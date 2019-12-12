@@ -360,6 +360,7 @@ export class RepositoryApp {
                         <Route exact path='/#premium' render={premiumScreen}/>
 
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+
                         <Route path='/group/:group/docs' render={renderGroupScreen}/>
 
                         <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>

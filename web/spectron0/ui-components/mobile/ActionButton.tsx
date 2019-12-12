@@ -8,7 +8,7 @@ export class ActionButton extends React.Component<IProps> {
             <Button color="primary"
                     style={{outline: 'none', boxShadow: 'none'}}
                     onClick={() => this.props.onClick()}
-                    className="btn-circle btn-xl shadow">
+                    className="btn-circle btn-xl shadow-mg">
 
                 <i className="fas fa-graduation-cap"/>
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {BottomNavButton} from "./BottomNavButton";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -8,9 +9,8 @@ export class RepoFooter extends React.PureComponent<IProps> {
 
     public render() {
 
-        return (
-
-            <footer className="d-none-desktop d-none-tablet border-top">
+        const Delegate =
+            <footer className="border-top">
 
                 <div className=""
                      style={{
@@ -22,8 +22,11 @@ export class RepoFooter extends React.PureComponent<IProps> {
 
                 </div>
 
-            </footer>
+            </footer>;
 
+        return (
+
+            <DeviceRouter phone={Delegate} tablet={Delegate}/>
 
         );
 

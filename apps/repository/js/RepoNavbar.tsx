@@ -5,6 +5,7 @@ import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 import { FeatureToggle } from '../../../web/js/ui/FeatureToggle';
+import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 
 const Styles: IStyleMap = {
 
@@ -49,15 +50,10 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
-        const NavButtons = () => (
+        const NavTabs = () => {
 
-            <div style={{display: 'flex'}}>
-
+            const Delegate =
                 <div className="mt-auto mb-auto">
-                    <NavLogo/>
-                </div>
-
-                <div className="mt-auto mb-auto d-none-mobile d-none-tablet">
 
                     <div className="ml-4">
                         <SimpleTabs>
@@ -72,7 +68,21 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                         </SimpleTabs>
                     </div>
 
+                </div>;
+
+            return <DeviceRouter desktop={Delegate}/>;
+
+        };
+
+        const NavFirstRow = () => (
+
+            <div style={{display: 'flex'}}>
+
+                <div className="mt-auto mb-auto">
+                    <NavLogo/>
                 </div>
+
+                <NavTabs/>
 
             </div>
         );
@@ -83,12 +93,7 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
                 <GDPRNotice/>
 
-                <div>
-                    <NavButtons/>
-                </div>
-
-                {/*Rework this so that I can accept the ESC key binding here.*/}
-                {/*https://stackoverflow.com/questions/37440408/how-to-detect-esc-key-press-in-react-and-how-to-handle-it/46123962*/}
+                <NavFirstRow/>
 
                 <section className="sidebar"
                          style={sidebarStyle}
@@ -96,7 +101,7 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
                     <div className="subheader" style={Styles.subheader}>
 
-                        <NavButtons/>
+                        <NavFirstRow/>
 
                     </div>
 

@@ -263,7 +263,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<IndeterminateProgressBar/>*/}
 
-                <LoadingSplash/>
+                {/*<LoadingSplash/>*/}
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
@@ -276,7 +276,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<InputFilter placeholder="Filter by title"/>*/}
 
-                {/*<FloatingActionButton onClick={NULL_FUNCTION} style={{paddingBottom: '4.5em'}}/>*/}
+                <FloatingActionButton onClick={NULL_FUNCTION} style={{paddingBottom: '4.5em'}}/>
 
                 {/*    <h4>Normal Circle Buttons</h4>*/}
                 {/*    <button type="button" className="btn btn-default btn-circle"><i className="fa fa-check"></i>*/}
