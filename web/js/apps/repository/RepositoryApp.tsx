@@ -325,6 +325,8 @@ export class RepositoryApp {
             throw new Error("No root element to render to");
         }
 
+        // TODO: splashes renders far far far too late and there's a delay.
+
         ReactDOM.render(
 
             <div style={{height: '100%'}}>

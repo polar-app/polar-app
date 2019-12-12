@@ -16,6 +16,8 @@ import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import * as semver from 'semver';
+import {Devices} from "../../../../web/js/util/Devices";
+import {ReleaseMetadatas} from "polar-release-metadata/src/ReleaseMetadatas";
 
 export class SplashEngine {
 
@@ -180,12 +182,13 @@ class WhatsNewRule implements Rule<UserFacts, SplashEventHandlers, WhatsNewState
                eventMap: EventMap<SplashEventHandlers>,
                state?: Readonly<WhatsNewState>): RuleFactPair<UserFacts, WhatsNewState> {
 
-        const updated = state && semver.lt(state.version, facts.version);
+        const hasUpdated = state && semver.lt(state.version, facts.version);
 
-        if (updated) {
+        const hasMetadata = ReleaseMetadatas.hasMetadata(facts.version);
 
-            if (Platforms.isDesktop()) {
-                // only call this on desktop...
+        if (hasUpdated && hasMetadata) {
+
+            if (Devices.isDesktop() || Devices.isTablet) {
                 eventMap.onWhatsNew.handler();
             }
 
