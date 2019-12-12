@@ -9,10 +9,7 @@ import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "../../../../web/js/util/Devices";
-import {Version} from "polar-shared/src/util/Version";
-import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
+import {AboutDialogs} from "./AboutDialogs";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -124,26 +121,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
     }
 
     private onAbout() {
-
-        const version = Version.get();
-        const device = Devices.get();
-        const platform = Platforms.toSymbol(Platforms.get());
-
-        const body = <div>
-
-            <b>Version: </b> {version}<br/>
-            <b>Device: </b> {device}<br/>
-            <b>Platform: </b> {platform}
-
-        </div>;
-
-        Dialogs.alert({
-            title: 'About',
-            body,
-            type: 'info',
-            onConfirm: NULL_FUNCTION
-        });
-
+        AboutDialogs.create();
     }
 
 }

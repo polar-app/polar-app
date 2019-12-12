@@ -39,7 +39,7 @@ button.dropdown-item:hover {
 
 }
 
-@media only screen and (max-device-width: 700px) {
+@media only screen and (max-device-width: 850px) {
 
     .d-none-tablet {
         display: none;
