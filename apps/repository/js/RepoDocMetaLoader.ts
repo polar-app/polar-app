@@ -10,7 +10,7 @@ import {EventListener} from '../../../web/js/reactor/EventListener';
 import {RepoDocMeta} from './RepoDocMeta';
 import {RepoDocMetas} from './RepoDocMetas';
 import {DeterminateProgressBar} from '../../../web/js/ui/progress_bar/DeterminateProgressBar';
-import {IndeterminateProgressBar} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
+import {IndeterminateProgressBars} from '../../../web/js/ui/progress_bar/IndeterminateProgressBar';
 import {PersistenceLayerProvider} from '../../../web/js/datastore/PersistenceLayer';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
@@ -128,7 +128,7 @@ export class RepoDocMetaLoader {
 
     private addInitialProgressListener(persistenceLayer: PersistenceLayer) {
 
-        let progressBar = IndeterminateProgressBar.create();
+        let progressBar = IndeterminateProgressBars.create();
 
         persistenceLayer.addDocMetaSnapshotEventListener(async () => {
 

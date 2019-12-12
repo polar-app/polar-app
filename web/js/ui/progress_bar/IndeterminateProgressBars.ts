@@ -10,11 +10,11 @@ const log = Logger.create();
  * complicated rendering issues or requiring React to be used.  This allows
  * us to easily show a GUI for a download at any point in time.
  */
-export class IndeterminateProgressBar {
+export class IndeterminateProgressBars {
 
     public destroy() {
 
-        const progressElement = IndeterminateProgressBar.getProgressElement().getOrUndefined();
+        const progressElement = IndeterminateProgressBars.getProgressElement().getOrUndefined();
 
         if (progressElement) {
 
@@ -35,12 +35,12 @@ export class IndeterminateProgressBar {
         return Optional.of(<HTMLProgressElement> element);
     }
 
-    public static create(): IndeterminateProgressBar {
+    public static create(): IndeterminateProgressBars {
 
         const current = this.getProgressElement();
 
         if (current.isPresent()) {
-            return new IndeterminateProgressBar();
+            return new IndeterminateProgressBars();
         }
 
         const element = document.createElement('div');
@@ -74,7 +74,7 @@ export class IndeterminateProgressBar {
 
         document.body.appendChild(element);
 
-        return new IndeterminateProgressBar();
+        return new IndeterminateProgressBars();
 
     }
 
