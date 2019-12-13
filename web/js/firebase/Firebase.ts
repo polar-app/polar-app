@@ -41,17 +41,25 @@ export class Firebase {
             return this.app;
         }
 
-        const project = process.env.POLAR_TEST_PROJECT || 'prod';
+        try {
 
-        log.info("Connecting to firebase with project: " + project);
+            log.notice("Initializing firebase...");
 
-        Preconditions.assertPresent(project, "project");
+            const project = process.env.POLAR_TEST_PROJECT || 'prod';
 
-        const config = PROJECTS[project];
+            log.info("Connecting to firebase with project: " + project);
 
-        Preconditions.assertPresent(config, "config");
+            Preconditions.assertPresent(project, "project");
 
-        return this.app = firebase.initializeApp(config);
+            const config = PROJECTS[project];
+
+            Preconditions.assertPresent(config, "config");
+
+            return this.app = firebase.initializeApp(config);
+
+        } finally {
+            log.notice("Initializing firebase...done");
+        }
 
     }
 

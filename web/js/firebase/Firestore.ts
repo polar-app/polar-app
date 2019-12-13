@@ -2,6 +2,9 @@ import * as firebase from './lib/firebase';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 const tracer = RendererAnalytics.createTracer('firestore');
 
@@ -21,19 +24,27 @@ export class Firestore {
 
         return await tracer.traceAsync('createInstance', async () => {
 
-            const firestore = firebase.firestore();
+            try {
 
-            const settings = {
-                // timestampsInSnapshots: true
-            };
+                log.notice("Initializing firestore...");
 
-            firestore.settings(settings);
+                const firestore = firebase.firestore();
 
-            if (opts.enablePersistence) {
-                this.enablePersistence(firestore);
+                const settings = {
+                    // timestampsInSnapshots: true
+                };
+
+                firestore.settings(settings);
+
+                if (opts.enablePersistence) {
+                    this.enablePersistence(firestore);
+                }
+
+                return firestore;
+
+            } finally {
+                log.notice("Initializing firestore...done");
             }
-
-            return firestore;
 
         });
 

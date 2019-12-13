@@ -15,6 +15,9 @@ import {FloatingActionButton} from "./mobile/FloatingActionButton";
 import {LoadingMessages} from "../../js/ui/loading_splash/LoadingMessages";
 import {LoadingSplash} from "../../js/ui/loading_splash/LoadingSplash";
 import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
+import {BottomSheet} from "./mobile/BottomSheet";
+import {ActionButton} from "./mobile/ActionButton";
+import {CircularIcon} from "./mobile/CircularIcon";
 
 const styles = {
     swatch: {
@@ -263,7 +266,70 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<IndeterminateProgressBar/>*/}
 
-                <LoadingSplash/>
+                {/*<LoadingSplash/>*/}
+
+                <div className="border"
+                     style={{
+                         width: 150,
+                         height: 150,
+                         display: 'table-cell',
+                         borderRadius: '50%',
+                         textAlign: 'center',
+                         verticalAlign: 'middle'
+                     }}>
+
+                    asdfasdf
+
+                </div>
+
+                <Button color="clear"
+                        className="btn-no-outline">
+
+                    <div className="text-center">
+
+                        <CircularIcon icon="fas fa-graduation-cap" size={75}/>
+
+                        <div className="mt-1">
+                            Start Reading
+                        </div>
+
+                    </div>
+
+                </Button>
+
+                <BottomSheet>
+
+                    <div style={{display: 'flex', flexDirection: 'column'}}>
+
+                        <div className="ml-auto mr-auto mb-1">
+                            <b>Start Review</b>
+                        </div>
+
+                        {/*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*/}
+
+                        <div className="ml-auto mr-auto mb-1">
+                            <Button size="lg"
+                                    style={{
+                                        width: '13em'
+                                    }}
+                                    color="clear"
+                                    outline
+                                    className="border">Reading</Button>
+                        </div>
+
+                        <div className="ml-auto mr-auto mb-1">
+                            <Button size="lg"
+                                    style={{
+                                        width: '13em'
+                                    }}
+                                    color="clear"
+                                    outline
+                                    className="border">Flashcards</Button>
+                        </div>
+
+                    </div>
+
+                </BottomSheet>
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
