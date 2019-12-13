@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IndeterminateProgressBar} from "../progress_bar/IndeterminateProgressBar";
 import {VerticalCenterBox} from "./VerticalCenterBox";
 import {LogData} from "./LogMessagesDataLoader";
-import {MessageBanner} from "../../../../apps/repository/js/MessageBanner";
 
 export class LoadingMessages extends React.Component<IProps, IState> {
 

@@ -41,10 +41,8 @@ export class ReactInjector {
     public static create(element: JSX.Element, container: HTMLElement) {
 
         ReactDOM.render(
-
             element,
             container
-
         );
 
         return new InjectedComponent(container);

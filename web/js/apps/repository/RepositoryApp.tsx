@@ -395,6 +395,8 @@ export class RepositoryApp {
 
         );
 
+        // TODO: return authStatus as an object and then do authState.authenticated
+        // and unauthenticated so that if statements are cleaner
         if (authStatus !== 'needs-authentication') {
 
             this.handleRepoDocInfoEvents();
