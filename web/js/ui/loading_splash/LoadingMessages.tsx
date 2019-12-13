@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {SplashBox} from "./SplashBox";
 import {IndeterminateProgressBar} from "../progress_bar/IndeterminateProgressBar";
+import {VerticalCenterBox} from "./VerticalCenterBox";
 
 export class LoadingMessages extends React.Component<IProps, IState> {
 
@@ -19,10 +20,13 @@ export class LoadingMessages extends React.Component<IProps, IState> {
         // };
 
         return (
-            <SplashBox paddingTop="255px">
-                <div style={{width: '350px'}}>
+            <VerticalCenterBox paddingTop="110px">
+                <div style={{
+                        width: '350px'
+                     }}
+                     className="ml-auto mr-auto">
 
-                    <div className="mt-5" >
+                    <div className="mt-0" >
                         <IndeterminateProgressBar/>
                     </div>
 
@@ -32,7 +36,7 @@ export class LoadingMessages extends React.Component<IProps, IState> {
                         <div>Loading UI... </div>
                     </div>
                 </div>
-            </SplashBox>
+            </VerticalCenterBox>
         );
     }
 

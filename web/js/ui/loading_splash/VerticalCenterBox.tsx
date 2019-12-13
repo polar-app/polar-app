@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {LoadingMessages} from "./LoadingMessages";
 
-export class SplashBox extends React.Component<IProps, IState> {
+export class VerticalCenterBox extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -15,9 +15,8 @@ export class SplashBox extends React.Component<IProps, IState> {
                      display: 'flex',
                      position: 'absolute',
                      left: 0,
-                     top: 0,
-                     width: '100vw',
-                     height: '100vh',
+                     width: '100%',
+                     top: '50%',
                      zIndex: 1000000
                  }}>
 
