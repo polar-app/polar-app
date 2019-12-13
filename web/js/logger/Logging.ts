@@ -244,7 +244,6 @@ export interface LogMessage {
     readonly idx: number;
 
     readonly timestamp: ISODateTimeString;
-
     readonly level: LogLevelName;
     readonly msg: string;
     readonly args: ReadonlyArray<any>;

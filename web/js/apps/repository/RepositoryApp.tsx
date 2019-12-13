@@ -103,7 +103,7 @@ export class RepositoryApp {
 
         const platform = Platforms.get();
 
-        log.notice("Running on platform: " + platform);
+        log.notice("Running on platform: " + Platforms.toSymbol(platform));
 
         if (authStatus !== 'needs-authentication') {
 
