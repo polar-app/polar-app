@@ -31,9 +31,9 @@ export class LoadingMessages extends React.Component<IProps, IState> {
                     </div>
 
                     <div className="mt-3" >
-                        <div style={{opacity: 0.33}}>Connecting to firebase...</div>
-                        <div style={{opacity: 0.66}}>Initializing datastore...</div>
-                        <div>Loading UI... </div>
+                        {/*<div style={{opacity: 0.33}}>Connecting to firebase...</div>*/}
+                        {/*<div style={{opacity: 0.66}}>Initializing datastore...</div>*/}
+                        {/*<div>Loading UI... </div>*/}
                     </div>
                 </div>
             </VerticalCenterBox>

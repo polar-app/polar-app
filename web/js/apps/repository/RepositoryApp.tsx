@@ -58,6 +58,7 @@ import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 
 const log = Logger.create();
 
@@ -75,6 +76,8 @@ export class RepositoryApp {
     public async start() {
 
         log.info("Running with Polar version: " + Version.get());
+
+        renderLoadingSplash();
 
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
         const persistenceLayerController = this.persistenceLayerManager;
@@ -319,13 +322,10 @@ export class RepositoryApp {
         Accounts.listenForPlanUpgrades()
             .catch(err => log.error("Unable to listen for plan upgrades: ", err));
 
-        const rootElement = document.getElementById('root') as HTMLElement;
-
-        if (! rootElement) {
-            throw new Error("No root element to render to");
-        }
 
         // TODO: splashes renders far far far too late and there's a delay.
+
+        const rootElement = getRootElement();
 
         ReactDOM.render(
 
@@ -554,3 +554,22 @@ export class RepositoryApp {
 
 }
 
+function getRootElement() {
+
+    const rootElement = document.getElementById('root') as HTMLElement;
+
+    if (! rootElement) {
+        throw new Error("No root element to render to");
+    }
+
+    return rootElement;
+
+}
+
+function renderLoadingSplash() {
+
+    const rootElement = getRootElement();
+
+    ReactDOM.render(<LoadingSplash/>, rootElement);
+
+}
