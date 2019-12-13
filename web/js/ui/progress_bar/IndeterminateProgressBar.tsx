@@ -4,28 +4,15 @@ export class IndeterminateProgressBar extends React.PureComponent<IProps, IState
 
     public render() {
 
-        const style: React.CSSProperties = {
-            height: this.props.height || '4px',
-        };
-
         return (
-            <div className="progress-indeterminate-slider" style={style}>
-                <div className="progress-indeterminate-line"
-                     />
-
-                <div className="progress-indeterminate-subline progress-indeterminate-inc"
-                     />
-
-                <div className="progress-indeterminate-subline progress-indeterminate-dec"
-                     />
-            </div>
+            <div className="polar-indeterminate-progress" style={this.props.style}/>
         );
     }
 
 }
 
 export interface IProps {
-    readonly height?: string | number;
+    readonly style?: React.CSSProperties;
 }
 
 export interface IState {

@@ -65,3 +65,36 @@ progress[value]::-webkit-progress-value {
     to { left: 110%; width: 10%;}
 }
 
+
+/* responsive indeterminate progress */
+
+.polar-indeterminate-progress, .polar-indeterminate-progress:before {
+    height: 3px;
+    width: 100%;
+    margin: 0;
+}
+
+.polar-indeterminate-progress {
+    background-color: #b3d4fc;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.polar-indeterminate-progress:before {
+    background-color: #3f51b5;
+    content: '';
+    -webkit-animation: polar-running-progress 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: polar-running-progress 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@-webkit-keyframes polar-running-progress {
+    0% { margin-left: 0px; margin-right: 100%; }
+    50% { margin-left: 25%; margin-right: 0%; }
+    100% { margin-left: 100%; margin-right: 0; }
+}
+@keyframes polar-running-progress {
+    0% { margin-left: 0px; margin-right: 100%; }
+    50% { margin-left: 25%; margin-right: 0%; }
+    100% { margin-left: 100%; margin-right: 0; }
+}
+

@@ -17,8 +17,7 @@ export class LoadingSplash extends React.Component<IProps, IState> {
                 {/*FIXME: should not be a full URL */}
                 <img className="logo" width="250" height="250" src="https://getpolarized.io/assets/logo/icon.svg"/>
 
-                {/*<IndeterminateProgressBar height="5px"/>*/}
-
+                {/*<IndeterminateProgressBar/>*/}
                 <LoadingMessages/>
 
             </SplashBox>

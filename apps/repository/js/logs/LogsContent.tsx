@@ -114,7 +114,6 @@ export default class LogsContent extends ReleasingReactComponent<IProps, IState>
                 <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
                 <div style={Styles.LogFieldMsg}>{current.msg}</div>
 
-
                 <RenderJSON/>
 
             </div>;

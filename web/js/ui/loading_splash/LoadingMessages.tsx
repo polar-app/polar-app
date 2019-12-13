@@ -20,13 +20,17 @@ export class LoadingMessages extends React.Component<IProps, IState> {
 
         return (
             <SplashBox paddingTop="255px">
-                <div className="pt-5" style={{width: '350px'}}>
+                <div style={{width: '350px'}}>
 
-                    <IndeterminateProgressBar/>
+                    <div className="mt-5" >
+                        <IndeterminateProgressBar/>
+                    </div>
 
-                    <div style={{opacity: 0.33}}>Connecting to firebase...</div>
-                    <div style={{opacity: 0.66}}>Initializing datastore...</div>
-                    <div>Loading UI...</div>
+                    <div className="mt-3" >
+                        <div style={{opacity: 0.33}}>Connecting to firebase...</div>
+                        <div style={{opacity: 0.66}}>Initializing datastore...</div>
+                        <div>Loading UI... </div>
+                    </div>
                 </div>
             </SplashBox>
         );
