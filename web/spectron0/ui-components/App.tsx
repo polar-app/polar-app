@@ -18,6 +18,8 @@ import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminatePr
 import {BottomSheet} from "./mobile/BottomSheet";
 import {ActionButton} from "./mobile/ActionButton";
 import {CircularIcon} from "./mobile/CircularIcon";
+import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
+import {ReactRouters} from "../../js/ui/ReactRouters";
 
 const styles = {
     swatch: {
@@ -260,6 +262,15 @@ export class App<P> extends React.Component<{}, IAppState> {
             </div>;
         };
 
+        const StartReview = () => <div>start review</div>;
+
+        const DefaultContent = () => <div>
+            <Link to={{hash: '#start-review'}}>
+                start review with router
+            </Link>
+
+        </div>;
+
         return (
 
             <div className="p-1">
@@ -268,68 +279,83 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<LoadingSplash/>*/}
 
-                <div className="border"
-                     style={{
-                         width: 150,
-                         height: 150,
-                         display: 'table-cell',
-                         borderRadius: '50%',
-                         textAlign: 'center',
-                         verticalAlign: 'middle'
-                     }}>
+                <BrowserRouter>
 
-                    asdfasdf
+                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
-                </div>
+                        <Route path='.*#start-review' component={StartReview}/>
+                        {/*<Route component={DefaultContent}/>*/}
 
-                <Button color="clear"
-                        className="btn-no-outline">
+                    </Switch>
 
-                    <div className="text-center">
+                </BrowserRouter>
 
-                        <CircularIcon icon="fas fa-graduation-cap" size={75}/>
+                {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
-                        <div className="mt-1">
-                            Start Reading
-                        </div>
+                {/*<FloatingActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
-                    </div>
+                {/*<div className="border"*/}
+                {/*     style={{*/}
+                {/*         width: 150,*/}
+                {/*         height: 150,*/}
+                {/*         display: 'table-cell',*/}
+                {/*         borderRadius: '50%',*/}
+                {/*         textAlign: 'center',*/}
+                {/*         verticalAlign: 'middle'*/}
+                {/*     }}>*/}
 
-                </Button>
+                {/*    asdfasdf*/}
 
-                <BottomSheet>
+                {/*</div>*/}
 
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
+                {/*<Button color="clear"*/}
+                {/*        className="btn-no-outline">*/}
 
-                        <div className="ml-auto mr-auto mb-1">
-                            <b>Start Review</b>
-                        </div>
+                {/*    <div className="text-center">*/}
 
-                        {/*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*/}
+                {/*        <CircularIcon icon="fas fa-graduation-cap" size={75}/>*/}
 
-                        <div className="ml-auto mr-auto mb-1">
-                            <Button size="lg"
-                                    style={{
-                                        width: '13em'
-                                    }}
-                                    color="clear"
-                                    outline
-                                    className="border">Reading</Button>
-                        </div>
+                {/*        <div className="mt-1">*/}
+                {/*            Start Reading*/}
+                {/*        </div>*/}
 
-                        <div className="ml-auto mr-auto mb-1">
-                            <Button size="lg"
-                                    style={{
-                                        width: '13em'
-                                    }}
-                                    color="clear"
-                                    outline
-                                    className="border">Flashcards</Button>
-                        </div>
+                {/*    </div>*/}
 
-                    </div>
+                {/*</Button>*/}
 
-                </BottomSheet>
+                {/*<BottomSheet>*/}
+
+                {/*    <div style={{display: 'flex', flexDirection: 'column'}}>*/}
+
+                {/*        <div className="ml-auto mr-auto mb-1">*/}
+                {/*            <b>Start Review</b>*/}
+                {/*        </div>*/}
+
+                {/*        /!*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*!/*/}
+
+                {/*        <div className="ml-auto mr-auto mb-1">*/}
+                {/*            <Button size="lg"*/}
+                {/*                    style={{*/}
+                {/*                        width: '13em'*/}
+                {/*                    }}*/}
+                {/*                    color="clear"*/}
+                {/*                    outline*/}
+                {/*                    className="border btn-no-outline">Reading</Button>*/}
+                {/*        </div>*/}
+
+                {/*        <div className="ml-auto mr-auto mb-1">*/}
+                {/*            <Button size="lg"*/}
+                {/*                    style={{*/}
+                {/*                        width: '13em'*/}
+                {/*                    }}*/}
+                {/*                    color="clear"*/}
+                {/*                    outline*/}
+                {/*                    className="border btn-no-outline">Flashcards</Button>*/}
+                {/*        </div>*/}
+
+                {/*    </div>*/}
+
+                {/*</BottomSheet>*/}
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 
 /**
  * A sheet anchored to the bottom of the page.
@@ -18,6 +17,8 @@ export class BottomSheet extends React.Component<IProps> {
                     width: '100%'
                  }}>
 
+                {this.props.children}
+
             </div>
         );
 
@@ -26,5 +27,5 @@ export class BottomSheet extends React.Component<IProps> {
 }
 
 export interface IProps {
-    readonly onClick: () => void;
 }
+

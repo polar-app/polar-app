@@ -49,7 +49,7 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
         const NavLink = (props: any) => {
             return <Link to={{pathname: link, hash: '#'}}>
                 {props.children}
-            </Link>
+            </Link>;
         };
 
         return (

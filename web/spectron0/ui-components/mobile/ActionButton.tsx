@@ -5,14 +5,27 @@ export class ActionButton extends React.Component<IProps> {
     public render() {
 
         return (
-            <Button color="primary"
-                    style={{outline: 'none', boxShadow: 'none'}}
-                    onClick={() => this.props.onClick()}
-                    className="btn-circle btn-xl shadow-mg">
 
-                <i className="fas fa-graduation-cap"/>
+            <div style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                 }}>
 
-            </Button>
+                <Button color="primary"
+                        style={{outline: 'none', boxShadow: 'none'}}
+                        onClick={() => this.props.onClick()}
+                        className="btn-circle btn-xl shadow-mg">
+
+                    <i className={this.props.icon}/>
+
+                </Button>
+
+                <div className="ml-auto mr-auto">
+                    {this.props.text || ""}
+                </div>
+
+            </div>
+
         );
 
     }
@@ -20,5 +33,11 @@ export class ActionButton extends React.Component<IProps> {
 }
 
 export interface IProps {
+    readonly icon: string;
+    readonly text?: string;
     readonly onClick: () => void;
 }
+
+
+
+
