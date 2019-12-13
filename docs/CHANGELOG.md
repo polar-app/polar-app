@@ -1,5 +1,13 @@
 
-- usability: I give up. You guys win. Spaces " " and hyphens "-" are now supported in tags and folders :)
+- Fixed privacy policy URL in login page
+
+- Tags can now contain spaces and hyphens
+
+- Semaphore now used for Windows disk writes.
+
+- Removed some unused libraries
+
+- Upgrades to latest firebase
 
 # 1.70.4
 
