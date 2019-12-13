@@ -347,7 +347,6 @@ export class RepositoryApp {
 
                         <Route exact path='/#community' render={renderCommunityScreen}/>
 
-                        <Route exact path='/#stats' render={renderStatsScreen}/>
 
                         <Route exact path='/#logs' render={renderLogsScreen}/>
 
@@ -371,7 +370,8 @@ export class RepositoryApp {
 
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 
-                        <Route exact path='/#annotations' component={renderAnnotationRepoScreen} />
+                        <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
+                        <Route exact path={['/#annotations', '/annotations']} component={renderAnnotationRepoScreen} />
 
                         <Route exact path='/' component={renderDefaultScreenByDevice}/>
 

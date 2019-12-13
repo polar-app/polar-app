@@ -1,4 +1,7 @@
 
+- Changed #annotations and #stats URLs so that they are /annotations and /stats 
+  as we're going to migrate to anchors for sub-screens for history.
+
 - Fixed privacy policy URL in login page
 
 - Tags can now contain spaces and hyphens
