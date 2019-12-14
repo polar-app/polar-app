@@ -20,6 +20,7 @@ import {ActionButton} from "./mobile/ActionButton";
 import {CircularIcon} from "./mobile/CircularIcon";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/ui/ReactRouters";
+import {ActionButtonWithText} from "./mobile/ActionButtonWithText";
 
 const styles = {
     swatch: {
@@ -279,18 +280,18 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<LoadingSplash/>*/}
 
-                <BrowserRouter>
+                {/*<BrowserRouter>*/}
 
-                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+                {/*    <Switch location={ReactRouters.createLocationWithPathnameHash()}>*/}
 
-                        <Route path='.*#start-review' component={StartReview}/>
-                        {/*<Route component={DefaultContent}/>*/}
+                {/*        <Route path='.*#start-review' component={StartReview}/>*/}
+                {/*        /!*<Route component={DefaultContent}/>*!/*/}
 
-                    </Switch>
+                {/*    </Switch>*/}
 
-                </BrowserRouter>
+                {/*</BrowserRouter>*/}
 
-                {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
+                <ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>
 
                 {/*<FloatingActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
@@ -308,54 +309,89 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                {/*<Button color="clear"*/}
-                {/*        className="btn-no-outline">*/}
+                <hr/>
 
-                {/*    <div className="text-center">*/}
+                <div className="text-center">
 
-                {/*        <CircularIcon icon="fas fa-graduation-cap" size={75}/>*/}
+                    <Button color="clear"
+                            style={{
+                                padding: 0,
+                                alignItems: 'center'
+                            }}
+                            className="btn-no-outline">
 
-                {/*        <div className="mt-1">*/}
-                {/*            Start Reading*/}
-                {/*        </div>*/}
+                        <CircularIcon icon="fas fa-graduation-cap" />
 
-                {/*    </div>*/}
+                    </Button>
 
-                {/*</Button>*/}
+                    <div className="mt-1 text-md">
+                        Reading
+                    </div>
+                </div>
 
-                {/*<BottomSheet>*/}
+                <hr/>
+                <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                     }}>
 
-                {/*    <div style={{display: 'flex', flexDirection: 'column'}}>*/}
+                    <CircularIcon icon="fas fa-graduation-cap" />
 
-                {/*        <div className="ml-auto mr-auto mb-1">*/}
-                {/*            <b>Start Review</b>*/}
-                {/*        </div>*/}
+                    <div className="mt-1">
+                        Start Reading
+                    </div>
 
-                {/*        /!*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*!/*/}
+                </div>
+                <hr/>
 
-                {/*        <div className="ml-auto mr-auto mb-1">*/}
-                {/*            <Button size="lg"*/}
-                {/*                    style={{*/}
-                {/*                        width: '13em'*/}
-                {/*                    }}*/}
-                {/*                    color="clear"*/}
-                {/*                    outline*/}
-                {/*                    className="border btn-no-outline">Reading</Button>*/}
-                {/*        </div>*/}
 
-                {/*        <div className="ml-auto mr-auto mb-1">*/}
-                {/*            <Button size="lg"*/}
-                {/*                    style={{*/}
-                {/*                        width: '13em'*/}
-                {/*                    }}*/}
-                {/*                    color="clear"*/}
-                {/*                    outline*/}
-                {/*                    className="border btn-no-outline">Flashcards</Button>*/}
-                {/*        </div>*/}
+                <BottomSheet>
 
-                {/*    </div>*/}
+                    <div style={{display: 'flex', flexDirection: 'column'}}>
 
-                {/*</BottomSheet>*/}
+                        <div className="ml-auto mr-auto mb-1">
+                            <b>Start Review</b>
+                        </div>
+
+                        {/*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*/}
+
+
+                        <div style={{display: 'flex'}} className="pb-3">
+
+                            <div className="ml-auto mr-auto">
+                                <ActionButtonWithText icon="fas fa-graduation-cap" text="Reading"/>
+                            </div>
+
+                            <div className="ml-auto mr-auto">
+                                <ActionButtonWithText icon="fas fa-graduation-cap" text="Reading"/>
+                            </div>
+
+                        </div>
+
+                        {/*<div className="ml-auto mr-auto mb-1">*/}
+                        {/*    <Button size="lg"*/}
+                        {/*            style={{*/}
+                        {/*                width: '13em'*/}
+                        {/*            }}*/}
+                        {/*            color="clear"*/}
+                        {/*            outline*/}
+                        {/*            className="border btn-no-outline">Reading</Button>*/}
+                        {/*</div>*/}
+
+                        {/*<div className="ml-auto mr-auto mb-1">*/}
+                        {/*    <Button size="lg"*/}
+                        {/*            style={{*/}
+                        {/*                width: '13em'*/}
+                        {/*            }}*/}
+                        {/*            color="clear"*/}
+                        {/*            outline*/}
+                        {/*            className="border btn-no-outline">Flashcards</Button>*/}
+                        {/*</div>*/}
+
+                    </div>
+
+                </BottomSheet>
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
