@@ -371,7 +371,15 @@ export class RepositoryApp {
 
                         <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
 
-                        <Route exact path={['/#annotations', '/annotations']} component={renderAnnotationRepoScreen} />
+                        <Route exact
+                               path={
+                                   [
+                                       '/#annotations',
+                                       '/annotations',
+                                       '/annotations#start-review'
+                                   ]
+                               }
+                               component={renderAnnotationRepoScreen} />
 
                         <Route exact path='/' component={renderDefaultScreenByDevice}/>
 

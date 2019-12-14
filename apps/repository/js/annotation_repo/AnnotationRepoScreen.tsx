@@ -32,6 +32,8 @@ import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {ReactRouters} from "../../../../web/js/ui/ReactRouters";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -166,6 +168,16 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                     <MessageBanner/>
 
                 </header>
+
+                <BrowserRouter>
+
+                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+
+                        <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
+
+                    </Switch>
+
+                </BrowserRouter>
 
                 <Dock componentClassNames={{
                         left: 'd-none-mobile',
