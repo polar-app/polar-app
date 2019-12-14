@@ -11,6 +11,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {Latch} from "polar-shared/src/util/Latch";
 import {DOM} from "polar-shared/src/util/DOM";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -183,7 +184,16 @@ export class DirectPHZLoader {
 
     private async loadIFrames(iframeRefs: IFrameRef[]) {
 
+        function invalidIFrame(iframe: IFrameRef) {
+            return ! isPresent(iframe.src) || ["", "http://", "https://"].includes(iframe.src);
+        }
+
         for (const iframeRef of iframeRefs) {
+
+            if (invalidIFrame(iframeRef)) {
+                log.warn("Found invalid iframe: " + iframeRef.src);
+                continue;
+            }
 
             const resourceEntry = this.getResourceEntry(iframeRef.src);
 
