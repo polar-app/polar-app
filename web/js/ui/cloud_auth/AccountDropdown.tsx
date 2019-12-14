@@ -2,7 +2,6 @@
 import React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
-import {SimpleTooltip} from '../tooltip/SimpleTooltip';
 import {SimpleTooltipEx} from '../tooltip/SimpleTooltipEx';
 
 const log = Logger.create();
@@ -23,11 +22,13 @@ export class AccountDropdown extends React.PureComponent<IProps, IState> {
                                       direction="down"
                                       size="md">
 
-                    <DropdownToggle color="primary" caret>
+                    <DropdownToggle color="primary"
+                                    caret>
                         <i className="fas fa-user" style={{marginRight: '5px'}}/>
 
                         Cloud Sync
                     </DropdownToggle>
+
                     <DropdownMenu className="shadow" right>
 
                         <SimpleTooltipEx placement="left"

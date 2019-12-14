@@ -7,6 +7,7 @@ import {Exporters, ExportFormat} from "../../../../web/js/metadata/exporter/Expo
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {Devices} from "../../../../web/js/util/Devices";
 
 const log = Logger.create();
 
@@ -18,6 +19,10 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
     }
 
     public render() {
+
+        if (! Devices.isDesktop()) {
+            return null;
+        }
 
         return (
 

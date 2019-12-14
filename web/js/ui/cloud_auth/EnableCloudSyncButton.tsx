@@ -1,21 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Button, Popover, PopoverBody, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
-import Popper from 'popper.js';
-import {CloudLoginModal} from './CloudLoginModal';
-import {Firebase} from '../../firebase/Firebase';
-import * as firebase from '../../firebase/lib/firebase';
-import {FirebaseUIAuth} from '../../firebase/FirebaseUIAuth';
+import {Button} from 'reactstrap';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
-import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
-import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {Nav} from '../util/Nav';
-import {InviteUsersModal} from './InviteUsersModal';
-import {Invitations} from '../../datastore/Invitations';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
-import {URLs} from 'polar-shared/src/util/URLs';
 
 const log = Logger.create();
 

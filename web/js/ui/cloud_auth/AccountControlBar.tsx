@@ -85,8 +85,6 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-
-
         const props = this.props;
 
         return (
