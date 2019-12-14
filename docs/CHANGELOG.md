@@ -1,4 +1,6 @@
 
+- Fixed bug where PHZ files were breaking with iframes that were invalid.
+
 - Changed #annotations and #stats URLs so that they are /annotations and /stats 
   as we're going to migrate to anchors for sub-screens for history.
 

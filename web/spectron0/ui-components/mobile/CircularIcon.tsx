@@ -7,20 +7,36 @@ export class CircularIcon extends React.Component<IProps> {
 
     public render() {
 
+        interface Size {
+            readonly icon: string;
+            readonly text: string;
+        }
+
+        const size: Size = {
+            icon: '50px',
+            text: '20px'
+        };
+
+        const color = this.props.color || 'primary';
+
         // TODO: make this a transition so it floats up from the bottom.
         return (
 
             <div className="border"
                  style={{
-                     width: this.props.size,
-                     height: this.props.size,
+                     width: size.icon,
+                     height: size.icon,
                      display: 'table-cell',
                      borderRadius: '50%',
                      textAlign: 'center',
                      verticalAlign: 'middle'
                  }}>
 
-                <i className={this.props.icon}/>
+                <i style={{
+                       fontSize: size.text,
+                       color: `var(--${color})`
+                   }}
+                   className={this.props.icon}/>
 
             </div>
 
@@ -31,7 +47,6 @@ export class CircularIcon extends React.Component<IProps> {
 }
 
 export interface IProps {
-    readonly color?: 'primary' | 'success' | 'clear';
     readonly icon: string;
-    readonly size: number | string;
+    readonly color?: 'primary' | 'success' | 'clear';
 }
