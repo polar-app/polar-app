@@ -15,7 +15,8 @@ export class FloatingActionButton extends React.Component<IProps> {
 
         return (
 
-            <div style={{
+            <div className="floating-action-button"
+                 style={{
                      position: "absolute",
                      right: 0,
                      bottom: 0,

@@ -376,7 +376,9 @@ export class RepositoryApp {
                                    [
                                        '/#annotations',
                                        '/annotations',
-                                       '/annotations#start-review'
+                                       '/annotations#start-review',
+                                       '/annotations#review-flashcards',
+                                       '/annotations#review-reading'
                                    ]
                                }
                                component={renderAnnotationRepoScreen} />

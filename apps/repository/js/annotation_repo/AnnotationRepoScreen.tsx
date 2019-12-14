@@ -40,6 +40,8 @@ import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton"
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
+import {Link} from "react-router-dom";
+import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/IndeterminateLoadingTransition";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -64,6 +66,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
+        this.startReviewAsync = this.startReviewAsync.bind(this);
 
         this.state = {
             data: [],
@@ -157,6 +160,15 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         Reviewers.start(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
     }
 
+    private async startReviewAsync(mode: RepetitionMode = 'reading') {
+        const persistenceLayer = this.props.persistenceLayerManager.get();
+        const datastoreCapabilities = persistenceLayer.capabilities();
+        const prefs = persistenceLayer.datastore.getPrefs();
+
+        await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
+
+    }
+
     public static PhoneAndTablet = class extends AnnotationRepoScreen {
 
         public render() {
@@ -213,17 +225,24 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                         <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
-                            <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
+                            <Route path='/annotations#start-review'
+                                   component={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+
+                            <Route path='/annotations#review-flashcards'
+                                   component={() => <IndeterminateLoadingTransition provider={() => this.startReviewAsync('flashcard')}/>}/>
+
+                            <Route path='/annotations#review-reading'
+                                   component={() => <IndeterminateLoadingTransition provider={() => this.startReviewAsync('reading')}/>}/>
 
                         </Switch>
 
                     </BrowserRouter>
 
-                    {/*<FloatingActionButton style={{paddingBottom: '20px'}}*/}
-                    {/*                      icon="fas fa-graduation-cap"*/}
-                    {/*                      onClick={NULL_FUNCTION}/>*/}
-
-                    {/*<StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>*/}
+                    <Link to={{pathname: '/annotations', hash: '#start-review'}}>
+                        <FloatingActionButton style={{paddingBottom: '75px'}}
+                                              icon="fas fa-graduation-cap"
+                                              onClick={NULL_FUNCTION}/>
+                    </Link>
 
                     <PreviewAndMainViewDock data={this.state.data}
                                             updateFilters={filters => this.filtersHandler.update(filters)}
@@ -290,16 +309,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         <MessageBanner/>
 
                     </header>
-
-                    <BrowserRouter>
-
-                        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
-
-                            <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
-
-                        </Switch>
-
-                    </BrowserRouter>
 
                     <Dock componentClassNames={{
                         left: 'd-none-mobile',
