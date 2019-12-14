@@ -7,7 +7,7 @@ export class BottomSheet extends React.Component<IProps> {
 
     public render() {
 
-        const zIndex = 1000000;
+        const zIndex = 2000000;
 
         // TODO: make this a transition so it floats up from the bottom.
         return (
