@@ -10,12 +10,11 @@ export class ActionButtonWithText extends React.Component<IProps> {
 
         const Btn = (props: any) => {
             return <Button color="clear"
-                    onClick={onClick}
-                    style={{
-                        padding: 0,
-                        alignItems: 'center'
-                    }}
-                    className="btn-no-outline">
+                           onClick={onClick}
+                           style={{
+                               alignItems: 'center'
+                           }}
+                           className="btn-no-outline p-0 pl-1 pr-1">
 
                 {props.children}
 
@@ -26,21 +25,18 @@ export class ActionButtonWithText extends React.Component<IProps> {
         return (
             <div className="text-center">
 
-                <Button color="clear"
-                        onClick={onClick}
-                        style={{
-                            padding: 0,
-                            alignItems: 'center'
-                        }}
-                        className="btn-no-outline">
-
+                <Btn>
                     <CircularIcon icon={this.props.icon} />
+                </Btn>
 
-                </Button>
-
-                <div className="mt-1 text-md">
-                    {this.props.text}
+                <div>
+                    <Btn>
+                        <div className="mt-1 text-md">
+                            {this.props.text}
+                        </div>
+                    </Btn>
                 </div>
+
             </div>
 
         );

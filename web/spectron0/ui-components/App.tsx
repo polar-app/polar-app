@@ -350,7 +350,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
 
-                        <div className="ml-auto mr-auto mb-1">
+                        <div className="ml-auto mr-auto mb-1 pt-3">
                             <b>Start Review</b>
                         </div>
 
