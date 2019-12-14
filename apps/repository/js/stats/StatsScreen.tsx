@@ -19,6 +19,7 @@ import {Devices} from "../../../../web/js/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 
 const log = Logger.create();
 
@@ -120,11 +121,10 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (Devices.get() === 'phone') {
-            return <StatsScreen.Phone {...this.props}/>;
-        } else {
-            return <StatsScreen.Default {...this.props}/>;
-        }
+        const desktop = <StatsScreen.Desktop {...this.props}/>;
+        const phoneAndTablet = <StatsScreen.PhoneAndTablet {...this.props}/>;
+
+        return <DeviceRouter desktop={desktop} phone={phoneAndTablet} tablet={phoneAndTablet}/>;
 
     }
 
@@ -133,7 +133,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
             .map(current => current.docInfo);
     }
 
-    public static Phone = class extends StatsScreen {
+    public static PhoneAndTablet = class extends StatsScreen {
         public render() {
             return <FixedNav id="doc-repository" className="statistics-view">
 
@@ -157,7 +157,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
         }
     };
 
-    public static Default = class extends StatsScreen {
+    public static Desktop = class extends StatsScreen {
 
         public render() {
 
