@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import {VersionStr} from "../../polar-app-public/polar-shared/src/util/Version";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",
@@ -27,6 +28,7 @@ async function showUserFeedback() {
         if (userFeedback.text !== null) {
             console.log("=================");
             console.log("nps: " + userFeedback.netPromoterScore);
+            console.log("version: " + userFeedback.version || "none");
             console.log(userFeedback.created);
             console.log(userFeedback.text);
         }
@@ -53,6 +55,8 @@ interface UserFeedback {
     readonly created: string;
 
     readonly machine: string;
+
+    readonly version?: VersionStr;
 
     // TODO: more fields including a unique/blinded ID for the user, the date
     // their account was created (so I can do cohorts for this)
