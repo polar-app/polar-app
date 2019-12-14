@@ -21,6 +21,7 @@ import {CircularIcon} from "./mobile/CircularIcon";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/ui/ReactRouters";
 import {ActionButtonWithText} from "./mobile/ActionButtonWithText";
+import {StartReviewBottomSheet} from "./mobile/StartReviewBottomSheet";
 
 const styles = {
     swatch: {
@@ -345,53 +346,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                 </div>
                 <hr/>
 
-
-                <BottomSheet>
-
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-
-                        <div className="ml-auto mr-auto mb-1 pt-3">
-                            <b>Start Review</b>
-                        </div>
-
-                        {/*<ActionButton icon="fas fa-graduation-cap" text="Reading" onClick={NULL_FUNCTION}/>*/}
-
-
-                        <div style={{display: 'flex'}} className="pb-3">
-
-                            <div className="ml-auto mr-auto">
-                                <ActionButtonWithText icon="fas fa-graduation-cap" text="Reading"/>
-                            </div>
-
-                            <div className="ml-auto mr-auto">
-                                <ActionButtonWithText icon="fas fa-graduation-cap" text="Reading"/>
-                            </div>
-
-                        </div>
-
-                        {/*<div className="ml-auto mr-auto mb-1">*/}
-                        {/*    <Button size="lg"*/}
-                        {/*            style={{*/}
-                        {/*                width: '13em'*/}
-                        {/*            }}*/}
-                        {/*            color="clear"*/}
-                        {/*            outline*/}
-                        {/*            className="border btn-no-outline">Reading</Button>*/}
-                        {/*</div>*/}
-
-                        {/*<div className="ml-auto mr-auto mb-1">*/}
-                        {/*    <Button size="lg"*/}
-                        {/*            style={{*/}
-                        {/*                width: '13em'*/}
-                        {/*            }}*/}
-                        {/*            color="clear"*/}
-                        {/*            outline*/}
-                        {/*            className="border btn-no-outline">Flashcards</Button>*/}
-                        {/*</div>*/}
-
-                    </div>
-
-                </BottomSheet>
+                <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
