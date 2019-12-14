@@ -19,7 +19,7 @@ export class FloatingActionButton extends React.Component<IProps> {
                      position: "absolute",
                      right: 0,
                      bottom: 0,
-                     zIndex: 2000000,
+                     zIndex: 100000,
                      ...style
                  }}>
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import {FilterIcon, TimesIcon} from "../icons/FixedWidthIcons";
+import {FilterIcon} from "../icons/FixedWidthIcons";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Button} from "reactstrap";
 import {ResetButton} from "./ResetButton";
 import {FocusInput} from "./FocusInput";
 
@@ -65,7 +64,7 @@ export class InputFilter extends React.Component<IProps, IState> {
                        placeholder={this.props.placeholder}
                        value={this.state.value}
                        defaultValue={this.props.defaultValue}
-                       className="border-0"
+                       className="border-0 mr-1"
                        onChange={event => this.setValue(event.target.value)}
                        style={{
                            flexGrow: 1,

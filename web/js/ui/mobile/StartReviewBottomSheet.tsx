@@ -15,7 +15,12 @@ export class StartReviewBottomSheet extends React.Component<IProps> {
                     <b>Start Review</b>
                 </div>
 
-                <div style={{display: 'flex'}} className="pb-3">
+                <div style={{
+                        display: 'flex',
+                        maxWidth: '50em',
+                        minWidth: '20em'
+                     }}
+                     className="pb-3 ml-auto mr-auto">
 
                     <div className="ml-auto mr-auto">
 

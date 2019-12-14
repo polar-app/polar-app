@@ -7,21 +7,11 @@ import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/sch
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
-import {InputFilter} from "../../js/ui/input_filter/InputFilter";
-import {Tracer} from "./Tracer";
 import {Button} from "reactstrap";
-import {TimesIcon} from "../../js/ui/icons/FixedWidthIcons";
-import {FloatingActionButton} from "./mobile/FloatingActionButton";
-import {LoadingMessages} from "../../js/ui/loading_splash/LoadingMessages";
-import {LoadingSplash} from "../../js/ui/loading_splash/LoadingSplash";
-import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
-import {BottomSheet} from "./mobile/BottomSheet";
-import {ActionButton} from "./mobile/ActionButton";
-import {CircularIcon} from "./mobile/CircularIcon";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
-import {ReactRouters} from "../../js/ui/ReactRouters";
-import {ActionButtonWithText} from "./mobile/ActionButtonWithText";
-import {StartReviewBottomSheet} from "./mobile/StartReviewBottomSheet";
+import {Link} from "react-router-dom";
+import {ActionButton} from "../../js/ui/mobile/ActionButton";
+import {CircularIcon} from "../../js/ui/mobile/CircularIcon";
+import {StartReviewBottomSheet} from "../../js/ui/mobile/StartReviewBottomSheet";
 
 const styles = {
     swatch: {

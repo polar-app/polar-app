@@ -25,7 +25,7 @@ export class BottomSheet extends React.Component<IProps> {
 
                 <div style={{
                          flexGrow: 1,
-                         backgroundColor: '000000',
+                         backgroundColor: '#000000',
                          opacity: 0.7,
                      }}>
 

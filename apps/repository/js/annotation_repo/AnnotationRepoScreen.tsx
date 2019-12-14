@@ -34,6 +34,12 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/ui/ReactRouters";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {NavIcon} from '../nav/NavIcon';
+import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
+import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
+import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -119,88 +125,13 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
     public render() {
 
-        return (
+        const desktop = <AnnotationRepoScreen.Desktop {...this.props}/>;
+        const phoneAndTablet = <AnnotationRepoScreen.PhoneAndTablet {...this.props}/>;
 
-            <FixedNav id="doc-repository"
-                      className="annotations-view">
+        return <DeviceRouter desktop={desktop}
+                             phone={phoneAndTablet}
+                             tablet={phoneAndTablet}/>;
 
-                <header>
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerManager}/>
-
-                    <Row id="header-filter"
-                         className="border-bottom p-1">
-                        <Row.Main>
-                            {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
-                            <StartReviewDropdown onFlashcards={() => this.startReview('flashcard')}
-                                                 onReading={() => this.startReview('reading')}/>
-                        </Row.Main>
-
-                        <Row.Right>
-
-                            <div style={{display: 'flex'}}>
-
-                                <div className="mr-1">
-                                    <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
-                                                            onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
-                                </div>
-
-                                <div className="mr-1">
-                                    <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
-                                                                onSelected={selected => this.filtersHandler.update({colors: selected})}/>
-                                </div>
-
-                                <div className="ml-1 d-none-mobile">
-                                    <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
-                                </div>
-
-                                <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                    <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                                                 annotations={this.state.data}/>
-                                </div>
-
-                            </div>
-
-                        </Row.Right>
-
-                    </Row>
-
-                    <MessageBanner/>
-
-                </header>
-
-                <BrowserRouter>
-
-                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
-
-                        <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
-
-                    </Switch>
-
-                </BrowserRouter>
-
-                <Dock componentClassNames={{
-                        left: 'd-none-mobile',
-                        splitter: 'd-none-mobile'
-                      }}
-                      left={
-                          <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
-                                         treeState={this.treeState}
-                                         tags={this.props.tags()}/>
-                      }
-                      right={
-                          <PreviewAndMainViewDock data={this.state.data}
-                                                  updateFilters={filters => this.filtersHandler.update(filters)}
-                                                  {...this.props}/>
-                      }
-                      side='left'
-                      initialWidth={300}/>
-
-                <RepoFooter/>
-
-            </FixedNav>
-
-        );
     }
 
     private onSelectedFolders(selected: ReadonlyArray<TagStr>) {
@@ -226,7 +157,177 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         Reviewers.start(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
     }
 
+    public static PhoneAndTablet = class extends AnnotationRepoScreen {
+
+        public render() {
+
+            return (
+
+                <FixedNav id="doc-repository"
+                          className="annotations-view">
+
+                    <header>
+
+                        <Row id="header-filter" className="border-bottom p-1 mt-1">
+
+                            <Row.Main>
+
+                                <div style={{display: 'flex'}}>
+
+                                    <div className="">
+                                        <NavIcon/>
+                                    </div>
+
+                                    <div className="mr-1 mt-auto mb-auto">
+                                        <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
+                                                                onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
+                                    </div>
+
+                                    <div className="mr-1 mt-auto mb-auto">
+                                        <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
+                                                                    onSelected={selected => this.filtersHandler.update({colors: selected})}/>
+                                    </div>
+
+                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                        <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+                                    </div>
+
+                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                        <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                                                     annotations={this.state.data}/>
+                                    </div>
+
+                                </div>
+
+                            </Row.Main>
+
+                            <Row.Right>
+                                <CloudAuthButton persistenceLayerController={this.props.persistenceLayerManager} />
+                            </Row.Right>
+
+                        </Row>
+
+                    </header>
+
+                    <BrowserRouter>
+
+                        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+
+                            <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
+
+                        </Switch>
+
+                    </BrowserRouter>
+
+                    {/*<FloatingActionButton style={{paddingBottom: '20px'}}*/}
+                    {/*                      icon="fas fa-graduation-cap"*/}
+                    {/*                      onClick={NULL_FUNCTION}/>*/}
+
+                    {/*<StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>*/}
+
+                    <PreviewAndMainViewDock data={this.state.data}
+                                            updateFilters={filters => this.filtersHandler.update(filters)}
+                                            {...this.props}/>
+
+                    <RepoFooter/>
+
+                </FixedNav>
+
+            );
+        }
+    };
+
+    public static Desktop = class extends AnnotationRepoScreen {
+
+        public render() {
+
+            return (
+
+                <FixedNav id="doc-repository"
+                          className="annotations-view">
+
+                    <header>
+                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                    persistenceLayerController={this.props.persistenceLayerManager}/>
+
+                        <Row id="header-filter"
+                             className="border-bottom p-1">
+                            <Row.Main>
+                                {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
+                                <StartReviewDropdown onFlashcards={() => this.startReview('flashcard')}
+                                                     onReading={() => this.startReview('reading')}/>
+                            </Row.Main>
+
+                            <Row.Right>
+
+                                <div style={{display: 'flex'}}>
+
+                                    <div className="mr-1">
+                                        <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
+                                                                onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
+                                    </div>
+
+                                    <div className="mr-1">
+                                        <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
+                                                                    onSelected={selected => this.filtersHandler.update({colors: selected})}/>
+                                    </div>
+
+                                    <div className="ml-1 d-none-mobile">
+                                        <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
+                                    </div>
+
+                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                        <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
+                                                                     annotations={this.state.data}/>
+                                    </div>
+
+                                </div>
+
+                            </Row.Right>
+
+                        </Row>
+
+                        <MessageBanner/>
+
+                    </header>
+
+                    <BrowserRouter>
+
+                        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+
+                            <Route path='/annotations#start-review' component={() => <div>starting the review</div>}/>
+
+                        </Switch>
+
+                    </BrowserRouter>
+
+                    <Dock componentClassNames={{
+                        left: 'd-none-mobile',
+                        splitter: 'd-none-mobile'
+                    }}
+                          left={
+                              <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
+                                             treeState={this.treeState}
+                                             tags={this.props.tags()}/>
+                          }
+                          right={
+                              <PreviewAndMainViewDock data={this.state.data}
+                                                      updateFilters={filters => this.filtersHandler.update(filters)}
+                                                      {...this.props}/>
+                          }
+                          side='left'
+                          initialWidth={300}/>
+
+                    <RepoFooter/>
+
+                </FixedNav>
+
+            );
+        }
+    };
+
 }
+
 
 export interface IProps {
 
