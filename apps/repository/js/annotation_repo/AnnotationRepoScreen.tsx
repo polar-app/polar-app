@@ -210,7 +210,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                                 <div style={{display: 'flex'}}>
 
-                                    <div className="">
+                                    <div className="mr-1">
                                         <NavIcon/>
                                     </div>
 

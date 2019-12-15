@@ -144,7 +144,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                             <div style={{display: 'flex'}}>
 
-                                <div className="">
+                                <div className="mr-1">
                                     <NavIcon/>
                                 </div>
 
