@@ -14,11 +14,11 @@ export class AboutDialogs {
 
         const body = <div>
 
-            <b>Version: </b> {version}<br/>
-            <b>Device: </b> {device}<br/>
-            <b>Platform: </b> {platform}
-            <b>Screen width: </b> {window.screen.width}
-            <b>Screen height: </b> {window.screen.height}
+            <div><b>Version: </b> {version}</div>
+            <div><b>Device: </b> {device}</div>
+            <div><b>Platform: </b> {platform}</div>
+            <div><b>Screen width: </b> {window.screen.width}</div>
+            <div><b>Screen height: </b> {window.screen.height}</div>
 
         </div>;
 

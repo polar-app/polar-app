@@ -1,19 +1,16 @@
-import {Platforms} from "polar-shared/src/util/Platforms";
-
 export class Devices {
 
     public static get(): Device {
 
-        if (Platforms.isDesktop()) {
-            // if this is explicitly a desktop OS
-            return 'desktop';
-        }
-
         if (window.screen.width < 850) {
             // it's not a desktop, so it must be a phone.
             return 'phone';
-        } else {
+        } else if (window.screen.width < 1024) {
+            // smaller displays than 1024 are tablet.
             return 'tablet';
+        } else {
+            // everything else is a desktop
+            return 'desktop';
         }
 
     }
