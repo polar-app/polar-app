@@ -160,13 +160,16 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                 </header>
 
-                <FixedNavBody className="p-1">
+                <FixedNav.Body className="p-1">
                     <div className="container p-0">
                         <ReviewerStats isReviewer={this.state.isReviewer}/>
                     </div>
-                </FixedNavBody>
+                </FixedNav.Body>
 
-                <RepoFooter/>
+                <FixedNav.Footer>
+                    <RepoFooter/>
+                </FixedNav.Footer>
+
             </FixedNav>;
         }
     };

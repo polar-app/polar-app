@@ -245,22 +245,28 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                     </header>
 
-                    {this.createRouter()}
+                    <FixedNav.Body>
 
-                    <Link to={{pathname: '/annotations', hash: '#start-review'}}>
-                        <FloatingActionButton style={{
-                                                  paddingBottom: '60px',
-                                                  paddingRight: '20px'
-                                              }}
-                                              icon="fas fa-graduation-cap"
-                                              onClick={NULL_FUNCTION}/>
-                    </Link>
+                        {this.createRouter()}
 
-                    <PreviewAndMainViewDock data={this.state.data}
-                                            updateFilters={filters => this.filtersHandler.update(filters)}
-                                            {...this.props}/>
+                        <Link to={{pathname: '/annotations', hash: '#start-review'}}>
+                            <FloatingActionButton style={{
+                                paddingBottom: '60px',
+                                paddingRight: '20px'
+                            }}
+                                                  icon="fas fa-graduation-cap"
+                                                  onClick={NULL_FUNCTION}/>
+                        </Link>
 
-                    <RepoFooter/>
+                        <PreviewAndMainViewDock data={this.state.data}
+                                                updateFilters={filters => this.filtersHandler.update(filters)}
+                                                {...this.props}/>
+
+                    </FixedNav.Body>
+
+                    <FixedNav.Footer>
+                        <RepoFooter/>
+                    </FixedNav.Footer>
 
                 </FixedNav>
 

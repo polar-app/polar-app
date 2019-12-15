@@ -12,11 +12,7 @@ export class RepoFooter extends React.PureComponent<IProps> {
         const Delegate =
             <footer className="border-top"
                     style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
                         width: '100%',
-                        zIndex: 1000000,
                         backgroundColor: 'var(--primary-background-color)',
                     }}>
 
