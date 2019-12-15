@@ -66,7 +66,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onSelectedFolders = this.onSelectedFolders.bind(this);
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
-        this.startReviewAsync = this.startReviewAsync.bind(this);
+        this.createReviewer = this.createReviewer.bind(this);
 
         this.state = {
             data: [],
@@ -160,13 +160,12 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         Reviewers.start(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
     }
 
-    private async startReviewAsync(mode: RepetitionMode = 'reading') {
+    private async createReviewer(mode: RepetitionMode = 'reading') {
         const persistenceLayer = this.props.persistenceLayerManager.get();
         const datastoreCapabilities = persistenceLayer.capabilities();
         const prefs = persistenceLayer.datastore.getPrefs();
 
-        await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
-
+        return await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, NULL_FUNCTION, 10);
     }
 
     public static PhoneAndTablet = class extends AnnotationRepoScreen {
@@ -229,10 +228,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                    component={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
 
                             <Route path='/annotations#review-flashcards'
-                                   component={() => <IndeterminateLoadingTransition provider={() => this.startReviewAsync('flashcard')}/>}/>
+                                   component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('flashcard')}/>}/>
 
                             <Route path='/annotations#review-reading'
-                                   component={() => <IndeterminateLoadingTransition provider={() => this.startReviewAsync('reading')}/>}/>
+                                   component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('reading')}/>}/>
 
                         </Switch>
 

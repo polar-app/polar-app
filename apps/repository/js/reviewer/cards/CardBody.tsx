@@ -44,7 +44,7 @@ export class CardBody extends React.Component<IProps, IState> {
                 </div>
 
                 <div style={{}}
-                     className="text-center">
+                     className="text-center mb-1 mt-1">
                     {this.props.children}
                 </div>
 

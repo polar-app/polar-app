@@ -2,7 +2,7 @@ import {Reviewer} from "./Reviewer";
 import {InjectedComponent, ReactInjector} from "../../../../web/js/ui/util/ReactInjector";
 import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
 import {LightModal} from "../../../../web/js/ui/LightModal";
 import {
@@ -22,13 +22,14 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
-import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {ConfirmProps, Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
+import {Confirm} from "../../../../web/js/ui/dialogs/Confirm";
 
 const log = Logger.create();
 
@@ -40,7 +41,7 @@ export class Reviewers {
                         mode: RepetitionMode,
                         limit: number = 10) {
 
-        this.create(datastoreCapabilities, prefs, repoDocAnnotations, mode, limit)
+        this.createAndInject(datastoreCapabilities, prefs, repoDocAnnotations, mode, limit)
             .catch(err => console.error("Unable to start review: ", err));
 
     }
@@ -54,43 +55,69 @@ export class Reviewers {
         await latch.get();
     }
 
-    private static displayWebRequiredError() {
+    private static createWebRequiredError() {
 
-        Dialogs.confirm({
+        const props: ConfirmProps = {
             title: 'Cloud sync required (please login)',
             subtitle: 'Cloud sync is required to review annotations.  Please login to review flashcards and reading.',
             type: 'danger',
             onConfirm: NULL_FUNCTION,
             noCancel: true
-        });
+        };
+
+        return <Confirm {...props}/>;
 
     }
 
-    private static displayNoTasksMessage() {
+    private static createNoTasksMessage() {
 
-        Dialogs.confirm({
+        const props: ConfirmProps = {
             title: 'No tasks to complete',
             subtitle: "Awesome.  Looks like you're all caught up and have no tasks to complete.",
             type: 'success',
             onConfirm: NULL_FUNCTION,
             noCancel: true
-        });
+        };
+
+        return <Confirm {...props}/>;
 
     }
+
+    public static async createAndInject(datastoreCapabilities: DatastoreCapabilities,
+                                        prefs: PersistentPrefs,
+                                        repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
+                                        mode: RepetitionMode,
+                                        limit: number = 10) {
+
+        let injected: InjectedComponent | undefined;
+
+        const doClose = () => {
+            injected!.destroy();
+        };
+
+        const reviewer = await this.create(datastoreCapabilities, prefs, repoDocAnnotations, mode, doClose, limit);
+
+        if (reviewer) {
+
+            injected = ReactInjector.inject(reviewer);
+        }
+
+    }
+
 
     public static async create(datastoreCapabilities: DatastoreCapabilities,
                                prefs: PersistentPrefs,
                                repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                mode: RepetitionMode,
-                               limit: number = 10) {
+                               doClose: Callback = NULL_FUNCTION,
+                               limit: number = 10): Promise<JSX.Element> {
 
         Preconditions.assertPresent(mode, 'mode');
 
         const uid = await Firebase.currentUserID();
 
         if (! datastoreCapabilities.networkLayers.has('web')) {
-            this.displayWebRequiredError();
-            return;
+            return this.createWebRequiredError();
         }
 
         if (! uid) {
@@ -130,17 +157,10 @@ export class Reviewers {
         await doWriteQueueStageCounts();
 
         if (taskReps.length === 0) {
-            this.displayNoTasksMessage();
-            return;
+            return this.createNoTasksMessage();
         }
 
         console.log("Found N tasks: " + taskReps.length);
-
-        let injected: InjectedComponent | undefined;
-
-        const doClose = () => {
-            injected!.destroy();
-        };
 
         const completedStageCounts = StageCountsCalculator.createMutable();
 
@@ -173,10 +193,14 @@ export class Reviewers {
 
             await SpacedRepStats.write(uid, spacedRepStats);
 
+            console.log("Wrote completed state counts");
+
         };
 
 
         const onFinished = () => {
+
+            console.log("Got finished...");
 
             doWriteCompletedStageCounts()
                 .catch(err => log.error("Unable to write completed stage counts: ", err));
@@ -194,7 +218,7 @@ export class Reviewers {
             };
 
             SpacedReps.set(taskRep.id, spacedRep)
-                 .catch(err => log.error("Could not save state: ", err));
+                .catch(err => log.error("Could not save state: ", err));
 
         };
 
@@ -217,14 +241,16 @@ export class Reviewers {
         // emit stats that the reviewer was run...
         RendererAnalytics.event({category: 'reviewer', action: 'created-' + mode});
 
-        injected = ReactInjector.inject(
+        return (
             <LightModal>
                 <Reviewer taskReps={taskReps}
                           onRating={onRating}
                           onSuspended={onSuspended}
                           onFinished={onFinished}/>
-            </LightModal>);
+            </LightModal>
+        );
 
     }
+
 
 }

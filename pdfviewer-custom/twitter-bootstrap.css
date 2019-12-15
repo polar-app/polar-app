@@ -314,6 +314,12 @@ button.dropdown-item:hover {
     --attention100: #ffe0b2;
     --attention000: #fff3e0;
 
+    --primary-background-color: #FFFFFF;
+    --primary-text-color: #000000;
+
+    --selected-background-color: #00afec;
+    --selected-text-color: #FFFFFF;
+
 }
 
 /* TODO: auto generate these */
@@ -390,3 +396,4 @@ button.dropdown-item:hover {
 /*.btn:focus {*/
 /*    outline: none;*/
 /*}*/
+

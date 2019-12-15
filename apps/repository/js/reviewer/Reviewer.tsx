@@ -11,6 +11,7 @@ import {FlashcardCard} from "./cards/FlashcardCard";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
+import {Link} from "react-router-dom";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -128,7 +129,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
         return (
 
             <div style={style}
-                 className="ml-auto mr-auto h-100 border p-1">
+                 className="ml-auto mr-auto h-100 border p-1 text-md">
 
                 <Row>
                     <Row.Main>
@@ -146,14 +147,16 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                             <i className="fas fa-pause"/> suspend
                         </Button>
 
-                        <Button size="md"
-                                color="light"
-                                className="text-muted"
-                                onClick={() => this.props.onFinished(true)}>
+                        <Link to={{pathname: '/annotations'}}>
+                            <Button size="md"
+                                    color="light"
+                                    className="text-muted"
+                                    onClick={() => this.props.onFinished(true)}>
 
-                            <i className="far fa-times-circle"/>
+                                <i className="far fa-times-circle"/>
 
-                        </Button>
+                            </Button>
+                        </Link>
 
                     </Row.Right>
 
@@ -170,7 +173,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                     </Progress>
 
                 </div>
-
 
                 <Card/>
 

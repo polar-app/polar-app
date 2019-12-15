@@ -1,17 +1,15 @@
 import * as React from 'react';
 import {Tags} from 'polar-shared/src/tags/Tags';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Group} from "../../js/datastore/sharing/db/Groups";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
-import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
-import {ActionButton} from "../../js/ui/mobile/ActionButton";
-import {CircularIcon} from "../../js/ui/mobile/CircularIcon";
-import {StartReviewBottomSheet} from "../../js/ui/mobile/StartReviewBottomSheet";
+import {Lightbox} from "../../js/ui/util/Lightbox";
+import {Dialogs} from "../../js/ui/dialogs/Dialogs";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const styles = {
     swatch: {
@@ -96,15 +94,15 @@ export class App<P> extends React.Component<{}, IAppState> {
         //     }
         // };
 
-        // Dialogs.confirm({title: 'hello world',
-        //                  subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
-        //                  onConfirm: NULL_FUNCTION,
-        //                  type: 'danger'});
+        Dialogs.confirm({title: 'hello world',
+                         subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
+                         onConfirm: NULL_FUNCTION,
+                         type: 'danger'});
         //
         // Dialogs.prompt({title: 'New folder: ',
         //                 onCancel: NULL_FUNCTION,
         //                 onDone: NULL_FUNCTION});
-
+        //
         // PreviewWarnings.createDialog(NULL_FUNCTION);
 
         const tags = [
@@ -267,6 +265,49 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="p-1">
 
+                {/*<Lightbox>*/}
+                {/*    asdf*/}
+                {/*</Lightbox>*/}
+
+                {/*<div style={{*/}
+                {/*    position: 'absolute',*/}
+                {/*    top: 0,*/}
+                {/*    left: 0,*/}
+                {/*    width: '100%',*/}
+                {/*    height: '100%',*/}
+                {/*    opacity: 1.0,*/}
+                {/*    zIndex: 10000*/}
+                {/*}}>*/}
+                {/*    asdfasdfasdf*/}
+
+                {/*</div>*/}
+
+                {/*<div style={{*/}
+                {/*        position: 'absolute',*/}
+                {/*        top: 0,*/}
+                {/*        left: 0,*/}
+                {/*        width: '100%',*/}
+                {/*        height: '100%',*/}
+                {/*        backgroundColor: 'rgba(0, 0, 0, 0.7)',*/}
+                {/*        zIndex: 9999*/}
+                {/*    }}>*/}
+                {/*</div>*/}
+
+                {/*<div style={{*/}
+                {/*    position: 'absolute',*/}
+                {/*    top: 0,*/}
+                {/*    left: 0,*/}
+                {/*    width: '100%',*/}
+                {/*    height: '100%',*/}
+                {/*    backgroundColor: 'var(--primary-background-color)',*/}
+                {/*    opacity: 1.0,*/}
+                {/*    zIndex: 10000*/}
+                {/*}}>*/}
+                {/*    asdfasdfasdf*/}
+
+                {/*</div>*/}
+
+
                 {/*<IndeterminateProgressBar/>*/}
 
                 {/*<LoadingSplash/>*/}
@@ -282,7 +323,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</BrowserRouter>*/}
 
-                <ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>
+                {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
                 {/*<FloatingActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
@@ -300,43 +341,43 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                <hr/>
+                {/*<hr/>*/}
 
-                <div className="text-center">
+                {/*<div className="text-center">*/}
 
-                    <Button color="clear"
-                            style={{
-                                padding: 0,
-                                alignItems: 'center'
-                            }}
-                            className="btn-no-outline">
+                {/*    <Button color="clear"*/}
+                {/*            style={{*/}
+                {/*                padding: 0,*/}
+                {/*                alignItems: 'center'*/}
+                {/*            }}*/}
+                {/*            className="btn-no-outline">*/}
 
-                        <CircularIcon icon="fas fa-graduation-cap" />
+                {/*        <CircularIcon icon="fas fa-graduation-cap" />*/}
 
-                    </Button>
+                {/*    </Button>*/}
 
-                    <div className="mt-1 text-md">
-                        Reading
-                    </div>
-                </div>
+                {/*    <div className="mt-1 text-md">*/}
+                {/*        Reading*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
-                <hr/>
-                <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                     }}>
+                {/*<hr/>*/}
+                {/*<div style={{*/}
+                {/*        display: 'flex',*/}
+                {/*        flexDirection: 'column',*/}
+                {/*        alignItems: 'center'*/}
+                {/*     }}>*/}
 
-                    <CircularIcon icon="fas fa-graduation-cap" />
+                {/*    <CircularIcon icon="fas fa-graduation-cap" />*/}
 
-                    <div className="mt-1">
-                        Start Reading
-                    </div>
+                {/*    <div className="mt-1">*/}
+                {/*        Start Reading*/}
+                {/*    </div>*/}
 
-                </div>
-                <hr/>
+                {/*</div>*/}
+                {/*<hr/>*/}
 
-                <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
+                {/*<StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>*/}
 
                 {/*<Button className="mt-auto mb-auto text-secondary p-0 no-focus"*/}
                 {/*        style={{outline: 'none', boxShadow: 'none'}}*/}

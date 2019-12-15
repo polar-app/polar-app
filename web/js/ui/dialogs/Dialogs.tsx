@@ -11,10 +11,7 @@ export class Dialogs {
 
         let injected: InjectedComponent | undefined;
 
-        Blackout.enable();
-
         const cleanup = () => {
-            Blackout.disable();
             injected!.destroy();
         };
 
@@ -39,10 +36,7 @@ export class Dialogs {
 
         let injected: InjectedComponent | undefined;
 
-        Blackout.enable();
-
         const cleanup = () => {
-            Blackout.disable();
             injected!.destroy();
         };
 
@@ -59,10 +53,7 @@ export class Dialogs {
 
         let injected: InjectedComponent | undefined;
 
-        Blackout.enable();
-
         const cleanup = () => {
-            Blackout.disable();
             injected!.destroy();
         };
 

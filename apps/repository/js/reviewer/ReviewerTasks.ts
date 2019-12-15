@@ -87,6 +87,11 @@ export class ReviewerTasks {
 
             };
 
+            if (repoDocAnnotations.length === 0) {
+                // nothing to do.
+                return [];
+            }
+
             return repoDocAnnotations
                 .filter(current => current.annotationType === AnnotationType.FLASHCARD)
                 .map(toTasks)

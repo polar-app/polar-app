@@ -15,7 +15,7 @@ export class IndeterminateLoadingTransition extends React.Component<IProps, ISta
         super(props, context);
 
         this.state = {
-            loaded: false
+            loaded: undefined
         };
 
     }
@@ -23,10 +23,10 @@ export class IndeterminateLoadingTransition extends React.Component<IProps, ISta
 
         const handler = async () => {
 
-            await this.props.provider();
+            const component = await this.props.provider();
 
             this.setState({
-                loaded: true
+                loaded: component
             });
 
         };
@@ -45,7 +45,7 @@ export class IndeterminateLoadingTransition extends React.Component<IProps, ISta
     public render() {
 
         if (this.state.loaded) {
-            return null;
+            return this.state.loaded;
         }
 
         return (
@@ -69,9 +69,13 @@ export class IndeterminateLoadingTransition extends React.Component<IProps, ISta
 }
 
 export interface IProps {
-    readonly provider: () => Promise<void>;
+
+    /**
+     * The component that provides a rendered element
+     */
+    readonly provider: () => Promise<JSX.Element>;
 }
 
 export interface IState {
-    readonly loaded: boolean;
+    readonly loaded: JSX.Element | undefined;
 }
