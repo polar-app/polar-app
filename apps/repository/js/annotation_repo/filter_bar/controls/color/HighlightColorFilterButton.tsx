@@ -55,6 +55,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                  style={this.props.style}>
 
                 <Button color={buttonProps.color}
+                        className="btn-no-outline"
                         outline={buttonProps.outline}
                         id={id}
                         size="md"
@@ -78,7 +79,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
                     <PopoverBody className="shadow rounded p-2"
                                  style={{backgroundColor: 'var(--primary-background-color)'}}>
 
-                        {/*FIXME: reset button and multi-colors*/}
+                        {/*TODO: reset button and multi-colors*/}
 
                         <ColorSelectorBox selected={this.props.selected}
                                           onSelected={(color) => this.onSelected(color)}/>
@@ -101,7 +102,7 @@ export class HighlightColorFilterButton extends React.PureComponent<IProps, ISta
         const selected = this.props.selected || [];
 
         const newSelected = selected.includes(color) ?
-            selected.filter(current => current != color) :
+            selected.filter(current => current !== color) :
             [...selected, color];
 
         onSelected(newSelected);

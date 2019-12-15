@@ -10,7 +10,7 @@ export class RepoFooter extends React.PureComponent<IProps> {
     public render() {
 
         const Delegate =
-            <footer className="border-top"
+            <footer className="border-top text-lg"
                     style={{
                         width: '100%',
                         backgroundColor: 'var(--primary-background-color)',

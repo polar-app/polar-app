@@ -45,6 +45,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
             <UncontrolledDropdown>
 
                 <DropdownToggle color={buttonProps.color}
+                                className="btn-no-outline"
                                 outline={buttonProps.outline}
                                 size="md"
                                 caret>

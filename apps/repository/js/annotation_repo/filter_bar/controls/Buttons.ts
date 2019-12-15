@@ -2,7 +2,7 @@
 
 export interface ButtonProps {
     readonly outline: boolean;
-    readonly color: 'primary' | 'light';
+    readonly color: 'primary' | 'secondary' | 'light' | 'clear';
 }
 
 const buttonActive: ButtonProps = {
@@ -12,7 +12,7 @@ const buttonActive: ButtonProps = {
 
 const buttonInactive: ButtonProps = {
     outline: false,
-    color: 'light'
+    color: 'clear'
 };
 
 export class Buttons {
