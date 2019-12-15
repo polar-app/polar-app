@@ -16,6 +16,9 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {Row} from "../../../../web/js/ui/layout/Row";
+import {NavIcon} from "../nav/NavIcon";
+import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
 
 const log = Logger.create();
 
@@ -135,10 +138,25 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
+                    <Row id="header-filter" className="border-bottom p-1 mt-1">
 
-                    <MessageBanner/>
+                        <Row.Main>
+
+                            <div style={{display: 'flex'}}>
+
+                                <div className="">
+                                    <NavIcon/>
+                                </div>
+
+                            </div>
+
+                        </Row.Main>
+
+                        <Row.Right>
+                            <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
+                        </Row.Right>
+
+                    </Row>
 
                 </header>
 
