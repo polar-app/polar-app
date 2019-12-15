@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import {Lightbox} from "../../js/ui/util/Lightbox";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {ActionButton} from "../../js/ui/mobile/ActionButton";
 
 const styles = {
     swatch: {
@@ -324,6 +325,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*</BrowserRouter>*/}
 
                 {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
+                <ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>
 
                 {/*<FloatingActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 

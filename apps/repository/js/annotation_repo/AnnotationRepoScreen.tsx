@@ -248,7 +248,10 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                     {this.createRouter()}
 
                     <Link to={{pathname: '/annotations', hash: '#start-review'}}>
-                        <FloatingActionButton style={{paddingBottom: '75px'}}
+                        <FloatingActionButton style={{
+                                                  paddingBottom: '60px',
+                                                  paddingRight: '20px'
+                                              }}
                                               icon="fas fa-graduation-cap"
                                               onClick={NULL_FUNCTION}/>
                     </Link>
