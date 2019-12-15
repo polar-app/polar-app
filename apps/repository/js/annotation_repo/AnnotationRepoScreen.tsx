@@ -43,6 +43,8 @@ import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBo
 import {Link} from "react-router-dom";
 import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/IndeterminateLoadingTransition";
 
+
+
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
     private readonly treeState: TreeState<TagDescriptor>;
@@ -67,6 +69,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
         this.createReviewer = this.createReviewer.bind(this);
+
+        this.createRouter = this.createRouter.bind(this);
 
         this.state = {
             data: [],
@@ -168,6 +172,27 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         return await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, NULL_FUNCTION, 10);
     }
 
+    private createRouter() {
+        return (
+            <BrowserRouter>
+
+                <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+
+                    <Route path='/annotations#start-review'
+                           component={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+
+                    <Route path='/annotations#review-flashcards'
+                           component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('flashcard')}/>}/>
+
+                    <Route path='/annotations#review-reading'
+                           component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('reading')}/>}/>
+
+                </Switch>
+
+            </BrowserRouter>
+        );
+    }
+
     public static PhoneAndTablet = class extends AnnotationRepoScreen {
 
         public render() {
@@ -220,22 +245,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                     </header>
 
-                    <BrowserRouter>
-
-                        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
-
-                            <Route path='/annotations#start-review'
-                                   component={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
-
-                            <Route path='/annotations#review-flashcards'
-                                   component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('flashcard')}/>}/>
-
-                            <Route path='/annotations#review-reading'
-                                   component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('reading')}/>}/>
-
-                        </Switch>
-
-                    </BrowserRouter>
+                    {this.createRouter()}
 
                     <Link to={{pathname: '/annotations', hash: '#start-review'}}>
                         <FloatingActionButton style={{paddingBottom: '75px'}}
@@ -308,6 +318,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                         <MessageBanner/>
 
                     </header>
+
+                    {this.createRouter()}
 
                     <Dock componentClassNames={{
                         left: 'd-none-mobile',

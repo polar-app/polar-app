@@ -56,7 +56,12 @@ export class NavIcon extends React.PureComponent<IProps, IState> {
             <div style={Styles.parent}>
                 <div style={Styles.child}>
                     <NavLink>
-                        <img src="/apps/repository/img/icon.svg" height="25" alt="Polar"/>
+                        <img src="/icon.svg"
+                             className="mt-auto mb-auto"
+                             style={{
+                                 height: '35px'
+                             }}
+                             alt="Polar"/>
                     </NavLink>
                 </div>
             </div>

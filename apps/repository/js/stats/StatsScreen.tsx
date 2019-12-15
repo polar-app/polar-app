@@ -6,16 +6,12 @@ import TopTagsTable from './TopTagsTable';
 import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import ReadingProgressTable from './ReadingProgressTable';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
-import {Devices} from "../../../../web/js/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
