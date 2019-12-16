@@ -1,4 +1,6 @@
 
+- removed outline on MacOS for tree nodes on the sidebar.
+
 - Dramatically improved our mobile and tablet apps.
 
 - Fixed bug where PHZ files were breaking with iframes that were invalid.

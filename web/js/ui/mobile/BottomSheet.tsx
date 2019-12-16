@@ -28,7 +28,7 @@ export class BottomSheet extends React.Component<IProps> {
                          backgroundColor: '#000000',
                          opacity: 0.7,
                      }}
-                     onClick={() => windows.history.back()}>
+                     onClick={() => window.history.back()}>
 
                 </div>
 

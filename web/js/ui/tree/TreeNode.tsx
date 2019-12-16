@@ -32,7 +32,7 @@ class Styles {
         // height: '20px'
     };
 
-    public static NODE_NAME: React.CSSProperties = {
+    public static NODE_BUTTON: React.CSSProperties = {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginLeft: '2px',
@@ -44,6 +44,8 @@ class Styles {
         paddingRight: '5px',
         fontFamily: 'sans-serif',
         boxShadow: 'none',
+
+        outline: 'none',
 
         // needed to change the look of buttons to something reasonable.
         backgroundColor: 'inherit',
@@ -224,7 +226,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                                  onContextMenu={(event) => this.onClick(event)}
                                  onClick={(event) => this.onClick(event)}>
 
-                                <button style={Styles.NODE_NAME}
+                                <button style={Styles.NODE_BUTTON}
                                         className={"p-0 pl-1 pr-1 border-0 no-outline " + nodeButtonClazz}
                                         color="light">
 
