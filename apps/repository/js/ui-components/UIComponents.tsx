@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Button, Form, FormGroup, FormText, Input, Label} from "reactstrap";
-import {ColorButton} from "../../js/ui/colors/ColorButton";
 
 const ExampleForm = () => {
 
