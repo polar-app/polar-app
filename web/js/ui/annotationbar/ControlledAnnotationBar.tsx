@@ -10,7 +10,7 @@ const Styles: IStyleMap = {
 
     bar: {
         backgroundColor: '#333333',
-        width: '200px'
+        // width: '200px'
     }
 
 };
@@ -33,7 +33,7 @@ export class ControlledAnnotationBar extends React.Component<IProps, IState> {
         return (
             <div>
 
-                <div className="rounded p-1 annotationbar text-center" style={Styles.bar}>
+                <div className="rounded p-1 pl-3 pr-3 annotationbar text-center" style={Styles.bar}>
 
                     <AnnotationHighlightButton dispatchColor='yellow'
                                                styleColor='rgba(255,255,0)'

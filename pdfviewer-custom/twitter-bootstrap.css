@@ -14,15 +14,13 @@
 }
 
 button.dropdown-item:hover {
-    background-color: #D8D8D8;
+    background-color: var(--grey100);
     background-image: none;
 }
 
 .confirm-prompt {
-
     min-width: 550px;
     width: 550px;
-
 }
 
 .popover {

@@ -14,6 +14,7 @@ export class AnnotationHighlightButton extends React.Component<IProps, IState> {
         return (
             <Button size="lg"
                     type="button"
+                    color="clear"
                     className="btn p-1 m-1 annotationbar-btn"
                     title=""
                     aria-label=""
