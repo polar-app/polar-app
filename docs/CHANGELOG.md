@@ -1,5 +1,5 @@
 
-- Dramatically improved our mobile and tablet apps
+- Dramatically improved our mobile and tablet apps.
 
 - Fixed bug where PHZ files were breaking with iframes that were invalid.
 

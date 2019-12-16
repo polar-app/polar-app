@@ -49,20 +49,19 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             // and the interpolated points shown in the graph would be too many
 
             const firstDatapointsReducer = (timestamp: ISODateTimeString,
-                                           datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
+                                            datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
 
                 const first = datapoints[0];
                 return {
                     ...first,
                     created: timestamp
-                }
+                };
             };
 
             const minDatapointsReducer = (timestamp: ISODateTimeString,
-                                            datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
+                                          datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
 
                 const min = StageCountsCalculator.createMutable();
-
 
                 datapoints.forEach(current => {
                     min.nrNew = Math.min(min.nrNew, current.nrNew);
@@ -75,7 +74,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                 return {
                     ...first,
                     created: timestamp
-                }
+                };
             };
 
             const sumDatapointsReducer = (timestamp: ISODateTimeString,
@@ -96,7 +95,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                     ...first,
                     ...sum,
                     created: timestamp
-                }
+                };
 
             };
 
@@ -144,7 +143,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                 return {
                     id,
                     data: stats.map(current => toDataPoint(current, id))
-                }
+                };
             };
 
             return [
@@ -176,7 +175,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
         const Chart = () => {
 
             const createTitle = () => {
-                switch(this.props.type) {
+                switch (this.props.type) {
                     case "queue":
                         return "Number of tasks pending (queue length)";
                     case "completed":

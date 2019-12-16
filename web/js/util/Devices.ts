@@ -2,10 +2,10 @@ export class Devices {
 
     public static get(): Device {
 
-        if (window.screen.width < 850) {
+        if (window.screen.width <= 850) {
             // it's not a desktop, so it must be a phone.
             return 'phone';
-        } else if (window.screen.width < 1024) {
+        } else if (window.screen.width <= 1024) {
             // smaller displays than 1024 are tablet.
             return 'tablet';
         } else {
