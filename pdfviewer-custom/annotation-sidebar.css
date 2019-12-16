@@ -1,5 +1,9 @@
 @import url('./flexbar.css');
 
+.annotation-sidebar {
+    height: 100%;
+}
+
 .annotation-sidebar,
 .annotation-sidebar * {
     font-size: 14px !important;

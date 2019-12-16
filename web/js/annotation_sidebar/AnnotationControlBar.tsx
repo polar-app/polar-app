@@ -80,7 +80,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             return <Button className="text-muted p-1"
                            title="Edit text highlight"
                            size="sm"
-                           color="light"
+                           color="clear"
                            style={Styles.button}
                            disabled={! this.props.doc.mutable}
                            onClick={() => this.toggleActiveInputComponent('text-highlight')}>
@@ -94,7 +94,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             return <Button className="ml-1 text-muted p-1"
                            title="Create comment"
                            size="sm"
-                           color="light"
+                           color="clear"
                            style={Styles.button}
                            disabled={! this.props.doc.mutable}
                            onClick={() => this.toggleActiveInputComponent('comment')}>
@@ -109,7 +109,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     title="Create flashcard"
                     style={Styles.button}
                     size="sm"
-                    color="light"
+                    color="clear"
                     disabled={! this.props.doc.mutable}
                     onClick={() => this.toggleActiveInputComponent('flashcard')}>
 

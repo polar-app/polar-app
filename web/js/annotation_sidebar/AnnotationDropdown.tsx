@@ -53,7 +53,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
                           isOpen={this.state.open}
                           toggle={this.toggle}>
 
-                    <DropdownToggle color="light"
+                    <DropdownToggle color="clear"
                                     disabled={this.props.disabled}
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     id={toggleID}>

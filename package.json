@@ -171,6 +171,7 @@
     "opencollective-postinstall": "~2.0.1",
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "~2.2.228",
+    "polar-dark-mode": "^1.70.9",
     "polar-backend-shared": "^1.70.9",
     "polar-content-capture": "^1.70.9",
     "polar-file-saver": "^1.70.9",

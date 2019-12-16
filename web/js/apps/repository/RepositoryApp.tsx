@@ -58,6 +58,7 @@ import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 
 const log = Logger.create();
@@ -356,6 +357,9 @@ export class RepositoryApp {
                         <Route exact path='/#support' render={supportScreen}/>
 
                         <Route exact path='/#premium' render={premiumScreen}/>
+
+                        <Route exact path='/ui-components' render={() => <UIComponentsScreen persistenceLayerManager={this.persistenceLayerManager}
+                                                                                             persistenceLayerProvider={persistenceLayerProvider}/>} />
 
                         <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
 

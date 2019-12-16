@@ -65,6 +65,10 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                                 <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>
                             </FeatureToggle>
 
+                            <FeatureToggle name='dev'>
+                                <SimpleTab id="nav-tab-ui" target={{pathname: "/ui-components"}} text="UI Components"/>
+                            </FeatureToggle>
+
                         </SimpleTabs>
                     </div>
 

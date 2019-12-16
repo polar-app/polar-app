@@ -18,7 +18,7 @@ export class EditButton extends React.PureComponent<IProps, IState> {
             <Button id={this.props.id}
                     className="text-muted p-1"
                     size="sm"
-                    color="light"
+                    color="clear"
                     disabled={this.props.disabled}
                     title={'Edit ' + this.props.type}
                     onClick={() => this.onClick()}>

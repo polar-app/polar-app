@@ -39,6 +39,10 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
                                                    title="Enable groups"
                                                    tooltip="Enable groups support for sharing documents with other Polar users"/>
 
+                    <SettingsFeatureToggleDropdown name="dev"
+                                                   title="Enable Dev"
+                                                   tooltip="Enable Dev Tools"/>
+
                 </DropdownMenu>
 
             </UncontrolledDropdown>

@@ -33,7 +33,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
                           isOpen={this.state.open}
                           toggle={this.toggle}>
 
-                    <DropdownToggle color="light"
+                    <DropdownToggle color="clear"
                                     className="doc-dropdown-button btn text-muted pl-1 pr-1"
                                     disabled={this.props.disabled}
                                     id={toggleID}>
