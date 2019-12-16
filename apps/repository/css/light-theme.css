@@ -15,15 +15,10 @@
 }
 
 body {
-    background-color: var(--white);
+    background-color: var(--primary-background-color);
     /*color: var(--dark);*/
 }
 
 #root {
-    background-color: var(--white);
+    background-color: var(--primary-background-color);
 }
-
-/*.btn-light {*/
-    /*background-color: var(--white);*/
-    /*color: var(--dark);*/
-/*}*/
