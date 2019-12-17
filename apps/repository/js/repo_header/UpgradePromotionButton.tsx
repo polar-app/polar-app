@@ -28,7 +28,7 @@ export class UpgradePromotionButton extends React.PureComponent<IProps, IState> 
             <div>
 
                 <Button color="clear"
-                        id="account-control-button"
+                        id="holiday-promotion-button"
                         size="md"
                         style={{
                             whiteSpace: 'nowrap',
@@ -45,7 +45,7 @@ export class UpgradePromotionButton extends React.PureComponent<IProps, IState> 
 
                 <UncontrolledPopover trigger="legacy"
                                      placement="bottom"
-                                     target="account-control-button"
+                                     target="holiday-promotion-button"
                                      delay={0}
                                      fade={false}
                                      style={{maxWidth: '600px'}}>
