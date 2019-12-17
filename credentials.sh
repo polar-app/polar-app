@@ -1,4 +1,7 @@
 
+## just used so that we know we've sourced the credentials file...
+export HAS_CREDENTIALS=true
+
 export GH_TOKEN=26722e632127b9548ce62024686d64c38e2b1994
 export CSC_IDENTITY_AUTO_DISCOVERY=true
 
