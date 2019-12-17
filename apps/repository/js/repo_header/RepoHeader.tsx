@@ -16,6 +16,7 @@ import {Platforms} from "polar-shared/src/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
 import {UpgradeAccountButton} from "./UpgradeAccountButton";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {UpgradePromotionButton} from "./UpgradePromotionButton";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -67,7 +68,8 @@ export class RepoHeader extends React.PureComponent<IProps, IState> {
                         <div className="ml-auto mt-auto mb-auto"
                              style={{display: 'flex'}}>
 
-                            <UpgradeAccountButton/>
+                            {/*<UpgradeAccountButton/>*/}
+                            <UpgradePromotionButton/>
 
                             <ChromeExtensionInstallButton/>
 

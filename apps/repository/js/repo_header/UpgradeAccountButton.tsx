@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Button} from 'reactstrap';
 import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
+import {Link} from "react-router-dom";
 
 export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
 
@@ -21,23 +22,22 @@ export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
         }
 
         return (
-            <Button color="light"
-                    size="md"
-                    onClick={() => this.onUpgrade()}
-                    className="border border-success">
+            <Link to={{pathname: '/', hash: '#plans'}}>
+                <Button color="light"
+                        size="md"
+                        onClick={() => this.onUpgrade()}
+                        className="border border-success">
 
-                {/*<i className="fas fa-certificate"/>*/}
+                    Upgrade Account
 
-                Upgrade Account
-
-            </Button>
+                </Button>
+            </Link>
         );
 
     }
 
     private onUpgrade() {
         RendererAnalytics.event({category: 'premium', action: 'upgrade-account-button'});
-        document.location.hash = "plans";
     }
 
 }

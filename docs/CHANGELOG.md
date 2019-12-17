@@ -1,4 +1,7 @@
 
+
+- Fixed bug with tablets now showing the pricing plan
+
 - removed outline on MacOS for tree nodes on the sidebar.
 
 - Dramatically improved our mobile and tablet apps.

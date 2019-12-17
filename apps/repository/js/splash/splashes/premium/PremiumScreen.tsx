@@ -5,7 +5,7 @@ import {
     PersistenceLayerController,
     PersistenceLayerManager
 } from '../../../../../../web/js/datastore/PersistenceLayerManager';
-import {PremiumContent2} from './PremiumContent2';
+import {PlanInterval, PremiumContent2} from './PremiumContent2';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountPlan} from '../../../../../../web/js/accounts/Account';
 import {RepoFooter} from "../../../repo_footer/RepoFooter";
@@ -31,7 +31,9 @@ export class PremiumScreen extends React.Component<IProps> {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent2 userInfo={this.props.userInfo} plan={this.props.plan}/>
+                            <PremiumContent2 userInfo={this.props.userInfo}
+                                             interval={this.props.interval}
+                                             plan={this.props.plan}/>
                         </div>
                     </div>
 
@@ -50,6 +52,7 @@ export interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
     readonly plan: AccountPlan;
+    readonly interval?: PlanInterval;
     readonly userInfo?: UserInfo;
 }
 

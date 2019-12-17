@@ -19,7 +19,7 @@ export const MobileContent = (props: IProps) => {
         <FindPlan/>
 
         <div className="mb-1">
-            <PlanIntervalButton planInterval={props.planInterval}
+            <PlanIntervalButton interval={props.interval}
                                 togglePlanInterval={() => props.togglePlanInterval()}/>
         </div>
 
@@ -60,7 +60,7 @@ export const MobileContent = (props: IProps) => {
                 <div><i className="fa fa-check"/> Up to 2GB of storage </div>
             </div>
 
-            <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.planInterval}/>
+            <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.interval}/>
 
         </div>
 
@@ -79,7 +79,7 @@ export const MobileContent = (props: IProps) => {
                 <div><i className="fa fa-check"/> Up to 5GB of storage </div>
             </div>
 
-            <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.planInterval}/>
+            <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.interval}/>
 
         </div>
 
@@ -97,7 +97,7 @@ export const MobileContent = (props: IProps) => {
                 <div><i className="fa fa-check"/> Up to 12GB of storage </div>
             </div>
 
-            <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.planInterval}/>
+            <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.interval}/>
 
         </div>
 
@@ -133,7 +133,7 @@ export const DesktopContent =  (props: IProps) => {
 
                                 <p className="text-center">
 
-                                    <PlanIntervalButton planInterval={props.planInterval}
+                                    <PlanIntervalButton interval={props.interval}
                                                         togglePlanInterval={() => props.togglePlanInterval()}/>
 
                                 </p>
@@ -161,13 +161,13 @@ export const DesktopContent =  (props: IProps) => {
                             <td>
                             </td>
                             <td className="">
-                                <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.planInterval}/>
+                                <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.interval}/>
                             </td>
                             <td>
-                                <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.planInterval}/>
+                                <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.interval}/>
                             </td>
                             <td className="">
-                                <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.planInterval}/>
+                                <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.interval}/>
                             </td>
                         </tr>
 
@@ -378,7 +378,7 @@ export const DesktopContent =  (props: IProps) => {
 export interface IProps {
     readonly plan: AccountPlan;
     readonly userInfo?: UserInfo;
-    readonly planInterval: PlanInterval;
+    readonly interval: PlanInterval;
     readonly togglePlanInterval: () => void;
 }
 

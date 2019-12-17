@@ -11,6 +11,7 @@ import {Lightbox} from "../../js/ui/util/Lightbox";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ActionButton} from "../../js/ui/mobile/ActionButton";
+import {UpgradePromotionButton} from "../../../apps/repository/js/repo_header/UpgradePromotionButton";
 
 const styles = {
     swatch: {
@@ -95,10 +96,10 @@ export class App<P> extends React.Component<{}, IAppState> {
         //     }
         // };
 
-        Dialogs.confirm({title: 'hello world',
-                         subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
-                         onConfirm: NULL_FUNCTION,
-                         type: 'danger'});
+        // Dialogs.confirm({title: 'hello world',
+        //                  subtitle: 'Some really bad stuff is happening right now which you should probably look into.',
+        //                  onConfirm: NULL_FUNCTION,
+        //                  type: 'danger'});
         //
         // Dialogs.prompt({title: 'New folder: ',
         //                 onCancel: NULL_FUNCTION,
@@ -265,6 +266,8 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div className="p-1">
+
+                <UpgradePromotionButton/>
 
                 {/*<Lightbox>*/}
                 {/*    asdf*/}

@@ -10,7 +10,10 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DesktopContent, MobileContent} from "./PremiumCopy";
-import {Devices} from "../../../../../../web/js/util/Devices";
+import {Discount, Discounts} from "./Discounts";
+import {DeviceRouter} from "../../../../../../web/js/ui/DeviceRouter";
+
+const discounts = Discounts.create();
 
 const log = Logger.create();
 
@@ -47,7 +50,7 @@ export const CancelSubscriptionButton = (props: IProps) => {
 };
 
 interface PlanIntervalProps {
-    readonly planInterval: PlanInterval;
+    readonly interval: PlanInterval;
     readonly togglePlanInterval: () => void;
 }
 
@@ -57,7 +60,7 @@ export const PlanIntervalButton = (props: PlanIntervalProps) => {
                    size="md"
                    onClick={() => props.togglePlanInterval()}>
 
-            Show {props.planInterval === 'month' ? 'Yearly' : 'Monthly'} Plans
+            Show {props.interval === 'month' ? 'Yearly' : 'Monthly'} Plans
 
         </Button>;
 
@@ -70,7 +73,7 @@ interface PlanPricingProps {
 }
 const PlanPricing = (props: PlanPricingProps) => {
 
-    const computeMonthlyAmount = () => {
+    const computeMonthlyPrice = () => {
 
         switch (props.plan) {
 
@@ -86,20 +89,53 @@ const PlanPricing = (props: PlanPricingProps) => {
 
     };
 
-
-    const computeYearlyAmount = () => {
-        const monthlyAmount = computeMonthlyAmount();
+    const computeYearlyPrice = () => {
+        const monthlyAmount = computeMonthlyPrice();
         return Numbers.toFixedFloat(monthlyAmount * 11, 2);
     };
 
-    const amount = props.planInterval === 'month' ? computeMonthlyAmount() : computeYearlyAmount();
+    interface Pricing {
+        readonly price: number;
+        readonly discount: Discount | undefined;
+    }
 
-    return <div>
-        <h3 className="text-xxlarge">${amount}<span
-            className="text-small">/{props.planInterval}</span>
-        </h3>
+    const computePrice = (): Pricing => {
 
-    </div>;
+        const price = props.planInterval === 'month' ? computeMonthlyPrice() : computeYearlyPrice();
+        const discount = discounts.get(props.planInterval, props.plan);
+
+        return {price, discount};
+    };
+
+    const pricing = computePrice();
+
+    if (pricing.discount) {
+
+        return <div>
+
+            <s>
+                <h3 className="text-xxlarge">${pricing.discount.before}<span
+                    className="text-small">/{props.planInterval}</span>
+                </h3>
+            </s>
+
+            <h3 className="text-xxlarge">
+                    ${pricing.discount.after}<span
+                className="text-small">/{props.planInterval}</span>
+            </h3>
+
+        </div>;
+
+    } else {
+
+        return <div>
+            <h3 className="text-xxlarge">${pricing.price}<span
+                className="text-small">/{props.planInterval}</span>
+            </h3>
+
+        </div>;
+
+    }
 
 };
 
@@ -166,7 +202,7 @@ export const BronzePlan = (props: IState) => {
     return <div>
         <h2>Bronze</h2>
 
-        <PlanPricing plan='bronze' planInterval={props.planInterval}/>
+        <PlanPricing plan='bronze' planInterval={props.interval}/>
 
         <p className="text-small text-tint">Less
             than the price of a cup of
@@ -181,7 +217,7 @@ export const SilverPlan = (props: IState) => {
     return <div>
         <h2>Silver</h2>
 
-        <PlanPricing plan='silver' planInterval={props.planInterval}/>
+        <PlanPricing plan='silver' planInterval={props.interval}/>
 
         <p className="text-small text-tint">
             Designed for Polar power users! Need
@@ -194,7 +230,7 @@ export const GoldPlan = (props: IState) => {
     return <div>
         <h2>Gold</h2>
 
-        <PlanPricing plan='gold' planInterval={props.planInterval}/>
+        <PlanPricing plan='gold' planInterval={props.interval}/>
 
         <p className="text-small text-tint">
             You can't live without Polar
@@ -214,36 +250,35 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
         this.togglePlanInterval = this.togglePlanInterval.bind(this);
 
         this.state = {
-            planInterval: 'month'
+            interval: this.props.interval || 'month'
         };
 
     }
 
     public render() {
 
-        if (Devices.isPhone()) {
+        const phoneOrTablet = (
+            <MobileContent {...this.props}
+                           {...this.state}
+                           togglePlanInterval={() => this.togglePlanInterval()}/>
+        );
 
-            return (
-                <MobileContent {...this.props}
-                               {...this.state}
-                               togglePlanInterval={() => this.togglePlanInterval()}/>
-            );
+        const desktop = (
+            <DesktopContent {...this.props}
+                            {...this.state}
+                            togglePlanInterval={() => this.togglePlanInterval()}/>
+        );
 
-        } else {
-            return (
-                <DesktopContent {...this.props}
-                                {...this.state}
-                                togglePlanInterval={() => this.togglePlanInterval()}/>
-            );
-
-        }
+        return (
+            <DeviceRouter phone={phoneOrTablet} tablet={phoneOrTablet} desktop={desktop}/>
+        );
 
     }
 
     private togglePlanInterval() {
 
         this.setState({
-            planInterval: this.state.planInterval === 'month' ? 'year' : 'month'
+            interval: this.state.interval === 'month' ? 'year' : 'month'
         });
 
     }
@@ -253,10 +288,12 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 interface IProps {
     readonly plan: AccountPlan;
     readonly userInfo?: UserInfo;
+    readonly interval?: PlanInterval;
+
 }
 
 interface IState {
-    readonly planInterval: PlanInterval;
+    readonly interval: PlanInterval;
 }
 
 export type PlanInterval = 'month' | 'year';

@@ -44,6 +44,7 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
                                      placement="bottom"
                                      target="account-control-button"
                                      delay={0}
+                                     fade={false}
                                      style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">

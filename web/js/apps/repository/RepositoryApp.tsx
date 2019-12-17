@@ -266,6 +266,14 @@ export class RepositoryApp {
                                    userInfo={userInfo.getOrUndefined()}/>);
         };
 
+        const premiumScreenYear = () => {
+            return (<PremiumScreen persistenceLayerProvider={persistenceLayerProvider}
+                                   persistenceLayerController={persistenceLayerController}
+                                   plan={plan}
+                                   interval='year'
+                                   userInfo={userInfo.getOrUndefined()}/>);
+        };
+
         const supportScreen = () => {
             return (<SupportScreen persistenceLayerProvider={persistenceLayerProvider}
                                    persistenceLayerController={persistenceLayerController}
@@ -353,6 +361,8 @@ export class RepositoryApp {
                         <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
 
                         <Route exact path='/#plans' render={premiumScreen}/>
+
+                        <Route exact path='/#plans-year' render={premiumScreenYear}/>
 
                         <Route exact path='/#support' render={supportScreen}/>
 
