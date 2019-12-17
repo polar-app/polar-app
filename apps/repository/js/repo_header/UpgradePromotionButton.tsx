@@ -5,7 +5,54 @@ import {UncontrolledPopover} from 'reactstrap';
 import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {DropdownChevron} from "../../../../web/js/ui/util/DropdownChevron";
-import {Link} from "react-router-dom";
+import {Callback} from "polar-shared/src/util/Functions";
+import {GiftIcon} from "./GiftIcon";
+import { Link } from 'react-router-dom';
+
+interface ButtonProps {
+    readonly onClick: Callback;
+}
+
+export const UpgradePromotionCopy = (props: ButtonProps) => {
+
+    return (
+        <div className="text-center text-md">
+
+            <div className="mt-3 mb-3">
+                <div style={{
+                         width: '200px'
+                     }}
+                     className="ml-auto mr-auto">
+                    <GiftIcon/>
+                </div>
+            </div>
+
+            <h2>Get Polar Bronze for 66% Off</h2>
+
+            <h4>Save $39 on a 1 year subscription</h4>
+
+            <p>
+                Offer includes mobile flashcard review, related tags, and increased storage!
+            </p>
+
+            <p className="text-muted">$19.95 for 12 months vs $59.88. Offer Valid until Dec 25</p>
+
+            <p>
+
+                <Link to={{pathname: '/', hash: '#plans-year'}}>
+                    <Button color="success"
+                            size="lg"
+                            onClick={() => props.onClick()}>
+                        Claim my Discount
+                    </Button>
+                </Link>
+
+            </p>
+
+        </div>
+    );
+
+};
 
 export class UpgradePromotionButton extends React.PureComponent<IProps, IState> {
 
@@ -52,30 +99,7 @@ export class UpgradePromotionButton extends React.PureComponent<IProps, IState> 
 
                     <PopoverBody className="shadow text-md">
 
-                        <h2>Get Polar Bronze for 66% Off</h2>
-
-                        <h4>Save $39 on a 1 year subscription</h4>
-
-                        <ul>
-                            <li>$19.95 for 12 months vs $59.88</li>
-                            <li>Offer Valid until Dec 25</li>
-                        </ul>
-
-                        <p>
-                        Offer includes mobile flashcard review, related tags, and increased storage!
-                        </p>
-
-                        <p className="text-center">
-
-                            <Link to={{pathname: '/', hash: '#plans-year'}}>
-                                <Button color="success"
-                                        size="lg"
-                                        onClick={() => this.onUpgrade()}>
-                                    Claim my Discount
-                                </Button>
-                            </Link>
-
-                        </p>
+                        <UpgradePromotionCopy onClick={() => this.onUpgrade()}/>
 
                     </PopoverBody>
 

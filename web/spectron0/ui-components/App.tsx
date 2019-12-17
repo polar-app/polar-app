@@ -11,7 +11,10 @@ import {Lightbox} from "../../js/ui/util/Lightbox";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ActionButton} from "../../js/ui/mobile/ActionButton";
-import {UpgradePromotionButton} from "../../../apps/repository/js/repo_header/UpgradePromotionButton";
+import {
+    UpgradePromotionButton,
+    UpgradePromotionCopy
+} from "../../../apps/repository/js/repo_header/UpgradePromotionButton";
 
 const styles = {
     swatch: {
@@ -267,7 +270,11 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="p-1">
 
-                <UpgradePromotionButton/>
+                {/*<UpgradePromotionButton/>*/}
+
+                <div style={{width: '500px'}} className="border p-1">
+                    <UpgradePromotionCopy onClick={NULL_FUNCTION}/>
+                </div>
 
                 {/*<Lightbox>*/}
                 {/*    asdf*/}
@@ -328,7 +335,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*</BrowserRouter>*/}
 
                 {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
-                <ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>
+                {/*<ActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
                 {/*<FloatingActionButton icon="fas fa-graduation-cap" onClick={NULL_FUNCTION}/>*/}
 
