@@ -360,9 +360,19 @@ export class RepositoryApp {
 
                         <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
 
-                        <Route exact path='/#plans' render={premiumScreen}/>
+                        <Route exact
+                               path={[
+                                   '/#plans',
+                                   '/plans'
+                               ]}
+                               render={premiumScreen}/>
 
-                        <Route exact path='/#plans-year' render={premiumScreenYear}/>
+                        <Route exact
+                               path={[
+                                   '/#plans-year',
+                                   '/plans-year'
+                               ]}
+                               render={premiumScreenYear}/>
 
                         <Route exact path='/#support' render={supportScreen}/>
 
@@ -386,15 +396,13 @@ export class RepositoryApp {
                         <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
 
                         <Route exact
-                               path={
-                                   [
-                                       '/#annotations',
-                                       '/annotations',
-                                       '/annotations#start-review',
-                                       '/annotations#review-flashcards',
-                                       '/annotations#review-reading'
-                                   ]
-                               }
+                               path={[
+                                   '/#annotations',
+                                   '/annotations',
+                                   '/annotations#start-review',
+                                   '/annotations#review-flashcards',
+                                   '/annotations#review-reading'
+                               ]}
                                component={renderAnnotationRepoScreen} />
 
                         <Route exact path='/' component={renderDefaultScreenByDevice}/>

@@ -3,6 +3,7 @@ import React from 'react';
 import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Link} from "react-router-dom";
 
 const LogoutButton = (props: IProps) => {
 
@@ -58,22 +59,22 @@ const InviteUsersButton = (props: IProps) => {
 const ViewPlansAndPricingButton = () => {
 
     const handler = () => {
-
         RendererAnalytics.event({category: 'premium', action: 'view-plans-and-pricing-button'});
-
-        document.location.hash = "plans";
-
     };
 
-    return <Button color="success"
-                   size="md"
-                   onClick={handler}>
+    return (
+        <Link to={{pathname: '/', hash: '#plans'}}>
+            <Button color="success"
+                    size="md"
+                    onClick={handler}>
 
-        <i className="fas fa-certificate"/>
-        &nbsp;
-        View Plans and Pricing
+                <i className="fas fa-certificate"/>
+                &nbsp;
+                View Plans and Pricing
 
-    </Button>;
+            </Button>
+        </Link>
+    );
 };
 
 export class AccountControlBar extends React.PureComponent<IProps, IState> {

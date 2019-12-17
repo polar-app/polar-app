@@ -5,6 +5,7 @@ import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {UpgradeRequired} from "./UpgradeRequired";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Link} from "react-router-dom";
 
 const MESSAGE = createRandomizedUpgradeMessage();
 
@@ -18,7 +19,6 @@ const GoPremium = (props: UpgradeRequiredProps) => {
 
     const onClick = () => {
         RendererAnalytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
-        document.location.hash = 'plans';
     };
 
     return <div className="mt-1 mb-1 p-1 rounded"
@@ -27,16 +27,18 @@ const GoPremium = (props: UpgradeRequiredProps) => {
                     fontWeight: 'bold'
                 }}>
 
-        <Button color="primary"
-                size="sm"
-                style={{fontWeight: 'bold'}}
-                onClick={() => onClick()}>
+        <Link to={{pathname: '/', hash: '#plans'}}>
+            <Button color="primary"
+                    size="sm"
+                    style={{fontWeight: 'bold'}}
+                    onClick={() => onClick()}>
 
-            <i className="fas fa-certificate"/>
-            &nbsp;
-            Go Premium!
+                <i className="fas fa-certificate"/>
+                &nbsp;
+                Go Premium!
 
-        </Button>
+            </Button>
+        </Link>
 
         <span className="ml-1">
             {MESSAGE}

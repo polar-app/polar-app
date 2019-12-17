@@ -4,6 +4,7 @@ import {AccountPlan, AccountPlans} from "../../accounts/Account";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {Button} from "reactstrap";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
+import {Link} from "react-router-dom";
 
 export class PremiumFeature extends React.Component<IProps, IState> {
 
@@ -74,14 +75,18 @@ export class PremiumFeature extends React.Component<IProps, IState> {
 
             const color = AccountPlans.toColor(account!.plan);
 
-            return <Button size={this.props.size}
-                           color="light"
-                           className="border"
-                           onClick={() => this.onUpgrade()}>
+            return (
+                <Link to={{pathname: '/', hash: '#plans'}}>
+                    <Button size={this.props.size}
+                            color="light"
+                            className="border"
+                            onClick={() => this.onUpgrade()}>
 
-                <i className="fas fa-gem" style={{color}}/> Upgrade to {required} to unlock {feature}
+                        <i className="fas fa-gem" style={{color}}/> Upgrade to {required} to unlock {feature}
 
-            </Button>
+                    </Button>
+                </Link>
+            );
 
         };
 
