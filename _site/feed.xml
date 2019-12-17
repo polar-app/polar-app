@@ -1,4 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-12-11T13:16:46-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0.</title><link href="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html" rel="alternate" type="text/html" title="Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0." /><published>2019-12-11T08:00:00-08:00</published><updated>2019-12-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7</id><content type="html" xml:base="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html">&lt;p&gt;Polar 1.70 is out! Lots of big changes in this release!&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-12-17T08:36:46-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.80 - Enhanced Mobile, Spaces within Tags and Special Holiday Offer</title><link href="https://getpolarized.io/2019/12/16/1-80-Enhanced-Mobile-Windows-Spaces-within-Tags.html" rel="alternate" type="text/html" title="Polar 1.80 - Enhanced Mobile, Spaces within Tags and Special Holiday Offer" /><published>2019-12-16T08:00:00-08:00</published><updated>2019-12-16T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/16/1-80-Enhanced-Mobile-Windows-Spaces-within-Tags</id><content type="html" xml:base="https://getpolarized.io/2019/12/16/1-80-Enhanced-Mobile-Windows-Spaces-within-Tags.html">&lt;p&gt;We have a new version of Polar out with some really interesting features.&lt;/p&gt;
+
+&lt;p&gt;Further, since holiday season is upon us, we are offering a special 1-year deal for Polar Premium for $19.95. That’s
+a 50% discount on the regular price.&lt;/p&gt;
+
+&lt;h1 id=&quot;holiday-discount&quot;&gt;Holiday Discount&lt;/h1&gt;
+
+&lt;div class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-responsive mb-2&quot; style=&quot;max-height: 350px&quot; src=&quot;https://i.imgur.com/QlytaB8.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We’ve decided to offer a 1 year license of Polar for just $19.95.  Normally the bronze version of Polar is $4.99 
+per month so this is nearly a $40 savings.&lt;/p&gt;
+
+&lt;p&gt;I wanted to do this because a number of our student users commented that paying per month was expensive and $4.99 per
+month was difficult when you’re living out of a dorm and eating ramen noodles.&lt;/p&gt;
+
+&lt;p&gt;When 2.0 arrives, which should land sometime in January, the mobile flashcard review is going to be a premium feature.&lt;/p&gt;
+
+&lt;p&gt;This is a great opportunity to save some money once 2.0 is out the door.&lt;/p&gt;
+
+&lt;h1 id=&quot;mobile&quot;&gt;Mobile&lt;/h1&gt;
+
+&lt;p&gt;The mobile app has been significantly reworked and now feels more like a native app.  Navigation works properly and
+also works amazingly well on a tablet.&lt;/p&gt;
+
+&lt;p&gt;If you have any feedback on our tablet app please reach out.&lt;/p&gt;
+
+&lt;p&gt;This version will form the basis of our Android app which we plan on shipping in early 2020.&lt;/p&gt;
+
+&lt;h1 id=&quot;spaces-within-tags&quot;&gt;Spaces within Tags&lt;/h1&gt;
+
+&lt;p&gt;Spaces within tags are now fully supported.  This includes both folders and regular tags.&lt;/p&gt;
+
+&lt;p&gt;I was hesitant to add this feature because then our tags wouldn’t be compatible with other systems like Twitter but
+so many people requested this functionality that it’s probably very important moving forward.&lt;/p&gt;
+
+&lt;h1 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed bug with tablets now showing the pricing plan&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;removed outline on MacOS for tree nodes on the sidebar.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dramatically improved our mobile and tablet apps.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed bug where PHZ files were breaking with iframes that were invalid.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Changed #annotations and #stats URLs so that they are /annotations and /stats 
+as we’re going to migrate to anchors for sub-screens for history.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fixed privacy policy URL in login page&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tags can now contain spaces and hyphens&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Semaphore now used for Windows disk writes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Removed some unused libraries&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Upgrades to latest firebase&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">We have a new version of Polar out with some really interesting features.</summary></entry><entry><title type="html">Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0.</title><link href="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html" rel="alternate" type="text/html" title="Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0." /><published>2019-12-11T08:00:00-08:00</published><updated>2019-12-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7</id><content type="html" xml:base="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html">&lt;p&gt;Polar 1.70 is out! Lots of big changes in this release!&lt;/p&gt;
 
 &lt;p&gt;I know I promised you guys that we would create a video for each release but I can’t create
 one for 1.70 just now as I’m trying to rush it out to fix an issue with Google authentication
@@ -1023,112 +1094,4 @@ after upgrading but it was just a timing issue.  Upon restart Polar does a full 
 &lt;p&gt;We apologize or the inconvenience.&lt;/p&gt;
 
 &lt;p&gt;We’re still trying to investigate &lt;em&gt;why&lt;/em&gt; this happened as there were no changes on our end and Google shouldn’t have
-taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry><entry><title type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons</title><link href="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html" rel="alternate" type="text/html" title="Minimizing Defection Might be the Solution to the Tragedy of the Commons" /><published>2019-07-26T10:00:00-07:00</published><updated>2019-07-26T10:00:00-07:00</updated><id>https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons</id><content type="html" xml:base="https://getpolarized.io/2019/07/26/Minimizing-Defection-Might-be-the-Solution-to-the-Tragedy-of-the-Commons.html">&lt;h1 id=&quot;minimizing-defection-might-be-the-solution-to-the-tragedy-of-the-commons&quot;&gt;Minimizing Defection Might be the Solution to the Tragedy of the Commons.&lt;/h1&gt;
-
-&lt;p&gt;Being that my background is in CompSci I tend to think about thinks in terms of probabilities, statistics, game theory, 
-and distributed systems.&lt;/p&gt;
-
-&lt;p&gt;I’ve recently made what I think may be a unique observation about a number of social problems that might all be
-related to one root cause - defection.&lt;/p&gt;
-
-&lt;p&gt;I might be wrong but would love some feedback.  It’s an exceedingly complicated topic which has been researched for 
-hundreds of years so it might be that this observation has been made before.&lt;/p&gt;
-
-&lt;p&gt;My initial epiphany came while thinking about two main issues:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Corporations abusing their employees and the need to unionize.&lt;/li&gt;
-  &lt;li&gt;Corporations all rushing towards some non-optimal solution in the pursuit of profit&lt;/li&gt;
-  &lt;li&gt;Consumers unwilling to purchase products even if purchasing them would fund a product they cared about.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It’s my assertion that these are all related to the tragedy of the commons. I’ll just quote from Wikipedia to save you a step:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The tragedy of the commons is a situation in a shared-resource system where individual users, acting independently
- according to their own self-interest, behave contrary to the common good of all users, by depleting or spoiling that
- resource through their collective action. The theory originated in an essay written in 1833 by the British economist
- William Forster Lloyd, who used a hypothetical example of the effects of unregulated grazing on common land (also known
- as a “common”) in Great Britain and Ireland.[1] The concept became widely known as the “tragedy of the commons” over a
- century later due to an article written by the American ecologist and philosopher Garrett Hardin in 1968.[2] In this
- modern economic context, commons is taken to mean any shared and unregulated resource such as atmosphere, oceans,
- rivers, fish stocks, roads and highways, or even an office refrigerator.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I’d assert that the tragedy of the commons is actually a more general form of the prisoners dilemma (again, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Prisoner%27s_dilemma&quot;&gt;Wikipedia&lt;/a&gt;):&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The prisoner’s dilemma is a standard example of a game analyzed in game theory that shows why two completely rational
-individuals might not cooperate, even if it appears that it is in their best interests to do so.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Instead of a prison term there’s the destruction of some resource and the tragedy of the commons is generalized to more actors.  Usually hundreds to thousands.&lt;/p&gt;
-
-&lt;h1 id=&quot;cheating-and-cynicism&quot;&gt;Cheating and Cynicism&lt;/h1&gt;
-
-&lt;p&gt;I think the core issue in the above is defection - the idea that one player can decide to cheat the others for their own
-benefit.&lt;/p&gt;
-
-&lt;p&gt;The FEWER the actors the less probability that there will be defection.&lt;/p&gt;
-
-&lt;p&gt;Here’s a completely hypothetical chart at what I think the rate of defection would look like:&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/GYGoVF4.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This would need to be validated experimentally but I suspect that the probability of cooperation (the opposite of
-defection) would be inversely proportional to the size of the group.&lt;/p&gt;
-
-&lt;p&gt;This would explain fundamental problems with collective action and why systems like communism are doomed to failure.&lt;/p&gt;
-
-&lt;p&gt;If you know the other person well and trust them, you’re probably not going to defect.&lt;/p&gt;
-
-&lt;p&gt;However, if you have thousands of people you’re going to be far far less trusting that someone isn’t going to defect and 
-screw you over.  Hence &lt;em&gt;you’re&lt;/em&gt; more likely to defect as well!&lt;/p&gt;
-
-&lt;p&gt;This is a core observation.  The more actors in a class that CAN defect the higher the probability that they WILL defect.&lt;/p&gt;
-
-&lt;p&gt;This why unions are so hard to form and manage.  There are thousands of people in a company and they all have conflicting
-interests.  If they would hold their ground they could achieve their goals but they don’t.&lt;/p&gt;
-
-&lt;p&gt;Why is that?&lt;/p&gt;
-
-&lt;p&gt;The reason they don’t is game theoretic and hence deterministic.  We won’t ever solve this problem until we reduce
-the probability of defection.&lt;/p&gt;
-
-&lt;p&gt;Interestingly enough, the same situation applies to corporations creating externalities (destroying the environment, 
-hurting their employees, etc).  They’re essentially forced into this behavior due to defection.&lt;/p&gt;
-
-&lt;p&gt;If your company cares about the environment but all your customers care about is price then the companies that have 
-a higher priced product will go out of business.&lt;/p&gt;
-
-&lt;p&gt;Oddly enough these customers are also driven by defection.  Why care about the environment when no one else does?  Why
-are you the only one who cares?  Why pay $15 a pound for steak when you can just pay $5?&lt;/p&gt;
-
-&lt;p&gt;Interestingly enough, the optimum solution is always present when N=1.  If there’s just one actor (you) then you’re not
-likely to destroy your own property.  The more actors present the higher chance that someone’s going to abuse the system.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-protocol-for-minimizing-defection&quot;&gt;A Protocol for Minimizing Defection?&lt;/h1&gt;
-
-&lt;p&gt;What if we could solve this problem through core changes in our society?&lt;/p&gt;
-
-&lt;p&gt;I can’t help thinking that maybe some sort of smart contract could be used here or a system of opt-in benefits and harsh 
-punishments for defection.&lt;/p&gt;
-
-&lt;p&gt;I’m still working through what this would mean but I’ll illustrate some (flawed) ideas below to illustrate some potential 
-solutions.&lt;/p&gt;
-
-&lt;p&gt;What if unions gave perks to employees including job references, health benefits, etc BUT to participate in the union 
-you had to put forth a $5k bond.  This could be deducted slowly over time from your paycheck.&lt;/p&gt;
-
-&lt;p&gt;If you defect, the bond is revoked and you lose that money - permanently.&lt;/p&gt;
-
-&lt;p&gt;I’ll agree that this is a week solution as I mentioned I’m still trying to work on an ideal way to handle this problem.&lt;/p&gt;
-
-&lt;p&gt;Consumers could do something similar for corporations as well.  Have reserved payments given out over time but only 
-if the companies don’t create any externalities for which the consumer doesn’t approve.&lt;/p&gt;
-
-&lt;p&gt;If these actors function collectively and make decisions as a group these could all be done automatically via simple
-majority.&lt;/p&gt;
-
-&lt;p&gt;I think regardless, identify the CORE issue here would allow us to keep working towards a goal.  The first step 
-towards a solution is realizing the problem.&lt;/p&gt;</content><author><name></name></author><summary type="html">Minimizing Defection Might be the Solution to the Tragedy of the Commons.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry></feed>
+taken our projects offline.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar Outage- Sept 18 2019</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://getpolarized.io/assets/logo/icon.png" /></entry></feed>

@@ -6,14 +6,18 @@ description: Polar 1.80 - Enhanced Mobile, Spaces within Tags and Special Holida
 release: 1.80.3
 ---
 
-We have a new version of Polar out the door just in time for the holiday season.
+We have a new version of Polar out with some really interesting features.
 
-Furthermore, since holiday season is upon us, we are offering a special 1-year deal for Polar Premium for $19.95. That’s
+Further, since holiday season is upon us, we are offering a special 1-year deal for Polar Premium for $19.95. That’s
 a 50% discount on the regular price. 
 
 # Holiday Discount
 
-First, we've decided to offer a 1 year license of Polar for just $19.95.  Normally the bronze version of Polar is $4.99 
+<div class="text-center">
+<img class="img-responsive mb-2" style="max-height: 350px" src="https://i.imgur.com/QlytaB8.png">
+</div>
+
+We've decided to offer a 1 year license of Polar for just $19.95.  Normally the bronze version of Polar is $4.99 
 per month so this is nearly a $40 savings.  
 
 I wanted to do this because a number of our student users commented that paying per month was expensive and $4.99 per
