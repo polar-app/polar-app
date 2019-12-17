@@ -398,7 +398,7 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         // write this using a write mutex so that on Windows we don't have any race
         // conditions writing files.
-        writeMutex.execute(async () => {
+        await writeMutex.execute(async () => {
             await DatastoreMutations.handle(async () => writeDelegate(), datastoreMutation, () => true);
         });
 
