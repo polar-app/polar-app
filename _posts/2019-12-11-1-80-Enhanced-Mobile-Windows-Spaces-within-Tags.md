@@ -16,8 +16,8 @@ a 50% discount on the regular price.
 First, we've decided to offer a 1 year license of Polar for just $19.95.  Normally the bronze version of Polar is $4.99 
 per month so this is nearly a $40 savings.  
 
-I wanted to do this because a number of our student users commented that paying per month was expensive and $4.99 was
-difficult when you're living out of a dorm and eating ramen noodles.  
+I wanted to do this because a number of our student users commented that paying per month was expensive and $4.99 per
+month was difficult when you're living out of a dorm and eating ramen noodles.
 
 When 2.0 arrives, which should land sometime in January, the mobile flashcard review is going to be a premium feature.
 
