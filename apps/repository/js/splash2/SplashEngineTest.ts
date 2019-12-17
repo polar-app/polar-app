@@ -153,7 +153,7 @@ describe('SplashEngine', function() {
 
         const facts: MutableUserFacts = {
             datastoreCreated: "2012-02-02T11:38:49.321Z",
-            version: "1.0.0",
+            version: "1.50.0",
         };
 
         let whatsNewCalled: number = 0;
@@ -174,7 +174,7 @@ describe('SplashEngine', function() {
         assert.equal(netPromoterCalled, 1);
 
         const externalEngineState = engine.toExternalEngineState();
-        facts.version = "1.1.0";
+        facts.version = "1.60.4";
         TestingTime.forward('10d');
 
         engine = new SplashEngine(facts, eventHandlers, externalEngineState);

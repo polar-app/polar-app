@@ -1,4 +1,5 @@
 
+# 1.80.0
 
 - Fixed bug with tablets now showing the pricing plan
 
