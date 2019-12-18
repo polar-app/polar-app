@@ -419,7 +419,10 @@ export class RepositoryApp {
                        accept=".pdf, .PDF"
                        multiple
                        onChange={() => this.onFileUpload()}
-                       style={{display: 'none'}}/>
+                       style={{
+                           width: 0,
+                           height: 0
+                       }}/>
 
             </div>,
 

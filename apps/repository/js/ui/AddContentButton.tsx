@@ -116,7 +116,16 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
     }
 
     private triggerFileUpload() {
-        document.getElementById('file-upload')!.click();
+
+        const fileUpload = document.getElementById('file-upload');
+
+        if (fileUpload) {
+            fileUpload.focus();
+            fileUpload.click();
+        } else {
+            log.warn("No file upload button");
+        }
+
     }
 
     private toggle(): void {
