@@ -81,7 +81,7 @@
     "cache-loader": "^4.1.0",
     "chai": "~4.2.0",
     "dtsmake": "0.0.10",
-    "electron": "^7.1.4",
+    "electron": "^7.1.2",
     "electron-builder": "~21.2.0",
     "electron-notarize": "0.2.1",
     "firebase-tools": "^7.10.0",
