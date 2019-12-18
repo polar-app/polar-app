@@ -88,20 +88,21 @@ export class StripeCustomers {
             throw new Error("No customer for email: " + email);
         }
 
-
         if (customer.subscriptions.data.length === 0) {
-            // we have a customer just now subscription yet
+            // we have a customer just no subscription yet
             return {customer};
         }
 
-        if (customer.subscriptions.data.length !== 1) {
+        const activeSubscriptions
+            = customer.subscriptions.data.filter(current => current.status === 'active');
+
+        if (activeSubscriptions.length !== 1) {
             throw new Error("Too many subscriptions: " + email);
         }
 
-        const subscription = customer.subscriptions.data[0];
+        const subscription = activeSubscriptions[0];
 
         return {customer, subscription};
-
 
     }
 
