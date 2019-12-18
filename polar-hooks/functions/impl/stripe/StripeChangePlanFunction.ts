@@ -3,10 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import {StripeUtils} from './StripeUtils';
 import {AccountPlan} from './StripeWebhookFunction';
-import {StripePlansIDs} from './StripeWebhookFunction';
 import {Accounts} from './StripeWebhookFunction';
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
+import {StripePlanIDs} from "./StripePlanIDs";
 
 const app = express();
 
@@ -111,7 +111,7 @@ export class StripeCustomers {
 
         const customerSubscription = await this.getCustomerSubscription(email);
 
-        const planID = StripePlansIDs.fromAccountPlan(plan);
+        const planID = StripePlanIDs.fromAccountPlan(plan);
 
         const stripe = StripeUtils.getStripe();
 
