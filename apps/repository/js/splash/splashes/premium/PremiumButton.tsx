@@ -68,9 +68,9 @@ export class PremiumButton extends React.Component<IProps, IState> {
 
                 console.log("Changing plan to: " + to);
 
-                Toaster.info(`Changing plan to ${to}.  One moment...`);
+                Toaster.info(`Changing plan to ${to}, interval: ${interval}.  One moment...`);
 
-                AccountActions.changePlan(to)
+                AccountActions.changePlan(to, interval)
                     .catch(err => log.error("Unable to upgrade plan: ", err));
             };
 

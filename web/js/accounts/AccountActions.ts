@@ -1,6 +1,6 @@
 import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
-import {AccountPlan} from "./Account";
+import {AccountPlan, PlanInterval} from "./Account";
 
 export class AccountActions {
 
@@ -12,10 +12,10 @@ export class AccountActions {
 
     }
 
-    public static async changePlan(plan: AccountPlan) {
+    public static async changePlan(plan: AccountPlan, interval: PlanInterval) {
         const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeChangePlan/`;
         const accountData = await this.createAccountData();
-        const data = {plan, ...accountData};
+        const data = {plan, interval, ...accountData};
 
         await this.executeAccountMethod(url, data);
 

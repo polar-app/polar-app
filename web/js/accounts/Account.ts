@@ -32,6 +32,8 @@ export interface Account extends AccountInit {
 
 }
 
+export type PlanInterval = 'month' | 'year';
+
 export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
 
 export class AccountPlans {
