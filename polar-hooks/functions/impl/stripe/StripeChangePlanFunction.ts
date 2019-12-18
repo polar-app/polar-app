@@ -19,26 +19,29 @@ app.use((req, res) => {
 
     const handleRequest = async () => {
 
-        console.log(JSON.stringify(req.body, null,  '  '));
+        try {
 
-        const body: StripeChangePlanBody = req.body;
+            console.log(JSON.stringify(req.body, null, '  '));
 
-        await Accounts.validate(body.email, body.uid);
-        await StripeCustomers.changePlan(body.email, body.plan);
-        await Accounts.changePlanViaEmail(body.email, body.plan);
+            const body: StripeChangePlanBody = req.body;
 
-    };
+            await Accounts.validate(body.email, body.uid);
+            await StripeCustomers.changePlan(body.email, body.plan);
+            await Accounts.changePlanViaEmail(body.email, body.plan);
 
-    handleRequest()
-        .then(() => {
             res.sendStatus(200);
-        })
-        .catch(err => {
+
+        } catch (err) {
             const now = Date.now();
             console.error(`Could properly handle webhook: ${now}`, err);
             console.error(`JSON body for failed webhook: ${now}`, JSON.stringify(req.body, null,  '  '));
             res.sendStatus(500);
-        });
+        }
+
+    };
+
+    handleRequest()
+        .catch(err => console.error("Failed to handle request: ", err));
 
 });
 
@@ -104,6 +107,8 @@ export class StripeCustomers {
 
     public static async changePlan(email: string, plan: AccountPlan) {
 
+        console.log(`Changing plan for ${email} to ${plan}`);
+
         const customerSubscription = await this.getCustomerSubscription(email);
 
         const planID = StripePlansIDs.fromAccountPlan(plan);
@@ -114,10 +119,9 @@ export class StripeCustomers {
 
         if (subscription) {
 
-            console.log("Updating subscription");
+            console.log(`Updating subscription ${subscription.id} to plan ID ${planID} (${plan})`);
 
             await stripe.subscriptions.update(subscription.id, {
-                // cancel_at_period_end: false,
                 prorate: true,
                 items: [
                     {
