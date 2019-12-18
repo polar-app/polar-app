@@ -75,7 +75,7 @@ export class PremiumButton extends React.Component<IProps, IState> {
             };
 
             Dialogs.confirm({
-                title: `Are you sure you want to ${to}?`,
+                title: `Are you sure you want to change to ${to}?`,
                 subtitle: 'Your billing will automatically be updated and account pro-rated.',
                 type: 'warning',
                 onConfirm
