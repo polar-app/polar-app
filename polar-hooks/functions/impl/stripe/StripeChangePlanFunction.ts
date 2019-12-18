@@ -2,7 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import {StripeUtils} from './StripeUtils';
-import {AccountPlan} from './StripeWebhookFunction';
+import {AccountPlan, PlanInterval} from './StripeWebhookFunction';
 import {Accounts} from './StripeWebhookFunction';
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
@@ -26,7 +26,7 @@ app.use((req, res) => {
             const body: StripeChangePlanBody = req.body;
 
             await Accounts.validate(body.email, body.uid);
-            await StripeCustomers.changePlan(body.email, body.plan);
+            await StripeCustomers.changePlan(body.email, body.plan, body.interval);
             await Accounts.changePlanViaEmail(body.email, body.plan);
 
             res.sendStatus(200);
@@ -51,6 +51,7 @@ export interface StripeChangePlanBody {
     readonly uid: string;
     readonly email: string;
     readonly plan: AccountPlan;
+    readonly interval: PlanInterval;
 }
 
 interface StripeCustomerSubscription {
@@ -106,13 +107,13 @@ export class StripeCustomers {
 
     }
 
-    public static async changePlan(email: string, plan: AccountPlan) {
+    public static async changePlan(email: string, plan: AccountPlan, interval: PlanInterval) {
 
         console.log(`Changing plan for ${email} to ${plan}`);
 
         const customerSubscription = await this.getCustomerSubscription(email);
 
-        const planID = StripePlanIDs.fromAccountPlan(plan);
+        const planID = StripePlanIDs.fromAccountPlan(plan, interval);
 
         const stripe = StripeUtils.getStripe();
 

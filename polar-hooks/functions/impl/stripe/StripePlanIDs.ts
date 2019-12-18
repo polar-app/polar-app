@@ -1,7 +1,8 @@
-import {AccountPlan} from "./StripeWebhookFunction";
+import {AccountPlan, PlanInterval} from "./StripeWebhookFunction";
 
 export enum StripePlanID {
 
+    FREE = "plan_free",
     GOLD = "plan_gold",
     SILVER = "plan_silver",
     BRONZE = "plan_bronze"
@@ -10,6 +11,7 @@ export enum StripePlanID {
 
 export enum StripeYearPlanID {
 
+    FREE = "plan_free_year",
     GOLD = "plan_gold_year",
     SILVER = "plan_silver_year",
     BRONZE = "plan_bronze_year"
@@ -42,25 +44,52 @@ export class StripePlanIDs {
 
     }
 
-    public static fromAccountPlan(plan: AccountPlan): StripePlanID {
+    public static fromAccountPlan(plan: AccountPlan,
+                                  interval: PlanInterval): StripePlanID | StripeYearPlanID {
 
         if (!plan) {
             throw new Error("No plan");
         }
 
-        if (plan.startsWith("bronze")) {
-            return StripePlanID.BRONZE;
-        }
+        const convertMonthly = () => {
 
-        if (plan.startsWith("silver")) {
-            return StripePlanID.SILVER;
-        }
+            switch (plan) {
+                case "free":
+                    return StripePlanID.FREE;
+                case "bronze":
+                    return StripePlanID.BRONZE;
+                case "silver":
+                    return StripePlanID.SILVER;
+                case "gold":
+                    return StripePlanID.GOLD;
+            }
 
-        if (plan.startsWith("gold")) {
-            return StripePlanID.GOLD;
-        }
+        };
 
-        throw new Error("Invalid plan: " + plan);
+        const convertYearly = () => {
+
+            switch (plan) {
+                case "free":
+                    return StripeYearPlanID.FREE;
+                case "bronze":
+                    return StripeYearPlanID.BRONZE;
+                case "silver":
+                    return StripeYearPlanID.SILVER;
+                case "gold":
+                    return StripeYearPlanID.GOLD;
+            }
+
+        };
+
+        switch (interval) {
+
+            case "month":
+                return convertMonthly();
+
+            case "year":
+                return convertYearly();
+
+        }
 
     }
 

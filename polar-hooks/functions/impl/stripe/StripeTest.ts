@@ -49,16 +49,16 @@ describe('Stripe', function() {
             source
         });
 
-        await StripeCustomers.changePlan(email, 'bronze');
-        await StripeCustomers.changePlan(email, 'silver');
-        await StripeCustomers.changePlan(email, 'gold');
+        await StripeCustomers.changePlan(email, 'bronze', 'month');
+        await StripeCustomers.changePlan(email, 'silver', 'month');
+        await StripeCustomers.changePlan(email, 'gold', 'month');
 
         // now downgrade...
-        await StripeCustomers.changePlan(email, 'silver');
-        await StripeCustomers.changePlan(email, 'bronze');
+        await StripeCustomers.changePlan(email, 'silver', 'month');
+        await StripeCustomers.changePlan(email, 'bronze', 'month');
 
         // make sure we can double set it to bronze, this should be idempotent.
-        await StripeCustomers.changePlan(email, 'bronze');
+        await StripeCustomers.changePlan(email, 'bronze', 'month');
         await StripeCustomers.cancelSubscription(email);
 
         // now make sure this customers has no subscriptions after the cancel now.

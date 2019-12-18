@@ -208,3 +208,6 @@ export interface Account extends AccountInit {
 }
 
 export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
+
+export type PlanInterval = 'month' | 'year';
+
