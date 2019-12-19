@@ -9,10 +9,10 @@ app.on('ready', async () => {
     //
     // console.log("READY");
 
-    // const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/latest-mac.yml";
+    const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/latest-mac.yml";
     // const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/Polar-Bookshelf-1.80.3-mac.zip";
     // const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/Polar-Bookshelf-1.80.3.dmg";
-    const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/Polar-Bookshelf-1.80.3.dmg.blockmap";
+    // const url = "https://github.com/burtonator/polar-bookshelf/releases/download/v1.80.3/Polar-Bookshelf-1.80.3.dmg.blockmap";
 
     const request = net.request({url, redirect: 'follow'});
     request.on('response', (response) => {
