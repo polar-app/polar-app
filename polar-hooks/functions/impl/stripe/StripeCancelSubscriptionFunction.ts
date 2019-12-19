@@ -22,7 +22,7 @@ app.use((req, res) => {
 
         await Accounts.validate(body.email, body.uid);
         await StripeCustomers.cancelSubscription(body.email);
-        await Accounts.changePlanViaEmail(body.email, 'free');
+        await Accounts.changePlanViaEmail(body.email, 'free', 'month');
 
     };
 

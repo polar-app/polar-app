@@ -2,11 +2,11 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import {StripeUtils} from './StripeUtils';
-import {AccountPlan, PlanInterval} from './StripeWebhookFunction';
 import {Accounts} from './StripeWebhookFunction';
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import {StripePlanIDs} from "./StripePlanIDs";
+import { accounts } from 'polar-accounts/src/accounts';
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use((req, res) => {
 
             await Accounts.validate(body.email, body.uid);
             await StripeCustomers.changePlan(body.email, body.plan, body.interval);
-            await Accounts.changePlanViaEmail(body.email, body.plan);
+            await Accounts.changePlanViaEmail(body.email, body.plan, body.interval);
 
             res.sendStatus(200);
 
@@ -50,8 +50,8 @@ export const StripeChangePlanFunction = functions.https.onRequest(app);
 export interface StripeChangePlanBody {
     readonly uid: string;
     readonly email: string;
-    readonly plan: AccountPlan;
-    readonly interval: PlanInterval;
+    readonly plan: accounts.Plan;
+    readonly interval: accounts.Interval;
 }
 
 interface StripeCustomerSubscription {
@@ -98,7 +98,9 @@ export class StripeCustomers {
             = customer.subscriptions.data.filter(current => current.status === 'active');
 
         if (activeSubscriptions.length !== 1) {
-            throw new Error("Too many subscriptions: " + email);
+            const msg = "Too many subscriptions: ";
+            console.warn("msg", activeSubscriptions);
+            throw new Error(msg + email);
         }
 
         const subscription = activeSubscriptions[0];
@@ -107,7 +109,7 @@ export class StripeCustomers {
 
     }
 
-    public static async changePlan(email: string, plan: AccountPlan, interval: PlanInterval) {
+    public static async changePlan(email: string, plan: accounts.Plan, interval: accounts.Interval) {
 
         console.log(`Changing plan for ${email} to ${plan}`);
 

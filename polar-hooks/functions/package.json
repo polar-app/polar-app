@@ -38,6 +38,7 @@
     "firebase-functions": "^3.3.0",
     "js-sha3": "^0.8.0",
     "node-fetch": "^2.6.0",
+    "polar-accounts": "^1.80.8",
     "polar-backend-shared": "^1.80.8",
     "polar-firebase": "^1.80.8",
     "polar-html": "^1.80.8",

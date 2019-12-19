@@ -5,9 +5,9 @@ xdescribe('StripeWebhookFunction', function() {
 
     it("basic", async function() {
         this.timeout(5000);
-        await Accounts.changePlan("cus_F9RB6dZIxRMZXj", "bronze");
+        await Accounts.changePlan("cus_F9RB6dZIxRMZXj", "bronze", 'month');
 
-        let account = await Accounts.get('burton@inputneuron.io');
+        const account = await Accounts.get('burton@inputneuron.io');
 
         assert.isDefined(account);
         assert.equal(account!.plan, 'bronze');
@@ -74,7 +74,7 @@ xdescribe('StripeWebhookFunction', function() {
         for (const email of bronze) {
 
             try {
-                await Accounts.changePlanViaEmail(email, "bronze");
+                await Accounts.changePlanViaEmail(email, "bronze", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);
@@ -84,7 +84,7 @@ xdescribe('StripeWebhookFunction', function() {
 
         for (const email of silver) {
             try {
-                await Accounts.changePlanViaEmail(email, "silver");
+                await Accounts.changePlanViaEmail(email, "silver", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);
@@ -93,7 +93,7 @@ xdescribe('StripeWebhookFunction', function() {
 
         for (const email of gold) {
             try {
-                await Accounts.changePlanViaEmail(email, "gold");
+                await Accounts.changePlanViaEmail(email, "gold", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);

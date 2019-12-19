@@ -6,6 +6,7 @@ import {FirebaseAdmin} from '../util/FirebaseAdmin';
 import {StripeUtils} from './StripeUtils';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {StripePlanID, StripePlanIDs} from "./StripePlanIDs";
+import {accounts} from "polar-accounts/src/accounts";
 
 // TODO:
 //
@@ -34,18 +35,18 @@ app.use((req, res) => {
 
         const planID = <StripePlanID> stripeEvent.data.object.plan.id;
 
-        const plan = StripePlanIDs.toAccountPlan(planID);
+        const sub = StripePlanIDs.toAccountPlan(planID);
 
         switch (stripeEvent.type) {
 
             case 'customer.subscription.created':
-                await Accounts.changePlan(customerID, plan);
+                await Accounts.changePlan(customerID, sub.plan, sub.interval);
                 break;
             case 'customer.subscription.updated':
-                await Accounts.changePlan(customerID, plan);
+                await Accounts.changePlan(customerID, sub.plan, sub.interval);
                 break;
             case 'customer.subscription.deleted':
-                await Accounts.changePlan(customerID, 'free');
+                await Accounts.changePlan(customerID, 'free', 'month');
                 break;
 
         }
@@ -93,7 +94,12 @@ export interface StripeEventPlan {
 
 interface AccountInit {
 
-    readonly plan: AccountPlan;
+    readonly plan: accounts.Plan;
+
+    /**
+     * The interval for the account. When undefined it's monthly.
+     */
+    readonly interval?: accounts.Interval;
 
 }
 
@@ -117,7 +123,9 @@ export class Accounts {
 
     }
 
-    public static async changePlan(customerID: string, plan: AccountPlan) {
+    public static async changePlan(customerID: string,
+                                   plan: accounts.Plan,
+                                   interval: accounts.Interval) {
 
         const stripe = StripeUtils.getStripe();
 
@@ -125,12 +133,14 @@ export class Accounts {
 
         const {email} = customer;
 
-        await this.changePlanViaEmail(email, plan);
+        await this.changePlanViaEmail(email, plan, interval);
 
     }
 
 
-    public static async changePlanViaEmail(email: string | undefined | null, plan: AccountPlan) {
+    public static async changePlanViaEmail(email: string | undefined | null,
+                                           plan: accounts.Plan,
+                                           interval: accounts.Interval) {
 
         if (! email) {
             throw new Error("Customer has no email address");
@@ -145,7 +155,8 @@ export class Accounts {
             uid: user.uid,
             plan,
             email,
-            lastModified
+            lastModified,
+            interval
         };
 
         await Accounts.write(account);
@@ -206,8 +217,3 @@ export interface Account extends AccountInit {
     readonly lastModified: ISODateTimeString;
 
 }
-
-export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
-
-export type PlanInterval = 'month' | 'year';
-

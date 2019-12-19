@@ -1,4 +1,4 @@
-import {AccountPlan, PlanInterval} from "./StripeWebhookFunction";
+import { accounts } from "polar-accounts/src/accounts";
 
 export enum StripePlanID {
 
@@ -20,32 +20,32 @@ export enum StripeYearPlanID {
 
 export class StripePlanIDs {
 
-    public static toAccountPlan(planID: StripePlanID | StripeYearPlanID): AccountPlan {
+    public static toAccountPlan(planID: StripePlanID | StripeYearPlanID): accounts.Subscription {
 
         switch (planID) {
             case StripePlanID.GOLD:
-                return 'gold';
+                return {interval: 'month', plan: 'gold'};
             case StripePlanID.SILVER:
-                return 'silver';
+                return {interval: 'month', plan: 'silver'};
             case StripePlanID.BRONZE:
-                return 'bronze';
+                return {interval: 'month', plan: 'bronze'};
         }
 
         switch (planID) {
             case StripeYearPlanID.GOLD:
-                return 'gold';
+                return {interval: 'year', plan: 'gold'};
             case StripeYearPlanID.SILVER:
-                return 'silver';
+                return {interval: 'year', plan: 'silver'};
             case StripeYearPlanID.BRONZE:
-                return 'bronze';
+                return {interval: 'year', plan: 'bronze'};
         }
 
         throw new Error("Invalid product: " + planID);
 
     }
 
-    public static fromAccountPlan(plan: AccountPlan,
-                                  interval: PlanInterval): StripePlanID | StripeYearPlanID {
+    public static fromAccountPlan(plan: accounts.Plan,
+                                  interval: accounts.Interval): StripePlanID | StripeYearPlanID {
 
         if (!plan) {
             throw new Error("No plan");
