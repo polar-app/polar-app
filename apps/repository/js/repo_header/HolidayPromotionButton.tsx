@@ -13,7 +13,7 @@ interface ButtonProps {
     readonly onClick: Callback;
 }
 
-export const UpgradePromotionCopy = (props: ButtonProps) => {
+export const HolidayPromotionCopy = (props: ButtonProps) => {
 
     return (
         <div className="text-center text-md">
@@ -54,7 +54,7 @@ export const UpgradePromotionCopy = (props: ButtonProps) => {
 
 };
 
-export class UpgradePromotionButton extends React.PureComponent<IProps, IState> {
+export class HolidayPromotionButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -79,8 +79,9 @@ export class UpgradePromotionButton extends React.PureComponent<IProps, IState> 
                         size="md"
                         style={{
                             whiteSpace: 'nowrap',
-                            backgroundColor: 'var(--indigo)',
-                            color: 'var(--white)'
+                            backgroundColor: '#E45E5B',
+                            color: 'var(--white)',
+                            fontWeight: 'bold'
                         }}
                         className="pl-2 pr-2 border">
 
@@ -99,7 +100,7 @@ export class UpgradePromotionButton extends React.PureComponent<IProps, IState> 
 
                     <PopoverBody className="shadow text-md">
 
-                        <UpgradePromotionCopy onClick={() => this.onUpgrade()}/>
+                        <HolidayPromotionCopy onClick={() => this.onUpgrade()}/>
 
                     </PopoverBody>
 

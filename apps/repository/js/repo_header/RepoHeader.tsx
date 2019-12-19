@@ -10,7 +10,7 @@ import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {UpgradePromotionButton} from "./UpgradePromotionButton";
+import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
 
@@ -110,7 +110,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                                 {this.props.right}
 
-                                <UpgradePromotionButton/>
+                                <HolidayPromotionButton/>
 
                                 <ChromeExtensionInstallButton/>
 

@@ -118,7 +118,7 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
                             <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
 
-                                <InviteUsersButton {...props}/>
+                                {/*<InviteUsersButton {...props}/>*/}
 
                                 <LogoutButton {...props}/>
 

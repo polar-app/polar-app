@@ -12,9 +12,9 @@ import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ActionButton} from "../../js/ui/mobile/ActionButton";
 import {
-    UpgradePromotionButton,
-    UpgradePromotionCopy
-} from "../../../apps/repository/js/repo_header/UpgradePromotionButton";
+    HolidayPromotionButton,
+    HolidayPromotionCopy
+} from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
 
 const styles = {
     swatch: {
@@ -273,7 +273,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*<UpgradePromotionButton/>*/}
 
                 <div style={{width: '500px'}} className="border p-1">
-                    <UpgradePromotionCopy onClick={NULL_FUNCTION}/>
+                    <HolidayPromotionCopy onClick={NULL_FUNCTION}/>
                 </div>
 
                 {/*<Lightbox>*/}
