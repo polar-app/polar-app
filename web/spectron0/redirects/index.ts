@@ -21,7 +21,7 @@ app.on('ready', async () => {
         response.on('data', (chunk) => {
             // console.log(`BODY: ${chunk}`);
             console.log("got chunk");
-        })
+        });
         response.on('end', () => {
             console.log('No more data in response.');
         });
