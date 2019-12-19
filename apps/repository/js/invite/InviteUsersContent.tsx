@@ -1,18 +1,14 @@
 import * as React from 'react';
-import {IStyleMap} from '../../react/IStyleMap';
 
+class Styles {
 
-const Styles: IStyleMap = {
-
-    icon: {
+    public static icon: React.CSSProperties = {
         fontSize: '120px',
         margin: '20px',
         color: '#007bff'
-        // minWidth: '350px',
-        // width: '350px'
-    },
+    };
 
-};
+}
 
 export class InviteUsersContent extends React.Component<IProps, IState> {
 
@@ -28,24 +24,16 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 
                 <div className="text-center">
 
-                    <i className="fas fa-envelope-open" style={Styles.icon}></i>
+                    <i className="fas fa-envelope-open" style={Styles.icon}/>
 
-                    <h1 className="title">Invite Your Colleagues to Polar</h1>
+                    <h1 className="title">Invite Your Friends to Polar</h1>
 
                 </div>
 
-                <p className="subtitle" style={Styles.overview}>
-                    One month free of cloud storage for every user
+                <p className="subtitle" style={{}}>
+                    One month free of cloud storage for every friend
                     you invite!
                 </p>
-
-                <p>
-                    Get a <b>free</b> month of Polar cloud storage for every
-                    user you invite. Once they purchase Polar cloud sync for
-                    sixty days we'll credit your account.  Invite as many users
-                    as you would like!
-                </p>
-
                 <p>
                     Just enter their emails below and we'll send them an
                     invitation.
@@ -58,11 +46,13 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 
                 <label className="text-muted">Enter email addresses below:</label>
 
-                <textarea autoFocus={true}
-                          onChange={(element) => this.props.onInvitedUserText(element.currentTarget.value)}
-                          style={{width: '100%', height: '100px'}}>
+                <div className="mt-2">
+                    <textarea autoFocus={true}
+                              onChange={(element) => this.props.onInvitedUserText(element.currentTarget.value)}
+                              style={{width: '100%', height: '100px'}}>
 
-                </textarea>
+                    </textarea>
+                </div>
 
             </div>
 

@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../../../FixedNav';
 import {RepoHeader} from '../../../repo_header/RepoHeader';
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from '../../../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../../../web/js/datastore/PersistenceLayerManager';
 import {PlanInterval, PremiumContent2} from './PremiumContent2';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountPlan} from '../../../../../../web/js/accounts/Account';

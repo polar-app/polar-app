@@ -4,18 +4,15 @@ import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firebase/Firebase';
 import * as firebase from '../../firebase/lib/firebase';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PersistenceLayerController, PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
-import {InviteUsersModal} from './InviteUsersModal';
-import {Invitations} from '../../datastore/Invitations';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
 import {AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControlDropdown} from './AccountControlDropdown';
-import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 
 const log = Logger.create();
 
@@ -81,11 +78,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>
 
-
-                    {/*<CloudSyncOverviewModal isOpen={this.state.stage === 'overview'}*/}
-                                            {/*onCancel={() => this.changeAuthStage()}*/}
-                                            {/*onSignup={() => this.changeAuthStage('login')}/>*/}
-
                 </div>
 
             );
@@ -97,10 +89,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                     <CloudSyncConfiguredModal isOpen={this.state.stage === 'configured'}
                                               onCancel={() => this.changeAuthStage()}/>
-
-                    <InviteUsersModal isOpen={this.state.stage === 'invite'}
-                                      onCancel={() => this.changeAuthStage()}
-                                      onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
                     <AccountButton/>
 
@@ -126,20 +114,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
             })
             .catch(err => log.error("Unable to logout: ", err));
-
-    }
-
-    private onInvitedUsers(emailAddresses: ReadonlyArray<string>) {
-
-        const handleInvitedUsers = async () => {
-
-            await Invitations.sendInvites(...emailAddresses);
-            this.changeAuthStage();
-
-        };
-
-        handleInvitedUsers()
-            .catch(err => log.error("Unable to invite users: ", err));
 
     }
 

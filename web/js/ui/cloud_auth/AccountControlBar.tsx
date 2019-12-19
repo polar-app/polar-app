@@ -43,16 +43,18 @@ const UserImage = (props: IProps) => {
 
 const InviteUsersButton = (props: IProps) => {
 
-    return <Button id="cloud-sync-invite-users"
-                   color="secondary"
-                   size="sm"
-                   onClick={() => props.onInvite()}>
+    return <Link to={{pathname: '/invite'}}>
+        <Button id="cloud-sync-invite-users"
+                color="secondary"
+                size="sm"
+                onClick={() => props.onInvite()}>
 
-        <i className="fas fa-user-plus mr-1"/>
+            <i className="fas fa-user-plus mr-1"/>
 
-        Invite Users
+            Invite Users
 
-    </Button>;
+        </Button>
+    </Link>;
 
 };
 
@@ -63,7 +65,7 @@ const ViewPlansAndPricingButton = () => {
     };
 
     return (
-        <Link to={{pathname: '/', hash: '#plans'}}>
+        <Link to={{pathname: '/plans'}}>
             <Button color="success"
                     size="md"
                     onClick={handler}>

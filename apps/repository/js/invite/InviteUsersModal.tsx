@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import {InviteUsersContent} from './InviteUsersContent';
-import {EmailAddress, EmailAddressParser} from '../../util/EmailAddressParser';
+import {EmailAddressParser} from "../../../../web/js/util/EmailAddressParser";
 
 export class InviteUsersModal extends React.Component<IProps, IState> {
 

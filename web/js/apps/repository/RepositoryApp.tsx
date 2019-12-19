@@ -60,6 +60,7 @@ import {AccountProvider} from "../../accounts/AccountProvider";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
+import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 
 const log = Logger.create();
 
@@ -300,6 +301,12 @@ export class RepositoryApp {
                                           persistenceLayerController={persistenceLayerController}/>);
         };
 
+        const renderInvite = () => {
+            return <InviteScreen persistenceLayerProvider={persistenceLayerProvider}
+                                 persistenceLayerController={persistenceLayerController}
+                                 plan={account?.plan}/>;
+        };
+
         const onNavChange = () => {
 
             try {
@@ -392,6 +399,8 @@ export class RepositoryApp {
                         <Route exact path='/groups' render={renderGroupsScreen}/>
 
                         <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+
+                        <Route exact path='/invite' render={renderInvite}/>
 
                         <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
 
