@@ -68,7 +68,8 @@ export class MainAppController {
         // send the messages to the renderer context now so that we can bulk
         // import them into the repo.
         if (files) {
-            FileImportClient.send(FileImportRequests.fromPaths(files));
+            const fileImportRequests = FileImportRequests.fromPaths(files);
+            FileImportClient.send(fileImportRequests);
         }
 
     }
@@ -290,10 +291,10 @@ export class MainAppController {
         });
 
         if (openedDialog.canceled) {
-            return openedDialog.filePaths;
+            return undefined;
         }
 
-        return undefined;
+        return openedDialog.filePaths;
 
     }
 

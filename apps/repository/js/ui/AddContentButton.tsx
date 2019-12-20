@@ -90,6 +90,7 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
             const accountUpgrader = new AccountUpgrader();
 
             if (await accountUpgrader.upgradeRequired()) {
+                log.warn("Account upgrade required");
                 accountUpgrader.startUpgrade();
                 return;
             }

@@ -49,7 +49,7 @@ https://discord.gg/qp5FsY
 [![AppVeyor](https://img.shields.io/appveyor/ci/Sential/wexond.svg?style=flat-square)](https://ci.appveyor.com/project/Sential/wexond)
 -->
 
-Polar Bookshelf is personal knowledge repository which supports advanced
+Polar is personal knowledge repository which supports advanced
 features like incremental reading, annotation, comments, and spaced repetition. 
 It supports reading PDF and the web content and was created using the [Electron
 framework](https://electron.atom.io) and
