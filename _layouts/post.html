@@ -13,7 +13,7 @@
 
         <div class="container">
           <div class="row">
-            <div class="col">
+            <div class="col col-md-8">
 
               {% if page.release %}
 
@@ -46,8 +46,9 @@
 
               {%- include comments.html -%}
 
-              {%- include related-posts.html -%}
-
+            </div>
+            <div class="col col-md-4">
+              {%- include post-sidebar.html -%}
             </div>
           </div>
         </div>
