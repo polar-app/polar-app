@@ -13,8 +13,8 @@ import {GroupInvites, UserRefInvitations} from './GroupInvites';
 import {UserRefs} from './db/UserRefs';
 import {GroupMembers} from "./db/GroupMembers";
 import {LinksValidator} from "./rpc/LinksValidator";
-import {TextSerializer} from "polar-shared/src/html5/TextSerializer";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
 
 export class GroupProvisionFunctions {
 
