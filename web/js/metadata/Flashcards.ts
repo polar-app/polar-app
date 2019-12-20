@@ -6,7 +6,6 @@ import {Flashcard} from './Flashcard';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {Text} from 'polar-shared/src/metadata/Text';
 import {TextType} from 'polar-shared/src/metadata/TextType';
-import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from 'polar-shared/src/metadata/Refs';
