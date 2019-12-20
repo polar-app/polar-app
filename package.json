@@ -31,7 +31,10 @@
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && npm outdated'",
     "purge-node-modules": "rm -rf node_modules && lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd && rm -rf node_modules'",
     "ls-packages": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'pwd'",
-    "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n"
+    "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n",
+    "__TODO": "dev dependencies too...",
+    "find-package-versions": "lerna exec --concurrency=1 --parallel=false --no-private -- jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
+    "find-package-versions-conflicting": "npm run-script find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '"
   },
   "deprecated": {},
   "keywords": [],
