@@ -30,6 +30,7 @@ async function launch() {
     console.log("Running with Node version: " + process.version);
     console.log("Running with Electron version: " + process.versions.electron);
     console.log("Running with Polar version: " + Version.get());
+    console.log("Running with app version: " + app.getVersion());
 
     const log = Logger.create();
 
