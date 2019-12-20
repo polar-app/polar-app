@@ -29,7 +29,7 @@ export class InviteScreen extends React.Component<IProps> {
 
         return (
 
-            <FixedNav id="invite">
+            <FixedNav id="doc-repository">
 
                 <header>
 
@@ -38,15 +38,16 @@ export class InviteScreen extends React.Component<IProps> {
 
                 </header>
 
-                <FixedNavBody className="container-fluid">
+                <FixedNavBody className="container-fluid bg-grey100">
 
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
 
-                            <div className="border ml-auto mr-auto rounded p-4"
+                            <div className="border ml-auto mr-auto rounded p-4 bg-white"
                                  style={{
-                                     maxWidth: '800px'
+                                     maxWidth: '800px',
+                                     flexGrow: 1
                                  }}>
 
                                 <InviteUsersContent onInvitedUserText={(invitedUsersText) => this.onInvitedUserText(invitedUsersText)}/>

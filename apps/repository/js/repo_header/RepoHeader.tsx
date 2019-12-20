@@ -46,7 +46,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                         <div className="mr-1">
                             <NavIcon/>
                         </div>
-
+                asdfasdf
                         {this.props.left}
 
                     </div>
@@ -95,9 +95,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         <div>
                             <RepoNavbar/>
-
                             {this.props.left}
-
                         </div>
 
                         <div style={{
