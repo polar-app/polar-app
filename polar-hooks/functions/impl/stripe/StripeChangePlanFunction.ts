@@ -2,11 +2,11 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import {StripeUtils} from './StripeUtils';
-import {Accounts} from './StripeWebhookFunction';
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import {StripePlanIDs} from "./StripePlanIDs";
 import { accounts } from 'polar-accounts/src/accounts';
+import {Accounts} from "./Accounts";
 
 const app = express();
 

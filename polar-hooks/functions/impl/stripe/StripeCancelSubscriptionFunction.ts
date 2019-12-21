@@ -1,9 +1,9 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
-import {Accounts} from './StripeWebhookFunction';
 import * as functions from 'firebase-functions';
 import {StripeCustomers} from './StripeChangePlanFunction';
+import {Accounts} from "./Accounts";
 
 const app = express();
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Accounts} from './StripeWebhookFunction';
+import {Accounts} from "./Accounts";
 
 xdescribe('StripeWebhookFunction', function() {
 
