@@ -9,7 +9,7 @@ class Styles {
     public static Dock: React.CSSProperties = {
         display: 'flex',
         flexGrow: 1,
-        height: '100%'
+        minHeight: 0
     };
 
 }
@@ -63,7 +63,9 @@ export class Dock extends React.Component<IProps, IState> {
         const rightStyle: React.CSSProperties = {};
 
         for (const style of [leftStyle, rightStyle]) {
-            style.height = '100%';
+            style.overflow = 'auto';
+            style.flexGrow = 1;
+            style.minHeight = 0;
         }
 
         const createSplitterStyle = () => {
@@ -77,7 +79,8 @@ export class Dock extends React.Component<IProps, IState> {
                 minWidth: '4px',
                 maxWidth: '4px',
                 cursor: 'col-resize',
-                backgroundColor: 'var(--grey200)'
+                backgroundColor: 'var(--grey200)',
+                minHeight: 0
             };
 
             if (this.props.side === 'left') {
@@ -116,9 +119,6 @@ export class Dock extends React.Component<IProps, IState> {
         
         contentStyle.flexGrow = 1;
 
-        // force it to be 100% and make the inner elements use overflow
-        sidebarStyle.height = '100%';
-
         const componentClassNames = this.props.componentClassNames || {};
 
         return (
@@ -128,7 +128,7 @@ export class Dock extends React.Component<IProps, IState> {
                  onMouseMove={() => this.onMouseMove()}
                  draggable={false}>
 
-                <div className={"dock-left" + ' ' + componentClassNames.left || ""}
+                <div className={"dock-left" + ' ' + (componentClassNames.left || "")}
                      style={leftStyle}
                      draggable={false}>
 
@@ -136,14 +136,14 @@ export class Dock extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className={"dock-splitter" + ' ' + componentClassNames.splitter || ""}
+                <div className={"dock-splitter" + ' ' + (componentClassNames.splitter || "")}
                      draggable={false}
                      onMouseDown={() => this.onMouseDown()}
                      style={splitterStyle}>
 
                 </div>
 
-                <div className={"dock-right" + ' ' + componentClassNames.right || ""}
+                <div className={"dock-right" + ' ' + (componentClassNames.right || "")}
                      style={rightStyle}
                      draggable={false}>
                     {this.props.right}
