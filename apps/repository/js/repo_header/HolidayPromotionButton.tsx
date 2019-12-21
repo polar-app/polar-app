@@ -35,7 +35,7 @@ export const HolidayPromotionCopy = (props: ButtonProps) => {
                 Offer includes mobile flashcard review, related tags, and increased storage!
             </p>
 
-            <p className="text-muted">$19.95 for 12 months vs $59.88. Offer Valid until Dec 25</p>
+            <p className="text-muted">$19.95 for 12 months vs $59.88. Offer Valid until Dec 31, 2019.</p>
 
             <p>
 
