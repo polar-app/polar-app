@@ -23,16 +23,16 @@
   {% endif %}
 
   {% if page.description %}
-  <meta name="twitter:description" content="{{ page.description }}">
+  <meta name="twitter:description" content="{{ page.description | escape }}">
   {% else %}
-  <meta name="twitter:description" content="{{ site.description }}">
+  <meta name="twitter:description" content="{{ site.description | escape }}">
   {% endif %}
 
   {% if page.title %}
-  <meta name="twitter:title" content="{{ page.title }}">
+  <meta name="twitter:title" content="{{ page.title | escape }}">
   <title>{{ page.title }}</title>
   {% else %}
-  <meta name="twitter:title" content="{{ site.title }}">
+  <meta name="twitter:title" content="{{ site.title | escape }}">
   <title>{{ site.title }}</title>
   {% endif %}
 

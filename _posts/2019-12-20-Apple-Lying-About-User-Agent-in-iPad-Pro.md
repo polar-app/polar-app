@@ -88,3 +88,9 @@ iPad users can’t install third-party browsers, which makes PWA-based technolog
 In light of this larger conversation, I can't help but think that Apple is doing this on purpose.
 
 I sincerely hope I'm wrong.
+
+A PWA won't be able to determine if it's running on iPad OS and enable the appropriate feature set.  There are some 
+hacks that can be done like looking at window.screen.width but this will yield false positives in some situations.  
+
+At the very minimum, Apple should augment the 'navigator' object with some proprietary extension so that I can at least
+add custom code to detect that I'm on an iPad.
