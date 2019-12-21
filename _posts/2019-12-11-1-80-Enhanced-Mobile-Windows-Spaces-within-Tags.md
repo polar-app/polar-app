@@ -4,6 +4,7 @@ date: 2019-12-16T08:00:00.000-08:00
 layout: post
 description: Polar 1.80 - Enhanced Mobile, Spaces within Tags and Special Holiday Offer
 release: 1.80.10
+pinned: 9
 ---
 
 We have a new version of Polar out with some really interesting features.

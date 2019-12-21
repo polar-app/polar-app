@@ -6,7 +6,8 @@
 
     <!--| where_exp:"post", "post.url != page.url"-->
 
-    {% assign top_posts = site.posts | where_exp:"post", "post.layout == 'post'" | where_exp:"post", "post.permalink != '/blog/index.html'" | where_exp:"post", "post.url != page.url" %}
+
+    {% assign top_posts = site.posts | where_exp:"post", "post.layout == 'post'" | where_exp:"post", "post.permalink != '/blog/index.html'" | where_exp:"post", "post.url != page.url" | sort:"pinned" | reverse %}
 
     {%- if top_posts.size > 0 -%}
 
@@ -18,18 +19,8 @@
         <div class="">
             <div class="card m-1" style="">
 
-                {%- if post.large_image && post.large_image != "" -%}
-
-                <div class="p-1">
-                <a href="{{ post.url }}">
-                    <img class="card-img-top" src="{{ post.large_image }}" alt="{{ post.title | escape }}">
-                </a>
-                </div>
-
-                {%- endif -%}
-
-
                 <div class="card-body">
+
                     <a href="{{ post.url }}">
                         <h5 class="card-title">{{ post.title | escape }}</h5>
                     </a>
@@ -37,6 +28,16 @@
                     <p class="card-text">
                         {{ post.content | strip_html | truncatewords: 40 }}
                     </p>
+
+                    {%- if post.large_image && post.large_image != "" -%}
+
+                    <div class="p-1">
+                        <a href="{{ post.url }}">
+                            <img class="card-img-top" src="{{ post.large_image }}" alt="{{ post.title | escape }}">
+                        </a>
+                    </div>
+
+                    {%- endif -%}
 
                 </div>
 

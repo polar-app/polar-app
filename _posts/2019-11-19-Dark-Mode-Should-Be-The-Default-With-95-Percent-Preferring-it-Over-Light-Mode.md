@@ -4,6 +4,7 @@ date: 2019-11-25T08:00:00.000-08:00
 layout: post
 description: Dark Mode by Default - 95% Prefer Dark over Light Mode. One thing that's kept coming up when talking to Polar users is that we should implement dark mode. It's quickly become one of our top requested features.  I think it's about #3 right now in our new feature roadmap.
 large_image: https://i.imgur.com/KSK0R75.png
+pinned: 10
 ---
 
 <img class="img-fluid border border-dark rounded" src="https://i.imgur.com/KSK0R75.png">

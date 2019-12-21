@@ -4,6 +4,7 @@ date: 2019-12-11T08:00:00.000-08:00
 layout: post
 description: Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0.
 release: 1.70.4
+pinned: 8
 ---
 
 Polar 1.70 is out! Lots of big changes in this release!

@@ -5,6 +5,8 @@ layout: post
 description: Polar 1.80 - Manual Update Required for Desktop Users
 ---
 
+# Polar 1.80 - Manual Update Required for Desktop Users
+
 Polar 1.80 for MacOS and Windows requires users to manually update to the latest version by [manually downloading and
 installing the latest version](https://getpolarized.io/download.html).
 
