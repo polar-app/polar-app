@@ -1,4 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-12-21T08:02:29-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.80 - Manual Update Required for Desktop Users</title><link href="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html" rel="alternate" type="text/html" title="Polar 1.80 - Manual Update Required for Desktop Users" /><published>2019-12-20T08:00:00-08:00</published><updated>2019-12-20T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users</id><content type="html" xml:base="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html">&lt;h1 id=&quot;polar-180---manual-update-required-for-desktop-users&quot;&gt;Polar 1.80 - Manual Update Required for Desktop Users&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-12-21T09:00:31-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T08:00:00-08:00</published><updated>2019-12-21T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
+&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/c5vfb1e.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;apple-lying-about-user-agent-in-ipad-pro---blocking-pwas&quot;&gt;Apple Lying About “User Agent” in iPad Pro - Blocking PWAs&lt;/h1&gt;
+
+&lt;p&gt;Apple is lying about the user agent in the latest iPad Pro.&lt;/p&gt;
+
+&lt;p&gt;They’re misrepresenting both the OS and the chipset.  They should be saying that they’re iPadOS on the A12X chipset.&lt;/p&gt;
+
+&lt;p&gt;Instead they’re saying that it’s running MacOS on Intel.&lt;/p&gt;
+
+&lt;p&gt;I honestly can’t believe this isn’t being covered elsewhere as it seems to me to be a pretty shocking and incredible
+error on their part.&lt;/p&gt;
+
+&lt;p&gt;This basically means it’s impossible for 3rd party developer to determine that they’re actually working on an iPad Pro.&lt;/p&gt;
+
+&lt;p&gt;If you’re developing a progressive webapp you’re unable to reliably determine that you’re working on an iPad Pro.&lt;/p&gt;
+
+&lt;p&gt;This essentially breaks webapp development targeting the iPad Pro.&lt;/p&gt;
+
+&lt;h1 id=&quot;user-agent&quot;&gt;User agent&lt;/h1&gt;
+
+&lt;p&gt;The user agent is usually used to detect the version of the browser, operating system.&lt;/p&gt;
+
+&lt;p&gt;In the case of the iPad Pro they’re sending:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Safari/605.1.15&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now what they’ve done is added a feature for ‘Request desktop version of site by default’ and they’re using this UA 
+to trigger the desktop site.&lt;/p&gt;
+
+&lt;p&gt;This might be true, and maybe we need better standards for implementing this feature, however, lying about the UA isn’t
+the right strategy.&lt;/p&gt;
+
+&lt;p&gt;They can handle this in the UA by saying “like Mac OS X” and still trigger UA scripts that use the older version.&lt;/p&gt;
+
+&lt;p&gt;Even if this technique didn’t work, Apple has a responsibility be a good citizen on the web and use web standards 
+properly and in the way they were intended.&lt;/p&gt;
+
+&lt;h1 id=&quot;great-device-for-reading&quot;&gt;Great Device for Reading&lt;/h1&gt;
+
+&lt;p&gt;The reason I’m so excited about the iPad Pro is that it’s a great device for reading. I’m working on porting Polar to
+running on it natively with a progressive webapp (PWA).&lt;/p&gt;
+
+&lt;p&gt;Our PWA looks and behaves almost perfectly like a native mobile app.&lt;/p&gt;
+
+&lt;p&gt;It allows you to review your reading annotations and review your flashcards and notes while mobile.&lt;/p&gt;
+
+&lt;p&gt;It’s also the perfect weight for reading while mobile and feels like an actual book.  Perfect for Polar users who want 
+to read while traveling.&lt;/p&gt;
+
+&lt;p&gt;Our desktop app would NOT run reliably on an iPad Pro and we’re specifically trying to target features for this device
+including a layout that properly utilizes the screen resolution and hand gestures.&lt;/p&gt;
+
+&lt;p&gt;For example, here’s our webapp running on a resolution targeted for iPad OS:&lt;/p&gt;
+
+&lt;div class=&quot;text-center mb-2&quot;&gt; 
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/ZVYUYCO.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;… and here it is targeted for desktop users:&lt;/p&gt;
+
+&lt;div class=&quot;text-center&quot;&gt; 
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/nzwhXZG.png&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;blocking-pwas&quot;&gt;Blocking PWAs&lt;/h1&gt;
+
+&lt;p&gt;PWAs behave like native apps in that they can be cached locally, installed like regular apps, etc.&lt;/p&gt;
+
+&lt;p&gt;However, &lt;a href=&quot;https://onezero.medium.com/apple-is-trying-to-kill-web-technology-a274237c174d&quot;&gt;Apple seems hostile to PWAs&lt;/a&gt; and seems to be actively penalizing the technology in favor of their own App Store
+since their revenues there are much higher.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Apple also handicapped an emerging standard called Progressive Web Apps (PWAs) — which, like Electron, allows
+developers to build native-like apps for both desktop and mobile — by partially implementing it in a way that makes it
+too inconsistent to rely on. PWA doesn’t have the same problem if users open apps in Chrome or Firefox, but iPhone and
+iPad users can’t install third-party browsers, which makes PWA-based technology a non-starter.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In light of this larger conversation, I can’t help but think that Apple is doing this on purpose.&lt;/p&gt;
+
+&lt;p&gt;I sincerely hope I’m wrong.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.80 - Manual Update Required for Desktop Users</title><link href="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html" rel="alternate" type="text/html" title="Polar 1.80 - Manual Update Required for Desktop Users" /><published>2019-12-20T08:00:00-08:00</published><updated>2019-12-20T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users</id><content type="html" xml:base="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html">&lt;h1 id=&quot;polar-180---manual-update-required-for-desktop-users&quot;&gt;Polar 1.80 - Manual Update Required for Desktop Users&lt;/h1&gt;
 
 &lt;p&gt;Polar 1.80 for MacOS and Windows requires users to manually update to the latest version by &lt;a href=&quot;https://getpolarized.io/download.html&quot;&gt;manually downloading and
 installing the latest version&lt;/a&gt;.&lt;/p&gt;
@@ -882,208 +967,4 @@ lower storage requirements.&lt;/p&gt;
 &lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
 
 &lt;p&gt;I think these issues will solve 95% of the initial problems we had with capture and make the entire platform much more
-reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">The Future of Polar Cloud Sync</title><link href="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html" rel="alternate" type="text/html" title="The Future of Polar Cloud Sync" /><published>2019-10-05T09:00:00-07:00</published><updated>2019-10-05T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync</id><content type="html" xml:base="https://getpolarized.io/2019/10/05/Future-of-Polar-Cloud-Sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://getpolarized.io/assets/images/firebase-sync-scaled.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;the-future-of-polar-cloud-sync&quot;&gt;The Future of Polar Cloud Sync&lt;/h1&gt;
-
-&lt;p&gt;We’re going to be changing some features in the ‘local’ mode version of Polar and some new cloud features won’t be 
-available in this mode.&lt;/p&gt;
-
-&lt;p&gt;I’ve tried to keep Polar’s local mode as full featured as possible but I’ve decided that this just isn’t possible 
-moving forward.&lt;/p&gt;
-
-&lt;p&gt;New features like full-text search, machine learning, and other features won’t be available in local mode.&lt;/p&gt;
-
-&lt;p&gt;I’ll explain more below but please read the full post if you’re concerned or have any suggestions.&lt;/p&gt;
-
-&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
-
-&lt;p&gt;Polar has three modes of operation.  Local, cloud, and web.  These are internal modes and you’ve probably never 
-really thought of them before.&lt;/p&gt;
-
-&lt;p&gt;When you first install Polar on the desktop it’s local only. No files are written to the cloud.&lt;/p&gt;
-
-&lt;p&gt;When you login to cloud on the desktop, it goes into cloud mode and transparently syncs between local and the cloud
-so that your local files are synchronized between all your devices.&lt;/p&gt;
-
-&lt;p&gt;The web mode is basically just the cloud mode bug without any local support.  It’s what you’re using when you login 
-to the webapp or use Polar on tablet or desktop devices.  It has the same features as cloud mode.&lt;/p&gt;
-
-&lt;h1 id=&quot;offline&quot;&gt;Offline&lt;/h1&gt;
-
-&lt;p&gt;The local, cloud, and web modes don’t accurately portray offline functionality.&lt;/p&gt;
-
-&lt;p&gt;All three modes will work in offline (and disconnected) mode.&lt;/p&gt;
-
-&lt;p&gt;For example, if you’re using a tablet, and have Polar installed, and you’ve downloaded a PDF before, you can still open
-it again and continue reading and annotating while it’s offline.&lt;/p&gt;
-
-&lt;p&gt;What WILL NOT work is search and some of the features articulated below.&lt;/p&gt;
-
-&lt;h2 id=&quot;offline-vs-online-features&quot;&gt;Offline vs Online Features&lt;/h2&gt;
-
-&lt;p&gt;Most core features of Polar will be designed to work offline.  Firebase itself has support for offline operation which
-means our webapp, and mobile and tablet apps will work just fine while offline.&lt;/p&gt;
-
-&lt;h2 id=&quot;cloud-specific-features&quot;&gt;Cloud-specific Features&lt;/h2&gt;
-
-&lt;p&gt;Some features won’t be ported to the desktop mode and will only work in cloud or web mode.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;local&lt;/th&gt;
-      &lt;th&gt;cloud&lt;/th&gt;
-      &lt;th&gt;web&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;full-text search&lt;/td&gt;
-      &lt;td&gt;no&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;thumbnails for documents&lt;/td&gt;
-      &lt;td&gt;no [1]&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ML features like tags suggested from content&lt;/td&gt;
-      &lt;td&gt;no&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;search for new documents using Arxiv / Pubmed&lt;/td&gt;
-      &lt;td&gt;online [2]&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-      &lt;td&gt;online&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Probably not initially but perhaps in the future.&lt;/li&gt;
-  &lt;li&gt;This will use a web service and will run your queries online but the PDFs and metadata will only be stored locally.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;/h1&gt;
-
-&lt;p&gt;Features like full-text search and other machine learning (ML) features have been requested by our users for a while now.&lt;/p&gt;
-
-&lt;p&gt;I want to add these features but they’re very complex and I can’t approach them as I would like adding a new UI button 
-or something trivial.  Complex performance issues, scale, power utilization, all factor into this decision.&lt;/p&gt;
-
-&lt;h1 id=&quot;reasoning&quot;&gt;Reasoning&lt;/h1&gt;
-
-&lt;p&gt;Mobile and tablet support are going to be a big part of Polar’s future.  After talking to our users it’s becoming 
-very clear that we’d probably have 50% of our users using these devices if they weren’t locked down to just desktop
-and the web.&lt;/p&gt;
-
-&lt;p&gt;This is by far the primary motivator for implementing these features in the cloud.&lt;/p&gt;
-
-&lt;p&gt;I can’t use Elasticsearch in mobile devices.  We can’t spin up tensor flow on your tablet.&lt;/p&gt;
-
-&lt;p&gt;Even if we could the power requirements would be insane.&lt;/p&gt;
-
-&lt;p&gt;There are dozens of APIs and features we can use with cloud APIs that just aren’t available any other way.  Thumbnails,
-text to speech, OCR, etc.&lt;/p&gt;
-
-&lt;h2 id=&quot;portability&quot;&gt;Portability&lt;/h2&gt;
-
-&lt;p&gt;Any code based on cloud infrastructure will work across all devices.&lt;/p&gt;
-
-&lt;p&gt;Mobile, tablet, desktop. Android, iOS, MacOS, Windows, Linux.&lt;/p&gt;
-
-&lt;p&gt;If we’re using Elasticsearch in the cloud it doesn’t matter which frontend device you’re using.&lt;/p&gt;
-
-&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
-
-&lt;p&gt;Supporting all platforms and operating systems for these features would be completely unworkable.&lt;/p&gt;
-
-&lt;h2 id=&quot;performance&quot;&gt;Performance&lt;/h2&gt;
-
-&lt;p&gt;Even if we could solve all the above the performance would be abysmal.  Importing a large document set could take 5-15 
-minutes when using full-text indexing.&lt;/p&gt;
-
-&lt;p&gt;With Elasticsearch I can index your documents across 100 nodes in parallel and have it done 100x faster.&lt;/p&gt;
-
-&lt;h2 id=&quot;feature-set&quot;&gt;Feature Set&lt;/h2&gt;
-
-&lt;p&gt;Frameworks like Elasticsearch and Tensorflow are very powerful. We might be able to get away with using something else 
-but for the most part it’s not going to be worth it.&lt;/p&gt;
-
-&lt;p&gt;Even simple features like language stemming aren’t really well documented in other desktop-only search libraries.&lt;/p&gt;
-
-&lt;h2 id=&quot;scale&quot;&gt;Scale&lt;/h2&gt;
-
-&lt;p&gt;Moving forward, I can bring in additional teams to easily manage these services on the backend.  This is going to help
-grow the team and make sure you’re a satisfied user.&lt;/p&gt;
-
-&lt;h1 id=&quot;pricing-and-access&quot;&gt;Pricing and Access&lt;/h1&gt;
-
-&lt;p&gt;Some of these cloud features will cost money.&lt;/p&gt;
-
-&lt;p&gt;I have some ideas on how to keep things more affordable (and free) for students and freemium users but generally
-speaking, users with larger repositories will have to pay to use these features.&lt;/p&gt;
-
-&lt;p&gt;… but believe me, it will be worth it!&lt;/p&gt;
-
-&lt;h2 id=&quot;unlocking-features&quot;&gt;Unlocking Features&lt;/h2&gt;
-
-&lt;p&gt;Some features of Polar may be unlocked in the future and in that case, if you don’t want to use any cloud services, we
-will just authenticate you and then allow you to opt out of cloud sync.&lt;/p&gt;
-
-&lt;h1 id=&quot;backups--snapshots&quot;&gt;Backups / Snapshots&lt;/h1&gt;
-
-&lt;p&gt;This will also allow us to support backups and snapshots of your data so that you can restore data directly from the 
-cloud.  Google cloud storage is insanely cheap so the plan is to enable a simple export/import mechanism which will 
-store your datastore directly on Google Cloud Storage.&lt;/p&gt;
-
-&lt;p&gt;The pricing for this is reasonable so we’re planning on taking regular backups for our users.&lt;/p&gt;
-
-&lt;h2 id=&quot;offline-first-and-data-privacy&quot;&gt;Offline First and Data Privacy&lt;/h2&gt;
-
-&lt;p&gt;We generally support the “offline-first” movement to keep data out of cloud devices but it’s a very complicated subject.&lt;/p&gt;
-
-&lt;p&gt;Some users don’t want any of their data in the cloud. Some are just concerned about which data providers are used.&lt;br /&gt;
-Some users don’t care at all as long as it’s reasonably secure.&lt;/p&gt;
-
-&lt;p&gt;One major issue is data storage location.&lt;/p&gt;
-
-&lt;p&gt;We’re going to improve our usability here by allowing the user to pick a primary location among the available Google 
-datacenters.&lt;/p&gt;
-
-&lt;p&gt;We’re going to support the United States and Western Europe.  &lt;a href=&quot;https://firebase.google.com/docs/firestore/locations&quot;&gt;Google’s Datacenters are located here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;This will help our users concerned about where they have their physical data stored.&lt;/p&gt;
-
-&lt;p&gt;We probably won’t have this soon but we’d like to have it done in the near term (3-12 months).&lt;/p&gt;
-
-&lt;p&gt;We won’t be able to provide any non-Google issues as we’re using their Firebase platform and don’t have plans to move away.&lt;/p&gt;
-
-&lt;h2 id=&quot;additional-features&quot;&gt;Additional Features&lt;/h2&gt;
-
-&lt;p&gt;Cloud mode enables additional features as well including the ability to sync the URL of your document (or annotations)
-to Anki so that the context for a flashcard is available with one click.&lt;/p&gt;
-
-&lt;p&gt;We’re just simply not able to implement features like this without some type of cloud backend.&lt;/p&gt;
-
-&lt;h2 id=&quot;default-mode&quot;&gt;Default Mode&lt;/h2&gt;
-
-&lt;p&gt;In the future we will encourage users to use the cloud mode by default so that all features are enabled including sync.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;In summary, Polar will continue to support local mode into the near future with limited features compared to full cloud
-and web mode.&lt;/p&gt;
-
-&lt;p&gt;We’re also going to encourage users to use cloud mode by default moving forward and will also allow you to pick your 
-own datacenter and by default pick one closer to you.&lt;/p&gt;
-
-&lt;p&gt;With the new cloud support we also intend on supporting advanced features like full-text search, machine learning, and 
-backups.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
