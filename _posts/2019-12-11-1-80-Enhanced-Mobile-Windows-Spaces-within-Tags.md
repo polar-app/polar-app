@@ -27,6 +27,8 @@ When 2.0 arrives, which should land sometime in January, the mobile flashcard re
 
 This is a great opportunity to save some money once 2.0 is out the door.
 
+<b>Update: </b> We're going to be extending the discount until Dec 31, 2019 due to the delayed release of 1.80.
+
 # Mobile 
 
 The mobile app has been significantly reworked and now feels more like a native app.  Navigation works properly and
