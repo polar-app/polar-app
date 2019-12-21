@@ -5,8 +5,8 @@ layout: post
 description: Polar 1.80 - Manual Update Required for Desktop Users
 ---
 
-Polar 1.80 requires users to manually update to the latest version by [manually downloading and installing 
-the latest version](https://getpolarized.io/download.html).  
+Polar 1.80 for MacOS and Windows requires users to manually update to the latest version by [manually downloading and
+installing the latest version](https://getpolarized.io/download.html).
 
 We're very sorry for the inconvenience.  There was a bug in Electron >7.1.2 that broke updates for all Electron
 applications.  I've filed bugs against the Electron project to hopefully fix this before it impacts other projects.
