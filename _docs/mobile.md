@@ -12,7 +12,8 @@ new annotations on mobile due to user-interface complexities [^1]
 
 # Progressive Web Application
 
-Polar mobile can be used (and installed) by just visiting the site and logging into the web application.
+Polar mobile can be used (and installed) by just visiting the site and logging into the web application on your mobile 
+device.
 
 Polar mobile isn't available on the Apple App Store or the Android Play Store but is a "progress web application" (PWA)
 that can be installed just like any local app.  
