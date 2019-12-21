@@ -7,7 +7,6 @@ import {RichTextArea} from '../../../RichTextArea';
 import {FlashcardInputFieldsType, FlashcardInputs, FrontAndBackFields} from './FlashcardInputs';
 import {FlashcardStyles} from './FlashcardStyles';
 import {Flashcard} from '../../../../metadata/Flashcard';
-import {ClozeFields} from './FlashcardInputs';
 
 const log = Logger.create();
 
@@ -87,7 +86,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     private toFields(): FrontAndBackFields {
 
-        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard);
+        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard, this.props.defaultValue);
         const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard);
 
         return {front, back};

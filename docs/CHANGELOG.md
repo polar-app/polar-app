@@ -1,4 +1,8 @@
 
+- Fixed bug with flashcard entry
+- Fixed layout for sidebar and main content.
+- Fixed Electron 7.0 distribution issue.
+
 # 1.80.0
 
 - Fixed bug with tablets now showing the pricing plan

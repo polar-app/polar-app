@@ -6,8 +6,7 @@ import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
-import {ClozeFields, FlashcardInputFieldsType} from './FlashcardInputs';
-import {FlashcardInputs} from './FlashcardInputs';
+import {ClozeFields, FlashcardInputFieldsType, FlashcardInputs} from './FlashcardInputs';
 import {UncontrolledTooltip} from 'reactstrap';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
@@ -104,7 +103,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     private toFields(): ClozeFields {
 
-        const text = FlashcardInputs.fieldToString('text', this.props.existingFlashcard);
+        const text = FlashcardInputs.fieldToString('text', this.props.existingFlashcard, this.props.defaultValue);
 
         return {text};
 

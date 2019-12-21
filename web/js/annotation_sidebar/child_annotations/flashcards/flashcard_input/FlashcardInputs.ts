@@ -14,7 +14,9 @@ export interface FrontAndBackFields {
 
 export class FlashcardInputs {
 
-    public static fieldToString(name: string, existingFlashcard?: Flashcard): string {
+    public static fieldToString(name: string,
+                                existingFlashcard: Flashcard | undefined,
+                                defaultValue?: string): string {
 
         if (existingFlashcard) {
 
@@ -24,7 +26,7 @@ export class FlashcardInputs {
 
         }
 
-        return "";
+        return defaultValue || "";
 
     }
 
