@@ -339,9 +339,8 @@ export class App<P> extends React.Component<{}, IAppState> {
         ];
 
         return (
-            <DockLayout dockPanels={dockPanels}/>
-            //
-            // <div className="p-1">
+
+            <div className="p-1">
 
 
             {/*<UpgradePromotionButton/>*/}
@@ -702,8 +701,7 @@ export class App<P> extends React.Component<{}, IAppState> {
             {/*                   left={<Preview/>}*/}
             {/*                   right={<Main/>}/>}/>*/}
 
-            //
-            // </div>
+            </div>
 
         );
     }
