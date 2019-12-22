@@ -1,8 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {AccountPlan} from '../../../../web/js/accounts/Account';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {MachineIDs} from '../../../../web/js/util/MachineIDs';
+import { accounts } from 'polar-accounts/src/accounts';
 
 export class SupportContent extends React.Component<IProps, IState> {
 
@@ -89,7 +89,7 @@ export class SupportContent extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly plan: AccountPlan;
+    readonly plan: accounts.Plan;
 }
 
 interface IState {

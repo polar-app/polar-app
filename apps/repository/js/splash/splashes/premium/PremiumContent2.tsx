@@ -1,7 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
-import {AccountPlan} from '../../../../../../web/js/accounts/Account';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import Button from 'reactstrap/lib/Button';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
@@ -12,6 +11,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {DesktopContent, MobileContent} from "./PremiumCopy";
 import {Discount, Discounts} from "./Discounts";
 import {DeviceRouter} from "../../../../../../web/js/ui/DeviceRouter";
+import {accounts} from "polar-accounts/src/accounts";
 
 const discounts = Discounts.create();
 
@@ -68,8 +68,8 @@ export const PlanIntervalButton = (props: PlanIntervalProps) => {
 
 
 interface PlanPricingProps {
-    readonly plan: AccountPlan;
-    readonly planInterval: PlanInterval;
+    readonly plan: accounts.Plan;
+    readonly planInterval: accounts.Interval;
 }
 const PlanPricing = (props: PlanPricingProps) => {
 
@@ -286,9 +286,9 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly plan: AccountPlan;
+    readonly plan: accounts.Plan;
     readonly userInfo?: UserInfo;
-    readonly interval?: PlanInterval;
+    readonly interval?: accounts.Interval;
 
 }
 

@@ -4,6 +4,9 @@ import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import { accounts } from 'polar-accounts/src/accounts';
+import {Account} from "../../../accounts/Account";
+import {AccountProvider} from "../../../accounts/AccountProvider";
 
 export interface AuthHandler {
 
@@ -51,7 +54,6 @@ export class AuthHandlers {
         const authHandler = this.get();
         await authHandler.requireAuthentication(signInSuccessUrl);
     }
-
 
 }
 
@@ -106,13 +108,34 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
             return Optional.empty();
         }
 
+        const createSubscription = (): accounts.Subscription => {
+
+            const account = AccountProvider.get();
+
+            if (account) {
+                return {
+                    plan: account.plan,
+                    interval: account.interval || 'month'
+                };
+            } else {
+                return {
+                    plan: 'free',
+                    interval: 'month'
+                };
+            }
+
+        };
+
+        const subscription = createSubscription();
+
         return Optional.of({
             displayName: Optional.of(user.displayName).getOrUndefined(),
             email: Optional.of(user.email).get(),
             emailVerified: user.emailVerified,
             photoURL: Optional.of(user.photoURL).getOrUndefined(),
             uid: user.uid,
-            creationTime: user.metadata.creationTime!
+            creationTime: user.metadata.creationTime!,
+            subscription
         });
 
     }
@@ -178,5 +201,10 @@ export interface UserInfo {
      * The time the account was created on our end.
      */
     readonly creationTime: ISODateTimeString;
+
+    /**
+     * The users subscription level.
+     */
+    readonly subscription: accounts.Subscription;
 
 }

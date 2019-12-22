@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
-import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Link} from "react-router-dom";
+import { accounts } from 'polar-accounts/src/accounts';
 
 /**
  * Listen to the machine datastore for this user and if their account isn't in
@@ -54,9 +54,10 @@ export class UpgradeRequired extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly planRequired?: AccountPlan;
+    readonly planRequired?: accounts.Plan;
 }
 
 interface IState {
 }
+
 

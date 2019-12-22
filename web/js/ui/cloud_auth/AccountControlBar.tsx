@@ -1,16 +1,17 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
+import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Link} from "react-router-dom";
+import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 
 const LogoutButton = (props: IProps) => {
 
     return <Button id="cloud-sync-logout"
                    color="secondary"
                    outline
-                   size="sm"
+                   size="md"
                    onClick={() => props.onLogout()}
                    className="ml-1">
 
@@ -26,15 +27,14 @@ const UserImage = (props: IProps) => {
 
     if (props.userInfo.photoURL) {
 
-        return <div style={{height: '100px', width: '100px'}}>
-
+        return (
             <img className="rounded border m-auto"
                  style={{
-                     maxHeight: '100px',
-                     maxWidth: '100px'
+                     maxHeight: '125px',
+                     maxWidth: '125px'
                  }}
                  src={props.userInfo.photoURL}/>
-        </div>;
+        );
     } else {
         return <div/>;
     }
@@ -67,7 +67,7 @@ const ViewPlansAndPricingButton = () => {
     return (
         <Link to={{pathname: '/plans'}}>
             <Button color="success"
-                    size="md"
+                    size="lg"
                     onClick={handler}>
 
                 <i className="fas fa-certificate"/>
@@ -95,33 +95,28 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
             <div>
 
                 <div>
-                    <div style={{
-                        display: 'flex',
-                        verticalAlign: 'top'
+                    <div className="text-center"
+                        style={{
                     }}>
 
-                        <div className="pl-0 p-0 pr-2">
-
-                            <UserImage {...props}/>
-
-                        </div>
+                        <UserImage {...props}/>
 
                         <div className="p-1">
 
-                            <div style={{fontWeight: 'bold'}}>
+                            <div className="text-lg"
+                                 style={{fontWeight: 'bold'}}>
+
                                 {this.props.userInfo.displayName || 'Anonymous'}
+
                             </div>
 
-                            <div className="text-muted" style={{fontSize: "14px"}}>
+                            <div className="text-muted text-md"
+                                 style={{}}>
                                 {this.props.userInfo.email || ''}
                             </div>
 
                             <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
-
-                                {/*<InviteUsersButton {...props}/>*/}
-
                                 <LogoutButton {...props}/>
-
                             </div>
 
                         </div>
@@ -129,7 +124,11 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
 
                     </div>
 
-                    <div className="mt-2 pt-2 border-top text-center">
+                    <div className="mt-2 pt-2 pb-2 border-top text-center">
+
+                        <div className="mt-2 mb-3">
+                            <AccountOverview plan={this.props.userInfo.subscription.plan}/>
+                        </div>
 
                         <ViewPlansAndPricingButton/>
 

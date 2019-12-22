@@ -1,10 +1,11 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {AccountPlan, AccountPlans} from "../../accounts/Account";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {Button} from "reactstrap";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Link} from "react-router-dom";
+import {AccountPlans} from "../../accounts/Account";
+import { accounts } from 'polar-accounts/src/accounts';
 
 export class PremiumFeature extends React.Component<IProps, IState> {
 
@@ -110,7 +111,7 @@ export class PremiumFeature extends React.Component<IProps, IState> {
 export type UISize = 'xs' | 'sm' | 'md' | 'lg';
 
 interface IProps {
-    readonly required: AccountPlan;
+    readonly required: accounts.Plan;
     readonly feature: string;
     readonly size: UISize;
 }

@@ -1,9 +1,9 @@
-import {AccountPlan} from "../../../../../../web/js/accounts/Account";
 import {PlanInterval} from "./PremiumContent2";
+import {accounts} from "polar-accounts/src/accounts";
 
 export interface Discount {
-    readonly interval: PlanInterval;
-    readonly plan: AccountPlan;
+    readonly interval: accounts.Interval;
+    readonly plan: accounts.Plan;
     readonly before: number;
     readonly after: number;
 }
@@ -42,12 +42,12 @@ export class Discounts {
 
     }
 
-    public get(interval: PlanInterval, plan: AccountPlan): Discount | undefined {
+    public get(interval: PlanInterval, plan: accounts.Plan): Discount | undefined {
         const key = Discounts.key(interval, plan);
         return this.delegate[key] || undefined;
     }
 
-    private static key(interval: PlanInterval, plan: AccountPlan) {
+    private static key(interval: PlanInterval, plan: accounts.Plan) {
         return `${interval}:${plan}`;
     }
 

@@ -7,8 +7,8 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
-import {AccountPlan} from "../../../../../../web/js/accounts/Account";
 import {PlanInterval} from "./PremiumContent2";
+import {accounts} from "polar-accounts/src/accounts";
 
 const log = Logger.create();
 
@@ -107,9 +107,9 @@ export class PremiumButton extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly from: AccountPlan;
-    readonly to: AccountPlan;
-    readonly interval: PlanInterval;
+    readonly from: accounts.Plan;
+    readonly to: accounts.Plan;
+    readonly interval: accounts.Interval;
     readonly userInfo?: UserInfo;
 
 }

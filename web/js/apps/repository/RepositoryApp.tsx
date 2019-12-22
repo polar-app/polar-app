@@ -28,7 +28,6 @@ import EditorsPicksScreen from '../../../../apps/repository/js/editors_picks/Edi
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from 'polar-shared/src/util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
-import {RepositoryTour} from './RepositoryTour';
 import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from 'polar-shared/src/util/Platforms';
@@ -99,9 +98,9 @@ export class RepositoryApp {
 
         const authStatus = await authHandler.status();
 
-        const userInfo = await authHandler.userInfo();
         const account = await Accounts.get();
-        await AccountProvider.init();
+        await AccountProvider.init(account);
+        const userInfo = await authHandler.userInfo();
 
         const platform = Platforms.get();
 

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
-import {AccountPlan} from "../../accounts/Account";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {UpgradeRequired} from "./UpgradeRequired";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Link} from "react-router-dom";
+import {accounts} from "polar-accounts/src/accounts";
 
 const MESSAGE = createRandomizedUpgradeMessage();
 
 interface UpgradeRequiredProps {
-    readonly planRequired?: AccountPlan;
+    readonly planRequired?: accounts.Plan;
 }
 
 const GoPremium = (props: UpgradeRequiredProps) => {
@@ -88,7 +88,7 @@ export class AccountUpgradeBarView extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly plan?: AccountPlan;
+    readonly plan?: accounts.Plan;
     readonly accountUsage?: AccountUsage;
 }
 

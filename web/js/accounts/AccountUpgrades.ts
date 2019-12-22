@@ -2,7 +2,8 @@
  * Handles listening for account changes for the user and telling them
  * of changes to their plan over time.
  */
-import {AccountPlan, AccountPlans} from "./Account";
+import {AccountPlans} from "./Account";
+import {accounts} from "polar-accounts/src/accounts";
 
 export class AccountUpgrades {
 
@@ -13,7 +14,7 @@ export class AccountUpgrades {
      * @param plan current user plan.
      * @param accountUsage The data about the machine that we're needing to upgrade
      */
-    public static upgradeRequired(plan: AccountPlan, accountUsage: AccountUsage): AccountPlan | undefined {
+    public static upgradeRequired(plan: accounts.Plan, accountUsage: AccountUsage): accounts.Plan | undefined {
 
         /**
          * Get the required plan per the amount of data being used.

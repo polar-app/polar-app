@@ -8,7 +8,8 @@ export class AccountProvider {
 
     private static account: Account | undefined;
 
-    public static async init() {
+    public static async init(account: Account | undefined) {
+        this.account = account;
         await Accounts.onSnapshot(account => this.account = account);
     }
 

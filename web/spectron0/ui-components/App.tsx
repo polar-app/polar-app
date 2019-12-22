@@ -15,6 +15,11 @@ import {
     HolidayPromotionButton,
     HolidayPromotionCopy
 } from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
+import {AccountControlBar} from "../../js/ui/cloud_auth/AccountControlBar";
+import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {ReactRouters} from "../../js/ui/ReactRouters";
+import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
 
 const styles = {
     swatch: {
@@ -266,15 +271,84 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         </div>;
 
+        const userInfo: UserInfo = {
+            displayName: "Kevin Burton",
+            email: "burton@example.com",
+            emailVerified: true,
+            photoURL: 'https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg',
+            uid: "12345",
+            creationTime: ISODateTimeStrings.create(),
+            subscription: {
+                plan: 'bronze',
+                interval: 'month'
+            }
+        };
+
+        const defaultComponent = () => {
+            return (
+                <div style={{
+                         maxWidth: 400
+                     }}
+                     className="border p-1 shadow">
+                    <AccountControlBar userInfo={userInfo} onInvite={NULL_FUNCTION} onLogout={NULL_FUNCTION}/>
+                </div>
+            );
+        };
+
+        const Joiner = () => (
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     width: '50px',
+                     borderWidth: '2px'
+                 }}>
+
+                <div className="ml-2 mr-2"
+                     style={{
+                         borderBottom: '2px solid var(--secondary)',
+                         height: '35px'
+                     }}
+                    />
+                <div className="border-secondary border-top mb-auto"/>
+
+            </div>
+        );
+
         return (
 
             <div className="p-1">
 
                 {/*<UpgradePromotionButton/>*/}
 
-                <div style={{width: '500px'}} className="border p-1">
-                    <HolidayPromotionCopy onClick={NULL_FUNCTION}/>
-                </div>
+                {/*<div style={{width: '500px'}} className="border p-1">*/}
+                {/*    <HolidayPromotionCopy onClick={NULL_FUNCTION}/>*/}
+                {/*</div>*/}
+
+                {/*<div className=""*/}
+                {/*     style={{*/}
+                {/*         display: 'flex',*/}
+                {/*         flexDirection: 'column'*/}
+                {/*     }}>*/}
+
+                {/*    <div className="text-center">*/}
+                {/*        <i className="fas fa-certificate" style={{fontSize: '50px', color: 'silver'}}/>*/}
+                {/*    </div>*/}
+
+                {/*    <div className="text-center">*/}
+                {/*        Bronze*/}
+                {/*    </div>*/}
+
+                {/*</div>*/}
+
+                {/*<BrowserRouter>*/}
+
+                {/*    <Switch location={ReactRouters.createLocationWithPathnameHash()}>*/}
+                {/*        <Route path='/' component={defaultComponent}/>*/}
+                {/*    </Switch>*/}
+                {/*</BrowserRouter>*/}
+
+                <AccountOverview plan='silver'/>
+
 
                 {/*<Lightbox>*/}
                 {/*    asdf*/}

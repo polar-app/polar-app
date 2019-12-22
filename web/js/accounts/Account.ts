@@ -1,4 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {accounts} from "polar-accounts/src/accounts";
 
 export interface AccountUsage {
     readonly storageInBytes: number;
@@ -6,7 +7,8 @@ export interface AccountUsage {
 
 export interface AccountInit {
 
-    readonly plan: AccountPlan;
+    readonly plan: accounts.Plan;
+    readonly interval?: accounts.Interval;
 
 }
 
@@ -32,13 +34,9 @@ export interface Account extends AccountInit {
 
 }
 
-export type PlanInterval = 'month' | 'year';
-
-export type AccountPlan = 'free' | 'bronze' | 'silver' | 'gold';
-
 export class AccountPlans {
 
-    public static toInt(plan: AccountPlan) {
+    public static toInt(plan: accounts.Plan) {
 
         switch (plan) {
             case "free":
@@ -56,11 +54,11 @@ export class AccountPlans {
     /**
      * Return true if the required plan level is ok vs the actual plan level.
      */
-    public static hasLevel(required: AccountPlan, actual: AccountPlan) {
+    public static hasLevel(required: accounts.Plan, actual: accounts.Plan) {
         return this.toInt(required) <= this.toInt(actual);
     }
 
-    public static toColor(plan: AccountPlan) {
+    public static toColor(plan: accounts.Plan) {
         switch (plan) {
             case "free":
                 return "";
@@ -74,3 +72,4 @@ export class AccountPlans {
     }
 
 }
+

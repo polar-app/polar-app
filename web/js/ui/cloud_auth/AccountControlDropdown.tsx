@@ -10,12 +10,8 @@ import {DropdownChevron} from '../util/DropdownChevron';
 
 export class AccountControlDropdown extends React.PureComponent<IProps, IState> {
 
-
-
     constructor(props: IProps) {
         super(props);
-
-
     }
 
     public render() {

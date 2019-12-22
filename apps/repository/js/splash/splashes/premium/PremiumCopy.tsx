@@ -1,4 +1,3 @@
-import {AccountPlan} from "../../../../../../web/js/accounts/Account";
 import {UserInfo} from "../../../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {
     BronzePlan, CancelSubscriptionButton,
@@ -13,6 +12,7 @@ import {
 import {PremiumButton} from "./PremiumButton";
 import React from "react";
 import {NullCollapse} from "../../../../../../web/js/ui/null_collapse/NullCollapse";
+import {accounts} from "polar-accounts/src/accounts";
 
 export const MobileContent = (props: IProps) => {
     return <div id="pricing" className="mt-1 mb-1">
@@ -376,7 +376,7 @@ export const DesktopContent =  (props: IProps) => {
 
 
 export interface IProps {
-    readonly plan: AccountPlan;
+    readonly plan: accounts.Plan;
     readonly userInfo?: UserInfo;
     readonly interval: PlanInterval;
     readonly togglePlanInterval: () => void;
