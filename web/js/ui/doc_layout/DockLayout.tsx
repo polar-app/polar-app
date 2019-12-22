@@ -97,6 +97,24 @@ export class DockLayout extends React.Component<IProps, IState> {
 
             const result: JSX.Element[] = [];
 
+            const createBaseStyle = (): React.CSSProperties => {
+
+                const style = {
+                    minHeight: 0
+                };
+
+                if (this.state.resizing) {
+                    return {
+                        ...style,
+                        pointerEvents: 'none',
+                        userSelect: 'none'
+                    };
+                } else {
+                    return style;
+                }
+
+            };
+
             const createFixedDockPanelElement = (docPanel: FixedDockPanel, idx: number): JSX.Element => {
 
                 const panelState = this.state.panels[docPanel.id];
@@ -104,12 +122,11 @@ export class DockLayout extends React.Component<IProps, IState> {
                 const {width} = panelState;
 
                 const style: React.CSSProperties = {
+                    ...createBaseStyle(),
                     width,
                     maxWidth: width,
                     minWidth: width,
-                    minHeight: 0
                 };
-
 
                 return (
                     <div style={style} key={idx}>
@@ -122,8 +139,8 @@ export class DockLayout extends React.Component<IProps, IState> {
             const createGrowDockPanelElement = (docPanel: GrowDockPanel, idx: number): JSX.Element => {
 
                 const style: React.CSSProperties = {
+                    ...createBaseStyle(),
                     flexGrow: docPanel.grow,
-                    minHeight: 0
                 };
 
                 return (
@@ -264,6 +281,9 @@ export class DockLayout extends React.Component<IProps, IState> {
 
 interface IProps {
 
+    /**
+     * The configuration of the panels.
+     */
     readonly dockPanels: ReadonlyArray<DockPanel>;
 
 }
