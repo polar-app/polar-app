@@ -62,7 +62,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
     public render() {
 
-        const createSplitter = (resizePanelID: string) => {
+        const createSplitter = (resizeTarget: ResizeTarget) => {
 
             const createSplitterStyle = () => {
 
@@ -83,7 +83,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
             return (
                 <div draggable={false}
-                     onMouseDown={() => this.onMouseDown(resizePanelID)}
+                     onMouseDown={() => this.onMouseDown(resizeTarget)}
                      style={splitterStyle}>
 
                 </div>
@@ -165,20 +165,25 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 result.push(createDocPanelElement(tuple.curr, tuple.idx));
 
-
-                const computeResizePanelID = () => {
+                const computeResizeTarget = (): ResizeTarget => {
 
                     if (tuple.curr.type === 'fixed') {
-                        return tuple.curr.id;
+                        return {
+                            id: tuple.curr.id,
+                            direction: 'left'
+                        };
                     }
 
-                    return tuple.next!.id;
+                    return {
+                        id: tuple.next!.id,
+                        direction: 'right'
+                    };
 
                 };
 
                 if  (tuple.next !== undefined) {
-                    const resizePanelID = computeResizePanelID();
-                    const splitter = createSplitter(resizePanelID);
+                    const resizeTarget = computeResizeTarget();
+                    const splitter = createSplitter(resizeTarget);
                     result.push({...splitter, key: tuple.idx});
                 }
 
@@ -187,16 +192,6 @@ export class DockLayout extends React.Component<IProps, IState> {
             return result;
 
         };
-
-        // if (this.state.resizing) {
-        //
-        //     for (const style of [sidebarStyle, contentStyle]) {
-        //         style.pointerEvents = 'none';
-        //         style.userSelect = 'none';
-        //     }
-        //
-        // }
-        //
 
         const docPanels = createDockPanels();
 
@@ -221,11 +216,11 @@ export class DockLayout extends React.Component<IProps, IState> {
         this.markResizing(undefined);
     }
 
-    private onMouseDown(resizePanelID: string) {
+    private onMouseDown(resizeTarget: ResizeTarget) {
 
         this.mousePosition = MousePositions.get();
 
-        this.markResizing(resizePanelID);
+        this.markResizing(resizeTarget);
 
         window.addEventListener('mouseup', () => {
             // this code properly handles the mouse leaving the window
@@ -235,9 +230,9 @@ export class DockLayout extends React.Component<IProps, IState> {
 
     }
 
-    private markResizing(resizePanelID: IDStr | undefined) {
-        this.mouseDown = resizePanelID !== undefined;
-        this.setState({...this.state, resizing: resizePanelID});
+    private markResizing(resizeTarget: ResizeTarget | undefined) {
+        this.mouseDown = resizeTarget !== undefined;
+        this.setState({...this.state, resizing: resizeTarget});
     }
 
     private onMouseMove() {
@@ -248,13 +243,14 @@ export class DockLayout extends React.Component<IProps, IState> {
 
         const lastMousePosition = MousePositions.get();
 
-        const mult = 1; // FIXME: this might need fixing.
+        const resizeTarget = this.state.resizing!;
+
+        // TODO: this might not be correct with multiple panels
+        const mult = resizeTarget.direction === 'left' ? 1 : -1;
 
         const delta = mult * (lastMousePosition.clientX - this.mousePosition.clientX);
 
-        const resizePanelID = this.state.resizing!;
-
-        const panelState = this.state.panels[resizePanelID];
+        const panelState = this.state.panels[resizeTarget.id];
         const width = panelState.width + delta;
 
         const newPanelState = {
@@ -266,7 +262,7 @@ export class DockLayout extends React.Component<IProps, IState> {
             ...this.state.panels
         };
 
-        newPanels[resizePanelID] = newPanelState;
+        newPanels[resizeTarget.id] = newPanelState;
 
         this.setState({
             ...this.state,
@@ -301,12 +297,17 @@ interface FixedDocPanelState {
     readonly width: CSSWidth;
 }
 
+interface ResizeTarget {
+    readonly id: IDStr;
+    readonly direction: 'left' | 'right';
+}
+
 interface IState {
 
     /**
      * The id of the panel we are resizing or undefined if not being resized.
      */
-    readonly resizing: IDStr | undefined;
+    readonly resizing: ResizeTarget | undefined;
 
     readonly panels: FixedDocPanelStateMap;
 
