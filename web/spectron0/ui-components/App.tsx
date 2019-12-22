@@ -20,6 +20,8 @@ import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/ui/ReactRouters";
 import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
+import milliseconds from "mocha/lib/ms";
+import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 
 const styles = {
     swatch: {
@@ -314,9 +316,33 @@ export class App<P> extends React.Component<{}, IAppState> {
             </div>
         );
 
+        const dockPanels: ReadonlyArray<DockPanel> = [
+            {
+                id: "left-sidebar",
+                type: 'fixed',
+                component: <div>left</div>,
+                width: 350
+            },
+            {
+                id: "main",
+                type: 'grow',
+                component: <div>main</div>,
+                grow: 1
+            },
+            {
+                id: "right-sidebar",
+                type: 'fixed',
+                component: <div>right</div>,
+                width: 350
+            }
+
+        ];
+
         return (
 
             <div className="p-1">
+
+                <DockLayout dockPanels={dockPanels}/>
 
                 {/*<UpgradePromotionButton/>*/}
 
@@ -347,7 +373,9 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {/*    </Switch>*/}
                 {/*</BrowserRouter>*/}
 
-                <AccountOverview plan='silver'/>
+
+
+                {/*<AccountOverview plan='silver'/>*/}
 
 
                 {/*<Lightbox>*/}
