@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {MousePositions} from '../dock/MousePositions';
 import {Tuples} from "polar-shared/src/util/Tuples";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 
 class Styles {
@@ -33,31 +34,37 @@ export class DockLayout extends React.Component<IProps, IState> {
         this.onMouseMove = this.onMouseMove.bind(this);
         this.markResizing = this.markResizing.bind(this);
 
+        const createFixedDocPanelStateMap = (): FixedDocPanelStateMap => {
+
+            const result: FixedDocPanelStateMap = {};
+
+            for (const docPanel of this.props.dockPanels) {
+
+                if (docPanel.type === 'fixed') {
+                    result[docPanel.id] = {
+                        id: docPanel.id,
+                        width: docPanel.width
+                    };
+                }
+
+            }
+
+            return result;
+
+        };
+
         this.state = {
-            resizing: false,
+            resizing: undefined,
+            panels: createFixedDocPanelStateMap()
         };
 
     }
 
     public render() {
 
-        const leftStyle: React.CSSProperties = {};
-        const rightStyle: React.CSSProperties = {};
-
-        for (const style of [leftStyle, rightStyle]) {
-            style.overflow = 'auto';
-            style.flexGrow = 1;
-            style.minHeight = 0;
-        }
-
-        const createSplitter = () => {
-
+        const createSplitter = (resizePanelID: string) => {
 
             const createSplitterStyle = () => {
-
-                // TODO: might be better to create a map indexed by 'side' and then
-                // just read that directly and have all the props enumerated
-                // clearly and no if statement.
 
                 const result: React.CSSProperties = {
                     width: '4px',
@@ -68,12 +75,6 @@ export class DockLayout extends React.Component<IProps, IState> {
                     minHeight: 0
                 };
 
-                // if (this.props.side === 'left') {
-                //     result.marginLeft = 'auto';
-                // } else {
-                //     result.marginRight = 'auto';
-                // }
-
                 return result;
 
             };
@@ -82,7 +83,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
             return (
                 <div draggable={false}
-                     onMouseDown={() => this.onMouseDown()}
+                     onMouseDown={() => this.onMouseDown(resizePanelID)}
                      style={splitterStyle}>
 
                 </div>
@@ -98,10 +99,15 @@ export class DockLayout extends React.Component<IProps, IState> {
 
             const createFixedDockPanelElement = (docPanel: FixedDockPanel, idx: number): JSX.Element => {
 
+                const panelState = this.state.panels[docPanel.id];
+
+                const {width} = panelState;
+
                 const style: React.CSSProperties = {
-                    width: docPanel.width,
-                    maxWidth: docPanel.width,
-                    minWidth: docPanel.width
+                    width,
+                    maxWidth: width,
+                    minWidth: width,
+                    minHeight: 0
                 };
 
 
@@ -116,7 +122,8 @@ export class DockLayout extends React.Component<IProps, IState> {
             const createGrowDockPanelElement = (docPanel: GrowDockPanel, idx: number): JSX.Element => {
 
                 const style: React.CSSProperties = {
-                    flexGrow: docPanel.grow
+                    flexGrow: docPanel.grow,
+                    minHeight: 0
                 };
 
                 return (
@@ -141,8 +148,20 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 result.push(createDocPanelElement(tuple.curr, tuple.idx));
 
+
+                const computeResizePanelID = () => {
+
+                    if (tuple.curr.type === 'fixed') {
+                        return tuple.curr.id;
+                    }
+
+                    return tuple.next!.id;
+
+                };
+
                 if  (tuple.next !== undefined) {
-                    const splitter = createSplitter();
+                    const resizePanelID = computeResizePanelID();
+                    const splitter = createSplitter(resizePanelID);
                     result.push({...splitter, key: tuple.idx});
                 }
 
@@ -180,18 +199,16 @@ export class DockLayout extends React.Component<IProps, IState> {
 
     private onMouseUp() {
 
-        // console.log("up");
-
         this.mousePosition = MousePositions.get();
 
-        this.markResizing(false);
+        this.markResizing(undefined);
     }
 
-    private onMouseDown() {
+    private onMouseDown(resizePanelID: string) {
 
         this.mousePosition = MousePositions.get();
 
-        this.markResizing(true);
+        this.markResizing(resizePanelID);
 
         window.addEventListener('mouseup', () => {
             // this code properly handles the mouse leaving the window
@@ -201,29 +218,45 @@ export class DockLayout extends React.Component<IProps, IState> {
 
     }
 
-    private markResizing(resizing: boolean) {
-        this.mouseDown = resizing;
-        this.setState({...this.state, resizing});
+    private markResizing(resizePanelID: IDStr | undefined) {
+        this.mouseDown = resizePanelID !== undefined;
+        this.setState({...this.state, resizing: resizePanelID});
     }
 
     private onMouseMove() {
-        // console.log("move");
 
         if (!this.mouseDown) {
             return;
         }
 
-        // const lastMousePosition = MousePositions.get();
-        //
-        // const mult = this.props.side === 'left' ? 1 : -1;
-        //
-        // const delta = mult * (lastMousePosition.clientX - this.mousePosition.clientX);
-        //
-        // const width = this.state.width + delta;
-        //
-        // this.setState({...this.state, width});
-        //
-        // this.mousePosition = lastMousePosition;
+        const lastMousePosition = MousePositions.get();
+
+        const mult = 1; // FIXME: this might need fixing.
+
+        const delta = mult * (lastMousePosition.clientX - this.mousePosition.clientX);
+
+        const resizePanelID = this.state.resizing!;
+
+        const panelState = this.state.panels[resizePanelID];
+        const width = panelState.width + delta;
+
+        const newPanelState = {
+            ...panelState,
+            width
+        };
+
+        const newPanels = {
+            ...this.state.panels
+        };
+
+        newPanels[resizePanelID] = newPanelState;
+
+        this.setState({
+            ...this.state,
+            panels: newPanels
+        });
+
+        this.mousePosition = lastMousePosition;
 
     }
 
@@ -235,19 +268,36 @@ interface IProps {
 
 }
 
+
+/**
+ * Keeps a map from the ID to the width.
+ */
+interface FixedDocPanelStateMap {
+    [id: string]: FixedDocPanelState;
+}
+
+interface FixedDocPanelState {
+    readonly id: string;
+    readonly width: CSSWidth;
+}
+
 interface IState {
 
     /**
-     * True when we're in the middle of resizing the dock.
+     * The id of the panel we are resizing or undefined if not being resized.
      */
-    readonly resizing: boolean;
+    readonly resizing: IDStr | undefined;
+
+    readonly panels: FixedDocPanelStateMap;
 
 }
+
 
 /**
  * A CSS width in CSS units (px, em, etc).
  */
-export type CSSWidth = string;
+// export type CSSWidth = number | string;
+export type CSSWidth = number;
 
 export interface BaseDockPanel {
     readonly id: string;
@@ -256,7 +306,7 @@ export interface BaseDockPanel {
 export interface FixedDockPanel extends BaseDockPanel {
     readonly type: 'fixed';
     readonly component: JSX.Element;
-    readonly width: number | CSSWidth;
+    readonly width: CSSWidth;
 }
 
 export interface GrowDockPanel extends BaseDockPanel {
