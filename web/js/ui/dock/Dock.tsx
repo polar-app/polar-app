@@ -45,7 +45,7 @@ export class Dock extends React.Component<IProps, IState> {
         }
 
         const mode = this.props.initialMode ? this.props.initialMode : 'expanded';
-        const width = this.props.initialWidth || 400;
+        const width = this.props.initialWidth || 300;
         const flyout = defaultValue(this.props.initialFlyout, false);
 
         this.state = {

@@ -342,17 +342,13 @@ export class RepositoryApp {
 
         const rootElement = getRootElement();
 
-        ReactDOM.render(
+        ReactDOM.render([
 
-            <div style={{height: '100%'}}>
+                <Splashes key="splashes" persistenceLayerManager={this.persistenceLayerManager}/>,
 
-            {/*<PrioritizedSplashes persistenceLayerManager={this.persistenceLayerManager}/>*/}
+                <SyncBar key="sync-bar" progress={syncBarProgress}/>,
 
-                <Splashes persistenceLayerManager={this.persistenceLayerManager}/>
-
-                <SyncBar progress={syncBarProgress}/>
-
-                <BrowserRouter>
+                <BrowserRouter key="browser-router">
 
                     <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
@@ -417,11 +413,10 @@ export class RepositoryApp {
 
                     </Switch>
 
-                </BrowserRouter>
+                </BrowserRouter>,
 
-                {/*Used for file uploads.  This has to be on the page and can't be*/}
-                {/*selectively hidden by components.*/}
-                <Input type="file"
+                <Input key="file-upload"
+                       type="file"
                        id="file-upload"
                        name="file-upload"
                        accept=".pdf, .PDF"
@@ -432,7 +427,7 @@ export class RepositoryApp {
                            height: 0
                        }}/>
 
-            </div>,
+            ],
 
             rootElement
 

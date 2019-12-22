@@ -5,14 +5,12 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import AnnotationRepoTable from './AnnotationRepoTable';
-import {AnnotationPreviewView} from './AnnotationPreviewView';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
-import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Devices} from "../../../../web/js/util/Devices";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
-export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
+export class AnnotationListView extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -24,14 +22,22 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
     public render() {
 
-        const onSelected = (repoAnnotation: IDocAnnotation) => this.onRepoAnnotationSelected(repoAnnotation);
+        const onSelected = (repoAnnotation: IDocAnnotation) => {
+
+            this.onRepoAnnotationSelected(repoAnnotation);
+
+            if (this.props.onSelected) {
+                this.props.onSelected(repoAnnotation);
+            }
+
+        };
 
         if (Devices.get() === 'phone') {
-            return <PreviewAndMainViewDock.Phone {...this.props}
+            return <AnnotationListView.Phone {...this.props}
                                                  repoAnnotation={this.state.repoAnnotation}
                                                  onSelected={onSelected}/>;
         } else {
-            return <PreviewAndMainViewDock.Default {...this.props}
+            return <AnnotationListView.Default {...this.props}
                                                    repoAnnotation={this.state.repoAnnotation}
                                                    onSelected={onSelected}/>;
         }
@@ -45,7 +51,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
     }
 
-    public static Main = class extends PreviewAndMainViewDock {
+    public static Main = class extends AnnotationListView {
 
         public render() {
 
@@ -53,20 +59,15 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
 
                 <div style={{
                         display: 'flex' ,
-                        flexDirection: 'column',
-                        height: '100%'
+                        flexDirection: 'column'
                     }}>
 
-                    <div style={{overflowY: 'auto'}}>
-
-                        <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                             updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                             repoDocMetaManager={this.props.repoDocMetaManager}
-                                             repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                             data={this.props.data}
-                                             onSelected={this.props.onSelected || NULL_FUNCTION}/>
-
-                    </div>
+                    <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                         updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                         repoDocMetaManager={this.props.repoDocMetaManager}
+                                         repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                         data={this.props.data}
+                                         onSelected={this.props.onSelected || NULL_FUNCTION}/>
 
                 </div>
 
@@ -74,39 +75,25 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
         }
     };
 
-    public static Default = class extends PreviewAndMainViewDock {
+    public static Default = class extends AnnotationListView {
 
         public render() {
 
             return (
-
-                <Dock componentClassNames={{
-                }}
-                      left={
-                          <PreviewAndMainViewDock.Main {...this.props}/>
-                      }
-                      right={
-                          <div className="mt-2 pl-1 pr-1">
-                              <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                     repoAnnotation={this.props.repoAnnotation}/>
-                          </div>
-                      }
-                      side='left'
-                      initialWidth={450}/>
+                <AnnotationListView.Main {...this.props}/>
             );
         }
 
     };
 
-    public static Phone = class extends PreviewAndMainViewDock {
+    public static Phone = class extends AnnotationListView {
 
         public render() {
 
             return (
-
-              <PreviewAndMainViewDock.Main {...this.props}/>
-
+                <AnnotationListView.Main {...this.props}/>
             );
+
         }
 
     };

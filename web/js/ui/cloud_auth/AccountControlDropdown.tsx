@@ -37,7 +37,7 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
                 </Button>
 
                 <UncontrolledPopover trigger="legacy"
-                                     placement="bottom"
+                                     placement="bottom-end"
                                      target="account-control-button"
                                      delay={0}
                                      fade={false}

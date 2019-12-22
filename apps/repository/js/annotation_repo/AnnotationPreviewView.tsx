@@ -32,7 +32,7 @@ const AnnotationImage = (props: AnnotationImageProps) => {
     return <ResponsiveImg id={props.id} img={props.img} defaultText=" "/>;
 };
 
-export class  RepoAnnotationMetaView extends React.Component<IProps, IState> {
+export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
@@ -56,7 +56,7 @@ export class  RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
             return (
 
-                <div>
+                <div className="pl-2 pr-2 pt-1 pb-1">
 
                     <div style={{display: 'flex'}}>
 
@@ -93,7 +93,7 @@ export class  RepoAnnotationMetaView extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="text-muted text-center">
+                <div className="text-muted text-center text-xl">
                     No annotation selected.
                 </div>
 

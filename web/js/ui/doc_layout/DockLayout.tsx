@@ -43,7 +43,7 @@ export class DockLayout extends React.Component<IProps, IState> {
                 if (docPanel.type === 'fixed') {
                     result[docPanel.id] = {
                         id: docPanel.id,
-                        width: docPanel.width
+                        width: docPanel.width || 400
                     };
                 }
 
@@ -100,7 +100,8 @@ export class DockLayout extends React.Component<IProps, IState> {
             const createBaseStyle = (): React.CSSProperties => {
 
                 const style = {
-                    minHeight: 0
+                    minHeight: 0,
+                    overflow: 'auto',
                 };
 
                 if (this.state.resizing) {
@@ -129,7 +130,7 @@ export class DockLayout extends React.Component<IProps, IState> {
                 };
 
                 return (
-                    <div style={style} key={idx}>
+                    <div className="dock-layout-fixed" style={style} key={idx} id={docPanel.id}>
                         {docPanel.component}
                     </div>
                 );
@@ -140,11 +141,11 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 const style: React.CSSProperties = {
                     ...createBaseStyle(),
-                    flexGrow: docPanel.grow,
+                    flexGrow: docPanel.grow || 1,
                 };
 
                 return (
-                    <div style={style} key={idx}>
+                    <div className="dock-layout-grow" style={style} key={idx} id={docPanel.id}>
                         {docPanel.component}
                     </div>
                 );
@@ -320,20 +321,23 @@ interface IState {
 // export type CSSWidth = number | string;
 export type CSSWidth = number;
 
+export type DocPanelType = 'fixed' | 'grow';
+
 export interface BaseDockPanel {
     readonly id: string;
+    readonly type: DocPanelType;
 }
 
 export interface FixedDockPanel extends BaseDockPanel {
     readonly type: 'fixed';
     readonly component: JSX.Element;
-    readonly width: CSSWidth;
+    readonly width?: CSSWidth;
 }
 
 export interface GrowDockPanel extends BaseDockPanel {
     readonly type: 'grow';
     readonly component: JSX.Element;
-    readonly grow: number;
+    readonly grow?: number;
 }
 
 export type DockPanel = FixedDockPanel | GrowDockPanel;

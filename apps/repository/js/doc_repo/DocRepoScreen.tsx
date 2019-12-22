@@ -44,6 +44,7 @@ import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptor
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
 const log = Logger.create();
 
@@ -392,13 +393,14 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             splitter: 'd-none'
         };
 
-        const rightDocComponentClassNames = this.state.docSidebarVisible ? docActive : docInactive;
-
         return (
             <div id="doc-repository"
                  className=""
                  style={{
-                     height: '100%'
+                     display: 'flex',
+                     minHeight: 0,
+                     minWidth: 0,
+                     flexGrow: 1
                  }}>
 
                 <RepositoryTour/>
@@ -461,62 +463,45 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                     </header>
 
-                    <Dock
-                        componentClassNames={{
-                            left: 'd-none-mobile',
-                            splitter: 'd-none-mobile'
-                        }}
-                        side='left'
-                        initialWidth={300}
-                        left={
-                            <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
-                                           treeState={this.treeState}
-                                           tags={this.props.tags()}/>
+                    <DockLayout dockPanels={[
+                        {
+                            id: "dock-panel-left",
+                            type: 'fixed',
+                            component: <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
+                                                      treeState={this.treeState}
+                                                      tags={this.props.tags()}/>,
+                            width: 300
+                        },
+                        {
+                            id: "doc-panel-center",
+                            type: 'grow',
+                            component: <DocRepoTable columns={this.state.columns}
+                                                     selected={this.state.selected}
+                                                     data={this.state.data}
+                                                     relatedTags={this.props.repoDocMetaManager!.relatedTags}
+                                                     synchronizingDocLoader={this.synchronizingDocLoader}
+                                                     tagsProvider={() => tagsProvider()}
+                                                     writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
+                                                     deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
+                                                     writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
+                                                     writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
+                                                     refresh={() => this.refresh()}
+                                                     onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
+                                                     onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
+                                                     onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
+                                                     onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
+                                                     onMultiDeleted={() => this.onMultiDeleted()}
+                                                     selectRow={(selectedIdx, event1, type) => this.selectRow(selectedIdx, event1, type)}
+                                                     onSelected={selected => this.onSelected(selected)}
+                                                     onReactTable={reactTable => this.reactTable = reactTable}
+                                                     onDragStart={event => this.onDragStart(event)}
+                                                     onDragEnd={() => this.onDragEnd()}
+                                                     filters={this.docRepoFilters.filters}
+                                                     getSelected={() => this.getSelected()}
+                                                     getRow={(viewIndex) => this.getRow(viewIndex)}
+                                                     onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos)}/>
                         }
-                        right={
-                            <Dock
-                                componentClassNames={rightDocComponentClassNames}
-                                side='right'
-                                initialWidth={300}
-                                left={
-
-                                    <DocRepoTable columns={this.state.columns}
-                                                  selected={this.state.selected}
-                                                  data={this.state.data}
-                                                  relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                                  synchronizingDocLoader={this.synchronizingDocLoader}
-                                                  tagsProvider={() => tagsProvider()}
-                                                  writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
-                                                  deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
-                                                  writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
-                                                  writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
-                                                  refresh={() => this.refresh()}
-                                                  onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
-                                                  onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
-                                                  onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
-                                                  onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
-                                                  onMultiDeleted={() => this.onMultiDeleted()}
-                                                  selectRow={(selectedIdx, event1, type) => this.selectRow(selectedIdx, event1, type)}
-                                                  onSelected={selected => this.onSelected(selected)}
-                                                  onReactTable={reactTable => this.reactTable = reactTable}
-                                                  onDragStart={event => this.onDragStart(event)}
-                                                  onDragEnd={() => this.onDragEnd()}
-                                                  filters={this.docRepoFilters.filters}
-                                                  getSelected={() => this.getSelected()}
-                                                  getRow={(viewIndex) => this.getRow(viewIndex)}
-                                                  onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos)}/>
-
-                                }
-                                right={
-                                    <div>
-                                        {/*<DocSidebar meta={primaryDoc ? primaryDoc.docInfo : undefined}*/}
-                                        {/*            persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
-                                    </div>
-                                }
-                            />
-
-                        }/>
-
+                    ]}/>
 
                 </FixedNav>
             </div>

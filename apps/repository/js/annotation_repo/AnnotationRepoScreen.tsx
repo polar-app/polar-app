@@ -8,8 +8,6 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {MessageBanner} from '../MessageBanner';
 import {FixedNav} from '../FixedNav';
-import PreviewAndMainViewDock from './PreviewAndMainViewDock';
-import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {AnnotationRepoFilterEngine, UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
@@ -32,7 +30,7 @@ import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/ui/ReactRouters";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from '../nav/NavIcon';
@@ -40,9 +38,10 @@ import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton"
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
-import {Link} from "react-router-dom";
 import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/IndeterminateLoadingTransition";
-
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import {AnnotationListView} from "./AnnotationListView";
+import {AnnotationPreviewView} from "./AnnotationPreviewView";
 
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
@@ -251,16 +250,31 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                         <Link to={{pathname: '/annotations', hash: '#start-review'}}>
                             <FloatingActionButton style={{
-                                paddingBottom: '60px',
-                                paddingRight: '20px'
-                            }}
+                                                      paddingBottom: '60px',
+                                                      paddingRight: '20px'
+                                                  }}
                                                   icon="fas fa-graduation-cap"
                                                   onClick={NULL_FUNCTION}/>
                         </Link>
 
-                        <PreviewAndMainViewDock data={this.state.data}
-                                                updateFilters={filters => this.filtersHandler.update(filters)}
-                                                {...this.props}/>
+                        <DockLayout dockPanels={[
+                            {
+                                id: 'dock-panel-center',
+                                type: 'fixed',
+                                component: <AnnotationListView data={this.state.data}
+                                                               updateFilters={filters => this.filtersHandler.update(filters)}
+                                                               onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
+                                                               {...this.props}/>,
+                                width: 450
+                            },
+                            {
+                                id: 'dock-panel-right',
+                                type: 'grow',
+                                component: <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                                  repoAnnotation={this.state.repoAnnotation}/>
+
+                            }
+                        ]}/>
 
                     </FixedNav.Body>
 
@@ -330,22 +344,32 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                     {this.createRouter()}
 
-                    <Dock componentClassNames={{
-                        left: 'd-none-mobile',
-                        splitter: 'd-none-mobile'
-                    }}
-                          left={
-                              <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
-                                             treeState={this.treeState}
-                                             tags={this.props.tags()}/>
-                          }
-                          right={
-                              <PreviewAndMainViewDock data={this.state.data}
-                                                      updateFilters={filters => this.filtersHandler.update(filters)}
-                                                      {...this.props}/>
-                          }
-                          side='left'
-                          initialWidth={300}/>
+                    <DockLayout dockPanels={[
+                        {
+                            id: 'dock-panel-left',
+                            type: 'fixed',
+                            component: <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
+                                                      treeState={this.treeState}
+                                                      tags={this.props.tags()}/>,
+                            width: 300
+                        },
+                        {
+                            id: 'dock-panel-center',
+                            type: 'fixed',
+                            component: <AnnotationListView data={this.state.data}
+                                                           updateFilters={filters => this.filtersHandler.update(filters)}
+                                                           onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
+                                                           {...this.props}/>,
+                            width: 450
+                        },
+                        {
+                            id: 'dock-panel-right',
+                            type: 'grow',
+                            component: <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                              repoAnnotation={this.state.repoAnnotation}/>
+
+                        }
+                    ]}/>
 
                     <RepoFooter/>
 

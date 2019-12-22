@@ -15,7 +15,8 @@ export class FixedNav extends React.Component<IProps, any> {
                  style={{
                      display: 'flex',
                      flexDirection: 'column',
-                     height: '100%'
+                     flexGrow: 1,
+                     minWidth: 0
                  }}>
 
                 {this.props.children}
@@ -34,10 +35,10 @@ export class FixedNav extends React.Component<IProps, any> {
                 <div {...(this.props.id ? {id: this.props.id} : {})}
                      {...(this.props.className ? {className: this.props.className} : {})}
                      style={{
+                         display: 'flex',
                          flexGrow: 1,
-                         overflowY: 'auto',
-                         height: '100%',
-                         width: '100%'
+                         minHeight: 0,
+                         minWidth: 0,
                      }}>
 
                     {this.props.children}
