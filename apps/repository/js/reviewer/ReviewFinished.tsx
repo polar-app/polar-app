@@ -48,6 +48,6 @@ export class ReviewFinished extends React.Component<IProps> {
 
 }
 
-export interface IProps {
+interface IProps {
 
 }

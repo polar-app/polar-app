@@ -4,7 +4,17 @@ function isElectron() {
     return window && 'process' in window;
 }
 
-if ('serviceWorker' in navigator && ! isElectron()) {
+function isBrowser() {
+    return ! isElectron();
+}
+
+if ('serviceWorker' in navigator && isBrowser()) {
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        //  used to trace PWA install so that we know we can install directly
+        console.log("SUCCESS: received beforeinstallprompt and PWA is installable!");
+    });
+
     // Delay registration until after the page has loaded, to ensure that our
     // precaching requests don't degrade the first visit experience.
     // See https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration
@@ -54,4 +64,5 @@ if ('serviceWorker' in navigator && ! isElectron()) {
             console.error('Error during service worker registration:', e);
         });
     });
+
 }
