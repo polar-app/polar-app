@@ -176,42 +176,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 <Card/>
 
-                {/*<div className="p-1"*/}
-                {/*     style={{*/}
-                {/*        flexGrow: 1,*/}
-                {/*        display: 'flex',*/}
-                {/*        flexDirection: 'column',*/}
-                {/*        overflowY: 'auto'*/}
-                {/*     }}>*/}
-
-                {/*    <div style={{*/}
-                {/*            flexGrow: 1*/}
-                {/*         }}>*/}
-
-                {/*        <Main/>*/}
-
-                {/*    </div>*/}
-
-                {/*</div>*/}
-
-                {/*<div>*/}
-
-                {/*    <div className="text-sm text-grey700 mb-1 ml-1">*/}
-                {/*        <b>stage: </b> {taskRep.stage}*/}
-                {/*    </div>*/}
-
-                {/*    <div style={{*/}
-                {/*            display: 'flex',*/}
-                {/*        }}>*/}
-
-                {/*        <RatingButtons taskRep={taskRep}*/}
-                {/*                       stage={taskRep.stage}*/}
-                {/*                       onRating={this.onRating}/>*/}
-
-                {/*    </div>*/}
-
-                {/*</div>*/}
-
             </div>
 
         );

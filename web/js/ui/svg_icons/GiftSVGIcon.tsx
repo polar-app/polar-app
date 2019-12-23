@@ -54,6 +54,6 @@ const SVG = `
 `;
 
 
-export const GiftIcon = () => {
+export const GiftSVGIcon = () => {
     return <span dangerouslySetInnerHTML={{__html: SVG}} />;
-}
+};
