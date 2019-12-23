@@ -121,9 +121,6 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
                                 {this.props.userInfo.email || ''}
                             </div>
 
-                            <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
-                                <LogoutButton {...props}/>
-                            </div>
 
                         </div>
 
@@ -137,6 +134,14 @@ export class AccountControlBar extends React.PureComponent<IProps, IState> {
                         </div>
 
                         <ViewPlansAndPricingButton/>
+
+                    </div>
+
+                    <div className="mt-2 pt-2 pb-2 border-top text-right">
+
+                        <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
+                            <LogoutButton {...props}/>
+                        </div>
 
                     </div>
 

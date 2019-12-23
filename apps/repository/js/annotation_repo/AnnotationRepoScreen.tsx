@@ -194,7 +194,43 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
     public static PhoneAndTablet = class extends AnnotationRepoScreen {
 
+
+
         public render() {
+
+            const AnnotationsList = () => <AnnotationListView data={this.state.data}
+                                                              updateFilters={filters => this.filtersHandler.update(filters)}
+                                                              onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
+                                                              {...this.props}/>;
+
+            const AnnotationPreview = () => <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                                   repoAnnotation={this.state.repoAnnotation}/>;
+
+            const Phone = () => (
+                <DockLayout dockPanels={[
+                    {
+                        id: 'dock-panel-center',
+                        type: 'grow',
+                        component: <AnnotationsList/>,
+                    },
+                ]}/>
+            );
+
+            const Tablet = () => (
+                <DockLayout dockPanels={[
+                    {
+                        id: 'dock-panel-center',
+                        type: 'fixed',
+                        component: <AnnotationsList/>,
+                        width: 350
+                    },
+                    {
+                        id: 'dock-panel-right',
+                        type: 'grow',
+                        component: <AnnotationPreview/>
+                    }
+                ]}/>
+            );
 
             return (
 
@@ -257,24 +293,8 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                                   onClick={NULL_FUNCTION}/>
                         </Link>
 
-                        <DockLayout dockPanels={[
-                            {
-                                id: 'dock-panel-center',
-                                type: 'fixed',
-                                component: <AnnotationListView data={this.state.data}
-                                                               updateFilters={filters => this.filtersHandler.update(filters)}
-                                                               onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
-                                                               {...this.props}/>,
-                                width: 350
-                            },
-                            {
-                                id: 'dock-panel-right',
-                                type: 'grow',
-                                component: <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                                  repoAnnotation={this.state.repoAnnotation}/>
 
-                            }
-                        ]}/>
+                        <DeviceRouter phone={<Phone/>} tablet={<Tablet/>}/>
 
                     </FixedNav.Body>
 
