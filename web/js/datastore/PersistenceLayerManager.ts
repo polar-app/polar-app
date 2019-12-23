@@ -91,7 +91,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
             // and their actual implementation (remote, firebase, cloud-aware).
             // Then toggle on the actual implementation and only change it when
             // the impl changes.
-            log.warn("Only 'web' persistence layers supported in browsers");
+            log.warn("Only 'web' persistence layers supported in browsers: " + type);
             return false;
         }
 

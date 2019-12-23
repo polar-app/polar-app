@@ -11,9 +11,15 @@ function isBrowser() {
 if ('serviceWorker' in navigator && isBrowser()) {
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        //  used to trace PWA install so that we know we can install directly
+        // Used to trace PWA install so that we know we can install directly.
+        // Note that this will NOT fire if the app is already installed.
         console.log("SUCCESS: received beforeinstallprompt and PWA is installable!");
+
+        // TODO: keep a copy of the event so that we can reuse it in the future.
+
     });
+
+    console.log("Trying to detect PWA beforeinstallprompt");
 
     // Delay registration until after the page has loaded, to ensure that our
     // precaching requests don't degrade the first visit experience.

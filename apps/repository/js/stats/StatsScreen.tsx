@@ -19,6 +19,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {NavIcon} from "../nav/NavIcon";
 import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
 const log = Logger.create();
 
@@ -40,13 +41,13 @@ const ReviewerStats = (props: ReviewerStats) => {
                 </SectionText>
             </SectionHeader>
 
-            <div className="row mt-2">
+            <div className="mt-2">
                 <div className="col-lg-12">
                     <SpacedRepQueueChart mode='flashcard' type='queue'/>
                 </div>
             </div>
 
-            <div className="row mt-2">
+            <div className="mt-2">
                 <div className="col-lg-12">
                     <SpacedRepQueueChart mode='flashcard' type='completed'/>
                 </div>
@@ -62,13 +63,13 @@ const ReviewerStats = (props: ReviewerStats) => {
                 </SectionText>
             </SectionHeader>
 
-            <div className="row mt-2">
+            <div className="mt-2">
                 <div className="col-lg-12">
                     <SpacedRepQueueChart mode='reading' type='queue'/>
                 </div>
             </div>
 
-            <div className="row mt-2">
+            <div className="mt-2">
                 <div className="col-lg-12">
                     <SpacedRepQueueChart mode='reading' type='completed'/>
                 </div>
@@ -83,7 +84,7 @@ const ReviewerStats = (props: ReviewerStats) => {
 };
 
 const SectionHeader = (props: any) => {
-    return <div className="row mt-2">
+    return <div className="row mt-3">
         <div className="col">
             {props.children}
         </div>
@@ -164,10 +165,15 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                 </header>
 
                 <FixedNav.Body className="p-1">
-                    <div className="container p-0"
-                         style={{overflow: 'auto'}}>
-                        <ReviewerStats isReviewer={this.state.isReviewer}/>
-                    </div>
+
+                    <DockLayout dockPanels={[
+                        {
+                            id: 'dock-panel-center',
+                            type: 'grow',
+                            component: <ReviewerStats isReviewer={this.state.isReviewer}/>
+                        },
+                    ]}/>
+
                 </FixedNav.Body>
 
                 <FixedNav.Footer>
