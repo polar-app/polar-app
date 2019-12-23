@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# TODO:
+#
+# create like 20 users here and randomize them so that we don't hit our per user
+# login limits.
+#
+#   - one challenge is what happens when we have a high degree of parallelism and
+#     we get a conflict
+
 export FIREBASE_USER=getpolarized.test+test@gmail.com
 export FIREBASE_PASS=mk9z79vlquixvqd
 
