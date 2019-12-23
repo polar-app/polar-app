@@ -6,8 +6,9 @@ import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {DropdownChevron} from "../../../../web/js/ui/util/DropdownChevron";
 import {Callback} from "polar-shared/src/util/Functions";
-import {GiftIcon} from "./GiftIcon";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {GiftSVGIcon} from "../../../../web/js/ui/svg_icons/GiftSVGIcon";
+import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
 
 interface ButtonProps {
     readonly onClick: Callback;
@@ -19,12 +20,9 @@ export const HolidayPromotionCopy = (props: ButtonProps) => {
         <div className="text-center text-md">
 
             <div className="mt-3 mb-3">
-                <div style={{
-                         width: '200px'
-                     }}
-                     className="ml-auto mr-auto">
-                    <GiftIcon/>
-                </div>
+                <SVGIcon size={200}>
+                    <GiftSVGIcon/>
+                </SVGIcon>
             </div>
 
             <h2>Get Polar Bronze for 66% Off</h2>

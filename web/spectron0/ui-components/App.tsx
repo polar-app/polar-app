@@ -22,6 +22,7 @@ import {ReactRouters} from "../../js/ui/ReactRouters";
 import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
 import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
+import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 
 const styles = {
     swatch: {
@@ -82,8 +83,12 @@ export class App<P> extends React.Component<{}, IAppState> {
         ];
 
         return (
-            <DockLayout dockPanels={dockPanels}/>
+            // <DockLayout dockPanels={dockPanels}/>
+
+            <ReviewFinished/>
+
         );
+
     }
 
 

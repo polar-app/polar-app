@@ -89,6 +89,10 @@ button.dropdown-item:hover {
     font-size: 18px;
 }
 
+.text-xl input,
+.text-xl textarea,
+.text-xl button,
+.text-xl p,
 .text-xl {
     font-size: 20px;
 }

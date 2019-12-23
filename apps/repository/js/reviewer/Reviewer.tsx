@@ -2,9 +2,7 @@ import * as React from 'react';
 import {Button, Progress} from "reactstrap";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {
-    TaskRep
-} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {FlashcardCard} from "./cards/FlashcardCard";
@@ -12,6 +10,7 @@ import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Link} from "react-router-dom";
+import {ReviewFinished} from "./ReviewFinished";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -34,12 +33,50 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
     public render() {
 
+        const ReviewerModal = (props: any) => {
+
+            const createStyle = () => {
+
+                // again, hard, good, easy
+
+                const style: React.CSSProperties = {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: 'var(--primary-background-color)',
+                };
+
+                if (Platforms.isMobile()) {
+                    style.width = '100%';
+                    style.height = '100%';
+                } else {
+                    style.maxHeight = '1000px';
+                    style.width = '800px';
+                    style.maxWidth = '800px';
+                }
+
+                return style;
+
+            };
+
+            const style = createStyle();
+
+            return <div style={style}
+                        className="ml-auto mr-auto h-100 border p-1 text-md">
+                {props.children}
+            </div>;
+
+        };
+
         const taskRep = this.state.taskRep;
 
         if (! taskRep) {
-            // we're done...
-            console.log("No tasks were given");
-            return <div/>;
+
+            return (
+                <ReviewerModal>
+                    <ReviewFinished/>
+                </ReviewerModal>
+            );
+
         }
 
         const {id, action, created, color} = taskRep;
@@ -55,43 +92,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             return `${this.state.finished + 1} of ${this.state.total}`;
 
         };
-
-        // again, hard, good, easy
-
-        const style: React.CSSProperties = {
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: 'var(--primary-background-color)',
-        };
-
-        if (Platforms.isMobile()) {
-            style.width = '100%';
-            style.height = '100%';
-        } else {
-            style.maxHeight = '1000px';
-            style.width = '800px';
-            style.maxWidth = '800px';
-        }
-
-        // const Main = () => {
-        //
-        //     if (typeof action === 'string') {
-        //         return <AnnotationPreview id={id}
-        //                                   text={action}
-        //                                   created={created}
-        //                                   meta={{color}}/>
-        //     } else {
-        //
-        //         const flashcardTaskAction: FlashcardTaskAction
-        //             = action as any as FlashcardTaskAction;
-        //         const front = flashcardTaskAction.front;
-        //         const back = flashcardTaskAction.back;
-        //         const answers = <div/>;
-        //
-        //         return <FlashcardCard front={front} back={back} answers={answers}/>
-        //     }
-        //
-        // };
 
         const DoReadingCard = () => {
 
@@ -128,8 +128,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
         return (
 
-            <div style={style}
-                 className="ml-auto mr-auto h-100 border p-1 text-md">
+            <ReviewerModal>
 
                 <Row>
                     <Row.Main>
@@ -176,7 +175,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 <Card/>
 
-            </div>
+            </ReviewerModal>
 
         );
 
