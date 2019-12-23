@@ -17,7 +17,7 @@ import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {Row} from "../../../../web/js/ui/layout/Row";
-import {Reviewers} from "../reviewer/Reviewers";
+import {DEFAULT_LIMIT, Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
@@ -42,7 +42,6 @@ import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/Indet
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
-
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -168,7 +167,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         const datastoreCapabilities = persistenceLayer.capabilities();
         const prefs = persistenceLayer.datastore.getPrefs();
 
-        return await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, NULL_FUNCTION, 10);
+        return await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, NULL_FUNCTION, DEFAULT_LIMIT);
     }
 
     private createRouter() {

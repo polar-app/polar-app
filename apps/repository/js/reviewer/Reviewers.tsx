@@ -34,13 +34,15 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const log = Logger.create();
 
+export const DEFAULT_LIMIT = 10;
+
 export class Reviewers {
 
     public static start(datastoreCapabilities: DatastoreCapabilities,
                         prefs: PersistentPrefs,
                         repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                         mode: RepetitionMode,
-                        limit: number = 10) {
+                        limit: number = DEFAULT_LIMIT) {
 
         this.createAndInject(datastoreCapabilities, prefs, repoDocAnnotations, mode, limit)
             .catch(err => console.error("Unable to start review: ", err));
@@ -88,7 +90,7 @@ export class Reviewers {
                                         prefs: PersistentPrefs,
                                         repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                         mode: RepetitionMode,
-                                        limit: number = 10) {
+                                        limit: number = DEFAULT_LIMIT) {
 
         let injected: InjectedComponent | undefined;
 
@@ -111,7 +113,7 @@ export class Reviewers {
                                repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
                                mode: RepetitionMode,
                                doClose: Callback = NULL_FUNCTION,
-                               limit: number = 10): Promise<JSX.Element> {
+                               limit: number = DEFAULT_LIMIT): Promise<JSX.Element> {
 
         Preconditions.assertPresent(mode, 'mode');
 
@@ -127,7 +129,7 @@ export class Reviewers {
 
         await FirestoreCollections.configure();
 
-        await this.notifyPreview(prefs);
+        // await this.notifyPreview(prefs);
 
         const calculateTaskReps = async (): Promise<CalculatedTaskReps<any>> => {
             switch (mode) {
@@ -200,6 +202,7 @@ export class Reviewers {
 
         };
 
+        // FIXME: when done, redirect to /annotations ... but I don't know how to do this without a <Link>
 
         const onFinished = () => {
 

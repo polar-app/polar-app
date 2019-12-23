@@ -59,7 +59,7 @@ export class FlashcardCard extends React.Component<IProps, IState> {
 
                 case 'front':
                     return <Button color="primary"
-                                   size="md"
+                                   size="lg"
                                    onClick={() => this.onShowAnswer()}>
                         Show Answer
                     </Button>;
@@ -81,7 +81,9 @@ export class FlashcardCard extends React.Component<IProps, IState> {
             </CardBody.Main>
 
             <CardBody.Footer taskRep={taskRep}>
-                <Buttons/>
+                <div className="mb-4">
+                    <Buttons/>
+                </div>
             </CardBody.Footer>
 
         </CardBody>;

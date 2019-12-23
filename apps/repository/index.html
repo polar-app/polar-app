@@ -147,9 +147,11 @@
 
   <script>
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log("SUCCESS: received beforeinstallprompt");
-    });
+      //  *** used to trace PWA install
+      window.addEventListener('beforeinstallprompt', (e) => {
+        console.log("SUCCESS: received beforeinstallprompt");
+      });
+
   </script>
 
 </html>
