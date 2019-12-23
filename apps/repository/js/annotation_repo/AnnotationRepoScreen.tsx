@@ -265,7 +265,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
                                                                updateFilters={filters => this.filtersHandler.update(filters)}
                                                                onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
                                                                {...this.props}/>,
-                                width: 450
+                                width: 350
                             },
                             {
                                 id: 'dock-panel-right',
