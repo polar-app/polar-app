@@ -24,6 +24,11 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
 
+        // TODO: this is actually a bug because the first time we do too many queries..
+
+        // TODO: migrate to the new data loader component which also means we will get one copy
+        // and use snapshots too.
+
         ReviewerStatistics.statistics(this.props.mode, this.props.type)
             .then(data => this.setState({data}))
             .catch(err => log.error("Could not fetch queue stats: ", err));
@@ -47,6 +52,10 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             // TODO: limit on the most recent N points so that I don't crowd up the UI BUT the points need to be
             // extrapolated including gaps for time because I could have one datapoint 5 years ago and another today
             // and the interpolated points shown in the graph would be too many
+
+            // TODO:
+            //  - create synthetic 'zero' values for days we don't actually do any work..
+            //
 
             const firstDatapointsReducer = (timestamp: ISODateTimeString,
                                             datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
@@ -100,7 +109,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             };
 
             const createDatapointsReducer = () => {
-                switch(this.props.type) {
+                switch (this.props.type) {
                     case "queue":
                         return minDatapointsReducer;
                     case "completed":

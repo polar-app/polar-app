@@ -6,6 +6,7 @@ import {Nav} from '../../../web/js/ui/util/Nav';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Platforms} from "polar-shared/src/util/Platforms";
+import {Browsers} from "polar-browsers/src/Browsers";
 
 const log = Logger.create();
 
@@ -26,7 +27,8 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
     public render() {
 
-        const hidden = AppRuntime.isElectron() || ! Platforms.isDesktop();
+        const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
+        const hidden = AppRuntime.isElectron() || ! Platforms.isDesktop() || ! isChrome;
 
         return (
 
@@ -41,6 +43,7 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
                     <div style={{display: 'flex'}}>
 
                         <div>
+                            {/*TODO: make this a inline SVG button not a URL*/}
                             <img style={{
                                     height: '22px',
                                     marginRight: '5px'

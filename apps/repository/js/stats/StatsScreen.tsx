@@ -112,6 +112,9 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
         // TODO: we shouldn't use this I think as it's not supported well on modern react...
 
+        // TODO: migrate this to the new DataProvider system as there is a race here
+        // and this code isn't very pretty
+
         ReviewerTasks.isReviewer()
             .then(isReviewer => this.setState({isReviewer}))
             .catch(err => log.error(err));
@@ -161,7 +164,8 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                 </header>
 
                 <FixedNav.Body className="p-1">
-                    <div className="container p-0">
+                    <div className="container p-0"
+                         style={{overflow: 'auto'}}>
                         <ReviewerStats isReviewer={this.state.isReviewer}/>
                     </div>
                 </FixedNav.Body>
@@ -226,7 +230,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                                 </div>
 
                             </div>
-
 
                             <SectionHeader>
                                 <h2>Documents</h2>

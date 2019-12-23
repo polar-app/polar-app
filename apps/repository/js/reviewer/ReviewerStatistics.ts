@@ -16,7 +16,10 @@ export class ReviewerStatistics {
             return [];
         }
 
-        return await SpacedRepStats.list(uid, mode, type);
+        const records = await SpacedRepStats.list(uid, mode, type);
+        // TODO: we should return 1 week or N records, max.
+
+        return records;
 
     }
 

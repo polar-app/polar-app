@@ -28,12 +28,18 @@ const UserImage = (props: IProps) => {
     if (props.userInfo.photoURL) {
 
         return (
-            <img className="rounded border m-auto"
+            <div className="ml-auto mr-auto"
                  style={{
-                     maxHeight: '125px',
-                     maxWidth: '125px'
-                 }}
-                 src={props.userInfo.photoURL}/>
+                     height: '125px',
+                     width: '125px'
+                 }}>
+                <img className="rounded border m-auto"
+                     style={{
+                         maxHeight: '125px',
+                         maxWidth: '125px'
+                     }}
+                     src={props.userInfo.photoURL}/>
+            </div>
         );
     } else {
         return <div/>;
