@@ -20,7 +20,7 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
             <div>
 
-                <Button color="light"
+                <Button color="clear"
                         id="account-control-button"
                         size="md"
                         onClick={() => NULL_FUNCTION}

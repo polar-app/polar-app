@@ -30,6 +30,7 @@ import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Confirm} from "../../../../web/js/ui/dialogs/Confirm";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const log = Logger.create();
 
@@ -145,6 +146,7 @@ export class Reviewers {
         const doWriteQueueStageCounts = async () => {
 
             const spacedRepStats: SpacedRepStat = {
+                created: ISODateTimeStrings.create(),
                 type: 'queue',
                 mode,
                 ...calculatedTaskReps.stageCounts
@@ -186,6 +188,7 @@ export class Reviewers {
         const doWriteCompletedStageCounts = async () => {
 
             const spacedRepStats: SpacedRepStat = {
+                created: ISODateTimeStrings.create(),
                 type: 'completed',
                 mode,
                 ...completedStageCounts

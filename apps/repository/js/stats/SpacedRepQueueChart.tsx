@@ -1,7 +1,7 @@
 import * as React from 'react';
 import StatTitle from './StatTitle';
 import {LineDatum, LineSerieData, ResponsiveLine} from '@nivo/line';
-import {SpacedRepStatRecord, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {SpacedRepStat, SpacedRepStatRecord, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {RepetitionMode, StageCountsCalculator} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
@@ -9,6 +9,7 @@ import {ReviewerStatistics} from "../reviewer/ReviewerStatistics";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
+import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
 
 const log = Logger.create();
 
@@ -57,57 +58,6 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             //  - create synthetic 'zero' values for days we don't actually do any work..
             //
 
-            const firstDatapointsReducer = (timestamp: ISODateTimeString,
-                                            datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
-
-                const first = datapoints[0];
-                return {
-                    ...first,
-                    created: timestamp
-                };
-            };
-
-            const minDatapointsReducer = (timestamp: ISODateTimeString,
-                                          datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
-
-                const min = StageCountsCalculator.createMutable();
-
-                datapoints.forEach(current => {
-                    min.nrNew = Math.min(min.nrNew, current.nrNew);
-                    min.nrLapsed = Math.min(min.nrLapsed, current.nrLapsed);
-                    min.nrLearning = Math.min(min.nrLearning, current.nrLearning);
-                    min.nrReview = Math.min(min.nrReview, current.nrReview);
-                });
-
-                const first = datapoints[0];
-                return {
-                    ...first,
-                    created: timestamp
-                };
-            };
-
-            const sumDatapointsReducer = (timestamp: ISODateTimeString,
-                                          datapoints: ReadonlyArray<SpacedRepStatRecord>): SpacedRepStatRecord => {
-
-                const sum = StageCountsCalculator.createMutable();
-
-                datapoints.forEach(current => {
-                    sum.nrNew += current.nrNew;
-                    sum.nrLapsed += current.nrLapsed;
-                    sum.nrLearning += current.nrLearning;
-                    sum.nrReview += current.nrReview;
-                });
-
-                const first = datapoints[0];
-
-                return {
-                    ...first,
-                    ...sum,
-                    created: timestamp
-                };
-
-            };
-
             const createDatapointsReducer = () => {
                 switch (this.props.type) {
                     case "queue":
@@ -117,7 +67,21 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                 }
             };
 
-            return Statistics.compute(data, createDatapointsReducer());
+            const emptyDatapointFactory = (created: ISODateTimeString): SpacedRepStat => {
+
+                return {
+                    created,
+                    type: this.props.type,
+                    mode: this.props.mode,
+                    nrNew: 0,
+                    nrLapsed: 0,
+                    nrLearning: 0,
+                    nrReview: 0
+                };
+
+            };
+
+            return Statistics.compute(data, createDatapointsReducer(), emptyDatapointFactory);
 
         };
 
@@ -139,7 +103,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             //     }
             // };
 
-            const toDataPoint = (spacedRepStat: SpacedRepStatRecord, id: StatID): LineDatum => {
+            const toDataPoint = (spacedRepStat: SpacedRepStat, id: StatID): LineDatum => {
 
                 const x = ISODateTimeStrings.parse(spacedRepStat.created);
                 // const y = spacedRepStat.nrLearning;
@@ -268,7 +232,7 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly data: ReadonlyArray<SpacedRepStatRecord> | undefined;
+    readonly data: ReadonlyArray<SpacedRepStat> | undefined;
 }
 
 
