@@ -7,7 +7,10 @@ export class Devices {
             return 'desktop';
         }
 
-        if (window.screen.width <= 400) {
+        if (window.screen.width <= 450) {
+
+            // My Galaxy S8 is 412x846
+
             // it's not a desktop, so it must be a phone.
             return 'phone';
         } else if (window.screen.width <= 1024) {
