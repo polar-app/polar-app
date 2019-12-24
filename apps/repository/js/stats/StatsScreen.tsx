@@ -42,13 +42,13 @@ const ReviewerStats = (props: ReviewerStats) => {
             </SectionHeader>
 
             <div className="mt-2">
-                <div className="col-lg-12">
+                <div className="">
                     <SpacedRepQueueChart mode='flashcard' type='queue'/>
                 </div>
             </div>
 
             <div className="mt-2">
-                <div className="col-lg-12">
+                <div className="">
                     <SpacedRepQueueChart mode='flashcard' type='completed'/>
                 </div>
             </div>
@@ -64,13 +64,13 @@ const ReviewerStats = (props: ReviewerStats) => {
             </SectionHeader>
 
             <div className="mt-2">
-                <div className="col-lg-12">
+                <div className="">
                     <SpacedRepQueueChart mode='reading' type='queue'/>
                 </div>
             </div>
 
             <div className="mt-2">
-                <div className="col-lg-12">
+                <div className="">
                     <SpacedRepQueueChart mode='reading' type='completed'/>
                 </div>
             </div>
@@ -84,10 +84,8 @@ const ReviewerStats = (props: ReviewerStats) => {
 };
 
 const SectionHeader = (props: any) => {
-    return <div className="row mt-3">
-        <div className="col">
-            {props.children}
-        </div>
+    return <div className="mt-3">
+        {props.children}
     </div>;
 };
 

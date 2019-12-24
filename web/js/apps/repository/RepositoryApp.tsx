@@ -399,18 +399,15 @@ export class RepositoryApp {
 
                         <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
 
-                        <Route exact
-                               path={[
-                                   '/#annotations',
-                                   '/annotations',
-                                   '/annotations#start-review',
-                                   '/annotations#review-flashcards',
-                                   '/annotations#review-reading'
-                               ]}
-                               component={renderAnnotationRepoScreen} />
+                    </Switch>
 
+                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                        <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
                         <Route exact path='/' component={renderDefaultScreenByDevice}/>
+                    </Switch>
 
+                    <Switch location={ReactRouters.createLocationWithHashOnly()}>
+                        <Route exact path='#sidebar' component={() => <div>this is a mock sidebar</div>}/>
                     </Switch>
 
                 </BrowserRouter>,
