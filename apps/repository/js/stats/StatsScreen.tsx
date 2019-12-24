@@ -170,7 +170,11 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                         {
                             id: 'dock-panel-center',
                             type: 'grow',
-                            component: <ReviewerStats isReviewer={this.state.isReviewer}/>
+                            component: (
+                                <div className="ml-1 mr-1">
+                                    <ReviewerStats isReviewer={this.state.isReviewer}/>
+                                </div>
+                            )
                         },
                     ]}/>
 

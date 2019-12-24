@@ -32,7 +32,7 @@ export class BottomSheet extends React.Component<IProps> {
 
                 </div>
 
-                <div className="rounded-top"
+                <div className=""
                      style={{
                         width: '100%',
                         backgroundColor: 'var(--primary-background-color)',

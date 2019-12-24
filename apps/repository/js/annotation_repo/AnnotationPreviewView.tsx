@@ -11,7 +11,6 @@ import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {AnnotationControlBar} from "../../../../web/js/annotation_sidebar/AnnotationControlBar";
 
 const log = Logger.create();
 

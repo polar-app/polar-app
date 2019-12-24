@@ -4,6 +4,7 @@ import {shell} from 'electron';
 
 export class Nav {
 
+    /// TODO: this should probably be deprecated
     public static createHashURL(hash: string) {
         const url = new URL(window.location.href);
         url.hash = hash;

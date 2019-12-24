@@ -23,6 +23,7 @@ import {AccountOverview} from "../../../apps/repository/js/account_overview/Acco
 import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
+import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 
 const styles = {
     swatch: {
@@ -85,7 +86,12 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
             // <DockLayout dockPanels={dockPanels}/>
 
-            <ReviewFinished/>
+            // <ReviewFinished/>
+
+            <BottomSheet>
+                asdfasfd
+            </BottomSheet>
+
 
         );
 
