@@ -25,6 +25,7 @@ import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 import {useSpring, animated} from "react-spring";
+import {LeftSidebar} from "polar-react-spring/src/LeftSidebar";
 
 const styles = {
     swatch: {
@@ -95,7 +96,46 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         };
 
-        return <MyAnimatedComponent/>;
+        // const LeftSidebar = () => (
+        //     <div style={{
+        //              position: 'absolute',
+        //              left: 0,
+        //              top: 0,
+        //              width: '350px',
+        //              height: '100%',
+        //              backgroundColor: 'orange'
+        //          }}>
+        //
+        //     </div>
+        // )
+
+        // const LeftSidebar = (props: any) => {
+        //
+        //     const style = useSpring({
+        //         position: 'absolute',
+        //         left: 0,
+        //         top: 0,
+        //         width: '350px',
+        //         height: '100%',
+        //         from: {
+        //             transform: 'translateX(-100%)'
+        //         },
+        //         to: {
+        //             transform: 'translateX(0%)'
+        //         }
+        //     });
+        //
+        //     return <animated.div style={style}>
+        //         {props.children}
+        //     </animated.div>;
+        //
+        // };
+
+        return <LeftSidebar style={{
+                    backgroundColor: 'red'
+               }}>
+            This is the left sidebar
+        </LeftSidebar>;
 
         // return (
         //     // <DockLayout dockPanels={dockPanels}/>
