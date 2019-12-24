@@ -7,7 +7,7 @@ export class Devices {
             return 'desktop';
         }
 
-        if (window.screen.width <= 850) {
+        if (window.screen.width <= 400) {
             // it's not a desktop, so it must be a phone.
             return 'phone';
         } else if (window.screen.width <= 1024) {
