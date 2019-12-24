@@ -24,6 +24,7 @@ import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
+import {useSpring, animated} from "react-spring";
 
 const styles = {
     swatch: {
@@ -83,17 +84,30 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         ];
 
-        return (
-            // <DockLayout dockPanels={dockPanels}/>
+        const MyAnimatedComponent = () => {
 
-            // <ReviewFinished/>
+            const props = useSpring({
+                opacity: 1,
+                from: { opacity: 0 },
+            });
 
-            <BottomSheet>
-                asdfasfd
-            </BottomSheet>
+            return <animated.h1 style={props}>hello</animated.h1>;
 
+        };
 
-        );
+        return <MyAnimatedComponent/>;
+
+        // return (
+        //     // <DockLayout dockPanels={dockPanels}/>
+        //
+        //     // <ReviewFinished/>
+        //     //
+        //     // <BottomSheet>
+        //     //     asdfasfd
+        //     // </BottomSheet>
+        //
+        //
+        // );
 
     }
 
