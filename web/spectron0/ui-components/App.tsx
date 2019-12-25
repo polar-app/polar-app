@@ -25,7 +25,7 @@ import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 import {useSpring, animated} from "react-spring";
-import {LeftSidebar} from "polar-react-spring/src/LeftSidebar";
+import {LeftSidebar} from "../../js/ui/spring/LeftSidebar";
 
 const styles = {
     swatch: {
