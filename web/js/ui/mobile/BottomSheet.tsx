@@ -11,6 +11,11 @@ export class BottomSheet extends React.Component<IProps> {
 
         const zIndex = 2000000;
 
+        const onCancel = () => {
+            console.log("cancel");
+            window.history.back();
+        };
+
         // TODO: make this a transition so it floats up from the bottom.
         return (
 
@@ -25,7 +30,7 @@ export class BottomSheet extends React.Component<IProps> {
                              height: '100%',
                              backgroundColor: 'rgba(0, 0, 0, 0.7)',
                          }}
-                         onClick={() => window.history.back()}>
+                         onClick={() => onCancel()}>
 
                  </FadeIn>
                 <SlideFromBottom className=""

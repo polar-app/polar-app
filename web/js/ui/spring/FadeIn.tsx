@@ -1,16 +1,22 @@
 import {animated, useSpring} from "react-spring";
 import * as React from "react";
 
-export const FadeIn = (props: any) => {
+export const FadeIn = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const spring = useSpring({
-        opacity: 1.0,
         from: {
             opacity: 0.0
         },
         to: {
             opacity: 1.0
+        },
+        enter: {
+            opacity: 1.0
+        },
+        leave: {
+            opacity: 0.0
         }
+
     });
 
     const style: React.CSSProperties = {
@@ -18,14 +24,8 @@ export const FadeIn = (props: any) => {
         ...spring
     };
 
-    return <animated.div style={style}>
+    return <animated.div {...props} style={style}>
         {props.children}
     </animated.div>;
 
 };
-
-interface IProps {
-    readonly style?: React.CSSProperties;
-    readonly children: React.ReactElement;
-}
-

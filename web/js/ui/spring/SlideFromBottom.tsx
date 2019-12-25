@@ -18,12 +18,8 @@ export const SlideFromBottom = (props: React.HTMLAttributes<HTMLDivElement>) => 
         ...spring
     };
 
-    return <animated.div style={style}>
+    return <animated.div {...props} style={style}>
         {props.children}
     </animated.div>;
 
 };
-
-interface IProps {
-    readonly render: (style: React.CSSProperties) => React.ReactElement;
-}
