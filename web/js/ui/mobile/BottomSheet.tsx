@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {SlideFromBottom} from "../spring/SlideFromBottom";
+import { FadeIn } from '../spring/FadeIn';
 
 /**
  * A sheet anchored to the bottom of the page.
@@ -12,37 +14,69 @@ export class BottomSheet extends React.Component<IProps> {
         // TODO: make this a transition so it floats up from the bottom.
         return (
 
-            <div style={{
-                     position: 'absolute',
-                     top: 0,
-                     left: 0,
-                     width: '100%',
-                     height: '100%',
-                     zIndex,
-                     display: 'flex',
-                     flexDirection: 'column'
-                 }}>
+            <div style={{overflow: 'hidden'}}>
+                 <FadeIn className="bottom-sheet-blackout"
+                         style={{
+                             position: 'absolute',
+                             top: 0,
+                             left: 0,
+                             zIndex: zIndex - 1,
+                             width: '100%',
+                             height: '100%',
+                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                         }}
+                         onClick={() => window.history.back()}>
 
-                <div style={{
-                         flexGrow: 1,
-                         backgroundColor: '#000000',
-                         opacity: 0.7,
-                     }}
-                     onClick={() => window.history.back()}>
-
-                </div>
-
-                <div className=""
-                     style={{
-                        width: '100%',
-                        backgroundColor: 'var(--primary-background-color)',
-                     }}>
+                 </FadeIn>
+                <SlideFromBottom className=""
+                                 style={{
+                                     position: 'absolute',
+                                     bottom: 0,
+                                     left: 0,
+                                     zIndex,
+                                     width: '100%',
+                                     backgroundColor: 'var(--primary-background-color)',
+                                 }}>
 
                     {this.props.children}
 
-                </div>
+                </SlideFromBottom>
 
             </div>
+
+            //
+            // <div style={{
+            //          position: 'absolute',
+            //          top: 0,
+            //          left: 0,
+            //          width: '100%',
+            //          height: '100%',
+            //          zIndex,
+            //          display: 'flex',
+            //          flexDirection: 'column',
+            //          overflow: 'none'
+            //      }}>
+            //
+            //     <FadeIn className="bottom-sheet-blackout"
+            //             style={{
+            //                 flexGrow: 1,
+            //                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            //             }}
+            //             onClick={() => window.history.back()}>
+            //
+            //     </FadeIn>
+            //
+            //     <SlideFromBottom className=""
+            //                      style={{
+            //                          width: '100%',
+            //                          backgroundColor: 'var(--primary-background-color)',
+            //                      }}>
+            //
+            //         {this.props.children}
+            //
+            //     </SlideFromBottom>
+            //
+            // </div>
 
         );
 

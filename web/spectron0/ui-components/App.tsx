@@ -25,7 +25,9 @@ import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 import {useSpring, animated} from "react-spring";
-import {LeftSidebar} from "../../js/ui/spring/LeftSidebar";
+import {LeftSidebar, LeftSidebars} from "../../js/ui/spring/LeftSidebar";
+import {FadeIn} from "../../js/ui/spring/FadeIn";
+import {SlideFromBottom} from "../../js/ui/spring/SlideFromBottom";
 
 const styles = {
     swatch: {
@@ -131,11 +133,37 @@ export class App<P> extends React.Component<{}, IAppState> {
         //
         // };
 
-        return <LeftSidebar style={{
-                    backgroundColor: 'red'
-               }}>
-            This is the left sidebar
-        </LeftSidebar>;
+        // const [sidebar, toggleSidebar] = LeftSidebars.create({
+        //     style: {
+        //         backgroundColor: 'red',
+        //     },
+        //     children: <div>this is the sidebar</div>
+        //
+        // });
+
+        // return (
+        //
+        //     <div>
+        //         <SlideFromBottom>
+        //             this is the fade in
+        //         </SlideFromBottom>
+        //     </div>
+        //
+        // );
+
+        return (
+            <BottomSheet>
+                01. this is the bottom sheet<br/>
+                02. this is the bottom sheet<br/>
+                03. this is the bottom sheet<br/>
+                04. this is the bottom sheet<br/>
+                05. this is the bottom sheet<br/>
+                06. this is the bottom sheet<br/>
+                07. this is the bottom sheet<br/>
+                08. this is the bottom sheet<br/>
+                09. this is the bottom sheet<br/>
+            </BottomSheet>
+        );
 
         // return (
         //     // <DockLayout dockPanels={dockPanels}/>
