@@ -15,6 +15,7 @@ export const VersionInfo = () => {
             <div><b>Platform: </b> {platform}</div>
             <div><b>Screen width: </b> {window.screen.width}</div>
             <div><b>Screen height: </b> {window.screen.height}</div>
+            <div><b>Device pixel ratio: </b> {window.devicePixelRatio}</div>
         </div>
     );
 };
