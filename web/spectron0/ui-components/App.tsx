@@ -24,10 +24,15 @@ import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
-import {useSpring, animated} from "react-spring";
+import {useSpring, animated, useTransition} from "react-spring";
 import {LeftSidebar, LeftSidebars} from "../../js/ui/spring/LeftSidebar";
 import {FadeIn} from "../../js/ui/spring/FadeIn";
 import {SlideFromBottom} from "../../js/ui/spring/SlideFromBottom";
+import {TestSpring} from "../../js/ui/spring/TestSpring";
+import {useState} from "react";
+import {Button} from "reactstrap";
+
+import {motion, AnimatePresence} from 'framer-motion';
 
 const styles = {
     swatch: {
@@ -151,19 +156,140 @@ export class App<P> extends React.Component<{}, IAppState> {
         //
         // );
 
-        return (
-            <BottomSheet>
-                01. this is the bottom sheet<br/>
-                02. this is the bottom sheet<br/>
-                03. this is the bottom sheet<br/>
-                04. this is the bottom sheet<br/>
-                05. this is the bottom sheet<br/>
-                06. this is the bottom sheet<br/>
-                07. this is the bottom sheet<br/>
-                08. this is the bottom sheet<br/>
-                09. this is the bottom sheet<br/>
-            </BottomSheet>
-        );
+        // return (
+        //     <BottomSheet>
+        //         01. this is the bottom sheet<br/>
+        //         02. this is the bottom sheet<br/>
+        //         03. this is the bottom sheet<br/>
+        //         04. this is the bottom sheet<br/>
+        //         05. this is the bottom sheet<br/>
+        //         06. this is the bottom sheet<br/>
+        //         07. this is the bottom sheet<br/>
+        //         08. this is the bottom sheet<br/>
+        //         09. this is the bottom sheet<br/>
+        //     </BottomSheet>
+        // );
+
+
+        // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/27805
+        const Foo = (): any => {
+            const [show, set] = useState(true);
+            const transitions = useTransition(show, null, {
+                from: {position: 'absolute', opacity: 0},
+                enter: {opacity: 1},
+                leave: {opacity: 0},
+            });
+
+            console.log("FIXME HERE");
+
+            const result = transitions.map(({item, key, props}) => {
+                if (item) {
+                    return <animated.div key={key} style={props}>this is a single component that should vanish</animated.div>;
+                } else {
+                    return <animated.div key={key} style={props}></animated.div>;
+                }
+            });
+
+            return result;
+
+        };
+        //
+        // const FooComponent = () => {
+        //
+        //     const items = [
+        //         <div>hello world</div>
+        //     ];
+        //
+        //     return <Transition
+        //         items={items}
+        //         from={{ opacity: 0 }}
+        //         enter={{ opacity: 1 }}
+        //         leave={{ opacity: 0 }}>
+        //         {show => show && (props => <div style={props}>this is the thing️</div>)}
+        //     </Transition>;
+        //
+        // };
+        //
+        // const FooToggler = () => {
+        //
+        //     const [show, toggle] = useState(true);
+        //
+        //     const ToggleButton = () => <Button onClick={() => toggle(! show)}>toggle</Button>;
+        //
+        //     if (show) {
+        //         return <div>
+        //             <ToggleButton/>
+        //             <FooComponent/>
+        //         </div>;
+        //     } else {
+        //         return <div>
+        //             <ToggleButton/>
+        //         </div>;
+        //     }
+        //
+        // };
+
+        // const Cat = () => {
+        //     const [show, set] = useState(true);
+        //     const transitions = useTransition(show, null, {
+        //         from: {position: 'absolute', opacity: 1},
+        //         enter: {opacity: 1},
+        //         leave: {opacity: 0},
+        //     });
+        //
+        //     console.log("FIXME HERE");
+        //
+        //     return <animated.div key='asdf' style={props}>✌️</animated.div>;
+        //
+        // };
+
+        // const Bar = () => {
+        //     const [state, toggle] = useState(true)
+        //     const transitions = useTransition(state, null, {  })
+        //
+        //     return transitions.map(({ item, key, props }) => item && <animated.div key={key} style={props}/>;
+        // };
+
+        // return <FooToggler/>;
+
+        const FramerToggler = () => {
+
+            const [visible, toggle] = useState(true);
+
+            const ToggleButton = () => <Button onClick={() => toggle(! visible)}>toggle</Button>;
+
+            return (
+                <AnimatePresence>
+                    <ToggleButton key={1}/>
+                    {visible && (
+                        <motion.div
+                            key={2}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}>
+
+                            hello world
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            );
+        };
+
+        return <FramerToggler/>;
+
+        // const isVisible = true;
+        //
+        // return <AnimatePresence>
+        //         {isVisible && (
+        //             <motion.div
+        //                 initial={{ opacity: 0 }}
+        //                 animate={{ opacity: 1 }}
+        //                 exit={{ opacity: 0 }}>
+        //
+        //                 hello world
+        //             </motion.div>
+        //         )}
+        //     </AnimatePresence>;
 
         // return (
         //     // <DockLayout dockPanels={dockPanels}/>

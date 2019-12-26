@@ -1,9 +1,9 @@
 import {animated, useSpring} from "react-spring";
 import * as React from "react";
 
-export const SlideFromLeft = (props: any) => {
+export const SlideFromLeft = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
-    const style = useSpring({
+    const spring = useSpring({
         opacity: 1,
         from: {
             transform: 'translateX(-100%)'
@@ -13,12 +13,13 @@ export const SlideFromLeft = (props: any) => {
         }
     });
 
-    return <animated.div style={style}>
+    const style: React.CSSProperties = {
+        ...props.style || {},
+        ...spring
+    };
+
+    return <animated.div {...props} style={style}>
         {props.children}
     </animated.div>;
 
 };
-
-interface IProps {
-    readonly render: (style: React.CSSProperties) => React.ReactElement;
-}
