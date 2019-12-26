@@ -6,7 +6,6 @@ import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {MessageBanner} from '../MessageBanner';
 import {FixedNav} from '../FixedNav';
 import {AnnotationRepoFilterEngine, UpdatedCallback} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
@@ -42,6 +41,274 @@ import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/Indet
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
+import {AnimatedRoute} from "../../../../web/js/ui/motion/AnimatedRoute";
+import {FadeIn} from "../../../../web/js/ui/motion/FadeIn";
+
+interface AnnotationsListProps extends IProps, IState {
+    readonly filtersHandler: AnnotationRepoFiltersHandler;
+    readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
+}
+
+const AnnotationsList = (props: AnnotationsListProps) => (
+    <AnnotationListView updateFilters={filters => props.filtersHandler.update(filters)}
+                        onSelected={repoAnnotation => props.onSelected(repoAnnotation)}
+                        {...props} />
+);
+
+interface AnnotationsPreviewProps {
+    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly repoAnnotation?: IDocAnnotation;
+}
+
+const AnnotationPreview = (props: AnnotationsPreviewProps) => (
+    <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                           repoAnnotation={props.repoAnnotation}/>
+);
+
+interface RouterProps {
+    readonly onCreateReviewer: (mode: RepetitionMode) => any;
+}
+
+const Router = (props: RouterProps) => (
+    <BrowserRouter>
+
+        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+
+            <AnimatedRoute path='/annotations#start-review'
+                           render={() => (
+                               <FadeIn>
+                                   <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
+                               </FadeIn>)}/>
+
+            <Route path='/annotations#review-flashcards'
+                   component={() => <IndeterminateLoadingTransition provider={() => props.onCreateReviewer('flashcard')}/>}/>
+
+            <Route path='/annotations#review-reading'
+                   component={() => <IndeterminateLoadingTransition provider={() => props.onCreateReviewer('reading')}/>}/>
+
+        </Switch>
+
+    </BrowserRouter>
+);
+
+namespace main {
+
+    interface MainProps extends IProps, IState {
+        readonly filtersHandler: AnnotationRepoFiltersHandler;
+        readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
+        readonly persistenceLayerMutator: PersistenceLayerMutator;
+        readonly treeState: TreeState<TagDescriptor>;
+
+    }
+
+    export const Phone = (props: MainProps) => (
+        <DockLayout dockPanels={[
+            {
+                id: 'dock-panel-center',
+                type: 'grow',
+                component: <AnnotationsList {...props}/>,
+            },
+        ]}/>
+    );
+
+    export const Tablet = (props: MainProps) => (
+        <DockLayout dockPanels={[
+            {
+                id: 'dock-panel-center',
+                type: 'fixed',
+                component: <AnnotationsList {...props}/>,
+                width: 350
+            },
+            {
+                id: 'dock-panel-right',
+                type: 'grow',
+                component: <AnnotationPreview {...props}/>
+            }
+        ]}/>
+    );
+
+    export const Desktop = (props: MainProps) => (
+        <DockLayout dockPanels={[
+            {
+                id: 'dock-panel-left',
+                type: 'fixed',
+                component: <FolderSidebar persistenceLayerMutator={props.persistenceLayerMutator}
+                                          treeState={props.treeState}
+                                          tags={props.tags()}/>,
+                width: 300
+            },
+            {
+                id: 'dock-panel-center',
+                type: 'fixed',
+                component: <AnnotationListView data={props.data}
+                                               updateFilters={filters => props.filtersHandler.update(filters)}
+                                               onSelected={repoAnnotation => props.onSelected(repoAnnotation)}
+                                               {...props}/>,
+                width: 450
+            },
+            {
+                id: 'dock-panel-right',
+                type: 'grow',
+                component: <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                                                  repoAnnotation={props.repoAnnotation}/>
+
+            }
+        ]}/>
+    );
+
+}
+
+namespace screen {
+
+    interface PhoneAndTabletProps extends ScreenProps {
+
+    }
+
+    export const PhoneAndTablet = (props: PhoneAndTabletProps) => (
+
+        <FixedNav id="doc-repository"
+                  className="annotations-view">
+
+            <header>
+
+                <Row id="header-filter" className="border-bottom p-1 mt-1">
+
+                    <Row.Main>
+
+                        <div style={{display: 'flex'}}>
+
+                            <div className="mr-1">
+                                <NavIcon/>
+                            </div>
+
+                            <div className="mr-1 mt-auto mb-auto">
+                                <AnnotationTypeSelector selected={props.filtersHandler.filters.annotationTypes || []}
+                                                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
+                            </div>
+
+                            <div className="mr-1 mt-auto mb-auto">
+                                <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
+                                                            onSelected={selected => props.filtersHandler.update({colors: selected})}/>
+                            </div>
+
+                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
+                            </div>
+
+                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                <AnnotationRepoTableDropdown persistenceLayerProvider={() => props.persistenceLayerManager.get()}
+                                                             annotations={props.data}/>
+                            </div>
+
+                        </div>
+
+                    </Row.Main>
+
+                    <Row.Right>
+                        <CloudAuthButton persistenceLayerController={props.persistenceLayerManager} />
+                    </Row.Right>
+
+                </Row>
+
+            </header>
+
+            <FixedNav.Body>
+
+                <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}/>
+
+                <Link to={{pathname: '/annotations', hash: '#start-review'}}>
+                    <FloatingActionButton style={{
+                        paddingBottom: '60px',
+                        paddingRight: '20px'
+                    }}
+                                          icon="fas fa-graduation-cap"/>
+                </Link>
+
+                <DeviceRouter phone={<main.Phone {...props}/>}
+                              tablet={<main.Tablet {...props}/>}>
+
+                </DeviceRouter>
+
+            </FixedNav.Body>
+
+            <FixedNav.Footer>
+                <RepoFooter/>
+            </FixedNav.Footer>
+
+        </FixedNav>
+
+    );
+
+    export interface ScreenProps extends IProps, IState {
+        readonly filtersHandler: AnnotationRepoFiltersHandler;
+        readonly persistenceLayerMutator: PersistenceLayerMutator;
+        readonly treeState: TreeState<TagDescriptor>;
+        readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
+        readonly onStartReview: (mode: RepetitionMode) => void;
+        readonly onCreateReviewer: (mode: RepetitionMode) => any;
+
+    }
+
+    export const Desktop = (props: ScreenProps) => (
+
+        <FixedNav id="doc-repository"
+                  className="annotations-view">
+
+            <header>
+
+                <RepoHeader persistenceLayerProvider={props.persistenceLayerProvider}
+                            persistenceLayerController={props.persistenceLayerManager}/>
+
+                <Row id="header-filter"
+                     className="border-bottom p-1">
+                    <Row.Main>
+                        {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
+                        <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
+                                             onReading={() => props.onStartReview('reading')}/>
+                    </Row.Main>
+
+                    <Row.Right>
+
+                        <div style={{display: 'flex'}}>
+
+                            <div className="mr-1">
+                                <AnnotationTypeSelector selected={props.filtersHandler.filters.annotationTypes || []}
+                                                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
+                            </div>
+
+                            <div className="mr-1">
+                                <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
+                                                            onSelected={selected => props.filtersHandler.update({colors: selected})}/>
+                            </div>
+
+                            <div className="ml-1 d-none-mobile">
+                                <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
+                            </div>
+
+                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                                <AnnotationRepoTableDropdown persistenceLayerProvider={() => props.persistenceLayerManager.get()}
+                                                             annotations={props.data}/>
+                            </div>
+
+                        </div>
+
+                    </Row.Right>
+
+                </Row>
+
+            </header>
+
+            <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}/>
+
+            <main.Desktop {...props}/>
+
+            <RepoFooter/>
+
+        </FixedNav>
+
+    );
+
+}
 
 export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -58,6 +325,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
      * The tags that are selected by the user.
      */
     private selectedFolders: ReadonlyArray<Tag> = [];
+
     private persistenceLayerMutator: PersistenceLayerMutator;
 
     constructor(props: IProps, context: any) {
@@ -67,7 +335,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
         this.createReviewer = this.createReviewer.bind(this);
-
         this.createRouter = this.createRouter.bind(this);
 
         this.state = {
@@ -130,12 +397,21 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
     public render() {
 
-        const desktop = <AnnotationRepoScreen.Desktop {...this.props}/>;
-        const phoneAndTablet = <AnnotationRepoScreen.PhoneAndTablet {...this.props}/>;
+        const props: screen.ScreenProps = {
+            ...this.props,
+            ...this.state,
+            persistenceLayerMutator: this.persistenceLayerMutator,
+            treeState: this.treeState,
+            filtersHandler: this.filtersHandler,
+            onSelected: (repoAnnotation) => this.setState({...this.state, repoAnnotation}),
+            onStartReview: (mode) => this.startReview(mode),
+            onCreateReviewer: (mode) => this.createReviewer(mode)
 
-        return <DeviceRouter desktop={desktop}
-                             phone={phoneAndTablet}
-                             tablet={phoneAndTablet}/>;
+        };
+
+        return <DeviceRouter desktop={<screen.Desktop {...props}/>}
+                             phone={<screen.PhoneAndTablet {...props}/>}
+                             tablet={<screen.PhoneAndTablet {...props}/>}/>;
 
     }
 
@@ -176,8 +452,11 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
                 <Switch location={ReactRouters.createLocationWithPathnameHash()}>
 
-                    <Route path='/annotations#start-review'
-                           component={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+                    <AnimatedRoute path='/annotations#start-review'
+                                   render={() => (
+                                       <FadeIn>
+                                           <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
+                                       </FadeIn>)}/>
 
                     <Route path='/annotations#review-flashcards'
                            component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('flashcard')}/>}/>
@@ -191,215 +470,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         );
     }
 
-    public static PhoneAndTablet = class extends AnnotationRepoScreen {
-
-
-
-        public render() {
-
-            const AnnotationsList = () => <AnnotationListView data={this.state.data}
-                                                              updateFilters={filters => this.filtersHandler.update(filters)}
-                                                              onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
-                                                              {...this.props}/>;
-
-            const AnnotationPreview = () => <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                                   repoAnnotation={this.state.repoAnnotation}/>;
-
-            const Phone = () => (
-                <DockLayout dockPanels={[
-                    {
-                        id: 'dock-panel-center',
-                        type: 'grow',
-                        component: <AnnotationsList/>,
-                    },
-                ]}/>
-            );
-
-            const Tablet = () => (
-                <DockLayout dockPanels={[
-                    {
-                        id: 'dock-panel-center',
-                        type: 'fixed',
-                        component: <AnnotationsList/>,
-                        width: 350
-                    },
-                    {
-                        id: 'dock-panel-right',
-                        type: 'grow',
-                        component: <AnnotationPreview/>
-                    }
-                ]}/>
-            );
-
-            return (
-
-                <FixedNav id="doc-repository"
-                          className="annotations-view">
-
-                    <header>
-
-                        <Row id="header-filter" className="border-bottom p-1 mt-1">
-
-                            <Row.Main>
-
-                                <div style={{display: 'flex'}}>
-
-                                    <div className="mr-1">
-                                        <NavIcon/>
-                                    </div>
-
-                                    <div className="mr-1 mt-auto mb-auto">
-                                        <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
-                                                                onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
-                                    </div>
-
-                                    <div className="mr-1 mt-auto mb-auto">
-                                        <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
-                                                                    onSelected={selected => this.filtersHandler.update({colors: selected})}/>
-                                    </div>
-
-                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                        <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
-                                    </div>
-
-                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                        <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                                                     annotations={this.state.data}/>
-                                    </div>
-
-                                </div>
-
-                            </Row.Main>
-
-                            <Row.Right>
-                                <CloudAuthButton persistenceLayerController={this.props.persistenceLayerManager} />
-                            </Row.Right>
-
-                        </Row>
-
-                    </header>
-
-                    <FixedNav.Body>
-
-                        {this.createRouter()}
-
-                        <Link to={{pathname: '/annotations', hash: '#start-review'}}>
-                            <FloatingActionButton style={{
-                                                      paddingBottom: '60px',
-                                                      paddingRight: '20px'
-                                                  }}
-                                                  icon="fas fa-graduation-cap"
-                                                  onClick={NULL_FUNCTION}/>
-                        </Link>
-
-
-                        <DeviceRouter phone={<Phone/>} tablet={<Tablet/>}/>
-
-                    </FixedNav.Body>
-
-                    <FixedNav.Footer>
-                        <RepoFooter/>
-                    </FixedNav.Footer>
-
-                </FixedNav>
-
-            );
-        }
-    };
-
-    public static Desktop = class extends AnnotationRepoScreen {
-
-        public render() {
-
-            return (
-
-                <FixedNav id="doc-repository"
-                          className="annotations-view">
-
-                    <header>
-                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                    persistenceLayerController={this.props.persistenceLayerManager}/>
-
-                        <Row id="header-filter"
-                             className="border-bottom p-1">
-                            <Row.Main>
-                                {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
-                                <StartReviewDropdown onFlashcards={() => this.startReview('flashcard')}
-                                                     onReading={() => this.startReview('reading')}/>
-                            </Row.Main>
-
-                            <Row.Right>
-
-                                <div style={{display: 'flex'}}>
-
-                                    <div className="mr-1">
-                                        <AnnotationTypeSelector selected={this.filtersHandler.filters.annotationTypes || []}
-                                                                onSelected={annotationTypes => this.filtersHandler.update({annotationTypes})}/>
-                                    </div>
-
-                                    <div className="mr-1">
-                                        <HighlightColorFilterButton selected={this.filtersHandler.filters.colors}
-                                                                    onSelected={selected => this.filtersHandler.update({colors: selected})}/>
-                                    </div>
-
-                                    <div className="ml-1 d-none-mobile">
-                                        <TextFilter updateFilters={filters => this.filtersHandler.update(filters)}/>
-                                    </div>
-
-                                    <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                        <AnnotationRepoTableDropdown persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}
-                                                                     annotations={this.state.data}/>
-                                    </div>
-
-                                </div>
-
-                            </Row.Right>
-
-                        </Row>
-
-                        <MessageBanner/>
-
-                    </header>
-
-                    {this.createRouter()}
-
-                    <DockLayout dockPanels={[
-                        {
-                            id: 'dock-panel-left',
-                            type: 'fixed',
-                            component: <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
-                                                      treeState={this.treeState}
-                                                      tags={this.props.tags()}/>,
-                            width: 300
-                        },
-                        {
-                            id: 'dock-panel-center',
-                            type: 'fixed',
-                            component: <AnnotationListView data={this.state.data}
-                                                           updateFilters={filters => this.filtersHandler.update(filters)}
-                                                           onSelected={repoAnnotation => this.setState({...this.state, repoAnnotation})}
-                                                           {...this.props}/>,
-                            width: 450
-                        },
-                        {
-                            id: 'dock-panel-right',
-                            type: 'grow',
-                            component: <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                              repoAnnotation={this.state.repoAnnotation}/>
-
-                        }
-                    ]}/>
-
-                    <RepoFooter/>
-
-                </FixedNav>
-
-            );
-        }
-    };
-
 }
-
 
 export interface IProps {
 
@@ -425,4 +496,5 @@ export interface IState {
     readonly data: ReadonlyArray<IDocAnnotation>;
 
 }
+
 

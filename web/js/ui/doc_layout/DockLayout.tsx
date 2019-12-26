@@ -93,7 +93,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
         const createDockPanels = (): ReadonlyArray<JSX.Element> => {
 
-            const tuples = Tuples.createSiblings(this.props.dockPanels);
+            const tuples = Tuples.createSiblings(this.props.dockPanels.filter(current => ! current.disabled));
 
             const result: JSX.Element[] = [];
 
@@ -326,6 +326,7 @@ export type DocPanelType = 'fixed' | 'grow';
 export interface BaseDockPanel {
     readonly id: string;
     readonly type: DocPanelType;
+    readonly disabled?: boolean;
 }
 
 export interface FixedDockPanel extends BaseDockPanel {

@@ -16,6 +16,7 @@ export class AnnotationListView extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
+            repoAnnotation: this.props.repoAnnotation
         };
 
     }
@@ -46,9 +47,7 @@ export class AnnotationListView extends React.Component<IProps, IState> {
 
     private onRepoAnnotationSelected(repoAnnotation: IDocAnnotation) {
         // console.log("A repo annotation was selected: " , repoAnnotation);
-
         this.setState({repoAnnotation});
-
     }
 
     public static Main = class extends AnnotationListView {

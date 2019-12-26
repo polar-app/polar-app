@@ -18,5 +18,6 @@ export const VersionInfo = () => {
             <div><b>Device pixel ratio: </b> {window.devicePixelRatio}</div>
         </div>
     );
+
 };
 
