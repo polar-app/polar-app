@@ -75,10 +75,9 @@ const SecondPage = () => (
 
 const ThirdPage = () => (
     <div>
-        this is the first page just inside a basic div
+        this is the third page just inside a basic div
     </div>
 );
-
 
 export class App<P> extends React.Component<{}, IAppState> {
 
@@ -322,20 +321,20 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 <Route render={({ location }) => (
                     <AnimatePresence exitBeforeEnter initial={false}>
-                        <motion.div
-                            initial={animation.initial}
-                            animate={animation.active}
-                            exit={animation.exit}
-                            // transition={transition}
-                        >
+                        {/*<motion.div*/}
+                        {/*    initial={animation.initial}*/}
+                        {/*    animate={animation.active}*/}
+                        {/*    exit={animation.exit}*/}
+                        {/*    // transition={transition}*/}
+                        {/*>*/}
                             <Switch location={loc}>
 
                                 <Route key={0} exact path='/web/spectron0/ui-components/content.html' component={FirstPage} />
                                 <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
-                                <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={ThirdPage} />
+                                <Route key={2} exact path='/web/spectron0/ui-components/content.html#third' component={ThirdPage} />
 
                             </Switch>
-                        </motion.div>
+                        {/*</motion.div>*/}
                     </AnimatePresence>
                     )}/>
 
