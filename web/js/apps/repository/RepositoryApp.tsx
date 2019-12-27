@@ -60,7 +60,6 @@ import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_la
 import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
-import {AnimatePresence} from "framer-motion";
 
 const log = Logger.create();
 
@@ -402,12 +401,10 @@ export class RepositoryApp {
 
                     </Switch>
 
-                    <AnimatePresence>
-                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                            <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
-                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
-                        </Switch>
-                    </AnimatePresence>
+                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                        <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
+                        <Route exact path='/' component={renderDefaultScreenByDevice}/>
+                    </Switch>
 
                     <Switch location={ReactRouters.createLocationWithHashOnly()}>
                         <Route exact path='#sidebar' component={() => <div>this is a mock sidebar</div>}/>
