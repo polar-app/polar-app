@@ -16,7 +16,8 @@ export const RightSidebar = (props: IProps) => {
     // TODO: this isn't working either...exit just does NOT get called!
 
     return (
-        <motion.div initial={{ right: -350 }}
+        <motion.div key="right-sidebar"
+                    initial={{ right: -350 }}
                     animate={{ right: 0 }}
                     exit={{ right: -350 }}
                     style={style}>
