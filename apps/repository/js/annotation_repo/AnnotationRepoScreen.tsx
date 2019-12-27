@@ -72,7 +72,7 @@ interface RouterProps {
 const Router = (props: RouterProps) => (
     <BrowserRouter>
 
-        <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+        <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
             <AnimatedRoute path='/annotations#start-review'
                            render={() => (
@@ -450,7 +450,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         return (
             <BrowserRouter>
 
-                <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+                <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
                     <AnimatedRoute path='/annotations#start-review'
                                    render={() => (

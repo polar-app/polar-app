@@ -19,7 +19,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <BrowserRouter>
 
-                    <Switch location={ReactRouters.createLocationWithPathnameHash()}>
+                    <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
                         <Route exact path='/#hello'>
 

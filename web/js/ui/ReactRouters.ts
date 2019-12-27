@@ -2,7 +2,7 @@ export class ReactRouters {
     /**
      * This is a big of a hack to support routes with hashes in them with react router.
      */
-    public static createLocationWithPathnameHash(): IRouteLocation {
+    public static createLocationWithPathAndHash(): IRouteLocation {
 
         const computePathname = () => {
             return document.location.hash ?

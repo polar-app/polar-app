@@ -26,7 +26,7 @@ import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinishe
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 import {useSpring, animated, useTransition} from "react-spring";
 import {LeftSidebar, LeftSidebars} from "../../js/ui/spring/LeftSidebar";
-import {FadeIn} from "../../js/ui/spring/FadeIn";
+import {FadeIn} from "../../js/ui/motion/FadeIn";
 import {SlideFromBottom} from "../../js/ui/spring/SlideFromBottom";
 import {TestSpring} from "../../js/ui/spring/TestSpring";
 import {useState} from "react";
@@ -60,6 +60,25 @@ const Preview = () => {
 const Main = () => {
     return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
 };
+
+const FirstPage = () => (
+    <FadeIn>
+        this is the first page
+    </FadeIn>
+);
+
+const SecondPage = () => (
+    <FadeIn>
+        this is the second page
+    </FadeIn>
+);
+
+const ThirdPage = () => (
+    <div>
+        this is the first page just inside a basic div
+    </div>
+);
+
 
 export class App<P> extends React.Component<{}, IAppState> {
 
@@ -251,31 +270,115 @@ export class App<P> extends React.Component<{}, IAppState> {
         // };
 
         // return <FooToggler/>;
-
-        const FramerToggler = () => {
-
-            const [visible, toggle] = useState(true);
-
-            const ToggleButton = () => <Button onClick={() => toggle(! visible)}>toggle</Button>;
-
-            return (
-                <AnimatePresence>
-                    <ToggleButton key={1}/>
-                    {visible && (
-                        <motion.div
-                            key={2}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}>
-
-                            hello world
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            );
+        //
+        // const FramerToggler = () => {
+        //
+        //     const [visible, toggle] = useState(true);
+        //
+        //     const ToggleButton = () => <Button onClick={() => toggle(! visible)}>toggle</Button>;
+        //
+        //     return (
+        //         <AnimatePresence>
+        //             <ToggleButton key={1}/>
+        //             {visible && (
+        //                 <motion.div
+        //                     key={2}
+        //                     initial={{ opacity: 0 }}
+        //                     animate={{ opacity: 1 }}
+        //                     exit={{ opacity: 0 }}>
+        //
+        //                     hello world
+        //                 </motion.div>
+        //             )}
+        //         </AnimatePresence>
+        //     );
+        // };
+        //
+        // return <FramerToggler/>;
+        const animation = {
+            initial: { opacity: 0 },
+            active: {
+                opacity: 1,
+                transition: {
+                    delay: 0.3,
+                    when: 'beforeChildren',
+                    staggerChildren: 0.1,
+                },
+            },
+            exit: { opacity: 0, y: 200 },
         };
 
-        return <FramerToggler/>;
+        // const transition = { type: 'spring', damping, stiffness };
+
+        const loc = ReactRouters.createLocationWithPathAndHash();
+
+        return (
+
+            <BrowserRouter key="browser-router">
+
+                <Link to={{hash: '#'}}>home</Link>
+                <Link to={{hash: '#second'}}>second</Link>
+                <Link to={{hash: '#third'}}>third</Link>
+
+                <Route render={({ location }) => (
+                    <AnimatePresence exitBeforeEnter initial={false}>
+                        <motion.div
+                            initial={animation.initial}
+                            animate={animation.active}
+                            exit={animation.exit}
+                            // transition={transition}
+                        >
+                            <Switch location={loc}>
+
+                                <Route key={0} exact path='/web/spectron0/ui-components/content.html' component={FirstPage} />
+                                <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
+                                <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={ThirdPage} />
+
+                            </Switch>
+                        </motion.div>
+                    </AnimatePresence>
+                    )}/>
+
+            </BrowserRouter>
+        );
+
+        // <Route render={({ location }) => (
+        //     <AnimatePresence exitBeforeEnter>
+        //         <motion.div
+        //             initial={animation.initial}
+        //             animate={animation.active}
+        //             exit={animation.exit}
+        //             // transition={transition}
+        //         >
+        //             <Switch location={loc}>
+        //
+        //                 <Route key={0} exact path='/web/spectron0/ui-components/content.html' render={() => <div>main</div>} />
+        //                 <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
+        //                 <Route key={2} exact path='/web/spectron0/ui-components/content.html#third' component={() => <div>third</div>} />
+        //
+        //             </Switch>
+        //         </motion.div>
+        //     </AnimatePresence>
+        // )}/>
+        //
+
+
+        // return (
+        //
+        //     <BrowserRouter key="browser-router">
+        //
+        //         <Link to={{hash: '#'}}>home</Link>
+        //         <Link to={{hash: '#second'}}>second</Link>
+        //         <Link to={{hash: '#second'}}>third</Link>
+        //         <Switch location={ReactRouters.createLocationWithPathAndHash()} >
+        //
+        //             <Route exact path='/web/spectron0/ui-components/content.html' render={() => <div>main</div>} />
+        //             <Route exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
+        //             <Route exact path='/web/spectron0/ui-components/content.html#third' component={() => <div>third</div>} />
+        //
+        //         </Switch>
+        //     </BrowserRouter>
+        // );
 
         // const isVisible = true;
         //
