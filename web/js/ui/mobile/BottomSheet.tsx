@@ -20,7 +20,7 @@ export class BottomSheet extends React.Component<IProps> {
         return (
 
             <div style={{overflow: 'hidden'}}>
-                 <FadeIn className="bottom-sheet-blackout"
+                 <div className="bottom-sheet-blackout"
                          style={{
                              position: 'absolute',
                              top: 0,
@@ -32,8 +32,9 @@ export class BottomSheet extends React.Component<IProps> {
                          }}
                          onClick={() => onCancel()}>
 
-                 </FadeIn>
-                <SlideFromBottom className=""
+                 </div>
+
+                <div className=""
                                  style={{
                                      position: 'absolute',
                                      bottom: 0,
@@ -45,7 +46,7 @@ export class BottomSheet extends React.Component<IProps> {
 
                     {this.props.children}
 
-                </SlideFromBottom>
+                </div>
 
             </div>
 

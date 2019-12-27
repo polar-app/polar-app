@@ -198,9 +198,17 @@ const ToggleVisibilityWorking2 = () => {
 
 };
 
+
+function computeKey() {
+    const key = location.hash;
+    console.log("FIXME", {key});
+    return key;
+}
+
 const RoutedPage = () => (
 
     <HashRouter key="browser-router" hashType="noslash" basename="/">
+
         <div style={{display: 'flex'}}>
             <Link to="/">home</Link>
             &nbsp;
@@ -216,13 +224,13 @@ const RoutedPage = () => (
         <Route render={({ location }) => (
             <AnimatePresence exitBeforeEnter initial={false}>
 
-                <Switch>
+                <Switch location={location} key={computeKey()}>
 
-                    <Route exact path='/' component={FirstPage} />
-                    <Route exact path='/second' component={SecondPage} />
-                    <Route exact path='/third' component={ThirdPage} />
-                    <Route exact path='/toggler' component={ToggleVisibilityWorking2} />
-                    <Route exact path='/sidebar' component={RightSidebarPage} />
+                    <Route key="0" exact path='/' component={FirstPage} />
+                    <Route key="1" exact path='/second' component={SecondPage} />
+                    <Route key="2" exact path='/third' component={ThirdPage} />
+                    <Route key="3" exact path='/toggler' component={ToggleVisibilityWorking2} />
+                    <Route key="4" exact path='/sidebar' component={RightSidebarPage} />
 
                 </Switch>
             </AnimatePresence>
@@ -232,10 +240,18 @@ const RoutedPage = () => (
 
 );
 
+
 // This doesn't work when animating the exit animations.  Here's what I've tried:
 
 // - I've confirmed that having a component which has a button and toggles tne presents within an AnimatePresence
 //   does in fact play the exit animation.
+//
+// - I'm using this as a template:
+//
+//     https://codesandbox.io/s/framer-motion-x-react-router-n7qhp
+//
+//   which does work the way I want but I can't seem to get it to work when I setup
+//   the same code:
 
 export const App = () => (
 
@@ -247,35 +263,5 @@ export const App = () => (
         <RoutedPage/>
 
     </div>
-
-    // <HashRouter key="browser-router" hashType="noslash" basename="/">
-    //     <div style={{display: 'flex'}}>
-    //         <Link to="/">home</Link>
-    //         &nbsp;
-    //         <Link to="/second">second</Link>
-    //         &nbsp;
-    //         <Link to="/third">third</Link>
-    //         &nbsp;
-    //         <Link to="/toggler">toggler</Link>
-    //         &nbsp;
-    //         <Link to="/sidebar">sidebar</Link>
-    //     </div>
-    //
-    //     <Route render={({ location }) => (
-    //         <AnimatePresence exitBeforeEnter initial={false}>
-    //
-    //             <Switch>
-    //
-    //                 <Route exact path='/' component={FirstPage} />
-    //                 <Route exact path='/second' component={SecondPage} />
-    //                 <Route exact path='/third' component={ThirdPage} />
-    //                 <Route exact path='/toggler' component={ToggleVisibility} />
-    //                 <Route exact path='/sidebar' component={RightSidebarPage} />
-    //
-    //             </Switch>
-    //         </AnimatePresence>
-    //     )}/>
-    //
-    // </HashRouter>
 
 );
