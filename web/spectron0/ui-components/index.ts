@@ -1,22 +1,26 @@
-import {SpectronMain2} from '../../js/test/SpectronMain2';
-import {DownloadItem, WebContents} from "electron";
+import {SpectronWebappMain} from "../../js/test/SpectronWebappMain";
+import {MainDatastore} from "../../js/datastore/MainDatastore";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 
-SpectronMain2.create().run(async state => {
+const webRoot = FilePaths.join(__dirname, "..", "..", "..");
+const appRoot = webRoot;
 
-    await state.window.loadURL(`file://${__dirname}/content.html`);
+const rewrites: ReadonlyArray<Rewrite> = [
+    {
+        source: "/",
+        destination: "content.html"
+    },
+];
 
-    state.window.webContents.session.addListener('will-download', (event: Event,
-                                                                   downloadItem: DownloadItem,
-                                                                   downloadWebContents: WebContents) => {
+const datastore = MainDatastore.create();
 
-        console.log("Within download handler");
+const path = "/web/spectron0/ui-components/content.html";
 
-        downloadItem.setSavePath('/tmp/test.pdf');
-
-    });
-
-
-    // await state.testResultWriter.write(true);
-
+SpectronWebappMain.run({
+    initializer: async () => await datastore.init(),
+    webRoot,
+    appRoot,
+    path,
+    rewrites
 });
-
