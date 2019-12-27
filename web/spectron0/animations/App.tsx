@@ -7,9 +7,37 @@ import {AnimatePresence, motion} from 'framer-motion';
 export const FadeIn = (props: any) => {
 
     return (
-        <motion.div initial={{ opacity: 0 }}
+        <motion.div key="fade-in-motion"
+                    initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}>
+
+            {props.children}
+        </motion.div>
+    );
+
+};
+
+export const FadeIn2 = (props: any) => {
+
+    const pageVariants = {
+        initial: {
+            opacity: 0,
+        },
+        in: {
+            opacity: 1,
+        },
+        out: {
+            opacity: 0,
+        }
+    };
+
+    return (
+        <motion.div key={"fade-in-2-motion"}
+                    initial="initial"
+                    animate="in"
+                    exit="out"
+                    variants={pageVariants}>
 
             {props.children}
         </motion.div>
@@ -74,7 +102,7 @@ interface TogglerProps {
 }
 
 const ToggleVisibilityButton = (props: TogglerProps) => (
-    <button onClick={() => props.onClick()}>toggle visibility</button>
+    <button key="toggle-button-impl" onClick={() => props.onClick()}>toggle visibility</button>
 );
 
 
@@ -87,15 +115,19 @@ const ToggleFade = (props: ToggleFadeProps) => {
 
     if (props.show) {
         return (
-            <div>
-                <ToggleVisibilityButton onClick={() => props.toggle()}/>
-                <FadeIn>This should fade in and out on toggle</FadeIn>
+            <div key="toggle-fade">
+                <ToggleVisibilityButton key="toggle-button" onClick={() => props.toggle()}/>
+                <FadeIn key="fade-in">
+                    <div key="fade-content">
+                        This should fade in and out on toggle
+                    </div>
+                </FadeIn>
             </div>
         );
     } else {
         return (
-            <div>
-                <ToggleVisibilityButton onClick={() => props.toggle()}/>
+            <div key="toggle-fade">
+                <ToggleVisibilityButton key="toggle-button" onClick={() => props.toggle()}/>
             </div>
         );
     }
@@ -105,10 +137,9 @@ const ToggleVisibility = () => {
 
     const [show, toggle] = useState(true);
 
-
     return (
         <AnimatePresence>
-            <ToggleFade show={show} toggle={() => toggle(! show)}/>
+            <ToggleFade key="toggle-fade" show={show} toggle={() => toggle(! show)}/>
         </AnimatePresence>
     );
 
@@ -121,34 +152,36 @@ const ToggleVisibility = () => {
 
 export const App = () => (
 
-    <HashRouter key="browser-router" hashType="noslash" basename="/">
-        <div style={{display: 'flex'}}>
-            <Link to="/">home</Link>
-            &nbsp;
-            <Link to="/second">second</Link>
-            &nbsp;
-            <Link to="/third">third</Link>
-            &nbsp;
-            <Link to="/toggler">toggler</Link>
-            &nbsp;
-            <Link to="/sidebar">sidebar</Link>
-        </div>
+    <ToggleVisibility/>
 
-        <Route render={({ location }) => (
-            <AnimatePresence exitBeforeEnter initial={false}>
-
-                <Switch>
-
-                    <Route exact path='/' component={FirstPage} />
-                    <Route exact path='/second' component={SecondPage} />
-                    <Route exact path='/third' component={ThirdPage} />
-                    <Route exact path='/toggler' component={ToggleVisibility} />
-                    <Route exact path='/sidebar' component={RightSidebarPage} />
-
-                </Switch>
-            </AnimatePresence>
-        )}/>
-
-    </HashRouter>
+    // <HashRouter key="browser-router" hashType="noslash" basename="/">
+    //     <div style={{display: 'flex'}}>
+    //         <Link to="/">home</Link>
+    //         &nbsp;
+    //         <Link to="/second">second</Link>
+    //         &nbsp;
+    //         <Link to="/third">third</Link>
+    //         &nbsp;
+    //         <Link to="/toggler">toggler</Link>
+    //         &nbsp;
+    //         <Link to="/sidebar">sidebar</Link>
+    //     </div>
+    //
+    //     <Route render={({ location }) => (
+    //         <AnimatePresence exitBeforeEnter initial={false}>
+    //
+    //             <Switch>
+    //
+    //                 <Route exact path='/' component={FirstPage} />
+    //                 <Route exact path='/second' component={SecondPage} />
+    //                 <Route exact path='/third' component={ThirdPage} />
+    //                 <Route exact path='/toggler' component={ToggleVisibility} />
+    //                 <Route exact path='/sidebar' component={RightSidebarPage} />
+    //
+    //             </Switch>
+    //         </AnimatePresence>
+    //     )}/>
+    //
+    // </HashRouter>
 
 );
