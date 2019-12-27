@@ -133,7 +133,7 @@ const ToggleFade = (props: ToggleFadeProps) => {
     }
 };
 
-const ToggleVisibility = () => {
+const ToggleVisibilityBroken = () => {
 
     const [show, toggle] = useState(true);
 
@@ -145,6 +145,93 @@ const ToggleVisibility = () => {
 
 };
 
+const ToggleVisibilityWorking = () => {
+
+    const [show, toggle] = useState(true);
+
+    return (
+        <div>
+
+            <ToggleVisibilityButton onClick={() => toggle( ! show)}/>
+
+            <AnimatePresence>
+                {show && (
+                    <motion.div initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}>
+
+                        <div>some stuff here</div>
+
+                    </motion.div>
+                )}
+
+            </AnimatePresence>
+        </div>
+    );
+
+};
+
+
+const ToggleVisibilityWorking2 = () => {
+
+    // tests using a nested div and the FadeIn component directly
+
+    const [show, toggle] = useState(true);
+
+    return (
+        <div>
+
+            <ToggleVisibilityButton onClick={() => toggle( ! show)}/>
+
+            <AnimatePresence>
+                {show && (
+                    <div>
+                        <FadeIn>
+                            <div>some stuff here</div>
+                        </FadeIn>
+                    </div>
+                )}
+
+            </AnimatePresence>
+        </div>
+    );
+
+};
+
+const RoutedPage = () => (
+
+    <HashRouter key="browser-router" hashType="noslash" basename="/">
+        <div style={{display: 'flex'}}>
+            <Link to="/">home</Link>
+            &nbsp;
+            <Link to="/second">second</Link>
+            &nbsp;
+            <Link to="/third">third</Link>
+            &nbsp;
+            <Link to="/toggler">toggler</Link>
+            &nbsp;
+            <Link to="/sidebar">sidebar</Link>
+        </div>
+
+        <Route render={({ location }) => (
+            <AnimatePresence exitBeforeEnter initial={false}>
+
+                <Switch>
+
+                    <Route exact path='/' component={FirstPage} />
+                    <Route exact path='/second' component={SecondPage} />
+                    <Route exact path='/third' component={ThirdPage} />
+                    <Route exact path='/toggler' component={ToggleVisibilityWorking2} />
+                    <Route exact path='/sidebar' component={RightSidebarPage} />
+
+                </Switch>
+            </AnimatePresence>
+        )}/>
+
+    </HashRouter>
+
+);
+
 // This doesn't work when animating the exit animations.  Here's what I've tried:
 
 // - I've confirmed that having a component which has a button and toggles tne presents within an AnimatePresence
@@ -152,7 +239,14 @@ const ToggleVisibility = () => {
 
 export const App = () => (
 
-    <ToggleVisibility/>
+    <div>
+        {/*<ToggleVisibilityWorking/>*/}
+
+        {/*<ToggleVisibilityWorking2/>*/}
+
+        <RoutedPage/>
+
+    </div>
 
     // <HashRouter key="browser-router" hashType="noslash" basename="/">
     //     <div style={{display: 'flex'}}>
