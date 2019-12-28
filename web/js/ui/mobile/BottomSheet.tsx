@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {SlideFromBottom} from "../motion/SlideFromBottom";
+import {FadeBlackout} from "../motion/FadeBlackout";
 
 /**
  * A sheet anchored to the bottom of the page.
@@ -20,19 +21,7 @@ export class BottomSheet extends React.Component<IProps> {
 
             <div style={{overflow: 'hidden'}}>
 
-                <div className="bottom-sheet-blackout"
-                         style={{
-                             position: 'absolute',
-                             top: 0,
-                             left: 0,
-                             zIndex: zIndex - 1,
-                             width: '100%',
-                             height: '100%',
-                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                         }}
-                         onClick={() => onCancel()}>
-
-                 </div>
+                <FadeBlackout style={{zIndex: zIndex - 1}} onClick={() => onCancel()}/>
 
                 <SlideFromBottom style={{
                                      position: 'absolute',
@@ -48,40 +37,6 @@ export class BottomSheet extends React.Component<IProps> {
                </SlideFromBottom>
 
             </div>
-
-            //
-            // <div style={{
-            //          position: 'absolute',
-            //          top: 0,
-            //          left: 0,
-            //          width: '100%',
-            //          height: '100%',
-            //          zIndex,
-            //          display: 'flex',
-            //          flexDirection: 'column',
-            //          overflow: 'none'
-            //      }}>
-            //
-            //     <FadeIn className="bottom-sheet-blackout"
-            //             style={{
-            //                 flexGrow: 1,
-            //                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            //             }}
-            //             onClick={() => window.history.back()}>
-            //
-            //     </FadeIn>
-            //
-            //     <SlideFromBottom className=""
-            //                      style={{
-            //                          width: '100%',
-            //                          backgroundColor: 'var(--primary-background-color)',
-            //                      }}>
-            //
-            //         {this.props.children}
-            //
-            //     </SlideFromBottom>
-            //
-            // </div>
 
         );
 

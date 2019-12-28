@@ -6,18 +6,23 @@ import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {UserInfoDataLoader} from "./persistence_layer/UserInfoDataLoader";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {AccountActions} from "./AccountActions";
+import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
 
 interface AccountInfoProps extends AccountControlSidebarProps {
     readonly userInfo: UserInfo | undefined;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 const AccountInfo = (props: AccountInfoProps) => {
+
+    const onLogout = () => AccountActions.logout(props.persistenceLayerController);
 
     if (props.userInfo) {
         return <AccountControl {...props}
                                userInfo={props.userInfo}
                                onInvite={NULL_FUNCTION}
-                               onLogout={NULL_FUNCTION}/>;
+                               onLogout={() => onLogout()}/>;
     } else {
         return <h2>Please Login</h2>;
     }
@@ -26,6 +31,7 @@ const AccountInfo = (props: AccountInfoProps) => {
 
 interface AccountControlSidebarProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 const AccountDataLoader = (props: AccountControlSidebarProps) => (

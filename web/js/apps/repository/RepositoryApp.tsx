@@ -414,7 +414,8 @@ export class RepositoryApp {
                         <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
                             <Route path='#settings'
-                                   render={() => <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}/>}/>
+                                   render={() => <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}
+                                                                        persistenceLayerController={persistenceLayerController}/>}/>
 
                         </Switch>
 

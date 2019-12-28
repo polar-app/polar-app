@@ -32,8 +32,6 @@ import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMuta
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/ui/ReactRouters";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {NavIcon} from '../nav/NavIcon';
-import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
@@ -41,9 +39,6 @@ import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/Indet
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
-import {AnimatedRoute} from "../../../../web/js/ui/motion/AnimatedRoute";
-import {FadeIn} from "../../../../web/js/ui/motion/FadeIn";
-import {AccountControlSidebar} from "../AccountControlSidebar";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;

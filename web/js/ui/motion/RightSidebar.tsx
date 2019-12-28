@@ -1,6 +1,7 @@
 import * as React from "react";
 import {motion} from "framer-motion";
 import {Button} from "reactstrap";
+import {FadeBlackout} from "./FadeBlackout";
 
 const zIndex = 3000000;
 
@@ -30,19 +31,8 @@ export const RightSidebar = (props: IProps) => {
 
     return (
         <>
-            <div className="right-sidebar-blackout"
-                 style={{
-                     position: 'absolute',
-                     top: 0,
-                     left: 0,
-                     zIndex: zIndex - 1,
-                     width: '100%',
-                     height: '100%',
-                     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                 }}
-                 onClick={() => props.onClose()}>
 
-            </div>
+            <FadeBlackout style={{zIndex: zIndex - 1}} onClick={() => props.onClose()}/>
 
             <motion.div className="right-sidebar border-left"
                         initial={{ right: inactiveWidth }}
