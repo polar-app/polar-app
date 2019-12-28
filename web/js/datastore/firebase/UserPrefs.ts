@@ -1,9 +1,10 @@
 import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict} from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
+import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import firebase from "../../firebase/lib/firebase";
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
 
 export type UserPrefCallback = (data: UserPref | undefined) => void;
 

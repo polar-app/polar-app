@@ -43,6 +43,7 @@ import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
 import {AnimatedRoute} from "../../../../web/js/ui/motion/AnimatedRoute";
 import {FadeIn} from "../../../../web/js/ui/motion/FadeIn";
+import {AccountControlSidebar} from "../AccountControlSidebar";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -67,9 +68,11 @@ const AnnotationPreview = (props: AnnotationsPreviewProps) => (
 
 interface RouterProps {
     readonly onCreateReviewer: (mode: RepetitionMode) => any;
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 const Router = (props: RouterProps) => (
+
     <BrowserRouter>
 
         <Switch location={ReactRouters.createLocationWithPathAndHash()}>
@@ -163,81 +166,71 @@ namespace screen {
     interface PhoneAndTabletProps extends ScreenProps {
 
     }
+    export const PhoneAndTablet = (props: PhoneAndTabletProps) => {
 
-    export const PhoneAndTablet = (props: PhoneAndTabletProps) => (
+        const FilterButtons = () => (
+            <div style={{display: 'flex'}}>
+                <div className="mr-1 mt-auto mb-auto">
+                    <AnnotationTypeSelector
+                        selected={props.filtersHandler.filters.annotationTypes || []}
+                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
+                </div>
 
-        <FixedNav id="doc-repository"
-                  className="annotations-view">
+                <div className="mr-1 mt-auto mb-auto">
+                    <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
+                                                onSelected={selected => props.filtersHandler.update({colors: selected})}/>
+                </div>
 
-            <header>
+                <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                    <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
+                </div>
 
-                <Row id="header-filter" className="border-bottom p-1 mt-1">
+                <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                    <AnnotationRepoTableDropdown
+                        persistenceLayerProvider={() => props.persistenceLayerManager.get()}
+                        annotations={props.data}/>
+                </div>
+            </div>
+        );
 
-                    <Row.Main>
+        return (
+            <FixedNav id="doc-repository"
+                      className="annotations-view">
 
-                        <div style={{display: 'flex'}}>
+                <RepoHeader left={<FilterButtons/>}
+                            persistenceLayerProvider={props.persistenceLayerProvider}
+                            persistenceLayerController={props.persistenceLayerManager}/>
 
-                            <div className="mr-1">
-                                <NavIcon/>
-                            </div>
+                <FixedNav.Body>
 
-                            <div className="mr-1 mt-auto mb-auto">
-                                <AnnotationTypeSelector selected={props.filtersHandler.filters.annotationTypes || []}
-                                                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
-                            </div>
+                    <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}
+                            persistenceLayerProvider={props.persistenceLayerProvider}/>
 
-                            <div className="mr-1 mt-auto mb-auto">
-                                <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
-                                                            onSelected={selected => props.filtersHandler.update({colors: selected})}/>
-                            </div>
+                    <Link to={{pathname: '/annotations', hash: '#start-review'}}>
 
-                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
-                            </div>
+                        <FloatingActionButton style={{
+                                                  paddingBottom: '60px',
+                                                  paddingRight: '20px'
+                                              }}
+                                              icon="fas fa-graduation-cap"/>
 
-                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                <AnnotationRepoTableDropdown persistenceLayerProvider={() => props.persistenceLayerManager.get()}
-                                                             annotations={props.data}/>
-                            </div>
+                    </Link>
 
-                        </div>
+                    <DeviceRouter phone={<main.Phone {...props}/>}
+                                  tablet={<main.Tablet {...props}/>}>
 
-                    </Row.Main>
+                    </DeviceRouter>
 
-                    <Row.Right>
-                        <CloudAuthButton persistenceLayerController={props.persistenceLayerManager} />
-                    </Row.Right>
+                </FixedNav.Body>
 
-                </Row>
+                <FixedNav.Footer>
+                    <RepoFooter/>
+                </FixedNav.Footer>
 
-            </header>
+            </FixedNav>
 
-            <FixedNav.Body>
-
-                <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}/>
-
-                <Link to={{pathname: '/annotations', hash: '#start-review'}}>
-                    <FloatingActionButton style={{
-                        paddingBottom: '60px',
-                        paddingRight: '20px'
-                    }}
-                                          icon="fas fa-graduation-cap"/>
-                </Link>
-
-                <DeviceRouter phone={<main.Phone {...props}/>}
-                              tablet={<main.Tablet {...props}/>}>
-
-                </DeviceRouter>
-
-            </FixedNav.Body>
-
-            <FixedNav.Footer>
-                <RepoFooter/>
-            </FixedNav.Footer>
-
-        </FixedNav>
-
-    );
+        );
+    };
 
     export interface ScreenProps extends IProps, IState {
         readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -298,7 +291,8 @@ namespace screen {
 
             </header>
 
-            <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}/>
+            <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}
+                    persistenceLayerProvider={props.persistenceLayerProvider}/>
 
             <main.Desktop {...props}/>
 
@@ -335,7 +329,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
         this.createReviewer = this.createReviewer.bind(this);
-        this.createRouter = this.createRouter.bind(this);
 
         this.state = {
             data: [],
@@ -444,30 +437,6 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         const prefs = persistenceLayer.datastore.getPrefs();
 
         return await Reviewers.create(datastoreCapabilities, prefs.get(), this.state.data, mode, NULL_FUNCTION, DEFAULT_LIMIT);
-    }
-
-    private createRouter() {
-        return (
-            <BrowserRouter>
-
-                <Switch location={ReactRouters.createLocationWithPathAndHash()}>
-
-                    <AnimatedRoute path='/annotations#start-review'
-                                   render={() => (
-                                       <FadeIn>
-                                           <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
-                                       </FadeIn>)}/>
-
-                    <Route path='/annotations#review-flashcards'
-                           component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('flashcard')}/>}/>
-
-                    <Route path='/annotations#review-reading'
-                           component={() => <IndeterminateLoadingTransition provider={() => this.createReviewer('reading')}/>}/>
-
-                </Switch>
-
-            </BrowserRouter>
-        );
     }
 
 }

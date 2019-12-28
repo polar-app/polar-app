@@ -60,6 +60,9 @@ import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_la
 import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
+import {NavRouter} from "../../../../apps/repository/js/NavRouter";
+import {FixedNav} from "../../../../apps/repository/js/FixedNav";
+import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 
 const log = Logger.create();
 
@@ -205,28 +208,25 @@ export class RepositoryApp {
 
         };
 
-        const renderWhatsNewScreen = () => {
-            return ( <WhatsNewScreen persistenceLayerProvider={persistenceLayerProvider}
-                                     persistenceLayerController={persistenceLayerController}/> );
-        };
+        const renderWhatsNewScreen = () => (
+            <WhatsNewScreen persistenceLayerProvider={persistenceLayerProvider}
+                             persistenceLayerController={persistenceLayerController}/>
+        );
 
-        const renderCommunityScreen = () => {
-            return (
-                <AuthRequired authStatus={authStatus}>
-                    <CommunityScreen persistenceLayerProvider={persistenceLayerProvider}
-                                     persistenceLayerController={persistenceLayerController}/>
-                </AuthRequired>
-            );
-        };
+        const renderCommunityScreen = () => (
+            <AuthRequired authStatus={authStatus}>
+                <CommunityScreen persistenceLayerProvider={persistenceLayerProvider}
+                                 persistenceLayerController={persistenceLayerController}/>
+            </AuthRequired>
+        );
 
-        const renderStatsScreen = () => {
-            return (
-                <AuthRequired authStatus={authStatus}>
-                    <StatsScreen persistenceLayerProvider={persistenceLayerProvider}
-                                 persistenceLayerController={persistenceLayerController}
-                                 repoDocMetaManager={this.repoDocInfoManager}/>
-                </AuthRequired>);
-        };
+        const renderStatsScreen = () => (
+            <AuthRequired authStatus={authStatus}>
+                <StatsScreen persistenceLayerProvider={persistenceLayerProvider}
+                             persistenceLayerController={persistenceLayerController}
+                             repoDocMetaManager={this.repoDocInfoManager}/>
+            </AuthRequired>
+        );
 
         const renderLogsScreen = () => {
             return (
@@ -348,66 +348,72 @@ export class RepositoryApp {
 
                 <SyncBar key="sync-bar" progress={syncBarProgress}/>,
 
-                <BrowserRouter key="browser-router">
+                    <BrowserRouter key="browser-router">
 
-                    <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+                        <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-                        <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
+                            <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
 
-                        <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
+                            <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
 
-                        <Route exact path='/#community' render={renderCommunityScreen}/>
+                            <Route exact path='/#community' render={renderCommunityScreen}/>
 
-                        <Route exact path='/#logs' render={renderLogsScreen}/>
+                            <Route exact path='/#logs' render={renderLogsScreen}/>
 
-                        <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
+                            <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
 
-                        <Route exact
-                               path={[
-                                   '/#plans',
-                                   '/plans'
-                               ]}
-                               render={premiumScreen}/>
+                            <Route exact
+                                   path={[
+                                       '/#plans',
+                                       '/plans'
+                                   ]}
+                                   render={premiumScreen}/>
 
-                        <Route exact
-                               path={[
-                                   '/#plans-year',
-                                   '/plans-year'
-                               ]}
-                               render={premiumScreenYear}/>
+                            <Route exact
+                                   path={[
+                                       '/#plans-year',
+                                       '/plans-year'
+                                   ]}
+                                   render={premiumScreenYear}/>
 
-                        <Route exact path='/#support' render={supportScreen}/>
+                            <Route exact path='/#support' render={supportScreen}/>
 
-                        <Route exact path='/#premium' render={premiumScreen}/>
+                            <Route exact path='/#premium' render={premiumScreen}/>
 
-                        <Route exact path='/ui-components' render={() => <UIComponentsScreen persistenceLayerManager={this.persistenceLayerManager}
-                                                                                             persistenceLayerProvider={persistenceLayerProvider}/>} />
+                            <Route exact path='/ui-components' render={() => <UIComponentsScreen persistenceLayerManager={this.persistenceLayerManager}
+                                                                                                 persistenceLayerProvider={persistenceLayerProvider}/>} />
 
-                        <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+                            <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
 
-                        <Route path='/group/:group/docs' render={renderGroupScreen}/>
+                            <Route path='/group/:group/docs' render={renderGroupScreen}/>
 
-                        <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
+                            <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
 
-                        <Route path='/group/:group' render={renderGroupHighlightsScreen}/>
+                            <Route path='/group/:group' render={renderGroupHighlightsScreen}/>
 
-                        <Route exact path='/groups' render={renderGroupsScreen}/>
+                            <Route exact path='/groups' render={renderGroupsScreen}/>
 
-                        <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+                            <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
 
-                        <Route exact path='/invite' render={renderInvite}/>
+                            <Route exact path='/invite' render={renderInvite}/>
 
-                        <Route exact path={['/#stats', '/stats']} render={renderStatsScreen}/>
+                            <Route exact path={['/#stats', '/stats']} component={renderStatsScreen}/>
 
-                    </Switch>
+                        </Switch>
 
-                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                        <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
-                        <Route exact path='/' component={renderDefaultScreenByDevice}/>
-                    </Switch>
+                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                            <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
+                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
+                        </Switch>
+
+                </BrowserRouter>,
+                <BrowserRouter key="hash-router">
 
                     <Switch location={ReactRouters.createLocationWithHashOnly()}>
-                        <Route exact path='#sidebar' component={() => <div>this is a mock sidebar</div>}/>
+
+                        <Route path='#settings'
+                               render={() => <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}/>}/>
+
                     </Switch>
 
                 </BrowserRouter>,

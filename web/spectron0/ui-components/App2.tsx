@@ -15,7 +15,7 @@ import {
     HolidayPromotionButton,
     HolidayPromotionCopy
 } from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
-import {AccountControlBar} from "../../js/ui/cloud_auth/AccountControlBar";
+import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/ui/ReactRouters";
@@ -292,7 +292,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                          maxWidth: 400
                      }}
                      className="border p-1 shadow">
-                    <AccountControlBar userInfo={userInfo} onInvite={NULL_FUNCTION} onLogout={NULL_FUNCTION}/>
+                    <AccountControl userInfo={userInfo} onInvite={NULL_FUNCTION} onLogout={NULL_FUNCTION}/>
                 </div>
             );
         };

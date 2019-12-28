@@ -1,10 +1,11 @@
 import React from 'react';
-import {ErrorHandlerCallback, SnapshotSubscriber} from "../../../../web/js/firebase/Firebase";
+import {ErrorHandlerCallback} from "../../../../web/js/firebase/Firebase";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
 import {AppTags} from "./AppTags";
+import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
 
 export class RepoDataLoader extends React.Component<IProps, IState> {
 

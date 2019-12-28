@@ -2,9 +2,10 @@ import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from "../../util/pre
 import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import firebase from "../../firebase/lib/firebase";
 import {Firestore} from "../../firebase/Firestore";
-import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber} from "../../firebase/Firebase";
+import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 

@@ -7,7 +7,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerController} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {Nav} from '../util/Nav';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';

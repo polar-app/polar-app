@@ -13,6 +13,8 @@ import {PersistenceLayerProvider} from "../../../../web/js/datastore/Persistence
 import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
+import {Link} from "react-router-dom";
+import {Button} from "reactstrap";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -41,7 +43,8 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                     <div className="mr-1"
                          style={{
-                             flexGrow: 1
+                             flexGrow: 1,
+                             display: 'flex'
                          }}>
                         <div className="mr-1">
                             <NavIcon/>
@@ -58,7 +61,13 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         {this.props.right}
 
-                        <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
+                        <a href="#settings">
+                            <Button size="md" color="clear" className="btn-no-outline">
+                                <i className="fas fa-cog"/>
+                            </Button>
+                        </a>
+
+                        {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
 
                     </div>
 

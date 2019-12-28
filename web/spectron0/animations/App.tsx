@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {HashRouter, Link, Route, Switch} from "react-router-dom";
 
 import {AnimatePresence, motion} from 'framer-motion';
+import {GalleryApp} from "./gallery/GalleryApp";
 
 export const FadeIn = (props: any) => {
 
@@ -198,6 +199,10 @@ const ToggleVisibilityWorking2 = () => {
 
 };
 
+const TestPage = () => (
+    <FadeIn>test</FadeIn>
+);
+
 
 function computeKey() {
     const key = location.hash;
@@ -207,7 +212,7 @@ function computeKey() {
 
 const RoutedPage = () => (
 
-    <HashRouter key="browser-router" hashType="noslash" basename="/">
+    <HashRouter key="hash-router" hashType="noslash" basename="/">
 
         <div style={{display: 'flex'}}>
             <Link to="/">home</Link>
@@ -219,18 +224,21 @@ const RoutedPage = () => (
             <Link to="/toggler">toggler</Link>
             &nbsp;
             <Link to="/sidebar">sidebar</Link>
+            &nbsp;
+            <Link to="/test">test</Link>
         </div>
 
-        <Route render={({ location }) => (
+        <Route render={() => (
             <AnimatePresence exitBeforeEnter initial={false}>
 
-                <Switch location={location} key={computeKey()}>
+                <Switch key={computeKey()}>
 
                     <Route key="0" exact path='/' component={FirstPage} />
                     <Route key="1" exact path='/second' component={SecondPage} />
                     <Route key="2" exact path='/third' component={ThirdPage} />
                     <Route key="3" exact path='/toggler' component={ToggleVisibilityWorking2} />
                     <Route key="4" exact path='/sidebar' component={RightSidebarPage} />
+                    <Route key="5" exact path='/test' component={TestPage} />
 
                 </Switch>
             </AnimatePresence>
@@ -256,6 +264,8 @@ const RoutedPage = () => (
 export const App = () => (
 
     <div>
+        {/*<GalleryApp/>*/}
+
         {/*<ToggleVisibilityWorking/>*/}
 
         {/*<ToggleVisibilityWorking2/>*/}

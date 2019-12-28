@@ -4,7 +4,7 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
-import {SnapshotSubscriber} from "../../../../web/js/firebase/Firebase";
+import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
 
 export class UserTagsDataLoader extends React.Component<IProps, IState> {
 

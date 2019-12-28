@@ -21,9 +21,10 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
-import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../firebase/Firebase";
+import {ErrorHandlerCallback} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SimpleReactor} from "../reactor/SimpleReactor";
+import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 

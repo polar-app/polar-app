@@ -86,7 +86,7 @@ const ViewPlansAndPricingButton = () => {
     );
 };
 
-export class AccountControlBar extends React.PureComponent<IProps, IState> {
+export class AccountControl extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

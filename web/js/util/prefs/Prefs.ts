@@ -4,7 +4,8 @@ import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PersistentPrefsUpdatedCallback, PrefsProvider} from "../../datastore/Datastore";
-import {ErrorHandlerCallback, SnapshotUnsubscriber} from "../../firebase/Firebase";
+import {ErrorHandlerCallback} from "../../firebase/Firebase";
+import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
 
 export abstract class Prefs {
 

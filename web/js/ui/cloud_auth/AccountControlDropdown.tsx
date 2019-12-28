@@ -5,7 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {UncontrolledPopover} from 'reactstrap';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {AccountControlBar} from './AccountControlBar';
+import {AccountControl} from './AccountControl';
 import {DropdownChevron} from '../util/DropdownChevron';
 
 export class AccountControlDropdown extends React.PureComponent<IProps, IState> {
@@ -44,9 +44,9 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
                                      style={{maxWidth: '600px'}}>
 
                     <PopoverBody className="shadow">
-                        <AccountControlBar userInfo={this.props.userInfo}
-                                           onInvite={this.props.onInvite}
-                                           onLogout={this.props.onLogout}/>
+                        <AccountControl userInfo={this.props.userInfo}
+                                        onInvite={this.props.onInvite}
+                                        onLogout={this.props.onLogout}/>
 
                     </PopoverBody>
 

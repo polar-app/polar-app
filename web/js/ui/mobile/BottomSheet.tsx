@@ -20,7 +20,8 @@ export class BottomSheet extends React.Component<IProps> {
         return (
 
             <div style={{overflow: 'hidden'}}>
-                 <div className="bottom-sheet-blackout"
+
+                <div className="bottom-sheet-blackout"
                          style={{
                              position: 'absolute',
                              top: 0,

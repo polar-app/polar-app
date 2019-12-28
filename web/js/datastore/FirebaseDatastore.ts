@@ -43,7 +43,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {ErrorHandlerCallback, Firebase, SnapshotUnsubscriber, UserID} from '../firebase/Firebase';
+import {ErrorHandlerCallback, Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -60,6 +60,7 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
 import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
+import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
 
 const log = Logger.create();
 

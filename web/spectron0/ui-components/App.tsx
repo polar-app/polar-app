@@ -15,7 +15,7 @@ import {
     HolidayPromotionButton,
     HolidayPromotionCopy
 } from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
-import {AccountControlBar} from "../../js/ui/cloud_auth/AccountControlBar";
+import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/ui/ReactRouters";
@@ -34,6 +34,8 @@ import {Button} from "reactstrap";
 
 import {motion, AnimatePresence} from 'framer-motion';
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
+import {HashRouter} from "react-router-dom";
+import {AccountControlSidebar} from "../../../apps/repository/js/AccountControlSidebar";
 
 const styles = {
     swatch: {
@@ -92,7 +94,7 @@ const LeftSidebarPage = () => (
 
 const RightSidebarPage = () => (
 
-    <RightSidebar style={{backgroundColor: 'red'}}>
+    <RightSidebar style={{backgroundColor: 'red'}} onClose={NULL_FUNCTION}>
         <div>
             this is the left sidebar
         </div>
@@ -334,27 +336,75 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
+            // <BrowserRouter key="browser-router">
+            //
+            //     <Link to={{hash: '#'}}>home</Link>
+            //     <Link to={{hash: '#second'}}>second</Link>
+            //     <Link to={{hash: '#third'}}>third</Link>
+            //     <Link to={{hash: '#sidebar'}}>sidebar</Link>
+            //
+            //     <Route render={({ location }) => (
+            //         <AnimatePresence exitBeforeEnter initial={false}>
+            //             <Switch location={loc}>
+            //
+            //                 <Route key={0} exact path='/web/spectron0/ui-components/content.html' component={FirstPage} />
+            //                 <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
+            //                 <Route key={2} exact path='/web/spectron0/ui-components/content.html#third' component={ThirdPage} />
+            //                 <Route key={3} exact path='/web/spectron0/ui-components/content.html#sidebar' component={RightSidebarPage} />
+            //
+            //             </Switch>
+            //         </AnimatePresence>
+            //         )}/>
+            //
+            // </BrowserRouter>
+
+            //
+            // <HashRouter key="hash-router" hashType="noslash">
+            //
+            //     HashRouter:
+            //
+            //     {/*NOTE: this works... but I do not want to use this syntax. I want the hash syntax.*/}
+            //     {/*<Link to="/settings">settings</Link>*/}
+            //     {/*<Link to="/help">help</Link>*/}
+            //
+            //     {/*<Link to={{hash: '#settings'}}>settings</Link>*/}
+            //      {/*<Link to={{hash: '#help'}}>help</Link>*/}
+            //
+            //      {/*<a href="#settings">settings</a>*/}
+            //      {/*<a href="#home">home</a>*/}
+            //
+            //     <Switch>
+            //
+            //         <Route path='/settings'
+            //                render={() => <div>settings page</div>}/>
+            //
+            //         <Route path='/help'
+            //                render={() => <div>help page</div>}/>
+            //
+            //     </Switch>
+            //
+            // </HashRouter>
+
+            //
             <BrowserRouter key="browser-router">
 
-                <Link to={{hash: '#'}}>home</Link>
-                <Link to={{hash: '#second'}}>second</Link>
-                <Link to={{hash: '#third'}}>third</Link>
-                <Link to={{hash: '#sidebar'}}>sidebar</Link>
+                BrowserRouter with hash only
 
-                <Route render={({ location }) => (
-                    <AnimatePresence exitBeforeEnter initial={false}>
-                        <Switch location={loc}>
+                <Link to="#settings">settings</Link>
+                <Link to="#help">help</Link>
 
-                            <Route key={0} exact path='/web/spectron0/ui-components/content.html' component={FirstPage} />
-                            <Route key={1} exact path='/web/spectron0/ui-components/content.html#second' component={SecondPage} />
-                            <Route key={2} exact path='/web/spectron0/ui-components/content.html#third' component={ThirdPage} />
-                            <Route key={3} exact path='/web/spectron0/ui-components/content.html#sidebar' component={RightSidebarPage} />
+                <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                        </Switch>
-                    </AnimatePresence>
-                    )}/>
+                     <Route path='#settings'
+                            render={() => <div>settings page</div>}/>
+
+                     <Route path='#help'
+                            render={() => <div>help page</div>}/>
+
+                </Switch>
 
             </BrowserRouter>
+
         );
 
         // <Route render={({ location }) => (
