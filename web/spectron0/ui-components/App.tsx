@@ -40,6 +40,7 @@ import {PolarSVGIcon} from "../../js/ui/svg_icons/PolarSVGIcon";
 import {PageTransition} from "../../js/ui/motion/PageTransition";
 import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
 import {Pulse} from "../../js/ui/motion/Pulse";
+import {SlideFromRight} from "../../js/ui/motion/SlideFromRight";
 
 const styles = {
     swatch: {
@@ -362,6 +363,25 @@ export class App<P> extends React.Component<{}, IAppState> {
             //
             // </PageTransition>
 
+                <div className="mt-5"
+                     style={{
+                         display: 'flex',
+                         overflow: 'hidden'
+                     }}>
+                    <div className="ml-auto mr-auto border"
+                         style={{
+                             maxWidth: '350px',
+                             width: '350px'
+                         }}>
+
+                        <SlideFromRight>
+                            <PolarSVGIcon/>
+                        </SlideFromRight>
+
+                    </div>
+                </div>
+
+
             // <BottomSheet>
             //
             //     <h1>
@@ -438,33 +458,33 @@ export class App<P> extends React.Component<{}, IAppState> {
             //     </Switch>
             //
             // </BrowserRouter>
-
-            <BrowserRouter key="browser-router">
-
-                BrowserRouter with hash only
-
-                <Link to="#settings">settings</Link>
-                <Link to="#help">help</Link>
-
-                <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                     <Route path='#settings'
-                            render={() => <div>settings page</div>}/>
-
-                     <Route path='#help'
-                            render={() => <div>help page</div>}/>
-
-                </Switch>
-
-                <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                    <Route path='#help'
-                           render={() => <div>help page 2</div>}/>
-
-                </Switch>
-
-
-            </BrowserRouter>
+            //
+            // <BrowserRouter key="browser-router">
+            //
+            //     BrowserRouter with hash only
+            //
+            //     <Link to="#settings">settings</Link>
+            //     <Link to="#help">help</Link>
+            //
+            //     <Switch location={ReactRouters.createLocationWithHashOnly()}>
+            //
+            //          <Route path='#settings'
+            //                 render={() => <div>settings page</div>}/>
+            //
+            //          <Route path='#help'
+            //                 render={() => <div>help page</div>}/>
+            //
+            //     </Switch>
+            //
+            //     <Switch location={ReactRouters.createLocationWithHashOnly()}>
+            //
+            //         <Route path='#help'
+            //                render={() => <div>help page 2</div>}/>
+            //
+            //     </Switch>
+            //
+            //
+            // </BrowserRouter>
         );
 
         // <Route render={({ location }) => (
