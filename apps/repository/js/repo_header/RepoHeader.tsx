@@ -14,6 +14,7 @@ import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
 import {Button} from "reactstrap";
+import {Link} from "react-router-dom";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -60,11 +61,11 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         {this.props.right}
 
-                        <a href="#settings">
+                        <Link to={{hash: 'settings'}}>
                             <Button size="md" color="clear" className="btn-no-outline">
                                 <i className="fas fa-cog"/>
                             </Button>
-                        </a>
+                        </Link>
 
                         {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
 
