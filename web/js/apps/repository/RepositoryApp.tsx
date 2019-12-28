@@ -60,8 +60,6 @@ import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_la
 import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
-import {NavRouter} from "../../../../apps/repository/js/NavRouter";
-import {FixedNav} from "../../../../apps/repository/js/FixedNav";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 
 const log = Logger.create();
