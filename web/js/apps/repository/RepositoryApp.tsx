@@ -360,51 +360,58 @@ export class RepositoryApp {
 
                             <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
 
-                            <Route exact
-                                   path={[
-                                       '/#plans',
-                                       '/plans'
-                                   ]}
-                                   render={premiumScreen}/>
+                            <Route exact path='/#plans' render={premiumScreen}/>
 
-                            <Route exact
-                                   path={[
-                                       '/#plans-year',
-                                       '/plans-year'
-                                   ]}
-                                   render={premiumScreenYear}/>
+                            <Route exact path='/#plans-year'  render={premiumScreenYear}/>
 
                             <Route exact path='/#support' render={supportScreen}/>
 
-                            <Route exact path='/#premium' render={premiumScreen}/>
+                            <Route exact path='/#stats' component={renderStatsScreen}/>
 
-                            <Route exact path='/ui-components' render={() => <UIComponentsScreen persistenceLayerManager={this.persistenceLayerManager}
-                                                                                                 persistenceLayerProvider={persistenceLayerProvider}/>} />
-
-                            <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
-
-                            <Route path='/group/:group/docs' render={renderGroupScreen}/>
-
-                            <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
-
-                            <Route path='/group/:group' render={renderGroupHighlightsScreen}/>
-
-                            <Route exact path='/groups' render={renderGroupsScreen}/>
-
-                            <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
-
-                            <Route exact path='/invite' render={renderInvite}/>
-
-                            <Route exact path={['/#stats', '/stats']} component={renderStatsScreen}/>
-
-                        </Switch>
-
-                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
-                            <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
-                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
                         </Switch>
 
                 </BrowserRouter>,
+
+                // the path-only router for all 'modern' paths
+                <BrowserRouter key="path-router">
+
+                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
+
+                        <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
+
+                        <Route path='/group/:group/docs' render={renderGroupScreen}/>
+
+                        <Route path='/group/:group/highlight/:id' render={renderGroupHighlightScreen}/>
+
+                        <Route path='/group/:group' render={renderGroupHighlightsScreen}/>
+
+                        <Route exact path='/groups' render={renderGroupsScreen}/>
+
+                        <Route exact path='/groups/create' render={renderCreateGroupScreen}/>
+
+                        <Route exact path='/invite' render={renderInvite}/>
+
+                        <Route exact path='/plans' render={premiumScreen}/>
+
+                        <Route exact path='/plans-year' render={premiumScreenYear}/>
+
+                        <Route exact path='/ui-components' render={() => <UIComponentsScreen persistenceLayerManager={this.persistenceLayerManager}
+                                                                                             persistenceLayerProvider={persistenceLayerProvider}/>} />
+
+                        <Route exact path='/premium' render={premiumScreen}/>
+
+                        <Route exact path='/support' render={supportScreen}/>
+
+                        <Route exact path='/stats' component={renderStatsScreen}/>
+
+                        <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
+
+                        <Route exact path='/' component={renderDefaultScreenByDevice}/>
+
+                    </Switch>
+
+                </BrowserRouter>,
+
                 <BrowserRouter key="hash-router">
 
                     <Switch location={ReactRouters.createLocationWithHashOnly()}>
