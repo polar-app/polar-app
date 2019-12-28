@@ -77,11 +77,8 @@ const Router = (props: RouterProps) => (
 
         <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-            <AnimatedRoute path='/annotations#start-review'
-                           render={() => (
-                               <FadeIn>
-                                   <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>
-                               </FadeIn>)}/>
+            <Route path='/annotations#start-review'
+                   render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
 
             <Route path='/annotations#review-flashcards'
                    component={() => <IndeterminateLoadingTransition provider={() => props.onCreateReviewer('flashcard')}/>}/>

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SlideFromBottom} from "../spring/SlideFromBottom";
-import { FadeIn } from '../spring/FadeIn';
+import {SlideFromBottom} from "../motion/SlideFromBottom";
 
 /**
  * A sheet anchored to the bottom of the page.
@@ -35,8 +34,7 @@ export class BottomSheet extends React.Component<IProps> {
 
                  </div>
 
-                <div className=""
-                                 style={{
+                <SlideFromBottom style={{
                                      position: 'absolute',
                                      bottom: 0,
                                      left: 0,
@@ -47,7 +45,7 @@ export class BottomSheet extends React.Component<IProps> {
 
                     {this.props.children}
 
-                </div>
+               </SlideFromBottom>
 
             </div>
 

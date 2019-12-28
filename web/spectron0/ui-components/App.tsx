@@ -336,6 +336,14 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
+            <BottomSheet>
+
+                <h1>
+                    This is the bottom sheet.  It's pretty awesome!
+                </h1>
+
+            </BottomSheet>
+
             // <BrowserRouter key="browser-router">
             //
             //     <Link to={{hash: '#'}}>home</Link>
@@ -386,24 +394,24 @@ export class App<P> extends React.Component<{}, IAppState> {
             // </HashRouter>
 
             //
-            <BrowserRouter key="browser-router">
-
-                BrowserRouter with hash only
-
-                <Link to="#settings">settings</Link>
-                <Link to="#help">help</Link>
-
-                <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                     <Route path='#settings'
-                            render={() => <div>settings page</div>}/>
-
-                     <Route path='#help'
-                            render={() => <div>help page</div>}/>
-
-                </Switch>
-
-            </BrowserRouter>
+            // <BrowserRouter key="browser-router">
+            //
+            //     BrowserRouter with hash only
+            //
+            //     <Link to="#settings">settings</Link>
+            //     <Link to="#help">help</Link>
+            //
+            //     <Switch location={ReactRouters.createLocationWithHashOnly()}>
+            //
+            //          <Route path='#settings'
+            //                 render={() => <div>settings page</div>}/>
+            //
+            //          <Route path='#help'
+            //                 render={() => <div>help page</div>}/>
+            //
+            //     </Switch>
+            //
+            // </BrowserRouter>
 
         );
 
