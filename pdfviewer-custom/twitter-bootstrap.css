@@ -29,7 +29,7 @@ button.dropdown-item:hover {
 }
 
 /* custom CSS for mobile devices */
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-device-width: 450px) {
 
     .d-none-mobile {
         display: none;
@@ -37,7 +37,7 @@ button.dropdown-item:hover {
 
 }
 
-@media only screen and (max-device-width: 850px) {
+@media only screen and (max-device-width: 1024px) {
 
     .d-none-tablet {
         display: none;
@@ -45,7 +45,7 @@ button.dropdown-item:hover {
 
 }
 
-@media only screen and (min-device-width: 480px) {
+@media only screen and (min-device-width: 1024px) {
 
     .d-none-desktop {
         display: none;
