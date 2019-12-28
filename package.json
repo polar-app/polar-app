@@ -203,7 +203,6 @@
     "react-moment": "~0.9.6",
     "react-router-dom": "~5.1.2",
     "react-select": "~2.1.2",
-    "react-spring": "^8.0.27",
     "react-summernote": "~2.0.0",
     "react-table": "~6.8.6",
     "reactstrap": "^8.1.1",

@@ -24,11 +24,8 @@ import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
 import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
 import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
-import {useSpring, animated, useTransition} from "react-spring";
 import {LeftSidebar} from "../../js/ui/motion/LeftSidebar";
 import {FadeIn} from "../../js/ui/motion/FadeIn";
-import {SlideFromBottom} from "../../js/ui/spring/SlideFromBottom";
-import {TestSpring} from "../../js/ui/spring/TestSpring";
 import {useState} from "react";
 import {Button} from "reactstrap";
 
@@ -138,17 +135,6 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         ];
 
-        const MyAnimatedComponent = () => {
-
-            const props = useSpring({
-                opacity: 1,
-                from: { opacity: 0 },
-            });
-
-            return <animated.h1 style={props}>hello</animated.h1>;
-
-        };
-
         // const LeftSidebar = () => (
         //     <div style={{
         //              position: 'absolute',
@@ -216,29 +202,6 @@ export class App<P> extends React.Component<{}, IAppState> {
         //     </BottomSheet>
         // );
 
-
-        // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/27805
-        const Foo = (): any => {
-            const [show, set] = useState(true);
-            const transitions = useTransition(show, null, {
-                from: {position: 'absolute', opacity: 0},
-                enter: {opacity: 1},
-                leave: {opacity: 0},
-            });
-
-            console.log("FIXME HERE");
-
-            const result = transitions.map(({item, key, props}) => {
-                if (item) {
-                    return <animated.div key={key} style={props}>this is a single component that should vanish</animated.div>;
-                } else {
-                    return <animated.div key={key} style={props}></animated.div>;
-                }
-            });
-
-            return result;
-
-        };
         //
         // const FooComponent = () => {
         //
