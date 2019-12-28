@@ -339,28 +339,28 @@ export class App<P> extends React.Component<{}, IAppState> {
         const loc = ReactRouters.createLocationWithPathAndHash();
 
         return (
-
-            <PageTransition>
-
-                <div style={{
-                    display: 'flex'
-                }}>
-                    <div className="ml-auto mr-auto"
-                         style={{
-                             maxWidth: '350px',
-                             width: '350px'
-                         }}>
-
-                        <Pulse>
-                            <PolarSVGIcon/>
-                        </Pulse>
-
-                        <IndeterminateProgressBar/>
-
-                    </div>
-                </div>
-
-            </PageTransition>
+            //
+            // <PageTransition>
+            //
+            //     <div style={{
+            //         display: 'flex'
+            //     }}>
+            //         <div className="ml-auto mr-auto"
+            //              style={{
+            //                  maxWidth: '350px',
+            //                  width: '350px'
+            //              }}>
+            //
+            //             <Pulse>
+            //                 <PolarSVGIcon/>
+            //             </Pulse>
+            //
+            //             <IndeterminateProgressBar/>
+            //
+            //         </div>
+            //     </div>
+            //
+            // </PageTransition>
 
             // <BottomSheet>
             //
@@ -439,6 +439,32 @@ export class App<P> extends React.Component<{}, IAppState> {
             //
             // </BrowserRouter>
 
+            <BrowserRouter key="browser-router">
+
+                BrowserRouter with hash only
+
+                <Link to="#settings">settings</Link>
+                <Link to="#help">help</Link>
+
+                <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+                     <Route path='#settings'
+                            render={() => <div>settings page</div>}/>
+
+                     <Route path='#help'
+                            render={() => <div>help page</div>}/>
+
+                </Switch>
+
+                <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+                    <Route path='#help'
+                           render={() => <div>help page 2</div>}/>
+
+                </Switch>
+
+
+            </BrowserRouter>
         );
 
         // <Route render={({ location }) => (

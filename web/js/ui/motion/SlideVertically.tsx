@@ -10,9 +10,18 @@ export const SlideVertically = (props: IProps) => {
     };
 
     return (
-        <motion.div initial={{ transform: `translateY(${props.initialY}%)` }}
-                    animate={{ transform: `translateY(${props.targetY}%)` }}
-                    exit={{ transform: `translateY(${props.initialY}%)` }}
+        <motion.div initial={{
+                        transform: `translateY(${props.initialY}%)`
+                    }}
+                    animate={{
+                        transform: `translateY(${props.targetY}%)`
+                    }}
+                    exit={{
+                        transform: `translateY(${props.initialY}%)`
+                    }}
+                    // transition={{
+                    //     ease: "linear"
+                    // }}
                     style={style}>
 
             {props.children}

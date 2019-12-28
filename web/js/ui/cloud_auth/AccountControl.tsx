@@ -72,7 +72,7 @@ const ViewPlansAndPricingButton = () => {
     };
 
     return (
-        <Link to={{pathname: '/plans'}}>
+        <Link to='/plans'>
             <Button color="success"
                     size="lg"
                     onClick={handler}>
