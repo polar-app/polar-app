@@ -39,6 +39,7 @@ import {AccountControlSidebar} from "../../../apps/repository/js/AccountControlS
 import {PolarSVGIcon} from "../../js/ui/svg_icons/PolarSVGIcon";
 import {PageTransition} from "../../js/ui/motion/PageTransition";
 import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
+import {Pulse} from "../../js/ui/motion/Pulse";
 
 const styles = {
     swatch: {
@@ -350,7 +351,9 @@ export class App<P> extends React.Component<{}, IAppState> {
                              width: '350px'
                          }}>
 
-                        <PolarSVGIcon/>
+                        <Pulse>
+                            <PolarSVGIcon/>
+                        </Pulse>
 
                         <IndeterminateProgressBar/>
 
