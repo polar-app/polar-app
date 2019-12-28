@@ -3,7 +3,6 @@ import {useState} from 'react';
 import {HashRouter, Link, Route, Switch} from "react-router-dom";
 
 import {AnimatePresence, motion} from 'framer-motion';
-import {GalleryApp} from "./gallery/GalleryApp";
 
 export const FadeIn = (props: any) => {
 
