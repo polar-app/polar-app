@@ -36,6 +36,9 @@ import {motion, AnimatePresence} from 'framer-motion';
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
 import {HashRouter} from "react-router-dom";
 import {AccountControlSidebar} from "../../../apps/repository/js/AccountControlSidebar";
+import {PolarSVGIcon} from "../../js/ui/svg_icons/PolarSVGIcon";
+import {PageTransition} from "../../js/ui/motion/PageTransition";
+import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
 
 const styles = {
     swatch: {
@@ -336,13 +339,33 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <BottomSheet>
+            <PageTransition>
 
-                <h1>
-                    This is the bottom sheet.  It's pretty awesome!
-                </h1>
+                <div style={{
+                    display: 'flex'
+                }}>
+                    <div className="ml-auto mr-auto"
+                         style={{
+                             maxWidth: '350px',
+                             width: '350px'
+                         }}>
 
-            </BottomSheet>
+                        <PolarSVGIcon/>
+
+                        <IndeterminateProgressBar/>
+
+                    </div>
+                </div>
+
+            </PageTransition>
+
+            // <BottomSheet>
+            //
+            //     <h1>
+            //         This is the bottom sheet.  It's pretty awesome!
+            //     </h1>
+            //
+            // </BottomSheet>
 
             // <BrowserRouter key="browser-router">
             //
