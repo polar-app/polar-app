@@ -61,7 +61,6 @@ import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/U
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
-import {HashRoute} from "../../ui/router/HashRoute";
 
 const log = Logger.create();
 

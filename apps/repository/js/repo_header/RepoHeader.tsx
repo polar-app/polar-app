@@ -13,7 +13,6 @@ import {PersistenceLayerProvider} from "../../../../web/js/datastore/Persistence
 import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
-import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 
 /**
