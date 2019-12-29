@@ -39,11 +39,15 @@ const Loading = (props: IProps) => (
                         <PolarSVGIcon/>
                     </Pulse>
 
-                    <h2 className="text-muted">
-                        {props.title || "LOADING"}
+                    <IndeterminateProgressBar/>
+
+                    <h2 className="text-muted mt-2">
+                        LOADING
                     </h2>
 
-                    <IndeterminateProgressBar/>
+                    <p className="text-grey400 text-lg">
+                        One moment.  Doing some cool computational stuff.
+                    </p>
 
                 </div>
             </div>
