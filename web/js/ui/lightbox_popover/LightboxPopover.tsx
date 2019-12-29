@@ -22,6 +22,7 @@ export class LightboxPopover extends React.Component<IProps, IState> {
         if (this.props.open !== nextProps.open) {
             Blackout.toggle(nextProps.open);
         }
+
     }
 
     public render() {

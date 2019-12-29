@@ -3,9 +3,6 @@ import Alert from 'reactstrap/lib/Alert';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-// <i className="fab fa-github"></i>
-
-// noinspection TsLint
 export class MessageBanner extends React.Component<IProps, IState> {
 
     private message?: Message;
@@ -42,7 +39,7 @@ export class MessageBanner extends React.Component<IProps, IState> {
             </div>);
 
         } else {
-            return (<div></div>);
+            return null;
         }
 
     }
