@@ -38,6 +38,8 @@ import {PageTransition} from "../../js/ui/motion/PageTransition";
 import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
 import {Pulse} from "../../js/ui/motion/Pulse";
 import {SlideFromRight} from "../../js/ui/motion/SlideFromRight";
+import {BlackoutCurtain} from "../../js/ui/BlackoutCurtain";
+import {ReviewerModal} from "../../../apps/repository/js/reviewer/ReviewerModal";
 
 const styles = {
     swatch: {
@@ -303,6 +305,39 @@ export class App<P> extends React.Component<{}, IAppState> {
         const loc = ReactRouters.createLocationWithPathAndHash();
 
         return (
+
+            <ReviewerModal>
+                <PageTransition>
+
+                    <div style={{
+                        display: 'flex'
+                    }}>
+                        <div className="ml-auto mr-auto text-center"
+                             style={{
+                                 maxWidth: '350px',
+                                 width: '350px'
+                             }}>
+
+                            <Pulse>
+                                <PolarSVGIcon/>
+                            </Pulse>
+
+                            <IndeterminateProgressBar/>
+
+                            <h2 className="text-muted mt-2">
+                                LOADING
+                            </h2>
+
+                            <p className="text-grey400 text-lg">
+                                One moment.  Doing some cool computational stuff.
+                            </p>
+
+                        </div>
+                    </div>
+
+                </PageTransition>
+            </ReviewerModal>
+
             //
             // <PageTransition>
             //
@@ -325,24 +360,39 @@ export class App<P> extends React.Component<{}, IAppState> {
             //     </div>
             //
             // </PageTransition>
+            //
+            // <motion.div style={{
+            //                position: 'absolute',
+            //                left: 0,
+            //                top: 0,
+            //                width: '100%',
+            //                height: '100%',
+            //                backgroundColor: 'red'
+            //             }}
+            //             drag="x"
+            //             onDragStart={() => console.log("drag start")}
+            //             onDragEnd={() => console.log("drag end")}>
+            //
+            //
+            // </motion.div>
 
-                <div className="mt-5"
-                     style={{
-                         display: 'flex',
-                         overflow: 'hidden'
-                     }}>
-                    <div className="ml-auto mr-auto border"
-                         style={{
-                             maxWidth: '350px',
-                             width: '350px'
-                         }}>
-
-                        <SlideFromRight>
-                            <PolarSVGIcon/>
-                        </SlideFromRight>
-
-                    </div>
-                </div>
+                // <div className="mt-5"
+                //      style={{
+                //          display: 'flex',
+                //          overflow: 'hidden'
+                //      }}>
+                //     <div className="ml-auto mr-auto border"
+                //          style={{
+                //              maxWidth: '350px',
+                //              width: '350px'
+                //          }}>
+                //
+                //         <SlideFromRight>
+                //             <PolarSVGIcon/>
+                //         </SlideFromRight>
+                //
+                //     </div>
+                // </div>
 
 
             // <BottomSheet>

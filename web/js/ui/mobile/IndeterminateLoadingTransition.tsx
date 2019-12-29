@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {IndeterminateProgressBar} from "../progress_bar/IndeterminateProgressBar";
-import { Logger } from 'polar-shared/src/logger/Logger';
+import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 

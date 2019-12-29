@@ -4,7 +4,7 @@ import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
-import {LightModal} from "../../../../web/js/ui/LightModal";
+import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
 import {
     Rating,
     RepetitionMode,
@@ -248,12 +248,10 @@ export class Reviewers {
         RendererAnalytics.event({category: 'reviewer', action: 'created-' + mode});
 
         return (
-            <LightModal>
-                <Reviewer taskReps={taskReps}
-                          onRating={onRating}
-                          onSuspended={onSuspended}
-                          onFinished={onFinished}/>
-            </LightModal>
+            <Reviewer taskReps={taskReps}
+                      onRating={onRating}
+                      onSuspended={onSuspended}
+                      onFinished={onFinished}/>
         );
 
     }

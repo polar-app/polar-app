@@ -11,6 +11,7 @@ import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Link} from "react-router-dom";
 import {ReviewFinished} from "./ReviewFinished";
+import {ReviewerModal} from "./ReviewerModal";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -33,40 +34,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
     public render() {
 
-        const ReviewerModal = (props: any) => {
-
-            const createStyle = () => {
-
-                // again, hard, good, easy
-
-                const style: React.CSSProperties = {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    backgroundColor: 'var(--primary-background-color)',
-                };
-
-                if (Platforms.isMobile()) {
-                    style.width = '100%';
-                    style.height = '100%';
-                } else {
-                    style.maxHeight = '1000px';
-                    style.width = '800px';
-                    style.maxWidth = '800px';
-                }
-
-                return style;
-
-            };
-
-            const style = createStyle();
-
-            return <div style={style}
-                        className="ml-auto mr-auto h-100 border p-1 text-md">
-                {props.children}
-            </div>;
-
-        };
-
         const taskRep = this.state.taskRep;
 
         if (! taskRep) {
@@ -78,8 +45,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             );
 
         }
-
-        const {id, action, created, color} = taskRep;
 
         const perc = Math.floor(Percentages.calculate(this.state.finished, this.state.total));
 

@@ -39,6 +39,7 @@ import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/Indet
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
+import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/IndeterminateLoadingModal";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -68,22 +69,21 @@ interface RouterProps {
 
 const Router = (props: RouterProps) => (
 
-    <BrowserRouter>
+    <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-        <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+        <Route path='/annotations#start-review'
+               render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
 
-            <Route path='/annotations#start-review'
-                   render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+        <Route path='/annotations#review-flashcards'
+               component={() => <IndeterminateLoadingModal id="loading-flashcards"
+                                                           provider={() => props.onCreateReviewer('flashcard')}/>}/>
 
-            <Route path='/annotations#review-flashcards'
-                   component={() => <IndeterminateLoadingTransition provider={() => props.onCreateReviewer('flashcard')}/>}/>
+        <Route path='/annotations#review-reading'
+               component={() => <IndeterminateLoadingModal id="loading-review"
+                                                           provider={() => props.onCreateReviewer('reading')}/>}/>
 
-            <Route path='/annotations#review-reading'
-                   component={() => <IndeterminateLoadingTransition provider={() => props.onCreateReviewer('reading')}/>}/>
+    </Switch>
 
-        </Switch>
-
-    </BrowserRouter>
 );
 
 namespace main {
