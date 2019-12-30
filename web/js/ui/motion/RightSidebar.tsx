@@ -27,7 +27,7 @@ export const RightSidebar = (props: IProps) => {
 
     // TODO: this isn't working either...exit just does NOT get called!
 
-    const inactiveWidth = -1 * width;
+    const inactiveWidth = -1 * (width * 0.7);
 
     return (
         <>
@@ -35,9 +35,18 @@ export const RightSidebar = (props: IProps) => {
             <FadeBlackout style={{zIndex: zIndex - 1}} onClick={() => props.onClose()}/>
 
             <motion.div className="right-sidebar border-left"
-                        initial={{ right: inactiveWidth }}
-                        animate={{ right: 0 }}
-                        exit={{ right: inactiveWidth }}
+                        initial={{
+                            opacity: 0.0,
+                            right: inactiveWidth
+                        }}
+                        animate={{
+                            opacity: 1.0,
+                            right: 0
+                        }}
+                        exit={{
+                            opacity: 0.0,
+                            right: inactiveWidth
+                        }}
                         style={style}>
 
                 <div className="text-right pr-1">

@@ -11,12 +11,15 @@ export const SlideVertically = (props: IProps) => {
 
     return (
         <motion.div initial={{
+                        opacity: 0.0,
                         transform: `translateY(${props.initialY}%)`
                     }}
                     animate={{
+                        opacity: 1.0,
                         transform: `translateY(${props.targetY}%)`
                     }}
                     exit={{
+                        opacity: 0.0,
                         transform: `translateY(${props.initialY}%)`
                     }}
                     // transition={{

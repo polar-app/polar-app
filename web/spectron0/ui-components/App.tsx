@@ -68,11 +68,16 @@ const Main = () => {
     return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
 };
 
-const FirstPage = () => (
-    <FadeIn>
-        this is the first page
-    </FadeIn>
-);
+const FirstPage = () => {
+
+    console.log("FIXME: RENDER first");
+
+    return (
+        <FadeIn>
+            this is the first page
+        </FadeIn>
+    );
+};
 
 const SecondPage = () => (
     <FadeIn>
@@ -306,37 +311,53 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <ReviewerModal>
-                <PageTransition>
+            <BrowserRouter>
 
-                    <div style={{
-                        display: 'flex'
-                    }}>
-                        <div className="ml-auto mr-auto text-center"
-                             style={{
-                                 maxWidth: '350px',
-                                 width: '350px'
-                             }}>
+                <Link to={{hash: '#home'}}>home</Link>
+                <Link to={{hash: '#second'}}>second</Link>
 
-                            <Pulse>
-                                <PolarSVGIcon/>
-                            </Pulse>
+                <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                            <IndeterminateProgressBar/>
+                    <Route key={0} exact path='#home' component={FirstPage} />
+                    <Route key={1} exact path='#second' component={SecondPage} />
 
-                            <h2 className="text-muted mt-2">
-                                LOADING
-                            </h2>
+                </Switch>
 
-                            <p className="text-grey400 text-lg">
-                                One moment.  Doing some cool computational stuff.
-                            </p>
+            </BrowserRouter>
 
-                        </div>
-                    </div>
 
-                </PageTransition>
-            </ReviewerModal>
+            //
+            // <ReviewerModal>
+            //     <PageTransition>
+            //
+            //         <div style={{
+            //             display: 'flex'
+            //         }}>
+            //             <div className="ml-auto mr-auto text-center"
+            //                  style={{
+            //                      maxWidth: '350px',
+            //                      width: '350px'
+            //                  }}>
+            //
+            //                 <Pulse>
+            //                     <PolarSVGIcon/>
+            //                 </Pulse>
+            //
+            //                 <IndeterminateProgressBar/>
+            //
+            //                 <h2 className="text-muted mt-2">
+            //                     LOADING
+            //                 </h2>
+            //
+            //                 <p className="text-grey400 text-lg">
+            //                     One moment.  Doing some cool computational stuff.
+            //                 </p>
+            //
+            //             </div>
+            //         </div>
+            //
+            //     </PageTransition>
+            // </ReviewerModal>
 
             //
             // <PageTransition>
