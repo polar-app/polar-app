@@ -18,7 +18,6 @@ import {
 import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {ReactRouters} from "../../js/ui/ReactRouters";
 import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
 import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
@@ -40,6 +39,9 @@ import {Pulse} from "../../js/ui/motion/Pulse";
 import {SlideFromRight} from "../../js/ui/motion/SlideFromRight";
 import {BlackoutCurtain} from "../../js/ui/BlackoutCurtain";
 import {ReviewerModal} from "../../../apps/repository/js/reviewer/ReviewerModal";
+import {CachedRoute} from "../../js/react/router/CachedRoute";
+import {ReactRouters} from "../../js/react/router/ReactRouters";
+import {Cached} from "../../js/react/Cached";
 
 const styles = {
     swatch: {
@@ -309,6 +311,8 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         const loc = ReactRouters.createLocationWithPathAndHash();
 
+        const foo = () => <div/>;
+
         return (
 
             <BrowserRouter>
@@ -318,8 +322,9 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                    <Route key={0} exact path='#home' component={FirstPage} />
-                    <Route key={1} exact path='#second' component={SecondPage} />
+                    <CachedRoute key={0} exact path='#home' component={() => <FirstPage/>} />
+                    <CachedRoute key={1} exact path='#second' component={() => <SecondPage/>} />
+                    <Route key={0} exact path='#home' component={foo} />
 
                 </Switch>
 

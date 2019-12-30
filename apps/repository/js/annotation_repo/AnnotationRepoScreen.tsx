@@ -29,17 +29,16 @@ import {FolderSidebar} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
-import {ReactRouters} from "../../../../web/js/ui/ReactRouters";
+import {Link, Route, Switch} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
-import {IndeterminateLoadingTransition} from "../../../../web/js/ui/mobile/IndeterminateLoadingTransition";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
 import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/IndeterminateLoadingModal";
+import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;

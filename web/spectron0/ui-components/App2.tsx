@@ -18,7 +18,6 @@ import {
 import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {ReactRouters} from "../../js/ui/ReactRouters";
 import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
 import milliseconds from "mocha/lib/ms";
 import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";

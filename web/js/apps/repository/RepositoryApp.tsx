@@ -49,7 +49,6 @@ import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {UIModes} from "../../ui/uimodes/UIModes";
 import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
-import {ReactRouters} from "../../ui/ReactRouters";
 import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
 import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
 import {PlatformStyles} from "../../ui/PlatformStyles";
@@ -61,6 +60,8 @@ import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/U
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
+import {ReactRouters} from "../../react/router/ReactRouters";
+import { Cached } from '../../react/Cached';
 
 const log = Logger.create();
 
@@ -158,39 +159,43 @@ export class RepositoryApp {
         const renderDocRepoScreen = () => {
 
             return (
-                <AuthRequired authStatus={authStatus}>
-                    <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
-                                         repoDocMetaLoader={this.repoDocInfoLoader}
-                                         persistenceLayerManager={this.persistenceLayerManager}
-                                         render={(docRepo) =>
-                        <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
-                                       persistenceLayerController={persistenceLayerController}
-                                       tags={docRepo.docTags}
-                                       docRepo={docRepo}
-                                       updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                       repoDocMetaManager={this.repoDocInfoManager}
-                                       repoDocMetaLoader={this.repoDocInfoLoader}/>
-                    }/>
-                </AuthRequired>
+                <Cached>
+                    <AuthRequired authStatus={authStatus}>
+                        <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
+                                             repoDocMetaLoader={this.repoDocInfoLoader}
+                                             persistenceLayerManager={this.persistenceLayerManager}
+                                             render={(docRepo) =>
+                            <DocRepoScreen persistenceLayerProvider={persistenceLayerProvider}
+                                           persistenceLayerController={persistenceLayerController}
+                                           tags={docRepo.docTags}
+                                           docRepo={docRepo}
+                                           updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                           repoDocMetaManager={this.repoDocInfoManager}
+                                           repoDocMetaLoader={this.repoDocInfoLoader}/>
+                        }/>
+                    </AuthRequired>
+                </Cached>
             );
         };
 
         const renderAnnotationRepoScreen = () => {
             return (
-                <AuthRequired authStatus={authStatus}>
-                    <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
-                                         repoDocMetaLoader={this.repoDocInfoLoader}
-                                         persistenceLayerManager={this.persistenceLayerManager}
-                                         render={(props) =>
-                        <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
-                                              persistenceLayerProvider={persistenceLayerProvider}
-                                              tags={props.annotationTags}
-                                              updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                              repoDocMetaManager={this.repoDocInfoManager}
-                                              repoDocMetaLoader={this.repoDocInfoLoader}
-                                              syncBarProgress={syncBarProgress}/>
-                    }/>
-                </AuthRequired>
+                <Cached>
+                    <AuthRequired authStatus={authStatus}>
+                        <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
+                                             repoDocMetaLoader={this.repoDocInfoLoader}
+                                             persistenceLayerManager={this.persistenceLayerManager}
+                                             render={(props) =>
+                            <AnnotationRepoScreen persistenceLayerManager={this.persistenceLayerManager}
+                                                  persistenceLayerProvider={persistenceLayerProvider}
+                                                  tags={props.annotationTags}
+                                                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                                  repoDocMetaManager={this.repoDocInfoManager}
+                                                  repoDocMetaLoader={this.repoDocInfoLoader}
+                                                  syncBarProgress={syncBarProgress}/>
+                        }/>
+                    </AuthRequired>
+                </Cached>
             );
         };
 
@@ -414,8 +419,12 @@ export class RepositoryApp {
                         <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
                             <Route path='#settings'
-                                   render={() => <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}
-                                                                        persistenceLayerController={persistenceLayerController}/>}/>
+                                   render={() => (
+                                       <Cached>
+                                           <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}
+                                                                  persistenceLayerController={persistenceLayerController}/>
+                                       </Cached>
+                                   )}/>
 
                         </Switch>
 

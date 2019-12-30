@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {BrowserRouter, HashRouter, Link, Route, Switch} from "react-router-dom";
-import {SimpleTooltipEx} from "../../js/ui/tooltip/SimpleTooltipEx";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {Navbar} from "./Navbar";
-import {ReactRouters} from "../../js/ui/ReactRouters";
+import {ReactRouters} from "../../js/react/router/ReactRouters";
 
 class App<P> extends React.Component<{}, IAppState> {
 
