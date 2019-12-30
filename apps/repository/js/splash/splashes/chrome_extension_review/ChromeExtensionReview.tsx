@@ -1,11 +1,10 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Splash} from '../../Splash';
-import {EmbeddedImages} from '../../../splash2/whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {EventTrackedLink} from '../components/EventTrackedLink';
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
-import {ChromeSVGIcon} from "../../../../../../../polar-app-public/polar-react-svg-icons/src/ChromeSVGIcon";
+import {ChromeSVGIcon} from "../../../../../../web/js/ui/svg_icons/ChromeSVGIcon";
 
 const LINK = 'https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/';
 const EVENT_CATEGORY = 'splash-chrome-extension-review';
