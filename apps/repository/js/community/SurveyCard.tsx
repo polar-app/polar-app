@@ -29,7 +29,7 @@ export default class SurveyCard extends React.Component<any, any> {
                         <p className="text-center">
 
                         <a href={SURVEY_LINK}>
-                        <img src={EmbeddedImages.SURVEY}></img>
+                        {/*<img src={EmbeddedImages.SURVEY}></img>*/}
                         </a>
 
                         </p>

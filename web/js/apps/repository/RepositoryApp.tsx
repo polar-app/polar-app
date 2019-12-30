@@ -216,12 +216,12 @@ export class RepositoryApp {
                              persistenceLayerController={persistenceLayerController}/>
         );
 
-        const renderCommunityScreen = () => (
-            <AuthRequired authStatus={authStatus}>
-                <CommunityScreen persistenceLayerProvider={persistenceLayerProvider}
-                                 persistenceLayerController={persistenceLayerController}/>
-            </AuthRequired>
-        );
+        // const renderCommunityScreen = () => (
+        //     <AuthRequired authStatus={authStatus}>
+        //         <CommunityScreen persistenceLayerProvider={persistenceLayerProvider}
+        //                          persistenceLayerController={persistenceLayerController}/>
+        //     </AuthRequired>
+        // );
 
         const renderStatsScreen = () => (
             <AuthRequired authStatus={authStatus}>
@@ -240,14 +240,14 @@ export class RepositoryApp {
             );
         };
 
-        const editorsPicksScreen = () => {
-            return (
-                <AuthRequired authStatus={authStatus}>
-                    <EditorsPicksScreen persistenceLayerProvider={persistenceLayerProvider}
-                                        persistenceLayerController={persistenceLayerController}/>
-                </AuthRequired>
-                );
-        };
+        // const editorsPicksScreen = () => {
+        //     return (
+        //         <AuthRequired authStatus={authStatus}>
+        //             <EditorsPicksScreen persistenceLayerProvider={persistenceLayerProvider}
+        //                                 persistenceLayerController={persistenceLayerController}/>
+        //         </AuthRequired>
+        //         );
+        // };
 
         const renderCreateGroupScreen = () => {
 
@@ -361,11 +361,9 @@ export class RepositoryApp {
 
                             <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
 
-                            <Route exact path='/#community' render={renderCommunityScreen}/>
-
                             <Route exact path='/#logs' render={renderLogsScreen}/>
 
-                            <Route exact path='/#editors-picks' render={editorsPicksScreen}/>
+                            {/*<Route exact path='/#editors-picks' render={editorsPicksScreen}/>*/}
 
                             <Route exact path='/#plans' render={premiumScreen}/>
 

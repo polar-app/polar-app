@@ -5,6 +5,7 @@ import {EmbeddedImages} from '../../../splash2/whats_new/EmbeddedImages';
 import {SplitLayout, SplitLayoutLeft} from '../../../../../../web/js/ui/split_layout/SplitLayout';
 import {EventTrackedLink} from '../components/EventTrackedLink';
 import {SplitLayoutRight} from '../../../../../../web/js/ui/split_layout/SplitLayoutRight';
+import {ChromeSVGIcon} from "../../../../../../../polar-app-public/polar-react-svg-icons/src/ChromeSVGIcon";
 
 const LINK = 'https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/';
 const EVENT_CATEGORY = 'splash-chrome-extension-review';
@@ -62,7 +63,9 @@ export class ChromeExtensionReview extends React.Component<IProps, IState> {
                                                   eventAction='clicked-image'
                                                   href={LINK}>
 
-                                    <img style={{maxHeight: '250px'}} src={EmbeddedImages.CHROME_LOGO}/>
+                                    <div style={{maxHeight: '250px'}}>
+                                        <ChromeSVGIcon/>
+                                    </div>
 
                                 </EventTrackedLink>
 
