@@ -376,8 +376,6 @@ export class RepositoryApp {
 
                             <Route exact path='/#support' render={supportScreen}/>
 
-                            <Route exact path='/#stats' component={renderStatsScreen}/>
-
                             <Route exact path='/' component={renderDefaultScreenByDevice}/>
 
                         </Switch>
