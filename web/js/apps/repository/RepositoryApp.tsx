@@ -62,6 +62,7 @@ import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
 import { Cached } from '../../react/Cached';
+import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 
 const log = Logger.create();
 
@@ -81,6 +82,10 @@ export class RepositoryApp {
         log.info("Running with Polar version: " + Version.get());
 
         renderLoadingSplash();
+
+        // enable the navigation block.  This enables it by default and then turns
+        // it on again after login is completed.
+        ExternalNavigationBlock.set(true);
 
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
         const persistenceLayerController = this.persistenceLayerManager;

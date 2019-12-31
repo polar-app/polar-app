@@ -24,6 +24,7 @@ import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrite
 import {WebserverConfigs} from "polar-shared-webserver/src/webserver/WebserverConfig";
 import {FileRegistry} from "polar-shared-webserver/src/webserver/FileRegistry";
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
+import {ExternalNavigationBlockDelegates} from "../../electron/navigation/ExternalNavigationBlockDelegates";
 
 declare var global: any;
 
@@ -46,6 +47,8 @@ export class MainApp {
     public async start(): Promise<MainAppStarted> {
 
         MainAppExceptionHandlers.register();
+
+        ExternalNavigationBlockDelegates.init();
 
         // share the disk datastore with the remote.
         // TODO: move this so that we don't expose 'global' here.

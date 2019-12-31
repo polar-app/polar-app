@@ -3,6 +3,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {AuthHosts} from "./AuthHosts";
 import {ElectronUserAgents} from "../electron_browser/ElectronUserAgents";
+import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 
 const log = Logger.create();
 
@@ -137,10 +138,18 @@ export class MainAppBrowserWindowFactory {
 
         });
 
-        browserWindow.webContents.on('new-window', (e, url) => {
-            e.preventDefault();
-            shell.openExternal(url)
-                .catch(err => log.error("Cloud open external URL", err, url));
+        browserWindow.webContents.on('new-window', (e, newURL) => {
+
+            if (ExternalNavigationBlock.get()) {
+
+                e.preventDefault();
+                shell.openExternal(newURL)
+                    .catch(err => log.error("Could not open external URL", err, newURL));
+
+            } else {
+                log.notice("Allowing external navigation to new window URL: " + newURL);
+            }
+
         });
 
         browserWindow.webContents.on('will-navigate', (e, navURL) => {
@@ -152,24 +161,24 @@ export class MainAppBrowserWindowFactory {
 
             const host = parsedURL.hostname;
 
-            const allowedHosts = AuthHosts.get();
-
             if (host === "localhost") {
                 log.info("Always allowing localhost URL");
                 return;
             }
 
-            if (navURL.startsWith("https://") && allowedHosts.includes(host)) {
-                log.info("Allowing URL for authentication: " + navURL);
+            if (ExternalNavigationBlock.get()) {
+
+                log.info("Attempt to navigate to new URL: ", navURL);
+                // required to force the URLs clicked to open in a new browser.  The
+                // user probably / certainly wants to use their main browser.
+                e.preventDefault();
+                shell.openExternal(navURL)
+                    .catch(err => log.error("Cloud open external URL", err, url));
+
+            } else {
+                log.notice("Allowing external navigation to: " + navURL);
                 return;
             }
-
-            log.info("Attempt to navigate to new URL: ", navURL);
-            // required to force the URLs clicked to open in a new browser.  The
-            // user probably / certainly wants to use their main browser.
-            e.preventDefault();
-            shell.openExternal(navURL)
-                .catch(err => log.error("Cloud open external URL", err, url));
 
         });
 

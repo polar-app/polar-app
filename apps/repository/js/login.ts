@@ -6,6 +6,7 @@ import {URLs} from 'polar-shared/src/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
 
 // TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl
 class SignInSuccessURLs {
@@ -91,6 +92,9 @@ window.addEventListener('load', async () => {
     InitialLogin.sentAnalytics();
 
 });
+
+// disable the external navigation block during login for now.
+ExternalNavigationBlock.set(false);
 
 Firebase.init();
 

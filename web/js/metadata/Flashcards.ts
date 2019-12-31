@@ -17,7 +17,7 @@ export class Flashcards {
     public static FRONT_BACK_ARCHETYPE = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
     public static createMutable(flashcard: Flashcard): Flashcard {
-        // TODO: an idiosyncracy of the proxies system is that it mutates the
+        // TODO: an idiosyncrasy of the proxies system is that it mutates the
         // object so if it's read only it won't work.  This is a bug with
         // Proxies so I need to also fix that bug there in the future.
         return <Flashcard> {...flashcard};

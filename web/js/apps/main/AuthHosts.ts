@@ -3,7 +3,7 @@
  */
 export class AuthHosts {
 
-    public static get(): ReadonlyArray<String> {
+    public static get(): ReadonlyArray<string> {
 
         return [
             "accounts.google.com",
