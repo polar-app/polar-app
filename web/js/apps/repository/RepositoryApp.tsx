@@ -368,8 +368,6 @@ export class RepositoryApp {
 
                             <Route exact path='/#logs' render={renderLogsScreen}/>
 
-                            {/*<Route exact path='/#editors-picks' render={editorsPicksScreen}/>*/}
-
                             <Route exact path='/#plans' render={premiumScreen}/>
 
                             <Route exact path='/#plans-year'  render={premiumScreenYear}/>
@@ -377,6 +375,8 @@ export class RepositoryApp {
                             <Route exact path='/#support' render={supportScreen}/>
 
                             <Route exact path='/#stats' component={renderStatsScreen}/>
+
+                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
 
                         </Switch>
 
@@ -414,8 +414,6 @@ export class RepositoryApp {
                             <Route exact path='/stats' component={renderStatsScreen}/>
 
                             <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
-
-                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
 
                         </Switch>
 
