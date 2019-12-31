@@ -6,8 +6,8 @@ import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {UserInfoDataLoader} from "./persistence_layer/UserInfoDataLoader";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {AccountActions} from "./AccountActions";
 import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
+import {AccountActions} from "../../../web/js/accounts/AccountActions";
 
 interface AccountInfoProps extends AccountControlSidebarProps {
     readonly userInfo: UserInfo | undefined;

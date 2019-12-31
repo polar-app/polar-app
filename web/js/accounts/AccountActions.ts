@@ -1,8 +1,35 @@
 import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
-import { accounts } from 'polar-accounts/src/accounts';
+import {accounts} from 'polar-accounts/src/accounts';
+import {PersistenceLayerController} from "../datastore/PersistenceLayerManager";
+import * as firebase from "../firebase/lib/firebase";
+import {LoginURLs} from "../apps/viewer/LoginURLs";
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export class AccountActions {
+
+    public static logout(persistenceLayerController: PersistenceLayerController) {
+
+        persistenceLayerController.reset();
+
+        firebase.auth().signOut()
+            .then(() => {
+
+                window.location.href = '/#logout';
+                window.location.reload();
+
+            })
+            .catch(err => log.error("Unable to logout: ", err));
+
+    }
+
+    public static login() {
+        const newLocation = LoginURLs.create();
+        window.location.href = newLocation;
+    }
+
 
     public static async cancelSubscription() {
         const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelSubscription/`;

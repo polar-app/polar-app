@@ -57,7 +57,7 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
                     <div className="ml-4">
                         <SimpleTabs>
-                            <SimpleTab id="nav-tab-document-repository" target={{pathname: "/", hash: "#"}} text="Document Repository"/>
+                            <SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>
                             <SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>
                             <SimpleTab id="nav-tab-statistics" target={{pathname: "/stats"}} text="Statistics"/>
 

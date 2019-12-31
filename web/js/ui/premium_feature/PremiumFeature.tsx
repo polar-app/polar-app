@@ -77,7 +77,7 @@ export class PremiumFeature extends React.Component<IProps, IState> {
             const color = AccountPlans.toColor(account!.plan);
 
             return (
-                <Link to={{pathname: '/', hash: '#plans'}}>
+                <Link to={{pathname: '/plans'}}>
                     <Button size={this.props.size}
                             color="light"
                             className="border"

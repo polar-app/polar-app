@@ -27,7 +27,7 @@ const GoPremium = (props: UpgradeRequiredProps) => {
                     fontWeight: 'bold'
                 }}>
 
-        <Link to={{pathname: '/', hash: '#plans'}}>
+        <Link to={{pathname: '/plans'}}>
             <Button color="primary"
                     size="sm"
                     style={{fontWeight: 'bold'}}

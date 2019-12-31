@@ -24,7 +24,8 @@ export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
 
     private onUpgrade() {
         this.props.dispose();
-        document.location.href = '#plans';
+        // TODO: I think this should be a push or should use a <Link>
+        document.location.href = '/plans';
     }
 
     public render() {
@@ -36,7 +37,7 @@ export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
                 <div className="text-center text-grey400 mb-2"
                      style={{fontSize: '95px'}}>
 
-                    <i className="fas fa-smile"></i>
+                    <i className="fas fa-smile"/>
 
                 </div>
 

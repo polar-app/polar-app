@@ -58,7 +58,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                     <HelpDropdownItem id="support-link"
                                       title="Support"
                                       tooltip="Get support on Polar"
-                                      link="#support"
+                                      link="/support"
                                       icon="fas fa-hands-helping"/>
 
                     <HelpDropdownItem id="chat-link"
@@ -81,7 +81,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       id="upgrade-to-premium-link"
                                       title="Upgrade to Premium"
                                       tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
-                                      link="#plans"
+                                      link="/plans"
                                       icon="fas fa-certificate"/>
 
                     <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
@@ -105,13 +105,12 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider hidden={isPhone}/>
 
-                    <TrackedDropdownItem id="sidebar-item-logs"
-                                         hidden={isPhone}
-                                         title="Logs"
-                                         tooltip="Show logs on internal activity during background operations like cloud activity and sync."
-                                         icon="fas fa-info-circle"
-                                         onClick={() => document.location.href = '/#logs'}
-                                         trackingCategory="help-logs"/>
+                    <HelpDropdownItem id="sidebar-item-logs"
+                                      hidden={isPhone}
+                                      title="Logs"
+                                      tooltip="Show logs on internal activity during background operations like cloud activity and sync."
+                                      icon="fas fa-info-circle"
+                                      link="/logs"/>
 
                 </DropdownMenu>
 

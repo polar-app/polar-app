@@ -28,7 +28,7 @@ export class UpgradeRequired extends React.Component<IProps, IState> {
                         fontWeight: 'bold',
                         display: 'flex'
                     }}>
-            <Link to={{pathname: '/', hash: '#plans'}}>
+            <Link to={{pathname: '/plans'}}>
                 <Button color="success"
                         size="sm"
                         style={{fontWeight: 'bold'}}

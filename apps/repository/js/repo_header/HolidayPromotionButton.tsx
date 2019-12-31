@@ -37,7 +37,7 @@ export const HolidayPromotionCopy = (props: ButtonProps) => {
 
             <p>
 
-                <Link to={{pathname: '/', hash: '#plans-year'}}>
+                <Link to={{pathname: '/plans-year'}}>
                     <Button color="success"
                             size="lg"
                             onClick={() => props.onClick()}>

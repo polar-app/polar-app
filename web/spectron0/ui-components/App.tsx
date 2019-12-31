@@ -322,8 +322,8 @@ export class App<P> extends React.Component<{}, IAppState> {
 
                 <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                    <CachedRoute key={0} exact path='#home' component={() => <FirstPage/>} />
-                    <CachedRoute key={1} exact path='#second' component={() => <SecondPage/>} />
+                    {/*<CachedRoute key={0} exact path='#home' component={() => <FirstPage/>} />*/}
+                    {/*<CachedRoute key={1} exact path='#second' component={() => <SecondPage/>} />*/}
                     <Route key={0} exact path='#home' component={foo} />
 
                 </Switch>

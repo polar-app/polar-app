@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import {TrackedDropdownItem} from './TrackedDropdownItem';
+import {URLs} from "polar-shared/src/util/URLs";
+import {Link} from "react-router-dom";
 
 /**
  * Tracked dropdown item that just loads a link.
@@ -13,7 +15,7 @@ export class TrackedDropdownLink extends React.PureComponent<TrackedDropdownLink
 
     public render() {
 
-        return (
+        const DropdownItem = () => (
 
             <TrackedDropdownItem id={this.props.id}
                                  title={this.props.title}
@@ -22,21 +24,27 @@ export class TrackedDropdownLink extends React.PureComponent<TrackedDropdownLink
                                  tooltip={this.props.tooltip}
                                  hidden={this.props.hidden}
                                  onClick={() => this.onClick()}/>
+
         );
+
+        if (URLs.isWebScheme(this.props.link)) {
+            return <DropdownItem/>;
+        } else {
+            return (
+                <Link to={this.props.link} className='no-underline'>
+                    <DropdownItem/>
+                </Link>
+            );
+        }
 
     }
 
     private onClick() {
 
-        if (this.props.link.startsWith("#")) {
-
-            // this is an in-app link
-            document.location!.href = this.props.link;
-            return;
-
+        if (URLs.isWebScheme(this.props.link)) {
+            Nav.openLinkWithNewTab(this.props.link);
         }
 
-        Nav.openLinkWithNewTab(this.props.link);
     }
 
 }

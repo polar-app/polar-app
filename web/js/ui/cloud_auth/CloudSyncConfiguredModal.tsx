@@ -1,45 +1,23 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import {CloudSyncConfiguredContent} from './CloudSyncConfiguredContent';
+import {Link} from "react-router-dom";
 
-export class CloudSyncConfiguredModal extends React.Component<IProps, IState> {
+export const CloudSyncConfiguredModal = () => (
+    <Modal isOpen={true} size="lg">
+        <ModalBody>
+            <CloudSyncConfiguredContent/>
+        </ModalBody>
+        <ModalFooter>
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+            <Link to="/" replace={true}>
+                <Button color="primary"
+                        size="lg">
+                    OK
+                </Button>
+            </Link>
 
-    }
+        </ModalFooter>
+    </Modal>
 
-    public render() {
-
-        return (
-
-            <Modal isOpen={this.props.isOpen} size="lg">
-                {/*<ModalHeader>Polar Cloud Sync</ModalHeader>*/}
-                <ModalBody>
-
-                    <CloudSyncConfiguredContent/>
-
-                </ModalBody>
-                <ModalFooter>
-
-                    <Button color="secondary"
-                            onClick={() => this.props.onCancel()}>
-                        OK
-                    </Button>
-
-                </ModalFooter>
-            </Modal>
-
-        );
-    }
-
-}
-
-interface IProps {
-    readonly isOpen: boolean;
-    readonly onCancel: () => void;
-}
-
-interface IState {
-
-}
+);

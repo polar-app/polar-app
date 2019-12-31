@@ -38,7 +38,7 @@ export class CloudSyncConfiguredContent extends React.Component<IProps, IState> 
 
                 <div className="text-center">
 
-                    <i className="fas fa-check-circle text-success" style={Styles.icon}></i>
+                    <i className="fas fa-check-circle text-success" style={Styles.icon}/>
 
                     <h1>Cloud Sync Configured</h1>
 

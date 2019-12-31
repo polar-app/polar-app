@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
 import {MessageBanner} from '../MessageBanner';
 import CommunityContent from './CommunityContent';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();

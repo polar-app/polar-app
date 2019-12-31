@@ -1,5 +1,4 @@
 
-// TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl
 export class LoginURLs {
 
     /**

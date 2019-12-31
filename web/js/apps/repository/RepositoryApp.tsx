@@ -17,14 +17,12 @@ import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaMana
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
-import CommunityScreen from '../../../../apps/repository/js/community/CommunityScreen';
 import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
-import EditorsPicksScreen from '../../../../apps/repository/js/editors_picks/EditorsPicksScreen';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from 'polar-shared/src/util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
@@ -61,8 +59,11 @@ import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
-import { Cached } from '../../react/Cached';
+import {Cached} from '../../react/Cached';
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
+import {CachedRoute} from "../../react/router/CachedRoute";
+import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const log = Logger.create();
 
@@ -362,22 +363,6 @@ export class RepositoryApp {
 
                         <Switch location={ReactRouters.createLocationWithPathAndHash()}>
 
-                            <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
-
-                            {/*TODO: there's a bug here in that we need to make these sub-pages each their own component*/}
-
-                            <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
-
-                            <Route exact path='/#logs' render={renderLogsScreen}/>
-
-                            <Route exact path='/#plans' render={premiumScreen}/>
-
-                            <Route exact path='/#plans-year'  render={premiumScreenYear}/>
-
-                            <Route exact path='/#support' render={supportScreen}/>
-
-                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
-
                         </Switch>
 
                     </BrowserRouter>
@@ -385,6 +370,10 @@ export class RepositoryApp {
                     <BrowserRouter key="path-router">
 
                         <Switch location={ReactRouters.createLocationWithPathOnly()}>
+
+                            <Route exact path='/logs' render={renderLogsScreen}/>
+
+                            <Route exact path='/whats-new' render={renderWhatsNewScreen} />
 
                             <Route path='/group/:group/highlights' render={renderGroupHighlightsScreen}/>
 
@@ -415,16 +404,31 @@ export class RepositoryApp {
 
                             <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
 
+                            <Route exact path='/' component={renderDefaultScreenByDevice}/>
+
                         </Switch>
 
                         <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
+                            <Route path='#configured'
+                                   component={() =>
+                                       <Cached>
+                                           <CloudSyncConfiguredModal/>
+                                       </Cached>
+                                   }/>
+
                             <Route path='#settings'
-                                   render={() => (
+                                   component={() =>
                                        <Cached>
                                            <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}
                                                                   persistenceLayerController={persistenceLayerController}/>
                                        </Cached>
+                                   }/>
+
+                            {/*TODO: add a logout splash so that the user knows that they are unauthenticated.*/}
+                            <Route path='#logout'
+                                   render={() => (
+                                       <div></div>
                                    )}/>
 
                         </Switch>

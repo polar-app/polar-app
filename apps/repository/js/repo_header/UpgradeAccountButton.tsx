@@ -22,7 +22,7 @@ export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
         }
 
         return (
-            <Link to={{pathname: '/', hash: '#plans'}}>
+            <Link to={{pathname: '/plans'}}>
                 <Button color="light"
                         size="md"
                         onClick={() => this.onUpgrade()}
