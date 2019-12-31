@@ -4,7 +4,6 @@ import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
-import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
 import {
     Rating,
     RepetitionMode,
@@ -22,7 +21,7 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
-import {ConfirmProps, Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {ConfirmProps} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
@@ -72,6 +71,7 @@ export class Reviewers {
 
     }
 
+    // TODO: convert this into a better message wrapped as a dialog
     private static createNoTasksMessage() {
 
         const props: ConfirmProps = {

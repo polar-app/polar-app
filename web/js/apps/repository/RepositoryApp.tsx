@@ -364,6 +364,8 @@ export class RepositoryApp {
 
                             <Route exact path='/#whats-new' render={renderWhatsNewScreen} />
 
+                            {/*TODO: there's a bug here in that we need to make these sub-pages each their own component*/}
+
                             <Route exact path='/#(logout|overview|login|configured|invite|premium)?' render={renderDocRepoScreen}/>
 
                             <Route exact path='/#logs' render={renderLogsScreen}/>
