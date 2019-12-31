@@ -1,32 +1,66 @@
 import * as functions from 'firebase-functions';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
-import {MetadataEngines} from "./metadata/MetadataEngines";
-import {Rewrite} from 'polar-shared-webserver/src/webserver/Rewrites';
+import {MetadataEngineHandlerRef, MetadataEngines} from "./metadata/MetadataEngines";
+import {
+    DestinationRewrite,
+    DirectRewrite,
+    IDRewrite,
+    Rewrite,
+    Rewrites
+} from 'polar-shared-webserver/src/webserver/Rewrites';
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {StaticIndexGenerator} from "./StaticIndexGenerator";
+import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
+import {Reducers} from "polar-shared/src/util/Reducers";
 
-function createRewrites(): ReadonlyArray<Rewrite> {
+function createRewrites(): ReadonlyArray<DirectRewrite> {
 
     const defaultRewrites = DefaultRewrites.create();
     const metadataEngineHandlerRefs = MetadataEngines.handlers();
 
-    type RewriteMap = {
-        [id: string]: Rewrite;
-    };
+    interface RewriteMap {
+        [id: string]: DirectRewrite;
+    }
 
-    const idDefaultRewrites: RewriteMap = IDMaps.create(defaultRewrites.map(current => {
-        return {id: current.source, ...current};
-    }));
+    function toDirectRewrites(rewrite: DestinationRewrite): ReadonlyArray<DirectRewrite> {
 
-    // now convert the static assets to dynamic so that we can serve custom content for SEO.
-    const idMetadataEngineHandlerRefs: RewriteMap = IDMaps.create(metadataEngineHandlerRefs.map(current => {
-        return {
-            id: current.source,
-            source: current.source,
-            destination: (url: string) => StaticIndexGenerator.generate(url)
-        };
-    }));
+        function toDirectRewrite(source: URLPathStr, rewrite: DestinationRewrite): DirectRewrite {
+            return {
+                id: source,
+                source,
+                destination: rewrite.destination,
+            };
+        }
+
+        const sources = Rewrites.toSources(rewrite);
+        return sources.map(source => toDirectRewrite(source, rewrite));
+
+    }
+
+    const directRewritesBySource: ReadonlyArray<ReadonlyArray<DirectRewrite>>
+        = defaultRewrites.map(current => toDirectRewrites(current));
+
+    const directRewrites = directRewritesBySource.reduce(Reducers.FLAT);
+
+    const idDefaultRewrites = IDMaps.create(directRewrites);
+
+    function toMetadataEngineHandlerRefs(): RewriteMap {
+
+        function toDirectRewrite(ref: MetadataEngineHandlerRef): DirectRewrite {
+            return {
+                id: ref.source,
+                source: ref.source,
+                destination: (url: string) => StaticIndexGenerator.generate(url)
+            };
+        }
+
+        // now convert the static assets to dynamic so that we can serve custom content for SEO.
+        return IDMaps.create(metadataEngineHandlerRefs.map(current => toDirectRewrite(current)));
+
+    }
+
+    const idMetadataEngineHandlerRefs = toMetadataEngineHandlerRefs();
 
     const combined = {...idDefaultRewrites, ...idMetadataEngineHandlerRefs};
 
