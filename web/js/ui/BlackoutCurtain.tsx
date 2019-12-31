@@ -25,7 +25,8 @@ export class BlackoutCurtain extends React.Component<IProps, IState> {
 
             // force things to be centered
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            backdropFilter: 'blur(5px)'
 
         };
 

@@ -315,21 +315,27 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <BrowserRouter>
+            <div>
+                hello world
 
-                <Link to={{hash: '#home'}}>home</Link>
-                <Link to={{hash: '#second'}}>second</Link>
+                <BlackoutCurtain/>
+            </div>
 
-                <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                    {/*<CachedRoute key={0} exact path='#home' component={() => <FirstPage/>} />*/}
-                    {/*<CachedRoute key={1} exact path='#second' component={() => <SecondPage/>} />*/}
-                    <Route key={0} exact path='#home' component={foo} />
-
-                </Switch>
-
-            </BrowserRouter>
-
+            // {/*<BrowserRouter>*/}
+            //
+            // {/*    <Link to={{hash: '#home'}}>home</Link>*/}
+            // {/*    <Link to={{hash: '#second'}}>second</Link>*/}
+            //
+            // {/*    <Switch location={ReactRouters.createLocationWithHashOnly()}>*/}
+            //
+            // {/*        /!*<CachedRoute key={0} exact path='#home' component={() => <FirstPage/>} />*!/*/}
+            // {/*        /!*<CachedRoute key={1} exact path='#second' component={() => <SecondPage/>} />*!/*/}
+            // {/*        <Route key={0} exact path='#home' component={foo} />*/}
+            //
+            // {/*    </Switch>*/}
+            //
+            // {/*</BrowserRouter>*/}
+            //
 
             //
             // <ReviewerModal>

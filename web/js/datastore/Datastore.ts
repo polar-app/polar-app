@@ -633,7 +633,7 @@ export interface DocMetaSnapshotBatch {
  * 'written' means that it was written to a WAL or a local cache but may not
  * be fully committed to a cloud store, to all replicas of a database, etc.
  *
- * 'committed' means that it's fully commited and consistent with the current
+ * 'committed' means that it's fully committed and consistent with the current
  * state of a database system.  A read that is 'committed' means it is fully
  * up to date.
  *
