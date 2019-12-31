@@ -1,4 +1,10 @@
 
+- Animations now work with the sidebar properly
+- Navigations now work on tablet and phone with routes
+- Reworked routes so that they're cached + faster plus work with nav
+- Fixed bad bug with authentication and Google auth bringing up external URL window/prompts
+
+
 - Fixed bug with flashcard entry
 - Fixed layout for sidebar and main content.
 - Fixed Electron 7.0 distribution issue.
