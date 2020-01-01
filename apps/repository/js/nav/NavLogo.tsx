@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Link} from "react-router-dom";
 import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "../../../../web/js/util/Devices";
 
 const Styles: IStyleMap = {
     parent: {
@@ -36,10 +37,10 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
 
         const createLink = () => {
 
-            if (Platforms.isMobile()) {
-                return '/#annotations';
-            } else {
+            if (Devices.get() === 'desktop') {
                 return '/';
+            } else {
+                return '/annotations';
             }
 
         };

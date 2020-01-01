@@ -6,6 +6,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
 import {NotificationButton} from './NotificationButton';
 import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "../../util/Devices";
 
 const log = Logger.create();
 
@@ -34,8 +35,8 @@ export class Notifications extends React.PureComponent<IProps, IState> {
 
     public render() {
 
-        if (Platforms.isMobile()) {
-            return <div/>;
+        if (! Devices.isDesktop()) {
+            return null;
         }
 
         return (

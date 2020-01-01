@@ -8,6 +8,7 @@ import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
 import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "../../util/Devices";
 
 const log = Logger.create();
 
@@ -62,8 +63,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (Platforms.isMobile()) {
-            return <div/>;
+        if (! Devices.isDesktop()) {
+            return null;
         }
 
         return (

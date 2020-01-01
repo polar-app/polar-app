@@ -2,6 +2,7 @@ import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Devices} from "../../../../web/js/util/Devices";
 
 const log = Logger.create();
 
@@ -10,7 +11,7 @@ export class PreviewWarnings {
     public static async doWarning(prefs: PersistentPrefs,
                                   onConfirm: () => void) {
 
-        if (! Platforms.isMobile()) {
+        if (! Devices.isDesktop()) {
             // we only need this on mobile platforms.
             return onConfirm();
         }

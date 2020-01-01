@@ -31,6 +31,7 @@ import {DocButtonsCell} from "./cells/DocButtonsCell";
 import {ReactTableRowInfo} from "../../../../web/js/ui/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
+import {Devices} from "../../../../web/js/util/Devices";
 
 const log = Logger.create();
 
@@ -384,10 +385,10 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     private createColumns(contextMenuHandlers: ContextMenuHandlers) {
 
-        if (Platforms.isMobile()) {
-            return this.createColumnsForTablet();
-        } else {
+        if (Devices.get() === 'desktop') {
             return this.createColumnsForDesktop();
+        } else {
+            return this.createColumnsForTablet();
         }
 
     }
@@ -421,11 +422,11 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     private createTDProps(rowInfo: RowInfo, column: Column, contextMenuHandlers: ContextMenuHandlers) {
 
-        if (Platforms.isMobile()) {
-            return this.createTDPropsForMobile(rowInfo, column);
-        } else {
+        if (Devices.get() === 'desktop') {
             return this.createTDPropsForDesktop(rowInfo, column, contextMenuHandlers);
-       }
+        } else {
+            return this.createTDPropsForMobile(rowInfo, column);
+        }
 
     }
 

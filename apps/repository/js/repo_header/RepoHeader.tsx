@@ -15,6 +15,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
 import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
+import {Devices} from "../../../../web/js/util/Devices";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -100,6 +101,8 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
             };
 
+            const isDesktop = Devices.isDesktop();
+
             return (
 
                 <div className="border-bottom">
@@ -132,7 +135,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                                 <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
 
-                                <LinkDropdown hidden={Platforms.isMobile()}/>
+                                <LinkDropdown hidden={! isDesktop}/>
 
                                 <HelpDropdown/>
 

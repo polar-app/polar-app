@@ -9,6 +9,7 @@ import {EventListener} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "../../util/Devices";
 
 const log = Logger.create();
 
@@ -53,9 +54,9 @@ export class GDPRNotice extends React.Component<any, IState> {
 
         const display = this.state.disabled ? 'none' : 'block';
 
-        if (Platforms.isMobile()) {
+        if (! Devices.isDesktop()) {
             // doesn't display properly on mobile.
-            return <div/>;
+            return null;
         }
 
         return (

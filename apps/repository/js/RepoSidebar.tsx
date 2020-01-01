@@ -12,6 +12,7 @@ import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {NullCollapse} from "../../../web/js/ui/null_collapse/NullCollapse";
+import {Devices} from "../../../web/js/util/Devices";
 
 const Styles: IStyleMap = {
 
@@ -84,7 +85,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                 <div className="mt-auto mb-auto">
 
-                    <NullCollapse open={! isMobile}>
+                    <NullCollapse open={isDesktop}>
 
                         <SimpleTooltipEx text="Toggle showing the sidebar">
 
@@ -121,7 +122,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
             </div>
         );
 
-        const isMobile = Platforms.isMobile();
+        const isDesktop = Devices.get() === 'desktop';
 
         return (
 
@@ -147,7 +148,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <NullCollapse open={! isMobile}>
+                    <NullCollapse open={isDesktop}>
 
                         <ListGroup flush>
 

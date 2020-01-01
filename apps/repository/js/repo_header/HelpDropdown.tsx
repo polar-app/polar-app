@@ -26,6 +26,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
         const isPhone = Devices.isPhone();
 
+        const isDesktop = Devices.isDesktop();
+
         return (
             <UncontrolledDropdown className="ml-1"
                                   size="md"
@@ -62,14 +64,14 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                       icon="fas fa-hands-helping"/>
 
                     <HelpDropdownItem id="chat-link"
-                                      hidden={Platforms.isMobile()}
+                                      hidden={! isDesktop}
                                       title="Chat"
                                       tooltip="Chat with other Polar users live via chat (Discord)"
                                       link="https://discord.gg/GT8MhA6"
                                       icon="fab fa-discord"/>
 
                     <HelpDropdownItem id="create-issue-link"
-                                      hidden={Platforms.isMobile()}
+                                      hidden={! isDesktop}
                                       title="Create Issue"
                                       tooltip="Create an issue (bug or feature) for the developer to investigate."
                                       link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
@@ -86,7 +88,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
                     <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
 
-                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES || Platforms.isMobile()}
+                    <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES || ! isDesktop}
                                       id="donate-link"
                                       title="Donate"
                                       tooltip="Donate to Polar to support development."
