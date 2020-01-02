@@ -127,8 +127,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                                 {this.props.right}
 
-                                <HolidayPromotionButton/>
-
                                 <ChromeExtensionInstallButton/>
 
                                 <Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>

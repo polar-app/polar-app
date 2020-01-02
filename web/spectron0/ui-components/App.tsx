@@ -42,6 +42,7 @@ import {ReviewerModal} from "../../../apps/repository/js/reviewer/ReviewerModal"
 import {CachedRoute} from "../../js/react/router/CachedRoute";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {Cached} from "../../js/react/Cached";
+import {FadeBlackout} from "../../js/ui/motion/FadeBlackout";
 
 const styles = {
     swatch: {
@@ -318,7 +319,8 @@ export class App<P> extends React.Component<{}, IAppState> {
             <div>
                 hello world
 
-                <BlackoutCurtain/>
+                <FadeBlackout/>
+                {/*<BlackoutCurtain/>*/}
             </div>
 
             // {/*<BrowserRouter>*/}

@@ -9,26 +9,46 @@ interface IProps {
 
 export const FadeBlackout = (props: IProps) => {
 
-    const style: React.CSSProperties = {
+    const positioning: React.CSSProperties = {
         position: 'absolute',
         top: 0,
         left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgb(0, 0, 0)',
+        ...(props.style || {})
+    };
+
+    const style: React.CSSProperties = {
+        backgroundColor: 'rgba(0, 0, 0)',
+        ...positioning,
         ...(props.style || {})
     };
 
     const onClick = props.onClick || NULL_FUNCTION;
 
-    return (
+    // TODO: move this blurry background filter to a dedicated component
 
-        <motion.div initial={{ opacity: 0.0 }}
-                    animate={{ opacity: 0.7 }}
-                    exit={{ opacity: 0 }}
-                    style={style}
-                    onClick={() => onClick()}>
-        </motion.div>
+    return (
+        <>
+            <div style={{
+                     ...positioning,
+                    backdropFilter: 'blur(5px)',
+                }}>
+
+            </div>
+            <motion.div initial={{
+                            opacity: 0.0
+                        }}
+                        animate={{
+                            opacity: 0.7
+                        }}
+                        exit={{
+                            opacity: 0
+                        }}
+                        style={style}
+                        onClick={() => onClick()}>
+            </motion.div>
+        </>
 
     );
 

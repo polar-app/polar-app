@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "../util/Devices";
 
 export class BlackoutCurtain extends React.Component<IProps, IState> {
 
@@ -30,7 +30,7 @@ export class BlackoutCurtain extends React.Component<IProps, IState> {
 
         };
 
-        if (! Platforms.isMobile()) {
+        if (Devices.isDesktop()) {
             // on the desktop we don't want to use a modal.
             style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
         }
