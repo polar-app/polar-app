@@ -94,7 +94,7 @@ export class SettingsScreen extends React.Component<IProps> {
 
         return (
 
-            <FixedNav id="doc-repository" className="statistics-view pb-2">
+            <FixedNav id="doc-repository" className="statistics-view">
 
                 <header>
 

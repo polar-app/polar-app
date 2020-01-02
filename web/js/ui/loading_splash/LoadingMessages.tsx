@@ -33,7 +33,7 @@ export class LoadingMessages extends React.Component<IProps, IState> {
                 <div style={{
                         width: '350px'
                      }}
-                     className="ml-auto mr-auto">
+                     className="ml-auto mr-auto text-muted">
 
                     <div className="mt-0" >
                         <IndeterminateProgressBar/>
