@@ -43,6 +43,7 @@ import {CachedRoute} from "../../js/react/router/CachedRoute";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {Cached} from "../../js/react/Cached";
 import {FadeBlackout} from "../../js/ui/motion/FadeBlackout";
+import {SwitchButton} from "../../js/ui/SwitchButton";
 
 const styles = {
     swatch: {
@@ -317,9 +318,9 @@ export class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
-                hello world
 
-                <FadeBlackout/>
+                <SwitchButton size="lg" onChange={NULL_FUNCTION}/>
+
                 {/*<BlackoutCurtain/>*/}
             </div>
 
