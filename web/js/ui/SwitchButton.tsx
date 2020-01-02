@@ -34,7 +34,7 @@ export class SwitchButton extends React.Component<IProps, IState> {
                     onClick={() => this.toggle()}
                     size={this.props.size  || 'sm'}>
 
-                <i className={iconClassName}/>
+                <i className={iconClassName} style={{fontSize: '1.75em'}}/>
 
             </Button>
 

@@ -30,6 +30,8 @@ export abstract class Prefs {
 
     public isMarked(key: string, defaultValue: boolean = false) {
 
+        Preconditions.assertPresent(key, "key");
+
         const currentValue =
             this.get(key).getOrElse(`${defaultValue}`);
 

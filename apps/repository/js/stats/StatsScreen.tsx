@@ -183,7 +183,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                     <FixedNavBody>
 
-                        <div className="container mt-3">
+                        <div className="container mt-3 pb-2">
 
                             <SectionHeader>
                                 <h1>Statistics</h1>

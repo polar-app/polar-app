@@ -61,9 +61,8 @@ import {AccountControlSidebar} from "../../../../apps/repository/js/AccountContr
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
-import {CachedRoute} from "../../react/router/CachedRoute";
 import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsScreen";
 
 const log = Logger.create();
 
@@ -183,6 +182,13 @@ export class RepositoryApp {
                 </Cached>
             );
         };
+
+        const renderSettingsScreen = () => (
+            <Cached>
+                <SettingsScreen persistenceLayerProvider={persistenceLayerProvider}
+                                persistenceLayerController={persistenceLayerController}/>
+            </Cached>
+            );
 
         const renderAnnotationRepoScreen = () => {
             return (
@@ -404,6 +410,8 @@ export class RepositoryApp {
 
                             <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
 
+                            <Route exact path="/settings" component={renderSettingsScreen} />
+
                             <Route exact path='/' component={renderDefaultScreenByDevice}/>
 
                         </Switch>
@@ -417,7 +425,7 @@ export class RepositoryApp {
                                        </Cached>
                                    }/>
 
-                            <Route path='#settings'
+                            <Route path='#account'
                                    component={() =>
                                        <Cached>
                                            <AccountControlSidebar persistenceLayerProvider={persistenceLayerProvider}

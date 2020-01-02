@@ -13,7 +13,7 @@ import {PersistenceLayerProvider} from "../../../../web/js/datastore/Persistence
 import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
-import {Button} from "reactstrap";
+import {Button, DropdownToggle, UncontrolledDropdown} from "reactstrap";
 import {Link} from "react-router-dom";
 import {Devices} from "../../../../web/js/util/Devices";
 
@@ -62,9 +62,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                         {this.props.right}
 
-                        <Link to={{hash: 'settings'}}>
+                        <Link to={{hash: 'account'}}>
                             <Button size="md" color="clear" className="btn-no-outline">
-                                <i className="fas fa-cog"/>
+                                <i className="fas fa-user"/>
                             </Button>
                         </Link>
 
@@ -85,19 +85,15 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
             const Settings = () => {
 
-                const prefs = (): Prefs | undefined => {
-
-                    const persistenceLayer = this.props.persistenceLayerProvider();
-
-                    if (! persistenceLayer) {
-                        return undefined;
-                    }
-
-                    return persistenceLayer.datastore.getPrefs().get();
-
-                };
-
-                return ( <SettingsDropdown prefs={prefs} hidden={Platforms.isMobile()}/> );
+                return (
+                    <Link to="/settings">
+                        <Button size="md"
+                                className="border ml-1 text-muted"
+                                color="light">
+                            <i className="fas fa-cog" style={{fontSize: '17px'}}/>
+                        </Button>
+                    </Link>
+                );
 
             };
 

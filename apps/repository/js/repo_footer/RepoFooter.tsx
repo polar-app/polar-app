@@ -23,6 +23,7 @@ export class RepoFooter extends React.PureComponent<IProps> {
 
                     <BottomNavButton pathname="/annotations" icon="fas fa-home" replace={true}/>
                     <BottomNavButton pathname="/stats" icon="fas fa-chart-line" replace={true}/>
+                    <BottomNavButton pathname="/settings" icon="fas fa-cog" replace={true}/>
 
                 </div>
 
