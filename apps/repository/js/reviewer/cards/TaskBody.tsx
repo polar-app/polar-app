@@ -45,7 +45,7 @@ export class TaskBody extends React.Component<IProps, IState> {
 
             return <div className="border-top">
 
-                <div className="text-sm text-grey700 mb-1 ml-1 task-stage">
+                <div className="text-grey700 mb-1 ml-1 task-stage">
                     <b>stage: </b> {this.props.taskRep.stage}
                 </div>
 

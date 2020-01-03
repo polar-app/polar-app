@@ -116,7 +116,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                                     className="text-muted"
                                     onClick={() => this.props.onFinished(true)}>
 
-                                <i className="far fa-times-circle"/>
+                                <i className="fas fa-times"/>
 
                             </Button>
                         </Link>
@@ -132,7 +132,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                               style={{
                                   height: '1.75em'
                               }}>
-                        {createProgressText()}
+                        {/*{createProgressText()}*/}
                     </Progress>
 
                 </div>
