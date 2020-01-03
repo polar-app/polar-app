@@ -63,6 +63,8 @@ import {Cached} from '../../react/Cached';
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
 import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsScreen";
+import {DeviceRouter} from "../../ui/DeviceRouter";
+import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 
 const log = Logger.create();
 
@@ -213,13 +215,21 @@ export class RepositoryApp {
 
         const renderDefaultScreenByDevice = () => {
 
-            if (['phone', 'tablet'].includes(Devices.get())) {
-                // for tablets or phones we need to use the annotation repo screen as the other UI
-                // isn't ready yet.
-                return renderAnnotationRepoScreen();
-            }
+            const PhoneAndTablet = () => {
 
-            return renderDocRepoScreen();
+                return (
+                    <FeatureToggleRouter name="mobile-reading"
+                                         enabled={renderDocRepoScreen()}
+                                         disabled={renderAnnotationRepoScreen()}/>
+                );
+
+            };
+
+            return (
+                <DeviceRouter phone={<PhoneAndTablet/>}
+                              tablet={<PhoneAndTablet/>}
+                              desktop={renderDocRepoScreen()}/>
+            );
 
         };
 

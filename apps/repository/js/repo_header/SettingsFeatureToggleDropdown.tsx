@@ -32,6 +32,7 @@ export class SettingsFeatureToggleDropdown extends React.PureComponent<IProps, I
     }
 
     private onClick() {
+
     }
 
 }

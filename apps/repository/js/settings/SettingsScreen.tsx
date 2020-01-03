@@ -1,17 +1,23 @@
 import * as React from 'react';
-import {FixedNav, FixedNavBody} from '../FixedNav';
+import {FixedNav} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {SwitchButton} from "../../../../web/js/ui/SwitchButton";
-import {Prefs} from "../../../../web/js/util/prefs/Prefs";
+import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {RepoFooter} from "../repo_footer/RepoFooter";
+import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
+import {Devices} from "../../../../web/js/util/Devices";
+import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 interface SettingEntryProps {
     readonly title: string;
     readonly description: string;
     readonly name: string;
-    readonly prefs: Prefs | undefined;
+    readonly prefs: PersistentPrefs | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
 }
@@ -44,7 +50,17 @@ const SettingEntry = (props: SettingEntryProps) => {
     const value = prefs.isMarked(name, defaultValue);
 
     const onChange = (value: boolean) => {
+        console.log("Setting " + name);
+        FeatureToggles.set(name, value);
         prefs.mark(name, value);
+
+        const doCommit = async () => {
+            await prefs.commit();
+            console.log("Prefs written");
+        };
+
+        doCommit()
+            .catch(err => log.error("Could not write prefs: ", err));
     };
 
     return (
@@ -80,7 +96,7 @@ export class SettingsScreen extends React.Component<IProps> {
 
     public render() {
 
-        const getPrefs = (): Prefs | undefined => {
+        const getPrefs = (): PersistentPrefs | undefined => {
             const persistenceLayer = this.props.persistenceLayerProvider();
 
             if (! persistenceLayer || ! persistenceLayer.datastore) {
@@ -113,6 +129,10 @@ export class SettingsScreen extends React.Component<IProps> {
                             <div className="col">
                                 <h2>General</h2>
 
+                                <p>
+                                    General settings. Note that some of these may require you to reload.
+                                </p>
+
                                 <SettingEntry title="Automatically resume reading position"
                                               description="This feature restores the document reading position using pagemarks when reopening a document."
                                               name="settings-auto-resume"
@@ -124,6 +144,14 @@ export class SettingsScreen extends React.Component<IProps> {
                                               name="groups"
                                               prefs={prefs}
                                               preview={true}/>
+
+                                <NullCollapse open={ ! Devices.isDesktop()}>
+                                    <SettingEntry title="Table and phone reading"
+                                                  description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
+                                                  name="mobile-reading"
+                                                  prefs={prefs}
+                                                  preview={true}/>
+                                </NullCollapse>
 
                                 <SettingEntry title="Development"
                                               description="Enables general development features for software engineers working on Polar."

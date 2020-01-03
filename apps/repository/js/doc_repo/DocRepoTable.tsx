@@ -359,13 +359,13 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         return {
             id: 'doc-buttons',
             Header: '',
-            headerClassName: "d-none-mobile",
+            headerClassName: "",
             accessor: '',
-            maxWidth: 100,
+            maxWidth: Devices.isDesktop() ? 100 : 35,
             defaultSortDesc: true,
             resizable: false,
             sortable: false,
-            className: 'doc-dropdown d-none-mobile',
+            className: 'doc-dropdown',
             Cell: (row: any) => {
 
                 const repoDocInfo: RepoDocInfo = row.original;
@@ -399,6 +399,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
             this.createColumnCheckbox(),
             this.createColumnTitle(),
             this.createColumnProgress(),
+            this.createColumnButtons()
         ];
 
     }
@@ -433,6 +434,8 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
     private createTDPropsForMobile(rowInfo?: RowInfo, column?: Column) {
 
         const DEFAULT_BEHAVIOR_COLUMNS = [
+            'doc-dropdown',
+            'doc-buttons',
             'doc-checkbox'
         ];
 
