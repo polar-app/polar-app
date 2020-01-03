@@ -110,23 +110,23 @@ export class SettingsScreen extends React.Component<IProps> {
 
         return (
 
-            <FixedNav id="doc-repository" className="statistics-view">
+            <FixedNav id="doc-repository"
+                      className="statistics-view">
 
-                <header>
+                <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                            persistenceLayerController={this.props.persistenceLayerController}/>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
+                <FixedNav.Body className="p-1"
+                               style={{
+                                   overflow: 'auto'
+                               }}>
 
-                </header>
-
-                <FixedNav.Body>
-
-                    <div className="container mt-3"
+                    <div className="ml-auto mr-auto mt-3"
                          style={{maxWidth: '700px'}}>
 
-                        <div className="row text-lg">
+                        <div className=" text-lg">
 
-                            <div className="col">
+                            <div className="">
                                 <h2>General</h2>
 
                                 <p>

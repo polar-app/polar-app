@@ -185,6 +185,7 @@ namespace screen {
         );
 
         return (
+
             <FixedNav id="doc-repository"
                       className="annotations-view">
 
@@ -200,8 +201,8 @@ namespace screen {
                     <Link to={{pathname: '/annotations', hash: '#start-review'}}>
 
                         <FloatingActionButton style={{
-                                                  paddingBottom: '60px',
-                                                  paddingRight: '20px'
+                                                  marginBottom: '60px',
+                                                  marginRight: '20px'
                                               }}
                                               icon="fas fa-graduation-cap"/>
 

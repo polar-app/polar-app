@@ -7,11 +7,11 @@ export class FloatingActionButton extends React.Component<IProps> {
     public render() {
 
         const style = {
-            paddingRight: this.props.style?.paddingRight || '2em',
-            paddingBottom: this.props.style?.paddingBottom || '2em',
+            marginRight: this.props.style?.marginRight || '2em',
+            marginBottom: this.props.style?.marginBottom || '2em',
         };
 
-        const onClick = this.props.onClick || NULL_FUNCTION
+        const onClick = this.props.onClick || NULL_FUNCTION;
 
         return (
 
@@ -39,8 +39,8 @@ export class FloatingActionButton extends React.Component<IProps> {
 export type CSSPadding = string | number;
 
 export interface FloatingStyle {
-    readonly paddingRight?: CSSPadding;
-    readonly paddingBottom?: CSSPadding;
+    readonly marginRight?: CSSPadding;
+    readonly marginBottom?: CSSPadding;
 }
 
 export interface IProps {

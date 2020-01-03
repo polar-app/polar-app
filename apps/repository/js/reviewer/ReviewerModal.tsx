@@ -2,7 +2,12 @@ import * as React from "react";
 import {Devices} from "../../../../web/js/util/Devices";
 import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
 
-export const ReviewerModal = (props: any) => {
+interface IProps {
+    readonly className?: string;
+    readonly children: any;
+}
+
+export const ReviewerModal = (props: IProps) => {
 
     const createStyle = () => {
 
@@ -29,10 +34,12 @@ export const ReviewerModal = (props: any) => {
 
     const style = createStyle();
 
+    const className = "ml-auto mr-auto h-100 border p-1 " + (props.className || '');
+
     return (
         <BlackoutCurtain>
             <div style={style}
-                 className="ml-auto mr-auto h-100 border p-1 text-md">
+                 className={className}>
                 {props.children}
             </div>
         </BlackoutCurtain>

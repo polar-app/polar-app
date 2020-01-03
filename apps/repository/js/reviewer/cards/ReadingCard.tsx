@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {CardBody} from "./CardBody";
+import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../RatingButtons";
 import {RatingCallback} from "../Reviewer";
@@ -18,26 +18,26 @@ export class ReadingCard extends React.Component<IProps, IState> {
         const taskRep = this.props.taskRep;
         const {id, action, created, color} = taskRep;
 
-        return <CardBody taskRep={taskRep}>
+        return <TaskBody taskRep={taskRep}>
 
-            <CardBody.Main taskRep={taskRep}>
+            <TaskBody.Main taskRep={taskRep}>
 
                 <AnnotationPreview id={id}
                                    text={action.text}
                                    created={created}
                                    color={color}/>
 
-            </CardBody.Main>
+            </TaskBody.Main>
 
-            <CardBody.Footer taskRep={taskRep}>
+            <TaskBody.Footer taskRep={taskRep}>
 
                 <RatingButtons taskRep={taskRep}
                                stage={taskRep.stage}
                                onRating={this.props.onRating}/>
 
-            </CardBody.Footer>
+            </TaskBody.Footer>
 
-        </CardBody>;
+        </TaskBody>;
 
     }
 

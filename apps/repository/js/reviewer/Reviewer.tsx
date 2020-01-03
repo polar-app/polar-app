@@ -3,7 +3,6 @@ import {Button, Progress} from "reactstrap";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {Row} from "../../../../web/js/ui/layout/Row";
 import {FlashcardCard} from "./cards/FlashcardCard";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
@@ -93,7 +92,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
         return (
 
-            <ReviewerModal>
+            <ReviewerModal className="reviewer">
 
                 <Row>
                     <Row.Main>
@@ -105,7 +104,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                     <Row.Right>
 
                         <Button size="md"
-                                color="light"
+                                color="clear"
                                 className="text-muted mr-1"
                                 onClick={() => this.onSuspended(taskRep)}>
                             <i className="fas fa-pause"/> suspend
@@ -113,7 +112,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                         <Link to={{pathname: '/annotations'}}>
                             <Button size="md"
-                                    color="light"
+                                    color="clear"
                                     className="text-muted"
                                     onClick={() => this.props.onFinished(true)}>
 
@@ -129,7 +128,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
                 <div className="pt-1 pb-1">
 
                     <Progress value={perc}
-                              className="text-md"
+                              className=""
                               style={{
                                   height: '1.75em'
                               }}>

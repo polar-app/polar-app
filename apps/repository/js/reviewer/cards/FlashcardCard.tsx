@@ -1,11 +1,69 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
-import {CardBody} from "./CardBody";
+import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "../Reviewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
+
+namespace card {
+
+    export const Body = (props: any) => (
+        <FadeIn>
+            <div className="mb-auto ml-auto mr-auto shadow-narrow p-3 border rounded flashcard"
+                 style={{
+                     minWidth: '300px',
+                     maxWidth: '700px',
+                     width: '85%'
+                 }}>
+                {props.children}
+            </div>
+        </FadeIn>
+    );
+
+    export const Parent = (props: any) => (
+        <div className="mt-3 pl-3 pr-3 flashcard-parent"
+             style={{
+                 width: '100%',
+             }}>
+            {props.children}
+        </div>
+    );
+
+}
+
+interface FrontCardProps {
+    readonly children: JSX.Element;
+}
+
+const FrontCard = (props: FrontCardProps) => (
+    <card.Parent>
+        <card.Body>
+            {props.children}
+        </card.Body>
+    </card.Parent>
+);
+
+interface FrontAndBackCardProps {
+    readonly front: JSX.Element;
+    readonly back: JSX.Element;
+}
+const FrontAndBackCard = (props: FrontAndBackCardProps) => (
+    <card.Parent>
+        <div className="mb-4">
+            <card.Body>
+                {props.front}
+            </card.Body>
+        </div>
+        <div className="mt-4">
+            <card.Body>
+                {props.back}
+            </card.Body>
+        </div>
+    </card.Parent>
+);
 
 /**
  * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
@@ -35,17 +93,17 @@ export class FlashcardCard extends React.Component<IProps, IState> {
             switch (this.state.side) {
 
                 case 'front':
-                    return this.props.front;
+                    return (
+                        <FrontCard>
+                            {this.props.front}
+                        </FrontCard>
+                    );
 
                 case 'back':
-                    return <div>
-                        {this.props.front}
-
-                        <div className="m-2">
-                            <hr/>
-                        </div>
-                        {this.props.back}
-                    </div>;
+                    return (
+                        <FrontAndBackCard front={this.props.front}
+                                          back={this.props.back}/>
+                    );
 
                 default:
                     throw new Error("Invalid side: " + this.state.side);
@@ -74,19 +132,19 @@ export class FlashcardCard extends React.Component<IProps, IState> {
             }
         };
 
-        return <CardBody taskRep={taskRep}>
+        return <TaskBody taskRep={taskRep}>
 
-            <CardBody.Main taskRep={taskRep}>
+            <TaskBody.Main taskRep={taskRep}>
                 <Main/>
-            </CardBody.Main>
+            </TaskBody.Main>
 
-            <CardBody.Footer taskRep={taskRep}>
+            <TaskBody.Footer taskRep={taskRep}>
                 <div className="mb-1">
                     <Buttons/>
                 </div>
-            </CardBody.Footer>
+            </TaskBody.Footer>
 
-        </CardBody>;
+        </TaskBody>;
 
     }
 

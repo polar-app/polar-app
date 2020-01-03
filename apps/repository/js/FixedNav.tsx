@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import {Props} from "../../../web/js/react/Props";
 
 export class FixedNav extends React.Component<IProps, any> {
 
@@ -30,16 +30,18 @@ export class FixedNav extends React.Component<IProps, any> {
 
         public render() {
 
+            const style = {
+                display: 'flex',
+                flexGrow: 1,
+                minHeight: 0,
+                minWidth: 0,
+            };
+
+            const props = Props.merge(this.props, {style});
+
             return (
 
-                <div {...(this.props.id ? {id: this.props.id} : {})}
-                     {...(this.props.className ? {className: this.props.className} : {})}
-                     style={{
-                         display: 'flex',
-                         flexGrow: 1,
-                         minHeight: 0,
-                         minWidth: 0,
-                     }}>
+                <div {...props}>
 
                     {this.props.children}
 
@@ -100,5 +102,6 @@ export class FixedNavBody extends React.Component<IProps> {
 export interface IProps {
     readonly id?: string;
     readonly className?: string;
+    readonly style?: React.CSSProperties;
 }
 

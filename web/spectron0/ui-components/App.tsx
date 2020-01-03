@@ -44,6 +44,11 @@ import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {Cached} from "../../js/react/Cached";
 import {FadeBlackout} from "../../js/ui/motion/FadeBlackout";
 import {SwitchButton} from "../../js/ui/SwitchButton";
+import {ScaleAndFadeIn} from "../../js/ui/motion/ScaleAndFadeIn";
+import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
+import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
+import {MockDocMetas} from "../../js/metadata/DocMetas";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const styles = {
     swatch: {
@@ -315,11 +320,26 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         const foo = () => <div/>;
 
+        const docMeta = MockDocMetas.createMockDocMeta();
+        const pageMeta = docMeta.pageMetas[1];
+
+        Preconditions.assertPresent(pageMeta);
+
+
+
+        // const DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta)
+
+        // ReviewerTasks.createFlashcardTasks()
+
         return (
 
             <div>
 
-                <SwitchButton size="lg" onChange={NULL_FUNCTION}/>
+                <ScaleAndFadeIn>
+                    hello world!
+                </ScaleAndFadeIn>
+
+                {/*<SwitchButton size="lg" onChange={NULL_FUNCTION}/>*/}
 
                 {/*<BlackoutCurtain/>*/}
             </div>
