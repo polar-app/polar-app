@@ -10,7 +10,7 @@
     "lerna-run-compile": "lerna run --concurrency=1 --parallel=false compile",
     "lerna-run-dist": "lerna run --concurrency=1 --parallel=false dist",
     "lerna-run-test": "lerna run --concurrency=1 --parallel=false test",
-    "lerna-npm-publish": "lerna exec --concurrency=1 --parallel=false --no-private -- npm publish",
+    "lerna-npm-publish": "npm whoami && lerna exec --concurrency=1 --parallel=false --no-private -- npm publish",
     "rebuild": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile",
     "dist-version": "lerna --no-git-tag-version version patch && lerna bootstrap",
     "dist-clean": "./sbin/mgit clean -Xfd && ./sbin/mgit clean -fd ",

@@ -72,3 +72,18 @@ Removes node-modules, does lerna bootstrap, does full build, etc
 - remove the git clean, etc. in polar-bookshelf/scripts/dist-release.sh
 
     "git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}"
+
+# Build Env
+
+## Debian
+
+https://github.com/nodesource/distributions/blob/master/README.md#deb
+
+```bash
+
+curl -sL https://deb.nodesource.com/setup_12.x | bash -
+apt-get install -y nodejs
+
+apt-get install git 
+
+```
