@@ -3,17 +3,13 @@ import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton'
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
-import {SettingsDropdown} from './SettingsDropdown';
-import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
 import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {RepoNavbar} from "../RepoNavbar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {HolidayPromotionButton} from "./HolidayPromotionButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
-import {Button, DropdownToggle, UncontrolledDropdown} from "reactstrap";
+import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
 import {Devices} from "../../../../web/js/util/Devices";
 
@@ -147,7 +143,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
             );
 
         }
-
 
     };
 

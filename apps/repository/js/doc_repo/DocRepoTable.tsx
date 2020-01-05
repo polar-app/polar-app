@@ -15,7 +15,6 @@ import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
     ContextMenuHandlers,
@@ -28,7 +27,7 @@ import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
 import {DocButtonsCell} from "./cells/DocButtonsCell";
-import {ReactTableRowInfo} from "../../../../web/js/ui/ReactTables";
+import {ReactTableRowInfo} from "../../../../web/js/ui/react-table/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {Devices} from "../../../../web/js/util/Devices";

@@ -1,15 +1,13 @@
 import * as React from 'react';
-import {FixedNav} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {SwitchButton} from "../../../../web/js/ui/SwitchButton";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-import {RepoFooter} from "../repo_footer/RepoFooter";
 import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
 import {Devices} from "../../../../web/js/util/Devices";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 
 const log = Logger.create();
 
@@ -92,96 +90,65 @@ const SettingEntry = (props: SettingEntryProps) => {
 
 };
 
-export class SettingsScreen extends React.Component<IProps> {
 
-    public render() {
-
-        const getPrefs = (): PersistentPrefs | undefined => {
-            const persistenceLayer = this.props.persistenceLayerProvider();
-
-            if (! persistenceLayer || ! persistenceLayer.datastore) {
-                return undefined;
-            }
-
-            return persistenceLayer.datastore.getPrefs().get();
-        };
-
-        const prefs = getPrefs();
-
-        return (
-
-            <FixedNav id="doc-repository"
-                      className="statistics-view">
-
-                <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                            persistenceLayerController={this.props.persistenceLayerController}/>
-
-                <FixedNav.Body className="p-1"
-                               style={{
-                                   overflow: 'auto'
-                               }}>
-
-                    <div className="ml-auto mr-auto mt-3"
-                         style={{maxWidth: '700px'}}>
-
-                        <div className=" text-lg">
-
-                            <div className="">
-                                <h2>General</h2>
-
-                                <p>
-                                    General settings. Note that some of these may require you to reload.
-                                </p>
-
-                                <SettingEntry title="Automatically resume reading position"
-                                              description="This feature restores the document reading position using pagemarks when reopening a document."
-                                              name="settings-auto-resume"
-                                              defaultValue={true}
-                                              prefs={prefs}/>
-
-                                <SettingEntry title="Enable groups"
-                                              description="Enables the new groups functionality for sharing documents with other users."
-                                              name="groups"
-                                              prefs={prefs}
-                                              preview={true}/>
-
-                                <NullCollapse open={ ! Devices.isDesktop()}>
-                                    <SettingEntry title="Table and phone reading"
-                                                  description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
-                                                  name="mobile-reading"
-                                                  prefs={prefs}
-                                                  preview={true}/>
-                                </NullCollapse>
-
-                                <SettingEntry title="Development"
-                                              description="Enables general development features for software engineers working on Polar."
-                                              name="dev"
-                                              prefs={prefs}
-                                              preview={true}/>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                </FixedNav.Body>
-
-                <FixedNav.Footer>
-                    <RepoFooter/>
-                </FixedNav.Footer>
-
-            </FixedNav>
-
-        );
-    }
-
-}
-
-export interface IProps {
+interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
 }
 
-export interface IState {
-}
+export const SettingsScreen = (props: IProps) => {
+
+    const getPrefs = (): PersistentPrefs | undefined => {
+        const persistenceLayer = props.persistenceLayerProvider();
+
+        if (! persistenceLayer || ! persistenceLayer.datastore) {
+            return undefined;
+        }
+
+        return persistenceLayer.datastore.getPrefs().get();
+    };
+
+    const prefs = getPrefs();
+
+    return (
+
+        <DefaultPageLayout {...props}>
+            <div className="">
+                <h2>General</h2>
+
+                <p>
+                    General settings. Note that some of these may require you to reload.
+                </p>
+
+                <SettingEntry title="Automatically resume reading position"
+                              description="This feature restores the document reading position using pagemarks when reopening a document."
+                              name="settings-auto-resume"
+                              defaultValue={true}
+                              prefs={prefs}/>
+
+                <SettingEntry title="Enable groups"
+                              description="Enables the new groups functionality for sharing documents with other users."
+                              name="groups"
+                              prefs={prefs}
+                              preview={true}/>
+
+                <NullCollapse open={ ! Devices.isDesktop()}>
+                    <SettingEntry title="Table and phone reading"
+                                  description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
+                                  name="mobile-reading"
+                                  prefs={prefs}
+                                  preview={true}/>
+                </NullCollapse>
+
+                <SettingEntry title="Development"
+                              description="Enables general development features for software engineers working on Polar."
+                              name="dev"
+                              prefs={prefs}
+                              preview={true}/>
+
+            </div>
+
+        </DefaultPageLayout>
+    );
+};
+

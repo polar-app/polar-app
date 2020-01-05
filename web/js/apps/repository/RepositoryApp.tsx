@@ -65,6 +65,7 @@ import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredM
 import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsScreen";
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
+import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 
 const log = Logger.create();
 
@@ -191,6 +192,13 @@ export class RepositoryApp {
                                 persistenceLayerController={persistenceLayerController}/>
             </Cached>
             );
+
+        const renderDeviceScreen = () => (
+            <Cached>
+                <DeviceScreen persistenceLayerProvider={persistenceLayerProvider}
+                              persistenceLayerController={persistenceLayerController}/>
+            </Cached>
+        );
 
         const renderAnnotationRepoScreen = () => {
             return (
@@ -421,6 +429,8 @@ export class RepositoryApp {
                             <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
 
                             <Route exact path="/settings" component={renderSettingsScreen} />
+
+                            <Route exact path="/device" component={renderDeviceScreen} />
 
                             <Route exact path='/' component={renderDefaultScreenByDevice}/>
 

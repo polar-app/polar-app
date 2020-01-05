@@ -5,8 +5,6 @@ import Button from 'reactstrap/lib/Button';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Link} from "react-router-dom";
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
-import {VersionInfo} from "../../../../apps/repository/js/repo_header/VersionInfo";
-import {FeatureToggle} from "../FeatureToggle";
 
 const LogoutButton = (props: IProps) => {
 
@@ -138,12 +136,6 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
                         <ViewPlansAndPricingButton/>
 
                     </div>
-
-                    <FeatureToggle name='dev'>
-                        <div className="m-2 border-top">
-                            <VersionInfo/>
-                        </div>
-                    </FeatureToggle>
 
                     <div className="mt-2 pt-2 pb-2 border-top text-right">
 

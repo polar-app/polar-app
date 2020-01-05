@@ -7,7 +7,6 @@ import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "../../../../web/js/util/Devices";
 import {AboutDialogs} from "./AboutDialogs";
 
@@ -29,6 +28,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
         const isDesktop = Devices.isDesktop();
 
         return (
+
             <UncontrolledDropdown className="ml-1"
                                   size="md"
                                   id="help-dropdown">
@@ -105,7 +105,13 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                          hidden={!updatesEnabled}
                                          onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
 
-                    <DropdownItem divider hidden={isPhone}/>
+                    <DropdownItem divider/>
+
+                    <HelpDropdownItem id="sidebar-item-device"
+                                      title="Device"
+                                      tooltip="Information about the current device"
+                                      icon="fas fa-tablet-alt"
+                                      link="/device"/>
 
                     <HelpDropdownItem id="sidebar-item-logs"
                                       hidden={isPhone}
