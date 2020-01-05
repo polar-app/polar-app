@@ -8,6 +8,7 @@ import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationPreview} from './AnnotationPreview';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
@@ -19,6 +20,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
         this.persistenceLayerManager = this.props.persistenceLayerManager;
 
         this.state = {
+            pageSize: 50
         };
 
     }
@@ -34,6 +36,13 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     public render() {
         const { data } = this.props;
 
+        const onNextPage = () => this.setState({
+            ...this.state,
+            pageSize: this.state.pageSize + 50
+        });
+
+        const reactTableProps = ReactTablePaginationPropsFactory.create(onNextPage);
+
         return (
 
             <div id="doc-repo-table">
@@ -42,7 +51,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
 
                     <ReactTable
                         data={[...data]}
-                        // headerProps={{display: 'none'}}
+                        {...reactTableProps}
                         columns={
                             [
                                 // {
@@ -116,11 +125,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                 // },
 
                             ]}
-
-                        defaultPageSize={50}
-                        style={{
-                            height: '100%'
-                        }}
+                        pageSize={this.state.pageSize}
                         showPageSizeOptions={false}
                         noDataText="No annotations available."
                         className="-striped -highlight"
@@ -250,6 +255,8 @@ interface IState extends IReactTableState {
     /**
      * The currently selected repo annotation.
      */
-    repoAnnotation?: IDocAnnotation;
+    readonly repoAnnotation?: IDocAnnotation;
+
+    readonly pageSize: number;
 
 }

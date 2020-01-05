@@ -31,7 +31,7 @@ import {ReactTableRowInfo} from "../../../../web/js/ui/react-table/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {Devices} from "../../../../web/js/util/Devices";
-import {Button} from "reactstrap";
+import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 
 const log = Logger.create();
 
@@ -39,64 +39,6 @@ const log = Logger.create();
 
 const CONTEXT_MENU_ID = 'doc-table-context-menu';
 
-
-interface ReactTableProps {
-
-    readonly style: React.CSSProperties;
-    readonly TheadComponent?: React.ElementType;
-    readonly PaginationComponent?: React.ElementType;
-
-}
-
-class ReactTablePropsFactory {
-
-    public static create(onNextPage: () => void) {
-
-        if (Devices.isDesktop()) {
-            return this.createDesktop();
-        } else {
-            return this.createPhoneAndTablet(() => onNextPage());
-        }
-
-    }
-
-    private static createDesktop(): ReactTableProps {
-
-        return {
-            style: {
-                height: '100%',
-            },
-        };
-
-    }
-
-    private static createPhoneAndTablet(onNextPage: () => void): ReactTableProps {
-
-        const PaginationComponent = () => (
-            <div style={{display: 'flex'}}>
-
-                <div className="ml-auto mr-auto">
-                    <Button size="md"
-                            className="btn-no-outline p-1"
-                            color="clear"
-                            onClick={() => onNextPage()}>
-                        <i className="fas fa-angle-down"/>
-                    </Button>
-                </div>
-
-            </div>
-        );
-
-        return {
-            style: {},
-            // the table headers must be disabled.
-            TheadComponent: () => null,
-            // use our own custom paginator
-            PaginationComponent
-        };
-
-    }
-}
 
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
@@ -617,10 +559,11 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         const contextMenuHandlers = this.createContextMenuHandlers();
 
         const onNextPage = () => this.setState({
+            ...this.state,
             pageSize: this.state.pageSize + 50
         });
 
-        const reactTableProps = ReactTablePropsFactory.create(onNextPage);
+        const reactTableProps = ReactTablePaginationPropsFactory.create(onNextPage);
 
         return (
 
