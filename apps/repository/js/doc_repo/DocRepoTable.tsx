@@ -31,12 +31,72 @@ import {ReactTableRowInfo} from "../../../../web/js/ui/react-table/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {Devices} from "../../../../web/js/util/Devices";
+import {Button} from "reactstrap";
 
 const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
 
 const CONTEXT_MENU_ID = 'doc-table-context-menu';
+
+
+interface ReactTableProps {
+
+    readonly style: React.CSSProperties;
+    readonly TheadComponent?: React.ElementType;
+    readonly PaginationComponent?: React.ElementType;
+
+}
+
+class ReactTablePropsFactory {
+
+    public static create(onNextPage: () => void) {
+
+        if (Devices.isDesktop()) {
+            return this.createDesktop();
+        } else {
+            return this.createPhoneAndTablet(() => onNextPage());
+        }
+
+    }
+
+    private static createDesktop(): ReactTableProps {
+
+        return {
+            style: {
+                height: '100%',
+            },
+        };
+
+    }
+
+    private static createPhoneAndTablet(onNextPage: () => void): ReactTableProps {
+
+        const PaginationComponent = () => (
+            <div style={{display: 'flex'}}>
+
+                <div className="ml-auto mr-auto">
+                    <Button size="md"
+                            className="btn-no-outline p-1"
+                            color="clear"
+                            onClick={() => onNextPage()}>
+                        <i className="fas fa-angle-down"/>
+                    </Button>
+                </div>
+
+            </div>
+        );
+
+        return {
+            style: {},
+            // the table headers must be disabled.
+            TheadComponent: () => null,
+            // use our own custom paginator
+            PaginationComponent
+        };
+
+    }
+}
 
 export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
@@ -77,6 +137,10 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
         this.createContextMenuHandlers = this.createContextMenuHandlers.bind(this);
 
         this.doHandleToggleField = this.doHandleToggleField.bind(this);
+
+        this.state = {
+            pageSize: 50
+        };
 
     }
 
@@ -552,11 +616,20 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
         const contextMenuHandlers = this.createContextMenuHandlers();
 
+        const onNextPage = () => this.setState({
+            pageSize: this.state.pageSize + 50
+        });
+
+        const reactTableProps = ReactTablePropsFactory.create(onNextPage);
+
         return (
 
             <div id="doc-table"
                  className=""
-                 style={{height: '100%', overflow: 'auto'}}>
+                 style={{
+                     height: '100%',
+                     overflow: 'auto'
+                 }}>
 
                 {/*TODO: removing now because it breaks scrollbars for new users.*/}
                 {/*<AccountUpgradeBar/>*/}
@@ -577,11 +650,11 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
                 <ReactTable
                     data={[...data]}
                     ref={(reactTable: Instance) => this.props.onReactTable(reactTable)}
+                    {...reactTableProps}
                     columns={this.createColumns(contextMenuHandlers)}
-                    defaultPageSize={50}
+                    pageSize={this.state.pageSize}
                     noDataText="No documents available."
                     className="-striped -highlight"
-                    style={{height: '100%'}}
                     showPageSizeOptions={false}
                     defaultSorted={[
                         {
@@ -791,6 +864,7 @@ interface IProps {
 }
 
 interface IState {
+    readonly pageSize: number;
 }
 
 
