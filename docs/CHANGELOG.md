@@ -1,4 +1,8 @@
 
+- Fixed bug with safari not rendering the top left folder filters...
+
+# 1.80.29
+
 - "Copy clipboard" from logs now pretty prints the JSON args
 - Reworked flashcard app so the flashcards now look like real flashcards.
 - Animations now work with the sidebar properly
