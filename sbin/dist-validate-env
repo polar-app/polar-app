@@ -1,0 +1,28 @@
+#!/bin/bash
+
+## make sure we are logged in via NPM
+validate_npm() {
+    npm whoami > /dev/null
+}
+
+validate_firebase() {
+
+    firebase projects:list |grep polar-32b0f > /dev/nul
+
+}
+
+## make sure we have the credentials wwe need
+validate_credentials() {
+
+    if [ "$HAS_CREDENTIALS" != "true" ]; then
+        echo "No credentials" > /dev/stderr
+        exit 1
+    fi
+
+}
+
+set -e
+
+validate_npm
+validate_credentials
+validate_firebase
