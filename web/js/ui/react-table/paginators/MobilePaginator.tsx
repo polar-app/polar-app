@@ -25,7 +25,7 @@ interface IState {
 
 const defaultButton = (props: any) => <button {...props}>{props.children}</button>;
 
-export default class Pagination extends React.Component<IProps, IState> {
+export class MobilePaginator extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
 
@@ -64,18 +64,20 @@ export default class Pagination extends React.Component<IProps, IState> {
     }
 
     private getVisiblePages = (page: number, total: number): ReadonlyArray<number> => {
+
         if (total < 7) {
-            return this.filterPages([1, 2, 3, 4, 5, 6], total);
+            return this.filterPages([1, 2, 3], total);
         } else {
             if (page % 5 >= 0 && page > 4 && page + 2 < total) {
                 return [1, page - 1, page, page + 1, total];
             } else if (page % 5 >= 0 && page > 4 && page + 2 >= total) {
                 return [1, total - 3, total - 2, total - 1, total];
             } else {
-                return [1, 2, 3, 4, 5, total];
+                return [1, 2, 3, total];
             }
         }
-    }
+
+    };
 
     private changePage(page: number) {
         const activePage = this.props.page + 1;
@@ -100,8 +102,12 @@ export default class Pagination extends React.Component<IProps, IState> {
         const activePage = this.props.page + 1;
 
         return (
-            <div className="Table__pagination">
-                <div className="Table__prevPageWrapper">
+            <div className="Table__pagination mt-1 mb-1"
+                 style={{
+                    display: 'flex'
+                 }}>
+
+                <div className="Table__prevPageWrapper mr-1 ml-auto">
                     <PageButtonComponent
                         className="Table__pageButton"
                         onClick={() => {
@@ -113,9 +119,13 @@ export default class Pagination extends React.Component<IProps, IState> {
                         }}
                         disabled={activePage === 1}
                     >
-                        {this.props.previousText}
+                        {/*{this.props.previousText}*/}
+
+                        <i className="fas fa-arrow-left"/>
+
                     </PageButtonComponent>
                 </div>
+
                 <div className="Table__visiblePagesWrapper">
                     {visiblePages.map((page, index, array) => {
                         return (
@@ -133,7 +143,8 @@ export default class Pagination extends React.Component<IProps, IState> {
                         );
                     })}
                 </div>
-                <div className="Table__nextPageWrapper">
+
+                <div className="Table__nextPageWrapper ml-1 mr-auto">
                     <PageButtonComponent
                         className="Table__pageButton"
                         onClick={() => {
@@ -147,7 +158,11 @@ export default class Pagination extends React.Component<IProps, IState> {
                         }}
                         disabled={activePage === this.props.pages}
                     >
-                        {this.props.nextText}
+                        {/*{this.props.nextText}*/}
+
+                        <i className="fas fa-arrow-right"/>
+
+
                     </PageButtonComponent>
                 </div>
             </div>
