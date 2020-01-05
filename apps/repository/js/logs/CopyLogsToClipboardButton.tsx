@@ -36,7 +36,7 @@ export default class CopyLogsToClipboardButton extends React.Component<IProps, I
         const text = messages.map(current => {
 
             if (current.args && current.args.length > 0) {
-                const args = JSON.stringify(current.args);
+                const args = JSON.stringify(current.args, null, "  ");
                 return `${current.timestamp}: ${current.msg}: ${args}`;
             } else {
                 return `${current.timestamp}: ${current.msg}`;

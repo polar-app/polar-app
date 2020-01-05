@@ -1,11 +1,14 @@
 
+- "Copy clipboard" from logs now pretty prints the JSON args
+- Reworked flashcard app so the flashcards now look like real flashcards.
 - Animations now work with the sidebar properly
 - Navigations now work on tablet and phone with routes
 - Reworked routes so that they're cached + faster plus work with nav
 - Fixed bad bug with authentication and Google auth bringing up external URL window/prompts
 
+# 1.80.10
 
-- Fixed bug with flashcard entry
+- Fixed bug with flashcard entry where the wrong field was used.
 - Fixed layout for sidebar and main content.
 - Fixed Electron 7.0 distribution issue.
 
