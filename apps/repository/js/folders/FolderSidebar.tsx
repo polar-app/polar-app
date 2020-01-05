@@ -87,27 +87,29 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
                     {this.tagContextMenuComponents.contextMenu()}
 
-                    <div className="p-1"
-                         style={{
-                             display: 'flex'
-                         }}>
+                    <div className="">
+                        <div className="p-1"
+                             style={{
+                                 display: 'flex'
+                             }}>
 
-                        <InputFilter placeholder="Filter by tag or folder"
-                                     style={{
-                                         flexGrow: 1
-                                     }}
-                                     onChange={value => this.setFilter(value)}/>
+                            <InputFilter placeholder="Filter by tag or folder"
+                                         style={{
+                                             flexGrow: 1
+                                         }}
+                                         onChange={value => this.setFilter(value)}/>
 
-                        {/*<Button className="ml-1 mt-auto mb-auto pl-1 pr-1"*/}
-                        {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
-                        {/*        onClick={() => NULL_FUNCTION}*/}
-                        {/*        color="light">*/}
+                            {/*<Button className="ml-1 mt-auto mb-auto pl-1 pr-1"*/}
+                            {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
+                            {/*        onClick={() => NULL_FUNCTION}*/}
+                            {/*        color="light">*/}
 
-                        {/*    <PlusIcon/>*/}
+                            {/*    <PlusIcon/>*/}
 
-                        {/*</Button>*/}
-                        <AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>
+                            {/*</Button>*/}
+                            <AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>
 
+                        </div>
                     </div>
 
                     <div style={{
