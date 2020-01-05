@@ -26,6 +26,28 @@ export class FixedNav extends React.Component<IProps, any> {
         );
     }
 
+    public static Header = class extends React.Component<IProps> {
+
+        public render() {
+
+            const style = {
+                width: '100%'
+            };
+
+            const props = Props.merge(this.props, {style});
+
+            return (
+
+                <div {...props}>
+
+                    {this.props.children}
+
+                </div>
+
+            );
+        }
+
+    };
     public static Body = class extends React.Component<IProps> {
 
         public render() {

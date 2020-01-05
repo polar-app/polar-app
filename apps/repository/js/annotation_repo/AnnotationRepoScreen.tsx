@@ -189,9 +189,13 @@ namespace screen {
             <FixedNav id="doc-repository"
                       className="annotations-view">
 
-                <RepoHeader left={<FilterButtons/>}
-                            persistenceLayerProvider={props.persistenceLayerProvider}
-                            persistenceLayerController={props.persistenceLayerManager}/>
+                <FixedNav.Header>
+
+                    <RepoHeader left={<FilterButtons/>}
+                                persistenceLayerProvider={props.persistenceLayerProvider}
+                                persistenceLayerController={props.persistenceLayerManager}/>
+
+                </FixedNav.Header>
 
                 <FixedNav.Body>
 

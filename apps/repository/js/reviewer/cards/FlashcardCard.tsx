@@ -139,9 +139,11 @@ export class FlashcardCard extends React.Component<IProps, IState> {
             </TaskBody.Main>
 
             <TaskBody.Footer taskRep={taskRep}>
-                <div className="mb-1">
+
+                <div className="mt-2 mb-2">
                     <Buttons/>
                 </div>
+
             </TaskBody.Footer>
 
         </TaskBody>;

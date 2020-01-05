@@ -40,7 +40,8 @@ export class RepoHeader extends React.Component<IProps, IState> {
         public render() {
 
             return (
-                <div style={{display: 'flex'}} className="border-bottom p-1 mt-1">
+                <div style={{display: 'flex'}}
+                     className="border-bottom p-1 mt-1">
 
                     <div className="mr-1"
                          style={{
