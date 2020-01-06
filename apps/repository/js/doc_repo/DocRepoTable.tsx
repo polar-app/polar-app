@@ -40,11 +40,11 @@ const log = Logger.create();
 const CONTEXT_MENU_ID = 'doc-table-context-menu';
 
 
-export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
+export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, IState> {
 
     private contextMenuProps: DocContextMenuProps;
 
-    constructor(props: IProps, context: any) {
+    constructor(props: DocRepoTableProps, context: any) {
         super(props, context);
 
         this.contextMenuProps = {
@@ -778,7 +778,7 @@ export class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
 }
 
-interface IProps {
+export interface DocRepoTableProps {
     readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly data: ReadonlyArray<RepoDocInfo>;

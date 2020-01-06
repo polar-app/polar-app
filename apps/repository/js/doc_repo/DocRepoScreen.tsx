@@ -29,26 +29,79 @@ import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
-import {DocRepoTable} from './DocRepoTable';
-import {Dock} from '../../../../web/js/ui/dock/Dock';
+import {DocRepoTable, DocRepoTableProps} from './DocRepoTable';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DraggingSelectedDocs} from "./SelectedDocs";
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
-import {FolderSidebar} from "../folders/FolderSidebar";
+import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {TagDescriptor, TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {RepoFooter} from "../repo_footer/RepoFooter";
 
 const log = Logger.create();
 
 // TODO: go back to ExtendedReactTable
+
+namespace main {
+
+    export interface DocumentsProps extends DocRepoTableProps {
+        readonly data: ReadonlyArray<RepoDocInfo>;
+        readonly columns: DocRepoTableColumnsMap;
+        readonly selected: ReadonlyArray<number>;
+    }
+
+    export const Documents = (props: DocumentsProps) => (
+        <DocRepoTable {...props}/>
+    );
+
+    export interface FoldersProps extends FoldersSidebarProps {
+
+    }
+
+    export const Folders = (props: FoldersProps) => (
+        <FolderSidebar {...props}/>
+    );
+
+}
+
+namespace devices {
+
+    export interface DeviceProps extends main.DocumentsProps, main.FoldersProps {
+
+    }
+
+    export const PhoneAndTablet = (props: DeviceProps) => (
+        <main.Documents {...props}/>
+    );
+
+    export const Desktop = (props: DeviceProps) => (
+
+        <DockLayout dockPanels={[
+            {
+                id: "dock-panel-left",
+                type: 'fixed',
+                component: <FolderSidebar {...props}/>,
+                width: 300
+            },
+            {
+                id: "doc-panel-center",
+                type: 'grow',
+                component: <main.Documents {...props}/>
+            }
+        ]}/>
+
+    );
+
+}
 
 export default class DocRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
@@ -97,6 +150,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onDragEnd = this.onDragEnd.bind(this);
 
         this.onRemoveFromTag = this.onRemoveFromTag.bind(this);
+
+        this.createDeviceProps = this.createDeviceProps.bind(this);
 
         this.state = {
             data: [],
@@ -379,132 +434,118 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.setState({ ...this.state, selected });
     }
 
+    private createDeviceProps(): devices.DeviceProps {
+
+        return {
+            ...this.state,
+            relatedTags: this.props.repoDocMetaManager!.relatedTags,
+            synchronizingDocLoader: this.synchronizingDocLoader,
+            tagsProvider: this.props.tags,
+            writeDocInfoTags: (repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags),
+            deleteDocInfo: repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo),
+            writeDocInfoTitle: (repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title),
+            writeDocInfo: docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo),
+            refresh: () => this.refresh(),
+            onDocDeleteRequested: repoDocInfos => this.onDocDeleteRequested(repoDocInfos),
+            onDocDeleted: repoDocInfos => this.onDocDeleted(repoDocInfos),
+            onDocSetTitle: (repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title),
+            onDocTagged: (repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags),
+            onMultiDeleted: () => this.onMultiDeleted(),
+            selectRow: (selectedIdx, event, type) => this.selectRow(selectedIdx, event, type),
+            onSelected: selected => this.onSelected(selected),
+            onReactTable: reactTable => this.reactTable = reactTable,
+            onDragStart: event => this.onDragStart(event),
+            onDragEnd: () => this.onDragEnd(),
+            filters: this.docRepoFilters.filters,
+            getSelected: () => this.getSelected(),
+            getRow: (viewIndex) => this.getRow(viewIndex),
+            onRemoveFromFolder: (folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos),
+            persistenceLayerMutator: this.persistenceLayerMutator,
+            treeState: this.treeState,
+            tags: this.props.tags()
+        };
+
+    }
+
     public render() {
 
         const tagsProvider = this.props.tags;
 
-        const docActive = {
-            right: 'd-none-mobile',
-            splitter: 'd-none-mobile'
-        };
-
-        const docInactive = {
-            right: 'd-none',
-            splitter: 'd-none'
-        };
+        const deviceProps = this.createDeviceProps();
 
         return (
-            <div id="doc-repository"
-                 className=""
-                 style={{
-                     display: 'flex',
-                     minHeight: 0,
-                     minWidth: 0,
-                     flexGrow: 1
-                 }}>
+            <FixedNav id="doc-repository">
 
                 <RepositoryTour/>
+                <header>
 
-                <FixedNav id="doc-repo-table">
+                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                                persistenceLayerController={this.props.persistenceLayerController}/>
 
-                    <header>
+                    <div id="header-filter" className="border-bottom">
 
-                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                    persistenceLayerController={this.props.persistenceLayerController}/>
+                        <div style={{display: 'flex'}}
+                             className="p-1">
 
-                        <div id="header-filter" className="border-bottom">
+                            <div className=""
+                                 style={{
+                                     whiteSpace: 'nowrap',
+                                     marginTop: 'auto',
+                                     marginBottom: 'auto',
+                                     display: 'flex'
+                                 }}>
 
-                            <div style={{display: 'flex'}}
-                                 className="p-1">
+                                <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
+                                                  tagsProvider={tagsProvider}
+                                                  onMultiTagged={tags => this.onMultiTagged(tags)}
+                                                  onMultiDeleted={() => this.onMultiDeleted()}/>
 
-                                <div className=""
-                                     style={{
-                                         whiteSpace: 'nowrap',
-                                         marginTop: 'auto',
-                                         marginBottom: 'auto',
-                                         display: 'flex'
-                                     }}>
+                            </div>
 
-                                    <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
-                                                      tagsProvider={tagsProvider}
-                                                      onMultiTagged={tags => this.onMultiTagged(tags)}
-                                                      onMultiDeleted={() => this.onMultiDeleted()}/>
+                            <div style={{marginLeft: 'auto'}}>
 
-                                </div>
+                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
+                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
+                                                  tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
+                                                  refresher={() => this.refresh()}
+                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
+                                                  docSidebarVisible={this.state.docSidebarVisible}
+                                                  onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
+                                                  right={
+                                               <div className="d-mobile-none"
+                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-                                <div style={{marginLeft: 'auto'}}>
-
-                                    <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                                      onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
-                                                      onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                                      tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
-                                                      refresher={() => this.refresh()}
-                                                      filteredTags={this.docRepoFilters.filters.filteredTags}
-                                                      docSidebarVisible={this.state.docSidebarVisible}
-                                                      onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
-                                                      right={
-                                                   <div className="d-mobile-none"
-                                                        style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                                       <DocRepoTableDropdown id="table-dropdown"
-                                                                             options={Object.values(this.state.columns)}
-                                                                             onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                                   </div>
-                                               }
-                                    />
-
-                                </div>
+                                                   <DocRepoTableDropdown id="table-dropdown"
+                                                                         options={Object.values(this.state.columns)}
+                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
+                                               </div>
+                                           }
+                                />
 
                             </div>
 
                         </div>
 
-                        <MessageBanner/>
+                    </div>
 
-                    </header>
+                    <MessageBanner/>
 
-                    <DockLayout dockPanels={[
-                        {
-                            id: "dock-panel-left",
-                            type: 'fixed',
-                            component: <FolderSidebar persistenceLayerMutator={this.persistenceLayerMutator}
-                                                      treeState={this.treeState}
-                                                      tags={this.props.tags()}/>,
-                            width: 300
-                        },
-                        {
-                            id: "doc-panel-center",
-                            type: 'grow',
-                            component: <DocRepoTable columns={this.state.columns}
-                                                     selected={this.state.selected}
-                                                     data={this.state.data}
-                                                     relatedTags={this.props.repoDocMetaManager!.relatedTags}
-                                                     synchronizingDocLoader={this.synchronizingDocLoader}
-                                                     tagsProvider={() => tagsProvider()}
-                                                     writeDocInfoTags={(repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags)}
-                                                     deleteDocInfo={repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)}
-                                                     writeDocInfoTitle={(repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)}
-                                                     writeDocInfo={docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo)}
-                                                     refresh={() => this.refresh()}
-                                                     onDocDeleteRequested={repoDocInfos => this.onDocDeleteRequested(repoDocInfos)}
-                                                     onDocDeleted={repoDocInfos => this.onDocDeleted(repoDocInfos)}
-                                                     onDocSetTitle={(repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title)}
-                                                     onDocTagged={(repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags)}
-                                                     onMultiDeleted={() => this.onMultiDeleted()}
-                                                     selectRow={(selectedIdx, event1, type) => this.selectRow(selectedIdx, event1, type)}
-                                                     onSelected={selected => this.onSelected(selected)}
-                                                     onReactTable={reactTable => this.reactTable = reactTable}
-                                                     onDragStart={event => this.onDragStart(event)}
-                                                     onDragEnd={() => this.onDragEnd()}
-                                                     filters={this.docRepoFilters.filters}
-                                                     getSelected={() => this.getSelected()}
-                                                     getRow={(viewIndex) => this.getRow(viewIndex)}
-                                                     onRemoveFromFolder={(folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos)}/>
-                        }
-                    ]}/>
+                </header>
 
-                </FixedNav>
-            </div>
+                <FixedNav.Body style={{height: '100%'}}>
+                    <div style={{flexGrow: 1, minHeight: 0, height: '100%'}}>
+                        <DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}
+                                      tablet={<devices.PhoneAndTablet {...deviceProps}/>}
+                                      desktop={<devices.Desktop {...deviceProps}/>}/>
+                    </div>
+                </FixedNav.Body>
+
+                <FixedNav.Footer>
+                    <RepoFooter/>
+                </FixedNav.Footer>
+
+            </FixedNav>
 
         );
     }

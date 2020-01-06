@@ -237,9 +237,11 @@ export class RepositoryApp {
             };
 
             return (
-                <DeviceRouter phone={<PhoneAndTablet/>}
-                              tablet={<PhoneAndTablet/>}
-                              desktop={renderDocRepoScreen()}/>
+                <Cached>
+                    <DeviceRouter phone={<PhoneAndTablet/>}
+                                  tablet={<PhoneAndTablet/>}
+                                  desktop={renderDocRepoScreen()}/>
+                </Cached>
             );
 
         };

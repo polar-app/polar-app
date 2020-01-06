@@ -6,18 +6,15 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {Button} from "reactstrap";
-import {PlusIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 
-export class FolderSidebar extends React.Component<IProps, IState> {
+export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
     private folderContextMenuComponents: ContextMenuComponents;
 
     private tagContextMenuComponents: ContextMenuComponents;
 
-    constructor(props: IProps, context: any) {
+    constructor(props: FoldersSidebarProps, context: any) {
         super(props, context);
 
         this.setFilter = this.setFilter.bind(this);
@@ -149,7 +146,7 @@ export class FolderSidebar extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
+export interface FoldersSidebarProps {
 
     readonly persistenceLayerMutator: PersistenceLayerMutator;
     readonly treeState: TreeState<TagDescriptor>;
