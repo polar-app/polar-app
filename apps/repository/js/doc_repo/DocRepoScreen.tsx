@@ -513,7 +513,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                                   docSidebarVisible={this.state.docSidebarVisible}
                                                   onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
                                                   right={
-                                               <div className="d-mobile-none"
+                                               <div className="d-none-phone d-none-tablet"
                                                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
                                                    <DocRepoTableDropdown id="table-dropdown"
@@ -533,13 +533,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
                 </header>
 
-                <FixedNav.Body style={{height: '100%'}}>
-                    <div style={{flexGrow: 1, minHeight: 0, height: '100%'}}>
-                        <DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}
-                                      tablet={<devices.PhoneAndTablet {...deviceProps}/>}
-                                      desktop={<devices.Desktop {...deviceProps}/>}/>
-                    </div>
-                </FixedNav.Body>
+                <DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}
+                              tablet={<devices.PhoneAndTablet {...deviceProps}/>}
+                              desktop={<devices.Desktop {...deviceProps}/>}/>
 
                 <FixedNav.Footer>
                     <RepoFooter/>
