@@ -479,7 +479,8 @@ export class RepositoryApp {
                        onChange={() => this.onFileUpload()}
                        style={{
                            width: 0,
-                           height: 0
+                           height: 0,
+                           opacity: 0
                        }}/>
 
             ],

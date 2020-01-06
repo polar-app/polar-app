@@ -61,8 +61,10 @@ export class AddContentButton extends React.PureComponent<IProps, IState> {
                                             tooltip="Upload PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
                                             onClick={() => this.doFileUpload()}>
 
-                        <i className="fas fa-hdd"/>
-                        &nbsp; Upload Documents
+                        <label htmlFor="file-upload">
+                            <i className="fas fa-hdd"/>
+                            &nbsp; Upload Documents
+                        </label>
 
                     </AddContentDropdownItem>
 
