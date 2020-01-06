@@ -4,7 +4,7 @@ This is a brief description of how the datastored work in Polar circa 10-15-2018
 to help highlight any concerns about security, privacy, and data integrity
 our users might have - especially with the cloud options.
 
-# Simple cloud syunc - Dropbox / Git 
+# Simple cloud sync - Dropbox / Git 
 
 It's possible to sync the .polar directory directly with Dropbox.  It will work 
 with git as well but requires you to remember to manually commit and push your 
@@ -42,7 +42,7 @@ However, the cloud has its own concerns:
 
 # EncryptedDatastore
 
-We're going to impelment an encrypted datastore which can be combined with other
+We're going to implement an encrypted datastore which can be combined with other
 datastores.  Any data which has private visibility will be encrypted before being
 send to the server.  The key will be kept local. If you lose the key you lose 
 the data.
