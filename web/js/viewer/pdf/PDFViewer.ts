@@ -7,6 +7,7 @@ import {Model} from '../../model/Model';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
+import {PinchToZoom} from "../../ui/Gestures";
 
 declare var window: any;
 
@@ -24,6 +25,8 @@ export class PDFViewer extends Viewer {
     public start() {
 
         log.info("Starting PDFViewer");
+
+        PinchToZoom.disable();
 
         RendererAnalytics.pageview("/pdfviewer");
 

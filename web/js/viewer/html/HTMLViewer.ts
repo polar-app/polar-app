@@ -3,7 +3,6 @@ import {Viewer} from '../Viewer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {Model} from '../../model/Model';
-import {PHZMetadata} from '../../phz/PHZMetadata';
 import {DocDetail} from '../../metadata/DocDetail';
 import {LinkHandler} from './LinkHandler';
 import {Services} from '../../util/services/Services';
@@ -20,7 +19,7 @@ import {LoadStrategy} from '../../apps/main/file_loaders/PHZLoader';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {IFrames} from '../../util/dom/IFrames';
-import {Documents} from './Documents';
+import {PinchToZoom} from "../../ui/Gestures";
 
 const log = Logger.create();
 
@@ -53,6 +52,8 @@ export class HTMLViewer extends Viewer {
     public start() {
 
         log.info("Starting HTMLViewer");
+
+        PinchToZoom.disable();
 
         this.content = <HTMLIFrameElement> document.querySelector("#content");
         this.contentParent = <HTMLElement> document.querySelector("#content-parent");

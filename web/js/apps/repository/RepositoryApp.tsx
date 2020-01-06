@@ -66,6 +66,7 @@ import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsSc
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
+import {Gestures, PinchToZoom} from "../../ui/Gestures";
 
 const log = Logger.create();
 
@@ -85,6 +86,8 @@ export class RepositoryApp {
         log.info("Running with Polar version: " + Version.get());
 
         renderLoadingSplash();
+
+        PinchToZoom.disable();
 
         // enable the navigation block.  This enables it by default and then turns
         // it on again after login is completed.

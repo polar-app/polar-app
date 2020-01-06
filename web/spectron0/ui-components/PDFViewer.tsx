@@ -11,8 +11,6 @@ PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pd
 
 const log = Logger.create();
 
-console.log("FIXME: ", (PDFJS as any).renderTextLayer);
-
 export class PDFViewer extends React.Component<IProps, IState> {
 
     // https://mozilla.github.io/pdf.js/examples/
