@@ -157,32 +157,32 @@ namespace screen {
     interface PhoneAndTabletProps extends ScreenProps {
 
     }
-    export const PhoneAndTablet = (props: PhoneAndTabletProps) => {
 
-        const FilterButtons = () => (
-            <div style={{display: 'flex'}}>
-                <div className="mr-1 mt-auto mb-auto">
-                    <AnnotationTypeSelector
-                        selected={props.filtersHandler.filters.annotationTypes || []}
-                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
-                </div>
-
-                <div className="mr-1 mt-auto mb-auto">
-                    <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
-                                                onSelected={selected => props.filtersHandler.update({colors: selected})}/>
-                </div>
-
-                <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                    <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
-                </div>
-
-                <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                    <AnnotationRepoTableDropdown
-                        persistenceLayerProvider={() => props.persistenceLayerManager.get()}
-                        annotations={props.data}/>
-                </div>
+    const FilterBar = (props: PhoneAndTabletProps) => (
+        <div style={{display: 'flex'}}>
+            <div className="mr-1 mt-auto mb-auto">
+                <AnnotationTypeSelector
+                    selected={props.filtersHandler.filters.annotationTypes || []}
+                    onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
             </div>
-        );
+
+            <div className="mr-1 mt-auto mb-auto">
+                <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
+                                            onSelected={selected => props.filtersHandler.update({colors: selected})}/>
+            </div>
+
+            <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
+            </div>
+
+            <div className="ml-1 d-none-mobile mt-auto mb-auto">
+                <AnnotationRepoTableDropdown persistenceLayerProvider={() => props.persistenceLayerManager.get()}
+                                             annotations={props.data}/>
+            </div>
+        </div>
+    );
+
+    export const PhoneAndTablet = (props: PhoneAndTabletProps) => {
 
         return (
 
@@ -191,7 +191,7 @@ namespace screen {
 
                 <FixedNav.Header>
 
-                    <RepoHeader left={<FilterButtons/>}
+                    <RepoHeader left={<FilterBar {...props}/>}
                                 persistenceLayerProvider={props.persistenceLayerProvider}
                                 persistenceLayerController={props.persistenceLayerManager}/>
 
@@ -258,28 +258,7 @@ namespace screen {
 
                     <Row.Right>
 
-                        <div style={{display: 'flex'}}>
-
-                            <div className="mr-1">
-                                <AnnotationTypeSelector selected={props.filtersHandler.filters.annotationTypes || []}
-                                                        onSelected={annotationTypes => props.filtersHandler.update({annotationTypes})}/>
-                            </div>
-
-                            <div className="mr-1">
-                                <HighlightColorFilterButton selected={props.filtersHandler.filters.colors}
-                                                            onSelected={selected => props.filtersHandler.update({colors: selected})}/>
-                            </div>
-
-                            <div className="ml-1 d-none-mobile">
-                                <TextFilter updateFilters={filters => props.filtersHandler.update(filters)}/>
-                            </div>
-
-                            <div className="ml-1 d-none-mobile mt-auto mb-auto">
-                                <AnnotationRepoTableDropdown persistenceLayerProvider={() => props.persistenceLayerManager.get()}
-                                                             annotations={props.data}/>
-                            </div>
-
-                        </div>
+                        <FilterBar {...props}/>
 
                     </Row.Right>
 
