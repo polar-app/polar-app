@@ -3,6 +3,7 @@ import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Link} from "react-router-dom";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "../../../../web/js/util/Devices";
+import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 
 const Styles: IStyleMap = {
     parent: {
@@ -57,12 +58,14 @@ export class NavIcon extends React.PureComponent<IProps, IState> {
             <div style={Styles.parent}>
                 <div style={Styles.child}>
                     <NavLink>
-                        <img src="/icon.svg"
-                             className="mt-auto mb-auto"
+                        <div className="mt-auto mb-auto"
                              style={{
-                                 height: '35px'
-                             }}
-                             alt="Polar"/>
+                                 height: '35px',
+                                 width: '35px'
+                             }}>
+                            <PolarSVGIcon/>
+                        </div>
+
                     </NavLink>
                 </div>
             </div>

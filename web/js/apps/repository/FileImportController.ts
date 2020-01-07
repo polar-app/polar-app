@@ -81,6 +81,8 @@ export class FileImportController {
 
         const handleFileUploaded = () => {
 
+            log.notice("Handling file upload");
+
             const target = document.querySelector('#file-upload');
 
             if (target) {
@@ -95,7 +97,7 @@ export class FileImportController {
                         .catch(err => log.error("Could not add files: ", err));
 
                 } else {
-                    // noop
+                    console.warn("No files actually uploaded");
                 }
 
             } else {

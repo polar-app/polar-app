@@ -511,9 +511,8 @@ export class RepositoryApp {
     }
 
     private onFileUpload() {
-
+        console.log("File uploaded and sending event via postMessage");
         window.postMessage({type: 'file-uploaded'}, '*');
-
     }
 
     private handleRepoDocInfoEvents() {

@@ -49,6 +49,7 @@ import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks"
 import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
 import {MockDocMetas} from "../../js/metadata/DocMetas";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {DropBox} from "../../js/ui/drop_box/DropBox";
 
 const styles = {
     swatch: {
@@ -335,9 +336,11 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <ScaleAndFadeIn>
-                    hello world!
-                </ScaleAndFadeIn>
+                <DropBox/>
+
+                {/*<ScaleAndFadeIn>*/}
+                {/*    hello world!*/}
+                {/*</ScaleAndFadeIn>*/}
 
                 {/*<SwitchButton size="lg" onChange={NULL_FUNCTION}/>*/}
 
