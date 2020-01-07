@@ -59,8 +59,8 @@ export class NavLogo extends React.PureComponent<IProps, IState> {
                     <NavLink>
 
                         <div style={{
-                                 height: '25px',
-                                 width: '25px'
+                                 height: '50px',
+                                 width: '50px'
                              }}>
                             <PolarSVGIcon/>
                         </div>
