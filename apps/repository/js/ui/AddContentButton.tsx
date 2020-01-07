@@ -7,6 +7,8 @@ import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentDropdownItem} from './AddContentDropdownItem';
 import {AddContentButtons} from "./AddContentButtons";
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
+import {FloatingAction} from "../../../../web/js/ui/mobile/FloatingAction";
+import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
 
 export namespace AddContent {
 
@@ -25,15 +27,21 @@ export namespace AddContent {
     // TODO: this still won't work on desktop safari...
 
     export const Handheld = () => (
-        <label htmlFor="file-upload">
-            <FloatingActionButton icon="fas fa-plus"
-                                  onClick={() => doFileUpload()}
-                                  style={{
-                                      marginBottom: '60px',
-                                      marginRight: '20px'
-                                  }}
-                                  color="success"/>
-        </label>
+
+        <FloatingAction style={{
+                            marginBottom: '60px',
+                            marginRight: '20px'
+                        }}>
+            <label htmlFor="file-upload">
+
+                <ActionButton icon="fas fa-plus"
+                              onClick={() => doFileUpload()}
+                              color="success"/>
+
+            </label>
+
+        </FloatingAction>
+
     );
 
     export const Desktop = (props: IProps) => (
