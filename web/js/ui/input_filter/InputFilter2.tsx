@@ -1,11 +1,10 @@
 import React from 'react';
-import {FilterIcon, SearchIcon} from "../icons/FixedWidthIcons";
+import {SearchIcon} from "../icons/FixedWidthIcons";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import InputGroupAddon from "reactstrap/lib/InputGroupAddon";
 import InputGroup from "reactstrap/lib/InputGroup";
 import Input from "reactstrap/lib/Input";
 import InputGroupText from "reactstrap/lib/InputGroupText";
-import {Button} from "reactstrap";
 
 export const InputFilter = (props: IProps) => {
 

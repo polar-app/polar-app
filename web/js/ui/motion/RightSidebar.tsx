@@ -25,8 +25,6 @@ export const RightSidebar = (props: IProps) => {
         ...props.style || {},
     };
 
-    // TODO: this isn't working either...exit just does NOT get called!
-
     const inactiveWidth = -1 * (width * 0.7);
 
     return (
@@ -61,7 +59,6 @@ export const RightSidebar = (props: IProps) => {
                     </Button>
 
                 </div>
-
 
                 {props.children}
 

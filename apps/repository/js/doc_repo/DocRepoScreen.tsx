@@ -46,7 +46,12 @@ import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour"
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {RepoFooter} from "../repo_footer/RepoFooter";
-import { AddContent } from '../ui/AddContentButton';
+import {AddContent} from '../ui/AddContentButton';
+import {Route, Switch} from "react-router";
+import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
+import {Link} from "react-router-dom";
+import {Button} from "reactstrap";
+import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 
 const log = Logger.create();
 
@@ -73,6 +78,23 @@ namespace main {
     );
 
 }
+
+const onClose = () => window.history.back();
+
+const Router = (props: main.FoldersProps) => (
+
+    <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+        <Route path='#folders'
+               render={() => (
+                   <LeftSidebar onClose={onClose}>
+                       <main.Folders {...props}/>
+                   </LeftSidebar>
+               )}/>
+
+    </Switch>
+
+);
 
 namespace devices {
 
@@ -480,7 +502,12 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 <RepositoryTour/>
                 <header>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
+                    <RepoHeader toggle={<Link to="#folders">
+                                            <Button color="clear">
+                                                <i className="fas fa-bars"/>
+                                            </Button>
+                                        </Link>}
+                                persistenceLayerProvider={this.props.persistenceLayerProvider}
                                 persistenceLayerController={this.props.persistenceLayerController}/>
 
                     <div id="header-filter" className="border-bottom">
@@ -533,6 +560,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                     <MessageBanner/>
 
                 </header>
+
+                <Router {...deviceProps}/>
 
                 <DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}
                               tablet={<devices.PhoneAndTablet {...deviceProps}/>}

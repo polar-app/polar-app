@@ -92,6 +92,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                             <div id="toggle-sidebar"
                                  className="mr-1">
                                 <Button color='light'
+                                        className="btn-no-outline"
                                         onClick={() => this.toggle()}>
                                     <i className="fas fa-bars"/>
                                 </Button>

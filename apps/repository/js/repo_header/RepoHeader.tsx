@@ -44,6 +44,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
                              flexGrow: 1,
                              display: 'flex'
                          }}>
+
+                        {this.props.toggle || null}
+
                         <div className="mr-1">
                             <NavIcon/>
                         </div>
@@ -151,6 +154,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
 interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
+    readonly toggle?: React.ReactElement;
     readonly left?: React.ReactElement;
     readonly right?: React.ReactElement;
 }
