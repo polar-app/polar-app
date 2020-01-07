@@ -336,7 +336,9 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <DropBox/>
+                <DropBox style={{width: '300px', height: '300px'}}/>
+
+                <ActionButton icon="fas fa-plus" onClick={NULL_FUNCTION} color="success"/>
 
                 {/*<ScaleAndFadeIn>*/}
                 {/*    hello world!*/}

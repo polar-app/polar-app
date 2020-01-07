@@ -15,9 +15,9 @@ export class DeviceRouter extends React.Component<IProps> {
         switch (this.device) {
 
             case "phone":
-                return this.props.phone || null;
+                return this.props.phone || this.props.handheld || null;
             case "tablet":
-                return this.props.tablet || null;
+                return this.props.tablet || this.props.handheld || null;
             case "desktop":
                 return this.props.desktop || null;
 
@@ -25,9 +25,32 @@ export class DeviceRouter extends React.Component<IProps> {
 
     }
 
+    public static Desktop = (props: any) => {
+
+        if (Devices.isDesktop()) {
+            return props.children;
+        } else {
+            return null;
+        }
+
+    }
+
+    public static Handheld = (props: any) => {
+
+        if (Devices.isPhone() || Devices.isTablet()) {
+            return props.children;
+        } else {
+            return null;
+        }
+
+    }
+
+
 }
 
 export interface IProps {
+
+    readonly handheld?: React.ReactElement | null;
 
     readonly phone?: React.ReactElement | null;
 

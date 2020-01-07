@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {AddContentButton} from '../ui/AddContentButton';
 import {AddContentActions} from '../ui/AddContentActions';
 import {TagButton} from './TagButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {Tag} from 'polar-shared/src/tags/Tags';
+import { DeviceRouter } from '../../../../web/js/ui/DeviceRouter';
+import { AddContent } from '../ui/AddContentButton';
 
 const log = Logger.create();
 
@@ -25,17 +26,21 @@ export class DocRepoButtonBar extends React.Component<IProps, IState> {
 
             <div style={{display: 'flex'}}>
 
-                <div className="mr-1"
-                     style={{
-                         whiteSpace: 'nowrap',
-                         marginTop: 'auto',
-                         marginBottom: 'auto'
-                     }}>
+                <DeviceRouter.Desktop>
 
-                    <AddContentButton importFromDisk={() => AddContentActions.cmdImportFromDisk()}
-                                      captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
+                    <div className="mr-1"
+                         style={{
+                             whiteSpace: 'nowrap',
+                             marginTop: 'auto',
+                             marginBottom: 'auto'
+                         }}>
 
-                </div>
+                        <AddContent.Desktop importFromDisk={() => AddContentActions.cmdImportFromDisk()}
+                                            captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
+
+                    </div>
+
+                </DeviceRouter.Desktop>
 
                 <div className="mr-1"
                      style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>

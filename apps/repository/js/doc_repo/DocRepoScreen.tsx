@@ -46,6 +46,7 @@ import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour"
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {RepoFooter} from "../repo_footer/RepoFooter";
+import { AddContent } from '../ui/AddContentButton';
 
 const log = Logger.create();
 
@@ -538,6 +539,11 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                               desktop={<devices.Desktop {...deviceProps}/>}/>
 
                 <FixedNav.Footer>
+
+                    <DeviceRouter.Handheld>
+                        <AddContent.Handheld/>
+                    </DeviceRouter.Handheld>
+
                     <RepoFooter/>
                 </FixedNav.Footer>
 

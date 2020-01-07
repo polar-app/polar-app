@@ -26,6 +26,7 @@ export class FloatingActionButton extends React.Component<IProps> {
 
                 <ActionButton icon={this.props.icon}
                               text={this.props.text}
+                              color={this.props.color}
                               onClick={onClick}/>
 
             </div>
@@ -54,5 +55,7 @@ export interface IProps {
     readonly style?: FloatingStyle;
 
     readonly onClick?: () => void;
+
+    readonly color?: 'success' | 'primary';
 
 }

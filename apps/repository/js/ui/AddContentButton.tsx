@@ -5,143 +5,93 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {ManualDropdown} from '../doc_repo/ManaulDropdown';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentDropdownItem} from './AddContentDropdownItem';
-import {AccountUpgrader} from "../../../../web/js/ui/account_upgrade/AccountUpgrader";
-import {Logger} from "polar-shared/src/logger/Logger";
+import {AddContentButtons} from "./AddContentButtons";
+import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 
-const log = Logger.create();
+export namespace AddContent {
 
-export class AddContentButton extends React.PureComponent<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.toggle = this.toggle.bind(this);
-        this.doAddFilesFromDisk = this.doAddFilesFromDisk.bind(this);
-        this.doCaptureWebPage = this.doCaptureWebPage.bind(this);
-        this.doFileUpload = this.doFileUpload.bind(this);
-        this.triggerFileUpload = this.triggerFileUpload.bind(this);
-
-        this.state = {
-            open: false
-        };
-
+    function doAddFilesFromDisk(props: IProps) {
+        AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
     }
 
-    public render() {
+    function doCaptureWebPage(props: IProps) {
+        AddContentButtons.doAccountVerifiedAction(() => props.captureWebPage());
+    }
 
-        return (
+    function doFileUpload() {
+        AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
+    }
 
-            <ManualDropdown id="add-content-dropdown"
-                            direction="down"
-                            size="md">
+    // TODO: this still won't work on desktop safari...
 
-                <SimpleTooltipEx text="Add content by importing PDFs from your local drive or capturing web pages from the Internet."
-                                 placement="bottom">
+    export const Handheld = () => (
+        <label htmlFor="file-upload">
+            <FloatingActionButton icon="fas fa-plus"
+                                  onClick={() => doFileUpload()}
+                                  style={{
+                                      marginBottom: '60px',
+                                      marginRight: '20px'
+                                  }}
+                                  color="success"/>
+        </label>
+    );
 
-                    <DropdownToggle size="md" style={{fontWeight: 'bold'}} color="success" caret>
-                        <i className="fas fa-plus mr-1" /> Add &nbsp;
-                    </DropdownToggle>
+    export const Desktop = (props: IProps) => (
+        <ManualDropdown id="add-content-dropdown"
+                        direction="down"
+                        size="md">
 
-                </SimpleTooltipEx>
+            <SimpleTooltipEx text="Add content by importing PDFs from your local drive or capturing web pages from the Internet."
+                             placement="bottom">
 
-                <DropdownMenu className="shadow">
+                <DropdownToggle size="md" style={{fontWeight: 'bold'}} color="success" caret>
+                    <i className="fas fa-plus mr-1" /> Add &nbsp;
+                </DropdownToggle>
 
-                    <AddContentDropdownItem id="add-content-import-from-disk"
-                                            hidden={AppRuntime.isBrowser()}
-                                            tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
-                                            onClick={() => this.doAddFilesFromDisk()}>
+            </SimpleTooltipEx>
 
+            <DropdownMenu className="shadow">
+
+                <AddContentDropdownItem id="add-content-import-from-disk"
+                                        hidden={AppRuntime.isBrowser()}
+                                        tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+                                        onClick={() => doAddFilesFromDisk(props)}>
+
+                    <i className="fas fa-hdd"/>
+                    &nbsp; Add Files from Disk
+
+                </AddContentDropdownItem>
+
+                <AddContentDropdownItem id="add-content-import-from-disk-via-file-upload"
+                                        hidden={AppRuntime.isElectron()}
+                                        tooltip="Upload PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+                                        onClick={() => doFileUpload()}>
+
+                    <label htmlFor="file-upload">
                         <i className="fas fa-hdd"/>
-                        &nbsp; Add Files from Disk
+                        &nbsp; Upload Documents
+                    </label>
 
-                    </AddContentDropdownItem>
+                </AddContentDropdownItem>
 
-                    <AddContentDropdownItem id="add-content-import-from-disk-via-file-upload"
-                                            hidden={AppRuntime.isElectron()}
-                                            tooltip="Upload PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
-                                            onClick={() => this.doFileUpload()}>
+                <AddContentDropdownItem id="add-content-capture-web-page"
+                                        hidden={AppRuntime.isBrowser()}
+                                        tooltip="Capture a web page from the web and save it for annotation and long term archival."
+                                        onClick={() => doCaptureWebPage(props)}>
 
-                        <label htmlFor="file-upload">
-                            <i className="fas fa-hdd"/>
-                            &nbsp; Upload Documents
-                        </label>
+                    <i className="fab fa-chrome"/>
+                    &nbsp; Capture Web Page
 
-                    </AddContentDropdownItem>
+                </AddContentDropdownItem>
 
-                    <AddContentDropdownItem id="add-content-capture-web-page"
-                                            hidden={AppRuntime.isBrowser()}
-                                            tooltip="Capture a web page from the web and save it for annotation and long term archival."
-                                            onClick={() => this.doCaptureWebPage()}>
+            </DropdownMenu>
 
-                        <i className="fab fa-chrome"/>
-                        &nbsp; Capture Web Page
-
-                    </AddContentDropdownItem>
-
-                </DropdownMenu>
-
-            </ManualDropdown>
-
-        );
-
-    }
-    private doAccountVerifiedAction(delegate: () => void) {
-
-        const handler = async () => {
-
-            const accountUpgrader = new AccountUpgrader();
-
-            if (await accountUpgrader.upgradeRequired()) {
-                log.warn("Account upgrade required");
-                accountUpgrader.startUpgrade();
-                return;
-            }
-
-            delegate();
-
-        };
-
-        handler()
-            .catch(err => log.error("Unable to add to repository: ", err));
-
-    }
-
-    private doAddFilesFromDisk() {
-        this.doAccountVerifiedAction(() => this.props.importFromDisk());
-    }
-
-    private doCaptureWebPage() {
-        this.doAccountVerifiedAction(() => this.props.captureWebPage());
-    }
-
-    private doFileUpload() {
-        this.doAccountVerifiedAction(() => this.triggerFileUpload());
-    }
-
-    private triggerFileUpload() {
-
-        const fileUpload = document.getElementById('file-upload');
-
-        if (fileUpload) {
-            fileUpload.focus();
-            fileUpload.click();
-        } else {
-            log.warn("No file upload button");
-        }
-
-    }
-
-    private toggle(): void {
-        this.setState({...this.state, open: !this.state.open});
-    }
+        </ManualDropdown>
+    );
 
 }
 
 interface IProps {
     readonly importFromDisk: () => void;
     readonly captureWebPage: () => void;
-}
-
-interface IState {
-    readonly open: boolean;
 }

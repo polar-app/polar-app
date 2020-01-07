@@ -37,10 +37,11 @@ export class ReactTablePaginationPropsFactory {
         const PaginationComponent = () => (
             <div style={{display: 'flex'}}>
 
-                <Button size="md"
+                <Button size="lg"
                         className="btn-no-outline p-1 text-primary"
                         color="clear"
                         style={{
+                            fontSize: '1.5em',
                             flexGrow: 1
                         }}
                         onClick={() => onNextPage()}>
