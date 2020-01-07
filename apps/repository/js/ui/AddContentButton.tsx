@@ -6,11 +6,12 @@ import {ManualDropdown} from '../doc_repo/ManaulDropdown';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentDropdownItem} from './AddContentDropdownItem';
 import {AddContentButtons} from "./AddContentButtons";
-import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {FloatingAction} from "../../../../web/js/ui/mobile/FloatingAction";
 import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
+import {Button} from "reactstrap";
+import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
 
-export namespace AddContent {
+namespace runtime {
 
     function doAddFilesFromDisk(props: IProps) {
         AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
@@ -24,27 +25,21 @@ export namespace AddContent {
         AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
     }
 
-    // TODO: this still won't work on desktop safari...
-
-    export const Handheld = () => (
-
-        <FloatingAction style={{
-                            marginBottom: '60px',
-                            marginRight: '20px'
-                        }}>
-            <label htmlFor="file-upload">
-
-                <ActionButton icon="fas fa-plus"
-                              onClick={() => doFileUpload()}
-                              color="success"/>
-
-            </label>
-
-        </FloatingAction>
-
+    export const Main = (props: IProps) => (
+        <AppRuntimeRouter browser={<Browser/>}
+                          electron={<Electron {...props}/>}/>
     );
 
-    export const Desktop = (props: IProps) => (
+    const Browser = () => (
+            <Button color="success"
+                    size="md">
+                <label htmlFor="file-upload" className="m-0">
+                    <i className="fas fa-plus mr-1" /> Add &nbsp;
+                </label>
+            </Button>
+    );
+
+    const Electron = (props: IProps) => (
         <ManualDropdown id="add-content-dropdown"
                         direction="down"
                         size="md">
@@ -95,6 +90,46 @@ export namespace AddContent {
             </DropdownMenu>
 
         </ManualDropdown>
+    );
+
+}
+
+export namespace AddContent {
+
+    function doAddFilesFromDisk(props: IProps) {
+        AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
+    }
+
+    function doCaptureWebPage(props: IProps) {
+        AddContentButtons.doAccountVerifiedAction(() => props.captureWebPage());
+    }
+
+    function doFileUpload() {
+        AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
+    }
+
+    // TODO: this still won't work on desktop safari...
+
+    export const Handheld = () => (
+
+        <FloatingAction style={{
+                            marginBottom: '60px',
+                            marginRight: '20px'
+                        }}>
+            <label htmlFor="file-upload">
+
+                <ActionButton icon="fas fa-plus"
+                              onClick={() => doFileUpload()}
+                              color="success"/>
+
+            </label>
+
+        </FloatingAction>
+
+    );
+
+    export const Desktop = (props: IProps) => (
+        <runtime.Main {...props}/>
     );
 
 }

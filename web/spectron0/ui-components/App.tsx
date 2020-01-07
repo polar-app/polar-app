@@ -26,7 +26,7 @@ import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
 import {LeftSidebar} from "../../js/ui/motion/LeftSidebar";
 import {FadeIn} from "../../js/ui/motion/FadeIn";
 import {useState} from "react";
-import {Button} from "reactstrap";
+import {Button, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
 
 import {motion, AnimatePresence} from 'framer-motion';
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
@@ -50,6 +50,8 @@ import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
 import {MockDocMetas} from "../../js/metadata/DocMetas";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {DropBox} from "../../js/ui/drop_box/DropBox";
+import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
+import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
 
 const styles = {
     swatch: {
@@ -336,9 +338,40 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <DropBox style={{width: '300px', height: '300px'}}/>
 
-                <ActionButton icon="fas fa-plus" onClick={NULL_FUNCTION} color="success"/>
+                <div className="m-5">
+
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <InputGroupText className="pl-1 pr-1 bg-primary text-white">
+                                <FilterIcon/>
+                            </InputGroupText>
+                        </InputGroupAddon>
+
+                        <Input id="foo"
+                               type="text"
+                               className="btn-no-outline"
+                               placeholder="hello world"
+                               defaultValue="">
+
+                        </Input>
+
+                    </InputGroup>
+
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <InputFilter/>
+                </div>
+
+                {/*<Lightbox>*/}
+                {/*    <div style={{display: 'flex'}} className="m-5">*/}
+                {/*        <div className="m-auto">*/}
+                {/*            <DropBox style={{width: '350px', height: '350px'}}/>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</Lightbox>*/}
 
                 {/*<ScaleAndFadeIn>*/}
                 {/*    hello world!*/}

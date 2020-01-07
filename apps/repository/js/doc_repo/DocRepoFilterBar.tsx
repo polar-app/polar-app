@@ -4,7 +4,7 @@ import {TagsDB} from '../TagsDB';
 import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
-import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
+import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
 
 export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
@@ -93,14 +93,13 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                             <InputGroup size="md">
 
                                 <InputFilter id="filter_title"
-                                             placeholder="Filter by title"
+                                             placeholder="Search by title"
                                              style={{
                                                  width: '20em'
                                              }}
                                              onChange={(value) => this.props.onFilterByTitle(value)}/>
 
                             </InputGroup>
-
 
                         </SimpleTooltipEx>
 

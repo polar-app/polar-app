@@ -29,7 +29,9 @@ export class ToggleButton extends React.Component<IProps, IState> {
         };
 
         const bgClassName = this.state.value ? 'bg-primary' : 'bg-secondary';
-        const iconClassName = createIconClassName();;
+        const iconClassName = createIconClassName();
+
+        // TODO: migrate this to an input group button with a input prepended... button should be small with no changes to padding
 
         return (
 
@@ -37,14 +39,14 @@ export class ToggleButton extends React.Component<IProps, IState> {
                     color="light"
                     className="p-0 pr-0 border rounded"
                     onClick={() => this.toggle()}
-                    size={this.props.size  || 'sm'}>
+                    size={this.props.size || 'sm'}>
 
                 <div style={{display: 'flex'}}>
 
                     <div className={bgClassName + " p-1 text-light rounded-left"}
                          style={{verticalAlign: 'middle', textAlign: 'center', width: '2.5em'}}>
 
-                        &nbsp;<i className={iconClassName}></i>&nbsp;
+                        &nbsp;<i className={iconClassName}/>&nbsp;
 
                     </div>
 

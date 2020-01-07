@@ -1,7 +1,7 @@
 import * as React from 'react';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import {UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
-import {InputFilter} from "../../../../../web/js/ui/input_filter/InputFilter";
+import {InputFilter} from "../../../../../web/js/ui/input_filter/InputFilter2";
 
 export class TextFilter extends React.PureComponent<IProps, IState> {
 
@@ -23,9 +23,9 @@ export class TextFilter extends React.PureComponent<IProps, IState> {
                 {/*       onChange={(value) => this.props.updateFilters({text: value.target.value})}/>*/}
 
                 <InputFilter id="filter_title"
-                             placeholder="Filter by text"
-                             style={{width}}
-                             onChange={(value) => this.props.updateFilters({text: value})}/>
+                              placeholder="Filter by text"
+                              style={{width}}
+                              onChange={(value) => this.props.updateFilters({text: value})}/>
 
             </InputGroup>
 
