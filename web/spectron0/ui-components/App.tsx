@@ -103,15 +103,15 @@ const ThirdPage = () => (
     </div>
 );
 
-const LeftSidebarPage = () => (
-
-    <LeftSidebar style={{backgroundColor: 'red'}}>
-        <div>
-            this is the left sidebar
-        </div>
-    </LeftSidebar>
-
-);
+// const LeftSidebarPage = () => (
+//
+//     <LeftSidebar style={{backgroundColor: 'red'}}>
+//         <div>
+//             this is the left sidebar
+//         </div>
+//     </LeftSidebar>
+//
+// );
 
 const RightSidebarPage = () => (
 
