@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Input} from "reactstrap";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../DocRepoScreen";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Checkbox} from "../../../../../web/js/ui/Checkbox";
 
 export class CheckCell extends React.Component<IProps> {
 
@@ -20,22 +19,18 @@ export class CheckCell extends React.Component<IProps> {
 
         const {selected, viewIndex, selectRow} = this.props;
 
-        return (<div style={{lineHeight: '1em'}}>
+        return (<div style={{
+                         lineHeight: '1em',
+                         display: 'flex'
+                     }}>
 
-                <Input checked={selected.includes(viewIndex)}
-                       style={{
-                           marginLeft: 'auto',
-                           marginRight: 'auto',
-                           margin: 'auto',
-                           position: 'relative',
-                           top: '2px',
-                           width: '16px',
-                           height: '16px',
-                       }}
-                       className="m-auto"
-                       onChange={NULL_FUNCTION}
-                       onClick={(event) => selectRow(viewIndex, event.nativeEvent, 'checkbox')}
-                       type="checkbox"/>
+                <Checkbox checked={selected.includes(viewIndex)}
+                          style={{
+                              margin: 'auto',
+                              fontSize: '1.2em'
+                          }}
+                          className="m-auto text-secondary"
+                          onClick={(event) => selectRow(viewIndex, event.nativeEvent, 'checkbox')}/>
 
                 {/*<i className="far fa-square"></i>*/}
 

@@ -32,6 +32,7 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {Devices} from "../../../../web/js/util/Devices";
 import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
+import {Checkbox} from "../../../../web/js/ui/Checkbox";
 
 const log = Logger.create();
 
@@ -99,18 +100,12 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
                 return (<div>
 
-                    <Input checked={checked}
+                    <Checkbox checked={checked}
                            style={{
-                               marginLeft: 'auto',
-                               marginRight: 'auto',
                                margin: 'auto',
-                               position: 'relative',
-                               top: '2px',
-                               width: '16px',
-                               height: '16px',
+                               fontSize: '1.2em'
                            }}
                            className="m-auto"
-                           onChange={NULL_FUNCTION}
                            onClick={() => {
                                // noop... now do we
                                // select ALL the
@@ -135,8 +130,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
                                this.props.onSelected(selected);
 
-                           }}
-                           type="checkbox"/>
+                           }}/>
 
                 </div>);
             },
@@ -146,6 +140,9 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
             resizable: false,
             sortable: false,
             className: 'doc-checkbox',
+            style: {
+                display: 'flex'
+            },
             Cell: (row: any) => {
                 // TODO: move to a PureComponent to
                 // improve performance
