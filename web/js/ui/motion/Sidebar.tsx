@@ -1,6 +1,5 @@
 import * as React from "react";
 import {motion} from "framer-motion";
-import {Button} from "reactstrap";
 import {FadeBlackout} from "./FadeBlackout";
 
 const zIndex = 3000000;
