@@ -4,6 +4,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {TNode} from './TreeView';
 import {DragTarget} from "./DragTarget";
 import {TreeState} from "./TreeState";
+import {Checkbox} from "../Checkbox";
 
 const DEFAULT_NODE_CONTEXT_MENU_RENDER = (child: React.ReactElement) => {
     return <div>{child}</div>;
@@ -61,7 +62,7 @@ class Styles {
         userSelect: 'none',
         marginTop: 'auto',
         marginBottom: 'auto',
-        paddingLeft: '5px',
+        paddingLeft: '2px',
 
     };
 
@@ -159,28 +160,14 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
             if (children.length > 0) {
 
-                // if (this.state.node.closed) {
-                //     return 'fas fa-caret-right';
-                // } else {
-                //     return 'fas fa-caret-down';
-                // }
-
-                // if (closed) {
-                //     return 'fas fa-plus';
-                // } else {
-                //     return 'fas fa-minus';
-                // }
-
                 if (closed) {
                     return 'far fa-plus-square';
                 } else {
                     return 'far fa-minus-square';
                 }
 
-                // <i className="far fa-plus-square"></i>
             }
 
-            // return "far fa-file";
             return "";
 
         };
@@ -203,7 +190,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                     <DragTarget onDropped={() => this.props.treeState.dispatchDropped(node.value)}>
 
                         <div style={Styles.NODE_PARENT}
-                             className="hover-highlight">
+                             className="">
 
                             <div style={Styles.NODE_ICON}
                                  className={icon}
@@ -212,12 +199,14 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
                             <div style={Styles.NODE_SELECTOR}>
 
-                                <input className="m-0"
-                                       checked={selected}
-                                       type="checkbox"
-                                       style={{display: 'block'}}
-                                       onContextMenu={(event) => this.onClick(event)}
-                                       onChange={event => this.onCheckbox(event)}/>
+                                <Checkbox className="m-0 text-secondary"
+                                          checked={selected}
+                                          style={{
+                                              display: 'block',
+                                              fontSize: '1.1em',
+                                          }}
+                                          onContextMenu={(event) => this.onClick(event)}
+                                          onClick={() => this.onCheckbox(! selected)}/>
 
                             </div>
 
@@ -266,8 +255,8 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
         this.select(multi);
     }
 
-    private onCheckbox(event: React.ChangeEvent<HTMLInputElement>) {
-        this.select(true, event.target.checked);
+    private onCheckbox(checked: boolean) {
+        this.select(true, checked);
     }
 
     private toggleClosed() {

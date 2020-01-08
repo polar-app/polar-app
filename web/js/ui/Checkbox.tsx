@@ -6,6 +6,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
 }
 
@@ -22,10 +23,12 @@ const Icon = (props: IProps) => {
 export const Checkbox = (props: IProps) => {
 
     const onClick = props.onClick || NULL_FUNCTION;
+    const onContextMenu = props.onContextMenu || NULL_FUNCTION;
 
     return (
         <span style={props.style || {}}
               className={props.className || ""}
+              onContextMenu={(event) => onContextMenu(event)}
               onClick={(event) => onClick(event)}>
 
             <Icon {...props}/>

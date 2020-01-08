@@ -105,7 +105,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
                                margin: 'auto',
                                fontSize: '1.2em'
                            }}
-                           className="m-auto"
+                           className="m-auto text-secondary"
                            onClick={() => {
                                // noop... now do we
                                // select ALL the
