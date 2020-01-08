@@ -191,7 +191,7 @@ namespace screen {
 
                 <FixedNav.Header>
 
-                    <RepoHeader left={<FilterBar {...props}/>}
+                    <RepoHeader right={<FilterBar {...props}/>}
                                 persistenceLayerProvider={props.persistenceLayerProvider}
                                 persistenceLayerController={props.persistenceLayerManager}/>
 
