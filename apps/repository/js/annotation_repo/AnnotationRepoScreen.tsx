@@ -25,7 +25,7 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
-import {FolderSidebar} from "../folders/FolderSidebar";
+import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
@@ -39,6 +39,8 @@ import {AnnotationListView} from "./AnnotationListView";
 import {AnnotationPreviewView} from "./AnnotationPreviewView";
 import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/IndeterminateLoadingModal";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
+import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
+import {Button} from "reactstrap";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -61,23 +63,32 @@ const AnnotationPreview = (props: AnnotationsPreviewProps) => (
                            repoAnnotation={props.repoAnnotation}/>
 );
 
-interface RouterProps {
+interface RouterProps extends main.MainProps {
     readonly onCreateReviewer: (mode: RepetitionMode) => any;
     readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
+const onClose = () => window.history.back();
+
 const Router = (props: RouterProps) => (
 
-    <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+    <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-        <Route path='/annotations#start-review'
+        <Route path='#folders'
+               render={() => (
+                   <LeftSidebar onClose={onClose}>
+                       <main.Folders {...props}/>
+                   </LeftSidebar>
+               )}/>
+
+        <Route path='#start-review'
                render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
 
-        <Route path='/annotations#review-flashcards'
+        <Route path='#review-flashcards'
                component={() => <IndeterminateLoadingModal id="loading-flashcards"
                                                            provider={() => props.onCreateReviewer('flashcard')}/>}/>
 
-        <Route path='/annotations#review-reading'
+        <Route path='#review-reading'
                component={() => <IndeterminateLoadingModal id="loading-review"
                                                            provider={() => props.onCreateReviewer('reading')}/>}/>
 
@@ -87,13 +98,23 @@ const Router = (props: RouterProps) => (
 
 namespace main {
 
-    interface MainProps extends IProps, IState {
+    export interface MainProps extends IProps, IState {
         readonly filtersHandler: AnnotationRepoFiltersHandler;
         readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
         readonly persistenceLayerMutator: PersistenceLayerMutator;
         readonly treeState: TreeState<TagDescriptor>;
 
     }
+
+    export interface FoldersProps extends FoldersSidebarProps {
+
+    }
+
+    export const Folders = (props: MainProps) => (
+        <FolderSidebar tags={props.tags()}
+                       persistenceLayerMutator={props.persistenceLayerMutator}
+                       treeState={props.treeState}/>
+    );
 
     export const Phone = (props: MainProps) => (
         <DockLayout dockPanels={[
@@ -126,9 +147,7 @@ namespace main {
             {
                 id: 'dock-panel-left',
                 type: 'fixed',
-                component: <FolderSidebar persistenceLayerMutator={props.persistenceLayerMutator}
-                                          treeState={props.treeState}
-                                          tags={props.tags()}/>,
+                component: <main.Folders {...props}/>,
                 width: 300
             },
             {
@@ -192,6 +211,13 @@ namespace screen {
                 <FixedNav.Header>
 
                     <RepoHeader right={<FilterBar {...props}/>}
+                                toggle={(
+                                    <Link to="#folders">
+                                        <Button color="clear">
+                                            <i className="fas fa-bars"/>
+                                        </Button>
+                                    </Link>
+                                )}
                                 persistenceLayerProvider={props.persistenceLayerProvider}
                                 persistenceLayerController={props.persistenceLayerManager}/>
 
@@ -200,7 +226,8 @@ namespace screen {
                 <FixedNav.Body>
 
                     <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}
-                            persistenceLayerProvider={props.persistenceLayerProvider}/>
+                            persistenceLayerProvider={props.persistenceLayerProvider}
+                            {...props}/>
 
                     <Link to={{pathname: '/annotations', hash: '#start-review'}}>
 
@@ -267,7 +294,8 @@ namespace screen {
             </header>
 
             <Router onCreateReviewer={mode => props.onCreateReviewer(mode)}
-                    persistenceLayerProvider={props.persistenceLayerProvider}/>
+                    persistenceLayerProvider={props.persistenceLayerProvider}
+                    {...props}/>
 
             <main.Desktop {...props}/>
 

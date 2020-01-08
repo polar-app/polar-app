@@ -73,7 +73,7 @@ namespace main {
 
     }
 
-    export const Folders = (props: FoldersProps) => (
+    export const Folders = (props: FoldersSidebarProps) => (
         <FolderSidebar {...props}/>
     );
 
@@ -502,11 +502,13 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                 <RepositoryTour/>
                 <header>
 
-                    <RepoHeader toggle={<Link to="#folders">
-                                            <Button color="clear">
-                                                <i className="fas fa-bars"/>
-                                            </Button>
-                                        </Link>}
+                    <RepoHeader toggle={(
+                                    <Link to="#folders">
+                                        <Button color="clear">
+                                            <i className="fas fa-bars"/>
+                                        </Button>
+                                    </Link>
+                                )}
                                 persistenceLayerProvider={this.props.persistenceLayerProvider}
                                 persistenceLayerController={this.props.persistenceLayerController}/>
 

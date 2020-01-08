@@ -24,7 +24,7 @@ export const Sidebar = (props: IProps) => {
         ...props.style || {},
     };
 
-    const inactiveWidth = -1 * (width * 0.7);
+    const inactiveWidth = 1 * (width * 0.7);
 
     return (
         <>
