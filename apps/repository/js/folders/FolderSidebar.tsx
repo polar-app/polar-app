@@ -4,7 +4,7 @@ import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {ContextMenuComponents, FolderContextMenus} from "./FolderContextMenus";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter";
+import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 
