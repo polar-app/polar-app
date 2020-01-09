@@ -48,23 +48,29 @@ export class ReactRouters {
     /**
      * Only match with the hash.
      */
-    public static createLocationWithHashOnly(): IRouteLocation {
+    public static createLocationWithHashOnly(location: ILocation = document.location): IRouteLocation {
 
         return {
             get pathname() {
-                return document.location.hash;
+                return location.hash;
             },
             get search() {
-                return document.location.hash;
+                return location.hash;
             },
             get hash() {
-                return document.location.hash;
+                return location.hash;
             },
             state: null,
         };
 
     }
 
+}
+
+export interface ILocation {
+    readonly pathname: string;
+    readonly search: string;
+    readonly hash: string;
 }
 
 export interface IRouteLocation {

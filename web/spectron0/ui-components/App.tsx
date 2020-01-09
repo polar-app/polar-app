@@ -52,6 +52,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {DropBox} from "../../js/ui/drop_box/DropBox";
 import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
+import {AnimatedRoutes} from "./AnimatedRoutes";
 
 const styles = {
     swatch: {
@@ -338,32 +339,33 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <AnimatedRoutes/>
 
-                <div className="m-5">
+                {/*<div className="m-5">*/}
 
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <InputGroupText className="pl-1 pr-1 bg-primary text-white">
-                                <FilterIcon/>
-                            </InputGroupText>
-                        </InputGroupAddon>
+                {/*    <InputGroup>*/}
+                {/*        <InputGroupAddon addonType="prepend">*/}
+                {/*            <InputGroupText className="pl-1 pr-1 bg-primary text-white">*/}
+                {/*                <FilterIcon/>*/}
+                {/*            </InputGroupText>*/}
+                {/*        </InputGroupAddon>*/}
 
-                        <Input id="foo"
-                               type="text"
-                               className="btn-no-outline"
-                               placeholder="hello world"
-                               defaultValue="">
+                {/*        <Input id="foo"*/}
+                {/*               type="text"*/}
+                {/*               className="btn-no-outline"*/}
+                {/*               placeholder="hello world"*/}
+                {/*               defaultValue="">*/}
 
-                        </Input>
+                {/*        </Input>*/}
 
-                    </InputGroup>
+                {/*    </InputGroup>*/}
 
-                    <br/>
-                    <br/>
-                    <br/>
+                {/*    <br/>*/}
+                {/*    <br/>*/}
+                {/*    <br/>*/}
 
-                    <InputFilter/>
-                </div>
+                {/*    <InputFilter/>*/}
+                {/*</div>*/}
 
                 {/*<Lightbox>*/}
                 {/*    <div style={{display: 'flex'}} className="m-5">*/}

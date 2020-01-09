@@ -113,7 +113,10 @@ namespace devices {
                 id: "dock-panel-left",
                 type: 'fixed',
                 component: <FolderSidebar {...props}/>,
-                width: 300
+                width: 300,
+                style: {
+                    overflow: 'none'
+                }
             },
             {
                 id: "doc-panel-center",

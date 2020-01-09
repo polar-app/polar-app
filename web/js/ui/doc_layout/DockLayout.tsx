@@ -127,6 +127,7 @@ export class DockLayout extends React.Component<IProps, IState> {
                     width,
                     maxWidth: width,
                     minWidth: width,
+                    ...(docPanel.style || {})
                 };
 
                 return (
@@ -142,6 +143,7 @@ export class DockLayout extends React.Component<IProps, IState> {
                 const style: React.CSSProperties = {
                     ...createBaseStyle(),
                     flexGrow: docPanel.grow || 1,
+                    ...(docPanel.style || {})
                 };
 
                 return (
@@ -318,7 +320,6 @@ interface IState {
 /**
  * A CSS width in CSS units (px, em, etc).
  */
-// export type CSSWidth = number | string;
 export type CSSWidth = number;
 
 export type DocPanelType = 'fixed' | 'grow';
@@ -327,6 +328,7 @@ export interface BaseDockPanel {
     readonly id: string;
     readonly type: DocPanelType;
     readonly disabled?: boolean;
+    readonly style?: React.CSSProperties;
 }
 
 export interface FixedDockPanel extends BaseDockPanel {
