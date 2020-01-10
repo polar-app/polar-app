@@ -21,15 +21,15 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
-import {ConfirmProps} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
-import {Confirm} from "../../../../web/js/ui/dialogs/Confirm";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ReviewerModal} from "./ReviewerModal";
+import {CloudSyncRequired, NoTasks} from "./ReviewFinished";
 
 const log = Logger.create();
 
@@ -55,35 +55,6 @@ export class Reviewers {
         await PreviewWarnings.doWarning(prefs, () => latch.resolve(true));
 
         await latch.get();
-    }
-
-    private static createWebRequiredError() {
-
-        const props: ConfirmProps = {
-            title: 'Cloud sync required (please login)',
-            subtitle: 'Cloud sync is required to review annotations.  Please login to review flashcards and reading.',
-            type: 'danger',
-            onConfirm: NULL_FUNCTION,
-            noCancel: true
-        };
-
-        return <Confirm {...props}/>;
-
-    }
-
-    // TODO: convert this into a better message wrapped as a dialog
-    private static createNoTasksMessage() {
-
-        const props: ConfirmProps = {
-            title: 'No tasks to complete',
-            subtitle: "Awesome.  Looks like you're all caught up and have no tasks to complete.",
-            type: 'success',
-            onConfirm: NULL_FUNCTION,
-            noCancel: true
-        };
-
-        return <Confirm {...props}/>;
-
     }
 
     public static async createAndInject(datastoreCapabilities: DatastoreCapabilities,
@@ -120,7 +91,12 @@ export class Reviewers {
         const uid = await Firebase.currentUserID();
 
         if (! datastoreCapabilities.networkLayers.has('web')) {
-            return this.createWebRequiredError();
+            return (
+                <ReviewerModal>
+                    <CloudSyncRequired/>
+                </ReviewerModal>
+            );
+
         }
 
         if (! uid) {
@@ -161,7 +137,11 @@ export class Reviewers {
         await doWriteQueueStageCounts();
 
         if (taskReps.length === 0) {
-            return this.createNoTasksMessage();
+            return (
+                <ReviewerModal>
+                    <NoTasks/>
+                </ReviewerModal>
+            );
         }
 
         console.log("Found N tasks: " + taskReps.length);
