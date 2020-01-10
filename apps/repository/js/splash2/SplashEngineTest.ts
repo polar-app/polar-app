@@ -222,7 +222,6 @@ describe('SplashEngine', function() {
 
     });
 
-
 });
 
 /**
