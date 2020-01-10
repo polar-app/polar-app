@@ -98,6 +98,10 @@ export class Engine<F, H extends EventHandlers> {
 
     }
 
+    public getFacts(): F {
+        return this.facts;
+    }
+
 }
 
 export class RuleMap<F, H extends EventHandlers> {

@@ -1,20 +1,10 @@
-import {EventHandlers} from './rules_engine/Engine';
-import {EventMap} from './rules_engine/Engine';
-import {EventMaps} from './rules_engine/Engine';
-import {RuleMap} from './rules_engine/Engine';
-import {Engine, Event} from './rules_engine/Engine';
-import {ExternalEngineState} from './rules_engine/Engine';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Rule} from './rules_engine/Rule';
-import {RuleFactPair} from './rules_engine/Rule';
-import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
-import {DurationStr} from 'polar-shared/src/util/TimeDurations';
-import {Duration} from 'polar-shared/src/util/TimeDurations';
+import {Engine, Event, EventHandlers, EventMap, EventMaps, ExternalEngineState, RuleMap} from './rules_engine/Engine';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {Rule, RuleFactPair} from './rules_engine/Rule';
+import {Duration, DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import * as semver from 'semver';
 import {Devices} from "../../../../web/js/util/Devices";
 import {ReleaseMetadatas} from "polar-release-metadata/src/ReleaseMetadatas";
@@ -29,8 +19,8 @@ export class SplashEngine {
 
         const rules: RuleMap<UserFacts, SplashEventHandlers> = {
             whatsNew: new WhatsNewRule(),
-            netPromoter: new NetPromoterRule(),
-            suggestions: new SuggestionsRule(),
+            // netPromoter: new NetPromoterRule(),
+            // suggestions: new SuggestionsRule(),
         };
 
         this.engine = new Engine(facts, rules, eventHandlers, externalEngineState);
@@ -39,6 +29,10 @@ export class SplashEngine {
 
     public run() {
         this.engine.run();
+    }
+
+    public getFacts() {
+        return this.engine.getFacts();
     }
 
     public toExternalEngineState() {
