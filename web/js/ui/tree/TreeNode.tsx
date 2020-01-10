@@ -23,7 +23,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: '0px',
-        fontSize: '12px',
+        fontSize: '0.8em',
         lineHeight: '1.5',
         color: 'var(--secondary)',
         cursor: 'pointer',
@@ -37,7 +37,6 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginLeft: '2px',
-        fontSize: '14px',
         lineHeight: '1.5',
         cursor: 'pointer',
         userSelect: 'none',
@@ -58,7 +57,6 @@ class Styles {
 
     public static NODE_SELECTOR: React.CSSProperties = {
         lineHeight: '1.5',
-        fontSize: '14px',
         userSelect: 'none',
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -79,7 +77,6 @@ class Styles {
         marginBottom: 'auto',
         marginLeft: 'auto',
 
-        fontSize: '14px',
         lineHeight: '1.5',
         userSelect: 'none',
         whiteSpace: 'nowrap',
@@ -110,7 +107,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
 
-        fontSize: '12px',
+        fontSize: '0.8em',
         lineHeight: '1.5',
         userSelect: 'none',
         whiteSpace: 'nowrap',
