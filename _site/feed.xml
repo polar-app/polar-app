@@ -1,4 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2019-12-22T15:35:53-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T08:00:00-08:00</published><updated>2019-12-21T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-01-11T11:41:41-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.90: Improved Tablet/Phone Support and Stability</title><link href="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html" rel="alternate" type="text/html" title="Polar 1.90: Improved Tablet/Phone Support and Stability" /><published>2020-01-10T08:00:00-08:00</published><updated>2020-01-10T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability</id><content type="html" xml:base="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html">&lt;p&gt;Polar 1.90 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+
+&lt;p&gt;The major changes in this release involve improved mobile support but a ton of stability and bug fixes have gone 
+into the desktop app.&lt;/p&gt;
+
+&lt;h2 id=&quot;improved-tablet-and-phone-support&quot;&gt;Improved Tablet and Phone Support&lt;/h2&gt;
+
+&lt;p&gt;We’re steadily improving our tablet and phone support and are hoping that full-document reading will be finished 
+in mid february.&lt;/p&gt;
+
+&lt;p&gt;For now, the major functionality includes flashcard and annotation review while on a handheld device.&lt;/p&gt;
+
+&lt;p&gt;We’re working on full document management just like the desktop but need a bit more time.  Specifically, features
+like pagemarks and annotation creation do not work properly on handheld devices.&lt;/p&gt;
+
+&lt;p&gt;Tablet including iPad support has been a big feature request from our users so we really want to nail that
+feature set.&lt;/p&gt;
+
+&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
+
+&lt;p&gt;This release includes more stability and reliability issues which are now available in the desktop app as well.&lt;/p&gt;
+
+&lt;p&gt;We fixed a major issue with some users logging into Google that prevented them from being unable to authenticate 
+in the desktop app.&lt;/p&gt;
+
+&lt;p&gt;This particularly impacted students at universities which used 3rd party integration with Google auth.&lt;/p&gt;
+
+&lt;h2 id=&quot;improved-release-cadence&quot;&gt;Improved Release Cadence&lt;/h2&gt;
+
+&lt;p&gt;Now that the holidays are over we’re planning on improving our release cadence and trying to push builds at 
+least once every two weeks.&lt;/p&gt;
+
+&lt;h2 id=&quot;roadmap&quot;&gt;Roadmap&lt;/h2&gt;
+
+&lt;p&gt;We’re also working on releasing a rough roadmap on features for Q1 2020 and that should be out this week.&lt;/p&gt;
+
+&lt;p&gt;Additionally, I have a bit of a surprise for you guys so stay tuned.&lt;/p&gt;
+
+&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
+
+&lt;h3 id=&quot;1900&quot;&gt;1.90.0&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Suggestions and net promoter score disabled for now as users were complaining
+that it was asking too often. We’re going to disable this until we can make
+sure that users are only asked once per month at most.&lt;/li&gt;
+  &lt;li&gt;significant improvements with mobile apps and spaced repetition&lt;/li&gt;
+  &lt;li&gt;Fixed bug with safari not rendering the top left folder filters…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;18029&quot;&gt;1.80.29&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;“Copy clipboard” from logs now pretty prints the JSON args&lt;/li&gt;
+  &lt;li&gt;Reworked flashcard app so the flashcards now look like real flashcards.&lt;/li&gt;
+  &lt;li&gt;Animations now work with the sidebar properly&lt;/li&gt;
+  &lt;li&gt;Navigations now work on tablet and phone with routes&lt;/li&gt;
+  &lt;li&gt;Reworked routes so that they’re cached + faster plus work with nav&lt;/li&gt;
+  &lt;li&gt;Fixed bad bug with authentication and Google auth bringing up external URL window/prompts&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.90 is now available for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="https://getpolarized.io/2020/01/01/Roadmap-Q1-2020.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/01/Roadmap-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/01/Roadmap-Q1-2020.html">&lt;ul&gt;
+  &lt;li&gt;Big announcement pending&lt;/li&gt;
+  &lt;li&gt;Keyboard bindings&lt;/li&gt;
+  &lt;li&gt;Android app&lt;/li&gt;
+  &lt;li&gt;Capture completely moved into the browser&lt;/li&gt;
+  &lt;li&gt;Annotation in the browser directly&lt;/li&gt;
+  &lt;li&gt;Dark mode&lt;/li&gt;
+  &lt;li&gt;Groups&lt;/li&gt;
+  &lt;li&gt;2.0 Release&lt;/li&gt;
+  &lt;li&gt;Full annotations on mobile…&lt;/li&gt;
+  &lt;li&gt;Citation management&lt;/li&gt;
+  &lt;li&gt;Add via DOI&lt;/li&gt;
+  &lt;li&gt;Extended metadata storage&lt;/li&gt;
+  &lt;li&gt;Expanding the team&lt;/li&gt;
+  &lt;li&gt;Improved builds&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Big announcement pending Keyboard bindings Android app Capture completely moved into the browser Annotation in the browser directly Dark mode Groups 2.0 Release Full annotations on mobile… Citation management Add via DOI Extended metadata storage Expanding the team Improved builds</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks</id><content type="html" xml:base="https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks.html">&lt;ul&gt;
+  &lt;li&gt;https://en.wikipedia.org/wiki/Method_of_loci&lt;/li&gt;
+  &lt;li&gt;use mult8iple encoding stratgies (visual, auditiory, etc)&lt;/li&gt;
+  &lt;li&gt;absurdity&lt;/li&gt;
+  &lt;li&gt;musical - ancient man encoded maps using song&lt;/li&gt;
+  &lt;li&gt;spaced repetition&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;https://www.academictips.org/memory/mnemeffc.html
+https://www.academictips.org/memory/link.html
+https://www.academictips.org/memory/mtgrade.html&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;stories (17th and Franklin)
+https://www.academictips.org/memory/norhyme.html
+https://www.academictips.org/memory/noshape.html
+https://www.academictips.org/memory/journey.html
+https://www.academictips.org/memory/romanrom.html
+https://www.academictips.org/memory/majorsys.html
+https://www.academictips.org/memory/remnames.html
+https://www.academictips.org/memory/remlists.html
+https://www.academictips.org/memory/remdate.html
+https://www.academictips.org/memory/remtel.html
+https://www.academictips.org/memory/remnos.html&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T08:00:00-08:00</published><updated>2019-12-21T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
 &lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/c5vfb1e.png&quot; /&gt;
 &lt;/div&gt;
 
@@ -634,343 +732,4 @@ this second feature.&lt;/p&gt;
 &lt;p&gt;These type of features will yield higher revenue in the long term which means you can have the financial resources
 to build out the rest of your feature set.&lt;/p&gt;
 
-&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0</title><link href="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.50 - Spaced Repetition, Better Incremental Reading and Plans for 2.0" /><published>2019-11-11T08:00:00-08:00</published><updated>2019-11-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0</id><content type="html" xml:base="https://getpolarized.io/2019/11/11/1-50-Spaced-Repetition-Better-Incremental-Reading-and-Plans-for-2-0.html">&lt;p&gt;Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.&lt;/p&gt;
-
-&lt;p&gt;This is one of the biggest releases we’ve had in a long time and will be the foundation for 2.0.&lt;/p&gt;
-
-&lt;h1 id=&quot;whats-in-this-release&quot;&gt;What’s In This Release&lt;/h1&gt;
-
-&lt;p&gt;Now let’s get into what we’ve changed in this release.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-incremental-reading-and-spaced-repetition&quot;&gt;Improved Incremental Reading and Spaced Repetition&lt;/h2&gt;
-
-&lt;p&gt;As part of this release we conducted about 30 user interviews and one clear trend was that users needed and wanted a
-better mobile experience.&lt;/p&gt;
-
-&lt;p&gt;The previous version of our mobile app was alpha at best and was just meant to be a standby until we had it fully ported
-over to mobile and tablet.&lt;/p&gt;
-
-&lt;p&gt;This is going to take longer than I had hoped but dove tails into the long term of Polar being a spaced repetition platform.&lt;/p&gt;
-
-&lt;p&gt;We’ve rebuild the mobile app and integrated native flashcard review into Polar directly.&lt;/p&gt;
-
-&lt;p&gt;Anki functionality and sync will keep improving of course and will not be deprecated.  In fact, we have a few more 
-features we’re working on for Anki and will be enabling them in the coming weeks via feature flags at first.&lt;/p&gt;
-
-&lt;p&gt;There’s now a ‘start review’ button in the annotations view that allows you to review your flashcards directly in Polar.&lt;/p&gt;
-
-&lt;h3 id=&quot;incremental-reading&quot;&gt;Incremental Reading&lt;/h3&gt;
-
-&lt;p&gt;As part of this we now have incremental reading and review of your annotations on mobile via spaced repetition schedules.&lt;/p&gt;
-
-&lt;p&gt;The intervals for incremental reading are longer for flashcards (1d, 4d, and 8d) and the system was designed to work
-well with review on the mobile app.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-mobile-app-redesign&quot;&gt;New Mobile App Redesign&lt;/h2&gt;
-
-&lt;p&gt;As part of the full mobile app redesign the new experience should be completely smooth and ready for production use.&lt;/p&gt;
-
-&lt;p&gt;I want to improve it a bit more to work completely offline.  Firebase has some amazing cache/offline-first features 
-where queries and data can be written and re-sync’d when you come back online.&lt;/p&gt;
-
-&lt;p&gt;This has interesting opportunities for reviewing your reading and flashcards when not connected to the Internet.&lt;/p&gt;
-
-&lt;h3 id=&quot;stats-for-flashcards&quot;&gt;Stats for Flashcards&lt;/h3&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/rjhlQLY.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This version now adds stats for flashcards including total completed, queue size, etc.&lt;/p&gt;
-
-&lt;h3 id=&quot;paid-on-mobile&quot;&gt;Paid on Mobile&lt;/h3&gt;
-
-&lt;p&gt;Mobile flashcard review will be a paid feature in 2.0 when on mobile.  It will work for free on the desktop app
-but if you want to review on mobile you will need a premium account.&lt;/p&gt;
-
-&lt;h2 id=&quot;annotation-bar-color-updates&quot;&gt;Annotation Bar color updates&lt;/h2&gt;
-
-&lt;p&gt;The annotation bar now has 5 main colors (up from 3) when selecting text for a highlight.&lt;/p&gt;
-
-&lt;h2 id=&quot;only-stable-features&quot;&gt;Only Stable Features&lt;/h2&gt;
-
-&lt;p&gt;We’re going to take the position of only enabling stable features from now on. For new users to Polar this was confusing
-when they would see something like groups (even if it had a ‘beta’ flag on it) and I want them to have a good initial&lt;br /&gt;
-experience.&lt;/p&gt;
-
-&lt;p&gt;From now on we will be enabling new (and not yet ready) features via feature flags that developers or beta testers 
-can turn on manually.&lt;/p&gt;
-
-&lt;h2 id=&quot;documentation-and-website-updates&quot;&gt;Documentation and Website Updates&lt;/h2&gt;
-
-&lt;p&gt;Our documentation is being reworked now to update the changes needed for 2.0.  I’m going to try to get more press for 
-2.0 so this will mean a lot of new user seeing Polar for the first time.&lt;/p&gt;
-
-&lt;h2 id=&quot;full-list-of-changes-in-15010&quot;&gt;Full List of Changes in 1.50.10&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Statistics now shown for flashcards when the user is using spaced repetition&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;No more hamburger menu in the sidebar.  All options are now flat in the desktop UI and more discoverable.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Using proper MacOS system font along with Robot everywhere else including android devices.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;New documentation rework and will be improving this long term.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Added two more colors to the annotation bar. Was frequently requested by our users so just added it.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Flashcards now inherit the text of the annotation when being created to avoid double copy / pasting of text.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Mobile now a supported platform and designed for spaced repetition.  This will get us moving on mobile until
-we can build out a real/full reading platform there.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The header and footer in the doc repo is fixed now and don’t move as you scroll.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed bug with drag and drop and working with items from the second page of results.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Flashcard reviewer now integrated along with our normal spaced repetition.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Annotation reviewer spaced repetition system finally integrated into Polar&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;More work on mobile including disabling some features when using the app.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Active filters are now light blue so that users know they have filters enabled.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Color and annotation type filters now work.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed bug with the root folders having the wrong counts&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;whats-next-and-plans-for-20&quot;&gt;What’s Next and Plans for 2.0&lt;/h1&gt;
-
-&lt;p&gt;This release is basically the foundation for 2.0.  There are a few more features / changes to make before 2.0 is ready.&lt;/p&gt;
-
-&lt;p&gt;We have to improve our documentation a bit more and we have a few more fixes and changes that are still pending.&lt;/p&gt;
-
-&lt;h2 id=&quot;updated-annotation-sidebar&quot;&gt;Updated Annotation Sidebar&lt;/h2&gt;
-
-&lt;p&gt;I’m looking at improving the annotation sidebar to add features like filtering by text (search basically), tagging documents
-directly (vs having to jump back to the document repository), and other options like archiving, etc.&lt;/p&gt;
-
-&lt;h2 id=&quot;better-pricing-models&quot;&gt;Better Pricing Models&lt;/h2&gt;
-
-&lt;p&gt;I’m working on better pricing models for students and those outside the United States in developing countries.  Charging
-$4.99 per month to someone in India/Laos doesn’t seem fair considering the differing values of currencies.&lt;/p&gt;
-
-&lt;p&gt;I’m also investigating yearly accounts as I think there’s a psychological advantage for students to buy in 1-2 year 
-increments as it seems many people really dislike monthly payments.&lt;/p&gt;
-
-&lt;h2 id=&quot;better-keyboard-bindings&quot;&gt;Better Keyboard Bindings&lt;/h2&gt;
-
-&lt;p&gt;We’re investigating bringing on board better keyboard bindings.  It didn’t make it to this release because we have to
-do a big dependency management update (React) and I wanted to get a stable release out the door.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.50 was just released and will be rolling out to everyone in a staged over the next week.</summary></entry><entry><title type="html">Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!</title><link href="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html" rel="alternate" type="text/html" title="Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!" /><published>2019-10-24T09:00:00-07:00</published><updated>2019-10-24T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders</id><content type="html" xml:base="https://getpolarized.io/2019/10/24/1-40-Tags-sidebar-drag-and-drop-folders.html">&lt;p&gt;&lt;img class=&quot;img-fluid border border-dark rounded&quot; src=&quot;https://i.imgur.com/HEKJEE2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;polar-140---tags-in-the-sidebar-drag-and-drop-folders-and-more&quot;&gt;Polar 1.40 - Tags in the sidebar, Drag and Drop Folders, and more!&lt;/h1&gt;
-
-&lt;p&gt;Polar 1.40 is now available.  This release includes a number of new features upgrades and stability improvements.&lt;/p&gt;
-
-&lt;p&gt;First, I should apologize for the slower release cycle lately.  I’ve been working on a number of internal refactors
-to Polar to help us scale moving forward.  Among these was a pretty large refactor into a ‘monorepo’ using submodules
-to make Polar much easier to manage moving forward.&lt;/p&gt;
-
-&lt;p&gt;This will enable a number of new features which below.  It’s already improved our speed of development now that we’ve
-mostly finished the migration.&lt;/p&gt;
-
-&lt;h1 id=&quot;whats-in-this-release&quot;&gt;What’s In This Release&lt;/h1&gt;
-
-&lt;p&gt;Now let’s get into what we’ve changed in this release.&lt;/p&gt;
-
-&lt;h2 id=&quot;tags-on-the-sidebar&quot;&gt;Tags on the Sidebar&lt;/h2&gt;
-
-&lt;p&gt;We now have tags (not just folders) on the sidebar.  You can see the tags and the number of documents with the given
-tag.&lt;/p&gt;
-
-&lt;p&gt;This also works for the annotation view too and you can see the tag counts there as well.&lt;/p&gt;
-
-&lt;p&gt;Clicking on the tag will load the tag in the right pane.&lt;/p&gt;
-
-&lt;h2 id=&quot;drag-and-drop-of-folders&quot;&gt;Drag and Drop of Folders&lt;/h2&gt;
-
-&lt;p&gt;You can now drag and drop documents on to folders or tag.  Dragging the document will add the the folder or tag to the 
-dropped document.&lt;/p&gt;
-
-&lt;p&gt;This won’t yet work for annotations as we have to upgrade our viewer for this to happen but it’s on the roadmap.&lt;/p&gt;
-
-&lt;h2 id=&quot;fixed-bad-firebase-authentication-bug&quot;&gt;Fixed Bad Firebase Authentication Bug&lt;/h2&gt;
-
-&lt;p&gt;We fixed an issue with the desktop version of Polar (running on Electron) where it would intermittently fail to 
-authenticate to Firebase when trying to sync to cloud.&lt;/p&gt;
-
-&lt;p&gt;This was really tough to track down and I apologize to anyone bitten by this bug. It would only impact some users and
-only some small percentage of the time.&lt;/p&gt;
-
-&lt;h2 id=&quot;library-upgrades&quot;&gt;Library Upgrades&lt;/h2&gt;
-
-&lt;p&gt;We’ve upgraded to the latest versions of firebase, pdfjs, jszip.&lt;/p&gt;
-
-&lt;h1 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h1&gt;
-
-&lt;p&gt;In the short/medium term we’re working on improving these issues.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-folders&quot;&gt;Improved Folders&lt;/h2&gt;
-
-&lt;p&gt;Many users have been confused with how folders work and in retrospect I can see why.  We shipped with a basic interface
-which was somewhat non-standard so it wasn’t really possible to figure out how it worked.&lt;/p&gt;
-
-&lt;p&gt;We’re going to add some UI changes to make this more accessible including a ‘+’ (create folder) button and the ability
-to create folders, and then drag files into them.&lt;/p&gt;
-
-&lt;h2 id=&quot;stable-groups-release&quot;&gt;Stable Groups Release&lt;/h2&gt;
-
-&lt;p&gt;We’re working on improving groups which are only about 80% complete.  I’m hoping that the drag and drop interface will
-make them easier to use.&lt;/p&gt;
-
-&lt;p&gt;I’m struggling with some UI issues here so my plan is to bring in a designer to help me understand the challenges I
-have with making it easy to use.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-version-of-capture&quot;&gt;New Version of Capture&lt;/h2&gt;
-
-&lt;p&gt;We’re working on a redesign of the way web capture works.&lt;/p&gt;
-
-&lt;p&gt;Web capture is the ability for Polar to take a web document in HTML and store it within Polar.&lt;/p&gt;
-
-&lt;p&gt;Too many users are reporting that capture fails a significant percentage of the time.&lt;/p&gt;
-
-&lt;p&gt;Further, capture doesn’t currently support adblock, readability, or other chrome/firefox extensions.&lt;/p&gt;
-
-&lt;p&gt;The new design will allow it to work directly within the extension within the browser.&lt;/p&gt;
-
-&lt;p&gt;The intention is to target the web extension API which will mean it will work on Chrome, Firefox, Edge, and Safari.&lt;/p&gt;
-
-&lt;p&gt;I can’t commit to supporting all four major browsers out of the door but that’s the goal.  We have about 90% of our
-users on Chrome but Firefox and Safari are definitely important.&lt;/p&gt;
-
-&lt;h2 id=&quot;doi-lookup-and-extended-metadata&quot;&gt;DOI Lookup and Extended Metadata&lt;/h2&gt;
-
-&lt;p&gt;We’re working on supporting more 3rd party metadata lookup APIs.  Initially we will support just lookup of public
-documents via DOI using &lt;a href=&quot;https://unpaywall.org/&quot;&gt;unpaywall&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;This will allow you to enter a DOI, fetch the document into your repository, and store the extended metadata.&lt;/p&gt;
-
-&lt;p&gt;We’ll also support resolving the metadata if the PDF has a DOI in stored in its metadata.&lt;/p&gt;
-
-&lt;p&gt;This will also serve as the basis for enhanced citation management.&lt;/p&gt;
-
-&lt;p&gt;The long term plans are to support the Pubmed API and the Fatcat API provided by the Internet Archive.&lt;/p&gt;
-
-&lt;h2 id=&quot;thumbnails&quot;&gt;Thumbnails&lt;/h2&gt;
-
-&lt;p&gt;We’re planning on adding thumbnail previews for documents added to Polar.  This has been on the agenda for a while now
-but is only just now possible due to some complexities regarding thumbnails and snapshots across operating systems.&lt;/p&gt;
-
-&lt;p&gt;I think initially this might only work when cloud-sync is enabled but I’d like to get it to work on the desktop version
-of Polar at some point.&lt;/p&gt;
-
-&lt;h2 id=&quot;electron-70&quot;&gt;Electron 7.0&lt;/h2&gt;
-
-&lt;p&gt;We’re going to migrate to Electron 7.0 now that it’s out. The major feature here is the updated Chrome backend but there
-are some other nice stability improvements here.&lt;/p&gt;
-
-&lt;h2 id=&quot;freemium-vs-premium&quot;&gt;Freemium vs Premium&lt;/h2&gt;
-
-&lt;p&gt;We’re working on some other features in the background to the premium version of Polar including full-text search.  Some
-of the citation management features will also be premium features like they are in other citation management tools.&lt;/p&gt;
-
-&lt;p&gt;I’m also working on working other ways to get access to Polar premium for students and others in developing nations 
-that might not be able to afford these tools.&lt;/p&gt;
-
-&lt;p&gt;I’ll be talking about these in the next few weeks.  Unfortunately, many of these features just flat out cost money 
-including features like cross-device full-text search, OCR, text to speech, and other premium features I’m considering.&lt;/p&gt;
-
-&lt;h1 id=&quot;upgrading&quot;&gt;Upgrading&lt;/h1&gt;
-
-&lt;p&gt;Want to make sure you’re on the right version of Polar?&lt;/p&gt;
-
-&lt;h2 id=&quot;web&quot;&gt;Web&lt;/h2&gt;
-
-&lt;p&gt;If you’re using the web version of Polar you’re probably running the latest version.&lt;/p&gt;
-
-&lt;h2 id=&quot;desktop&quot;&gt;Desktop&lt;/h2&gt;
-
-&lt;p&gt;If you’re using a desktop app this release will be pushed to all users over the next week. If you’d like to see if
-you’re already on the latest version just go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | About&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;If you’d like to upgrade earlier you can go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Help | Check for Updates&lt;/code&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">What’s Next for Offline Web Capture of Web Pages in Polar</title><link href="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html" rel="alternate" type="text/html" title="What's Next for Offline Web Capture of Web Pages in Polar" /><published>2019-10-06T09:00:00-07:00</published><updated>2019-10-06T09:00:00-07:00</updated><id>https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture</id><content type="html" xml:base="https://getpolarized.io/2019/10/06/Whats-Next-For-Web-Capture.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/lLKEfKI.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-
-&lt;p&gt;Since we shipped Polar we’ve been listening to feedback from our users as to the default behavior and functionality of 
-web capture.&lt;/p&gt;
-
-&lt;p&gt;Web capture (or just capture) is what we call converting an HTML page to a format that can be persisted and used within
-Polar.&lt;/p&gt;
-
-&lt;p&gt;This code started off as an advanced proof of concept but it had a few issues in practice that holds it back from 
-perfectly solving the problem of offline web pages as documents.&lt;/p&gt;
-
-&lt;p&gt;Here’s what we’re working on in the background.&lt;/p&gt;
-
-&lt;h2 id=&quot;epub&quot;&gt;EPUB&lt;/h2&gt;
-
-&lt;p&gt;EPUB will become the default format.  Internally, EPUB is just HTML and CSS and if we migrate web capture to use EPUB 
-then this means we &lt;em&gt;also&lt;/em&gt; support EPUB as a primary file format in Polar.&lt;/p&gt;
-
-&lt;p&gt;It also means less code to debug since everything is EPUB.&lt;/p&gt;
-
-&lt;p&gt;We’re going to work on a converter to take our PHZ format and convert it to EPUB so that existing documents will 
-convert in place.&lt;/p&gt;
-
-&lt;h2 id=&quot;based-on-web-extensions&quot;&gt;Based on Web Extensions&lt;/h2&gt;
-
-&lt;p&gt;We’re going to migrate everything to a web extension.&lt;/p&gt;
-
-&lt;p&gt;This means the native Electron capture will migrate to being completely browser based.&lt;/p&gt;
-
-&lt;p&gt;Our goal is to support Chrome, Firefox, and Safari extensions during this process as our Firefox extension is nearly 
-finished.&lt;/p&gt;
-
-&lt;p&gt;The advantages here are the ability to use regular chrome extensions like uBlock, Ad Block Pro, Mercury Reader, or Easy Reader.&lt;/p&gt;
-
-&lt;p&gt;The new extension will completely bundle the pages resources and send them to the Polar cloud or desktop app.&lt;/p&gt;
-
-&lt;h2 id=&quot;fluid-layout&quot;&gt;Fluid Layout.&lt;/h2&gt;
-
-&lt;p&gt;The new format will not require a fixed document size like the previous version.  This was needed due to the layout
-algorithm for placing highlights.  The new version should support placing highlights based on text.&lt;/p&gt;
-
-&lt;p&gt;One UI change might be that area highlights for HTML documents will anchor to images since the flow can change this 
-means that an area you select might move when you resize.&lt;/p&gt;
-
-&lt;h2 id=&quot;mobile-and-tablet-support&quot;&gt;Mobile and Tablet Support&lt;/h2&gt;
-
-&lt;p&gt;Once we’ve migrated to EPUB as a backend, captured content will work on mobile and tablet devices.&lt;/p&gt;
-
-&lt;p&gt;We’re also going to have capture work on mobile by sending the raw URL to the Polar cloud backend and having it 
-perform the capture for you in the background.&lt;/p&gt;
-
-&lt;p&gt;This way capture will work on all devices.&lt;/p&gt;
-
-&lt;h2 id=&quot;lightweight-capture-url-only&quot;&gt;Lightweight Capture (URL only)&lt;/h2&gt;
-
-&lt;p&gt;We’re also going to work on lightweight capture where we store the URL only.  I think for a lot of users it might not
-make sense to store 300k per document as part of Polar so storing just the URL and annotations will mean much 
-lower storage requirements.&lt;/p&gt;
-
-&lt;h2 id=&quot;overview-1&quot;&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I think these issues will solve 95% of the initial problems we had with capture and make the entire platform much more
-reliable.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;h2 id=&quot;prioritize-features-by-easy-of-implementation&quot;&gt;Prioritize features by easy of implementation&lt;/h2&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
