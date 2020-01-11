@@ -1,8 +1,12 @@
 #!/bin/bash
 
 ## make sure we are logged in via NPM
-validate_npm() {
+validate_npm_auth() {
     npm whoami > /dev/null
+}
+
+validate_snapcraft_auth() {
+    snapcraft whoami > /dev/null
 }
 
 validate_firebase() {
@@ -23,7 +27,8 @@ validate_credentials() {
 
 set -e
 
-validate_npm
+validate_npm_auth
+validate_snapcraft_auth
 validate_credentials
 validate_firebase
 

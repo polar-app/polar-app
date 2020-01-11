@@ -75,6 +75,10 @@ Removes node-modules, does lerna bootstrap, does full build, etc
 
 # Build Env
 
+## Git
+
+git config --global credential.helper 'cache --timeout 28800000'
+
 ## Debian
 
 https://github.com/nodesource/distributions/blob/master/README.md#deb
@@ -85,5 +89,24 @@ curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs
 
 apt-get install git 
+apt-get install jq
 
 ```
+
+## Docker
+
+https://docs.docker.com/v17.12/install/linux/docker-ce/debian/#install-docker-ce-1
+
+install the latest docker-ci for the windows builds here.
+
+### Snapcraft
+
+Snaps must be installed via the classic mode and must be via snap or the package 
+is too old
+
+```bash
+snap install snapcraft --classic
+```
+
+# Basic Packages
+apt-get install jq nc
