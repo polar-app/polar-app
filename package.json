@@ -80,6 +80,7 @@
     "@types/prop-types": "~15.7.3",
     "cache-loader": "^4.1.0",
     "chai": "~4.2.0",
+    "dotenv": "^8.2.0",
     "dtsmake": "0.0.10",
     "electron": "^7.1.2",
     "electron-builder": "~21.2.0",
