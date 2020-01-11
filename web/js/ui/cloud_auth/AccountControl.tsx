@@ -9,7 +9,7 @@ import {AccountOverview} from "../../../../apps/repository/js/account_overview/A
 const LogoutButton = (props: IProps) => {
 
     return <Button id="cloud-sync-logout"
-                   color="secondary"
+                   color="danger"
                    outline
                    size="md"
                    onClick={() => props.onLogout()}

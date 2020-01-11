@@ -15,7 +15,7 @@ export class ExternalNavigationBlockDelegate {
     private enabled: boolean = true;
 
     public set(enabled: boolean) {
-        log.notice("External navigation: " + enabled);
+        log.notice("External navigation block enabled: " + enabled);
         this.enabled = enabled;
     }
 
