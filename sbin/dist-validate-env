@@ -13,6 +13,7 @@ validate_snapcraft_auth() {
 
 validate_firebase_auth() {
     echo "Validating firebase auth..."
+    echo "NOTE: if this fails login via: firebase login --no-localhost"
     firebase projects:list 2> /dev/null |grep polar-32b0f > /dev/null
 
 }
@@ -36,3 +37,4 @@ validate_snapcraft_auth
 validate_firebase_auth
 validate_credentials
 
+echo "SUCCESS"
