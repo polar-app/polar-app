@@ -2,21 +2,25 @@
 
 ## make sure we are logged in via NPM
 validate_npm_auth() {
+    echo "Validating npm auth..."
     npm whoami > /dev/null
 }
 
 validate_snapcraft_auth() {
+    echo "Validating snapcraft auth..."
     snapcraft whoami > /dev/null
 }
 
-validate_firebase() {
-
+validate_firebase_auth() {
+    echo "Validating firebase auth..."
     firebase projects:list 2> /dev/null |grep polar-32b0f > /dev/null
 
 }
 
 ## make sure we have the credentials wwe need
 validate_credentials() {
+
+    echo "Validating credentials setup..."
 
     if [ "$HAS_CREDENTIALS" != "true" ]; then
         echo "No credentials (source polar-bookshelf-secrets first)" > /dev/stderr
@@ -29,6 +33,6 @@ set -e
 
 validate_npm_auth
 validate_snapcraft_auth
+validate_firebase_auth
 validate_credentials
-validate_firebase
 
