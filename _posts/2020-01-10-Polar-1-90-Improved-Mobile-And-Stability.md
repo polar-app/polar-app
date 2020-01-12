@@ -1,5 +1,5 @@
 ---
-title: "Polar 1.90: Improved Tablet/Phone Support and Stability"
+title: Polar 1.90 - Improved Tablet/Phone Support and Stability
 date: 2020-01-10T08:00:00.000-08:00
 layout: post
 description: Polar 1.90 is now available for all desktop users and will be rolling out over the next week.  
