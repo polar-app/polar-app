@@ -23,7 +23,25 @@ export class ToasterLogger implements ILogger {
     public error(msg: string, ...args: any[]) {
 
         if (args.length > 0 && args[0] instanceof Error) {
-            Toaster.persistentError("An internal error has occurred.");
+
+            const createMessage = () => {
+
+                const err = args[0];
+
+                const base = "An internal error has occurred";
+
+                if (err.message && err.message !== '') {
+                    return `${base}: ${err.message}`;
+                } else {
+                    return base;
+                }
+
+            };
+
+            const message = createMessage();
+
+            Toaster.persistentError(message);
+
         } else {
             Toaster.error(msg);
         }

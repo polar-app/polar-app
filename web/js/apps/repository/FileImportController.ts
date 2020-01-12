@@ -257,7 +257,7 @@ export class FileImportController {
         if (AppRuntime.isElectron() && importedFiles.length === 1) {
 
             // only automatically open the file within Electron as that's the
-            // only platform that's really fast enough.
+            // only platform that's really fast enough after the initial copy
 
             const importedFile = importedFiles[0];
 

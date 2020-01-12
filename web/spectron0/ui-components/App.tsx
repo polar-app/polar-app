@@ -53,6 +53,7 @@ import {DropBox} from "../../js/ui/drop_box/DropBox";
 import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
 import {AnimatedRoutes} from "./AnimatedRoutes";
+import {Toaster} from "../../js/ui/toaster/Toaster";
 
 const styles = {
     swatch: {
@@ -334,6 +335,8 @@ export class App<P> extends React.Component<{}, IAppState> {
         // const DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta)
 
         // ReviewerTasks.createFlashcardTasks()
+
+        Toaster.info("hello world");
 
         return (
 
