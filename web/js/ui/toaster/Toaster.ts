@@ -1,5 +1,4 @@
 import Toastr from 'toastr';
-import {useToasts } from 'react-toast-notifications'
 
 // needed to enforce that jquery is working.
 import $ from '../JQuery';
@@ -14,16 +13,7 @@ export class Toaster {
 
     public static info(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {
         title = Optional.of(title).getOrElse("");
-        // return Toastr.info(message, title, this.augmentExtendedOptions(options));
-
-        const { addToast } = useToasts();
-        addToast("hello world", {
-            appearance: 'warning',
-            autoDismiss: true,
-        });
-
-        return null!;
-
+        return Toastr.info(message, title, this.augmentExtendedOptions(options));
     }
 
     public static success(message: string, title: string = "", options: ToasterOptions = {}): ToasterRef {

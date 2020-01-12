@@ -56,7 +56,7 @@ export class ReviewerTasks {
                        annotationType === AnnotationType.AREA_HIGHLIGHT;
             };
 
-            const predicateText = (text: string): boolean => ! Strings.empty(text);
+            const predicateText = (text: string | undefined): boolean => ! Strings.empty(text);
 
             return repoDocAnnotations
                 .filter(current => predicateAnnotationType(current.annotationType))
