@@ -4,7 +4,6 @@
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export interface ReadingTaskAction {
-    readonly text: string;
     readonly docAnnotation: IDocAnnotation;
 }
 

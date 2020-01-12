@@ -23,7 +23,8 @@ export class ReadingCard extends React.Component<IProps, IState> {
             <TaskBody.Main taskRep={taskRep}>
 
                 <AnnotationPreview id={id}
-                                   text={action.text}
+                                   text={action.docAnnotation.text}
+                                   img={action.docAnnotation.img}
                                    created={created}
                                    color={color}/>
 

@@ -32,7 +32,7 @@ const Body = (props: IProps) => {
 
     if (img) {
         return <div style={style}>
-            <ResponsiveImg id={props.id} img={img} defaultText=" "/>
+            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
         </div>;
 
     } else {

@@ -42,7 +42,6 @@ export class ReviewerTasks {
                 return {
                     id: docAnnotation.guid || docAnnotation.id,
                     action: {
-                        text: docAnnotation.text || "",
                         docAnnotation
                     },
                     created: docAnnotation.created,
@@ -51,16 +50,22 @@ export class ReviewerTasks {
                 };
             };
 
-            const predicateAnnotationType = (annotationType: AnnotationType): boolean => {
-                return annotationType === AnnotationType.TEXT_HIGHLIGHT ||
-                       annotationType === AnnotationType.AREA_HIGHLIGHT;
+            const predicate = (annotation: IDocAnnotation): boolean => {
+
+                if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                    return annotation.img !== undefined;
+                }
+
+                if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+                    return ! Strings.empty(annotation.text);
+                }
+
+                return false;
+
             };
 
-            const predicateText = (text: string | undefined): boolean => ! Strings.empty(text);
-
             return repoDocAnnotations
-                .filter(current => predicateAnnotationType(current.annotationType))
-                .filter(current => predicateText(current.text))
+                .filter(current => predicate(current))
                 .map(toTask);
 
         };
