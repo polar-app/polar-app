@@ -233,26 +233,26 @@ function canFireMajorRule(facts: Readonly<UserFacts>,
     };
 
     if (! hasExistingAgedDatastore()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-existing-aged-datastore'});
+        // RendererAnalytics.event({category: analyticsKey, action: 'reason-has-existing-aged-datastore'});
         return false;
     }
 
     if (! hasMinimumTimeSinceLastMajorPrompt(eventMap)) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-major-prompt'});
+        // RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-major-prompt'});
         return false;
     }
 
     if (! hasMinimumTimeSinceLastEvent()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-event'});
+        // RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-event'});
         return false;
     }
     if (! hasMinimumTimeSinceLastRuleFired()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-rule-fired'});
+        // RendererAnalytics.event({category: analyticsKey, action: 'reason-has-minimum-time-since-last-rule-fired'});
         return false;
     }
 
     if (! hasTourTerminated()) {
-        RendererAnalytics.event({category: analyticsKey, action: 'reason-has-tour-terminated'});
+        // RendererAnalytics.event({category: analyticsKey, action: 'reason-has-tour-terminated'});
         return false;
     }
 

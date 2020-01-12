@@ -14,6 +14,9 @@ export class AccountActions {
 
         persistenceLayerController.reset();
 
+        // FIXME: refactor this completely , redirect to /do-logout, then, once that's complete,
+        // redirect to #logout.
+
         firebase.auth().signOut()
             .then(() => {
 

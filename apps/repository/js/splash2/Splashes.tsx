@@ -80,22 +80,18 @@ export class Splashes extends React.Component<IProps, IState> {
     }
 
     private onWhatsNew() {
-        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-whats-new'});
+        // RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-whats-new'});
         this.setState({...this.state, splash: 'whats-new'});
     }
 
     private onNetPromoter() {
-
-        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-net-promoter'});
+        // RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-net-promoter'});
         this.setState({...this.state, splash: 'net-promoter'});
-
     }
 
     private onSuggestions() {
-
-        RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-suggestions'});
+        // RendererAnalytics.event({category: 'splash-subsystem', action: 'displaying-suggestions'});
         this.setState({...this.state, splash: 'suggestions'});
-
     }
 
     private async init() {
@@ -114,7 +110,7 @@ export class Splashes extends React.Component<IProps, IState> {
 
         } else {
             log.warn("Unable to run splash engine due to no user facts");
-            RendererAnalytics.event({category: 'splash-subsystem', action: 'warn-no-user-facts'});
+            // RendererAnalytics.event({category: 'splash-subsystem', action: 'warn-no-user-facts'});
         }
 
     }
@@ -122,9 +118,7 @@ export class Splashes extends React.Component<IProps, IState> {
     private doUpdate(splashEngine: SplashEngine) {
 
         try {
-
-            RendererAnalytics.event({category: 'splash-subsystem-background', action: 'do-update'});
-
+            // RendererAnalytics.event({category: 'splash-subsystem-background', action: 'do-update'});
             splashEngine.run();
 
         } finally {

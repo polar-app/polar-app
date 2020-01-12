@@ -48,9 +48,9 @@ export class SuggestionsModal extends React.Component<IProps, IState> {
             .map(current => current as NetPromoterScore)
             .getOrNull();
 
-        if (netPromoterScore === null) {
-            RendererAnalytics.event({category: 'suggestions-splash', action: 'no-nps'});
-        }
+        // if (netPromoterScore === null) {
+        //     RendererAnalytics.event({category: 'suggestions-splash', action: 'no-nps'});
+        // }
 
         const version = Version.get();
 

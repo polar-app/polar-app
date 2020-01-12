@@ -1,4 +1,6 @@
 
+- Fixed bug with #? not being encoded properly due when creating file URLs.
+
 # 1.90.0
 
 - Suggestions and net promoter score disabled for now as users were complaining
@@ -6,6 +8,7 @@
   sure that users are only asked once per month at most. 
 - significant improvements with mobile apps and spaced repetition
 - Fixed bug with safari not rendering the top left folder filters...
+
 
 # 1.80.29
 
