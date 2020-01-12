@@ -1,4 +1,6 @@
 
+hidden: true
+---
 A new year is upon is and I wanted to follow up with a new roadmap of where the project is headed.
 
 
@@ -23,6 +25,9 @@ A new year is upon is and I wanted to follow up with a new roadmap of where the 
 ## automatic pagemarks
 ## two column pagemarks
 # Improved Anki support
+## Improved sync 
 
 ## Excessive tags
 ## Better error messages
+
+# New Support System
