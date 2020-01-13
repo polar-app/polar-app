@@ -2,9 +2,9 @@ import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
+import {Analytics} from "../../analytics/Analytics";
 
 export class Styles {
 
@@ -150,7 +150,7 @@ export class PreviewTour extends React.Component<IProps, IState> {
 
     private onCallback(callbackProps: CallBackProps): void {
 
-        RendererAnalytics.event({category: 'preview-tour-steps', action: 'did-step-' + callbackProps.index});
+        Analytics.event({category: 'preview-tour-steps', action: 'did-step-' + callbackProps.index});
 
         if (callbackProps.status === STATUS.SKIPPED || callbackProps.status === STATUS.FINISHED) {
 
@@ -159,14 +159,14 @@ export class PreviewTour extends React.Component<IProps, IState> {
                 switch (callbackProps.status) {
 
                     case STATUS.SKIPPED:
-                        RendererAnalytics.event({category: 'preview-tour-result', action: 'skipped'});
-                        RendererAnalytics.event({category: 'preview-tour-skip', action: 'skipped-at-step-' + callbackProps.index});
+                        Analytics.event({category: 'preview-tour-result', action: 'skipped'});
+                        Analytics.event({category: 'preview-tour-skip', action: 'skipped-at-step-' + callbackProps.index});
 
                         LifecycleToggle.mark(LifecycleEvents.PREVIEW_TOUR_SKIPPED);
                         break;
 
                     case STATUS.FINISHED:
-                        RendererAnalytics.event({category: 'preview-tour-result', action: 'finished'});
+                        Analytics.event({category: 'preview-tour-result', action: 'finished'});
 
                         LifecycleToggle.mark(LifecycleEvents.PREVIEW_TOUR_FINISHED);
                         break;

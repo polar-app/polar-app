@@ -1,22 +1,20 @@
-import {DeleteResult} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {ErrorListener} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {Datastore} from './Datastore';
-import {DatastoreID} from './Datastore';
-import {InitResult} from './Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DatastoreID,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    ErrorListener,
+    GetFileOpts,
+    InitResult,
+    WriteFileOpts,
+    WriteOpts
+} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocMetaFileRef} from './DocMetaRef';
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
-import {WriteOpts} from './Datastore';
-import {DocInfo} from '../metadata/DocInfo';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';

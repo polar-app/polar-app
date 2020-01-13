@@ -1,13 +1,13 @@
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
+import {Analytics} from "../../analytics/Analytics";
 
 declare var window: any;
 
@@ -28,7 +28,7 @@ export class PDFViewer extends Viewer {
 
         PinchToZoom.disable();
 
-        RendererAnalytics.pageview("/pdfviewer");
+        Analytics.page("/pdfviewer");
 
         const stopwatch = Stopwatches.create();
 

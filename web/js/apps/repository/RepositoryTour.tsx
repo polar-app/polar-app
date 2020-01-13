@@ -2,13 +2,11 @@ import Joyride, {ACTIONS, CallBackProps, EVENTS, STATUS} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "../../util/Devices";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -524,7 +522,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         this.callback = callbackProps;
 
-        RendererAnalytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
+        Analytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
 
         const step: EnhancedStep = callbackProps.step;
 
@@ -587,13 +585,13 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 switch (callbackProps.status) {
                     case STATUS.SKIPPED:
-                        RendererAnalytics.event({category: 'tour-result', action: 'skipped'});
-                        RendererAnalytics.event({category: 'tour-skip', action: 'skipped-at-step-' + callbackProps.index});
+                        Analytics.event({category: 'tour-result', action: 'skipped'});
+                        Analytics.event({category: 'tour-skip', action: 'skipped-at-step-' + callbackProps.index});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
                     case STATUS.FINISHED:
-                        RendererAnalytics.event({category: 'tour-result', action: 'finished'});
+                        Analytics.event({category: 'tour-result', action: 'finished'});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
                         break;

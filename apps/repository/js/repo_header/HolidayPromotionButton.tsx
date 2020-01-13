@@ -3,12 +3,12 @@ import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {UncontrolledPopover} from 'reactstrap';
 import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
-import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {DropdownChevron} from "../../../../web/js/ui/util/DropdownChevron";
 import {Callback} from "polar-shared/src/util/Functions";
 import {Link} from 'react-router-dom';
 import {GiftSVGIcon} from "../../../../web/js/ui/svg_icons/GiftSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 interface ButtonProps {
     readonly onClick: Callback;
@@ -110,7 +110,7 @@ export class HolidayPromotionButton extends React.PureComponent<IProps, IState> 
     }
 
     private onUpgrade() {
-        RendererAnalytics.event({category: 'premium-promotion', action: 'xmas-2019'});
+        Analytics.event({category: 'premium-promotion', action: 'xmas-2019'});
     }
 
 }

@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {UserFacts} from './SplashEngine';
-import {SplashEngine} from './SplashEngine';
-import {DefaultSplashEngine} from './SplashEngine';
+import {DefaultSplashEngine, SplashEngine, UserFacts} from './SplashEngine';
 import {Version} from 'polar-shared/src/util/Version';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {NPSModal} from './nps/NPSModal';
 import {WhatsNewModal} from './whats_new/WhatsNewModal';
 import {SuggestionsModal} from './suggestions/SuggestionsModal';

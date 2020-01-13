@@ -24,12 +24,12 @@ import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
-import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ReviewerModal} from "./ReviewerModal";
 import {CloudSyncRequired, NoTasks} from "./ReviewFinished";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -225,7 +225,7 @@ export class Reviewers {
         };
 
         // emit stats that the reviewer was run...
-        RendererAnalytics.event({category: 'reviewer', action: 'created-' + mode});
+        Analytics.event({category: 'reviewer', action: 'created-' + mode});
 
         return (
             <Reviewer taskReps={taskReps}

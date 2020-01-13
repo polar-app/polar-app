@@ -3,8 +3,8 @@
  */
 import {AuthHandlers} from './AuthHandler';
 import {Mailchimp} from '../../../util/thirdparty/Mailchimp';
-import {RendererAnalytics} from '../../../ga/RendererAnalytics';
 import {LocalPrefs} from '../../../util/LocalPrefs';
+import {Analytics} from "../../../analytics/Analytics";
 
 export class MailingList {
 
@@ -30,10 +30,10 @@ export class MailingList {
 
                 if (userInfo.email) {
                     try {
-                        RendererAnalytics.event({category: 'mailing-list', action: 'subscribed'});
+                        Analytics.event({category: 'mailing-list', action: 'subscribed'});
                         await Mailchimp.subscribe(userInfo.email, userInfo.displayName || "");
                     } catch (e) {
-                        RendererAnalytics.event({category: 'mailing-list', action: 'failed'});
+                        Analytics.event({category: 'mailing-list', action: 'failed'});
                         throw e;
                     }
                 }

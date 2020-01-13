@@ -5,11 +5,10 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Percentages} from 'polar-shared/src/util/Percentages';
-import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {DocMetas} from '../../metadata/DocMetas';
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -122,7 +121,7 @@ export class PagemarkCoverageEventListener {
                 .catch(err => log.error("Failed to create pagemark: ", err));
 
         } finally {
-            RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
+            Analytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
         }
 
     }
@@ -142,7 +141,7 @@ export class PagemarkCoverageEventListener {
                 .catch(err => log.error("Failed to create pagemark: ", err));
 
         } finally {
-            RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+            Analytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
         }
 
     }

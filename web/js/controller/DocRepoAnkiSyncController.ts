@@ -6,7 +6,7 @@ import {SyncBarProgress} from '../ui/sync_bar/SyncBar';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
 import {DocMetaSupplierCollection} from '../metadata/DocMetaSupplierCollection';
 import {IProvider} from 'polar-shared/src/util/Providers';
-import {RendererAnalytics} from '../ga/RendererAnalytics';
+import {Analytics} from "../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -46,7 +46,7 @@ export class DocRepoAnkiSyncController {
 
     private async onStartSync() {
 
-        RendererAnalytics.event({category: 'anki', action: 'sync-started'});
+        Analytics.event({category: 'anki', action: 'sync-started'});
 
         let nrTasks = 0;
         let nrFailedTasks = 0;
@@ -105,8 +105,8 @@ export class DocRepoAnkiSyncController {
             percentage: 100
         });
 
-        RendererAnalytics.event({category: 'anki', action: 'sync-completed-' + nrTasks});
-        RendererAnalytics.event({category: 'anki', action: 'sync-failed-' + nrFailedTasks});
+        Analytics.event({category: 'anki', action: 'sync-completed-' + nrTasks});
+        Analytics.event({category: 'anki', action: 'sync-failed-' + nrFailedTasks});
 
     }
 

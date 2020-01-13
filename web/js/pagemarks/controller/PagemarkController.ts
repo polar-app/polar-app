@@ -9,9 +9,9 @@ import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {Rects} from '../../Rects';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {PagemarkIDRef} from '../../metadata/Pagemark';
 import {DocMetas} from '../../metadata/DocMetas';
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -82,7 +82,7 @@ export class PagemarkController {
 
     private onCreatePagemark(triggerEvent: TriggerEvent) {
 
-        RendererAnalytics.event({category: 'user', action: 'created-pagemark'});
+        Analytics.event({category: 'user', action: 'created-pagemark'});
 
         // convert the point on the page and then save it into the
         // model/docMeta... the view will do the rest.
@@ -148,7 +148,7 @@ export class PagemarkController {
 
     private onDeletePagemark(triggerEvent: TriggerEvent) {
 
-        RendererAnalytics.event({category: 'user', action: 'deleted-pagemark'});
+        Analytics.event({category: 'user', action: 'deleted-pagemark'});
 
         log.info("Deleting pagemark: ", triggerEvent);
 

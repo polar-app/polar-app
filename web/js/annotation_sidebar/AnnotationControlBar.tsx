@@ -5,7 +5,6 @@ import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Button} from 'reactstrap';
-import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
@@ -26,6 +25,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
 import {EditIcon} from "../ui/standard_icons/EditIcon";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Analytics} from "../analytics/Analytics";
 
 const Styles: IStyleMap = {
 
@@ -257,7 +257,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     private onCommentCreated(html: string, existingComment?: Comment) {
 
-        RendererAnalytics.event({category: 'annotations', action: 'comment-created'});
+        Analytics.event({category: 'annotations', action: 'comment-created'});
 
         // sanitize the HTML first to prevent breaking the DOM and other
         // problematic issues with HTML.  Right now we don't handle any type of
@@ -277,7 +277,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     private onFlashcardCreated(type: FlashcardType, fields: FrontAndBackFields | ClozeFields) {
 
-        RendererAnalytics.event({category: 'annotations', action: 'flashcard-created'});
+        Analytics.event({category: 'annotations', action: 'flashcard-created'});
 
         FlashcardActions.create(this.props.annotation, type, fields);
 

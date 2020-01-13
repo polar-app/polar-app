@@ -2,8 +2,8 @@ import {Accounts} from "../../accounts/Accounts";
 import {MachineDatastores} from "../../telemetry/MachineDatastores";
 import {AccountUpgrades} from "../../accounts/AccountUpgrades";
 import {UpgradeRequiredMessageBoxes} from "./UpgradeRequiredMessageBoxes";
-import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -39,7 +39,7 @@ export class AccountUpgrader {
 
     public startUpgrade() {
 
-        RendererAnalytics.event({category: 'upgrades', action: 'required-upgrade-triggered'});
+        Analytics.event({category: 'upgrades', action: 'required-upgrade-triggered'});
 
         UpgradeRequiredMessageBoxes.create();
 

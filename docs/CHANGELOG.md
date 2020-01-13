@@ -1,4 +1,5 @@
 
+- Fixed bug with performing reviews when nothing left was available.
 - Fixed bug with #? not being encoded properly due when creating file URLs.
 
 # 1.90.0

@@ -1,17 +1,12 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Feedback} from '../../../../../web/js/ui/feedback/Feedback';
-import {Rating} from '../../../../../web/js/ui/feedback/Feedback';
 import {Toaster} from '../../../../../web/js/ui/toaster/Toaster';
 import {MachineIDs} from '../../../../../web/js/util/MachineIDs';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
+import {NetPromoterScore, UserFeedback, UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {Suggestions} from '../../../../../web/js/ui/feedback/Suggestions';
 import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
 import {SplashKeys} from '../SplashKeys';
-import {UserFeedback} from '../../../../../web/js/telemetry/UserFeedback';
-import {NetPromoterScore} from '../../../../../web/js/telemetry/UserFeedback';
-import {RendererAnalytics} from '../../../../../web/js/ga/RendererAnalytics';
 import {Version} from 'polar-shared/src/util/Version';
 
 export class SuggestionsModal extends React.Component<IProps, IState> {

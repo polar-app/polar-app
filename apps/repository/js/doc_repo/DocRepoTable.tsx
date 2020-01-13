@@ -8,7 +8,6 @@ import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import Input from 'reactstrap/lib/Input';
 import {DocContextMenuProps} from '../DocContextMenu';
 import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
@@ -33,6 +32,7 @@ import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {Devices} from "../../../../web/js/util/Devices";
 import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 import {Checkbox} from "../../../../web/js/ui/Checkbox";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -740,7 +740,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
         let mutated: boolean = false;
 
         if (field === 'archived') {
-            RendererAnalytics.event({category: 'user', action: 'archived-doc'});
+            Analytics.event({category: 'user', action: 'archived-doc'});
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
             mutated = true;
@@ -756,7 +756,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
         if (field === 'flagged') {
 
-            RendererAnalytics.event({category: 'user', action: 'flagged-doc'});
+            Analytics.event({category: 'user', action: 'flagged-doc'});
             repoDocInfo.flagged = !repoDocInfo.flagged;
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
 import {CrowdfundingProgress} from './CrowdfundingProgress';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Analytics} from "../../analytics/Analytics";
 
 export class CrowdfundingBar extends React.Component<IProps, IState> {
 
@@ -75,12 +75,12 @@ export class CrowdfundingBar extends React.Component<IProps, IState> {
     }
 
     private onMoreInfo() {
-        RendererAnalytics.event({category: 'crowdfunding-bar', action: 'more-info'});
+        Analytics.event({category: 'crowdfunding-bar', action: 'more-info'});
         Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html");
     }
 
     private onDonate() {
-        RendererAnalytics.event({category: 'crowdfunding-bar', action: 'donate'});
+        Analytics.event({category: 'crowdfunding-bar', action: 'donate'});
         Nav.openLinkWithNewTab("https://opencollective.com/polar-bookshelf");
     }
 

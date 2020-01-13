@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
-import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Link} from "react-router-dom";
-import { accounts } from 'polar-accounts/src/accounts';
+import {accounts} from 'polar-accounts/src/accounts';
+import {Analytics} from "../../analytics/Analytics";
 
 /**
  * Listen to the machine datastore for this user and if their account isn't in
@@ -16,10 +16,10 @@ export class UpgradeRequired extends React.Component<IProps, IState> {
 
     public render() {
 
-        RendererAnalytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
+        Analytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
 
         const onClick = () => {
-            RendererAnalytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
+            Analytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
         };
 
         return <div className="mt-1 mb-1 p-1 rounded"

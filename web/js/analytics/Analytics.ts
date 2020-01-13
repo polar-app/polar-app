@@ -2,28 +2,43 @@ import {SegmentAnalytics} from "./segment/SegmentAnalytics";
 import {CompositeAnalytics} from "./CompositeAnalytics";
 import {IEventArgs, TraitsMap} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
+import {NullAnalytics} from "./null/NullAnalytics";
+
+function isBrowser() {
+    return typeof window !== 'undefined';
+}
+
+function createDelegate() {
+
+    if (isBrowser()) {
+        return new CompositeAnalytics([
+            new SegmentAnalytics(),
+            new GAAnalytics()
+        ]);
+    } else {
+        return new NullAnalytics();
+    }
+
+}
+
+const delegate = createDelegate();
 
 export class Analytics {
 
-    private static delegate = new CompositeAnalytics([
-        new SegmentAnalytics(),
-        new GAAnalytics()
-    ]);
-
     public static event(event: IEventArgs): void {
-        this.delegate.event(event);
+        delegate.event(event);
     }
 
     public static identify(userId: string): void {
-        this.delegate.identify(userId);
+        delegate.identify(userId);
     }
 
     public static page(name: string): void {
-        this.delegate.page(name);
+        delegate.page(name);
     }
 
     public static traits(map: TraitsMap): void {
-        this.delegate.traits(map);
+        delegate.traits(map);
     }
 
 }

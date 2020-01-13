@@ -11,6 +11,7 @@ import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -146,7 +147,7 @@ export class BrowserApp {
 
         this.loadedURL = true;
 
-        RendererAnalytics.event({category: 'content-capture', action: 'loaded-url'});
+        Analytics.event({category: 'content-capture', action: 'loaded-url'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
@@ -154,7 +155,7 @@ export class BrowserApp {
 
     private onTriggerCapture() {
 
-        RendererAnalytics.event({category: 'content-capture', action: 'triggered'});
+        Analytics.event({category: 'content-capture', action: 'triggered'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
@@ -164,7 +165,7 @@ export class BrowserApp {
 
         const browser = BrowserRegistry[browserName];
 
-        RendererAnalytics.event({category: 'content-capture', action: 'browser-changed'});
+        Analytics.event({category: 'content-capture', action: 'browser-changed'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
 

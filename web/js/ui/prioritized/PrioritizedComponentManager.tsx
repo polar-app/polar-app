@@ -2,10 +2,10 @@ import * as React from 'react';
 import {SplashLifecycle} from '../../../../apps/repository/js/splash2/SplashLifecycle';
 import {LifecycleEvents} from '../util/LifecycleEvents';
 import {LocalPrefs} from '../../util/LocalPrefs';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DatastoreOverview} from '../../datastore/Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Numbers} from "polar-shared/src/util/Numbers";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -51,9 +51,9 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
         // mark this as shown so that we delay the next splash, even on refresh
         SplashLifecycle.markShown();
 
-        RendererAnalytics.event({category: 'splashes', action: 'shown'});
+        Analytics.event({category: 'splashes', action: 'shown'});
 
-        RendererAnalytics.event({category: 'splashes-shown', action: prioritizedComponentRef.id});
+        Analytics.event({category: 'splashes-shown', action: prioritizedComponentRef.id});
 
         // return the top ranking element.
         return prioritizedComponentRef.create();

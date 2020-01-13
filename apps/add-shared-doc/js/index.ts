@@ -7,7 +7,7 @@ import {PersistenceLayer} from "../../../web/js/datastore/PersistenceLayer";
 import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/BrowserDocLoader";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
-import {RendererAnalytics} from "../../../web/js/ga/RendererAnalytics";
+import {Analytics} from "../../../web/js/analytics/Analytics";
 
 // *****
 //
@@ -59,7 +59,7 @@ async function redirectToDocumentViewer(persistenceLayer: PersistenceLayer,
 
 async function doHandle() {
 
-    RendererAnalytics.event({category: 'add-shared-doc', action: 'do-handle'});
+    Analytics.event({category: 'add-shared-doc', action: 'do-handle'});
 
     const authHandler = AuthHandlers.get();
 

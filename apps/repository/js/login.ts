@@ -1,5 +1,4 @@
 import {Firebase} from '../../../web/js/firebase/Firebase';
-import {Nav} from '../../../web/js/ui/util/Nav';
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import * as firebase from '../../../web/js/firebase/lib/firebase';
 import {URLs} from 'polar-shared/src/util/URLs';
@@ -7,6 +6,7 @@ import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
+import {Analytics} from "../../../web/js/analytics/Analytics";
 
 // TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl
 class SignInSuccessURLs {
@@ -63,11 +63,9 @@ class InitialLogin {
     public static sentAnalytics() {
 
         if (this.get()) {
-
             const runtime = AppRuntime.type();
             const category = runtime + '-login';
-            RendererAnalytics.event({category, action: 'initial'});
-
+            Analytics.event({category, action: 'initial'});
         }
 
     }

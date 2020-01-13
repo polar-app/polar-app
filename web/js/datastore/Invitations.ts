@@ -5,8 +5,8 @@ import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/I
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import * as firebase from '../firebase/lib/firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {Analytics} from "../analytics/Analytics";
 
 export class Invitations {
 
@@ -33,7 +33,7 @@ export class Invitations {
 
             }
 
-            RendererAnalytics.event({category: 'invitations', action: 'invited-' + emailAddresses.length});
+            Analytics.event({category: 'invitations', action: 'invited-' + emailAddresses.length});
 
         } finally {
             // noop for now

@@ -2,10 +2,10 @@
 import React from 'react';
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {Button} from "reactstrap";
-import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {Link} from "react-router-dom";
 import {AccountPlans} from "../../accounts/Account";
-import { accounts } from 'polar-accounts/src/accounts';
+import {accounts} from 'polar-accounts/src/accounts';
+import {Analytics} from "../../analytics/Analytics";
 
 export class PremiumFeature extends React.Component<IProps, IState> {
 
@@ -102,7 +102,7 @@ export class PremiumFeature extends React.Component<IProps, IState> {
     }
 
     private onUpgrade() {
-        RendererAnalytics.event({category: 'premium', action: 'upgrade-from-premium-feature-wall'});
+        Analytics.event({category: 'premium', action: 'upgrade-from-premium-feature-wall'});
         document.location.hash = "plans";
     }
 

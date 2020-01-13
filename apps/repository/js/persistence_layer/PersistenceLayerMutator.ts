@@ -1,5 +1,4 @@
 import {RepoDocInfo} from "../RepoDocInfo";
-import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags, TagStr} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
@@ -7,6 +6,7 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -94,7 +94,7 @@ export class PersistenceLayerMutator {
     }
 
     private async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
-        RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
+        Analytics.event({category: 'user', action: 'doc-tagged'});
         await this.repoDocMetaManager.writeDocInfoTags(repoDocInfo, tags);
         this.refresher();
     }

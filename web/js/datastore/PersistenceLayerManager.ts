@@ -4,11 +4,11 @@ import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFac
 import {IProvider} from "polar-shared/src/util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "polar-shared/src/logger/Logger";
-import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory';
 import {AppRuntime} from '../AppRuntime';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
+import {Analytics} from "../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -136,7 +136,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         log.info("Initialized persistence layer: " + type);
 
-        RendererAnalytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
+        Analytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
 
         return true;
 

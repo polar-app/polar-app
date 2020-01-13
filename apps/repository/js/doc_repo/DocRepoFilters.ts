@@ -1,12 +1,12 @@
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {FilteredTags} from '../FilteredTags';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -132,7 +132,7 @@ export class DocRepoFilters {
 
     private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo>  {
 
-        RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
+        Analytics.event({category: 'user', action: 'filter-by-tags'});
 
         const tags = this.filters.filteredTags.get()
             .filter(current => current.id !== '/');

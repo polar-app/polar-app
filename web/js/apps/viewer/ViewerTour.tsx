@@ -1,10 +1,10 @@
-import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
+import Joyride, {CallBackProps, STATUS, Step} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
+import {Analytics} from "../../analytics/Analytics";
 
 export class Styles {
 
@@ -188,7 +188,7 @@ export class ViewerTour extends React.Component<IProps, IState> {
 
     private onCallback(callbackProps: CallBackProps): void {
 
-        RendererAnalytics.event({category: 'viewer-tour-steps', action: 'did-step-' + callbackProps.index});
+        Analytics.event({category: 'viewer-tour-steps', action: 'did-step-' + callbackProps.index});
 
         if (callbackProps.status === STATUS.SKIPPED || callbackProps.status === STATUS.FINISHED) {
 
@@ -197,14 +197,14 @@ export class ViewerTour extends React.Component<IProps, IState> {
                 switch (callbackProps.status) {
 
                     case STATUS.SKIPPED:
-                        RendererAnalytics.event({category: 'viewer-tour-result', action: 'skipped'});
-                        RendererAnalytics.event({category: 'viewer-tour-skip', action: 'skipped-at-step-' + callbackProps.index});
+                        Analytics.event({category: 'viewer-tour-result', action: 'skipped'});
+                        Analytics.event({category: 'viewer-tour-skip', action: 'skipped-at-step-' + callbackProps.index});
 
                         LifecycleToggle.mark(LifecycleEvents.VIEWER_TOUR_SKIPPED);
                         break;
 
                     case STATUS.FINISHED:
-                        RendererAnalytics.event({category: 'viewer-tour-result', action: 'finished'});
+                        Analytics.event({category: 'viewer-tour-result', action: 'finished'});
 
                         LifecycleToggle.mark(LifecycleEvents.VIEWER_TOUR_FINISHED);
                         break;

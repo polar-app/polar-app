@@ -1,6 +1,6 @@
 import React from 'react';
-import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
+import {Analytics} from "../../../../../../web/js/analytics/Analytics";
 
 /**
  * A simple button that also supports sending an event when clicked.
@@ -33,7 +33,7 @@ export class EventTrackedLink extends React.Component<IProps, IState> {
 
     private onClick() {
 
-        RendererAnalytics.event({category: this.props.eventCategory, action: this.props.eventAction});
+        Analytics.event({category: this.props.eventCategory, action: this.props.eventAction});
 
     }
 

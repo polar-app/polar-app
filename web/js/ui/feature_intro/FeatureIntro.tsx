@@ -1,13 +1,6 @@
 import * as React from 'react';
-import Dropdown, {DropdownButton, DropdownMenu, DropdownMenuWrapper, DropdownToggle, MenuItem} from '@burtonator/react-dropdown';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import Button from 'reactstrap/lib/Button';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {SplitLayout} from '../split_layout/SplitLayout';
-import {SplitBarLeft} from '../../../../apps/repository/js/SplitBarLeft';
-import {SplitLayoutLeft} from '../split_layout/SplitLayout';
-import {SplitLayoutRight} from '../split_layout/SplitLayoutRight';
+import {SplitLayout, SplitLayoutLeft} from '../split_layout/SplitLayout';
 
 export class FeatureIntro extends React.Component<IProps, IState> {
 

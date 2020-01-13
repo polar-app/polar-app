@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
-import {RendererAnalytics} from "../../ga/RendererAnalytics";
 import {UpgradeRequired} from "./UpgradeRequired";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Link} from "react-router-dom";
 import {accounts} from "polar-accounts/src/accounts";
+import {Analytics} from "../../analytics/Analytics";
 
 const MESSAGE = createRandomizedUpgradeMessage();
 
@@ -15,10 +15,10 @@ interface UpgradeRequiredProps {
 
 const GoPremium = (props: UpgradeRequiredProps) => {
 
-    RendererAnalytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
+    Analytics.event({category: 'upgrade', action: 'triggered-upgrade-required'});
 
     const onClick = () => {
-        RendererAnalytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
+        Analytics.event({category: 'upgrade', action: 'clicked-button-to-plans'});
     };
 
     return <div className="mt-1 mb-1 p-1 rounded"

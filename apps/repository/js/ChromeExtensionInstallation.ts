@@ -1,6 +1,6 @@
 import {AppRuntime} from '../../../web/js/AppRuntime';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {isPresent} from 'polar-shared/src/Preconditions';
+import {Analytics} from "../../../web/js/analytics/Analytics";
 
 const EXTENSION_URL = "https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd";
 
@@ -50,19 +50,19 @@ export class ChromeExtensionInstallation {
     public static doInstall(successCallback: () => void,
                             failureCallback: (error: string, errorCode?: string) => void) {
 
-        RendererAnalytics.event({category: 'chrome-extension', action: 'inline-installation-triggered'});
+        Analytics.event({category: 'chrome-extension', action: 'inline-installation-triggered'});
 
         const handleSuccess = () => {
-            RendererAnalytics.event({category: 'chrome-extension-install-result', action: 'install-successful'});
+            Analytics.event({category: 'chrome-extension-install-result', action: 'install-successful'});
             successCallback();
         };
 
         const handleFailure = (error: string, errorCode?: string) => {
 
-            RendererAnalytics.event({category: 'chrome-extension-install-result', action: 'install-failed'});
+            Analytics.event({category: 'chrome-extension-install-result', action: 'install-failed'});
 
             if (errorCode) {
-                RendererAnalytics.event({category: 'chrome-extension-failures', action: errorCode});
+                Analytics.event({category: 'chrome-extension-failures', action: errorCode});
             }
 
             failureCallback(error, errorCode);

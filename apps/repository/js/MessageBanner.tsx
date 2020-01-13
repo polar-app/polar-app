@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Alert from 'reactstrap/lib/Alert';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Analytics} from "../../../web/js/analytics/Analytics";
 
 export class MessageBanner extends React.Component<IProps, IState> {
 
@@ -58,7 +58,7 @@ export class MessageBanner extends React.Component<IProps, IState> {
     }
 
     private onClick(message: Message) {
-        RendererAnalytics.event({category: 'message-banner-click', action: message.id});
+        Analytics.event({category: 'message-banner-click', action: message.id});
     }
 
 }

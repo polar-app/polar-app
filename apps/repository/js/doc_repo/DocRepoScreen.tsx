@@ -6,7 +6,6 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns';
@@ -52,6 +51,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -260,11 +260,11 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         // TODO: move some of these analytics into the main RepoaitoryApp.tsx.
 
-        RendererAnalytics.set({'nrDocs': nrDocs});
+        Analytics.traits({'nrDocs': nrDocs});
 
         const persistenceLayerType = this.props.persistenceLayerController.currentType();
 
-        RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
+        Analytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
 
     }
 
@@ -613,7 +613,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
 
-        RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
+        Analytics.event({category: 'user', action: 'doc-tagged'});
 
         await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
         this.refresh();
@@ -686,7 +686,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
 
-        RendererAnalytics.event({category: 'user', action: 'set-doc-title'});
+        Analytics.event({category: 'user', action: 'set-doc-title'});
 
         log.info("Setting doc title: " , title);
 
@@ -699,7 +699,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onSelectedColumns(columns: ReadonlyArray<ListOptionType>) {
 
-        RendererAnalytics.event({category: 'user', action: 'selected-columns'});
+        Analytics.event({category: 'user', action: 'selected-columns'});
 
         // tslint:disable-next-line:variable-name
         const columns_map = IDMaps.create(columns);
@@ -731,7 +731,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
 
     private onFilterByTitle(title: string) {
-        RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
+        Analytics.event({category: 'user', action: 'filter-by-title'});
         this.docRepoFilters.onFilterByTitle(title);
     }
 

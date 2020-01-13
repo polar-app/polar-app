@@ -1,25 +1,23 @@
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {PersistenceLayerListener} from './PersistenceLayerListener';
-import {DocMetaSnapshotEventListener} from './Datastore';
-import {DeleteResult} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {ErrorListener} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
-import {SnapshotResult} from './Datastore';
-import {BinaryFileData} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {Datastore} from './Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    GetFileOpts,
+    SnapshotResult,
+    WriteFileOpts
+} from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocMetaFileRef} from './DocMetaRef';
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocMeta} from '../metadata/DocMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocFileMeta} from './DocFileMeta';
 import {WriteOpts} from './PersistenceLayer';
-import {DocInfo} from '../metadata/DocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

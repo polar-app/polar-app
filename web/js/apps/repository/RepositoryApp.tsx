@@ -23,7 +23,6 @@ import {ToasterService} from '../../ui/toaster/ToasterService';
 import {ProgressService} from '../../ui/progress_bar/ProgressService';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Version} from 'polar-shared/src/util/Version';
 import {LoadExampleDocs} from './onboarding/LoadExampleDocs';
 import {LocalPrefs} from '../../util/LocalPrefs';
@@ -50,7 +49,6 @@ import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/
 import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
 import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
 import {PlatformStyles} from "../../ui/PlatformStyles";
-import {Devices} from "../../util/Devices";
 import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 import {AccountProvider} from "../../accounts/AccountProvider";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
@@ -66,7 +64,8 @@ import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsSc
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
-import {Gestures, PinchToZoom} from "../../ui/Gestures";
+import {PinchToZoom} from "../../ui/Gestures";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -356,7 +355,7 @@ export class RepositoryApp {
 
                 log.info("Navigating to: ", { path, hostname, title });
 
-                RendererAnalytics.pageview(path, hostname, document.title);
+                Analytics.page(path);
 
             } catch (e) {
                 log.error("Unable to handle hash change", e);
@@ -540,10 +539,12 @@ export class RepositoryApp {
         const screen = `${window.screen.width}x${window.screen.height}`;
         const runtime = AppRuntime.type();
 
-        RendererAnalytics.event({category: 'app', action: 'version-' + version});
-        RendererAnalytics.event({category: 'platform', action: `${platform}`});
-        RendererAnalytics.event({category: 'screen', action: screen});
-        RendererAnalytics.event({category: 'runtime', action: runtime});
+
+        // TODO: I think these should be session traits
+        Analytics.event({category: 'app', action: 'version-' + version});
+        Analytics.event({category: 'platform', action: `${platform}`});
+        Analytics.event({category: 'screen', action: screen});
+        Analytics.event({category: 'runtime', action: runtime});
 
     }
 

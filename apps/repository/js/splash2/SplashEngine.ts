@@ -4,7 +4,6 @@ import {Rule, RuleFactPair} from './rules_engine/Rule';
 import {Duration, DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import * as semver from 'semver';
 import {Devices} from "../../../../web/js/util/Devices";
 import {ReleaseMetadatas} from "polar-release-metadata/src/ReleaseMetadatas";

@@ -1,7 +1,23 @@
-import analytics from '@segment/analytics.js-core';
 import {IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {Segments} from "./Segments";
 
-analytics.load("ogIRcN7inQDBxIYySQtDZjBUHepranLX");
+function isBrowser() {
+    return typeof window !== 'undefined';
+}
+
+function createAnalytics(): SegmentAnalytics.AnalyticsJS {
+
+    if (isBrowser()) {
+        const analytics: SegmentAnalytics.AnalyticsJS = Segments.getInstance();
+        analytics.load("ogIRcN7inQDBxIYySQtDZjBUHepranLX");
+        return analytics;
+    }
+
+    return null!;
+
+}
+
+const analytics = createAnalytics();
 
 export class SegmentAnalytics {
 
@@ -10,8 +26,8 @@ export class SegmentAnalytics {
         analytics.track(eventName);
     }
 
-    public page(name: string) {
-        analytics.page(name);
+    public page(pageName: string) {
+        analytics.page(pageName);
     }
 
     public identify(userId: UserIdentificationStr) {

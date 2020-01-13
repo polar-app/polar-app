@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import Input from 'reactstrap/lib/Input';
 import {TakeExtendedSurveyButton} from './TakeExtendedSurveyButton';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Analytics} from "../../analytics/Analytics";
 
 export class Suggestions extends React.Component<IProps, IState> {
 
@@ -95,7 +95,7 @@ export class Suggestions extends React.Component<IProps, IState> {
 
         if (! this.props.noEvent) {
 
-            RendererAnalytics.event({
+            Analytics.event({
                 category: this.props.category,
                 action: 'cancel-suggestion',
             });
@@ -110,7 +110,7 @@ export class Suggestions extends React.Component<IProps, IState> {
 
         if (! this.props.noEvent) {
 
-            RendererAnalytics.event({
+            Analytics.event({
                 category: this.props.category,
                 action: 'sent-suggestion',
             });

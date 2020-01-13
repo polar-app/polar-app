@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {LeftRightSplit} from '../left_right_split/LeftRightSplit';
 import {Nav} from '../util/Nav';
 import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
 import {MessageBox} from "../util/MessageBox";
+import {Analytics} from "../../analytics/Analytics";
 
 export class Feedback extends React.Component<IProps, IState> {
 
@@ -186,7 +186,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
         if (! this.props.noEvent) {
 
-            RendererAnalytics.event({
+            Analytics.event({
                 category: this.props.category,
                 action: `${rating}`,
             });
@@ -214,7 +214,7 @@ export class Feedback extends React.Component<IProps, IState> {
 
         if (! this.props.noEvent) {
 
-            RendererAnalytics.event({
+            Analytics.event({
                                         category: this.props.category,
                                         action: `unsure`,
                                     });

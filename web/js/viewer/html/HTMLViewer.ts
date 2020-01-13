@@ -12,7 +12,6 @@ import {BackgroundFrameResizer} from './BackgroundFrameResizer';
 import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
 import {FrameResizer} from './FrameResizer';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DirectPHZLoader} from '../../phz/DirectPHZLoader';
 import {LoadStrategy} from '../../apps/main/file_loaders/PHZLoader';
@@ -20,6 +19,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {IFrames} from '../../util/dom/IFrames';
 import {PinchToZoom} from "../../ui/Gestures";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -61,7 +61,7 @@ export class HTMLViewer extends Viewer {
 
         this.htmlFormat = new HTMLFormat();
 
-        RendererAnalytics.pageview("/htmlviewer");
+        Analytics.page("/htmlviewer");
 
         // *** start the resizer and initializer before setting the iframe
 

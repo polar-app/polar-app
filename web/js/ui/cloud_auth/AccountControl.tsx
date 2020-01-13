@@ -2,9 +2,9 @@
 import React from 'react';
 import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import Button from 'reactstrap/lib/Button';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Link} from "react-router-dom";
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
+import {Analytics} from "../../analytics/Analytics";
 
 const LogoutButton = (props: IProps) => {
 
@@ -67,7 +67,7 @@ const InviteUsersButton = (props: IProps) => {
 const ViewPlansAndPricingButton = () => {
 
     const handler = () => {
-        RendererAnalytics.event({category: 'premium', action: 'view-plans-and-pricing-button'});
+        Analytics.event({category: 'premium', action: 'view-plans-and-pricing-button'});
     };
 
     return (

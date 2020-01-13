@@ -10,9 +10,9 @@ import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighli
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {TypedMessage} from '../../util/TypedMessage';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {ControlledAnnotationBars} from './ControlledAnnotationBars';
 import {Docs} from '../../metadata/Docs';
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -105,7 +105,7 @@ export class AnnotationBarService {
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
 
-            RendererAnalytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
+            Analytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
 
             // TODO: this is just a hack for now.  We should send a dedicated
             // object.

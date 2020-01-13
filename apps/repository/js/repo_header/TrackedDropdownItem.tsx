@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {DropdownItem} from 'reactstrap';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FontAwesomeIcon} from "../../../../web/js/ui/fontawesome/FontAwesomeIcon";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 /**
  */
@@ -62,7 +62,7 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
         const action = this.props.title.replace(/ /g, '').toLowerCase();
 
         if (this.props.trackingCategory) {
-            RendererAnalytics.event({category: this.props.trackingCategory, action});
+            Analytics.event({category: this.props.trackingCategory, action});
         }
 
         this.props.onClick();

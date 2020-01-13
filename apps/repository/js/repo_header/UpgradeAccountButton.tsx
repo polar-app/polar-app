@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Button} from 'reactstrap';
 import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
-import {RendererAnalytics} from "../../../../web/js/ga/RendererAnalytics";
 import {Link} from "react-router-dom";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
 
@@ -37,7 +37,7 @@ export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
     }
 
     private onUpgrade() {
-        RendererAnalytics.event({category: 'premium', action: 'upgrade-account-button'});
+        Analytics.event({category: 'premium', action: 'upgrade-account-button'});
     }
 
 }

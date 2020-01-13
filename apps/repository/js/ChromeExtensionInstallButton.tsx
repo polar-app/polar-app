@@ -3,10 +3,10 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import Button from 'reactstrap/lib/Button';
 import {Nav} from '../../../web/js/ui/util/Nav';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Browsers} from "polar-browsers/src/Browsers";
+import {Analytics} from "../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -67,7 +67,7 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
 
     private onClick(): void {
 
-        RendererAnalytics.event({category: 'chrome-extension', action: 'manual-installation-triggered'});
+        Analytics.event({category: 'chrome-extension', action: 'manual-installation-triggered'});
 
         Nav.openLinkWithNewTab("https://chrome.google.com/webstore/detail/polar-pdf-web-and-documen/jkfdkjomocoaljglgddnmhcbolldcafd");
 

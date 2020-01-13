@@ -5,12 +5,11 @@ import Button from 'reactstrap/lib/Button';
 import {DatastoreCapabilities} from '../../datastore/Datastore';
 import Input from 'reactstrap/lib/Input';
 import {SocialLinks} from '../../util/SocialLinks';
-import {RendererAnalytics} from '../../ga/RendererAnalytics';
-import {SplitLayout} from '../../ui/split_layout/SplitLayout';
-import {SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
+import {SplitLayout, SplitLayoutLeft} from '../../ui/split_layout/SplitLayout';
 import {SplitLayoutRight} from '../../ui/split_layout/SplitLayoutRight';
 import CreatableSelect from 'react-select';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -310,11 +309,11 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
     }
 
     private sharedVia(platform: SharePlatform) {
-        RendererAnalytics.event({category: 'shared-via', action: platform});
+        Analytics.event({category: 'shared-via', action: platform});
     }
 
     private onDone() {
-        RendererAnalytics.event({category: 'sharing', action: this.state.visibility});
+        Analytics.event({category: 'sharing', action: this.state.visibility});
         this.props.onDone();
     }
 

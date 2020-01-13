@@ -1,4 +1,3 @@
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {RepoDocAnnotations} from '../RepoDocAnnotations';
@@ -7,6 +6,7 @@ import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 /**
  * The actual engine that applies the filters once they are updated.
@@ -85,7 +85,7 @@ export class AnnotationRepoFilterEngine {
 
         if (! Strings.empty(this.filters.text)) {
 
-            RendererAnalytics.event({category: 'annotation-view', action: 'filter-by-text'});
+            Analytics.event({category: 'annotation-view', action: 'filter-by-text'});
 
             return repoAnnotations
                 .filter(current => isPresent(current.text))
