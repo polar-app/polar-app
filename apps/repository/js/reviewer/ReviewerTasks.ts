@@ -108,7 +108,7 @@ export class ReviewerTasks {
             return repoDocAnnotations
                 .filter(current => current.annotationType === AnnotationType.FLASHCARD)
                 .map(toTasks)
-                .reduce(Reducers.FLAT);
+                .reduce(Reducers.FLAT, []);
 
         };
 
