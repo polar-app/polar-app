@@ -1,36 +1,17 @@
 import ua, {EventParams} from 'universal-analytics';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {CIDs} from './CIDs';
-import {Version} from 'polar-shared/src/util/Version';
-import {Stopwatch} from 'polar-shared/src/util/Stopwatch';
-import {TrackedDuration} from 'polar-shared/src/util/Stopwatch';
+import {Stopwatch, TrackedDuration} from 'polar-shared/src/util/Stopwatch';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {DurationMS} from 'polar-shared/src/util/TimeDurations';
 
-// const TRACKING_ID = 'UA-122721184-1';
 const TRACKING_ID = 'UA-122721184-5';
 
 const DEBUG = false;
 
-const version = Version.get();
-
 declare var window: Window;
 
 const isBrowserContext = typeof window !== 'undefined';
-
-function getUserAgent() {
-
-    if (isBrowserContext && window && window.navigator) {
-        return window.navigator.userAgent;
-    }
-
-    return "none";
-
-}
-
-
-const userAgent = getUserAgent();
-
 const cid =  isBrowserContext ? CIDs.get() : 'none';
 
 const headers = {
@@ -81,8 +62,6 @@ export class RendererAnalytics {
         const eventParams: EventParams = {
             ec: args.category,
             ea: args.action,
-            el: args.label,
-            ev: args.value,
             // ua: userAgent,
             // av: version
         };
@@ -214,10 +193,6 @@ export class RendererAnalytics {
 export interface IEventArgs {
     category: string;
     action: string;
-    label?: string;
-    value?: number;
-    nonInteraction?: boolean;
-    transport?: string;
 }
 
 export interface IFieldsObject {

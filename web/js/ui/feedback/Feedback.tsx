@@ -187,10 +187,9 @@ export class Feedback extends React.Component<IProps, IState> {
         if (! this.props.noEvent) {
 
             RendererAnalytics.event({
-                                        category: this.props.category,
-                                        action: `${rating}`,
-                                        value: rating
-                                    });
+                category: this.props.category,
+                action: `${rating}`,
+            });
 
             console.log(`Sent feedback for category ${this.props.category}: ${rating}`);
 
