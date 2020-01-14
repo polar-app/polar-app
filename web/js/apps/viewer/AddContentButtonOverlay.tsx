@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Button from 'reactstrap/lib/Button';
 import {Callback} from "polar-shared/src/util/Functions";
+import {useState} from "react";
+import {DeviceRouter} from "../../ui/DeviceRouter";
 
 const DesktopTopRight = (props: any) => (
 
@@ -35,8 +37,24 @@ const DesktopBottomRight = (props: any) => (
 
 );
 
+const BottomBar = (props: any) => (
+
+    <div className=""
+         style={{
+             position: 'fixed',
+             bottom: '0',
+             zIndex: 100,
+             width: '100%'
+         }}>
+
+        {props.children}
+
+    </div>
+
+);
+
 interface AboutButtonProps {
-    readonly onClick: Callback;
+    readonly onAdd: Callback;
 }
 
 const AddButton = (props: AboutButtonProps) => (
@@ -49,7 +67,7 @@ const AddButton = (props: AboutButtonProps) => (
             }}
             color="success"
             className="btn-lg shadow ml-auto mr-auto"
-            onClick={() => props.onClick()}
+            onClick={() => props.onAdd()}
             size="lg">
 
         <i className="fas fa-plus mr-1"/>
@@ -59,7 +77,7 @@ const AddButton = (props: AboutButtonProps) => (
 );
 
 interface DownloadButtonProps {
-    readonly onClick: Callback;
+    readonly onDownload: Callback;
 }
 
 const DownloadButton = (props: DownloadButtonProps) => (
@@ -71,7 +89,7 @@ const DownloadButton = (props: DownloadButtonProps) => (
             }}
             color="primary"
             className="shadow ml-auto mr-auto"
-            onClick={() => props.onClick()}
+            onClick={() => props.onDownload()}
             size="sm">
 
         <i className="fas fa-file-download mr-1" />
@@ -80,84 +98,130 @@ const DownloadButton = (props: DownloadButtonProps) => (
     </Button>
 );
 
-const AboutSplash = () => (
+export namespace devices {
 
-    <div style={{
-            borderWidth: '2px !important'
-         }}
-         className="bg-white border border-primary rounded p-3">
+    export const Handheld = (props: AddContentButtonOverlayProps) => (
 
-        <h4 className="text-center">
-            Polar makes it easy to manage your education.
-        </h4>
+        <BottomBar>
 
-        <p className="ml-2">
-            <i className="fas fa-check text-success"/> Manage both PDFs and web pages.<br/>
-            <i className="fas fa-check text-success"/> Track reading progress, annotate, and comment.<br/>
-            <i className="fas fa-check text-success"/> Web, desktop, and mobile support.<br/>
-            <i className="fas fa-check text-success"/> Study smarter with flashcards and spaced repetition.<br/>
-        </p>
+            <div className="m-2">
+                <AboutSplash/>
+            </div>
 
-        <div className="mt-3 text-center">
-            <a href="https://getpolarized.io/">
-                <Button size="lg" color="primary">
-                    Learn Smarter
-                </Button>
-            </a>
-        </div>
+        </BottomBar>
+    );
 
-    </div>
-);
+    export const Desktop = (props: AddContentButtonOverlayProps) => (
+        <>
+            <DesktopTopRight>
 
-export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState> {
+                <div className="text-center">
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
-
-    public render() {
-
-        // TODO: Add RendererAnalytics for when this is loaded ... and added...
-
-        return (
-            <>
-                <DesktopTopRight>
-
-                    <div className="text-center">
-
-                        <div>
-                            <AddButton {...this.props}/>
-                        </div>
-
-                        <div className="mt-2">
-                            <DownloadButton onClick={() => this.handleDownload()}/>
-                        </div>
-
+                    <div>
+                        <AddButton onAdd={() => props.onAdd()}/>
                     </div>
 
-                </DesktopTopRight>
+                    <div className="mt-2">
+                        <DownloadButton onDownload={() => handleDownload()}/>
+                    </div>
 
-                <DesktopBottomRight>
-                    <AboutSplash/>
-                </DesktopBottomRight>
+                </div>
 
-            </>
+            </DesktopTopRight>
 
-        );
+            <DesktopBottomRight>
+                <AboutSplash/>
+            </DesktopBottomRight>
 
+        </>
+    );
+}
+
+const AboutSplash = () => (
+
+    <Dismissable id='add-to-polar-splash' render={dismiss => (
+
+        <div style={{
+                 borderWidth: '2px !important'
+             }}
+             className="bg-white border border-primary rounded p-3">
+
+            <h4 className="text-center">
+                Polar makes it easy to manage your education.
+            </h4>
+
+            <p className="ml-2">
+                <i className="fas fa-check text-success"/> Manage both PDFs and web pages.<br/>
+                <i className="fas fa-check text-success"/> Track reading progress, annotate, and comment.<br/>
+                <i className="fas fa-check text-success"/> Web, desktop, and mobile support.<br/>
+                <i className="fas fa-check text-success"/> Study smarter with flashcards and spaced repetition.<br/>
+            </p>
+
+            <div className="mt-3 text-center">
+
+                <Button size="lg"
+                        color="clear"
+                        className="text-muted"
+                        onClick={() => dismiss()}>
+                    No Thanks
+                </Button>
+
+                <a href="https://getpolarized.io/">
+                    <Button size="lg" color="primary">
+                        Learn Smarter
+                    </Button>
+                </a>
+
+            </div>
+
+        </div>
+
+    )}/>
+
+);
+
+function handleDownload() {
+    const url = new URL(document.location.href);
+    const file = url.searchParams.get('file');
+    document.location.href = file!;
+}
+
+interface AddContentButtonOverlayProps {
+    readonly onAdd: Callback;
+}
+
+interface DismissableProps {
+
+    /**
+     * The id to use for the key to dismiss this item in local storage.
+     */
+    readonly id: string;
+
+    readonly render: (dismiss: Callback) => JSX.Element;
+
+}
+
+const Dismissable = (props: DismissableProps) => {
+
+    const initial = localStorage.getItem(props.id) === 'true';
+
+    const [dismissed, setDismissed] = useState(initial);
+
+    const dismiss = () => {
+        localStorage.setItem(props.id, 'true');
+        setDismissed(true);
+    };
+
+    if (dismissed) {
+        return null;
+    } else {
+        return props.render(dismiss);
     }
 
-    private handleDownload() {
-        const url = new URL(document.location.href);
-        const file = url.searchParams.get('file');
-        document.location.href = file!;
-    }
+};
 
-}
+export const AddContentButtonOverlay = (props: AddContentButtonOverlayProps) => (
+    <DeviceRouter desktop={<devices.Desktop {...props}/>}
+                  handheld={<devices.Handheld {...props}/>}/>
+);
 
-interface IProps {
-    onClick: () => void;
-}
-
-interface IState {
-}
