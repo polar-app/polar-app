@@ -55,6 +55,7 @@ import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
 import {AnimatedRoutes} from "./AnimatedRoutes";
 import {Toaster} from "../../js/ui/toaster/Toaster";
 import {FakePagemark} from "./FakePagemark";
+import {AddContentButtonOverlay} from "../../js/apps/viewer/AddContentButtonOverlay";
 
 const styles = {
     swatch: {
@@ -341,8 +342,9 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <FakePagemark/>
+                {/*<FakePagemark/>*/}
 
+                <AddContentButtonOverlay onClick={NULL_FUNCTION}/>
                 {/*<AnimatedRoutes/>*/}
 
                 {/*<div className="m-5">*/}
