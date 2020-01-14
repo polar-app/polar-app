@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../ui/tooltip/SimpleTooltip';
 import Button from 'reactstrap/lib/Button';
-import {SimpleTooltipEx} from '../../ui/tooltip/SimpleTooltipEx';
 
 export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState> {
 
@@ -23,12 +21,7 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
                      zIndex: 100
                  }}>
 
-                <SimpleTooltipEx text="Add document to your Polar repository."
-                                 style={{
-                                     fontSize: '14px'
-                                 }}
-                                 show={0}
-                                 placement="left" >
+                <div>
 
                     <Button id="add-content-overlay"
                             direction="down"
@@ -38,20 +31,45 @@ export class AddContentButtonOverlay  extends React.PureComponent<IProps, IState
                                 fontFamily: 'sans-serif'
                             }}
                             color="success"
-                            className="btn-lg shadow"
+                            className="btn-lg shadow ml-auto mr-auto"
                             onClick={() => this.props.onClick()}
                             size="lg">
 
-                        <i className="fas fa-plus" style={{marginRight: '5px'}}></i> Add to Polar
+                        <i className="fas fa-plus" style={{marginRight: '5px'}}/>
+                        Add to Polar
 
                     </Button>
 
-                </SimpleTooltipEx>
+                    <Button id="download-content-overlay"
+                            direction="down"
+                            style={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                fontFamily: 'sans-serif'
+                            }}
+                            color="primary"
+                            className="btn-lg shadow ml-auto mr-auto"
+                            onClick={() => this.handleDownload()}
+                            size="lg">
+
+                        <i className="fas fa-file-download mr-1" />
+                        Download
+
+                    </Button>
+
+
+                </div>
 
             </div>
 
         );
 
+    }
+
+    private handleDownload() {
+        const url = new URL(document.location.href);
+        const file = url.searchParams.get('file');
+        document.location.href = file!;
     }
 
 }
