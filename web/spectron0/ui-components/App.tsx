@@ -54,6 +54,7 @@ import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
 import {AnimatedRoutes} from "./AnimatedRoutes";
 import {Toaster} from "../../js/ui/toaster/Toaster";
+import {FakePagemark} from "./FakePagemark";
 
 const styles = {
     swatch: {
@@ -336,13 +337,13 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         // ReviewerTasks.createFlashcardTasks()
 
-        Toaster.info("hello world");
-
         return (
 
             <div>
 
-                <AnimatedRoutes/>
+                <FakePagemark/>
+
+                {/*<AnimatedRoutes/>*/}
 
                 {/*<div className="m-5">*/}
 
