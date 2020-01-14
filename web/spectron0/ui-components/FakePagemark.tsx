@@ -1,9 +1,10 @@
 import * as React from "react";
-import {useState} from "react";
 import * as ReactDOM from 'react-dom';
 import {Button} from "reactstrap";
 import {NullCollapse} from "../../js/ui/null_collapse/NullCollapse";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {ColorSelector} from "../../js/ui/colors/ColorSelector";
+import {CloseIcon, CommentIcon} from "../../js/ui/icons/FixedWidthIcons";
 
 interface ActivatorProps {
     readonly render: (active: boolean) => JSX.Element;
@@ -65,12 +66,58 @@ class Activator extends React.Component<ActivatorProps, ActivatorState> {
 
 }
 
-interface PagemarkControlProps {
+interface BarButtonProps {
+    readonly onClick: Callback;
+    readonly children: any;
+}
+
+const BarButton = (props: BarButtonProps) => (
+    <Button color="clear"
+            className="m-0 p-0 ml-1 text-secondary"
+            onClick={NULL_FUNCTION}>
+        {props.children}
+    </Button>
+);
+
+const PagemarkControl = () => (
+
+    <div className="text-right border-right border-bottom border-left rounded">
+
+        <div style={{
+                 display: 'flex'
+             }}
+             className="text-secondary p-1">
+
+            <div style={{flexGrow: 1}}>
+
+            </div>
+
+            <div style={{display: 'flex'}}>
+
+                <div className="mr-1">
+                    <ColorSelector color='#8DFF76' size="1em"/>
+                </div>
+
+                <BarButton onClick={NULL_FUNCTION}>
+                    <CommentIcon/>
+                </BarButton>
+
+                <BarButton onClick={NULL_FUNCTION}>
+                    <CloseIcon/>
+                </BarButton>
+
+            </div>
+        </div>
+    </div>
+
+);
+
+interface PagemarkCollapseProps {
     readonly active: boolean;
     readonly children: any;
 }
 
-const PagemarkControl = (props: PagemarkControlProps) => (
+const PagemarkCollapse = (props: PagemarkCollapseProps) => (
     <NullCollapse open={props.active}>
         {props.children}
     </NullCollapse>
@@ -136,13 +183,9 @@ export const FakePagemark = () => {
 
                     </div>
 
-                    <PagemarkControl active={active}>
-                        <div className="text-right border-right border-bottom border-left rounded">
-                            <Button color="clear" onClick={NULL_FUNCTION}>comment</Button>
-
-                            <Button color="clear" onClick={onClose}>X</Button>
-                        </div>
-                    </PagemarkControl>
+                    <PagemarkCollapse active={active}>
+                        <PagemarkControl/>
+                    </PagemarkCollapse>
 
                 </div>
 
