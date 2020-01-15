@@ -3,6 +3,7 @@ import {Wayback} from "./Wayback";
 import {CacheFetches} from "./CacheFetches";
 import {HackerNewsContent, HackerNewsContents} from "./HackerNewsContents";
 import {ArchiveLinks} from "./ArchiveLinks";
+import { Files } from "polar-shared/src/util/Files";
 
 // TODO: pages 1-5 ... do every hour of the day???
 
@@ -73,7 +74,10 @@ export class Crawler {
 
         console.log("Found N links: " + dumped.length);
 
-        console.log(dumped);
+        // console.log(dumped);
+
+        const json = JSON.stringify(dumped, null, "  ");
+        await Files.writeFileAsync('crawler.json', json);
 
     }
 
