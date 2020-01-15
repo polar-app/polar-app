@@ -1,6 +1,5 @@
 import {ArchiveTimestamps} from "./ArchiveTimestamps";
 import {Wayback} from "./Wayback";
-import {Latch} from "polar-shared/src/util/Latch";
 import {CacheFetches} from "./CacheFetches";
 
 export class Crawler {
@@ -8,7 +7,8 @@ export class Crawler {
     public static async exec() {
 
         const timestamp = "2019-01-01T00:00:00Z";
-        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
+        // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
+        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 30);
 
         for (const timestamp of timestamps) {
             console.log("timestamp: " + timestamp);

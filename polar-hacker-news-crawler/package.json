@@ -22,7 +22,9 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "polar-shared": "^1.90.2",
-    "@types/node": "^12.11.1"
+    "@types/jsdom": "^12.2.4",
+    "@types/node": "^12.11.1",
+    "jsdom": "^16.0.0",
+    "polar-shared": "^1.90.2"
   }
 }
