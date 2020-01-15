@@ -3,6 +3,7 @@ import Button from 'reactstrap/lib/Button';
 import {Callback} from "polar-shared/src/util/Functions";
 import {useState} from "react";
 import {DeviceRouter} from "../../ui/DeviceRouter";
+import doc = Mocha.reporters.doc;
 
 const DesktopTopRight = (props: any) => (
 
@@ -90,7 +91,7 @@ const DownloadButton = (props: DownloadButtonProps) => (
             color="primary"
             className="shadow ml-auto mr-auto"
             onClick={() => props.onDownload()}
-            size="sm">
+            size="lg">
 
         <i className="fas fa-file-download mr-1" />
         Download
@@ -104,11 +105,8 @@ export namespace devices {
 
         <BottomBar>
 
-            <div className="m-2">
-                <AboutSplash/>
-            </div>
-
         </BottomBar>
+
     );
 
     export const Desktop = (props: AddContentButtonOverlayProps) => (
@@ -129,10 +127,6 @@ export namespace devices {
 
             </DesktopTopRight>
 
-            <DesktopBottomRight>
-                <AboutSplash/>
-            </DesktopBottomRight>
-
         </>
     );
 }
@@ -144,7 +138,7 @@ const AboutSplash = () => (
         <div style={{
                  borderWidth: '2px !important'
              }}
-             className="bg-white border border-primary rounded p-3">
+             className="bg-white border border-primary rounded p-3 shadow-lg">
 
             <h4 className="text-center">
                 Polar makes it easy to manage your education.
@@ -181,9 +175,16 @@ const AboutSplash = () => (
 );
 
 function handleDownload() {
+    // const url = new URL(document.location.href);
+    // const file = url.searchParams.get('file');
+    // document.location.href = file!;
+
     const url = new URL(document.location.href);
     const file = url.searchParams.get('file');
-    document.location.href = file!;
+    const loc = `https://getpolarized.io/download-trigger.html?file=${file}`;
+
+    document.location.href = loc;
+
 }
 
 interface AddContentButtonOverlayProps {
