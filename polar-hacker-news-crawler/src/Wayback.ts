@@ -1,3 +1,16 @@
+import {CacheFetches} from "./CacheFetches";
+
+interface ArchivedSnapshot {
+    readonly status: string;
+    readonly available: boolean;
+    readonly url: string;
+    readonly timestamp: string;
+}
+
+interface ArchivedSnapshots {
+    readonly closest: ArchivedSnapshot;
+}
+
 /*
 
     {
@@ -14,21 +27,6 @@
     }
 
  */
-
-
-import {CacheFetches} from "./CacheFetches";
-import {Fetches} from "polar-shared/src/util/Fetch";
-
-interface ArchivedSnapshot {
-    readonly status: string;
-    readonly available: boolean;
-    readonly url: string;
-    readonly timestamp: string;
-}
-
-interface ArchivedSnapshots {
-    readonly closest: ArchivedSnapshot;
-}
 interface WaybackResponse {
 
     readonly timestamp: string;
@@ -51,9 +49,6 @@ export class Wayback {
         const apiURL = this.computeAPI(url, timestamp);
 
         const content = await CacheFetches.fetch(apiURL);
-
-        // const response = await Fetches.fetch(apiURL);
-        // const content = await response.text();
 
         return JSON.parse(content);
 

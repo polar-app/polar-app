@@ -1,6 +1,7 @@
 import {ArchiveTimestamps} from "./ArchiveTimestamps";
 import {Wayback} from "./Wayback";
 import {Latch} from "polar-shared/src/util/Latch";
+import {CacheFetches} from "./CacheFetches";
 
 export class Crawler {
 
@@ -11,7 +12,13 @@ export class Crawler {
 
         for (const timestamp of timestamps) {
             console.log("timestamp: " + timestamp);
-            await Wayback.listArchives('https://news.ycombinator.com/', timestamp.yymmdd);
+            const waybackResponse = await Wayback.listArchives('https://news.ycombinator.com/', timestamp.yymmdd);
+
+            const cacheURL = waybackResponse.archived_snapshots.closest.url;
+
+            console.log("cacheURL: " + cacheURL);
+            const content = await CacheFetches.fetch(cacheURL);
+
         }
 
     }
