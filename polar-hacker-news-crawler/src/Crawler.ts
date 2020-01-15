@@ -1,6 +1,22 @@
 import {ArchiveTimestamps} from "./ArchiveTimestamps";
 import {Wayback} from "./Wayback";
 import {CacheFetches} from "./CacheFetches";
+import {HackerNewsContents} from "./HackerNewsContents";
+
+class PDFIndex {
+
+    public doIndex(content: string) {
+        const hackerNewsContents = HackerNewsContents.parse(content);
+
+        for(const hackerNewsContent of hackerNewsContents) {
+            if (hackerNewsContent.link.endsWith(".pdf")) {
+                console.log("HIT: ", hackerNewsContent);
+            }
+        }
+
+    }
+
+}
 
 export class Crawler {
 
@@ -9,6 +25,8 @@ export class Crawler {
         const timestamp = "2019-01-01T00:00:00Z";
         // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
         const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 30);
+
+        const pdfIndex = new PDFIndex();
 
         for (const timestamp of timestamps) {
             console.log("timestamp: " + timestamp);
@@ -19,9 +37,13 @@ export class Crawler {
             console.log("cacheURL: " + cacheURL);
             const content = await CacheFetches.fetch(cacheURL);
 
+            pdfIndex.doIndex(content);
+
         }
 
     }
+
+
 
 }
 
