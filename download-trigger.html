@@ -1,0 +1,127 @@
+---
+
+title: Your file download should begin automatically.
+description: Downloading a file in the background.
+layout: nofooter
+author: Kevin Burton
+---
+
+<div class="">
+
+    <div>
+
+    </div>
+
+    <div style="display: flex;">
+
+        <div style="background-color: rgb(73, 224, 177); color: rgb(40, 40, 40)" class="pl-5 pr-5 rounded p-2 ml-auto mr-auto">
+
+            Your download should begin automatically. Didn’t work?
+            <a href="javascript:location.reload()" style="color: rgb(0,0,0); font-weight: bold;">Try downloading again.</a>
+
+        </div>
+
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col">
+                <h1 class="intro"> We make it easy to manage your reading.</h1>
+
+                <h2 class="mt-3 text-muted" style="font-size: 22px;">
+
+                    A <b>powerful</b> document manager for web pages, textbooks, PDFs, and anything you want to read.
+
+                    <br><br>
+                    Supports <b>tagging</b>, <b>annotation</b>, <b style="background-color: yellow;">highlighting</b> and
+                    keeps track of your reading progress.
+
+                </h2>
+            </div>
+            <div class="col">
+                <img class="img-shadow"
+                     src="https://getpolarized.io//assets/screenshots/2019-11-document-view.webp"
+                     style="width: 500px"/>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-2 text-center">
+        <a href="/" class="btn btn-lg btn-success">Become a Freakin Genius</a>
+    </div>
+
+
+
+<!--    <section class="fdb-block mt-2" data-block-type="features" data-id="1" draggable="false" style="padding-top: 0 !important;">-->
+<!--        <div class="container">-->
+<!--            <div class="row text-left mt-5">-->
+<!--                <div class="col-12 col-md-4">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-3">-->
+
+<!--                            <i class="fas fa-file-pdf fa-4x"></i>-->
+<!--                        </div>-->
+<!--                        <div class="col-9">-->
+
+<!--                            <h3><strong>PDF support</strong></h3>-->
+<!--                            <p>We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  PDFs work well when reading content in book format or when reading scientific-->
+<!--                                research which is often stored as PDF.</p>-->
+
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-3">-->
+
+<!--                            <i class="fab fa-html5 fa-4x"></i>-->
+
+
+<!--                        </div>-->
+<!--                        <div class="col-9">-->
+<!--                            <h3><strong>Captured Web Pages</strong></h3>-->
+<!--                            <p>-->
+<!--                                Download HTML content and save them as offline documents which can-->
+<!--                                be annotated.  Captured pages are <b>rendered for greater-->
+<!--                                readability</b> using CSS browser emulation.-->
+<!--                            </p>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-3">-->
+<!--                            <i class="fas fa-bookmark fa-4x"></i>-->
+<!--                        </div>-->
+<!--                        <div class="col-9">-->
+<!--                            <h3><strong>Pagemarks</strong></h3>-->
+<!--                            <p>Easily keep track of what you're reading and the progress of each-->
+<!--                                document.  Pagemarks enable a form of <b>non-linear reading</b> named <a href="/incremental-reading.html">incremental reading</a> and the ability to-->
+<!--                                suspend and resume individual documents for later consumption.</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </section>-->
+
+
+    <script>
+        const url = new URL(document.location.href);
+        const file = url.searchParams.get('file');
+
+        if (file && file !== '') {
+            // trigger the download now
+            document.location.href = file;
+        }
+    </script>
+
+</div>
+
