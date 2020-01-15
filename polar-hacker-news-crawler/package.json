@@ -1,0 +1,27 @@
+{
+  "name": "polar-hacker-neww-crawler",
+  "version": "1.90.2",
+  "description": "Provides support for calling our backend REST APIs in the polar cloud.",
+  "main": "index.js",
+  "scripts": {
+    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit",
+    "_test": "echo disabled",
+    "compile": "tsc",
+    "dist": "echo noop"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "polar-test": "^1.90.2",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "polar-shared": "^1.90.2"
+  }
+}
