@@ -3,11 +3,22 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 export interface HackerNewsContent {
 
+    readonly title: string;
+
+    readonly link: string;
+
+    readonly score: number;
+
+    readonly commentURL: string;
+
 }
 
 export class HackerNewsContents {
 
-    public static parse(content: string) {
+    public static parse(content: string): ReadonlyArray<HackerNewsContent> {
+
+        const result: HackerNewsContent[] = [];
+
         const jsdom = new JSDOM(content);
         const doc = jsdom.window.document;
 
@@ -21,7 +32,7 @@ export class HackerNewsContents {
             const anchor = linkRow.querySelector(".title a");
 
             const link = anchor!.getAttribute('href')!;
-            const title = anchor!.textContent;
+            const title = anchor!.textContent!;
 
             if (! link.startsWith("http")) {
                 continue;
@@ -67,11 +78,19 @@ export class HackerNewsContents {
 
             const commentURL = computeCommentURL();
 
-            console.log(`${title} - ${link}: ${score} - ${commentURL}`);
+            if (! commentURL) {
+                continue;
+            }
+
+            // console.log(`${title} - ${link}: ${score} - ${commentURL}`);
+
+            result.push({
+                title, link, score, commentURL
+            });
 
         }
 
-        console.log(rows.length);
+        return result;
 
     }
 
