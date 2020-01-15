@@ -7,6 +7,18 @@ export class Wayback {
 
         // http://archive.org/wayback/available?url=example.com&timestamp=20060101
 
+
+
+    }
+
+    private static computeAPI(url: string, timestamp: string) {
+
+        const params = {
+            url: encodeURIComponent(url),
+            timestamp: encodeURIComponent(timestamp)
+        };
+
+        return `http://archive.org/wayback/available?url=${params.url}&timestamp=${params.timestamp}`;
     }
 
 }

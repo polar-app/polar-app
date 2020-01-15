@@ -1,8 +1,5 @@
 import {assert} from 'chai';
 import {ArchiveTimestamps} from "./ArchiveTimestamps";
-import {getSourceFile} from "tslint";
-import {assertJSON} from "polar-test/src/test/Assertions";
-import {Arrays} from "polar-shared/src/util/Arrays";
 
 describe('ArchiveTimestamps', function() {
 
@@ -18,15 +15,10 @@ describe('ArchiveTimestamps', function() {
 
         assert.equal(timestamps[364].yymmdd, '20191231');
 
-        //
         // assertJSON(Arrays.head(timestamps, 30), [
-        //
-        // ])
 
         console.log(timestamps);
 
-
     });
-
 
 });
