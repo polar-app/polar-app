@@ -2,6 +2,7 @@ import {ArchiveTimestamps} from "./ArchiveTimestamps";
 import {Wayback} from "./Wayback";
 import {CacheFetches} from "./CacheFetches";
 import {HackerNewsContent, HackerNewsContents} from "./HackerNewsContents";
+import {ArchiveLinks} from "./ArchiveLinks";
 
 // TODO: pages 1-5 ... do every hour of the day???
 
@@ -15,7 +16,10 @@ class PDFIndex {
         for (const hackerNewsContent of hackerNewsContents) {
             if (hackerNewsContent.link.endsWith(".pdf")) {
                 console.log("HIT: ", hackerNewsContent);
-                this.data[hackerNewsContent.link] = hackerNewsContent;
+
+                const link = ArchiveLinks.source(hackerNewsContent.link);
+
+                this.data[link] = {...hackerNewsContent, link};
 
             }
         }
@@ -34,7 +38,7 @@ export class Crawler {
 
         const timestamp = "2019-01-01T00:00:00Z";
         // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
-        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 180);
+        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
 
         const pdfIndex = new PDFIndex();
 
