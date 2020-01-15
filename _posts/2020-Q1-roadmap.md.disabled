@@ -1,18 +1,60 @@
 
 hidden: true
 ---
-A new year is upon is and I wanted to follow up with a new roadmap of where the project is headed.
 
+A new year is upon is and I wanted to publish a roadmap of where we're going
+with Polar in Q1 2020 as well as some small changes in the project.
 
 # Expanding the Team
 
+First, the most interesting news is that we've expanded the team and I wanted to introduce Jonathan Graeupner.
 
+Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
+learning process.  Jonathan's focus is going to be on growth and product and helping us to really understand our
+user base and expand the user base.
 
-## Jonathan joining as a co-founder
-# tablet + phones
-## Fully Working
-## Android App
-# stability
+To an outsider, focused on the tech aspects of Polar, it might seem more beneficial to hire a React engineer or
+someone focused on UI and UX.  However, by far THE most important thing a product needs to do is resonate with users
+and of course grow (revenue, number of users, etc).
+
+I've been laser focused on first, confirming that you guys would actually benefit from using a product like Polar, and
+then trying to improve usability and market fit.
+
+This is one of the reasons I've been so aggressive about sending off surveys, asking for feedback directly inside the
+app, etc.
+
+What's the use of building something faster if you're just building something no one wants!
+
+Having Jonathan come in and focus on this basically allows me to focus more on building the product and scaling the
+team.
+
+# Tablets, phones, and handheld devices
+
+We're working on implementing support for both tablet and phones including improving our mobile usability.
+
+Right now we've been able to implement about 95% of the annotation support on handheld devices and about 80% of the
+core reading functionality.
+
+The goal is to have both iOS and Android apps that you can install directly from the app store.
+
+Initially, these are going to be usable via webapps (just in your mobile browser) but we're going to port them directly
+to the app stores directly.
+
+Android will come first and then 30-90 days later we will have iOS.  Unfortunately, shipping an app in the Apple App
+Store is rather difficult and they require us to jump through a ton of hoops that aren't really required in the
+Google Play Store.
+
+# Stability
+
+This has been a huge focus of mine and I'm trying to allocate 20% of my time to just fixing basic usability bugs that
+pop up from time to time.
+
+Stability is insanely important.  Polar users are really passionate about the project but it's frustating when you
+adopt it into your workflow and small things break from time to time.
+
+To that end we're revamping our testing and continuous integration system to test in more scenarios including bringing
+on board full webapp testing, platform specific tests including Windows, Linux, and MacOS.
+
 ## Improved Offline Reading
 
 ## Releases

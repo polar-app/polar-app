@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
 <meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
-<link rel="canonical" href="https://getpolarized.io/" />
-<meta property="og:url" content="https://getpolarized.io/" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
 <meta property="og:image" content="https://getpolarized.io/assets/logo/icon.png" />
 <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 <script type="application/ld+json">
-{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"WebSite","headline":"POLAR - Easily manage your PDFs, web content, and notes.","sameAs":["https://github.com/burtonator/polar-bookshelf","https://twitter.com/getpolarized"],"url":"https://getpolarized.io/","name":"getpolarized","author":{"@type":"Person","name":"Kevin Burton"},"image":"https://getpolarized.io/assets/logo/icon.png","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"},"name":"Kevin Burton"},"@context":"http://schema.org"}</script>
+{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"WebSite","headline":"POLAR - Easily manage your PDFs, web content, and notes.","sameAs":["https://github.com/burtonator/polar-bookshelf","https://twitter.com/getpolarized"],"url":"http://localhost:4000/","name":"getpolarized","author":{"@type":"Person","name":"Kevin Burton"},"image":"https://getpolarized.io/assets/logo/icon.png","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"},"name":"Kevin Burton"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -98,6 +98,10 @@
             max-width: 1200px;
         }
 
+    }
+
+    .img-screenshot {
+        max-width: 800px;
     }
 
 </style>
@@ -309,7 +313,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Main Polar PDF document showing an deep learning book" src="./assets/screenshots/cnn5.webp" class="img-fluid img-shadow" style="max-width: 100%; min-width: 350px;">
+    <img alt="Main Polar PDF document showing an deep learning book" src="./assets/screenshots/cnn5.webp" class="img-fluid img-shadow img-screenshot" style="max-width: 100%; min-width: 350px;">
 
 </picture>
 </div>
@@ -537,15 +541,16 @@
                     </p>
                 </div>
 
-                <div class="img-shadow-wrapper pb-5">
+                <div class="img-shadow-wrapper pb-5 text-center">
 
-                    <div class="" style=""><picture>
+                    <div class="ml-auto mr-auto"
+                         style=""><picture>
     <source srcset=".//assets/screenshots/2019-11-document-view.webp" type="image/webp">
     <source srcset=".//assets/screenshots/2019-11-document-view.png" type="image/png">
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Polar Document Repository for all your PDFs and eBooks" src=".//assets/screenshots/2019-11-document-view.png" class="img-fluid img-shadow" style="">
+    <img alt="Polar Document Repository for all your PDFs and eBooks" src=".//assets/screenshots/2019-11-document-view.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
@@ -582,7 +587,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Polar Annotation Viewer" src="./assets/screenshots/2019-11-annotation-view.png" class="img-fluid img-shadow" style="">
+    <img alt="Polar Annotation Viewer" src="./assets/screenshots/2019-11-annotation-view.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
@@ -622,7 +627,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Document Repository filtering by tag" src="./assets/screenshots/tag-filters-2019-04.png" class="img-fluid img-shadow" style="">
+    <img alt="Document Repository filtering by tag" src="./assets/screenshots/tag-filters-2019-04.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 <!--<figcaption class="m-3 muted">Filter documents by tag</figcaption>-->
@@ -662,7 +667,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Polar Reading Progress" src="./assets/screenshots/reading-progress.png" class="img-fluid img-shadow" style="">
+    <img alt="Polar Reading Progress" src="./assets/screenshots/reading-progress.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
@@ -714,7 +719,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Polar supports all platforms including MacOS, Windows, Linux, and Firefox." src="/assets/images/platforms.png" class="mt-4 img-fluid" style="">
+    <img alt="Polar supports all platforms including MacOS, Windows, Linux, and Firefox." src="/assets/images/platforms.png" class="mt-4 img-fluid img-screenshot" style="">
 
 </picture>
 </div>
@@ -757,7 +762,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Polar supports text annotations" src="./assets/screenshots/highlighting-zoomed.png" class="img-fluid img-shadow" style="">
+    <img alt="Polar supports text annotations" src="./assets/screenshots/highlighting-zoomed.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
@@ -892,7 +897,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Captured Content" src="./assets/screenshots/capture-browser-narrow.png" class="img-fluid img-shadow" style="">
+    <img alt="Captured Content" src="./assets/screenshots/capture-browser-narrow.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
@@ -938,7 +943,7 @@
 
     <!--TODO: automatically include width and height here-->
 
-    <img alt="Annotation Sidebar" src="./assets/screenshots/annotation-sidebar-zoomed.png" class="img-fluid img-shadow" style="">
+    <img alt="Annotation Sidebar" src="./assets/screenshots/annotation-sidebar-zoomed.png" class="img-fluid img-shadow img-screenshot" style="">
 
 </picture>
 </div>
