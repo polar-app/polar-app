@@ -6,10 +6,10 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 
 export class AddContentButtonOverlays {
 
-    public static async create(onClick?: () => void): Promise<InjectedComponent> {
+    public static async create(onAdd?: () => void): Promise<InjectedComponent> {
 
         const id = 'add-content-button-overlay-parent';
-        return ReactInjector.inject(<AddContentButtonOverlay onClick={onClick || NULL_FUNCTION}/>, id);
+        return ReactInjector.inject(<AddContentButtonOverlay onAdd={onAdd || NULL_FUNCTION}/>, id);
 
     }
 
