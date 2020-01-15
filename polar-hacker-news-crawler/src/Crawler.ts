@@ -34,24 +34,38 @@ export class Crawler {
 
         const timestamp = "2019-01-01T00:00:00Z";
         // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
-        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 90);
+        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 180);
 
         const pdfIndex = new PDFIndex();
 
         for (const timestamp of timestamps) {
             console.log("timestamp: " + timestamp);
-            const waybackResponse = await Wayback.listArchives('https://news.ycombinator.com/', timestamp.yymmdd);
 
-            const cacheURL = waybackResponse.archived_snapshots.closest.url;
+            const links = [
+                'https://news.ycombinator.com/',
+                'https://news.ycombinator.com/news?p=2'
+            ];
 
-            console.log("cacheURL: " + cacheURL);
-            const content = await CacheFetches.fetch(cacheURL);
+            for (const link of links) {
 
-            pdfIndex.doIndex(content);
+                const waybackResponse = await Wayback.listArchives(link, timestamp.yymmdd);
+
+                const cacheURL = waybackResponse.archived_snapshots.closest.url;
+
+                console.log("cacheURL: " + cacheURL);
+                const content = await CacheFetches.fetch(cacheURL);
+
+                pdfIndex.doIndex(content);
+
+            }
 
         }
 
-        console.log(pdfIndex.dump());
+        const dumped = pdfIndex.dump();
+
+        console.log("Found N links: " + dumped.length);
+
+        console.log(dumped);
 
     }
 
