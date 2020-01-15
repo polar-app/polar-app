@@ -2,8 +2,14 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
 export interface ArchiveTimestamp {
-    readonly yymmdd: string;
+
+    /**
+     * The query timestamp used to send to wayback.
+     */
+    readonly query: string;
+
     readonly iso: string;
+
 }
 
 export class ArchiveTimestamps {
@@ -30,10 +36,22 @@ export class ArchiveTimestamps {
             const month = padd(d.getUTCMonth() + 1);
             const day = padd(d.getUTCDate());
 
-            const yymmdd = `${year}${month}${day}`;
+            const computeQuery = () => {
+
+                if (d.getUTCHours() > 0) {
+                    const hour = padd(d.getUTCHours());
+                    return `${year}${month}${day}${hour}`;
+                }
+
+                return `${year}${month}${day}`;
+
+            };
+
+            const query = computeQuery();
+
             const iso = d.toISOString();
 
-            return {yymmdd, iso};
+            return {query, iso};
 
         }
 

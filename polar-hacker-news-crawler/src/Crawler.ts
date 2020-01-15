@@ -38,7 +38,7 @@ export class Crawler {
 
         const timestamp = "2019-01-01T00:00:00Z";
         // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
-        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
+        const timestamps = ArchiveTimestamps.create(timestamp, 12 * 60 * 60 * 1000, (365 * 2));
 
         const pdfIndex = new PDFIndex();
 
@@ -52,7 +52,11 @@ export class Crawler {
 
             for (const link of links) {
 
-                const waybackResponse = await Wayback.listArchives(link, timestamp.yymmdd);
+                const waybackResponse = await Wayback.listArchives(link, timestamp.query);
+
+                if (! waybackResponse.archived_snapshots.closest) {
+                    continue;
+                }
 
                 const cacheURL = waybackResponse.archived_snapshots.closest.url;
 
