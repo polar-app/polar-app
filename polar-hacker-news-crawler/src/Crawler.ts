@@ -1,19 +1,29 @@
 import {ArchiveTimestamps} from "./ArchiveTimestamps";
 import {Wayback} from "./Wayback";
 import {CacheFetches} from "./CacheFetches";
-import {HackerNewsContents} from "./HackerNewsContents";
+import {HackerNewsContent, HackerNewsContents} from "./HackerNewsContents";
+
+// TODO: pages 1-5 ... do every hour of the day???
 
 class PDFIndex {
+
+    private data: {[key: string]: HackerNewsContent} = {};
 
     public doIndex(content: string) {
         const hackerNewsContents = HackerNewsContents.parse(content);
 
-        for(const hackerNewsContent of hackerNewsContents) {
+        for (const hackerNewsContent of hackerNewsContents) {
             if (hackerNewsContent.link.endsWith(".pdf")) {
                 console.log("HIT: ", hackerNewsContent);
+                this.data[hackerNewsContent.link] = hackerNewsContent;
+
             }
         }
 
+    }
+
+    public dump() {
+        return Object.values(this.data).sort((a, b) => b.score - a.score);
     }
 
 }
@@ -24,7 +34,7 @@ export class Crawler {
 
         const timestamp = "2019-01-01T00:00:00Z";
         // const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 365);
-        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 30);
+        const timestamps = ArchiveTimestamps.create(timestamp, 24 * 60 * 60 * 1000, 90);
 
         const pdfIndex = new PDFIndex();
 
@@ -40,6 +50,8 @@ export class Crawler {
             pdfIndex.doIndex(content);
 
         }
+
+        console.log(pdfIndex.dump());
 
     }
 
