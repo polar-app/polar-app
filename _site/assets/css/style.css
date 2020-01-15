@@ -114,13 +114,15 @@ h4 {
 
 .img-shadow {
 
-    -webkit-box-shadow:
-            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
-            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
-    box-shadow:
-            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
-            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+    /*-webkit-box-shadow:*/
+    /*        2px 4px 20px 0px rgba(0, 0, 0, 0.2),*/
+    /*        4px 6px 50px 8px rgba(0, 0, 0, 0.2);*/
+    /*box-shadow:*/
+    /*        2px 4px 20px 0px rgba(0, 0, 0, 0.2),*/
+    /*        4px 6px 50px 8px rgba(0, 0, 0, 0.2);*/
 
+    -webkit-box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
 .tilt-right {
