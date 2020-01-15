@@ -29,6 +29,10 @@ export class HackerNewsContents {
             const linkRow = rows[offset];
             const metadataRow = rows[offset + 1];
 
+            if (! linkRow || ! metadataRow) {
+                continue;
+            }
+
             const anchor = linkRow.querySelector(".title a");
 
             const link = anchor!.getAttribute('href')!;
