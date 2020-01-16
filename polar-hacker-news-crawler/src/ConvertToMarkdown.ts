@@ -12,7 +12,7 @@ export class ConvertToMarkdown {
         let idx = 1;
         for (const post of posts) {
 
-            console.log(`# ${idx}. [${post.title}](https://app.getpolarized.io/add/${post.link})`);
+            console.log(`## ${idx}. [${post.title}](https://app.getpolarized.io/add/${post.link})`);
             console.log(`score: ${post.score} [ ${post.nrComments} comments](${post.commentsURL})`);
 
             idx++;
