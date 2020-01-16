@@ -1,66 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-16T11:36:31-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Joining the Team</title><link href="http://localhost:4000/2020/01/16/joining-the-team.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/16/joining-the-team</id><content type="html" xml:base="http://localhost:4000/2020/01/16/joining-the-team.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-16T11:39:15-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;joining-the-team&quot;&gt;Joining the Team&lt;/h1&gt;
+&lt;p&gt;A new year is upon is and I wanted to publish a roadmap of where we’re going with Polar in Q1 2020 as well as some small
+changes in the project.&lt;/p&gt;
 
-&lt;p&gt;I wanted to take a few moments and introduce myself.  My name is Jonathan Graeupner and I just joined the team to help
-Kevin scale Polar and I’m mostly focused on product and growth.&lt;/p&gt;
+&lt;h1 id=&quot;expanding-the-team&quot;&gt;Expanding the Team&lt;/h1&gt;
 
-&lt;p&gt;Originally, I’m from Germany - Garmisch- Partenkirchen. Lovely place to grow up. After my BSc in Munich, I was fortunate
-to get admitted to Yale to pursue my MSc and Phd in chemistry there. Homogeneous water oxidation and hydrogenation with
-Ir(III) - if you want to know exactly… My PhD experience is a huge part why I immediately fell in love with Polar.
-Subsequently, I was lucky enough to get an offer from BCG’s NYC office where I worked for over four years Startups have
-always fascinated me and so last summer, I decided to take the plunge and pursue my passion full-time.&lt;/p&gt;
+&lt;p&gt;First, the most interesting news is that we’ve expanded the team and &lt;a href=&quot;https://getpolarized.io/2020/01/16/joining-the-team.html&quot;&gt;I wanted to introduce Jonathan Graeupner&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;polar--plan-ahead&quot;&gt;Polar &amp;amp; plan ahead&lt;/h2&gt;
+&lt;p&gt;Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
+learning process.  Jonathan’s focus is going to be on growth and product and helping us to really understand our
+user base and expand the user base.&lt;/p&gt;
 
-&lt;p&gt;Guess how Kevin and I met? Reddi… actually. Fortunately, we were both located in SF and when we met, we immediately had
-a shared passion for EdTech and building something that can truly change the world. After a few meetings and hikes in
-the Bay Area, it was clear that pursuing this together was the right choice.&lt;/p&gt;
+&lt;p&gt;To an outsider, focused on the tech aspects of Polar, it might seem more beneficial to hire a React engineer or
+someone focused on UI and UX.  However, by far THE most important thing a product needs to do is resonate with users
+and of course grow (revenue, number of users, etc).&lt;/p&gt;
 
-&lt;p&gt;So toward the 	end of 2019, I joined forces with Kevin to build out Polar. Obviously, Kevin is the brain behind the
-code. Given my background in academia and management consulting, my focus moving forward will be more around engaging
-with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
-strategy, and some of the ‘boring’ corporate stuff.&lt;/p&gt;
+&lt;p&gt;I’ve been laser focused on first, confirming that you guys would actually benefit from using a product like Polar, and
+then trying to improve usability and market fit.&lt;/p&gt;
 
-&lt;p&gt;We’ve shared with you our Q1/Q2 roadmap here. As with everything, we welcome feedback and input about our plans - rest
-assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
-about getting the Polar more stable, further simplifying existing features, and streamlining user flows.&lt;/p&gt;
+&lt;p&gt;This is one of the reasons I’ve been so aggressive about sending off surveys, asking for feedback directly inside the
+app, etc.&lt;/p&gt;
 
-&lt;p&gt;Longer-term, we are looking at implementing additional features to really make this the platform of choice for anyone
-serious about their education. This will include opening up Polar to a vast array of integrations, and adding features
-like reference management, note taking, improving spaced repetition / flashcards, and more. We truly believe that
-incremental reading is a deeply transformative tool of thought and want to maximize its utility in Polar.&lt;/p&gt;
+&lt;p&gt;What’s the use of building something faster if you’re just building something no one wants!&lt;/p&gt;
 
-&lt;h2 id=&quot;further-building-the-community--how-you-can-be-involved&quot;&gt;Further building the community &amp;amp; how you can be involved&lt;/h2&gt;
+&lt;p&gt;Having Jonathan come in and focus on this basically allows me to focus more on building the product and scaling the
+team.&lt;/p&gt;
 
-&lt;p&gt;Since a big reason for me to join Polar was the community, I do want to provide a few thoughts on how we can work
-together in the future:&lt;/p&gt;
+&lt;h1 id=&quot;tablets-phones-and-handheld-devices&quot;&gt;Tablets, phones, and handheld devices&lt;/h1&gt;
+
+&lt;p&gt;We’re working on implementing support for both tablet and phones including improving our mobile usability.&lt;/p&gt;
+
+&lt;p&gt;Right now we’ve been able to implement about 95% of the annotation support on handheld devices and about 80% of the
+core reading functionality.&lt;/p&gt;
+
+&lt;p&gt;The goal is to have both iOS and Android apps that you can install directly from the app store.&lt;/p&gt;
+
+&lt;p&gt;Initially, these are going to be usable via webapps (just in your mobile browser) but we’re going to port them directly
+to the app stores directly.&lt;/p&gt;
+
+&lt;p&gt;Android will come first and then 30-90 days later we will have iOS.  Unfortunately, shipping an app in the Apple App
+Store is rather difficult and they require us to jump through a ton of hoops that aren’t really required in the
+Google Play Store.&lt;/p&gt;
+
+&lt;h1 id=&quot;stability&quot;&gt;Stability&lt;/h1&gt;
+
+&lt;p&gt;This has been a huge focus of mine and I’m trying to allocate 20% of my time to just fixing basic usability bugs that
+pop up from time to time.&lt;/p&gt;
+
+&lt;p&gt;Stability is insanely important.  Polar users are really passionate about the project but it’s frustrating when you
+adopt it into your workflow and small things break from time to time.&lt;/p&gt;
+
+&lt;p&gt;To that end we’re revamping our testing and continuous integration system to test more scenarios including bringing
+on board full webapp testing, platform specific tests including Windows, Linux, and MacOS.&lt;/p&gt;
+
+&lt;h2 id=&quot;improved-offline-reading&quot;&gt;Improved Offline Reading&lt;/h2&gt;
+
+&lt;p&gt;This is another area that will benefit from our improved testing framework.  We want to test offline and Chrome supports
+simulating both slow networks and being completely offline.&lt;/p&gt;
+
+&lt;p&gt;We’re going to incorporate this into our testing framework to help prevent regressions where we accidentally break
+offline functionality.&lt;/p&gt;
+
+&lt;h2 id=&quot;releases&quot;&gt;Releases&lt;/h2&gt;
+
+&lt;p&gt;Now that the holidays are over we want to bump our our release cadence and push new versions every 1-2 weeks.&lt;/p&gt;
+
+&lt;p&gt;Right now we update the webapp 2-3x per week but try to only release 1x per week max four our Desktop app.  We don’t
+want constant updates to interrupt your workflow.&lt;/p&gt;
+
+&lt;h1 id=&quot;dark-mode&quot;&gt;Dark Mode&lt;/h1&gt;
+
+&lt;p&gt;This has been a major background task and we’re making progress on implementing dark mode.  The major blockers
+right now are mostly around PDFJS not properly supporting changing text colors but we have an important fix in
+progress.&lt;/p&gt;
+
+&lt;h1 id=&quot;citation-management&quot;&gt;Citation Management&lt;/h1&gt;
+
+&lt;p&gt;This is another big feature set we’re working on.  Improved citation management should mean Polar users can partially
+manage bibliography as well as extended metadata for the documents they import.&lt;/p&gt;
+
+&lt;p&gt;This includes features like DOI lookup, searching for PDFs by title, DOI, and storing the extended metadata within Polar
+directly.&lt;/p&gt;
+
+&lt;h1 id=&quot;key-bindings&quot;&gt;Key Bindings&lt;/h1&gt;
+
+&lt;p&gt;This is right up there with dark mode but supporting extended key bindings is important for desktop and Linux users.&lt;/p&gt;
+
+&lt;p&gt;We’re working on adopting a new react library to make key bindings much easier.&lt;/p&gt;
+
+&lt;h1 id=&quot;automatic-pagemarks&quot;&gt;Automatic Pagemarks&lt;/h1&gt;
+
+&lt;p&gt;New users to Polar seem to get confused about the fact that pagemarks (right now) are manual.&lt;/p&gt;
+
+&lt;p&gt;We’re going to add a new “auto pagemark” feature that creates pagemarks automatically while you scroll.&lt;/p&gt;
+
+&lt;h1 id=&quot;two-column-pagemarks&quot;&gt;Two Column Pagemarks&lt;/h1&gt;
+
+&lt;p&gt;Somewhat related to auto pagemarks but another main issue is supporting pagemarks while there are multiple columns.&lt;/p&gt;
+
+&lt;p&gt;This is going to be resolved as well with a new ‘two column’ mode to allow the user to tell us that the PDF they’re
+working with is two columns to allow smarter pagemark placement.&lt;/p&gt;
+
+&lt;h1 id=&quot;improved-anki-support&quot;&gt;Improved Anki support&lt;/h1&gt;
+
+&lt;p&gt;Big one!  We’re definitely going to be improving our Anki support.  Some important features that are queued up include:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;We want to understand your needs better to build an even better platform - I will be reaching out to a few of you
-sporadically and would really appreciate your time!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We are working on a referral incentive and an ambassador program and are actively looking for student ambassadors.
-Especially since we received the feedback that Polar premium can be a big investment for students, reach out to me!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Interested in writing a blog post? Reach out to me. We have a long list of topics in the pipeline (including Wim Hof
-breathing, meditation, reviews of various study techniques,…) but are always open to guest blog posts. Happy to
-cross-link your blog too if you have one.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are you in the Bay Area? Happy to connect in person as well. I’m very interested in not only knowing our users online
-but in real as well.&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Do a better job at preventing cards that are invalid in Anki and yield sync errors&lt;/li&gt;
+  &lt;li&gt;Add new models so that we can include Polar-specific metadata to Anki including context, book metadata, images
+of the area highlights, the original text highlight that it was attached to, etc.&lt;/li&gt;
+  &lt;li&gt;Fixing small bugs like excess tags within Anki.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Final point: we are in the very early stages of this exciting endeavor and are fully aware that not everything will work
-out the way we want it from the get-go. Please be patient as we are only a two-person team working around the clock
-these days! I know we’re doing everything we can on our end to make this the best study and reading platform out there.&lt;/p&gt;
+&lt;h1 id=&quot;feedback&quot;&gt;Feedback&lt;/h1&gt;
 
-&lt;p&gt;Jonathan&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Joining the Team</title><link href="http://localhost:4000/2020/01/16/joining-the-team-2.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/16/joining-the-team-2</id><content type="html" xml:base="http://localhost:4000/2020/01/16/joining-the-team-2.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we’re very good
+at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Joining the Team</title><link href="http://localhost:4000/2020/01/16/joining-the-team.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/16/joining-the-team</id><content type="html" xml:base="http://localhost:4000/2020/01/16/joining-the-team.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;joining-the-team&quot;&gt;Joining the Team&lt;/h1&gt;
 
@@ -84,7 +139,7 @@ code. Given my background in academia and management consulting, my focus moving
 with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
 strategy, and some of the ‘boring’ corporate stuff.&lt;/p&gt;
 
-&lt;p&gt;We’ve shared with you our Q1/Q2 roadmap here. As with everything, we welcome feedback and input about our plans - rest
+&lt;p&gt;We’ve shared with you our &lt;a href=&quot;https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html&quot;&gt;Q1/Q2 roadmap here&lt;/a&gt;. As with everything, we welcome feedback and input about our plans - rest
 assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
 about getting the Polar more stable, further simplifying existing features, and streamlining user flows.&lt;/p&gt;
 

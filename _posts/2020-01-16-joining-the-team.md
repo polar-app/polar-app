@@ -30,7 +30,7 @@ code. Given my background in academia and management consulting, my focus moving
 with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
 strategy, and some of the ‘boring’ corporate stuff.
 
-We’ve shared with you our Q1/Q2 roadmap here. As with everything, we welcome feedback and input about our plans - rest
+We’ve shared with you our [Q1/Q2 roadmap here](https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html). As with everything, we welcome feedback and input about our plans - rest
 assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
 about getting the Polar more stable, further simplifying existing features, and streamlining user flows.
 

@@ -13,7 +13,7 @@ changes in the project.
 
 # Expanding the Team
 
-First, the most interesting news is that we've expanded the team and I wanted to introduce Jonathan Graeupner.
+First, the most interesting news is that we've expanded the team and [I wanted to introduce Jonathan Graeupner](https://getpolarized.io/2020/01/16/joining-the-team.html).
 
 Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
 learning process.  Jonathan's focus is going to be on growth and product and helping us to really understand our
