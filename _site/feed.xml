@@ -1,4 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-16T10:09:34-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-15T08:00:00-08:00</published><updated>2020-01-15T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-16T11:11:29-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="http://localhost:4000/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A new year is upon is and I wanted to publish a roadmap of where we’re going with Polar in Q1 2020 as well as some small
+changes in the project.&lt;/p&gt;
+
+&lt;h1 id=&quot;expanding-the-team&quot;&gt;Expanding the Team&lt;/h1&gt;
+
+&lt;p&gt;First, the most interesting news is that we’ve expanded the team and I wanted to introduce Jonathan Graeupner.&lt;/p&gt;
+
+&lt;p&gt;Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
+learning process.  Jonathan’s focus is going to be on growth and product and helping us to really understand our
+user base and expand the user base.&lt;/p&gt;
+
+&lt;p&gt;To an outsider, focused on the tech aspects of Polar, it might seem more beneficial to hire a React engineer or
+someone focused on UI and UX.  However, by far THE most important thing a product needs to do is resonate with users
+and of course grow (revenue, number of users, etc).&lt;/p&gt;
+
+&lt;p&gt;I’ve been laser focused on first, confirming that you guys would actually benefit from using a product like Polar, and
+then trying to improve usability and market fit.&lt;/p&gt;
+
+&lt;p&gt;This is one of the reasons I’ve been so aggressive about sending off surveys, asking for feedback directly inside the
+app, etc.&lt;/p&gt;
+
+&lt;p&gt;What’s the use of building something faster if you’re just building something no one wants!&lt;/p&gt;
+
+&lt;p&gt;Having Jonathan come in and focus on this basically allows me to focus more on building the product and scaling the
+team.&lt;/p&gt;
+
+&lt;h1 id=&quot;tablets-phones-and-handheld-devices&quot;&gt;Tablets, phones, and handheld devices&lt;/h1&gt;
+
+&lt;p&gt;We’re working on implementing support for both tablet and phones including improving our mobile usability.&lt;/p&gt;
+
+&lt;p&gt;Right now we’ve been able to implement about 95% of the annotation support on handheld devices and about 80% of the
+core reading functionality.&lt;/p&gt;
+
+&lt;p&gt;The goal is to have both iOS and Android apps that you can install directly from the app store.&lt;/p&gt;
+
+&lt;p&gt;Initially, these are going to be usable via webapps (just in your mobile browser) but we’re going to port them directly
+to the app stores directly.&lt;/p&gt;
+
+&lt;p&gt;Android will come first and then 30-90 days later we will have iOS.  Unfortunately, shipping an app in the Apple App
+Store is rather difficult and they require us to jump through a ton of hoops that aren’t really required in the
+Google Play Store.&lt;/p&gt;
+
+&lt;h1 id=&quot;stability&quot;&gt;Stability&lt;/h1&gt;
+
+&lt;p&gt;This has been a huge focus of mine and I’m trying to allocate 20% of my time to just fixing basic usability bugs that
+pop up from time to time.&lt;/p&gt;
+
+&lt;p&gt;Stability is insanely important.  Polar users are really passionate about the project but it’s frustrating when you
+adopt it into your workflow and small things break from time to time.&lt;/p&gt;
+
+&lt;p&gt;To that end we’re revamping our testing and continuous integration system to test more scenarios including bringing
+on board full webapp testing, platform specific tests including Windows, Linux, and MacOS.&lt;/p&gt;
+
+&lt;h2 id=&quot;improved-offline-reading&quot;&gt;Improved Offline Reading&lt;/h2&gt;
+
+&lt;p&gt;This is another area that will benefit from our improved testing framework.  We want to test offline and Chrome supports
+simulating both slow networks and being completely offline.&lt;/p&gt;
+
+&lt;p&gt;We’re going to incorporate this into our testing framework to help prevent regressions where we accidentally break
+offline functionality.&lt;/p&gt;
+
+&lt;h2 id=&quot;releases&quot;&gt;Releases&lt;/h2&gt;
+
+&lt;p&gt;Now that the holidays are over we want to bump our our release cadence and push new versions every 1-2 weeks.&lt;/p&gt;
+
+&lt;p&gt;Right now we update the webapp 2-3x per week but try to only release 1x per week max four our Desktop app.  We don’t
+want constant updates to interrupt your workflow.&lt;/p&gt;
+
+&lt;h1 id=&quot;dark-mode&quot;&gt;Dark Mode&lt;/h1&gt;
+
+&lt;p&gt;This has been a major background task and we’re making progress on implementing dark mode.  The major blockers
+right now are mostly around PDFJS not properly supporting changing text colors but we have an important fix in
+progress.&lt;/p&gt;
+
+&lt;h1 id=&quot;citation-management&quot;&gt;Citation Management&lt;/h1&gt;
+
+&lt;p&gt;This is another big feature set we’re working on.  Improved citation management should mean Polar users can partially
+manage bibliography as well as extended metadata for the documents they import.&lt;/p&gt;
+
+&lt;p&gt;This includes features like DOI lookup, searching for PDFs by title, DOI, and storing the extended metadata within Polar
+directly.&lt;/p&gt;
+
+&lt;h1 id=&quot;key-bindings&quot;&gt;Key Bindings&lt;/h1&gt;
+
+&lt;p&gt;This is right up there with dark mode but supporting extended key bindings is important for desktop and Linux users.&lt;/p&gt;
+
+&lt;p&gt;We’re working on adopting a new react library to make key bindings much easier.&lt;/p&gt;
+
+&lt;h1 id=&quot;automatic-pagemarks&quot;&gt;Automatic Pagemarks&lt;/h1&gt;
+
+&lt;p&gt;New users to Polar seem to get confused about the fact that pagemarks (right now) are manual.&lt;/p&gt;
+
+&lt;p&gt;We’re going to add a new “auto pagemark” feature that creates pagemarks automatically while you scroll.&lt;/p&gt;
+
+&lt;h1 id=&quot;two-column-pagemarks&quot;&gt;Two Column Pagemarks&lt;/h1&gt;
+
+&lt;p&gt;Somewhat related to auto pagemarks but another main issue is supporting pagemarks while there are multiple columns.&lt;/p&gt;
+
+&lt;p&gt;This is going to be resolved as well with a new ‘two column’ mode to allow the user to tell us that the PDF they’re
+working with is two columns to allow smarter pagemark placement.&lt;/p&gt;
+
+&lt;h1 id=&quot;improved-anki-support&quot;&gt;Improved Anki support&lt;/h1&gt;
+
+&lt;p&gt;Big one!  We’re definitely going to be improving our Anki support.  Some important features that are queued up include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Do a better job at preventing cards that are invalid in Anki and yield sync errors&lt;/li&gt;
+  &lt;li&gt;Add new models so that we can include Polar-specific metadata to Anki including context, book metadata, images
+of the area highlights, the original text highlight that it was attached to, etc.&lt;/li&gt;
+  &lt;li&gt;Fixing small bugs like excess tags within Anki.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;feedback&quot;&gt;Feedback&lt;/h1&gt;
+
+&lt;p&gt;Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we’re very good
+at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-15T08:00:00-08:00</published><updated>2020-01-15T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="http://localhost:4000/2020/01/15/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;over-500-top-pdfs-posted-to-hacker-news-in-2019&quot;&gt;Over 500 Top PDFs posted to Hacker News in 2019&lt;/h1&gt;
 
@@ -1198,7 +1315,22 @@ sure that users are only asked once per month at most.&lt;/li&gt;
   &lt;li&gt;Navigations now work on tablet and phone with routes&lt;/li&gt;
   &lt;li&gt;Reworked routes so that they’re cached + faster plus work with nav&lt;/li&gt;
   &lt;li&gt;Fixed bad bug with authentication and Google auth bringing up external URL window/prompts&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.90 is now available for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="http://localhost:4000/2020/01/01/Top-10-Memory-Tricks.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/01/Top-10-Memory-Tricks</id><content type="html" xml:base="http://localhost:4000/2020/01/01/Top-10-Memory-Tricks.html">&lt;ul&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.90 is now available for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="http://localhost:4000/2020/01/01/Roadmap-Q1-2020.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/01/Roadmap-Q1-2020</id><content type="html" xml:base="http://localhost:4000/2020/01/01/Roadmap-Q1-2020.html">&lt;ul&gt;
+  &lt;li&gt;Big announcement pending&lt;/li&gt;
+  &lt;li&gt;Keyboard bindings&lt;/li&gt;
+  &lt;li&gt;Android app&lt;/li&gt;
+  &lt;li&gt;Capture completely moved into the browser&lt;/li&gt;
+  &lt;li&gt;Annotation in the browser directly&lt;/li&gt;
+  &lt;li&gt;Dark mode&lt;/li&gt;
+  &lt;li&gt;Groups&lt;/li&gt;
+  &lt;li&gt;2.0 Release&lt;/li&gt;
+  &lt;li&gt;Full annotations on mobile…&lt;/li&gt;
+  &lt;li&gt;Citation management&lt;/li&gt;
+  &lt;li&gt;Add via DOI&lt;/li&gt;
+  &lt;li&gt;Extended metadata storage&lt;/li&gt;
+  &lt;li&gt;Expanding the team&lt;/li&gt;
+  &lt;li&gt;Improved builds&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Big announcement pending Keyboard bindings Android app Capture completely moved into the browser Annotation in the browser directly Dark mode Groups 2.0 Release Full annotations on mobile… Citation management Add via DOI Extended metadata storage Expanding the team Improved builds</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="http://localhost:4000/2020/01/01/Top-10-Memory-Tricks.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/01/Top-10-Memory-Tricks</id><content type="html" xml:base="http://localhost:4000/2020/01/01/Top-10-Memory-Tricks.html">&lt;ul&gt;
   &lt;li&gt;https://en.wikipedia.org/wiki/Method_of_loci&lt;/li&gt;
   &lt;li&gt;use mult8iple encoding stratgies (visual, auditiory, etc)&lt;/li&gt;
   &lt;li&gt;absurdity&lt;/li&gt;
@@ -1222,22 +1354,7 @@ https://www.academictips.org/memory/remlists.html
 https://www.academictips.org/memory/remdate.html
 https://www.academictips.org/memory/remtel.html
 https://www.academictips.org/memory/remnos.html&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="http://localhost:4000/2020/01/01/Roadmap-Q1-2020.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T08:00:00-08:00</published><updated>2020-01-01T08:00:00-08:00</updated><id>http://localhost:4000/2020/01/01/Roadmap-Q1-2020</id><content type="html" xml:base="http://localhost:4000/2020/01/01/Roadmap-Q1-2020.html">&lt;ul&gt;
-  &lt;li&gt;Big announcement pending&lt;/li&gt;
-  &lt;li&gt;Keyboard bindings&lt;/li&gt;
-  &lt;li&gt;Android app&lt;/li&gt;
-  &lt;li&gt;Capture completely moved into the browser&lt;/li&gt;
-  &lt;li&gt;Annotation in the browser directly&lt;/li&gt;
-  &lt;li&gt;Dark mode&lt;/li&gt;
-  &lt;li&gt;Groups&lt;/li&gt;
-  &lt;li&gt;2.0 Release&lt;/li&gt;
-  &lt;li&gt;Full annotations on mobile…&lt;/li&gt;
-  &lt;li&gt;Citation management&lt;/li&gt;
-  &lt;li&gt;Add via DOI&lt;/li&gt;
-  &lt;li&gt;Extended metadata storage&lt;/li&gt;
-  &lt;li&gt;Expanding the team&lt;/li&gt;
-  &lt;li&gt;Improved builds&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Big announcement pending Keyboard bindings Android app Capture completely moved into the browser Annotation in the browser directly Dark mode Groups 2.0 Release Full annotations on mobile… Citation management Add via DOI Extended metadata storage Expanding the team Improved builds</summary></entry><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T08:00:00-08:00</published><updated>2019-12-21T08:00:00-08:00</updated><id>http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T08:00:00-08:00</published><updated>2019-12-21T08:00:00-08:00</updated><id>http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="http://localhost:4000/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
 &lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/c5vfb1e.png&quot; /&gt;
 &lt;/div&gt;
 
@@ -1626,95 +1743,4 @@ in dark mode.&lt;/p&gt;
 
 &lt;p&gt;However, if I were building a new app from the ground up, I would make it dark-mode by default.&lt;/p&gt;
 
-&lt;p&gt;… so we’re going to eventually have a dark mode.  We have a working prototype but just need a bit more time.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.60 - Preparing for 2.0</title><link href="http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0.html" rel="alternate" type="text/html" title="Polar 1.60 - Preparing for 2.0" /><published>2019-11-20T08:00:00-08:00</published><updated>2019-11-20T08:00:00-08:00</updated><id>http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0</id><content type="html" xml:base="http://localhost:4000/2019/11/20/1-60-Preparing-for-2-0.html">&lt;p&gt;Another big release is out to help prepare us for 2.0.&lt;/p&gt;
-
-&lt;p&gt;Most of the changes here are small to moderate features and improving stability but there have also been a lot of library 
-updates too which were important.&lt;/p&gt;
-
-&lt;h2 id=&quot;prompting-for-premium-and-locked-features&quot;&gt;Prompting for Premium and Locked Features&lt;/h2&gt;
-
-&lt;p&gt;One of the big changes in this release is that we’re now requiring that users upgrade for features in premium 
-for which (in the past) we weren’t requiring an upgrade.&lt;/p&gt;
-
-&lt;p&gt;This might mean at this point you will need to upgrade to premium if you depend on one of these features.&lt;/p&gt;
-
-&lt;h2 id=&quot;features&quot;&gt;Features&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The sidebar no longer shows the color for the buttons unless you hover over them.  The colors 
-are also more muted to help not distract more when using the annotation sidebar.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Flashcards stats in the mobile app now work.  This way you can do a review and them immediately see the size of your
-queue and also the number of tasks completed.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Ability to revise the text of a text highlight.  This was requested by a number of users due to some annotations 
-having hyphens or errors in representation of mathematical formulas.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Big refactor of the context menu so that range selection and context menus work properly.&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;Multi-selection for deletes implemented.&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;The context menus now have icons&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Ability to remove items from folders via right click&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Bronze now officially required for reading stats and recommended tags&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Major refactor of how text selection works using the new modern text layer code in pdf.js which has 
-been a major complaint since 1.0.  Excited to finally have this fixed!&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;fixes&quot;&gt;Fixes&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed issue with Polar builds not working on MacOS Catalina.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Upgrade to latest electron-builder so that we can have MacOS Catalina&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed bug where sometimes exceptions were swallowed and not properly reported.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Updated Firebase to hopefully fix some bugs with latency and exceptions..&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed delete dialogs as they were using older code…&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Merged branch for image optimization.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed alignment of headers in the doc repo&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fixed bad bug with stats for spaced repetition queue not being computed accurately.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Improved performance of doc table when selecting items.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The document repository view is now much faster and context menus no longer have a ‘gap’
-which wouldn’t trigger the menu.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Now using larger buttons in the UI&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Show the front + back of cards when we ‘show answer’&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Another big release is out to help prepare us for 2.0.</summary></entry></feed>
+&lt;p&gt;… so we’re going to eventually have a dark mode.  We have a working prototype but just need a bit more time.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

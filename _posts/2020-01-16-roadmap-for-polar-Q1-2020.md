@@ -1,6 +1,12 @@
-
-hidden: true
 ---
+title: Roadmap for Polar in Q1 2020
+date: 2020-01-16T08:00:00.000-08:00
+layout: post
+description: Roadmap for Polar in Q1 2020.  Dark mode, keyboard bindings, and expanding the team.
+large_image: https://i.imgur.com/CQYO7T7.png
+---
+
+<img class="img-fluid" src="https://i.imgur.com/CQYO7T7.png">
 
 A new year is upon is and I wanted to publish a roadmap of where we're going with Polar in Q1 2020 as well as some small
 changes in the project.
