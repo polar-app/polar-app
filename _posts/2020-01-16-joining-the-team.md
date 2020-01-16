@@ -19,6 +19,12 @@ Ir(III) - if you want to know exactly... My PhD experience is a huge part why I 
 Subsequently, I was lucky enough to get an offer from BCG’s NYC office where I worked for over four years Startups have
 always fascinated me and so last summer, I decided to take the plunge and pursue my passion full-time.
 
+<img class="img-fluid" src="https://i.imgur.com/sONUWwd.png"/>
+
+<p class="text-center">
+<b>Jonathan and Kevin in at AWS Loft San Francisco, Jan 2020</b>
+</p>
+
 ## Polar & plan ahead
 
 Guess how Kevin and I met? Reddi... actually. Fortunately, we were both located in SF and when we met, we immediately had

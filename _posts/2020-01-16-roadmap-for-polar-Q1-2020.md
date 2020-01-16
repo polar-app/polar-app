@@ -15,6 +15,12 @@ changes in the project.
 
 First, the most interesting news is that we've expanded the team and [I wanted to introduce Jonathan Graeupner](https://getpolarized.io/2020/01/16/joining-the-team.html).
 
+<img class="img-fluid" src="https://i.imgur.com/sONUWwd.png"/>
+
+<p class="text-center">
+<b>Jonathan and Kevin in at AWS Loft San Francisco, Jan 2020</b>
+</p>
+
 Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
 learning process.  Jonathan's focus is going to be on growth and product and helping us to really understand our
 user base and expand the user base.
