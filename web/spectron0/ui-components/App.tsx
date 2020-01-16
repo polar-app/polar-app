@@ -54,6 +54,8 @@ import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
 import {AnimatedRoutes} from "./AnimatedRoutes";
 import {Toaster} from "../../js/ui/toaster/Toaster";
+import {FakePagemark} from "./FakePagemark";
+import {AddContentButtonOverlay, devices} from "../../js/apps/viewer/AddContentButtonOverlay";
 
 const styles = {
     swatch: {
@@ -336,13 +338,17 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         // ReviewerTasks.createFlashcardTasks()
 
-        Toaster.info("hello world");
-
         return (
 
             <div>
 
-                <AnimatedRoutes/>
+                {/*<FakePagemark/>*/}
+
+                <AddContentButtonOverlay onAdd={NULL_FUNCTION}/>
+
+                {/*<devices.Handheld onAdd={NULL_FUNCTION}/>*/}
+
+                {/*<AnimatedRoutes/>*/}
 
                 {/*<div className="m-5">*/}
 

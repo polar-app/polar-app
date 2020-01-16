@@ -53,7 +53,7 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
                        onClick={() => onSelected(props.color)}
                        style={{
                            backgroundColor,
-                           border: border,
+                           border,
                            width: size,
                            height: size
                        }}>
