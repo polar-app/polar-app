@@ -1,15 +1,21 @@
 import {JSDOM} from "jsdom";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-export interface HackerNewsContent {
+interface CommentMeta {
+
+    readonly commentsURL: string;
+
+    readonly nrComments: number;
+
+}
+
+export interface HackerNewsContent extends CommentMeta {
 
     readonly title: string;
 
     readonly link: string;
 
     readonly score: number;
-
-    readonly commentURL: string;
 
 }
 
@@ -60,14 +66,33 @@ export class HackerNewsContents {
 
             };
 
-            const computeCommentURL = () => {
+            const computeCommentMeta = (): CommentMeta | undefined => {
 
                 const metadataLinks = Array.from(metadataRow.querySelectorAll("a"));
 
                 const commentURLElement = Arrays.last(metadataLinks);
 
                 if (commentURLElement) {
-                    return 'https://news.ycombinator.com/' + commentURLElement.getAttribute('href');
+
+                    const computeNrComments = () => {
+                        const text = commentURLElement.textContent!
+                            .replace(' comments', '')
+                            .replace('discuss', '')
+                            .trim();
+
+                        const result = text === '' ? 0 : parseInt(text);
+
+                        if (result === null || isNaN(result)) {
+                            throw new Error("No comment count: " + text);
+                        }
+
+                        return result;
+                    };
+
+                    const nrComments = computeNrComments();
+                    const commentsURL = 'https://news.ycombinator.com/' + commentURLElement.getAttribute('href');
+
+                    return {commentsURL, nrComments};
                 }
 
                 return undefined;
@@ -80,16 +105,16 @@ export class HackerNewsContents {
                 continue;
             }
 
-            const commentURL = computeCommentURL();
+            const commentMeta = computeCommentMeta();
 
-            if (! commentURL) {
+            if (! commentMeta) {
                 continue;
             }
 
             // console.log(`${title} - ${link}: ${score} - ${commentURL}`);
 
             result.push({
-                title, link, score, commentURL
+                title, link, score, ...commentMeta
             });
 
         }
