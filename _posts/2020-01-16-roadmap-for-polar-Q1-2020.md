@@ -8,17 +8,19 @@ large_image: https://i.imgur.com/CQYO7T7.png
 
 <img class="img-fluid" src="https://i.imgur.com/CQYO7T7.png">
 
+# Roadmap for Polar in Q1 2020
+
 A new year is upon is and I wanted to publish a roadmap of where we're going with Polar in Q1 2020 as well as some small
 changes in the project.
 
-# Expanding the Team
+## Expanding the Team
 
 First, the most interesting news is that we've expanded the team and [I wanted to introduce Jonathan Graeupner](https://getpolarized.io/2020/01/16/joining-the-team.html).
 
 <img class="img-fluid" src="https://i.imgur.com/sONUWwd.png"/>
 
 <p class="text-center">
-<b>Jonathan and Kevin in at AWS Loft San Francisco, Jan 2020</b>
+<b>Jonathan and Kevin at AWS Loft San Francisco, Jan 2020</b>
 </p>
 
 Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
@@ -40,7 +42,7 @@ What's the use of building something faster if you're just building something no
 Having Jonathan come in and focus on this basically allows me to focus more on building the product and scaling the
 team.
 
-# Tablets, phones, and handheld devices
+## Tablets, phones, and handheld devices
 
 We're working on implementing support for both tablet and phones including improving our mobile usability.
 
@@ -56,7 +58,7 @@ Android will come first and then 30-90 days later we will have iOS.  Unfortunate
 Store is rather difficult and they require us to jump through a ton of hoops that aren't really required in the
 Google Play Store.
 
-# Stability
+## Stability
 
 This has been a huge focus of mine and I'm trying to allocate 20% of my time to just fixing basic usability bugs that
 pop up from time to time.
@@ -67,7 +69,7 @@ adopt it into your workflow and small things break from time to time.
 To that end we're revamping our testing and continuous integration system to test more scenarios including bringing
 on board full webapp testing, platform specific tests including Windows, Linux, and MacOS.
 
-## Improved Offline Reading
+### Improved Offline Reading
 
 This is another area that will benefit from our improved testing framework.  We want to test offline and Chrome supports
 simulating both slow networks and being completely offline.
@@ -82,13 +84,13 @@ Now that the holidays are over we want to bump our our release cadence and push 
 Right now we update the webapp 2-3x per week but try to only release 1x per week max four our Desktop app.  We don't
 want constant updates to interrupt your workflow.
 
-# Dark Mode
+## Dark Mode
 
 This has been a major background task and we're making progress on implementing dark mode.  The major blockers
 right now are mostly around PDFJS not properly supporting changing text colors but we have an important fix in
 progress.
 
-# Citation Management
+## Citation Management
 
 This is another big feature set we're working on.  Improved citation management should mean Polar users can partially
 manage bibliography as well as extended metadata for the documents they import.
@@ -96,26 +98,26 @@ manage bibliography as well as extended metadata for the documents they import.
 This includes features like DOI lookup, searching for PDFs by title, DOI, and storing the extended metadata within Polar
 directly.
 
-# Key Bindings
+## Key Bindings
 
 This is right up there with dark mode but supporting extended key bindings is important for desktop and Linux users.
 
 We're working on adopting a new react library to make key bindings much easier.
 
-# Automatic Pagemarks
+## Automatic Pagemarks
 
 New users to Polar seem to get confused about the fact that pagemarks (right now) are manual.
 
 We're going to add a new "auto pagemark" feature that creates pagemarks automatically while you scroll.
 
-# Two Column Pagemarks
+## Two Column Pagemarks
 
 Somewhat related to auto pagemarks but another main issue is supporting pagemarks while there are multiple columns.
 
 This is going to be resolved as well with a new 'two column' mode to allow the user to tell us that the PDF they're
 working with is two columns to allow smarter pagemark placement.
 
-# Improved Anki support
+## Improved Anki support
 
 Big one!  We're definitely going to be improving our Anki support.  Some important features that are queued up include:
 
@@ -124,7 +126,7 @@ Big one!  We're definitely going to be improving our Anki support.  Some importa
    of the area highlights, the original text highlight that it was attached to, etc.
  - Fixing small bugs like excess tags within Anki.
 
-# Feedback
+## Feedback
 
 Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we're very good
 at rapid iteration and fixing issues found by our users!

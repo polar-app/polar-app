@@ -3,7 +3,7 @@ title: Over 500 Top PDFs posted to Hacker News in 2019
 date: 2020-01-15T08:00:00.000-08:00
 layout: post
 description: Over 500 Top PDFs posted to Hacker News in 2019
-large_image: https://i.imgur.com/16uLX8S.png
+large_image: https://i.imgur.com/16uLX8S.png    
 hidden: true
 visible: false
 ---
