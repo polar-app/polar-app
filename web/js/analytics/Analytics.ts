@@ -1,4 +1,3 @@
-import {SegmentAnalytics} from "./segment/SegmentAnalytics";
 import {CompositeAnalytics} from "./CompositeAnalytics";
 import {IEventArgs, TraitsMap} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
@@ -12,7 +11,7 @@ function createDelegate() {
 
     if (isBrowser()) {
         return new CompositeAnalytics([
-            new SegmentAnalytics(),
+            // new SegmentAnalytics(),
             new GAAnalytics()
         ]);
     } else {
