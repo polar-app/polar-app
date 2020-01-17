@@ -30,6 +30,7 @@ class Styles {
         userSelect: 'none',
         // this has to be fixed width or each layer doesn't line up.
         width: '12px',
+        minWidth: '12px',
         // height: '20px'
     };
 
