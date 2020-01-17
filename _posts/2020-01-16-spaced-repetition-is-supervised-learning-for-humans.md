@@ -4,6 +4,8 @@ date: 2020-01-21T08:00:00.000-08:00
 layout: post
 description: 
 large_image: 
+hidden: true
+visible: false
 ---
 
 # Spaced Repetition is Supervised Learning for Humans
