@@ -1,4 +1,5 @@
 
+- Fixed bug with spacing in the tree sidebar for nodes that get compressed.
 - Ability to filter annotations on the sidebar.
 - Fixed bug with performing reviews when nothing left was available.
 - Fixed bug with #? not being encoded properly due when creating file URLs.

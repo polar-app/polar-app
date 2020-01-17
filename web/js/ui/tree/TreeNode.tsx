@@ -54,6 +54,10 @@ class Styles {
         outlineColor: 'transparent',
         borderRadius: '4px',
 
+        // this isn't working because the width isn't constrained
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+
     };
 
     public static NODE_SELECTOR: React.CSSProperties = {
