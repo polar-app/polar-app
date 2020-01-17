@@ -6,21 +6,22 @@ import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
-import {SplitBar, SplitBarRight} from '../../../apps/repository/js/SplitBar';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
-import {DocMeta} from "../metadata/DocMeta";
 import {Firebase} from "../firebase/Firebase";
 import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
-import {SplitBarLeft} from '../../../apps/repository/js/SplitBarLeft';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FeatureToggle} from "../ui/FeatureToggle";
+import {InputFilter} from '../ui/input_filter/InputFilter2';
+import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
+import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
+import {DatastoreCapabilities} from "../datastore/Datastore";
 
 const log = Logger.create();
 
@@ -53,7 +54,7 @@ const NoAnnotations = () => {
     );
 };
 
-function createItems(render: IRender) {
+function createItems(props: IRenderProps) {
 
     // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
 
@@ -62,13 +63,13 @@ function createItems(render: IRender) {
 
     const result: any = [];
 
-    const {annotations} = render;
+    const {annotations} = props;
 
     annotations.map(annotation => {
         result.push (<DocAnnotationComponent key={annotation.id}
                                              annotation={annotation}
-                                             persistenceLayerProvider={render.persistenceLayerProvider}
-                                             doc={render.doc}/>);
+                                             persistenceLayerProvider={props.persistenceLayerProvider}
+                                             doc={props.doc}/>);
     });
 
 
@@ -76,33 +77,82 @@ function createItems(render: IRender) {
 
 }
 
-const AnnotationsBlock = (render: IRender) => {
+const AnnotationsBlock = (props: IRenderProps) => {
 
-    if (render.annotations.length > 0) {
-        return createItems(render);
+    if (props.annotations.length > 0) {
+        return createItems(props);
     } else {
         return <NoAnnotations/>;
     }
 
 };
 
-const Annotations = (render: IRender) => {
+const Annotations = (props: IRenderProps) => {
 
     return <div className="annotations">
-        <AnnotationsBlock {...render}/>
+        <AnnotationsBlock {...props}/>
     </div>;
+
+};
+
+interface AnnotationHeaderProps extends IRenderProps {
+    readonly datastoreCapabilities: DatastoreCapabilities;
+    readonly onExport: (format: ExportFormat) => void;
+    readonly onFiltered: (text: string) => void;
+
+}
+
+const AnnotationHeader = (props: AnnotationHeaderProps) => {
+
+    return (
+
+        <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1 text-md">
+
+            <div style={{display: 'flex'}}>
+
+                <div style={{
+                    flexGrow: 1
+                }}
+                     className="pr-1">
+
+                    <InputFilter style={{flexGrow: 1}} onChange={text => props.onFiltered(text)}/>
+
+                </div>
+
+                <div>
+
+                    <ExportButton onExport={(format) => props.onExport(format)}/>
+
+                    <FeatureToggle name='groups'>
+                        <GroupSharingButton doc={props.doc}
+                                            datastoreCapabilities={props.datastoreCapabilities}
+                                            onDone={NULL_FUNCTION}/>
+                    </FeatureToggle>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    );
 
 };
 
 export class AnnotationSidebar extends React.Component<IProps, IState> {
 
-    private docAnnotationIndex: DocAnnotationIndex;
-    private docAnnotationIndexManager: DocAnnotationIndexManager;
+    private readonly docAnnotationIndex: DocAnnotationIndex;
+
+    private readonly docAnnotationIndexManager: DocAnnotationIndexManager;
+
+    private readonly filtersHandler: AnnotationRepoFiltersHandler;
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         const {persistenceLayerProvider} = this.props;
+
+        this.onFiltered = this.onFiltered.bind(this);
 
         this.docAnnotationIndex = new DocAnnotationIndex();
 
@@ -110,16 +160,27 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
             = new DocAnnotationIndexManager(DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider),
                                             this.docAnnotationIndex, annotations => {
 
-                this.setState({annotations});
+                this.setState({
+                    data: annotations,
+                    annotations
+                });
 
             });
+
+        const filterEngine = new AnnotationRepoFilterEngine<DocAnnotation>(() => this.state.data, this.onFiltered);
+        this.filtersHandler = new AnnotationRepoFiltersHandler(filters => filterEngine.onFiltered(filters));
 
         this.onExport = this.onExport.bind(this);
 
         this.state = {
+            data: [],
             annotations: []
         };
 
+    }
+
+    private onFiltered(annotations: ReadonlyArray<DocAnnotation>) {
+        this.setState({annotations});
     }
 
     public componentDidMount(): void {
@@ -218,49 +279,14 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
         const persistenceLayer = this.props.persistenceLayerProvider();
         const capabilities = persistenceLayer.capabilities();
 
-        const AnnotationHeader = () => {
-
-            return (
-
-                <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1 text-md">
-
-                    <SplitBar>
-
-                        <SplitBarLeft>
-                            <div style={{
-                                    fontWeight: 'bold',
-                                    fontSize: '14px'
-                                 }}>
-                                Annotations
-                            </div>
-                        </SplitBarLeft>
-
-                        <SplitBarRight>
-
-                            <ExportButton onExport={(format) => this.onExport(format)}/>
-
-                            <FeatureToggle name='groups'>
-                                <GroupSharingButton doc={this.props.doc}
-                                                    datastoreCapabilities={capabilities}
-                                                    onDone={NULL_FUNCTION}/>
-                            </FeatureToggle>
-
-                        </SplitBarRight>
-
-
-                    </SplitBar>
-
-                </div>
-
-            );
-
-        };
-
         return (
 
             <div id="annotation-manager" className="annotation-sidebar">
 
-                <AnnotationHeader/>
+                <AnnotationHeader {...this.state} {...this.props}
+                                  onExport={format => this.onExport(format)}
+                                  onFiltered={text => this.filtersHandler.update({text})}
+                                  datastoreCapabilities={capabilities}/>
 
                 <Annotations {...this.state} {...this.props}/>
 
@@ -277,9 +303,19 @@ interface IProps {
 }
 
 interface IState {
+
+    /**
+     * The raw annotations data which is unfiltered.
+     */
+    readonly data: ReadonlyArray<DocAnnotation>;
+
+    /**
+     * The annotations to display in the UI which is (optionally) filtered.
+     */
     readonly annotations: ReadonlyArray<DocAnnotation>;
+
 }
 
-interface IRender extends IProps, IState {
+interface IRenderProps extends IProps, IState {
 
 }

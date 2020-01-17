@@ -13,6 +13,26 @@ export interface StandardProps extends Readonly<MutableStandardProps> {
 
 export class Props {
 
+    public static create(props: StandardProps): StandardProps {
+
+        const result: MutableStandardProps = {};
+
+        if (props.id) {
+            result.id = props.id;
+        }
+
+        if (props.className) {
+            result.className = props.className;
+        }
+
+        if (props.style) {
+            result.style = props.style;
+        }
+
+        return props;
+
+    }
+
     /**
      * Merge standard props like id, className, style such that we don't have any
      * that are undefined after the merge.

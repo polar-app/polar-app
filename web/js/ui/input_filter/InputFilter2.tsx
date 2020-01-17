@@ -5,15 +5,14 @@ import InputGroupAddon from "reactstrap/lib/InputGroupAddon";
 import InputGroup from "reactstrap/lib/InputGroup";
 import Input from "reactstrap/lib/Input";
 import InputGroupText from "reactstrap/lib/InputGroupText";
+import {Props} from "../../react/Props";
 
 export const InputFilter = (props: IProps) => {
 
     const onChange = props.onChange || NULL_FUNCTION;
 
-    const style = props.style || {};
-
     return (
-        <InputGroup>
+        <InputGroup {...Props.create(props)}>
             <InputGroupAddon addonType="prepend">
                 <InputGroupText className="pl-1 pr-1">
                     <SearchIcon/>
@@ -46,6 +45,8 @@ interface IProps {
     readonly id?: string;
 
     readonly style?: React.CSSProperties;
+
+    readonly className?: string;
 
     /**
      * The changed value or undefined if it has been cleared.

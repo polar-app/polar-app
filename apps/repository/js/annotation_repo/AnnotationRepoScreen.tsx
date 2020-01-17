@@ -353,7 +353,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         };
 
-        const onUpdated: UpdatedCallback = repoAnnotations => {
+        const onUpdated: UpdatedCallback<IDocAnnotation> = (repoAnnotations: ReadonlyArray<IDocAnnotation>) => {
             const state = {...this.state, data: repoAnnotations};
             setStateInBackground(state);
         };
