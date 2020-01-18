@@ -20,7 +20,7 @@ export class LinkDropdown extends React.PureComponent<IProps, IState> {
                                   id="links-dropdown">
 
                 <DropdownToggle className="text-muted border"
-                                color="light"
+                                color="clear"
                                 caret>
 
                     <i className="fas fa-link" style={{fontSize: '17px'}}/>

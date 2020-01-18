@@ -63,7 +63,7 @@ export class NotificationButton extends React.PureComponent<IProps, IState> {
         const invitations = this.props.invitations || [];
         const count = invitations.length;
         const hasNotifications = count > 0;
-        const color = hasNotifications ? 'primary' : 'light';
+        const color = hasNotifications ? 'primary' : 'clear';
 
         return (
 

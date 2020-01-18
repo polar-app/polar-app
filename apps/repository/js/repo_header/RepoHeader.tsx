@@ -89,7 +89,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                     <Link to="/settings">
                         <Button size="md"
                                 className="border ml-1 text-muted"
-                                color="light">
+                                color="clear">
                             <i className="fas fa-cog" style={{fontSize: '17px'}}/>
                         </Button>
                     </Link>

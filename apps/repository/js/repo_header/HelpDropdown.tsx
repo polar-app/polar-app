@@ -34,7 +34,7 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                   id="help-dropdown">
 
                 <DropdownToggle className="text-muted border"
-                                color="light"
+                                color="clear"
                                 caret>
 
                     <i className="fas fa-question" style={{fontSize: '17px'}}/>

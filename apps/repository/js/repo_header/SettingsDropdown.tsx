@@ -20,7 +20,7 @@ export class SettingsDropdown extends React.PureComponent<IProps, IState> {
                                   id="settings-dropdown">
 
                 <DropdownToggle className="text-muted border"
-                                color="light"
+                                color="clear"
                                 caret>
 
                     <i className="fas fa-cog" style={{fontSize: '17px'}}/>
