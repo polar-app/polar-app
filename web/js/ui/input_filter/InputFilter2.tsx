@@ -18,7 +18,7 @@ export const InputFilter = (props: IProps) => {
 
     return (
 
-        <InputGroup {...Props.create(props)}>
+        <InputGroup>
             <InputGroupAddon addonType="prepend">
                 <InputGroupText className="pl-1 pr-1">
                     <SearchIcon/>
@@ -52,8 +52,6 @@ interface IProps {
     readonly id?: string;
 
     readonly style?: React.CSSProperties;
-
-    readonly className?: string;
 
     /**
      * The changed value or undefined if it has been cleared.
