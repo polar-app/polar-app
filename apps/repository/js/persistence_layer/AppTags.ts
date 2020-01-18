@@ -1,4 +1,4 @@
-import {TagDescriptor} from "polar-shared/src/tags/Tags";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 export interface AppTags {
 

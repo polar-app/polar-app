@@ -144,6 +144,8 @@ export class RepoDocMetaManager {
 
     private updateTagsDB(...repoDocInfos: RepoDocInfo[]) {
 
+        console.log("FIXME: updating with N docs to compute tags: " + repoDocInfos.length);
+
         for (const repoDocInfo of repoDocInfos) {
 
             // update the tags data.
