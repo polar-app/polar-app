@@ -69,6 +69,11 @@ FIXME: (this is wrong) For all my fellow math geeks these intervals would essent
 
 
 
+10 years, one review per week, 15s per review, this would mean a total of 2.2 hours of review.
+
+ 
+
+
 
 
 What's key about the forgetting curve is that it exploits exponential decay.
