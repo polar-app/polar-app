@@ -7,6 +7,7 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 /**
  * Keeps track of the doc index so that we can filter it in the UI and have
@@ -39,6 +40,8 @@ export class DocRepoFilters {
     }
 
     public onFilterByTitle(title: string) {
+        Preconditions.assertString(title, 'title');
+
         this.filters.title = title;
         this.refresh();
     }

@@ -29,7 +29,7 @@ export class Props {
             result.style = props.style;
         }
 
-        return props;
+        return result;
 
     }
 

@@ -7,6 +7,7 @@ import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMuta
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
+import { Strings } from 'polar-shared/src/util/Strings';
 
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
@@ -50,7 +51,7 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
             const filter = this.state.filter;
             const tags = this.props.tags;
 
-            if (filter && filter.trim() !== '') {
+            if (filter && ! Strings.empty(filter)) {
 
                 const predicate = (tag: Tag) => {
                     return tag.label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;

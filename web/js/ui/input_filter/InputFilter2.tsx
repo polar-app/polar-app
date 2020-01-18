@@ -11,7 +11,13 @@ export const InputFilter = (props: IProps) => {
 
     const onChange = props.onChange || NULL_FUNCTION;
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = ('' + event.target.value);
+        onChange(value);
+    };
+
     return (
+
         <InputGroup {...Props.create(props)}>
             <InputGroupAddon addonType="prepend">
                 <InputGroupText className="pl-1 pr-1">
@@ -24,7 +30,7 @@ export const InputFilter = (props: IProps) => {
                    className="btn-no-outline "
                    placeholder={props.placeholder}
                    defaultValue={props.defaultValue}
-                   onChange={event => onChange(event.target.value)}>
+                   onChange={event => handleChange(event)}>
 
             </Input>
 
@@ -37,6 +43,7 @@ export const InputFilter = (props: IProps) => {
             {/*</InputGroupAddon>*/}
 
         </InputGroup>
+
     );
 };
 
@@ -57,8 +64,4 @@ interface IProps {
 
     readonly defaultValue?: string;
 
-}
-
-interface IState {
-    readonly value: string;
 }

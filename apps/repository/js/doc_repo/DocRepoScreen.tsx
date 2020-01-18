@@ -5,7 +5,7 @@ import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
-import {isPresent} from 'polar-shared/src/Preconditions';
+import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
 import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns';
@@ -731,6 +731,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
 
     private onFilterByTitle(title: string) {
+        Preconditions.assertString(title, 'title');
         Analytics.event({category: 'user', action: 'filter-by-title'});
         this.docRepoFilters.onFilterByTitle(title);
     }
