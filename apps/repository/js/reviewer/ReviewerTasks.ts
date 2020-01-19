@@ -19,7 +19,7 @@ import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
-import {Strings} from "../../../../../polar-app-public/polar-shared/src/util/Strings";
+import {Strings} from "polar-shared/src/util/Strings";
 
 /**
  * Take tasks and then build a

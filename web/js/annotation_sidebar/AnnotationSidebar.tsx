@@ -115,7 +115,9 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
                 }}
                      className="pr-1">
 
-                    <InputFilter style={{flexGrow: 1}} onChange={text => props.onFiltered(text)}/>
+                    <InputFilter style={{flexGrow: 1}}
+                                 onChange={text => props.onFiltered(text)}
+                                 placeholder="Filter annotations by text"/>
 
                 </div>
 
