@@ -223,16 +223,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                                 </SectionText>
                             </SectionHeader>
 
-                            <div className="row mt-2">
-
-                                <div className="col-lg-12">
-                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
-                                        <NewDocumentRateChart docInfos={docInfos}/>
-                                    </PremiumFeature>
-                                </div>
-
-                            </div>
-
                             <div className="row mt-2 tag-statistics">
 
                                 <div className="col-lg-8">
@@ -244,6 +234,16 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                                 <div className="col-lg-4">
                                     <PremiumFeature required='bronze' feature="statistics" size="lg">
                                         <TopTagsTable docInfos={docInfos}/>
+                                    </PremiumFeature>
+                                </div>
+
+                            </div>
+
+                            <div className="row mt-2">
+
+                                <div className="col-lg-12">
+                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
+                                        <NewDocumentRateChart docInfos={docInfos}/>
                                     </PremiumFeature>
                                 </div>
 
