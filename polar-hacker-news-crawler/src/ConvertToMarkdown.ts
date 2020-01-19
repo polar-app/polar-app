@@ -20,7 +20,7 @@ export class ConvertToMarkdown {
                 docInfo: encodeURIComponent(JSON.stringify(docInfo))
             };
 
-            console.log(`## ${idx}. [${post.title}](https://app.getpolarized.io/add/${post.link}?docInfo=${params.docInfo})`);
+            console.log(`## ${idx}. [${post.title}](https://app.getpolarized.io/add/?file=${post.link}&docInfo=${params.docInfo})`);
             console.log(`score: ${post.score} [ ${post.nrComments} comments](${post.commentsURL})`);
 
             idx++;
