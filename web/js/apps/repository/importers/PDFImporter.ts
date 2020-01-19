@@ -161,7 +161,7 @@ export class PDFImporter {
             basename = FilePaths.basename(docPath);
         }
 
-        const defaultTitle = basename || "";
+        const defaultTitle = opts?.docInfo?.title || basename || "";
 
         // TODO: this is not particularly efficient to create the hashcode
         // first, then copy the bytes to the target location.  It would be
@@ -297,4 +297,5 @@ interface FileHashMeta {
 
 interface PDFImportOpts {
     readonly pdfMeta?: PDFMeta;
+    readonly docInfo?: Partial<IDocInfo>;
 }

@@ -1,10 +1,7 @@
-import {PDFImporter} from '../repository/importers/PDFImporter';
-import {ImportedFile} from '../repository/importers/PDFImporter';
-import {IProvider} from 'polar-shared/src/util/Providers';
+import {ImportedFile, PDFImporter} from '../repository/importers/PDFImporter';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
-import {ListenablePersistenceLayer} from '../../datastore/ListenablePersistenceLayer';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
 import {PreviewURLs} from 'polar-webapp-links/src/docs/PreviewURLs';
@@ -14,6 +11,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 import {Latch} from "polar-shared/src/util/Latch";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const log = Logger.create();
 
@@ -186,7 +184,9 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             const pdfImporter = new PDFImporter(persistenceLayerProvider);
 
-            const importedFile = await pdfImporter.importFile(blobURL, basename);
+            const importedFile = await pdfImporter.importFile(blobURL, basename, {
+                docInfo: this.getFileDocInfo()
+            });
 
             importedFile.map(this.updateURL);
 
@@ -224,6 +224,19 @@ export class DefaultAddContentImporter  implements AddContentImporter {
     private getURL() {
         const url = new URL(document.location!.href);
         return url.searchParams.get('file')!;
+    }
+
+    private getFileDocInfo(): Partial<IDocInfo> | undefined {
+
+        const url = new URL(document.location!.href);
+        const docInfoParam = url.searchParams.get('docInfo')!;
+
+        if (docInfoParam) {
+            return JSON.parse(docInfoParam);
+        }
+
+        return undefined;
+
     }
 
 }
