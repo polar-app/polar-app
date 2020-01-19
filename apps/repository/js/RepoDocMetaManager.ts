@@ -4,8 +4,6 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {TagsDB} from './TagsDB';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from 'polar-shared/src/util/Providers';
@@ -128,6 +126,8 @@ export class RepoDocMetaManager {
      */
     public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
+        // FIXME this is wrong and we're not updating related tags, etc
+
         if (repoDocInfo) {
             this.repoDocInfoIndex.put(fingerprint, repoDocInfo);
         } else {
@@ -213,6 +213,5 @@ export class RepoDocMetaManager {
         await persistenceLayer.delete(docMetaFileRef);
 
     }
-
 
 }
