@@ -2,13 +2,7 @@ import * as functions from 'firebase-functions';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
 import {MetadataEngineHandlerRef, MetadataEngines} from "./metadata/MetadataEngines";
-import {
-    DestinationRewrite,
-    DirectRewrite,
-    IDRewrite,
-    Rewrite,
-    Rewrites
-} from 'polar-shared-webserver/src/webserver/Rewrites';
+import {DestinationRewrite, DirectRewrite, Rewrites} from 'polar-shared-webserver/src/webserver/Rewrites';
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {StaticIndexGenerator} from "./StaticIndexGenerator";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
