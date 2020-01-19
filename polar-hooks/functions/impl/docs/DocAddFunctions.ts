@@ -14,11 +14,13 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
     }
 
     const importedDoc = await DatastoreFetchImports.doFetch(parsedURL.target);
-    console.log(importedDoc);
+    console.log("Imported doc to: " + importedDoc);
 
     const {url} = importedDoc;
 
     const previewURL = PreviewURLs.createPreviewURL(url, parsedURL.docInfo);
+
+    console.log("Sending redirect to: " + previewURL);
 
     // TODO: in the future just change the request handler I think.
     res.redirect(previewURL);
