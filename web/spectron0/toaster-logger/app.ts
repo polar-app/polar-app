@@ -23,7 +23,7 @@ SpectronRenderer.run(async (state) => {
 
         assert.notEqual(toastMessage, null);
 
-        assert.equal(toastMessage!.textContent, 'An internal error has occurred.');
+        assert.equal(toastMessage!.textContent, 'An internal error has occurred: it broke');
 
     });
 
