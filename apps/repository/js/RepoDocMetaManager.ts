@@ -45,8 +45,6 @@ export class RepoDocMetaManager {
 
     public readonly repoDocAnnotationIndex: RepoDocAnnotationDataObjectIndex = new RepoDocAnnotationDataObjectIndex();
 
-    public readonly tagsDB = new TagsDB();
-
     public readonly relatedTags = new RelatedTags();
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
@@ -54,7 +52,6 @@ export class RepoDocMetaManager {
     constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
         Preconditions.assertPresent(persistenceLayerProvider, 'persistenceLayerProvider');
         this.persistenceLayerProvider = persistenceLayerProvider;
-        this.init();
     }
 
     public updateFromRepoDocMeta(fingerprint: string, repoDocMeta?: RepoDocMeta) {
@@ -62,8 +59,6 @@ export class RepoDocMetaManager {
         if (repoDocMeta) {
 
             this.repoDocInfoIndex.put(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
-
-            this.updateTagsDB(repoDocMeta.repoDocInfo);
 
             this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
                                                                  .map(current => current.label));
@@ -135,25 +130,8 @@ export class RepoDocMetaManager {
 
         if (repoDocInfo) {
             this.repoDocInfoIndex.put(fingerprint, repoDocInfo);
-            this.updateTagsDB(repoDocInfo);
         } else {
             this.repoDocInfoIndex.delete(fingerprint);
-        }
-
-    }
-
-    private updateTagsDB(...repoDocInfos: RepoDocInfo[]) {
-
-        console.log("FIXME: updating with N docs to compute tags: " + repoDocInfos.length);
-
-        for (const repoDocInfo of repoDocInfos) {
-
-            // update the tags data.
-            Optional.of(repoDocInfo.docInfo.tags)
-                .map(tags => {
-                    this.tagsDB.register(...Object.values(tags));
-                });
-
         }
 
     }
@@ -233,15 +211,6 @@ export class RepoDocMetaManager {
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
 
         await persistenceLayer.delete(docMetaFileRef);
-
-    }
-
-    private init() {
-        // TODO: is this even needed anymore?
-
-        for (const repoDocInfo of this.repoDocInfoIndex.values()) {
-            this.updateTagsDB(repoDocInfo);
-        }
 
     }
 

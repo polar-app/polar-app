@@ -140,11 +140,6 @@ export interface IProps {
     readonly onFilterByTitle: (title: string) => void;
 
     /**
-     * An index of the currently available tags.
-     */
-    readonly tagsDBProvider: () => TagsDB;
-
-    /**
      * A function to refresh the table when new results have been selected.
      */
     readonly refresher: () => void;

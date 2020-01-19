@@ -540,7 +540,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                 <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
                                                   onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
                                                   onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                                  tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                   refresher={() => this.refresh()}
                                                   filteredTags={this.docRepoFilters.filters.filteredTags}
                                                   docSidebarVisible={this.state.docSidebarVisible}
