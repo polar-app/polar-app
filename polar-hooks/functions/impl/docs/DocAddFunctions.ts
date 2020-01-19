@@ -8,7 +8,7 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
     // TODO: accept a POST here with the data int the body with the proper mine type
 
     const parsedURL = AddURLs.parse(req.url);
-
+    
     if (! parsedURL) {
         throw new Error("Wrong URL");
     }
@@ -18,9 +18,7 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
 
     const {url} = importedDoc;
 
-    const previewURL = PreviewURLs.createPreviewURL(url);
-
-    console.log(previewURL);
+    const previewURL = PreviewURLs.createPreviewURL(url, parsedURL.docInfo);
 
     // TODO: in the future just change the request handler I think.
     res.redirect(previewURL);
