@@ -31,7 +31,8 @@ namespace runtime {
     );
 
     const Browser = () => (
-            <Button color="success"
+            <Button id="add-content-dropdown"
+                    color="success"
                     size="md">
                 <label htmlFor="file-upload" className="m-0">
                     <i className="fas fa-plus mr-1" /> Add &nbsp;

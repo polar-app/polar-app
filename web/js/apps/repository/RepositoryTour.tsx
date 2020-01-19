@@ -169,10 +169,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         it offline in your archive - forever!
                     </p>
 
-                    <p>
-                        The tour should take about 60 seconds.
-                    </p>
-
                 </div>,
                 image: "/icon.png",
                 placement: 'center'
@@ -233,28 +229,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     image: "/web/assets/images/files.svg"
             // }),
 
-            JoyrideTours.createImageStep({
-                target: '#add-content-dropdown',
-                title: <Title>Add Documents</Title>,
-                content: <div>
-                    <p>
-                        Documents can easily be added by clicking the <Term>Add</Term> button
-                        and you can import documents individually or in bulk from
-                        a local directory.
-                    </p>
-
-                    <p>
-                        You can also just drag and drop files onto the document
-                        repository as well.
-                    </p>
-
-                    <p>
-                        Once the tour is over you'll probably want to use this
-                        feature to add any documents you're currently reading.
-                    </p>
-                </div>,
-                image: "/web/assets/images/add-file.svg"
-            }),
             {
                 target: '#add-tags-dropdown',
                 title: <Title>Create Folders and Tags</Title>,
@@ -285,7 +259,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     </p>
                 </div>,
                 image:
-                    <Icon className="fas fa-cloud-upload-alt"/>
+                    <Icon className="fas fa-cloud-upload-alt"/>,
+                disabled: ! AppRuntime.isElectron()
 
             }),
             //
@@ -423,21 +398,39 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     image: "/web/assets/images/statistics.svg",
             // }),
 
+            // JoyrideTours.createImageStep({
+            //     target: 'header',
+            //     content: <div>
+            //
+            //         <h2>Thanks for taking the Tour</h2>
+            //
+            //         <p>
+            //             You next step needs to be adding documents.  Just click the <Term>add</Term> button or install
+            //             the chrome extension to capture web pages.
+            //         </p>
+            //
+            //     </div>,
+            //     image: "/icon.png",
+            //     placement: 'center'
+            //
+            // }),
             JoyrideTours.createImageStep({
-                target: 'header',
+                target: '#add-content-dropdown',
+                title: <Title>Add Documents</Title>,
                 content: <div>
-
-                    <h2>Thanks for taking the Tour</h2>
+                    <p>
+                        Documents can easily be added by clicking the <Term>Add</Term> button
+                        and you can import documents individually or in bulk from
+                        a local directory.
+                    </p>
 
                     <p>
-                        You next step needs to be adding documents.  Just click the <Term>add</Term> button or install
-                        the chrome extension to capture web pages.
+                        You can also just drag and drop files onto the document
+                        repository as well.
                     </p>
 
                 </div>,
-                image: "/icon.png",
-                placement: 'center'
-
+                image: "/web/assets/images/add-file.svg"
             }),
 
             // {
