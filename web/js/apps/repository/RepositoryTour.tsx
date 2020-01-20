@@ -154,7 +154,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                         <li><b>Build a personal knowledge repository</b> with <span className="text-dark" style={{backgroundColor: 'rgba(255,255,0.3)'}}><b>highlights</b></span>, tags, and annotations.</li>
 
-                        <li><b>Permanently remember</b> facts usingspaced repetition and incremental reading</li>
+                        <li><b>Permanently remember</b> facts using spaced repetition and incremental reading</li>
 
                     </ul>
 
