@@ -1,11 +1,11 @@
 {
-  "name": "polar-hacker-neww-crawler",
+  "name": "polar-hacker-news-crawler",
   "version": "1.90.10",
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
   "scripts": {
-    "test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit",
-    "_test": "echo disabled",
+    "_test": "find . -name *Test.js | xargs mocha --timeout 20000 --exit",
+    "test": "echo noop",
     "compile": "tsc",
     "dist": "echo noop"
   },
