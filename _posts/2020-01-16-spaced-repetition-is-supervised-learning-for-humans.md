@@ -59,19 +59,28 @@ This is eventually a scheduling system to supervise your brain to learn complica
 normally be able to encode.  Supervised learning for humans.  It's almost a *cognitive prosthetic* designed for force
 you to learn.  
 
-## Exponential Decay
+## Exponential Backoff
 
-One key innovation is that spaced repetition intervals use exponential decay.  
+One key innovation is that spaced repetition intervals use exponential backoff - or ever increasing intervals.
 
-What the heck is exponential decay?  
+What the heck is exponential backoff?  
 
-FIXME: (this is wrong) For all my fellow math geeks these intervals would essentially mirror a y=x^1.3.
+A naive (and rather insane) strategy to review your flashcards would be to just review them ever week.  However, This
+won't scale to a large number of flashcards.
 
+Over ten years, and 15 seconds pre review, this would require 2 hours of study time - for one card.
 
+However, using an efficient flashcard scheduler, which adapts itself your answers, we're able to retain this knowledge
+using just 8 iterations.  
 
-10 years, one review per week, 15s per review, this would mean a total of 2.2 hours of review.
+This is approximately 99% more efficient (8 * 15 seconds vs more than 2 hours) than a naive solution.
 
- 
+These scheduler increases the interval based on your feedback.  If you keep answering the flashcard properly the 
+interval will increase exponentially (approximately t^1.3).
+
+For example, 3 days, then 9 days, then 27, then 81 days, etc.    
+
+## 
 
 
 
@@ -80,7 +89,6 @@ What's key about the forgetting curve is that it exploits exponential decay.
 
 
 
-- explain exponential backoff... 
 - include a chart of the learning curve
 
 
