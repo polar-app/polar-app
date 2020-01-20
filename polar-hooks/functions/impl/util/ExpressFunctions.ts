@@ -5,8 +5,6 @@ import * as functions from 'firebase-functions';
 import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
-import {GroupDocAddRequest} from '../groups/GroupDocsAddFunction';
-import {GroupDocsAddFunctions} from '../groups/GroupDocsAddFunction';
 
 export class ExpressFunctions {
 
