@@ -14,7 +14,11 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
     }
 
     const importedDoc = await DatastoreFetchImports.doFetch(parsedURL.target);
-    console.log("Imported doc to: " + importedDoc);
+
+
+    console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
+    console.log("Imported doc to: " + JSON.stringify(importedDoc, null, "   "));
+
 
     const {url} = importedDoc;
 
