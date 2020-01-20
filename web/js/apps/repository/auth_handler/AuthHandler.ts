@@ -4,8 +4,7 @@ import * as firebase from '../../../firebase/lib/firebase';
 import {AppRuntime} from '../../../AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import { accounts } from 'polar-accounts/src/accounts';
-import {Account} from "../../../accounts/Account";
+import {accounts} from 'polar-accounts/src/accounts';
 import {AccountProvider} from "../../../accounts/AccountProvider";
 
 export interface AuthHandler {
