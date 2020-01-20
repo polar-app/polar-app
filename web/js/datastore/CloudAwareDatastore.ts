@@ -115,8 +115,14 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const cloudPrefs = this.cloud.getPrefs().get();
 
         const doUpdate = async (source: PersistentPrefs, target: PersistentPrefs) => {
-            target.update(source.toPrefDict());
-            await target.commit();
+
+            if (target.update(source.toPrefDict())) {
+                // TODO: firestore sometimes will lock up here when we go to write
+                // but this essentially avoids the problem for now and a commit
+                // would be redundant here anyway plus slow things down.
+                await target.commit();
+            }
+
         };
 
         await doUpdate(localPrefs, cloudPrefs);

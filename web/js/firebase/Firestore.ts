@@ -57,7 +57,13 @@ export class Firestore {
         await tracer.traceAsync('enablePersistence', async () => {
 
             try {
+
+                // Without synchronizeTabs=true the main document repository works
+                // but the viewer windows complain that they do not have access to
+                // work with the disk persistence.
+
                 await firestore.enablePersistence({synchronizeTabs: true});
+
             } catch (e) {
                 // we've probably exceeded the local quota so we can't run with caching for now.
                 console.warn("Unable to use persistence. Data will not be cached locally: ", e);

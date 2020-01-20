@@ -1,4 +1,7 @@
 
+- Short term workaround for a bug where firebase won't write to prefs on 
+  startup which blocked cloud sync on restart.
+- Upgraded to latest Firebase libraries (7.7.0)
 - Fixed bug with spacing in the tree sidebar for nodes that get compressed.
 - Ability to filter annotations on the sidebar.
 - Fixed bug with performing reviews when nothing left was available.

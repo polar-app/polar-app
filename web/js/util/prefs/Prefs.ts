@@ -106,7 +106,12 @@ export interface Pref {
  */
 export interface PersistentPrefs extends Prefs {
 
-    update(source: StringToPrefDict): void;
+    /**
+     * Update the current prefs with the source and return true
+     * if any changes were made.
+     * @param source
+     */
+    update(source: StringToPrefDict): boolean;
 
     fetch(key: string): Pref | undefined;
 
@@ -208,10 +213,10 @@ export class DictionaryPrefs extends Prefs {
         this.update(delegate);
     }
 
-    public update(dict: StringToPrefDict = {}) {
+    public update(dict: StringToPrefDict = {}): boolean {
 
         if (! dict) {
-            return;
+            return false;
         }
 
         const isInvalid = (pref: Pref | string): boolean => {
@@ -233,6 +238,8 @@ export class DictionaryPrefs extends Prefs {
 
         };
 
+        let updated: boolean = false;
+
         for (const pref of Object.values(dict)) {
 
             if (isInvalid(pref)) {
@@ -243,9 +250,12 @@ export class DictionaryPrefs extends Prefs {
 
             if (needsUpdate(curr, pref)) {
                 this.delegate[pref.key] = pref;
+                updated = true;
             }
 
         }
+
+        return updated;
 
     }
 
@@ -373,8 +383,8 @@ export class CompositePrefs implements PersistentPrefs {
         return this.delegate.prefs();
     }
 
-    public update(dict: StringToPrefDict): void {
-        this.delegate.update(dict);
+    public update(dict: StringToPrefDict): boolean {
+        return this.delegate.update(dict);
     }
 
 
