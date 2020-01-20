@@ -68,45 +68,19 @@ export class GDPRNotice extends React.Component<any, IState> {
                     <div className="pt-1 pb-1">
 
                         <div style={Styles.intro}>
-                            We use cookies to track your usage.
+                            We use cookies to track improve Polar.
                         </div>
 
                         <p>
-                            We use cookies to track your usage and to determine
-                            which features are used to improve the quality of Polar.
+                            We use cookies to help improve the quality of Polar.
                         </p>
 
                         <p>
-                            Additionally, we track application errors which helps us
-                            find bugs and to prioritize which issues to fix.
+                            We <b>do not</b> send personally identifiable information at any point.
                         </p>
 
                         <p>
-                            This data is sent to 3rd parties which provide the
-                            infrastructure necessary to provide the analytics
-                            services needed to analyze and store the data.
-                        </p>
-
-                        <p>
-                            We avoid sending personally identifiable information
-                            at all times.
-                        </p>
-
-                        <div style={Styles.intro}>
-                            Cloud storage and privacy.
-                        </div>
-
-                        <p>
-                            When using Polar cloud sync we store your data in the
-                            cloud and authentication / authorization is controlled
-                            by the auth provider you select.
-                        </p>
-
-                        <p>
-                            We do not sell your private data.  Your private data is
-                            yours and we're not interested in selling, monetizing, or
-                            distributing it to 3rd parties except when necessary to
-                            provide data storage services.
+                            We <b>do not</b> sell your private data to 3rd parties.
                         </p>
 
                     </div>

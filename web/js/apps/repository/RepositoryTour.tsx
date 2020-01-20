@@ -143,23 +143,18 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                     <h2 className="text-center">Welcome to Polar!</h2>
 
                     <p>
-                        We're going to give you a quick tour of how to use the
-                        main features in Polar.
-                    </p>
-
-                    <p>
                         Polar allows you to:
                     </p>
 
                     <ul>
 
-                        <li>Keep all your documents in one place.</li>
+                        <li><b>Keep all your reading</b> in one place.</li>
 
-                        <li>Easily keep track of your reading with <b>pagemarks</b> and <b>stats tracking</b>.</li>
+                        <li><b>Track all your reading</b> statistics.</li>
 
-                        <li><b>Annotate</b>, <b>tag</b>, and <span className="text-dark" style={{backgroundColor: 'yellow'}}><b>highlight</b></span> all your documents and build a personal knowledge repository.</li>
+                        <li><b>Build a personal knowledge repository</b> with <span className="text-dark" style={{backgroundColor: 'rgba(255,255,0.3)'}}><b>highlights</b></span>, tags, and annotations.</li>
 
-                        <li>Use <b>spaced repetition</b> and <b>incremental reading</b> to help you permanently remember everything you study!</li>
+                        <li><b>Permanently remember</b> facts usingspaced repetition and incremental reading</li>
 
                     </ul>
 
@@ -190,19 +185,18 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                         and major browsers) and is <b>fully cloud aware</b>.
                     </p>
 
-                    <p>
-                        If you use the desktop version of Polar you can enable
-                        cloud sync which will <b>keep all your documents in
-                        sync</b> across all your devices and the web - and in
-                        near realtime!
-                    </p>
+                    {/*<p>*/}
+                    {/*    If you use the desktop version of Polar you can enable*/}
+                    {/*    cloud sync which will <b>keep all your documents in*/}
+                    {/*    sync</b> across all your devices and the web - and in*/}
+                    {/*    near realtime!*/}
+                    {/*</p>*/}
 
-                    <p>
-                        Note that the web version is missing a few features
-                        including Anki sync and web page capture and only
-                        supports PDF documents at the moment.
-                    </p>
-
+                    {/*<p>*/}
+                    {/*    Note that the web version is missing a few features*/}
+                    {/*    including Anki sync and web page capture and only*/}
+                    {/*    supports PDF documents at the moment.*/}
+                    {/*</p>*/}
 
                 </div>,
                 image: "/web/assets/images/web.svg",
@@ -235,7 +229,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 disableBeacon: true,
                 content: <div>
                     <p>
-                        Polar supports either folders and tags. You create folders or tags by selecting this
+                        You can create folders or tags by selecting this
                         button or right clicking on the sidebar.
                     </p>
                 </div>,
@@ -286,9 +280,8 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 title: <Title>Reading Progress</Title>,
                 disableBeacon: true,
                 content: <div>
-                    Each document has a progress associated with it which is
-                    derived from pagemarks. Pagemarks are similar to bookmarks
-                    but manually updated on each document while you read.
+                    <b>Track your reading progress</b> in each document
+                    with pagemarks (manually now, soon to be automatic).
                 </div>,
 
                 // placement: "bottom",
@@ -317,27 +310,29 @@ export class RepositoryTour extends React.Component<IProps, IState> {
                 disableBeacon: true,
                 content: <div>
 
-                    <p>
-                        Documents can
-                        be <Term>tagged</Term>, <Term>flagged</Term>, <Term>archived</Term> and <Term>deleted</Term> by using
-                        these buttons to the right.
-                    </p>
+                    Documents can be <b>tagged, flagged, archived or deleted</b>.
 
-                    <p>
-                         The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document
-                    </p>
+                    {/*<p>*/}
+                    {/*    Documents can*/}
+                    {/*    be <Term>tagged</Term>, <Term>flagged</Term>, <Term>archived</Term> and <Term>deleted</Term> by using*/}
+                    {/*    these buttons to the right.*/}
+                    {/*</p>*/}
 
-                    <p>
-                         The <Term>flag</Term> button allow you to mark important
-                         documents.  Once flagged you can use the <Term>filter bar</Term> to
-                         show only flagged documents.
-                    </p>
+                    {/*<p>*/}
+                    {/*     The <Term>tag</Term> button allow you to assign new <b><i>tags</i></b> a document*/}
+                    {/*</p>*/}
 
-                    <p>
-                        The <Term>archive</Term> button allow you to
-                        hide a document once read.  It's usually best to
-                        archive a document once it's been read.
-                    </p>
+                    {/*<p>*/}
+                    {/*     The <Term>flag</Term> button allow you to mark important*/}
+                    {/*     documents.  Once flagged you can use the <Term>filter bar</Term> to*/}
+                    {/*     show only flagged documents.*/}
+                    {/*</p>*/}
+
+                    {/*<p>*/}
+                    {/*    The <Term>archive</Term> button allow you to*/}
+                    {/*    hide a document once read.  It's usually best to*/}
+                    {/*    archive a document once it's been read.*/}
+                    {/*</p>*/}
 
                 </div>,
                 styles: {
@@ -414,24 +409,16 @@ export class RepositoryTour extends React.Component<IProps, IState> {
             //     placement: 'center'
             //
             // }),
-            JoyrideTours.createImageStep({
+            {
                 target: '#add-content-dropdown',
                 title: <Title>Add Documents</Title>,
                 content: <div>
                     <p>
-                        Documents can easily be added by clicking the <Term>Add</Term> button
-                        and you can import documents individually or in bulk from
-                        a local directory.
-                    </p>
-
-                    <p>
-                        You can also just drag and drop files onto the document
-                        repository as well.
+                        Get started now by <b>clicking here to upload your first document</b>.
                     </p>
 
                 </div>,
-                image: "/web/assets/images/add-file.svg"
-            }),
+            },
 
             // {
             //     target: 'header',
