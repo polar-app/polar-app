@@ -1,7 +1,7 @@
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
 import {assert} from 'chai';
 import {PreviewURLs} from "polar-webapp-links/src/docs/PreviewURLs";
-import { URLParams } from "polar-shared/src/util/URLParams";
+import { URLParams } from "polar-url/src/URLParams";
 
 describe('DocAddFunctions', function() {
 

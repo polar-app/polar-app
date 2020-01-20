@@ -49,6 +49,7 @@
     "polar-shared-webserver": "^1.90.9",
     "polar-webapp-dist": "^1.90.9",
     "polar-webapp-links": "^1.90.9",
+    "polar-url": "^1.90.9",
     "prompts": "^2.2.1",
     "stripe": "^7.2.0",
     "typescript": "^3.7.2",
