@@ -20,6 +20,8 @@ export class DeviceRouter extends React.Component<IProps> {
                 return this.props.tablet || this.props.handheld || null;
             case "desktop":
                 return this.props.desktop || null;
+            default:
+                return null;
 
         }
 
@@ -33,7 +35,7 @@ export class DeviceRouter extends React.Component<IProps> {
             return null;
         }
 
-    }
+    };
 
     public static Handheld = (props: any) => {
 

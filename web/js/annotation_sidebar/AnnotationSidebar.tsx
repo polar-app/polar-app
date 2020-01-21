@@ -22,33 +22,75 @@ import {InputFilter} from '../ui/input_filter/InputFilter2';
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
 import {DatastoreCapabilities} from "../datastore/Datastore";
+import Button from "reactstrap/lib/Button";
+import {DeviceRouter} from "../ui/DeviceRouter";
+import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 
 const log = Logger.create();
 
+const LoadRepositoryExplainer = () => (
+    <div className="p-2 text-center">
+
+        <h2 className="text-muted mb-3">
+            Click below for your personal repository
+        </h2>
+
+        <a href="https://app.getpolarized.io">
+
+            <img alt="Annotation Sidebar"
+                 className="img-shadow img-fluid shadow"
+                 src="https://getpolarized.io/assets/screenshots/2019-11-document-view.png"/>
+        </a>
+
+        <div className="mt-3 mb-3">
+             <a href="https://app.getpolarized.io">
+                 <Button size="lg" color="success">Load My Doc Repository</Button>
+             </a>
+         </div>
+
+    </div>
+);
+
 const NoAnnotations = () => {
     return (
-        <div className="p-2">
+        <div className="p-2"
+             style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 flexGrow: 1
+             }}>
 
-            <h4 className="text-center text-muted text-xxl">
-                No Annotations
-            </h4>
+            <div style={{flexGrow: 1}}>
+                <h4 className="text-center text-muted text-xxl">
+                    No Annotations
+                </h4>
 
-            <p className="text-muted"
-               style={{fontSize: '16px'}}>
+                <p className="text-muted"
+                   style={{fontSize: '16px'}}>
 
-                No annotations have yet been created. To create new
-                annotations create a
-                new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
-                selecting text in the document.
-            </p>
+                    No annotations have yet been created. To create new
+                    annotations create a
+                    new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
+                    selecting text in the document.
+                </p>
 
-            <p className="text-muted"
-               style={{fontSize: '16px'}}>
+                <p className="text-muted"
+                   style={{fontSize: '16px'}}>
 
-                The highlight will then be shown here and you can
-                then easily attach comments and flashcards to it
-                directly.
-            </p>
+                    The highlight will then be shown here and you can
+                    then easily attach comments and flashcards to it
+                    directly.
+                </p>
+
+            </div>
+
+            <div>
+                <AppRuntimeRouter browser={(
+                    <DeviceRouter desktop={(
+                        <LoadRepositoryExplainer/>
+                    )}/>
+                )}/>
+            </div>
 
         </div>
     );
@@ -89,7 +131,12 @@ const AnnotationsBlock = (props: IRenderProps) => {
 
 const Annotations = (props: IRenderProps) => {
 
-    return <div className="annotations">
+    return <div className="annotations"
+                style={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
         <AnnotationsBlock {...props}/>
     </div>;
 
@@ -108,11 +155,13 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
         <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1 text-md">
 
-            <div style={{display: 'flex'}}>
+            <div style={{
+                     display: 'flex'
+                 }}>
 
                 <div style={{
-                    flexGrow: 1
-                }}
+                         flexGrow: 1
+                     }}
                      className="pr-1">
 
                     <InputFilter style={{flexGrow: 1}}
@@ -283,7 +332,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="annotation-manager" className="annotation-sidebar">
+            <div id="annotation-manager"
+                 className="annotation-sidebar"
+                 style={{
+                     display: "flex",
+                     flexDirection: "column"
+                 }}>
 
                 <AnnotationHeader {...this.state} {...this.props}
                                   onExport={format => this.onExport(format)}

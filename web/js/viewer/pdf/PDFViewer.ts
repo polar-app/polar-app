@@ -44,6 +44,9 @@ export class PDFViewer extends Viewer {
 
             // Scrollers.register();
 
+            // register with something like (prevous move > 30s ago and jump is <= 100 % of viewport height
+            // then set the previous page to 100% of height... JUST below the current fold... just call
+            // currentePagemarkToPoint
 
         });
 

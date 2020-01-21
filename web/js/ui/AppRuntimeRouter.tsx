@@ -14,12 +14,13 @@ export class AppRuntimeRouter extends React.Component<IProps> {
 
         switch (this.runtime) {
             case "electron-renderer":
-                return this.props.electron;
+                return this.props.electron || null;
             case "electron-main":
-                return this.props.electron;
+                return this.props.electron || null;
             case "browser":
-                return this.props.browser;
-
+                return this.props.browser || null;
+            default:
+                return null;
         }
 
     }
@@ -32,7 +33,7 @@ export class AppRuntimeRouter extends React.Component<IProps> {
             return null;
         }
 
-    }
+    };
 
     public static Browser = (props: any) => {
 
