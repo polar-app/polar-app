@@ -8,6 +8,7 @@ import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
 import {Analytics} from "../../analytics/Analytics";
+import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
 
 declare var window: any;
 
@@ -40,6 +41,9 @@ export class PDFViewer extends Viewer {
             this.sendResizeEvent();
 
             // this.handleChromeSelectionFix();
+
+            // Scrollers.register();
+
 
         });
 

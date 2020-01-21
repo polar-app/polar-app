@@ -190,6 +190,7 @@
     "polar-spaced-repetition-api": "^1.90.10",
     "polar-web-extension-api": "^1.90.10",
     "polar-webapp-links": "^1.90.10",
+    "polar-pagemarks-auto": "^1.90.10",
     "popper.js": "~1.16.0",
     "prop-types": "~15.7.2",
     "raphael": "~2.2.7",
