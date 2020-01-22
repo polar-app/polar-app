@@ -1,4 +1,149 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-01-20T18:53:45-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T08:00:00-08:00</published><updated>2020-01-19T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-01-21T08:55:46-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Spaced Repetition is Supervised Learning for Humans</title><link href="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html" rel="alternate" type="text/html" title="Spaced Repetition is Supervised Learning for Humans" /><published>2020-01-21T08:00:00-08:00</published><updated>2020-01-21T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans</id><content type="html" xml:base="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html">&lt;h1 id=&quot;spaced-repetition-is-supervised-learning-for-humans&quot;&gt;Spaced Repetition is Supervised Learning for Humans&lt;/h1&gt;
+
+&lt;p&gt;What if you could train your brain the way computer scientists train computers and effectively remember anything you
+want - forever?&lt;/p&gt;
+
+&lt;p&gt;On the surface this sounds rather absurd. You’re not a computer.  You can’t be forced to learn new things.  Education is
+complicated and (if you’re like me) there doesn’t seem to be any rhyme or reason why some knowledge sticks while you
+fail to grasp other (often more complicated) concepts.&lt;/p&gt;
+
+&lt;p&gt;Cognitive science has found a way to solve this problem.  It turns out that we’ve had a solution to this problem for
+more than 135 years and the tools are finally starting to become mainstream.&lt;/p&gt;
+
+&lt;p&gt;This connection between supervised learning (AKA machine learning) and spaced repetition was my motivation for building
+Polar. I wanted a unified learning platform that exploited spaced repetition and made it easy to use and incorporate
+into your workflow.&lt;/p&gt;
+
+&lt;p&gt;I’ll get to the connection between spaced repetition and supervised learning in a moment but it’s probably best to 
+first explain spaced repetition.&lt;/p&gt;
+
+&lt;h2 id=&quot;background-in-learning&quot;&gt;Background in Learning&lt;/h2&gt;
+
+&lt;p&gt;Spaced repetition is centered around what’s known as the ‘forgetting curve’ and directly exploits the way the brain
+encodes knowledge.&lt;/p&gt;
+
+&lt;p&gt;The forgetting curve is based on the intuition that it’s best to study something &lt;em&gt;just&lt;/em&gt; before it’s forgotten.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-responsive&quot; src=&quot;https://i.imgur.com/jOAqCpi.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This was discovered in 1885 by &lt;a href=&quot;https://en.wikipedia.org/wiki/Hermann_Ebbinghaus&quot;&gt;Hermann_Ebbinghaus&lt;/a&gt; when he was
+researching the rate of information loss when trying to memorize three letter syllables.&lt;/p&gt;
+
+&lt;p&gt;As an aside, Ebbinghaus’s major innovation, in my opinion was the use of data and statistics to learn how the brain
+functioned internally. Prior to Ebbinghaus, most “research” on memory was done by philosophers without any form of 
+scientific rigor (at least no where near Ebbinghaus).&lt;/p&gt;
+
+&lt;p&gt;It might be best to think of these as time intervals from when you originally studied a piece of information.&lt;/p&gt;
+
+&lt;p&gt;Let’s say you wanted to remember that “Fe is the chemical symbol for Iron.”  This is actually a bit complicated (at
+least for English speakers) as Fe is taken from the Latin word for iron - ferrum.&lt;/p&gt;
+
+&lt;p&gt;You can imagine that this would be quickly forgotten so you might want to recall it twenty minutes before it’s forgotten.&lt;/p&gt;
+
+&lt;p&gt;It’s this observation that the intervals keep increasing which makes spaced repetition so powerful.&lt;/p&gt;
+
+&lt;p&gt;Typical intervals her would involve reviewing the material at 20 minutes, 1 hour, 4hour, 8hour, etc intervals.  These 
+would keep increasing exponentially until you’re reviewing the material with intervals of years, not minutes.&lt;/p&gt;
+
+&lt;p&gt;This is eventually a scheduling system to supervise your brain to learn complicated topics which your brain wouldn’t 
+normally be able to encode.  Supervised learning for humans.  It’s almost a &lt;em&gt;cognitive prosthetic&lt;/em&gt; designed for force
+you to learn.&lt;/p&gt;
+
+&lt;h2 id=&quot;exponential-backoff&quot;&gt;Exponential Backoff&lt;/h2&gt;
+
+&lt;p&gt;One key innovation is that spaced repetition intervals use exponential backoff - or ever increasing intervals.&lt;/p&gt;
+
+&lt;p&gt;What the heck is exponential backoff?&lt;/p&gt;
+
+&lt;p&gt;A naive (and rather insane) strategy to review your flashcards would be to just review them ever week.  However, This
+won’t scale to a large number of flashcards.&lt;/p&gt;
+
+&lt;p&gt;Over ten years, and 15 seconds pre review, this would require 2 hours of study time - for one card.&lt;/p&gt;
+
+&lt;p&gt;However, using an efficient flashcard scheduler, which adapts itself your answers, we’re able to retain this knowledge
+using just 8 iterations.&lt;/p&gt;
+
+&lt;p&gt;This is approximately 99% more efficient (8 * 15 seconds vs more than 2 hours) than a naive solution.&lt;/p&gt;
+
+&lt;p&gt;These scheduler increases the interval based on your feedback.  If you keep answering the flashcard properly the 
+interval will increase exponentially (approximately t^1.3).&lt;/p&gt;
+
+&lt;p&gt;For example, 3 days, then 9 days, then 27, then 81 days, etc.&lt;/p&gt;
+
+&lt;p&gt;##&lt;/p&gt;
+
+&lt;p&gt;What’s key about the forgetting curve is that it exploits exponential decay.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;include a chart of the learning curve&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Hacks to Remember&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Ubsurdity&lt;/li&gt;
+      &lt;li&gt;Passion&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Bitrot…&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;It’s easier to commit to learning something if you know it will never be forgotten&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is Machine Learning?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;unsupervised is where the algorithm, inherently knows what to do and 
+generally tends to do the right thing.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;supervised learning is training a computer&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is Supervised Learning?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Cognitive prosthetic&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Other Mnemonic Strategies
+    &lt;ul&gt;
+      &lt;li&gt;these can accelerate spaced repetition but (in my opinion) are not a replacement for SR.&lt;/li&gt;
+      &lt;li&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Mainstream.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Spaced Repetition is Supervised Learning for Humans</summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T08:00:00-08:00</published><updated>2020-01-19T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
+
+&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
+he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
+
+&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
+
+&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
+annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
+
+&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
+tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
+
+&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
+notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
+
+&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
+
+&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T08:00:00-08:00</published><updated>2020-01-19T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;over-500-top-pdfs-posted-to-hacker-news-in-2019&quot;&gt;Over 500 Top PDFs posted to Hacker News in 2019&lt;/h1&gt;
 
@@ -1139,31 +1284,7 @@ highlight the PDFs and easily manage your reading.&lt;/p&gt;
 &lt;h2 id=&quot;556-the-state-of-homelessness-in-america-pdf&quot;&gt;556. &lt;a href=&quot;https://app.getpolarized.io/add/?file=https://www.whitehouse.gov/wp-content/uploads/2019/09/The-State-of-Homelessness-in-America.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20State%20of%20Homelessness%20in%20America%20%5Bpdf%5D%22%7D&quot;&gt;The State of Homelessness in America [pdf]&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21001300&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;557-the-effect-of-founder-experience-on-labor-market-outcomes-a-field-experiment-pdf&quot;&gt;557. &lt;a href=&quot;https://app.getpolarized.io/add/?file=http://www.tristanbotelho.com/files/BotelhoChang2019_FounderExperienceLaborMarkets.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20Effect%20of%20Founder%20Experience%20on%20Labor%20Market%20Outcomes%3A%20A%20Field%20Experiment%20%5Bpdf%5D%22%7D&quot;&gt;The Effect of Founder Experience on Labor Market Outcomes: A Field Experiment [pdf]&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T08:00:00-08:00</published><updated>2020-01-19T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
-
-&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
-he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
-
-&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
-
-&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
-annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
-
-&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
-tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
-
-&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
-notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
-
-&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
-
-&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T08:00:00-08:00</published><updated>2020-01-16T08:00:00-08:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roadmap-for-polar-in-q1-2020&quot;&gt;Roadmap for Polar in Q1 2020&lt;/h1&gt;
 
@@ -1616,143 +1737,4 @@ as we’re going to migrate to anchors for sub-screens for history.&lt;/p&gt;
   &lt;li&gt;
     &lt;p&gt;Upgrades to latest firebase&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">We have a new version of Polar out with some really interesting features.</summary></entry><entry><title type="html">Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0.</title><link href="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html" rel="alternate" type="text/html" title="Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0." /><published>2019-12-11T08:00:00-08:00</published><updated>2019-12-11T08:00:00-08:00</updated><id>https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7</id><content type="html" xml:base="https://getpolarized.io/2019/12/11/1-70-Folder-Exporting-Electron-7.html">&lt;p&gt;Polar 1.70 is out! Lots of big changes in this release!&lt;/p&gt;
-
-&lt;p&gt;I know I promised you guys that we would create a video for each release but I can’t create
-one for 1.70 just now as I’m trying to rush it out to fix an issue with Google authentication
-(more below).&lt;/p&gt;
-
-&lt;p&gt;Normally emergency releases I will do a small point release but this release changed a great 
-deal and I think it’s a reasonable trade-off to get it out the door.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-sidebar&quot;&gt;New Sidebar&lt;/h2&gt;
-
-&lt;h3 id=&quot;folder--tag-creation&quot;&gt;Folder / Tag Creation&lt;/h3&gt;
-
-&lt;p&gt;The sidebar code has been significantly refactored to be far far more usable.  You can read
-more in-depth about &lt;a href=&quot;https://getpolarized.io/docs/folders.html&quot;&gt;how folders work in our documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In a nutshell, we now have more explicit folders which can be created ahead of time by the user.&lt;/p&gt;
-
-&lt;p&gt;This ended up confusing new users as they were confused how to work with tags.  They didn’t 
-realize you first had to create tags/folders on documents.&lt;/p&gt;
-
-&lt;p&gt;Now you can just right click the sidebar and click “Create Folder” or “Create Tag” and you’ll 
-be prompted for the value of the new tag, and it will be created.&lt;/p&gt;
-
-&lt;p&gt;Additionally there’s a “+” dropdown in the sidebar so it’s more discoverable for new users.&lt;/p&gt;
-
-&lt;h3 id=&quot;filtering&quot;&gt;Filtering&lt;/h3&gt;
-
-&lt;p&gt;Now the sidebar code has a filter box at the top where you can type in text to filter 
-the tags shown.  This works really well for selecting a tag that you know by name.&lt;/p&gt;
-
-&lt;p&gt;You can just select the filter, type the tag, then click the tag.&lt;/p&gt;
-
-&lt;p&gt;This became more important as we added improved support for tags and people are creating
-more and more tags.  We don’t want to have tag overload!&lt;/p&gt;
-
-&lt;h2 id=&quot;saving-annotations&quot;&gt;Saving Annotations&lt;/h2&gt;
-
-&lt;p&gt;Many of our users want to take their annotations and save them to external files.  They’re 
-doing this to make it easy to share annotations with others but also for scripts or 
-migrating into a document that they might be editing.&lt;/p&gt;
-
-&lt;p&gt;One glaring omission was that the annotation view didn’t allow you to save annotations to 
-a file.&lt;/p&gt;
-
-&lt;p&gt;Now there’s a “…” to the right where you can click “Download annotation as” to save the 
-files locally.&lt;/p&gt;
-
-&lt;p&gt;I’m trying to migrate away from calling this process “exporting” as we don’t have a 
-corresponding “import.”  The Polar desktop app itself is basically it’s own export.&lt;/p&gt;
-
-&lt;p&gt;If you want a raw backup of your data on the desktop app it’s already done for you - it’s
-just your .polar directory.&lt;/p&gt;
-
-&lt;p&gt;That said, some users have noted some reasonable concern to feel more in charge of their
-backups.&lt;/p&gt;
-
-&lt;p&gt;I’m going to add an option to perform backups directly in Polar in the future just so 
-users can have more piece of mind that their data is safe.&lt;/p&gt;
-
-&lt;h2 id=&quot;electron-70&quot;&gt;Electron 7.0&lt;/h2&gt;
-
-&lt;p&gt;This release also migrates us to Electron 7.0.  I’ve been wanting to do this for a while
-but the Electron releases are usually a big migration.  This was forced on us by a change
-Google made with their authentication which blocked Electron releases.&lt;/p&gt;
-
-&lt;p&gt;Electron 7.0 adds a ton of new features for better integration into the OS so this should
-be an improvement across the board in terms of usability, reliability, etc.&lt;/p&gt;
-
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h2&gt;
-
-&lt;p&gt;Next we’re going to focus on a 1.80 release. 2.0 is going to come out soon but I need to 
-switch back to working on mobile support as this is very important for mobile flashcard 
-review.&lt;/p&gt;
-
-&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
-
-&lt;p&gt;Here’s the full changelog for this release:&lt;/p&gt;
-
-&lt;h2 id=&quot;features&quot;&gt;Features&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Migration to Electron 7.1.4&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Flagged items are now bold.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;odd/even coloring in the document list / table.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;usability: the sidebar has been significantly redesigned
-    &lt;ul&gt;
-      &lt;li&gt;”+” button for adding tags and folders&lt;/li&gt;
-      &lt;li&gt;context menu for adding tags and folders&lt;/li&gt;
-      &lt;li&gt;remove tag from docs&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;usability: expand/collapse of folders now works now.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;UI: better UI filter control.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;usability: you can now see the folders a file is within in the document repository&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;usability: you can now export annotations from the annotations view.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;usability: double click of comments or flashcards edits them.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;fixes&quot;&gt;Fixes&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fix for Google authentication issues due to exposing Electron in User Agent and confused
-Google.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Reading and review for older items would fail due to schema changes.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;ChromeOS is now a desktop platform&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Upgrade account button now works.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Improved text in suggestions dialog.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The user suggestions dialog is centered.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;usability: Fixed an issue where if the user accidentally hit ‘r’ the document would rotate and people
-couldn’t figure out how to revert.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.70 is out! Lots of big changes in this release!</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">We have a new version of Polar out with some really interesting features.</summary></entry></feed>
