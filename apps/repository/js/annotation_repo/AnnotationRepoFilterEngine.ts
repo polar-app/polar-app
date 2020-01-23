@@ -85,7 +85,7 @@ export class AnnotationRepoFilterEngine<D extends IDocAnnotation> {
 
         if (! Strings.empty(this.filters.text)) {
 
-            Analytics.event({category: 'annotation-view', action: 'filter-by-text'});
+            // Analytics.event({category: 'annotation-view', action: 'filter-by-text'});
 
             return repoAnnotations
                 .filter(current => isPresent(current.text))

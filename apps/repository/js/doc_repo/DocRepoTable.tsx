@@ -740,7 +740,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
         let mutated: boolean = false;
 
         if (field === 'archived') {
-            Analytics.event({category: 'user', action: 'archived-doc'});
+            // Analytics.event({category: 'user', action: 'archived-doc'});
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
             mutated = true;
@@ -756,7 +756,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
         if (field === 'flagged') {
 
-            Analytics.event({category: 'user', action: 'flagged-doc'});
+            // Analytics.event({category: 'user', action: 'flagged-doc'});
             repoDocInfo.flagged = !repoDocInfo.flagged;
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
 

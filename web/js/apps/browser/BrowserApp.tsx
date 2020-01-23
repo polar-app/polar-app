@@ -165,7 +165,7 @@ export class BrowserApp {
 
         const browser = BrowserRegistry[browserName];
 
-        Analytics.event({category: 'content-capture', action: 'browser-changed'});
+        // Analytics.event({category: 'content-capture', action: 'browser-changed'});
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
 

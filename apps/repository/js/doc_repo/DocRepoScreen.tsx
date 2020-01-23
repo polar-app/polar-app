@@ -264,7 +264,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         const persistenceLayerType = this.props.persistenceLayerController.currentType();
 
-        Analytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
+        // Analytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
 
     }
 
@@ -612,7 +612,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
 
-        Analytics.event({category: 'user', action: 'doc-tagged'});
+        // Analytics.event({category: 'user', action: 'doc-tagged'});
 
         await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
         this.refresh();
@@ -685,7 +685,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
 
-        Analytics.event({category: 'user', action: 'set-doc-title'});
+        // Analytics.event({category: 'user', action: 'set-doc-title'});
 
         log.info("Setting doc title: " , title);
 
@@ -698,7 +698,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onSelectedColumns(columns: ReadonlyArray<ListOptionType>) {
 
-        Analytics.event({category: 'user', action: 'selected-columns'});
+        // Analytics.event({category: 'user', action: 'selected-columns'});
 
         // tslint:disable-next-line:variable-name
         const columns_map = IDMaps.create(columns);
@@ -731,7 +731,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onFilterByTitle(title: string) {
         Preconditions.assertString(title, 'title');
-        Analytics.event({category: 'user', action: 'filter-by-title'});
+        // Analytics.event({category: 'user', action: 'filter-by-title'});
         this.docRepoFilters.onFilterByTitle(title);
     }
 

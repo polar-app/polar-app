@@ -110,7 +110,7 @@ export class HolidayPromotionButton extends React.PureComponent<IProps, IState> 
     }
 
     private onUpgrade() {
-        Analytics.event({category: 'premium-promotion', action: 'xmas-2019'});
+        // Analytics.event({category: 'premium-promotion', action: 'xmas-2019'});
     }
 
 }

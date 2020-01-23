@@ -502,7 +502,7 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
         this.callback = callbackProps;
 
-        Analytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
+        // Analytics.event({category: 'tour', action: 'did-step-' + callbackProps.index});
 
         const step: EnhancedStep = callbackProps.step;
 
@@ -565,13 +565,13 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
                 switch (callbackProps.status) {
                     case STATUS.SKIPPED:
-                        Analytics.event({category: 'tour-result', action: 'skipped'});
-                        Analytics.event({category: 'tour-skip', action: 'skipped-at-step-' + callbackProps.index});
+                        // Analytics.event({category: 'tour-result', action: 'skipped'});
+                        // Analytics.event({category: 'tour-skip', action: 'skipped-at-step-' + callbackProps.index});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_SKIPPED);
                         break;
                     case STATUS.FINISHED:
-                        Analytics.event({category: 'tour-result', action: 'finished'});
+                        // Analytics.event({category: 'tour-result', action: 'finished'});
 
                         LifecycleToggle.mark(LifecycleEvents.TOUR_FINISHED);
                         break;

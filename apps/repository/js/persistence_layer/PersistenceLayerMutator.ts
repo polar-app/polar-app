@@ -94,7 +94,7 @@ export class PersistenceLayerMutator {
     }
 
     private async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
-        Analytics.event({category: 'user', action: 'doc-tagged'});
+        // Analytics.event({category: 'user', action: 'doc-tagged'});
         await this.repoDocMetaManager.writeDocInfoTags(repoDocInfo, tags);
         this.refresher();
     }

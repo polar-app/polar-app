@@ -62,7 +62,7 @@ export class TrackedDropdownItem extends React.PureComponent<TrackedDropdownItem
         const action = this.props.title.replace(/ /g, '').toLowerCase();
 
         if (this.props.trackingCategory) {
-            Analytics.event({category: this.props.trackingCategory, action});
+            // Analytics.event({category: this.props.trackingCategory, action});
         }
 
         this.props.onClick();

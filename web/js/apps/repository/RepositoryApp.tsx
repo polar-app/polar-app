@@ -534,17 +534,17 @@ export class RepositoryApp {
 
     private sendAnalytics() {
 
-        const version = Version.get();
-        const platform = Platforms.toSymbol(Platforms.get());
-        const screen = `${window.screen.width}x${window.screen.height}`;
-        const runtime = AppRuntime.type();
-
-
-        // TODO: I think these should be session traits
-        Analytics.event({category: 'app', action: 'version-' + version});
-        Analytics.event({category: 'platform', action: `${platform}`});
-        Analytics.event({category: 'screen', action: screen});
-        Analytics.event({category: 'runtime', action: runtime});
+        // const version = Version.get();
+        // const platform = Platforms.toSymbol(Platforms.get());
+        // const screen = `${window.screen.width}x${window.screen.height}`;
+        // const runtime = AppRuntime.type();
+        //
+        //
+        // // TODO: I think these should be session traits
+        // Analytics.event({category: 'app', action: 'version-' + version});
+        // Analytics.event({category: 'platform', action: `${platform}`});
+        // Analytics.event({category: 'screen', action: screen});
+        // Analytics.event({category: 'runtime', action: runtime});
 
     }
 

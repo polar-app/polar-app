@@ -135,7 +135,7 @@ export class DocRepoFilters {
 
     private doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>): ReadonlyArray<RepoDocInfo>  {
 
-        Analytics.event({category: 'user', action: 'filter-by-tags'});
+        // Analytics.event({category: 'user', action: 'filter-by-tags'});
 
         const tags = this.filters.filteredTags.get()
             .filter(current => current.id !== '/');
