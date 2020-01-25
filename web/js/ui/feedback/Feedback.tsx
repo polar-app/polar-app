@@ -215,9 +215,9 @@ export class Feedback extends React.Component<IProps, IState> {
         if (! this.props.noEvent) {
 
             Analytics.event({
-                                        category: this.props.category,
-                                        action: `unsure`,
-                                    });
+                category: this.props.category,
+                action: `unsure`,
+            });
 
             console.log(`Sent unsure feedback for category ${this.props.category}`);
 
@@ -230,8 +230,8 @@ export class Feedback extends React.Component<IProps, IState> {
     private markCompleted() {
 
         this.setState({
-                          completed: true
-                      });
+            completed: true
+        });
 
     }
 
