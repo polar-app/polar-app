@@ -51,9 +51,9 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
         // mark this as shown so that we delay the next splash, even on refresh
         SplashLifecycle.markShown();
 
-        Analytics.event({category: 'splashes', action: 'shown'});
-
-        Analytics.event({category: 'splashes-shown', action: prioritizedComponentRef.id});
+        // Analytics.event({category: 'splashes', action: 'shown'});
+        //
+        // Analytics.event({category: 'splashes-shown', action: prioritizedComponentRef.id});
 
         // return the top ranking element.
         return prioritizedComponentRef.create();

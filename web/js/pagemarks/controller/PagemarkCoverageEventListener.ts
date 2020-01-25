@@ -121,7 +121,7 @@ export class PagemarkCoverageEventListener {
                 .catch(err => log.error("Failed to create pagemark: ", err));
 
         } finally {
-            Analytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
+            // Analytics.event({category: 'user', action: 'created-pagemark-via-context-menu'});
         }
 
     }
@@ -141,7 +141,7 @@ export class PagemarkCoverageEventListener {
                 .catch(err => log.error("Failed to create pagemark: ", err));
 
         } finally {
-            Analytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+            // Analytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
         }
 
     }

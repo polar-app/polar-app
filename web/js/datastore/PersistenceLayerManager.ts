@@ -136,7 +136,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         log.info("Initialized persistence layer: " + type);
 
-        Analytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
+        // Analytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
 
         return true;
 

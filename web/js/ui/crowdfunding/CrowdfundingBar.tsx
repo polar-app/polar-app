@@ -75,12 +75,12 @@ export class CrowdfundingBar extends React.Component<IProps, IState> {
     }
 
     private onMoreInfo() {
-        Analytics.event({category: 'crowdfunding-bar', action: 'more-info'});
+        // Analytics.event({category: 'crowdfunding-bar', action: 'more-info'});
         Nav.openLinkWithNewTab("https://getpolarized.io/2019/04/11/Polar-Initial-Crowdfunding-Campaign.html");
     }
 
     private onDonate() {
-        Analytics.event({category: 'crowdfunding-bar', action: 'donate'});
+        // Analytics.event({category: 'crowdfunding-bar', action: 'donate'});
         Nav.openLinkWithNewTab("https://opencollective.com/polar-bookshelf");
     }
 

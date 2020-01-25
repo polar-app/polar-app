@@ -105,8 +105,11 @@ export class DocRepoAnkiSyncController {
             percentage: 100
         });
 
-        Analytics.event({category: 'anki', action: 'sync-completed-' + nrTasks});
-        Analytics.event({category: 'anki', action: 'sync-failed-' + nrFailedTasks});
+        Analytics.event({category: 'anki', action: 'sync-completed'});
+
+
+        // Analytics.event({category: 'anki', action: 'sync-completed-' + nrTasks});
+        // Analytics.event({category: 'anki', action: 'sync-failed-' + nrFailedTasks});
 
     }
 

@@ -33,7 +33,9 @@ export class Invitations {
 
             }
 
-            Analytics.event({category: 'invitations', action: 'invited-' + emailAddresses.length});
+            // Analytics.event({category: 'invitations', action: 'invited-' + emailAddresses.length});
+            Analytics.event({category: 'invitations', action: 'invited'});
+
 
         } finally {
             // noop for now

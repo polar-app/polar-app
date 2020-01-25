@@ -105,7 +105,7 @@ export class AnnotationBarService {
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
 
-            Analytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
+            // Analytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
 
             // TODO: this is just a hack for now.  We should send a dedicated
             // object.

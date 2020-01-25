@@ -30,10 +30,10 @@ export class MailingList {
 
                 if (userInfo.email) {
                     try {
-                        Analytics.event({category: 'mailing-list', action: 'subscribed'});
+                        // Analytics.event({category: 'mailing-list', action: 'subscribed'});
                         await Mailchimp.subscribe(userInfo.email, userInfo.displayName || "");
                     } catch (e) {
-                        Analytics.event({category: 'mailing-list', action: 'failed'});
+                        // Analytics.event({category: 'mailing-list', action: 'failed'});
                         throw e;
                     }
                 }
