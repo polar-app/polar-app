@@ -5,19 +5,16 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {round} from 'polar-shared/src/util/Percentages';
+import {Percentages, round} from 'polar-shared/src/util/Percentages';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
-import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {PageMeta} from './PageMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {ReadingProgresses} from './ReadingProgresses';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {HitMap} from 'polar-shared/src/util/HitMap';
 import {ReadingOverviews} from './ReadingOverviews';
-import {Percentages} from 'polar-shared/src/util/Percentages';
 import {IPageMeta, PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -32,6 +29,10 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     width: 100,
     height: 100
 });
+
+export interface UpdatePagemarksForRangeOpts {
+    readonly start?: PageNumber;
+}
 
 export class Pagemarks {
 
@@ -51,10 +52,12 @@ export class Pagemarks {
      * @param docMeta
      * @param end
      * @param percentage The percentage of the end page to create a pagemark.
+     * @param start Where to start creating the pagemark from.
      */
     public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
-                                          percentage: number = 100 ): ReadonlyArray<PagemarkRef> {
+                                          percentage: number = 100,
+                                          opts: UpdatePagemarksForRangeOpts = {}): ReadonlyArray<PagemarkRef> {
 
         if (end < 1) {
             throw new Error("Page number must be 1 or more");
@@ -138,7 +141,7 @@ export class Pagemarks {
 
         };
 
-        const start = calculateStartPage();
+        const start = opts.start || calculateStartPage();
 
         const result: PagemarkRef[] = [];
 
