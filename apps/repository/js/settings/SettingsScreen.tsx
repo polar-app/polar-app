@@ -132,6 +132,12 @@ export const SettingsScreen = (props: IProps) => {
                               prefs={prefs}
                               preview={true}/>
 
+                <SettingEntry title="Automatic pagemarks"
+                              description="Enables auto pagemark creation as you scroll and read a document."
+                              name="auto-pagemarks"
+                              prefs={prefs}
+                              preview={true}/>
+
                 <NullCollapse open={ ! Devices.isDesktop()}>
                     <SettingEntry title="Table and phone reading"
                                   description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
