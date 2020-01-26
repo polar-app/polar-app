@@ -20,6 +20,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {Objects} from "polar-shared/src/util/Objects";
+import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 
 const log = Logger.create();
 
@@ -43,6 +44,15 @@ export class Pagemarks {
 
     public static createID(created: ISODateTimeString) {
         return Hashcodes.createID({created, sequence: this.sequences.id++});
+    }
+
+    public static createExtender(docMeta: IDocMeta) {
+
+        return (extendPagemark: ExtendPagemark) => {
+            Pagemarks.updatePagemarksForRange(docMeta, extendPagemark.page, 100, {start: extendPagemark.origin});
+
+        };
+
     }
 
     /**
