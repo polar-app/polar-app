@@ -1,4 +1,6 @@
 
+- Flow for the annotation sidebar now fixes the header at the top and 
+  properly sets overflow so just the sidebar text flows. 
 - Short term workaround for a bug where firebase won't write to prefs on 
   startup which blocked cloud sync on restart for some users.
 - Upgraded to latest Firebase libraries (7.7.0)

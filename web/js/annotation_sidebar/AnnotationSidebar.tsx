@@ -135,7 +135,8 @@ const Annotations = (props: IRenderProps) => {
                 style={{
                     flexGrow: 1,
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    overflow: 'auto'
                 }}>
         <AnnotationsBlock {...props}/>
     </div>;
@@ -153,7 +154,7 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
     return (
 
-        <div className="p-1 pb-2 mb-3 border-bottom pl-1 pr-1 text-md">
+        <div className="p-1 border-bottom pl-1 pr-1 text-md">
 
             <div style={{
                      display: 'flex'
