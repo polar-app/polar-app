@@ -50,7 +50,6 @@ export class Pagemarks {
 
         return (extendPagemark: ExtendPagemark) => {
             Pagemarks.updatePagemarksForRange(docMeta, extendPagemark.page, 100, {start: extendPagemark.origin});
-
         };
 
     }
@@ -62,7 +61,7 @@ export class Pagemarks {
      * @param docMeta
      * @param end
      * @param percentage The percentage of the end page to create a pagemark.
-     * @param start Where to start creating the pagemark from.
+     * @param opts options for creating the pagemarks.
      */
     public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
