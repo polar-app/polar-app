@@ -5,7 +5,7 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {Percentages, round} from 'polar-shared/src/util/Percentages';
+import {Percentage100, Percentages, round} from 'polar-shared/src/util/Percentages';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
 import {DocMetas} from './DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
@@ -56,7 +56,7 @@ export class Pagemarks {
      */
     public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
-                                          percentage: number = 100,
+                                          percentage: Percentage100 = 100,
                                           opts: UpdatePagemarksForRangeOpts = {}): ReadonlyArray<PagemarkRef> {
 
         if (end < 1) {
