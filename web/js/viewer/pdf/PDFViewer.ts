@@ -9,6 +9,7 @@ import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
 import {Analytics} from "../../analytics/Analytics";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
+import {Pagemarks} from "../../metadata/Pagemarks";
 
 declare var window: any;
 
@@ -42,7 +43,8 @@ export class PDFViewer extends Viewer {
 
             // this.handleChromeSelectionFix();
 
-            // Scrollers.register();
+            // TODO: only register this via prefs (if this feature is enabled).
+            // Scrollers.register(Pagemarks.createExtender(this.model.docMeta), 'full');
 
             // register with something like (prevous move > 30s ago and jump is <= 100 % of viewport height
             // then set the previous page to 100% of height... JUST below the current fold... just call
