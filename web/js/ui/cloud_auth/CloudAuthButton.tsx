@@ -41,7 +41,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
             if (this.state.userInfo) {
 
                 return <AccountControlDropdown userInfo={this.state.userInfo}
-                                               onInvite={NULL_FUNCTION}
                                                onLogout={() => this.logout()}/>;
 
             } else {

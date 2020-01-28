@@ -21,7 +21,6 @@ const AccountInfo = (props: AccountInfoProps) => {
     if (props.userInfo) {
         return <AccountControl {...props}
                                userInfo={props.userInfo}
-                               onInvite={NULL_FUNCTION}
                                onLogout={() => onLogout()}/>;
     } else {
         return <h2>Please Login</h2>;
