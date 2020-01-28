@@ -95,7 +95,7 @@ apt-get install jq
 
 ## Docker
 
-https://docs.docker.com/v17.12/install/linux/docker-ce/debian/#install-docker-ce-1
+https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 
 install the latest docker-ci for the windows builds here.
 
@@ -110,3 +110,11 @@ snap install snapcraft --classic
 
 # Basic Packages
 apt-get install jq nc
+
+
+
+tme4wAZMnKS4ByEfrUl4UfH62dm2
+
+ravi.saive82@gmail.com
+
+
