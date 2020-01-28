@@ -50,15 +50,8 @@ export class InviteScreen extends React.Component<IProps> {
                                      flexGrow: 1
                                  }}>
 
-                                <InviteUsersContent onInvitedUserText={(invitedUsersText) => this.onInvitedUserText(invitedUsersText)}/>
-
-                                <div className="text-right">
-                                    <Button color="primary"
-                                            size="lg"
-                                            onClick={() => this.onInvite()}>
-                                        Invite
-                                    </Button>
-                                </div>
+                                <InviteUsersContent onInvite={() => this.onInvite()}
+                                                    onInvitedUserText={(invitedUsersText) => this.onInvitedUserText(invitedUsersText)}/>
 
                             </div>
 

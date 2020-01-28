@@ -47,13 +47,13 @@ const UserImage = (props: IProps) => {
 
 };
 
-const InviteUsersButton = (props: IProps) => {
+const InviteUsersButton = () => {
 
     return <Link to={{pathname: '/invite'}}>
         <Button id="cloud-sync-invite-users"
                 color="secondary"
-                size="sm"
-                onClick={() => props.onInvite()}>
+                outline
+                size="md">
 
             <i className="fas fa-user-plus mr-1"/>
 
@@ -139,8 +139,17 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
 
                     <div className="mt-2 pt-2 pb-2 border-top text-right">
 
-                        <div style={{display: 'block', whiteSpace: 'nowrap'}} className="mt-2">
-                            <LogoutButton {...props}/>
+                        <div style={{display: 'flex', whiteSpace: 'nowrap'}} className="mt-2">
+
+
+                            <div className="ml-auto mr-1">
+                                {/*<InviteUsersButton/>*/}
+                            </div>
+
+                            <div>
+                                <LogoutButton {...props}/>
+                            </div>
+
                         </div>
 
                     </div>
@@ -158,8 +167,6 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
 interface IProps {
 
     readonly userInfo: UserInfo;
-
-    readonly onInvite: () => void;
 
     readonly onLogout: () => void;
 

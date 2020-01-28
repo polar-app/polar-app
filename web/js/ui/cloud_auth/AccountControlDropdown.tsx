@@ -45,7 +45,6 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 
                     <PopoverBody className="shadow">
                         <AccountControl userInfo={this.props.userInfo}
-                                        onInvite={this.props.onInvite}
                                         onLogout={this.props.onLogout}/>
 
                     </PopoverBody>
@@ -63,8 +62,6 @@ export class AccountControlDropdown extends React.PureComponent<IProps, IState> 
 interface IProps {
 
     readonly userInfo: UserInfo;
-
-    readonly onInvite: () => void;
 
     readonly onLogout: () => void;
 
