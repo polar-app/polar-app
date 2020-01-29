@@ -30,7 +30,7 @@ const XMAS_2019: ReadonlyArray<Discount> = [
 
 ];
 
-const DISCOUNTS = XMAS_2019;
+const DISCOUNTS: ReadonlyArray<Discount> = [];
 
 export interface DiscountMap {
     [key: string]: Discount;
