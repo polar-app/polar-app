@@ -115,4 +115,20 @@ export class StripeCustomers {
 
     }
 
+    public static async applyCoupon(email: string, coupon: string) {
+
+        const stripe = StripeUtils.getStripe();
+
+        const customerSubscription = await this.getCustomerSubscription(email);
+        const {customer, subscription} = customerSubscription;
+
+        if (!subscription) {
+            // we are already done. no subscription.
+            return;
+        }
+
+        await stripe.subscriptions.update(subscription.id, {coupon});
+
+    }
+
 }
