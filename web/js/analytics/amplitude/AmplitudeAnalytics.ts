@@ -1,10 +1,22 @@
 import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
 
-import amplitude from 'amplitude-js';
+function isBrowser() {
+    return typeof window !== 'undefined';
+}
 
-// TODO session and version
+function createAmplitude(): any {
 
-amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0");
+    if (isBrowser()) {
+        const amplitude = require('amplitude-js');
+        amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0");
+        return amplitude;
+    }
+
+}
+
+// TODO session variables...
+
+const amplitude = createAmplitude();
 
 export class AmplitudeAnalytics implements IAnalytics {
 

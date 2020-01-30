@@ -4,7 +4,7 @@ import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 
-function isBrowser() {
+export function isBrowser() {
     return typeof window !== 'undefined';
 }
 
@@ -12,7 +12,6 @@ function createDelegate(): IAnalytics {
 
     if (isBrowser()) {
         return new CompositeAnalytics([
-            // new SegmentAnalytics(),
             new AmplitudeAnalytics(),
             new GAAnalytics()
         ]);
@@ -45,6 +44,7 @@ export class Analytics {
     public static traits(map: TraitsMap): void {
         delegate.traits(map);
     }
+
     public static version(version: string): void {
         delegate.version(version);
     }
