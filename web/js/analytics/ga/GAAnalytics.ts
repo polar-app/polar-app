@@ -10,6 +10,9 @@ export class GAAnalytics {
         RendererAnalytics.event(evt);
     }
 
+    public event2(event: string, data?: any): void {
+    }
+
     public page(name: string) {
         RendererAnalytics.pageview(name);
     }

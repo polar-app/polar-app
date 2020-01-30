@@ -28,6 +28,10 @@ export class Analytics {
         delegate.event(event);
     }
 
+    public event2(event: string, data?: any): void {
+        delegate.event2(event, data);
+    }
+
     public static identify(userId: string): void {
         delegate.identify(userId);
     }

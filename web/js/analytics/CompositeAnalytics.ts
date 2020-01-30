@@ -10,6 +10,10 @@ export class CompositeAnalytics implements IAnalytics {
         this.invoke(delegate => delegate.event(event));
     }
 
+    public event2(event: string, data?: any): void {
+        this.invoke(delegate => delegate.event2(event, data));
+    }
+
     public identify(userId: string): void {
         this.invoke(delegate => delegate.identify(userId));
     }

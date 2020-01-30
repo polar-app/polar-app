@@ -5,6 +5,9 @@ export class NullAnalytics implements IAnalytics {
     public event(event: IEventArgs): void {
     }
 
+    public event2(event: string, data?: any): void {
+    }
+
     public identify(userId: string): void {
     }
 

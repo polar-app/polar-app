@@ -1,9 +1,10 @@
 
 export interface IAnalytics {
     event(event: IEventArgs): void;
+    event2(event: string, data?: any): void;
     page(name: string): void;
     identify(userId: UserIdentificationStr): void;
-    traits(map: TraitsMap): void;
+    traits(traits: TraitsMap): void;
 }
 
 /**
