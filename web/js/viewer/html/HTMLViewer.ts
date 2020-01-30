@@ -20,6 +20,7 @@ import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {IFrames} from '../../util/dom/IFrames';
 import {PinchToZoom} from "../../ui/Gestures";
 import {Analytics} from "../../analytics/Analytics";
+import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 
 const log = Logger.create();
 
@@ -53,6 +54,8 @@ export class HTMLViewer extends Viewer {
 
         log.info("Starting HTMLViewer");
 
+        AnalyticsInitializer.doInit();
+
         PinchToZoom.disable();
 
         this.content = <HTMLIFrameElement> document.querySelector("#content");
@@ -60,8 +63,6 @@ export class HTMLViewer extends Viewer {
         this.textLayer = <HTMLElement> document.querySelector(".textLayer");
 
         this.htmlFormat = new HTMLFormat();
-
-        Analytics.page("/htmlviewer");
 
         // *** start the resizer and initializer before setting the iframe
 

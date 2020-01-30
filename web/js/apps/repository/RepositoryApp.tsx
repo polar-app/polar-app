@@ -29,7 +29,6 @@ import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Platforms} from 'polar-shared/src/util/Platforms';
 import {AppOrigin} from '../AppOrigin';
-import {AppRuntime} from '../../AppRuntime';
 import {AuthHandlers} from './auth_handler/AuthHandler';
 import Input from 'reactstrap/lib/Input';
 import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
@@ -66,6 +65,7 @@ import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {PinchToZoom} from "../../ui/Gestures";
 import {Analytics} from "../../analytics/Analytics";
+import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 
 const log = Logger.create();
 
@@ -83,6 +83,8 @@ export class RepositoryApp {
     public async start() {
 
         log.info("Running with Polar version: " + Version.get());
+
+        AnalyticsInitializer.doInit();
 
         renderLoadingSplash();
 
@@ -343,37 +345,8 @@ export class RepositoryApp {
                                  plan={account?.plan}/>;
         };
 
-        const onNavChange = () => {
-
-            try {
-
-                const url = new URL(document.location!.href);
-
-                const path = url.pathname + url.hash || "";
-                const hostname = url.hostname;
-                const title = document.title;
-
-                log.info("Navigating to: ", { path, hostname, title });
-
-                Analytics.page(path);
-
-            } catch (e) {
-                log.error("Unable to handle hash change", e);
-            }
-
-        };
-
-        // must be called the first time so that we have analytics for the home
-        // page on first load.
-        onNavChange();
-
-        window.addEventListener("hashchange", () => onNavChange(), false);
-
-        this.sendAnalytics();
-
         Accounts.listenForPlanUpgrades()
             .catch(err => log.error("Unable to listen for plan upgrades: ", err));
-
 
         // TODO: splashes renders far far far too late and there's a delay.
 
@@ -529,22 +502,6 @@ export class RepositoryApp {
             }
 
         });
-
-    }
-
-    private sendAnalytics() {
-
-        // const version = Version.get();
-        // const platform = Platforms.toSymbol(Platforms.get());
-        // const screen = `${window.screen.width}x${window.screen.height}`;
-        // const runtime = AppRuntime.type();
-        //
-        //
-        // // TODO: I think these should be session traits
-        // Analytics.event({category: 'app', action: 'version-' + version});
-        // Analytics.event({category: 'platform', action: `${platform}`});
-        // Analytics.event({category: 'screen', action: screen});
-        // Analytics.event({category: 'runtime', action: runtime});
 
     }
 

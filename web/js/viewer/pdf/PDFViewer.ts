@@ -8,8 +8,7 @@ import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
 import {Analytics} from "../../analytics/Analytics";
-import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
-import {Pagemarks} from "../../metadata/Pagemarks";
+import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 
 declare var window: any;
 
@@ -28,9 +27,9 @@ export class PDFViewer extends Viewer {
 
         log.info("Starting PDFViewer");
 
-        PinchToZoom.disable();
+        AnalyticsInitializer.doInit();
 
-        Analytics.page("/pdfviewer");
+        PinchToZoom.disable();
 
         const stopwatch = Stopwatches.create();
 
