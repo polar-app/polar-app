@@ -3,6 +3,8 @@ import {Version} from "polar-shared/src/util/Version";
 import {Firebase} from "../firebase/Firebase";
 import {Accounts} from "../accounts/Accounts";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Emails} from "polar-shared/src/util/Emails";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const log = Logger.create();
 
@@ -27,16 +29,66 @@ export class AnalyticsInitializer {
 
     private static async initAccount() {
 
-        const userID = await Firebase.currentUserID();
+        const doUserCreated = (user: firebase.User) => {
 
-        if (userID) {
-            Analytics.identify(userID);
+            const doUserEmailDomain = () => {
+
+                // tslint:disable-next-line:variable-name
+                const user_email_domain = Emails.toDomain(user.email!) || "";
+
+                Analytics.traits({
+                    user_email_domain,
+                });
+
+            };
+
+            const doUserCreated = () => {
+
+                if (user.metadata.creationTime) {
+
+                    // tslint:disable-next-line:variable-name
+                    const user_created_week = ISODateTimeStrings.toPartialWeek(user.metadata.creationTime)!;
+
+                    // tslint:disable-next-line:variable-name
+                    const user_created_month = ISODateTimeStrings.toPartialMonth(user.metadata.creationTime)!;
+
+                    // tslint:disable-next-line:variable-name
+                    const user_created_day = ISODateTimeStrings.toPartialDay(user.metadata.creationTime)!;
+
+                    Analytics.traits({
+                        user_created_week,
+                        user_created_month,
+                        user_created_day
+                    });
+
+                }
+
+            };
+
+            doUserEmailDomain();
+            doUserCreated();
+
+        };
+
+        const doPlan = async () => {
 
             const account = await Accounts.get();
 
             const plan = account?.plan || 'free';
 
             Analytics.traits({plan});
+
+        };
+
+        const user = await Firebase.currentUser();
+
+        if (user) {
+
+            Analytics.identify(user.uid);
+
+            doUserCreated(user);
+            await doPlan();
+
         }
 
     }
