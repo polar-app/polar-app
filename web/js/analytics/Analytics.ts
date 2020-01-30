@@ -1,17 +1,19 @@
 import {CompositeAnalytics} from "./CompositeAnalytics";
-import {IEventArgs, TraitsMap} from "./IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
+import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 
 function isBrowser() {
     return typeof window !== 'undefined';
 }
 
-function createDelegate() {
+function createDelegate(): IAnalytics {
 
     if (isBrowser()) {
         return new CompositeAnalytics([
             // new SegmentAnalytics(),
+            new AmplitudeAnalytics(),
             new GAAnalytics()
         ]);
     } else {
@@ -28,7 +30,7 @@ export class Analytics {
         delegate.event(event);
     }
 
-    public event2(event: string, data?: any): void {
+    public static event2(event: string, data?: any): void {
         delegate.event2(event, data);
     }
 
@@ -42,6 +44,9 @@ export class Analytics {
 
     public static traits(map: TraitsMap): void {
         delegate.traits(map);
+    }
+    public static version(version: string): void {
+        delegate.version(version);
     }
 
 }

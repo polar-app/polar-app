@@ -1,10 +1,10 @@
 /**
  * System that just uses the legacy RendererAnalytics until we do away with GA.
  */
-import {IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
-export class GAAnalytics {
+export class GAAnalytics implements IAnalytics {
 
     public event(evt: IEventArgs) {
         RendererAnalytics.event(evt);
@@ -22,6 +22,10 @@ export class GAAnalytics {
     }
 
     public traits(map: TraitsMap) {
+        // not implemented
+    }
+
+    public version(version: string): void {
         // not implemented
     }
 

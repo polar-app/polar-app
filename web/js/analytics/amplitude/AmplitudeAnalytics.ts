@@ -2,7 +2,8 @@ import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
 
 import amplitude from 'amplitude-js';
 
-// TODO: when in NPM environment this won't work..
+// TODO session and version
+
 amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0");
 
 export class AmplitudeAnalytics implements IAnalytics {
@@ -26,6 +27,11 @@ export class AmplitudeAnalytics implements IAnalytics {
 
     public traits(traits: TraitsMap): void {
         amplitude.getInstance().setUserProperties(traits);
+    }
+
+    // TODO: make this a method
+    public version(version: string) {
+        amplitude.getInstance().setVersionName(version);
     }
 
 }

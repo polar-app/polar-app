@@ -4,7 +4,16 @@ export interface IAnalytics {
     event2(event: string, data?: any): void;
     page(name: string): void;
     identify(userId: UserIdentificationStr): void;
+
+    /**
+     * Set user traits.
+     */
     traits(traits: TraitsMap): void;
+
+    /**
+     * Set the app version
+     */
+    version(version: string): void;
 }
 
 /**

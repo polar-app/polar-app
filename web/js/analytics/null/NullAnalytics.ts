@@ -17,4 +17,7 @@ export class NullAnalytics implements IAnalytics {
     public traits(map: TraitsMap): void {
     }
 
+    public version(version: string): void {
+    }
+
 }

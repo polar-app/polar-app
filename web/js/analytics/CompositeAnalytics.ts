@@ -25,6 +25,9 @@ export class CompositeAnalytics implements IAnalytics {
     public traits(map: TraitsMap): void {
         this.invoke(delegate => delegate.traits(map));
     }
+    public version(version: string): void {
+        this.invoke(delegate => delegate.version(version));
+    }
 
     private invoke(handler: (delegate: IAnalytics) => void) {
 
