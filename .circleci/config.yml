@@ -185,12 +185,17 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Compile Typescript
-          command: npx tsc
+          name: setup full dependencies
+          command: npm run-script purge-node-modules && lerna bootstrap
+
+      - run:
+          name: compile
+          command: lerna run compile
 
       - run:
           name: build and verify webapp
           command: |
+            cd packages/polar-bookshelf && \
             npm run-script build-webapp && \
             find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
 
