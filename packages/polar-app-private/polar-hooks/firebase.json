@@ -1,0 +1,24 @@
+{
+  "hosting": {
+    "target": "app.getpolarized.io",
+    "public": "functions/node_modules/polar-webapp-dist/public",
+    "rewrites": [
+      {
+        "source": "/sitemap.xml",
+        "function": "sitemap"
+      },
+      {
+        "source": "/sitemaps/group/*",
+        "function": "groupSitemap"
+      },
+      {
+        "source": "/add/**",
+        "function": "docAdd"
+      },
+      {
+        "source": "**",
+        "function": "webapp"
+      }
+    ]
+  }
+}
