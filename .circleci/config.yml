@@ -46,8 +46,12 @@ jobs:
         command: npm run-script purge-node-modules && lerna bootstrap
 
     - run:
-        name: full compile
+        name: compile
         command: lerna run compile
+
+    - run:
+        name: test
+        command: lerna run test
 
 #    - save_cache:
 #        paths:
