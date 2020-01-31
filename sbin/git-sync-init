@@ -1,6 +1,7 @@
 #!/bin/bash
 
 git-import-no-prefix() {
+
   name=${1}
   repo=${2}
 
@@ -15,7 +16,6 @@ git-import-no-prefix() {
 
 git-import-main() {
 
-
   # do the main one now
 
   git-import-no-prefix polar-app https://github.com/burtonator/polar-app.git
@@ -28,7 +28,7 @@ git-import-packages() {
   for repo in `cat conf/repos.conf`; do
 
     echo ${repo}
-    name=$(echo ${repo} | grep -Eo '[^/]+$' | grep -Eo '^[^.]+')
+    name=$(basename ${repo} .git)
     echo ${name}
 
     ./sbin/git-sync-import ${name} ${repo}
@@ -39,3 +39,7 @@ git-import-packages() {
 
 git-import-main
 git-import-packages
+
+
+# git remote add origin https://github.com/burtonator/polar-app-dist.git
+# git push -u origin master

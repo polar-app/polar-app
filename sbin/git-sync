@@ -2,5 +2,11 @@
 
 set -e
 
-git pull --no-edit -s subtree polar-bookshelf master
+for repo in `cat conf/repos.conf`; do
+    name=$(basename ${repo} .git)
+    echo ${name}
+
+    git pull --no-edit -s subtree ${name} master
+
+done
 
