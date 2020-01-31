@@ -11,7 +11,7 @@ xdescribe('TODO change this describe', function() {
     Spectron.setup(__dirname);
     this.timeout(30000);
 
-    it('TODO change this test description', async function() {
+    xit('TODO change this test description', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 
