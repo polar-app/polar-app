@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-private.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-assets" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf" vcs="Git" />

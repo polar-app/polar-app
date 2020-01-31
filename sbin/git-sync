@@ -10,3 +10,5 @@ for repo in `cat conf/repos.conf`; do
 
 done
 
+# now pull in the main (root)
+git pull --no-edit -s subtree polar-app master
