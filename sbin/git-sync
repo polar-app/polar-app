@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+git pull --no-edit -s subtree polar-bookshelf master
+

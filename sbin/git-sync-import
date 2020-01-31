@@ -1,0 +1,15 @@
+#!/bin/bash
+
+name=${1}
+repo=${2}
+
+set -e
+
+# TODO: if the dir already exists it's already imported
+
+echo "Adding remote..."
+git remote add -f ${name} ${repo}
+git fetch ${name}
+git merge -s ours --no-commit --allow-unrelated-histories ${name}/master
+git read-tree --prefix=packages/${name} -u ${name}/master
+git commit -m "Imported ${name} as a subtree."
