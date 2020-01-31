@@ -1,15 +1,5 @@
 #!/bin/bash
 
-for repo in `cat conf/repos.conf`; do
-
-  echo ${repo}
-  name=$(echo ${repo} | grep -Eo '[^/]+$' | grep -Eo '^[^.]+')
-  echo ${name}
-
-  ./sbin/git-sync-import ${name} ${repo}
-
-done
-
 git-import-no-prefix() {
   name=${1}
   repo=${2}
@@ -23,6 +13,29 @@ git-import-no-prefix() {
 
 }
 
-# do the main one now
+git-import-main() {
 
-git-import-no-prefix polar-app https://github.com/burtonator/polar-app.git
+
+  # do the main one now
+
+  git-import-no-prefix polar-app https://github.com/burtonator/polar-app.git
+
+}
+
+git-import-packages() {
+
+
+  for repo in `cat conf/repos.conf`; do
+
+    echo ${repo}
+    name=$(echo ${repo} | grep -Eo '[^/]+$' | grep -Eo '^[^.]+')
+    echo ${name}
+
+    ./sbin/git-sync-import ${name} ${repo}
+
+  done
+
+}
+
+git-import-main
+git-import-packages
