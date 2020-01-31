@@ -115,7 +115,9 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: rm -rf node_modules/loader && rm -rf node_modules/injector && npm install
+      - run:
+          name: setup full dependencies
+          command: npm run-script purge-node-modules && lerna bootstrap
 
       - save_cache:
           paths:
