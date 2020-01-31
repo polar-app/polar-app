@@ -116,6 +116,10 @@ jobs:
             - v1-dependencies-
 
       - run:
+          name: install lerna
+          command: sudo npm install -g lerna
+
+      - run:
           name: setup full dependencies
           command: npm run-script purge-node-modules && lerna bootstrap
 
@@ -123,10 +127,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run:
-          name: install lerna
-          command: sudo npm install -g lerna
 
       - run:
           name: Install packages needed for Electron testing.
