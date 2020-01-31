@@ -8,6 +8,7 @@ import {Devices} from "../../../../web/js/util/Devices";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
+import {KnownPrefs} from "../../../../web/js/util/prefs/KnownPrefs";
 
 const log = Logger.create();
 
@@ -133,8 +134,8 @@ export const SettingsScreen = (props: IProps) => {
                               preview={true}/>
 
                 <SettingEntry title="Automatic pagemarks"
-                              description="Enables auto pagemark creation as you scroll and read a document."
-                              name="auto-pagemarks"
+                              description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
+                              name={KnownPrefs.AUTO_PAGEMARKS}
                               prefs={prefs}
                               preview={true}/>
 
