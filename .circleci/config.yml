@@ -86,9 +86,9 @@ jobs:
   e2e:
 
     parameters:
-        num:
-            description: "The ID integer of this e2e spectron test (0-N)"
-            type: integer
+      num:
+        description: "The ID integer of this e2e spectron test (0-N)"
+        type: integer
 
     docker:
       # specify the version you desire here
@@ -115,7 +115,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: rm -rf node_modules/loader && npm install
+      - run: rm -rf node_modules/loader && rm -rf node_modules/injector && npm install
 
       - save_cache:
           paths:
@@ -149,6 +149,7 @@ jobs:
           command: |
             export DISPLAY=:99 &&
             export SPECTRON_OFFSCREEN=true &&
+            cd packages/polar-bookshelf &&
             npm run-script e2e-<< parameters.num>>
 
   build-webapp:
@@ -209,3 +210,7 @@ workflows:
     jobs:
       - build
       - build-webapp
+      - e2e:
+          num: 0
+      - e2e:
+          num: 1
