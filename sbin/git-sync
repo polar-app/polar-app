@@ -12,3 +12,6 @@ done
 
 # now pull in the main (root)
 git pull --no-edit -s subtree polar-app master
+
+# now push back to origin
+git push
