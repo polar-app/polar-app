@@ -9,6 +9,7 @@ packages/polar-backend-shared
 packages/polar-shared-webserver
 packages/polar-app-private
 packages/polar-app-public
+packages/polar-app-private.wiki
 packages
 node_modules
 lerna-debug.log
