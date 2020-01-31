@@ -7,12 +7,18 @@ import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
-import {Analytics} from "../../analytics/Analytics";
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
+import {KnownPrefs} from "../../util/prefs/KnownPrefs";
+import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
+import {Pagemarks} from "../../metadata/Pagemarks";
 
 declare var window: any;
 
 const log = Logger.create();
+
+interface ViewerConfig {
+    readonly autoPagemarks: boolean;
+}
 
 export class PDFViewer extends Viewer {
 
@@ -21,6 +27,17 @@ export class PDFViewer extends Viewer {
     constructor(model: Model) {
         super();
         this.model = model;
+    }
+
+    private config(): ViewerConfig {
+        const persistenceLayer = this.model.persistenceLayerProvider();
+        const prefs = persistenceLayer.datastore.getPrefs();
+
+        const autoPagemarks = prefs.get().isMarked(KnownPrefs.AUTO_PAGEMARKS);
+
+        return {
+            autoPagemarks
+        };
     }
 
     public start() {
@@ -33,6 +50,8 @@ export class PDFViewer extends Viewer {
 
         const stopwatch = Stopwatches.create();
 
+        const config = this.config();
+
         this.model.registerListenerForDocumentLoaded(event => {
 
             ViewerTours.createWhenNecessary(event.fingerprint);
@@ -42,8 +61,12 @@ export class PDFViewer extends Viewer {
 
             // this.handleChromeSelectionFix();
 
-            // TODO: only register this via prefs (if this feature is enabled).
-            // Scrollers.register(Pagemarks.createExtender(this.model.docMeta), 'full');
+            log.notice("config: ", config);
+
+            if (config.autoPagemarks) {
+                log.notice("Using auto pagemarks");
+                Scrollers.register(Pagemarks.createExtender(this.model.docMeta), 'full');
+            }
 
         });
 
