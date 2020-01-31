@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "lerna run compile",
-    "publish": "lerna exec --no-private -- npm publish",
+    "publish": "lerna exec --no-private -- npm publish --no-bail",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist-validate-env": "./sbin/dist-validate-env",
     "lerna-run-compile": "lerna run --concurrency=1 --parallel=false compile",
