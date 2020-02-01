@@ -41,7 +41,7 @@
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
     "webpack-dev-server": "webpack-dev-server --https",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
-    "serve": "node scripts/serve.js",
+    "serve": "node scripts/serve.js"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -114,7 +114,7 @@
     "@nivo/calendar": "~0.52.0",
     "@nivo/line": "~0.52.0",
     "@nivo/pie": "~0.52.0",
-    "@sentry/electron": "~0.13.0",
+    "@sentry/electron": "~1.2.0",
     "@types/amplitude-js": "^4.4.5",
     "@types/blueimp-md5": "^2.7.0",
     "@types/chrome": "0.0.81",
