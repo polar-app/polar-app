@@ -156,7 +156,7 @@ jobs:
             export DISPLAY=:99 &&
             export SPECTRON_OFFSCREEN=true &&
             cd packages/polar-bookshelf &&
-            npm run-script e2e-<< parameters.num>>
+            npm run-script e2e-X << parameters.num>>
 
   build-webapp:
     docker:
@@ -220,3 +220,11 @@ workflows:
           num: 0
       - e2e:
           num: 1
+      - e2e:
+          num: 2
+      - e2e:
+          num: 3
+      - e2e:
+          num: 4
+      - e2e:
+          num: 5
