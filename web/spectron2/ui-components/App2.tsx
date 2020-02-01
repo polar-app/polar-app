@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {Group} from "../../js/datastore/sharing/db/Groups";
-import {ISODateTimeStrings} from "../../../polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {Link} from "react-router-dom";
 import {Lightbox} from "../../js/ui/util/Lightbox";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
-import {NULL_FUNCTION} from "../../../polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ActionButton} from "../../js/ui/mobile/ActionButton";
 import {
     HolidayPromotionButton,
