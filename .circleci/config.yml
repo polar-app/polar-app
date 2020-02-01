@@ -184,16 +184,10 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: rm -rf node_modules/loader && npm install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run:
-          name: install lerna
-          command: sudo npm install -g lerna
 
       - run:
           name: setup full dependencies
