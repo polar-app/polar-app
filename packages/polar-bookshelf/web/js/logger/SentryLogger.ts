@@ -36,9 +36,14 @@ export class SentryLogger implements ILogger {
 
                 if ( arg instanceof Error) {
 
-                    // This captures 'handles' exceptions as Sentry wouldn't actually
-                    // capture these as they aren't surfaced to Electron.
-                    captureException(arg);
+                    try {
+                        // This captures 'handles' exceptions as Sentry wouldn't actually
+                        // capture these as they aren't surfaced to Electron.
+                        captureException(arg);
+                    } catch (e) {
+                        // guard against errors within sentry itself.
+                        console.error("Failed to process exception for sentry: ", e);
+                    }
                 }
 
             });
