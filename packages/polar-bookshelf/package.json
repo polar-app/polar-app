@@ -32,10 +32,7 @@
     "compile": "tsc",
     "compile-watch": "tsc --watch",
     "test": "./scripts/test-runner.sh",
-    "e2e": "find web/spectron* -name 'spec.js' | xargs mocha-parallel-tests --timeout 600000 --max-parallel=1 --exit",
-    "e2e-0": "find web/spectron0 -name 'spec.js' | sort | xargs mocha-parallel-tests --timeout 600000 --max-parallel=1 --exit",
-    "e2e-1": "find web/spectron1 -name 'spec.js' | sort | xargs mocha-parallel-tests --timeout 600000 --max-parallel=1 --exit",
-    "e2e-X": "find web/spectron$1 -name 'spec.js' | sort | xargs mocha-parallel-tests --timeout 600000 --max-parallel=1 --exit",
+    "e2e-X": "./scripts/run-spectron",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
     "postinstall": "opencollective-postinstall",
@@ -44,7 +41,7 @@
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
     "webpack-dev-server": "webpack-dev-server --https",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
-    "serve": "node scripts/serve.js"
+    "serve": "node scripts/serve.js",
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
