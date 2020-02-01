@@ -1,8 +1,8 @@
-import * as admin from 'firebase-admin';
+import * as admin from "firebase-admin";
 
 export class Firebase {
 
-    public static async getFirestore() {
+    public static getApp() {
 
         const serviceAccount: admin.ServiceAccount = {
             projectId: "polar-32b0f",
@@ -15,9 +15,8 @@ export class Firebase {
             databaseURL: "https://polar-32b0f.firebaseio.com"
         });
 
-        return admin.firestore();
+        return app;
 
     }
 
 }
-
