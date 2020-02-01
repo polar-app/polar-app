@@ -4,7 +4,7 @@ import {
     ContextMenuWrapper,
     prepareContextMenuHandlers
 } from '@burtonator/react-context-menu-wrapper';
-import {NULL_FUNCTION} from '../../../polar-shared/src/util/Functions';
+import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {AppRuntime} from '../../js/AppRuntime';
 import {IStyleMap} from '../../js/react/IStyleMap';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
