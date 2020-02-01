@@ -21,10 +21,15 @@ export class AnalyticsInitializer {
         this.initVersion();
         this.initAccount();
         this.initNavigation();
+        this.initHeartbeat();
     }
 
     private static initVersion() {
         Analytics.version(Version.get());
+    }
+
+    private static initHeartbeat() {
+        Analytics.event2('heartbeat');
     }
 
     private static async initAccount() {
