@@ -1,0 +1,5 @@
+#!/bin/bash
+
+id=${1}
+
+find web/spectron${id} -name 'spec.js' | sort | xargs mocha-parallel-tests --timeout 600000 --max-parallel=1 --exit
