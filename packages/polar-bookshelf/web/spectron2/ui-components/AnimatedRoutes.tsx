@@ -4,7 +4,7 @@ import {FadeIn} from "../../js/ui/motion/FadeIn";
 import * as React from "react";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "../../../polar-shared/src/util/Functions";
 
 const FirstPage = () => {
 

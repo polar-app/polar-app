@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from 'react-dom';
 import {Button} from "reactstrap";
 import {NullCollapse} from "../../js/ui/null_collapse/NullCollapse";
-import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback, NULL_FUNCTION} from "../../../polar-shared/src/util/Functions";
 import {ColorSelector} from "../../js/ui/colors/ColorSelector";
 import {CloseIcon, CommentIcon} from "../../js/ui/icons/FixedWidthIcons";
 
