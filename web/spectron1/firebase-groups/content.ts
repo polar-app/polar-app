@@ -59,14 +59,14 @@ mocha.timeout(600000);
 
 process.env.POLAR_TEST_PROJECT = 'polar-test2';
 
-const FIREBASE_USER = process.env.FIREBASE_USER!;
-const FIREBASE_PASS = process.env.FIREBASE_PASS!;
+const FIREBASE_USER = process.env.FIREBASE_USER7!;
+const FIREBASE_PASS = process.env.FIREBASE_PASS7!;
 
-const FIREBASE_USER1 = process.env.FIREBASE_USER1!;
-const FIREBASE_PASS1 = process.env.FIREBASE_PASS1!;
+const FIREBASE_USER1 = process.env.FIREBASE_USER8!;
+const FIREBASE_PASS1 = process.env.FIREBASE_PASS8!;
 
-const FIREBASE_USER2 = process.env.FIREBASE_USER2!;
-const FIREBASE_PASS2 = process.env.FIREBASE_PASS2!;
+const FIREBASE_USER2 = process.env.FIREBASE_USER9!;
+const FIREBASE_PASS2 = process.env.FIREBASE_PASS9!;
 
 async function verifyFailed(delegate: () => Promise<any>) {
 
