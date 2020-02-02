@@ -18,7 +18,7 @@ export FIREBASE_USER2=getpolarized.test+test2@gmail.com
 export FIREBASE_PASS2=mk9z79vlquixvqd
 
 for id in `seq 1 9`; do
-  echo ${id}
+  # echo ${id}
   export FIREBASE_USER${id}=getpolarized.test+test${id}@gmail.com
   export FIREBASE_PASS${id}=mk9z79vlquixvqd
 
