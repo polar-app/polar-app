@@ -128,7 +128,7 @@ SpectronRenderer.run(async (state) => {
     //    created, to profile IDs updated.
     //
 
-    describe("firebase-groups", async function() {
+    xdescribe("firebase-groups", async function() {
 
         async function purgeDatastores() {
 
