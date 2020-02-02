@@ -1,8 +1,4 @@
-
-import * as admin from 'firebase-admin';
-import {Firebase} from "./Firebase";
-
-const app = Firebase.getApp();
+import {CONFIG_MAIN, CONFIG_TEST, Firebase} from "./Firebase";
 
 async function createUserWhenAbsent(email: string, pass: string) {
 
@@ -59,6 +55,13 @@ async function createUsers() {
     await createUserWhenAbsent('getpolarized.test+test9@gmail.com', password);
 
 }
+
+// let app = Firebase.getApp(CONFIG_MAIN);
+//
+// createUsers()
+//     .catch(err => console.error(err));
+
+let app = Firebase.getApp(CONFIG_TEST);
 
 createUsers()
     .catch(err => console.error(err));
