@@ -17,6 +17,13 @@ export FIREBASE_PASS1=mk9z79vlquixvqd
 export FIREBASE_USER2=getpolarized.test+test2@gmail.com
 export FIREBASE_PASS2=mk9z79vlquixvqd
 
+for id in `seq 1 9`; do
+  echo ${id}
+  export FIREBASE_USER${id}=getpolarized.test+test${id}@gmail.com
+  export FIREBASE_PASS${id}=mk9z79vlquixvqd
+
+done
+
 export GH_TOKEN=26722e632127b9548ce62024686d64c38e2b1994
 export CSC_IDENTITY_AUTO_DISCOVERY=true
 
