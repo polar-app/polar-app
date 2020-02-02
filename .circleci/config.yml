@@ -155,6 +155,7 @@ jobs:
           command: |
             export DISPLAY=:99 &&
             export SPECTRON_OFFSCREEN=true &&
+            source packages/polar-bookshelf-secrets/build-env.sh &&
             cd packages/polar-bookshelf &&
             npm run-script e2e-X << parameters.num>>
 
