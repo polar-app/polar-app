@@ -9,6 +9,7 @@ There is a new page at /invite that the user will be shown that they can use to 
 On this page they can:
 
 - paste in a list of emails.  The backend will send then an email with a referral code
+    - TODO: this has not yet been implemented on the backend.
 - copy the link, with referral code so that the user can send it themselves.
 - use the mobile 'send' feature to trigger sending a message when using their mobile device
 - send via twitter button (automatically triggers twitter share)
@@ -47,6 +48,13 @@ There will be two ways of rewarding points:
 - FIXME: I think for TRIAL users with a referral, they should just be given a longer trial, it's easier because capturing
   the credit card at that point, might be harder.      
         
+# Messages
+
+- send the referee an email that one of their users has signed up and that they will be given a free month 
+  once their referred user has aged for 30 days.
+        
+- 
+        
 # Notes
 
 - I think it should always just be 'one month of bronze'.  This way:
@@ -79,7 +87,9 @@ There will be two ways of rewarding points:
 
 ## TODO
 
-- how do we handle granting referrals to new uses and handle trials.
+- the referred user basically gets a full month extra in their trial... when they are ready.
+
+- how do we handle granting referrals to new users and handle trials.
 
     - the main issue is that we would need to capture credit card details and UNTIL they have given us credit card 
       details we're not really certain they are 'converted' users...  
@@ -88,3 +98,11 @@ There will be two ways of rewarding points:
   sure they are really / truly active
   
 - write to a 'heartbeat' table?
+
+## Questions
+
+- the initial 30 day trial should not require a CC, what about when the user is given an extension on the trial?
+
+- can I convert trials to paying via stripe checkout?  (I'm finding out now via stripe)
+
+- 
