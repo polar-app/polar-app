@@ -74,7 +74,7 @@ xdescribe('StripeWebhookFunction', function() {
         for (const email of bronze) {
 
             try {
-                await Accounts.changePlanViaEmail(email, "bronze", 'month');
+                await Accounts.changePlanViaEmail(email, '1234', "bronze", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);
@@ -84,7 +84,7 @@ xdescribe('StripeWebhookFunction', function() {
 
         for (const email of silver) {
             try {
-                await Accounts.changePlanViaEmail(email, "silver", 'month');
+                await Accounts.changePlanViaEmail(email, '1234', "silver", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);
@@ -93,7 +93,7 @@ xdescribe('StripeWebhookFunction', function() {
 
         for (const email of gold) {
             try {
-                await Accounts.changePlanViaEmail(email, "gold", 'month');
+                await Accounts.changePlanViaEmail(email, '1234', "gold", 'month');
                 console.log("WORKED");
             } catch (e) {
                 console.error(e);

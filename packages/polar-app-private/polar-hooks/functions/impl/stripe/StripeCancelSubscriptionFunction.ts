@@ -2,8 +2,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
-import {StripeCustomers} from './StripeChangePlanFunction';
 import {Accounts} from "./Accounts";
+import {StripeCustomers} from "./StripeCustomers";
+import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 
 const app = express();
 
@@ -20,9 +21,11 @@ app.use((req, res) => {
 
         const body: StripeCancelSubscriptionBody = req.body;
 
+        const account = await StripeCustomerAccounts.get(body.email);
+
         await Accounts.validate(body.email, body.uid);
         await StripeCustomers.cancelSubscription(body.email);
-        await Accounts.changePlanViaEmail(body.email, 'free', 'month');
+        await Accounts.changePlanViaEmail(body.email, account.customer.customerID, 'free', 'month');
 
     };
 

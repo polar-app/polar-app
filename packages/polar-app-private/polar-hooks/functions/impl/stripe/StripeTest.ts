@@ -1,7 +1,7 @@
 import {assert} from 'chai';
-import {StripeCustomers} from './StripeChangePlanFunction';
 import {StripeUtils} from './StripeUtils';
 import Stripe from 'stripe';
+import {StripeCustomers} from "./StripeCustomers";
 
 const email = "getpolarized.test+test@gmail.com";
 process.env.STRIPE_TEST = 'true';

@@ -2,7 +2,8 @@ import {accounts} from "polar-accounts/src/accounts";
 import {StripeUtils} from "./StripeUtils";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirebaseAdmin} from "../util/FirebaseAdmin";
-import { Logger } from "polar-shared/src/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 const firebase = FirebaseAdmin.app();
 const firestore = firebase.firestore();
@@ -57,12 +58,12 @@ export class Accounts {
             throw new Error(msg);
         }
 
-        await this.changePlanViaEmail(email, plan, interval);
+        await this.changePlanViaEmail(email, customerID, plan, interval);
 
     }
 
-
     public static async changePlanViaEmail(email: string | undefined | null,
+                                           customerID: IDStr,
                                            plan: accounts.Plan,
                                            interval: accounts.Interval) {
 
@@ -74,13 +75,19 @@ export class Accounts {
 
         const lastModified = new Date().toISOString();
 
+        const customer: StripeCustomer = {
+            type: 'stripe',
+            customerID
+        };
+
         const account: Account = {
             id: user.uid,
             uid: user.uid,
             plan,
             email,
             lastModified,
-            interval
+            interval,
+            customer
         };
 
         await Accounts.write(account);
@@ -106,7 +113,6 @@ export class Accounts {
 
     }
 
-
     public static async write(account: Account) {
 
         const ref = firestore
@@ -118,6 +124,11 @@ export class Accounts {
     }
 
 
+}
+
+export interface StripeCustomer {
+    readonly type: 'stripe';
+    readonly customerID: IDStr;
 }
 
 export interface Account extends AccountInit {
@@ -140,4 +151,13 @@ export interface Account extends AccountInit {
      */
     readonly lastModified: ISODateTimeString;
 
+    readonly customer?: StripeCustomer;
+
+}
+
+/**
+ * An account where the customer is not optional.
+ */
+export interface CustomerAccount extends Account {
+    readonly customer: StripeCustomer;
 }
