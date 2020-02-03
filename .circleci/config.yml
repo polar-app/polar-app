@@ -85,13 +85,21 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
+#      - run:
+#          name: debug
+#          command: touch /tmp/foo && rm /tmp/foo && which rm
+#
       - run:
-          name: debug
-          command: touch /tmp/foo && rm /tmp/foo && which rm
+          name: debug find 1
+          command: which find
 
       - run:
-          name: debug 2
-          command: echo $PATH
+          name: debug find 2
+          command: touch /tmp/foo && find /tmp -name foo
+
+      - run:
+          name: debug find 3
+          command: touch /tmp/foo && find /tmp -name 'foo*'
 
       - run:
           name: install lerna
