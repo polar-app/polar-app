@@ -1,4 +1,3 @@
-import {ThumbnailGenerator} from "./ThumbnailGenerator";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Files} from "polar-shared/src/util/Files";
 
@@ -10,6 +9,8 @@ describe('ThumbnailGenerator', function() {
             // this is only valid on Linux and doesn't matter for other platforms.
             return;
         }
+
+        const  ThumbnailGenerator = require("./ThumbnailGenerator");
 
         this.timeout(60000);
 
