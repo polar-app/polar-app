@@ -101,6 +101,12 @@ There will be two ways of rewarding points:
 
 ## Questions
 
+- I don't think they should start the trial right away.  They might not be using premium features yet and this way 
+  we can tell them which features they need to pay for before starting the trial.
+  
+    - we will need to record something, somewhere which says the length of the trial.
+        - though if they have a referral code, they would get another 30 days.
+
 - the initial 30 day trial should not require a CC, what about when the user is given an extension on the trial?
 
 - can I convert trials to paying via stripe checkout?  (I'm finding out now via stripe)
