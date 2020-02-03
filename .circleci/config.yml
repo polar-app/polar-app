@@ -3,6 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
 jobs:
   build:
     docker:
@@ -46,42 +50,60 @@ jobs:
         command: npm run-script purge-node-modules && lerna bootstrap
 
     - run:
-        name: compile
-        command: lerna run compile
-
-    - run:
         name: Install packages needed for Electron testing.
         command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6
+
+    - run:
+        name: compile
+        command: lerna run compile
 
     - run:
         name: test
         command: lerna run test
 
-#    - save_cache:
-#        paths:
-#        - node_modules
-#        key: v1-dependencies-{{ checksum "package.json" }}
-#
-#    - run:
-#        name: Install packages needed for Electron testing.
-#        command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2
-#
-#    - run:
-#        name: XVFB installed?
-#        command: whereis Xvfb
-#
-#    - run:
-#        name: Running X virtual framebuffer
-#        command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
-#        background: true
-#
-#    - run:
-#        name: Compile Typescript
-#        command: npx tsc
-#
-#    - run:
-#        name: npm test
-#        command: npm test
+  windows:
+    executor:
+      name: win/default
+      shell: bash.exe
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - add_ssh_keys:
+          fingerprints:
+            - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
+            - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
+            - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
+            - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install lerna
+          command: sudo npm install -g lerna
+
+      - run:
+          name: setup full dependencies
+          command: npm run-script purge-node-modules && lerna bootstrap
+
+      - run:
+          name: Install packages needed for Electron testing.
+          command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6
+
+      - run:
+          name: compile
+          command: lerna run compile
+
+      - run:
+          name: test
+          command: lerna run test
 
   e2e:
 
@@ -227,3 +249,5 @@ workflows:
           num: 4
       - e2e:
           num: 5
+      - windows
+
