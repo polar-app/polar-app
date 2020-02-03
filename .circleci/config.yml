@@ -61,10 +61,14 @@ jobs:
         name: test
         command: lerna run test
 
-  windows:
-    executor:
-      name: win/default
-      shell: bash.exe
+  build_with_executor:
+
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
+
+    executor: << parameters.executor>>
 
     working_directory: ~/repo
 
@@ -84,39 +88,6 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
-#      - run:
-#          name: debug
-#          command: touch /tmp/foo && rm /tmp/foo && which rm
-#
-#      - run:
-#          name: debug find 1
-#          command: which rm
-#
-#      - run:
-#          name: debug find 2
-#          command: echo $PATH
-#
-#      - run:
-#          name: debug export 1
-#          command: export foo=bar && echo $foo
-#
-#      - run:
-#          name: debug export 2
-#          command: echo $foo
-
-#
-#      - run:
-#          name: debug find 1
-#          command: which find
-
-#      - run:
-#          name: debug find 2
-#          command: touch /tmp/foo && find /tmp -name foo
-#
-#      - run:
-#          name: debug find 3
-#          command: touch /tmp/foo && find /tmp -name 'foo*'
 
       - run:
           name: install lerna
@@ -270,35 +241,39 @@ workflows:
   version: 2
   parallel_workflow:
     jobs:
-      - build
-      - build-webapp:
-          requires:
-            - build
-      - e2e:
-          requires:
-            - build
-          num: 0
-      - e2e:
-          requires:
-            - build
-          num: 1
-      - e2e:
-          requires:
-            - build
-          num: 2
-      - e2e:
-          requires:
-            - build
-          num: 3
-      - e2e:
-          requires:
-            - build
-          num: 4
-      - e2e:
-          requires:
-            - build
-          num: 5
-      - windows:
-          requires:
-            - build
-
+      - build_with_executor:
+          executor:
+            name: win/default
+            shell: bash.exe
+#
+#      - build-webapp:
+#          requires:
+#            - build
+#      - e2e:
+#          requires:
+#            - build
+#          num: 0
+#      - e2e:
+#          requires:
+#            - build
+#          num: 1
+#      - e2e:
+#          requires:
+#            - build
+#          num: 2
+#      - e2e:
+#          requires:
+#            - build
+#          num: 3
+#      - e2e:
+#          requires:
+#            - build
+#          num: 4
+#      - e2e:
+#          requires:
+#            - build
+#          num: 5
+#      - windows:
+#          requires:
+#            - build
+#
