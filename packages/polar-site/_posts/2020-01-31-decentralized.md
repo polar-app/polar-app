@@ -4,6 +4,8 @@ date: 2020-01-30T08:00:00.000-08:00
 layout: post
 description: The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020
 large_image: https://i.imgur.com/16uLX8S.png    
+hidden: true
+visible: false
 ---
 
 # Decentralized social media using federated and peer-to-peer protocols
