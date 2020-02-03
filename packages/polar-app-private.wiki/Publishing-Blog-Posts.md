@@ -40,3 +40,8 @@ Make sure to update the publication time and to use the date in the path of the 
 When ready to publish I can just remove 'hiding' fields above and push it.
 
 In the future I plan on making it automated.
+
+# large_image
+
+Make sure to set the large_image field.  This is used so that when we share via social media that a preview image is set.
+
