@@ -7,6 +7,44 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 
+commands:
+  build_setup:
+    - checkout
+
+    - add_ssh_keys:
+        fingerprints:
+          - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
+          - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
+          - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
+          - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
+
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+    - run:
+        name: node version
+        command: node --version
+
+    - run:
+        name: install lerna
+        command: npm install lerna
+
+    - run:
+        name: setup full dependencies
+        command: npm run-script purge-node-modules && npx lerna bootstrap
+
+    - run:
+        name: Required Linux packages (when on Linux)
+        command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
+
+    - run:
+        name: compile
+        command: npx lerna run compile
+
 jobs:
   build:
     docker:
@@ -61,6 +99,7 @@ jobs:
         name: test
         command: lerna run test
 
+
   build_with_executor:
 
     parameters:
@@ -73,42 +112,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - checkout
 
-      - add_ssh_keys:
-          fingerprints:
-            - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
-            - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
-            - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
-            - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run:
-          name: node version
-          command: node --version
-
-      - run:
-          name: install lerna
-          command: npm install lerna
-
-      - run:
-          name: setup full dependencies
-          command: npm run-script purge-node-modules && npx lerna bootstrap
-
-      - run:
-          name: Required Linux packages (when on Linux)
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
-
-      - run:
-          name: compile
-          command: npx lerna run compile
-
+      - build_setup
       - run:
           name: test
           command: npx lerna run test
