@@ -10,7 +10,7 @@ describe('ThumbnailGenerator', function() {
             return;
         }
 
-        const  ThumbnailGenerator = require("./ThumbnailGenerator");
+        const ThumbnailGenerator = require("./ThumbnailGenerator");
 
         this.timeout(60000);
 
