@@ -87,7 +87,7 @@ jobs:
 
       - run:
           name: install lerna
-          command: sudo npm install -g lerna
+          command: npm install -g lerna
 
       - run:
           name: setup full dependencies
