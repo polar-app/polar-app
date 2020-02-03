@@ -248,8 +248,8 @@ workflows:
 
       - build_with_executor:
           executor:
-            name: docker
-            image: circleci/node:12.1-stretch
+            docker:
+              - image: circleci/node:12.1-stretch
 #
 #      - build-webapp:
 #          requires:
