@@ -30,7 +30,7 @@
     "dist-release-macos": "npm run-script do-release-init && npm run-script do-release-macos",
     "dist-release-site": "cd packages/polar-site && npm run-script publish",
     "lerna-outdated": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'echo ${PWD} && npm outdated'",
-    "purge-node-modules": "rm -rf node_modules && lerna exec --concurrency=1 --parallel=false -- 'rm -rf node_modules'",
+    "purge-node-modules": "rm -rf node_modules && lerna exec --concurrency=1 --parallel=false -- rm -rf node_modules",
     "ls-packages": "lerna exec --concurrency=1 --parallel=false --no-bail -- 'echo ${PWD}'",
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n",
     "__TODO": "dev dependencies too...",
