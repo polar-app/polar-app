@@ -4,8 +4,7 @@
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
   "scripts": {
-    "test": "find src -name *Test.js | xargs mocha --timeout 20000 --exit",
-    "_test": "echo disabled",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc",
     "dist": "echo noop"
   },
