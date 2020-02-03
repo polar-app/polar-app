@@ -9,7 +9,7 @@
   },
   "scripts": {
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "_test": "find . -name '*Test.js' | xargs mocha --timeout 20000 --exit ",
+    "_test": "mocha --timeout 20000 --exit '**/*Test.js'",
     "test": "echo no tests",
     "compile": "npx tsc",
     "dist": "npm run-script compile"
