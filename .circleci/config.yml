@@ -95,7 +95,7 @@ jobs:
 
       - run:
           name: setup full dependencies
-          command: npm run-script purge-node-modules && lerna bootstrap
+          command: npm run-script purge-node-modules && npx lerna bootstrap
 
       #- run:
       #    name: Install packages needed for Electron testing.
@@ -103,11 +103,11 @@ jobs:
 
       - run:
           name: compile
-          command: lerna run compile
+          command: npx lerna run compile
 
       - run:
           name: test
-          command: lerna run test
+          command: npx lerna run test
 
   e2e:
 
