@@ -247,8 +247,9 @@ workflows:
   parallel_workflow:
     jobs:
       - build_with_executor:
-          name: win/default
-          shell: bash.exe
+          executor:
+            name: win/default
+            shell: bash.exe
 
       - build_with_executor:
           executor: my-docker
