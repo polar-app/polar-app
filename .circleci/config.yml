@@ -166,6 +166,7 @@ jobs:
           name: XVFB installed?
           command: whereis Xvfb
 
+      # TODO: this might not be needed anymore with spectron headless.
       - run:
           name: Running X virtual framebuffer
           command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
