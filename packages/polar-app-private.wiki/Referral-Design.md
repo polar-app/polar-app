@@ -112,3 +112,7 @@ There will be two ways of rewarding points:
 - can I convert trials to paying via stripe checkout?  (I'm finding out now via stripe)
 
 - 
+
+
+
+
