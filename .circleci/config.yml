@@ -99,7 +99,7 @@ jobs:
 
       - run:
           name: debug export 1
-          command: export foo=bar
+          command: export foo=bar && echo $foo
 
       - run:
           name: debug export 2
