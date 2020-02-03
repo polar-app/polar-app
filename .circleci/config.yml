@@ -241,7 +241,8 @@ executors:
       - image: circleci/node:12.1-stretch
 
   my-macos:
-    macos
+    macos:
+      xcode: 11.3.0
 
 workflows:
   version: 2
