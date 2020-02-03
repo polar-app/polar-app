@@ -86,6 +86,15 @@ jobs:
             - v1-dependencies-
 
       - run:
+          name: test environment with echo
+          command: echo hello world
+          shell: bash.exe
+
+      - run:
+          name: test environment without shell
+          command: echo hello world
+
+      - run:
           name: install lerna
           command: npm install -g lerna
 
