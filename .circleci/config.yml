@@ -87,7 +87,7 @@ jobs:
 
       - run:
           name: debug
-          command: whereis bash && whereis rm
+          command: touch /tmp/foo && rm /tmp/foo && which rm
 
       - run:
           name: install lerna
