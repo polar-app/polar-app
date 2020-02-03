@@ -91,15 +91,32 @@ jobs:
 #
       - run:
           name: debug find 1
-          command: which find
+          command: which rm
 
       - run:
           name: debug find 2
-          command: touch /tmp/foo && find /tmp -name foo
+          command: echo $PATH
 
       - run:
-          name: debug find 3
-          command: touch /tmp/foo && find /tmp -name 'foo*'
+          name: debug export 1
+          command: export foo=bar
+
+      - run:
+          name: debug export 2
+          command: echo $foo
+
+#
+#      - run:
+#          name: debug find 1
+#          command: which find
+
+#      - run:
+#          name: debug find 2
+#          command: touch /tmp/foo && find /tmp -name foo
+#
+#      - run:
+#          name: debug find 3
+#          command: touch /tmp/foo && find /tmp -name 'foo*'
 
       - run:
           name: install lerna
