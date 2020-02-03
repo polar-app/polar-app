@@ -241,6 +241,10 @@ executors:
   my-docker:
     docker:
       - image: circleci/node:12.1-stretch
+  my-windows:
+    name: win/default
+    shell: bash.exe
+
 
 
 workflows:
@@ -248,9 +252,7 @@ workflows:
   parallel_workflow:
     jobs:
       - build_with_executor:
-          executor:
-            name: win/default
-            shell: bash.exe
+          executor: my-windows
 
       - build_with_executor:
           executor: my-docker
