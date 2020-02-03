@@ -235,12 +235,13 @@ jobs:
             npm run-script build-webapp && \
             find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
 
-# TODO: only run platform specific tests after builds, tests, etc pass so we don't waste resources.
-
 executors:
   my-docker:
     docker:
       - image: circleci/node:12.1-stretch
+
+  my-macos:
+    macos:
 
 workflows:
   version: 2
@@ -253,6 +254,9 @@ workflows:
 
       - build_with_executor:
           executor: my-docker
+
+      - build_with_executor:
+          executor: my-macos
 
       - build-webapp
 
