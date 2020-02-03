@@ -86,13 +86,8 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: test environment with echo
-          command: echo hello world
-          shell: bash.exe
-
-      - run:
-          name: test environment without shell
-          command: echo hello world
+          name: debug
+          command: whereis bash && whereis rm
 
       - run:
           name: install lerna
