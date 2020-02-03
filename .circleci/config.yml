@@ -9,41 +9,43 @@ orbs:
 
 commands:
   build_setup:
-    - checkout
+    description: setup the build for commands
+    steps:
+      - checkout
 
-    - add_ssh_keys:
-        fingerprints:
-          - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
-          - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
-          - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
-          - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
+      - add_ssh_keys:
+          fingerprints:
+            - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
+            - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
+            - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
+            - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
-    # Download and cache dependencies
-    - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-    - run:
-        name: node version
-        command: node --version
+      - run:
+          name: node version
+          command: node --version
 
-    - run:
-        name: install lerna
-        command: npm install lerna
+      - run:
+          name: install lerna
+          command: npm install lerna
 
-    - run:
-        name: setup full dependencies
-        command: npm run-script purge-node-modules && npx lerna bootstrap
+      - run:
+          name: setup full dependencies
+          command: npm run-script purge-node-modules && npx lerna bootstrap
 
-    - run:
-        name: Required Linux packages (when on Linux)
-        command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
+      - run:
+          name: Required Linux packages (when on Linux)
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
 
-    - run:
-        name: compile
-        command: npx lerna run compile
+      - run:
+          name: compile
+          command: npx lerna run compile
 
 jobs:
   build:
@@ -119,6 +121,83 @@ jobs:
           command: npx lerna run test
 
   e2e:
+
+    parameters:
+      num:
+        description: "The ID integer of this e2e spectron test (0-N)"
+        type: integer
+
+    docker:
+      # specify the version you desire here
+      #
+      # all images and tags here:
+      #   https://circleci.com/docs/2.0/docker-image-tags.json
+      #
+      - image: circleci/node:12.1-stretch
+
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install lerna
+          command: sudo npm install -g lerna
+
+      - run:
+          name: setup full dependencies
+          command: npm run-script purge-node-modules && lerna bootstrap
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Install packages needed for Electron testing.
+          command: sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2
+
+      - run:
+          name: XVFB installed?
+          command: whereis Xvfb
+
+      # TODO: this might not be needed anymore with spectron headless.
+      - run:
+          name: Running X virtual framebuffer
+          command: Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
+          background: true
+
+      - run:
+          name: compile
+          command: lerna run compile
+
+      - run:
+          name: What is my IP
+          command: |
+            curl -X GET "https://httpbin.org/ip" -H "accept: application/json"
+
+      - run:
+          name: e2e
+          command: |
+            export DISPLAY=:99 &&
+            export SPECTRON_OFFSCREEN=true &&
+            source packages/polar-bookshelf-secrets/build-env.sh &&
+            cd packages/polar-bookshelf &&
+            npm run-script e2e-X << parameters.num>>
+
+  end2end:
 
     parameters:
       num:
