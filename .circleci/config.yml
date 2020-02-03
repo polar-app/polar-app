@@ -264,23 +264,41 @@ jobs:
             npm run-script build-webapp && \
             find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
 
+# TODO: only run platform specific tests after builds, tests, etc pass so we don't waste resources.
+
 workflows:
   version: 2
   parallel_workflow:
     jobs:
       - build
       - build-webapp
+          requires:
+            - build
       - e2e:
+          requires:
+            - build
           num: 0
       - e2e:
+          requires:
+            - build
           num: 1
       - e2e:
+          requires:
+            - build
           num: 2
       - e2e:
+          requires:
+            - build
           num: 3
       - e2e:
+          requires:
+            - build
           num: 4
       - e2e:
+          requires:
+            - build
           num: 5
       - windows
+          requires:
+            - build
 
