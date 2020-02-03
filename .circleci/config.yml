@@ -89,21 +89,21 @@ jobs:
 #          name: debug
 #          command: touch /tmp/foo && rm /tmp/foo && which rm
 #
-      - run:
-          name: debug find 1
-          command: which rm
-
-      - run:
-          name: debug find 2
-          command: echo $PATH
-
-      - run:
-          name: debug export 1
-          command: export foo=bar && echo $foo
-
-      - run:
-          name: debug export 2
-          command: echo $foo
+#      - run:
+#          name: debug find 1
+#          command: which rm
+#
+#      - run:
+#          name: debug find 2
+#          command: echo $PATH
+#
+#      - run:
+#          name: debug export 1
+#          command: export foo=bar && echo $foo
+#
+#      - run:
+#          name: debug export 2
+#          command: echo $foo
 
 #
 #      - run:
