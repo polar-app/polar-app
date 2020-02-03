@@ -245,6 +245,11 @@ workflows:
           executor:
             name: win/default
             shell: bash.exe
+
+      - build_with_executor:
+          executor:
+            name: default
+
 #
 #      - build-webapp:
 #          requires:
