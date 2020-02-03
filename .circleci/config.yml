@@ -101,9 +101,9 @@ jobs:
           name: setup full dependencies
           command: npm run-script purge-node-modules && npx lerna bootstrap
 
-      #- run:
-      #    name: Install packages needed for Electron testing.
-      #    command: apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6
+      - run:
+          name: Required Linux packages (when on Linux)
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
 
       - run:
           name: compile
