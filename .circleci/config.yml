@@ -308,7 +308,16 @@ workflows:
       - build-webapp
 
       - end2end:
+          executor:
+            name: win/default
+            shell: bash.exe
+
+      - end2end:
           executor: my-docker
+
+      - end2end:
+          executor: my-macos
+
 
 #      - e2e:
 #          requires:
