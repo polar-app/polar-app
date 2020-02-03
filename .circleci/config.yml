@@ -90,6 +90,10 @@ jobs:
             - v1-dependencies-
 
       - run:
+          name: node version
+          command: node --version
+
+      - run:
           name: install lerna
           command: npm install lerna
 
