@@ -90,6 +90,10 @@ jobs:
           command: touch /tmp/foo && rm /tmp/foo && which rm
 
       - run:
+          name: debug 2
+          command: echo $PATH
+
+      - run:
           name: install lerna
           command: npm install -g lerna
 
