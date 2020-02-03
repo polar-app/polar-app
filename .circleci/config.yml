@@ -222,11 +222,11 @@ jobs:
 
       - run:
           name: setup full dependencies
-          command: npm run-script purge-node-modules && lerna bootstrap
+          command: npm run-script purge-node-modules && npx lerna bootstrap
 
       - run:
           name: compile
-          command: lerna run compile
+          command: npx lerna run compile
 
       - run:
           name: build and verify webapp
@@ -253,10 +253,9 @@ workflows:
 
       - build_with_executor:
           executor: my-docker
-#
-#      - build-webapp:
-#          requires:
-#            - build
+
+      - build-webapp
+
 #      - e2e:
 #          requires:
 #            - build
@@ -281,7 +280,3 @@ workflows:
 #          requires:
 #            - build
 #          num: 5
-#      - windows:
-#          requires:
-#            - build
-#
