@@ -102,7 +102,7 @@ jobs:
           command: npm run-script purge-node-modules && npx lerna bootstrap
 
       - run:
-          name: Required Linux packages
+          name: Required Linux packages (when on Linux)
           command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
 
       - run:
