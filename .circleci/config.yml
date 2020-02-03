@@ -237,6 +237,12 @@ jobs:
 
 # TODO: only run platform specific tests after builds, tests, etc pass so we don't waste resources.
 
+executors:
+  my-docker:
+    docker:
+      - image: circleci/node:12.1-stretch
+
+
 workflows:
   version: 2
   parallel_workflow:
@@ -247,9 +253,7 @@ workflows:
             shell: bash.exe
 
       - build_with_executor:
-          executor:
-            docker:
-              - image: circleci/node:12.1-stretch
+          executor: my-docker
 #
 #      - build-webapp:
 #          requires:
