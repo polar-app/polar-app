@@ -91,7 +91,7 @@ jobs:
 
       - run:
           name: install lerna
-          command: npm install -g lerna
+          command: npm install lerna
 
       - run:
           name: setup full dependencies
