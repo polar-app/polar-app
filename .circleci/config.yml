@@ -31,6 +31,11 @@ commands:
           name: node version
           command: node --version
 
+
+      - run:
+          name: OS environment
+          command: echo $OSTYPE
+
       - run:
           name: install lerna
           command: npm install lerna
@@ -80,10 +85,6 @@ jobs:
         - v1-dependencies-{{ checksum "package.json" }}
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
-
-    - run:
-        name: OS environment
-        command: echo $OSTYPE
 
     - run:
         name: install lerna
