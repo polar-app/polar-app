@@ -1,5 +1,5 @@
 ---
-title: Is AnkiApp trying to make you believe they are Anki?
+title: AnkiApp is Ripping Off Anki
 date: 2020-02-03T08:00:00.000-08:00
 layout: post
 description: On Friday, Redditor u/farazyashar launched a discussion in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
@@ -8,7 +8,7 @@ large_image: https://i.imgur.com/s3hmhWJ.png
 
 <img src="https://i.imgur.com/s3hmhWJ.png" class="img-fluid">
 
-# Is AnkiApp trying to make you believe they are Anki?
+# AnkiApp is Ripping Off Anki
 
 On Friday, Redditor u/farazyashar launched a [discussion](https://www.reddit.com/r/Anki/comments/ewoir7/trademark_lawsuit_against_ankiapp/) in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
 
