@@ -31,6 +31,12 @@ Key differences include:
  - Community: the original Anki has a huge community, especially on Reddit. Our research found that the AnkiApp community indeed has its own Subreddit. As of January 31, 2020 that Subreddit had one user. Several Redditors did point out however, that they initially confused the Anki community with the AnkiApp (Admium) community
  - Cost: both Anki and AnkiApp (Admium) are free on the Google Play Store and $24.99 on the Apple Store
 
+large_image: https://imgur.com/aeZQal1
+Anki vs AnkiApp design
+
+large_image: https://imgur.com/VjYVKV7
+Anki add-ons
+
 In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a Wikipedia article about it under the Anki name
 
 Since we found this topic interesting and confusing at the same time, we decided to dig deeper. Below you’ll find additional findings. It should be clarified from the get-go that there are multiple spaced repetition apps that are using the term Anki, as even specified in AnkiApp’s (Admium) FAQs.
@@ -38,6 +44,9 @@ Since we found this topic interesting and confusing at the same time, we decided
 Additional findings about AnkiApp (Admium)
 
 When looking at AnkiApp’s (Admium) website, you notice that Chinese is referenced everywhere. Even on Admium’s website, all text is in English with a few Chinese snippets. It does make you wonder why…
+
+large_image: https://imgur.com/KmUTdA1
+Admium's website
 
 Since data handling and privacy is a major concern (in particular in the open-source community), we decided to take a closer look here as well. When looking at AnkiApp’s (Admium) privacy policy, we immediately noticed a lack of specificity. For once, it is extremely short. Compare AnkiApp’s (Admium) privacy policy to Yelp’s for example. Secondly, AnkiApp (Admium) fails to clarify how and in which location (US, China, or elsewhere) personal information is being stored.
 
