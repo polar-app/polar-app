@@ -10,7 +10,7 @@ large_image: https://i.imgur.com/gUjA8Hp.png
 
 # Is AnkiApp trying to make you believe they are Anki?
 
-On Friday, Redditor u/farazyashar launched a discussion in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
+On Friday, Redditor u/farazyashar launched a [discussion](https://www.reddit.com/r/Anki/comments/ewoir7/trademark_lawsuit_against_ankiapp/) in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
 
 In fact, it seems like many AnkiApp (Admium) users had not been aware they are not using the original software and expressed outrage. It’s likely the confusion stemmed from the similar naming of the newer product, with a few Redditors insinuating malicious behavior on Admium’s part
 
@@ -34,7 +34,7 @@ Anki vs AnkiApp design
 
 <img src="https://i.imgur.com/VjYVKV7.png" class="img-fluid border">
 
-## Anki add-ons
+Anki add-ons
 
 In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a Wikipedia article about it under the Anki name
 
@@ -46,7 +46,7 @@ When looking at AnkiApp’s (Admium) website, you notice that Chinese is referen
 
 <img src="https://i.imgur.com/KmUTdA1.png" class="img-fluid border">
 
-## Admium's website
+Admium's website
 
 Since data handling and privacy is a major concern (in particular in the open-source community), we decided to take a
 closer look here as well. When looking at AnkiApp’s (Admium) privacy policy, we immediately noticed a lack of
