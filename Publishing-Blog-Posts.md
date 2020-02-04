@@ -45,3 +45,17 @@ In the future I plan on making it automated.
 
 Make sure to set the large_image field.  This is used so that when we share via social media that a preview image is set.
 
+# Linking Images
+
+You can link to images using the following format:
+
+```text
+<img src="http://example.com/hello.png" class="img-fluid">
+``` 
+
+If you would like the image to have a border use:
+
+```text
+<img src="http://example.com/hello.png" class="img-fluid border">
+``` 
+
