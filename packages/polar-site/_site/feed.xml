@@ -1,6 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-03T06:55:43-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/01/30/decentralized.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-01-30T09:00:00-07:00</published><updated>2020-01-30T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/30/decentralized</id><content type="html" xml:base="https://getpolarized.io/2020/01/30/decentralized.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-04T11:55:50-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">AnkiApp is Ripping Off Anki</title><link href="https://getpolarized.io/2020/02/03/anki-ripped-off.html" rel="alternate" type="text/html" title="AnkiApp is Ripping Off Anki" /><published>2020-02-03T09:00:00-07:00</published><updated>2020-02-03T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/03/anki-ripped-off</id><content type="html" xml:base="https://getpolarized.io/2020/02/03/anki-ripped-off.html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/s3hmhWJ.png&quot; class=&quot;img-fluid&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;ankiapp-is-ripping-off-anki&quot;&gt;AnkiApp is Ripping Off Anki&lt;/h1&gt;
+
+&lt;p&gt;On Friday, Redditor u/farazyashar launched a &lt;a href=&quot;https://www.reddit.com/r/Anki/comments/ewoir7/trademark_lawsuit_against_ankiapp/&quot;&gt;discussion&lt;/a&gt; in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)&lt;/p&gt;
+
+&lt;p&gt;In fact, it seems like many AnkiApp (Admium) users had not been aware they are not using the original software and expressed outrage. It’s likely the confusion stemmed from the similar naming of the newer product, with a few Redditors insinuating malicious behavior on Admium’s part&lt;/p&gt;
+
+&lt;p&gt;In the following, we clarify any potential confusion and also share a little our own research we conducted into AnkiApp (Admium)&lt;/p&gt;
+
+&lt;p&gt;Let’s start with the most important part: how to differentiate between Anki and AnkiApp (Admium)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://apps.ankiweb.net/&quot;&gt;Anki&lt;/a&gt; is a flashcard tool incorporating a simple yet powerful spaced repetition algorithm at its backend. AnkiApp (Admium) is essentially the same tool copied but developed by a corporation called &lt;a href=&quot;https://www.admium.net/&quot;&gt;Admium&lt;/a&gt;, though many reviews point to major issues, such as &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.ankiapp.client&quot;&gt;regular crashes and data loss&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Key differences include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Design: the original Anki has a very simplistic design. The newer AnkiApp (Admium) has a more elaborate design, though reading their reviews, it suffers from many glitches&lt;/li&gt;
+  &lt;li&gt;Open-source: the original Anki app is open source. AnkiApp (Admium) is not&lt;/li&gt;
+  &lt;li&gt;Integration with other apps: the original Anki has many integrations, such as the relatively new Pokamanki add-on or Polar. AnkiApp (Admium) has no integrations that we could find. It only allows you to mass import data from spreadsheets&lt;/li&gt;
+  &lt;li&gt;Community: the original Anki has a huge community, especially on &lt;a href=&quot;https://www.reddit.com/r/Anki/&quot;&gt;Reddit&lt;/a&gt;. Our research found that the AnkiApp community indeed has its own &lt;a href=&quot;https://www.reddit.com/r/AnkiApp/&quot;&gt;Subreddit&lt;/a&gt;. As of January 31, 2020, that Subreddit had one user. Several Redditors did point out however, that they initially confused the Anki community with the AnkiApp (Admium) community&lt;/li&gt;
+  &lt;li&gt;Cost: both Anki and AnkiApp (Admium) are free on the Google Play Store and $24.99 on the Apple Store&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/whKsXND.png&quot; class=&quot;img-fluid border&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Anki vs AnkiApp design&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/VjYVKV7.png&quot; class=&quot;img-fluid border&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Anki add-ons&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a &lt;a href=&quot;https://en.wikipedia.org/wiki/Anki_(software)&quot;&gt;Wikipedia&lt;/a&gt; article about it under the Anki name&lt;/p&gt;
+
+&lt;p&gt;Since we found this topic interesting and confusing at the same time, we decided to dig deeper. Below you’ll find additional findings. It should be clarified from the get-go that there are multiple spaced repetition apps that are using the term Anki, as even specified in AnkiApp’s (Admium) &lt;a href=&quot;https://ankiapp.freshdesk.com/support/solutions/articles/5000359829-is-ankiapp-the-same-as-anki-&quot;&gt;FAQs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;additional-findings-about-ankiapp-admium&quot;&gt;Additional findings about AnkiApp (Admium)&lt;/h2&gt;
+
+&lt;p&gt;When looking at AnkiApp’s (Admium) website, you notice that Chinese is referenced everywhere. Even on Admium’s website, all text is in English with a few Chinese snippets. It does make you wonder why…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/KmUTdA1.png&quot; class=&quot;img-fluid border&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Admium's website&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;Since data handling and privacy is a major concern (in particular in the open-source community), we decided to take a
+closer look here as well. When looking at AnkiApp’s (Admium) privacy policy, we immediately noticed a lack of
+specificity. For once, it is extremely short. Compare AnkiApp’s (Admium) privacy policy to Yelp’s for example. Secondly,
+AnkiApp (Admium) fails to clarify how and in which location (US, China, or elsewhere) personal information is being
+stored.&lt;/p&gt;
+
+&lt;p&gt;It seems possible that AnkiApp (Admium) is a Chinese-owned company based on the original Anki platform, intended to take
+advantage of the confusion in naming. This conclusion is based on the confusion in names as well as Chinese being the
+only other supported language used on AnkiApp (Admium). While AnkiApp (Admium) does claim that additional language
+support is planned, this claim has been &lt;a href=&quot;https://web.archive.org/web/20131230030458/http://www.ankiapp.com/&quot;&gt;on the site since early 2014&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, the AnkiApp’s Subreddit’s only user and moderator &lt;a href=&quot;https://www.reddit.com/user/admium/&quot;&gt;u/admium&lt;/a&gt;, only wrote three responses on Reddit, two of which
+directly aim at getting Anki users to switch to AnkiApp which further supports the above conclusion.&lt;/p&gt;
+
+&lt;p&gt;We reached out to AnkiApp (Admium) by phone for clarification, however, did not receive a response. We will keep you
+posted if we learn anything new.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/01/30/decentralized-social-media.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-01-30T09:00:00-07:00</published><updated>2020-01-30T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/30/decentralized-social-media</id><content type="html" xml:base="https://getpolarized.io/2020/01/30/decentralized-social-media.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
 
 &lt;p&gt;The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020&lt;/p&gt;
+
+&lt;p&gt;large_image: https://imgur.com/BaJJyCJ
+Presentation at Internet Archive on decentralized social media&lt;/p&gt;
 
 &lt;p&gt;Given the impact social media has had on our lives in the last few years - from less privacy to election interfering - an increasing focus has been put on decentralized social media platforms as a potential solution. In addition, the crypto boom of 2017 brought blockchain to the mainstream media, which further helped out projects in that space&lt;/p&gt;
 
@@ -15,6 +77,12 @@
 &lt;p&gt;Examples of platforms using such a protocol include ActivityPub built on Mastodon. ActivityPub is a social network with nearly about 2.2M users and roughly doubled its user base in 2019
 Matrix is a chat platform and another example using a federated protocol with ~11M users. Matrix allows multiple communication platforms to all integrate into one&lt;/p&gt;
 
+&lt;p&gt;large_image: https://imgur.com/PCUysdj
+ActivityPub’s landing page&lt;/p&gt;
+
+&lt;p&gt;large_image: https://imgur.com/91LoKlw
+Matrix’ approach to decentralized communication&lt;/p&gt;
+
 &lt;p&gt;The main advantages of federated protocols are a familiar UX, no user key management, and control of moderation policy by the user. Generally speaking, platforms using federated protocols are closer to what we are used to seeing in social media. For example, they allow for users to change and delete content&lt;/p&gt;
 
 &lt;p&gt;The key disadvantages are a stronger dependence on admins, identities being potentially bound to specific servers, and platforms can lack privacy&lt;/p&gt;
@@ -24,6 +92,9 @@ Matrix is a chat platform and another example using a federated protocol with ~1
 &lt;p&gt;In a peer-to-peer protocol, no distinction is made between a client and a server, meaning all nodes are equal&lt;/p&gt;
 
 &lt;p&gt;The most well-known example of such a protocol is scuttlebutt. Scuttlebutt is a protocol for gossip sharing with an estimated 16k nodes. Social media platforms built on it include Patchwork, Manyverse, and Planetary&lt;/p&gt;
+
+&lt;p&gt;large_image: https://imgur.com/chXxdT4
+Manyverse - a social network based on a scuttlebutt’s peer-to-peer protocol&lt;/p&gt;
 
 &lt;p&gt;In peer-to-peer protocols, users are identified by public keys or human-readable usernames. Moderation is typically achieved bottoms-up which provides a lot of flexibility on which kind of content and under what rules they want to engage with&lt;/p&gt;
 
@@ -174,7 +245,31 @@ generally tends to do the right thing.&lt;/p&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Mainstream.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Spaced Repetition is Supervised Learning for Humans</summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Spaced Repetition is Supervised Learning for Humans</summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
+
+&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
+he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
+
+&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
+
+&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
+annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
+
+&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
+tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
+
+&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
+notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
+
+&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
+
+&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;over-500-top-pdfs-posted-to-hacker-news-in-2019&quot;&gt;Over 500 Top PDFs posted to Hacker News in 2019&lt;/h1&gt;
 
@@ -1315,31 +1410,7 @@ highlight the PDFs and easily manage your reading.&lt;/p&gt;
 &lt;h2 id=&quot;556-the-state-of-homelessness-in-america-pdf&quot;&gt;556. &lt;a href=&quot;https://app.getpolarized.io/add/?file=https://www.whitehouse.gov/wp-content/uploads/2019/09/The-State-of-Homelessness-in-America.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20State%20of%20Homelessness%20in%20America%20%5Bpdf%5D%22%7D&quot;&gt;The State of Homelessness in America [pdf]&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21001300&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;557-the-effect-of-founder-experience-on-labor-market-outcomes-a-field-experiment-pdf&quot;&gt;557. &lt;a href=&quot;https://app.getpolarized.io/add/?file=http://www.tristanbotelho.com/files/BotelhoChang2019_FounderExperienceLaborMarkets.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20Effect%20of%20Founder%20Experience%20on%20Labor%20Market%20Outcomes%3A%20A%20Field%20Experiment%20%5Bpdf%5D%22%7D&quot;&gt;The Effect of Founder Experience on Labor Market Outcomes: A Field Experiment [pdf]&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
-
-&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
-he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
-
-&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
-
-&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
-annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
-
-&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
-tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
-
-&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
-notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
-
-&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
-
-&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roadmap-for-polar-in-q1-2020&quot;&gt;Roadmap for Polar in Q1 2020&lt;/h1&gt;
 
@@ -1706,17 +1777,4 @@ iPad users can’t install third-party browsers, which makes PWA-based technolog
 hacks that can be done like looking at window.screen.width but this will yield false positives in some situations.&lt;/p&gt;
 
 &lt;p&gt;At the very minimum, Apple should augment the ‘navigator’ object with some proprietary extension so that I can at least
-add custom code to detect that I’m on an iPad.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.80 - Manual Update Required for Desktop Users</title><link href="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html" rel="alternate" type="text/html" title="Polar 1.80 - Manual Update Required for Desktop Users" /><published>2019-12-20T09:00:00-07:00</published><updated>2019-12-20T09:00:00-07:00</updated><id>https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users</id><content type="html" xml:base="https://getpolarized.io/2019/12/20/1-80-Manual-Update-for-Desktop-Users.html">&lt;h1 id=&quot;polar-180---manual-update-required-for-desktop-users&quot;&gt;Polar 1.80 - Manual Update Required for Desktop Users&lt;/h1&gt;
-
-&lt;p&gt;Polar 1.80 for MacOS and Windows requires users to manually update to the latest version by &lt;a href=&quot;https://getpolarized.io/download.html&quot;&gt;manually downloading and
-installing the latest version&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;We’re very sorry for the inconvenience.  There was a bug in Electron &amp;gt;7.1.2 that broke updates for all Electron
-applications.  I’ve filed bugs against the Electron project to hopefully fix this before it impacts other projects.&lt;/p&gt;
-
-&lt;p&gt;We aggressively test all major releases but didn’t think that a small point upgrade would have such a massive 
-implication.&lt;/p&gt;
-
-&lt;p&gt;Moving forward, we’re going to be migrating to a new build system which automatically tests the update system.&lt;/p&gt;
-
-&lt;p&gt;This should prevent the problem from happening again.&lt;/p&gt;</content><author><name></name></author><summary type="html">Polar 1.80 - Manual Update Required for Desktop Users</summary></entry></feed>
+add custom code to detect that I’m on an iPad.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
