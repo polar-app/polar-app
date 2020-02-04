@@ -4,7 +4,6 @@ const assert = require("assert");
 const {Rects} = require("../../../js/Rects");
 const {Objects} = require("../../../js/util/Objects");
 const {Styles} = require("../../../js/util/Styles");
-const {assertJSON} = require("../../../js/test/Assertions");
 const {Rect} = require("../../../js/Rect");
 const {ResizeRectAdjacencyCalculator} = require("../../../js/pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
 const {RectEdges} = require("../../../js/pagemarks/controller/interact/edges/RectEdges");
