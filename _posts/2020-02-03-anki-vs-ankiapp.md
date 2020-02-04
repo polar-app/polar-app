@@ -6,7 +6,7 @@ description: On Friday, Redditor u/farazyashar launched a discussion in the Anki
 large_image: https://imgur.com/zr9cCga  
 ---
 
-<img src="https://imgur.com/zr9cCga" class="img-fluid">
+<img src="https://i.imgur.com/zr9cCga.jpg" class="img-fluid">
 
 # Is AnkiApp trying to make you believe they are Anki?
 
