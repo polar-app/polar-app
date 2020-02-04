@@ -222,13 +222,13 @@ jobs:
             export DISPLAY=:99 &&
             export SPECTRON_OFFSCREEN=true &&
             source packages/polar-bookshelf-secrets/build-env.sh &&
-            cd packages/polar-bookshelf &&
-            npx mocha --timeout 600000 --exit 'web/spectron0/**/spec.js' &&
-            npx mocha --timeout 600000 --exit 'web/spectron1/**/spec.js' &&
-            npx mocha --timeout 600000 --exit 'web/spectron2/**/spec.js' &&
-            npx mocha --timeout 600000 --exit 'web/spectron3/**/spec.js' &&
-            npx mocha --timeout 600000 --exit 'web/spectron4/**/spec.js' &&
-            npx mocha --timeout 600000 --exit 'web/spectron5/**/spec.js'
+            cd packages/polar-bookshelf
+#            npx mocha --timeout 600000 --exit 'web/spectron0/**/spec.js' &&
+#            npx mocha --timeout 600000 --exit 'web/spectron1/**/spec.js' &&
+#            npx mocha --timeout 600000 --exit 'web/spectron2/**/spec.js' &&
+#            npx mocha --timeout 600000 --exit 'web/spectron3/**/spec.js' &&
+#            npx mocha --timeout 600000 --exit 'web/spectron4/**/spec.js' &&
+#            npx mocha --timeout 600000 --exit 'web/spectron5/**/spec.js'
 
 #            npm run-script e2e-X 0 &&
 #            npm run-script e2e-X 1 &&
