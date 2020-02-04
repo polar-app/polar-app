@@ -18,14 +18,14 @@ In the following, we clarify any potential confusion and also share a little our
 
 Let’s start with the most important part: how to differentiate between Anki and AnkiApp (Admium)
 
-Anki is a flashcard tool incorporating a simple yet powerful spaced repetition algorithm at its backend. AnkiApp (Admium) is essentially the same tool copied but developed by a corporation called Admium, though many reviews point to major issues, such as regular crashes and data loss
+[Anki](https://apps.ankiweb.net/) is a flashcard tool incorporating a simple yet powerful spaced repetition algorithm at its backend. AnkiApp (Admium) is essentially the same tool copied but developed by a corporation called [Admium](https://www.admium.net/), though many reviews point to major issues, such as [regular crashes and data loss](https://play.google.com/store/apps/details?id=com.ankiapp.client)
 
 Key differences include:
 
  - Design: the original Anki has a very simplistic design. The newer AnkiApp (Admium) has a more elaborate design, though reading their reviews, it suffers from many glitches
  - Open-source: the original Anki app is open source. AnkiApp (Admium) is not
  - Integration with other apps: the original Anki has many integrations, such as the relatively new Pokamanki add-on or Polar. AnkiApp (Admium) has no integrations that we could find. It only allows you to mass import data from spreadsheets
- - Community: the original Anki has a huge community, especially on Reddit. Our research found that the AnkiApp community indeed has its own Subreddit. As of January 31, 2020 that Subreddit had one user. Several Redditors did point out however, that they initially confused the Anki community with the AnkiApp (Admium) community
+ - Community: the original Anki has a huge community, especially on [Reddit](https://www.reddit.com/r/Anki/). Our research found that the AnkiApp community indeed has its own [Subreddit](https://www.reddit.com/r/AnkiApp/). As of January 31, 2020, that Subreddit had one user. Several Redditors did point out however, that they initially confused the Anki community with the AnkiApp (Admium) community
  - Cost: both Anki and AnkiApp (Admium) are free on the Google Play Store and $24.99 on the Apple Store
 
 <img src="https://i.imgur.com/aeZQal1.png" class="img-fluid border">
@@ -36,9 +36,9 @@ Anki vs AnkiApp design
 
 Anki add-ons
 
-In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a Wikipedia article about it under the Anki name
+In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a [Wikipedia](https://en.wikipedia.org/wiki/Anki_(software)) article about it under the Anki name
 
-Since we found this topic interesting and confusing at the same time, we decided to dig deeper. Below you’ll find additional findings. It should be clarified from the get-go that there are multiple spaced repetition apps that are using the term Anki, as even specified in AnkiApp’s (Admium) FAQs.
+Since we found this topic interesting and confusing at the same time, we decided to dig deeper. Below you’ll find additional findings. It should be clarified from the get-go that there are multiple spaced repetition apps that are using the term Anki, as even specified in AnkiApp’s (Admium) [FAQs](https://ankiapp.freshdesk.com/support/solutions/articles/5000359829-is-ankiapp-the-same-as-anki-).
 
 ## Additional findings about AnkiApp (Admium)
 
@@ -57,9 +57,9 @@ stored.
 It seems possible that AnkiApp (Admium) is a Chinese-owned company based on the original Anki platform, intended to take
 advantage of the confusion in naming. This conclusion is based on the confusion in names as well as Chinese being the
 only other supported language used on AnkiApp (Admium). While AnkiApp (Admium) does claim that additional language
-support is planned, this claim has been on the site since early 2014.
+support is planned, this claim has been [on the site since early 2014](https://web.archive.org/web/20131230030458/http://www.ankiapp.com/).
 
-Finally, the AnkiApp’s Subreddit’s only user and moderator u/admium, only wrote three responses on Reddit, two of which
+Finally, the AnkiApp’s Subreddit’s only user and moderator [u/admium](https://www.reddit.com/user/admium/), only wrote three responses on Reddit, two of which
 directly aim at getting Anki users to switch to AnkiApp which further supports the above conclusion.
 
 We reached out to AnkiApp (Admium) by phone for clarification, however, did not receive a response. We will keep you
