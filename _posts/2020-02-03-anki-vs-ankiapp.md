@@ -3,10 +3,10 @@ title: Is AnkiApp trying to make you believe they are Anki?
 date: 2020-02-03T08:00:00.000-08:00
 layout: post
 description: On Friday, Redditor u/farazyashar launched a discussion in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
-large_image: https://i.imgur.com/gUjA8Hp.png   
+large_image: https://i.imgur.com/s3hmhWJ.png  
 ---
 
-<img src="https://i.imgur.com/gUjA8Hp.png" class="img-fluid">
+<img src="https://i.imgur.com/s3hmhWJ.png" class="img-fluid">
 
 # Is AnkiApp trying to make you believe they are Anki?
 
@@ -28,13 +28,13 @@ Key differences include:
  - Community: the original Anki has a huge community, especially on [Reddit](https://www.reddit.com/r/Anki/). Our research found that the AnkiApp community indeed has its own [Subreddit](https://www.reddit.com/r/AnkiApp/). As of January 31, 2020, that Subreddit had one user. Several Redditors did point out however, that they initially confused the Anki community with the AnkiApp (Admium) community
  - Cost: both Anki and AnkiApp (Admium) are free on the Google Play Store and $24.99 on the Apple Store
 
-<img src="https://i.imgur.com/aeZQal1.png" class="img-fluid border">
+<img src="https://i.imgur.com/whKsXND.png" class="img-fluid border">
 
-Anki vs AnkiApp design
+<p class="text-center"><b>Anki vs AnkiApp design</b></p>
 
 <img src="https://i.imgur.com/VjYVKV7.png" class="img-fluid border">
 
-Anki add-ons
+<p class="text-center"><b>Anki add-ons</b></p>
 
 In summary, it can be confusing for a new user trying to differentiate between both apps. The good news is that the original Anki app appears first when googling and has a [Wikipedia](https://en.wikipedia.org/wiki/Anki_(software)) article about it under the Anki name
 
@@ -46,7 +46,7 @@ When looking at AnkiApp’s (Admium) website, you notice that Chinese is referen
 
 <img src="https://i.imgur.com/KmUTdA1.png" class="img-fluid border">
 
-Admium's website
+<p class="text-center"><b>Admium's website</b></p>
 
 Since data handling and privacy is a major concern (in particular in the open-source community), we decided to take a
 closer look here as well. When looking at AnkiApp’s (Admium) privacy policy, we immediately noticed a lack of
