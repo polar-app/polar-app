@@ -82,6 +82,10 @@ jobs:
         - v1-dependencies-
 
     - run:
+        name: OS environment
+        command: echo $OSTYPE
+
+    - run:
         name: install lerna
         command: sudo npm install -g lerna
 
