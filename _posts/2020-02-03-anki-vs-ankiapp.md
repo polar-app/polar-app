@@ -11,6 +11,8 @@ Is AnkiApp trying to make you believe they are Anki?
 
 On Friday, Redditor u/farazyashar launched a discussion in the Anki subreddit about a potential lawsuit against AnkiApp (Admium). The main rationale behind it is a potential infringement on the name Anki and clear confusion between Anki and AnkiApp (Admium)
 
+large_image: https://imgur.com/gUjA8Hp
+
 Original Anki (left) and AnkiApp (Admium) on the right
 
 In fact, it seems like many AnkiApp (Admium) users had not been aware they are not using the original software and expressed outrage. It’s likely the confusion stemmed from the similar naming of the newer product, with a few Redditors insinuating malicious behavior on Admium’s part
