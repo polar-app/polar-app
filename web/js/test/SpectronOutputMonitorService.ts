@@ -13,42 +13,47 @@ export class SpectronOutputMonitorService {
     private stopped: boolean = false;
 
     constructor(app: any) {
-        this.app = Preconditions.assertNotNull(app, "app");
+        this.app = Preconditions.assertPresent(app, "app");
         this.stopped = false;
     }
 
-    start() {
+    public start() {
         this._iter();
         console.log("SpectronOutputMonitorService started");
     }
 
-    _iter() {
+    private _iter() {
 
-        this._doLogForwarding();
+        try {
+            this.doLogForwarding();
+        } catch (e) {
+            console.error(e);
+        }
+
         this._reschedule();
 
     }
 
-    _doLogForwarding() {
+    public doLogForwarding() {
 
-        let client = this.app.client;
+        const client = this.app.client;
 
-        if(client) {
+        if (client) {
 
             // right now e only forward the main because we can get the renderer
             // via the javascript console.
             client.getMainProcessLogs().then(function (logs: any[]) {
                 logs.forEach(function (log) {
                     console.log("main: " + log);
-                })
+                });
 
-            })
+            });
 
             // right now e only forward the main because we can get the renderer
             // via the javascript console.
             client.getRenderProcessLogs().then(function (logs: any[]) {
                 logs.forEach(function (log) {
-                    //console.log("render: " + JSON.stringify(log, null, "  "));
+                    // console.log("render: " + JSON.stringify(log, null, "  "));
 
                     // TODO: this is ALL we get for SEVERE.  We don't get an
                     // exception.  I think if there are args given to log.info or
@@ -80,23 +85,21 @@ export class SpectronOutputMonitorService {
 
     }
 
-    _reschedule() {
+    private _reschedule() {
 
-        if(this.stopped) {
+        if (this.stopped) {
             return;
         }
 
-        setTimeout(() => {
-            this._doLogForwarding();
-        }, TIMEOUT);
+        setTimeout(() => this._iter(), TIMEOUT);
 
     }
 
-    stop() {
+    public stop() {
 
         // do one more just to make sure we don't have any missing last moment
         // logs
-        this._doLogForwarding();
+        this.doLogForwarding();
         this.stopped = true;
 
         console.log("SpectronOutputMonitorService stopped");
