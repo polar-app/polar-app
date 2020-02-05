@@ -7,15 +7,17 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 describe('Browser Capture', function() {
 
+    console.log("Setting up spectron...");
     Spectron.setup(__dirname);
-    this.timeout(30000);
 
     before(async function() {
+        console.log("Using fresh data dir...");
         await PolarDataDir.useFreshDirectory('.polar-browser-capture');
     });
 
     it('Test browser capturing and writing to a file.', async function() {
 
+        console.log("Creating and running spectron test...");
         await SpectronSpec.create(this.app).waitFor(true);
 
     });

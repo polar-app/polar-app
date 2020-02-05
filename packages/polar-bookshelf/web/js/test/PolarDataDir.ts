@@ -10,8 +10,10 @@ export class PolarDataDir {
     public static async useFreshDirectory(name: string): Promise<string> {
 
         const dataDir = FilePaths.createTempName(name);
-        process.env.POLAR_DATA_DIR = dataDir;
+
         console.log("Using new dataDir: " + dataDir);
+
+        process.env.POLAR_DATA_DIR = dataDir;
         await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         const directories = new Directories();
