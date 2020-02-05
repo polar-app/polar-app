@@ -106,13 +106,6 @@ jobs:
                 npx mocha --timeout 600000 --exit 'web/spectron5/**/spec.js'
             fi
 
-#            npm run-script e2e-X 0 &&
-#            npm run-script e2e-X 1 &&
-#            npm run-script e2e-X 2 &&
-#            npm run-script e2e-X 3 &&
-#            npm run-script e2e-X 4 &&
-#            npm run-script e2e-X 5 &&
-
   build-webapp:
     docker:
       # specify the version you desire here
