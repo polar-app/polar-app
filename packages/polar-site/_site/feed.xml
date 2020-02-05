@@ -1,4 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-04T11:55:50-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">AnkiApp is Ripping Off Anki</title><link href="https://getpolarized.io/2020/02/03/anki-ripped-off.html" rel="alternate" type="text/html" title="AnkiApp is Ripping Off Anki" /><published>2020-02-03T09:00:00-07:00</published><updated>2020-02-03T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/03/anki-ripped-off</id><content type="html" xml:base="https://getpolarized.io/2020/02/03/anki-ripped-off.html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/s3hmhWJ.png&quot; class=&quot;img-fluid&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-05T14:03:29-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/02/04/decentralized-social-media.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-02-04T09:00:00-07:00</published><updated>2020-02-04T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/04/decentralized-social-media</id><content type="html" xml:base="https://getpolarized.io/2020/02/04/decentralized-social-media.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
+
+&lt;p&gt;The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/BaJJyCJ.png&quot; class=&quot;img-fluid&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Presentation at Internet Archive on decentralized social media&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;Given the impact social media has had on our lives in the last few years - from less privacy to election interfering - an increasing focus has been put on decentralized social media platforms as a potential solution. In addition, the crypto boom of 2017 brought blockchain to the mainstream media, which further helped out projects in that space&lt;/p&gt;
+
+&lt;p&gt;While these platforms promise a better solution to existing social media, no single platform has to date achieved the kind of success seen in the early stages of Facebook, Twitter, Reddit, and others. In fact, not only do many face technical challenges and delays, the business model is oftentimes not clear either&lt;/p&gt;
+
+&lt;p&gt;Decentralized social media platforms are primarily built on two types of protocols - federated protocols or peer-to-peer protocols&lt;/p&gt;
+
+&lt;h2 id=&quot;federated-protocols&quot;&gt;Federated protocols&lt;/h2&gt;
+
+&lt;p&gt;A federated protocol allows multiple small networks to talk to each other without giving away too much control&lt;/p&gt;
+
+&lt;p&gt;Examples of platforms using such a protocol include ActivityPub built on Mastodon. ActivityPub is a social network with nearly about 2.2M users and roughly doubled its user base in 2019
+Matrix is a chat platform and another example using a federated protocol with ~11M users. Matrix allows multiple communication platforms to all integrate into one&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://i.imgur.com/PCUysdj.png&quot; /&gt;&lt;/p&gt;
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;ActivityPub's landing page&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://i.imgur.com/91LoKlw.png&quot; /&gt;&lt;/p&gt;
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Matrix' approach to decentralized communication&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;The main advantages of federated protocols are a familiar UX, no user key management, and control of moderation policy by the user. Generally speaking, platforms using federated protocols are closer to what we are used to seeing in social media. For example, they allow for users to change and delete content&lt;/p&gt;
+
+&lt;p&gt;The key disadvantages are a stronger dependence on admins, identities being potentially bound to specific servers, and platforms can lack privacy&lt;/p&gt;
+
+&lt;h2 id=&quot;peer-to-peer-protocols&quot;&gt;Peer-to-peer protocols&lt;/h2&gt;
+
+&lt;p&gt;In a peer-to-peer protocol, no distinction is made between a client and a server, meaning all nodes are equal&lt;/p&gt;
+
+&lt;p&gt;The most well-known example of such a protocol is scuttlebutt. Scuttlebutt is a protocol for gossip sharing with an estimated 16k nodes. Social media platforms built on it include Patchwork, Manyverse, and Planetary&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://i.imgur.com/chXxdT4.png&quot; /&gt;&lt;/p&gt;
+&lt;p class=&quot;text-center&quot;&gt;&lt;b&gt;Manyverse - a social network based on a scuttlebutt's peer-to-peer protocol&lt;/b&gt;&lt;/p&gt;
+
+&lt;p&gt;In peer-to-peer protocols, users are identified by public keys or human-readable usernames. Moderation is typically achieved bottoms-up which provides a lot of flexibility on which kind of content and under what rules they want to engage with&lt;/p&gt;
+
+&lt;p&gt;Additional networks using a peer-to-peer network, though not built on scuttlebutt, are Aether (a Reddit-style network) and Iris (an ethereum-based network)&lt;/p&gt;
+
+&lt;p&gt;The key advantages of peer-to-peer protocols are the fact that users are able to control their data and identity, capacity scales with demand (since every node is equal), and a local-first approach&lt;/p&gt;
+
+&lt;p&gt;On the flipside, peer-to-peer protocols have a few disadvantages as well. Namely, no password recovery, a resource-intensive approach (all data is stored on users’ nodes), and an unfamiliar UX (no deletion, changing of content, no cross-device usage,…). In particular the relatively user-unfriendly features give the peer-to-peer protocols a distinct disadvantage over federated protocols in the social media space&lt;/p&gt;
+
+&lt;p&gt;Furthermore, a big issue for such protocols is the lack of a clear monetization strategy&lt;/p&gt;
+
+&lt;h2 id=&quot;how-blockchain-is-used-in-the-design&quot;&gt;How blockchain is used in the design&lt;/h2&gt;
+
+&lt;p&gt;Blockchain is used in two parts of the design - data storage and monetization / payments&lt;/p&gt;
+
+&lt;p&gt;Data can be irreversible stored on a blockchain. Cryptocurrencies built on top of the blockchain protocol are oftentimes employed for monetization of the platform and payments between users&lt;/p&gt;
+
+&lt;p&gt;There are a few examples that store data on the blockchain AND utilize the blockchain for payments. The best-known example is Steem. Steem is a Reddit-style platform. In addition, the Steem blockchain protocol is being used to build a host of other social media and content sharing platforms&lt;/p&gt;
+
+&lt;p&gt;Examples of platforms that only use blockchain infrastructure for payments include DTube and Minds. DTube is a perfect example of the limitations of blockchain-based content platforms. DTube, a blockchain-based Youtube competitor, requires a huge amount of data to be stored, which makes it practically impossible to use blockchain&lt;/p&gt;
+
+&lt;p&gt;Advantages of blockchain-based social media platforms include decentralized monetization and payments, and decentralized global consensus on identities&lt;/p&gt;
+
+&lt;p&gt;However, such platforms also come with significant disadvantages. Namely, key management issues with potential of financial loss, non-modifiable on-chain data, and publicly visible on-chain data. In particular, the last point is contentious among privacy-centric users&lt;/p&gt;
+
+&lt;p&gt;In addition, at the current state of blockchain, the base-layer blockchain is not scalable, though research is actively going on to resolve this problem&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;In summary, decentralized social media platforms have not been able to break into the mainstream at the pace traditional ones were able to. It remains to be seen if further privacy violations, data misuse, and other topics will ultimately lead to large-scale adoption&lt;/p&gt;</content><author><name></name></author><summary type="html">Decentralized social media using federated and peer-to-peer protocols</summary></entry><entry><title type="html">AnkiApp is Ripping Off Anki</title><link href="https://getpolarized.io/2020/02/03/anki-ripped-off.html" rel="alternate" type="text/html" title="AnkiApp is Ripping Off Anki" /><published>2020-02-03T09:00:00-07:00</published><updated>2020-02-03T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/03/anki-ripped-off</id><content type="html" xml:base="https://getpolarized.io/2020/02/03/anki-ripped-off.html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/s3hmhWJ.png&quot; class=&quot;img-fluid&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;ankiapp-is-ripping-off-anki&quot;&gt;AnkiApp is Ripping Off Anki&lt;/h1&gt;
 
@@ -57,74 +125,7 @@ support is planned, this claim has been &lt;a href=&quot;https://web.archive.org
 directly aim at getting Anki users to switch to AnkiApp which further supports the above conclusion.&lt;/p&gt;
 
 &lt;p&gt;We reached out to AnkiApp (Admium) by phone for clarification, however, did not receive a response. We will keep you
-posted if we learn anything new.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/01/30/decentralized-social-media.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-01-30T09:00:00-07:00</published><updated>2020-01-30T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/30/decentralized-social-media</id><content type="html" xml:base="https://getpolarized.io/2020/01/30/decentralized-social-media.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
-
-&lt;p&gt;The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020&lt;/p&gt;
-
-&lt;p&gt;large_image: https://imgur.com/BaJJyCJ
-Presentation at Internet Archive on decentralized social media&lt;/p&gt;
-
-&lt;p&gt;Given the impact social media has had on our lives in the last few years - from less privacy to election interfering - an increasing focus has been put on decentralized social media platforms as a potential solution. In addition, the crypto boom of 2017 brought blockchain to the mainstream media, which further helped out projects in that space&lt;/p&gt;
-
-&lt;p&gt;While these platforms promise a better solution to existing social media, no single platform has to date achieved the kind of success seen in the early stages of Facebook, Twitter, Reddit, and others. In fact, not only do many face technical challenges and delays, the business model is oftentimes not clear either&lt;/p&gt;
-
-&lt;p&gt;Decentralized social media platforms are primarily built on two types of protocols - federated protocols or peer-to-peer protocols&lt;/p&gt;
-
-&lt;h2 id=&quot;federated-protocols&quot;&gt;Federated protocols&lt;/h2&gt;
-
-&lt;p&gt;A federated protocol allows multiple small networks to talk to each other without giving away too much control&lt;/p&gt;
-
-&lt;p&gt;Examples of platforms using such a protocol include ActivityPub built on Mastodon. ActivityPub is a social network with nearly about 2.2M users and roughly doubled its user base in 2019
-Matrix is a chat platform and another example using a federated protocol with ~11M users. Matrix allows multiple communication platforms to all integrate into one&lt;/p&gt;
-
-&lt;p&gt;large_image: https://imgur.com/PCUysdj
-ActivityPub’s landing page&lt;/p&gt;
-
-&lt;p&gt;large_image: https://imgur.com/91LoKlw
-Matrix’ approach to decentralized communication&lt;/p&gt;
-
-&lt;p&gt;The main advantages of federated protocols are a familiar UX, no user key management, and control of moderation policy by the user. Generally speaking, platforms using federated protocols are closer to what we are used to seeing in social media. For example, they allow for users to change and delete content&lt;/p&gt;
-
-&lt;p&gt;The key disadvantages are a stronger dependence on admins, identities being potentially bound to specific servers, and platforms can lack privacy&lt;/p&gt;
-
-&lt;h2 id=&quot;peer-to-peer-protocols&quot;&gt;Peer-to-peer protocols&lt;/h2&gt;
-
-&lt;p&gt;In a peer-to-peer protocol, no distinction is made between a client and a server, meaning all nodes are equal&lt;/p&gt;
-
-&lt;p&gt;The most well-known example of such a protocol is scuttlebutt. Scuttlebutt is a protocol for gossip sharing with an estimated 16k nodes. Social media platforms built on it include Patchwork, Manyverse, and Planetary&lt;/p&gt;
-
-&lt;p&gt;large_image: https://imgur.com/chXxdT4
-Manyverse - a social network based on a scuttlebutt’s peer-to-peer protocol&lt;/p&gt;
-
-&lt;p&gt;In peer-to-peer protocols, users are identified by public keys or human-readable usernames. Moderation is typically achieved bottoms-up which provides a lot of flexibility on which kind of content and under what rules they want to engage with&lt;/p&gt;
-
-&lt;p&gt;Additional networks using a peer-to-peer network, though not built on scuttlebutt, are Aether (a Reddit-style network) and Iris (an ethereum-based network)&lt;/p&gt;
-
-&lt;p&gt;The key advantages of peer-to-peer protocols are the fact that users are able to control their data and identity, capacity scales with demand (since every node is equal), and a local-first approach&lt;/p&gt;
-
-&lt;p&gt;On the flipside, peer-to-peer protocols have a few disadvantages as well. Namely, no password recovery, a resource-intensive approach (all data is stored on users’ nodes), and an unfamiliar UX (no deletion, changing of content, no cross-device usage,…). In particular the relatively user-unfriendly features give the peer-to-peer protocols a distinct disadvantage over federated protocols in the social media space&lt;/p&gt;
-
-&lt;p&gt;Furthermore, a big issue for such protocols is the lack of a clear monetization strategy&lt;/p&gt;
-
-&lt;h2 id=&quot;how-blockchain-is-used-in-the-design&quot;&gt;How blockchain is used in the design&lt;/h2&gt;
-
-&lt;p&gt;Blockchain is used in two parts of the design - data storage and monetization / payments&lt;/p&gt;
-
-&lt;p&gt;Data can be irreversible stored on a blockchain. Cryptocurrencies built on top of the blockchain protocol are oftentimes employed for monetization of the platform and payments between users&lt;/p&gt;
-
-&lt;p&gt;There are a few examples that store data on the blockchain AND utilize the blockchain for payments. The best-known example is Steem. Steem is a Reddit-style platform. In addition, the Steem blockchain protocol is being used to build a host of other social media and content sharing platforms&lt;/p&gt;
-
-&lt;p&gt;Examples of platforms that only use blockchain infrastructure for payments include DTube and Minds. DTube is a perfect example of the limitations of blockchain-based content platforms. DTube, a blockchain-based Youtube competitor, requires a huge amount of data to be stored, which makes it practically impossible to use blockchain&lt;/p&gt;
-
-&lt;p&gt;Advantages of blockchain-based social media platforms include decentralized monetization and payments, and decentralized global consensus on identities&lt;/p&gt;
-
-&lt;p&gt;However, such platforms also come with significant disadvantages. Namely, key management issues with potential of financial loss, non-modifiable on-chain data, and publicly visible on-chain data. In particular, the last point is contentious among privacy-centric users&lt;/p&gt;
-
-&lt;p&gt;In addition, at the current state of blockchain, the base-layer blockchain is not scalable, though research is actively going on to resolve this problem&lt;/p&gt;
-
-&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
-
-&lt;p&gt;In summary, decentralized social media platforms have not been able to break into the mainstream at the pace traditional ones were able to. It remains to be seen if further privacy violations, data misuse, and other topics will ultimately lead to large-scale adoption&lt;/p&gt;</content><author><name></name></author><summary type="html">Decentralized social media using federated and peer-to-peer protocols</summary></entry><entry><title type="html">Spaced Repetition is Supervised Learning for Humans</title><link href="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html" rel="alternate" type="text/html" title="Spaced Repetition is Supervised Learning for Humans" /><published>2020-01-21T09:00:00-07:00</published><updated>2020-01-21T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans</id><content type="html" xml:base="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html">&lt;h1 id=&quot;spaced-repetition-is-supervised-learning-for-humans&quot;&gt;Spaced Repetition is Supervised Learning for Humans&lt;/h1&gt;
+posted if we learn anything new.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Spaced Repetition is Supervised Learning for Humans</title><link href="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html" rel="alternate" type="text/html" title="Spaced Repetition is Supervised Learning for Humans" /><published>2020-01-21T09:00:00-07:00</published><updated>2020-01-21T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans</id><content type="html" xml:base="https://getpolarized.io/2020/01/21/spaced-repetition-is-supervised-learning-for-humans.html">&lt;h1 id=&quot;spaced-repetition-is-supervised-learning-for-humans&quot;&gt;Spaced Repetition is Supervised Learning for Humans&lt;/h1&gt;
 
 &lt;p&gt;What if you could train your brain the way computer scientists train computers and effectively remember anything you
 want - forever?&lt;/p&gt;

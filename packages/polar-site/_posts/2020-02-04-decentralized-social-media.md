@@ -1,19 +1,18 @@
 ---
 title: Decentralized social media using federated and peer-to-peer protocols
-date: 2020-01-30T08:00:00.000-08:00
+date: 2020-02-04T08:00:00.000-08:00
 layout: post
 description: The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020
-large_image: https://i.imgur.com/16uLX8S.png    
-hidden: true
-visible: false
+large_image: https://i.imgur.com/BaJJyCJ.png   
 ---
 
 # Decentralized social media using federated and peer-to-peer protocols
 
 The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020
 
-large_image: https://imgur.com/BaJJyCJ
-Presentation at Internet Archive on decentralized social media
+<img src="https://i.imgur.com/BaJJyCJ.png" class="img-fluid">
+
+<p class="text-center"><b>Presentation at Internet Archive on decentralized social media</b></p>
 
 Given the impact social media has had on our lives in the last few years - from less privacy to election interfering - an increasing focus has been put on decentralized social media platforms as a potential solution. In addition, the crypto boom of 2017 brought blockchain to the mainstream media, which further helped out projects in that space
 
@@ -28,11 +27,11 @@ A federated protocol allows multiple small networks to talk to each other withou
 Examples of platforms using such a protocol include ActivityPub built on Mastodon. ActivityPub is a social network with nearly about 2.2M users and roughly doubled its user base in 2019
 Matrix is a chat platform and another example using a federated protocol with ~11M users. Matrix allows multiple communication platforms to all integrate into one
 
-large_image: https://imgur.com/PCUysdj
-ActivityPub's landing page
+<img class="img-fluid border" src="https://i.imgur.com/PCUysdj.png">
+<p class="text-center"><b>ActivityPub's landing page</b></p>
 
-large_image: https://imgur.com/91LoKlw
-Matrix' approach to decentralized communication
+<img class="img-fluid border" src="https://i.imgur.com/91LoKlw.png">
+<p class="text-center"><b>Matrix' approach to decentralized communication</b></p>
 
 The main advantages of federated protocols are a familiar UX, no user key management, and control of moderation policy by the user. Generally speaking, platforms using federated protocols are closer to what we are used to seeing in social media. For example, they allow for users to change and delete content
 
@@ -44,8 +43,8 @@ In a peer-to-peer protocol, no distinction is made between a client and a server
 
 The most well-known example of such a protocol is scuttlebutt. Scuttlebutt is a protocol for gossip sharing with an estimated 16k nodes. Social media platforms built on it include Patchwork, Manyverse, and Planetary
 
-large_image: https://imgur.com/chXxdT4
-Manyverse - a social network based on a scuttlebutt's peer-to-peer protocol
+<img class="img-fluid border" src="https://i.imgur.com/chXxdT4.png">
+<p class="text-center"><b>Manyverse - a social network based on a scuttlebutt's peer-to-peer protocol</b></p>
 
 In peer-to-peer protocols, users are identified by public keys or human-readable usernames. Moderation is typically achieved bottoms-up which provides a lot of flexibility on which kind of content and under what rules they want to engage with
 
