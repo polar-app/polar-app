@@ -98,12 +98,12 @@ jobs:
             source packages/polar-bookshelf-secrets/build-env.sh &&
             cd packages/polar-bookshelf
             if [ "$OSTYPE" != "msys" ]; then
-                npx mocha --timeout 600000 --exit 'web/spectron0/**/spec.js' &&
-                npx mocha --timeout 600000 --exit 'web/spectron1/**/spec.js' &&
-                npx mocha --timeout 600000 --exit 'web/spectron2/**/spec.js' &&
-                npx mocha --timeout 600000 --exit 'web/spectron3/**/spec.js' &&
-                npx mocha --timeout 600000 --exit 'web/spectron4/**/spec.js' &&
-                npx mocha --timeout 600000 --exit 'web/spectron5/**/spec.js'
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron0/**/spec.js' &&
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron1/**/spec.js' &&
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron2/**/spec.js' &&
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron3/**/spec.js' &&
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron4/**/spec.js' &&
+                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron5/**/spec.js'
             else
               echo "WARN: Not running spectron tests on windows"
             fi
