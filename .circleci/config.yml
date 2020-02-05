@@ -104,6 +104,8 @@ jobs:
                 npx mocha --timeout 600000 --exit 'web/spectron3/**/spec.js' &&
                 npx mocha --timeout 600000 --exit 'web/spectron4/**/spec.js' &&
                 npx mocha --timeout 600000 --exit 'web/spectron5/**/spec.js'
+            else
+              echo "WARN: Not running spectron tests on windows"
             fi
 
   build-webapp:
