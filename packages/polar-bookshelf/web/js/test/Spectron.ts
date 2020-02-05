@@ -91,7 +91,7 @@ export class Spectron {
 
             if (spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
-                spectronOutputMonitorService._doLogForwarding();
+                spectronOutputMonitorService.doLogForwarding();
             }
 
             // TODO: there's a bug here where if mocha times out it won't allow
