@@ -98,6 +98,7 @@ jobs:
             source packages/polar-bookshelf-secrets/build-env.sh &&
             cd packages/polar-bookshelf
             if [ "$OSTYPE" != "msys" ]; then
+                echo "Running E2E tests..."
                 npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron0/**/spec.js' &&
                 npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron1/**/spec.js' &&
                 npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron2/**/spec.js' &&
