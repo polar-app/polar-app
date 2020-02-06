@@ -97,7 +97,9 @@ jobs:
             export SPECTRON_OFFSCREEN=true &&
             source packages/polar-bookshelf-secrets/build-env.sh &&
             cd packages/polar-bookshelf
-            if [ "$OSTYPE" != "msys" ]; then
+            # if [ "$OSTYPE" != "msys" ]; then
+            if [ "1" = "1" ]; then
+                # FIXME: add support back in for windows..
                 echo "Running E2E tests..."
                 npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron0/**/spec.js' &&
                 npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron1/**/spec.js' &&
