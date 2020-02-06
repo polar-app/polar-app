@@ -126,7 +126,7 @@ export class RepoDocMetaManager {
      */
     public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
-        // FIXME this is wrong and we're not updating related tags, etc
+        // TODO this is wrong and we're not updating related tags, etc
 
         if (repoDocInfo) {
             this.repoDocInfoIndex.put(fingerprint, repoDocInfo);

@@ -10,7 +10,7 @@ import {Files} from 'polar-shared/src/util/Files';
 import {LogLevels} from './LogLevels';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
-import {SentryLogger} from './SentryLogger';
+// import {SentryLogger} from './SentryLogger';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
@@ -83,12 +83,12 @@ export class Logging {
 
         const electronContext = ElectronContextTypes.create();
 
-        if (level === LogLevel.WARN && SentryLogger.isEnabled() && AppRuntime.isElectron()) {
-            // SentryLogger enabled for INFO will lock us up.
-            // *** first logger is sentry but only if we are not running within
-            // a SNAP container.
-            loggers.push(new SentryLogger());
-        }
+        // if (level === LogLevel.WARN && SentryLogger.isEnabled() && AppRuntime.isElectron()) {
+        //     // SentryLogger enabled for INFO will lock us up.
+        //     // *** first logger is sentry but only if we are not running within
+        //     // a SNAP container.
+        //     loggers.push(new SentryLogger());
+        // }
 
         // *** next up is the Toaster Logger to visually show errors.
 
