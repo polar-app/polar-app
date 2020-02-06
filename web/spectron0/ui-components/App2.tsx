@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {Group} from "../../js/datastore/sharing/db/Groups";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeStrings} from "../../../polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";

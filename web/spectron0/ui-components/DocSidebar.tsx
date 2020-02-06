@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DocDetail} from "../../js/metadata/DocDetail";
-import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "../../../polar-shared/src/metadata/ISODateTimeStrings";
 import {PropertyTable} from "./PropertyTable";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {DocThumbnail} from "../../../apps/repository/js/annotation_repo/meta_view/DocThumbnail";
