@@ -120,7 +120,7 @@ jobs:
                 npx mocha --timeout 60000 --exit web/spectron5/main-app-with-import/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron5/firebase-datastore/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron5/main-app/spec.js &&
-                npx mocha --timeout 60000 --exit web/spectron5/main-app-with-empty-repo/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron5/main-app-with-empty-repo/spec.js
             else
               echo "WARN: Not running spectron tests on windows"
             fi
