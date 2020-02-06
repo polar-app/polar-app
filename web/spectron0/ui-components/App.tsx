@@ -56,6 +56,7 @@ import {AnimatedRoutes} from "./AnimatedRoutes";
 import {Toaster} from "../../js/ui/toaster/Toaster";
 import {FakePagemark} from "./FakePagemark";
 import {AddContentButtonOverlay, devices} from "../../js/apps/viewer/AddContentButtonOverlay";
+import {NewToasts} from "./NewToasts";
 
 const styles = {
     swatch: {
@@ -342,9 +343,11 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <NewToasts/>
+
                 {/*<FakePagemark/>*/}
 
-                <AddContentButtonOverlay onAdd={NULL_FUNCTION}/>
+                {/*<AddContentButtonOverlay onAdd={NULL_FUNCTION}/>*/}
 
                 {/*<devices.Handheld onAdd={NULL_FUNCTION}/>*/}
 
