@@ -101,12 +101,26 @@ jobs:
             if [ "1" = "1" ]; then
                 # FIXME: add support back in for windows..
                 echo "Running E2E tests..."
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron0/**/spec.js' &&
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron1/**/spec.js' &&
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron2/**/spec.js' &&
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron3/**/spec.js' &&
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron4/**/spec.js' &&
-                npx mocha-parallel-tests --timeout 60000 --exit --max-parallel=1 'web/spectron5/**/spec.js'
+                npx mocha --timeout 60000 --exit web/spectron0/browser-capture/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron0/content-capture/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron0/firebase-cloud-aware-datastore/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron0/doc-info-advertisements/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron1/firebase-groups/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron2/toaster/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron2/toaster-logger/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron2/ui-components/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron2/ui-notifier/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron3/sentry-test/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron3/repository-app/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron3/text-node-splitting/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron4/persistent-error-logger/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron4/open-phz-file-with-arg/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron4/open-pdf-file-with-arg/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron4/net-request/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron5/main-app-with-import/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron5/firebase-datastore/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron5/main-app/spec.js &&
+                npx mocha --timeout 60000 --exit web/spectron5/main-app-with-empty-repo/spec.js &&
             else
               echo "WARN: Not running spectron tests on windows"
             fi
