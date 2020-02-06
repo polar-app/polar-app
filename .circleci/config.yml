@@ -108,7 +108,6 @@ jobs:
                 npx mocha --timeout 60000 --exit web/spectron1/firebase-groups/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron2/toaster/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron2/toaster-logger/spec.js &&
-                npx mocha --timeout 60000 --exit web/spectron2/ui-components/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron2/ui-notifier/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron3/sentry-test/spec.js &&
                 npx mocha --timeout 60000 --exit web/spectron3/repository-app/spec.js &&
