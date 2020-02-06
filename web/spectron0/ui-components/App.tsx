@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Tags} from 'polar-shared/src/tags/Tags';
 import {Group} from "../../js/datastore/sharing/db/Groups";
-import {ISODateTimeStrings} from "../../../polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
@@ -48,7 +48,7 @@ import {ScaleAndFadeIn} from "../../js/ui/motion/ScaleAndFadeIn";
 import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
 import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
 import {MockDocMetas} from "../../js/metadata/DocMetas";
-import {Preconditions} from "../../../polar-shared/src/Preconditions";
+import {Preconditions} from "polar-shared/src/Preconditions";
 import {DropBox} from "../../js/ui/drop_box/DropBox";
 import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
 import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
