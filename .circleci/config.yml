@@ -96,7 +96,7 @@ jobs:
             if [ "$OSTYPE" = 'linux-gnu' ]; then
               Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
             else
-              echo Not running Xvfb (not linux)
+              echo "Not running Xvfb (not linux)"
             fi
           background: true
 
