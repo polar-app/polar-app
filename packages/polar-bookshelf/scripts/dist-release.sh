@@ -27,6 +27,6 @@ source ../polar-bookshelf-secrets/credentials.sh
 
 # TODO: this is no longer needed with the new release system.
 
-# git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
+git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
 
-npm run-script dist-${target}
+# npm run-script dist-${target}
