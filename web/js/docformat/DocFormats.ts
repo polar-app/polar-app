@@ -1,22 +1,23 @@
 
+export type DocFormat = 'html' | 'pdf' | 'epub';
+
 /**
  *
  */
 export class DocFormats {
 
     /**
-     * Get the doc format we're using (html, pdf, etc). Otherwise return null.
-     * @return {*}
+     * Get the doc format we're using (html, pdf, epub, etc).
      */
-    static getFormat(): string | null {
+    public static getFormat(): DocFormat | undefined {
 
-        let polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
+        const polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
 
-        if(polarDocFormat) {
-            return polarDocFormat.getAttribute("content");
+        if (polarDocFormat) {
+            return <DocFormat> polarDocFormat.getAttribute("content") || undefined;
         }
 
-        return null;
+        return undefined;
 
     }
 
