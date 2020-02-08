@@ -55,7 +55,12 @@ export class PremiumButton extends React.Component<IProps, IState> {
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
 
             if (email) {
-                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${email}&plan=${plan}`);
+
+                const params = {
+                    email: encodeURIComponent(email)
+                };
+
+                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${params.email}&plan=${plan}`);
             } else {
                 Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${plan}`);
             }
