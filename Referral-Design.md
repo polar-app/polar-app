@@ -11,9 +11,9 @@ On this page they can:
 - paste in a list of emails.  The backend will send then an email with a referral code
     - TODO: this has not yet been implemented on the backend.
 - copy the link, with referral code so that the user can send it themselves.
-- use the mobile 'send' feature to trigger sending a message when using their mobile device
 - send via twitter button (automatically triggers twitter share)
 - send via facebook button (automatically triggers facebook share)
+- use the mobile 'send' feature to trigger sending a message when using their mobile device
 
 In the future we can extend this to support more APIs like accessing their gmail contacts.
 
@@ -40,7 +40,6 @@ This referral link will:
 There will be two ways of rewarding points:
 
 - if they are approaching the end of a trial , but they are a referral, we
-
         
 - FIXME: do the grant when their trial is about to expire?  This is probably the best way to do things as we 
   would be within a function ANYWAY and they just get to continue using polar for another 60 days.        
@@ -111,8 +110,35 @@ There will be two ways of rewarding points:
 
 - can I convert trials to paying via stripe checkout?  (I'm finding out now via stripe)
 
-- 
+## Remaining Challenges
+
+- I have to test and make sure TRIALS work and that part is a pain too!
+
+- NO trial subscription... just give them a premium account, which expires, and then they call back saying their
+  subscription has expired, I downgrade them to free, then I try to get them to pay once their subscription has 
+  expired.
+  
+    - so they sign up , and they ALREADY have premium... ? no 'triggering' a trial.. FAR less code involved.
+    
+    - 
+# Coupons and Subscriptions
+
+- create a subscription
+- apply a coupon to it... ???
+- how do I start a subscription for an existing customer ???
 
 
+- I will need to test ALL the payment flows... 
+
+- https://stripe.com/docs/payments/checkout/subscriptions/updating
+    - this is a huge fucking pain to setup! 
 
 
+https://stripe.com/partners/memberful
+https://stripe.com/pricing  
+
+chargebee is FREE for startups:
+
+"NOTE: We also have integrations with ReferralCandy, Refersion and LeadDyno for referral marketing. However, please note
+that ReferralCandy is available only for Rise and higher plan users. Kindly refer to our pricing details to know more
+about this.
