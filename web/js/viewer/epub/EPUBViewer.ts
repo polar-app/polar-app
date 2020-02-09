@@ -3,6 +3,7 @@ import {DocDetail} from "../../metadata/DocDetail";
 import {Model} from "../../model/Model";
 import ePub from 'epubjs';
 import { Logger } from "polar-shared/src/logger/Logger";
+import Section from "epubjs/types/section";
 
 const log = Logger.create();
 
@@ -14,6 +15,9 @@ export class EPUBViewer extends Viewer {
 
 
     public docDetail(): DocDetail | undefined {
+
+        // TODO: get the document details
+
         return {
             fingerprint: '12345'
         };
@@ -46,6 +50,31 @@ export class EPUBViewer extends Viewer {
             const pageList = await book.loaded.pageList;
 
             console.log("pageList: ", pageList);
+
+            const manifest = await book.loaded.manifest;
+
+            console.log("manifest: ", manifest);
+
+            interface ExtendedSpine {
+                readonly spineItems: ReadonlyArray<Section>;
+            }
+
+            const spine = await book.loaded.spine;
+
+            const extendedSpine = <ExtendedSpine> (<any> spine);
+
+            console.log("spine: ", spine);
+
+            const loaded  = await book.load("toc.ncx");
+
+            console.log("loaded: ", loaded);
+
+            // FIXME: spine actually has spineList above ...
+
+            const titles = extendedSpine.spineItems.map(current => current.document.title);
+
+            console.log("titles: ", titles);
+
 
         };
 
