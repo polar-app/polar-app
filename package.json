@@ -164,6 +164,7 @@
     "framer-motion": "^1.7.0",
     "glyphicons": "~0.2.0",
     "interactjs": "^1.4.1",
+    "epubjs": "^0.3.85",
     "jquery": "^3.4.1",
     "jquery-ui": "~1.12.1",
     "jquery-ui-bundle": "~1.12.1-migrate",

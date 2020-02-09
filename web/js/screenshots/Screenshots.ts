@@ -30,18 +30,24 @@ export class Screenshots {
 
         const docFormat = DocFormatFactory.getInstance();
 
+        const captureDirectly = () => {
+            if (AppRuntime.isBrowser()) {
+                return this.captureViaBrowser(boxRect, element);
+            } else {
+                return this.captureViaElectron(boxRect, element);
+            }
+        };
+
         switch (docFormat.name) {
 
             case 'pdf':
                 return this.captureViaCanvas(pageNum, boxRect);
 
             case 'html':
+                return captureDirectly();
 
-                if (AppRuntime.isBrowser()) {
-                    return this.captureViaBrowser(boxRect, element);
-                } else {
-                    return this.captureViaElectron(boxRect, element);
-                }
+            case 'epub':
+                return captureDirectly();
 
         }
 
