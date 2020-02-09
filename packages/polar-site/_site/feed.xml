@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-06T11:53:31-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/02/04/decentralized-social-media.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-02-04T09:00:00-07:00</published><updated>2020-02-04T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/04/decentralized-social-media</id><content type="html" xml:base="https://getpolarized.io/2020/02/04/decentralized-social-media.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-07T14:15:52-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.90.18 - Stability Improvements and Auto Pagemarks</title><link href="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html" rel="alternate" type="text/html" title="Polar 1.90.18 - Stability Improvements and Auto Pagemarks" /><published>2020-02-07T09:00:00-07:00</published><updated>2020-02-07T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks</id><content type="html" xml:base="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html">&lt;p&gt;Polar 1.90.18 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+
+&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
+
+&lt;p&gt;A ton of work has gone into stability to continue improving reliability for users.&lt;/p&gt;
+
+&lt;h2 id=&quot;filtering-annotations-in-sidebar&quot;&gt;Filtering Annotations in Sidebar&lt;/h2&gt;
+
+&lt;p&gt;You can now filter annotations in the sidebar to search by text.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Ph4xcM7.png&quot; class=&quot;border&quot; style=&quot;width: 400px&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;auto-pagemarks&quot;&gt;Auto Pagemarks&lt;/h2&gt;
+
+&lt;p&gt;We have preview support for auto-pagemarks which are part of our new &lt;a href=&quot;https://getpolarized.io/docs/new-pagemark-design.html&quot;&gt;pagemark design&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This will create pagemarks automatically while you naturally read the document.&lt;/p&gt;
+
+&lt;p&gt;You have to enable it in settings (as it’s preview for now) and it only supports PDF documents.&lt;/p&gt;
+
+&lt;p&gt;We’re going to probably make this the default mode and remove manually sized pagemark boxes as this is a better initial
+user experience but also resolves some issues with manually resized pagemarks being buggy.&lt;/p&gt;
+
+&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1.90.18&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sentry is now disabled as it was breaking windows builds.&lt;/li&gt;
+  &lt;li&gt;Flow for the annotation sidebar now fixes the header at the top and 
+properly sets overflow so just the sidebar text flows.&lt;/li&gt;
+  &lt;li&gt;Short term workaround for a bug where firebase won’t write to prefs on 
+startup which blocked cloud sync on restart for some users.&lt;/li&gt;
+  &lt;li&gt;Upgraded to latest Firebase libraries (7.7.0)&lt;/li&gt;
+  &lt;li&gt;Fixed bug with spacing in the tree sidebar for nodes that get compressed.&lt;/li&gt;
+  &lt;li&gt;Ability to filter annotations on the sidebar.&lt;/li&gt;
+  &lt;li&gt;Fixed bug with performing reviews when nothing left was available.&lt;/li&gt;
+  &lt;li&gt;Fixed bug with #? not being encoded properly due when creating file URLs.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.90.18 is now available for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Decentralized social media using federated and peer-to-peer protocols</title><link href="https://getpolarized.io/2020/02/04/decentralized-social-media.html" rel="alternate" type="text/html" title="Decentralized social media using federated and peer-to-peer protocols" /><published>2020-02-04T09:00:00-07:00</published><updated>2020-02-04T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/04/decentralized-social-media</id><content type="html" xml:base="https://getpolarized.io/2020/02/04/decentralized-social-media.html">&lt;h1 id=&quot;decentralized-social-media-using-federated-and-peer-to-peer-protocols&quot;&gt;Decentralized social media using federated and peer-to-peer protocols&lt;/h1&gt;
 
 &lt;p&gt;The following overview is loosely based on a presentation by Jay Graber at the Internet Archive in San Francisco on Jan 21, 2020&lt;/p&gt;
 
@@ -246,31 +284,7 @@ generally tends to do the right thing.&lt;/p&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Mainstream.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Spaced Repetition is Supervised Learning for Humans</summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
-
-&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
-he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
-
-&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
-
-&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
-annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
-
-&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
-tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
-
-&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
-notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
-
-&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
-
-&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Spaced Repetition is Supervised Learning for Humans</summary></entry><entry><title type="html">Over 500 Top PDFs posted to Hacker News in 2019</title><link href="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html" rel="alternate" type="text/html" title="Over 500 Top PDFs posted to Hacker News in 2019" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/over-500-top-pdf-posted-to-hacker-news-2019.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/16uLX8S.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;over-500-top-pdfs-posted-to-hacker-news-in-2019&quot;&gt;Over 500 Top PDFs posted to Hacker News in 2019&lt;/h1&gt;
 
@@ -1411,7 +1425,99 @@ highlight the PDFs and easily manage your reading.&lt;/p&gt;
 &lt;h2 id=&quot;556-the-state-of-homelessness-in-america-pdf&quot;&gt;556. &lt;a href=&quot;https://app.getpolarized.io/add/?file=https://www.whitehouse.gov/wp-content/uploads/2019/09/The-State-of-Homelessness-in-America.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20State%20of%20Homelessness%20in%20America%20%5Bpdf%5D%22%7D&quot;&gt;The State of Homelessness in America [pdf]&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21001300&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;557-the-effect-of-founder-experience-on-labor-market-outcomes-a-field-experiment-pdf&quot;&gt;557. &lt;a href=&quot;https://app.getpolarized.io/add/?file=http://www.tristanbotelho.com/files/BotelhoChang2019_FounderExperienceLaborMarkets.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20Effect%20of%20Founder%20Experience%20on%20Labor%20Market%20Outcomes%3A%20A%20Field%20Experiment%20%5Bpdf%5D%22%7D&quot;&gt;The Effect of Founder Experience on Labor Market Outcomes: A Field Experiment [pdf]&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
+
+&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
+he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
+
+&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
+
+&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
+annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
+
+&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
+tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
+
+&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
+notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
+
+&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
+
+&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Joining the Team</title><link href="https://getpolarized.io/2020/01/16/joining-the-team.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/joining-the-team</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/joining-the-team.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;joining-the-team&quot;&gt;Joining the Team&lt;/h1&gt;
+
+&lt;p&gt;I wanted to take a few moments and introduce myself.  My name is Jonathan Graeupner and I just joined the team to help
+Kevin scale Polar and I’m mostly focused on product and growth.&lt;/p&gt;
+
+&lt;p&gt;Originally, I’m from Germany - Garmisch- Partenkirchen. Lovely place to grow up. After my BSc in Munich, I was fortunate
+to get admitted to Yale to pursue my MSc and Phd in chemistry there. Homogeneous water oxidation and hydrogenation with
+Ir(III) - if you want to know exactly… My PhD experience is a huge part why I immediately fell in love with Polar.
+Subsequently, I was lucky enough to get an offer from BCG’s NYC office where I worked for over four years Startups have
+always fascinated me and so last summer, I decided to take the plunge and pursue my passion full-time.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/sONUWwd.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;b&gt;Jonathan and Kevin at AWS Loft San Francisco, Jan 2020&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;polar--plan-ahead&quot;&gt;Polar &amp;amp; plan ahead&lt;/h2&gt;
+
+&lt;p&gt;Guess how Kevin and I met? Reddit… actually. Fortunately, we were both located in SF and when we met, we immediately had
+a shared passion for EdTech and building something that can truly change the world. After a few meetings and hikes in
+the Bay Area, it was clear that pursuing this together was the right choice.&lt;/p&gt;
+
+&lt;p&gt;So toward the 	end of 2019, I joined forces with Kevin to build out Polar. Obviously, Kevin is the brain behind the
+code. Given my background in academia and management consulting, my focus moving forward will be more around engaging
+with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
+strategy, and some of the ‘boring’ corporate stuff.&lt;/p&gt;
+
+&lt;p&gt;We’ve shared with you our &lt;a href=&quot;https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html&quot;&gt;Q1/Q2 roadmap here&lt;/a&gt;. As with everything, we welcome feedback and input about our plans - rest
+assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
+about getting the Polar more stable, further simplifying existing features, and streamlining user flows.&lt;/p&gt;
+
+&lt;p&gt;Longer-term, we are looking at implementing additional features to really make this the platform of choice for anyone
+serious about their education. This will include opening up Polar to a vast array of integrations, and adding features
+like reference management, note taking, improving spaced repetition / flashcards, and more. We truly believe that
+incremental reading is a deeply transformative tool of thought and want to maximize its utility in Polar.&lt;/p&gt;
+
+&lt;h2 id=&quot;further-building-the-community--how-you-can-be-involved&quot;&gt;Further building the community &amp;amp; how you can be involved&lt;/h2&gt;
+
+&lt;p&gt;Since a big reason for me to join Polar was the community, I do want to provide a few thoughts on how we can work
+together in the future:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We want to understand your needs better to build an even better platform - I will be reaching out to a few of you
+sporadically and would really appreciate your time!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We are working on a referral incentive and an ambassador program and are actively looking for student ambassadors.
+Especially since we received the feedback that Polar premium can be a big investment for students, reach out to me!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Interested in writing a blog post? Reach out to me. We have a long list of topics in the pipeline (including Wim Hof
+breathing, meditation, reviews of various study techniques,…) but are always open to guest blog posts. Happy to
+cross-link your blog too if you have one.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are you in the Bay Area? Happy to connect in person as well. I’m very interested in not only knowing our users online
+but in real as well.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Final point: we are in the very early stages of this exciting endeavor and are fully aware that not everything will work
+out the way we want it from the get-go. Please be patient as we are only a two-person team working around the clock
+these days! I know we’re doing everything we can on our end to make this the best study and reading platform out there.&lt;/p&gt;
+
+&lt;p&gt;Jonathan&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;roadmap-for-polar-in-q1-2020&quot;&gt;Roadmap for Polar in Q1 2020&lt;/h1&gt;
 
@@ -1536,75 +1642,7 @@ of the area highlights, the original text highlight that it was attached to, etc
 &lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
 
 &lt;p&gt;Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we’re very good
-at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Joining the Team</title><link href="https://getpolarized.io/2020/01/16/joining-the-team.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/joining-the-team</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/joining-the-team.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;joining-the-team&quot;&gt;Joining the Team&lt;/h1&gt;
-
-&lt;p&gt;I wanted to take a few moments and introduce myself.  My name is Jonathan Graeupner and I just joined the team to help
-Kevin scale Polar and I’m mostly focused on product and growth.&lt;/p&gt;
-
-&lt;p&gt;Originally, I’m from Germany - Garmisch- Partenkirchen. Lovely place to grow up. After my BSc in Munich, I was fortunate
-to get admitted to Yale to pursue my MSc and Phd in chemistry there. Homogeneous water oxidation and hydrogenation with
-Ir(III) - if you want to know exactly… My PhD experience is a huge part why I immediately fell in love with Polar.
-Subsequently, I was lucky enough to get an offer from BCG’s NYC office where I worked for over four years Startups have
-always fascinated me and so last summer, I decided to take the plunge and pursue my passion full-time.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/sONUWwd.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;b&gt;Jonathan and Kevin at AWS Loft San Francisco, Jan 2020&lt;/b&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;polar--plan-ahead&quot;&gt;Polar &amp;amp; plan ahead&lt;/h2&gt;
-
-&lt;p&gt;Guess how Kevin and I met? Reddit… actually. Fortunately, we were both located in SF and when we met, we immediately had
-a shared passion for EdTech and building something that can truly change the world. After a few meetings and hikes in
-the Bay Area, it was clear that pursuing this together was the right choice.&lt;/p&gt;
-
-&lt;p&gt;So toward the 	end of 2019, I joined forces with Kevin to build out Polar. Obviously, Kevin is the brain behind the
-code. Given my background in academia and management consulting, my focus moving forward will be more around engaging
-with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
-strategy, and some of the ‘boring’ corporate stuff.&lt;/p&gt;
-
-&lt;p&gt;We’ve shared with you our &lt;a href=&quot;https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html&quot;&gt;Q1/Q2 roadmap here&lt;/a&gt;. As with everything, we welcome feedback and input about our plans - rest
-assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
-about getting the Polar more stable, further simplifying existing features, and streamlining user flows.&lt;/p&gt;
-
-&lt;p&gt;Longer-term, we are looking at implementing additional features to really make this the platform of choice for anyone
-serious about their education. This will include opening up Polar to a vast array of integrations, and adding features
-like reference management, note taking, improving spaced repetition / flashcards, and more. We truly believe that
-incremental reading is a deeply transformative tool of thought and want to maximize its utility in Polar.&lt;/p&gt;
-
-&lt;h2 id=&quot;further-building-the-community--how-you-can-be-involved&quot;&gt;Further building the community &amp;amp; how you can be involved&lt;/h2&gt;
-
-&lt;p&gt;Since a big reason for me to join Polar was the community, I do want to provide a few thoughts on how we can work
-together in the future:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;We want to understand your needs better to build an even better platform - I will be reaching out to a few of you
-sporadically and would really appreciate your time!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We are working on a referral incentive and an ambassador program and are actively looking for student ambassadors.
-Especially since we received the feedback that Polar premium can be a big investment for students, reach out to me!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Interested in writing a blog post? Reach out to me. We have a long list of topics in the pipeline (including Wim Hof
-breathing, meditation, reviews of various study techniques,…) but are always open to guest blog posts. Happy to
-cross-link your blog too if you have one.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are you in the Bay Area? Happy to connect in person as well. I’m very interested in not only knowing our users online
-but in real as well.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Final point: we are in the very early stages of this exciting endeavor and are fully aware that not everything will work
-out the way we want it from the get-go. Please be patient as we are only a two-person team working around the clock
-these days! I know we’re doing everything we can on our end to make this the best study and reading platform out there.&lt;/p&gt;
-
-&lt;p&gt;Jonathan&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.90 - Improved Tablet/Phone Support and Stability</title><link href="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html" rel="alternate" type="text/html" title="Polar 1.90 - Improved Tablet/Phone Support and Stability" /><published>2020-01-10T09:00:00-07:00</published><updated>2020-01-10T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability</id><content type="html" xml:base="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html">&lt;p&gt;Polar 1.90 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.90 - Improved Tablet/Phone Support and Stability</title><link href="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html" rel="alternate" type="text/html" title="Polar 1.90 - Improved Tablet/Phone Support and Stability" /><published>2020-01-10T09:00:00-07:00</published><updated>2020-01-10T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability</id><content type="html" xml:base="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html">&lt;p&gt;Polar 1.90 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
 
 &lt;p&gt;The major changes in this release involve improved mobile support but a ton of stability and bug fixes have gone 
 into the desktop app.&lt;/p&gt;
@@ -1687,95 +1725,4 @@ https://www.academictips.org/memory/remlists.html
 https://www.academictips.org/memory/remdate.html
 https://www.academictips.org/memory/remtel.html
 https://www.academictips.org/memory/remnos.html&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry><entry><title type="html">Apple Lying About “User Agent” in iPad Pro - Blocking PWAs</title><link href="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html" rel="alternate" type="text/html" title="Apple Lying About &quot;User Agent&quot; in iPad Pro - Blocking PWAs" /><published>2019-12-21T09:00:00-07:00</published><updated>2019-12-21T09:00:00-07:00</updated><id>https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro</id><content type="html" xml:base="https://getpolarized.io/2019/12/21/Apple-Lying-About-User-Agent-in-iPad-Pro.html">&lt;div class=&quot;text-center&quot;&gt; 
-&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/c5vfb1e.png&quot; /&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;apple-lying-about-user-agent-in-ipad-pro---blocking-pwas&quot;&gt;Apple Lying About “User Agent” in iPad Pro - Blocking PWAs&lt;/h1&gt;
-
-&lt;p&gt;Apple is lying about the user agent in the latest iPad Pro.&lt;/p&gt;
-
-&lt;p&gt;They’re misrepresenting both the OS and the chipset.  They should be saying that they’re iPadOS on the A12X chipset.&lt;/p&gt;
-
-&lt;p&gt;Instead they’re saying that it’s running MacOS on Intel.&lt;/p&gt;
-
-&lt;p&gt;I honestly can’t believe this isn’t being covered elsewhere as it seems to me to be a pretty shocking and incredible
-error on their part.&lt;/p&gt;
-
-&lt;p&gt;This basically means it’s impossible for 3rd party developer to determine that they’re actually working on an iPad Pro.&lt;/p&gt;
-
-&lt;p&gt;If you’re developing a progressive webapp you’re unable to reliably determine that you’re working on an iPad Pro.&lt;/p&gt;
-
-&lt;p&gt;This essentially breaks webapp development targeting the iPad Pro.&lt;/p&gt;
-
-&lt;h1 id=&quot;user-agent&quot;&gt;User agent&lt;/h1&gt;
-
-&lt;p&gt;The user agent is usually used to detect the version of the browser, operating system.&lt;/p&gt;
-
-&lt;p&gt;In the case of the iPad Pro they’re sending:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.1 Safari/605.1.15&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Now what they’ve done is added a feature for ‘Request desktop version of site by default’ and they’re using this UA 
-to trigger the desktop site.&lt;/p&gt;
-
-&lt;p&gt;This might be true, and maybe we need better standards for implementing this feature, however, lying about the UA isn’t
-the right strategy.&lt;/p&gt;
-
-&lt;p&gt;They can handle this in the UA by saying “like Mac OS X” and still trigger UA scripts that use the older version.&lt;/p&gt;
-
-&lt;p&gt;Even if this technique didn’t work, Apple has a responsibility be a good citizen on the web and use web standards 
-properly and in the way they were intended.&lt;/p&gt;
-
-&lt;h1 id=&quot;great-device-for-reading&quot;&gt;Great Device for Reading&lt;/h1&gt;
-
-&lt;p&gt;The reason I’m so excited about the iPad Pro is that it’s a great device for reading. I’m working on porting Polar to
-running on it natively with a progressive webapp (PWA).&lt;/p&gt;
-
-&lt;p&gt;Our PWA looks and behaves almost perfectly like a native mobile app.&lt;/p&gt;
-
-&lt;p&gt;It allows you to review your reading annotations and review your flashcards and notes while mobile.&lt;/p&gt;
-
-&lt;p&gt;It’s also the perfect weight for reading while mobile and feels like an actual book.  Perfect for Polar users who want 
-to read while traveling.&lt;/p&gt;
-
-&lt;p&gt;Our desktop app would NOT run reliably on an iPad Pro and we’re specifically trying to target features for this device
-including a layout that properly utilizes the screen resolution and hand gestures.&lt;/p&gt;
-
-&lt;p&gt;For example, here’s our webapp running on a resolution targeted for iPad OS:&lt;/p&gt;
-
-&lt;div class=&quot;text-center mb-2&quot;&gt; 
-&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/ZVYUYCO.png&quot; /&gt;
-&lt;/div&gt;
-
-&lt;p&gt;… and here it is targeted for desktop users:&lt;/p&gt;
-
-&lt;div class=&quot;text-center&quot;&gt; 
-&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/nzwhXZG.png&quot; /&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;blocking-pwas&quot;&gt;Blocking PWAs&lt;/h1&gt;
-
-&lt;p&gt;PWAs behave like native apps in that they can be cached locally, installed like regular apps, etc.&lt;/p&gt;
-
-&lt;p&gt;However, &lt;a href=&quot;https://onezero.medium.com/apple-is-trying-to-kill-web-technology-a274237c174d&quot;&gt;Apple seems hostile to PWAs&lt;/a&gt; and seems to be actively penalizing the technology in favor of their own App Store
-since their revenues there are much higher.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Apple also handicapped an emerging standard called Progressive Web Apps (PWAs) — which, like Electron, allows
-developers to build native-like apps for both desktop and mobile — by partially implementing it in a way that makes it
-too inconsistent to rely on. PWA doesn’t have the same problem if users open apps in Chrome or Firefox, but iPhone and
-iPad users can’t install third-party browsers, which makes PWA-based technology a non-starter.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;In light of this larger conversation, I can’t help but think that Apple is doing this on purpose.&lt;/p&gt;
-
-&lt;p&gt;I sincerely hope I’m wrong.&lt;/p&gt;
-
-&lt;p&gt;A PWA won’t be able to determine if it’s running on iPad OS and enable the appropriate feature set.  There are some 
-hacks that can be done like looking at window.screen.width but this will yield false positives in some situations.&lt;/p&gt;
-
-&lt;p&gt;At the very minimum, Apple should augment the ‘navigator’ object with some proprietary extension so that I can at least
-add custom code to detect that I’m on an iPad.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry></feed>

@@ -16,6 +16,7 @@
 
     const plan = url.searchParams.get('plan');
     const email = url.searchParams.get('email');
+    const sessionId = url.searchParams.get('sessionId');
 
     var stripe = Stripe('pk_live_nuUlFGZzCqFCnx19rAfGBO9900Fx3Mpi3m');
 
@@ -35,6 +36,10 @@
 
         if (email) {
             planInfo.customerEmail = email;
+        }
+
+        if (sessionId) {
+            planInfo.sessionId = sessionId;
         }
 
         stripe.redirectToCheckout(planInfo)
