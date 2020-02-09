@@ -1,6 +1,7 @@
 
-# 1.90.15
+# 1.90.18
 
+- Sentry is now disabled as it was breaking windows builds.
 - Flow for the annotation sidebar now fixes the header at the top and 
   properly sets overflow so just the sidebar text flows. 
 - Short term workaround for a bug where firebase won't write to prefs on 

@@ -22,11 +22,8 @@ interface ViewerConfig {
 
 export class PDFViewer extends Viewer {
 
-    private readonly model: Model;
-
-    constructor(model: Model) {
+    constructor(private readonly model: Model) {
         super();
-        this.model = model;
     }
 
     private config(): ViewerConfig {

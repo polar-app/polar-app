@@ -1,7 +1,7 @@
 import {HTMLFormat} from './HTMLFormat';
 import {PDFFormat} from './PDFFormat';
 import {DocFormat} from './DocFormat';
-
+import {EPUBFormat} from "./EPUBFormat";
 
 /**
  * Get the proper docFormat to work with.
@@ -16,7 +16,9 @@ export class DocFormatFactory {
             return new HTMLFormat();
         } else if (polarDocFormat === "pdf") {
             return new PDFFormat();
-        } else if(polarDocFormat == null) {
+        } else if (polarDocFormat === "epub") {
+            return new EPUBFormat();
+        } else if (polarDocFormat == null) {
             return new PDFFormat();
         } else {
             throw new Error("Unable to handle the given format: " + polarDocFormat);

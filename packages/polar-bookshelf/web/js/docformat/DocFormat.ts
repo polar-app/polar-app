@@ -162,4 +162,4 @@ export interface CurrentDocState {
 
 }
 
-export type DocFormatName = 'html' | 'pdf';
+export type DocFormatName = 'html' | 'pdf' | 'epub';
