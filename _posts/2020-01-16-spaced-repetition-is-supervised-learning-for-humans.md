@@ -17,8 +17,8 @@ On the surface this sounds rather absurd. You're not a computer.  You can't be f
 complicated and (if you're like me) there doesn't seem to be any rhyme or reason why some knowledge sticks while you
 fail to grasp other (often more complicated) concepts.
 
-Cognitive science has found a way to solve this problem.  It turns out that we've had a solution to this problem for
-more than 135 years and the tools are finally starting to become mainstream.
+Cognitive science has found a way to solve this problem.  It turns out that we've had a solution for more than 135 years
+and the tools are finally starting to become mainstream.
 
 This connection between supervised learning (AKA machine learning) and spaced repetition was my motivation for building
 Polar. I wanted a unified learning platform that exploited spaced repetition and made it easy to use and incorporate
