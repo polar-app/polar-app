@@ -49,4 +49,8 @@ export class Analytics {
         delegate.version(version);
     }
 
+    public static heartbeat(): void {
+        delegate.heartbeat();
+    }
+
 }

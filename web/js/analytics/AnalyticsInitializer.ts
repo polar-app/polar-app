@@ -29,7 +29,7 @@ export class AnalyticsInitializer {
     }
 
     private static initHeartbeat() {
-        Analytics.event2('heartbeat');
+        Analytics.heartbeat();
     }
 
     private static async initAccount() {
