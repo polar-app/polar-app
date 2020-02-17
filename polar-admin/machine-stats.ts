@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import {TimeDurations} from "../../polar-app-public/polar-shared/src/util/TimeDurations";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",
@@ -21,6 +22,40 @@ function recent(machineDatastores: MachineDatastore[]) {
         const written = new Date(current.written);
         return now - written.getTime() > 2 * 7 * 24 * 60 * 60 * 1000;
     });
+}
+
+async function computeUniqueMachinesPerMonth() {
+
+    console.log("Computing unique machines per month...");
+
+    const snapshot = await firestore.collection("machine_datastore").get();
+
+    const interval = '30d';
+
+    const cutoff = new Date().getTime() - TimeDurations.toMillis(interval);
+
+    let count = 0;
+
+    for( const doc of snapshot.docs) {
+
+        const machineDatastore: MachineDatastore = <any> doc.data();
+
+        const writtenDate = new Date(machineDatastore.written);
+
+        if (writtenDate.getTime() < cutoff) {
+            // console.log("x");
+            continue;
+        }
+
+        // console.log("h");
+
+        ++count;
+
+    }
+
+    console.log(`Count for interval ${interval}: ${count}`);
+
+
 }
 
 async function computeStats() {
@@ -110,7 +145,12 @@ async function computeStats() {
 
 }
 
-computeStats()
+async function handle() {
+    // await computeUniqueMachinesPerMonth();
+    await computeStats();
+}
+
+handle()
     .catch(err => console.error(err));
 
 interface MachineDatastore {
