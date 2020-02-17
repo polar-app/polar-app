@@ -94,12 +94,12 @@ export class AreaHighlightComponent extends Component {
 
         // TODO: actually I think this belongs in the controller... not the view
 
-        const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                                                                        boxMoveEvent.restrictionRect);
-
-        const areaHighlightRect = new AreaHighlightRect(annotationRect);
-
         if (boxMoveEvent.state === "completed") {
+
+            const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
+                boxMoveEvent.restrictionRect);
+
+            const areaHighlightRect = new AreaHighlightRect(annotationRect);
 
             const annotationEvent = this.annotationEvent!;
             const { docMeta, pageMeta } = annotationEvent;

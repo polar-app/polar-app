@@ -674,7 +674,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const batch = this.firestore!.batch();
 
-            log.info(`Write of doc with id ${id} and permission: `, recordPermission);
+            const dataLen = data.length;
+
+            log.notice(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
 
             batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, recordPermission));
             batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, recordPermission));

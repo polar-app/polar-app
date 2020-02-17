@@ -140,14 +140,14 @@ export class BoxController {
 
                 if (intersectedBoxes.intersectedRects.length === 0) {
 
-                    log.info("NOT INTERSECTED");
+                    // log.info("NOT INTERSECTED");
 
-                    log.info("Moving to origin: " + JSON.stringify(origin));
+                    // log.info("Moving to origin: " + JSON.stringify(origin));
                     this._moveTargetElement(origin.x, origin.y, target);
 
                 } else {
 
-                    log.info("INTERSECTED========== ");
+                    // log.info("INTERSECTED========== ");
 
                     const primaryRect = Rects.createFromBasicRect({
                         left: origin.x,
@@ -184,19 +184,19 @@ export class BoxController {
             .on('resizestart', (interactionEvent: any) => {
 
                 this._captureStartTargetRect(interactionEvent);
-                log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+                // log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
                 interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
 
             })
             .on('resizemove', (interactionEvent: any) => {
 
-                log.info("resizemove: event: ", interactionEvent);
-                log.info("resizemove: event.target: ", interactionEvent.target);
+                // log.info("resizemove: event: ", interactionEvent);
+                // log.info("resizemove: event.target: ", interactionEvent.target);
                 // log.info("resizemove: event.restrict: ",
                 // interactionEvent.restrict); log.info("resizemove:
                 // interactionEvent.rect: " +
                 // JSON.stringify(interactionEvent.rect, null, "  "));
-                log.info("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
+                // log.info("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
 
                 const target = interactionEvent.target;
 
@@ -216,13 +216,13 @@ export class BoxController {
 
                 const intersectedBoxes = this._calculateIntersectedBoxes(target, resizeRect, boxOptions.intersectedElementsSelector);
 
-                log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
+                // log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
                 let boxRect;
 
                 if (intersectedBoxes.intersectedRects.length === 0) {
 
-                    log.info("Resizing in non-intersected mode");
+                    // log.info("Resizing in non-intersected mode");
 
                     boxRect = resizeRect;
 
@@ -237,7 +237,7 @@ export class BoxController {
                     // vanishes...  FIXME: pulling it left while intersected
                     // also makes it vanish...
 
-                    log.info("Resizing in intersected mode");
+                    // log.info("Resizing in intersected mode");
 
                     const resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
 
@@ -247,7 +247,7 @@ export class BoxController {
 
                     const adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
-                    log.info("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+                    // log.info("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
                     boxRect = adjustedRect;
 
@@ -331,7 +331,7 @@ export class BoxController {
             boxMoveEvent.state = "completed";
 
             if (this.onMove) {
-                log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
+                // log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
 
                 // for some reason, without a timeout, the controller just seems
                 // to lock up.
@@ -356,7 +356,7 @@ export class BoxController {
         // let elementRect = Rects.fromElementStyle(element);
 
         // log.info(`x: ${x}: y: ${y}`);
-        log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
+        // log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
         // TODO: it looks like there's an issue with parentElement being missing
         // here.  If the parentElement is missing I probably need to ignore the
