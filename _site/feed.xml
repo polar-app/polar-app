@@ -1,4 +1,394 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-07T14:15:52-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.90.18 - Stability Improvements and Auto Pagemarks</title><link href="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html" rel="alternate" type="text/html" title="Polar 1.90.18 - Stability Improvements and Auto Pagemarks" /><published>2020-02-07T09:00:00-07:00</published><updated>2020-02-07T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks</id><content type="html" xml:base="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html">&lt;p&gt;Polar 1.90.18 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-02-15T21:36:42-07:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Top 5 Flashcard Apps for 2020</title><link href="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html" rel="alternate" type="text/html" title="Top 5 Flashcard Apps for 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;top-5-flashcard-apps-for-2020&quot;&gt;Top 5 Flashcard Apps for 2020&lt;/h1&gt;
+
+&lt;p&gt;Flashcards have a reputation for being one of the most popular ways of studying and retaining information. They’re also a time-tested tool. Their history dates back to the 19th century when English educator Favell Lee Mortimer used a set of phonics flashcards. Here’s a nice read on the &lt;a href=&quot;https://www.brainscape.com/blog/2012/04/history-of-flashcards/&quot;&gt;history of flashcards&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since then, flashcards have come a long way and have been adapted for mobile platforms.&lt;/p&gt;
+
+&lt;p&gt;It’s quite handy to know how to write good flashcards. You can start by mixing pictures and words — imagery helps you recollect experiences a lot better. This is also known as the &lt;a href=&quot;https://www.youtube.com/watch?v=27CsEELSkrw&quot;&gt;Picture Superiority Effect&lt;/a&gt; in cognitive psychology. You can also try to break complex concepts into multiple simpler questions. Making good flashcards goes a long way in learning and retaining new information.&lt;/p&gt;
+
+&lt;p&gt;Multiple software and mobile app solutions exist to simplify your life when creating flashcards. There’s a reason for that — flashcards significantly improve your learning experience. But with so many options, choosing the best flashcard app can be quite confusing.&lt;/p&gt;
+
+&lt;p&gt;To make things simpler, here’s our list of top flashcard tools for 2020.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-anki&quot;&gt;1. &lt;a href=&quot;https://apps.ankiweb.net/&quot;&gt;Anki&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/6wCjFqZQ8sYwfSiBaBP7I2rb4_lhHopsAiHFdfCEHc9-funfUZZCAs-plmovAYHdonlun8YVb_df4ozPSppUY5o6o5Gcy_1kVr6KQvurU36vmz_PBYtgjo_GVu5iV2sUg265pCJt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overview: Anki in Japanese stands for memorization. It’s free and open source, and utilizes spaced retention to increase your memorization. Anki supports all popular platforms such as Windows, macOS, Android, iOS, Linux.&lt;/p&gt;
+
+&lt;p&gt;There are quite a few handy &lt;a href=&quot;https://ankiweb.net/shared/addons/2.1&quot;&gt;Anki add-ons&lt;/a&gt; that you can download for free and use it to customize Anki as per your needs. These Anki add-ons add numerous customization options to make your learning experience more engaging.&lt;/p&gt;
+
+&lt;p&gt;For beginners, it might take some time to get used to Anki’s interface. But if you ever feel stuck, you can check out &lt;a href=&quot;https://apps.ankiweb.net/docs/manual.html&quot;&gt;Anki’s manual&lt;/a&gt; which has extensive resources on using the software, making flashcards, and working around them. .&lt;/p&gt;
+
+&lt;p&gt;If you need a reliable app that comes with great customization, then Anki should be your go-to option.&lt;/p&gt;
+
+&lt;p&gt;Primary target audience: Medical students&lt;/p&gt;
+
+&lt;p&gt;Integration: Anki add-ons&lt;/p&gt;
+
+&lt;p&gt;Pricing: Free for Windows, Mac, Linux and Android; $24.99 for iOS&lt;/p&gt;
+
+&lt;h2 id=&quot;2-polar&quot;&gt;2. &lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/yHGvyNl84L4IyDOIZnGsGkmIOEGxGbs_HNJHz-ucg2shHSq2lro01qImL1HHpX605QFdbHnFxPVadvSKBm6E-Xt3WF0IknKxWglDcYVQAUii-lqaJJi6aYQIe-ttG3I0OVEVciAM&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overview: Polar is an all-in-one learning tool which supports a document manager, reader, and learning tools. If you are studying from a PDF or a website (which is becoming more common every day), it’s easy to create flashcards based on what you are reading. Polar allows you to auto-convert annotations into flashcards with one simple button.&lt;/p&gt;
+
+&lt;p&gt;Polar also integrates with Anki. Using Polar as an add-on to Anki enables automatic syncing between both tools. Yes, you can take your flashcards on the go with the effective learning duo of Polar and Anki.&lt;/p&gt;
+
+&lt;p&gt;In addition, another feature that sets Polar apart from other reading tools is its advanced reader functionality. This includes incremental reading, reading progress tracking, and various other features.&lt;/p&gt;
+
+&lt;p&gt;Primary target audience: students, universal&lt;/p&gt;
+
+&lt;p&gt;Integration: Can sync with Anki&lt;/p&gt;
+
+&lt;p&gt;Pricing: Free; paid plans starting at $4.99 per month.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-tinycards-by-duolingo&quot;&gt;3. &lt;a href=&quot;https://tinycards.duolingo.com/&quot;&gt;TinyCards by Duolingo&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/sf0EfevV4Kc4zP39kTKT-lD-vCJkWOM20Z1DXBz0wjMebnX0m2z71bZfVhFoXajoVb5_K2isQddBOty5l4U94qtc6xiQvVAahDC1DVNoKhlXyueO01g-qY3VO9l9Mc0hyHSfZZ2N&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overview: TinyCards is brought to you by Duolingo, your favorite neighborhood language learning app. Wait, what happened to your last Duolingo learning streak? Are you still on? ;)&lt;/p&gt;
+
+&lt;p&gt;Anyway, TinyCards mobile app by Duolingo brings spaced retention at the tip of your fingers through flashcards. The best part of TinyCards is its design: it looks quite elegant and has a colorful interface which stands out . Good design is a great motivation to learn new stuff!&lt;/p&gt;
+
+&lt;p&gt;You can make new lessons, access lessons by other people, and look for lessons. You also have the option to set practice reminders, which is helpful if you want to get some learning done. TinyCards is a great way to fill your time by learning new things.&lt;/p&gt;
+
+&lt;p&gt;TinyCards is available for the web, Android, iOS, and Google Chrome.&lt;/p&gt;
+
+&lt;p&gt;Primary target audience: language learners, universal&lt;/p&gt;
+
+&lt;p&gt;Integration: Duolingo&lt;/p&gt;
+
+&lt;p&gt;Pricing: Free&lt;/p&gt;
+
+&lt;h2 id=&quot;4-quizlet&quot;&gt;4. &lt;a href=&quot;https://quizlet.com/&quot;&gt;Quizlet&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/rJXpKl2OPcJM8aYHmmMvw0ctEIw5qxX4LqDDpNtqKBfFlfaeD78X3PNPoXy6qnkgiX_ddaKmT3UASKRDApsZ08Kx7P2T5DZyR2Jv4J55bedmuOarFowP8GqOxGf8AlYvvGUqows5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overview: Quizlet’s claims that over 90 percent of students who use Quizlet report getting higher grades in their tests. Well, a lot of it is possible due to their flashcard tool. With Quizlet, you can create your own flashcards, revise flashcards made by a classmate, or search the archive of millions of flashcard decks created by students.&lt;/p&gt;
+
+&lt;p&gt;Quizlet also gives you access to an inbuilt image library, which makes integrating images in your flashcards a walk in the park. Once you are done with creating flashcards, you can study them, go back and edit them, and even share them with your friends.&lt;/p&gt;
+
+&lt;p&gt;Quizlet is a great way to study with friends. It is available for Windows, Mac, Android and iOS. The app is free to use, but you can purchase plans such as Quizlet Plus and Quizlet Go are available, providing features such as offline access, document scanning, and more.&lt;/p&gt;
+
+&lt;p&gt;Primary target audience: High School and college students&lt;/p&gt;
+
+&lt;p&gt;Integration: Quizlet image library&lt;/p&gt;
+
+&lt;p&gt;Pricing: Free download and paid upgrades&lt;/p&gt;
+
+&lt;h2 id=&quot;5-cram&quot;&gt;5. &lt;a href=&quot;https://www.cram.com/&quot;&gt;Cram&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/hRGDdEAIxkW7wnsSjUzP8rrStojSJOf1myp1vyNgM8brHj7wKHV8C7PbrHexMr1Pg5WAttvNrpOKME9L7dS_uMXleFzXICWjHt_saWh-cOVKm7lQBvtGPFKxc5eu5UJTftp4uDCV&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overview: Cram makes cramming fun — that’s what they say. It has been around since 2001 and has over 195 million flashcards that you can access any moment. You can also use Cram to create your own online flashcards, export and share them, and even collaborate with others.&lt;/p&gt;
+
+&lt;p&gt;Cram is available for both Android and iOS, so you can have your cards on the go. You also get to create flashcards on the web.&lt;/p&gt;
+
+&lt;p&gt;Primary target audience: students&lt;/p&gt;
+
+&lt;p&gt;Integration: Developers program&lt;/p&gt;
+
+&lt;p&gt;Pricing: Free&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;People and developers are finding new ways of using flashcard tools. &lt;a href=&quot;https://thesector.com.au/2020/02/03/a-21st-century-approach-to-emergent-literacy-no-flashcards-in-preschool-please/&quot;&gt;Some are opposing it&lt;/a&gt; as well, especially in playschools, saying that early learning needs to be creative and challenging. Flashcards have nothing against extensive print learning, they’re a proven way of learning new information. Sometimes the new stuff does not have much of a creative approach to it, as in the case of the many medical terminologies.&lt;/p&gt;
+
+&lt;p&gt;Besides, flashcards can be fun. The add-ons for Anki have made them more engaging and interactive, where they are more than just binary. Their integrations to document managers such as Polar have also proved how they can be effectively integrated to find more applications.&lt;/p&gt;
+
+&lt;p&gt;Finally, flashcards are particularly powerful when coupled with other learning methods. In particular, association or absurd and ridiculous imagery can help tremendously in retaining information on flashcards.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Must-have Anki Add-ons for Medical Students in 2020</title><link href="https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020.html" rel="alternate" type="text/html" title="Must-have Anki Add-ons for Medical Students in 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020.html">&lt;h1 id=&quot;must-have-anki-add-ons-for-medical-students-in-2020&quot;&gt;Must-have Anki Add-ons for Medical Students in 2020&lt;/h1&gt;
+
+&lt;p&gt;We all know med school is tough and the amount of information required to memorize is tremendous. So obviously the question begs why not make it easy on yourself and use some powerful tools?&lt;/p&gt;
+
+&lt;p&gt;Anki is an open source flashcard software. If you’re here, you likely know how popular it is among med school students. Since it’s open source, anyone can build on top of it. So we decided to compile a list of most popular add-ons we heard from &lt;a href=&quot;https://getpolarized.io/&quot;&gt;our users&lt;/a&gt;!&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh5.googleusercontent.com/knT-rTG6qdw8OlKZUIijJm2_r2d6-tB3_Dop0AouIW9WUmaFCvsSAxL-b1uqpjxppt1ubnVVqwjobPGfU2qaGZpho1w8YEESLBd2OS_c6AXinYz-YBdO97q9nxR--KXLrOec4sq_&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can find the free add-ons on the &lt;a href=&quot;https://ankiweb.net/shared/addons/2.1&quot;&gt;Anki website&lt;/a&gt; to improve your Anki experience.&lt;/p&gt;
+
+&lt;p&gt;There are hundreds of add-ons by other Anki users. With every Anki update, more functionality is added, especially through support of more add-ons.&lt;/p&gt;
+
+&lt;p&gt;We have categorized these Anki add-ons to make it easy to find what you are looking for. While these Anki add-ons are great for med students, they can be used by other students or casual learners as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/hpJLma7qa1jb98a0y_AUdwsW7HCVio2-82yd6FYOj3VbyKU3aYMuT1xZWLDTwBGUJe7kOUio5s-YPoHbUr1WxSbM462fFWj6qHyVswBpK6dI1G71iGRVTk6rRMuMdgK-cbWVcg6v&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To install an Anki add-on, go to the tools menu and then Add-ons, then click on Browse &amp;amp; Install and paste in the code. Here’s also a &lt;a href=&quot;https://www.youtube.com/watch?v=saVJN5-_JDM&quot;&gt;video&lt;/a&gt; that explains this process.&lt;/p&gt;
+
+&lt;p&gt;With that, let’s get started.&lt;/p&gt;
+
+&lt;h2 id=&quot;gamification&quot;&gt;Gamification&lt;/h2&gt;
+
+&lt;p&gt;These add-ons will bring some fun to your learning habits.&lt;/p&gt;
+
+&lt;h3 id=&quot;pokemanki&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/633922407&quot;&gt;Pokemanki&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Very popular (73 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/L5L0Y_E3KJaKH0lqSIAsuPjzSZcZ1uNQALd0acl2jfzTPix3eyMWnHUkVqK4WV1ikpm9PFtayuzU79hMqe8StjORlwq4ITPxQuI7gtzoKo1LSDpBfQBzkkdsfoi-qB5QGQ4DM4dK&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The Pokemanki add-on will keep you motivated to use Anki by letting you catch and train Pokemons inside your deck. It gives you a hatchable Pokemon egg for each lowest-level deck that you start learning. Your Pokemon will keep on leveling up as you review and learn the cards in the deck. They might even evolve.&lt;/p&gt;
+
+&lt;p&gt;You can access your Pokemons under your Stats screen. They will be above all your figures and charts. You will be able to see Pokemons for specific decks and their origin. Just review the deck to keep on training them.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 633922407&lt;/p&gt;
+
+&lt;h3 id=&quot;kitten-rewards&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1627107763&quot;&gt;Kitten Rewards&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (15 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/CKiNmo5xYzaNQK9IhKJkdjopDZdzsZchuDQ6kAVnGFMOXee_IlSaxJLLkej04ayeX4KdmW6fWI3B3PHIPeq39g9ljOh7hPgVRMSslG2sYl4ww5nWl_U9JvgdB3aakP1T6Qs9wB2U&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Kittens rule the internet, and they have taken over Anki decks as well. Kitten Rewards is an Anki add-on which acts as an excellent learning motivator. This add-on has a simple concept: it adds a “cute kitten” on the congrats screen after a deck is finished. So if you lack motivation to study, use this add-on to get back on track.&lt;/p&gt;
+
+&lt;p&gt;What’s more? You can upload your own kitten pictures as well :)&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1627107763&lt;/p&gt;
+
+&lt;h3 id=&quot;anki-fanfare&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/2073603704&quot;&gt;Anki Fanfare&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (14 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/tuwlhIAeqgQ6Ac5ETqPd0ROFwiMGhmwY7TtdcmVJcsu644YOWfit65PG0dRX37frgg8ZMHm_X2AFGaryy9VuS4n2hqgtYOTFrq1yHByqGetQzr1IgaJTzuOLKNLOuFQk9rFqJ9C2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Anki fanfare is another cool add-on if you want to add a particular theme to your flashcard review. For example, there’s a trout theme and a Bruce Lee theme. The trout theme shows pictures of trout, and the Bruce Lee theme shows you sayings from the Master. Be like water?&lt;/p&gt;
+
+&lt;p&gt;It has so many themes that you can use with your cards. Simply download a particular theme and unzip it to “fanfare/user_files”.&lt;/p&gt;
+
+&lt;p&gt;Users have reviewed this add-on writing that they get a “dopamine hit” every time they finish a card.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 2073603704&lt;/p&gt;
+
+&lt;h3 id=&quot;anki-habitat&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1758045507&quot;&gt;Anki Habitat&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (14 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh5.googleusercontent.com/b4EjFuoozRUGQWkFosKcvOLyeofphP_ICvhpug_iH-etso4MSvMqI0eA_UF0QNw2M9Zq64eq0QX640HbiS6tW81qHnjeOFKxTW-J9SUJY9CzJMQp48IbNqgVXxsq5W20HmwBF0zA&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: A little RPG magic always does the trick. No, we are not talking about Skyrim — you might never do any learning around Skyrim. But this little RPG integrated into the Anki software can take you a long way when it comes to finding a little motivation while reviewing those cards.&lt;/p&gt;
+
+&lt;p&gt;Anki Habitat is supported across platforms. It works by adding points to your &lt;a href=&quot;https://habitica.com/static/home&quot;&gt;Habitica stats&lt;/a&gt; as you progress through your cards. With these points added to your Habitica character, you can battle your friends and slay monsters.&lt;/p&gt;
+
+&lt;p&gt;It’s a really cool add-on if you already use Habitica. If not, give it a try and motivate yourself to achieve your goals. Over 2,000,000 people are having fun through Habitica while achieving their goals.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1758045507&lt;/p&gt;
+
+&lt;h2 id=&quot;productivity&quot;&gt;Productivity&lt;/h2&gt;
+
+&lt;p&gt;Some Anki plugins to boost your productivity and ace your card review.&lt;/p&gt;
+
+&lt;h3 id=&quot;polar-connect---pdf-and-incremental-reading-with-anki-sync&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/734898866&quot;&gt;Polar Connect - PDF and Incremental Reading with Anki Sync&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Very popular (45 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/zrCPs4Gs0jX_G85QQ-oE7WXIWlEdlFrh2joxpDEW3_c_T5wubbt1V7SxvYPmJ5uKAwM0zoCRubcdqnl5Fw-DcsYAXDS5llHar7u2iAlOSonxWFNX91EK6ESlrFev74K6VIq5cBRa&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: &lt;a href=&quot;https://getpolarized.io/&quot;&gt;Polar&lt;/a&gt; is a document manager, reader, and learning tool all in one. Have you ever had to study from a book or a website and then create flashcards based on what you’re reading? Well, Polar is your tool. With Polar, you can auto-convert any annotation, highlight, or comment in one click into a flashcard.&lt;/p&gt;
+
+&lt;p&gt;The Polar add-on for Anki establishes a communication channel between Polar and Anki to easily sync flashcards from Polar to Anki.&lt;/p&gt;
+
+&lt;p&gt;Finally, Polar simplifies managing a reading list with tags, groups, reading progress tracking, and more&lt;/p&gt;
+
+&lt;p&gt;Anki code: 734898866&lt;/p&gt;
+
+&lt;h3 id=&quot;more-overview-stats&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/2116130837&quot;&gt;More Overview Stats&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (38 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/Cnu5SDauGvu2J0ngVM8ym-_K5IMkL4ZRvWI4OJ_FJJaiodtFpocf5Fg6ZEvb2WVkiWvvGlDoDMxE2-K_cUzRC2ZEGz_PCwto5QZ0BIKUVDvWh81yZ3lW6mMWOGm3hGO_8D2cIYrh&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: As the name indicates, this Anki plugin adds more stats to your overview page. This way you can keep track of your learning progress. It even adds colors to the labels for a different touch to the Anki stats page. When you hover over the colors, they show you the cards in the following order: new, learn, review, buried, and suspended.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 2116130837&lt;/p&gt;
+
+&lt;h3 id=&quot;batch-editing&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/291119185&quot;&gt;Batch Editing&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (66 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/2-dtmZqtpQC2YRTrLSUtqBlWSy_sQNVPhRd10F7Jkm9qImc1WhO9_e5OZ8L5KTFesFI9w7PRHFR0BSIi8eIv_nHiJHikrQWNxpp3Zzm5TTsOA7PeAxAcJYSkXB3R_8Uj89_Vesq1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The Batch Editing add-on for Anki adds a new menu item to the card browser, which allows you to do two things: Batch-add information/media to a specific field, batch-replace the contents of any particular field.&lt;/p&gt;
+
+&lt;p&gt;The changes that you make are applied to all selected notes that are featured in the field.&lt;/p&gt;
+
+&lt;p&gt;Here’s an &lt;a href=&quot;https://www.youtube.com/watch?v=iCZzcSnAeH4&amp;amp;feature=youtu.be&quot;&gt;instructional video&lt;/a&gt; on how to use this add-on.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 291119185&lt;/p&gt;
+
+&lt;h2 id=&quot;visual-upgrades&quot;&gt;Visual upgrades&lt;/h2&gt;
+
+&lt;p&gt;Visual upgrades to Anki enhance the way it looks, giving it room for more memory cues and helping you learn faster.&lt;/p&gt;
+
+&lt;h3 id=&quot;night-mode&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1496166067&quot;&gt;Night Mode&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Very popular (383 upvotes - I mean, seriously, who doesn’t love night mode?)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/A0CvRPNWwemX65-lcw-n-_yQfzbqcTkXkctPInMNtuHDcAP2lMqBuqHAsV0uo3SbX0H_uOASDu90eF6LEB1uchgvVydUzU3OehpHv2SdzF8Avo0nOcMtLo4DwfV9neLJvkgOid1a&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The history of night modes can be traced back to Windows Phone 7. The feature was added to the now-dead OS to reduce battery consumption as entirely black pixels didn’t emit any light on OLED screens. Since then, night mode as a feature in apps and software has come a long way.&lt;/p&gt;
+
+&lt;p&gt;It’s one the best Anki add-ons for medical students as they can recharge their deck review (even at night) by modifying Anki to having an all-black background. The add-on gives you the option to automatically (timer) or manually turn on the night mode. You can even invert colors of images or latex formulas and define custom color substitution rules.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1496166067&lt;/p&gt;
+
+&lt;h3 id=&quot;button-colors&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/2494384865&quot;&gt;Button Colors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Very popular (111 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/-WY26FUE2TLF8zif4Po9ifD--XFHyOxGbGi0Ga2KkNRk8gXA1Hl0UxX2Zu5arx4ghjD-BQA7YzVKYq_b8R3szTrSV9uW1-bxFPswSFVDDrJjX_86sUK0WOwK2ACVRZNcDe5QgX9z&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: If you need some rigorous learning done through Anki, then you might as well use some colors. You must know that the Anki’s deck page has buttons defined as ‘Good’, ‘Easy’, and ‘Again’ to update the time between iterations on a card.&lt;/p&gt;
+
+&lt;p&gt;This add-on only imitates the impact of colors on humans: red is known to pose a bit of danger, and you are good to go when things are green. This add-on makes the “Good” button green and the “Again” button red.&lt;/p&gt;
+
+&lt;p&gt;“I’m a simple man. I see colours, I click like.” — add-on review.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 2494384865&lt;/p&gt;
+
+&lt;h3 id=&quot;full-screen-toggle&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1612375712&quot;&gt;Full Screen Toggle&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (14 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/a9MN67reec94gRuVkAjEloL2wlSssF2ODWIzRGsgIYhwElz4qx0ubA_N710OYrX1Lf70qwbC7gjT7zj70A08UpFucN2fB6PQ05_4H7Ixksq5U2R6FRVUNq_6Gly49xexc6wb2uhV&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Medical studies require a high amount of focus. There are so many new terms coming in, and you wouldn’t want to entertain any distractions as you try to get through them.&lt;/p&gt;
+
+&lt;p&gt;This add-on does what it says — it adds F11 key binding so that you can toggle full screen on Anki. You can also find this feature in the Tools menu. With this add-on at hand, you can cast all the distractions aside.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1612375712&lt;/p&gt;
+
+&lt;h3 id=&quot;customize-keyboard-shortcuts&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/24411424&quot;&gt;Customize Keyboard Shortcuts&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Frequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (44 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/T6S-VKMuCjgB6I5Wbr_KFRfTMVN223ofUDbu0NOtQP4FsvKopRS_gcW3VLZLcJhugYySebj2xhEH8WTZXOfMHmF8lpschKJA5hFSsfCQIWW_yxMnKiAc6fMmAmjs5tXI12lsantD&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The Keyboards Shortcuts add-on is designed to increase your efficiency on the Anki app. It allows you to change the shortcuts on the main page, the editor window, the review window, and the deck browser window.&lt;/p&gt;
+
+&lt;p&gt;You can head over to Tools &amp;gt; Add-ons&amp;gt; Custom Shortcuts and click Config to change each shortcut inside Anki.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 24411424&lt;/p&gt;
+
+&lt;h2 id=&quot;usability&quot;&gt;Usability&lt;/h2&gt;
+
+&lt;p&gt;The add-ons under this category add extra features to the way you use Anki. With these add-ons in action, you can do much more than just reviewing your deck.&lt;/p&gt;
+
+&lt;h3 id=&quot;imageresizer&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1214357311&quot;&gt;ImageResizer&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (67 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh4.googleusercontent.com/9ZSYQY0K7qHtww0eAs4Z7y1Bs07sTiRCyWLqCIQUuiu6D6EADMdseC30il9RRKjejdi7hwPEangHAKEuPtWC5RycMuc0yzqvjacQ_j8tMUb38QDzHdo3xPwh6xkYHjKXvstt18Pz&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The whole point of Anki is to make memorization more efficient. Now imagine this: you plan out your cards, add images, and at the review time, you realize that the pictures are too small or big.&lt;/p&gt;
+
+&lt;p&gt;With the ImageResizer add-on, you can resize all the images to the desired format and make sure that the image size is not a problem anymore. To change the shortcut and the size of the photos you are using, click on Tools, and then go to ImageResizer. The add-on page has a great tutorial to figure out exactly how to use this add-on to your advantage.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1214357311&lt;/p&gt;
+
+&lt;h3 id=&quot;image-occlusion-enhanced&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/1374772155&quot;&gt;Image Occlusion Enhanced&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Frequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Very popular (159 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/wDyGKjRLb-4Zo3oUPTWCfS_NnmPyY222p0mHQdq6M-hechRcIP-Skl5m_DI7oQfhw3LZg752gqzSk8RCBcaqmlqfuQthHn4VXpmQihEiidNm9Vm8v2s3-ZcZfXD7lfKIAvFolbL0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Have you ever had to remember body parts from an image? Probably… :) A quick and effective way to remember these names is by hiding parts of an image in your card and then testing your knowledge of that hidden information.&lt;/p&gt;
+
+&lt;p&gt;The Occlusion Enhanced Addon is designed to do just that. You can use it to memorize things better by hiding labels in a diagram, and then revealing them. The cards generated under this add-on are described as ‘mage-based cloze-deletions’.&lt;/p&gt;
+
+&lt;p&gt;There’s even a series of &lt;a href=&quot;https://www.youtube.com/playlist?list=PL3MozITKTz5YFHDGB19ypxcYfJ1ITk_6o&quot;&gt;video tutorials&lt;/a&gt; on how to use the add-on.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 1374772155&lt;/p&gt;
+
+&lt;h3 id=&quot;awesometts&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/427598962&quot;&gt;AwesomeTTS&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Infrequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (74 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/e155vNGq_2j0WbHpNjPqNCyCJ8jFCab2YJBnSIb8q-FSQ-HfH3Jf7zoTYFJJyy2NclBx_a1axJEQ03MogAL2o9z6bJOr25X1MVs4osuYhXCwK_tJ_LhB2mnhSq_YzZkjU8_gDA2t&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: The AwesomeTTS add-on makes it easier for medical students to learn new terms by adding speed to their card decks. It has the option to store MP3 or speech to the collection. And yes, you can generate MP3 files on the go.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://ankiatts.appspot.com/&quot;&gt;Click here&lt;/a&gt; to find their documentation, including their usage, service, and configuration.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 427598962&lt;/p&gt;
+
+&lt;h3 id=&quot;batch-download-pictures-from-google-images&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/561924305&quot;&gt;Batch Download Pictures From Google Images&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Frequent&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (10 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/-yGhpw99WW_-etv8GzdmL2IxOoAP4aCQ2lAhdqrUlpTKitjrLZrkkp9xW-_nN4H2bRoXzTFahp4z-5dKARpWWQgCxllTVgwUN68YcTYILeNRhfwlI2xWOgjnoHWQ-wG9l_OY1cfq&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Wouldn’t it be great if you can batch download pictures to Anki through an add-on so that you can later use them in your cards? This add-on for Anki downloads pictures from Google Images into a destination field. You also get to select how many pictures to download and choose the maximum height and width for them.&lt;/p&gt;
+
+&lt;p&gt;The add-on is fast and takes about 3 seconds to download a picture.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 561924305&lt;/p&gt;
+
+&lt;h3 id=&quot;web-browser---search-terms-import-texts-and-images-automatically&quot;&gt;&lt;a href=&quot;https://ankiweb.net/shared/info/864545277&quot;&gt;Web Browser - Search terms, Import texts and images automatically&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Somewhat popular (24 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh6.googleusercontent.com/I4XACvOahc_-G7YCHC-Lm6z4kdLpomwuFYjJvRjnLqIy2TWX8L4nViLtzzJfYRl9XVLUe7haEli2yOceJzkkqrm_u88av6NGiJeAkHdvnjHyTei0WHbhfhPRZe2H4YzfgMPAjWHJ&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: Web browsers can be a distraction. You sit with Anki open on your computer, and next thing you know, you are browsing memes on Reddit ;)&lt;/p&gt;
+
+&lt;p&gt;This add-on prevents you from opening your computer’s web browser by installing a native browser to Anki. It has a simple browser that lets you search words on the internet and then later import the information to your card.&lt;/p&gt;
+
+&lt;p&gt;Anki code: 864545277&lt;/p&gt;
+
+&lt;h3 id=&quot;review-heatmap&quot;&gt;&lt;a href=&quot;https://github.com/glutanimate/review-heatmap/releases&quot;&gt;Review Heatmap&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Updates: Regular&lt;/p&gt;
+
+&lt;p&gt;Popularity: Popular (50 upvotes)&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/hj9JzYZq7zIULpVaxRMoUSQ11CQbPuOYnYb4EcJ8mfGhDzembP2Fj2Fof4mr-_7hSpBb-b_fboYGDIYFRQJ71hB0H1eEQIXp_aD7a1IkGakY4tEjQDIn2FVfzyPxgNSvXyKfTm-8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Description: While studying, it’s always great to track your progress. Anki does come with some stats that you can look at, but the Review Heatmap add-on gives you an advanced tracking functionality. It’s a great Anki plugin for med students as it shows you your daily review averages, days learned, current streak, and longest streak.&lt;/p&gt;
+
+&lt;p&gt;The newest release for Anki 2.1 is still in Beta, and you can download it from &lt;a href=&quot;https://github.com/glutanimate/review-heatmap/releases&quot;&gt;here&lt;/a&gt;. This Anki plugin also integrates well with the Night Mode add-on.&lt;/p&gt;
+
+&lt;p&gt;Anki code: Suggested download from the &lt;a href=&quot;https://github.com/glutanimate/review-heatmap/releases/tag/v0.7.0-beta.1&quot;&gt;beta page on GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Summary&lt;/p&gt;
+
+&lt;p&gt;Here you have it folks. These Anki add-ons for medical students can save you valuable time and totally redefine the way you use Anki to learn and retain new information. Most of these plugins come with great support and documentation to make their usage as easy as possible.&lt;/p&gt;
+
+&lt;p&gt;If you have other add-ons you think med students should use, do let us know.&lt;/p&gt;</content><author><name></name></author><summary type="html">Must-have Anki Add-ons for Medical Students in 2020</summary></entry><entry><title type="html">Polar 1.90.18 - Stability Improvements and Auto Pagemarks</title><link href="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html" rel="alternate" type="text/html" title="Polar 1.90.18 - Stability Improvements and Auto Pagemarks" /><published>2020-02-07T09:00:00-07:00</published><updated>2020-02-07T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks</id><content type="html" xml:base="https://getpolarized.io/2020/02/07/Polar-1-90-18-Stability-And-Auto-Pagemarks.html">&lt;p&gt;Polar 1.90.18 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
 
 &lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
 
@@ -172,8 +562,8 @@ want - forever?&lt;/p&gt;
 complicated and (if you’re like me) there doesn’t seem to be any rhyme or reason why some knowledge sticks while you
 fail to grasp other (often more complicated) concepts.&lt;/p&gt;
 
-&lt;p&gt;Cognitive science has found a way to solve this problem.  It turns out that we’ve had a solution to this problem for
-more than 135 years and the tools are finally starting to become mainstream.&lt;/p&gt;
+&lt;p&gt;Cognitive science has found a way to solve this problem.  It turns out that we’ve had a solution for more than 135 years
+and the tools are finally starting to become mainstream.&lt;/p&gt;
 
 &lt;p&gt;This connection between supervised learning (AKA machine learning) and spaced repetition was my motivation for building
 Polar. I wanted a unified learning platform that exploited spaced repetition and made it easy to use and incorporate
@@ -1642,87 +2032,4 @@ of the area highlights, the original text highlight that it was attached to, etc
 &lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
 
 &lt;p&gt;Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we’re very good
-at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.90 - Improved Tablet/Phone Support and Stability</title><link href="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html" rel="alternate" type="text/html" title="Polar 1.90 - Improved Tablet/Phone Support and Stability" /><published>2020-01-10T09:00:00-07:00</published><updated>2020-01-10T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability</id><content type="html" xml:base="https://getpolarized.io/2020/01/10/Polar-1-90-Improved-Mobile-And-Stability.html">&lt;p&gt;Polar 1.90 is now available for all desktop users and will be rolling out over the next week.&lt;/p&gt;
-
-&lt;p&gt;The major changes in this release involve improved mobile support but a ton of stability and bug fixes have gone 
-into the desktop app.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-tablet-and-phone-support&quot;&gt;Improved Tablet and Phone Support&lt;/h2&gt;
-
-&lt;p&gt;We’re steadily improving our tablet and phone support and are hoping that full-document reading will be finished 
-in mid february.&lt;/p&gt;
-
-&lt;p&gt;For now, the major functionality includes flashcard and annotation review while on a handheld device.&lt;/p&gt;
-
-&lt;p&gt;We’re working on full document management just like the desktop but need a bit more time.  Specifically, features
-like pagemarks and annotation creation do not work properly on handheld devices.&lt;/p&gt;
-
-&lt;p&gt;Tablet including iPad support has been a big feature request from our users so we really want to nail that
-feature set.&lt;/p&gt;
-
-&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
-
-&lt;p&gt;This release includes more stability and reliability issues which are now available in the desktop app as well.&lt;/p&gt;
-
-&lt;p&gt;We fixed a major issue with some users logging into Google that prevented them from being unable to authenticate 
-in the desktop app.&lt;/p&gt;
-
-&lt;p&gt;This particularly impacted students at universities which used 3rd party integration with Google auth.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-release-cadence&quot;&gt;Improved Release Cadence&lt;/h2&gt;
-
-&lt;p&gt;Now that the holidays are over we’re planning on improving our release cadence and trying to push builds at 
-least once every two weeks.&lt;/p&gt;
-
-&lt;h2 id=&quot;roadmap&quot;&gt;Roadmap&lt;/h2&gt;
-
-&lt;p&gt;We’re also working on releasing a rough roadmap on features for Q1 2020 and that should be out this week.&lt;/p&gt;
-
-&lt;p&gt;Additionally, I have a bit of a surprise for you guys so stay tuned.&lt;/p&gt;
-
-&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
-
-&lt;h3 id=&quot;1900&quot;&gt;1.90.0&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Suggestions and net promoter score disabled for now as users were complaining
-that it was asking too often. We’re going to disable this until we can make
-sure that users are only asked once per month at most.&lt;/li&gt;
-  &lt;li&gt;significant improvements with mobile apps and spaced repetition&lt;/li&gt;
-  &lt;li&gt;Fixed bug with safari not rendering the top left folder filters…&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;18029&quot;&gt;1.80.29&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;“Copy clipboard” from logs now pretty prints the JSON args&lt;/li&gt;
-  &lt;li&gt;Reworked flashcard app so the flashcards now look like real flashcards.&lt;/li&gt;
-  &lt;li&gt;Animations now work with the sidebar properly&lt;/li&gt;
-  &lt;li&gt;Navigations now work on tablet and phone with routes&lt;/li&gt;
-  &lt;li&gt;Reworked routes so that they’re cached + faster plus work with nav&lt;/li&gt;
-  &lt;li&gt;Fixed bad bug with authentication and Google auth bringing up external URL window/prompts&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.90 is now available for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Polar Roadmap for Q1</title><link href="https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks.html" rel="alternate" type="text/html" title="Polar Roadmap for Q1" /><published>2020-01-01T09:00:00-07:00</published><updated>2020-01-01T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks</id><content type="html" xml:base="https://getpolarized.io/2020/01/01/Top-10-Memory-Tricks.html">&lt;ul&gt;
-  &lt;li&gt;https://en.wikipedia.org/wiki/Method_of_loci&lt;/li&gt;
-  &lt;li&gt;use mult8iple encoding stratgies (visual, auditiory, etc)&lt;/li&gt;
-  &lt;li&gt;absurdity&lt;/li&gt;
-  &lt;li&gt;musical - ancient man encoded maps using song&lt;/li&gt;
-  &lt;li&gt;spaced repetition&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;https://www.academictips.org/memory/mnemeffc.html
-https://www.academictips.org/memory/link.html
-https://www.academictips.org/memory/mtgrade.html&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;stories (17th and Franklin)
-https://www.academictips.org/memory/norhyme.html
-https://www.academictips.org/memory/noshape.html
-https://www.academictips.org/memory/journey.html
-https://www.academictips.org/memory/romanrom.html
-https://www.academictips.org/memory/majorsys.html
-https://www.academictips.org/memory/remnames.html
-https://www.academictips.org/memory/remlists.html
-https://www.academictips.org/memory/remdate.html
-https://www.academictips.org/memory/remtel.html
-https://www.academictips.org/memory/remnos.html&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">https://en.wikipedia.org/wiki/Method_of_loci use mult8iple encoding stratgies (visual, auditiory, etc) absurdity musical - ancient man encoded maps using song spaced repetition</summary></entry></feed>
+at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

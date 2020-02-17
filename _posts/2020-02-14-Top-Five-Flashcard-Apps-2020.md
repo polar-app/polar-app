@@ -6,8 +6,7 @@ description: Flashcards have a reputation for being one of the most popular ways
 large_image: https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1
 ---
 
-
-# ![](https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1)
+<img class="img-fluid border" src="https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1">
 
 # Top 5 Flashcard Apps for 2020
 
@@ -37,7 +36,7 @@ To make things simpler, here’s our list of top flashcard tools for 2020.
 
   
 
-![](https://lh3.googleusercontent.com/6wCjFqZQ8sYwfSiBaBP7I2rb4_lhHopsAiHFdfCEHc9-funfUZZCAs-plmovAYHdonlun8YVb_df4ozPSppUY5o6o5Gcy_1kVr6KQvurU36vmz_PBYtgjo_GVu5iV2sUg265pCJt)
+<img class="img-fluid border" src="https://lh3.googleusercontent.com/6wCjFqZQ8sYwfSiBaBP7I2rb4_lhHopsAiHFdfCEHc9-funfUZZCAs-plmovAYHdonlun8YVb_df4ozPSppUY5o6o5Gcy_1kVr6KQvurU36vmz_PBYtgjo_GVu5iV2sUg265pCJt">
 
   
 
@@ -69,9 +68,7 @@ Pricing: Free for Windows, Mac, Linux and Android; $24.99 for iOS
 
 ## 2. [Polar](https://getpolarized.io/)
 
-![](https://lh6.googleusercontent.com/yHGvyNl84L4IyDOIZnGsGkmIOEGxGbs_HNJHz-ucg2shHSq2lro01qImL1HHpX605QFdbHnFxPVadvSKBm6E-Xt3WF0IknKxWglDcYVQAUii-lqaJJi6aYQIe-ttG3I0OVEVciAM)
-
-  
+<img class="img-fluid border" src="https://lh6.googleusercontent.com/yHGvyNl84L4IyDOIZnGsGkmIOEGxGbs_HNJHz-ucg2shHSq2lro01qImL1HHpX605QFdbHnFxPVadvSKBm6E-Xt3WF0IknKxWglDcYVQAUii-lqaJJi6aYQIe-ttG3I0OVEVciAM">
 
 Overview: Polar is an all-in-one learning tool which supports a document manager, reader, and learning tools. If you are studying from a PDF or a website (which is becoming more common every day), it’s easy to create flashcards based on what you are reading. Polar allows you to auto-convert annotations into flashcards with one simple button.
 
@@ -99,7 +96,7 @@ Pricing: Free; paid plans starting at $4.99 per month.
 
 ## 3. [TinyCards by Duolingo](https://tinycards.duolingo.com/)
 
-![](https://lh6.googleusercontent.com/sf0EfevV4Kc4zP39kTKT-lD-vCJkWOM20Z1DXBz0wjMebnX0m2z71bZfVhFoXajoVb5_K2isQddBOty5l4U94qtc6xiQvVAahDC1DVNoKhlXyueO01g-qY3VO9l9Mc0hyHSfZZ2N)
+<img class="img-fluid border" src="https://lh6.googleusercontent.com/sf0EfevV4Kc4zP39kTKT-lD-vCJkWOM20Z1DXBz0wjMebnX0m2z71bZfVhFoXajoVb5_K2isQddBOty5l4U94qtc6xiQvVAahDC1DVNoKhlXyueO01g-qY3VO9l9Mc0hyHSfZZ2N">
 
   
 
@@ -135,7 +132,7 @@ Pricing: Free
 
   
 
-![](https://lh6.googleusercontent.com/rJXpKl2OPcJM8aYHmmMvw0ctEIw5qxX4LqDDpNtqKBfFlfaeD78X3PNPoXy6qnkgiX_ddaKmT3UASKRDApsZ08Kx7P2T5DZyR2Jv4J55bedmuOarFowP8GqOxGf8AlYvvGUqows5)
+<img class="img-fluid border" src="https://lh6.googleusercontent.com/rJXpKl2OPcJM8aYHmmMvw0ctEIw5qxX4LqDDpNtqKBfFlfaeD78X3PNPoXy6qnkgiX_ddaKmT3UASKRDApsZ08Kx7P2T5DZyR2Jv4J55bedmuOarFowP8GqOxGf8AlYvvGUqows5">
 
   
 
@@ -164,7 +161,7 @@ Pricing: Free download and paid upgrades
 
 ## 5. [Cram](https://www.cram.com/)
 
-![](https://lh3.googleusercontent.com/hRGDdEAIxkW7wnsSjUzP8rrStojSJOf1myp1vyNgM8brHj7wKHV8C7PbrHexMr1Pg5WAttvNrpOKME9L7dS_uMXleFzXICWjHt_saWh-cOVKm7lQBvtGPFKxc5eu5UJTftp4uDCV)
+<img class="img-fluid border" src="https://lh3.googleusercontent.com/hRGDdEAIxkW7wnsSjUzP8rrStojSJOf1myp1vyNgM8brHj7wKHV8C7PbrHexMr1Pg5WAttvNrpOKME9L7dS_uMXleFzXICWjHt_saWh-cOVKm7lQBvtGPFKxc5eu5UJTftp4uDCV">
 
   
 
