@@ -20,6 +20,11 @@ function getURL(): string {
 
 }
 
+interface DocMetadata {
+    readonly title: string;
+    readonly description: string;
+}
+
 async function doLoad2() {
 
     // FIXME: accept a URL to render..
@@ -64,8 +69,21 @@ async function doLoad2() {
 
     console.log("scale: " + scale);
 
+    const pdfMetadata = await doc.getMetadata();
+
+    const docMetadata: DocMetadata = {
+        title: pdfMetadata.info.Title || '',
+        description: pdfMetadata.info.Description || ''
+    };
+
+    console.log("pdfMetadata: ", pdfMetadata);
+    console.log("pdfMetadata.metadata: ", pdfMetadata.metadata);
+
+    console.log("docMetadata: ", docMetadata);
+
     // viewer.currentScale = scale;
 
 }
 
-doLoad2().catch(err => console.log(err));
+doLoad2()
+    .catch(err => console.log(err));
