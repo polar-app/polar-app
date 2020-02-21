@@ -16,6 +16,7 @@ function getURL(): string {
         return url;
     }
 
+    // FIXME: this URL should not be local but should be something in cloud storage
     return FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
 
 }
@@ -24,6 +25,8 @@ interface DocMetadata {
     readonly title: string;
     readonly description: string;
 }
+
+// FIXME: get the DocInfo from either the URL command line or firebase.
 
 async function doLoad2() {
 
