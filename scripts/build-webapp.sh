@@ -32,6 +32,16 @@ showEnv() {
 
 }
 
+die() {
+  msg="${1}"
+  echo "${msg}"
+  exit 1
+}
+
+if [ ! -d web/dist ]; then
+  die "web/dist does not exist"
+fi
+
 set -e
 
 ## make sure we're running the latest code.
