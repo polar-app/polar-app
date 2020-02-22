@@ -167,7 +167,8 @@ jobs:
           name: build and verify webapp
           command: |
             npm run-script build-webapp && \
-            find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*'
+            pwd && \
+            find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*' && \
             find web/dist/repository-bundle.js -size +4000000c |tee /dev/stderr| egrep '.*'
 
 workflows:

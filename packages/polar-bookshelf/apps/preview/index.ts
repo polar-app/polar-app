@@ -1,7 +1,7 @@
-import PDFJS, {PDFPageProxy, DocumentInitParameters} from 'pdfjs-dist';
+import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFSinglePageViewer, TextLayerMode} from 'pdfjs-dist/web/pdf_viewer';
+import {PDFSinglePageViewer} from 'pdfjs-dist/web/pdf_viewer';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -61,6 +61,12 @@ async function doLoad2() {
 
     // FIXME: title, description, and all other metadata should be shown on the
     // page for proper SEO + user metadata (DOI, author information, etc)
+
+    // TODO: other approaches for pre-rendering:
+    //
+    // - store the textlayer in firestore, and then assemble the HTML on the
+    //   backend in realtime including the metadata like title, link, description,
+    //   etc
 
     viewer.setDocument(doc);
 
