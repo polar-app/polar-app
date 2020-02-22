@@ -46,7 +46,7 @@ async function doLoad2() {
 
     // const container = <HTMLDivElement> document.getElementById('viewer')!;
 
-    console.log("Rendering to: ", container)
+    console.log("Rendering to: ", container);
 
     if (container === null) {
         throw new Error("No container");
@@ -56,7 +56,7 @@ async function doLoad2() {
 
     const viewer = new PDFSinglePageViewer({
         container,
-        // textLayerMode: 1
+        textLayerMode: 2
     });
 
     // FIXME: title, description, and all other metadata should be shown on the
@@ -70,11 +70,19 @@ async function doLoad2() {
 
     viewer.setDocument(doc);
 
+    const page = await doc.getPage(1);
+
     const calculateScale = (to: number, from: number) => {
+        console.log(`Calculating scale from ${from} to ${to}...`);
         return to / from;
     };
 
-    const scale = calculateScale(window.innerHeight, container.offsetHeight);
+    const viewport = page.getViewport({scale: 1.0});
+
+    console.log("viewport: ", viewport);
+    console.log("window.innerHeight: ", window.innerHeight);
+
+    const scale = calculateScale(window.innerWidth, viewport.width);
 
     console.log("scale: " + scale);
 
@@ -90,7 +98,14 @@ async function doLoad2() {
 
     console.log("docMetadata: ", docMetadata);
 
-    // viewer.currentScale = scale;
+    function doResize() {
+        // console.log('resizing');
+        viewer.currentScaleValue = 'page-width';
+    }
+
+    doResize();
+
+    window.addEventListener('resize', () => doResize());
 
 }
 
