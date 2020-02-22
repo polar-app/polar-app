@@ -175,6 +175,7 @@ jobs:
           name: build and verify webapp
           command: |
             cd packages/polar-bookshelf && \
+            free -m && \
             npm run-script build-webapp && \
             echo "Webapp Built Successfully" && \
             pwd && \
