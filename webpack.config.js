@@ -6,8 +6,12 @@ var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // const workers = require('os').cpus().length - 1;
 
 const workers = 1;
+
+const OUTPUT_PATH = path.resolve(__dirname, 'web/dist');
+
 console.log("Using N workers: " + workers);
 console.log("Running in directory: " + __dirname);
+console.log("Writing to output path: " + OUTPUT_PATH);
 
 module.exports = {
     // mode: 'development',
@@ -92,7 +96,7 @@ module.exports = {
     // only inline-source-map works.
     // devtool: "inline-source-map",
     output: {
-        path: path.resolve(__dirname, 'web/dist'),
+        path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
         // publicPath: '/web/js/apps'
     },
