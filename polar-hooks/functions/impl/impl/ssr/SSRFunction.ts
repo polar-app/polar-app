@@ -6,6 +6,7 @@ prerender.set('prerenderToken', 'YOUR_TOKEN');
 prerender.crawlerUserAgents.push('googlebot');
 prerender.crawlerUserAgents.push('bingbot');
 prerender.crawlerUserAgents.push('yandex');
+prerender.crawlerUserAgents.push('twitterbot');
 
 const app = express();
 app.use(prerender);
