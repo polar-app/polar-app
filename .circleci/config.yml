@@ -175,7 +175,7 @@ jobs:
           name: build and verify webapp
           command: |
             cd packages/polar-bookshelf && \
-            ehco "Webapp Built Successfully" && \
+            echo "Webapp Built Successfully" && \
             pwd && \
             npm run-script build-webapp && \
             find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*' && \
