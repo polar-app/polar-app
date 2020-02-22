@@ -1,4 +1,4 @@
-import * as prerender from 'prerender-node';
+const prerender = require('prerender-node');
 import express from "express";
 import * as functions from "firebase-functions";
 
