@@ -20,12 +20,26 @@ purge() {
 
 }
 
+showEnv() {
+
+  echo "XXXXX: showing env: START"
+
+  pwd
+
+  ls -al web
+
+  echo "XXXXX: showing env: END"
+
+}
+
 set -e
 
 ## make sure we're running the latest code.
 #npm install
 
 echo "build-webapp: starting..."
+
+showEnv
 
 purge dist/public
 
@@ -44,6 +58,8 @@ copy htmlviewer "*.css"
 
 copy pdfviewer "*"
 copy pdfviewer-custom "*.css"
+
+showEnv
 
 copy web/dist "*.js"
 copy web "*.svg"
