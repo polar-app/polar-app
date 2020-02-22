@@ -5,10 +5,9 @@ import {PageVisibility, ViewVisibility, ViewVisibilityCalculator} from "./ViewVi
 import {UnixTimeMS} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Percentage100} from "polar-shared/src/util/Percentages";
+import {DurationMS} from "polar-shared/src/util/TimeDurations";
 
 const log = Logger.create();
-
-const MIN_DURATION = 10 * 1000;
 
 /**
  * A page ID greater than 1.
@@ -81,12 +80,38 @@ export type CreatePagemarkCallback = (extendPagemark: ExtendPagemark) => void;
  */
 export type AutoPagemarkerMode = 'full' | 'partial';
 
+/**
+ * Number of pixels as an integer.
+ */
+export type Pixels = number;
+
+export interface AutoPagemarkerOpts {
+    readonly mode: AutoPagemarkerMode;
+    readonly minDuration: DurationMS;
+    readonly minPagemarkHeight: Pixels;
+}
+
+const DEFAULT_OPTS: AutoPagemarkerOpts = {
+    mode: 'full',
+    minDuration: 30 * 1000,
+    minPagemarkHeight: 200
+};
+
 export class AutoPagemarker {
 
     private position?: Position;
 
+    private readonly opts: AutoPagemarkerOpts;
+
     constructor(private callback: CreatePagemarkCallback,
-                private mode: AutoPagemarkerMode = 'full') {
+                opts: Partial<AutoPagemarkerOpts> = {}) {
+
+        this.opts = {
+            mode: opts.mode || DEFAULT_OPTS.mode,
+            minDuration: opts.minDuration || DEFAULT_OPTS.minDuration,
+            minPagemarkHeight: opts.minPagemarkHeight || DEFAULT_OPTS.minPagemarkHeight
+        };
+
     }
 
     public compute(viewVisibility: ViewVisibility): ComputeResult {
@@ -155,7 +180,7 @@ export class AutoPagemarker {
 
         }
 
-        if ((now - this.position.created) < MIN_DURATION) {
+        if ((now - this.position.created) < this.opts.minDuration) {
             return updatePosition('early');
         }
 
@@ -174,7 +199,10 @@ export class AutoPagemarker {
          */
         const computeCoverage = (): Coverage => {
 
-            switch (this.mode) {
+            // FIXME: use the viewVisibility along with this.position to recompute
+            // the pagemarks from this point.
+
+            switch (this.opts.mode) {
 
                 case "full":
 
