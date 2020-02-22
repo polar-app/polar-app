@@ -6,6 +6,7 @@ var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const workers = require('os').cpus().length - 1;
 
 console.log("Using N workers: " + workers);
+console.log("Running in directory: " + __dirname);
 
 module.exports = {
     // mode: 'development',
