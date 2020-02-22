@@ -25,6 +25,7 @@ set -e
 ## make sure we're running the latest code.
 #npm install
 
+echo "build-webapp: starting..."
 
 purge dist/public
 
