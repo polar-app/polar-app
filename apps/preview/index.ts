@@ -52,12 +52,21 @@ async function doLoad2() {
         throw new Error("No container");
     }
 
+    const page = await doc.getPage(1);
+
+    // FIXME the page viewport sees wrong.
+    const viewport = page.getViewport({scale: 1.0});
+
     // NOTE: if we set textLayerMode: 0 no text is rendered.
 
     const viewer = new PDFSinglePageViewer({
         container,
-        textLayerMode: 2
+        textLayerMode: 2,
+        removePageBorders: true,
+        // defaultViewport: viewport
     });
+
+    // console.log("pageView width: ", pageView.width);
 
     // FIXME: title, description, and all other metadata should be shown on the
     // page for proper SEO + user metadata (DOI, author information, etc)
@@ -70,17 +79,21 @@ async function doLoad2() {
 
     viewer.setDocument(doc);
 
-    const page = await doc.getPage(1);
+    const pageView = viewer.getPageView(1);
+
+    console.log("pageView: ", pageView);
 
     const calculateScale = (to: number, from: number) => {
         console.log(`Calculating scale from ${from} to ${to}...`);
         return to / from;
     };
 
-    const viewport = page.getViewport({scale: 1.0});
 
+    console.log("page view: ", page.view);
     console.log("viewport: ", viewport);
     console.log("window.innerHeight: ", window.innerHeight);
+
+    console.log("converted: ", viewport.convertToViewportPoint(viewport.width, viewport.height));
 
     const scale = calculateScale(window.innerWidth, viewport.width);
 
@@ -102,6 +115,9 @@ async function doLoad2() {
         // console.log('resizing');
         viewer.currentScaleValue = 'page-width';
     }
+
+    console.log("currentScale: ", viewer.currentScale);
+    console.log("currentScaleValue: ", viewer.currentScaleValue);
 
     doResize();
 
