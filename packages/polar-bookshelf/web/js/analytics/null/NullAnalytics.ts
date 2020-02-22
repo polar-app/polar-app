@@ -20,4 +20,9 @@ export class NullAnalytics implements IAnalytics {
     public version(version: string): void {
     }
 
+    public heartbeat(): void {
+
+    }
+
+
 }

@@ -1,4 +1,5 @@
 import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
+import {Analytics} from "../Analytics";
 
 function isBrowser() {
     return typeof window !== 'undefined';
@@ -44,6 +45,10 @@ export class AmplitudeAnalytics implements IAnalytics {
     // TODO: make this a method
     public version(version: string) {
         amplitude.getInstance().setVersionName(version);
+    }
+
+    public heartbeat(): void {
+        Analytics.event2('heartbeat');
     }
 
 }

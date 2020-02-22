@@ -1,23 +1,26 @@
 <html>
 <head>
+
+    <link rel="stylesheet" href="../../node_modules/pdfjs-dist/web/pdf_viewer.css">
+
     <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            margin: 0;
-        }
-
-        .page {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
+        /*#viewerContainer {*/
+        /*    margin: auto;*/
+        /*    border: 1px solid black;*/
+        /*}*/
     </style>
+
+    <title></title>
+
+    <meta name="description" content="">
+
+    <!-- TODO: twitter sharing metadata including a thumbnail of the PDF -->
+
 </head>
 <body>
 
 <div id="viewerContainer">
+
     <div>
         <div id="viewer" class="pdfViewer"></div>
     </div>
@@ -29,7 +32,6 @@
 <script>
 
     const fallbackLoader = () => {
-
 
         // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
         // loading over HTTP we can't find node_modules until we require().  We can
@@ -45,7 +47,7 @@
 
     };
 
-    injectApp('/web/dist/repository-bundle.js', fallbackLoader);
+    injectApp('/web/dist/preview-bundle.js', fallbackLoader);
 
 </script>
 

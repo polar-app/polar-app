@@ -1,8 +1,26 @@
 
 export interface IAnalytics {
+
+    /**
+     * Older style GA event with category and action.
+     */
     event(event: IEventArgs): void;
+
+    /**
+     * An event with an arbitrary data payload with key/value pairs.
+     */
     event2(event: string, data?: any): void;
+
+    /**
+     * A page has been loaded
+     *
+     * @param name The name/path of the page
+     */
     page(name: string): void;
+
+    /**
+     * Identify the user so that duplicate users on different machines are tracked.
+     */
     identify(userId: UserIdentificationStr): void;
 
     /**
@@ -14,6 +32,13 @@ export interface IAnalytics {
      * Set the app version
      */
     version(version: string): void;
+
+    /**
+     * The user has has loaded the app nad we should record a heartbeat so that
+     * we can track app usage.
+     */
+    heartbeat(): void;
+
 }
 
 /**

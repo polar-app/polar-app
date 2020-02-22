@@ -29,4 +29,8 @@ export class GAAnalytics implements IAnalytics {
         // not implemented
     }
 
+    public heartbeat(): void {
+        // not implemented
+    }
+
 }

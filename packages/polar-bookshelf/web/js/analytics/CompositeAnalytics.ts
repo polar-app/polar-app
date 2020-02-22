@@ -29,6 +29,10 @@ export class CompositeAnalytics implements IAnalytics {
         this.invoke(delegate => delegate.version(version));
     }
 
+    public heartbeat(): void {
+        this.invoke(delegate => delegate.heartbeat());
+    }
+
     private invoke(handler: (delegate: IAnalytics) => void) {
 
         for (const delegate of this.delegates) {
