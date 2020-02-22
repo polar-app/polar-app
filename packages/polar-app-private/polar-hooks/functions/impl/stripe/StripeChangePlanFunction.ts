@@ -14,7 +14,8 @@ app.use(cors({ origin: true }));
 
 app.use((req, res) => {
 
-    // req.body should be a JSON body for stripe with the payment metadata.
+
+    // TODO: I think we need to validate the logged in user here.
 
     const handleRequest = async () => {
 
