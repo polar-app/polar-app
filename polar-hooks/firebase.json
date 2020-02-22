@@ -16,6 +16,10 @@
         "function": "docAdd"
       },
       {
+        "source": "/d/**",
+        "function": "docPreview"
+      },
+      {
         "source": "**",
         "function": "webapp"
       }

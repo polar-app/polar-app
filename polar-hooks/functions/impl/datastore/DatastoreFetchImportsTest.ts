@@ -1,17 +1,17 @@
 import {DatastoreFetchImports} from "./DatastoreFetchImports";
-import {PreviewURLs} from "polar-webapp-links/src/docs/PreviewURLs";
+import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
 
 
-describe('DatastoreFetchImports', function () {
+describe('DatastoreFetchImports', function() {
 
-    it('basic', async function () {
+    it('basic', async function() {
         this.timeout(500000)
         const importedDoc = await DatastoreFetchImports.doFetch('https://bitcoin.org/bitcoin.pdf');
         console.log(importedDoc);
 
         const {url} = importedDoc;
 
-        const previewURL = PreviewURLs.createPreviewURL(url);
+        const previewURL = PreviewViewerURLs.createPreviewURL(url);
         console.log(previewURL);
 
     });

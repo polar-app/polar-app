@@ -2,9 +2,9 @@ import * as functions from "firebase-functions";
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
 import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
 import {ExpressRequests} from "../util/ExpressRequests";
-import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
+import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
-export const DocAddFunction = functions.https.onRequest(async (req, res) => {
+export const DocPreviewFunction = functions.https.onRequest(async (req, res) => {
 
     // TODO: accept a POST here with the data int the body with the proper mine type
 
@@ -25,12 +25,12 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
 
     const {url} = importedDoc;
 
-    const previewURL = PreviewViewerURLs.createPreviewURL(url, parsedURL.docInfo);
+    const redirectURL = DocPreviewURLs.create({hashcode: importedDoc.hashcode});
 
-    console.log("Sending redirect to: " + previewURL);
+    console.log("Sending redirect to: " + redirectURL);
 
     // TODO: in the future just change the request handler I think.
-    res.redirect(previewURL);
+    res.redirect(redirectURL);
 
 });
 

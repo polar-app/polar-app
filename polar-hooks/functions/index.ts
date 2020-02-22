@@ -20,6 +20,7 @@ import {Webapp} from "./impl/webapp/Webapp";
 import {Sitemap} from "./impl/sitemaps/Sitemap";
 import {GroupSitemap} from "./impl/sitemaps/GroupSitemap";
 import {DocAddFunction} from "./impl/docs/DocAddFunctions";
+import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
 
 exports.mailinglist = MailinglistFunction;
@@ -44,4 +45,5 @@ exports.webapp = Webapp;
 exports.groupSitemap = GroupSitemap;
 exports.sitemap = Sitemap;
 exports.docAdd = DocAddFunction;
+exports.docPreview = DocPreviewFunction;
 exports.search = SearchFunction;

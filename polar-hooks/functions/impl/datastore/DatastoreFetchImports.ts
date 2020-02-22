@@ -21,7 +21,7 @@ export class DatastoreFetchImports {
 
     public static async doFetch(docURL: URLStr): Promise<ImportedDoc> {
 
-        if( ! URLs.isWebScheme(docURL)) {
+        if ( ! URLs.isWebScheme(docURL)) {
             throw new Error("URL needs to be http or https: " + docURL);
         }
 
