@@ -1,7 +1,7 @@
 import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFSinglePageViewer} from 'pdfjs-dist/web/pdf_viewer';
+import {PDFSinglePageViewer, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreview,
@@ -82,7 +82,8 @@ async function doLoad2() {
 
     const doc = await PDFJS.getDocument(init).promise;
 
-    const container = <HTMLDivElement> document.getElementById('viewerContainer')!;
+    // const container = <HTMLDivElement> document.getElementById('viewerContainer')!;
+    const container = <HTMLDivElement> document.getElementById('viewer')!;
 
     // const container = <HTMLDivElement> document.getElementById('viewer')!;
 
@@ -99,10 +100,10 @@ async function doLoad2() {
 
     // NOTE: if we set textLayerMode: 0 no text is rendered.
 
-    const viewer = new PDFSinglePageViewer({
+    const viewer = new PDFViewer({
         container,
         textLayerMode: 2,
-        removePageBorders: true,
+        // removePageBorders: true,
         // defaultViewport: viewport
     });
 
