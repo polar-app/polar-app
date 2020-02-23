@@ -16,7 +16,7 @@
         "function": "docAdd"
       },
       {
-        "source": "/d/**",
+        "source": "/preview/**",
         "function": "docPreview"
       },
       {
