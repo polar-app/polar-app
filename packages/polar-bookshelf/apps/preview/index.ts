@@ -28,6 +28,8 @@ async function getDocPreview(): Promise<DocPreviewCached> {
             throw new Error("Doc not cached: " + parsedURL.id);
         }
 
+        console.log("Working with docPreview: ", docPreview);
+
         return docPreview;
 
     }
