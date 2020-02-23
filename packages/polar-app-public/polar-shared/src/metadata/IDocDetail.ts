@@ -4,17 +4,18 @@ import {ISODateString, ISODateTimeString} from "./ISODateTimeStrings";
 import {IDocAuthor} from "./IDocAuthor";
 import {IText} from "./Text";
 import {IImage} from "./IImage";
+import {DOIStr, URLStr} from "../util/Strings";
+
+export interface IJournal {
+    readonly name: string;
+    readonly openAccess?: boolean;
+}
 
 /**
  * Details about a document that was loaded which can be incorporated into
  * DocInfo if necessary.
  */
 export interface IDocDetail {
-
-    /**
-     * A fingerprint for the document.
-     */
-    readonly fingerprint: string;
 
     /**
      * The title for the document.
@@ -26,9 +27,16 @@ export interface IDocDetail {
     readonly description?: string;
 
     /**
-     * The network URL for the document where we originally fetched it.
+     * The network URL for the document where we originally fetched it.  This is
+     * the raw PDF, EPUB.
      */
-    readonly url?: string;
+    readonly url?: URLStr;
+
+    /**
+     * The web page , landing URL for this document which can be the original
+     * URL if this is just HTML or a web page representing the doc.
+     */
+    readonly landingURL?: URLStr;
 
     /**
      * The number of pages in this document.
@@ -45,10 +53,15 @@ export interface IDocDetail {
 
     readonly publisher?: string;
 
-    readonly doi?: string;
+    readonly doi?: DOIStr;
+
+    readonly doiURL?: string;
 
     readonly pmid?: string;
 
     readonly summary?: IText;
 
+    readonly journal?: string | IJournal;
+
 }
+
