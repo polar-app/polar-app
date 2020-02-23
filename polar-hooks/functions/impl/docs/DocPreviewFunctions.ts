@@ -47,7 +47,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
             ...docPreview,
             docHash: importedDoc.hashcode,
             cached: true,
-            datastoreURL: importedDoc.docURL,
+            datastoreURL: importedDoc.storageURL,
         });
 
     };
