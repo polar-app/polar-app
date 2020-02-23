@@ -4,7 +4,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
 import {Toaster} from '../../ui/toaster/Toaster';
-import {PreviewURLs} from 'polar-webapp-links/src/docs/PreviewURLs';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -12,6 +11,7 @@ import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
 import {Latch} from "polar-shared/src/util/Latch";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
 
 const log = Logger.create();
 
@@ -42,7 +42,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
     public async prepare(): Promise<void> {
 
-        if (PreviewURLs.isAutoAdd()) {
+        if (PreviewViewerURLs.isAutoAdd()) {
 
             // the user is now auto-adding this URL so we don't need to prompt.
             this.latch.resolve(true);
@@ -53,7 +53,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             this.overlay = await AddContentButtonOverlays.create(() => {
 
-                if (PreviewURLs.getDesktopAppState() === 'active') {
+                if (PreviewViewerURLs.getDesktopAppState() === 'active') {
 
                     log.notice("Completing import via web app desktop");
 
@@ -96,7 +96,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
         // If we aren't logged in here, we need to redirect to the
         // proper login path and create an auto-add URL
 
-        const successURL = PreviewURLs.createAutoAdd(document.location!.href);
+        const successURL = PreviewViewerURLs.createAutoAdd(document.location!.href);
         const loginURL = LoginURLs.create(successURL);
 
         document.location!.href = loginURL;

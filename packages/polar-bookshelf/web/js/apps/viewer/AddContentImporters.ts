@@ -2,13 +2,13 @@ import {
     DefaultAddContentImporter,
     NullAddContentImporter
 } from './AddContentImporter';
-import {PreviewURLs} from 'polar-webapp-links/src/docs/PreviewURLs';
+import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
 
 export class AddContentImporters {
 
     public static create() {
 
-        if (PreviewURLs.isPreview()) {
+        if (PreviewViewerURLs.isPreview()) {
             return new DefaultAddContentImporter();
         }
 
