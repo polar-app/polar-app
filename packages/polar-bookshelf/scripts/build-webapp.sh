@@ -90,6 +90,7 @@ cp *.ico dist/public
 cp *.png dist/public
 cp *.svg dist/public
 
+cp sitemap*.xml dist/public
 cp robots.txt dist/public
 cp manifest.json dist/public
 
