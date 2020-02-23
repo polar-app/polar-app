@@ -1,14 +1,14 @@
 import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFSinglePageViewer, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
+import {PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
-    DocPreview,
-    DocPreviews,
-    BaseDocPreview, DocPreviewCached
+    DocPreviewCached,
+    DocPreviews
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
+import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -52,6 +52,8 @@ interface DocMetadata {
 }
 
 async function doLoad2() {
+
+    await FirestoreCollections.configure();
 
     AnalyticsInitializer.doInit();
 
