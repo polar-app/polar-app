@@ -57,11 +57,17 @@ service cloud.firestore {
 
 
     match /account/{document=**} {
-
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // only allow the user to read their own account
         allow read: if request.auth.uid == resource.data.uid;
+
 
     }
 
@@ -74,8 +80,13 @@ service cloud.firestore {
     match /doc_file_meta/{document=**} {
         // this rule is shared with both doc_info and doc_meta
 
-        // if the document is missing allow read because we need to show that it's not present
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // if the visibility is public we're ok with sharing
         allow read: if resource.data.visibility == 'public';
@@ -96,8 +107,13 @@ service cloud.firestore {
     match /doc_info/{document=**} {
         // this rule is shared with both doc_info and doc_meta
 
-        // if the document is missing allow read because we need to show that it's not present
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // if the visibility is public we're ok with sharing
         allow read: if resource.data.visibility == 'public';
@@ -118,8 +134,13 @@ service cloud.firestore {
     match /doc_meta/{document=**} {
         // this rule is shared with both doc_info and doc_meta
 
-        // if the document is missing allow read because we need to show that it's not present
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // if the visibility is public we're ok with sharing
         allow read: if resource.data.visibility == 'public';
@@ -138,7 +159,13 @@ service cloud.firestore {
     }
 
     match /doc_permission/{document=**} {
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // If the user is the owner they can read it obviously
         allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
@@ -147,8 +174,13 @@ service cloud.firestore {
 
     match /group/{document=**} {
 
-        // if the document is missing allow read because we need to show that it's not present
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // TODO: what if the group has been flagged as deleted?
 
@@ -173,6 +205,13 @@ service cloud.firestore {
     }
 
     match /group_doc/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // allows us to lookup the group by group_id and see if the visibility allows
         // access or if the user is already in the group as a member.
@@ -190,7 +229,39 @@ service cloud.firestore {
 
     }
 
+    match /group_doc_annotation/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // allows us to lookup the group by group_id and see if the visibility allows
+        // access or if the user is already in the group as a member.
+
+        allow read: if ['public', 'protected'].hasAny([resource.data.visibility]);
+
+        // we can read/write if the group is public
+        allow read: if existsGroup() && ['public', 'protected'].hasAny([getGroup().data.visibility]);
+
+        // only allow members of this group to read which documents are
+        // contained here. Writes are not allowed because they are implemented
+        // via a cloud hook.
+        allow read: if existsGroup() && isPermittedGroup(resource.data.groupID);
+
+
+    }
+
     match /group_doc_info/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // allows us to lookup the group by group_id and see if the visibility allows
         // access or if the user is already in the group as a member.
@@ -209,6 +280,13 @@ service cloud.firestore {
     }
 
     match /group_member/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // allows us to lookup the group by group_id and see if the visibility allows
         // access or if the user is already in the group as a member.
@@ -227,7 +305,13 @@ service cloud.firestore {
     }
 
     match /group_member_invitation/{document=**} {
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // If the user is the owner (by email) they can read it.
         allow delete, read: if request.auth != null && request.auth.token.email == resource.data.to;
@@ -260,6 +344,13 @@ service cloud.firestore {
 
     }
 
+    match /profile_doc_annotation/{document=**} {
+        // for now all annotations on this user profile are public for their public documents
+        allow read;
+
+
+    }
+
     match /profile_handle/{document=**} {
         // anyone can read this. Just allows us to lookup a profile ID based on handle.
         allow read;
@@ -267,11 +358,47 @@ service cloud.firestore {
     }
 
     match /profile_owner/{document=**} {
-
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // only allow the user to read their own account
         allow read: if request.auth.uid == resource.data.uid;
+
+
+    }
+
+    match /spaced_rep/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
+
+    }
+
+    match /spaced_rep_stat/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
 
     }
 
@@ -287,10 +414,31 @@ service cloud.firestore {
 
     match /user_group/{document=**} {
 
-        allow read: if resource == null || resource.data == null;
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
 
         // only allow the user to read their own account
         allow read: if request.auth.uid == resource.data.uid;
+
+    }
+
+    match /user_pref/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
 
     }
 

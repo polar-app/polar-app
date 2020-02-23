@@ -17,7 +17,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     const parsedURL = AddURLs.parse(fullURL);
     
     if (! parsedURL) {
-        throw new Error("Wrong URL");
+        throw new Error("Wrong URL: " + fullURL);
     }
 
     // this will return immediately due to the cache after the first

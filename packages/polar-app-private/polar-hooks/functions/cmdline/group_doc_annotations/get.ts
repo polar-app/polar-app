@@ -1,8 +1,5 @@
 import {Stdout} from "../Stdout";
-import {GroupDocAnnotation, GroupDocAnnotations} from "../../impl/groups/db/doc_annotations/GroupDocAnnotations";
-import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
-import {Clause, Collections} from "../../impl/groups/db/Collections";
-import {Arrays} from "polar-shared/src/util/Arrays";
+import {GroupDocAnnotations} from "../../impl/groups/db/doc_annotations/GroupDocAnnotations";
 
 function getID() {
     // console.log(process.argv);
