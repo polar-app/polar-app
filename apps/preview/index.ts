@@ -8,6 +8,7 @@ import {
     DocPreviews,
     BaseDocPreview, DocPreviewCached
 } from "polar-firebase/src/firebase/om/DocPreviews";
+import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -67,6 +68,8 @@ interface DocMetadata {
 }
 
 async function doLoad2() {
+
+    AnalyticsInitializer.doInit();
 
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
