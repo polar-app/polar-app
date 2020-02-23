@@ -1,6 +1,18 @@
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+
+interface SitemapURL {
+    readonly loc: URLStr;
+    readonly lastmod?: ISODateTimeString;
+    readonly changefreq?: 'weekly' | 'monthly';
+
+    // TODO: images are supported in sitemaps.  Use a thumbnail preview
+    // option
+
+}
 
 export class DocPreviewsSitemapGenerator {
 
@@ -16,18 +28,40 @@ export class DocPreviewsSitemapGenerator {
 
         const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
 
-        for (const docPreview of docPreviews) {
+        const toSitemapURL = (docPreview: DocPreview): SitemapURL => {
 
-            // const url = DocPreviewURLs.create({
-            //     id: docPreview.urlHash,
-            //     category: docPreview.category,
-            //     title: docPreview.title
-            // });
+            const loc = DocPreviewURLs.create({
+                id: docPreview.urlHash,
+                category: docPreview.category,
+                title: docPreview.title
+            });
 
-            const url = `https://app.getpolarized.io/preview/${docPreview.url}`;
-            console.log(url);
+            return {loc, changefreq: 'weekly'};
 
-        }
+        };
+
+        const sitemapURLs = docPreviews.map(toSitemapURL);
+
+        const toXML = (sitemapURLs: SitemapURL[]) => {
+
+            console.log('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+
+            for (const sitemapURL of sitemapURLs) {
+                console.log('<url>');
+
+                if (sitemapURL.changefreq) {
+                    console.log(`<changefreq>${sitemapURL.changefreq}</changefreq>`);
+                }
+
+                console.log(`<loc>${sitemapURL.loc}</loc>`);
+                console.log('</url>');
+            }
+
+            console.log('</urlset>');
+
+        };
+
+        toXML(sitemapURLs);
 
     }
 

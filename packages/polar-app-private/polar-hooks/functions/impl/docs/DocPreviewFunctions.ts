@@ -4,7 +4,7 @@ import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
 import {ExpressRequests} from "../util/ExpressRequests";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 
 export const DocPreviewFunction = functions.https.onRequest(async (req, res) => {
 
@@ -23,7 +23,8 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     // this will return immediately due to the cache after the first
     const importedDoc = await DatastoreFetchImports.doFetch(parsedURL.target);
 
-    const urlHash = Hashcodes.create(parsedURL.target);
+    const urlHash = DocPreviewHashcodes.urlHash(parsedURL.target);
+
     const docPreview = await DocPreviews.get(urlHash);
 
     console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
@@ -47,7 +48,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
             ...docPreview,
             docHash: importedDoc.hashcode,
             cached: true,
-            datastoreURL: importedDoc.docURL,
+            datastoreURL: importedDoc.storageURL,
         });
 
     };

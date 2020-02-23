@@ -95,9 +95,9 @@ export class DatastoreFetchImports {
         };
 
         // now compute theURL for this file in the backend.
-        const url = FirebaseFileStorage.computeDownloadURLDirectly(backend, fileRef);
+        const storageURL = FirebaseFileStorage.computeDownloadURLDirectly(backend, fileRef);
 
-        return {hashcode, destination, docURL, url};
+        return {hashcode, destination, docURL, url: storageURL, storageURL};
 
     }
 
@@ -161,5 +161,6 @@ export interface ImportedDoc {
     readonly hashcode: string;
     readonly destination: PathStr;
     readonly docURL: URLStr;
+    readonly storageURL: URLStr;
     readonly url: URLStr;
 }

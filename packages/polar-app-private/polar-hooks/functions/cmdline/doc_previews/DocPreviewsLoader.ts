@@ -11,6 +11,7 @@ import {
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
+import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 
 const LIMIT = 100;
 
@@ -56,7 +57,7 @@ export class DocPreviewsLoader {
                 return undefined;
             }
 
-            const urlHash = Hashcodes.create(url);
+            const urlHash = DocPreviewHashcodes.urlHash(url);
 
             const docPreview: DocPreviewUncached = {
                 cached: false,
@@ -75,13 +76,13 @@ export class DocPreviewsLoader {
         };
 
         const docPreviews = ArrayStreams.create(content.split("\n"))
-                                  .filter(line => line.trim() !== '')
-                                  .head(LIMIT * 4)
-                                  .map(toDocPreview)
-                                  .filter(current => current !== undefined)
-                                  .map(current => current!)
-                                  .head(LIMIT)
-                                  .collect();
+                                        .filter(line => line.trim() !== '')
+                                        .head(LIMIT * 4)
+                                        .map(toDocPreview)
+                                        .filter(current => current !== undefined)
+                                        .map(current => current!)
+                                        .head(LIMIT)
+                                        .collect();
 
         for (const docPreview of docPreviews) {
             await DocPreviews.set(docPreview);
