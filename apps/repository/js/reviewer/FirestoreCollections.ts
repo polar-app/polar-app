@@ -10,6 +10,9 @@ export class FirestoreCollections {
     public static async configure() {
 
         // TODO: dependency injection would rock here.
+
+        // TODO: migrate this to being called in Firestore.getInstance so we
+        // NEVER forget about it.
         const firestore = await Firestore.getInstance();
 
         for (const firestoreBacked of [SpacedReps, SpacedRepStats, DocPreviews]) {
