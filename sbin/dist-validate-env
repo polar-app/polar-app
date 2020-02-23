@@ -55,7 +55,7 @@ validate_credentials() {
 
 set -e
 
-validate_release_notes
+# validate_release_notes
 validate_npm_auth
 validate_snapcraft_auth
 validate_firebase_auth
