@@ -4,6 +4,7 @@ import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
 import {ExpressRequests} from "../util/ExpressRequests";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export const DocPreviewFunction = functions.https.onRequest(async (req, res) => {
 
@@ -22,7 +23,8 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     // this will return immediately due to the cache after the first
     const importedDoc = await DatastoreFetchImports.doFetch(parsedURL.target);
 
-    const docPreview = await DocPreviews.get(importedDoc.hashcode);
+    const urlHash = Hashcodes.create(parsedURL.target);
+    const docPreview = await DocPreviews.get(urlHash);
 
     console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
     console.log("Imported doc to: " + JSON.stringify(importedDoc, null, "   "));
@@ -43,6 +45,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
         await DocPreviews.set({
             ...docPreview,
+            docHash: importedDoc.hashcode,
             cached: true,
             datastoreURL: importedDoc.docURL,
         });
@@ -54,9 +57,13 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     const createRedirectURL = () => {
 
         if (docPreview) {
-            return DocPreviewURLs.create(docPreview);
+            return DocPreviewURLs.create({
+                id: urlHash,
+                category: docPreview.category,
+                title: docPreview.title,
+            });
         } else {
-            return DocPreviewURLs.create({hashcode: importedDoc.hashcode});
+            return DocPreviewURLs.create({id: urlHash});
         }
 
     };
