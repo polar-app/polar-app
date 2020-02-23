@@ -9,6 +9,7 @@ import {
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
+import { Version } from 'polar-shared/src/util/Version';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -55,12 +56,21 @@ interface DocMetadata {
 
 async function doLoad2() {
 
+    const version = Version.get();
+
+    console.log("Running with version: " + version);
+
     await FirestoreCollections.configure();
 
     AnalyticsInitializer.doInit();
 
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
+
+    if (docPreview.title) {
+        document.title = docPreview.title;
+        document.head.title = docPreview.title;
+    }
 
     const init: DocumentInitParameters = {
         url,
