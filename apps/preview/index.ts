@@ -153,6 +153,8 @@ async function doLoad2() {
         viewer.currentScaleValue = 'page-width';
     }
 
+    // viewer.currentScale = 0.5;
+
     console.log("currentScale: ", viewer.currentScale);
     console.log("currentScaleValue: ", viewer.currentScaleValue);
 
