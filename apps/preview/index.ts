@@ -12,22 +12,6 @@ import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer"
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
-function getURL(): string {
-
-    const parseURL = new URL(document.location.href);
-
-    const url = parseURL.searchParams.get('url') ||
-                parseURL.searchParams.get('file');
-
-    if (url) {
-        return url;
-    }
-
-    // FIXME: this URL should not be local but should be something in cloud storage
-    return FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
-
-}
-
 async function getDocPreview(): Promise<DocPreviewCached> {
 
     const parsedURL = DocPreviewURLs.parse(document.location.href);
@@ -95,7 +79,7 @@ async function doLoad2() {
 
     const page = await doc.getPage(1);
 
-    // FIXME the page viewport sees wrong.
+    // FIXME the page viewport sees is wrong.
     const viewport = page.getViewport({scale: 1.0});
 
     // NOTE: if we set textLayerMode: 0 no text is rendered.
