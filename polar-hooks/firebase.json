@@ -20,6 +20,10 @@
         "function": "docPreview"
       },
       {
+        "source": "/doc-preview-import/**",
+        "function": "docPreview"
+      },
+      {
         "source": "**",
         "function": "webapp"
       }

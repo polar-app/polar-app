@@ -8,22 +8,23 @@ export class DocPreviewsSitemapGenerator {
 
         const app = FirebaseAdmin.app();
 
-        const firestore = app.firestore()
+        const firestore = app.firestore();
 
         const snapshot = await firestore.collection('doc_preview')
-                                    .limit(1000)
-                                    .get();
+                                        .limit(1000)
+                                        .get();
 
         const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
 
         for (const docPreview of docPreviews) {
 
-            const url = DocPreviewURLs.create({
-                id: docPreview.urlHash,
-                category: docPreview.category,
-                title: docPreview.title
-            });
+            // const url = DocPreviewURLs.create({
+            //     id: docPreview.urlHash,
+            //     category: docPreview.category,
+            //     title: docPreview.title
+            // });
 
+            const url = `https://app.getpolarized.io/preview/${docPreview.url}`;
             console.log(url);
 
         }
