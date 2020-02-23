@@ -4,9 +4,13 @@ import {
     ISODateTimeString
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Files} from "polar-shared/src/util/Files";
-import {DocPreviews, DocPreviewUncached} from "polar-firebase/src/firebase/om/DocPreviews";
+import {
+    DocPreviews,
+    DocPreviewUncached
+} from "polar-firebase/src/firebase/om/DocPreviews";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
+import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 
 const LIMIT = 100;
 
@@ -25,6 +29,8 @@ export class DocPreviewsLoader {
 
     public static async load() {
 
+        const app = FirebaseAdmin.app();
+
         const path = getPath();
 
         const data = await Files.readFileAsync(path);
@@ -39,9 +45,22 @@ export class DocPreviewsLoader {
 
             const doc: Unpaywall.Doc = JSON.parse(line);
 
+            console.log("doc: \n" + JSON.stringify(doc, null, '  '));
+
+            if (doc.oa_locations.length === 0) {
+                console.warn("No open access locations (skipping).");
+                continue;
+            }
+
             // TODO: authors
 
             const url = doc.oa_locations[0].url_for_pdf;
+
+            if (url === null) {
+                console.warn("No URL to PDF");
+                continue;
+            }
+
             const urlHash = Hashcodes.create(url);
 
             const docPreview: DocPreviewUncached = {
@@ -86,7 +105,7 @@ export namespace Unpaywall {
         readonly updated: ISODateTimeString;
         readonly is_best: boolean;
         readonly url_for_landing_page: URLStr;
-        readonly url_for_pdf: URLStr;
+        readonly url_for_pdf: URLStr | null;
     }
 
 }
