@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
 import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
-import {PreviewURLs} from "polar-webapp-links/src/docs/PreviewURLs";
 import {ExpressRequests} from "../util/ExpressRequests";
+import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
 
 export const DocAddFunction = functions.https.onRequest(async (req, res) => {
 
@@ -25,7 +25,7 @@ export const DocAddFunction = functions.https.onRequest(async (req, res) => {
 
     const {url} = importedDoc;
 
-    const previewURL = PreviewURLs.createPreviewURL(url, parsedURL.docInfo);
+    const previewURL = PreviewViewerURLs.createPreviewURL(url, parsedURL.docInfo);
 
     console.log("Sending redirect to: " + previewURL);
 

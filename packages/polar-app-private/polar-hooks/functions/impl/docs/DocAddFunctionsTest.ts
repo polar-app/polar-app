@@ -1,7 +1,7 @@
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
 import {assert} from 'chai';
-import {PreviewURLs} from "polar-webapp-links/src/docs/PreviewURLs";
-import { URLParams } from "polar-url/src/URLParams";
+import {URLParams} from "polar-url/src/URLParams";
+import {PreviewViewerURLs} from "polar-webapp-links/src/docs/PreviewViewerURLs";
 
 describe('DocAddFunctions', function() {
 
@@ -11,7 +11,7 @@ describe('DocAddFunctions', function() {
 
         assert.exists(parsedURL);
 
-        const previewURL = PreviewURLs.createPreviewURL(parsedURL!.target, parsedURL!.docInfo);
+        const previewURL = PreviewViewerURLs.createPreviewURL(parsedURL!.target, parsedURL!.docInfo);
 
         console.log(previewURL);
 
