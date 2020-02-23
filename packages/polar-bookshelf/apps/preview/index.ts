@@ -1,31 +1,16 @@
 import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFSinglePageViewer} from 'pdfjs-dist/web/pdf_viewer';
+import {PDFSinglePageViewer, PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreview,
     DocPreviews,
     BaseDocPreview, DocPreviewCached
 } from "polar-firebase/src/firebase/om/DocPreviews";
+import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
-
-function getURL(): string {
-
-    const parseURL = new URL(document.location.href);
-
-    const url = parseURL.searchParams.get('url') ||
-                parseURL.searchParams.get('file');
-
-    if (url) {
-        return url;
-    }
-
-    // FIXME: this URL should not be local but should be something in cloud storage
-    return FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
-
-}
 
 async function getDocPreview(): Promise<DocPreviewCached> {
 
@@ -68,6 +53,8 @@ interface DocMetadata {
 
 async function doLoad2() {
 
+    AnalyticsInitializer.doInit();
+
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
 
@@ -79,7 +66,8 @@ async function doLoad2() {
 
     const doc = await PDFJS.getDocument(init).promise;
 
-    const container = <HTMLDivElement> document.getElementById('viewerContainer')!;
+    // const container = <HTMLDivElement> document.getElementById('viewerContainer')!;
+    const container = <HTMLDivElement> document.getElementById('viewer')!;
 
     // const container = <HTMLDivElement> document.getElementById('viewer')!;
 
@@ -91,15 +79,15 @@ async function doLoad2() {
 
     const page = await doc.getPage(1);
 
-    // FIXME the page viewport sees wrong.
+    // FIXME the page viewport sees is wrong.
     const viewport = page.getViewport({scale: 1.0});
 
     // NOTE: if we set textLayerMode: 0 no text is rendered.
 
-    const viewer = new PDFSinglePageViewer({
+    const viewer = new PDFViewer({
         container,
         textLayerMode: 2,
-        removePageBorders: true,
+        // removePageBorders: true,
         // defaultViewport: viewport
     });
 
@@ -152,6 +140,8 @@ async function doLoad2() {
         // console.log('resizing');
         viewer.currentScaleValue = 'page-width';
     }
+
+    // viewer.currentScale = 0.5;
 
     console.log("currentScale: ", viewer.currentScale);
     console.log("currentScaleValue: ", viewer.currentScaleValue);

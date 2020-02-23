@@ -1,13 +1,29 @@
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
 
     <link rel="stylesheet" href="../../node_modules/pdfjs-dist/web/pdf_viewer.css">
 
+    <!-- TODO: these need to load locally before we enable firebase in production -->
+    <script src="/node_modules/firebase/firebase.js"></script>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" href="/icon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+
     <style>
-        .page {
-            /*margin: 5px;*/
-            /*border: 1px solid black;*/
+        html, body {
+            margin: 0;
+            padding: 0;
         }
+
+        .page {
+            margin-bottom: 10px !important;
+        }
+
     </style>
 
     <title></title>
@@ -22,7 +38,10 @@
 <div id="viewerContainer">
 
     <div>
-        <div id="viewer" class="pdfViewer"></div>
+        <div id="viewer" class="pdfViewer">
+            <div/>
+
+        </div>
     </div>
 
 </div>
