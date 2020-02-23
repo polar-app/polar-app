@@ -46,6 +46,7 @@ async function getDocPreview(): Promise<DocPreview> {
     const datastoreURL = FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/availability.pdf");
 
     return {
+        cached: true,
         fingerprint: hashcode,
         hashcode,
         datastoreURL
