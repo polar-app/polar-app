@@ -1,4 +1,4 @@
-import {DOIStr, URLStr} from "polar-shared/src/util/Strings";
+import {DOIStr, JSONStr, URLStr} from "polar-shared/src/util/Strings";
 import {
     ISODateString,
     ISODateTimeString
@@ -36,20 +36,15 @@ export class DocPreviewsLoader {
         const data = await Files.readFileAsync(path);
         const content = data.toString('utf-8');
 
-        const lines = ArrayStreams.create(content.split("\n"))
-                                  .filter(line => line.trim() !== '')
-                                  .head(LIMIT)
-                                  .collect();
+        const toDocPreview = (json: JSONStr): DocPreviewUncached | undefined => {
 
-        for (const line of lines) {
-
-            const doc: Unpaywall.Doc = JSON.parse(line);
+            const doc: Unpaywall.Doc = JSON.parse(json);
 
             console.log("doc: \n" + JSON.stringify(doc, null, '  '));
 
             if (doc.oa_locations.length === 0) {
                 console.warn("No open access locations (skipping).");
-                continue;
+                return undefined;
             }
 
             // TODO: authors
@@ -58,7 +53,7 @@ export class DocPreviewsLoader {
 
             if (url === null) {
                 console.warn("No URL to PDF");
-                continue;
+                return undefined;
             }
 
             const urlHash = Hashcodes.create(url);
@@ -75,9 +70,24 @@ export class DocPreviewsLoader {
                 doiURL: doc.doi_url,
             };
 
-            await DocPreviews.set(docPreview);
+            return docPreview;
 
+        };
+
+        const docPreviews = ArrayStreams.create(content.split("\n"))
+                                  .filter(line => line.trim() !== '')
+                                  .head(LIMIT * 4)
+                                  .map(toDocPreview)
+                                  .filter(current => current !== undefined)
+                                  .map(current => current!)
+                                  .head(LIMIT)
+                                  .collect();
+
+        for (const docPreview of docPreviews) {
+            await DocPreviews.set(docPreview);
         }
+
+        console.log("Wrote N docPreviews: " + docPreviews.length);
 
     }
 
