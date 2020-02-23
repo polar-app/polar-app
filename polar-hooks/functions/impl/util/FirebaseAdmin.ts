@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import {StorageOptions} from '@google-cloud/storage';
 import {FirebaseConfig} from './FirebaseConfig';
+import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
 
 let app: admin.app.App;
 
@@ -21,15 +22,32 @@ export class FirebaseAdmin {
 
         const firebaseConfig = FirebaseConfig.create(project);
 
-        if (firebaseConfig) {
+        const initializeApp = () => {
 
-            console.log("Creating app for project: " + firebaseConfig.project);
+            if (firebaseConfig) {
 
-            return admin.initializeApp(firebaseConfig.appOptions);
+                console.log("Creating app for project: " + firebaseConfig.project);
 
-        } else {
-            return admin.initializeApp();
-        }
+                return admin.initializeApp(firebaseConfig.appOptions);
+
+            } else {
+                return admin.initializeApp();
+            }
+
+        };
+
+        const app = initializeApp();
+
+        const initializeFirestore = () => {
+            const firestore = app.firestore();
+
+            DocPreviews.firestoreProvider = () => firestore;
+
+        };
+
+        initializeFirestore();
+
+        return app;
 
     }
 
