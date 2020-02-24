@@ -1,8 +1,9 @@
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
+import {Fetches} from "polar-shared/src/util/Fetch";
 
-export class DocPreviewsIndexGenerator {
+export class DocPreviewsPrerenderer {
 
     public static async generate() {
 
@@ -16,7 +17,7 @@ export class DocPreviewsIndexGenerator {
 
         const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
 
-        const toHTML = () => {
+        const doPrerender = async () => {
 
             for (const docPreview of docPreviews) {
 
@@ -26,18 +27,35 @@ export class DocPreviewsIndexGenerator {
                     title: docPreview.title
                 });
 
-                console.log('<p>');
-                console.log(`<a href="${href}">${docPreview.title}</a>`);
-                console.log('</p>');
+                console.log(href);
+
+                const body = JSON.stringify({
+                    "prerenderToken": "nHFtg5f01o0FJZXDtAlR",
+                    "url": href
+                });
+
+                const response = await Fetches.fetch('https://api.prerender.io/recache', {
+                    method: "POST",
+                    body,
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                });
+
+                // console.log(response);
+                if (response.status !== 200) {
+                    console.warn(`Invalid response: ${response.status}: ${response.statusText}`);
+                }
+
             }
 
         };
 
-        toHTML();
+        await doPrerender();
 
     }
 
 }
 
-DocPreviewsIndexGenerator.generate()
+DocPreviewsPrerenderer.generate()
     .catch(err => console.error(err));
