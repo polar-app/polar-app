@@ -7,6 +7,11 @@ let app = express();
 
 console.log("SSR3: Running with minimal SSR function");
 
+// TODO: does NOT seem to be ussing the prerender AT ALL... what happens, I think
+//
+// TODO: I think what is happening is that we are creating a NEW app as my old
+// module is being called.
+
 const prerender =
     require('prerender-node')
         .set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR')
