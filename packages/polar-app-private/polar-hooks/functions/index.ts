@@ -22,7 +22,7 @@ import {GroupSitemap} from "./impl/sitemaps/GroupSitemap";
 import {DocAddFunction} from "./impl/docs/DocAddFunctions";
 import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
-import {SSRFunction} from "./impl/impl/ssr/SSRFunction2";
+import {SSRFunction} from "./impl/impl/ssr/SSRFunction3";
 
 exports.ssr = SSRFunction;
 exports.mailinglist = MailinglistFunction;

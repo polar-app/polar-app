@@ -31,6 +31,8 @@ let app = express();
 
 // TODO: try a pre-render with my own BASIC webapp without my complex one.
 
+// TODO: note that bingbot with X-prerender does work with SSRFunction2
+
 //
 // const prerender =
 //     require('prerender-node')
