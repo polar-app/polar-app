@@ -5,6 +5,6 @@
     "packages/polar-app-private/polar-hooks/functions",
     "packages/polar-app-public/*"
   ],
-  "version": "1.90.23",
+  "version": "1.90.24",
   "concurrency": 1
 }
