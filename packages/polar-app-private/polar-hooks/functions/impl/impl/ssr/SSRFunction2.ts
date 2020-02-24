@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import express from 'express';
+import {Callback} from "polar-shared/src/util/Functions";
 
 const app = express();
 
