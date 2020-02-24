@@ -23,10 +23,10 @@ import {DocAddFunction} from "./impl/docs/DocAddFunctions";
 import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
 import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
-import {PrerenderFunction} from "./impl/impl/prerender/PrerenderFunction";
+// import {PrerenderFunction} from "./impl/impl/prerender/PrerenderFunction";
 
 exports.ssr = SSRFunction;
-exports.prerender = PrerenderFunction;
+//  exports.prerender = PrerenderFunction;
 exports.mailinglist = MailinglistFunction;
 exports.StripeWebhook = StripeWebhookFunction;
 exports.StripeChangePlan = StripeChangePlanFunction;
