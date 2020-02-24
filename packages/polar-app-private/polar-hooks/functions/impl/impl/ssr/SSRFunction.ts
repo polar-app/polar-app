@@ -16,6 +16,12 @@ let app = express();
 //
 // TODO: remove the use() on the prerender and see if the Googlebot UA
 //       still gives an error.
+
+// TODO: add a tracing function BEFORE the pre-render and then just call the prerender function
+//
+// TODO: test without bingbot and JUST the X header.  Maybe google is doing
+// something with user-agents .. .
+
 //
 // const prerender =
 //     require('prerender-node')
@@ -41,7 +47,15 @@ let app = express();
 //     prerender(req, res, next);
 // });
 
-app = createWebapp(app);
+// app = createWebapp(app);
+
+console.log("FIXME: running with fake webapp");
+
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.log("FIXME: handling fake request");
+    res.status(200).send('Hello World');
+    next();
+});
 
 // https://expressjs.com/en/guide/error-handling.html
 // add a better error handler
