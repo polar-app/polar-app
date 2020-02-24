@@ -1,7 +1,6 @@
 import {MetadataEngines} from "./metadata/MetadataEngines";
 import {DefaultMetadataEngine} from "./metadata/impl/DefaultMetadataEngine";
 import escapeHtml from 'escape-html';
-import {URLs} from "polar-shared/src/util/URLs";
 import {Graphs} from "./metadata/jsonld/Graph";
 import {Permalinks} from "./metadata/Permalinks";
 
