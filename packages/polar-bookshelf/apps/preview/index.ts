@@ -98,6 +98,40 @@ export class Prerenderer {
 }
 
 
+const doUpdateRelCanonical = (docPreview: DocPreviewCached) => {
+
+    const link = document.querySelector("head link[rel='canonical']");
+
+    if (! link) {
+        console.warn("No rel=canonical link");
+        return;
+    }
+
+    const href = DocPreviewURLs.create({
+        id: docPreview.urlHash,
+        category: docPreview.category,
+        title: docPreview.title
+    });
+
+    link.setAttribute('href', href);
+
+};
+
+const doUpdateAppVersion = () => {
+
+    const meta = document.querySelector("meta[name='app_version']");
+
+    const version = Version.get();
+
+    if (! meta) {
+        console.warn("No app_version meta");
+        return;
+    }
+
+    meta.setAttribute('content', version);
+
+};
+
 async function doLoad2() {
 
     Prerenderer.loading();
@@ -120,33 +154,14 @@ async function doLoad2() {
         if (docPreview.title) {
             const title = '[PDF] ' + docPreview.title;
             document.title = title;
-            document.head.title = title;
         }
 
     };
 
     doUpdateTitle();
+    doUpdateAppVersion();
 
-    const doUpdateRelCanonical = () => {
-
-        const link = document.querySelector("head link[rel='canonical']");
-
-        if (! link) {
-            console.warn("No rel=canonical link");
-            return;
-        }
-
-        const href = DocPreviewURLs.create({
-            id: docPreview.urlHash,
-            category: docPreview.category,
-            title: docPreview.title
-        });
-
-        link.setAttribute('href', href);
-
-    };
-
-    doUpdateRelCanonical();
+    doUpdateRelCanonical(docPreview);
 
     const init: DocumentInitParameters = {
         url,
