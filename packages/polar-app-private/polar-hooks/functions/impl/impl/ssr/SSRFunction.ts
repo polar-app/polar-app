@@ -4,7 +4,11 @@ import express from 'express';
 
 let app = express();
 
-app.use(require('prerender-node').set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR'));
+const prerender = require('prerender-node').set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR');
+
+console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
+
+app.use(prerender);
 
 app = createWebapp(app);
 
