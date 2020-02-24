@@ -1,10 +1,28 @@
 import {createWebapp} from "../../webapp/Webapp";
 import * as functions from "firebase-functions";
 import express from 'express';
+import {Callback} from "polar-shared/src/util/Functions";
 
 let app = express();
 
-const prerender = require('prerender-node').set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR');
+// TODO: other issues...
+
+const prerender =
+    require('prerender-node')
+        .set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR')
+        .set('beforeRender', function(req: express.Request, done: Callback) {
+            console.log("SSR: beforeRender");
+            done();
+        })
+        .set('afterRender', function(err: Error | undefined, req: express.Request, done: Callback) {
+
+            if (err) {
+                console.log("SSR: afterRender: FAIL: ", err);
+            } else {
+                console.log("SSR: afterRender: SUCCESS");
+            }
+            done();
+        });
 
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
 
