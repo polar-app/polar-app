@@ -70,8 +70,9 @@ async function doLoad2() {
     const doUpdateTitle = () => {
 
         if (docPreview.title) {
-            document.title = docPreview.title;
-            document.head.title = docPreview.title;
+            const title = '[PDF] ' + docPreview.title;
+            document.title = title;
+            document.head.title = title;
         }
 
     };
