@@ -2,8 +2,11 @@ import {createWebapp} from "../../webapp/Webapp";
 import * as functions from "firebase-functions";
 import express from 'express';
 
-const app = createWebapp();
+let app = express();
+
 app.use(require('prerender-node').set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR'));
+
+app = createWebapp(app);
 
 // https://expressjs.com/en/guide/error-handling.html
 // add a better error handler

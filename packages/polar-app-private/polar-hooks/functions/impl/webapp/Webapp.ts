@@ -7,6 +7,7 @@ import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {StaticIndexGenerator} from "./StaticIndexGenerator";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {Reducers} from "polar-shared/src/util/Reducers";
+import express, {Express} from 'express';
 
 function createRewrites(): ReadonlyArray<DirectRewrite> {
 
@@ -62,11 +63,11 @@ function createRewrites(): ReadonlyArray<DirectRewrite> {
 
 }
 
-export function createWebapp() {
+export function createWebapp(app: Express = express()) {
     const rewrites = createRewrites();
 
     const dir = "/srv/node_modules/polar-webapp-dist/public";
-    const app = Webserver.createApp(dir, rewrites);
+    app = Webserver.createApp(dir, rewrites, app);
 
     console.log("Creating webapp with rewrites: ", rewrites);
     return app;
