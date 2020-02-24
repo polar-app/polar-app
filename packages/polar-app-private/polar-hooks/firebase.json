@@ -28,6 +28,10 @@
         "function": "ssr"
       },
       {
+        "source": "/prerender/**",
+        "function": "prerender"
+      },
+      {
         "source": "**",
         "function": "webapp"
       }

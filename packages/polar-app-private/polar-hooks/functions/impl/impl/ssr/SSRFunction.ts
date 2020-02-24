@@ -10,6 +10,7 @@ console.log("SSR: Running with production SSR function v5");
 const prerender =
     require('prerender-node')
         .set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR')
+        // .set('prerenderServiceUrl', 'https://app.getpolarized.io/prerender')
         .set('beforeRender', function(req: express.Request, done: Callback) {
             console.log("SSR: beforeRender");
 
