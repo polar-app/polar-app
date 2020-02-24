@@ -56,6 +56,8 @@ interface DocMetadata {
 
 async function doLoad2() {
 
+    (window as any).prerenderReady = false;
+
     const version = Version.get();
 
     console.log("Running with version: " + version);
@@ -191,6 +193,8 @@ async function doLoad2() {
     doResize();
 
     window.addEventListener('resize', () => doResize());
+
+    (window as any).prerenderReady = true;
 
 }
 
