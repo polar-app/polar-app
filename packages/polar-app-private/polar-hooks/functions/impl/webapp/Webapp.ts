@@ -62,7 +62,7 @@ function createRewrites(): ReadonlyArray<DirectRewrite> {
 
 }
 
-function createWebapp() {
+export function createWebapp() {
     const rewrites = createRewrites();
 
     const dir = "/srv/node_modules/polar-webapp-dist/public";
