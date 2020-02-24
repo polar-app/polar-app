@@ -5,7 +5,7 @@ import {Webapps} from "../../webapp/Webapps";
 
 let app = express();
 
-console.log("SSR: Running with production SSR function");
+console.log("SSR: Running with production SSR function v5");
 
 const prerender =
     require('prerender-node')
@@ -17,19 +17,19 @@ const prerender =
                 done();
             }
 
-        })
-        .set('afterRender', function(err: Error | undefined, req: express.Request, done: Callback) {
-
-            if (err) {
-                console.log("SSR: afterRender: FAIL: ", err);
-            } else {
-                console.log("SSR: afterRender: SUCCESS");
-            }
-
-            if (done) {
-                done();
-            }
         });
+        // .set('afterRender', function(err: Error | undefined, req: express.Request, done: Callback) {
+        //
+        //     if (err) {
+        //         console.log("SSR: afterRender: FAIL: ", err);
+        //     } else {
+        //         console.log("SSR: afterRender: SUCCESS");
+        //     }
+        //
+        //     if (done) {
+        //         done();
+        //     }
+        // });
 
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
 
