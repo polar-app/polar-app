@@ -54,9 +54,55 @@ interface DocMetadata {
     readonly description: string;
 }
 
+function traceLoading() {
+    const pages = document.querySelectorAll(".page");
+    console.log("We have N pages: " + pages.length);
+
+    const textLayers = document.querySelectorAll(".textLayer");
+    console.log("We have N textLayers: " + textLayers.length);
+}
+
+function onDocumentLoaded() {
+
+    console.log("PDF document loaded");
+
+    Prerenderer.done();
+
+}
+
+function handleDocLoad() {
+
+    document.addEventListener('textlayerrendered', function (e) {
+
+        const pages = document.querySelectorAll(".page");
+        const textLayers = document.querySelectorAll(".textLayer");
+
+        if (pages.length === textLayers.length || textLayers.length > 5) {
+            onDocumentLoaded();
+        }
+
+    }, true);
+
+}
+
+export class Prerenderer {
+
+    public static loading() {
+        (window as any).prerenderReady = false;
+    }
+
+    public static done() {
+        (window as any).prerenderReady = true;
+    }
+
+}
+
+
 async function doLoad2() {
 
-    (window as any).prerenderReady = false;
+    Prerenderer.loading();
+
+    handleDocLoad();
 
     const version = Version.get();
 
@@ -194,7 +240,7 @@ async function doLoad2() {
 
     window.addEventListener('resize', () => doResize());
 
-    (window as any).prerenderReady = true;
+    traceLoading();
 
 }
 
