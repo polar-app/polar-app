@@ -12,7 +12,11 @@ const prerender =
         .set('prerenderToken', 'nHFtg5f01o0FJZXDtAlR')
         .set('beforeRender', function(req: express.Request, done: Callback) {
             console.log("SSR: beforeRender");
-            done();
+
+            if (done) {
+                done();
+            }
+
         })
         .set('afterRender', function(err: Error | undefined, req: express.Request, done: Callback) {
 
@@ -21,7 +25,10 @@ const prerender =
             } else {
                 console.log("SSR: afterRender: SUCCESS");
             }
-            done();
+
+            if (done) {
+                done();
+            }
         });
 
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
