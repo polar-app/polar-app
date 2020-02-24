@@ -67,10 +67,37 @@ async function doLoad2() {
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
 
-    if (docPreview.title) {
-        document.title = docPreview.title;
-        document.head.title = docPreview.title;
-    }
+    const doUpdateTitle = () => {
+
+        if (docPreview.title) {
+            document.title = docPreview.title;
+            document.head.title = docPreview.title;
+        }
+
+    };
+
+    doUpdateTitle();
+
+    const doUpdateRelCanonical = () => {
+
+        const link = document.querySelector("head link[rel='canonical']");
+
+        if (! link) {
+            console.warn("No rel=canonical link");
+            return;
+        }
+
+        const href = DocPreviewURLs.create({
+            id: docPreview.urlHash,
+            category: docPreview.category,
+            title: docPreview.title
+        });
+
+        link.setAttribute('href', href);
+
+    };
+
+    doUpdateRelCanonical();
 
     const init: DocumentInitParameters = {
         url,
