@@ -24,6 +24,10 @@
         "function": "docPreview"
       },
       {
+        "source": "/d/**",
+        "function": "ssr"
+      },
+      {
         "source": "**",
         "function": "webapp"
       }
