@@ -18,6 +18,13 @@ export class DocPreviewsIndexGenerator {
 
         const toHTML = () => {
 
+            console.log("---\n" +
+                "title: Doc Preview\n" +
+                "layout: default\n" +
+                "---\n")
+
+            console.log("<div>");
+
             for (const docPreview of docPreviews) {
 
                 const href = DocPreviewURLs.create({
@@ -26,10 +33,13 @@ export class DocPreviewsIndexGenerator {
                     title: docPreview.title
                 });
 
+                // put additional metadata here including author information
                 console.log('<p>');
                 console.log(`<a href="${href}">${docPreview.title}</a>`);
                 console.log('</p>');
             }
+
+            console.log("</div>");
 
         };
 
