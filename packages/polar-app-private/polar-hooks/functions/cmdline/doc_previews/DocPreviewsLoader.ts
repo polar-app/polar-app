@@ -13,7 +13,7 @@ import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 
-const LIMIT = 100;
+const LIMIT = 1000;
 
 function getPath() {
 
@@ -41,7 +41,7 @@ export class DocPreviewsLoader {
 
             const doc: Unpaywall.Doc = JSON.parse(json);
 
-            console.log("doc: \n" + JSON.stringify(doc, null, '  '));
+            // console.log("doc: \n" + JSON.stringify(doc, null, '  '));
 
             if (doc.oa_locations.length === 0) {
                 console.warn("No open access locations (skipping).");
@@ -85,6 +85,13 @@ export class DocPreviewsLoader {
                                         .collect();
 
         for (const docPreview of docPreviews) {
+
+            if (await DocPreviews.get(docPreview.urlHash)) {
+                console.log('skipping');
+                continue;
+            }
+
+            console.log('writing');
             await DocPreviews.set(docPreview);
         }
 
