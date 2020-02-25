@@ -2,8 +2,6 @@ import * as functions from "firebase-functions";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
-/**
- */
 export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) => {
 
     const handler = async () => {
@@ -17,6 +15,12 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         const docPreviews = await DocPreviews.list(50000);
 
         for (const docPreview of docPreviews) {
+
+            if (! docPreview.cached) {
+                // do not generate links for anything that is not cached to
+                // prevent 404s for Google.
+                continue;
+            }
 
             const url = DocPreviewURLs.create({
                 id: docPreview.urlHash,

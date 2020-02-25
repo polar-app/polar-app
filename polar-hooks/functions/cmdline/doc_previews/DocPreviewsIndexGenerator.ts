@@ -27,6 +27,10 @@ export class DocPreviewsIndexGenerator {
 
             for (const docPreview of docPreviews) {
 
+                if (! docPreview.cached) {
+                    continue;
+                }
+
                 const href = DocPreviewURLs.create({
                     id: docPreview.urlHash,
                     category: docPreview.category,
