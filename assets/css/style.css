@@ -1,5 +1,9 @@
 @import "pricing.css";
 
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
 html, body {
     height: 100%;
 }
