@@ -9,6 +9,28 @@
 
     <!-- TODO: these need to load locally before we enable firebase in production -->
     <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
+
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
+    <link rel="stylesheet" href="https://getpolarized.io/assets/css/style.css">
+
+    <style>
+        * {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        *:before,
+        *:after {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+    </style>
 
     <link rel="manifest" href="/manifest.json">
 
@@ -24,6 +46,8 @@
     <link rel="icon" href="/icon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+    <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+
     <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 
     <style>
@@ -36,6 +60,18 @@
             margin-bottom: 10px !important;
         }
 
+        #viewerContainer {
+            margin-top: 85px;
+        }
+
+        header .navbar-nav a.nav-link {
+            color: #777;
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+
     </style>
 
     <title></title>
@@ -46,6 +82,62 @@
 
 </head>
 <body>
+<header data-block-type="headers" class="fixed-header">
+    <div class="" style="margin-left: auto; margin-right: auto; padding-left: 5px; padding-right: 5px; max-width: 1280px;">
+        <nav class="navbar navbar-expand-md p-0">
+
+            <a class="navbar-brand" href="/">
+                <img src="https://getpolarized.io/assets/logo/icon.svg" height="60" alt="POLAR">
+            </a>
+
+            <div class="logo" style="">
+                <a href="https://getpolarized.io/">
+                    POLAR
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav5" aria-controls="navbarNav5" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-links navbar-collapse" id="navbarNav5">
+
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io//#features">features</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io//#pricing">pricing</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/docs/">docs</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/blog">blog</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/download.html">download</a>
+                    </li>
+
+                </ul>
+                </ul>
+
+
+                <a class="btn btn-light font-weight-bold ml-md-3" href="https://app.getpolarized.io">Sign In</a>
+
+                <a class="btn btn-success btn-lg font-weight-bold ml-2"
+                   onclick="sendEvent('main-cta', 'open-polar-in-browser')"
+                   href="https://app.getpolarized.io">Create an Account</a>
+
+            </div>
+        </nav>
+    </div>
+</header>
 
 <div id="viewerContainer">
 
