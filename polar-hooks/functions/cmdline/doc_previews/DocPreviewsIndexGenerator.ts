@@ -14,7 +14,10 @@ export class DocPreviewsIndexGenerator {
                                         .limit(5000)
                                         .get();
 
-        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
+        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview)
+                                         .filter(current => current.cached);
+
+        console.log("Found N records: " + docPreviews.length);
 
         const toHTML = () => {
 
@@ -23,7 +26,7 @@ export class DocPreviewsIndexGenerator {
                 "layout: default\n" +
                 "---\n")
 
-            console.log("<div>");
+            console.log(`<div class="container">`);
 
             for (const docPreview of docPreviews) {
 
