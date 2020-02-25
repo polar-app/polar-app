@@ -67,7 +67,7 @@ export const GroupSitemap = functions.https.onRequest((req, resp) => {
         resp.write(`<loc>https://app.getpolarized.io/group/${group.name}</loc>\n`);
         resp.write(`</url>\n`);
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
 
             const page = await iterator.next();
 

@@ -4,6 +4,11 @@
     "public": "functions/node_modules/polar-webapp-dist/public",
     "rewrites": [
       {
+        "source": "/sitemap-doc-preview.xml",
+        "function": "docPreviewSitemap"
+      },
+
+      {
         "source": "/sitemap.xml",
         "function": "sitemap"
       },

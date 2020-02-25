@@ -34,7 +34,7 @@ export const Sitemap = functions.https.onRequest((req, resp) => {
         resp.write(`<?xml version="1.0" encoding="UTF-8"?>\n`);
         resp.write(`<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`);
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
 
             const page = await iterator.next();
 
