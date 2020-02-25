@@ -64,9 +64,10 @@ export class DocPreviews {
         await this.collections().set(doc.urlHash, doc);
     }
 
-    // public static async list(): Promise<ReadonlyArray<DocPreview>> {
-    //     return await this.collections().list([]);
-    // }
+    public static async list(size: number): Promise<ReadonlyArray<DocPreview>> {
+        const snapshot = await this.collections().collection().limit(size).get();
+        return snapshot.docs.map(doc => doc.data() as DocPreview);
+    }
 
     public static async get(id: IDStr): Promise<DocPreview | undefined> {
         return this.collections().get(id);
