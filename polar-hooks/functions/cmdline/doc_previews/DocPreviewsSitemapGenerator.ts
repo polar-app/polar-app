@@ -23,7 +23,7 @@ export class DocPreviewsSitemapGenerator {
         const firestore = app.firestore();
 
         const snapshot = await firestore.collection('doc_preview')
-                                        .limit(1000)
+                                        .limit(5000)
                                         .get();
 
         const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
