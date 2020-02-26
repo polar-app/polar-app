@@ -7,6 +7,10 @@
         "source": "/sitemap-doc-preview.xml",
         "function": "docPreviewSitemap"
       },
+      {
+        "source": "/sitemap-doc-preview-function.xml",
+        "function": "docPreviewSitemap"
+      },
 
       {
         "source": "/sitemap.xml",
@@ -31,6 +35,10 @@
       {
         "source": "/d/**",
         "function": "ssr"
+      },
+      {
+        "source": "/hello/**",
+        "function": "hello"
       },
       {
         "source": "/prerender/**",
