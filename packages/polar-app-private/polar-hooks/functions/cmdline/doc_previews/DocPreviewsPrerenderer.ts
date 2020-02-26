@@ -15,7 +15,8 @@ export class DocPreviewsPrerenderer {
                                         .limit(5000)
                                         .get();
 
-        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
+        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview)
+                                         .filter(current => current.cached);
 
         const doPrerender = async () => {
 

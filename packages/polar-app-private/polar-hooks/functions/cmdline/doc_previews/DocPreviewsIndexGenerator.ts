@@ -14,11 +14,25 @@ export class DocPreviewsIndexGenerator {
                                         .limit(5000)
                                         .get();
 
-        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
+        const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview)
+                                         .filter(current => current.cached);
+
+        console.log("Found N records: " + docPreviews.length);
 
         const toHTML = () => {
 
+            console.log("---\n" +
+                "title: Doc Preview\n" +
+                "layout: default\n" +
+                "---\n")
+
+            console.log(`<div class="container">`);
+
             for (const docPreview of docPreviews) {
+
+                if (! docPreview.cached) {
+                    continue;
+                }
 
                 const href = DocPreviewURLs.create({
                     id: docPreview.urlHash,
@@ -26,10 +40,13 @@ export class DocPreviewsIndexGenerator {
                     title: docPreview.title
                 });
 
+                // put additional metadata here including author information
                 console.log('<p>');
                 console.log(`<a href="${href}">${docPreview.title}</a>`);
                 console.log('</p>');
             }
+
+            console.log("</div>");
 
         };
 
