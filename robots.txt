@@ -6,7 +6,7 @@ Disallow: /add
 
 # going to block groups now as this isn't search accessible and we're going to
 # work on SSR for this.
-Disallow: /groups
+# Disallow: /groups
 Disallow: /group
 
 Sitemap: http://app.getpolarized.io/sitemap.xml
