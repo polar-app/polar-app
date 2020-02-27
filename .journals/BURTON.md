@@ -18,6 +18,10 @@ should port this to JSDOM within Polar so that I can make it work in production.
 
 /Users/burton/projects/journal/2020/01/test-search-within-dom.html 
 
+## new package
+
+.. created new package **polar-dom-text-search**
+
 # PREHISTORY
 
 - We have a new EPUBViewer that basically can RENDER to a single page but we 
