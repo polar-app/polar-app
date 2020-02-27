@@ -22,6 +22,9 @@ should port this to JSDOM within Polar so that I can make it work in production.
 
 .. created new package **polar-dom-text-search**
 
+- the code here isn't complete or tested yet.  I need to implement more of the 
+  core operations like join and search but I think the index is created now.
+
 # PREHISTORY
 
 - We have a new EPUBViewer that basically can RENDER to a single page but we 
