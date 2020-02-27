@@ -23,7 +23,7 @@ import {DocAddFunction} from "./impl/docs/DocAddFunctions";
 import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
 import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
-import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemap";
+import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 
 exports.hello = HelloWorldFunction;
