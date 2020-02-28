@@ -41,7 +41,10 @@ should port this to JSDOM within Polar so that I can make it work in production.
     
     - FIXME: OR inline annotation and improve upon that... 
     
-    - FIXME talk to jonathan about this.
+- I have the basic epub loader working but I need some way to change 'chapters
+
+- Do we need to have nrPages and how do we handle that?  each 'chapter' should be 
+  a page for now?
 
 # PREHISTORY
 
