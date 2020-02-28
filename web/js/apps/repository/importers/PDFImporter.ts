@@ -25,6 +25,9 @@ import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {DocFormatName} from "../../../docformat/DocFormat";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {EPUBMetadata} from "../../../../../../polar-app-public/polar-epub/src/EPUBMetadata";
 
 const log = Logger.create();
 
@@ -102,6 +105,22 @@ export class PDFImporter {
                             basename: string,
                             opts: PDFImportOpts = {}): Promise<Optional<ImportedFile>> {
 
+        const toDocType = () => {
+
+            if (basename.toLowerCase().endsWith(".epub")) {
+                return 'epub';
+            }
+
+            if (basename.toLowerCase().endsWith(".pdf")) {
+                return 'pdf';
+            }
+
+            throw new Error("Unable to determine type from basename: " + basename);
+
+        };
+
+        const docType = toDocType();
+
         docPath = await this.prefetch(docPath, basename);
 
         const isPath = ! URLs.isURL(docPath);
@@ -123,7 +142,7 @@ export class PDFImporter {
 
         }
 
-        const rawMeta = opts.parsedDocMeta || await PDFMetadata.getMetadata(docPath);
+        const rawMeta = opts.parsedDocMeta || await ParsedDocMetas.getMetadata(docPath, docType);
 
         const persistenceLayer = this.persistenceLayerProvider();
 
@@ -269,6 +288,22 @@ export class PDFImporter {
         stashDir = await Files.realpathAsync(stashDir);
 
         return currentDirname === stashDir;
+
+    }
+
+}
+
+class ParsedDocMetas {
+
+    public static async getMetadata(docPath: string, type: DocFormatName) {
+
+        if (type === 'pdf') {
+            return await PDFMetadata.getMetadata(docPath);
+        } else if (type === 'epub') {
+            return await EPUBMetadata.getMetadata(docPath);
+        }
+
+        throw new Error("Invalid type: " + type);
 
     }
 
