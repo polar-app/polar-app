@@ -25,6 +25,24 @@ should port this to JSDOM within Polar so that I can make it work in production.
 - the code here isn't complete or tested yet.  I need to implement more of the 
   core operations like join and search but I think the index is created now.
 
+## EPUB is working
+
+- ... work on this in the background ... it IS rendering to a single page now
+- I need to build a new viewer for it because we only have our htmlviewer and 
+  pdfviewer and this one doesn't work properly
+  
+- also I need some sort of table of contents for the document and navigation 
+  for the ToC
+  
+- instead of a VIEWER maybe we just make it a fully fluid webpage.  I think that
+  might be better!
+  
+    - FIXME what about the sidebar? use the same web sidebar style in the browser.
+    
+    - FIXME: OR inline annotation and improve upon that... 
+    
+    - FIXME talk to jonathan about this.
+
 # PREHISTORY
 
 - We have a new EPUBViewer that basically can RENDER to a single page but we 
