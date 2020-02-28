@@ -26,8 +26,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {DocFormatName} from "../../../docformat/DocFormat";
-import {URLStr} from "polar-shared/src/util/Strings";
-import {EPUBMetadata} from "../../../../../../polar-app-public/polar-epub/src/EPUBMetadata";
+import {EPUBMetadata} from "polar-epub/src/EPUBMetadata";
 
 const log = Logger.create();
 
