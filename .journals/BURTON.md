@@ -3,6 +3,10 @@
 I need to work on the DOM text index algorithm and then port the text overlay 
 code into Polar so it's ready to display the text highlights.
 
+- The DOMTextSearch functionality now seems to work. What I now need to do is
+  port over the highlighting code so that I can verify thatI can both SEARCH
+  and highlight and then we should build a basic UI to perform highlighting 
+  directly.   
 
 # 2020-02-27
 
