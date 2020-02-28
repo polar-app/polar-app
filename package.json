@@ -187,6 +187,7 @@
     "polar-loader": "1.0.3",
     "polar-pagemarks-auto": "^1.90.34",
     "polar-pdf": "^1.90.34",
+    "polar-epub": "^1.90.34",
     "polar-pdf-types": "^1.90.34",
     "polar-release-metadata": "^1.90.34",
     "polar-shared": "^1.90.34",
