@@ -3,10 +3,10 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {CommentPopupBoxes} from './react/CommentPopupBoxes';
 import {SimpleReactor} from '../reactor/SimpleReactor';
 import {CommentInputEvent} from './react/CommentInputEvent';
-import {Comments} from '../metadata/Comments';
 import {Model} from '../model/Model';
 import {AnnotationDescriptor} from '../metadata/AnnotationDescriptor';
 import {CommentCreatedEvent} from './react/CommentCreatedEvent';
+import {DocFormatFactory} from "../docformat/DocFormatFactory";
 
 const log = Logger.create();
 
@@ -23,6 +23,12 @@ export class CommentsController {
     private readonly commentEventDispatcher = new SimpleReactor<CommentInputEvent>();
 
     public start(): void {
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        if (docFormat.name !== 'pdf' && docFormat.name !== 'html') {
+            return;
+        }
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 

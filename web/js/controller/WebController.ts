@@ -138,11 +138,12 @@ export class WebController extends Controller {
 
     public listenForDocumentLoad() {
 
-        const container = notNull(document.getElementById('viewerContainer'));
+        const container = document.getElementById('viewerContainer');
 
-        for (const eventName of ['pagesinit', 'updateviewarea']) {
-            container.addEventListener(eventName, (event) => this.detectDocumentLoaded(eventName));
-
+        if (container) {
+            for (const eventName of ['pagesinit', 'updateviewarea']) {
+                container.addEventListener(eventName, (event) => this.detectDocumentLoaded(eventName));
+            }
         }
 
         // run manually the first time in case we get lucky of we're running HTML
