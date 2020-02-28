@@ -1,12 +1,16 @@
 import admin from "firebase-admin";
-import UserRecord = admin.auth.UserRecord;
 import {UserPager} from "./UserPager";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {UserInterviews} from "./UserInterviews";
 import {UserInterview, UserInterviewReason} from "./UserInterview";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {UserInterviewMessages, UserMessageType} from "./UserInterviewMessages";
+import {
+    FromOpts,
+    UserInterviewMessages,
+    UserMessageType
+} from "./UserInterviewMessages";
 import {Sendgrid} from "../Sendgrid";
+import UserRecord = admin.auth.UserRecord;
 
 const NR_MESSAGES_PER_BATCH = 20;
 
@@ -19,7 +23,7 @@ export class UserPredicates {
 
     public static get(reason: UserInterviewReason): UserPredicate {
 
-        switch(reason) {
+        switch (reason) {
 
             case "recent":
                 return this.recent;
@@ -73,7 +77,7 @@ class UsersRecentlyContacted {
 
         const result: UserRecord[] = [];
 
-        for(const user of users) {
+        for (const user of users) {
 
             const email = user.email!;
 
@@ -91,7 +95,7 @@ class UsersRecentlyContacted {
 
     public static async write(users: ReadonlyArray<UserRecord>, reason: UserInterviewReason) {
 
-        for(const user of users) {
+        for (const user of users) {
 
             const email = user.email!;
 
@@ -112,14 +116,16 @@ class UsersRecentlyContacted {
 
 class MessageSender {
 
-    public static async sendMessages(type: UserMessageType, users: ReadonlyArray<UserRecord>) {
+    public static async sendMessages(type: UserMessageType,
+                                     from: FromOpts,
+                                     users: ReadonlyArray<UserRecord>) {
 
-        for(const user of users) {
+        for (const user of users) {
 
-            const userInterviewMessage = UserInterviewMessages.compute(type, user);
+            const userInterviewMessage = UserInterviewMessages.compute(type, user, from);
 
             const msg = {
-                from: 'burton@getpolarized.io',
+                from: from.email,
                 to: user.email!,
                 subject: userInterviewMessage.subject,
                 text: userInterviewMessage.body,
@@ -162,6 +168,7 @@ export class UserInterviewer {
     }
 
     private static async sendMessagesForReason(type: UserMessageType,
+                                               from: FromOpts,
                                                reason: UserInterviewReason,
                                                nrMessagesPerBatch: number = NR_MESSAGES_PER_BATCH) {
 
@@ -172,23 +179,23 @@ export class UserInterviewer {
 
         // const targetEmails = targets.map(current => current.email);
 
-        await MessageSender.sendMessages(type, targets);
+        await MessageSender.sendMessages(type, from, targets);
 
         await UsersRecentlyContacted.write(targets, reason);
 
-        console.log(`Sent messages to ${targets.length} recipients.`)
+        console.log(`Sent messages to ${targets.length} recipients.`);
 
     }
 
-    public static async exec() {
+    public static async exec(from: FromOpts) {
 
         // FIXME: do user interviews with PAYING customers.
 
-        //await this.sendMessagesForReason('churned', 'churned', 100);
-        await this.sendMessagesForReason('standard', 'recent');
-        await this.sendMessagesForReason('standard', 'veteran');
+        // await this.sendMessagesForReason('churned', 'churned', 100);
+        await this.sendMessagesForReason('standard', from, 'recent');
+        await this.sendMessagesForReason('standard', from, 'veteran');
 
-        console.log("SENT!!!")
+        console.log("SENT!!!");
 
     }
 

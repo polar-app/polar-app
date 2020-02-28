@@ -5,6 +5,23 @@ import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import * as admin from 'firebase-admin';
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 
+export interface FromOpts {
+    readonly email: string;
+    readonly firstName: string;
+    readonly calendarLink: string;
+}
+
+export interface ToOpts {
+    readonly firstName: string;
+}
+
+interface MessageOpts {
+
+    readonly from: FromOpts;
+    readonly to: ToOpts;
+
+}
+
 function createEmailLink(email: string, subject: string, body: string) {
 
     const params = {
@@ -57,11 +74,13 @@ function computeFirstName(user: admin.auth.UserRecord) {
 
 }
 
-function computeMailBody(firstName: string) {
+function computeMailBody(opts: MessageOpts) {
 
-    return `Hey ${firstName},
+    // https://calendly.com/kevinburton415/polar-meeting
 
-I'm Kevin, the author of Polar..  
+    return `Hey ${opts.to.firstName},
+
+I'm ${opts.from.firstName}, one of the founders of Polar..  
 
 I need a favor! Could I interview you about how you use Polar and your use case?
 
@@ -71,7 +90,7 @@ This feedback *really* helps me prioritize important features.
 
 My calendar link is here:
 
-https://calendly.com/kevinburton415/polar-meeting
+${opts.from.calendarLink}
 
  and you can just pick a time directly and send you a confirmation!  I picked a 
  30 minute window in case it runs over but it's usually about 15 minutes.
@@ -80,7 +99,7 @@ https://calendly.com/kevinburton415/polar-meeting
 
 Thanks!
 
-Kevin
+${opts.from.firstName}
 
 `;
 
@@ -90,7 +109,7 @@ function computeMailSubject(firstName: string ) {
     return`Hey ${firstName}, can I interview you about Polar?`;
 }
 
-function handleUsers(users: admin.auth.UserRecord[]) {
+function handleUsers(users: admin.auth.UserRecord[], messageOpts: MessageOpts) {
 
     for (const user of users) {
 
@@ -101,9 +120,9 @@ function handleUsers(users: admin.auth.UserRecord[]) {
             const firstName = computeFirstName(user);
 
             const subject = computeMailSubject(firstName);
-            const body = computeMailBody(firstName);
+            const body = computeMailBody(messageOpts);
 
-            const emailLink = createEmailLink(user.email!, subject, body)
+            const emailLink = createEmailLink(user.email!, subject, body);
 
             console.log(`HIT: ${userType}: ${user.email}: ${emailLink}`);
         }
@@ -114,8 +133,7 @@ function handleUsers(users: admin.auth.UserRecord[]) {
 
 // FIXME: write a table of users into Firebase so I don't send duplicate invites to the same user!!!
 
-
-async function exec() {
+async function exec(messageOpts: MessageOpts) {
 
     const app = FirebaseAdmin.app();
     const auth = app.auth();
@@ -128,7 +146,7 @@ async function exec() {
         const listUsersResult = await auth.listUsers(1000, nextPageToken);
         console.log("Fetching batch of users...done");
 
-        handleUsers(listUsersResult.users);
+        handleUsers(listUsersResult.users, messageOpts);
 
         if (listUsersResult.pageToken) {
             nextPageToken = listUsersResult.pageToken;
@@ -140,5 +158,5 @@ async function exec() {
 
 }
 
-exec()
-    .catch(err => console.error(err));
+// exec()
+//     .catch(err => console.error(err));

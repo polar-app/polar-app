@@ -1,28 +1,47 @@
 import * as admin from "firebase-admin";
 
+export interface FromOpts {
+    readonly email: string;
+    readonly firstName: string;
+    readonly calendarLink: string;
+}
+
+export interface ToOpts {
+    readonly firstName: string;
+}
+
+interface MessageOpts {
+
+    readonly from: FromOpts;
+    readonly to: ToOpts;
+
+}
+
 export type UserMessageType = 'standard' | 'churned';
 
 export class UserInterviewMessages {
 
-    public static compute(type: UserMessageType, user: admin.auth.UserRecord) {
+    public static compute(type: UserMessageType,
+                          user: admin.auth.UserRecord,
+                          from: FromOpts) {
 
-        switch(type) {
+        switch (type) {
 
             case "standard":
-                return this.computeStandard(user);
+                return this.computeStandard(user, from);
             case "churned":
-                return this.computeChurned(user);
+                return this.computeChurned(user, from);
 
         }
 
     }
 
-    public static computeStandard(user: admin.auth.UserRecord): UserInterviewMessage {
-        return new StandardUserInterviewMessageFactory(UserMetas.create(user)).create();
+    public static computeStandard(user: admin.auth.UserRecord, from: FromOpts): UserInterviewMessage {
+        return new StandardUserInterviewMessageFactory(UserMetas.create(user, from)).create();
     }
 
-    public static computeChurned(user: admin.auth.UserRecord): UserInterviewMessage {
-        return new ChurnedUserInterviewMessageFactory(UserMetas.create(user)).create();
+    public static computeChurned(user: admin.auth.UserRecord, from: FromOpts): UserInterviewMessage {
+        return new ChurnedUserInterviewMessageFactory(UserMetas.create(user, from)).create();
     }
 
 }
@@ -35,7 +54,7 @@ export interface UserInterviewMessageFactory {
 
 export class StandardUserInterviewMessageFactory implements UserInterviewMessageFactory {
 
-    constructor(private readonly userMeta: UserMeta) {
+    constructor(private readonly messageOpts: MessageOpts) {
 
     }
 
@@ -47,11 +66,9 @@ export class StandardUserInterviewMessageFactory implements UserInterviewMessage
 
     private computeMailBody() {
 
-        const {firstName} = this.userMeta;
+        return `Hey ${this.messageOpts.to.firstName},
 
-        return `Hey ${firstName},
-
-I'm Kevin, the author of Polar..  
+I'm ${this.messageOpts.from.firstName}, one of the co-founders of Polar..  
 
 I need a favor! Could I interview you about how you use Polar?
 
@@ -61,7 +78,7 @@ This feedback *really* helps me prioritize important features.
 
 My calendar link is here:
 
-https://calendly.com/kevinburton415/polar-meeting
+${this.messageOpts.from.calendarLink}
 
 ... and you can just pick a time directly and send you a confirmation!  I picked a 
 30 minute window in case it runs over but it's usually about 15 minutes.
@@ -76,14 +93,14 @@ It's not the same but either way we I appreciate the feedback!
 
 Thanks!
 
-Kevin
+${this.messageOpts.from.firstName}
 
 `;
 
     }
 
     private computeMailSubject() {
-        const {firstName} = this.userMeta;
+        const {firstName} = this.messageOpts.to;
         return`Hey ${firstName}, can I interview you about Polar?`;
     }
 
@@ -91,7 +108,7 @@ Kevin
 
 export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageFactory {
 
-    constructor(private readonly userMeta: UserMeta) {
+    constructor(private readonly messageOpts: MessageOpts) {
 
     }
 
@@ -103,11 +120,9 @@ export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageF
 
     private computeMailBody() {
 
-        const {firstName} = this.userMeta;
+        return `Hey ${this.messageOpts.to.firstName},
 
-        return `Hey ${firstName},
-
-I'm Kevin, the author of Polar and I need your help.  
+I'm ${this.messageOpts.from.firstName}, the author of Polar and I need your help.  
 
 It looks like you tried Polar but didn't continue to use the product.
 
@@ -119,14 +134,14 @@ https://kevinburton1.typeform.com/to/O6RAXf
 
 Thanks!
 
-Kevin
+${this.messageOpts.from.firstName}
 
 `;
 
     }
 
     private computeMailSubject() {
-        const {firstName} = this.userMeta;
+        const {firstName} = this.messageOpts.to;
         return`Hey ${firstName}, can I interview you about Polar?`;
     }
 
@@ -143,9 +158,12 @@ export interface UserMeta {
 
 export class UserMetas {
 
-    public static create(user: admin.auth.UserRecord) {
+    public static create(user: admin.auth.UserRecord, from: FromOpts): MessageOpts {
         const firstName = this.computeFirstName(user);
-        return {firstName};
+        return {
+            to: {firstName},
+            from
+        };
     }
 
     private static computeFirstName(user: admin.auth.UserRecord) {
