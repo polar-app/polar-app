@@ -4,6 +4,9 @@ import {Model} from "../../model/Model";
 import ePub from 'epubjs';
 import { Logger } from "polar-shared/src/logger/Logger";
 import Section from "epubjs/types/section";
+import {DocFileResolvers} from "../../datastore/DocFileResolvers";
+import {DocMetaFileRefs} from "../../datastore/DocMetaRef";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 const log = Logger.create();
 
@@ -18,16 +21,32 @@ export class EPUBViewer extends Viewer {
 
         // TODO: get the document details
 
+        // TODO: I think the epub DOES have a ID I can run with... and it's
+        // based on the URL of the 'epub'...
+
         return {
             fingerprint: '12345'
         };
+
     }
 
     public start(): void {
+
         console.log("Starting the epub viewer");
 
-        const book = ePub("file:///Users/burton/Downloads/pg61335-images.epub");
-        // const book = ePub("file:///Users/burton/Downloads/package.opf");
+        const getURL = () => {
+            // const docMeta = this.model.docMeta;
+            // const persistenceLayer = this.model.persistenceLayerProvider();
+            // const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
+            // const docFileMeta = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile!);
+            //
+            // return docFileMeta.url;
+
+            return "file:///Users/burton/Downloads/pg61335-images.epub";
+
+        };
+
+        const book = ePub(getURL());
 
         const pageElement = document.querySelector(".page")!;
 
@@ -36,6 +55,8 @@ export class EPUBViewer extends Viewer {
         const rendition = book.renderTo(pageElement, { flow: "scrolled-doc", width: '100%', height: '100%'});
 
         const handle = async () => {
+
+            // TODO how do I jump to the spine items
             await rendition.display();
             await rendition.next();
 
@@ -69,12 +90,15 @@ export class EPUBViewer extends Viewer {
 
             console.log("loaded: ", loaded);
 
-            // FIXME: spine actually has spineList above ...
+            // spineItems.length would be the number of pages.
+
+            // TODO: the sections map to pages in polar.  We can jump to each
+            // 'page' by jumping to a section.  
+            await rendition.display(1);
 
             const titles = extendedSpine.spineItems.map(current => current.document.title);
 
             console.log("titles: ", titles);
-
 
         };
 

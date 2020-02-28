@@ -1,30 +1,33 @@
-import {PersistenceLayer, PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
+import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PDFMetadata} from 'polar-pdf/src/pdf/PDFMetadata';
-import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
-import {DocInfo} from '../../../metadata/DocInfo';
-import {HashAlgorithm, Hashcode, HashEncoding} from 'polar-shared/src/metadata/Hashcode';
-import {IProvider} from 'polar-shared/src/util/Providers';
-import {BinaryFileData} from '../../../datastore/Datastore';
-import {BackendFileRefData} from '../../../datastore/Datastore';
+import {
+    HashAlgorithm,
+    Hashcode,
+    HashEncoding
+} from 'polar-shared/src/metadata/Hashcode';
+import {BackendFileRefData, BinaryFileData} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {AppRuntime} from '../../../AppRuntime';
 
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
-import {Datastores} from '../../../datastore/Datastores';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
+import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {DocFormatName} from "../../../docformat/DocFormat";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {EPUBMetadata} from "../../../../../../polar-app-public/polar-epub/src/EPUBMetadata";
 
 const log = Logger.create();
 
@@ -96,10 +99,27 @@ export class PDFImporter {
      *                 path information.  This is needed because blob URLs might
      *                 not actually have the full metadata we need that the
      *                 original input URL has given us.
+     * @param opts The PDF importer options.
      */
     public async importFile(docPath: string,
                             basename: string,
                             opts: PDFImportOpts = {}): Promise<Optional<ImportedFile>> {
+
+        const toDocType = () => {
+
+            if (basename.toLowerCase().endsWith(".epub")) {
+                return 'epub';
+            }
+
+            if (basename.toLowerCase().endsWith(".pdf")) {
+                return 'pdf';
+            }
+
+            throw new Error("Unable to determine type from basename: " + basename);
+
+        };
+
+        const docType = toDocType();
 
         docPath = await this.prefetch(docPath, basename);
 
@@ -122,15 +142,15 @@ export class PDFImporter {
 
         }
 
-        const pdfMeta = opts.pdfMeta || await PDFMetadata.getMetadata(docPath);
+        const rawMeta = opts.parsedDocMeta || await ParsedDocMetas.getMetadata(docPath, docType);
 
         const persistenceLayer = this.persistenceLayerProvider();
 
-        if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
+        if (await persistenceLayer.contains(rawMeta.fingerprint)) {
 
-            log.warn(`File already present in datastore: fingerprint=${pdfMeta.fingerprint}: ${docPath}`);
+            log.warn(`File already present in datastore: fingerprint=${rawMeta.fingerprint}: ${docPath}`);
 
-            const docMeta = await persistenceLayer.getDocMeta(pdfMeta.fingerprint);
+            const docMeta = await persistenceLayer.getDocMeta(rawMeta.fingerprint);
 
             if (docMeta) {
 
@@ -177,8 +197,8 @@ export class PDFImporter {
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
-        // always read from a stream here as some of the PDFs we might want to
-        // import could be rather large.  Also this needs to be a COPY of the
+        // always read from a stream here as some of the documents we might want
+        // to import could be rather large.  Also this needs to be a COPY of the
         // data, not a symlink since that's not really portable and it would
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
@@ -199,13 +219,13 @@ export class PDFImporter {
 
         const binaryFileData: BinaryFileData = await toBinaryFileData();
 
-        const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
+        const docMeta = DocMetas.create(rawMeta.fingerprint, rawMeta.nrPages, filename);
 
-        docMeta.docInfo.title = Optional.of(pdfMeta.title)
+        docMeta.docInfo.title = Optional.of(rawMeta.title)
                                         .getOrElse(defaultTitle);
 
-        docMeta.docInfo.description = pdfMeta.description;
-        docMeta.docInfo.doi = pdfMeta.doi;
+        docMeta.docInfo.description = rawMeta.description;
+        docMeta.docInfo.doi = rawMeta.doi;
 
         docMeta.docInfo.hashcode = {
             enc: HashEncoding.BASE58CHECK,
@@ -224,7 +244,7 @@ export class PDFImporter {
             ...fileRef
         };
 
-        await persistenceLayer.write(pdfMeta.fingerprint, docMeta, {writeFile});
+        await persistenceLayer.write(rawMeta.fingerprint, docMeta, {writeFile});
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
@@ -273,6 +293,22 @@ export class PDFImporter {
 
 }
 
+class ParsedDocMetas {
+
+    public static async getMetadata(docPath: string, type: DocFormatName) {
+
+        if (type === 'pdf') {
+            return await PDFMetadata.getMetadata(docPath);
+        } else if (type === 'epub') {
+            return await EPUBMetadata.getMetadata(docPath);
+        }
+
+        throw new Error("Invalid type: " + type);
+
+    }
+
+}
+
 export interface ImportedFile {
 
     /**
@@ -296,6 +332,6 @@ interface FileHashMeta {
 }
 
 interface PDFImportOpts {
-    readonly pdfMeta?: PDFMeta;
+    readonly parsedDocMeta?: IParsedDocMeta;
     readonly docInfo?: Partial<IDocInfo>;
 }

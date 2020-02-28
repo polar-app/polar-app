@@ -39,9 +39,14 @@ export class DocTitleController {
         // bind to keyDown so I can listen for enter to change the title
 
         const inputElement = <HTMLElement> document.querySelector("#set-title input")!;
+
+        if (! inputElement) {
+            return;
+        }
+
         inputElement.addEventListener('keydown', (event: KeyboardEvent) => {
 
-            if( event.key === 'Enter') {
+            if ( event.key === 'Enter') {
                 log.info("Updating document metadata now");
                 this.doUpdateTitle();
                 this.hideTitlePrompt();
