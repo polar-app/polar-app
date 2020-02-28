@@ -1,3 +1,9 @@
+# 2020-02-28
+
+I need to work on the DOM text index algorithm and then port the text overlay 
+code into Polar so it's ready to display the text highlights.
+
+
 # 2020-02-27
 
 Trying to determine where to resume my coding. I think I can have the DOM 
@@ -25,6 +31,10 @@ should port this to JSDOM within Polar so that I can make it work in production.
 - the code here isn't complete or tested yet.  I need to implement more of the 
   core operations like join and search but I think the index is created now.
 
+- the basic DOM text search stuff SHOULD work but I now need to write unit tests
+  for it to verify real world behavior.  I should use JSDOM for this since 
+  this is the easiest way to reliably test this functionality.
+  
 ## EPUB is working
 
 - ... work on this in the background ... it IS rendering to a single page now
@@ -45,6 +55,12 @@ should port this to JSDOM within Polar so that I can make it work in production.
 
 - Do we need to have nrPages and how do we handle that?  each 'chapter' should be 
   a page for now?
+  
+- I finished up the BASIC loader for EPUB including the metadata. Now I have to 
+  work on:
+    - area highlights using the new inline-text layout algorithm
+    - some sort of sidebar for the annotations 
+    - 
 
 # PREHISTORY
 
