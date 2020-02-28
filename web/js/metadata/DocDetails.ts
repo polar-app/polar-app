@@ -1,7 +1,6 @@
 import {DocDetail, UpdatableDocDetails} from './DocDetail';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocInfo} from './DocInfo';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const log = Logger.create();

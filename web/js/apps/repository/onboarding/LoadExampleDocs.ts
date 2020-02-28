@@ -2,28 +2,29 @@ import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ImportedFile, PDFImporter} from '../importers/PDFImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
-import {Providers} from 'polar-shared/src/util/Providers';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {AppRuntime} from '../../../AppRuntime';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
-import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
-import {HashAlgorithm} from 'polar-shared/src/metadata/Hashcode';
-import {HashEncoding} from 'polar-shared/src/metadata/Hashcode';
-import {DocInfo} from '../../../metadata/DocInfo';
-import {Datastores} from '../../../datastore/Datastores';
-import {PDFMeta} from 'polar-pdf/src/pdf/PDFMetadata';
+import {
+    HashAlgorithm,
+    Hashcode,
+    HashEncoding
+} from 'polar-shared/src/metadata/Hashcode';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 
 const log = Logger.create();
 
@@ -286,7 +287,7 @@ export class LoadExampleDocs {
 
             if (AppRuntime.isElectron()) {
 
-                const pdfMeta: PDFMeta = {
+                const pdfMeta: IParsedDocMeta = {
                     fingerprint: opts.fingerprint,
                     nrPages: opts.nrPages,
                     props: {}
@@ -381,7 +382,7 @@ export class LoadExampleDocs {
 
     }
 
-    private async doImport(relativePath: string, pdfMeta: PDFMeta): Promise<Optional<ImportedFile>> {
+    private async doImport(relativePath: string, parsedDocMeta: IParsedDocMeta): Promise<Optional<ImportedFile>> {
 
         const appPath = AppPath.get();
 
@@ -393,7 +394,7 @@ export class LoadExampleDocs {
         const path = FilePaths.join(appPath, relativePath);
         const basename = FilePaths.basename(relativePath);
 
-        return await this.pdfImporter.importFile(path, basename, {pdfMeta});
+        return await this.pdfImporter.importFile(path, basename, {parsedDocMeta});
 
     }
 

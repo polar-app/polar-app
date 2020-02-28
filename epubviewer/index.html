@@ -22,7 +22,6 @@
 
 	<link rel="stylesheet" href="/node_modules/toastr/build/toastr.min.css">
 
-	<link rel="stylesheet" href="./pdfjs-toolbar.css">
 	<link rel="stylesheet" href="/pdfviewer-custom/polar.css">
 
     <meta name="polar-doc-format" content="epub">
@@ -64,7 +63,7 @@
 				console.warn("Not running within Electron");
 			}
 
-		}
+		};
 
 		injectApp('/web/dist/chrome-bundle.js', fallbackLoader);
 
@@ -77,21 +76,6 @@
             z-index: -1;
         }
 
-        body {
-            background-color: #3f3f3f;
-            margin: 0;
-            padding: 0;
-        }
-
-        #viewerContainer {
-            /*margin-top: 75px;*/
-            margin-bottom: 10px;
-        }
-
-        #content-parent {
-            margin: 0 auto;
-        }
-
         iframe {
             display: block;
             /* z-index: -1; */
@@ -99,24 +83,13 @@
             background-color: #ffffff;
         }
 
-        /* CSS borrowed from the pdf.js CSS */
-        #content-parent {
-            border: 9px solid transparent;
-            background-clip: content-box;
-            -o-border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
-            border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
-            background-color: white;
-        }
-
     </style>
 
 </head>
 
-<body class="polar-htmlviewer" style="">
+<body class="polar-epubviewer" style="">
 
-<!-- NOTE: 700px seems the minimum we can constrain to emulate a proper ipad -->
-
-<div class="page"></div>
+	<div class="page"></div>
 
 </body>
 </html>
