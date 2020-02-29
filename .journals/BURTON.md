@@ -11,6 +11,11 @@ code into Polar so it's ready to display the text highlights.
 - I have the new DOM text stuff working... so now I need to figure out how to 
   get the text highlighter to work... 
 
+- the epub viewer is writing to an iframe.  This kind of breaks our viewer 
+  in that:
+    - the annotation highlighter won't work
+    - the DOM text overlay algorithm won't work.
+
 # 2020-02-27
 
 Trying to determine where to resume my coding. I think I can have the DOM 
