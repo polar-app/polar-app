@@ -39,14 +39,13 @@ export interface IProps extends AnnotationBarCallbacks {
 
 export const ControlledAnnotationBar = (props: IProps) => {
 
-
     function dispatchOnHighlighted(highlightColor: HighlightColor) {
 
         const highlightCreatedEvent: HighlightCreatedEvent = {
-            activeSelection: this.props.activeSelection,
+            activeSelection: props.activeSelection,
             highlightColor,
-            pageNum: this.props.pageNum,
-            annotationDescriptor: this.props.annotationDescriptor
+            pageNum: props.pageNum,
+            annotationDescriptor: props.annotationDescriptor
         };
 
         props.onHighlighted(highlightCreatedEvent);
