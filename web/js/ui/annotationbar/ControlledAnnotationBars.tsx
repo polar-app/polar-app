@@ -1,4 +1,4 @@
-import {AnnotationBarCallbacks} from './AnnotationBar';
+import {AnnotationBarCallbacks} from './ControlledAnnotationBar';
 import * as React from 'react';
 import {ActiveSelectionEvent, ActiveSelections} from '../popup/ActiveSelections';
 import {ControlledPopupProps} from '../popup/ControlledPopup';

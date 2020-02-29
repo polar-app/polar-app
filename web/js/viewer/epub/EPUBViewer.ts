@@ -2,11 +2,9 @@ import {Viewer} from "../Viewer";
 import {DocDetail} from "../../metadata/DocDetail";
 import {Model} from "../../model/Model";
 import ePub from 'epubjs';
-import { Logger } from "polar-shared/src/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import Section from "epubjs/types/section";
-import {DocFileResolvers} from "../../datastore/DocFileResolvers";
-import {DocMetaFileRefs} from "../../datastore/DocMetaRef";
-import {Backend} from "polar-shared/src/datastore/Backend";
+import {DocFormatFactory} from "../../docformat/DocFormatFactory";
 
 const log = Logger.create();
 
@@ -24,9 +22,19 @@ export class EPUBViewer extends Viewer {
         // TODO: I think the epub DOES have a ID I can run with... and it's
         // based on the URL of the 'epub'...
 
+        const docMeta = this.model.docMeta;
+
         return {
-            fingerprint: '12345'
+            fingerprint: docMeta.docInfo.fingerprint
         };
+
+    }
+    private dispatchPagesInit() {
+
+        const event = new Event('pagesinit', {bubbles: true});
+
+        // Dispatch the event.
+        document.querySelector(".page")!.dispatchEvent(event);
 
     }
 
@@ -35,6 +43,7 @@ export class EPUBViewer extends Viewer {
         console.log("Starting the epub viewer");
 
         const getURL = () => {
+
             // const docMeta = this.model.docMeta;
             // const persistenceLayer = this.model.persistenceLayerProvider();
             // const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
@@ -50,9 +59,16 @@ export class EPUBViewer extends Viewer {
 
         const pageElement = document.querySelector(".page")!;
 
+        // console.log("FIXME: InlineView: ", InlineView);
+
         // const rendition = book.renderTo(pageElement, { flow: "scrolled-doc"});
         // const rendition = book.renderTo(pageElement, { flow: "continuous", width: '100%', height: '100%'});
-        const rendition = book.renderTo(pageElement, { flow: "scrolled-doc", width: '100%', height: '100%'});
+        const rendition = book.renderTo(pageElement, {
+            flow: "scrolled-doc",
+            width: '100%',
+            height: '100%',
+            // view: InlineView
+        });
 
         const handle = async () => {
 
@@ -99,6 +115,14 @@ export class EPUBViewer extends Viewer {
             const titles = extendedSpine.spineItems.map(current => current.document.title);
 
             console.log("titles: ", titles);
+
+            console.log("FIXME: setting fingerprint");
+
+            const docDetail = this.docDetail();
+            const docFormat = DocFormatFactory.getInstance();
+            docFormat.setCurrentDocFingerprint(docDetail!.fingerprint);
+
+            this.dispatchPagesInit();
 
         };
 

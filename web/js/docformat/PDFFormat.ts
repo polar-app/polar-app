@@ -67,6 +67,10 @@ export class PDFFormat extends DocFormat {
 
     }
 
+    public setCurrentDocFingerprint(fingerprint: string): void {
+        // noop
+    }
+
     /**
      * Get the current state of the doc.
      */

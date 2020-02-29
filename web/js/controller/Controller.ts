@@ -1,7 +1,6 @@
 import {Model} from '../model/Model';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocDetails} from '../metadata/DocDetails';
 import {DocDetail} from '../metadata/DocDetail';
 
 const log = Logger.create();
@@ -14,7 +13,7 @@ export class Controller {
      *
      */
     constructor(model: Model) {
-        this.model = Preconditions.assertNotNull(model, "model");
+        this.model = Preconditions.assertPresent(model, "model");
     }
 
     /**

@@ -2,7 +2,6 @@ import {Splitter} from '../ui/splitter/Splitter';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {AnnotationSidebar} from './AnnotationSidebar';
-import {DocMeta} from '../metadata/DocMeta';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Docs} from '../metadata/Docs';

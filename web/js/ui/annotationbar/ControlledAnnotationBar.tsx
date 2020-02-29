@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ActiveSelection} from '../popup/ActiveSelections';
+import {ActiveSelection, ActiveSelectionType} from '../popup/ActiveSelections';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
@@ -111,3 +111,29 @@ export type OnHighlightedCallback
  * it's either a previously created 'text-highlight' or 'area-highlight
  */
 export type AnnotationBarTargetType = 'range' | 'text-highlight' | 'area-highlight';
+
+export interface AnnotationBarEvent {
+
+    /**
+     * The ActiveSelection in the browser that's being selected by the user.
+     */
+    readonly activeSelection: ActiveSelection;
+
+    readonly type: ActiveSelectionType;
+
+    readonly pageNum: number;
+
+    /**
+     * An optional annotationDescriptor if this is an existing annotation.
+     */
+    readonly annotationDescriptor?: AnnotationDescriptor;
+
+}
+
+export interface CommentTriggerEvent extends AnnotationBarEvent {
+
+}
+
+// TODO: this should be CommentCreatedEvent
+export type OnCommentCallback
+    = (commentTriggerEvent: CommentTriggerEvent) => void;

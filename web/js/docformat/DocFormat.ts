@@ -103,7 +103,7 @@ export abstract class DocFormat {
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
     public abstract currentDocFingerprint(): string | undefined;
-
+    public abstract setCurrentDocFingerprint(fingerprint: string): void;
     /**
      * Get the current state of the doc.
      */
