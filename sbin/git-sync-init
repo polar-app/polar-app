@@ -7,6 +7,8 @@ git-import-no-prefix() {
 
   echo "Adding remote..."
 
+  # TODO: always remove the remote first , then re-add it ...
+
   git remote add -f ${name} ${repo}
   git fetch ${name}
   git merge -s ours --no-commit --allow-unrelated-histories ${name}/master
