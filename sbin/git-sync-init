@@ -7,11 +7,7 @@ git-import-no-prefix() {
 
   echo "Adding remote..."
 
-  if [ "$(git remote | grep ${name})" = "" ]; then
-    echo "Adding git remote ${name}"
-    git remote add -f ${name} ${repo}
-  fi
-
+  git remote add -f ${name} ${repo}
   git fetch ${name}
   git merge -s ours --no-commit --allow-unrelated-histories ${name}/master
   git read-tree -m -u ${name}/master
