@@ -8,6 +8,9 @@ code into Polar so it's ready to display the text highlights.
   and highlight and then we should build a basic UI to perform highlighting 
   directly.   
 
+- I have the new DOM text stuff working... so now I need to figure out how to 
+  get the text highlighter to work... 
+
 # 2020-02-27
 
 Trying to determine where to resume my coding. I think I can have the DOM 
