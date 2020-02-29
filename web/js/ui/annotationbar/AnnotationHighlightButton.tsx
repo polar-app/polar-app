@@ -1,36 +1,7 @@
 import * as React from 'react';
 import {Button} from 'reactstrap';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-
-/**
- */
-export class AnnotationHighlightButton extends React.Component<IProps, IState> {
-
-    constructor(props: any) {
-        super(props);
-    }
-
-    public render() {
-        return (
-            <Button size="lg"
-                    type="button"
-                    color="clear"
-                    className="btn p-1 m-1 annotationbar-btn"
-                    title=""
-                    aria-label=""
-                    onClick={() => this.props.onHighlightedColor(this.props.dispatchColor)}
-                    style={{ }}>
-
-                <span className="fas fa-highlighter"
-                      aria-hidden="true"
-                      style={{ color: this.props.styleColor }}/>
-
-            </Button>
-        );
-
-    }
-
-}
+import {HighlighterSVGIcon} from "../svg_icons/HighlighterSVGIcon";
 
 export interface IProps {
     readonly dispatchColor: HighlightColor;
@@ -38,6 +9,25 @@ export interface IProps {
     readonly onHighlightedColor: (color: HighlightColor) => void;
 }
 
-export interface IState {
-}
+export const AnnotationHighlightButton = (props: IProps) =>
+    <Button size="lg"
+            type="button"
+            color="clear"
+            className=""
+            title=""
+            aria-label=""
+            onClick={() => props.onHighlightedColor(props.dispatchColor)}
+            style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                margin: '2px'
+            }}>
+
+        <span aria-hidden="true"
+              style={{ color: props.styleColor, fontSize: '14px' }}>
+            <HighlighterSVGIcon style={{width: '15px', height: '15px'}}/>
+        </span>
+
+    </Button>;
+
 
