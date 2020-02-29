@@ -6,7 +6,12 @@ git-import-no-prefix() {
   repo=${2}
 
   echo "Adding remote..."
-  git remote add -f ${name} ${repo}
+
+  if [ "$(git remote | grep ${name})" = "" ]; then
+    echo "Adding git remote ${name}"
+    git remote add -f ${name} ${repo}
+  fi
+
   git fetch ${name}
   git merge -s ours --no-commit --allow-unrelated-histories ${name}/master
   git read-tree -m -u ${name}/master
@@ -23,7 +28,6 @@ git-import-main() {
 }
 
 git-import-packages() {
-
 
   for repo in `cat conf/repos.conf`; do
 
