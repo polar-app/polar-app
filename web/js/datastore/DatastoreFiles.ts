@@ -1,4 +1,5 @@
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export class DatastoreFiles {
 
@@ -30,6 +31,7 @@ export class DatastoreFiles {
     }
 
     public static isSanitizedFileName(name: string) {
+        Preconditions.assertPresent(name, "name");
         return name.search(/[/\\:*?\"<>|]/) === -1;
     }
 

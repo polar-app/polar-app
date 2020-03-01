@@ -157,7 +157,7 @@ export class DocDropdownItems extends React.Component<IProps, IState> {
                 </DropdownItem>
 
                 <DropdownItem toggle={this.props.toggle}
-                              hidden={isMulti || ! FeatureToggles.get('developer')}
+                              hidden={isMulti || ! FeatureToggles.get('dev')}
                               onClick={() => this.onCopyText(repoDocInfo.fingerprint, "Document ID copied to clipboard")}>
                     <FontAwesomeIcon name="far fa-clone"/>
                     Copy Document ID
