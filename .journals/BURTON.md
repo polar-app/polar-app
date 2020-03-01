@@ -1,3 +1,12 @@
+# 2020-02-29
+
+- TODO REACH 
+
+- had bad insomnia but worked on 
+
+
+- 
+
 # 2020-02-28
 
 I need to work on the DOM text index algorithm and then port the text overlay 
