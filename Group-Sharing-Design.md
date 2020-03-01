@@ -72,7 +72,5 @@ documents makes sense but I don't think it's very clear when listing the groups.
 We would have to improve that and maybe have a standard 'view' for what a group
 looks like.
 
-## Public / Private Groups
-
 
 
