@@ -1,9 +1,13 @@
-import {AnnotationBarCallbacks} from './ControlledAnnotationBar';
+import {
+    AnnotationBarCallbacks,
+    ControlledAnnotationBar
+} from './ControlledAnnotationBar';
 import * as React from 'react';
-import {ActiveSelectionEvent, ActiveSelections} from '../popup/ActiveSelections';
+import {
+    ActiveSelectionEvent,
+    ActiveSelections
+} from '../popup/ActiveSelections';
 import {ControlledPopupProps} from '../popup/ControlledPopup';
-import {ControlledAnnotationBar} from './ControlledAnnotationBar';
-import {Elements} from '../../util/Elements';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import * as ReactDOM from 'react-dom';
 import {Point} from '../../Point';
@@ -11,8 +15,14 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Points} from '../../Points';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
+import {Reducers} from "polar-shared/src/util/Reducers";
+import {Elements} from "../../util/Elements";
 
 const log = Logger.create();
+
+export interface RegisterOpts {
+    readonly mode: 'viewer' | 'web';
+}
 
 export class ControlledAnnotationBars {
 
@@ -23,50 +33,119 @@ export class ControlledAnnotationBars {
 
     }
 
-    private static registerEventListener(annotationBarCallbacks: AnnotationBarCallbacks) {
+    private static registerEventListener(annotationBarCallbacks: AnnotationBarCallbacks,
+                                         opts: RegisterOpts = {mode: 'viewer'}) {
 
-        const target = document.getElementById("viewerContainer")!;
+        const handleTarget = (target: HTMLElement) => {
 
-        let annotationBar: HTMLElement | undefined;
+            let annotationBar: HTMLElement | undefined;
 
-        ActiveSelections.addEventListener(activeSelectionEvent => {
-
-            const pageElement = Elements.untilRoot(activeSelectionEvent.element, ".page");
-
-            if (! pageElement) {
-                log.warn("Not found within .page element");
-                return;
+            interface AnnotationPageInfo {
+                readonly pageNum: number;
+                readonly pageElement: HTMLElement;
             }
 
-            const pageNum = parseInt(pageElement.getAttribute("data-page-number"), 10);
+            ActiveSelections.addEventListener(activeSelectionEvent => {
 
-            switch (activeSelectionEvent.type) {
+                const computeAnnotationPageInfo = (): AnnotationPageInfo | undefined => {
 
-                case 'created':
+                    const computeForViewer = (): AnnotationPageInfo | undefined => {
 
-                    annotationBar = this.createAnnotationBar(pageNum,
-                                                             pageElement,
-                                                             annotationBarCallbacks,
-                                                             activeSelectionEvent);
+                        const pageElement = Elements.untilRoot(activeSelectionEvent.element, ".page");
 
-                    break;
+                        if (! pageElement) {
+                            log.warn("Not found within .page element");
+                            return undefined;
+                        }
 
-                case 'destroyed':
+                        const pageNum = parseInt(pageElement.getAttribute("data-page-number"), 10);
 
-                    if (annotationBar) {
-                        this.destroyAnnotationBar(annotationBar);
+                        return {pageElement, pageNum};
+
+                    };
+
+                    const computeForWeb = (): AnnotationPageInfo | undefined => {
+                        return {pageElement: target, pageNum: 1};
+                    };
+
+                    switch (opts.mode) {
+                        case "viewer":
+                            return computeForViewer();
+
+                        case "web":
+                            return computeForWeb();
                     }
 
-                    break;
+                };
 
-            }
+                const annotationPageInfo = computeAnnotationPageInfo();
 
-            if (activeSelectionEvent.type === 'destroyed') {
-                // only created supported for now.
-                return;
-            }
+                if (! annotationPageInfo) {
+                    return;
+                }
 
-        }, target);
+                switch (activeSelectionEvent.type) {
+
+                    case 'created':
+
+                        annotationBar = this.createAnnotationBar(annotationPageInfo.pageNum,
+                                                                 annotationPageInfo.pageElement,
+                                                                 annotationBarCallbacks,
+                                                                 activeSelectionEvent);
+
+                        break;
+
+                    case 'destroyed':
+
+                        if (annotationBar) {
+                            this.destroyAnnotationBar(annotationBar);
+                        }
+
+                        break;
+
+                }
+
+                if (activeSelectionEvent.type === 'destroyed') {
+                    // only created supported for now.
+                    return;
+                }
+
+            }, target);
+        };
+
+        const computeTargets = (): ReadonlyArray<HTMLElement> => {
+
+            const computeTargetsForLegacyViewer = (): ReadonlyArray<HTMLElement> => {
+                const target = document.getElementById("viewerContainer")!;
+                return [target];
+            };
+
+            const computeTargetsForWebViewer = (): ReadonlyArray<HTMLElement> => {
+
+                const computeDocumentElements = (main: HTMLElement): ReadonlyArray<HTMLElement> => {
+
+                    const iframes = Array.from(main.querySelectorAll("iframe"))
+                        .map(iframe => iframe.contentDocument)
+                        .filter(contentDocument => contentDocument !== null)
+                        .map(contentDocument => contentDocument!)
+                        .map(contentDocument => contentDocument.documentElement)
+                        .map(documentElement => computeDocumentElements(documentElement))
+                        .reduce(Reducers.FLAT, []);
+
+                    return [main, ...iframes];
+
+                };
+
+                return computeDocumentElements(document.documentElement);
+
+            };
+
+            return computeTargetsForWebViewer();
+
+        };
+
+        // now handle all our targets (including iframes if necessary)
+        computeTargets().forEach(target => handleTarget(target));
 
     }
 
