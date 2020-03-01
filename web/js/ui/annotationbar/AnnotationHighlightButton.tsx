@@ -20,7 +20,8 @@ export const AnnotationHighlightButton = (props: IProps) =>
             style={{
                 backgroundColor: 'transparent',
                 border: 'none',
-                margin: '2px'
+                margin: '0',
+                padding: '5px'
             }}>
 
         <span aria-hidden="true"

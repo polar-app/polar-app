@@ -11,10 +11,11 @@ const Styles: IStyleMap = {
     bar: {
         backgroundColor: '#333333',
         fontSize: '14px',
-        padding: '8px',
-        paddingLeft: '15px',
-        paddingRight: '15px',
-        borderRadius: '5px'
+        padding: '0',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        paddingBottom: '2px',
+        borderRadius: '3px'
     }
 
 };
