@@ -5,6 +5,9 @@ import ePub from 'epubjs';
 import {Logger} from "polar-shared/src/logger/Logger";
 import Section from "epubjs/types/section";
 import {DocFormatFactory} from "../../docformat/DocFormatFactory";
+import {Backend} from "polar-shared/src/datastore/Backend";
+import {DocMetaFileRefs} from "../../datastore/DocMetaRef";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -44,14 +47,20 @@ export class EPUBViewer extends Viewer {
 
         const getURL = () => {
 
-            // const docMeta = this.model.docMeta;
-            // const persistenceLayer = this.model.persistenceLayerProvider();
-            // const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
-            // const docFileMeta = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile!);
-            //
-            // return docFileMeta.url;
+            const docMeta = this.model.docMeta;
+            const persistenceLayer = this.model.persistenceLayerProvider();
+            const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 
-            return "file:///Users/burton/Downloads/pg61335-images.epub";
+            console.log("FIXME: docMetaFileRef: ", docMetaFileRef);
+
+            Preconditions.assertPresent(docMetaFileRef.docFile, 'docFile');
+            Preconditions.assertPresent(docMetaFileRef.docFile!.name, 'docFile.name');
+
+            const docFileMeta = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile!);
+
+            return docFileMeta.url;
+
+            // return "file:///Users/burton/Downloads/pg61335-images.epub";
 
         };
 

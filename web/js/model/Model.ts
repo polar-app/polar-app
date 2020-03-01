@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Reactor} from '../reactor/Reactor';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
