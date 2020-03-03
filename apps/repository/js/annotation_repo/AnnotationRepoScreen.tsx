@@ -354,6 +354,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         };
 
         const onUpdated: UpdatedCallback<IDocAnnotation> = (repoAnnotations: ReadonlyArray<IDocAnnotation>) => {
+
             const state = {...this.state, data: repoAnnotations};
             setStateInBackground(state);
         };
@@ -379,12 +380,16 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
             this.releaser.register(
-                persistenceLayer.addEventListener(() => doRefresh()));
+                persistenceLayer.addEventListener((event) => {
+                    doRefresh();
+                }));
 
         });
 
         this.releaser.register(
-            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => doRefresh()));
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => {
+                doRefresh();
+            }));
 
         // do an initial refresh to get the first batch of data.
         doRefresh();

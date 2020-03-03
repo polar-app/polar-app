@@ -7,6 +7,14 @@ import {FastComponent} from '../../../../web/js/react/FastComponent';
 import {RepoHighlightInfo} from "../RepoAnnotation";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
+interface IProps {
+    readonly id: string;
+    readonly text?: string;
+    readonly img?: Img;
+    readonly created: ISODateTimeString;
+    readonly color: HighlightColor | undefined;
+}
+
 const Body = (props: IProps) => {
 
     const {text, img} = props;
@@ -45,32 +53,9 @@ const Body = (props: IProps) => {
 
 };
 
-export class AnnotationPreview extends FastComponent<IProps> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.state = {};
-
-    }
-
-    public render() {
-
-        return <div id={this.props.id}>
-
-            <Body {...this.props}/>
-
-            <DateTimeTableCell datetime={this.props.created} className="text-muted text-xs"/>
-
-        </div>;
-
-    }
-
-}
-interface IProps {
-    readonly id: string;
-    readonly text?: string;
-    readonly img?: Img;
-    readonly created: ISODateTimeString;
-    readonly color: HighlightColor | undefined;
-}
+export const AnnotationPreview = (props: IProps) => (
+    <div id={props.id}>
+        <Body {...props}/>
+        <DateTimeTableCell datetime={props.created} className="text-muted text-xs"/>
+    </div>
+)
