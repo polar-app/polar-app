@@ -332,6 +332,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.onUpdatedTags = this.onUpdatedTags.bind(this);
         this.startReview = this.startReview.bind(this);
         this.createReviewer = this.createReviewer.bind(this);
+        this.setStateInBackground = this.setStateInBackground.bind(this);
 
         this.state = {
             data: [],
@@ -341,22 +342,11 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
         this.treeState = new TreeState(onSelected);
 
-        const setStateInBackground = (state: IState) => {
-
-            setTimeout(() => {
-
-                // The react table will not update when I change the state from
-                // within the event listener
-                this.setState(state);
-
-            }, 1);
-
-        };
-
         const onUpdated: UpdatedCallback<IDocAnnotation> = (repoAnnotations: ReadonlyArray<IDocAnnotation>) => {
 
             const state = {...this.state, data: repoAnnotations};
-            setStateInBackground(state);
+            this.setStateInBackground(state);
+
         };
 
         const repoAnnotationsProvider: () => ReadonlyArray<IDocAnnotation> =
@@ -404,7 +394,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
             persistenceLayerMutator: this.persistenceLayerMutator,
             treeState: this.treeState,
             filtersHandler: this.filtersHandler,
-            onSelected: (repoAnnotation) => this.setState({...this.state, repoAnnotation}),
+            onSelected: (repoAnnotation) => this.setStateInBackground({...this.state, repoAnnotation}),
             onStartReview: (mode) => this.startReview(mode),
             onCreateReviewer: (mode) => this.createReviewer(mode)
 
@@ -413,6 +403,27 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         return <DeviceRouter desktop={<screen.Desktop {...props}/>}
                              phone={<screen.PhoneAndTablet {...props}/>}
                              tablet={<screen.PhoneAndTablet {...props}/>}/>;
+
+    }
+
+    private setStateInBackground(state: IState) {
+
+        setTimeout(() => {
+
+            // check if we still have the repoAnnotation in case it's deleted
+            const repoAnnotation = state.repoAnnotation ?
+                this.props.repoDocMetaManager.repoDocAnnotationIndex.get(state.repoAnnotation.id) : undefined;
+
+            state = {
+                ...state,
+                repoAnnotation
+            };
+
+            // The react table will not update when I change the state from
+            // within the event listener
+            this.setState(state);
+
+        }, 1);
 
     }
 
