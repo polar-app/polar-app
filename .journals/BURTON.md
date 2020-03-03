@@ -1,11 +1,28 @@
+# 2020-03-02
+
+new metadata.mutations package in polar-shared including:
+
+- CommentMutations
+- FlashcardMutations 
+
+which should allow us to delete and update flashcards by just the flashcard 
+and the docMeta so that we can easily update in the UI and commit back to 
+the datastore.  
+
+# 2020-03-01
+
+I'm going to build a new framework to give us an annotation bar that's isolated
+from the main code.  This way I can dock it into the chrome extension and then 
+have web annotation, a basic sidebar (as a new component), and a new pagemark
+system for keeping track of your reading.
+
 # 2020-02-29
 
-- TODO REACH 
+- had bad insomnia but worked on the annotation viewer.  There is a bad bug
+where the annotation bar comes up in the wrong place because the selection
+bounding client rect is wrong.  It's a race condition that goes away after 300ms.
+I might want to just ignore it though.  
 
-- had bad insomnia but worked on 
-
-
-- 
 
 # 2020-02-28
 
