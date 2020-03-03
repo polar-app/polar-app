@@ -4,10 +4,15 @@ new metadata.mutations package in polar-shared including:
 
 - CommentMutations
 - FlashcardMutations 
+... and other mutation objects too.
 
 which should allow us to delete and update flashcards by just the flashcard 
 and the docMeta so that we can easily update in the UI and commit back to 
 the datastore.  
+
+... I need these for area, text, comment and flashcards and I think I just have 
+to get them to work properly with the web + cloud datastores so that the UI 
+updates in the local datastore.
 
 # 2020-03-01
 
