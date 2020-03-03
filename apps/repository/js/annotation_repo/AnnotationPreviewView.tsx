@@ -11,6 +11,11 @@ import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {Button} from "reactstrap";
+import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
+import {DeleteIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
+import Moment from "react-moment";
+import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 
 const log = Logger.create();
 
@@ -38,6 +43,9 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onDelete = this.onDelete.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
+
         this.synchronizingDocLoader = new SynchronizingDocLoader(() => this.props.persistenceLayerManager.get());
 
         this.state = {
@@ -57,6 +65,49 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                 <div className="pl-2 pr-2 pt-1 pb-1">
 
+                    <div style={{display: 'flex'}} className="mb-1">
+
+                        <div className="mt-auto mb-auto"
+                             style={{flexGrow: 1}}>
+
+                            <div style={{display: 'flex'}}>
+
+                                <Moment withTitle={true}
+                                        titleFormat="D MMM YYYY hh:MM A"
+                                        format="MMM DD YYYY HH:mm A"
+                                        filter={(value) => value.replace(/^an? /g, '1 ')}>
+                                    {repoAnnotation.created}
+                                </Moment>
+
+                                <div className="text-secondary pl-1">
+
+                                    (
+
+                                    <Moment withTitle={true}
+                                            titleFormat="D MMM YYYY hh:MM A"
+                                            fromNow>
+                                        {repoAnnotation.created}
+                                    </Moment>
+
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div className="mt-auto mb-auto">
+                            <Button size="md"
+                                    color="clear"
+                                    className="m-0 p-0"
+                                    onClick={() => this.onDelete()}>
+                                <DeleteIcon/>
+                            </Button>
+                        </div>
+
+                    </div>
+
                     <div style={{display: 'flex'}}>
 
                         <div style={{flexGrow: 1, verticalAlign: 'top'}}>
@@ -72,8 +123,6 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                         </div>
 
                     </div>
-
-
 
                     <div style={Styles.annotationText}>
                         {repoAnnotation.text}
@@ -99,6 +148,46 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
             );
 
         }
+
+    }
+
+    private onDelete() {
+
+        if (! this.props.repoAnnotation) {
+            log.warn("no repoAnnotation");
+            return;
+        }
+
+        const {docMeta, annotationType, original} = this.props.repoAnnotation;
+
+        const onConfirm = () => {
+
+            AnnotationMutations.delete(docMeta, annotationType, original);
+
+            this.props.persistenceLayerManager.get()
+                .writeDocMeta(docMeta)
+                .catch(err => log.error(err));
+
+        };
+
+        Dialogs.confirm({
+            title: "Are you sure you want to delete this item? ",
+            subtitle: "This is a permanent operation and can't be undone. ",
+            type: "danger",
+            onConfirm: ()  => onConfirm()
+        });
+
+    }
+
+    private onUpdate() {
+
+        if (! this.props.repoAnnotation) {
+            return;
+        }
+
+        const {docMeta, annotationType, original} = this.props.repoAnnotation;
+
+        AnnotationMutations.update(docMeta, annotationType, original);
 
     }
 
