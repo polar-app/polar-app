@@ -1,6 +1,4 @@
-import {DocInfo} from './DocInfo';
 import {DatastorePermission} from '../datastore/Datastore';
-import {DocMeta} from './DocMeta';
 import {ObjectID} from '../util/ObjectIDs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
