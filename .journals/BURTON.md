@@ -1,3 +1,30 @@
+
+# 2020-03-03 
+
+- worked on revamping the annotation viewer so we can have full record
+  manipulation within the viewer.  I can DELETE now and properly update the UI
+  but I have to continue working on full manipulation like we have in the 
+  sidebar.
+  
+  - The main issue I have is that we're using IDocAnnotation and not
+    DocAnnotation and I need to have children and other methods supported.
+
+  - one of the MAIN things I need now is the tag manager...
+   
+    - We have SharedDocTags and SharedAnnotationTags BUT I have to handle 
+      deletes properly in the UI but that's really not THAT hard to do.  
+      
+      - I just have to sit down and figure out EVERY place I create/delete tags
+        and make sure we have a coherent backing.
+ 
+- We have the following half implemented features that we should probably resume
+  work on:
+  
+    - cloze deletions do not work right now in polar???   
+        - create new account, with just one doc, and one cloze, and then test it
+        - 
+        
+
 # 2020-03-02
 
 new metadata.mutations package in polar-shared including:
