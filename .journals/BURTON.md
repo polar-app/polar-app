@@ -1,4 +1,28 @@
 
+# 2020-03-04
+
+## TagDB design
+
+- getTagDB method in PersistenceLayer which is updated for every doc write via
+  DefaultPersistenceLayer 
+  
+    - I forget where the main tags are kept now when the user creates one manually.   
+
+    - If I can unify these easily I think the whole system would work.
+    
+    - We will ALSO have to do it when reading snapshots as new tags could be 
+      present which need to be updated because the *local* machine could be 
+      out of sync with the cloud.  
+      
+      - if this whole system executes in a few ms it won't matter from a 
+        performance standpoint. 
+        
+        - I think the existing system is done via PREFS for our tags.  
+        
+        - I think I can put this into the init() method and add a snapshot listener
+          and it would be updated on loading the docMetas and when writing them 
+          too...  
+
 # 2020-03-03 
 
 - worked on revamping the annotation viewer so we can have full record
