@@ -19,6 +19,8 @@ to look at something else.
 - We should consider supporting / migrating to Markdown + Latex and *maybe* 
   WYSIWYG editor but I think markdown might be better.
 
+- We should be able to have cloze deletions in the Latex like we have in Anki.
+
 - The serialization of the output needs to have support for identifying what 
   part of the HTML / markdown / content is in Latex so that it's not just a 
   "blob" of HTML.
