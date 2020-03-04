@@ -57,6 +57,7 @@ import {Toaster} from "../../js/ui/toaster/Toaster";
 import {FakePagemark} from "./FakePagemark";
 import {AddContentButtonOverlay, devices} from "../../js/apps/viewer/AddContentButtonOverlay";
 import {NewToasts} from "./NewToasts";
+import {ReviewerDemo} from "./ReviewerDemo";
 
 const styles = {
     swatch: {
@@ -336,14 +337,16 @@ export class App<P> extends React.Component<{}, IAppState> {
 
 
         // const DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta)
-
-        // ReviewerTasks.createFlashcardTasks()
+        //
+        // ReviewerTasks.createFlashcardTasks();
 
         return (
 
             <div>
 
-                <NewToasts/>
+                <ReviewerDemo/>
+
+                {/*<NewToasts/>*/}
 
                 {/*<FakePagemark/>*/}
 

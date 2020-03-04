@@ -10,6 +10,7 @@ import {
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 import { Version } from 'polar-shared/src/util/Version';
+import {Analytics} from "../../web/js/analytics/Analytics";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -145,6 +146,8 @@ async function doLoad2() {
     await FirestoreCollections.configure();
 
     AnalyticsInitializer.doInit();
+
+    Analytics.event2('screen:doc-preview');
 
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
