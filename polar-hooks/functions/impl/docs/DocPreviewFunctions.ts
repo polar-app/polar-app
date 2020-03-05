@@ -2,10 +2,27 @@ import * as functions from "firebase-functions";
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
 import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
 import {ExpressRequests} from "../util/ExpressRequests";
-import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {
+    DocPreviewURL,
+    DocPreviewURLs,
+} from "polar-webapp-links/src/docs/DocPreviewURLs";
+import {
+    DocPreviewCached,
+    DocPreviews, DocPreviewUncached
+} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
+import {Slugs} from "polar-shared/src/util/Slugs";
 
+/**
+ * This function takes a document via HTTP POST, performs an analysis on it, then
+ * indexes its metadata using various APIs, then writes it to the index so that
+ * we have the correct metadata we need.
+ *
+ * TODO:
+ *
+ * - the metadata we have from fatcat and unpaywall doesn't have a summary
+ * - pubmed DOES have extended metadata but not everything has a pmid
+ */
 export const DocPreviewFunction = functions.https.onRequest(async (req, res) => {
 
     // TODO: accept a POST here with the data int the body with the proper mine type
@@ -30,51 +47,51 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
     console.log("Imported doc to: " + JSON.stringify(importedDoc, null, "   "));
 
-    const updateDocPreviewCache = async () => {
+    if (docPreview) {
 
-        if (! docPreview) {
-            // this is a raw URL
-            return;
-        }
+        const slug = docPreview.title ? Slugs.calculate(docPreview.title) : undefined;
 
-        if (docPreview.cached) {
-            // already cached.
-            return;
-        }
+        const updateDocPreviewCache = async (docPreview: DocPreviewCached | DocPreviewUncached) => {
 
-        console.log("Updating doc_preview cache");
+            if (docPreview.cached) {
+                // already cached.
+                return;
+            }
 
-        await DocPreviews.set({
-            ...docPreview,
-            docHash: importedDoc.hashcode,
-            cached: true,
-            datastoreURL: importedDoc.storageURL,
+            console.log("Updating doc_preview cache");
+
+            await DocPreviews.set({
+                ...docPreview,
+                docHash: importedDoc.hashcode,
+                cached: true,
+                datastoreURL: importedDoc.storageURL,
+                slug
+            });
+
+        };
+
+        await updateDocPreviewCache(docPreview);
+
+        const redirectURL = DocPreviewURLs.create({
+            id: urlHash,
+            category: docPreview.category,
+            title: docPreview.title,
+            slug,
         });
 
-    };
+        res.redirect(redirectURL);
 
-    await updateDocPreviewCache();
+    } else {
 
-    const createRedirectURL = () => {
+        const redirectURL = DocPreviewURLs.create({
+            id: urlHash,
+            category: undefined,
+            title: undefined,
+            slug: undefined
+        });
 
-        if (docPreview) {
-            return DocPreviewURLs.create({
-                id: urlHash,
-                category: docPreview.category,
-                title: docPreview.title,
-            });
-        } else {
-            return DocPreviewURLs.create({id: urlHash});
-        }
+        res.redirect(redirectURL);
 
-    };
-
-    const redirectURL = createRedirectURL();
-
-    console.log("Sending redirect to: " + redirectURL);
-
-    // TODO: in the future just change the request handler I think.
-    res.redirect(redirectURL);
+    }
 
 });
-

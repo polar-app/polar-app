@@ -24,7 +24,7 @@ export class DocPreviewsIndexGenerator {
             console.log("---\n" +
                 "title: Doc Preview\n" +
                 "layout: default\n" +
-                "---\n")
+                "---\n");
 
             console.log(`<div class="container">`);
 
@@ -37,7 +37,8 @@ export class DocPreviewsIndexGenerator {
                 const href = DocPreviewURLs.create({
                     id: docPreview.urlHash,
                     category: docPreview.category,
-                    title: docPreview.title
+                    title: docPreview.title,
+                    slug: docPreview.slug,
                 });
 
                 // put additional metadata here including author information
