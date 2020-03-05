@@ -44,6 +44,7 @@ async function getDocPreview(): Promise<DocPreviewCached> {
         urlHash,
         docHash,
         datastoreURL,
+        slug: 'test-slug',
         cached: true,
         url: datastoreURL
     };
@@ -111,7 +112,8 @@ const doUpdateRelCanonical = (docPreview: DocPreviewCached) => {
     const href = DocPreviewURLs.create({
         id: docPreview.urlHash,
         category: docPreview.category,
-        title: docPreview.title
+        title: docPreview.title,
+        slug: docPreview.slug
     });
 
     link.setAttribute('href', href);
@@ -147,7 +149,7 @@ async function doLoad2() {
 
     AnalyticsInitializer.doInit();
 
-    Analytics.event2('screen:doc-preview');
+    Analytics.event2('screen:preview');
 
     const docPreview = await getDocPreview();
     const url = docPreview.datastoreURL;
