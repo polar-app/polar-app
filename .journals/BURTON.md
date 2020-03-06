@@ -55,6 +55,13 @@
 
         - Just say fuck it for now and only work with NEW tags? 
 
+    - investigate the current TagsDB object
+    
+    - TODO:
+        - UserTags and TagsDB need to be unified I think... this way deletes 
+          work easily
+            - FIXME: metadata in UserTags needs to work too.
+
 # 2020-03-04
 
 ## TagDB design
