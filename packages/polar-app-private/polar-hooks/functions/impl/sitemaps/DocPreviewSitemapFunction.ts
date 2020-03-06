@@ -25,7 +25,8 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
             const url = DocPreviewURLs.create({
                 id: docPreview.urlHash,
                 category: docPreview.category,
-                title: docPreview.title
+                title: docPreview.title,
+                slug: docPreview.slug
             });
 
             resp.write(`<url>\n`);

@@ -28,19 +28,28 @@ export class DocPreviewsSitemapGenerator {
 
         const docPreviews = snapshot.docs.map(doc => doc.data() as DocPreview);
 
-        const toSitemapURL = (docPreview: DocPreview): SitemapURL => {
+        const toSitemapURL = (docPreview: DocPreview): SitemapURL | undefined => {
 
-            const loc = DocPreviewURLs.create({
-                id: docPreview.urlHash,
-                category: docPreview.category,
-                title: docPreview.title
-            });
+            if (docPreview.cached) {
 
-            return {loc, changefreq: 'weekly'};
+                const loc = DocPreviewURLs.create({
+                    id: docPreview.urlHash,
+                    category: docPreview.category,
+                    title: docPreview.title,
+                    slug: docPreview.slug,
+                });
+
+                return {loc, changefreq: 'weekly'};
+
+            }
+
+            return undefined;
 
         };
 
-        const sitemapURLs = docPreviews.map(toSitemapURL);
+        const sitemapURLs = docPreviews.map(toSitemapURL)
+                                       .filter(current => current !== undefined)
+                                       .map(current => current!);
 
         const toXML = (sitemapURLs: SitemapURL[]) => {
 

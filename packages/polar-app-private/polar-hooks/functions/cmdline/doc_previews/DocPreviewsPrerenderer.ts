@@ -22,10 +22,15 @@ export class DocPreviewsPrerenderer {
 
             for (const docPreview of docPreviews) {
 
+                if (! docPreview.cached) {
+                    continue;
+                }
+
                 const href = DocPreviewURLs.create({
                     id: docPreview.urlHash,
                     category: docPreview.category,
-                    title: docPreview.title
+                    title: docPreview.title,
+                    slug: docPreview.slug
                 });
 
                 console.log(href);
