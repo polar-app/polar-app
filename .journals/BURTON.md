@@ -1,3 +1,59 @@
+# 2020-03-06
+
+- I worked on the SEO system so that everything has a unique slug and we 
+  will also fetch from arxiv so that we can pull in a summary of a document too.
+  
+- I think we're going to use the Google PubSub system to handle a queue of items
+  that need to be processed.  They have a simpler queue system that allows us
+  to do HTTP POST to our cloud functions.  
+  
+    - These have a 9m max timeout which is more than enough time to execute
+    
+    - https://cloud.google.com/functions/docs/concepts/exec#timeout
+    
+    - docPreview
+    
+    npx gcloud functions deploy docPreview --timeout=9m
+ 
+    - unfortunately, it seems difficult to change the timeout and I received an error:   
+
+        ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed:
+        {"error": {"canonicalCode": "INVALID_ARGUMENT", "errorMessage": "`npm_install`
+        had stderr output:\nnpm ERR! code ETARGET\nnpm ERR! notarget No matching version
+        found for polar-backend-shared@^1.90.35\nnpm ERR! notarget In most cases you or
+        one of your dependencies are requesting\nnpm ERR! notarget a package version
+        that doesn't exist.\nnpm ERR! notarget \nnpm ERR! notarget It was specified as a
+        dependency of 'polar-hooks'\nnpm ERR! notarget \n\nnpm ERR! A complete log of
+        this run can be found in:\nnpm ERR!    
+        /builder/home/.npm/_logs/2020-03-06T19_00_15_065Z-debug.log\n\nerror:
+        `npm_install` returned code: 1", "errorType": "InternalError", "errorId":
+        "1E8DF1C2"}}
+    
+        - but I think think its just because I need to deploy functions again
+          at which point I can change the timeout
+
+- zettelkasten + roam would require linking to cards.  We can do that but I would
+  have to improve suppot for it.
+  
+## NOT MOBILE FRIENDLY
+
+- Google thinks our pages are not mobile friendly
+
+    https://search.google.com/test/mobile-friendly?utm_source=gws&utm_medium=metaline&utm_campaign=notmobilefriendy&id=DFoGC1MSyqDXbsz23K3FNQ&view=fetch-info  
+
+    - this is because the pre-render doesn't exacute Javacript and then our CSS
+      width of the page is not adjusted.
+  
+## TagsDB 
+    - how do we migrate / index existing docs?
+    
+        - Build the index in memory, then only persist it once we have read
+          all the documents in , then commit it periodically?
+          
+          - In fact, we CAN NOT do this because we dont' read the docMeta on init
+            right?  THAT is where the tags are stored. 
+
+        - Just say fuck it for now and only work with NEW tags? 
 
 # 2020-03-04
 
