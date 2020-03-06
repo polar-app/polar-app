@@ -1,17 +1,109 @@
 import * as functions from "firebase-functions";
 import {AddURLs} from "polar-webapp-links/src/docs/AddURLs";
-import {DatastoreFetchImports} from "../datastore/DatastoreFetchImports";
+import {
+    DatastoreFetchImports,
+    ImportedDoc
+} from "../datastore/DatastoreFetchImports";
 import {ExpressRequests} from "../util/ExpressRequests";
+import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
-    DocPreviewURL,
-    DocPreviewURLs,
-} from "polar-webapp-links/src/docs/DocPreviewURLs";
-import {
+    DocPreview,
     DocPreviewCached,
-    DocPreviews, DocPreviewUncached
+    DocPreviews,
+    DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 import {Slugs} from "polar-shared/src/util/Slugs";
+import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
+import {DOIStr, PlainTextStr} from "polar-shared/src/util/Strings";
+import {ARXIVSearchEngine} from "polar-search/src/search/arxiv/ARXIVSearchEngine";
+import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
+
+export interface CoreDocMetadata {
+    readonly doi?: DOIStr;
+    readonly description?: string;
+    readonly nrPages?: number;
+}
+
+export class CoreDocMetadatas {
+
+    private static async fetchPDFMetadata(importedDoc: ImportedDoc): Promise<CoreDocMetadata> {
+
+        const metadata = await PDFMetadata.getMetadata(importedDoc.storageURL);
+
+        return {
+            doi: metadata.doi,
+            description: metadata.description,
+            nrPages: metadata.nrPages
+        };
+
+    }
+
+    private static async fetchArxivMetadata(doi: string): Promise<CoreDocMetadata> {
+
+        const engine = new ARXIVSearchEngine({
+            q: doi
+        });
+
+        const results = await engine.executeQuery();
+
+        if (results.entries.length === 0) {
+            return {};
+        }
+
+        const entry = results.entries[0];
+
+        const toSummary = (): PlainTextStr | undefined => {
+
+            if (! entry.summary) {
+                return undefined;
+            }
+
+            if (entry.summary.type === 'text') {
+                return entry.summary.value;
+            }
+
+            return TextSerializer.serialize(entry.summary.value);
+
+        };
+
+        // FIXME: authors are important here and they're provided via arxiv so we
+        // should store them.
+        return {
+            doi,
+            description: toSummary(),
+            nrPages: undefined
+        };
+
+    }
+
+    /**
+     * Use the PDF metadata and arxiv (and other systems) to build extended
+     * metadata for PDFs.
+     */
+    public static async fetch(docPreview: DocPreview,
+                              importedDoc: ImportedDoc) {
+
+        const pdfMetadata = await this.fetchPDFMetadata(importedDoc);
+
+        const doi = docPreview.doi || pdfMetadata.doi;
+
+        const arxivMetadata = doi ? await this.fetchArxivMetadata(doi) : {};
+
+        return this.merge(pdfMetadata, arxivMetadata);
+
+    }
+
+    private static merge(a: CoreDocMetadata, b: CoreDocMetadata): CoreDocMetadata {
+        return {
+            doi: a.doi || b.doi,
+            description: a.description || b.description,
+            nrPages: a.nrPages || b.nrPages
+        };
+    }
+
+}
+
 
 /**
  * This function takes a document via HTTP POST, performs an analysis on it, then
@@ -49,6 +141,10 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
     if (docPreview) {
 
+        // this should generally be fast because we're now reading from a storage
+        // URL
+        const metadata = await CoreDocMetadatas.fetch(docPreview, importedDoc);
+
         const slug = docPreview.title ? Slugs.calculate(docPreview.title) : undefined;
 
         const updateDocPreviewCache = async (docPreview: DocPreviewCached | DocPreviewUncached) => {
@@ -65,6 +161,9 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
                 docHash: importedDoc.hashcode,
                 cached: true,
                 datastoreURL: importedDoc.storageURL,
+                doi: docPreview.doi || metadata.doi,
+                description: docPreview.description || metadata.description,
+                nrPages: metadata.nrPages,
                 slug
             });
 
