@@ -1,11 +1,15 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import * as ReactDOM from '@types/react-dom';
-import * as React from '@types/react';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 import App from './App';
-import {AnnotationBars} from '../../js/ui/annotationbar/AnnotationBars';
 import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
 import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighlightedCallback} from '../../js/ui/annotationbar/AnnotationBar';
+import {
+    AnnotationBarCallbacks,
+    CommentTriggerEvent,
+    OnCommentCallback,
+    OnHighlightedCallback
+} from '../../js/ui/annotationbar/AnnotationBar';
 import {ControlledPopupProps} from '../../js/ui/popup/ControlledPopup';
 import {CommentPopupBars} from '../../js/comments/react/CommentPopupBars';
 import {CommentPopupBarCallbacks} from '../../js/comments/react/CommentPopupBar';
@@ -85,7 +89,7 @@ SpectronRenderer.run(async () => {
         onComment
     };
 
-    AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks, 1);
+    // AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks, 1);
 
 });
 

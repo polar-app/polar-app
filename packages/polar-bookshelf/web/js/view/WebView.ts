@@ -60,9 +60,15 @@ export class WebView extends View {
 
         if (headerElement) {
             headerElement.style.display = 'block';
+        } else {
+            return;
         }
 
         const progressElement = <HTMLProgressElement> document.querySelector("#polar-progress progress");
+
+        if (! progressElement) {
+            return;
+        }
 
         progressElement.value = perc;
 
@@ -125,7 +131,13 @@ export class WebView extends View {
 
     private handleProgressDoubleClick(docMeta: IDocMeta) {
 
-        document.querySelector("#polar-header")!.addEventListener('dblclick', () => {
+        const polarHeader = document.querySelector("#polar-header");
+
+        if (! polarHeader) {
+            return;
+        }
+
+        polarHeader.addEventListener('dblclick', () => {
 
             ReadingProgressResume.resume(docMeta);
 

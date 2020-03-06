@@ -3,6 +3,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {ForwardTagToDocIDIndex} from "./ForwardTagToDocIDIndex";
 import {ReverseDocIDToTagIndex} from "./ReverseDocIDToTagIndex";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 
 class TagIndex {
@@ -81,6 +82,21 @@ export class DataObjectIndex<D> {
     private tags = new TagIndex();
 
     public constructor(private readonly toTags: (input?: D) => ReadonlyArray<Tag>) {
+
+    }
+
+    public contains(key: string): boolean {
+        return isPresent(this.index[key]);
+    }
+
+    public get(key: string): D | undefined {
+        const value = this.index[key];
+
+        if (value) {
+            return value;
+        }
+
+        return undefined;
 
     }
 

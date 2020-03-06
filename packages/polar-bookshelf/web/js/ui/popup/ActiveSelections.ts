@@ -110,11 +110,13 @@ export class ActiveSelections {
 
             const element = this.targetElementForEvent(event);
 
+            const view = event.view || window;
+
             switch (type) {
 
                 case "mouse":
 
-                    window.addEventListener('mouseup', event => {
+                    view.addEventListener('mouseup', event => {
                         // this code properly handles the mouse leaving the window
                         // during mouse up and then leaving wonky event handlers.
                         onMouseUp(event, element);
@@ -124,7 +126,7 @@ export class ActiveSelections {
 
                 case "touch":
 
-                    window.addEventListener('touchend', event => {
+                    view.addEventListener('touchend', event => {
                         // this code properly handles the mouse leaving the window
                         // during mouse up and then leaving wonky event handlers.
                         onMouseUp(event, element);
@@ -185,21 +187,15 @@ export class ActiveSelections {
         setTimeout(() => callback(), 1);
     }
 
-    private static targetElementForEvent(event: MouseEvent | TouchEvent): HTMLElement | undefined {
+    private static targetElementForEvent(event: MouseEvent | TouchEvent): HTMLElement {
 
-        if (event.target instanceof Node) {
+        const view = event.view || window;
 
-            if (event.target instanceof HTMLElement) {
-                return event.target;
-            } else {
-                return event.target.parentElement!;
-            }
-
+        if ((event.target as any).type === Node.ELEMENT_NODE) {
+            return event.target as HTMLElement;
         } else {
-            log.warn("Event target is not node: ", event.target);
+            return (event.target! as any).parentElement! as HTMLElement;
         }
-
-        return undefined;
 
     }
 

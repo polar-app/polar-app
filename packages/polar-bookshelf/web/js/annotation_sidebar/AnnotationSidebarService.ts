@@ -20,6 +20,16 @@ export class AnnotationSidebarService {
 
     public start() {
 
+        if (! document.querySelector(".polar-viewer")) {
+            log.warn("No viewer");
+            return;
+        }
+
+        if (! document.querySelector(".polar-sidebar")) {
+            log.warn("No sidebar");
+            return;
+        }
+
         this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);

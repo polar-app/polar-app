@@ -6,13 +6,16 @@ import {TriggerPopupEvent} from '../popup/TriggerPopupEvent';
 import {CommentPopupBarCallbacks} from '../../comments/react/CommentPopupBar';
 import {CommentCreatedEvent} from '../../comments/react/CommentCreatedEvent';
 import {CommentPopupBars} from '../../comments/react/CommentPopupBars';
-import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighlightedCallback} from './AnnotationBar';
+import {
+    AnnotationBarCallbacks,
+    OnHighlightedCallback,
+    OnCommentCallback, CommentTriggerEvent
+} from './ControlledAnnotationBar';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {TypedMessage} from '../../util/TypedMessage';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {ControlledAnnotationBars} from './ControlledAnnotationBars';
 import {Docs} from '../../metadata/Docs';
-import {Analytics} from "../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -25,8 +28,12 @@ export class AnnotationBarService {
     }
 
     public start(): void {
+
         this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
+
         document.body.addEventListener('click', event => {
+
+            // TODO: remove this as I dont 'think it actually does anything
 
             if (event.target instanceof HTMLElement) {
 
@@ -45,10 +52,6 @@ export class AnnotationBarService {
 
     }
 
-    private onClick() {
-
-    }
-
     private onDocumentLoaded(event: DocumentLoadedEvent) {
         log.debug("Creating annotation bar");
 
@@ -62,6 +65,7 @@ export class AnnotationBarService {
         const commentPopupBarCallbacks: CommentPopupBarCallbacks = {
 
             onComment: (commentCreatedEvent: CommentCreatedEvent) => {
+                // noop
             }
 
         };
@@ -122,7 +126,7 @@ export class AnnotationBarService {
 
         const annotationBarCallbacks: AnnotationBarCallbacks = {
             onHighlighted,
-            onComment
+            // onComment
         };
 
         const persistenceLayer = this.model.persistenceLayerProvider();

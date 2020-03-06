@@ -1,6 +1,4 @@
-import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 /**
  * A simple in-memory database of tags which can be built when we load the .json
@@ -14,9 +12,12 @@ export class TagsDB {
      */
     private readonly index: {[id: string]: MutableTagDescriptor} = {};
 
+    constructor() {
+    }
+
     public register(...tags: Tag[]): void {
 
-        tags.forEach(tag => {
+        for (const tag of tags) {
 
             if (! this.index[tag.id]) {
                 this.index[tag.id] = {...tag, count: 0};
@@ -28,7 +29,7 @@ export class TagsDB {
             // in the future.
             this.index[tag.id].count++;
 
-        });
+        }
 
     }
 

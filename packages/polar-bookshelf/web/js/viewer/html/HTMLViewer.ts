@@ -19,7 +19,6 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Captured} from 'polar-content-capture/src/capture/Captured';
 import {IFrames} from '../../util/dom/IFrames';
 import {PinchToZoom} from "../../ui/Gestures";
-import {Analytics} from "../../analytics/Analytics";
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 
 const log = Logger.create();
@@ -110,6 +109,7 @@ export class HTMLViewer extends Viewer {
 
         };
 
+        // TODO: remove jquery
         $(document).ready(() => {
             onReady()
                 .catch(err => log.error("Could not load doc: ", err));

@@ -43,7 +43,7 @@ export class EPUBFormat extends DocFormat {
 
     }
 
-    setCurrentDocFingerprint(fingerprint: string) {
+    public setCurrentDocFingerprint(fingerprint: string) {
         const polarFingerprint = this._queryFingerprintElement();
         polarFingerprint.setAttribute("content", fingerprint);
     }

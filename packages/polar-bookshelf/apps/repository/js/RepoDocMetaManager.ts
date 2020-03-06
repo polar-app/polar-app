@@ -65,7 +65,7 @@ export class RepoDocMetaManager {
 
                 const deleteOrphaned = () => {
 
-                    const currentAnnotationsIDs = Object.values(this.repoDocAnnotationIndex)
+                    const currentAnnotationsIDs = this.repoDocAnnotationIndex.values()
                         .filter(current => current.fingerprint === repoDocMeta.repoDocInfo.fingerprint)
                         .map(current => current.id);
 
@@ -100,7 +100,7 @@ export class RepoDocMetaManager {
             const deleteOrphanedAnnotations = () => {
 
                 // now delete stale repo annotations.
-                for (const repoAnnotation of Object.values(this.repoDocAnnotationIndex)) {
+                for (const repoAnnotation of this.repoDocAnnotationIndex.values()) {
 
                     if (repoAnnotation.fingerprint === fingerprint) {
                         this.repoDocAnnotationIndex.delete(repoAnnotation.id);

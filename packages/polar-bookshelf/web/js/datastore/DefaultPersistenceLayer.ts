@@ -1,22 +1,27 @@
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    ErrorListener,
+    GetFileOpts,
+    SnapshotResult,
+    WriteFileOpts
+} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {PersistenceLayer} from './PersistenceLayer';
-import {WriteOpts} from './PersistenceLayer';
+import {PersistenceLayer, WriteOpts} from './PersistenceLayer';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
@@ -24,6 +29,8 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {DocMetaTags} from "../metadata/DocMetaTags";
+import {MutableTagsDB, TagsDB} from "./TagsDB";
 
 const log = Logger.create();
 
@@ -41,6 +48,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     private datastoreMutations: DatastoreMutations;
 
+    private tagsDB?: MutableTagsDB;
+
     constructor(datastore: Datastore) {
         this.datastore = datastore;
         this.datastoreMutations = DatastoreMutations.create('written');
@@ -48,6 +57,11 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
         await this.datastore.init(errorListener, opts);
+
+        const prefsProvider = this.datastore.getPrefs();
+        this.tagsDB = new MutableTagsDB(prefsProvider);
+        await this.tagsDB.init();
+
     }
 
     public async stop() {
@@ -96,8 +110,31 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         Preconditions.assertPresent(docMeta.docInfo, "No docInfo on docMeta");
         Preconditions.assertPresent(docMeta.docInfo.fingerprint, "No fingerprint on docInfo");
 
+        // TODO: this could be made faster by using Promise.all and a latch
+
+        await this.writeDocMetaTags(docMeta);
+
         return this.write(docMeta.docInfo.fingerprint, docMeta, {datastoreMutation});
 
+    }
+
+    private async writeDocMetaTags(docMeta: IDocMeta) {
+
+        try {
+
+            const tags = DocMetaTags.toTags(docMeta);
+
+            for (const tag of tags) {
+                this.tagsDB?.registerWhenAbsent(tag);
+            }
+
+            await this.tagsDB?.persist();
+
+            log.debug("Wrote tags to TagsDB: ", tags);
+
+        } catch (e) {
+            log.error("Failed to write docMeta tags: ", e);
+        }
     }
 
     /**

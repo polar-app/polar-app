@@ -1,4 +1,4 @@
-<html>
+<html itemtype="https://schema.org/WebPage">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
@@ -37,8 +37,8 @@
     <!--
 
         - TODO:
-            - rel=canonical
             - twitter microdata
+            - title, summary,
     -->
 
     <link rel="canonical" href="" />
@@ -75,7 +75,7 @@
 
     </style>
 
-    <title></title>
+    <title itemprop="headline"></title>
 
     <!-- TODO: twitter sharing metadata including a thumbnail of the PDF -->
 
@@ -138,7 +138,7 @@
     </div>
 </header>
 
-<div id="viewerContainer">
+<main id="viewerContainer" itemprop="mainContentOfPage">
 
     <div>
         <div id="viewer" class="pdfViewer">
@@ -147,7 +147,7 @@
         </div>
     </div>
 
-</div>
+</main>
 
 <script src="/apps/init.js"></script>
 

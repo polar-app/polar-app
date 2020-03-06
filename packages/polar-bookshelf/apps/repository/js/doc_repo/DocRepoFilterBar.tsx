@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
-import {TagsDB} from '../TagsDB';
 import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';

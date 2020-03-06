@@ -189,9 +189,9 @@ export type FinishedCallback = (cancelled?: boolean) => void;
  *
  * @param cancelled true if the user explicitly cancelled the review.
  */
-export interface RatingCallback<A> {
-    (taskRep: TaskRep<A>, rating: Rating): void;
-}
+export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => void;
+
+export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => void;
 
 export interface IProps<A> {
 
@@ -202,7 +202,7 @@ export interface IProps<A> {
      */
     readonly onRating: RatingCallback<A>;
 
-    readonly onSuspended: (taskRep: TaskRep<A>) => void;
+    readonly onSuspended: SuspendedCallback<A>;
 
     readonly onFinished: FinishedCallback;
 
