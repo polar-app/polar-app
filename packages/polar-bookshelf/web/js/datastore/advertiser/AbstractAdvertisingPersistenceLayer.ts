@@ -23,6 +23,7 @@ import {WriteOpts} from '../PersistenceLayer';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {UserTagsDB} from "../UserTagsDB";
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
@@ -181,6 +182,10 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     public async deactivate() {
         await this.delegate.deactivate();
+    }
+
+    public getUserTagsDB(): Promise<UserTagsDB> {
+        return this.delegate.getUserTagsDB();
     }
 
 }

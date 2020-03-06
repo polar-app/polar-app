@@ -17,6 +17,7 @@ import {WriteOpts} from './PersistenceLayer';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {UserTagsDB} from "./UserTagsDB";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.
@@ -108,6 +109,10 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
 
     public capabilities(): DatastoreCapabilities {
         return this.delegate.capabilities();
+    }
+
+    public getUserTagsDB(): Promise<UserTagsDB> {
+        return this.delegate.getUserTagsDB();
     }
 
 }

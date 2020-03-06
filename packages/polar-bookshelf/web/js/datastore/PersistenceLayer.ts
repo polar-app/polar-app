@@ -22,6 +22,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
+import {UserTagsDB} from "./UserTagsDB";
 
 export interface PersistenceLayer {
 
@@ -91,6 +92,8 @@ export interface PersistenceLayer {
     overview(): Promise<DatastoreOverview  | undefined>;
 
     capabilities(): DatastoreCapabilities;
+
+    getUserTagsDB(): Promise<UserTagsDB>;
 
 }
 
