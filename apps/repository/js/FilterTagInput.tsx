@@ -11,7 +11,6 @@ import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {SimpleTooltipEx} from '../../../web/js/ui/tooltip/SimpleTooltipEx';
 import Popper from 'popper.js';
-// import {SyntheticKeyboardEvent} from 'react-dom';
 
 const Styles: IStyleMap = {
 
@@ -32,6 +31,9 @@ const Styles: IStyleMap = {
 
 };
 
+/**
+ * @Deprecated
+ */
 export class FilterTagInput extends React.PureComponent<IProps, IState> {
 
     private readonly id: string;
