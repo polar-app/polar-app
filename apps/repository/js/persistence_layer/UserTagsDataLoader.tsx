@@ -3,8 +3,8 @@ import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
 import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
+import {UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
 
 export class UserTagsDataLoader extends React.Component<IProps, IState> {
 
@@ -27,12 +27,15 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
             throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
         }
 
-        const render = (prefs: PersistentPrefs | undefined) => {
+        const render = (persistentPrefs: PersistentPrefs | undefined) => {
 
-            if (prefs) {
+            if (persistentPrefs) {
 
-                const userTags = DatastoreUserTags.get(prefs);
-                // console.log("Working with new userTags: ", userTags);
+                const userTagsDB = new UserTagsDB(persistentPrefs);
+                userTagsDB.init();
+                const userTags = userTagsDB.tags();
+
+                // console.log("UserTags: ", userTags);
 
                 return this.props.render(userTags);
 

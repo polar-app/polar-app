@@ -30,7 +30,8 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {DocMetaTags} from "../metadata/DocMetaTags";
-import {MutableTagsDB, TagsDB} from "./TagsDB";
+import {UserTagsDB} from "./UserTagsDB";
+import {Latch} from "polar-shared/src/util/Latch";
 
 const log = Logger.create();
 
@@ -48,7 +49,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     private datastoreMutations: DatastoreMutations;
 
-    private tagsDB?: MutableTagsDB;
+    private userTagsDB?: UserTagsDB;
+
+    private initLatch = new Latch();
 
     constructor(datastore: Datastore) {
         this.datastore = datastore;
@@ -56,11 +59,19 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
-        await this.datastore.init(errorListener, opts);
+
+        try {
+
+            await this.datastore.init(errorListener, opts);
+            this.initLatch.resolve(true);
+
+        } catch (e) {
+            this.initLatch.reject(e);
+        }
 
         const prefsProvider = this.datastore.getPrefs();
-        this.tagsDB = new MutableTagsDB(prefsProvider);
-        await this.tagsDB.init();
+        this.userTagsDB = new UserTagsDB(prefsProvider.get());
+        this.userTagsDB.init();
 
     }
 
@@ -125,10 +136,10 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
             const tags = DocMetaTags.toTags(docMeta);
 
             for (const tag of tags) {
-                this.tagsDB?.registerWhenAbsent(tag);
+                this.userTagsDB?.registerWhenAbsent(tag);
             }
 
-            await this.tagsDB?.persist();
+            await this.userTagsDB?.commit();
 
             log.debug("Wrote tags to TagsDB: ", tags);
 
@@ -274,6 +285,17 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public async deactivate() {
         await this.datastore.deactivate();
+    }
+
+    public async getUserTagsDB(): Promise<UserTagsDB> {
+
+        await this.initLatch.get();
+
+        if (! this.userTagsDB) {
+            throw new Error("No userTagsDB (initialized?)");
+        }
+
+        return this.userTagsDB!;
     }
 
 }

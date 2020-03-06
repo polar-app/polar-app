@@ -3,10 +3,8 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags, TagStr} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {Callback} from "polar-shared/src/util/Functions";
-import {DatastoreUserTags} from "../../../../web/js/datastore/DatastoreUserTags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
-import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const log = Logger.create();
 
@@ -26,25 +24,21 @@ export class PersistenceLayerMutator {
     public async createTag(newTag: TagStr) {
 
         const persistenceLayer = this.persistenceLayerProvider();
-        const prefs = persistenceLayer.datastore.getPrefs().get();
 
-        await DatastoreUserTags.create(prefs, newTag);
+        const userTagsDB = await persistenceLayer.getUserTagsDB();
+
+        userTagsDB.registerWhenAbsent(newTag);
+        await userTagsDB.commit();
 
     }
 
     public async deleteTag(deleteTagID: TagStr) {
 
         const deleteFromUserTags = async () => {
-
             const persistenceLayer = this.persistenceLayerProvider();
-            const prefs = persistenceLayer.datastore.getPrefs().get();
-
-            const userTags = DatastoreUserTags.get(prefs);
-
-            const newUserTags = userTags.filter(current => current.id !== deleteTagID);
-
-            await DatastoreUserTags.set(prefs, newUserTags);
-
+            const userTagsDB = await persistenceLayer.getUserTagsDB();
+            userTagsDB.delete(deleteTagID);
+            await userTagsDB.commit();
         };
 
         const lookupTag = (tag: TagStr): Tag | undefined => {

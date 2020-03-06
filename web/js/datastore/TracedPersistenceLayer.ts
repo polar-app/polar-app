@@ -22,6 +22,7 @@ import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {UserTagsDB} from "./UserTagsDB";
 
 const tracer = RendererAnalytics.createTracer('persistence-layer');
 
@@ -121,6 +122,10 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
 
     public capabilities(): DatastoreCapabilities {
         return this.delegate.capabilities();
+    }
+
+    public getUserTagsDB(): Promise<UserTagsDB> {
+        return this.delegate.getUserTagsDB();
     }
 
 }
