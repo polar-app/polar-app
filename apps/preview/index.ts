@@ -180,6 +180,7 @@ async function doLoad() {
     };
 
     doUpdateTitle();
+    doUpdateDescription();
     doUpdateAppVersion();
 
     doUpdateRelCanonical(docPreview);
