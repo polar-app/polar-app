@@ -11,6 +11,7 @@ import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer"
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 import { Version } from 'polar-shared/src/util/Version';
 import {Analytics} from "../../web/js/analytics/Analytics";
+import {Strings} from "polar-shared/src/util/Strings";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -135,7 +136,7 @@ const doUpdateAppVersion = () => {
 
 };
 
-async function doLoad2() {
+async function doLoad() {
 
     Prerenderer.loading();
 
@@ -157,8 +158,23 @@ async function doLoad2() {
     const doUpdateTitle = () => {
 
         if (docPreview.title) {
-            const title = '[PDF] ' + docPreview.title;
+            const title = '[PDF] ' + Strings.truncateOnWordBoundary(docPreview.title, 50);
             document.title = title;
+        }
+
+    };
+
+    const doUpdateDescription = () => {
+
+        if (docPreview.description) {
+
+            const descriptionElement = document.querySelector("meta[name=description]");
+
+            if (descriptionElement) {
+                const description = Strings.truncateOnWordBoundary(docPreview.description, 165);
+                descriptionElement.setAttribute('content', description);
+            }
+
         }
 
     };
@@ -264,5 +280,5 @@ async function doLoad2() {
 
 }
 
-doLoad2()
+doLoad()
     .catch(err => console.log(err));
