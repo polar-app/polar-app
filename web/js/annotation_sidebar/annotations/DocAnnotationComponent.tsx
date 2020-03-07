@@ -7,6 +7,7 @@ import {AreaHighlightAnnotationComponent} from './AreaHighlightAnnotationCompone
 import {TextHighlightAnnotationComponent} from './TextHighlightAnnotationComponent';
 import {Doc} from '../../metadata/Doc';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
+import { Tag } from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
@@ -43,6 +44,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
             return (
                 <AreaHighlightAnnotationComponent key={key}
                                                   annotation={annotation}
+                                                  tagsProvider={this.props.tagsProvider}
                                                   doc={this.props.doc}/>
             );
 
@@ -51,6 +53,7 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
             return (
                 <TextHighlightAnnotationComponent key={key}
                                                   annotation={annotation}
+                                                  tagsProvider={this.props.tagsProvider}
                                                   doc={this.props.doc}/>
             );
 
@@ -61,6 +64,8 @@ export class DocAnnotationComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
+
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 
     readonly persistenceLayerProvider: PersistenceLayerProvider;
 

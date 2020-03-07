@@ -51,8 +51,7 @@ export class RepoDocInfos {
                 .validateBoolean()
                 .getOrElse(false),
 
-            tags: Optional.of(docInfo.tags)
-                .getOrElse({}),
+            tags: docInfo.tags || {},
 
             site: Optional.of(docInfo.url)
                 .map(url => new URL(url).hostname)

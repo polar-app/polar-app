@@ -22,6 +22,8 @@ export class TextHighlights {
                          pageMeta: IPageMeta,
                          updates: Partial<ITextHighlight>) {
 
+        // TODO: shouldn't we use a new id and make sure the guid is the same?
+
         const existing = pageMeta.textHighlights[id]!;
 
         if (!existing) {

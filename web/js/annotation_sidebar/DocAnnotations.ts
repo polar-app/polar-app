@@ -1,7 +1,6 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
 import {ObjectIDs} from '../util/ObjectIDs';
@@ -173,6 +172,7 @@ export class DocAnnotations {
             pageMeta,
             original: areaHighlight,
             author: areaHighlight.author,
+            tags: {...(areaHighlight.tags || init.tags)},
             immutable: this.isImmutable(areaHighlight.author),
         };
 
@@ -206,6 +206,7 @@ export class DocAnnotations {
             original: textHighlight,
             author: textHighlight.author,
             immutable: this.isImmutable(textHighlight.author),
+            tags: {...(textHighlight.tags || init.tags)},
             img: undefined
         };
 

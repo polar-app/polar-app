@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {AddContentActions} from '../ui/AddContentActions';
 import {TagButton} from './TagButton';
 import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import { DeviceRouter } from '../../../../web/js/ui/DeviceRouter';
-import { AddContent } from '../ui/AddContentButton';
-
-const log = Logger.create();
+import {DeviceRouter} from '../../../../web/js/ui/DeviceRouter';
+import {AddContent} from '../ui/AddContentButton';
 
 export class DocRepoButtonBar extends React.Component<IProps, IState> {
 

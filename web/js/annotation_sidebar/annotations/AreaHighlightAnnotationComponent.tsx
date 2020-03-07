@@ -6,6 +6,7 @@ import {Doc} from '../../metadata/Doc';
 import {LazyProps} from '../../react/LazyComponents';
 import {ResponsiveImg} from '../ResponsiveImg';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
+import {Tag} from "polar-shared/src/tags/Tags";
 
 const Image = (props: IProps) => {
 
@@ -56,11 +57,12 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                             borderLeft: `5px solid ${borderColor}`
                         }}>
 
-                        <Image doc={props.doc} annotation={annotation}/>
+                        <Image {...props}/>
 
                     </div>
 
                     <AnnotationControlBar doc={this.props.doc}
+                                          tagsProvider={this.props.tagsProvider}
                                           annotation={annotation}/>
 
                 </div>
@@ -77,8 +79,9 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
 }
-interface IProps extends LazyProps {
+interface IProps {
     readonly doc: Doc;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly annotation: DocAnnotation;
 }
 

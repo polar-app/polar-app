@@ -8,7 +8,10 @@ import {Button} from 'reactstrap';
 import {CommentIcon} from '../ui/standard_icons/CommentIcon';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {ClozeFields, FrontAndBackFields} from './child_annotations/flashcards/flashcard_input/FlashcardInputs';
+import {
+    ClozeFields,
+    FrontAndBackFields
+} from './child_annotations/flashcards/flashcard_input/FlashcardInputs';
 import {Comment} from "../metadata/Comment";
 import {CreateComment} from "./child_annotations/comments/CreateComment";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
@@ -26,17 +29,15 @@ import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight"
 import {EditIcon} from "../ui/standard_icons/EditIcon";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Analytics} from "../analytics/Analytics";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {TagInput} from "../../../apps/repository/js/TagInput";
 
 const Styles: IStyleMap = {
 
     button: {
         marginTop: 'auto',
         marginBottom: 'auto',
-        color: 'red !important',
         fontSize: '15px'
-
-        // minWidth: '350px',
-        // width: '350px'
     },
 
     barBody: {
@@ -60,6 +61,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         this.onTextHighlightReset = this.onTextHighlightReset.bind(this);
         this.onTextHighlightEdited = this.onTextHighlightEdited.bind(this);
+        this.onTagged = this.onTagged.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -106,12 +108,12 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const CreateFlashcardButton = () => {
             return <Button className="ml-1 text-muted p-1"
-                    title="Create flashcard"
-                    style={Styles.button}
-                    size="sm"
-                    color="clear"
-                    disabled={! this.props.doc.mutable}
-                    onClick={() => this.toggleActiveInputComponent('flashcard')}>
+                           title="Create flashcard"
+                           style={Styles.button}
+                           size="sm"
+                           color="clear"
+                           disabled={! this.props.doc.mutable}
+                           onClick={() => this.toggleActiveInputComponent('flashcard')}>
 
                 <FlashcardIcon/>
 
@@ -142,6 +144,13 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
                         <ChangeTextHighlightButton/>
+
+                        <TagInput placement="bottom"
+                                  className='ml-1 p-1 text-muted'
+                                  availableTags={this.props.tagsProvider()}
+                                  existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
+                                  // existingTags={() => [{id: 'asdf', label: 'asdf'}]}
+                                  onChange={(tags) => this.onTagged(tags)}/>
 
                         <CreateCommentButton/>
 
@@ -190,6 +199,26 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             </div>
 
         );
+    }
+
+    private onTagged(tags: ReadonlyArray<Tag>) {
+
+        setTimeout(() => {
+
+            const {annotation} = this.props;
+
+            const updates = {tags: Tags.toMap(tags)};
+
+            if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+                TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, updates);
+            }
+
+            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, updates);
+            }
+
+        }, 1);
+
     }
 
     private onTextHighlightReset() {
@@ -290,6 +319,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 }
 interface IProps {
     readonly doc: Doc;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly annotation: DocAnnotation;
 }
 

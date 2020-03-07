@@ -34,6 +34,8 @@ export class PersistenceLayerMutator {
 
     public async deleteTag(deleteTagID: TagStr) {
 
+        // FIXME: this needs to remove from annotations now too..
+
         const deleteFromUserTags = async () => {
             const persistenceLayer = this.persistenceLayerProvider();
             const userTagsDB = await persistenceLayer.getUserTagsDB();
@@ -55,7 +57,7 @@ export class PersistenceLayerMutator {
                 const repoDocInfos = this.repoDocInfosProvider();
                 this.removeTagsFromDocInfos([deleteTag], repoDocInfos);
             } else {
-                log.warn("Unable to find tag: " + deleteTag);
+                log.warn("No tag to delete: " + deleteTag);
             }
 
         };

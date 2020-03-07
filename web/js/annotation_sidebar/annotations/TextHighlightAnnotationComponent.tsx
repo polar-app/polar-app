@@ -7,6 +7,7 @@ import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSectio
 import {Doc} from '../../metadata/Doc';
 import {LazyProps, LazyState} from '../../react/LazyComponents';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export class TextHighlightAnnotationComponent extends React.Component<IProps, IState> {
 
@@ -68,6 +69,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                             <div>
                                 <AnnotationControlBar doc={this.props.doc}
+                                                      tagsProvider={this.props.tagsProvider}
                                                       annotation={annotation}/>
 
                             </div>
@@ -92,7 +94,9 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
     }
 
 }
-interface IProps extends LazyProps {
+interface IProps {
+
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 
     readonly doc: Doc;
 
