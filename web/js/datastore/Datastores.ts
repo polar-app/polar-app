@@ -39,7 +39,7 @@ export class Datastores {
 
     public static async getDocMetas(datastore: Datastore,
                                     listener: DocMetaListener,
-                                    docMetaRefs?: DocMetaRef[]) {
+                                    docMetaRefs?: ReadonlyArray<DocMetaRef>) {
 
         if (!docMetaRefs) {
             docMetaRefs = await datastore.getDocMetaRefs();
@@ -218,9 +218,9 @@ export class Datastores {
 
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
-        const docMetaFiles =
-            (await datastore.getDocMetaRefs())
-                .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
+        const docMetaRefs = await datastore.getDocMetaRefs();
+        const docMetaFiles = [...docMetaRefs]
+            .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
 
         const result: IDocInfo[] = [];
 

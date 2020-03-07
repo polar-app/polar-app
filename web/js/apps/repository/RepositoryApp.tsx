@@ -4,11 +4,15 @@ import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
-import {PersistenceLayerManager, PersistenceLayerTypes} from '../../datastore/PersistenceLayerManager';
+import {
+    PersistenceLayerManager,
+    PersistenceLayerTypes
+} from '../../datastore/PersistenceLayerManager';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar, SyncBarProgress} from '../../ui/sync_bar/SyncBar';
 import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
-import AnnotationRepoScreen from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
+import AnnotationRepoScreen
+    from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {UpdatesController} from '../../auto_updates/UpdatesController';
@@ -16,7 +20,8 @@ import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import WhatsNewScreen from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
+import WhatsNewScreen
+    from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
 import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import {ToasterService} from '../../ui/toaster/ToasterService';
@@ -38,7 +43,8 @@ import {UniqueMachines} from '../../telemetry/UniqueMachines';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {Accounts} from '../../accounts/Accounts';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
-import DocRepoScreen from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
+import DocRepoScreen
+    from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
 import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
@@ -64,7 +70,6 @@ import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {PinchToZoom} from "../../ui/Gestures";
-import {Analytics} from "../../analytics/Analytics";
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 
 const log = Logger.create();
@@ -552,7 +557,12 @@ export class RepositoryApp {
 
             log.info("Received DocInfo update");
 
-            const docMeta = await this.persistenceLayerManager.get().getDocMeta(docInfo.fingerprint);
+            const persistenceLayer = this.persistenceLayerManager.get();
+            const docMeta = await persistenceLayer.getDocMeta(docInfo.fingerprint);
+
+            if (! docMeta) {
+                throw new Error("No DocMeta");
+            }
 
             const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, docInfo.fingerprint, docMeta);
 
@@ -583,7 +593,10 @@ export class RepositoryApp {
                 if (PersistenceLayerTypes.get() === 'cloud') {
 
                     const handleWriteDocMeta = async () => {
-                        await persistenceLayer.synchronizeDocs({fingerprint: docInfo.fingerprint, docMeta});
+                        await persistenceLayer.synchronizeDocs({
+                            fingerprint: docInfo.fingerprint,
+                            docMetaProvider: () => Promise.resolve(docMeta)
+                        });
                     };
 
                     handleWriteDocMeta()

@@ -810,7 +810,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
         Preconditions.assertPresent(this.firestore, 'firestore');
 
@@ -831,7 +831,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const recordHolder = <RecordHolder<DocMetaHolder>> doc.data();
 
-            result.push({fingerprint: recordHolder.value.docInfo.fingerprint});
+            const fingerprint = recordHolder.value.docInfo.fingerprint;
+
+            result.push({
+                fingerprint,
+                docMetaProvider: () => Promise.resolve(DocMetas.deserialize(recordHolder.value.value, fingerprint))
+            });
 
         }
 
@@ -1099,9 +1104,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const progressTracker = new ProgressTracker({total: docChanges.length, id: 'firebase-snapshot'});
 
         for (const docChange of docChanges) {
-
             handleDocChange(docChange);
-
         }
 
         // progressTracker = new ProgressTracker(snapshot.docs.length);

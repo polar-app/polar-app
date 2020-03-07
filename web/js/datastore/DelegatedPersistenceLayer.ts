@@ -63,7 +63,7 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.getDocMeta(fingerprint);
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return this.delegate.getDocMetaRefs();
     }
 

@@ -284,7 +284,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return this.local.getDocMetaRefs();
     }
 

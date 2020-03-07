@@ -60,6 +60,16 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION, opts?: DatastoreInitOpts) {
 
+        await this.doInitDatastore(errorListener, opts);
+
+        await this.doInitUserTagsDB();
+
+        await this.doInitUserTagsLegacyData();
+
+    }
+
+    private async doInitDatastore(errorListener: ErrorListener, opts: DatastoreInitOpts | undefined) {
+
         try {
 
             await this.datastore.init(errorListener, opts);
@@ -69,9 +79,86 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
             this.initLatch.reject(e);
         }
 
+    }
+
+    private async doInitUserTagsDB() {
+
         const prefsProvider = this.datastore.getPrefs();
         this.userTagsDB = new UserTagsDB(prefsProvider.get());
         this.userTagsDB.init();
+
+        log.notice("UserTagsDB now has N record: ", this.userTagsDB.tags().length);
+
+    }
+
+    /**
+     * Called once when migrating a datastore which didn't have a user tags
+     * pref to the new system.
+     *
+     * This will perform a snapshot, read in all the data, then update the
+     * user tags with the new records, then commit it back out.
+     */
+    private async doInitUserTagsLegacyData() {
+
+        const MIGRATED_KEY = 'has-user-tags-migrated';
+
+        const markMigrationCompleted = async () => {
+            const prefs = this.datastore.getPrefs();
+            const persistentPrefs = prefs.get();
+            persistentPrefs.set(MIGRATED_KEY, 'true');
+            await persistentPrefs.commit();
+        };
+
+        const hasMigrated = () => {
+            const prefs = this.datastore.getPrefs();
+            const persistentPrefs = prefs.get();
+            const value = persistentPrefs.get(MIGRATED_KEY).getOrElse('false');
+            return value === 'true';
+        };
+
+        if (await hasMigrated()) {
+            log.notice("Already migrated legacy tags to UserTagsDB.");
+            return;
+        }
+
+        const onFail = (err: Error) => {
+            log.error("Couldn't init legacy user tags: ", err);
+        };
+
+        const doCommitUserTagsDB = async () => {
+            await this.userTagsDB?.commit();
+        };
+
+        const onSuccess = async () => {
+            await doCommitUserTagsDB();
+            await markMigrationCompleted();
+        };
+
+        log.info("Performing init of userTags");
+
+        try {
+
+            const docMetaRefs = await this.getDocMetaRefs();
+
+            for (const docMetaRef of docMetaRefs) {
+
+                const docMetaProvider = docMetaRef.docMetaProvider!;
+                const docMeta = await docMetaProvider();
+
+                const docInfo = docMeta.docInfo;
+                const tags = Object.values(docInfo.tags || {});
+
+                for (const tag of tags) {
+                    this.userTagsDB?.registerWhenAbsent(tag.label);
+                }
+
+            }
+
+            await onSuccess();
+
+        } catch (e) {
+            onFail(e);
+        }
 
     }
 
@@ -238,7 +325,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.synchronizeDocs(...docMetaRefs);
     }
 
-    public getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return this.datastore.getDocMetaRefs();
     }
 
@@ -248,7 +335,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      */
     public snapshot(listener: DocMetaSnapshotEventListener,
                     errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
+
         return this.datastore.snapshot(listener, errorListener);
+
     }
 
     public async createBackup(): Promise<void> {

@@ -68,7 +68,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
                 this.docMetaRefs = [
                     {
                         fingerprint: this.fingerprint,
-                        docMeta: this.docMeta
+                        docMetaProvider: () => Promise.resolve(this.docMeta!)
                     }
                 ];
 
@@ -110,7 +110,7 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         return this.docMetaData;
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return this.docMetaRefs;
     }
 

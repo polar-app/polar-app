@@ -82,7 +82,7 @@ export class PersistenceLayers {
     }
 
     public static async toSyncDocMapFromDocs(datastore: Datastore,
-                                             docMetaRefs: DocMetaRef[],
+                                             docMetaRefs: ReadonlyArray<DocMetaRef>,
                                              progressStateListener: ProgressListener = NULL_FUNCTION) {
 
         const syncDocsMap: SyncDocMap = {};
@@ -101,7 +101,8 @@ export class PersistenceLayers {
 
             work.push(async () => {
 
-                let docMeta: IDocMeta | undefined = docMetaRef.docMeta;
+                let docMeta: IDocMeta | undefined
+                    = docMetaRef.docMetaProvider ? await docMetaRef.docMetaProvider() : undefined;
 
                 if (! docMeta) {
 

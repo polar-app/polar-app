@@ -55,7 +55,7 @@ export class HybridRemoteDatastore extends RemoteDatastore {
 
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return await this.diskDatastore.getDocMetaRefs();
     }
 

@@ -76,7 +76,7 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('getDocMeta', () => this.delegate.getDocMeta(fingerprint));
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return tracer.traceAsync('getDocMetaRefs', () => this.delegate.getDocMetaRefs());
     }
 
