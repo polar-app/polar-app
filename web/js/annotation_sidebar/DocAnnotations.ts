@@ -60,7 +60,7 @@ export class DocAnnotations {
                                       flashcard: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
 
-        const iTextConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
+        const textConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
 
         const init = this.createInit(docMeta);
 
@@ -71,7 +71,7 @@ export class DocAnnotations {
             guid: flashcard.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            ...iTextConverter,
+            ...textConverter,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
@@ -87,7 +87,8 @@ export class DocAnnotations {
             author: flashcard.author,
             immutable: this.isImmutable(flashcard.author),
             color: undefined,
-            img: undefined
+            img: undefined,
+            tags: {...(flashcard.tags || {}), ...init.tags},
         };
 
     }
@@ -172,7 +173,7 @@ export class DocAnnotations {
             pageMeta,
             original: areaHighlight,
             author: areaHighlight.author,
-            tags: {...(areaHighlight.tags || init.tags)},
+            tags: {...(areaHighlight.tags || {}), ...init.tags},
             immutable: this.isImmutable(areaHighlight.author),
         };
 
@@ -206,7 +207,7 @@ export class DocAnnotations {
             original: textHighlight,
             author: textHighlight.author,
             immutable: this.isImmutable(textHighlight.author),
-            tags: {...(textHighlight.tags || init.tags)},
+            tags: {...(textHighlight.tags || {}), ...init.tags},
             img: undefined
         };
 

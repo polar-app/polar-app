@@ -32,6 +32,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
+import {Analytics} from "../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -129,9 +130,14 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
             await this.userTagsDB?.commit();
         };
 
+        const doAnalytics = () => {
+            Analytics.event2('datastore-user-tags-migrated');
+        };
+
         const onSuccess = async () => {
             await doCommitUserTagsDB();
             await markMigrationCompleted();
+            doAnalytics();
         };
 
         log.info("Performing init of userTags");
@@ -139,6 +145,11 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         try {
 
             const docMetaRefs = await this.getDocMetaRefs();
+
+            if (docMetaRefs.length === 0) {
+                // this is a new user so we don't actually have any work
+                return;
+            }
 
             for (const docMetaRef of docMetaRefs) {
 
