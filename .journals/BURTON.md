@@ -66,6 +66,8 @@
         - Should objects inherit the tags of their parent?
         
     - Should comments have tags?
+    
+    - Should we show the tags for comments?
 
     
     - 
