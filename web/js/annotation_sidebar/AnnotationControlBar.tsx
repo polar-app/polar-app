@@ -146,6 +146,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         <ChangeTextHighlightButton/>
 
                         <TagInput placement="bottom"
+                                  container="#annotation-manager"
                                   className='ml-1 p-1 text-muted'
                                   availableTags={this.props.tagsProvider()}
                                   existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}

@@ -156,6 +156,7 @@ export class TagInput extends React.Component<IProps, IState> {
                              width: '500px',
                              maxWidth: 'calc(100vw - 5px)'
                          }}
+                         container={this.props.container}
                          className="tag-input-popover shadow">
 
                     <PopoverBody style={Styles.popover}
@@ -302,6 +303,8 @@ export class TagInput extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
+
+    readonly container?: string;
 
     readonly size?: 'sm' | 'md' | 'lg';
 
