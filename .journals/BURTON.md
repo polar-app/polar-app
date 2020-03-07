@@ -57,7 +57,24 @@
     - TODO: I need to implement deletes and removing all the tags on all the
       docInfos and annotations and then persisting things back out.
 
+    - Should flashcards have tags?
+        - Should objects inherit the tags of their parent?
+        
+    - Should comments have tags?
+
+    - The spacing in the document repository is broken due to the tag button I think
     
+    - 
+       
+## Things to test:
+
+    - If I update the tag on the doc, make sure all the dependent annotations 
+      update as well.
+      
+    - make sure migration of user tags works without cloud sync being used
+    
+            
+        
       
 # 2020-03-04
 
