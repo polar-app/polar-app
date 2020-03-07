@@ -72,6 +72,7 @@ namespace devices {
                     <TagInput availableTags={props.tagsProvider()}
                               existingTags={existingTags}
                               relatedTags={props.relatedTags}
+                              className="m-0 p-0 doc-button doc-button-inactive"
                               onChange={(tags) => props.dispatchOnDocTagged(tags)}/>
 
                 </DocButton>
