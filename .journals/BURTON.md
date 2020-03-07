@@ -47,12 +47,12 @@
 ## TagsDB 
 
     - DONE: I have a new UserTagsDB which merges user tags with the new write
-    through system so that we can have ONE view of tags at a high level.
+      through system so that we can have ONE view of tags at a high level.
 
     - DONE: need to update the UI in the annotation sidebar to support tags
       for annotations.
 
-    - TODO: better to migrate the EXISTING tags... 
+    - DONE: migrate the EXISTING tags... 
 
     - TODO: I need to implement deletes and removing all the tags on all the
       docInfos and annotations and then persisting things back out.
