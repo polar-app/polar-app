@@ -54,6 +54,11 @@
 
     - DONE: migrate the EXISTING tags... 
 
+    - DONE: The spacing in the document repository is broken due to the tag button I think
+
+    - DONE: the annotation repo does NOT properly filter by tag when they are
+      applied to the annotations.
+
     - TODO: I need to implement deletes and removing all the tags on all the
       docInfos and annotations and then persisting things back out.
 
@@ -62,7 +67,6 @@
         
     - Should comments have tags?
 
-    - The spacing in the document repository is broken due to the tag button I think
     
     - 
        
