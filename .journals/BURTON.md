@@ -45,23 +45,20 @@
       width of the page is not adjusted.
   
 ## TagsDB 
-    - how do we migrate / index existing docs?
+
+    - DONE: I have a new UserTagsDB which merges user tags with the new write
+    through system so that we can have ONE view of tags at a high level.
+
+    - DONE: need to update the UI in the annotation sidebar to support tags
+      for annotations.
+
+    - TODO: better to migrate the EXISTING tags... 
+
+    - TODO: I need to implement deletes and removing all the tags on all the
+      docInfos and annotations and then persisting things back out.
+
     
-        - Build the index in memory, then only persist it once we have read
-          all the documents in , then commit it periodically?
-          
-          - In fact, we CAN NOT do this because we dont' read the docMeta on init
-            right?  THAT is where the tags are stored. 
-
-        - Just say fuck it for now and only work with NEW tags? 
-
-    - investigate the current TagsDB object
-    
-    - TODO:
-        - UserTags and TagsDB need to be unified I think... this way deletes 
-          work easily
-            - FIXME: metadata in UserTags needs to work too.
-
+      
 # 2020-03-04
 
 ## TagDB design
