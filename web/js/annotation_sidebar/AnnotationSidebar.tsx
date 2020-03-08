@@ -187,14 +187,15 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
                 <div style={{display: 'flex'}}>
 
-                    <div className="mt-auto mb-auto mr-1">
-                        <TagInput placement="bottom"
-                                  size="md"
-                                  className='text-muted border'
-                                  availableTags={props.tagsProvider()}
-                                  existingTags={() => props.doc.docInfo.tags ? Object.values(props.doc.docInfo.tags) : []}
-                                  onChange={(tags) => onTagged(tags)}/>
-                    </div>
+                    {/*<div className="mt-auto mb-auto mr-1">*/}
+                    {/*    <TagInput placement="bottom"*/}
+                    {/*              container="#annotation-manager"*/}
+                    {/*              size="md"*/}
+                    {/*              className='text-muted border'*/}
+                    {/*              availableTags={props.tagsProvider()}*/}
+                    {/*              existingTags={() => props.doc.docInfo.tags ? Object.values(props.doc.docInfo.tags) : []}*/}
+                    {/*              onChange={(tags) => onTagged(tags)}/>*/}
+                    {/*</div>*/}
 
                     <div className="mt-auto mb-auto">
                         <ExportButton onExport={(format) => props.onExport(format)}/>
@@ -235,7 +236,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         this.docAnnotationIndexManager
             = new DocAnnotationIndexManager(DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider),
-                                            this.docAnnotationIndex, annotations => {
+                                            this.docAnnotationIndex,
+                                            annotations => {
 
                 this.setState({
                     data: annotations,
@@ -280,10 +282,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async buildInitialAnnotations() {
 
+        const {docMeta} = this.props.doc;
+
         const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
         const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
                                                                           this.docAnnotationIndex,
-                                                                          this.props.doc.docMeta);
+                                                                          docMeta);
 
         this.docAnnotationIndex.put(...docAnnotations);
 
@@ -292,6 +296,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
     }
 
     private async registerListenerForPrimaryDocMeta() {
+
+        // FIXME: no updates are being handled when the document changes in
+        // firebase
 
         const {docMeta} = this.props.doc;
 

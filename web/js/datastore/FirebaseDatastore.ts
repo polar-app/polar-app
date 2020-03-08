@@ -23,7 +23,7 @@ import {
     SnapshotResult,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
-    WriteOpts
+    WriteOpts, DocMetaSnapshotOpts, DocMetaSnapshotResult
 } from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -293,8 +293,40 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts): Promise<DocMetaSnapshotResult> {
+
+        const {fingerprint} = opts;
+
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
+
+        const ref = this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .doc(id);
+
+        const onNext = (snapshot: firebase.firestore.DocumentSnapshot) => {
+
+            const source = snapshot.metadata.fromCache ? 'cache' : 'server';
+
+            const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
+
+            opts.onSnapshot({data: recordHolder?.value?.value, source});
+
+        };
+
+        const onError = (err: Error) => {
+            if (opts.onError) {
+                opts.onError(err);
+            }
+        };
+
+        const unsubscriber = ref.onSnapshot(snapshot => onNext(snapshot), err => onError(err));
+
+        return {unsubscriber};
+
+    }
+
     /**
-     * Get the DocMeta if from teh raw docID encoded into the users account.
+     * Get the DocMeta if from the raw docID encoded into the users account.
      */
     public async getDocMetaDirectly(id: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
 
@@ -309,6 +341,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const preferredSource = opts.preferredSource || this.preferredSource();
 
             if (preferredSource === 'cache') {
+
+                // TODO: migrate this to cache-or-server or somthing along
+                // those lines.
 
                 // Firebase supports three cache strategies.  The first
                 // (default) is server with fall back to cache but what we
