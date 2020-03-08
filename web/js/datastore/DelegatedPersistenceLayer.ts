@@ -1,19 +1,27 @@
-import {BinaryFileData, Datastore, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from './Datastore';
-import {DeleteResult} from './Datastore';
-import {WriteFileOpts} from './Datastore';
-import {GetFileOpts} from './Datastore';
-import {DatastoreOverview} from './Datastore';
-import {DatastoreCapabilities} from './Datastore';
-import {DatastoreInitOpts} from './Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DatastoreCapabilities,
+    DatastoreInitOpts,
+    DatastoreOverview,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
+    ErrorListener,
+    GetFileOpts,
+    SnapshotResult,
+    WriteFileOpts
+} from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
-import {PersistenceLayer, PersistenceLayerID} from './PersistenceLayer';
-import {DocMeta} from '../metadata/DocMeta';
-import {WriteOpts} from './PersistenceLayer';
+import {
+    PersistenceLayer,
+    PersistenceLayerID,
+    WriteOpts
+} from './PersistenceLayer';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
@@ -61,6 +69,10 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
 
     public async getDocMeta(fingerprint: string): Promise<IDocMeta| undefined> {
         return this.delegate.getDocMeta(fingerprint);
+    }
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+        return this.delegate.getDocMetaSnapshot(opts);
     }
 
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {

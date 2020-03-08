@@ -293,7 +293,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts): Promise<DocMetaSnapshotResult> {
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
         const {fingerprint} = opts;
 
@@ -746,7 +746,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         return {
             networkLayers: NetworkLayers.WEB,
-            permission: {mode: 'rw'}
+            permission: {mode: 'rw'},
+            snapshots: true
         };
 
     }

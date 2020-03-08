@@ -6,8 +6,8 @@ import {
     DatastoreCapabilities,
     DatastoreInitOpts,
     DatastoreOverview,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
+    DeleteResult, DocMetaSnapshot,
+    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     GroupIDStr,
@@ -23,6 +23,8 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {UserTagsDB} from "./UserTagsDB";
+import { NULL_FUNCTION } from 'polar-shared/src/util/Functions';
+import {DocMetas} from "../metadata/DocMetas";
 
 export interface PersistenceLayer {
 
@@ -44,6 +46,8 @@ export interface PersistenceLayer {
     contains(fingerprint: string): Promise<boolean>;
 
     getDocMeta(fingerprint: string): Promise<IDocMeta| undefined>;
+
+    getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult>;
 
     getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>>;
 
@@ -94,6 +98,38 @@ export interface PersistenceLayer {
     capabilities(): DatastoreCapabilities;
 
     getUserTagsDB(): Promise<UserTagsDB>;
+
+}
+
+export abstract class AbstractPersistenceLayer {
+
+    public readonly abstract datastore: Datastore;
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        // TODO: the only thing this actually needs to do , by default, is to
+        // marshal the string to IDocMeta and then we are done
+
+        const onSnapshot = (snapshot: DocMetaSnapshot<string>) => {
+
+            if (snapshot.data) {
+                const docMeta = DocMetas.deserialize(snapshot.data, opts.fingerprint);
+
+                opts.onSnapshot({data: docMeta, source: snapshot.source});
+
+            } else {
+                opts.onSnapshot({data: undefined, source: snapshot.source});
+            }
+
+        };
+
+        return this.datastore.getDocMetaSnapshot({
+            fingerprint: opts.fingerprint,
+            onSnapshot: snapshot => onSnapshot(snapshot),
+            onError: opts.onError
+        });
+
+    }
 
 }
 

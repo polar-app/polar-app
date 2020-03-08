@@ -2,7 +2,11 @@ import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
-import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
+import {
+    AbstractPersistenceLayer,
+    PersistenceLayer,
+    PersistenceLayerID
+} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from '../Datastore';
@@ -25,7 +29,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {UserTagsDB} from "../UserTagsDB";
 
-export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
+export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersistenceLayer implements ListenablePersistenceLayer {
 
     public abstract readonly id: PersistenceLayerID;
 
@@ -39,6 +43,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     public readonly delegate: PersistenceLayer;
 
     protected constructor(delegate: PersistenceLayer) {
+        super();
         this.datastore = delegate.datastore;
         this.delegate = delegate;
     }

@@ -17,7 +17,11 @@ import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {PersistenceLayer, WriteOpts} from './PersistenceLayer';
+import {
+    AbstractPersistenceLayer,
+    PersistenceLayer,
+    WriteOpts
+} from './PersistenceLayer';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from './DocFileMeta';
@@ -42,7 +46,7 @@ const log = Logger.create();
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-export class DefaultPersistenceLayer implements PersistenceLayer {
+export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements PersistenceLayer {
 
     public readonly id = 'default';
 
@@ -55,6 +59,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
     private initLatch = new Latch();
 
     constructor(datastore: Datastore) {
+        super();
         this.datastore = datastore;
         this.datastoreMutations = DatastoreMutations.create('written');
     }

@@ -28,9 +28,9 @@ import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
-export interface DocMetaSnapshot {
+export interface DocMetaSnapshot<T> {
 
-    readonly data: string | undefined;
+    readonly data: T | undefined;
 
     /**
      * Where this data was loaded from
@@ -39,7 +39,7 @@ export interface DocMetaSnapshot {
 
 }
 
-export interface DocMetaSnapshotOpts {
+export interface DocMetaSnapshotOpts<T> {
 
     /**
      * The fingerprint of the document we want to fetch.
@@ -50,7 +50,7 @@ export interface DocMetaSnapshotOpts {
      * Called for each document update.  The value (as a string) of the DocMeta
      * or undefined if the document is not in the datastore.
      */
-    readonly onSnapshot: (snapshot: DocMetaSnapshot) => void;
+    readonly onSnapshot: (snapshot: DocMetaSnapshot<T>) => void;
 
     /**
      * Called on any error on updates when fetching snapshots.
@@ -101,7 +101,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Get DocMeta from this datastore and send snapshots when we have updates over time.
      */
-    getDocMetaSnapshot(opts: DocMetaSnapshotOpts): Promise<DocMetaSnapshotResult>;
+    getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult>;
 
     /**
      * Return an array of {DocMetaRef}s currently in the repository.
@@ -168,6 +168,11 @@ export interface DatastoreCapabilities {
 
     readonly permission: DatastorePermission;
 
+    /**
+     * True if this datastore supports snapshots.
+     */
+    readonly snapshots?: true;
+
 }
 
 export interface DatastoreInfo {
@@ -210,7 +215,7 @@ export abstract class AbstractDatastore {
      * Default implementation provides no updates.  Used by default with
      * DiskDatastore, MemoryDatastore, etc.
      */
-    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts): Promise<DocMetaSnapshotResult> {
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
         try {
 
