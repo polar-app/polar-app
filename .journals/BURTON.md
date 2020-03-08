@@ -66,12 +66,13 @@
         - Should objects inherit the tags of their parent?
         
     - Should comments have tags?
-    
-    - Should we show the tags for comments?
 
-    
-    - 
-       
+    - If I add a tag to a doc in the repository, the tags in the viewer are not 
+      updated.  
+
+    - The viewer doesn't seem to get any updates from firebase.  We will have to 
+      figure out how to unify this datastore with the disk datastore.
+
 ## Things to test:
 
     - If I update the tag on the doc, make sure all the dependent annotations 
