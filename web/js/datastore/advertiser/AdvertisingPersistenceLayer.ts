@@ -46,6 +46,7 @@ export class AdvertisingPersistenceLayer
     protected broadcastEvent(event: PersistenceLayerEvent): void {
 
         DocInfoAdvertiser.send({
+            docMeta: event.docMeta,
             docInfo: event.docInfo,
             advertisementType: event.eventType
         });
@@ -56,15 +57,16 @@ export class AdvertisingPersistenceLayer
 
         this.dispatchEvent({
 
-           docMetaRef: <DocMetaRef> {
-               fingerprint: docInfoAdvertisement.docInfo.fingerprint,
-               filename: docInfoAdvertisement.docInfo.filename,
-               docInfo: docInfoAdvertisement.docInfo
-           },
-           docInfo: docInfoAdvertisement.docInfo,
-           eventType: docInfoAdvertisement.advertisementType
+            docMetaRef: <DocMetaRef> {
+                fingerprint: docInfoAdvertisement.docInfo.fingerprint,
+                filename: docInfoAdvertisement.docInfo.filename,
+                docInfo: docInfoAdvertisement.docInfo
+            },
+            docMeta: docInfoAdvertisement.docMeta,
+            docInfo: docInfoAdvertisement.docInfo,
+            eventType: docInfoAdvertisement.advertisementType
 
-       });
+        });
 
     }
 

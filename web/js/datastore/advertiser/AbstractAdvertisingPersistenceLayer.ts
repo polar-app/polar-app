@@ -9,7 +9,15 @@ import {
 } from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from '../Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    ErrorListener,
+    SnapshotResult
+} from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
@@ -56,13 +64,30 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
         return this.delegate.stop();
     }
 
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        if (this.datastore.capabilities().snapshots) {
+            // for firebase/cloud so we would just rely on these events
+            return super.getDocMetaSnapshot(opts);
+        }
+
+        const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
+            opts.onSnapshot({data: event.docMeta, source: 'server'});
+        });
+
+        return {
+            unsubscriber: () => releasable.release()
+        };
+
+    }
+
     public addEventListener(listener: PersistenceLayerListener): Releaseable {
         return this.reactor.addEventListener(listener);
     }
 
-    public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void {
+    public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): Releaseable {
 
-        this.addEventListener((event) => {
+        return this.addEventListener((event) => {
 
             if (fingerprint === event.docInfo.fingerprint) {
                 listener(event);
@@ -95,6 +120,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
 
         this.broadcastEvent({
             docInfo,
+            docMeta,
             docMetaRef: {
                 fingerprint: docMeta.docInfo.fingerprint
             },
@@ -133,6 +159,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
         const result = this.delegate.delete(docMetaFileRef);
 
         this.broadcastEvent({
+            docMeta: undefined,
             docInfo: docMetaFileRef.docInfo,
             docMetaRef: {
                 fingerprint: docMetaFileRef.fingerprint
