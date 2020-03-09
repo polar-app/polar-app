@@ -24,7 +24,11 @@ import {FeatureToggle} from "../ui/FeatureToggle";
 import {InputFilter} from '../ui/input_filter/InputFilter2';
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
-import {DatastoreCapabilities} from "../datastore/Datastore";
+import {
+    DatastoreCapabilities,
+    DocMetaSnapshot,
+    DocMetaSnapshotError
+} from "../datastore/Datastore";
 import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
@@ -282,16 +286,42 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async buildInitialAnnotations() {
 
-        const {docMeta} = this.props.doc;
+        const handleDocMeta = async (docMeta: IDocMeta) => {
 
-        const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
-        const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
-                                                                          this.docAnnotationIndex,
-                                                                          docMeta);
+            const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
+            const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
+                this.docAnnotationIndex,
+                docMeta);
 
-        this.docAnnotationIndex.put(...docAnnotations);
+            this.docAnnotationIndex.put(...docAnnotations);
 
-        this.reload();
+            this.reload();
+
+
+        };
+
+        const docMeta = this.props.doc.docMeta;
+        await handleDocMeta(docMeta);
+
+        const persistenceLayer = this.props.persistenceLayerProvider();
+
+        const onSnapshot = (snapshot: DocMetaSnapshot<IDocMeta>) => {
+            if (snapshot.data) {
+                handleDocMeta(docMeta)
+                    .catch(err => log.error("Unable to handle snapshot: ", err));
+            }
+        };
+
+        const onError = (err: DocMetaSnapshotError) => {
+            log.error("Could not handle snapshot: ", err);
+            err.unsubscriber();
+        };
+
+        await persistenceLayer.getDocMetaSnapshot({
+            fingerprint: docMeta.docInfo.fingerprint,
+            onSnapshot: snapshot => onSnapshot(snapshot),
+            onError: err => onError(err)
+        });
 
     }
 

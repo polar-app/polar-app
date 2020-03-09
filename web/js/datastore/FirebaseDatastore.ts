@@ -303,23 +303,25 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
+        let unsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
+
         const onNext = (snapshot: firebase.firestore.DocumentSnapshot) => {
 
             const source = snapshot.metadata.fromCache ? 'cache' : 'server';
 
             const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
-            opts.onSnapshot({data: recordHolder?.value?.value, source});
+            opts.onSnapshot({data: recordHolder?.value?.value, source, unsubscriber});
 
         };
 
         const onError = (err: Error) => {
             if (opts.onError) {
-                opts.onError(err);
+                opts.onError({err, unsubscriber});
             }
         };
 
-        const unsubscriber = ref.onSnapshot(snapshot => onNext(snapshot), err => onError(err));
+        unsubscriber = ref.onSnapshot(snapshot => onNext(snapshot), err => onError(err));
 
         return {unsubscriber};
 

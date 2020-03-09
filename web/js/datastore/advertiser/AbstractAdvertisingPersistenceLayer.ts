@@ -72,7 +72,13 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
         }
 
         const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
-            opts.onSnapshot({data: event.docMeta, source: 'server'});
+
+            opts.onSnapshot({
+                data: event.docMeta,
+                source: 'server',
+                unsubscriber: () => releasable.release()
+            });
+
         });
 
         return {

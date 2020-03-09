@@ -107,23 +107,20 @@ export abstract class AbstractPersistenceLayer {
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
 
-        // TODO: the only thing this actually needs to do , by default, is to
-        // marshal the string to IDocMeta and then we are done
-
         const onSnapshot = (snapshot: DocMetaSnapshot<string>) => {
 
             if (snapshot.data) {
                 const docMeta = DocMetas.deserialize(snapshot.data, opts.fingerprint);
 
-                opts.onSnapshot({data: docMeta, source: snapshot.source});
+                opts.onSnapshot({...snapshot, data: docMeta});
 
             } else {
-                opts.onSnapshot({data: undefined, source: snapshot.source});
+                opts.onSnapshot({...snapshot, data: undefined});
             }
 
         };
 
-        return this.datastore.getDocMetaSnapshot({
+        return await this.datastore.getDocMetaSnapshot({
             fingerprint: opts.fingerprint,
             onSnapshot: snapshot => onSnapshot(snapshot),
             onError: opts.onError

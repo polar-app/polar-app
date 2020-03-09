@@ -37,7 +37,18 @@ export interface DocMetaSnapshot<T> {
      */
     readonly source: 'server' | 'cache';
 
+    readonly unsubscriber: SnapshotUnsubscriber;
+
 }
+
+export interface DocMetaSnapshotError {
+
+    readonly err: Error;
+
+    readonly unsubscriber: SnapshotUnsubscriber;
+
+}
+
 
 export interface DocMetaSnapshotOpts<T> {
 
@@ -55,7 +66,7 @@ export interface DocMetaSnapshotOpts<T> {
     /**
      * Called on any error on updates when fetching snapshots.
      */
-    readonly onError?: (err: Error) => void;
+    readonly onError?: (err: DocMetaSnapshotError) => void;
 
     /**
      * The source of the snapshot, when applicable.  Can be server or cache
@@ -217,11 +228,17 @@ export abstract class AbstractDatastore {
      */
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
+        const unsubscriber = NULL_FUNCTION;
+
         try {
 
             const data = await this.getDocMeta(opts.fingerprint);
 
-            opts.onSnapshot({data: data || undefined, source: 'server'});
+            opts.onSnapshot({
+                data: data || undefined,
+                source: 'server',
+                unsubscriber
+            });
 
         } catch (e) {
 
@@ -232,7 +249,7 @@ export abstract class AbstractDatastore {
         }
 
         return {
-            unsubscriber: NULL_FUNCTION
+            unsubscriber
         };
 
     }
