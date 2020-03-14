@@ -18,8 +18,41 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IComment} from 'polar-shared/src/metadata/IComment';
+import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
+
+export type AnnotationCallback = (pageMeta: IPageMeta,
+                                  annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
+                                  type: AnnotationType) => void;
 
 export class DocMetas {
+
+    public static annotations(docMeta: IDocMeta, callback: AnnotationCallback) {
+
+        for (const pageMeta of Object.values(docMeta.pageMetas)) {
+
+            for (const annotation of Object.values(pageMeta.textHighlights || {})) {
+                callback(pageMeta, annotation, AnnotationType.TEXT_HIGHLIGHT);
+            }
+
+            for (const annotation of Object.values(pageMeta.areaHighlights || {})) {
+                callback(pageMeta, annotation, AnnotationType.AREA_HIGHLIGHT);
+            }
+
+            for (const annotation of Object.values(pageMeta.flashcards || {})) {
+                callback(pageMeta, annotation, AnnotationType.FLASHCARD);
+            }
+
+            for (const annotation of Object.values(pageMeta.comments || {})) {
+                callback(pageMeta, annotation, AnnotationType.COMMENT);
+            }
+
+        }
+
+    }
 
     /**
      * Create the basic DocInfo structure that we can use with required / basic
@@ -232,7 +265,6 @@ export class DocMetas {
         }
 
     }
-
 
     /**
      * Force a write of the DocMeta

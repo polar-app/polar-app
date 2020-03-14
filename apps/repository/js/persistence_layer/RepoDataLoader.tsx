@@ -6,6 +6,7 @@ import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
 import {AppTags} from "./AppTags";
 import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
+import {TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 
 export class RepoDataLoader extends React.Component<IProps, IState> {
 
@@ -30,8 +31,9 @@ export class RepoDataLoader extends React.Component<IProps, IState> {
 
 function createSnapshot(repoDocMetaManager: RepoDocMetaManager): AppTags {
 
-    const docTags = () => repoDocMetaManager.repoDocInfoIndex.toTagDescriptors();
-    const annotationTags = () => repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors();
+    const docTags = () => TagDescriptors.filterWithMembers(repoDocMetaManager.repoDocInfoIndex.toTagDescriptors());
+
+    const annotationTags = () => TagDescriptors.filterWithMembers(repoDocMetaManager.repoDocAnnotationIndex.toTagDescriptors());
 
     return {
         docTags, annotationTags

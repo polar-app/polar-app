@@ -123,7 +123,8 @@ export class DocAnnotations {
             author: comment.author,
             immutable: this.isImmutable(comment.author),
             color: undefined,
-            img: undefined
+            img: undefined,
+            tags: {...(comment.tags || {}), ...init.tags},
         };
 
     }
