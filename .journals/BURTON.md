@@ -1,3 +1,23 @@
+# 2020-03-14
+
+When deleting a tag, the annotations are also updated but now we're given the 
+event back SLOWLY, not immediately, which is very unfortunate.  
+
+So still left to fix:
+
+- the annotation viewer isn't being updated
+- the document viewer isn't being updated fast enough.
+
+
+# 2020-03-10
+
+Now the big issues seems to be that when I change an annotation that it will
+replicate it locally again. I think this is a bug with the event duplicate 
+detector and it's not seeing that the record on the server is NEWER than the
+local one.
+
+- the table layout is still wrong too... 
+
 # 2020-03-06
 
 - I worked on the SEO system so that everything has a unique slug and we 
@@ -62,25 +82,38 @@
     - TODO: I need to implement deletes and removing all the tags on all the
       docInfos and annotations and then persisting things back out.
 
+    - DONE: If I add a tag to a doc in the repository, the tags in the viewer
+      are not updated.
+
+    - DONE: The viewer doesn't seem to get any updates from firebase.  We will
+      have to figure out how to unify this datastore with the disk datastore.
+
+    - The tag popover doesn't position itself properly to the left of the tab
+      button
+    
+    - PersistenceLayerMutator needs to properly delete tags from any annotation 
+      type with a 'tags' property... 
+
     - Should flashcards have tags?
         - Should objects inherit the tags of their parent?
         
     - Should comments have tags?
 
-    - If I add a tag to a doc in the repository, the tags in the viewer are not 
-      updated.  
+    - the annotation viewer doesn't have updated UserTags I think...
+    
+    - NOW the main issue is that we're replicating to Firebase, and then the data
+      is getting re-replicated BACK locally.. 
 
-    - The viewer doesn't seem to get any updates from firebase.  We will have to 
-      figure out how to unify this datastore with the disk datastore.
 
-## Things to test:
+
+## Things to test before release:
 
     - If I update the tag on the doc, make sure all the dependent annotations 
       update as well.
       
     - make sure migration of user tags works without cloud sync being used
     
-            
+    - that building the new tags db works for local + cloud + web           
         
       
 # 2020-03-04
