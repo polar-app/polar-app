@@ -287,6 +287,10 @@ export class TagInputControl extends React.Component<IProps, IState> {
                 <Button id={this.id}
                         onClick={() => this.activate()}
                         color="clear"
+                        size={this.props.size}
+                        style={{
+                            lineHeight: 1.0
+                        }}
                         className={this.props.className || ''}>
                     <span className="fas fa-tag"/>
                 </Button>

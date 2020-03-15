@@ -72,6 +72,7 @@ namespace devices {
 
                     <TagInputControl availableTags={props.tagsProvider()}
                                      container="body"
+                                     size="sm"
                                      existingTags={existingTags}
                                      relatedTagsManager={props.relatedTagsManager}
                                      className="m-0 p-0 doc-button doc-button-inactive"
