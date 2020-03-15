@@ -1,12 +1,19 @@
 # 2020-03-14
 
+
 When deleting a tag, the annotations are also updated but now we're given the 
 event back SLOWLY, not immediately, which is very unfortunate.  
 
 So still left to fix:
 
-- the annotation viewer isn't being updated
-- the document viewer isn't being updated fast enough.
+- DONE: the annotation viewer isn't being updated
+- DONE: the document viewer isn't being updated fast enough.
+
+... now the biggest problem we have is placement of the tag input.  I'm 
+going ot migrate all tagging to use the CENTER of the screen plus this will make 
+it better for keyboard navigation too.
+
+    - I just need to build a new widget for this...
 
 
 # 2020-03-10
@@ -88,21 +95,23 @@ local one.
     - DONE: The viewer doesn't seem to get any updates from firebase.  We will
       have to figure out how to unify this datastore with the disk datastore.
 
+    - DONE: PersistenceLayerMutator needs to properly delete tags from any
+      annotation type with a 'tags' property...
+
+    - DONE: the annotation viewer doesn't have updated UserTags I think...
+    
+    - DONE: NOW the main issue is that we're replicating to Firebase, and then the data
+      is getting re-replicated BACK locally.. 
+
+
     - The tag popover doesn't position itself properly to the left of the tab
       button
-    
-    - PersistenceLayerMutator needs to properly delete tags from any annotation 
-      type with a 'tags' property... 
 
     - Should flashcards have tags?
         - Should objects inherit the tags of their parent?
         
     - Should comments have tags?
 
-    - the annotation viewer doesn't have updated UserTags I think...
-    
-    - NOW the main issue is that we're replicating to Firebase, and then the data
-      is getting re-replicated BACK locally.. 
 
 
 
