@@ -59,6 +59,11 @@ and restart Anki.  At this point Polar can sync to Anki properly.
 Note that we used to recommend Anki Connect but we suggest you install Polar
 Connect now which will have more functionality.
 
+# Usage 
+
+Once Polar Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
+within the Document Repository. 
+
 # Issues
 
 ## Firewall
@@ -73,11 +78,6 @@ via TCP to sync your flashcards.
 create note types for "Basic" and "Cloze" otherwise sync will fail.  Changing
 the language doesn't re-create the note types unfortunately.  We're working 
 on a fix for this issue. 
-
-# Usage 
-
-Once Polar Connect is running, go to *Tools | Sync Flashcards to Anki* from 
-within the Document Repository. 
 
 # Limitations
 
