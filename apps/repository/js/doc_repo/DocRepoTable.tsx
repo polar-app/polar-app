@@ -363,7 +363,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
             Header: '',
             headerClassName: "",
             accessor: '',
-            maxWidth: Devices.isDesktop() ? 100 : 35,
+            maxWidth: Devices.isDesktop() ? 110 : 35,
             defaultSortDesc: true,
             resizable: false,
             sortable: false,
