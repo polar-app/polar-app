@@ -1,3 +1,26 @@
+# 2020-03-15
+
+You can now tag from the annotation viewer AND the document viewer.
+
+Now the big issue is that the updates are still too slow, and I think this is 
+because we're not sending 'cached' snapshot events and only those from the 
+server.  
+
+I think this is because we're not updating on 'cache' or 'written' snapshots 
+but we should because we receive them much much faster.
+
+    - Document updates are too slow in firebase mode
+
+    - Should flashcards have tags?
+        - Should objects inherit the tags of their parent?
+        
+    - Should comments have tags?
+
+    - test with 
+
+    - DONE: we have to update comments too BUT we're not properly updating the ID 
+      and guid...
+
 # 2020-03-14
 
 
@@ -103,14 +126,9 @@ local one.
     - DONE: NOW the main issue is that we're replicating to Firebase, and then the data
       is getting re-replicated BACK locally.. 
 
-
-    - The tag popover doesn't position itself properly to the left of the tab
+    - DONE: The tag popover doesn't position itself properly to the left of the tab
       button
 
-    - Should flashcards have tags?
-        - Should objects inherit the tags of their parent?
-        
-    - Should comments have tags?
 
 
 
