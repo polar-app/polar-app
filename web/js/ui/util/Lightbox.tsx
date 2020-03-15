@@ -19,7 +19,6 @@ const LightboxBody = (props: IProps) => (
     }}>
 
         <div style={{
-            backgroundColor: 'var(--primary-background-color)',
             margin: "auto",
         }}>
 
