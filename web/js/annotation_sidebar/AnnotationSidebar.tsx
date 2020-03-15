@@ -33,9 +33,6 @@ import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
-import {TagInput} from "../../../apps/repository/js/TagInput";
-import {RelatedTags} from "../tags/related/RelatedTags";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const log = Logger.create();
 

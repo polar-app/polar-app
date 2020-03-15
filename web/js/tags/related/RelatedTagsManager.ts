@@ -8,7 +8,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
  * much in-memory storage.  Maybe 100k MAX even for massive document
  * collections.
  */
-export class RelatedTags {
+export class RelatedTagsManager {
 
     /**
      * Maps from the tag to the DocIDs for this tag.

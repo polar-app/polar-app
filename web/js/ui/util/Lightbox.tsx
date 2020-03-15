@@ -1,36 +1,57 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-export class Lightbox extends React.Component<IProps> {
+interface IProps  {
+    readonly children: any;
+    readonly container?: string;
+}
 
-    public render() {
+const LightboxBody = (props: IProps) => (
+    <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        zIndex: 9999,
+        display: 'flex'
+    }}>
 
-        return (
-            <div style={{
-                     position: 'absolute',
-                     top: 0,
-                     left: 0,
-                     width: '100%',
-                     height: '100%',
-                     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                     zIndex: 9999,
-                     display: 'flex'
-                 }}>
+        <div style={{
+            backgroundColor: 'var(--primary-background-color)',
+            margin: "auto",
+        }}>
 
-                <div style={{
-                         backgroundColor: 'var(--primary-background-color)',
-                         margin: "auto",
-                     }}>
+            {props.children}
 
-                    {this.props.children}
+        </div>
 
-                </div>
+    </div>
+);
 
-            </div>
+export const Lightbox = (props: IProps) => {
+
+    if (props.container) {
+
+        const element = document.querySelector(props.container)!;
+
+        return ReactDOM.createPortal(
+            <LightboxBody {...props}/>,
+            element
         );
 
     }
 
-}
+    return (
+        <LightboxBody {...props}/>
+    );
 
-interface IProps {
-}
+};
+
+export const Lightbox2 = (props: any) => (
+    <div>
+        {props.children}
+    </div>
+);
+

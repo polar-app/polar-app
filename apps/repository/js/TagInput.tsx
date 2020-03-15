@@ -5,7 +5,7 @@ import {TagOptions} from './TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
+import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
 import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
@@ -87,7 +87,7 @@ export class TagInput extends React.Component<IProps, IState> {
 
     public render() {
 
-        const relatedTagsManager = this.props.relatedTags || new RelatedTags();
+        const relatedTagsManager = this.props.relatedTags || new RelatedTagsManager();
 
         const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
 
@@ -325,7 +325,7 @@ export interface IProps {
     /**
      * The relatedTags index which is updated as the user selects new tags.
      */
-    readonly relatedTags?: RelatedTags;
+    readonly relatedTags?: RelatedTagsManager;
 
     readonly onChange?: (values: ReadonlyArray<Tag>) => void;
 

@@ -31,6 +31,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Analytics} from "../analytics/Analytics";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {TagInput} from "../../../apps/repository/js/TagInput";
+import {TagInputControl} from "../../../apps/repository/js/TagInputControl";
 
 const Styles: IStyleMap = {
 
@@ -145,13 +146,12 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         <ChangeTextHighlightButton/>
 
-                        <TagInput placement="bottom"
-                                  container="#annotation-manager"
-                                  className='ml-1 p-1 text-muted'
-                                  availableTags={this.props.tagsProvider()}
-                                  existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
-                                  // existingTags={() => [{id: 'asdf', label: 'asdf'}]}
-                                  onChange={(tags) => this.onTagged(tags)}/>
+                        <TagInputControl className='ml-1 p-1 text-muted'
+                                         container="body"
+                                         availableTags={this.props.tagsProvider()}
+                                         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
+                                         // existingTags={() => [{id: 'asdf', label: 'asdf'}]}
+                                         onChange={(tags) => this.onTagged(tags)}/>
 
                         <CreateCommentButton/>
 

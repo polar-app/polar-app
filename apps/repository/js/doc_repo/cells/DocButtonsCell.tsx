@@ -4,7 +4,7 @@ import {TagInput} from "../../TagInput";
 import {FlagDocButton} from "../../ui/FlagDocButton";
 import {ArchiveDocButton} from "../../ui/ArchiveDocButton";
 import {DocDropdown} from "../../DocDropdown";
-import {RelatedTags} from "../../../../../web/js/tags/related/RelatedTags";
+import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTagsManager";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {RepoDocInfo} from "../../RepoDocInfo";
@@ -13,6 +13,7 @@ import {Filters} from "../DocRepoFilters";
 import {SelectRowType} from "../DocRepoScreen";
 import {ReactComponents} from "../../../../../web/js/react/ReactComponents";
 import {DeviceRouter} from "../../../../../web/js/ui/DeviceRouter";
+import {TagInputControl} from "../../TagInputControl";
 
 namespace devices {
 
@@ -69,11 +70,12 @@ namespace devices {
 
                 <DocButton>
 
-                    <TagInput availableTags={props.tagsProvider()}
-                              existingTags={existingTags}
-                              relatedTags={props.relatedTags}
-                              className="m-0 p-0 doc-button doc-button-inactive"
-                              onChange={(tags) => props.dispatchOnDocTagged(tags)}/>
+                    <TagInputControl availableTags={props.tagsProvider()}
+                                     container="body"
+                                     existingTags={existingTags}
+                                     relatedTagsManager={props.relatedTagsManager}
+                                     className="m-0 p-0 doc-button doc-button-inactive"
+                                     onChange={(tags) => props.dispatchOnDocTagged(tags)}/>
 
                 </DocButton>
 
@@ -155,7 +157,7 @@ interface IProps {
     readonly getSelected: () => ReadonlyArray<RepoDocInfo>;
     readonly filters: Filters;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
-    readonly relatedTags: RelatedTags;
+    readonly relatedTagsManager: RelatedTagsManager;
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocDeleteRequested: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
