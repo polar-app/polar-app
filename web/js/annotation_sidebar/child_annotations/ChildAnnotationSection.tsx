@@ -10,6 +10,7 @@ import {FlashcardInputFieldsType} from './flashcards/flashcard_input/FlashcardIn
 import {FlashcardActions} from './flashcards/FlashcardActions';
 import {Flashcard} from '../../metadata/Flashcard';
 import {Doc} from '../../metadata/Doc';
+import {Tag} from "polar-shared/src/tags/Tags";
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -39,6 +40,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
             if (child.annotationType === AnnotationType.COMMENT) {
 
                 result.push (<ViewOrEditComment key={child.id}
+                                                tagsProvider={this.props.tagsProvider}
                                                 doc={this.props.doc}
                                                 id={child.id}
                                                 onComment={(html, existingComment) => this.onComment(html, existingComment)}
@@ -46,6 +48,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
             } else {
                 result.push (<ViewOrEditFlashcard key={child.id}
+                                                  tagsProvider={this.props.tagsProvider}
                                                   doc={this.props.doc}
                                                   id={child.id}
                                                   onFlashcard={(flashcardType, fields, existingFlashcard) => this.onFlashcard(flashcardType, fields, existingFlashcard)}
@@ -72,9 +75,8 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
 interface IProps {
 
     readonly doc: Doc;
-
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly parent: DocAnnotation;
-
     readonly docAnnotations: ReadonlyArray<DocAnnotation>;
 
 }

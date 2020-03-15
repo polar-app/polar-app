@@ -6,6 +6,7 @@ import {ViewComment} from "./ViewComment";
 import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
 import {Doc} from '../../../metadata/Doc';
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export class ViewOrEditComment extends React.Component<IProps, IState> {
 
@@ -35,6 +36,7 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
         if (this.state.mode === 'view') {
 
             return <ViewComment comment={this.props.comment}
+                                tagsProvider={this.props.tagsProvider}
                                 doc={this.props.doc}
                                 onEdit={() => this.onEdit()}
                                 editButton={editButton}/>;
@@ -62,6 +64,7 @@ interface IProps {
     readonly doc: Doc;
     readonly comment: DocAnnotation;
     readonly onComment: (html: string, existingComment: Comment) => void;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 interface IState {

@@ -54,8 +54,8 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
                 <div className="muted-color-root">
 
                     <div style={{
-                            borderLeft: `5px solid ${borderColor}`
-                        }}>
+                             borderLeft: `5px solid ${borderColor}`
+                         }}>
 
                         <Image {...props}/>
 
@@ -69,6 +69,7 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
 
                 <div className="comments">
                     <ChildAnnotationSection doc={this.props.doc}
+                                            tagsProvider={this.props.tagsProvider}
                                             parent={annotation}
                                             docAnnotations={annotation.getChildren()}/>
                 </div>

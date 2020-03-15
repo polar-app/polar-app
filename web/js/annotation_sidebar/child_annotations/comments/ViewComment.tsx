@@ -7,6 +7,8 @@ import {Doc} from '../../../metadata/Doc';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
+import { AnnotationTagInputButton } from '../AnnotationTagInputButton';
+import { Tag } from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
@@ -69,6 +71,9 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                         <div style={Styles.barChild} className="flexbar-right muted-color">
 
+                            <AnnotationTagInputButton tagsProvider={this.props.tagsProvider}
+                                                      annotation={this.props.comment}/>
+
                             <NullCollapse open={! comment.immutable}>
                                 {this.props.editButton}
                             </NullCollapse>
@@ -98,6 +103,7 @@ export class ViewComment extends React.Component<IProps, IState> {
 
 }
 interface IProps {
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly doc: Doc;
     readonly comment: DocAnnotation;
     readonly editButton: JSX.Element;

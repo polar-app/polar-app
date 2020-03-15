@@ -30,8 +30,8 @@ import {EditIcon} from "../ui/standard_icons/EditIcon";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Analytics} from "../analytics/Analytics";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {TagInput} from "../../../apps/repository/js/TagInput";
 import {TagInputControl} from "../../../apps/repository/js/TagInputControl";
+import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 
 const Styles: IStyleMap = {
 
@@ -150,7 +150,6 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                          container="body"
                                          availableTags={this.props.tagsProvider()}
                                          existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
-                                         // existingTags={() => [{id: 'asdf', label: 'asdf'}]}
                                          onChange={(tags) => this.onTagged(tags)}/>
 
                         <CreateCommentButton/>
@@ -207,16 +206,13 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         setTimeout(() => {
 
             const {annotation} = this.props;
+            const {docMeta} = annotation;
 
             const updates = {tags: Tags.toMap(tags)};
 
-            if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-                TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, updates);
-            }
-
-            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-                AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, updates);
-            }
+            AnnotationMutations.update(docMeta,
+                                       annotation.annotationType,
+                                       {...annotation.original, ...updates});
 
         }, 1);
 

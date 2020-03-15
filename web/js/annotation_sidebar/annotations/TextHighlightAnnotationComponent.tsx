@@ -79,6 +79,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                             <div className="comments">
                                 <ChildAnnotationSection doc={this.props.doc}
+                                                        tagsProvider={this.props.tagsProvider}
                                                         parent={annotation}
                                                         docAnnotations={annotation.getChildren()}/>
                             </div>
@@ -97,9 +98,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 interface IProps {
 
     readonly tagsProvider: () => ReadonlyArray<Tag>;
-
     readonly doc: Doc;
-
     readonly annotation: DocAnnotation;
 
 }
