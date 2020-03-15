@@ -1,7 +1,6 @@
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocInfo} from '../metadata/DocInfo';
 import {Proxies} from '../proxies/Proxies';
 import {PersistenceLayerManagers} from '../datastore/PersistenceLayerManagers';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
@@ -81,7 +80,12 @@ export class ModelPersister {
                     throw new Error(`Attempt to update incorrect fingerprint: ` + detail);
                 }
 
-                this.docMeta.docInfo = new DocInfo(event.docInfo);
+                // removing this for now as it's causing bugs with the cloud+web
+                // datastores
+                //
+                // DocMetas.withSkippedMutations(this.docMeta, () => {
+                //     this.docMeta.docInfo = new DocInfo(event.docInfo);
+                // });
 
             });
 

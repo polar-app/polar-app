@@ -307,7 +307,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const onSnapshot = (snapshot: DocMetaSnapshot<IDocMeta>) => {
             if (snapshot.data) {
-                handleDocMeta(docMeta)
+                handleDocMeta(snapshot.data)
                     .catch(err => log.error("Unable to handle snapshot: ", err));
             }
         };
