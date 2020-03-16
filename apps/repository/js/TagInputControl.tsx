@@ -157,12 +157,11 @@ const TagInputBody = (props: IRenderProps) => {
                  maxWidth: 'calc(100vw - 5px)',
                  backgroundColor: 'var(--primary-background-color)',
                  color: 'var(--primary-text-color)',
-                 borderRadius: '5px',
-                 overflow: 'hidden'
+                 borderRadius: '5px'
              }}
              className="">
 
-            <div className="bg-white p-2">
+            <div className="p-2">
 
                 <div className="pt-1 pb-1">
                     <strong>Assign tags:</strong>
