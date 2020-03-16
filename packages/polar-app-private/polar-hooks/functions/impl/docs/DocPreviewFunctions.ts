@@ -25,6 +25,9 @@ export interface CoreDocMetadata {
     readonly nrPages?: number;
 }
 
+// TODO:
+//  - submit it to prerender.io
+
 export class CoreDocMetadatas {
 
     private static async fetchPDFMetadata(importedDoc: ImportedDoc): Promise<CoreDocMetadata> {
