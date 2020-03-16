@@ -744,14 +744,25 @@ export interface SnapshotProgress extends Readonly<Progress> {
 }
 
 /**
- * Only use one provider, either dataProvider, docMetaProvider, or
- * docInfoProvider, whichever is the most efficient and only read once ideally.
+ * A minimal DocMetaMutation that only has the fields we need.
  */
-export interface DocMetaMutation {
+export interface MinimalDocMetaMutation {
 
     readonly fingerprint: string;
 
     readonly mutationType: MutationType;
+
+    readonly docMetaProvider: AsyncProvider<IDocMeta>;
+
+    readonly docInfoProvider: AsyncProvider<IDocInfo>;
+
+}
+
+/**
+ * Only use one provider, either dataProvider, docMetaProvider, or
+ * docInfoProvider, whichever is the most efficient and only read once ideally.
+ */
+export interface DocMetaMutation extends MinimalDocMetaMutation {
 
     readonly docMetaFileRefProvider: AsyncProvider<DocMetaFileRef>;
 
@@ -760,10 +771,6 @@ export interface DocMetaMutation {
      * read/write directly to the Datastore without mutating anything.
      */
     readonly dataProvider: AsyncProvider<string | null>;
-
-    readonly docMetaProvider: AsyncProvider<IDocMeta>;
-
-    readonly docInfoProvider: AsyncProvider<IDocInfo>;
 
 }
 

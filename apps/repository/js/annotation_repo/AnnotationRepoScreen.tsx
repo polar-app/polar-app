@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {RepoDocMetaLoader, RepoDocMetaUpdater} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
@@ -55,12 +55,15 @@ const AnnotationsList = (props: AnnotationsListProps) => (
 
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
     readonly repoAnnotation?: IDocAnnotation;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 const AnnotationPreview = (props: AnnotationsPreviewProps) => (
     <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                           repoDocMetaUpdater={props.repoDocMetaUpdater}
                            tagsProvider={props.tagsProvider}
                            repoAnnotation={props.repoAnnotation}/>
 );
@@ -139,7 +142,8 @@ namespace main {
             {
                 id: 'dock-panel-right',
                 type: 'grow',
-                component: <AnnotationPreview {...props}/>
+                component: <AnnotationPreview repoDocMetaUpdater={props.repoDocMetaLoader}
+                                              {...props}/>
             }
         ]}/>
     );
@@ -165,6 +169,7 @@ namespace main {
                 id: 'dock-panel-right',
                 type: 'grow',
                 component: <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                                                  repoDocMetaUpdater={props.repoDocMetaLoader}
                                                   tagsProvider={props.tagsProvider}
                                                   repoAnnotation={props.repoAnnotation}/>
 

@@ -77,11 +77,11 @@ const log = Logger.create();
 export class RepositoryApp {
 
     private readonly persistenceLayerManager = new PersistenceLayerManager();
-    private readonly repoDocInfoManager: RepoDocMetaManager;
+    private readonly repoDocMetaManager: RepoDocMetaManager;
     private readonly repoDocInfoLoader: RepoDocMetaLoader;
 
     constructor() {
-        this.repoDocInfoManager = new RepoDocMetaManager(this.persistenceLayerManager);
+        this.repoDocMetaManager = new RepoDocMetaManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
     }
 
@@ -178,7 +178,7 @@ export class RepositoryApp {
             return (
                 <Cached>
                     <AuthRequired authStatus={authStatus}>
-                        <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
+                        <PersistenceLayerApp repoDocMetaManager={this.repoDocMetaManager}
                                              repoDocMetaLoader={this.repoDocInfoLoader}
                                              persistenceLayerManager={this.persistenceLayerManager}
                                              render={(docRepo) =>
@@ -187,7 +187,7 @@ export class RepositoryApp {
                                            tags={docRepo.docTags}
                                            docRepo={docRepo}
                                            updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                           repoDocMetaManager={this.repoDocInfoManager}
+                                           repoDocMetaManager={this.repoDocMetaManager}
                                            repoDocMetaLoader={this.repoDocInfoLoader}/>
                         }/>
                     </AuthRequired>
@@ -213,7 +213,7 @@ export class RepositoryApp {
             return (
                 <Cached>
                     <AuthRequired authStatus={authStatus}>
-                        <PersistenceLayerApp repoDocMetaManager={this.repoDocInfoManager}
+                        <PersistenceLayerApp repoDocMetaManager={this.repoDocMetaManager}
                                              repoDocMetaLoader={this.repoDocInfoLoader}
                                              persistenceLayerManager={this.persistenceLayerManager}
                                              render={(props) =>
@@ -221,7 +221,7 @@ export class RepositoryApp {
                                                   persistenceLayerProvider={persistenceLayerProvider}
                                                   tags={props.annotationTags}
                                                   updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                                  repoDocMetaManager={this.repoDocInfoManager}
+                                                  repoDocMetaManager={this.repoDocMetaManager}
                                                   repoDocMetaLoader={this.repoDocInfoLoader}
                                                   syncBarProgress={syncBarProgress}/>
                         }/>
@@ -268,7 +268,7 @@ export class RepositoryApp {
             <AuthRequired authStatus={authStatus}>
                 <StatsScreen persistenceLayerProvider={persistenceLayerProvider}
                              persistenceLayerController={persistenceLayerController}
-                             repoDocMetaManager={this.repoDocInfoManager}/>
+                             repoDocMetaManager={this.repoDocMetaManager}/>
             </AuthRequired>
         );
 
@@ -296,7 +296,7 @@ export class RepositoryApp {
                 <AuthRequired authStatus={authStatus}>
                     <CreateGroupScreen persistenceLayerProvider={persistenceLayerProvider}
                                        persistenceLayerController={persistenceLayerController}
-                                       repoDocMetaManager={this.repoDocInfoManager}/>
+                                       repoDocMetaManager={this.repoDocMetaManager}/>
                 </AuthRequired>
             );
         };
@@ -499,9 +499,9 @@ export class RepositoryApp {
             for (const mutation of event.mutations) {
 
                 if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.repoDocInfoManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
+                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
                 } else {
-                    this.repoDocInfoManager.updateFromRepoDocMeta(mutation.fingerprint);
+                    this.repoDocMetaManager.updateFromRepoDocMeta(mutation.fingerprint, undefined);
                 }
 
             }
@@ -570,7 +570,7 @@ export class RepositoryApp {
 
             if (validity === 'valid') {
 
-                this.repoDocInfoManager.updateFromRepoDocMeta(docInfo.fingerprint, repoDocMeta);
+                this.repoDocMetaManager.updateFromRepoDocMeta(docInfo.fingerprint, repoDocMeta);
 
                 const progress = new ProgressTracker({total: 1, id: 'doc-info-update'}).terminate();
 

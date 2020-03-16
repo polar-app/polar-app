@@ -42,9 +42,7 @@ export class RepoDocMetaLoaders {
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 
         return repoDocMetaLoader.addEventListener(event => {
-
             refreshThrottler.exec();
-
         });
 
     }

@@ -1,5 +1,8 @@
 import {Reviewer} from "./Reviewer";
-import {InjectedComponent, ReactInjector} from "../../../../web/js/ui/util/ReactInjector";
+import {
+    InjectedComponent,
+    ReactInjector
+} from "../../../../web/js/ui/util/ReactInjector";
 import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -22,7 +25,10 @@ import {PreviewWarnings} from "./PreviewWarnings";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {DatastoreCapabilities} from "../../../../web/js/datastore/Datastore";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {SpacedRepStat, SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {
+    SpacedRepStat,
+    SpacedRepStats
+} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
@@ -30,10 +36,22 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ReviewerModal} from "./ReviewerModal";
 import {CloudSyncRequired, NoTasks} from "./ReviewFinished";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 const log = Logger.create();
 
 export const DEFAULT_LIMIT = 10;
+
+class FlashcardFilters {
+
+    public static cloze(repoDocAnnotations: ReadonlyArray<IDocAnnotation>) {
+        return repoDocAnnotations.filter(current => current.annotationType === AnnotationType.FLASHCARD)
+                                 .filter(current => (current.original as IFlashcard).type === FlashcardType.CLOZE);
+    }
+}
+
 
 export class Reviewers {
 
