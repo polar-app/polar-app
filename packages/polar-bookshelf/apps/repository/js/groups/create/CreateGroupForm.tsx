@@ -12,7 +12,7 @@ import {
     GroupProvisions
 } from "../../../../../web/js/datastore/sharing/rpc/GroupProvisions";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
-import {RelatedTags} from "../../../../../web/js/tags/related/RelatedTags";
+import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTagsManager";
 
 const log = Logger.create();
 
@@ -157,7 +157,7 @@ export interface FormData {
 
 export interface IProps {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
-    readonly relatedTags: RelatedTags;
+    readonly relatedTags: RelatedTagsManager;
 }
 
 export interface IState {

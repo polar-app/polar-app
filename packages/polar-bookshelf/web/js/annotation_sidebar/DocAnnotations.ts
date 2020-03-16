@@ -1,7 +1,6 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Flashcard} from '../metadata/Flashcard';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
 import {ObjectIDs} from '../util/ObjectIDs';
@@ -61,7 +60,7 @@ export class DocAnnotations {
                                       flashcard: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
 
-        const iTextConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
+        const textConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
 
         const init = this.createInit(docMeta);
 
@@ -72,7 +71,7 @@ export class DocAnnotations {
             guid: flashcard.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
-            ...iTextConverter,
+            ...textConverter,
             fields: Flashcards.convertFieldsToMap(flashcard.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
@@ -88,7 +87,8 @@ export class DocAnnotations {
             author: flashcard.author,
             immutable: this.isImmutable(flashcard.author),
             color: undefined,
-            img: undefined
+            img: undefined,
+            tags: {...(flashcard.tags || {}), ...init.tags},
         };
 
     }
@@ -123,7 +123,8 @@ export class DocAnnotations {
             author: comment.author,
             immutable: this.isImmutable(comment.author),
             color: undefined,
-            img: undefined
+            img: undefined,
+            tags: {...(comment.tags || {}), ...init.tags},
         };
 
     }
@@ -173,6 +174,7 @@ export class DocAnnotations {
             pageMeta,
             original: areaHighlight,
             author: areaHighlight.author,
+            tags: {...(areaHighlight.tags || {}), ...init.tags},
             immutable: this.isImmutable(areaHighlight.author),
         };
 
@@ -206,6 +208,7 @@ export class DocAnnotations {
             original: textHighlight,
             author: textHighlight.author,
             immutable: this.isImmutable(textHighlight.author),
+            tags: {...(textHighlight.tags || {}), ...init.tags},
             img: undefined
         };
 

@@ -20,11 +20,66 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {PathStr, URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
 import {ErrorHandlerCallback} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SimpleReactor} from "../reactor/SimpleReactor";
 import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
+
+export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
+
+export interface DocMetaSnapshot<T> {
+
+    readonly data: T | undefined;
+
+    /**
+     * Where this data was loaded from
+     */
+    readonly source: 'server' | 'cache';
+
+    readonly unsubscriber: SnapshotUnsubscriber;
+
+}
+
+export interface DocMetaSnapshotError {
+
+    readonly err: Error;
+
+    readonly unsubscriber: SnapshotUnsubscriber;
+
+}
+
+
+export interface DocMetaSnapshotOpts<T> {
+
+    /**
+     * The fingerprint of the document we want to fetch.
+     */
+    readonly fingerprint: IDStr;
+
+    /**
+     * Called for each document update.  The value (as a string) of the DocMeta
+     * or undefined if the document is not in the datastore.
+     */
+    readonly onSnapshot: (snapshot: DocMetaSnapshot<T>) => void;
+
+    /**
+     * Called on any error on updates when fetching snapshots.
+     */
+    readonly onError?: (err: DocMetaSnapshotError) => void;
+
+    /**
+     * The source of the snapshot, when applicable.  Can be server or cache
+     * for firebase and cloud so that we can fetch from a specific source if we
+     * want.  The default is to fetch from cache to begin.
+     */
+    readonly source?: DocMetaSnapshotSource;
+
+}
+
+export interface DocMetaSnapshotResult {
+    readonly unsubscriber: SnapshotUnsubscriber;
+}
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -55,9 +110,14 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     getDocMeta(fingerprint: string): Promise<string | null>;
 
     /**
+     * Get DocMeta from this datastore and send snapshots when we have updates over time.
+     */
+    getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult>;
+
+    /**
      * Return an array of {DocMetaRef}s currently in the repository.
      */
-    getDocMetaRefs(): Promise<DocMetaRef[]>;
+    getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>>;
 
     /**
      * Get a current snapshot of the internal state of the Datastore by
@@ -119,6 +179,11 @@ export interface DatastoreCapabilities {
 
     readonly permission: DatastorePermission;
 
+    /**
+     * True if this datastore supports snapshots.
+     */
+    readonly snapshots?: true;
+
 }
 
 export interface DatastoreInfo {
@@ -152,6 +217,40 @@ export abstract class AbstractDatastore {
 
     protected constructor() {
         this.datastoreMutations = DatastoreMutations.create('written');
+
+    }
+
+    public abstract async getDocMeta(fingerprint: string): Promise<string | null>;
+
+    /**
+     * Default implementation provides no updates.  Used by default with
+     * DiskDatastore, MemoryDatastore, etc.
+     */
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
+
+        const unsubscriber = NULL_FUNCTION;
+
+        try {
+
+            const data = await this.getDocMeta(opts.fingerprint);
+
+            opts.onSnapshot({
+                data: data || undefined,
+                source: 'server',
+                unsubscriber
+            });
+
+        } catch (e) {
+
+            if (opts.onError) {
+                opts.onError(e);
+            }
+
+        }
+
+        return {
+            unsubscriber
+        };
 
     }
 

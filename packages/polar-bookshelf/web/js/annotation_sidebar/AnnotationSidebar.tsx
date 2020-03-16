@@ -11,7 +11,10 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {Firebase} from "../firebase/Firebase";
-import {DocMetaListeners, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
+import {
+    DocMetaListeners,
+    DocMetaRecords
+} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
@@ -21,10 +24,15 @@ import {FeatureToggle} from "../ui/FeatureToggle";
 import {InputFilter} from '../ui/input_filter/InputFilter2';
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
-import {DatastoreCapabilities} from "../datastore/Datastore";
+import {
+    DatastoreCapabilities,
+    DocMetaSnapshot,
+    DocMetaSnapshotError
+} from "../datastore/Datastore";
 import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
@@ -110,6 +118,7 @@ function createItems(props: IRenderProps) {
     annotations.map(annotation => {
         result.push (<DocAnnotationComponent key={annotation.id}
                                              annotation={annotation}
+                                             tagsProvider={props.tagsProvider}
                                              persistenceLayerProvider={props.persistenceLayerProvider}
                                              doc={props.doc}/>);
     });
@@ -147,10 +156,16 @@ interface AnnotationHeaderProps extends IRenderProps {
     readonly datastoreCapabilities: DatastoreCapabilities;
     readonly onExport: (format: ExportFormat) => void;
     readonly onFiltered: (text: string) => void;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
+    readonly doc: Doc;
 
 }
 
 const AnnotationHeader = (props: AnnotationHeaderProps) => {
+
+    const onTagged = (tags: ReadonlyArray<Tag>) => {
+        props.doc.docInfo.tags = Tags.toMap(tags);
+    };
 
     return (
 
@@ -171,9 +186,21 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
                 </div>
 
-                <div>
+                <div style={{display: 'flex'}}>
 
-                    <ExportButton onExport={(format) => props.onExport(format)}/>
+                    {/*<div className="mt-auto mb-auto mr-1">*/}
+                    {/*    <TagInput placement="bottom"*/}
+                    {/*              container="#annotation-manager"*/}
+                    {/*              size="md"*/}
+                    {/*              className='text-muted border'*/}
+                    {/*              availableTags={props.tagsProvider()}*/}
+                    {/*              existingTags={() => props.doc.docInfo.tags ? Object.values(props.doc.docInfo.tags) : []}*/}
+                    {/*              onChange={(tags) => onTagged(tags)}/>*/}
+                    {/*</div>*/}
+
+                    <div className="mt-auto mb-auto">
+                        <ExportButton onExport={(format) => props.onExport(format)}/>
+                    </div>
 
                     <FeatureToggle name='groups'>
                         <GroupSharingButton doc={props.doc}
@@ -210,7 +237,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         this.docAnnotationIndexManager
             = new DocAnnotationIndexManager(DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider),
-                                            this.docAnnotationIndex, annotations => {
+                                            this.docAnnotationIndex,
+                                            annotations => {
 
                 this.setState({
                     data: annotations,
@@ -255,18 +283,49 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
     private async buildInitialAnnotations() {
 
-        const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
-        const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
-                                                                          this.docAnnotationIndex,
-                                                                          this.props.doc.docMeta);
+        const handleDocMeta = async (docMeta: IDocMeta) => {
 
-        this.docAnnotationIndex.put(...docAnnotations);
+            const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
+            const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
+                this.docAnnotationIndex,
+                docMeta);
 
-        this.reload();
+            this.docAnnotationIndex.put(...docAnnotations);
+
+            this.reload();
+
+
+        };
+
+        const docMeta = this.props.doc.docMeta;
+        await handleDocMeta(docMeta);
+
+        const persistenceLayer = this.props.persistenceLayerProvider();
+
+        const onSnapshot = (snapshot: DocMetaSnapshot<IDocMeta>) => {
+            if (snapshot.data) {
+                handleDocMeta(snapshot.data)
+                    .catch(err => log.error("Unable to handle snapshot: ", err));
+            }
+        };
+
+        const onError = (err: DocMetaSnapshotError) => {
+            log.error("Could not handle snapshot: ", err);
+            err.unsubscriber();
+        };
+
+        await persistenceLayer.getDocMetaSnapshot({
+            fingerprint: docMeta.docInfo.fingerprint,
+            onSnapshot: snapshot => onSnapshot(snapshot),
+            onError: err => onError(err)
+        });
 
     }
 
     private async registerListenerForPrimaryDocMeta() {
+
+        // FIXME: no updates are being handled when the document changes in
+        // firebase
 
         const {docMeta} = this.props.doc;
 
@@ -356,6 +415,7 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly doc: Doc;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 

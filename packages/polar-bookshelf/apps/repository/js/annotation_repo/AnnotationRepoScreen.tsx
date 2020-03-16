@@ -56,10 +56,12 @@ const AnnotationsList = (props: AnnotationsListProps) => (
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly repoAnnotation?: IDocAnnotation;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 const AnnotationPreview = (props: AnnotationsPreviewProps) => (
     <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                           tagsProvider={props.tagsProvider}
                            repoAnnotation={props.repoAnnotation}/>
 );
 
@@ -103,7 +105,7 @@ namespace main {
         readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
         readonly persistenceLayerMutator: PersistenceLayerMutator;
         readonly treeState: TreeState<TagDescriptor>;
-
+        readonly tagsProvider: () => ReadonlyArray<Tag>;
     }
 
     export interface FoldersProps extends FoldersSidebarProps {
@@ -163,6 +165,7 @@ namespace main {
                 id: 'dock-panel-right',
                 type: 'grow',
                 component: <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                                                  tagsProvider={props.tagsProvider}
                                                   repoAnnotation={props.repoAnnotation}/>
 
             }
@@ -262,7 +265,7 @@ namespace screen {
         readonly onSelected: (repoAnnotation: IDocAnnotation) => void;
         readonly onStartReview: (mode: RepetitionMode) => void;
         readonly onCreateReviewer: (mode: RepetitionMode) => any;
-
+        readonly tagsProvider: () => ReadonlyArray<Tag>;
     }
 
     export const Desktop = (props: ScreenProps) => (
@@ -394,6 +397,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
             persistenceLayerMutator: this.persistenceLayerMutator,
             treeState: this.treeState,
             filtersHandler: this.filtersHandler,
+            tagsProvider: this.props.tags,
             onSelected: (repoAnnotation) => this.setStateInBackground({...this.state, repoAnnotation}),
             onStartReview: (mode) => this.startReview(mode),
             onCreateReviewer: (mode) => this.createReviewer(mode)
@@ -475,6 +479,7 @@ export interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
     readonly tags: () => ReadonlyArray<TagDescriptor>;
+
 }
 
 export interface IState {

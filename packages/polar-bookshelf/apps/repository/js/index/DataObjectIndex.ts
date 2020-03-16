@@ -1,9 +1,10 @@
-import {Tag} from 'polar-shared/src/tags/Tags';
+import {Tag, TagStr} from 'polar-shared/src/tags/Tags';
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {ForwardTagToDocIDIndex} from "./ForwardTagToDocIDIndex";
 import {ReverseDocIDToTagIndex} from "./ReverseDocIDToTagIndex";
 import {isPresent} from "polar-shared/src/Preconditions";
+import { IDStr } from 'polar-shared/src/util/Strings';
 
 
 class TagIndex {
@@ -13,6 +14,17 @@ class TagIndex {
 
     // docs to tags
     private reverse = new ReverseDocIDToTagIndex();
+
+    public prune () {
+        this.forward.purge(value => value.count() === 0);
+    }
+
+    /**
+     * Find doc IDs tagged with this tag.
+     */
+    public tagged(tag: Tag): ReadonlyArray<IDStr> {
+        return this.forward.get(tag).toArray();
+    }
 
     public set(docID: string, tags: ReadonlyArray<Tag>) {
 
@@ -79,10 +91,18 @@ export class DataObjectIndex<D> {
 
     private index: {[id: string]: D} = {};
 
-    private tags = new TagIndex();
+    private tagIndex = new TagIndex();
 
     public constructor(private readonly toTags: (input?: D) => ReadonlyArray<Tag>) {
 
+    }
+
+    public prune() {
+        this.tagIndex.prune();
+    }
+
+    public tagged(tag: Tag) {
+        return this.tagIndex.tagged(tag);
     }
 
     public contains(key: string): boolean {
@@ -104,7 +124,7 @@ export class DataObjectIndex<D> {
 
         this.index[key] = data;
         const tags = this.toTags(data);
-        this.tags.set(key, tags);
+        this.tagIndex.set(key, tags);
 
     }
 
@@ -112,7 +132,7 @@ export class DataObjectIndex<D> {
         const value = this.index[key];
         delete this.index[key];
 
-        this.tags.delete(key, this.toTags(value));
+        this.tagIndex.delete(key, this.toTags(value));
     }
 
     public values(): ReadonlyArray<D> {
@@ -124,7 +144,7 @@ export class DataObjectIndex<D> {
     }
 
     public toTagDescriptors() {
-        return this.tags.toTagDescriptors();
+        return this.tagIndex.toTagDescriptors();
     }
 
 }

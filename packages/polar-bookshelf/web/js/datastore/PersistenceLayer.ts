@@ -6,8 +6,8 @@ import {
     DatastoreCapabilities,
     DatastoreInitOpts,
     DatastoreOverview,
-    DeleteResult,
-    DocMetaSnapshotEventListener,
+    DeleteResult, DocMetaSnapshot,
+    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     GroupIDStr,
@@ -23,6 +23,8 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {UserTagsDB} from "./UserTagsDB";
+import { NULL_FUNCTION } from 'polar-shared/src/util/Functions';
+import {DocMetas} from "../metadata/DocMetas";
 
 export interface PersistenceLayer {
 
@@ -45,7 +47,9 @@ export interface PersistenceLayer {
 
     getDocMeta(fingerprint: string): Promise<IDocMeta| undefined>;
 
-    getDocMetaRefs(): Promise<DocMetaRef[]>;
+    getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult>;
+
+    getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>>;
 
     /**
      * Get a current snapshot of the internal state of the Datastore by
@@ -94,6 +98,35 @@ export interface PersistenceLayer {
     capabilities(): DatastoreCapabilities;
 
     getUserTagsDB(): Promise<UserTagsDB>;
+
+}
+
+export abstract class AbstractPersistenceLayer {
+
+    public readonly abstract datastore: Datastore;
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        const onSnapshot = (snapshot: DocMetaSnapshot<string>) => {
+
+            if (snapshot.data) {
+                const docMeta = DocMetas.deserialize(snapshot.data, opts.fingerprint);
+
+                opts.onSnapshot({...snapshot, data: docMeta});
+
+            } else {
+                opts.onSnapshot({...snapshot, data: undefined});
+            }
+
+        };
+
+        return await this.datastore.getDocMetaSnapshot({
+            fingerprint: opts.fingerprint,
+            onSnapshot: snapshot => onSnapshot(snapshot),
+            onError: opts.onError
+        });
+
+    }
 
 }
 

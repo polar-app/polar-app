@@ -38,13 +38,18 @@ import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from '../util/prefs/Prefs';
+import {
+    DictionaryPrefs,
+    PersistentPrefs,
+    StringToPrefDict
+} from '../util/prefs/Prefs';
 import {DatastoreMutations} from './DatastoreMutations';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
+import {DocMetas} from "../metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -404,29 +409,36 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
         if ( ! await Files.existsAsync(this.dataDir)) {
             // no data dir but this should rarely happen.
             return [];
         }
 
-        const entries = await Files.readdirAsync(this.dataDir);
+        const fingerprints = await Files.readdirAsync(this.dataDir);
 
         const result: DocMetaRef[] = [];
 
-        for ( const entry of entries) {
+        for ( const fingerprint of fingerprints) {
 
-            const docMetaDir = FilePaths.join(this.dataDir, entry);
+            const docMetaDir = FilePaths.join(this.dataDir, fingerprint);
             const docMetaDirStat = await Files.statAsync(docMetaDir);
 
             if (docMetaDirStat.isDirectory()) {
 
-                const stateFile = FilePaths.join(this.dataDir, entry, 'state.json');
+                const stateFile = FilePaths.join(this.dataDir, fingerprint, 'state.json');
 
                 const exists = await Files.existsAsync(stateFile);
+
                 if (exists) {
-                    result.push({fingerprint: entry});
+                    result.push({
+                        fingerprint,
+                        docMetaProvider: async () => {
+                            const data = await this.getDocMeta(fingerprint);
+                            return DocMetas.deserialize(data!, fingerprint);
+                        }
+                    });
                 }
 
             }

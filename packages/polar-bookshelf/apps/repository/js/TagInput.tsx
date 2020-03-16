@@ -2,17 +2,16 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
-import {Tags} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
+import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
 import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Tag} from 'polar-shared/src/tags/Tags';
 import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
 import {BlackoutBox} from "../../../web/js/ui/util/BlackoutBox";
 
@@ -88,6 +87,8 @@ export class TagInput extends React.Component<IProps, IState> {
 
     public render() {
 
+        const relatedTagsManager = this.props.relatedTags || new RelatedTagsManager();
+
         const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
 
         const pendingTags = TagOptions.fromTags(this.state.pendingTags);
@@ -98,7 +99,7 @@ export class TagInput extends React.Component<IProps, IState> {
                             .map(current => current.label)
                             ;
 
-            return this.props.relatedTags.compute(input).map(current => current.tag);
+            return relatedTagsManager.compute(input).map(current => current.tag);
 
         };
 
@@ -111,7 +112,7 @@ export class TagInput extends React.Component<IProps, IState> {
                              key={item}
                              style={Styles.relatedTag}
                              color="light"
-                             size="sm"
+                             size={this.props.size || 'sm'}
                              onClick={() => this.addRelatedTag(item)}>{item}</Button>)}
             </span>;
 
@@ -138,16 +139,24 @@ export class TagInput extends React.Component<IProps, IState> {
 
             <div className="mt-auto mb-auto">
 
-                <i id={this.id}
-                   onClick={() => this.activate()}
-                   className="fa fa-tag doc-button doc-button-inactive"/>
+                <Button id={this.id}
+                        onClick={() => this.activate()}
+                        color="clear"
+                        className={this.props.className || ''}>
+                    <span className="fas fa-tag"/>
+                </Button>
 
-                <Popover placement="auto"
+                <Popover placement={this.props.placement || 'auto'}
                          isOpen={this.state.open}
                          target={this.id}
                          fade={false}
                          delay={0}
                          toggle={() => this.deactivate()}
+                         style={{
+                             width: '500px',
+                             maxWidth: 'calc(100vw - 5px)'
+                         }}
+                         container={this.props.container}
                          className="tag-input-popover shadow">
 
                     <PopoverBody style={Styles.popover}
@@ -160,7 +169,7 @@ export class TagInput extends React.Component<IProps, IState> {
                             <div className="bg-white">
 
                                 <div className="pt-1 pb-1">
-                                    <strong>Assign tags to document:</strong>
+                                    <strong>Assign tags:</strong>
                                 </div>
 
                                 <CreatableSelect
@@ -295,6 +304,14 @@ export class TagInput extends React.Component<IProps, IState> {
 
 export interface IProps {
 
+    readonly container?: string;
+
+    readonly size?: 'sm' | 'md' | 'lg';
+
+    readonly className?: string;
+
+    readonly placement?: 'top' | 'bottom' | 'left' | 'right' | 'auto';
+
     /**
      * The tags that can be selected.
      */
@@ -308,7 +325,7 @@ export interface IProps {
     /**
      * The relatedTags index which is updated as the user selects new tags.
      */
-    readonly relatedTags: RelatedTags;
+    readonly relatedTags?: RelatedTagsManager;
 
     readonly onChange?: (values: ReadonlyArray<Tag>) => void;
 

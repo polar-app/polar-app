@@ -58,6 +58,8 @@ import {FakePagemark} from "./FakePagemark";
 import {AddContentButtonOverlay, devices} from "../../js/apps/viewer/AddContentButtonOverlay";
 import {NewToasts} from "./NewToasts";
 import {ReviewerDemo} from "./ReviewerDemo";
+import {KeyDownDemo} from "./KeyDownDemo";
+import {CreatableSelectDemo} from "./CreatableSelectDemo";
 
 const styles = {
     swatch: {
@@ -324,16 +326,16 @@ export class App<P> extends React.Component<{}, IAppState> {
         };
 
         // const transition = { type: 'spring', damping, stiffness };
-
-        const loc = ReactRouters.createLocationWithPathAndHash();
-
-        const foo = () => <div/>;
-
-        const docMeta = MockDocMetas.createMockDocMeta();
-        const pageMeta = docMeta.pageMetas[1];
-
-        Preconditions.assertPresent(pageMeta);
-
+        //
+        // const loc = ReactRouters.createLocationWithPathAndHash();
+        //
+        // const foo = () => <div/>;
+        //
+        // const docMeta = MockDocMetas.createMockDocMeta();
+        // const pageMeta = docMeta.pageMetas[1];
+        //
+        // Preconditions.assertPresent(pageMeta);
+        //
 
 
         // const DocAnnotations.createFromFlashcard(docMeta, flashcard, pageMeta)
@@ -344,7 +346,11 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <ReviewerDemo/>
+                <CreatableSelectDemo/>
+
+                {/*<KeyDownDemo/>*/}
+
+                {/*<ReviewerDemo/>*/}
 
                 {/*<NewToasts/>*/}
 

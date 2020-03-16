@@ -6,6 +6,7 @@ import {ViewFlashcard} from './ViewFlashcard';
 import {FlashcardCallback, FlashcardInput} from './flashcard_input/FlashcardInput';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Doc} from '../../../metadata/Doc';
+import { Tag } from 'polar-shared/src/tags/Tags';
 
 export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 
@@ -35,6 +36,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
         if (this.state.mode === 'view') {
 
             return <ViewFlashcard flashcard={this.props.flashcard}
+                                  tagsProvider={this.props.tagsProvider}
                                   doc={this.props.doc}
                                   onEdit={() => this.onEdit()}
                                   editButton={editButton}/>;
@@ -61,6 +63,7 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 interface IProps {
     readonly id: string;
     readonly doc: Doc;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly flashcard: DocAnnotation;
     readonly onFlashcard: FlashcardCallback;
 }

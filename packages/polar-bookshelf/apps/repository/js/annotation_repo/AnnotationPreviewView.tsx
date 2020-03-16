@@ -16,6 +16,8 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {DeleteIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
 import Moment from "react-moment";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
+import {TagInputControl} from "../TagInputControl";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 
 const log = Logger.create();
 
@@ -98,9 +100,17 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                         </div>
 
                         <div className="mt-auto mb-auto">
+                            <TagInputControl className='ml-1 p-1 text-muted'
+                                             container="body"
+                                             availableTags={this.props.tagsProvider()}
+                                             existingTags={() => this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
+                                             onChange={(tags) => this.onTagged(tags)}/>
+                        </div>
+
+                        <div className="mt-auto mb-auto">
                             <Button size="md"
                                     color="clear"
-                                    className="m-0 p-0"
+                                    className="m-0 p-0 text-muted"
                                     onClick={() => this.onDelete()}>
                                 <DeleteIcon/>
                             </Button>
@@ -129,6 +139,18 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                     </div>
 
                     <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
+
+                    {/*<DocAnnotationComponent persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
+                    {/*                        annotation={repoAnnotation}*/}
+                    {/*                        doc={{*/}
+                    {/*                            oid: 123,*/}
+                    {/*                            docInfo: repoAnnotation.docInfo,*/}
+                    {/*                            docMeta: repoAnnotation.docMeta,*/}
+                    {/*                            permission: {*/}
+                    {/*                                mode: 'rw'*/}
+                    {/*                            },*/}
+                    {/*                            mutable: true*/}
+                    {/*                        }}/>*/}
 
                     {/*FIXME: I need to figure out how to get the 'doc' now*/}
                     {/*<AnnotationControlBar doc={} annotation={}/>*/}
@@ -200,10 +222,37 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     }
 
+    private onTagged(tags: ReadonlyArray<Tag>) {
+
+        const annotation = this.props.repoAnnotation!;
+        const docMeta = annotation.docMeta;
+        const updates = {tags: Tags.toMap(tags)};
+
+        setTimeout(() => {
+
+            AnnotationMutations.update(docMeta,
+                                       annotation.annotationType,
+                                       {...annotation.original, ...updates});
+
+            const doPersist = async () => {
+
+                const persistenceLayer = this.props.persistenceLayerManager.get();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            };
+
+            doPersist()
+                .catch(err => log.error(err));
+
+        }, 1);
+
+    }
+
 }
 
 export interface IProps {
 
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly repoAnnotation?: IDocAnnotation;
 }

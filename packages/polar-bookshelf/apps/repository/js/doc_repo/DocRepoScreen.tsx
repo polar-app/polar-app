@@ -464,7 +464,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
         return {
             ...this.state,
-            relatedTags: this.props.repoDocMetaManager!.relatedTags,
+            relatedTagsManager: this.props.repoDocMetaManager!.relatedTags,
             synchronizingDocLoader: this.synchronizingDocLoader,
             tagsProvider: this.props.tags,
             writeDocInfoTags: (repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags),

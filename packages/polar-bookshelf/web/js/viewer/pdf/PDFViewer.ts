@@ -84,6 +84,11 @@ export class PDFViewer extends Viewer {
 
     private disableSidebarKeyboardHandling() {
 
+        // this is necessary because pdf.js has regular key bindings like 'r'
+        // which would rotate the document.  This means if you were using the
+        // sidebar and typed 'regular' the PDF viewer would rotate on you which
+        // is not what we want.
+
         const sidebarElement = document.querySelector(".polar-sidebar")!;
 
         sidebarElement.addEventListener("keypress", event => {

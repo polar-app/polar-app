@@ -6,6 +6,8 @@ import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
+import {AnnotationTagInputButton} from "../AnnotationTagInputButton";
+import { Tag } from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
@@ -114,6 +116,9 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
                     <div style={Styles.barChild} className="flexbar-right muted-color">
 
+                        <AnnotationTagInputButton tagsProvider={this.props.tagsProvider}
+                                                  annotation={this.props.flashcard}/>
+
                         {this.props.editButton}
 
                         <FlashcardDropdown id={'flashcard-dropdown-' + flashcard.id}
@@ -136,6 +141,7 @@ export class ViewFlashcard extends React.PureComponent<IProps, IState> {
 
 }
 interface IProps {
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly flashcard: DocAnnotation;
     readonly doc: Doc;
     readonly editButton: JSX.Element;

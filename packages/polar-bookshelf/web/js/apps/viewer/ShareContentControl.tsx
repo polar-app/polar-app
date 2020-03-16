@@ -58,7 +58,7 @@ export class ShareContentControl extends React.PureComponent<IProps, IState> {
 
         const shareLink = this.state.shareLink || "";
 
-        // FIXME include the tags for the document too this way when people
+        // TODO include the tags for the document too this way when people
         // search via Twitter or Facebook these tags show up and so will the
         // docs from Polar when they click through.
 

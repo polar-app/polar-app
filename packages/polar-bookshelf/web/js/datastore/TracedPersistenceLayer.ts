@@ -7,7 +7,7 @@ import {
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
-    DocMetaSnapshotEventListener,
+    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     SnapshotResult,
@@ -76,7 +76,11 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return tracer.traceAsync('getDocMeta', () => this.delegate.getDocMeta(fingerprint));
     }
 
-    public async getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+        return tracer.traceAsync('getDocMetaSnapshot', () => this.delegate.getDocMetaSnapshot(opts));
+    }
+
+    public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return tracer.traceAsync('getDocMetaRefs', () => this.delegate.getDocMetaRefs());
     }
 

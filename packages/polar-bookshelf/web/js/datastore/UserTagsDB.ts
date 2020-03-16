@@ -51,7 +51,7 @@ export class UserTagsDB {
     }
 
     public delete(id: TagStr) {
-        delete this.backing[id];
+        return delete this.backing[id];
     }
 
     /**

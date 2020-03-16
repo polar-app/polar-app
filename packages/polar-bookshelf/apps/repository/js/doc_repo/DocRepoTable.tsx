@@ -13,7 +13,7 @@ import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
 import {Either} from '../../../../web/js/util/Either';
 import {BackendFileRefs} from '../../../../web/js/datastore/BackendFileRefs';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {RelatedTags} from '../../../../web/js/tags/related/RelatedTags';
+import {RelatedTagsManager} from '../../../../web/js/tags/related/RelatedTagsManager';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
     ContextMenuHandlers,
@@ -363,7 +363,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
             Header: '',
             headerClassName: "",
             accessor: '',
-            maxWidth: Devices.isDesktop() ? 100 : 35,
+            maxWidth: Devices.isDesktop() ? 110 : 35,
             defaultSortDesc: true,
             resizable: false,
             sortable: false,
@@ -779,7 +779,7 @@ export interface DocRepoTableProps {
     readonly columns: DocRepoTableColumnsMap;
     readonly selected: ReadonlyArray<number>;
     readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly relatedTags: RelatedTags;
+    readonly relatedTagsManager: RelatedTagsManager;
     readonly synchronizingDocLoader: SynchronizingDocLoader;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly writeDocInfoTags: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;

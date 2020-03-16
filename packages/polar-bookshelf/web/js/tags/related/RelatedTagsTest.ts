@@ -1,16 +1,16 @@
-import {RelatedTags} from './RelatedTags';
+import {RelatedTagsManager} from './RelatedTagsManager';
 import {assertJSON} from '../../test/Assertions';
 import {assert} from 'chai';
 
 describe('RelatedTags', function() {
 
-    const getTagDocsIndex = (relatedTags: RelatedTags) => {
+    const getTagDocsIndex = (relatedTags: RelatedTagsManager) => {
         return (<any> relatedTags).tagDocsIndex;
     };
 
     it("basic", async function() {
 
-        const relatedTags = new RelatedTags();
+        const relatedTags = new RelatedTagsManager();
 
         relatedTags.update('0x01', 'set', 'linux');
         relatedTags.update('0x01', 'set', 'microsoft');

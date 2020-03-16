@@ -560,7 +560,6 @@ export class RepositoryTour extends React.Component<IProps, IState> {
 
             try {
 
-                // FIXME?
                 // this.setState({ run: false, stepIndex: 0 });
 
                 switch (callbackProps.status) {

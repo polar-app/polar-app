@@ -52,12 +52,12 @@ export class TagButton extends React.Component<IProps, IState> {
                                  disabled={this.props.disabled}
                                  placement="bottom">
 
-                    <Button color="light"
+                    <Button color="clear"
                             id={this.id}
                             size="md"
                             disabled={this.props.disabled}
-                            onClick={this.toggle}
-                            className="border">
+                            onClick={() => this.toggle()}
+                            className="">
 
                         <i className="fa fa-tag doc-button doc-button-selectable"/>
 
@@ -72,6 +72,10 @@ export class TagButton extends React.Component<IProps, IState> {
                          trigger="legacy"
                          fade={false}
                          delay={0}
+                         style={{
+                             width: '500px',
+                             maxWidth: 'calc(100vw - 5px)'
+                         }}
                          className="tag-input-popover">
 
                     <PopoverBody>

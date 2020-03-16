@@ -5,7 +5,7 @@ import {TagOptions} from './TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
+import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
 import Button from 'reactstrap/lib/Button';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 
@@ -189,7 +189,7 @@ export interface IProps {
     /**
      * The relatedTags index which is updated as the user selects new tags.
      */
-    readonly relatedTags?: RelatedTags;
+    readonly relatedTags?: RelatedTagsManager;
 
     readonly onChange: (values: Tag[]) => void;
 

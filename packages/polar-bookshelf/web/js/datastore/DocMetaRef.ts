@@ -12,10 +12,11 @@ export interface DocMetaRef {
     readonly fingerprint: string;
 
     /**
-     * Store the DocMeta if we're passing this directly but have already read
-     * the DocMeta elsewhere and it's not actually stale.
+     * A promise to the DocMeta.  If we're passing this directly the promise is
+     * already resolved and just a value, but, if we have at least the
+     * fingerprint or have a better reference we give a promise.
      */
-    readonly docMeta?: IDocMeta;
+    readonly docMetaProvider?: () => Promise<IDocMeta>;
 
 }
 
@@ -38,7 +39,17 @@ export class DocMetaFileRefs {
 
     public static createFromDocMeta(docMeta: IDocMeta): DocMetaFileRef {
 
-        return this.createFromDocInfo(docMeta.docInfo);
+        const docInfo = docMeta.docInfo;
+
+        return {
+            fingerprint: docInfo.fingerprint,
+            docFile: {
+                name: docInfo.filename!,
+                hashcode: docInfo.hashcode
+            },
+            docInfo,
+            docMetaProvider: () => Promise.resolve(docMeta)
+        };
 
     }
 

@@ -20,7 +20,9 @@ export class TextHighlights {
     public static update(id: string,
                          docMeta: IDocMeta,
                          pageMeta: IPageMeta,
-                         updates: Partial<ITextHighlight>) {
+                         updates: Partial<ITextHighlight>): ITextHighlight {
+
+        // TODO: shouldn't we use a new id and make sure the guid is the same?
 
         const existing = pageMeta.textHighlights[id]!;
 
@@ -30,11 +32,15 @@ export class TextHighlights {
 
         const updated = new TextHighlight({...existing, ...updates});
 
+        // TODO: I don't think this should use withBatchedMutations and
+        // we should require the caller to do this.
         DocMetas.withBatchedMutations(docMeta, () => {
             // TODO: I think this is wrong and we have to use a new ID...
             // delete pageMeta.textHighlights[id];
             pageMeta.textHighlights[id] = updated;
         });
+
+        return updated;
 
     }
 

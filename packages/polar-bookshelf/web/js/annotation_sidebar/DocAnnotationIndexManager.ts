@@ -160,9 +160,10 @@ export class DocAnnotationIndexManager {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
 
-        if( ! this.registering) {
+        if (! this.registering) {
             this.onUpdated(annotations);
         }
 
     }
+
 }

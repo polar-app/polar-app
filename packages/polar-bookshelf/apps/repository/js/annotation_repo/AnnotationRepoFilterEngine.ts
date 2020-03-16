@@ -130,7 +130,7 @@ export class AnnotationRepoFilterEngine<D extends IDocAnnotation> {
         }
 
         return tagMatcherFactory.filter(repoAnnotations,
-                                        current => Object.values(current.docInfo.tags || {}));
+                                        current => Object.values(current.tags || {}));
 
     }
 

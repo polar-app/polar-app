@@ -111,7 +111,14 @@ export class FolderContextMenus {
 
             Dialogs.confirm({
                 title: `Are you sure you want to delete this ${type}?`,
-                subtitle: "This is a permanent operation and can't be undone.  The underlying documents will NOT be deleted.",
+                subtitle: <div>
+                    <p>
+                        The tag will be removed from all your documents and annotations.
+                    </p>
+                    <p>
+                        This is a permanent operation and can't be undone.
+                    </p>
+                    </div>,
                 onCancel: NULL_FUNCTION,
                 type: 'danger',
                 onConfirm

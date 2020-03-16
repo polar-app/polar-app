@@ -8,7 +8,7 @@ import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from 'polar-shared/src/util/Providers';
 import {RepoDocMeta} from './RepoDocMeta';
-import {RelatedTags} from '../../../web/js/tags/related/RelatedTags';
+import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {DataObjectIndex} from './index/DataObjectIndex';
 import {RepoDocAnnotations} from "./RepoDocAnnotations";
@@ -43,7 +43,7 @@ export class RepoDocMetaManager {
 
     public readonly repoDocAnnotationIndex: RepoDocAnnotationDataObjectIndex = new RepoDocAnnotationDataObjectIndex();
 
-    public readonly relatedTags = new RelatedTags();
+    public readonly relatedTags = new RelatedTagsManager();
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 

@@ -2,10 +2,22 @@ import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
-import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
+import {
+    AbstractPersistenceLayer,
+    PersistenceLayer,
+    PersistenceLayerID
+} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {BinaryFileData, Datastore, DeleteResult, DocMetaSnapshotEventListener, ErrorListener, SnapshotResult} from '../Datastore';
+import {
+    BinaryFileData,
+    Datastore,
+    DeleteResult,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    ErrorListener,
+    SnapshotResult
+} from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
 import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
@@ -25,7 +37,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {UserTagsDB} from "../UserTagsDB";
 
-export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
+export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersistenceLayer implements ListenablePersistenceLayer {
 
     public abstract readonly id: PersistenceLayerID;
 
@@ -39,6 +51,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     public readonly delegate: PersistenceLayer;
 
     protected constructor(delegate: PersistenceLayer) {
+        super();
         this.datastore = delegate.datastore;
         this.delegate = delegate;
     }
@@ -51,13 +64,36 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.stop();
     }
 
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        if (this.datastore.capabilities().snapshots) {
+            // for firebase/cloud so we would just rely on these events
+            return super.getDocMetaSnapshot(opts);
+        }
+
+        const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
+
+            opts.onSnapshot({
+                data: event.docMeta,
+                source: 'server',
+                unsubscriber: () => releasable.release()
+            });
+
+        });
+
+        return {
+            unsubscriber: () => releasable.release()
+        };
+
+    }
+
     public addEventListener(listener: PersistenceLayerListener): Releaseable {
         return this.reactor.addEventListener(listener);
     }
 
-    public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void {
+    public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): Releaseable {
 
-        this.addEventListener((event) => {
+        return this.addEventListener((event) => {
 
             if (fingerprint === event.docInfo.fingerprint) {
                 listener(event);
@@ -90,6 +126,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
         this.broadcastEvent({
             docInfo,
+            docMeta,
             docMetaRef: {
                 fingerprint: docMeta.docInfo.fingerprint
             },
@@ -108,7 +145,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         return this.delegate.contains(fingerprint);
     }
 
-    public getDocMetaRefs(): Promise<DocMetaRef[]> {
+    public getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
         return this.delegate.getDocMetaRefs();
     }
 
@@ -128,6 +165,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
         const result = this.delegate.delete(docMetaFileRef);
 
         this.broadcastEvent({
+            docMeta: undefined,
             docInfo: docMetaFileRef.docInfo,
             docMetaRef: {
                 fingerprint: docMetaFileRef.fingerprint

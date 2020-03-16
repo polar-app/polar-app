@@ -6,6 +6,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Docs} from '../metadata/Docs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {UserTagsDB} from "../datastore/UserTagsDB";
 
 const log = Logger.create();
 
@@ -23,10 +24,31 @@ export class AnnotationSidebars {
 
         const doc = Docs.create(docMeta, persistenceLayerProvider().capabilities().permission);
 
+        const createTagsProvider = () => {
+
+            let userTagsDB: UserTagsDB | undefined;
+
+            const userTagsLoader = async () => {
+                userTagsDB = await persistenceLayerProvider().getUserTagsDB();
+            };
+
+            const tagsProvider = () => userTagsDB?.tags() || [];
+
+            userTagsLoader().catch(err => log.error("Could not load user tags: ", err));
+
+            return tagsProvider;
+
+        };
+
+        const tagsProvider = createTagsProvider();
+
+        const sidebarElement = document.querySelector('.polar-sidebar') as HTMLElement;
+
         ReactDOM.render(
             <AnnotationSidebar doc={doc}
+                               tagsProvider={tagsProvider}
                                persistenceLayerProvider={persistenceLayerProvider} />,
-            document.querySelector('.polar-sidebar') as HTMLElement
+            sidebarElement
         );
 
         return splitter;
