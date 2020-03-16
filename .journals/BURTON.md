@@ -9,17 +9,17 @@ server.
 I think this is because we're not updating on 'cache' or 'written' snapshots 
 but we should because we receive them much much faster.
 
-    - Document updates are too slow in firebase mode
-
-    - Should flashcards have tags?
-        - Should objects inherit the tags of their parent?
-        
-    - Should comments have tags?
-
-    - test with 
-
     - DONE: we have to update comments too BUT we're not properly updating the ID 
       and guid...
+
+    - DONE: flashcards and comments need tags.
+
+    - Document updates are too slow in firebase mode
+
+    - another issue is that the DOC tags seem like they can be deleted but they 
+      can not!
+
+    - the tag drop down and complete can't be selected... 
 
 # 2020-03-14
 
