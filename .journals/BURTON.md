@@ -1,3 +1,53 @@
+# 2020-03-15
+
+You can now tag from the annotation viewer AND the document viewer.
+
+Now the big issue is that the updates are still too slow, and I think this is 
+because we're not sending 'cached' snapshot events and only those from the 
+server.  
+
+I think this is because we're not updating on 'cache' or 'written' snapshots 
+but we should because we receive them much much faster.
+
+    - DONE: we have to update comments too BUT we're not properly updating the ID 
+      and guid...
+
+    - DONE: flashcards and comments need tags.
+
+    - Document updates are too slow in firebase mode
+
+    - another issue is that the DOC tags seem like they can be deleted but they 
+      can not!
+
+    - the tag drop down and complete can't be selected... 
+
+# 2020-03-14
+
+
+When deleting a tag, the annotations are also updated but now we're given the 
+event back SLOWLY, not immediately, which is very unfortunate.  
+
+So still left to fix:
+
+- DONE: the annotation viewer isn't being updated
+- DONE: the document viewer isn't being updated fast enough.
+
+... now the biggest problem we have is placement of the tag input.  I'm 
+going ot migrate all tagging to use the CENTER of the screen plus this will make 
+it better for keyboard navigation too.
+
+    - I just need to build a new widget for this...
+
+
+# 2020-03-10
+
+Now the big issues seems to be that when I change an annotation that it will
+replicate it locally again. I think this is a bug with the event duplicate 
+detector and it's not seeing that the record on the server is NEWER than the
+local one.
+
+- the table layout is still wrong too... 
+
 # 2020-03-06
 
 - I worked on the SEO system so that everything has a unique slug and we 
@@ -45,23 +95,54 @@
       width of the page is not adjusted.
   
 ## TagsDB 
-    - how do we migrate / index existing docs?
+
+    - DONE: I have a new UserTagsDB which merges user tags with the new write
+      through system so that we can have ONE view of tags at a high level.
+
+    - DONE: need to update the UI in the annotation sidebar to support tags
+      for annotations.
+
+    - DONE: migrate the EXISTING tags... 
+
+    - DONE: The spacing in the document repository is broken due to the tag button I think
+
+    - DONE: the annotation repo does NOT properly filter by tag when they are
+      applied to the annotations.
+
+    - TODO: I need to implement deletes and removing all the tags on all the
+      docInfos and annotations and then persisting things back out.
+
+    - DONE: If I add a tag to a doc in the repository, the tags in the viewer
+      are not updated.
+
+    - DONE: The viewer doesn't seem to get any updates from firebase.  We will
+      have to figure out how to unify this datastore with the disk datastore.
+
+    - DONE: PersistenceLayerMutator needs to properly delete tags from any
+      annotation type with a 'tags' property...
+
+    - DONE: the annotation viewer doesn't have updated UserTags I think...
     
-        - Build the index in memory, then only persist it once we have read
-          all the documents in , then commit it periodically?
-          
-          - In fact, we CAN NOT do this because we dont' read the docMeta on init
-            right?  THAT is where the tags are stored. 
+    - DONE: NOW the main issue is that we're replicating to Firebase, and then the data
+      is getting re-replicated BACK locally.. 
 
-        - Just say fuck it for now and only work with NEW tags? 
+    - DONE: The tag popover doesn't position itself properly to the left of the tab
+      button
 
-    - investigate the current TagsDB object
+
+
+
+
+## Things to test before release:
+
+    - If I update the tag on the doc, make sure all the dependent annotations 
+      update as well.
+      
+    - make sure migration of user tags works without cloud sync being used
     
-    - TODO:
-        - UserTags and TagsDB need to be unified I think... this way deletes 
-          work easily
-            - FIXME: metadata in UserTags needs to work too.
-
+    - that building the new tags db works for local + cloud + web           
+        
+      
 # 2020-03-04
 
 ## TagDB design
