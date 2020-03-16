@@ -1,0 +1,17 @@
+#!/bin/bash
+
+git-reset-packages() {
+
+  for repo in `cat conf/repos.conf`; do
+
+    echo ${repo}
+    name=$(basename ${repo} .git)
+    echo ${name}
+
+    git remote remove ${name}
+
+  done
+
+}
+
+git-reset-packages
