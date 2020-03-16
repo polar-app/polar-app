@@ -14,12 +14,12 @@ but we should because we receive them much much faster.
 
     - DONE: flashcards and comments need tags.
 
+    - DONE the tag drop down and complete can't be selected... 
+
     - Document updates are too slow in firebase mode
 
     - another issue is that the DOC tags seem like they can be deleted but they 
       can not!
-
-    - the tag drop down and complete can't be selected... 
 
 # 2020-03-14
 
