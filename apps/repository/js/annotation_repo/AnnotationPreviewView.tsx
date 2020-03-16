@@ -164,7 +164,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="text-muted text-center text-xl">
+                <div className="text-muted text-center text-xl m-3">
                     No annotation selected.
                 </div>
 
