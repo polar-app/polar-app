@@ -5,6 +5,7 @@ import {Accounts} from "../accounts/Accounts";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
 
 const log = Logger.create();
 
@@ -18,6 +19,9 @@ export class AnalyticsInitializer {
     }
 
     public static async init() {
+
+        await FirestoreCollections.configure();
+
         this.initVersion();
         this.initAccount();
         this.initNavigation();

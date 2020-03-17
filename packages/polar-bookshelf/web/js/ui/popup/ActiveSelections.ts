@@ -50,7 +50,7 @@ export class ActiveSelections {
 
                 try {
 
-                    const view: Window = event.view!;
+                    const view: Window = event.view || window;
                     const selection = view.getSelection()!;
 
                     hasActiveTextSelection = this.hasActiveTextSelection(selection);

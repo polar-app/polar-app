@@ -60,6 +60,7 @@ import {NewToasts} from "./NewToasts";
 import {ReviewerDemo} from "./ReviewerDemo";
 import {KeyDownDemo} from "./KeyDownDemo";
 import {CreatableSelectDemo} from "./CreatableSelectDemo";
+import {SchoolSelectDemo} from "./SchoolSelectDemo";
 
 const styles = {
     swatch: {
@@ -344,9 +345,9 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
 
-            <div>
+            <div className="m-2">
 
-                <CreatableSelectDemo/>
+                <SchoolSelectDemo/>
 
                 {/*<KeyDownDemo/>*/}
 

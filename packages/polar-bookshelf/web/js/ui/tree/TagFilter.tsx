@@ -3,7 +3,7 @@ import Select from 'react-select';
 import {TagOptions} from '../../../../apps/repository/js/TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagOption} from '../../../../apps/repository/js/TagOption';
-import {ActionMeta, ValueType} from "react-select/lib/types";
+import {ActionMeta, ValueType} from "react-select";
 
 export class TagFilter extends React.Component<IProps, IState> {
 
