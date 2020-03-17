@@ -1,22 +1,39 @@
 import {DATA} from "./UniversitiesData";
+import {IDStr} from "./Strings";
 
+export type CountryNameStr = string;
 export type TwoLetterCountryCode = string;
 export type DomainNameStr = string;
 
 export interface Country {
     readonly code: TwoLetterCountryCode;
-    readonly name: string;
+    readonly name: CountryNameStr;
 }
 
 export interface DomainNameToUniversityMap {
     [name: string]: University;
 }
 
+export type UniversityName = string;
+export type UniversityDomain = DomainNameStr;
+export type UniversityDomains = ReadonlyArray<UniversityDomain>;
+
+export type UniversityTuple = [
+    UniversityName,
+    UniversityDomains,
+    TwoLetterCountryCode,
+    CountryNameStr,
+    UniversityDomain,
+    IDStr
+];
+
 
 export interface University {
     readonly name: string;
     readonly domains: ReadonlyArray<DomainNameStr>;
     readonly country: Country;
+    readonly domain: string;
+    readonly id: IDStr;
 }
 
 function createUniversities(): ReadonlyArray<University> {
@@ -26,13 +43,17 @@ function createUniversities(): ReadonlyArray<University> {
         const domains = uni[1];
         const countryCode = uni[2];
         const countryName = uni[3];
+        const domain = uni[4];
+        const id = uni[5];
 
         return {
             name, domains,
             country: {
                 code: countryCode,
                 name: countryName
-            }
+            },
+            domain,
+            id
         };
 
     };
@@ -66,6 +87,25 @@ export class Universities {
     public static getByDomain(domain: DomainNameStr): University | undefined {
         return domainNameToUniversityMap[domain] || undefined;
     }
+
+    public static toTupleJSON(university: University) {
+        const tuple = this.toTuple(university);
+        return JSON.stringify(tuple);
+    }
+
+    public static toTuple(university: University): UniversityTuple {
+
+        return [
+            university.name,
+            university.domains,
+            university.country.code,
+            university.country.name,
+            university.domain,
+            university.id
+        ];
+
+    }
+
 
 }
 

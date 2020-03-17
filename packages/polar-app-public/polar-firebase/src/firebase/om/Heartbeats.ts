@@ -12,6 +12,10 @@ import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
+import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
+import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {Device, Devices} from "polar-shared/src/util/Devices";
 
 export class Heartbeats {
 
@@ -32,23 +36,24 @@ export class Heartbeats {
         const doc = firestore.collection(this.COLLECTION)
                              .doc(heartbeat.id);
 
-        await doc.set(heartbeat);
+        await doc.set(Dictionaries.onlyDefinedProperties(heartbeat));
 
     }
 
     public static create(uid: UserIDStr | undefined): HeartbeatsInit {
 
-        const timestamp = ISODateTimeStrings.create();
-        const interval = ISODateTimeStrings.toISODateStringRoundedToHour(timestamp);
+        const id = Hashcodes.createRandomID();
+        const created = ISODateTimeStrings.create();
+        const machine = MachineIDs.get();
 
-        // tslint:disable-next-line:variable-name
-        const machine_id = MachineIDs.get();
-
-        const id = Hashcodes.create({machine_id, interval});
-
+        const platform = Platforms.toSymbol(Platforms.get());
         const version = Version.get();
+        const runtime = AppRuntime.get();
+        const device = Devices.get();
 
-        return {id, machine_id, version, interval, timestamp, uid};
+        return {
+            id, created, uid, platform, machine, version, runtime, device
+        };
 
     }
 
@@ -56,27 +61,36 @@ export class Heartbeats {
 
 export interface HeartbeatsInit {
 
+    /**
+     * The UD created which is just a random / unique ID
+     */
     readonly id: IDStr;
 
-    readonly machine_id: MachineID;
+    /**
+     * When this heartbeat was created and written to the database.
+     */
+    readonly created: ISODateTimeString;
+
+    /**
+     * The user UD that generated this heartbeat.
+     */
+    readonly uid: UserIDStr | undefined;
+
+    /**
+     * The user's platform .
+     */
+    readonly platform: PlatformStr;
+
+    readonly machine: MachineID;
 
     readonly version: VersionStr;
 
-    /**
-     * The rounded time interval (hour) that this event happened.
-     */
-    readonly interval: ISODateTimeString;
+    readonly runtime: AppRuntimeID;
 
     /**
-     * The actual timestamp that this happened.
+     * phone/tablet/desktop
      */
-    readonly timestamp: ISODateTimeString;
-
-    /**
-     * The optional UID that generated this heartbeat.
-     */
-    readonly uid?: UserIDStr;
-
+    readonly device: Device;
 }
 
 export interface Heartbeat extends HeartbeatsInit {
