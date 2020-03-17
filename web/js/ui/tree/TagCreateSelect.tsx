@@ -1,9 +1,9 @@
 import * as React from 'react';
-import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select/Creatable';
 import {TagOptions} from '../../../../apps/repository/js/TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {TagOption} from '../../../../apps/repository/js/TagOption';
-import {ActionMeta, ValueType} from "react-select/lib/types";
+import {ActionMeta, ValueType} from "react-select";
 
 export class TagCreateSelect extends React.Component<IProps, IState> {
 

@@ -1,3 +1,7 @@
+# 1.100.0
+
+- annotations can have tags
+- latest version of react-select 
 
 # 1.90.18
 
