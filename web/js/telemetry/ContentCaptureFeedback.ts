@@ -1,7 +1,7 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {MachineID} from '../util/MachineIDs';
+import {MachineID} from "polar-shared/src/util/MachineIDs";
 
 export class ContentCaptureFeedbacks {
 

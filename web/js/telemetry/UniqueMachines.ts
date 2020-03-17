@@ -1,11 +1,11 @@
-import {MachineID} from '../util/MachineIDs';
-import {MachineIDs} from '../util/MachineIDs';
+
 import {Firestore} from '../firebase/Firestore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
 import {Version} from 'polar-shared/src/util/Version';
+import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 /**
  * Does one thing.. records the machine ID to the table and the time it was

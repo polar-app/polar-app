@@ -1,8 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
-import {MachineIDs} from '../../../../web/js/util/MachineIDs';
 import { accounts } from 'polar-accounts/src/accounts';
+import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 export class SupportContent extends React.Component<IProps, IState> {
 
