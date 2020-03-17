@@ -1,7 +1,14 @@
 # 2020-03-17 (tue)
 
-- latest version of react-select
-- 
+- latest version of react-select upgraded
+
+- TODO: Combine all individual d/ signals
+    - URL tokenizer... 
+- TODO: 2 question onboarding 
+    - student/professor/faculty
+    - what university
+- TODO: Separate event when user creates annotation
+- TODO: can't remove the doc tags... they just magically come back... 
 
 # 2020-03-16 (mon)
 
@@ -10,11 +17,11 @@
   
 - The updates still work but still a few more bugs.
     
-    - done: the right view is reset and nothing is shown on updates. I think the issue
+    - DONE: the right view is reset and nothing is shown on updates. I think the issue
       is with the guid not selecting the right one after the update.  the ID is 
       changed but we now have a different guid.
       
-    - done: the view is temporarily sorted improperly and not sure why this would be 
+    - DONE: the view is temporarily sorted improperly and not sure why this would be 
       happening.  Need to keep a sorter to sort properly.  
 
     
@@ -23,13 +30,11 @@
   any time but it slows down the UI dramatically... 
       
 - TODO: can't remove the doc tags... they just magically come back... 
-
       
 - What sort orders do we need?
     - created/last updated (ASC/DESC)
     - has tag 
     - by tag
-    
   
 - TODO: we need to support 'day' tags...   
 
@@ -37,13 +42,13 @@
 
 - DONE: Implement check DAU / MAU straight to firebase
     - Track unique visitors (user_heartbeat)
-- Combine all individual d/ signals
+- TODO: Combine all individual d/ signals
     - URL tokenizer... 
 - DONE: Add event for users who just converted to premium
-- Separate event when user creates annotation
-- 2 question onboarding 
-    - student/professor
+- TODO: 2 question onboarding 
+    - student/professor/faculty
     - what university
+- TODO: Separate event when user creates annotation
 
 # 2020-03-15
 
