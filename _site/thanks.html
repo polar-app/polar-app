@@ -260,6 +260,33 @@
         ;e.amplitude=n})(window,document);
 
     amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0");
+
+    const onNavChange = () => {
+
+        try {
+
+            const url = new URL(document.location.href);
+
+            const path = url.pathname + url.hash || "";
+            const hostname = url.hostname;
+            const title = document.title;
+
+            const eventName = 'page:' + path;
+
+            amplitude.getInstance().logEvent(eventName, {path, hostname, title});
+
+            console.info("Sent eventName to amplitude: " + eventName);
+
+        } catch (e) {
+            console.error("Unable to handle hash change", e);
+        }
+
+    };
+
+    onNavChange();
+
+    window.addEventListener("hashchange", () => onNavChange(), false);
+
 </script>
 </body>
 
