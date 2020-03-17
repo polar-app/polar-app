@@ -7,8 +7,8 @@ import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceL
 import AnnotationRepoTable from './AnnotationRepoTable';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Devices} from "../../../../web/js/util/Devices";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export class AnnotationListView extends React.Component<IProps, IState> {
 

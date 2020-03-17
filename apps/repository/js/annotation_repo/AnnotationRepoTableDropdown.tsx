@@ -7,7 +7,7 @@ import {Exporters, ExportFormat} from "../../../../web/js/metadata/exporter/Expo
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {Devices} from "../../../../web/js/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 

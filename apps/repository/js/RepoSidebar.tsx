@@ -12,7 +12,7 @@ import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {NullCollapse} from "../../../web/js/ui/null_collapse/NullCollapse";
-import {Devices} from "../../../web/js/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const Styles: IStyleMap = {
 

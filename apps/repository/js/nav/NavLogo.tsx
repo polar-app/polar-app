@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {Link} from "react-router-dom";
-import {Devices} from "../../../../web/js/util/Devices";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const Styles: IStyleMap = {
     parent: {

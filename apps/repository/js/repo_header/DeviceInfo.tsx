@@ -1,8 +1,8 @@
-import {Devices} from "../../../../web/js/util/Devices";
 import * as React from "react";
 import {Version} from "polar-shared/src/util/Version";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {AppRuntime} from "../../../../web/js/AppRuntime";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export const DeviceInfo = () => {
 

@@ -5,8 +5,8 @@ import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
-import {Devices} from "../../util/Devices";
 import {Analytics} from "../../analytics/Analytics";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 

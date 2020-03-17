@@ -9,7 +9,7 @@ import {EventListener} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import Button from 'reactstrap/lib/Button';
 import {Platforms} from "polar-shared/src/util/Platforms";
-import {Devices} from "../../util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 

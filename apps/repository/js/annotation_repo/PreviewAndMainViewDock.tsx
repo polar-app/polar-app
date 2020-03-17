@@ -9,9 +9,9 @@ import {AnnotationPreviewView} from './AnnotationPreviewView';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Devices} from "../../../../web/js/util/Devices";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import { Tag } from 'polar-shared/src/tags/Tags';
+import {Devices} from "polar-shared/src/util/Devices";
 
 export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
 

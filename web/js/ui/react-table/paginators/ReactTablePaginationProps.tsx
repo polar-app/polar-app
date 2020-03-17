@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Devices} from "../../../util/Devices";
 import {Button} from "reactstrap";
+import {Devices} from "polar-shared/src/util/Devices";
 
 interface ReactTablePaginationProps {
 
