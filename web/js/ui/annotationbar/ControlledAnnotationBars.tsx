@@ -195,52 +195,14 @@ export class ControlledAnnotationBars {
                                        annotationBarCallbacks: AnnotationBarCallbacks,
                                        activeSelectionEvent: ActiveSelectionEvent) {
 
-        // FIXMEL window selection bounding client rect this is coming back wrong!!!
-
-        console.log("FIXME: text: " + activeSelectionEvent.selection.getRangeAt(0).cloneContents().textContent);
-
-        function testWithTimeout(timeout: number) {
-
-            window.setTimeout(() => {
-
-                const boundingClientRect = activeSelectionEvent.selection.getRangeAt(0).getBoundingClientRect();
-                console.log(`FIXME (${timeout}):  with set timeout it's looking like `, boundingClientRect);
-
-            }, timeout);
-
-        }
-
-        // testWithTimeout(100);
-        // testWithTimeout(200);
-        testWithTimeout(300);
-        // testWithTimeout(400);
-        // testWithTimeout(500);
-        // testWithTimeout(600);
-        // testWithTimeout(700);
-        // testWithTimeout(800);
-        // testWithTimeout(900);
-        // testWithTimeout(1000);
-        //
-        // const boundingClientRect = activeSelectionEvent.boundingClientRect;
-        const boundingClientRect = activeSelectionEvent.selection.getRangeAt(0).getBoundingClientRect();
-
         const point: Point = {
-            x: boundingClientRect.left,
-            y: boundingClientRect.top
+            x: activeSelectionEvent.boundingClientRect.left + (activeSelectionEvent.boundingClientRect.width / 2),
+            y: activeSelectionEvent.boundingClientRect.top
         };
 
-
-
-        console.log("FIXME: pageElement.boundingClientRect: ", pageElement.getBoundingClientRect());
-        console.log("FIXME: boundingClientRect: ", boundingClientRect);
-
-        // FIXMEL this doesn't make ANY sense as the range is coming off wrong.
-        console.log("FIXME: range:  " , activeSelectionEvent.selection.getRangeAt(0).getBoundingClientRect());
-
-        // TODO: adjust by the top / bottom of the bar???
         const offset: Point = {
-            x: 0,
-            y: 0
+            x: -75,
+            y: -50
         };
 
         // TODO use the mouseDirection on the activeSelectionEvent and place
@@ -251,22 +213,13 @@ export class ControlledAnnotationBars {
 
         const position = this.computePosition(pageElement, point, offset);
 
-        console.log("FIXME: ", position);
-
-        // TODO: this can be rewritten to add this to the scrollParent
-        // of the current element...
-
         const annotationBar = document.createElement('div');
 
         annotationBar.addEventListener('mouseup', (event) => event.stopPropagation());
         annotationBar.addEventListener('mousedown', (event) => event.stopPropagation());
 
-        annotationBar.style.position = 'absolute';
-        annotationBar.style.top = `${position.y}px`;
-        annotationBar.style.left = `${position.x}px`;
-        annotationBar.style.zIndex = `10000`;
-
-        annotationBar.style.border = 'solid 1px black';
+        const style = `position: absolute; top: ${position.y}px; left: ${position.x}px; z-index: 10000;`;
+        annotationBar.setAttribute('style', style);
 
         pageElement.insertBefore(annotationBar, pageElement.firstChild);
 
