@@ -4,10 +4,12 @@
 
 - DONE: Combine all individual d/ signals
     - URL tokenizer... 
+- DONE: Separate event when user creates annotation
+    
+    
 - TODO: 2 question onboarding 
     - student/professor/faculty
     - what university
-- TODO: Separate event when user creates annotation
 - TODO: can't remove the doc tags... they just magically come back... 
 
 # 2020-03-16 (mon)
