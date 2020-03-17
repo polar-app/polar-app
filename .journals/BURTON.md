@@ -2,7 +2,7 @@
 
 - latest version of react-select upgraded
 
-- TODO: Combine all individual d/ signals
+- DONE: Combine all individual d/ signals
     - URL tokenizer... 
 - TODO: 2 question onboarding 
     - student/professor/faculty
