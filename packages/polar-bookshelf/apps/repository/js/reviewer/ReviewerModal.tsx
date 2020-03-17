@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Devices} from "../../../../web/js/util/Devices";
 import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
+import {Devices} from "polar-shared/src/util/Devices";
 
 interface IProps {
     readonly className?: string;

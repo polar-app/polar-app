@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Device, Devices} from "../util/Devices";
+import {Device, Devices} from "polar-shared/src/util/Devices";
 
 export class DeviceRouter extends React.Component<IProps> {
 

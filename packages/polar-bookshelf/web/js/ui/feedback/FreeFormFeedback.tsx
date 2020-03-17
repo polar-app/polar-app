@@ -4,7 +4,7 @@ import Input from 'reactstrap/lib/Input';
 import {Rating} from './Feedback';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../telemetry/UserFeedback';
-import {MachineIDs} from '../../util/MachineIDs';
+import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 /**
  * @Deprecated this is duplicated with Suggestions.  Remove.

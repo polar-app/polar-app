@@ -1,5 +1,5 @@
 import React from 'react';
-import {Devices} from "../util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export class BlackoutCurtain extends React.Component<IProps, IState> {
 

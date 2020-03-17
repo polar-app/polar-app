@@ -4,11 +4,11 @@ import {PersistenceLayerProvider} from "../../../../web/js/datastore/Persistence
 import {SwitchButton} from "../../../../web/js/ui/SwitchButton";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
-import {Devices} from "../../../../web/js/util/Devices";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {KnownPrefs} from "../../../../web/js/util/prefs/KnownPrefs";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 

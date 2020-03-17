@@ -5,8 +5,8 @@ import {Duration, DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDu
 import {LifecycleEvents} from '../../../../web/js/ui/util/LifecycleEvents';
 import {LifecycleToggle} from '../../../../web/js/ui/util/LifecycleToggle';
 import * as semver from 'semver';
-import {Devices} from "../../../../web/js/util/Devices";
 import {ReleaseMetadatas} from "polar-release-metadata/src/ReleaseMetadatas";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export class SplashEngine {
 

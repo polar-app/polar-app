@@ -7,8 +7,8 @@ import {TrackedDropdownItem} from './TrackedDropdownItem';
 import {ipcRenderer} from 'electron';
 import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
-import {Devices} from "../../../../web/js/util/Devices";
 import {AboutDialogs} from "./AboutDialogs";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 

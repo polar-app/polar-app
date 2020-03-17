@@ -11,7 +11,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
 import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
-import {Devices} from "../../../../web/js/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 /**
  * Simple header for the repository which supports arbitrary children.

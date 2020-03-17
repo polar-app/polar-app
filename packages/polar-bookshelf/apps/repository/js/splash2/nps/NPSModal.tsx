@@ -3,12 +3,12 @@ import React from 'react';
 import {Feedback} from '../../../../../web/js/ui/feedback/Feedback';
 import {Rating} from '../../../../../web/js/ui/feedback/Feedback';
 import {Toaster} from '../../../../../web/js/ui/toaster/Toaster';
-import {MachineIDs} from '../../../../../web/js/util/MachineIDs';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {SplashKeys} from '../SplashKeys';
 import {LocalPrefs} from '../../../../../web/js/util/LocalPrefs';
 import {Version} from 'polar-shared/src/util/Version';
+import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 
 export class NPSModal extends React.Component<IProps, IState> {
 

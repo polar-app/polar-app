@@ -29,10 +29,10 @@ import {DocButtonsCell} from "./cells/DocButtonsCell";
 import {ReactTableRowInfo} from "../../../../web/js/ui/react-table/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
-import {Devices} from "../../../../web/js/util/Devices";
 import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 import {Checkbox} from "../../../../web/js/ui/Checkbox";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 

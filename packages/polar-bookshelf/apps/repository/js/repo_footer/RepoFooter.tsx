@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {BottomNavButton} from "./BottomNavButton";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {Devices} from "../../../../web/js/util/Devices";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export const RepoFooter = () => {
 

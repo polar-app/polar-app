@@ -3,8 +3,6 @@ import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {FastComponent} from '../../../../web/js/react/FastComponent';
-import {RepoHighlightInfo} from "../RepoAnnotation";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
 interface IProps {

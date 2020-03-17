@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {RepoDocMetaLoader, RepoDocMetaUpdater} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
@@ -41,6 +41,7 @@ import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/Indetermin
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Button} from "reactstrap";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -55,12 +56,15 @@ const AnnotationsList = (props: AnnotationsListProps) => (
 
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly repoAnnotation?: IDocAnnotation;
+    readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
+    readonly repoAnnotation: IDocAnnotation | undefined;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 const AnnotationPreview = (props: AnnotationsPreviewProps) => (
     <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                           repoDocMetaUpdater={props.repoDocMetaUpdater}
                            tagsProvider={props.tagsProvider}
                            repoAnnotation={props.repoAnnotation}/>
 );
@@ -139,7 +143,9 @@ namespace main {
             {
                 id: 'dock-panel-right',
                 type: 'grow',
-                component: <AnnotationPreview {...props}/>
+                component: <AnnotationPreview repoDocMetaUpdater={props.repoDocMetaLoader}
+                                              repoAnnotation={props.repoAnnotation || undefined}
+                                              {...props}/>
             }
         ]}/>
     );
@@ -165,6 +171,7 @@ namespace main {
                 id: 'dock-panel-right',
                 type: 'grow',
                 component: <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                                                  repoDocMetaUpdater={props.repoDocMetaLoader}
                                                   tagsProvider={props.tagsProvider}
                                                   repoAnnotation={props.repoAnnotation}/>
 
@@ -412,11 +419,34 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
 
     private setStateInBackground(state: IState) {
 
+        const getExistingRepoAnnotation = (repoAnnotation: IDocAnnotation | undefined): IDocAnnotation | undefined => {
+
+            const repoDocAnnotationIndex = this.props.repoDocMetaManager.repoDocAnnotationIndex;
+
+            if (! repoAnnotation) {
+                return undefined;
+            }
+
+            const existing = repoDocAnnotationIndex.get(repoAnnotation.id);
+
+            if (existing) {
+                return existing;
+            }
+
+            // TODO: get via GUID. this isn't efficient and is O(N) but it's
+            // not very many comparisons.
+            const values = repoDocAnnotationIndex.values();
+
+            return arrayStream(values)
+                .filter(current => repoAnnotation.guid === current.guid)
+                .first();
+
+        };
+
         setTimeout(() => {
 
             // check if we still have the repoAnnotation in case it's deleted
-            const repoAnnotation = state.repoAnnotation ?
-                this.props.repoDocMetaManager.repoDocAnnotationIndex.get(state.repoAnnotation.id) : undefined;
+            const repoAnnotation = getExistingRepoAnnotation(state.repoAnnotation);
 
             state = {
                 ...state,

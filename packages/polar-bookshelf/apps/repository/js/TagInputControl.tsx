@@ -349,10 +349,7 @@ export class TagInputControl extends React.Component<IProps, IState> {
 
     private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
 
-        console.log("FIXME: 999 0");
-
         if (event.key === "Escape") {
-            console.log("FIXME: 999 1");
             this.onCancel();
         }
 

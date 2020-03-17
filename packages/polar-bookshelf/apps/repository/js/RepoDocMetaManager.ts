@@ -52,7 +52,7 @@ export class RepoDocMetaManager {
         this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
-    public updateFromRepoDocMeta(fingerprint: string, repoDocMeta?: RepoDocMeta) {
+    public updateFromRepoDocMeta(fingerprint: string, repoDocMeta: RepoDocMeta | undefined) {
 
         if (repoDocMeta) {
 

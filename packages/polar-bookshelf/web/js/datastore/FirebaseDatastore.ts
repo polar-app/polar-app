@@ -1082,46 +1082,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const docMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
+        const toDocMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
             const record = <RecordHolder<IDocInfo>> docChange.doc.data();
             return docMetaMutationFromRecord(record, toMutationType(docChange.type));
-
-        };
-
-        const docMetaMutationFromDoc = (doc: firebase.firestore.DocumentData) => {
-            const record = <RecordHolder<IDocInfo>> doc;
-            return docMetaMutationFromRecord(record, 'created');
-
-        };
-
-        const handleDocMetaMutation = async (docMetaMutation: DocMetaMutation) => {
-
-            // dispatch a progress event so we can detect how far we've been
-            // loading
-            await docMetaSnapshotEventListener({
-                datastore: this.id,
-                consistency,
-                progress: progressTracker.incr(),
-                docMetaMutations: [docMetaMutation],
-                batch: {
-                    id: batchID,
-                    terminated: false,
-                }
-            });
-
-        };
-
-        const handleDocChange = (docChange: firebase.firestore.DocumentChange) => {
-            const docMetaMutation = docMetaMutationFromDocChange(docChange);
-            handleDocMetaMutation(docMetaMutation)
-                .catch(err => log.error(err));
-
-        };
-
-        const handleDoc = (doc: firebase.firestore.QueryDocumentSnapshot) => {
-            const docMetaMutation = docMetaMutationFromDoc(doc.data());
-            handleDocMetaMutation(docMetaMutation)
-                .catch(err => log.error(err));
 
         };
 
@@ -1129,33 +1092,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const docChanges = snapshot.docChanges();
 
-        const nrDocChanges = docChanges.length;
-        const nrDocs = snapshot.docs.length;
-
-        // log.notice(`GOT SNAPSHOT with consistency ${consistency}, nrDocs:
-        // ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
-
-        // if (docChanges.length === 0) {
-        //     log.notice("SKIPPING SNAPSHOT (no docChanges)");
-        // }
-
         const progressTracker = new ProgressTracker({total: docChanges.length, id: 'firebase-snapshot'});
 
-        for (const docChange of docChanges) {
-            handleDocChange(docChange);
-        }
+        const docChangeDocMetaMutations = docChanges.map(current => toDocMetaMutationFromDocChange(current));
 
-        // progressTracker = new ProgressTracker(snapshot.docs.length);
-        //
-        // for (const doc of snapshot.docs) {
-        //     handleDoc(doc);
-        // }
+        const docMetaMutations = [...docChangeDocMetaMutations];
 
         docMetaSnapshotEventListener({
             datastore: this.id,
             consistency,
             progress: progressTracker.terminate(),
-            docMetaMutations: [],
+            docMetaMutations,
             batch: {
                 id: batchID,
                 terminated: true,

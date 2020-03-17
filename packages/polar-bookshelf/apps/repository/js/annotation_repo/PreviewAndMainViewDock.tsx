@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {RepoDocMetaLoader, RepoDocMetaUpdater} from '../RepoDocMetaLoader';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
@@ -9,9 +9,9 @@ import {AnnotationPreviewView} from './AnnotationPreviewView';
 import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {Dock} from '../../../../web/js/ui/dock/Dock';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Devices} from "../../../../web/js/util/Devices";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import { Tag } from 'polar-shared/src/tags/Tags';
+import {Devices} from "polar-shared/src/util/Devices";
 
 export default class PreviewAndMainViewDock extends React.Component<IProps, IState> {
 
@@ -89,6 +89,7 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                       right={
                           <div className="mt-2 pl-1 pr-1">
                               <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
+                                                     repoDocMetaUpdater={this.props.repoDocMetaUpdater}
                                                      tagsProvider={this.props.tagsProvider}
                                                      repoAnnotation={this.props.repoAnnotation}/>
                           </div>
@@ -124,6 +125,8 @@ export interface IProps {
     readonly repoDocMetaManager: RepoDocMetaManager;
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
+    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
 
     readonly updateFilters: UpdateFiltersCallback;
 

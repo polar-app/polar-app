@@ -18,6 +18,7 @@ import Moment from "react-moment";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {TagInputControl} from "../TagInputControl";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {RepoDocMetaUpdater} from "../RepoDocMetaLoader";
 
 const log = Logger.create();
 
@@ -163,7 +164,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="text-muted text-center text-xl">
+                <div className="text-muted text-center text-xl m-3">
                     No annotation selected.
                 </div>
 
@@ -186,8 +187,16 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             AnnotationMutations.delete(docMeta, annotationType, original);
 
-            this.props.persistenceLayerManager.get()
-                .writeDocMeta(docMeta)
+            const doPersist = async () => {
+
+                await this.props.repoDocMetaUpdater.update(docMeta, 'deleted');
+
+                const persistenceLayer = this.props.persistenceLayerManager.get();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            };
+
+            doPersist()
                 .catch(err => log.error(err));
 
         };
@@ -236,6 +245,8 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             const doPersist = async () => {
 
+                await this.props.repoDocMetaUpdater.update(docMeta, 'updated');
+
                 const persistenceLayer = this.props.persistenceLayerManager.get();
                 await persistenceLayer.writeDocMeta(docMeta);
 
@@ -252,6 +263,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
 export interface IProps {
 
+    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly repoAnnotation?: IDocAnnotation;
