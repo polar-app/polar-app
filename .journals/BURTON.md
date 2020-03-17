@@ -32,7 +32,7 @@
 - Implement check DAU / MAU straight to firebase
 - Combine all individual d/ signals
 - Add event for users who just converted to premium
-- Track unique visitors
+- Track unique visitors (user_heartbeat)
 - Separate event when user creates annotation
 
 # 2020-03-15
