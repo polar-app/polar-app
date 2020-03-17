@@ -1,3 +1,40 @@
+# 2020-03-16 (mon)
+
+- Fixed the issue with updates.  We're now updating the RepoDocMetaLoader and
+  thinking of it more as an in-memory store now.  
+  
+- The updates still work but still a few more bugs.
+    
+    - the right view is reset and nothing is shown on updates. I think the issue
+      is with the guid not selecting the right one after the update.  the ID is 
+      changed but we now have a different guid.
+      
+    - the view is temporarily sorted improperly and not sure why this would be 
+      happening.  Need to keep a sorter to sort properly.  
+      
+- TODO: can't remove the doc tags... they just magically come back... 
+
+      
+- What sort orders do we need?
+    - created/last updated (ASC/DESC)
+    - has tag 
+    - by tag
+    
+    
+- DONE: the next major issue I have to do is take the FirebaseDatastore and have it send 
+  ALL the events all at once rather than one at a time. I don't think it saves
+  any time but it slows down the UI dramatically... 
+  
+- TODO: we need to support 'day' tags...   
+
+## small features that Jonathan wants in this release:
+
+- Implement check DAU / MAU straight to firebase
+- Combine all individual d/ signals
+- Add event for users who just converted to premium
+- Track unique visitors (user_heartbeat)
+- Separate event when user creates annotation
+
 # 2020-03-15
 
 You can now tag from the annotation viewer AND the document viewer.
@@ -16,9 +53,9 @@ but we should because we receive them much much faster.
 
     - DONE the tag drop down and complete can't be selected... 
 
-    - Document updates are too slow in firebase mode
+    - DONE Document updates are too slow in firebase mode
 
-    - another issue is that the DOC tags seem like they can be deleted but they 
+    - DONE: another issue is that the DOC tags seem like they can be deleted but they 
       can not!
 
 # 2020-03-14
