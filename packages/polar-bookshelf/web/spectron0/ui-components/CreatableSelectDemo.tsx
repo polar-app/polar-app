@@ -1,4 +1,4 @@
-import CreatableSelect from 'react-select/Creatable';
+import CreatableSelect from 'react-select/creatable';
 import * as React from "react";
 
 const options = [
