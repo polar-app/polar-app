@@ -12,6 +12,8 @@
     - the view is temporarily sorted improperly and not sure why this would be 
       happening.  Need to keep a sorter to sort properly.  
       
+- TODO: can't remove the doc tags... they just magically come back... 
+
       
 - What sort orders do we need?
     - created/last updated (ASC/DESC)
@@ -24,6 +26,14 @@
   any time but it slows down the UI dramatically... 
   
 - TODO: we need to support 'day' tags...   
+
+## small features that Jonathan wants in this release:
+
+- Implement check DAU / MAU straight to firebase
+- Combine all individual d/ signals
+- Add event for users who just converted to premium
+- Track unique visitors
+- Separate event when user creates annotation
 
 # 2020-03-15
 
