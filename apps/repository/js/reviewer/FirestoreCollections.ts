@@ -4,6 +4,7 @@ import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
 
 export class FirestoreCollections {
 
@@ -15,7 +16,7 @@ export class FirestoreCollections {
         // NEVER forget about it.
         const firestore = await Firestore.getInstance();
 
-        for (const firestoreBacked of [SpacedReps, SpacedRepStats, DocPreviews]) {
+        for (const firestoreBacked of [SpacedReps, SpacedRepStats, DocPreviews, Heartbeats]) {
             if (isPresent(firestoreBacked.firestoreProvider)) {
                 // already configured
                 continue;
