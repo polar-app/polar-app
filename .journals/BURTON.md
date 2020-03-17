@@ -30,9 +30,9 @@
 ## small features that Jonathan wants in this release:
 
 - Implement check DAU / MAU straight to firebase
+    - Track unique visitors (user_heartbeat)
 - Combine all individual d/ signals
 - Add event for users who just converted to premium
-- Track unique visitors (user_heartbeat)
 - Separate event when user creates annotation
 
 # 2020-03-15
