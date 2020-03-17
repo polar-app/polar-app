@@ -1,3 +1,8 @@
+# 2020-03-17 (tue)
+
+- latest version of react-select
+- 
+
 # 2020-03-16 (mon)
 
 - Fixed the issue with updates.  We're now updating the RepoDocMetaLoader and
@@ -5,12 +10,17 @@
   
 - The updates still work but still a few more bugs.
     
-    - the right view is reset and nothing is shown on updates. I think the issue
+    - done: the right view is reset and nothing is shown on updates. I think the issue
       is with the guid not selecting the right one after the update.  the ID is 
       changed but we now have a different guid.
       
-    - the view is temporarily sorted improperly and not sure why this would be 
+    - done: the view is temporarily sorted improperly and not sure why this would be 
       happening.  Need to keep a sorter to sort properly.  
+
+    
+- DONE: the next major issue I have to do is take the FirebaseDatastore and have it send 
+  ALL the events all at once rather than one at a time. I don't think it saves
+  any time but it slows down the UI dramatically... 
       
 - TODO: can't remove the doc tags... they just magically come back... 
 
@@ -20,20 +30,20 @@
     - has tag 
     - by tag
     
-    
-- DONE: the next major issue I have to do is take the FirebaseDatastore and have it send 
-  ALL the events all at once rather than one at a time. I don't think it saves
-  any time but it slows down the UI dramatically... 
   
 - TODO: we need to support 'day' tags...   
 
 ## small features that Jonathan wants in this release:
 
-- Implement check DAU / MAU straight to firebase
+- DONE: Implement check DAU / MAU straight to firebase
     - Track unique visitors (user_heartbeat)
 - Combine all individual d/ signals
-- Add event for users who just converted to premium
+    - URL tokenizer... 
+- DONE: Add event for users who just converted to premium
 - Separate event when user creates annotation
+- 2 question onboarding 
+    - student/professor
+    - what university
 
 # 2020-03-15
 
