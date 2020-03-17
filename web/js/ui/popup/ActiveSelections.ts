@@ -50,8 +50,9 @@ export class ActiveSelections {
 
                 try {
 
-                    const view: Window = event.view!;
+                    const view: Window = event.view || window;
                     const selection = view.getSelection()!;
+
 
                     hasActiveTextSelection = this.hasActiveTextSelection(selection);
 
@@ -95,6 +96,11 @@ export class ActiveSelections {
                 }
 
             };
+
+            requestAnimationFrame(() => {
+                console.log("FIXME0.1: " , window.getSelection()!.getRangeAt(0).getBoundingClientRect());
+            })
+
 
             this.withTimeout(() => handleMouseEvent());
 
