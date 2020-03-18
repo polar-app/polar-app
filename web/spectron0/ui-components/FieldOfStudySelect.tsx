@@ -1,6 +1,7 @@
 import * as React from "react";
 import Select from "react-select";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
+import {toIdentifier} from "polar-shared/src/util/Identifiers";
 
 export interface IOption<T> {
     readonly value: T;
@@ -45,9 +46,7 @@ export interface FieldOfStudy {
 
 
 function toFieldOfStudy(name: string): FieldOfStudy {
-    const id = name.toLowerCase()
-                   .replace(/[ ,]/g, "-")
-                   .replace(/[-]+/g, '-');
+    const id = toIdentifier(name);
     return {id, name};
 }
 
