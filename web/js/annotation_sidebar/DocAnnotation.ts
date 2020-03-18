@@ -17,17 +17,7 @@ import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Tag} from "polar-shared/src/tags/Tags";
-
-export interface InheritedTag extends Tag {
-
-    /**
-     * The source of this tag whether it be from the document or the annotation
-     * itself.
-     */
-    readonly source: 'doc' | 'self';
-
-}
+import {InheritedTag} from 'polar-shared/src/tags/InheritedTags';
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 

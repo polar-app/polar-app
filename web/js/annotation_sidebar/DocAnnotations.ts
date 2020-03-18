@@ -1,5 +1,5 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {IDocAnnotation, InheritedTag} from './DocAnnotation';
+import {IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
@@ -22,6 +22,10 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {
+    InheritedTag,
+    toSelfInheritedTags
+} from "polar-shared/src/tags/InheritedTags";
 
 export class DocAnnotations {
 
@@ -309,20 +313,4 @@ interface ITextConverter {
     readonly html: PlainTextStr | undefined;
 }
 
-export interface ITagMap {
-    [id: string]: Tag;
-}
 
-export interface IInheritedTagMap {
-    [id: string]: InheritedTag;
-}
-
-function toSelfInheritedTags(tags: ITagMap | undefined | null): IInheritedTagMap {
-    return arrayStream(Object.values(tags || {}))
-            .map(toSelfInheritedTag)
-            .toMap(current => current.id);
-}
-
-function toSelfInheritedTag(tag: Tag): InheritedTag {
-    return {...tag, source: 'self'};
-}
