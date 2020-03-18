@@ -19,6 +19,16 @@ import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag} from "polar-shared/src/tags/Tags";
 
+export interface InheritedTag extends Tag {
+
+    /**
+     * The source of this tag whether it be from the document or the annotation
+     * itself.
+     */
+    readonly source: 'doc' | 'self';
+
+}
+
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     // fingerprint, guid, type, docInfo...
@@ -53,7 +63,11 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     readonly immutable: boolean;
 
-    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    /**
+     * The effective tags for this item including any inherited tags from parent
+     * objects like flashcards, comments, etc.
+     */
+    readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
 }
 
@@ -108,7 +122,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly immutable: boolean;
 
-    public readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    public readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
