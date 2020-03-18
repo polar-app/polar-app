@@ -61,6 +61,8 @@ import {ReviewerDemo} from "./ReviewerDemo";
 import {KeyDownDemo} from "./KeyDownDemo";
 import {CreatableSelectDemo} from "./CreatableSelectDemo";
 import {SchoolSelectDemo} from "./SchoolSelectDemo";
+import {TagChicklet} from "../../js/ui/tags/TagChicklet";
+import { TagChickletDemo } from './TagChickletDemo';
 
 const styles = {
     swatch: {
@@ -347,6 +349,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="m-2">
 
+                <TagChickletDemo/>
                 <SchoolSelectDemo/>
 
                 {/*<KeyDownDemo/>*/}

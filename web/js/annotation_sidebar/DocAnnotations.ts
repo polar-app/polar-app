@@ -262,7 +262,7 @@ export class DocAnnotations {
         const tags =
             arrayStream(Object.values(docMeta.docInfo.tags || {}))
                 .map(toInheritedTag)
-                .toMap(current => current.label);
+                .toMap(current => current.id);
 
         return {
             tags: {...tags}
