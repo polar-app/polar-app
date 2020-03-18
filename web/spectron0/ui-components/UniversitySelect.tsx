@@ -84,7 +84,7 @@ export const UniversitySelect = (props: IProps) => {
             isClearable
             autoFocus
             cacheOptions
-            placeholder="Search for a university..."
+            placeholder="Search from nearly 10k universities..."
             defaultOptions={Loader.defaultOptions()}
             loadOptions={loadOptions}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}

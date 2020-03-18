@@ -79,7 +79,7 @@ export const FieldOfStudySelect = (props: IProps) => {
         <Select
             isClearable
             autoFocus
-            placeholder="Search for a field of study..."
+            placeholder="Select a field of study..."
             options={options}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
             // onKeyDown={event => props.onKeyDown(event)}
