@@ -65,7 +65,7 @@ import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
-import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsScreen";
+import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";

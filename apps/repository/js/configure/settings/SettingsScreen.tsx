@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {SwitchButton} from "../../../../web/js/ui/SwitchButton";
-import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
+import {PersistenceLayerController} from '../../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
+import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
+import {PersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
+import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
-import {KnownPrefs} from "../../../../web/js/util/prefs/KnownPrefs";
+import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
+import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();

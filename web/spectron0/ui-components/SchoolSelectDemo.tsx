@@ -164,21 +164,21 @@ export const ProfileConfigurator = (props: IProps) => {
                 </NullCollapse>
             </div>
 
-            <div className="text-center mt-2">
+            {/*<div className="text-center mt-2">*/}
 
-                <Button hidden={progress === 100}
-                        color="clear"
-                        size="md">
-                    Skip
-                </Button>
+            {/*    <Button hidden={progress === 100}*/}
+            {/*            color="clear"*/}
+            {/*            size="md">*/}
+            {/*        Skip*/}
+            {/*    </Button>*/}
 
-                <Button hidden={progress !== 100}
-                        color="primary"
-                        size="lg">
-                    Let's Go!
-                </Button>
+            {/*    <Button hidden={progress !== 100}*/}
+            {/*            color="primary"*/}
+            {/*            size="lg">*/}
+            {/*        Let's Go!*/}
+            {/*    </Button>*/}
 
-            </div>
+            {/*</div>*/}
 
         </div>
     );
