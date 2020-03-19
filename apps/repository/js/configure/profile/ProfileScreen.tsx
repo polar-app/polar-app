@@ -23,7 +23,7 @@ export const ProfileScreen = (props: IProps) => {
             <ConfigureBody>
                 <ConfigureNavbar/>
 
-                <h2>Profile</h2>
+                {/*<h2>Profile</h2>*/}
 
                 <ProfileConfigurator onProfile={profile => onProfile(profile)}/>
 
