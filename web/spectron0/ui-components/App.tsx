@@ -349,7 +349,7 @@ export class App<P> extends React.Component<{}, IAppState> {
 
             <div className="m-2">
 
-                <TagChickletDemo/>
+                {/*<TagChickletDemo/>*/}
                 <SchoolSelectDemo/>
 
                 {/*<KeyDownDemo/>*/}

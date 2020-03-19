@@ -7,6 +7,10 @@ import {useState} from "react";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {NullCollapse} from "../../js/ui/null_collapse/NullCollapse";
 import {URLStr} from "polar-shared/src/util/Strings";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Percentages} from "polar-shared/src/util/Percentages";
+import {Progress, Button} from "reactstrap";
+import {UniversityLevel, UniversityLevelSelect} from "./UniversityLevelSelect";
 
 export type ProfileType = 'academic' | 'business' | 'personal';
 
@@ -38,6 +42,7 @@ interface IProps {
 
 interface IState {
     readonly occupation?: Occupation;
+    readonly universityLevel?: UniversityLevel;
     readonly fieldOfStudy?: FieldOfStudy;
     readonly university?: University;
 }
@@ -49,33 +54,131 @@ export const ProfileConfigurator = (props: IProps) => {
         setState({...state, occupation});
     };
 
+    const onUniversityLevel = (universityLevel: UniversityLevel | undefined) => {
+        setState({...state, universityLevel});
+    };
+
+    const onFieldOfStudy = (fieldOfStudy: FieldOfStudy | undefined) => {
+        setState({...state, fieldOfStudy});
+    };
+
+    const onUniversity = (university: University | undefined) => {
+        setState({...state, university});
+    };
+
+    const computeProgress = () => {
+
+        const score = arrayStream([
+                            state.occupation,
+                            state.universityLevel,
+                            state.fieldOfStudy,
+                            state.university
+                        ])
+                        .filter(current => current !== undefined)
+                        .collect()
+                        .length;
+
+        return Percentages.calculate(score, 4);
+
+    };
+
+    const progress = computeProgress();
+
     return (
-        <div>
+        <div style={{
+                 minHeight: '30em',
+                 display: 'flex',
+                 flexDirection: 'column'
+             }}
+             className="border rounded p-1">
 
-            <p>
-                Tell us about yourself.
-            </p>
+            <div style={{flexGrow: 1}}>
 
-            <div className="mt-1">
-                <OccupationSelect onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
-            </div>
+                <div className="mb-1">
+                    <Progress value={progress}/>
+                </div>
 
-            <NullCollapse open={state.occupation !== undefined}>
+                <p>
+                    <b>Tell us about yourself! </b> We just want to ask you a few
+                    questions to better tailor your experience.
+                </p>
 
                 <div className="mt-1">
-                    <FieldOfStudySelect onSelect={selected => console.log({selected})}/>
-                </div>
 
-                <div className="mt-2">
-
-                    <div className="mb-1">
-                        Select a university:
+                    <div className="mb-1 font-weight-bold">
+                        What's your occupation?
                     </div>
 
-                    <UniversitySelect onSelect={selected => console.log({selected})}/>
+                    <OccupationSelect
+                        placeholder=""
+                        onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
                 </div>
 
-            </NullCollapse>
+                <NullCollapse open={state.occupation !== undefined}>
+
+                    <div className="mb-1 mt-2">
+
+                        <div className="mb-1 font-weight-bold">
+                            At what university level?
+                        </div>
+
+                        <div className="mt-1">
+                            <UniversityLevelSelect
+                                placeholder=""
+                                onSelect={selected => onUniversityLevel(nullToUndefined(selected?.value))}/>
+                        </div>
+
+                    </div>
+                </NullCollapse>
+
+                <NullCollapse open={state.universityLevel !== undefined}>
+
+                    <div className="mb-1 mt-2">
+
+                        <div className="mb-1 font-weight-bold">
+                            What do you study?
+                        </div>
+
+                        <div className="mt-1">
+                            <FieldOfStudySelect
+                                placeholder=""
+                                onSelect={selected => onFieldOfStudy(nullToUndefined(selected?.value))}/>
+                        </div>
+
+                    </div>
+                </NullCollapse>
+
+                <NullCollapse open={state.fieldOfStudy !== undefined}>
+
+                    <div className="mb-1 mt-2">
+
+                        <div className="mb-1 font-weight-bold">
+                            Select a university:
+                        </div>
+
+                        <UniversitySelect
+                            onSelect={selected => onUniversity(nullToUndefined(selected?.value))}/>
+
+                    </div>
+
+                </NullCollapse>
+            </div>
+
+            <div className="text-center mt-2">
+
+                <Button hidden={progress === 100}
+                        color="clear"
+                        size="md">
+                    Skip
+                </Button>
+
+                <Button hidden={progress !== 100}
+                        color="primary"
+                        size="lg">
+                    Let's Go!
+                </Button>
+
+            </div>
 
         </div>
     );
@@ -87,7 +190,8 @@ export const SchoolSelectDemo2 = () => (
     <div>
 
         <div className="m-1">
-            <OccupationSelect onSelect={selected => console.log({selected})}/>
+            <OccupationSelect
+                onSelect={selected => console.log({selected})}/>
         </div>
 
         <div className="m-1">

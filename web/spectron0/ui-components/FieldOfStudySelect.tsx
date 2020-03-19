@@ -37,6 +37,7 @@ const fieldsOfStudy = [
     "Social Sciences",
     "Sports and Recreations",
     "Veterinary Science and Veterinary Medicine",
+    "Other",
 ];
 
 export interface FieldOfStudy {
@@ -64,9 +65,9 @@ const options: ReadonlyArray<IOption<FieldOfStudy>>
 
 
 interface IProps {
-    /**
-     *
-     */
+
+    readonly placeholder?: string;
+
     readonly onSelect: (option: IOption<FieldOfStudy> | undefined) => void;
 }
 
@@ -79,7 +80,7 @@ export const FieldOfStudySelect = (props: IProps) => {
         <Select
             isClearable
             autoFocus
-            placeholder="Select a field of study..."
+            placeholder={props.placeholder ?? "Select a field of study..."}
             options={options}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
             // onKeyDown={event => props.onKeyDown(event)}

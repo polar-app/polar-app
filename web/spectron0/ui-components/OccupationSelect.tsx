@@ -11,18 +11,12 @@ export interface IOption<T> {
 export type OccupationType = 'academic' | 'business';
 
 const academicOccupations = [
+    "Student",
+    "Researcher",
+    "Professor",
     "Lecturer",
-    "Lecturer: Senior Lecturer",
     "Librarian",
     "Other",
-    "Professor",
-    "Professor: Associate Professor",
-    "Researcher",
-    "Student: Bachelor",
-    "Student: Doctoral Student",
-    "Student: Master",
-    "Student: Ph. D. Student",
-    "Student: Postgraduate",
 ];
 
 export interface Occupation {
@@ -53,9 +47,9 @@ const options: ReadonlyArray<IOption<Occupation>>
                          .map(toOption);
 
 interface IProps {
-    /**
-     *
-     */
+
+    readonly placeholder?: string;
+
     readonly onSelect: (option: IOption<Occupation> | undefined) => void;
 }
 
@@ -68,7 +62,7 @@ export const OccupationSelect = (props: IProps) => {
         <Select
             isClearable
             autoFocus
-            placeholder="Select an occupation..."
+            placeholder={props.placeholder ?? "Select an occupation..."}
             options={options}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
         />
