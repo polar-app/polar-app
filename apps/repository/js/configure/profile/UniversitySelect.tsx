@@ -68,9 +68,7 @@ class Loader {
 }
 
 interface IProps {
-    /**
-     *
-     */
+    readonly placeholder?: string;
     readonly onSelect: (option: IOption<University> | undefined) => void;
 }
 
@@ -84,7 +82,7 @@ export const UniversitySelect = (props: IProps) => {
             isClearable
             autoFocus
             cacheOptions
-            placeholder="Search from nearly 10k universities..."
+            placeholder={props.placeholder ?? "Search from nearly 10k universities..."}
             defaultOptions={Loader.defaultOptions()}
             loadOptions={loadOptions}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}

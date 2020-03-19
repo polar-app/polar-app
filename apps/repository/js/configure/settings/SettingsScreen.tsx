@@ -9,6 +9,8 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {Devices} from "polar-shared/src/util/Devices";
+import { ConfigureNavbar } from '../ConfigureNavbar';
+import {ConfigureBody} from "../ConfigureBody";
 
 const log = Logger.create();
 
@@ -114,46 +116,52 @@ export const SettingsScreen = (props: IProps) => {
     return (
 
         <DefaultPageLayout {...props}>
-            <div className="">
-                <h2>General</h2>
 
-                <p>
-                    General settings. Note that some of these may require you to reload.
-                </p>
+            <ConfigureBody>
+                <ConfigureNavbar/>
 
-                <SettingEntry title="Automatically resume reading position"
-                              description="This feature restores the document reading position using pagemarks when reopening a document."
-                              name="settings-auto-resume"
-                              defaultValue={true}
-                              prefs={prefs}/>
+                <div className="">
+                    <h2>General</h2>
 
-                <SettingEntry title="Enable groups"
-                              description="Enables the new groups functionality for sharing documents with other users."
-                              name="groups"
-                              prefs={prefs}
-                              preview={true}/>
+                    <p>
+                        General settings. Note that some of these may require you to reload.
+                    </p>
 
-                <SettingEntry title="Automatic pagemarks"
-                              description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
-                              name={KnownPrefs.AUTO_PAGEMARKS}
-                              prefs={prefs}
-                              preview={true}/>
+                    <SettingEntry title="Automatically resume reading position"
+                                  description="This feature restores the document reading position using pagemarks when reopening a document."
+                                  name="settings-auto-resume"
+                                  defaultValue={true}
+                                  prefs={prefs}/>
 
-                <NullCollapse open={ ! Devices.isDesktop()}>
-                    <SettingEntry title="Table and phone reading"
-                                  description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
-                                  name="mobile-reading"
+                    <SettingEntry title="Enable groups"
+                                  description="Enables the new groups functionality for sharing documents with other users."
+                                  name="groups"
                                   prefs={prefs}
                                   preview={true}/>
-                </NullCollapse>
 
-                <SettingEntry title="Development"
-                              description="Enables general development features for software engineers working on Polar."
-                              name="dev"
-                              prefs={prefs}
-                              preview={true}/>
+                    <SettingEntry title="Automatic pagemarks"
+                                  description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
+                                  name={KnownPrefs.AUTO_PAGEMARKS}
+                                  prefs={prefs}
+                                  preview={true}/>
 
-            </div>
+                    <NullCollapse open={ ! Devices.isDesktop()}>
+                        <SettingEntry title="Table and phone reading"
+                                      description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
+                                      name="mobile-reading"
+                                      prefs={prefs}
+                                      preview={true}/>
+                    </NullCollapse>
+
+                    <SettingEntry title="Development"
+                                  description="Enables general development features for software engineers working on Polar."
+                                  name="dev"
+                                  prefs={prefs}
+                                  preview={true}/>
+
+                </div>
+
+            </ConfigureBody>
 
         </DefaultPageLayout>
     );

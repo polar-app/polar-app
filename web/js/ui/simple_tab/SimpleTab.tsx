@@ -41,10 +41,10 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
         return (
 
-            <div id={this.props.id}>
+            <div id={this.props.id} className="mr-1">
 
                 <Link to={this.props.target}
-                      className="p-2 ml-1 mr-1"
+                      className="p-2"
                       onMouseEnter={() => this.toggleHover()}
                       onMouseLeave={() => this.toggleHover()}
                       style={{

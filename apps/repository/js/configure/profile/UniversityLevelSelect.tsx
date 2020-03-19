@@ -15,6 +15,10 @@ export interface UniversityLevel {
 
 const universityLevels: ReadonlyArray<UniversityLevel> = [
     {
+        id: 'highschool',
+        name: "High School"
+    },
+    {
         id: 'bachelors',
         name: "Bachelors"
     },
