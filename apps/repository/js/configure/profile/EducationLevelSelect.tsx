@@ -8,12 +8,12 @@ export interface IOption<T> {
     readonly label: string;
 }
 
-export interface UniversityLevel {
+export interface EducationLevel {
     readonly id: string;
     readonly name: string;
 }
 
-const universityLevels: ReadonlyArray<UniversityLevel> = [
+const educationLevels: ReadonlyArray<EducationLevel> = [
     {
         id: 'highschool',
         name: "High School"
@@ -40,33 +40,33 @@ const universityLevels: ReadonlyArray<UniversityLevel> = [
     },
 ];
 
-function toOption(universityLevel: UniversityLevel): IOption<UniversityLevel> {
+function toOption(educationLevel: EducationLevel): IOption<EducationLevel> {
     return {
-        value: universityLevel,
-        label: universityLevel.name
+        value: educationLevel,
+        label: educationLevel.name
     };
 }
 
-const options: ReadonlyArray<IOption<UniversityLevel>>
-    = universityLevels.map(toOption);
+const options: ReadonlyArray<IOption<EducationLevel>>
+    = educationLevels.map(toOption);
 
 interface IProps {
 
     readonly placeholder?: string;
 
-    readonly onSelect: (option: IOption<UniversityLevel> | undefined) => void;
+    readonly onSelect: (option: IOption<EducationLevel> | undefined) => void;
 }
 
 
-export const UniversityLevelSelect = (props: IProps) => {
+export const EducationLevelSelect = (props: IProps) => {
 
-    type RawOption = IOption<UniversityLevel> | null;
+    type RawOption = IOption<EducationLevel> | null;
 
     return (
         <Select
             isClearable
             autoFocus
-            placeholder={props.placeholder ?? "Select a degree..."}
+            placeholder={props.placeholder ?? "Select a level of education..."}
             options={options}
             onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
         />

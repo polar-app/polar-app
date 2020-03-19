@@ -1,5 +1,5 @@
 import {Occupation, OccupationSelect} from "./OccupationSelect";
-import {UniversityLevel, UniversityLevelSelect} from "./UniversityLevelSelect";
+import {EducationLevel, EducationLevelSelect} from "./EducationLevelSelect";
 import {FieldOfStudy, FieldOfStudySelect} from "./FieldOfStudySelect";
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
@@ -11,11 +11,15 @@ import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse"
 import {UniversitySelect} from "./UniversitySelect";
 import {URLStr} from "polar-shared/src/util/Strings";
 
+// FIXME: now this conflicts with 'profile' in the database and I think we
+// should use that...
+
 export type ProfileType = 'academic' | 'business' | 'personal';
 
 export interface AcademicProfile {
     readonly type: 'academic';
     readonly occupation: Occupation;
+    readonly educationLevel?: EducationLevel;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
@@ -40,7 +44,7 @@ interface IProps {
 
 interface IState {
     readonly occupation?: Occupation;
-    readonly universityLevel?: UniversityLevel;
+    readonly educationLevel?: EducationLevel;
     readonly fieldOfStudy?: FieldOfStudy;
     readonly university?: University;
 }
@@ -52,8 +56,8 @@ export const ProfileConfigurator = (props: IProps) => {
         setState({...state, occupation});
     };
 
-    const onUniversityLevel = (universityLevel: UniversityLevel | undefined) => {
-        setState({...state, universityLevel});
+    const onEducationLevel = (educationLevel: EducationLevel | undefined) => {
+        setState({...state, educationLevel});
     };
 
     const onFieldOfStudy = (fieldOfStudy: FieldOfStudy | undefined) => {
@@ -68,7 +72,7 @@ export const ProfileConfigurator = (props: IProps) => {
 
         const score = arrayStream([
             state.occupation,
-            state.universityLevel,
+            state.educationLevel,
             state.fieldOfStudy,
             state.university
         ])
@@ -120,19 +124,19 @@ export const ProfileConfigurator = (props: IProps) => {
                     <div className="mb-1 mt-2">
 
                         <div className="mb-1 font-weight-bold">
-                            At what university level?
+                            At what level of education?
                         </div>
 
                         <div className="mt-1">
-                            <UniversityLevelSelect
+                            <EducationLevelSelect
                                 placeholder=""
-                                onSelect={selected => onUniversityLevel(nullToUndefined(selected?.value))}/>
+                                onSelect={selected => onEducationLevel(nullToUndefined(selected?.value))}/>
                         </div>
 
                     </div>
                 </NullCollapse>
 
-                <NullCollapse open={state.universityLevel !== undefined}>
+                <NullCollapse open={state.educationLevel !== undefined}>
 
                     <div className="mb-1 mt-2">
 
@@ -165,22 +169,6 @@ export const ProfileConfigurator = (props: IProps) => {
 
                 </NullCollapse>
             </div>
-
-            {/*<div className="text-center mt-2">*/}
-
-            {/*    <Button hidden={progress === 100}*/}
-            {/*            color="clear"*/}
-            {/*            size="md">*/}
-            {/*        Skip*/}
-            {/*    </Button>*/}
-
-            {/*    <Button hidden={progress !== 100}*/}
-            {/*            color="primary"*/}
-            {/*            size="lg">*/}
-            {/*        Let's Go!*/}
-            {/*    </Button>*/}
-
-            {/*</div>*/}
 
         </div>
     );

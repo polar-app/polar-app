@@ -8,6 +8,10 @@ export interface IOption<T> {
     readonly label: string;
 }
 
+// FIXME add business occupations here not just academic ones
+// FIXME prompt for their company URL / domain...
+// FIXME event when profile completed
+
 export type OccupationType = 'academic' | 'business';
 
 const academicOccupations = [
