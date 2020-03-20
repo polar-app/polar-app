@@ -1,8 +1,12 @@
 # 2020-03-18 (tue)
 
+- TODO: highlighter not working on web capture content!
+
 - TODO: 2 question onboarding 
     - student/professor/faculty
     - what university
+    
+    
 
 # 2020-03-17 (tue)
 
