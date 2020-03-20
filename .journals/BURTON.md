@@ -1,15 +1,22 @@
+# 2020-03-18 (tue)
+
+- TODO: highlighter not working on web capture content!
+
+- TODO: 2 question onboarding 
+    - student/professor/faculty
+    - what university
+    
+    
+
 # 2020-03-17 (tue)
 
 - latest version of react-select upgraded
 
-- TODO: Combine all individual d/ signals
+- DONE: Combine all individual d/ signals
     - URL tokenizer... 
-- TODO: 2 question onboarding 
-    - student/professor/faculty
-    - what university
-- TODO: Separate event when user creates annotation
-- TODO: can't remove the doc tags... they just magically come back... 
-
+- DONE: Separate event when user creates annotation
+- DONE: can't remove the doc tags... they just magically come back... 
+    
 # 2020-03-16 (mon)
 
 - Fixed the issue with updates.  We're now updating the RepoDocMetaLoader and
