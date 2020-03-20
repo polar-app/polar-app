@@ -1,8 +1,6 @@
 import {
     OccupationSelect
 } from "./selectors/OccupationSelect";
-import {EducationLevel} from "./selectors/EducationLevelSelect";
-import {FieldOfStudy} from "./selectors/FieldOfStudySelect";
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
 import {Progress} from "reactstrap";
@@ -15,6 +13,8 @@ import {
     BusinessOccupation,
     Occupation
 } from "polar-shared/src/util/Occupations";
+import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
+import {EducationLevel} from "polar-shared/src/util/EducationLevels";
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
