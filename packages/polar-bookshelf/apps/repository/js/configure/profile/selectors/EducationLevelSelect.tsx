@@ -1,44 +1,15 @@
 import * as React from "react";
 import Select from "react-select";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
-import {toIdentifier} from "polar-shared/src/util/Identifiers";
+import {
+    EducationLevel,
+    educationLevels
+} from "polar-shared/src/util/EducationLevels";
 
 export interface IOption<T> {
     readonly value: T;
     readonly label: string;
 }
-
-export interface EducationLevel {
-    readonly id: string;
-    readonly name: string;
-}
-
-const educationLevels: ReadonlyArray<EducationLevel> = [
-    {
-        id: 'highschool',
-        name: "High School"
-    },
-    {
-        id: 'bachelors',
-        name: "Bachelors"
-    },
-    {
-        id: "masters",
-        name: "Masters"
-    },
-    {
-        id: "doctorate",
-        name: "Doctorate / PhD"
-    },
-    {
-        id: "postdoctorate",
-        name: "Postdoctorate"
-    },
-    {
-        id: "other",
-        name: "Other"
-    },
-];
 
 function toOption(educationLevel: EducationLevel): IOption<EducationLevel> {
     return {

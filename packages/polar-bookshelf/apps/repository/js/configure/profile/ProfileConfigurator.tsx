@@ -1,40 +1,35 @@
 import {
-    AcademicOccupation,
-    BusinessOccupation,
-    Occupation,
     OccupationSelect
 } from "./selectors/OccupationSelect";
-import {EducationLevel} from "./selectors/EducationLevelSelect";
-import {FieldOfStudy} from "./selectors/FieldOfStudySelect";
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Percentages} from "polar-shared/src/util/Percentages";
 import {Progress} from "reactstrap";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
 import {BusinessProfileConfigurator} from "./BusinessProfileConfigurator";
+import {
+    AcademicOccupation,
+    BusinessOccupation,
+    Occupation
+} from "polar-shared/src/util/Occupations";
+import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
+import {EducationLevel} from "polar-shared/src/util/EducationLevels";
 
-// FIXME: now this conflicts with 'profile' in the database and I think we
-// should use that...
-//
-// FIXME: we can't call 'profile' 'occupation' because that's a field in profile
-
-export interface AcademicProfile {
+export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
     readonly educationLevel: EducationLevel;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
 
-export interface BusinessProfile {
+export interface BusinessOccupationProfile {
     readonly occupation: BusinessOccupation;
     readonly domainOrURL: URLStr | DomainNameStr;
     readonly domain: DomainNameStr;
 }
 
-export type OccupationProfile = AcademicProfile | BusinessProfile;
+export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {
     readonly onOccupationProfile: (occupationProfile: OccupationProfile) => void;
@@ -47,7 +42,7 @@ export interface FormData<T> {
 
 interface IState {
     readonly occupation?: Occupation;
-    readonly form: FormData<AcademicProfile> | FormData<BusinessProfile>;
+    readonly form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>;
 }
 
 export const ProfileConfigurator = (props: IProps) => {
@@ -88,7 +83,7 @@ export const ProfileConfigurator = (props: IProps) => {
         setState(newState);
     };
 
-    const onForm = (form: FormData<AcademicProfile> | FormData<BusinessProfile>) => {
+    const onForm = (form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
         console.log("form: "    , form);
         setState({...state, form});
     };
@@ -128,12 +123,12 @@ export const ProfileConfigurator = (props: IProps) => {
 
                 {state.occupation && state.occupation.type === 'academic' &&
                     <AcademicProfileConfigurator occupation={state.occupation}
-                                                 form={state.form as FormData<AcademicProfile>}
+                                                 form={state.form as FormData<AcademicOccupationProfile>}
                                                  onForm={form => onForm(form)}/>}
 
                 {state.occupation && state.occupation.type === 'business' &&
                     <BusinessProfileConfigurator occupation={state.occupation}
-                                                 form={state.form as FormData<BusinessProfile>}
+                                                 form={state.form as FormData<BusinessOccupationProfile>}
                                                  onForm={form => onForm(form)}/>}
 
             </div>

@@ -1,22 +1,22 @@
 import * as React from "react";
 import Input from "reactstrap/lib/Input";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Occupation} from "./selectors/OccupationSelect";
-import {BusinessProfile, FormData} from "./ProfileConfigurator";
+import {BusinessOccupationProfile, FormData} from "./ProfileConfigurator";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
+import {Occupation} from "polar-shared/src/util/Occupations";
 
 interface IProps {
 
     readonly occupation: Occupation;
-    readonly form: FormData<BusinessProfile>;
-    readonly onForm: (form: FormData<BusinessProfile>) => void;
+    readonly form: FormData<BusinessOccupationProfile>;
+    readonly onForm: (form: FormData<BusinessOccupationProfile>) => void;
 
 }
 
 export const BusinessProfileConfigurator = (props: IProps) => {
 
-    const onForm = (newProfile: Partial<BusinessProfile>) => {
+    const onForm = (newProfile: Partial<BusinessOccupationProfile>) => {
 
         const profile = {
             ...props.form.profile,
@@ -26,6 +26,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
         const computeProgress = () => {
 
             const tasks = [
+                props.occupation,
                 profile.domain,
             ];
 
@@ -34,7 +35,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
                 .collect()
                 .length;
 
-            return Percentages.calculate(score + 1, tasks.length);
+            return Percentages.calculate(score, tasks.length);
 
         };
 
@@ -60,6 +61,10 @@ export const BusinessProfileConfigurator = (props: IProps) => {
 
         } catch (e) {
             // noop as this is an invalid URL so far.
+            onForm({
+                domainOrURL: undefined,
+                domain: undefined
+            });
         }
 
     };
@@ -73,7 +78,9 @@ export const BusinessProfileConfigurator = (props: IProps) => {
             </div>
 
             <div className="mt-1">
-                <Input type="url" onChange={event => onURL(event.currentTarget.value)}/>
+                <Input type="url"
+                       autoFocus={true}
+                       onChange={event => onURL(event.currentTarget.value)}/>
             </div>
 
         </div>
