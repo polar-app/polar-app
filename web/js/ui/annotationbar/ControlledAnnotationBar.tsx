@@ -14,7 +14,8 @@ const Styles: IStyleMap = {
         padding: '0',
         paddingLeft: '10px',
         paddingRight: '10px',
-        paddingBottom: '2px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
         borderRadius: '3px'
     }
 

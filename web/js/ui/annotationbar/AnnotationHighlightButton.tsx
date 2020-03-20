@@ -10,9 +10,7 @@ export interface IProps {
 }
 
 export const AnnotationHighlightButton = (props: IProps) =>
-    <Button size="lg"
-            type="button"
-            color="clear"
+    <button color="clear"
             className=""
             title=""
             aria-label=""
@@ -29,6 +27,6 @@ export const AnnotationHighlightButton = (props: IProps) =>
             <HighlighterSVGIcon style={{width: '15px', height: '15px'}}/>
         </span>
 
-    </Button>;
+    </button>;
 
 

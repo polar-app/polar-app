@@ -189,9 +189,9 @@ export class ActiveSelections {
 
     private static targetElementForEvent(event: MouseEvent | TouchEvent): HTMLElement {
 
-        const view = event.view || window;
+        const anyTarget = event.target as any;
 
-        if ((event.target as any).type === Node.ELEMENT_NODE) {
+        if (anyTarget.nodeType === Node.ELEMENT_NODE) {
             return event.target as HTMLElement;
         } else {
             return (event.target! as any).parentElement! as HTMLElement;
