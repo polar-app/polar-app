@@ -29,16 +29,19 @@ export const AcademicProfileConfigurator = (props: IProps) => {
 
         const computeProgress = () => {
 
-            const score = arrayStream([
-                    profile.educationLevel,
-                    profile.fieldOfStudy,
-                    profile.university
-                ])
+            const tasks = [
+                props.occupation,
+                profile.educationLevel,
+                profile.fieldOfStudy,
+                profile.university
+            ];
+
+            const score = arrayStream(tasks)
                 .filter(current => current !== undefined)
                 .collect()
                 .length;
 
-            return Percentages.calculate(score + 1, 4);
+            return Percentages.calculate(score, tasks.length);
 
         };
 

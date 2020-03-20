@@ -26,6 +26,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
         const computeProgress = () => {
 
             const tasks = [
+                props.occupation,
                 profile.domain,
             ];
 
@@ -34,7 +35,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
                 .collect()
                 .length;
 
-            return Percentages.calculate(score + 1, tasks.length);
+            return Percentages.calculate(score, tasks.length);
 
         };
 
@@ -60,6 +61,10 @@ export const BusinessProfileConfigurator = (props: IProps) => {
 
         } catch (e) {
             // noop as this is an invalid URL so far.
+            onForm({
+                domainOrURL: undefined,
+                domain: undefined
+            });
         }
 
     };
@@ -73,7 +78,9 @@ export const BusinessProfileConfigurator = (props: IProps) => {
             </div>
 
             <div className="mt-1">
-                <Input type="url" onChange={event => onURL(event.currentTarget.value)}/>
+                <Input type="url"
+                       autoFocus={true}
+                       onChange={event => onURL(event.currentTarget.value)}/>
             </div>
 
         </div>
