@@ -9,9 +9,9 @@ import {CloudFunctions} from './firebase/CloudFunctions';
 import {Firebase, UserID} from '../firebase/Firebase';
 import * as firebase from '../firebase/lib/firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {UserIDStr} from './sharing/db/Profiles';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 const log = Logger.create();
 

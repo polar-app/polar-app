@@ -1,6 +1,6 @@
 import {SerializedObject} from './SerializedObject';
-import {ProfileIDStr} from "../datastore/sharing/db/Profiles";
 import {AuthorImage, IAuthor} from "polar-shared/src/metadata/IAuthor";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class Author extends SerializedObject implements IAuthor {
 

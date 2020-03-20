@@ -5,7 +5,9 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 
-const LIMIT = 25;
+// use a large limit so that the user sees a bunch of universities and then
+// realizes that they need to type for it...
+const LIMIT = 250;
 
 export interface IOption<T> {
     readonly value: T;

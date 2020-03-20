@@ -1,7 +1,5 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {EmailStr} from './Profiles';
-import {ProfileIDStr} from './Profiles';
 import {Firebase} from '../../../firebase/Firebase';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
@@ -9,6 +7,7 @@ import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
 import {Logger} from 'polar-shared/src/logger/Logger';
+import {EmailStr, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 const log = Logger.create();
 

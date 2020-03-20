@@ -5,9 +5,9 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {ProfileIDStr} from "../Profiles";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export interface BaseDocAnnotation {
 

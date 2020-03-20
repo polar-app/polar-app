@@ -3,8 +3,8 @@
  * (which we then resolve to a user and profile. Or a profile which we then
  * resolve to a user + profile.
  */
-import {ProfileIDStr} from '../db/Profiles';
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class UserRefs {
 

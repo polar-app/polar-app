@@ -2,7 +2,7 @@ import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import * as React from "react";
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
 import {PersistenceLayerController} from "../../../../../web/js/datastore/PersistenceLayerManager";
-import {Profile, ProfileConfigurator} from "./ProfileConfigurator";
+import {OccupationProfile, ProfileConfigurator} from "./ProfileConfigurator";
 import {ConfigureNavbar} from "../ConfigureNavbar";
 import {ConfigureBody} from "../ConfigureBody";
 
@@ -13,7 +13,7 @@ interface IProps {
 
 export const ProfileScreen = (props: IProps) => {
 
-    const onProfile = (profile: Profile) => {
+    const onProfile = (profile: OccupationProfile) => {
         // noop
     };
 
@@ -25,7 +25,7 @@ export const ProfileScreen = (props: IProps) => {
 
                 {/*<h2>Profile</h2>*/}
 
-                <ProfileConfigurator onProfile={profile => onProfile(profile)}/>
+                <ProfileConfigurator onOccupationProfile={occupationProfile => onProfile(occupationProfile)}/>
 
             </ConfigureBody>
         </DefaultPageLayout>

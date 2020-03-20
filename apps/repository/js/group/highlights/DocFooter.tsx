@@ -1,12 +1,7 @@
 import * as React from 'react';
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
-import {GroupDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
-import {DocAnnotationComponent} from "./annotations/DocAnnotationComponent";
 import {ProfileRecord} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
-import {Profile} from "../../../../../web/js/datastore/sharing/db/Profiles";
-import {DocAnnotationMoment} from "../../../../../web/js/annotation_sidebar/DocAnnotationMoment";
 import {BaseDocAnnotation} from "../../../../../web/js/datastore/sharing/db/doc_annotations/BaseDocAnnotation";
-import {RelativeMoment} from "../../../../../web/js/ui/util/RelativeMoment";
 import {GroupDocAddButton} from "../GroupDocAddButton";
 import {GroupIDStr} from "../../../../../web/js/datastore/Datastore";
 

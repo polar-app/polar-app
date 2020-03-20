@@ -10,10 +10,10 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
-import {Profile} from '../../datastore/sharing/db/Profiles';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
+import {Profile} from "polar-firebase/src/firebase/om/Profiles";
 
 const log = Logger.create();
 

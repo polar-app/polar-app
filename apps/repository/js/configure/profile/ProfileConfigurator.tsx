@@ -1,103 +1,110 @@
-import {Occupation, OccupationSelect} from "./OccupationSelect";
-import {EducationLevel, EducationLevelSelect} from "./EducationLevelSelect";
-import {FieldOfStudy, FieldOfStudySelect} from "./FieldOfStudySelect";
+import {
+    AcademicOccupation,
+    BusinessOccupation,
+    Occupation,
+    OccupationSelect
+} from "./selectors/OccupationSelect";
+import {EducationLevel} from "./selectors/EducationLevelSelect";
+import {FieldOfStudy} from "./selectors/FieldOfStudySelect";
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Progress} from "reactstrap";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
-import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse";
-import {UniversitySelect} from "./UniversitySelect";
 import {URLStr} from "polar-shared/src/util/Strings";
+import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
+import {BusinessProfileConfigurator} from "./BusinessProfileConfigurator";
 
 // FIXME: now this conflicts with 'profile' in the database and I think we
 // should use that...
-
-export type ProfileType = 'academic' | 'business' | 'personal';
+//
+// FIXME: we can't call 'profile' 'occupation' because that's a field in profile
 
 export interface AcademicProfile {
-    readonly type: 'academic';
-    readonly occupation: Occupation;
-    readonly educationLevel?: EducationLevel;
+    readonly occupation: AcademicOccupation;
+    readonly educationLevel: EducationLevel;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
 
 export interface BusinessProfile {
-    readonly type: 'business';
-    readonly occupation: Occupation;
+    readonly occupation: BusinessOccupation;
     readonly domainOrURL: URLStr | DomainNameStr;
     readonly domain: DomainNameStr;
 }
 
-export interface PersonalProfile {
-    readonly type: 'personal';
-    readonly occupation: Occupation;
-}
-
-export type Profile = AcademicProfile;
+export type OccupationProfile = AcademicProfile | BusinessProfile;
 
 interface IProps {
-    readonly onProfile: (profile: Profile) => void;
+    readonly onOccupationProfile: (occupationProfile: OccupationProfile) => void;
+}
+
+export interface FormData<T> {
+    readonly profile: Partial<T>;
+    readonly progress: number;
 }
 
 interface IState {
     readonly occupation?: Occupation;
-    readonly educationLevel?: EducationLevel;
-    readonly fieldOfStudy?: FieldOfStudy;
-    readonly university?: University;
+    readonly form: FormData<AcademicProfile> | FormData<BusinessProfile>;
 }
 
 export const ProfileConfigurator = (props: IProps) => {
-    const [state, setState] = useState<IState>({});
+
+    const [state, setState] = useState<IState>({
+        form: {
+            profile: {},
+            progress: 0
+        }
+    });
 
     const onOccupation = (occupation: Occupation | undefined) => {
-        setState({...state, occupation});
+        console.log("occupation: ", occupation);
+
+        const computeProgress = () => {
+            switch (occupation?.type) {
+
+                case "academic":
+                    return 25;
+                case "business":
+                    return 50;
+                default:
+                    return 0;
+            }
+        };
+
+        const progress = computeProgress();
+
+        const newState = {
+            ...state,
+            form: {
+                ...state.form,
+                progress
+            },
+            occupation
+        };
+
+        setState(newState);
     };
 
-    const onEducationLevel = (educationLevel: EducationLevel | undefined) => {
-        setState({...state, educationLevel});
+    const onForm = (form: FormData<AcademicProfile> | FormData<BusinessProfile>) => {
+        console.log("form: "    , form);
+        setState({...state, form});
     };
-
-    const onFieldOfStudy = (fieldOfStudy: FieldOfStudy | undefined) => {
-        setState({...state, fieldOfStudy});
-    };
-
-    const onUniversity = (university: University | undefined) => {
-        setState({...state, university});
-    };
-
-    const computeProgress = () => {
-
-        const score = arrayStream([
-            state.occupation,
-            state.educationLevel,
-            state.fieldOfStudy,
-            state.university
-        ])
-            .filter(current => current !== undefined)
-            .collect()
-            .length;
-
-        return Percentages.calculate(score, 4);
-
-    };
-
-    const progress = computeProgress();
 
     return (
         <div style={{
-            minHeight: '30em',
-            display: 'flex',
-            flexDirection: 'column'
-        }}
+                 minHeight: '30em',
+                 display: 'flex',
+                 flexDirection: 'column'
+             }}
              className="">
 
             <div style={{flexGrow: 1}}>
 
                 <div className="mb-1">
-                    <Progress value={progress}/>
+                    <Progress value={state.form.progress}/>
                 </div>
 
                 <div className="font-weight-bold text-xl">Tell us about yourself! </div>
@@ -115,59 +122,20 @@ export const ProfileConfigurator = (props: IProps) => {
                     </div>
 
                     <OccupationSelect
-                        placeholder=""
+                        placeholder="Pick one from the list or create one if necessary."
                         onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
                 </div>
 
-                <NullCollapse open={state.occupation !== undefined}>
+                {state.occupation && state.occupation.type === 'academic' &&
+                    <AcademicProfileConfigurator occupation={state.occupation}
+                                                 form={state.form as FormData<AcademicProfile>}
+                                                 onForm={form => onForm(form)}/>}
 
-                    <div className="mb-1 mt-2">
+                {state.occupation && state.occupation.type === 'business' &&
+                    <BusinessProfileConfigurator occupation={state.occupation}
+                                                 form={state.form as FormData<BusinessProfile>}
+                                                 onForm={form => onForm(form)}/>}
 
-                        <div className="mb-1 font-weight-bold">
-                            At what level of education?
-                        </div>
-
-                        <div className="mt-1">
-                            <EducationLevelSelect
-                                placeholder=""
-                                onSelect={selected => onEducationLevel(nullToUndefined(selected?.value))}/>
-                        </div>
-
-                    </div>
-                </NullCollapse>
-
-                <NullCollapse open={state.educationLevel !== undefined}>
-
-                    <div className="mb-1 mt-2">
-
-                        <div className="mb-1 font-weight-bold">
-                            What do you study?
-                        </div>
-
-                        <div className="mt-1">
-                            <FieldOfStudySelect
-                                placeholder=""
-                                onSelect={selected => onFieldOfStudy(nullToUndefined(selected?.value))}/>
-                        </div>
-
-                    </div>
-                </NullCollapse>
-
-                <NullCollapse open={state.fieldOfStudy !== undefined}>
-
-                    <div className="mb-1 mt-2">
-
-                        <div className="mb-1 font-weight-bold">
-                            ... and at what school/university?
-                        </div>
-
-                        <UniversitySelect
-                            placeholder=""
-                            onSelect={selected => onUniversity(nullToUndefined(selected?.value))}/>
-
-                    </div>
-
-                </NullCollapse>
             </div>
 
         </div>

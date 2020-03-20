@@ -1,7 +1,7 @@
 import * as React from "react";
-import {UniversitySelect} from "../../../apps/repository/js/configure/profile/UniversitySelect";
-import {FieldOfStudySelect} from "../../../apps/repository/js/configure/profile/FieldOfStudySelect";
-import {OccupationSelect} from "../../../apps/repository/js/configure/profile/OccupationSelect";
+import {UniversitySelect} from "../../../apps/repository/js/configure/profile/selectors/UniversitySelect";
+import {FieldOfStudySelect} from "../../../apps/repository/js/configure/profile/selectors/FieldOfStudySelect";
+import {OccupationSelect} from "../../../apps/repository/js/configure/profile/selectors/OccupationSelect";
 import {ProfileConfigurator} from "../../../apps/repository/js/configure/profile/ProfileConfigurator";
 
 
@@ -30,7 +30,7 @@ export const SchoolSelectDemo2 = () => (
 export const SchoolSelectDemo = () => (
 
     <div>
-        <ProfileConfigurator onProfile={profile => console.log({profile})}/>
+        <ProfileConfigurator onOccupationProfile={profile => console.log({profile})}/>
     </div>
 );
 

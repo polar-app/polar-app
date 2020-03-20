@@ -1,7 +1,7 @@
 import * as React from "react";
-import Select from "react-select";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {toIdentifier} from "polar-shared/src/util/Identifiers";
+import CreatableSelect from 'react-select/creatable';
 
 export interface IOption<T> {
     readonly value: T;
@@ -62,8 +62,6 @@ const options: ReadonlyArray<IOption<FieldOfStudy>>
     = fieldsOfStudy.map(toFieldOfStudy)
                    .map(toOption);
 
-
-
 interface IProps {
 
     readonly placeholder?: string;
@@ -74,15 +72,28 @@ interface IProps {
 
 export const FieldOfStudySelect = (props: IProps) => {
 
-    type RawOption = IOption<FieldOfStudy> | null;
+    type RawOption = IOption<FieldOfStudy> | string | null;
+
+
+    const onSelect = (option: RawOption) => {
+
+        if (option === null) {
+            props.onSelect(undefined);
+        } else if (typeof option === 'string') {
+            props.onSelect(toOption(toFieldOfStudy(option)));
+        } else {
+            props.onSelect(option);
+        }
+
+    };
 
     return (
-        <Select
+        <CreatableSelect
             isClearable
             autoFocus
             placeholder={props.placeholder ?? "Select a field of study..."}
             options={options}
-            onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
+            onChange={(option => onSelect(option as RawOption))}
             // onKeyDown={event => props.onKeyDown(event)}
             // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
             // value={props.pendingTagOptions}

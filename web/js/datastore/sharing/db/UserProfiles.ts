@@ -1,6 +1,7 @@
-import {Profile, ProfileIDStr, Profiles} from "./Profiles";
+import {Profiles} from "./Profiles";
 import {CacheFirstThenServerGetOptions, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {isPresent} from 'polar-shared/src/Preconditions';
+import {Profile, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class UserProfiles {
 
