@@ -19,6 +19,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
     const onForm = (newProfile: Partial<BusinessOccupationProfile>) => {
 
         const profile = {
+            occupation: props.occupation,
             ...props.form.profile,
             ...newProfile
         };

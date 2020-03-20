@@ -86,6 +86,22 @@ export const ProfileConfigurator = (props: IProps) => {
     const onForm = (form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
         console.log("form: "    , form);
         setState({...state, form});
+
+        if (form.progress === 100) {
+
+            switch (state.occupation?.type) {
+
+                case "academic":
+                    props.onOccupationProfile(form.profile as AcademicOccupationProfile);
+                    break;
+                case "business":
+                    props.onOccupationProfile(form.profile as BusinessOccupationProfile);
+                    break;
+
+            }
+
+        }
+
     };
 
     return (
