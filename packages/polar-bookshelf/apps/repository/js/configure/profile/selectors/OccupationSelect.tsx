@@ -13,8 +13,6 @@ export interface IOption<T> {
 }
 
 // FIXME add more business occupations here not just academic ones
-// FIXME send event when profile completed
-// FIXME: add final changes to Profile
 
 function toOption(occupation: Occupation): IOption<Occupation> {
     return {

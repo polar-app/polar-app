@@ -23,6 +23,7 @@ export const AcademicProfileConfigurator = (props: IProps) => {
     const onForm = (newProfile: Partial<AcademicOccupationProfile>) => {
 
         const profile = {
+            occupation: props.occupation,
             ...props.form.profile,
             ...newProfile
         };

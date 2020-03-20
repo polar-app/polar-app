@@ -30,7 +30,7 @@ export const SchoolSelectDemo2 = () => (
 export const SchoolSelectDemo = () => (
 
     <div>
-        <ProfileConfigurator onOccupationProfile={profile => console.log({profile})}/>
+        <ProfileConfigurator onOccupationProfile={profile => console.log("GOT PROFILE: ", {profile})}/>
     </div>
 );
 

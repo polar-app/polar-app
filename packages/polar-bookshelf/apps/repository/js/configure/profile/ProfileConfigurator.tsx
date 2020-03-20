@@ -29,6 +29,12 @@ export interface BusinessOccupationProfile {
     readonly domain: DomainNameStr;
 }
 
+// TODO:
+//
+// - should we have 'personal' accounts and company ones and differentiate?
+// - does the 'domain' conflict with 'links' in the profile?
+//
+
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {
@@ -86,6 +92,22 @@ export const ProfileConfigurator = (props: IProps) => {
     const onForm = (form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
         console.log("form: "    , form);
         setState({...state, form});
+
+        if (form.progress === 100) {
+
+            switch (state.occupation?.type) {
+
+                case "academic":
+                    props.onOccupationProfile(form.profile as AcademicOccupationProfile);
+                    break;
+                case "business":
+                    props.onOccupationProfile(form.profile as BusinessOccupationProfile);
+                    break;
+
+            }
+
+        }
+
     };
 
     return (
