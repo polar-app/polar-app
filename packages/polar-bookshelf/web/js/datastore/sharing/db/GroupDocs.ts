@@ -1,10 +1,10 @@
-import {ProfileIDStr} from './Profiles';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {Collections, DocumentChange, OrderByClause} from './Collections';
 import {Clause} from './Collections';
 import {SnapshotListener} from './Collections';
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class GroupDocs {
 

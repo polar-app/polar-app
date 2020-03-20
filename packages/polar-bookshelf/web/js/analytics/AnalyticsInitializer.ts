@@ -6,6 +6,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
+import {AnalyticsURLCanonicalizer} from "./AnalyticsURLCanonicalizer";
 
 const log = Logger.create();
 
@@ -110,7 +111,8 @@ export class AnalyticsInitializer {
 
                 const url = new URL(document.location!.href);
 
-                const path = url.pathname + url.hash || "";
+                // TODO: what about query params??
+                const path = AnalyticsURLCanonicalizer.canonicalize(url.pathname + url.hash || "");
                 const hostname = url.hostname;
                 const title = document.title;
 

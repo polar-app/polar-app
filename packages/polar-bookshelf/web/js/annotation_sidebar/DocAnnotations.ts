@@ -21,6 +21,11 @@ import {PlainTextStr} from "polar-shared/src/util/Strings";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {Tag} from "polar-shared/src/tags/Tags";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {
+    InheritedTag,
+    toSelfInheritedTags
+} from "polar-shared/src/tags/InheritedTags";
 
 export class DocAnnotations {
 
@@ -88,7 +93,7 @@ export class DocAnnotations {
             immutable: this.isImmutable(flashcard.author),
             color: undefined,
             img: undefined,
-            tags: {...(flashcard.tags || {}), ...init.tags},
+            tags: {...toSelfInheritedTags(flashcard.tags), ...init.tags},
         };
 
     }
@@ -124,7 +129,7 @@ export class DocAnnotations {
             immutable: this.isImmutable(comment.author),
             color: undefined,
             img: undefined,
-            tags: {...(comment.tags || {}), ...init.tags},
+            tags: {...toSelfInheritedTags(comment.tags), ...init.tags},
         };
 
     }
@@ -174,7 +179,7 @@ export class DocAnnotations {
             pageMeta,
             original: areaHighlight,
             author: areaHighlight.author,
-            tags: {...(areaHighlight.tags || {}), ...init.tags},
+            tags: {...toSelfInheritedTags(areaHighlight.tags), ...init.tags},
             immutable: this.isImmutable(areaHighlight.author),
         };
 
@@ -208,7 +213,7 @@ export class DocAnnotations {
             original: textHighlight,
             author: textHighlight.author,
             immutable: this.isImmutable(textHighlight.author),
-            tags: {...(textHighlight.tags || {}), ...init.tags},
+            tags: {...toSelfInheritedTags(textHighlight.tags), ...init.tags},
             img: undefined
         };
 
@@ -247,8 +252,20 @@ export class DocAnnotations {
 
     private static createInit(docMeta: IDocMeta): DocAnnotationInit {
 
+        const toInheritedTag = (tag: Tag): InheritedTag => {
+            return {
+                source: 'doc',
+                ...tag
+            };
+        };
+
+        const tags =
+            arrayStream(Object.values(docMeta.docInfo.tags || {}))
+                .map(toInheritedTag)
+                .toMap(current => current.id);
+
         return {
-            tags: docMeta.docInfo.tags || {},
+            tags: {...tags}
         };
 
     }
@@ -265,7 +282,7 @@ export class DocAnnotations {
  * Properties present in most annotations that will be used the same.
  */
 interface DocAnnotationInit {
-    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 }
 
 class ITextConverters {
@@ -295,3 +312,5 @@ interface ITextConverter {
     readonly text: PlainTextStr | undefined;
     readonly html: PlainTextStr | undefined;
 }
+
+

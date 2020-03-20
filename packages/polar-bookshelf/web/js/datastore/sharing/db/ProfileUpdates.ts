@@ -1,5 +1,5 @@
-import {ProfileInit} from './Profiles';
 import {JSONRPC} from '../rpc/JSONRPC';
+import {ProfileInit} from "polar-firebase/src/firebase/om/Profiles";
 
 export class ProfileUpdates {
 

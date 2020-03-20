@@ -11,6 +11,12 @@ import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
 import {Lightbox} from "../../../web/js/ui/util/Lightbox";
+import {
+    InheritedTag,
+    isInheritedTag
+} from "polar-shared/src/tags/InheritedTags";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {TagChicklet} from "../../../web/js/ui/tags/TagChicklet";
 
 const log = Logger.create();
 
@@ -88,6 +94,8 @@ interface IState {
      */
     readonly pendingTags: ReadonlyArray<Tag>;
 
+    readonly docTags: ReadonlyArray<Tag>;
+
 }
 
 interface IRenderProps extends IState, IProps {
@@ -126,6 +134,27 @@ const RelatedTagsWidget = (props: IRenderProps) => {
             <strong>Related tags: </strong>
         </div>
         <RelatedTagsItems {...props}/>
+    </div>;
+
+};
+
+const DocTagsTagsWidget = (props: IRenderProps) => {
+
+    if (props.docTags.length === 0) {
+        return null;
+    }
+
+    return <div className="mt-1">
+
+        <div className="mr-1 pt-1"
+             style={Styles.relatedTagsLabel}>
+            <strong>Tags inherited from document: </strong>
+        </div>
+
+        <div style={{display: 'flex'}}>
+            {props.docTags.map(current => <TagChicklet>{current.label}</TagChicklet>)}
+        </div>
+
     </div>;
 
 };
@@ -193,6 +222,8 @@ const TagInputBody = (props: IRenderProps) => {
 
                 </div>
 
+                <DocTagsTagsWidget {...props}/>
+
                 <div className="mt-2">
 
                     <div style={{display: 'flex'}}>
@@ -224,6 +255,38 @@ const TagInputBody = (props: IRenderProps) => {
 
 };
 
+class TagUtils {
+
+    public static docTags(tags: ReadonlyArray<Tag> | ReadonlyArray<InheritedTag>) {
+
+        return arrayStream(tags)
+            .filter(current => isInheritedTag(current) && current.source === 'doc')
+            .collect();
+
+    }
+
+    public static selfTags(tags: ReadonlyArray<Tag> | ReadonlyArray<InheritedTag>) {
+
+        const isSelfTag = (tag: Tag | InheritedTag): boolean => {
+
+            if (isInheritedTag(tag)) {
+                return tag.source === 'self';
+            }
+
+            // it's just a regular tag and we should assume that it's a self tag.
+            return true;
+
+        };
+
+        return arrayStream(tags)
+            .filter(isSelfTag)
+            .collect();
+
+    }
+
+
+}
+
 export class TagInputControl extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
@@ -243,15 +306,21 @@ export class TagInputControl extends React.Component<IProps, IState> {
 
         this.state = {
             open: false,
-            pendingTags: []
+            pendingTags: [],
+            docTags: []
         };
 
     }
 
     private activate() {
 
-        const pendingTags = this.props.existingTags ? this.props.existingTags() : [];
-        this.setState({open: true, pendingTags});
+        const existingTags = this.props.existingTags ? this.props.existingTags() : [];
+        const pendingTags = TagUtils.selfTags(existingTags);
+        const docTags = TagUtils.docTags(existingTags);
+        this.setState({
+            open: true,
+            pendingTags, docTags
+        });
 
     }
 

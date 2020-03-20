@@ -1,5 +1,6 @@
-import {Profile, ProfileIDStr, Profiles} from "./Profiles";
+import {Profiles} from "./Profiles";
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {Profile, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 /**
  * Provides a way to join against profiles so that we can resolve the live profile

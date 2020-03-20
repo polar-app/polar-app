@@ -1,11 +1,14 @@
-import {EmailStr, UserIDStr} from './Profiles';
-import {HandleStr} from './Profiles';
-import {ProfileIDStr} from './Profiles';
+
 import {Firestore} from '../../../firebase/Firestore';
 import * as firebase from '../../../firebase/lib/firebase';
 import DocumentReference = firebase.firestore.DocumentReference;
 import {Firebase} from "../../../firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
+import {
+    EmailStr,
+    HandleStr, ProfileIDStr,
+    UserIDStr
+} from "polar-firebase/src/firebase/om/Profiles";
 
 export class ProfileOwners {
 

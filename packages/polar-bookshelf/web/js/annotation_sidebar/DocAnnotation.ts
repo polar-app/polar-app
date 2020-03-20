@@ -17,7 +17,7 @@ import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {InheritedTag} from 'polar-shared/src/tags/InheritedTags';
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
@@ -53,7 +53,11 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     readonly immutable: boolean;
 
-    readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    /**
+     * The effective tags for this item including any inherited tags from parent
+     * objects like flashcards, comments, etc.
+     */
+    readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
 }
 
@@ -108,7 +112,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly immutable: boolean;
 
-    public readonly tags: Readonly<{[id: string]: Tag}> | undefined;
+    public readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {

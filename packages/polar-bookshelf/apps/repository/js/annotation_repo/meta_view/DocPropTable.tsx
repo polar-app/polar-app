@@ -21,7 +21,6 @@ const Styles: IStyleMap = {
         // fontWeight: 'bold',
         color: 'var(--secondary)',
         marginRight: '10px',
-        verticalAlign: 'top'
     },
 
     metaValue: {
@@ -89,18 +88,6 @@ export class DocPropTable extends React.Component<IProps, IState> {
 
                 <div style={Styles.metaTableRow}>
 
-                    <div style={Styles.metaField}>Tags</div>
-
-                    <div style={Styles.metaValue}>
-
-                        <FormattedTags tags={repoAnnotation.tags || {}}/>
-
-                    </div>
-
-                </div>
-
-                <div style={Styles.metaTableRow}>
-
                     <div style={Styles.metaField}>Type</div>
 
                     <div style={Styles.metaValue}>
@@ -131,6 +118,10 @@ export class DocPropTable extends React.Component<IProps, IState> {
 
                     </div>
 
+                </div>
+
+                <div className="mt-auto mb-auto">
+                    <FormattedTags tags={repoAnnotation.tags || {}}/>
                 </div>
 
             </div>

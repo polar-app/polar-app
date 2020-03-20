@@ -1,35 +1,51 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import Moment from 'react-moment';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Tag} from 'polar-shared/src/tags/Tags';
-
-const log = Logger.create();
-
-export class FormattedTags extends React.Component<IProps, any> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
-
-    public render() {
-
-        const tags = this.props.tags;
-
-        const formatted = Object.values(tags)
-            .map(tag => tag.label)
-            .sort()
-            .join(", ");
-
-        return (
-            <div>{formatted}</div>
-        );
-
-    }
-
-}
+import {TagChicklet} from "../../../web/js/ui/tags/TagChicklet";
+import {createSiblings} from "polar-shared/src/util/Functions";
 
 interface IProps {
     tags: {[id: string]: Tag};
 }
+
+function joinItems<T, S>(values: ReadonlyArray<T>, sep: S): ReadonlyArray<T | S> {
+
+    const result: Array<T | S> = [];
+
+    for (const current of createSiblings(values)) {
+
+        result.push(current.curr);
+
+        if (current.next) {
+            result.push(sep);
+        }
+
+    }
+
+    return result;
+
+}
+
+export const FormattedTags = (props: IProps) => {
+
+    const tags = props.tags;
+
+    const chicklets = Object.values(tags)
+        .map(tag => tag.label)
+        .sort()
+        .map(tag => <div className="mr-1">
+            <TagChicklet>
+                {tag}
+            </TagChicklet>
+        </div>);
+
+    // const formatted = joinItems(chicklets, <div className="pl-1 pr-1">, </div>);
+
+    const formatted = chicklets;
+
+    return (
+        <div style={{display: 'flex'}}>
+            {formatted}
+        </div>
+    );
+
+};

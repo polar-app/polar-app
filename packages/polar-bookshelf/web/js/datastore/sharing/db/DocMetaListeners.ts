@@ -9,7 +9,6 @@ import {DocMetas} from "../../../metadata/DocMetas";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Proxies} from "../../../proxies/Proxies";
 import {ProfileOwners} from "./ProfileOwners";
-import {ProfileIDStr} from "./Profiles";
 import {Author} from "../../../metadata/Author";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserProfile, UserProfiles} from "./UserProfiles";
@@ -18,6 +17,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAnnotation} from "polar-shared/src/metadata/IAnnotation";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 const log = Logger.create();
 

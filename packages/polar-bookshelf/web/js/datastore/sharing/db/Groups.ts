@@ -1,12 +1,12 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {UserIDStr} from './Profiles';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 const HASHCODE_LEN = 20;
 

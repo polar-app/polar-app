@@ -65,12 +65,13 @@ import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
-import {SettingsScreen} from "../../../../apps/repository/js/settings/SettingsScreen";
+import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceRouter} from "../../ui/DeviceRouter";
 import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {PinchToZoom} from "../../ui/Gestures";
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
+import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 
 const log = Logger.create();
 
@@ -201,6 +202,13 @@ export class RepositoryApp {
                                 persistenceLayerController={persistenceLayerController}/>
             </Cached>
             );
+
+        const renderProfileScreen = () => (
+            <Cached>
+                <ProfileScreen persistenceLayerProvider={persistenceLayerProvider}
+                               persistenceLayerController={persistenceLayerController}/>
+            </Cached>
+        );
 
         const renderDeviceScreen = () => (
             <Cached>
@@ -411,6 +419,8 @@ export class RepositoryApp {
                             <Route exact path="/annotations" component={renderAnnotationRepoScreen} />
 
                             <Route exact path="/settings" component={renderSettingsScreen} />
+
+                            <Route exact path="/profile" component={renderProfileScreen} />
 
                             <Route exact path="/device" component={renderDeviceScreen} />
 
