@@ -29,6 +29,12 @@ export interface BusinessOccupationProfile {
     readonly domain: DomainNameStr;
 }
 
+// TODO:
+//
+// - should we have 'personal' accounts and company ones and differentiate?
+// - does the 'domain' conflict with 'links' in the profile?
+//
+
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {
