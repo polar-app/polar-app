@@ -4,7 +4,7 @@ import {FieldOfStudySelect} from "./selectors/FieldOfStudySelect";
 import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {UniversitySelect} from "./selectors/UniversitySelect";
-import {AcademicProfile, FormData} from "./ProfileConfigurator";
+import {AcademicOccupationProfile, FormData} from "./ProfileConfigurator";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Occupation} from "./selectors/OccupationSelect";
@@ -12,15 +12,15 @@ import {Occupation} from "./selectors/OccupationSelect";
 interface IProps {
 
     readonly occupation: Occupation;
-    readonly form: FormData<AcademicProfile>;
+    readonly form: FormData<AcademicOccupationProfile>;
 
-    readonly onForm: (form: FormData<AcademicProfile>) => void;
+    readonly onForm: (form: FormData<AcademicOccupationProfile>) => void;
 
 }
 
 export const AcademicProfileConfigurator = (props: IProps) => {
 
-    const onForm = (newProfile: Partial<AcademicProfile>) => {
+    const onForm = (newProfile: Partial<AcademicOccupationProfile>) => {
 
         const profile = {
             ...props.form.profile,

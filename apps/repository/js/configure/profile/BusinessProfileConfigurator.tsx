@@ -2,21 +2,21 @@ import * as React from "react";
 import Input from "reactstrap/lib/Input";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Occupation} from "./selectors/OccupationSelect";
-import {BusinessProfile, FormData} from "./ProfileConfigurator";
+import {BusinessOccupationProfile, FormData} from "./ProfileConfigurator";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
 
 interface IProps {
 
     readonly occupation: Occupation;
-    readonly form: FormData<BusinessProfile>;
-    readonly onForm: (form: FormData<BusinessProfile>) => void;
+    readonly form: FormData<BusinessOccupationProfile>;
+    readonly onForm: (form: FormData<BusinessOccupationProfile>) => void;
 
 }
 
 export const BusinessProfileConfigurator = (props: IProps) => {
 
-    const onForm = (newProfile: Partial<BusinessProfile>) => {
+    const onForm = (newProfile: Partial<BusinessOccupationProfile>) => {
 
         const profile = {
             ...props.form.profile,

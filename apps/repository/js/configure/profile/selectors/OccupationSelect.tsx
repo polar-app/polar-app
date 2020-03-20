@@ -1,6 +1,5 @@
 import * as React from "react";
 import CreatableSelect from 'react-select/creatable';
-import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {toIdentifier} from "polar-shared/src/util/Identifiers";
 
 export interface IOption<T> {
@@ -8,13 +7,8 @@ export interface IOption<T> {
     readonly label: string;
 }
 
-// FIXME add business occupations here not just academic ones
-// FIXME prompt for their company URL / domain...
-// FIXME event when profile completed
-// FIXME: when we set an 'other' we should assume it's not a
-
-// FIXME: call occupation ... somethign else, profile then becomes occupation...
-// FIXME: call it an OccupationProfile
+// FIXME add more business occupations here not just academic ones
+// FIXME send event when profile completed
 
 export type OccupationType = 'academic' | 'business';
 
