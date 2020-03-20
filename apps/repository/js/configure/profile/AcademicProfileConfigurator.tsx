@@ -7,7 +7,7 @@ import {UniversitySelect} from "./selectors/UniversitySelect";
 import {AcademicOccupationProfile, FormData} from "./ProfileConfigurator";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Occupation} from "./selectors/OccupationSelect";
+import {Occupation} from "polar-shared/src/util/Occupations";
 
 interface IProps {
 

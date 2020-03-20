@@ -1,10 +1,10 @@
 import * as React from "react";
 import Input from "reactstrap/lib/Input";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Occupation} from "./selectors/OccupationSelect";
 import {BusinessOccupationProfile, FormData} from "./ProfileConfigurator";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
+import {Occupation} from "polar-shared/src/util/Occupations";
 
 interface IProps {
 

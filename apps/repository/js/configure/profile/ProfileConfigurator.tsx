@@ -1,7 +1,4 @@
 import {
-    AcademicOccupation,
-    BusinessOccupation,
-    Occupation,
     OccupationSelect
 } from "./selectors/OccupationSelect";
 import {EducationLevel} from "./selectors/EducationLevelSelect";
@@ -13,6 +10,11 @@ import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
 import {BusinessProfileConfigurator} from "./BusinessProfileConfigurator";
+import {
+    AcademicOccupation,
+    BusinessOccupation,
+    Occupation
+} from "polar-shared/src/util/Occupations";
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
