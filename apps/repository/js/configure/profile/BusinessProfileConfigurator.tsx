@@ -4,7 +4,10 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {BusinessOccupationProfile, FormData} from "./ProfileConfigurator";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Percentages} from "polar-shared/src/util/Percentages";
-import {Occupation} from "polar-shared/src/util/Occupations";
+import {
+    BusinessOccupation,
+    Occupation
+} from "polar-shared/src/util/Occupations";
 
 interface IProps {
 
@@ -18,8 +21,10 @@ export const BusinessProfileConfigurator = (props: IProps) => {
 
     const onForm = (newProfile: Partial<BusinessOccupationProfile>) => {
 
+        const occupation = props.occupation as BusinessOccupation;
+
         const profile = {
-            occupation: props.occupation,
+            occupation,
             ...props.form.profile,
             ...newProfile
         };

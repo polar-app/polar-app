@@ -35,6 +35,28 @@ export interface BusinessOccupationProfile {
 // - does the 'domain' conflict with 'links' in the profile?
 //
 
+// - FIXME: ok.. another major probem... we should have a separate configuration
+// for their education because just because they're not a student DOES NOT mean
+// they lack a professional education.
+
+// - FIXME: ok... what about self-taught people... should we allow them to specify
+// an equivalent level of study?
+
+// - FIXME: completed level of education... if only high school we will need to have
+// that to and right now we only have universities.  And there isn't an 'other'
+// option there either.
+//
+// - FIXME: if they're pursing a masters we can't assume they received an
+//  undergraduate from that university for example.
+//
+// - FIXME: should we only have them specify their highest completed level of
+//   education.
+//
+// - FIXME: we definitely should NOT just limit the education to not include
+//   a univer¡sity in the business profile.
+
+
+
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {
