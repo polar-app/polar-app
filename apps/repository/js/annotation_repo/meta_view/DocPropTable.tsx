@@ -54,72 +54,74 @@ export class DocPropTable extends React.Component<IProps, IState> {
 
         return (
 
-            <div style={Styles.metaTable}>
+            <div>
+                <div style={Styles.metaTable}>
 
-                {/*<div style={Styles.metaTableRow}>*/}
-                {/*    <div style={Styles.metaField}>Created</div>*/}
+                    {/*<div style={Styles.metaTableRow}>*/}
+                    {/*    <div style={Styles.metaField}>Created</div>*/}
 
-                {/*    <div style={Styles.metaValue}>*/}
+                    {/*    <div style={Styles.metaValue}>*/}
 
-                {/*        <Moment withTitle={true}*/}
-                {/*                titleFormat="D MMM YYYY hh:MM A"*/}
-                {/*                format="MMM DD YYYY HH:mm A"*/}
-                {/*                filter={(value) => value.replace(/^an? /g, '1 ')}>*/}
-                {/*            {repoAnnotation.created}*/}
-                {/*        </Moment>*/}
+                    {/*        <Moment withTitle={true}*/}
+                    {/*                titleFormat="D MMM YYYY hh:MM A"*/}
+                    {/*                format="MMM DD YYYY HH:mm A"*/}
+                    {/*                filter={(value) => value.replace(/^an? /g, '1 ')}>*/}
+                    {/*            {repoAnnotation.created}*/}
+                    {/*        </Moment>*/}
 
-                {/*        <div style={Styles.relativeTime}>*/}
+                    {/*        <div style={Styles.relativeTime}>*/}
 
-                {/*            (*/}
+                    {/*            (*/}
 
-                {/*            <Moment withTitle={true}*/}
-                {/*                    titleFormat="D MMM YYYY hh:MM A"*/}
-                {/*                    fromNow>*/}
-                {/*                {repoAnnotation.created}*/}
-                {/*            </Moment>*/}
+                    {/*            <Moment withTitle={true}*/}
+                    {/*                    titleFormat="D MMM YYYY hh:MM A"*/}
+                    {/*                    fromNow>*/}
+                    {/*                {repoAnnotation.created}*/}
+                    {/*            </Moment>*/}
 
-                {/*            )*/}
+                    {/*            )*/}
 
-                {/*        </div>*/}
+                    {/*        </div>*/}
 
-                {/*    </div>*/}
+                    {/*    </div>*/}
 
-                {/*</div>*/}
+                    {/*</div>*/}
 
-                <div style={Styles.metaTableRow}>
+                    <div style={Styles.metaTableRow}>
 
-                    <div style={Styles.metaField}>Type</div>
+                        <div style={Styles.metaField}>Type</div>
 
-                    <div style={Styles.metaValue}>
+                        <div style={Styles.metaValue}>
 
-                        {repoAnnotation.annotationType}
+                            {repoAnnotation.annotationType}
+
+                        </div>
+
+                    </div>
+
+                    <div style={Styles.metaTableRow}>
+
+                        <div style={Styles.metaField}>Doc</div>
+
+                        <div style={Styles.metaValue}>
+
+                            {/*TODO: make this into a TextLink component*/}
+
+                            <Button onClick={() => this.props.onDocumentLoadRequested(repoAnnotation.docInfo)}
+                                    style={{whiteSpace: 'normal', textAlign: 'left'}}
+                                    className="p-0"
+                                    size="md"
+                                    color="link">
+
+                                {repoAnnotation.docInfo.title}
+
+                            </Button>
+
+                        </div>
 
                     </div>
 
                 </div>
-
-                <div style={Styles.metaTableRow}>
-
-                    <div style={Styles.metaField}>Doc</div>
-
-                    <div style={Styles.metaValue}>
-
-                        {/*TODO: make this into a TextLink component*/}
-
-                        <Button onClick={() => this.props.onDocumentLoadRequested(repoAnnotation.docInfo)}
-                                style={{whiteSpace: 'normal', textAlign: 'left'}}
-                                className="p-0"
-                                size="md"
-                                color="link">
-
-                            {repoAnnotation.docInfo.title}
-
-                        </Button>
-
-                    </div>
-
-                </div>
-
                 <div className="mt-auto mb-auto">
                     <FormattedTags tags={repoAnnotation.tags || {}}/>
                 </div>
