@@ -1,3 +1,26 @@
+
+
+# 2020-03-21 (tue)
+
+- DONE: final last issue but it's big one... 
+
+    - when the sidebar updates items it does NOT change the guid... it just 
+      changes the item directly I think.
+      
+    - we can add a debug feature to copy the JSON of the object so we can view 
+      the structure to verify
+      
+    - the main annotation repo updates the GUID and changes the ID so a new 
+      annotation is created and does not replace the existing one. 
+      
+    - a temp work around could be to NOT update the ID but that might change 
+      or break other issues. 
+      
+    - this is fixed... the solution was to just use the existing ID and not 
+      create a new one.
+
+      
+
 # 2020-03-18 (tue)
 
 - TODO: highlighter not working on web capture content!
