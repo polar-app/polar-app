@@ -2,7 +2,6 @@ import {Confirm} from './Confirm';
 import * as React from 'react';
 import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
 import {Prompt, PromptProps} from './Prompt';
-import {Blackout} from '../blackout/Blackout';
 import {Alert} from "./Alert";
 
 export class Dialogs {

@@ -7,7 +7,10 @@ import {UniversitySelect} from "./selectors/UniversitySelect";
 import {AcademicOccupationProfile, FormData} from "./ProfileConfigurator";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Occupation} from "polar-shared/src/util/Occupations";
+import {
+    AcademicOccupation,
+    Occupation
+} from "polar-shared/src/util/Occupations";
 
 interface IProps {
 
@@ -22,8 +25,10 @@ export const AcademicProfileConfigurator = (props: IProps) => {
 
     const onForm = (newProfile: Partial<AcademicOccupationProfile>) => {
 
-        const profile = {
-            occupation: props.occupation,
+        const occupation = props.occupation as AcademicOccupation;
+
+        const profile: Partial<AcademicOccupationProfile> = {
+            occupation,
             ...props.form.profile,
             ...newProfile
         };

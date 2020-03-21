@@ -61,6 +61,11 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
 }
 
+// TODO we need a full doc annotation including children and a way to manage
+// them over time for the annotation repository. Create a NEW interface that
+// just has a children getter prop so that we can keep a graph props including
+// their parent and children.
+
 export interface DocAnnotation extends IDocAnnotation {
 
     getChildren(): ReadonlyArray<DocAnnotation>;

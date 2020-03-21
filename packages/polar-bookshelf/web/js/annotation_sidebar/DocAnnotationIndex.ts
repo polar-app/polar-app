@@ -8,6 +8,7 @@ import {
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
 
 export class DocAnnotationIndex {
 
@@ -41,6 +42,34 @@ export class DocAnnotationIndex {
         }
 
     }
+
+    /**
+     * Like put but we assume the given annotations represent the new annotation
+     * set and that any old annotations/stale must be removed.
+     */
+    public set(...docAnnotations: ReadonlyArray<IDocAnnotation>) {
+
+        const deleteAnnotations = () => {
+
+            const existing = this.getDocAnnotations();
+            const existingIDs = existing.map(current => current.id);
+            const newIDs = docAnnotations.map(current => current.id);
+
+            const deleteIDs = SetArrays.difference(existingIDs, newIDs);
+
+            deleteIDs.forEach(deleteID => this.delete(deleteID));
+
+        };
+
+        const putNewAnnotations = () => {
+            this.put(...docAnnotations);
+        };
+
+        deleteAnnotations();
+        putNewAnnotations();
+
+    }
+
 
     public delete(id: IDString) {
 

@@ -8,10 +8,6 @@ export class TextHighlightView {
 
     private readonly componentManager: ComponentManager;
 
-    /**
-     *
-     * @param model {Model}
-     */
     constructor(model: Model) {
 
         this.componentManager = new ComponentManager("area-highlight",

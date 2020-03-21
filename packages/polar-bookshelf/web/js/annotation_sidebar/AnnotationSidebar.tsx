@@ -290,10 +290,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                 this.docAnnotationIndex,
                 docMeta);
 
-            this.docAnnotationIndex.put(...docAnnotations);
+            this.docAnnotationIndex.set(...docAnnotations);
 
             this.reload();
-
 
         };
 
