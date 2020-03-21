@@ -62,55 +62,55 @@ export class DocAnnotations {
     }
 
     public static createFromFlashcard(docMeta: IDocMeta,
-                                      flashcard: IFlashcard,
+                                      annotation: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
 
-        const textConverter = ITextConverters.create(AnnotationType.FLASHCARD, flashcard);
+        const textConverter = ITextConverters.create(AnnotationType.FLASHCARD, annotation);
 
         const init = this.createInit(docMeta);
 
         return {
             ...init,
             oid: ObjectIDs.create(),
-            id: flashcard.id,
-            guid: flashcard.guid,
+            id: annotation.id,
+            guid: annotation.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             ...textConverter,
-            fields: Flashcards.convertFieldsToMap(flashcard.fields),
+            fields: Flashcards.convertFieldsToMap(annotation.fields),
             pageNum: pageMeta.pageInfo.num,
             // irrelevant on comments
             position: {
                 x: 0,
                 y: 0
             },
-            created: flashcard.created,
+            created: annotation.created,
             docMeta,
             pageMeta,
-            ref: flashcard.ref,
-            original: flashcard,
-            author: flashcard.author,
-            immutable: this.isImmutable(flashcard.author),
+            ref: annotation.ref,
+            original: annotation,
+            author: annotation.author,
+            immutable: this.isImmutable(annotation.author),
             color: undefined,
             img: undefined,
-            tags: {...toSelfInheritedTags(flashcard.tags), ...init.tags},
+            tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
         };
 
     }
 
     public static createFromComment(docMeta: IDocMeta,
-                                    comment: IComment,
+                                    annotation: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
-        const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, comment);
+        const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, annotation);
 
         const init = this.createInit(docMeta);
 
         return {
             ...init,
             oid: ObjectIDs.create(),
-            id: comment.id,
-            guid: comment.guid,
+            id: annotation.id,
+            guid: annotation.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             ...iTextConverter,
@@ -120,39 +120,39 @@ export class DocAnnotations {
                 x: 0,
                 y: 0
             },
-            created: comment.created,
+            created: annotation.created,
             docMeta,
             pageMeta,
-            ref: comment.ref,
-            original: comment,
-            author: comment.author,
-            immutable: this.isImmutable(comment.author),
+            ref: annotation.ref,
+            original: annotation,
+            author: annotation.author,
+            immutable: this.isImmutable(annotation.author),
             color: undefined,
             img: undefined,
-            tags: {...toSelfInheritedTags(comment.tags), ...init.tags},
+            tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
         };
 
     }
 
     public static createFromAreaHighlight(docFileResolver: DocFileResolver,
                                           docMeta: IDocMeta,
-                                          areaHighlight: IAreaHighlight,
+                                          annotation: IAreaHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
         const createPosition = (): Point => {
 
-            if (areaHighlight.position) {
-                return {...areaHighlight.position};
+            if (annotation.position) {
+                return {...annotation.position};
             }
 
             return {
-                x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
-                y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
+                x: this.firstRect(annotation).map(current => current.left).getOrElse(0),
+                y: this.firstRect(annotation).map(current => current.top).getOrElse(0),
             };
 
         };
 
-        const img = Providers.memoize(() => Images.toImg(docFileResolver, areaHighlight.image));
+        const img = Providers.memoize(() => Images.toImg(docFileResolver, annotation.image));
 
         const position = createPosition();
 
@@ -161,8 +161,8 @@ export class DocAnnotations {
         return {
             ...init,
             oid: ObjectIDs.create(),
-            id: areaHighlight.id,
-            guid: areaHighlight.guid,
+            id: annotation.id,
+            guid: annotation.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             annotationType: AnnotationType.AREA_HIGHLIGHT,
@@ -173,47 +173,47 @@ export class DocAnnotations {
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
             position,
-            color: HighlightColors.withDefaultColor(areaHighlight.color),
-            created: areaHighlight.created,
+            color: HighlightColors.withDefaultColor(annotation.color),
+            created: annotation.created,
             docMeta,
             pageMeta,
-            original: areaHighlight,
-            author: areaHighlight.author,
-            tags: {...toSelfInheritedTags(areaHighlight.tags), ...init.tags},
-            immutable: this.isImmutable(areaHighlight.author),
+            original: annotation,
+            author: annotation.author,
+            tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
+            immutable: this.isImmutable(annotation.author),
         };
 
     }
 
     public static createFromTextHighlight(docMeta: IDocMeta,
-                                          textHighlight: ITextHighlight,
+                                          annotation: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
-        const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, textHighlight);
+        const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation);
 
         const init = this.createInit(docMeta);
 
         return {
             ...init,
             oid: ObjectIDs.create(),
-            id: textHighlight.id,
-            guid: textHighlight.guid,
+            id: annotation.id,
+            guid: annotation.guid,
             fingerprint: docMeta.docInfo.fingerprint,
             docInfo: docMeta.docInfo,
             ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             position: {
-                x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
-                y: this.firstRect(textHighlight).map(current => current.top).getOrElse(0),
+                x: this.firstRect(annotation).map(current => current.left).getOrElse(0),
+                y: this.firstRect(annotation).map(current => current.top).getOrElse(0),
             },
-            color: HighlightColors.withDefaultColor(textHighlight.color),
-            created: textHighlight.created,
+            color: HighlightColors.withDefaultColor(annotation.color),
+            created: annotation.created,
             docMeta,
             pageMeta,
-            original: textHighlight,
-            author: textHighlight.author,
-            immutable: this.isImmutable(textHighlight.author),
-            tags: {...toSelfInheritedTags(textHighlight.tags), ...init.tags},
+            original: annotation,
+            author: annotation.author,
+            immutable: this.isImmutable(annotation.author),
+            tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             img: undefined
         };
 

@@ -146,7 +146,7 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
 
     return <div className="mt-1">
 
-        <div className="mr-1 pt-1"
+        <div className="mr-1 pt-1 pb-1"
              style={Styles.relatedTagsLabel}>
             <strong>Tags inherited from document: </strong>
         </div>

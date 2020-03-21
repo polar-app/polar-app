@@ -42,7 +42,6 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
                 <RichTextArea label="front"
                               id={`front-${this.props.id}`}
                               value={fields.front}
-                              defaultValue={this.props.defaultValue}
                               autofocus={true}
                               onKeyDown={event => this.onKeyDown(event)}
                               onChange={(html) => this.fields.front = html}
@@ -86,8 +85,8 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     private toFields(): FrontAndBackFields {
 
-        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard, this.props.defaultValue);
-        const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard);
+        const front = FlashcardInputs.fieldToString('front', this.props.existingFlashcard);
+        const back = FlashcardInputs.fieldToString('back', this.props.existingFlashcard, this.props.defaultValue);
 
         return {front, back};
 

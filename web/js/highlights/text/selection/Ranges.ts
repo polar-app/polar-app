@@ -173,7 +173,7 @@ export class Ranges {
         // valuable to rework this to a visitor pattern which accepts a function
         // which returns true if we should keep moving forward.
 
-        Preconditions.assertNotNull(range, "range");
+        Preconditions.assertPresent(range, "range");
 
         // We start walking the tree until we find the start node, then we
         // enable set inSelection = true... then when we exit the selection by

@@ -91,7 +91,7 @@ export class Prompt extends React.PureComponent<PromptProps, IState> {
 
                     <div className="text-right">
 
-                        <Button color="light"
+                        <Button color="clear"
                                 size="lg"
                                 className=""
                                 onClick={() => this.onCancel()}>Cancel</Button>

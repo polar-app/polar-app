@@ -52,7 +52,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
                 <div onKeyDown={(event) => this.onKeyDown(event)}
                      style={{minWidth: '350px'}}>
 
-                    <div className={"w-100 p-1 pl-2 pr-2 " + opts.titlebarClassName}
+                    <div className={"w-100 p-2 " + opts.titlebarClassName}
                          style={Styles.title}>
 
                         {this.props.title}
@@ -70,7 +70,7 @@ export class Confirm extends React.PureComponent<IProps, IState> {
 
                         <NullCollapse open={! this.props.noCancel}>
 
-                            <Button color="light"
+                            <Button color="clear"
                                     style={Styles.button}
                                     size="lg"
                                     className="m-1"
