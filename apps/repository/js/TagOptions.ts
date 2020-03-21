@@ -33,6 +33,7 @@ export class TagOptions {
             return tagOptions;
         }
 
+        // TODO: we should make the default sort tags, then folders
         return tagOptions.sort((a, b) => a.label.localeCompare(b.label));
 
     }

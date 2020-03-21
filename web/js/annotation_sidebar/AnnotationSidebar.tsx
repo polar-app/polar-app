@@ -287,8 +287,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
             const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
-                this.docAnnotationIndex,
-                docMeta);
+                                                                              this.docAnnotationIndex,
+                                                                              docMeta);
 
             this.docAnnotationIndex.set(...docAnnotations);
 

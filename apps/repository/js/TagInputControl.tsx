@@ -2,7 +2,7 @@ import * as React from 'react';
 import CreatableSelect from 'react-select/creatable';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
-import {Tag, Tags} from 'polar-shared/src/tags/Tags';
+import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
 import Button from 'reactstrap/lib/Button';
@@ -144,6 +144,14 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
         return null;
     }
 
+    const toTagChicklet = (tag: Tag) => (
+        <div key={tag.id} className="mr-1">
+            <TagChicklet>
+                {tag.label}
+            </TagChicklet>
+        </div>
+    );
+
     return <div className="mt-1">
 
         <div className="mr-1 pt-1 pb-1"
@@ -152,7 +160,7 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
         </div>
 
         <div style={{display: 'flex'}}>
-            {props.docTags.map(current => <TagChicklet>{current.label}</TagChicklet>)}
+            {props.docTags.map(toTagChicklet)}
         </div>
 
     </div>;
@@ -332,7 +340,8 @@ export class TagInputControl extends React.Component<IProps, IState> {
 
         const relatedTagsManager = this.props.relatedTagsManager || new RelatedTagsManager();
 
-        const availableTagOptions = TagOptions.fromTags(this.props.availableTags);
+        const availableTags = Tags.regularTagsThenFolderTagsSorted(this.props.availableTags);
+        const availableTagOptions = TagOptions.fromTags(availableTags, true);
 
         const pendingTags = TagOptions.fromTags(this.state.pendingTags);
 
