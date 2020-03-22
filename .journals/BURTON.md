@@ -1,6 +1,6 @@
 
 
-# 2020-03-21 (tue)
+# 2020-03-21 (sun)
 
 - DONE: final last issue but it's big one... 
 
@@ -19,7 +19,20 @@
     - this is fixed... the solution was to just use the existing ID and not 
       create a new one.
 
+- TODO
+    - the new set() functionality, I think, is causing the tags in the viewer 
+      to no longer be updated.
       
+      - if the repo updates the annotation, the viewer is updated, and that annotation
+        no longer causes a sync
+      
+    - the ContentMerger won't work here AT ALL ...       
+            
+- now the MAIN issue is that the DocMeta is being sent and we don't have a way
+  of representing the annotations properly ...
+  
+  - this also applies to the main viewer too... 
+         
 
 # 2020-03-18 (tue)
 
