@@ -31,6 +31,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly pageNum: number;
     readonly position: Point;
     readonly created: ISODateTimeString;
+    readonly lastUpdated: ISODateTimeString;
 
     // the reference to a parent annotation if this is a child annotation.
     readonly ref?: Ref;
@@ -95,6 +96,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
     public readonly pageNum: number;
     public readonly position: Point;
     public readonly created: ISODateTimeString;
+    public readonly lastUpdated: ISODateTimeString;
 
     // the reference to a parent annotation if this is a child annotation.
     public readonly ref?: Ref;
@@ -136,6 +138,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.pageNum = obj.pageNum;
         this.position = obj.position;
         this.created = obj.created;
+        this.lastUpdated = obj.lastUpdated || obj.created;
         this.ref = obj.ref;
         this.img = obj.img;
         this.color = obj.color;

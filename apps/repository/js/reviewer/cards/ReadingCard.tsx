@@ -25,6 +25,7 @@ export class ReadingCard extends React.Component<IProps, IState> {
                 <AnnotationPreview id={id}
                                    text={action.docAnnotation.text}
                                    img={action.docAnnotation.img}
+                                   lastUpdated={action.docAnnotation.lastUpdated}
                                    created={created}
                                    color={color}/>
 

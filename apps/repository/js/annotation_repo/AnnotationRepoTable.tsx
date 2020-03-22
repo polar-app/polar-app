@@ -9,6 +9,7 @@ import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
 import {AnnotationPreview} from './AnnotationPreview';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export default class AnnotationRepoTable extends ExtendedReactTable<IProps, IState> {
 
@@ -34,7 +35,16 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
     }
 
     public render() {
-        const { data } = this.props;
+        const data = arrayStream(this.props.data)
+            .sort((a, b) => {
+
+                const toTimestamp = (val: IDocAnnotation): string => {
+                    return val.lastUpdated ?? val.created ?? '';
+                };
+
+                return toTimestamp(b).localeCompare(toTimestamp(a));
+            })
+            .collect();
 
         const onNextPage = () => this.setState({
             ...this.state,
@@ -86,6 +96,7 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                                                                text={annotation.text}
                                                                img={annotation.img}
                                                                color={annotation.color}
+                                                               lastUpdated={annotation.lastUpdated}
                                                                created={annotation.created}/>
 
                                         );
@@ -129,12 +140,17 @@ export default class AnnotationRepoTable extends ExtendedReactTable<IProps, ISta
                         showPageSizeOptions={false}
                         noDataText="No annotations available."
                         className="-striped -highlight"
-                        defaultSorted={[
-                            {
-                                id: "created",
-                                desc: true
-                            }
-                        ]}
+                        // defaultSorted={[
+                        //     {
+                        //         id: "lastUpdated",
+                        //         desc: true
+                        //     },
+                        //     {
+                        //         id: "created",
+                        //         desc: true
+                        //     }
+                        // ]}
+                        // defaultSortMethod={}
                         // sorted={[{
                         //     id: 'added',
                         //     desc: true

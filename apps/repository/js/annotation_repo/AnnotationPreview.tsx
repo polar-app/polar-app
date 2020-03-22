@@ -9,6 +9,7 @@ interface IProps {
     readonly id: string;
     readonly text?: string;
     readonly img?: Img;
+    readonly lastUpdated: ISODateTimeString;
     readonly created: ISODateTimeString;
     readonly color: HighlightColor | undefined;
 }
@@ -54,6 +55,6 @@ const Body = (props: IProps) => {
 export const AnnotationPreview = (props: IProps) => (
     <div id={props.id}>
         <Body {...props}/>
-        <DateTimeTableCell datetime={props.created} className="text-muted text-xs"/>
+        <DateTimeTableCell datetime={props.lastUpdated || props.created} className="text-muted text-xs"/>
     </div>
-)
+);
