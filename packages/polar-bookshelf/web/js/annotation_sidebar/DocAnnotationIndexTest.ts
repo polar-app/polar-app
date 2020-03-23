@@ -484,6 +484,7 @@ function createAnnotation(id: string,
             y
         },
         created: '2009-06-15T13:45:30',
+        lastUpdated: '2009-06-15T13:45:30',
         pageMeta: null!,
         docMeta: null!,
         original: textHighlight,

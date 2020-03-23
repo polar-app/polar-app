@@ -51,7 +51,7 @@ export class EditTextHighlight extends React.PureComponent<IProps, IState> {
                             <div className="flexbar-right mt-1 mb-1">
                                 <CancelButton onClick={() => this.props.onCancel()}/>
 
-                                <Button color="light"
+                                <Button color="clear"
                                         size="md"
                                         className="ml-1"
                                         onClick={() => this.props.onReset()}>

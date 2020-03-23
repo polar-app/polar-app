@@ -33,6 +33,7 @@ import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
+import {DocMetaTransformer} from "../metadata/DocMetaTransformer";
 
 const log = Logger.create();
 
@@ -287,8 +288,8 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
             const docFileResolver = DocFileResolvers.createForPersistenceLayer(this.props.persistenceLayerProvider);
             const docAnnotations = await DocAnnotations.getAnnotationsForPage(docFileResolver,
-                this.docAnnotationIndex,
-                docMeta);
+                                                                              this.docAnnotationIndex,
+                                                                              docMeta);
 
             this.docAnnotationIndex.set(...docAnnotations);
 
@@ -303,8 +304,12 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const onSnapshot = (snapshot: DocMetaSnapshot<IDocMeta>) => {
             if (snapshot.data) {
-                handleDocMeta(snapshot.data)
-                    .catch(err => log.error("Unable to handle snapshot: ", err));
+                const snapshotDocMeta = snapshot.data;
+
+                DocMetas.withSkippedMutations(docMeta, () => {
+                    DocMetaTransformer.transform(snapshotDocMeta, docMeta);
+                });
+
             }
         };
 

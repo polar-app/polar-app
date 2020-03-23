@@ -85,6 +85,7 @@ export class DocAnnotations {
                 y: 0
             },
             created: annotation.created,
+            lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
             ref: annotation.ref,
@@ -121,6 +122,7 @@ export class DocAnnotations {
                 y: 0
             },
             created: annotation.created,
+            lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
             ref: annotation.ref,
@@ -175,6 +177,7 @@ export class DocAnnotations {
             position,
             color: HighlightColors.withDefaultColor(annotation.color),
             created: annotation.created,
+            lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
             original: annotation,
@@ -208,6 +211,7 @@ export class DocAnnotations {
             },
             color: HighlightColors.withDefaultColor(annotation.color),
             created: annotation.created,
+            lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
             original: annotation,

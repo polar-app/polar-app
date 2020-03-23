@@ -1,6 +1,5 @@
 import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
-import {Simulate} from 'react-dom/test-utils';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';

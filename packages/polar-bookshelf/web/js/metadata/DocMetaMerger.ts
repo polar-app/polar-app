@@ -1,6 +1,4 @@
-import {DocMeta} from './DocMeta';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {PageMeta} from './PageMeta';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
