@@ -1,7 +1,9 @@
 
 # 2020-03-21 (sun)
 
- - DONE comments are now vanishing for some reason so I need to track this down.
+- DONE: duplicate comments when editing the from the repo
+- DONE: now comments vanish when editing them from the viewer
+- ActiveSelections being triggered...  
 
 # 2020-03-21 (sat)
 
