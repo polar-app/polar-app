@@ -140,7 +140,7 @@ export class DocAnnotationIndex {
     }
 
     public _removeChild(id: IDString, child: IDString) {
-        this.children.filter(id, (value: DocAnnotation) => value.id === child);
+        this.children.filter(id, (value: DocAnnotation) => value.id !== child);
         delete this.parents[child];
     }
 
