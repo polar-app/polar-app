@@ -2,19 +2,19 @@ import {
     DefaultDocAnnotation,
     DocAnnotation,
     DocAnnotationMap,
-    IDocAnnotation,
-    SortedDocAnnotations
+    IDocAnnotation
 } from './DocAnnotation';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {Refs} from "polar-shared/src/metadata/Refs";
-import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {SetMultimap} from "polar-shared/src/util/SetMultimap";
 
 export class DocAnnotationIndex {
 
     private readonly lookup: DocAnnotationMap = {};
 
-    private readonly children = new ArrayListMultimap<string, DocAnnotation>();
+    private readonly children = new SetMultimap<string, DocAnnotation>((value) => value,
+                                                                       value => value.id);
 
     private readonly parents: ParentMap = {};
 
@@ -90,24 +90,26 @@ export class DocAnnotationIndex {
 
     public getDocAnnotationsSorted(): ReadonlyArray<DefaultDocAnnotation> {
 
+        // TODO: I would prefer that this was a binary tree which was maintained sorted
+
         const computeScore = (item: DocAnnotation) => {
             return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
         };
 
-        // TODO: I would prefer that this was a binary tree which was maintained sorted
+        const compareFn = (a: DocAnnotation, b: DocAnnotation) => {
+
+            const diff = computeScore(a) - computeScore(b);
+
+            if (diff === 0) {
+                return a.id.localeCompare(b.id);
+            }
+
+            return diff;
+
+        };
 
         return Object.values(this.lookup)
-            .sort((a, b) => {
-
-                const diff = computeScore(a) - computeScore(b);
-
-                if (diff === 0) {
-                    return a.id.localeCompare(b.id);
-                }
-
-                return diff;
-
-            });
+                     .sort(compareFn);
 
     }
 
@@ -138,7 +140,7 @@ export class DocAnnotationIndex {
     }
 
     public _removeChild(id: IDString, child: IDString) {
-        this.children.delete(id, undefined, (value: DocAnnotation) => value.id === child);
+        this.children.filter(id, (value: DocAnnotation) => value.id === child);
         delete this.parents[child];
     }
 

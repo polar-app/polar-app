@@ -18,6 +18,7 @@ import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {InheritedTag} from 'polar-shared/src/tags/InheritedTags';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
@@ -152,7 +153,9 @@ export class DefaultDocAnnotation implements DocAnnotation {
     }
 
     public getChildren(): ReadonlyArray<DocAnnotation> {
-        return this.getIndex()._getChildren(this.id);
+        return arrayStream(this.getIndex()._getChildren(this.id))
+                .unique(current => current.id)
+                .collect();
     }
 
     public setChildren(children: ReadonlyArray<DocAnnotation>): void {
@@ -161,9 +164,6 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public addChild(docAnnotation: DocAnnotation) {
         this.getIndex()._addChild(this.id, docAnnotation);
-
-        // this.children.push(docAnnotation);
-        // this.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
     }
 
     public removeChild(id: string) {

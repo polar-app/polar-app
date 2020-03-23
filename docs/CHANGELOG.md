@@ -1,5 +1,7 @@
 # 1.100.0
 
+- annotations in the annotation view are now sorted by 'last updated' not the
+  creation time.  
 - annotations can have tags
 - latest version of react-select 
 
