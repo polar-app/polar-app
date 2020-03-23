@@ -1,6 +1,9 @@
 
-
 # 2020-03-21 (sun)
+
+ - DONE comments are now vanishing for some reason so I need to track this down.
+
+# 2020-03-21 (sat)
 
 - DONE: final last issue but it's big one... 
 
