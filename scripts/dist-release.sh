@@ -20,7 +20,13 @@ if [ "${branch}" != "master" ]; then
     die "Must be on master branch"
 fi
 
-source ../polar-bookshelf-secrets/credentials.sh
+CREDENTIALS_FILE="../polar-bookshelf-secrets/credentials.sh"
+
+if [ ! -e "${CREDENTIALS_FILE}" ]; then
+  die "No credentials file"
+fi
+
+source "${CREDENTIALS_FILE}"
 
 # TODO: consider doing a full rm -rf node_modules first but the problem is that
 # we need to make sure we're still using the right npm binary.
