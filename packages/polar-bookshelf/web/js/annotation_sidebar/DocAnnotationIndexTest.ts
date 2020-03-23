@@ -95,6 +95,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 0
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
@@ -143,6 +144,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 0
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
@@ -191,6 +193,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 0
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
@@ -253,6 +256,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 50
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
@@ -301,6 +305,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 0
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
@@ -349,6 +354,7 @@ describe('DocAnnotationIndex', function() {
                     "y": 100
                 },
                 "created": "2009-06-15T13:45:30",
+                "lastUpdated": "2009-06-15T13:45:30",
                 "pageMeta": null,
                 "docMeta": null,
                 "original": {
