@@ -183,8 +183,9 @@ export class Ranges {
         const startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
         const endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
 
-        Preconditions.assertPresent(startNode, "startNode");
-        Preconditions.assertPresent(endNode, "endNode");
+        if (! startNode || ! endNode) {
+            return false;
+        }
 
         const doc = range.startContainer.ownerDocument!;
 

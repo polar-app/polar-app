@@ -238,7 +238,7 @@ const TagInputBody = (props: IRenderProps) => {
 
                         <div className="ml-auto"/>
 
-                        <Button color="secondary"
+                        <Button color="clear"
                                 size="sm"
                                 style={Styles.button}
                                 onClick={() => props.onCancel()}>
