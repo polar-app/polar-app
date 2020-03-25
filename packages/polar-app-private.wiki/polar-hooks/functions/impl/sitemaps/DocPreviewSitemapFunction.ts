@@ -1,5 +1,8 @@
 import * as functions from "firebase-functions";
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {
+    DocPreviews,
+    ListOpts
+} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
 export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) => {
@@ -9,7 +12,7 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
      * the start/end range and limit and then use multiple sitemap URLs to
      * split things up properly.
      */
-    const parseListOpts = () => {
+    const parseListOpts = (): ListOpts => {
 
         const parseRange = () => {
 
