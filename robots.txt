@@ -9,6 +9,6 @@ Disallow: /add
 # Disallow: /groups
 Disallow: /group
 
-Sitemap: http://app.getpolarized.io/sitemap.xml
-Sitemap: http://app.getpolarized.io/sitemap-static.xml
-Sitemap: http://app.getpolarized.io/sitemap-doc-preview.xml
+Sitemap: https://app.getpolarized.io/sitemap.xml
+Sitemap: https://app.getpolarized.io/sitemap-static.xml
+Sitemap: https://app.getpolarized.io/sitemap-doc-preview.xml
