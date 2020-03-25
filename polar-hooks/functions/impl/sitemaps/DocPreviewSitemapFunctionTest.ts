@@ -7,7 +7,7 @@ describe('DocPreviewSitemapFunction', function() {
 
         FirebaseAdmin.app();
 
-        const docPreviews = await DocPreviews.list(50000);
+        const docPreviews = await DocPreviews.list({size: 50000});
 
     });
 
