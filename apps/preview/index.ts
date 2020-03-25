@@ -1,7 +1,7 @@
-import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
+import PDFJS, {DocumentInitParameters, PDFDocumentProxy} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFViewer} from 'pdfjs-dist/web/pdf_viewer';
+import {PDFViewer, PDFFindController, EventBus, PDFLinkService} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreviewCached,
@@ -14,6 +14,30 @@ import {Analytics} from "../../web/js/analytics/Analytics";
 import {Strings} from "polar-shared/src/util/Strings";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+
+namespace pdfjs {
+
+    export interface FindCommandState {
+        query: string;
+        phraseSearch: boolean;
+        caseSensitive: boolean;
+        highlightAll: boolean;
+        findPrevious: boolean;
+    }
+
+    export interface IFindController {
+        reset(): void;
+        nextMatch(): void;
+        executeCommand(cmd: string, state: FindCommandState): void;
+        setDocument(doc: PDFDocumentProxy): void;
+
+    }
+
+    export interface ILinkService {
+        setDocument(doc: PDFDocumentProxy, baseURL: string | null): void;
+    }
+
+}
 
 async function getDocPreview(): Promise<DocPreviewCached> {
 
@@ -206,17 +230,37 @@ async function doLoad() {
 
     const page = await doc.getPage(1);
 
+    const eventBus = new EventBus();
+    // TODO  this isn't actually exported..
+    // const pdfRenderingQueue = new PDFRenderingQueue();
+
+    const linkService = new PDFLinkService({
+        eventBus,
+    });
+
+    const findController = <pdfjs.IFindController> new PDFFindController({
+        linkService,
+        eventBus
+    });
+
     // FIXME the page viewport sees is wrong.
     const viewport = page.getViewport({scale: 1.0});
 
     // NOTE: if we set textLayerMode: 0 no text is rendered.
 
-    const viewer = new PDFViewer({
+    const viewerOpts = {
         container,
         textLayerMode: 2,
+        linkService,
+        findController,
+        eventBus,
         // removePageBorders: true,
         // defaultViewport: viewport
-    });
+    };
+
+    const viewer = new PDFViewer(viewerOpts);
+
+    linkService.setViewer(viewer);
 
     // console.log("pageView width: ", pageView.width);
 
@@ -230,6 +274,7 @@ async function doLoad() {
     //   etc
 
     viewer.setDocument(doc);
+    (<pdfjs.ILinkService> linkService).setDocument(doc, null);
 
     const pageView = viewer.getPageView(1);
 
@@ -239,7 +284,6 @@ async function doLoad() {
         console.log(`Calculating scale from ${from} to ${to}...`);
         return to / from;
     };
-
 
     console.log("page view: ", page.view);
     console.log("viewport: ", viewport);
@@ -268,14 +312,30 @@ async function doLoad() {
         viewer.currentScaleValue = 'page-width';
     }
 
-    // viewer.currentScale = 0.5;
-
     console.log("currentScale: ", viewer.currentScale);
     console.log("currentScaleValue: ", viewer.currentScaleValue);
 
     doResize();
 
+    // viewer.currentScale = 0.5;
+
     window.addEventListener('resize', () => doResize());
+
+    // eventBus.on("updatefindmatchescount", (evt: any) => {
+    //     console.log("TODO: ", evt);
+    // });
+
+    // eventBus.on('updatefindcontrolstate', (event: any) => {
+    //     console.log("find control state: ", event);
+    // });
+
+    // findController.executeCommand('find', {
+    //     query: 'Gene',
+    //     phraseSearch: false,
+    //     caseSensitive: false,
+    //     highlightAll: true,
+    //     findPrevious: false
+    // });
 
     traceLoading();
 
