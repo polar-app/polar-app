@@ -1,0 +1,27 @@
+{
+  "name": "polar-mocha",
+  "version": "1.100.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo no test",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bin": "src/polar-mocha.js",
+  "dependencies": {
+    "polar-shared": "^1.100.5"
+  },
+  "devDependencies": {
+    "@types/node": "^12.11.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
