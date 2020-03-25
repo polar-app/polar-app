@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Split.js</title>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>-->
+
+    <style>
+
+        body {
+            margin: 0;
+        }
+
+        /*td {*/
+            /*padding: 8px 10px;*/
+        /*}*/
+
+        /*td:first-child {*/
+            /*font-family: monospace;*/
+        /*}*/
+        /*h3 {*/
+            /*margin-top: 100px;*/
+        /*}*/
+        /*h5 {*/
+            /*margin-bottom: 0;*/
+        /*}*/
+        /*hr {*/
+            /*margin-top: 2px;*/
+        /*}*/
+
+        .api {
+            height: calc(100vh - 0px);
+            /*border: 1px solid #ddd;*/
+            border-radius: 4px;
+
+        }
+
+        .split p {
+            padding: 20px;
+        }
+        .split {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .gutter.gutter-horizontal {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+            cursor: ew-resize;
+        }
+        .gutter.gutter-vertical {
+            background-image: url('../grips/horizontal.png');
+            cursor: ns-resize;
+        }
+
+        .gutter {
+            background-color: #eee;
+            background-repeat: no-repeat;
+            background-position: 50%;
+        }
+
+        .split.split-horizontal, .gutter.gutter-horizontal {
+            height: 100%;
+            float: left;
+        }
+
+        /*#three, #four {*/
+            /*display: flex;*/
+            /*flex-direction: column;*/
+        /*}*/
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="api">
+        <div id="three" class="split split-horizontal">
+            <p>Bacon ipsum dolor amet beef ribs meatloaf picanha pork loin pork chop rump pig sausage bacon shank boudin beef fatback. Pork loin turducken t-bone chicken.</p>
+        </div>
+        <div id="four" class="split split-horizontal">
+            <p>Brisket andouille cow ball tip. Ham ground round short loin tri-tip ribeye t-bone boudin, pork loin turkey drumstick tongue pork chop. Kielbasa doner picanha turducken, swine bacon shank pastrami andouille. Hamburger tongue tenderloin meatball picanha. Rump bresaola chicken bacon, ground round corned beef ribeye salami. Turkey fatback short ribs andouille meatball, brisket pork belly cow t-bone turducken pig beef ribs.</p>
+        </div>
+    </div>
+
+</div>
+</body>
+<script>require("./app");</script>
+
+</body>
+
