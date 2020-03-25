@@ -4,6 +4,37 @@ import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
 export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) => {
 
+    /**
+     * Parse the options from the HTTP request so that we can change
+     * the start/end range and limit and then use multiple sitemap URLs to
+     * split things up properly.
+     */
+    const parseListOpts = () => {
+
+        const parseRange = () => {
+
+            if (req.params.start && req.params.end) {
+                return {
+                    start: req.params.start,
+                    end: req.params.end
+                };
+            }
+
+            return undefined;
+
+        };
+
+        const parseSize = () => {
+            return parseInt(req.params.size ?? '50000');
+        };
+
+        const size = parseSize();
+        const range = parseRange();
+
+        return {size, range};
+
+    };
+
     const handler = async () => {
 
         resp.contentType('text/xml');
@@ -12,7 +43,10 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         resp.write(`<?xml version="1.0" encoding="UTF-8"?>\n`);
         resp.write(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`);
 
-        const docPreviews = await DocPreviews.list(50000);
+        const opts = parseListOpts();
+
+        console.log("Using list opts: ", opts);
+        const docPreviews = await DocPreviews.list(opts);
 
         for (const docPreview of docPreviews) {
 

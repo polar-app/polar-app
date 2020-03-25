@@ -24,7 +24,7 @@ xdescribe('Collections', function() {
 
         const iterator = await collections.iterate([['visibility', '==', 'public']], {orderBy, limit: 2});
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             const page = await iterator.next();
             console.log(page);
         }
