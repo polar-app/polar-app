@@ -24,7 +24,14 @@ showEnv() {
 
   echo "XXXXX: showing env: START"
 
+  echo "=== PWD is now"
   pwd
+
+  echo "=== LS of all files in current dir"
+
+  find . -ls
+
+  echo "=== ls of web dir"
 
   ls -al web
 
