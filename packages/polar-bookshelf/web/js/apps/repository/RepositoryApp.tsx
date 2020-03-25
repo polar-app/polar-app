@@ -635,7 +635,7 @@ function getRootElement() {
     const rootElement = document.getElementById('root') as HTMLElement;
 
     if (! rootElement) {
-        throw new Error("No root element to render to");
+        throw new Error("No root element to which to render");
     }
 
     return rootElement;
