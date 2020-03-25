@@ -27,7 +27,7 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
 
         };
 
-        const parseSize = () => {
+        const parseSize = (): number => {
             return parseInt(req.params.size ?? '50000');
         };
 
