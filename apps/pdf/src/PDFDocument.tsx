@@ -140,10 +140,12 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
         const scale = calculateScale(window.innerWidth, viewport.width);
 
-        docViewer.viewer.currentScaleValue = 'page-width';
-
         docViewer.viewer.setDocument(doc);
         (docViewer.linkService as pdfjs.ILinkService).setDocument(doc, null);
+
+        setTimeout(() => {
+            docViewer.viewer.currentScaleValue = 'page-width';
+        }, 1500 );
 
         this.setState({
             loadedDoc: {
@@ -151,10 +153,16 @@ export class PDFDocument extends React.Component<IProps, IState> {
             }
         });
 
+        // FIXME: now I need a way to render the pages with react-window ...
+        // right now it just renders them all and with out having a component
+        // on top of every page I can't easily add context menus and so forth
+        // I think.
+
     }
 
     public render() {
-        return <div>hello world</div>;
+        // TODO render single pages...
+        return null;
     }
 
 }
