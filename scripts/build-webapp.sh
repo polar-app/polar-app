@@ -31,9 +31,9 @@ showEnv() {
 
   # find . -ls
 
-  echo "=== ls of web dir"
+  echo "=== ls of web/dist dir"
 
-  ls -al web
+  ls -al web/dist
 
   echo "XXXXX: showing env: END"
 
