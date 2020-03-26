@@ -1,5 +1,8 @@
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
-import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
+import {
+    DocPreview,
+    DocPreviewCached
+} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {Fetches} from "polar-shared/src/util/Fetch";
 
@@ -26,38 +29,47 @@ export class DocPreviewsPrerenderer {
                     continue;
                 }
 
-                const href = DocPreviewURLs.create({
-                    id: docPreview.urlHash,
-                    category: docPreview.category,
-                    title: docPreview.title,
-                    slug: docPreview.slug
-                });
-
-                console.log(href);
-
-                const body = JSON.stringify({
-                    "prerenderToken": "nHFtg5f01o0FJZXDtAlR",
-                    "url": href
-                });
-
-                const response = await Fetches.fetch('https://api.prerender.io/recache', {
-                    method: "POST",
-                    body,
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                });
-
-                // console.log(response);
-                if (response.status !== 200) {
-                    console.warn(`Invalid response: ${response.status}: ${response.statusText}`);
-                }
+                await this.submit(docPreview);
 
             }
 
         };
 
         await doPrerender();
+
+    }
+
+    /**
+     * Submit a URL to prerender.io to be cached.
+     */
+    public static async submit(docPreview: DocPreviewCached) {
+
+        const href = DocPreviewURLs.create({
+            id: docPreview.urlHash,
+            category: docPreview.category,
+            title: docPreview.title,
+            slug: docPreview.slug
+        });
+
+        console.log(href);
+
+        const body = JSON.stringify({
+            "prerenderToken": "nHFtg5f01o0FJZXDtAlR",
+            "url": href
+        });
+
+        const response = await Fetches.fetch('https://api.prerender.io/recache', {
+            method: "POST",
+            body,
+            headers: {
+                'content-type': 'application/json'
+            }
+        });
+
+        // console.log(response);
+        if (response.status !== 200) {
+            console.warn(`Invalid response: ${response.status}: ${response.statusText}`);
+        }
 
     }
 

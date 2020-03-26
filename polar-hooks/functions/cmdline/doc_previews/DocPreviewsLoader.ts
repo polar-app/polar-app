@@ -8,7 +8,6 @@ import {
     DocPreviews,
     DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviews";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
@@ -60,6 +59,7 @@ export class DocPreviewsLoader {
             const urlHash = DocPreviewHashcodes.urlHash(url);
 
             const docPreview: DocPreviewUncached = {
+                id: urlHash,
                 cached: false,
                 url,
                 urlHash,
