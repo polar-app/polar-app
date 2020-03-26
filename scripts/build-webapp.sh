@@ -27,9 +27,9 @@ showEnv() {
   echo "=== PWD is now"
   pwd
 
-  echo "=== LS of all files in current dir"
+  # echo "=== LS of all files in current dir"
 
-  find . -ls
+  # find . -ls
 
   echo "=== ls of web dir"
 
