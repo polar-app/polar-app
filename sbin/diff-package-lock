@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+
+const dir = process.argv[2];
+
+function loadJSON(path) {
+
+    const data = fs.readFileSync(path);
+    return JSON.parse(data);
+}
+
+function toVersion(ver) {
+    return ver.replace(/^[~=^]/, '');
+}
+
+const pack_data = loadJSON(`${dir}/package.json`);
+const package_lock_data = loadJSON(`${dir}/package-lock.json`);
+
+for (const pack_name of Object.keys(pack_data.dependencies)) {
+    const pack_ver = toVersion(pack_data.dependencies[pack_name]);
+
+    const cmp_pack = package_lock_data.dependencies[pack_name];
+
+    if (cmp_pack) {
+
+        const cmp_pack_name = cmp_pack.name;
+        const cmp_pack_version = cmp_pack.version;
+
+        if (pack_ver !== cmp_pack_version) {
+            console.log(`${pack_name} =  ${pack_ver} vs ${cmp_pack_version}`);
+        }
+
+    }
+}
