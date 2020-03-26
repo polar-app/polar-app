@@ -1,6 +1,5 @@
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
-import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
 export class DocPreviewsDocImporterGenerator {
 

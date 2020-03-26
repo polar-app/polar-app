@@ -14,6 +14,9 @@ interface SitemapURL {
 
 }
 
+/**
+ * @Deprecated using cloud function to generate this now.
+ */
 export class DocPreviewsSitemapGenerator {
 
     public static async generate() {
