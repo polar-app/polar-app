@@ -232,7 +232,9 @@
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.20",
     "uuid": "~3.3.2",
-    "workbox-cli": "^4.3.1"
+    "workbox-cli": "^4.3.1",
+    "react-pdf": "=4.1.0",
+    "@types/react-pdf": "=4.0.3"
   },
   "collective": {
     "type": "opencollective",
