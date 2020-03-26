@@ -9,8 +9,7 @@ import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreview,
     DocPreviewCached,
-    DocPreviews,
-    DocPreviewUncached
+    DocPreviews
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 import {Slugs} from "polar-shared/src/util/Slugs";
@@ -18,15 +17,13 @@ import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
 import {DOIStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {ARXIVSearchEngine} from "polar-search/src/search/arxiv/ARXIVSearchEngine";
 import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
+import {DocPreviewsPrerenderer} from "../../cmdline/doc_previews/DocPreviewsPrerenderer";
 
 export interface CoreDocMetadata {
     readonly doi?: DOIStr;
     readonly description?: string;
     readonly nrPages?: number;
 }
-
-// TODO:
-//  - submit it to prerender.io
 
 export class CoreDocMetadatas {
 
@@ -86,6 +83,8 @@ export class CoreDocMetadatas {
      */
     public static async fetch(docPreview: DocPreview,
                               importedDoc: ImportedDoc) {
+
+        // TODO: get better on handling exceptions here
 
         const pdfMetadata = await this.fetchPDFMetadata(importedDoc);
 
@@ -150,12 +149,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
         const slug = docPreview.title ? Slugs.calculate(docPreview.title) : undefined;
 
-        const updateDocPreviewCache = async (docPreview: DocPreviewCached | DocPreviewUncached) => {
-
-            if (docPreview.cached) {
-                // already cached.
-                return;
-            }
+        const setDocPreview = async (docPreview: DocPreviewCached) => {
 
             console.log("Updating doc_preview cache");
 
@@ -172,7 +166,17 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
         };
 
-        await updateDocPreviewCache(docPreview);
+        const prerenderDocPreview = async (docPreview: DocPreviewCached) => {
+            console.log("Submitting to prerender.io to precache/prerender for SEO");
+            await DocPreviewsPrerenderer.submit(docPreview);
+        };
+
+        if (docPreview.cached) {
+
+            await setDocPreview(docPreview);
+            await prerenderDocPreview(docPreview);
+
+        }
 
         const redirectURL = DocPreviewURLs.create({
             id: urlHash,
