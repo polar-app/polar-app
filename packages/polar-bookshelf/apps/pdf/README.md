@@ -14,3 +14,8 @@
 
 - going with something like react-pdf might be better anyway especially  
   if I webpack the full thing
+
+- the problem now is that if I import react-pdf it won't compile due to module 
+  dependency issues. Maybe for now I need to have my OWN @types/pdfjs-dist 
+  which would replace the one in npm and that way I can have a custom version
+  of the bindings which is more correct.
