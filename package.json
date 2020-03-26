@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist-validate-env": "./sbin/dist-validate-env",
     "lerna-run-compile": "lerna run --concurrency=1 --parallel=false compile",
-    "lerna-run-dist": "lerna run --concurrency=1 --parallel=false dist",
+    "lerna-run-dist": "lerna run --concurrency=1 --parallel=false --stream dist",
     "lerna-run-test": "lerna run --concurrency=1 --parallel=false test",
     "lerna-npm-publish": "npm run-script dist-validate-env && lerna exec --concurrency=1 --parallel=false --no-private -- npm publish",
     "rebuild": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile",
