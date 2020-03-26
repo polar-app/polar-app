@@ -16,10 +16,10 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
 
         const parseRange = () => {
 
-            if (req.params.start && req.params.end) {
+            if (req.query.start && req.query.end) {
                 return {
-                    start: req.params.start,
-                    end: req.params.end
+                    start: req.query.start,
+                    end: req.query.end
                 };
             }
 
@@ -28,7 +28,7 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         };
 
         const parseSize = (): number => {
-            return parseInt(req.params.size ?? '50000');
+            return parseInt(req.query.size ?? '50000');
         };
 
         const size = parseSize();
