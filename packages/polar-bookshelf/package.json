@@ -40,7 +40,7 @@
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
     "postinstall": "opencollective-postinstall",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "webpack": "mkdir -p web/dist && npx webpack --verbose --config=webpack.config.js && pwd && find . -ls && ls -al web/dist && echo 'Webpack built successfully'",
+    "webpack": "mkdir -p web/dist && npx webpack --verbose --config=webpack.config.js && pwd && ls -al web/dist && echo 'Webpack built successfully'",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
     "webpack-dev-server": "webpack-dev-server --https",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
