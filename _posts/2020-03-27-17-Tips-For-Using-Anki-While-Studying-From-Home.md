@@ -2,7 +2,7 @@
 hidden: true
 visible: false
 title: 17 tips for crushing it with Anki while studying remotely
-date: TBD
+date: 2020-03-27T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/FeMzRL1.png
 description: We've been avid Anki users for the last few years. Especially now that everyone is studying remotely, it's extremely helpful to be able to create flashcards directly from annotations. We do the reading and annotating in Polar.
