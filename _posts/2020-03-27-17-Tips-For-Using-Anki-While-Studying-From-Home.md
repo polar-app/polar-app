@@ -1,7 +1,6 @@
+---
 hidden: true
 visible: false
-
----
 title: 17 tips for crushing it with Anki while studying remotely
 date: TBD
 layout: post
