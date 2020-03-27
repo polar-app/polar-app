@@ -6,6 +6,8 @@
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public.wiki" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-react-pdf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-app-public/polar-react-pdf/journal" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-assets" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-bookshelf-secrets" vcs="Git" />
