@@ -20,9 +20,15 @@ export class PDFApp {
                     </div>
 
                 </main>
-                <PDFDocument target="viewerContainer" url="./example.pdf"/>
+                <PDFDocument target="viewerContainer" url="./test.pdf"/>
             </div>
             ), rootElement);
+
+        // ReactDOM.render((
+        //     // <div>
+        //     //     <Viewer/>
+        //     // </div>
+        //     ), rootElement);
 
     }
 

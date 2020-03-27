@@ -19,3 +19,18 @@
   dependency issues. Maybe for now I need to have my OWN @types/pdfjs-dist 
   which would replace the one in npm and that way I can have a custom version
   of the bindings which is more correct.
+
+- now the problem is that react-pdf and our version of Polar do not cooperate 
+  and are running different versions of pdf.js
+
+- I think I should fork react-pdf to polar-react-pdf and make my changes
+  there so that I can post the packages ot npm and then give the changes 
+  to npm repo
+
+- if I want to revert to using the new windowed version I have to add the following
+  to packages.json
+  
+      "polar-react-pdf": "^1.100.8",
+      "@types/polar-react-pdf": "^1.100.8",
+      "react-window": "=1.8.5",
+      "@types/react-window": "=1.8.1"

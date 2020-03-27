@@ -1,12 +1,13 @@
-import React, {PureComponent, Fragment, createRef} from 'react';
-import PropTypes from 'prop-types';
-import {Document} from 'react-pdf/dist/entry.webpack';
+import React, {createRef, Fragment} from 'react';
+import {Document, pdfjs} from 'polar-react-pdf';
 import {VariableSizeList} from 'react-window';
 import {debounce} from 'throttle-debounce';
 
 import Loader from './Loader';
 import PageRenderer from './PageRenderer';
 import Buttons from './Buttons';
+
+pdfjs.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
 class Viewer extends React.PureComponent<any, any> {
 
@@ -41,8 +42,8 @@ class Viewer extends React.PureComponent<any, any> {
             currentPage: 1,
             cachedPageDimensions: null,
             responsiveScale: 1,
-            pageNumbers: {},
-            pages: {}
+            pageNumbers: new Map(),
+            pages: new Map()
         };
 
         this._list = createRef();
@@ -177,10 +178,10 @@ class Viewer extends React.PureComponent<any, any> {
                             numPages={pdf.numPages}
                             onClick={this.handleClick.bind(this)} />
                         <VariableSizeList
-                            height={containerHeight}
-                            width={500}
+                            height={500}
+                            width='100%'
                             itemCount={pdf.numPages}
-                            itemSize={this.computeRowHeight.bind(this)}
+                            itemSize={() => 500}
                             itemData={{
                                 scale,
                                 pages,
