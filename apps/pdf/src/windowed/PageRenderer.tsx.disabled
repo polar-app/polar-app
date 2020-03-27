@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Page} from 'react-pdf/dist/entry.webpack';
+import {Page} from 'polar-react-pdf';
 
 class PageRenderer extends PureComponent<any, any> {
 

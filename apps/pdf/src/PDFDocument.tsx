@@ -118,7 +118,6 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
     }
 
-
     private async doLoad(docViewer: DocViewer) {
 
         const {url} = this.props;
