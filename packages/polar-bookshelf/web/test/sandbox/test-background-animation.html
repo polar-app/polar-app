@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <style>
+        .yellow {
+            background-color: yellow;
+        }
+
+        .white {
+            background-color: white;
+            transition: background-color 1s;
+
+        }
+        .test {
+            background-color: yellow;
+            transition: background-color 1s;
+        }
+
+    </style>
+</head>
+
+<body class="yellow">
+
+<script>
+    function trigger() {
+        document.body.classList.toggle('white');
+        //document.body.classList.toggle('test');
+
+    }
+</script>
+
+<button onclick="trigger();">trigger</button>
+</body>
+</html>
