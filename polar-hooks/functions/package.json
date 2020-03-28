@@ -40,6 +40,7 @@
     "polar-accounts": "^1.100.13",
     "polar-backend-shared": "^1.100.13",
     "polar-firebase": "^1.100.13",
+    "polar-firebase-admin": "^1.100.13",
     "polar-html": "^1.100.13",
     "polar-pdf": "^1.100.13",
     "polar-search": "^1.100.13",
