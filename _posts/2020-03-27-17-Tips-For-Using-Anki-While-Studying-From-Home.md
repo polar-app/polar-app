@@ -1,6 +1,4 @@
 ---
-hidden: true
-visible: false
 title: 17 tips for crushing it with Anki while studying remotely
 date: 2020-03-27T08:00:00.000-08:00
 layout: post
