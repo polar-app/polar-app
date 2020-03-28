@@ -140,6 +140,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
     console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
     console.log("Imported doc to: " + JSON.stringify(importedDoc, null, "   "));
+    console.log("DocPreview: " + JSON.stringify(docPreview, null, "   "));
 
     if (docPreview) {
 
@@ -149,12 +150,13 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
         const slug = docPreview.title ? Slugs.calculate(docPreview.title) : undefined;
 
-        const setDocPreview = async (docPreview: DocPreviewCached) => {
+        const setDocPreview = async (docPreview: DocPreview): Promise<DocPreviewCached> => {
 
-            console.log("Updating doc_preview cache");
+            console.log("Writing doc_preview cache");
 
-            await DocPreviews.set({
+            const docPreviewCached: DocPreviewCached = {
                 ...docPreview,
+                id: docPreview.id || docPreview.urlHash,
                 docHash: importedDoc.hashcode,
                 cached: true,
                 datastoreURL: importedDoc.storageURL,
@@ -162,7 +164,11 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
                 description: docPreview.description || metadata.description,
                 nrPages: metadata.nrPages,
                 slug
-            });
+            };
+
+            await DocPreviews.set(docPreviewCached);
+
+            return docPreviewCached;
 
         };
 
@@ -171,12 +177,9 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
             await DocPreviewsPrerenderer.submit(docPreview);
         };
 
-        if (docPreview.cached) {
+        const docPreviewCached = await setDocPreview(docPreview);
 
-            await setDocPreview(docPreview);
-            await prerenderDocPreview(docPreview);
-
-        }
+        await prerenderDocPreview(docPreviewCached);
 
         const redirectURL = DocPreviewURLs.create({
             id: urlHash,

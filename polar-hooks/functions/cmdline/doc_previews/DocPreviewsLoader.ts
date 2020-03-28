@@ -5,6 +5,7 @@ import {
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Files} from "polar-shared/src/util/Files";
 import {
+    DocPreview,
     DocPreviews,
     DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviews";
@@ -12,7 +13,7 @@ import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 
-const LIMIT = 1000;
+const LIMIT = 10000;
 
 function getPath() {
 
@@ -39,8 +40,6 @@ export class DocPreviewsLoader {
         const toDocPreview = (json: JSONStr): DocPreviewUncached | undefined => {
 
             const doc: Unpaywall.Doc = JSON.parse(json);
-
-            // console.log("doc: \n" + JSON.stringify(doc, null, '  '));
 
             if (doc.oa_locations.length === 0) {
                 console.warn("No open access locations (skipping).");
@@ -75,6 +74,10 @@ export class DocPreviewsLoader {
 
         };
 
+        const toImportURL = (docPreview: DocPreview) => {
+            return `https://app.getpolarized.io/doc-preview-import/${docPreview.url}`;
+        };
+
         const docPreviews = ArrayStreams.create(content.split("\n"))
                                         .filter(line => line.trim() !== '')
                                         .head(LIMIT * 4)
@@ -93,6 +96,9 @@ export class DocPreviewsLoader {
 
             console.log('writing');
             await DocPreviews.set(docPreview);
+
+            console.log("Import URL: " + toImportURL(docPreview));
+
         }
 
         console.log("Wrote N docPreviews: " + docPreviews.length);
