@@ -40,8 +40,6 @@ being designed with mobile support in mind.
 
 ## Full Changelog
 
-**1.100**
-
 - annotations in the annotation view are now sorted by 'last updated' not the
   creation time.  
 - annotations can have tags
