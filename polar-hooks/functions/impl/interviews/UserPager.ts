@@ -1,4 +1,4 @@
-import {FirebaseAdmin} from "../util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import admin from "firebase-admin";
 import UserRecord = admin.auth.UserRecord;
 

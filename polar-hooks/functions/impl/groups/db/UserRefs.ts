@@ -2,7 +2,7 @@ import {EmailStr} from './Profiles';
 import {ProfileIDStr} from './Profiles';
 import {UserRecord} from 'firebase-functions/lib/providers/auth';
 import {Profile} from './Profiles';
-import {FirebaseAdmin} from '../../util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {ProfileOwners} from './ProfileOwners';
 import {Profiles} from './Profiles';
 import {Preconditions} from 'polar-shared/src/Preconditions';

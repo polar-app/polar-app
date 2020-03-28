@@ -1,4 +1,4 @@
-import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {URLStr} from "polar-shared/src/util/Strings";

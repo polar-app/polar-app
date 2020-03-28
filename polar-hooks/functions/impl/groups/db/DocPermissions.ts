@@ -1,5 +1,5 @@
 import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
-import {FirebaseAdmin} from '../../util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {GroupIDStr} from './Groups';
 import {IDUser} from '../../util/IDUsers';
 import {DocRef} from 'polar-shared/src/groups/DocRef';

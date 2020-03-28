@@ -1,4 +1,4 @@
-import {FirebaseAdmin} from './FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
 import {UserIDStr} from '../groups/db/Profiles';
 import {ProfileIDStr} from '../groups/db/Profiles';

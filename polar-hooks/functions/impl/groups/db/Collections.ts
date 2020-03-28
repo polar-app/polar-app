@@ -1,6 +1,6 @@
 import {Firestore} from '../../util/Firestore';
 import {DocumentReference, WhereFilterOp, WriteBatch} from '@google-cloud/firestore';
-import {FirebaseAdmin} from '../../util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import OrderByDirection = FirebaseFirestore.OrderByDirection;

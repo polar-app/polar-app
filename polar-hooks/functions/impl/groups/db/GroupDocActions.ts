@@ -2,7 +2,7 @@ import {WriteBatch} from "@google-cloud/firestore";
 import * as admin from 'firebase-admin';
 import FieldValue = admin.firestore.FieldValue;
 import {GroupIDStr, GroupVisibility} from "./Groups";
-import {FirebaseAdmin} from "../../util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPermissions} from "./DocPermissions";
 import {GroupDocs} from "./GroupDocs";
 import {IDUser} from "../../util/IDUsers";

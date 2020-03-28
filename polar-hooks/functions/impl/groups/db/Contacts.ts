@@ -8,7 +8,7 @@ import {Firestore} from '../../util/Firestore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Sets} from 'polar-shared/src/util/Sets';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {FirebaseAdmin} from '../../util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {ProfileOwners} from './ProfileOwners';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import * as admin from 'firebase-admin';

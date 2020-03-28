@@ -1,4 +1,4 @@
-import {FirebaseAdmin} from '../impl/util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
 import {GroupProvisionFunctions} from '../impl/groups/GroupProvisionFunction';
 import {IDUsers} from '../impl/util/IDUsers';

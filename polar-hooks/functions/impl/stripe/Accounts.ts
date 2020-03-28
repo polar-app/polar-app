@@ -1,7 +1,7 @@
 import {accounts} from "polar-accounts/src/accounts";
 import {StripeUtils} from "./StripeUtils";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {FirebaseAdmin} from "../util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDStr} from "polar-shared/src/util/Strings";
 

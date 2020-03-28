@@ -1,6 +1,6 @@
 import {WriteBatch} from "@google-cloud/firestore";
 import {GroupIDStr} from './Groups';
-import {FirebaseAdmin} from '../../util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
 import {UserIDStr} from './Profiles';
 import {IDUser} from '../../util/IDUsers';

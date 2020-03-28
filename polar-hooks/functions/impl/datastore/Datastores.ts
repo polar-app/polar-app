@@ -1,6 +1,6 @@
-import {FirebaseConfig} from '../util/FirebaseConfig';
+import {FirebaseConfig} from 'polar-firebase-admin/src/FirebaseConfig';
 import {Storage} from '@google-cloud/storage';
-import {ServiceAccounts} from '../util/FirebaseAdmin';
+import {ServiceAccounts} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {trace} from '../trace';
 import {DocPermission, DocPermissions} from '../groups/db/DocPermissions';
 import {UserGroups} from '../groups/db/UserGroups';

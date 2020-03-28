@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import {default as fetch} from 'node-fetch';
-import {FirebaseAdmin} from './util/FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 
 const app = FirebaseAdmin.app();
 

@@ -10,7 +10,7 @@ import {
     DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
-import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 
 const LIMIT = 10000;

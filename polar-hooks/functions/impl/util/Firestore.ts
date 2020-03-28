@@ -1,4 +1,4 @@
-import {FirebaseAdmin} from './FirebaseAdmin';
+import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 
 export class Firestore {
 

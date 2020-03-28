@@ -1,5 +1,5 @@
 import {Collections} from "../groups/db/Collections";
-import {FirebaseAdmin} from "../util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {UserInterview} from "./UserInterview";
 import {EmailStr} from "polar-shared/src/util/Strings";
 

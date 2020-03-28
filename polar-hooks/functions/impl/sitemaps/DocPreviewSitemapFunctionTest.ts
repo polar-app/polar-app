@@ -1,5 +1,5 @@
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
-import {FirebaseAdmin} from "../util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 
 describe('DocPreviewSitemapFunction', function() {
 

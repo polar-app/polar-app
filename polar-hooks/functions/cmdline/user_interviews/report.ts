@@ -1,7 +1,7 @@
 // print a report of users that would be good candiates for user interviews probably new users that have been using for
 // 30 days and also aged users > 90 days but still actively using the product.
 
-import {FirebaseAdmin} from "../../impl/util/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import * as admin from 'firebase-admin';
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 
