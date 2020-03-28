@@ -1,4 +1,208 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-03-17T13:16:25-06:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Top 5 Flashcard Apps for 2020</title><link href="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html" rel="alternate" type="text/html" title="Top 5 Flashcard Apps for 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-03-28T11:42:55-06:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.100.13 - Tags for Annotations</title><link href="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html" rel="alternate" type="text/html" title="Polar 1.100.13 - Tags for Annotations" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html">&lt;p&gt;Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+
+&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
+&lt;iframe class=&quot;embed-responsive-item&quot; src=&quot;https://www.youtube.com/embed/6M6jNlairGc&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;tags-for-annotations&quot;&gt;Tags for Annotations&lt;/h2&gt;
+
+&lt;p&gt;The main feature of this release is tags for annotations.&lt;/p&gt;
+
+&lt;p&gt;This has been frequently requested by users and we finally were able to devote 
+the time to making sure it was implemented properly.&lt;/p&gt;
+
+&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
+
+&lt;p&gt;Of course we’ve also fixed a number of bugs in this release including a bad one
+that sometimes prevented the UI from updating when working with annotations.&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h2&gt;
+
+&lt;p&gt;We’re working on moving the entire platform over to React including the PDF 
+viewer.  Once this is complete we’ll be able to quickly finish implementing 
+EPUB, dark mode, and some improvements to our chrome extension to enable 
+annotation and capture directly in the browser for web content.&lt;/p&gt;
+
+&lt;p&gt;This will also meant that tablet and phone support can come online as 2.0 is 
+being designed with mobile support in mind.&lt;/p&gt;
+
+&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1.100&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;annotations in the annotation view are now sorted by ‘last updated’ not the
+creation time.&lt;/li&gt;
+  &lt;li&gt;annotations can have tags&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">17 tips for crushing it with Anki while studying remotely</title><link href="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html" rel="alternate" type="text/html" title="17 tips for crushing it with Anki while studying remotely" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;17-tips-for-crushing-it-with-anki-while-studying-remotely&quot;&gt;17 tips for crushing it with Anki while studying remotely&lt;/h1&gt;
+
+&lt;p&gt;Over the last few years, Anki has become a staple for us when learning with flashcards. Usually, we annotate our readings in &lt;a href=&quot;https://getpolarized.io/&quot; target=&quot;_blank&quot;&gt;Polar&lt;/a&gt;, then auto-convert those annotations into flashcards.&lt;/p&gt;
+
+&lt;p&gt;The biggest reason I love using Anki is that it simplifies learning by reminding me when to repeat flashcards.&lt;/p&gt;
+
+&lt;p&gt;Polar supports both textbooks and webpages, which made it a key part of our workflow for both schoolwork and personal learning.&lt;/p&gt;
+
+&lt;p&gt;Below, we are summarizing our key learnings for Anki. For most part, these tips also work for other spaced repetition platforms, like Quizlet or Supermemo.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-understand-how-spaced-repetition-works&quot;&gt;1. Understand how spaced repetition works&lt;/h2&gt;
+
+&lt;p&gt;A tool is only as useful as we make it for us, so make sure you understand how &lt;a href=&quot;https://en.wikipedia.org/wiki/Spaced_repetition&quot; target=&quot;_blank&quot;&gt;spaced reptition&lt;/a&gt; works.&lt;/p&gt;
+
+&lt;p&gt;The key is to why repeated review is crucial. That will avoid reverting back to the standard approach - wait until a week before the exam and freak out.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/otv7GF0.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;2-speed-up-flashcard-creation&quot;&gt;2. Speed up flashcard creation&lt;/h2&gt;
+
+&lt;p&gt;Creating flashcards takes time which it shouldn’t have to. That’s why we use Polar to speed things up. Polar allows you to auto-convert annotations into flashcards. They can easily be synced with Anki for studying&lt;/p&gt;
+
+&lt;p&gt;In addition, Polar supports incremental reading and reading progress tracking. That’s crucial to manage multiple readings and continue where you left off.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/rbAwfR6.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;3-maximize-impact-of-active-recall&quot;&gt;3. Maximize impact of active recall&lt;/h2&gt;
+
+&lt;p&gt;You should also understand why &lt;a href=&quot;https://en.wikipedia.org/wiki/Active_recall&quot; target=&quot;_blank&quot;&gt;active recall&lt;/a&gt; is so important.
+Active recall is a principle of efficient learning. It claims the need to actively stimulate memory during the learning process. It contrasts with passive review, in which the learning material is processed passively (e.g. by reading, watching, etc.). For example, reading a text about George Washington, with no further action, is a passive review. Answering the question “Who was the first US President?”, is active recall.
+Essentially you want everything to be a question and you want to have to think of the answer. It’s this thinking process which allows your brain to map weights to specific neurons and actually retain information.
+Don’t give leading questions or hints to the answer. If you don’t know the questions that’s fine. Just mark that on the card so it’s brought up again.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-build-a-habit&quot;&gt;4. Build a habit&lt;/h2&gt;
+
+&lt;p&gt;You couldn’t sit down at the end of the month and brush your teeth for 2-3 hours to make up for not brushing would you?
+The same is true for using spaced repetition - it should be a daily process of 15 - 60 min. Do it while you’re commuting. Or bored. Or even worse - waiting in line at the DMV.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/fwgmZOX.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;5-aim-for-90-difficulty-add-link-to-the-rule-here&quot;&gt;5. Aim for 90% difficulty (add link to the rule here)&lt;/h2&gt;
+
+&lt;p&gt;You should try to target 85-90% difficulty for your cards. If you go into Anki stats you can see the difficulty level for your recent usage.
+Too easy and you’re probably reviewing too often (and wasting time). Too hard and you’re not learning anything because you don’t have the understanding.
+So, you want it to be difficult but not too difficult.
+Unfortunately Anki doesn’t tune itself so you have to tune Anki directly.
+You can adjust this in the per-deck settings by changing the ease factors.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-think-long-term&quot;&gt;6. Think long-term&lt;/h2&gt;
+
+&lt;p&gt;Don’t give up on cards after you’ve finished a class or other milestone.
+The cool thing about spaced repetition is that you can remember the material forever. If you paid money to learn Calculus you might as well keep it. Once you’ve learned it using spaced repetition is mostly about maintenance.
+Since you know the material the scheduling will get farther and farther in the future and there won’t be such a massive burden.&lt;/p&gt;
+
+&lt;h2 id=&quot;7-use-the-right-card-type&quot;&gt;7. Use the right card type&lt;/h2&gt;
+
+&lt;p&gt;You should prefer to use question and answer cards.
+These are in the form of
+Q: What is the capital of California?
+A: Sacramento
+This would be as opposed to cloze deletion cards like:
+[Sacramento] is the capital of California.
+In the above the ‘Sacramento’ string is hidden.
+Cloze deletion cards might seem easy but they often give away context clues which weakens the entire point of spaced repetition.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/MaTlTKG.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;8-use-cloze-deletions-for-languages&quot;&gt;8. Use cloze deletions for languages&lt;/h2&gt;
+
+&lt;p&gt;There’s one main exception for cloze deletion cards - languages (especially in med school)
+Cloze can be good to help with grammar and sentence structure. They should NOT replace Q/A cards though.
+For a given word you should have the definition and the forward and reverse translation.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/G66EqlD.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;9-use-image-occlusion&quot;&gt;9. Use image occlusion&lt;/h2&gt;
+&lt;p&gt;Another powerful use case of flashcards is image occlusion, especially in med school. 
+Image occlusion allows you practice identifying parts of an image by hiding its description.
+After all, it would be quite useful to actually be able to identify the spleen during surgery instead of just knowing facts about it.&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/JAo54HZ.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;10-create-related-cards-for-a-360-understanding&quot;&gt;10. Create related cards for a 360 understanding&lt;/h2&gt;
+
+&lt;p&gt;If you’re struggling to remember cards because it seems like random facts, add more cards around the topic.&lt;/p&gt;
+
+&lt;p&gt;For example, if you want to know who was the first vice president of the US ( John Adams), add a card about who was the second president (surprise surprise - John Adams again). Now it’s much easier to get a better understanding of Adam’s career, not just the random fact that he was the first Vice President.&lt;/p&gt;
+
+&lt;h2 id=&quot;11-make-it-absurd-and-fun&quot;&gt;11. Make it absurd and fun&lt;/h2&gt;
+
+&lt;p&gt;If you were driving to work and you saw a naked man riding a horse on the side of the road would you need to remember it?
+Would you have to write it down?
+No. It would burn in your mind. You’d remember this image for a decade. Do this for your Anki cards you’re trying to remember.
+Below is an example of a ‘fun’ mnemonic device. I’m sure you have all seen more absurd and ridiculous ones, which we’ll abstain from showing here for now…&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/YtpRZX7.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;12-create-only-cards-you-actually-plan-to-study&quot;&gt;12. Create only cards you actually plan to study&lt;/h2&gt;
+
+&lt;p&gt;Don’t create nonsense cards. Ask yourself if the card will actually help you.
+Remember that spaced repetition is an efficient scheduler so going from 5k to 10k cards isn’t 2x more work. It is initially but quickly your spacings increase and you’re going to just be reviewing a few cards per day again.
+However, by only keeping important cards in there this helps you avoid card burnout. Reason #1 why people stop using spaced repetition is that the ‘why’ is not there.
+The why is because they’re valuable!&lt;/p&gt;
+
+&lt;h2 id=&quot;13-use-shingling-to-remember-speeches&quot;&gt;13. Use ‘shingling’ to remember speeches&lt;/h2&gt;
+
+&lt;p&gt;Do not include entire speeches to remember. Instead. Instead, use overlapping sentences.
+For example, if you want to remember the following:
+Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.
+Break it out into three cards:
+Q: Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+A: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+–
+Q: Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure.
+A: We are met on a great battle-field of that war.
+–
+Q: We are met on a great battle-field of that war.
+A: We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live.
+This will help you connect the parts without having to choke on a massive card with the entire speech.&lt;/p&gt;
+
+&lt;h2 id=&quot;14-use-extra-fields&quot;&gt;14. Use extra fields&lt;/h2&gt;
+
+&lt;p&gt;Create an ‘extra’ field with your cards so that you can add notes and pictures so that when you fail to remember you can get back to the original context.
+We’ll often put the book information. The actual text of where I saw the card, etc.
+In fact, one of the Polar features we’re working on is to add this directly so when you create a flashcard in Polar it automatically generates a card with the context.&lt;/p&gt;
+
+&lt;h2 id=&quot;15-use-stories-and-etymology&quot;&gt;15. Use stories and etymology&lt;/h2&gt;
+
+&lt;p&gt;Attach ‘extra’ stories to the material but or use imagery to remember the material.
+We’ve found that etymology works VERY well for learning languages.
+For example. The German word for sea is Meer which is related to the English word marine and mare (Spanish / Italian for sea).
+See, now you’re already speaking three languages ;)&lt;/p&gt;
+
+&lt;h2 id=&quot;16-use-cards-to-remember-faces&quot;&gt;16. Use cards to remember faces&lt;/h2&gt;
+
+&lt;p&gt;This is one of our favorite hacks. Most people have trouble matching faces and names. 
+I used to have an excel file with names and any additional information where I met them. Actually adding the picture makes it 10x more powerful&lt;/p&gt;
+
+&lt;h2 id=&quot;17-and-finally-dont-fall-for-ankiapp&quot;&gt;17. And finally… don’t fall for AnkiApp&lt;/h2&gt;
+
+&lt;p&gt;Make sure you’re using Anki and not AnkiApp&lt;/p&gt;
+
+&lt;p&gt;You can read about &lt;a href=&quot;https://getpolarized.io/2020/02/03/anki-ripped-off.html&quot; target=&quot;_blank&quot;&gt;our research&lt;/a&gt; into it here. Anki is the popular open-source platform used by many. AnkiApp is a Chinese rip-off riding the wave of Anki’s popularity&lt;/p&gt;
+
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/zr9cCga.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;These are our Anki tips from years of using it hands-on. Use the above tips to keep moving forward with spaced repetition. Use a tool like &lt;a href=&quot;https://getpolarized.io/&quot; target=&quot;_blank&quot;&gt;Polar&lt;/a&gt; to easily create flashcards and sync them to Anki.
+Spaced repetition is tremendously powerful. However, it won’t replace the work of actually understanding the material. This is still your job.
+Finally, make sure you’re also using the right Anki plugins and that you’re using it to full effect. You can read more about the most popular Anki add-ons &lt;a href=&quot;https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020.html&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Top 5 Flashcard Apps for 2020</title><link href="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html" rel="alternate" type="text/html" title="Top 5 Flashcard Apps for 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;top-5-flashcard-apps-for-2020&quot;&gt;Top 5 Flashcard Apps for 2020&lt;/h1&gt;
 
@@ -1857,197 +2061,4 @@ notes (figures, text, etc) in a virtual margin setup where the document has a la
 
 &lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
 
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry><entry><title type="html">Joining the Team</title><link href="https://getpolarized.io/2020/01/16/joining-the-team.html" rel="alternate" type="text/html" title="Joining the Team" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/joining-the-team</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/joining-the-team.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/NGKoA4y.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;joining-the-team&quot;&gt;Joining the Team&lt;/h1&gt;
-
-&lt;p&gt;I wanted to take a few moments and introduce myself.  My name is Jonathan Graeupner and I just joined the team to help
-Kevin scale Polar and I’m mostly focused on product and growth.&lt;/p&gt;
-
-&lt;p&gt;Originally, I’m from Germany - Garmisch- Partenkirchen. Lovely place to grow up. After my BSc in Munich, I was fortunate
-to get admitted to Yale to pursue my MSc and Phd in chemistry there. Homogeneous water oxidation and hydrogenation with
-Ir(III) - if you want to know exactly… My PhD experience is a huge part why I immediately fell in love with Polar.
-Subsequently, I was lucky enough to get an offer from BCG’s NYC office where I worked for over four years Startups have
-always fascinated me and so last summer, I decided to take the plunge and pursue my passion full-time.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/sONUWwd.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;b&gt;Jonathan and Kevin at AWS Loft San Francisco, Jan 2020&lt;/b&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;polar--plan-ahead&quot;&gt;Polar &amp;amp; plan ahead&lt;/h2&gt;
-
-&lt;p&gt;Guess how Kevin and I met? Reddit… actually. Fortunately, we were both located in SF and when we met, we immediately had
-a shared passion for EdTech and building something that can truly change the world. After a few meetings and hikes in
-the Bay Area, it was clear that pursuing this together was the right choice.&lt;/p&gt;
-
-&lt;p&gt;So toward the 	end of 2019, I joined forces with Kevin to build out Polar. Obviously, Kevin is the brain behind the
-code. Given my background in academia and management consulting, my focus moving forward will be more around engaging
-with you all on plans ahead (I’ve been reaching out to a few of you already), grow the platform, refine our long-term
-strategy, and some of the ‘boring’ corporate stuff.&lt;/p&gt;
-
-&lt;p&gt;We’ve shared with you our &lt;a href=&quot;https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html&quot;&gt;Q1/Q2 roadmap here&lt;/a&gt;. As with everything, we welcome feedback and input about our plans - rest
-assured, we are taking a more subtle approach to getting feedback now :) On a high-level, Q1 and Q2 2020 will be all
-about getting the Polar more stable, further simplifying existing features, and streamlining user flows.&lt;/p&gt;
-
-&lt;p&gt;Longer-term, we are looking at implementing additional features to really make this the platform of choice for anyone
-serious about their education. This will include opening up Polar to a vast array of integrations, and adding features
-like reference management, note taking, improving spaced repetition / flashcards, and more. We truly believe that
-incremental reading is a deeply transformative tool of thought and want to maximize its utility in Polar.&lt;/p&gt;
-
-&lt;h2 id=&quot;further-building-the-community--how-you-can-be-involved&quot;&gt;Further building the community &amp;amp; how you can be involved&lt;/h2&gt;
-
-&lt;p&gt;Since a big reason for me to join Polar was the community, I do want to provide a few thoughts on how we can work
-together in the future:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;We want to understand your needs better to build an even better platform - I will be reaching out to a few of you
-sporadically and would really appreciate your time!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We are working on a referral incentive and an ambassador program and are actively looking for student ambassadors.
-Especially since we received the feedback that Polar premium can be a big investment for students, reach out to me!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Interested in writing a blog post? Reach out to me. We have a long list of topics in the pipeline (including Wim Hof
-breathing, meditation, reviews of various study techniques,…) but are always open to guest blog posts. Happy to
-cross-link your blog too if you have one.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are you in the Bay Area? Happy to connect in person as well. I’m very interested in not only knowing our users online
-but in real as well.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Final point: we are in the very early stages of this exciting endeavor and are fully aware that not everything will work
-out the way we want it from the get-go. Please be patient as we are only a two-person team working around the clock
-these days! I know we’re doing everything we can on our end to make this the best study and reading platform out there.&lt;/p&gt;
-
-&lt;p&gt;Jonathan&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Roadmap for Polar in Q1 2020</title><link href="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html" rel="alternate" type="text/html" title="Roadmap for Polar in Q1 2020" /><published>2020-01-16T09:00:00-07:00</published><updated>2020-01-16T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020</id><content type="html" xml:base="https://getpolarized.io/2020/01/16/roadmap-for-polar-Q1-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CQYO7T7.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;roadmap-for-polar-in-q1-2020&quot;&gt;Roadmap for Polar in Q1 2020&lt;/h1&gt;
-
-&lt;p&gt;A new year is upon is and I wanted to publish a roadmap of where we’re going with Polar in Q1 2020 as well as some small
-changes in the project.&lt;/p&gt;
-
-&lt;h2 id=&quot;expanding-the-team&quot;&gt;Expanding the Team&lt;/h2&gt;
-
-&lt;p&gt;First, the most interesting news is that we’ve expanded the team and &lt;a href=&quot;https://getpolarized.io/2020/01/16/joining-the-team.html&quot;&gt;I wanted to introduce Jonathan Graeupner&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/sONUWwd.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p class=&quot;text-center&quot;&gt;
-&lt;b&gt;Jonathan and Kevin at AWS Loft San Francisco, Jan 2020&lt;/b&gt;
-&lt;/p&gt;
-
-&lt;p&gt;Jonathan received a PhD in Chemistry from Yale at 25 and has been fascinated by mnemonics as a way to accelerate his
-learning process.  Jonathan’s focus is going to be on growth and product and helping us to really understand our
-user base and expand the user base.&lt;/p&gt;
-
-&lt;p&gt;To an outsider, focused on the tech aspects of Polar, it might seem more beneficial to hire a React engineer or
-someone focused on UI and UX.  However, by far THE most important thing a product needs to do is resonate with users
-and of course grow (revenue, number of users, etc).&lt;/p&gt;
-
-&lt;p&gt;I’ve been laser focused on first, confirming that you guys would actually benefit from using a product like Polar, and
-then trying to improve usability and market fit.&lt;/p&gt;
-
-&lt;p&gt;This is one of the reasons I’ve been so aggressive about sending off surveys, asking for feedback directly inside the
-app, etc.&lt;/p&gt;
-
-&lt;p&gt;What’s the use of building something faster if you’re just building something no one wants!&lt;/p&gt;
-
-&lt;p&gt;Having Jonathan come in and focus on this basically allows me to focus more on building the product and scaling the
-team.&lt;/p&gt;
-
-&lt;h2 id=&quot;tablets-phones-and-handheld-devices&quot;&gt;Tablets, phones, and handheld devices&lt;/h2&gt;
-
-&lt;p&gt;We’re working on implementing support for both tablet and phones including improving our mobile usability.&lt;/p&gt;
-
-&lt;p&gt;Right now we’ve been able to implement about 95% of the annotation support on handheld devices and about 80% of the
-core reading functionality.&lt;/p&gt;
-
-&lt;p&gt;The goal is to have both iOS and Android apps that you can install directly from the app store.&lt;/p&gt;
-
-&lt;p&gt;Initially, these are going to be usable via webapps (just in your mobile browser) but we’re going to port them directly
-to the app stores directly.&lt;/p&gt;
-
-&lt;p&gt;Android will come first and then 30-90 days later we will have iOS.  Unfortunately, shipping an app in the Apple App
-Store is rather difficult and they require us to jump through a ton of hoops that aren’t really required in the
-Google Play Store.&lt;/p&gt;
-
-&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
-
-&lt;p&gt;This has been a huge focus of mine and I’m trying to allocate 20% of my time to just fixing basic usability bugs that
-pop up from time to time.&lt;/p&gt;
-
-&lt;p&gt;Stability is insanely important.  Polar users are really passionate about the project but it’s frustrating when you
-adopt it into your workflow and small things break from time to time.&lt;/p&gt;
-
-&lt;p&gt;To that end we’re revamping our testing and continuous integration system to test more scenarios including bringing
-on board full webapp testing, platform specific tests including Windows, Linux, and MacOS.&lt;/p&gt;
-
-&lt;h3 id=&quot;improved-offline-reading&quot;&gt;Improved Offline Reading&lt;/h3&gt;
-
-&lt;p&gt;This is another area that will benefit from our improved testing framework.  We want to test offline and Chrome supports
-simulating both slow networks and being completely offline.&lt;/p&gt;
-
-&lt;p&gt;We’re going to incorporate this into our testing framework to help prevent regressions where we accidentally break
-offline functionality.&lt;/p&gt;
-
-&lt;h2 id=&quot;releases&quot;&gt;Releases&lt;/h2&gt;
-
-&lt;p&gt;Now that the holidays are over we want to bump our our release cadence and push new versions every 1-2 weeks.&lt;/p&gt;
-
-&lt;p&gt;Right now we update the webapp 2-3x per week but try to only release 1x per week max four our Desktop app.  We don’t
-want constant updates to interrupt your workflow.&lt;/p&gt;
-
-&lt;h2 id=&quot;dark-mode&quot;&gt;Dark Mode&lt;/h2&gt;
-
-&lt;p&gt;This has been a major background task and we’re making progress on implementing dark mode.  The major blockers
-right now are mostly around PDFJS not properly supporting changing text colors but we have an important fix in
-progress.&lt;/p&gt;
-
-&lt;h2 id=&quot;citation-management&quot;&gt;Citation Management&lt;/h2&gt;
-
-&lt;p&gt;This is another big feature set we’re working on.  Improved citation management should mean Polar users can partially
-manage bibliography as well as extended metadata for the documents they import.&lt;/p&gt;
-
-&lt;p&gt;This includes features like DOI lookup, searching for PDFs by title, DOI, and storing the extended metadata within Polar
-directly.&lt;/p&gt;
-
-&lt;h2 id=&quot;key-bindings&quot;&gt;Key Bindings&lt;/h2&gt;
-
-&lt;p&gt;This is right up there with dark mode but supporting extended key bindings is important for desktop and Linux users.&lt;/p&gt;
-
-&lt;p&gt;We’re working on adopting a new react library to make key bindings much easier.&lt;/p&gt;
-
-&lt;h2 id=&quot;automatic-pagemarks&quot;&gt;Automatic Pagemarks&lt;/h2&gt;
-
-&lt;p&gt;New users to Polar seem to get confused about the fact that pagemarks (right now) are manual.&lt;/p&gt;
-
-&lt;p&gt;We’re going to add a new “auto pagemark” feature that creates pagemarks automatically while you scroll.&lt;/p&gt;
-
-&lt;h2 id=&quot;two-column-pagemarks&quot;&gt;Two Column Pagemarks&lt;/h2&gt;
-
-&lt;p&gt;Somewhat related to auto pagemarks but another main issue is supporting pagemarks while there are multiple columns.&lt;/p&gt;
-
-&lt;p&gt;This is going to be resolved as well with a new ‘two column’ mode to allow the user to tell us that the PDF they’re
-working with is two columns to allow smarter pagemark placement.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-anki-support&quot;&gt;Improved Anki support&lt;/h2&gt;
-
-&lt;p&gt;Big one!  We’re definitely going to be improving our Anki support.  Some important features that are queued up include:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Do a better job at preventing cards that are invalid in Anki and yield sync errors&lt;/li&gt;
-  &lt;li&gt;Add new models so that we can include Polar-specific metadata to Anki including context, book metadata, images
-of the area highlights, the original text highlight that it was attached to, etc.&lt;/li&gt;
-  &lt;li&gt;Fixing small bugs like excess tags within Anki.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
-
-&lt;p&gt;Keep the feedback coming!  If you guys have any issues with Polar feel free to reach out as we’re very good
-at rapid iteration and fixing issues found by our users!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry></feed>

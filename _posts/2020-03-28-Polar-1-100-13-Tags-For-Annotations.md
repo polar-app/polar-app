@@ -8,13 +8,13 @@ release: 1.100.13
 
 Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.  
 
-<p class="text-center">
-    <iframe width="560" height="315"
-            src="https://www.youtube.com/embed/6M6jNlairGc"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen></iframe>
-</p>
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item"  
+        src="https://www.youtube.com/embed/6M6jNlairGc"
+        frameBorder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen></iframe>
+</div>
 
 ## Tags for Annotations
 
