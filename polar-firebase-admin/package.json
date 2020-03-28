@@ -1,7 +1,7 @@
 {
-  "name": "polar-doc-preview-loader",
+  "name": "polar-firebase-admin",
   "version": "1.100.13",
-  "description": "Loads up doc preview URLs into be queued for processing",
+  "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "=4.7.0",
+    "polar-firebase": "^1.100.13",
     "firebase-admin": "^8.6.0",
     "polar-shared": "^1.100.13"
   }
