@@ -42,6 +42,4 @@ git-import-packages() {
 git-import-main
 git-import-packages
 
-
-# git remote add origin https://github.com/burtonator/polar-app-dist.git
-# git push -u origin master
+git push
