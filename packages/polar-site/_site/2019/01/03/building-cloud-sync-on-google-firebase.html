@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Building Cloud Document Sync with Google Firebase" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="About a month ago we shipped a new version of Polar which enables support for cloud sync backed by Firebase." />
+<meta property="og:description" content="About a month ago we shipped a new version of Polar which enables support for cloud sync backed by Firebase." />
+<link rel="canonical" href="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html" />
+<meta property="og:url" content="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html" />
+<meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-03T10:00:00-07:00" />
+<meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+<script type="application/ld+json">
+{"description":"About a month ago we shipped a new version of Polar which enables support for cloud sync backed by Firebase.","@type":"BlogPosting","headline":"Building Cloud Document Sync with Google Firebase","dateModified":"2019-01-03T10:00:00-07:00","datePublished":"2019-01-03T10:00:00-07:00","url":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+  <meta name="og:image" content="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg">
+  <meta name="twitter:image" content="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg">
+  <meta name="twitter:card"  content="summary_large_image">
+  
+
+  
+
+  
+  <meta name="twitter:description" content="About a month ago we shipped a new version of Polar which enables support for cloud sync backed by Firebase.">
+  
+
+  
+  <meta name="twitter:title" content="Building Cloud Document Sync with Google Firebase">
+  <title>Building Cloud Document Sync with Google Firebase</title>
+  
+
+  <meta name="twitter:site" content="@getpolarized">
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/froala-design-blocks/1.0.2/css/froala_blocks.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <link href="/assets/logo/favicon.png" rel="icon" type="image/png">
+
+  <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+
+  <link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="https://getpolarized.io/feed.xml" />
+
+  <style>
+    * {
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
+
+  <script src="/assets/js/site.js"></script>
+
+  <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+
+  
+<!-- polar webapp prefetches -->
+
+<link rel="prefetch" href="https://app.getpolarized.io/web/dist/chrome-bundle.js"/>
+
+<link rel="prefetch" href="https://app.getpolarized.io/web/dist/repository-bundle.js"/>
+
+<link rel="prefetch" href="https://app.getpolarized.io/node_modules/firebase/firebase.js" />
+<link rel="prefetch" href="https://app.getpolarized.io/node_modules/firebaseui/dist/firebaseui.js" />
+<link rel="prefetch" href="https://app.getpolarized.io/node_modules/firebaseui/dist/firebaseui.css" />
+<link rel="prefetch" href="https://app.getpolarized.io/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+
+<body><header data-block-type="headers" data-id="2" class="fixed-header">
+  <div class="container-fluid max-width-1280">
+    <nav class="navbar navbar-expand-md p-0">
+
+      <a class="navbar-brand" href="/">
+        <img src="/assets/logo/icon.svg" height="60" alt="POLAR">
+      </a>
+
+      <div class="logo" style="">
+        <a href="/">
+          POLAR
+        </a>
+      </div>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav5" aria-controls="navbarNav5" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-links navbar-collapse" id="navbarNav5">
+
+        <ul class="navbar-nav mr-auto">
+          <!--<li class="nav-item active">-->
+          <!--<a class="nav-link" href="https://www.froala.com">Home <span class="sr-only">(current)</span></a>-->
+          <!--</li>-->
+
+          <li class="nav-item">
+            <a class="nav-link" href="/#features">features</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/#pricing">pricing</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/docs/">docs</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/blog">blog</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/download.html">download</a>
+          </li>
+
+          <!--<li class="nav-item">-->
+          <!--<a class="nav-link" href="https://www.froala.com">Pricing</a>-->
+          <!--</li>-->
+          <!--<li class="nav-item">-->
+          <!--<a class="nav-link" href="https://www.froala.com">Team</a>-->
+          <!--</li>-->
+        </ul>
+        </ul>
+
+        <!--<ul class="navbar-nav justify-content-end ml-auto">-->
+          <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+          <!--&lt;!&ndash;<a class="nav-link" href="https://www.froala.com">Docs</a>&ndash;&gt;-->
+          <!--&lt;!&ndash;</li>&ndash;&gt;-->
+          <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+          <!--&lt;!&ndash;<a class="nav-link" href="https://www.froala.com">Contact</a>&ndash;&gt;-->
+          <!--&lt;!&ndash;</li>&ndash;&gt;-->
+
+          <!--<li class="nav-item">-->
+
+            <!--<a class="nav-link" href="https://www.reddit.com/r/PolarBookshelf">-->
+              <!--<i class="fab fa-reddit"></i>-->
+            <!--</a>-->
+
+          <!--</li>-->
+
+          <!--<li class="nav-item">-->
+
+            <!--<a class="nav-link" href="https://github.com/burtonator/polar-bookshelf">-->
+              <!--<i class="fab fa-github"></i>-->
+            <!--</a>-->
+
+          <!--</li>-->
+
+          <!--<li class="nav-item">-->
+
+            <!--<a class="nav-link" href="https://discord.gg/GT8MhA6">-->
+              <!--<i class="fab fa-discord"></i>-->
+            <!--</a>-->
+
+          <!--</li>-->
+
+          <!--<li class="nav-item">-->
+
+            <!--<a class="nav-link" href="https://twitter.com/getpolarized">-->
+              <!--<i class="fab fa-twitter"></i>-->
+            <!--</a>-->
+
+          <!--</li>-->
+
+        <!--</ul>-->
+
+        <a class="btn btn-light font-weight-bold ml-md-3" href="https://app.getpolarized.io">Sign In</a>
+
+        <a class="btn btn-success btn-lg font-weight-bold ml-2"
+           onclick="sendEvent('main-cta', 'open-polar-in-browser')"
+           href="https://app.getpolarized.io">Create an Account</a>
+
+      </div>
+    </nav>
+  </div>
+</header>
+<main id="post">
+
+      <section>
+
+        <div class="container">
+          <div class="row">
+            <div class="col col-md-8">
+
+              
+
+              <p><img class="img-fluid" src="https://getpolarized.io/assets/images/firebase-sync-scaled.jpg" /></p>
+
+<h1 id="building-cloud-document-sync-with-google-firebase">Building Cloud Document Sync with Google Firebase</h1>
+
+<p>About a month ago we shipped <a href="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html">a new
+version of Polar</a> which enables support for cloud sync backed by Firebase.</p>
+
+<p>Polar is a personal knowledge repository for your books, PDFs, and web content
+which supports annotation including highlights and comments.  Having this data
+available across all your computers is insanely helpful.</p>
+
+<p>Our users wanted the ability to sync their reading and annotations across 
+computers with the option for mobile in the future.</p>
+
+<p>We wanted something future proof with the ability to sync and update in
+realtime.</p>
+
+<p>We evaluated a number of options including GraphQL, DynamoDB, Elasticsearch, 
+and AppSync but kept coming back to Firebase.</p>
+
+<p>Firebase just seems to hit the sweet spot in terms of rapid implementation
+and feature set.</p>
+
+<p>For our requirements we also wanted:</p>
+
+<ul>
+  <li>Support for BLOB storage</li>
+  <li>Flexible permission system</li>
+  <li>Easy (and rapid) implementation</li>
+  <li>SDKs that were Open Source which would enable distribution with Polar (which
+is also Open Source).</li>
+  <li>Simple data model using JSON (Polar’s data model is JSON based)</li>
+  <li>Easy authentication and authorization system</li>
+  <li>Ability to share objects with other users (not just the primary account).</li>
+  <li>Support for mobile (iOS and Android)</li>
+</ul>
+
+<p>After evaluating the above platforms we decided to do a quick proof of concept
+on Firebase to see how difficult it would be to work with.</p>
+
+<p>Firebase seemed like an almost perfect fit for our model. AppSync and GraphQL 
+seem great if you’re planning on using DynamoDB or have a complex (and legacy) 
+backend with connectivity to a lot of different datasources.</p>
+
+<p><img class="img-fluid" src="https://getpolarized.io/assets/images/mvp-scaled.jpg" /></p>
+
+<p>Firebase is almost brilliantly designed for knocking out a MVP (minimum viable
+product).  They seem to focus on the key features needed to get an app off the
+ground quickly but also allow you to iterate over time.</p>
+
+<p>I imagine this is part of the distribution strategy.  Make it easy and quick to
+prototype your app their platform, pay by usage, and if your app is successful
+you can worry about scaling it later.</p>
+
+<p>Once you’re on Firebase though your scalability is actually fairly decent and
+since you’re paying by user you’re never really going to get financially 
+destroyed as long as your revenue scales with your user base (which is good for
+both you and Google).</p>
+
+<p>That said, Google Cloud (and Firebase) is definitely missing a lot of features
+when compared to AWS.</p>
+
+<p>It doesn’t really have full-text search.  You can sort of bolt it on but it would
+be nice if this was a native feature in Firebase.</p>
+
+<h2 id="authentication">Authentication</h2>
+
+<p><img class="img-fluid" src="/assets/images/firebase-auth-scaled.jpg" /></p>
+
+<p>Clearly the first hurdle would be authentication.  We actually used
+this as smoke test to see which platforms were easiest to implement.</p>
+
+<p>If authentication was insanely hard to implement it’s probable that the rest of
+the platform would be just as difficult.  It’s the starting point anyway so why
+not try to see if you can get a simple app up and running and writing data.</p>
+
+<p>With Firebase we were up and running in a few hours (once I figured out some
+insanity with Electron).</p>
+
+<p>If you’re building a traditional webapp you can probably get up and running
+in Firebase in about 30-60 minutes assuming you have a basic understanding
+of modern web development (Node, Webpack, Typescript, React, etc).</p>
+
+<p>Getting OAuth up and running so quickly was motivating.  Technically I had
+support for just Google as well as username + password but I could add other
+platforms like Github, Twitter, and LinkedIn if I wanted.</p>
+
+<p>I tried to setup Auth0 in the past and it took me about a week.  Not to trash
+Auth0 of course.  I imagine their setup is much faster now as I worked on their
+platform a long time ago.  It’s just that it was very exciting to make quick and
+efficient progress with Firebase.</p>
+
+<h2 id="datastores">Datastores</h2>
+
+<p>Polar is modeled on the concept of a Datastore.  The Datastore interface has
+a simple contract which supports binary files attached to a high level document
+construct represented as metadata in JSON named DocMeta.</p>
+
+<p>A DocMeta write is always atomic and the ID is constructed from either the 
+hash of the URL being stored (in the case of HTML) or the content hash of a 
+PDF as SHA256.</p>
+
+<p>We then support binary attachments to the DocMeta.  The first binary attachment
+is actually the document itself.  This is written to a ‘stash’ where we store
+the raw binary documents.</p>
+
+<p>Additional binary attachments can be screenshots and thumbnails of the documents.</p>
+
+<p>The screenshots are usually annotations like area highlights but we also have
+plans to support thumbnails.</p>
+
+<p>The binary file support initially supports images and raw binaries (PDFs and 
+HTML archives) but we also support video and audio.  We’d like to add support
+for this in the future so that people could annotate documents by recording 
+video/audio from their devices directly.</p>
+
+<p>This binary/meta model maps perfectly to Firebase.</p>
+
+<p>We write the DocMeta directly into Cloud Firestore which is their JSON datastore
+similar to Cassandra or DynamoDB (but with some unique constraints).</p>
+
+<p>It maps pretty well to a JSON datastore.  It’s not very feature rich compared 
+to other systems but not bad either.</p>
+
+<p>For example, there’s no full-text search - which is definitely a pain if you’re 
+used to working with Elasticsearch.</p>
+
+<p>The binary files are written to Google Cloud Storage (GCS). They basically setup a
+really nice frontend to GCS with Firebase.</p>
+
+<p>The pricing on Cloud Storage and Firebase is really attractive when used properly.</p>
+
+<p>Our BLOBS are immutable and designed for long term storage.  They’re often large.</p>
+
+<p>At LEAST 300k for HTML cached content (Polar support offline storage of HTML) and
+the average PDF is about 5MB.</p>
+
+<p>The DocMeta is super small and updated frequently.  The DocMeta is usually less
+than 10k.</p>
+
+<h2 id="firebasedatastore">FirebaseDatastore</h2>
+
+<p>We started with a FirebaseDatastore which implemented the same semantics
+as our current DiskDatastore.</p>
+
+<p>That part was actually pretty easy.  The FirebaseDatastore just wrote DocMeta 
+as JSON and then the BLOBS to CloudStorage.</p>
+
+<p>That took just a few days of work to have fully polished.</p>
+
+<p>The great thing about this is that it works natively in the cloud.  Nothing is
+on disk.  The data just is loaded and cached temporarily.</p>
+
+<p>However, Polar needs to work offline and many of our users want to keep
+their data on disk.  We needed a better solution.</p>
+
+<h2 id="cloudawaredatastore">CloudAwareDatastore</h2>
+
+<p>Polar needs to support something that’s offline-first and we already had on
+disk support so we needed a Datastore to bridge the two.  Our DiskDatastore
+is what users used by default and we didn’t want to force all our users to use
+cloud.</p>
+
+<p>We implemented CloudAwareDatastore which used events synchronized between the 
+two systems (DiskDatastore and FirebaseDatastore) to build a coherent platform
+between the two.</p>
+
+<p>Firebase has a really amazing event system which allows you to monitor the 
+system as it’s reading and writing to the backend.</p>
+
+<p>We were able to then use these events to merge a stream which enables 
+realtime sync across all your devices.</p>
+
+<p>It’s really fascinating to watch annotations and documents update on my Mac
+laptop while I’m working on my Ubuntu desktop.</p>
+
+<p>This took the most time because of the sync semantics required and things 
+had to be done properly. I think we had a full implementation of cloud sync 
+in 2-3 weeks.</p>
+
+<h1 id="offline-support">Offline Support</h1>
+
+<p>One of the nice things about Firebase is that it has native support for offline.</p>
+
+<p>This means you can configure it to load previously cached data from local
+browser storage and it will complete a query locally rather than from the
+server.</p>
+
+<p>This means that all the normal sync functionality will work even when offline - 
+it’s just that it’s synchronizing with an offline cache.</p>
+
+<p>This means that the code for offline and online support can function the same in
+both situations.</p>
+
+<p>This has the nice benefit that once the machine comes back online synchronization
+can continue as normal and the local machine would receive updates immediately.</p>
+
+<h1 id="realtime-snapshots">Realtime Snapshots</h1>
+
+<p>In Firebase the queries are implemented as ‘snapshots’.  If you have caching
+enabled you can fetch the first snapshot (which could be resolved from disk) and
+then subscribe to additional snapshots which could arrive in the future when 
+data is updated remotely.</p>
+
+<p>The snapshots are delivered in realtime.</p>
+
+<p>In my experience the data took about 1 second to arrive.  I think this is usable
+for most practical purposes but it would be nice if this was faster.</p>
+
+<p>I’m not sure if the latencies were due to my code being slower to handle the events
+or if the data was just slightly lagged within Firebase.</p>
+
+<p>That said, 1 seconds is probably usable in almost all web usage and anything 
+but hard realtime usage.</p>
+
+<h1 id="authorization">Authorization</h1>
+
+<p>Authorization within Firebase is another area that really shines.</p>
+
+<p>Here’s an example Firebase authorization rule to only allow access to documents 
+for the current user:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+// Allow <span class="nb">read</span>/write access on all documents to any user signed <span class="k">in </span>to the application
+service cloud.firestore <span class="o">{</span>
+  match /databases/<span class="o">{</span>database<span class="o">}</span>/documents <span class="o">{</span>
+    match /<span class="o">{</span><span class="nv">document</span><span class="o">=</span><span class="k">**</span><span class="o">}</span> <span class="o">{</span>
+      allow <span class="nb">read</span>, write: <span class="k">if </span>request.auth <span class="o">!=</span> null <span class="o">&amp;&amp;</span> <span class="o">(</span>resource <span class="o">==</span> null <span class="o">||</span> request.auth.uid <span class="o">==</span> resource.data.uid<span class="o">)</span><span class="p">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>The above authorization code will only allow read and write if the user is 
+logged in and the user is the same user who created the document.</p>
+
+<p>It also supports NEW documents (resource == null) by allowing creation.</p>
+
+<p>For a future version of Polar we’re going to support document sharing and 
+collaboration so we can add fields to the underlying data to permit modifying
+the records but only if the users who wrote the document explicitly granted
+sharing permissions.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>If you’re trying to bang out an MVP and your use case fits Firebase I think you 
+would be able to implement something quickly and get it in front of your users
+to see if it resonates with them.</p>
+
+<p>If not at least you would be able to cut your losses.  You might find that 
+there’s a key feature you nee but hopefully you address this in your initial 
+requirements analysis.</p>
+
+<p>Additionally, if you need quality mobile support with high quality SDKs I think
+Firebase would work out well.</p>
+
+<p>There are a ton of secondary APIs already setup for mobile which can be used
+with your app out of the box including features like cloud messaging and 
+analytics.</p>
+
+<div class="text-center mb-1">
+    <div class="m-auto mb" style="max-width: 700px;">
+
+        <iframe src="/mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 150px;" scrolling="no"></iframe>
+
+    </div>
+</div>
+
+</div>
+            <div class="col col-md-4">
+<div class="mt-0 p-1 pl-2 pr-2 rounded border border-secondary"
+     style="background-color: var(--grey050)">
+
+    <div class="text-center">
+        <h2 class="intro" style="font-size: 25px; font-weight: bold;">Read. Learn. Never Forget.</h2>
+    </div>
+
+    <h3 class="mt-3 text-muted" style="font-size: 22px;">
+
+        A <b>powerful</b> document manager for web pages, textbooks, PDFs, and anything you want to read.
+
+        <br><br>
+        Supports <b>tagging</b>, <b>annotation</b>, <b
+            style="background-color: rgba(255, 255, 0, 0.3);">highlighting</b>,
+        keeping track of your reading progress and makes it <i>effortless</i> to
+        remember what you've learned.
+
+    </h3>
+
+    <div class="mt-3 mb-3">
+        <a href="/"><picture>
+    <source srcset="/assets/screenshots/2019-11-document-view.webp" type="image/webp">
+    <source srcset="/assets/screenshots/2019-11-document-view.png" type="image/png">
+
+    <!--TODO: automatically include width and height here-->
+
+    <img alt="Main Polar PDF document showing an deep learning book" src="/assets/screenshots/2019-11-document-view.png" class="img-fluid img-shadow" style="max-width: 100%; ">
+
+</picture>
+</a>
+    </div>
+
+    <div class="text-center mt-3 mb-1">
+        <a href="/">
+            <a class="btn btn-lg btn-success"
+               onclick="sendEvent('post-cta-sidebar', 'learn-more')"
+               href="/">Learn More</a>
+        </a>
+
+    </div>
+
+</div><div class="related-posts mt-4">
+
+    <div class="text-center mt-2 mb-3 text-muted">
+        <h2>Related Posts</h2>
+    </div>
+
+    <!--| where_exp:"post", "post.url != page.url"-->
+
+
+    <div class="post-list">
+
+        <!--https://stackoverflow.com/questions/12655109/limit-the-number-of-post-though-a-category-with-jekyll--><div class="">
+            <div class="card m-1" style="">
+
+                <div class="card-body">
+
+                    <a href="/2019/11/25/Dark-Mode-Should-Be-The-Default-With-95-Percent-Preferring-it-Over-Light-Mode.html">
+                        <h5 class="card-title">Dark Mode by Default - 95% Prefer Dark over Light Mode</h5>
+                    </a>
+
+                    <p class="card-text">
+                        # Dark Mode by Default - 95% Prefer Dark over Light Mode One thing that's kept coming up when talking to Polar users is that we should implement dark mode. It's quickly become one of our top requested features. I...
+                    </p><div class="p-1">
+                        <a href="/2019/11/25/Dark-Mode-Should-Be-The-Default-With-95-Percent-Preferring-it-Over-Light-Mode.html">
+                            <img class="card-img-top" src="https://i.imgur.com/KSK0R75.png" alt="Dark Mode by Default - 95% Prefer Dark over Light Mode">
+                        </a>
+                    </div></div>
+
+            </div>
+        </div><div class="">
+            <div class="card m-1" style="">
+
+                <div class="card-body">
+
+                    <a href="/2019/12/16/1-80-Enhanced-Mobile-Windows-Spaces-within-Tags.html">
+                        <h5 class="card-title">Polar 1.80 - Enhanced Mobile, Spaces within Tags and Special Holiday Offer</h5>
+                    </a>
+
+                    <p class="card-text">
+                        We have a new version of Polar out with some really interesting features. Further, since holiday season is upon us, we are offering a special 1-year deal for Polar Premium for $19.95. That’s a 50% discount on the regular price....
+                    </p></div>
+
+            </div>
+        </div><div class="">
+            <div class="card m-1" style="">
+
+                <div class="card-body">
+
+                    <a href="/2019/12/11/1-70-Folder-Exporting-Electron-7.html">
+                        <h5 class="card-title">Polar 1.70 - New Folders Sidebar, Improved Saving of Annotations, and Electron 7.0.</h5>
+                    </a>
+
+                    <p class="card-text">
+                        Polar 1.70 is out! Lots of big changes in this release! I know I promised you guys that we would create a video for each release but I can't create one for 1.70 just now as I'm trying to rush...
+                    </p></div>
+
+            </div>
+        </div></div></div>
+</div>
+          </div>
+        </div>
+
+      </section>
+
+    </main><footer class="mt-4 fdb-block footer-small bg-dark" data-block-type="footers" data-id="9">
+    <div class="container">
+
+        <div class="row align-items-center">
+            <div class="col-12">
+                <ul class="nav text-center">
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+
+                    <li class="nav-item m-auto">
+                        <a class="nav-link" href="/download.html">Download</a>
+                    </li>
+
+                    <li class="nav-item m-auto">
+                        <a class="nav-link" href="/incremental-reading.html">Incremental Reading</a>
+                    </li>
+
+                    <li class="nav-item m-auto">
+                        <a class="nav-link" href="/docs/web-page-capture-and-archival-of-html-content.html">Web Page Capture and Archival</a>
+                    </li>
+
+                    <li class="nav-item m-auto">
+                        <a class="nav-link" href="https://app.getpolarized.io/groups">Polar Groups</a>
+                    </li>
+
+                    <li class="nav-item m-auto">
+                        <a class="nav-link" href="/doc_previews.html">Doc Previews</a>
+                    </li>
+
+                    <!--<li class="nav-item">-->
+                    <!--<a class="nav-link" href="https://www.froala.com">Terms</a>-->
+                    <!--</li>-->
+                    <!--<li class="nav-item">-->
+                    <!--<a class="nav-link" href="https://www.froala.com">About</a>-->
+                    <!--</li>-->
+
+
+                </ul>
+            </div>
+
+            <!--<div class="col-12 col-md-4 mt-4 mt-md-0 text-center text-md-right">-->
+                <!--© 2018 Kevin Burton-->
+            <!--</div>-->
+
+        </div>
+    </div>
+<!-- scripts that need to run on every page -->
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script src="https://www.googletagmanager.com/gtag/js?id=UA-122721184-3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-122721184-3');
+</script>
+
+<!-- Amplitude -->
+<script type="text/javascript">
+    (function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
+    ;r.type="text/javascript"
+    ;r.integrity="sha384-3bSR/uIgD42pCWBeq1//B3mI/hPuWdk0L1EUnQIWfGyMOjs0VEoFLhHMqObtv2BA"
+    ;r.crossOrigin="anonymous";r.async=true
+    ;r.src="https://cdn.amplitude.com/libs/amplitude-5.10.0-min.gz.js"
+    ;r.onload=function(){if(!e.amplitude.runQueuedFunctions){
+        console.log("[Amplitude] Error: could not load SDK")}}
+    ;var i=t.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)
+    ;function s(e,t){e.prototype[t]=function(){
+        this._q.push([t].concat(Array.prototype.slice.call(arguments,0)));return this}}
+        var o=function(){this._q=[];return this}
+        ;var a=["add","append","clearAll","prepend","set","setOnce","unset"]
+        ;for(var u=0;u<a.length;u++){s(o,a[u])}n.Identify=o;var c=function(){this._q=[]
+            ;return this}
+        ;var l=["setProductId","setQuantity","setPrice","setRevenueType","setEventProperties"]
+        ;for(var p=0;p<l.length;p++){s(c,l[p])}n.Revenue=c
+        ;var d=["init","logEvent","logRevenue","setUserId","setUserProperties","setOptOut","setVersionName","setDomain","setDeviceId", "enableTracking", "setGlobalUserProperties","identify","clearUserProperties","setGroup","logRevenueV2","regenerateDeviceId","groupIdentify","onInit","logEventWithTimestamp","logEventWithGroups","setSessionId","resetSessionId"]
+        ;function v(e){function t(t){e[t]=function(){
+            e._q.push([t].concat(Array.prototype.slice.call(arguments,0)))}}
+            for(var n=0;n<d.length;n++){t(d[n])}}v(n);n.getInstance=function(e){
+            e=(!e||e.length===0?"$default_instance":e).toLowerCase()
+            ;if(!n._iq.hasOwnProperty(e)){n._iq[e]={_q:[]};v(n._iq[e])}return n._iq[e]}
+        ;e.amplitude=n})(window,document);
+
+    amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0");
+
+    const onNavChange = () => {
+
+        try {
+
+            const url = new URL(document.location.href);
+
+            const path = url.pathname + url.hash || "";
+            const hostname = url.hostname;
+            const title = document.title;
+
+            const eventName = 'page:' + path;
+
+            amplitude.getInstance().logEvent(eventName, {path, hostname, title});
+
+            console.info("Sent eventName to amplitude: " + eventName);
+
+        } catch (e) {
+            console.error("Unable to handle hash change", e);
+        }
+
+    };
+
+    onNavChange();
+
+    window.addEventListener("hashchange", () => onNavChange(), false);
+
+</script>
+</footer>
+</body>
+
+</html>
