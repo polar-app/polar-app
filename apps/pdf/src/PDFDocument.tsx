@@ -143,8 +143,22 @@ export class PDFDocument extends React.Component<IProps, IState> {
         (docViewer.linkService as pdfjs.ILinkService).setDocument(doc, null);
 
         setTimeout(() => {
+
+
+            // FIXME the PDF version of this viewer doesn't seem to handle CPU
+            // properly and continues to composite this on the GPU using 100%
+            // of resources while scrolling.  This is probably the issue we
+            // had with react-pdf
+
+            //
+            // FIXME: it seems that chrome with pdfjs tends to run
+            // "composite layers" too often.  Not sure why.
+
+
             console.log("FIXME: setting page to page-width");
-            docViewer.viewer.currentScaleValue = 'page-width';
+            // docViewer.viewer.currentScaleValue = 'page-width';
+            docViewer.viewer.currentScaleValue = '2';
+
         }, 3000 );
 
         this.setState({
@@ -158,9 +172,11 @@ export class PDFDocument extends React.Component<IProps, IState> {
         // on top of every page I can't easily add context menus and so forth
         // I think.
 
+
     }
 
     public render() {
+        // console.log("FIXME: render");
         // TODO render single pages...
         return null;
     }
