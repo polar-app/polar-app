@@ -4,6 +4,8 @@ date: 2020-03-30T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/9iLF7UR.jpg
 description: Tips on how to study productively from home while staying sane and happy. We're used to be in a classroom but with the current coronavirus pandemic we are forced to study from home. Read here for tips how to ace it.
+hidden: true
+visible: false
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/9iLF7UR.jpg">
