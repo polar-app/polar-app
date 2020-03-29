@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.1",
     "@types/mocha": "^5.2.7",
+    "@types/node": "=12.12.32",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
     "polar-test": "^1.100.13",
@@ -22,7 +23,7 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@google-cloud/storage": "=4.7.0",
+    "@google-cloud/tasks": "=1.9.0",
     "firebase-admin": "=8.10.0",
     "polar-shared": "^1.100.13"
   }
