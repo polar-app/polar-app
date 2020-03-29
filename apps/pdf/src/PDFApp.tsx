@@ -2,6 +2,28 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {PDFDocument} from "./PDFDocument";
 
+let iter: number = 0;
+
+const ViewerContainer = () => {
+
+    ++iter;
+
+    return (
+
+        <main id="viewerContainer" itemProp="mainContentOfPage" data-iter={iter}>
+
+            <div>
+                <div id="viewer" className="pdfViewer">
+                    <div/>
+
+                </div>
+            </div>
+
+        </main>
+    );
+
+};
+
 export class PDFApp {
 
     public start() {
@@ -10,16 +32,7 @@ export class PDFApp {
 
         ReactDOM.render((
             <div>
-                <main id="viewerContainer" itemProp="mainContentOfPage">
-
-                    <div>
-                        <div id="viewer" className="pdfViewer">
-                            <div/>
-
-                        </div>
-                    </div>
-
-                </main>
+                <ViewerContainer/>
                 <PDFDocument target="viewerContainer" url="./test.pdf"/>
             </div>
             ), rootElement);
