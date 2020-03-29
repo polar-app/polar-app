@@ -308,11 +308,17 @@ async function doLoad() {
 
     console.log("docMetadata: ", docMetadata);
 
-    function doResize() {
-        // console.log('resizing');
-        viewer.currentScaleValue = 'page-width';
+    const doResize = () => {
+
+        const computeZoomLevel = () => {
+            const parsedURL = new URL(document.location.href);
+            const zoom = parsedURL.searchParams.get('zoom');
+            return zoom || 'page-width';
+        };
+
+        viewer.currentScaleValue = computeZoomLevel();
         // viewer.currentScaleValue = '2';
-    }
+    };
 
     console.log("currentScale: ", viewer.currentScale);
     console.log("currentScaleValue: ", viewer.currentScaleValue);
