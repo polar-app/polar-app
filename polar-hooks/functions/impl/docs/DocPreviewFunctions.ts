@@ -19,6 +19,11 @@ import {ARXIVSearchEngine} from "polar-search/src/search/arxiv/ARXIVSearchEngine
 import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
 import {DocPreviewsPrerenderer} from "../../cmdline/doc_previews/DocPreviewsPrerenderer";
 
+// FIXME: this should not just return HTTP 500 (unhandled exception) if something
+// happens but should instead return HTTP 200 or send a redirect to a page
+// explaining that an error occurred.  I don't want to send JSON or HTML either
+// though..
+
 export interface CoreDocMetadata {
     readonly doi?: DOIStr;
     readonly description?: string;

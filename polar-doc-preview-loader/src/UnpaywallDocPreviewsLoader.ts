@@ -41,7 +41,20 @@ export class UnpaywallDocPreviewsLoader {
 
         const toDocPreview = (json: JSONStr): DocPreviewUncached | undefined => {
 
-            const doc: Unpaywall.Doc = JSON.parse(json);
+            const doParse = () => {
+
+                try {
+                    return JSON.parse(json);
+                } catch (e) {
+                    return undefined;
+                }
+            }
+
+            const doc: Unpaywall.Doc = doParse();
+
+            if (! doc) {
+                return undefined;
+            }
 
             if (doc.oa_locations.length === 0) {
                 // console.log("No open access locations (skipping): ", doc);
