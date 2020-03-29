@@ -15,7 +15,7 @@ import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHash
 import {SendToQueue} from "./SendToQueue";
 import {isPresent} from "polar-shared/src/Preconditions";
 
-const LIMIT = 10000;
+const LIMIT = 20000;
 
 function getPath() {
 
@@ -44,7 +44,7 @@ export class UnpaywallDocPreviewsLoader {
             const doc: Unpaywall.Doc = JSON.parse(json);
 
             if (doc.oa_locations.length === 0) {
-                console.log("No open access locations (skipping): ", doc);
+                // console.log("No open access locations (skipping): ", doc);
                 return undefined;
             }
 
@@ -63,7 +63,7 @@ export class UnpaywallDocPreviewsLoader {
             const url = computeURLToPDF();
 
             if (! url) {
-                console.log("No URL to PDF: ", doc);
+                // console.log("No URL to PDF: ", doc);
                 return undefined;
             }
 
@@ -99,6 +99,10 @@ export class UnpaywallDocPreviewsLoader {
             .head(LIMIT)
             .collect();
 
+        console.log("Working with N docPreviews: " + docPreviews.length);
+
+        let processed: number = 0;
+
         for (const docPreview of docPreviews) {
 
             if (await DocPreviews.get(docPreview.urlHash)) {
@@ -113,9 +117,12 @@ export class UnpaywallDocPreviewsLoader {
 
             // console.log("Import URL: " + );
 
+            ++processed;
+
         }
 
-        console.log("Wrote N docPreviews: " + docPreviews.length);
+        console.log("Processed: " + processed);
+
 
     }
 
