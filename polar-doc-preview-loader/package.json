@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "=4.7.0",
-    "firebase-admin": "^8.6.0",
+    "firebase-admin": "=8.10.0",
     "polar-shared": "^1.100.13"
   }
 }

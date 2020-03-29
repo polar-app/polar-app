@@ -14,7 +14,6 @@
     "dist": "echo noop"
   },
   "dependencies": {
-    "@google-cloud/tasks": "^1.2.0",
     "@types/escape-html": "0.0.20",
     "@types/uuid": "^3.4.4",
     "escape-html": "^1.0.3",
