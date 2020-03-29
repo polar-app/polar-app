@@ -15,3 +15,5 @@ gcloud projects add-iam-policy-binding polar-32b0f --member "serviceAccount:queu
 gcloud iam service-accounts keys create credentials.json --iam-account queue-admin@polar-32b0f.iam.gserviceaccount.com
 
 export GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
+
+gcloud tasks queues update doc-preview --max-attempts=1

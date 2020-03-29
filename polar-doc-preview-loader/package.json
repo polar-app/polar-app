@@ -25,6 +25,8 @@
   "dependencies": {
     "@google-cloud/tasks": "=1.9.0",
     "firebase-admin": "=8.10.0",
-    "polar-shared": "^1.100.13"
+    "polar-shared": "^1.100.13",
+    "polar-firebase": "^1.100.13",
+    "polar-firebase-admin": "^1.100.13"
   }
 }
