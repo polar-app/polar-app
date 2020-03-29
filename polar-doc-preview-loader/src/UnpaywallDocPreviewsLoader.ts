@@ -92,19 +92,12 @@ export class UnpaywallDocPreviewsLoader {
 
         const docPreviews = ArrayStreams.create(content.split("\n"))
             .filter(line => line.trim() !== '')
-            .debug(values => console.log("FIXME1: " + values.length))
             .head(LIMIT * 10)
-            .debug(values => console.log("FIXME2: " + values.length))
             .map(toDocPreview)
-            .debug(values => console.log("FIXME3: " + values.length))
             .filter(current => current !== undefined)
-            .debug(values => console.log("FIXME4: " + values.length))
             .map(current => current!)
             .head(LIMIT)
-            .debug(values => console.log("FIXME5: " + values.length))
             .collect();
-
-        console.log("")
 
         for (const docPreview of docPreviews) {
 
