@@ -143,8 +143,9 @@ export class PDFDocument extends React.Component<IProps, IState> {
         (docViewer.linkService as pdfjs.ILinkService).setDocument(doc, null);
 
         setTimeout(() => {
+            console.log("FIXME: setting page to page-width");
             docViewer.viewer.currentScaleValue = 'page-width';
-        }, 1500 );
+        }, 3000 );
 
         this.setState({
             loadedDoc: {
