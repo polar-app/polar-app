@@ -3,13 +3,20 @@ import {
     EventBus,
     PDFFindController,
     PDFLinkService,
-    PDFViewer
+    PDFViewer,
+    PDFRenderingQueue,
 } from 'pdfjs-dist/web/pdf_viewer';
+
+import * as foo from 'pdfjs-dist/web/pdf_viewer';
 import PDFJS, {DocumentInitParameters, PDFDocumentProxy} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { Logger } from 'polar-shared/src/logger/Logger';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const log = Logger.create();
+
+console.log("FIXME PDFRenderingQueue: ", PDFRenderingQueue);
+console.log("FIXME foo: ", foo);
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
@@ -42,13 +49,16 @@ interface DocViewer {
     readonly findController: PDFFindController;
     readonly viewer: PDFViewer;
     readonly linkService: PDFLinkService;
+    readonly renderingQueue: PDFRenderingQueue;
 }
 
 function createDocViewer(): DocViewer {
 
-    const eventBus = new EventBus();
+    const eventBus = new EventBus({dispatchToDOM: false});
     // TODO  this isn't actually exported..
-    // const pdfRenderingQueue = new PDFRenderingQueue();
+    const renderingQueue = new PDFRenderingQueue();
+
+    console.log("FIXME: renderingQueue: ", renderingQueue);
 
     const linkService = new PDFLinkService({
         eventBus,
@@ -59,18 +69,40 @@ function createDocViewer(): DocViewer {
         eventBus
     });
 
-    const container = document.getElementById('viewer')! as HTMLDivElement;
+    const containerElement = document.getElementById('viewerContainer')! as HTMLDivElement;
 
-    if (container === null) {
-        throw new Error("No container");
+    if (containerElement === null) {
+        throw new Error("No containerElement");
     }
 
+    const viewerElement = document.getElementById('viewer')! as HTMLDivElement;
+
+    if (viewerElement === null) {
+        throw new Error("No viewerElement");
+    }
+
+    // FIXME: use the proper render mode...
+
     const viewerOpts = {
-        container,
-        textLayerMode: 2,
+        container: containerElement,
+        viewer: viewerElement,
+        textLayerMode: 1,
+        // FIXME: textLayerMode: 2, // this is the modern text layer mode
         linkService, // FIXME: setting the linkServices causes errors.
         findController,
         eventBus,
+        useOnlyCssZoom: false,
+        enableWebGL: false,
+        renderInteractiveForms: false,
+        pdfBugEnabled: false,
+        disableRange: false,
+        disableStream: false,
+        disableAutoFetch: false,
+        disableFontFace: false,
+        // renderingQueue, // this isn't actually needed when its in a scroll container
+        maxCanvasPixels: 16777216,
+        enablePrintAutoRotate: false,
+        // renderer: RenderType
         // removePageBorders: true,
         // defaultViewport: viewport
     };
@@ -78,8 +110,14 @@ function createDocViewer(): DocViewer {
     const viewer = new PDFViewer(viewerOpts);
 
     linkService.setViewer(viewer);
+    renderingQueue.setViewer(viewer);
 
-    return {eventBus, findController, viewer, linkService};
+    (renderingQueue as any).onIdle = () => {
+        viewer.cleanup();
+
+    };
+
+    return {eventBus, findController, viewer, linkService, renderingQueue};
 
 }
 
@@ -125,7 +163,8 @@ export class PDFDocument extends React.Component<IProps, IState> {
         const init: DocumentInitParameters = {
             url,
             cMapPacked: true,
-            cMapUrl: '../../node_modules/pdfjs-dist/cmaps/'
+            cMapUrl: '../../node_modules/pdfjs-dist/cmaps/',
+            disableAutoFetch: true,
         };
 
         const doc = await PDFJS.getDocument(init).promise;
@@ -142,8 +181,9 @@ export class PDFDocument extends React.Component<IProps, IState> {
         docViewer.viewer.setDocument(doc);
         (docViewer.linkService as pdfjs.ILinkService).setDocument(doc, null);
 
-        setTimeout(() => {
+        // docViewer.viewer.update();
 
+        setTimeout(() => {
 
             // FIXME the PDF version of this viewer doesn't seem to handle CPU
             // properly and continues to composite this on the GPU using 100%
@@ -159,7 +199,7 @@ export class PDFDocument extends React.Component<IProps, IState> {
             // docViewer.viewer.currentScaleValue = 'page-width';
             docViewer.viewer.currentScaleValue = '2';
 
-        }, 3000 );
+        }, 1 );
 
         this.setState({
             loadedDoc: {

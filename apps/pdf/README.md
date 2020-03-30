@@ -34,3 +34,12 @@
       "@types/polar-react-pdf": "^1.100.8",
       "react-window": "=1.8.5",
       "@types/react-window": "=1.8.1"
+
+
+- I'm now using my own custom pdf build and pushing it to github.  I think this
+  is by far the best way to do that. 
+
+- The viewerContainer needs to be overflow: auto, absolutely positioned, and use
+  a rendering queue.  Otherwise ALL pages are loaded
+  
+- dark mode *sort* of works in PDF.js but 

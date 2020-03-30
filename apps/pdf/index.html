@@ -1,6 +1,5 @@
-<html itemtype="https://schema.org/WebPage">
-<html lang="en" class="ui-mode-light">
-  <head>
+<html dir="ltr" itemtype="https://schema.org/WebPage">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
 
@@ -8,16 +7,18 @@
 
     <link rel="stylesheet" href="../../node_modules/pdfjs-dist/web/pdf_viewer.css">
 
+<!--    <link rel="stylesheet" href="./viewer.css">-->
+
     <!-- TODO: these need to load locally before we enable firebase in production -->
     <script src="/node_modules/firebase/firebase.js"></script>
     <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
     <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
 
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+<!--    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">-->
+<!--    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">-->
 
-    <link rel="stylesheet" href="https://getpolarized.io/assets/css/style.css">
+<!--    <link rel="stylesheet" href="https://getpolarized.io/assets/css/style.css">-->
 
     <style>
         * {
@@ -40,6 +41,13 @@
 
     <link rel="manifest" href="/manifest.json">
 
+    <!--
+
+        - TODO:
+            - twitter microdata
+            - title, summary,
+    -->
+
     <link rel="canonical" href="" />
     <meta name="description" content="">
 
@@ -51,46 +59,49 @@
     <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 
     <style>
+
         html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
-        .page {
-            margin-bottom: 10px !important;
-        }
+        /*.page {*/
+        /*    margin-bottom: 10px !important;*/
+        /*}*/
+
+        /*#viewerContainer {*/
+        /*}*/
+
+        /*#viewerContainer,*/
+        /*#viewerContainer * {*/
+        /*    will-change: transform;*/
+        /*}*/
+
+
+        /*header .navbar-nav a.nav-link {*/
+        /*    color: #777;*/
+        /*}*/
+
+        /** {*/
+        /*    font-family: 'Open Sans', sans-serif;*/
+        /*}*/
 
         #viewerContainer {
-        }
-
-        header .navbar-nav a.nav-link {
-            color: #777;
-        }
-
-        * {
-            font-family: 'Open Sans', sans-serif;
+            position: absolute;
+            overflow: auto;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%
         }
 
     </style>
 
     <title itemprop="headline"></title>
 
-<!--    <meta name="theme-color" content="#000000">-->
-
-<!--    <meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />-->
-<!--    &lt;!&ndash; TODO: use react-helmet to set canonical and other properties here when we &ndash;&gt;-->
-<!--    &lt;!&ndash; use SSR&ndash;&gt;-->
-<!--    &lt;!&ndash; <link rel="canonical" href="https://app.getpolarized.io/" />&ndash;&gt;-->
-
-<!--    <meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />-->
-<!--    <meta property="og:url" content="https://app.getpolarized.io/" />-->
-<!--    <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />-->
-<!--    <meta property="og:image" content="https://getpolarized.io/assets/logo/icon.png" />-->
-<!--    <meta name="twitter:image" content="https://getpolarized.io/assets/logo/icon.png">-->
-<!--    <meta name="twitter:card"  content="summary">-->
-<!--    <meta name="twitter:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.">-->
-<!--    <meta name="twitter:title" content="POLAR - Easily manage your reading.  Tag, annotate, and highlight PDFs and web content.">-->
-<!--    <meta name="twitter:site" content="@getpolarized">-->
 
   </head>
   <body>
@@ -104,23 +115,17 @@
 
     </noscript>
 
-    <div id="root" style="height: 100%; width: 100%; display: flex;">
+    <main id="viewerContainer" itemProp="mainContentOfPage">
 
-      <div id="error" class="alert alert-danger m-1"
-           style="display: none;"
-           role="alert">
-
-      </div>
-
-      <div id="loading-v1"
-           style="display: flex; position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;">
-        <!-- a simple loading widget -->
-
-        <div style="margin: auto; ">
-          <img class="logo" width="250" height="250" src="/icon.svg"/>
+        <div>
+            <div id="viewer" class="pdfViewer">
+                <div/>
+            </div>
         </div>
 
-      </div>
+    </main>
+
+    <div id="root" style="">
 
     </div>
 

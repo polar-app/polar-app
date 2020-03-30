@@ -10,7 +10,16 @@ const ViewerContainer = () => {
 
     return (
 
-        <main id="viewerContainer" itemProp="mainContentOfPage" data-iter={iter}>
+        <main id="viewerContainer"
+              itemProp="mainContentOfPage"
+              style={{
+                  position: 'absolute',
+                  overflow: 'auto',
+                  top: 0,
+                  left: 0,
+                  height: '100%'
+              }}
+              data-iter={iter}>
 
             <div>
                 <div id="viewer" className="pdfViewer">
@@ -31,8 +40,9 @@ export class PDFApp {
         const rootElement = document.getElementById('root') as HTMLElement;
 
         ReactDOM.render((
-            <div>
-                <ViewerContainer/>
+            <div style={{
+                 }}>
+                {/*<ViewerContainer/>*/}
                 <PDFDocument target="viewerContainer" url="./test.pdf"/>
             </div>
             ), rootElement);
