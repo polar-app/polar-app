@@ -43,3 +43,9 @@
   a rendering queue.  Otherwise ALL pages are loaded
   
 - dark mode *sort* of works in PDF.js but 
+
+- going back and forth between my fork and 2.2.228 ... 
+
+    "pdfjs-dist": "~2.2.228",
+
+    "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
