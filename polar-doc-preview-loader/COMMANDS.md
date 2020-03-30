@@ -17,3 +17,7 @@ gcloud iam service-accounts keys create credentials.json --iam-account queue-adm
 export GOOGLE_APPLICATION_CREDENTIALS=./credentials.json
 
 gcloud tasks queues update doc-preview --max-attempts=1
+
+gcloud tasks queues update doc-preview --max-concurrent-dispatches=50
+
+gcloud tasks queues update doc-preview --log-sampling-ratio=1.0

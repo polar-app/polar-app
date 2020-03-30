@@ -2,9 +2,10 @@ import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SendToQueue} from "./SendToQueue";
 import {DocPreviewURLs} from "../../../polar-app-public/polar-webapp-links/src/docs/DocPreviewURLs";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
-const DEFAULT_LIMIT = 10;
-// const DEFAULT_LIMIT = 50000;
+// const DEFAULT_LIMIT = 5000;
+const DEFAULT_LIMIT = 50000;
 
 export class DocPreviewsPrerender {
 
@@ -12,7 +13,8 @@ export class DocPreviewsPrerender {
 
         const app = FirebaseAdmin.app();
 
-        const docPreviews = await DocPreviews.list({size: DEFAULT_LIMIT});
+        const rawDocPreviews = await DocPreviews.list({size: DEFAULT_LIMIT});
+        const docPreviews = Arrays.shuffle(...rawDocPreviews);
 
         console.log("Working with N doc previews: " + docPreviews.length);
 

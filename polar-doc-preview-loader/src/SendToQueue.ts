@@ -1,6 +1,8 @@
 // Imports the Google Cloud Tasks library.
 import {CloudTasksClient} from '@google-cloud/tasks';
 import {URLStr} from "polar-shared/src/util/Strings";
+import {google} from "@google-cloud/tasks/build/protos/protos";
+import HttpMethod = google.cloud.tasks.v2beta3.HttpMethod;
 
 // Instantiates a client.
 const client = new CloudTasksClient();
@@ -8,7 +10,6 @@ const client = new CloudTasksClient();
 const project = 'polar-32b0f';
 const queue = 'doc-preview';
 const location = 'us-central1';
-
 
 export class SendToQueue {
 
@@ -22,7 +23,8 @@ export class SendToQueue {
 
         const task = {
             httpRequest: {
-                // httpMethod: "GET",
+                // TODO: we shouldn't assume GET by default
+                httpMethod: HttpMethod.GET,
                 url,
                 headers
             },

@@ -7,7 +7,7 @@ let app = express();
 
 // Google-Cloud-Tasks
 
-console.log("SSR: Running with production SSR function v6");
+console.log("SSR: Running with production SSR function v7");
 
 const prerender =
     require('prerender-node')
@@ -41,7 +41,9 @@ prerender.crawlerUserAgents.push("Google-Cloud-Tasks");
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.log("SSR: handling prerender: " + req.header('User-Agent'));
+    const userAgent = req.header('User-Agent');
+    const method = req.method;
+    console.log(`SSR: handling prerender: ${method} ${userAgent}`);
     prerender(req, res, next);
 });
 
