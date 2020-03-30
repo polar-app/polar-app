@@ -1,6 +1,6 @@
 {
   "name": "polar-hacker-news-crawler",
-  "version": "1.100.13",
+  "version": "1.100.14",
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.100.13",
+    "polar-test": "^1.100.14",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
@@ -24,6 +24,6 @@
     "@types/jsdom": "^12.2.4",
     "@types/node": "^12.11.1",
     "jsdom": "^16.0.0",
-    "polar-shared": "^1.100.13"
+    "polar-shared": "^1.100.14"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "polar-doc-preview-loader",
-  "version": "1.100.13",
+  "version": "1.100.14",
   "description": "Loads up doc preview URLs into be queued for processing",
   "main": "index.js",
   "scripts": {
@@ -18,15 +18,15 @@
     "@types/node": "=12.12.32",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "polar-test": "^1.100.13",
+    "polar-test": "^1.100.14",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
   "dependencies": {
     "@google-cloud/tasks": "=1.9.0",
     "firebase-admin": "=8.10.0",
-    "polar-shared": "^1.100.13",
-    "polar-firebase": "^1.100.13",
-    "polar-firebase-admin": "^1.100.13"
+    "polar-firebase": "^1.100.14",
+    "polar-firebase-admin": "^1.100.14",
+    "polar-shared": "^1.100.14"
   }
 }
