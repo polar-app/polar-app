@@ -14,18 +14,38 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 import {SendToQueue} from "./SendToQueue";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {SlugStr} from "polar-shared/src/util/Slugs";
 
 const LIMIT = 20000;
 
-function getPath() {
+interface Args {
+    readonly path: string;
+    readonly category?: SlugStr;
+}
 
-    if (process.argv.length !== 3) {
-        const command = process.argv[1];
-        console.error(`SYNTAX ${command} [path]`);
-        process.exit(1);
+function parseArgs(): Args {
+
+    let path: string | undefined;
+    let category: string | undefined;
+
+    for (const arg of process.argv) {
+
+        if (arg.startsWith('--path=')) {
+            path = arg.split('=')[1];
+        }
+
+        if (arg.startsWith('--category=')) {
+            category = arg.split('=')[1];
+        }
+
     }
 
-    return process.argv[2];
+    if (! path) {
+        throw new Error("no path");
+    }
+
+    return {path, category};
+
 }
 
 export class UnpaywallDocPreviewsLoader {
@@ -34,9 +54,9 @@ export class UnpaywallDocPreviewsLoader {
 
         const app = FirebaseAdmin.app();
 
-        const path = getPath();
+        const args = parseArgs();
 
-        const data = await Files.readFileAsync(path);
+        const data = await Files.readFileAsync(args.path);
         const content = data.toString('utf-8');
 
         const toDocPreview = (json: JSONStr): DocPreviewUncached | undefined => {
@@ -48,7 +68,7 @@ export class UnpaywallDocPreviewsLoader {
                 } catch (e) {
                     return undefined;
                 }
-            }
+            };
 
             const doc: Unpaywall.Doc = doParse();
 

@@ -12,7 +12,7 @@ const location = 'us-central1';
 
 export class SendToQueue {
 
-    public static async send(url: URLStr) {
+    public static async send(url: URLStr, headers: {[key: string]: string} = {}) {
 
         // const url = 'https://app.getpolarized.io/doc-preview-import/https://www.jstage.jst.go.jp/article/jmsjmag/18/S_1_PMRC_94_1/18_S_1_PMRC_94_1_S1_179/_pdf';
         // const payload = 'Hello, World!';
@@ -24,6 +24,7 @@ export class SendToQueue {
             httpRequest: {
                 // httpMethod: "GET",
                 url,
+                headers
             },
         };
 

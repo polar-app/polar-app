@@ -35,7 +35,7 @@ const prerender =
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.log("SSR: handling prerender");
+    console.log("SSR: handling prerender: " + req.header('User-Agent'));
     prerender(req, res, next);
 });
 
