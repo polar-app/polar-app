@@ -5,7 +5,9 @@ import {Webapps} from "../../webapp/Webapps";
 
 let app = express();
 
-console.log("SSR: Running with production SSR function v5");
+// Google-Cloud-Tasks
+
+console.log("SSR: Running with production SSR function v6");
 
 const prerender =
     require('prerender-node')
@@ -31,6 +33,10 @@ const prerender =
         //         done();
         //     }
         // });
+
+// this is a bit hacky but there's now way to force the user agent in google
+// cloud tasks...
+prerender.crawlerUserAgents.push("Google-Cloud-Tasks");
 
 console.log("Running with crawler user agents: ", prerender.crawlerUserAgents);
 
