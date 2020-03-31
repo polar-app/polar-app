@@ -86,9 +86,8 @@ function createDocViewer(): DocViewer {
     const viewerOpts = {
         container: containerElement,
         viewer: viewerElement,
-        textLayerMode: 1,
-        // FIXME: textLayerMode: 2, // this is the modern text layer mode
-        linkService, // FIXME: setting the linkServices causes errors.
+        textLayerMode: 2,
+        linkService, 
         findController,
         eventBus,
         useOnlyCssZoom: false,
@@ -196,8 +195,8 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
 
             console.log("FIXME: setting page to page-width");
-            // docViewer.viewer.currentScaleValue = 'page-width';
-            docViewer.viewer.currentScaleValue = '2';
+            docViewer.viewer.currentScaleValue = 'page-width';
+            // docViewer.viewer.currentScaleValue = '2';
 
         }, 1 );
 

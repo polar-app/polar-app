@@ -9,7 +9,9 @@ async function start() {
 
     await Logging.init();
 
-    new PDFApp().start();
+    const pdfApp = new PDFApp();
+
+    pdfApp.start().catch(err => log.error(err));
 
 }
 
