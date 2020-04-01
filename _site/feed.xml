@@ -1,38 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-03-28T17:34:48-06:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.100.13 - Tags for Annotations</title><link href="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html" rel="alternate" type="text/html" title="Polar 1.100.13 - Tags for Annotations" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html">&lt;p&gt;Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2020-04-01T13:51:24-06:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">How An Astronaut’s Experience Can Enable Us To Study Better From Home</title><link href="https://getpolarized.io/2020/03/30/How-An-Astronaut's-Experience-Can-Enable-Us-To-Study-Better-From-Home.html" rel="alternate" type="text/html" title="How An Astronaut's Experience Can Enable Us To Study Better From Home" /><published>2020-03-30T10:00:00-06:00</published><updated>2020-03-30T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/30/How-An-Astronaut's-Experience-Can-Enable-Us-To-Study-Better-From-Home</id><content type="html" xml:base="https://getpolarized.io/2020/03/30/How-An-Astronaut's-Experience-Can-Enable-Us-To-Study-Better-From-Home.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/9iLF7UR.jpg&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
-&lt;iframe class=&quot;embed-responsive-item&quot; src=&quot;https://www.youtube.com/embed/6M6jNlairGc&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
+&lt;h1 id=&quot;how-an-astronauts-experience-can-enable-us-to-study-better-from-home&quot;&gt;How An Astronaut’s Experience Can Enable Us To Study Better From Home&lt;/h1&gt;
 
-&lt;h2 id=&quot;tags-for-annotations&quot;&gt;Tags for Annotations&lt;/h2&gt;
+&lt;p&gt;Most of us are going into week 2 of studying and working remmotely. Obviously, we humans are not made to stay in a confined space for a long time. That’s why it’s even more important to be deliberate about how we go about our daily lives. Here at &lt;a href=&quot;https://getpolarized.io&quot; target=&quot;_blank&quot;&gt;Polar&lt;/a&gt;, we’re working on a tool to enable remote studying and knowledge management. We did want to take some time, however, to look at what else we can do to optimize our time at home.&lt;/p&gt;
 
-&lt;p&gt;The main feature of this release is tags for annotations.&lt;/p&gt;
+&lt;p&gt;In the subsequent post, we summarize key learnings from an astronaut’s experience in space. Back in 2015 / 2016, Scott Kelly spent nearly a year in space living on the ISS. In an &lt;a href=&quot;https://www.nytimes.com/2020/03/21/opinion/scott-kelly-coronavirus-isolation.html&quot; target=&quot;_blank&quot;&gt;interview&lt;/a&gt; with the New York Times, he admits it “wasn’t always easy but I learned some things during my time up there”. His experience clearly shows that there is a way to make this productive.&lt;/p&gt;
 
-&lt;p&gt;This has been frequently requested by users and we finally were able to devote 
-the time to making sure it was implemented properly.&lt;/p&gt;
+&lt;p class=&quot;text-center&quot;&gt;
+&lt;img class=&quot;img-fluid border border-secondary&quot; src=&quot;https://i.imgur.com/DRYuC2t.jpg&quot; /&gt;
+&lt;/p&gt;
 
-&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
+&lt;h2 id=&quot;follow-a-routine&quot;&gt;Follow a routine&lt;/h2&gt;
 
-&lt;p&gt;Of course we’ve also fixed a number of bugs in this release including a bad one
-that sometimes prevented the UI from updating when working with annotations.&lt;/p&gt;
+&lt;p&gt;“Maintaining a plan will help you adjust to a different environment”, says Kelly. “On the space station, my time was scheduled tightly, from the moment I woke up to when I went to sleep”.&lt;/p&gt;
 
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h2&gt;
+&lt;p&gt;Now that classes are remote, it’s easier to let a regular schedule slip. We see it ourselves. For example, the gym is closed and of course it’s harder to work out at home. However, keeping a set schedule will prevent us from slipping into a world where we end up only sitting on the couch, smoking weed, and eating unhealthy food. Hell, while you’re at it, this might be a good time to incorporate some good habits into your daily routine, like &lt;a href=&quot;https://www.mindful.org/how-to-meditate/&quot; target=&quot;_blank&quot;&gt;meditation&lt;/a&gt; or the &lt;a href=&quot;https://www.youtube.com/watch?v=VaMjhwFE1Zw&quot; target=&quot;_blank&quot;&gt;Wim Hof method&lt;/a&gt;. And if you need some motivation, we have just the right &lt;a href=&quot;https://davidgoggins.com/book/&quot; target=&quot;_blank&quot;&gt;book&lt;/a&gt; for you to get started.&lt;/p&gt;
 
-&lt;p&gt;We’re working on moving the entire platform over to React including the PDF 
-viewer.  Once this is complete we’ll be able to quickly finish implementing 
-EPUB, dark mode, and some improvements to our chrome extension to enable 
-annotation and capture directly in the browser for web content.&lt;/p&gt;
+&lt;h2 id=&quot;pace-yourself&quot;&gt;Pace yourself&lt;/h2&gt;
 
-&lt;p&gt;This will also meant that tablet and phone support can come online as 2.0 is 
-being designed with mobile support in mind.&lt;/p&gt;
+&lt;p&gt;“When you are living and working in the same place for days on end, work can have a way of taking over everything if you let it”, Kelly argues. “Living in space, I deliberately paced myself because I knew I was in it for the long haul.”&lt;/p&gt;
 
-&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
+&lt;p&gt;There are many different ways to achieve that - reading a book, calling friends, or simply taking a nap. We see it ourselves all the time. There is always one more thing that needs to be done, always one additional discussion to be had. However, a refreshed mind is much more useful than an overworked and stressed one. So make sure you pace yourself.
+On the flip side, make sure you don’t “pace yourself” too much. &lt;a href=&quot;https://shyamsankar.com/the-case-against-work-life-balance-owning-your-future&quot; target=&quot;_blank&quot;&gt;It’s interesting&lt;/a&gt; how people typically only state “it’s a marathon, not a sprint” to argue for more comfort, not of sustained excellence. If you want to achieve all your dreams, you simply have to put in the time. Of course while pacing yourself ;)&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;annotations in the annotation view are now sorted by ‘last updated’ not the
-creation time.&lt;/li&gt;
-  &lt;li&gt;annotations can have tags&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">17 tips for crushing it with Anki while studying remotely</title><link href="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html" rel="alternate" type="text/html" title="17 tips for crushing it with Anki while studying remotely" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;spent-time-outside-while-keeping-social-distance&quot;&gt;Spent time outside (while keeping social distance)&lt;/h2&gt;
+
+&lt;p&gt;One of the main advantages of living in the Bay Area is nature. Obviously, with every passing day, it’s becoming harder for me to spend time outside. But while it’s still possible, make sure you go out for walks and get some fresh air. Of course while maintaining the necessary social distance. In fact, while you’re at it, you might want to consider wearing a mask, even if just makeshift. There is &lt;a href=&quot;https://www.youtube.com/watch?v=BoDwXwZXsDI&quot; target=&quot;_blank&quot;&gt;early indication&lt;/a&gt; that masks are a key part in fighting the spreading of the virus. So, do go outside. And be reasonable about it.&lt;/p&gt;
+
+&lt;h2 id=&quot;focus-on-hobbies&quot;&gt;Focus on hobbies&lt;/h2&gt;
+
+&lt;p&gt;Duh. This is obvious but we tend to forget it in times of stress (like finals… or a pandemic). Usually, reading is a good hobby to pick up. Now you might argue you’re already reading a lot for school (and simplifying your reading and information management with &lt;a href=&quot;https://getpolarized.io&quot; target=&quot;_blank&quot;&gt;Polar&lt;/a&gt; ;) ). That’s ok. Pick something else. I recently picked up cooking again. Whatever it is, make sure it gives you the timeout you need from your studies&lt;/p&gt;
+
+&lt;h2 id=&quot;start-journaling&quot;&gt;Start journaling&lt;/h2&gt;
+
+&lt;p&gt;NASA discovered that keeping a journal is one of the most effective activities to keep us sane. Interesting, huh? “Even if you don’t wind up writing a book based on your journal like I did, writing about your days will help put your experiences in perspective and let you look back later on what this unique time in history has meant”, Kelly shares. There are many different versions of journaling out there. I’ve been doing my own version for over 10 years and absolutely love it. While you’re at it, definitely add affirmations to it. Then go out and kick butt achieving those goals you tell yourself during the affirmations. Well, stay inside and achieve those goals ;)&lt;/p&gt;
+
+&lt;h2 id=&quot;take-time-to-connect&quot;&gt;Take time to connect&lt;/h2&gt;
+
+&lt;p&gt;“Isolation is damaging not only to our mental health, but to our physical health as well, especially our immune system”, Kelly warns. Make sure you regularly connect with loved ones and close friends. Now might even be a good time to reconnect with this one person you’ve lost contact with a while back… or reconnect with your ex you still think of. Melissa, how are you doing…? ;)&lt;/p&gt;
+
+&lt;h2 id=&quot;listen-to-expert-voices&quot;&gt;Listen to expert voices&lt;/h2&gt;
+
+&lt;p&gt;And finally… listen to experts. “Living in space taught me a lot about the importance of trusting the advice of people who knew more than I did about their subjects”, Kelly shares. Given how much misinformation is actively being spread these days about the coronavirus (did you &lt;a href=&quot;https://www.bbc.com/news/world-51735367&quot; target=&quot;_blank&quot;&gt;hear&lt;/a&gt; how garlic can prevent the spread of coronavirus?), make sure you listen to people with authority in the subject.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">17 tips for crushing it with Anki while studying remotely</title><link href="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html" rel="alternate" type="text/html" title="17 tips for crushing it with Anki while studying remotely" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/17-Tips-For-Using-Anki-While-Studying-From-Home.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/FeMzRL1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;17-tips-for-crushing-it-with-anki-while-studying-remotely&quot;&gt;17 tips for crushing it with Anki while studying remotely&lt;/h1&gt;
 
@@ -200,7 +209,41 @@ I used to have an excel file with names and any additional information where I m
 
 &lt;p&gt;These are our Anki tips from years of using it hands-on. Use the above tips to keep moving forward with spaced repetition. Use a tool like &lt;a href=&quot;https://getpolarized.io/&quot; target=&quot;_blank&quot;&gt;Polar&lt;/a&gt; to easily create flashcards and sync them to Anki.
 Spaced repetition is tremendously powerful. However, it won’t replace the work of actually understanding the material. This is still your job.
-Finally, make sure you’re also using the right Anki plugins and that you’re using it to full effect. You can read more about the most popular Anki add-ons &lt;a href=&quot;https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020.html&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Top 5 Flashcard Apps for 2020</title><link href="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html" rel="alternate" type="text/html" title="Top 5 Flashcard Apps for 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1&quot; /&gt;&lt;/p&gt;
+Finally, make sure you’re also using the right Anki plugins and that you’re using it to full effect. You can read more about the most popular Anki add-ons &lt;a href=&quot;https://getpolarized.io/2020/02/14/Must-have-Anki-Add-ons-for-Medical-Students-in-2020.html&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Polar 1.100.13 - Tags for Annotations</title><link href="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html" rel="alternate" type="text/html" title="Polar 1.100.13 - Tags for Annotations" /><published>2020-03-27T10:00:00-06:00</published><updated>2020-03-27T10:00:00-06:00</updated><id>https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations</id><content type="html" xml:base="https://getpolarized.io/2020/03/27/Polar-1-100-13-Tags-For-Annotations.html">&lt;p&gt;Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.&lt;/p&gt;
+
+&lt;div class=&quot;embed-responsive embed-responsive-16by9&quot;&gt;
+&lt;iframe class=&quot;embed-responsive-item&quot; src=&quot;https://www.youtube.com/embed/6M6jNlairGc&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;tags-for-annotations&quot;&gt;Tags for Annotations&lt;/h2&gt;
+
+&lt;p&gt;The main feature of this release is tags for annotations.&lt;/p&gt;
+
+&lt;p&gt;This has been frequently requested by users and we finally were able to devote 
+the time to making sure it was implemented properly.&lt;/p&gt;
+
+&lt;h2 id=&quot;stability&quot;&gt;Stability&lt;/h2&gt;
+
+&lt;p&gt;Of course we’ve also fixed a number of bugs in this release including a bad one
+that sometimes prevented the UI from updating when working with annotations.&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next&lt;/h2&gt;
+
+&lt;p&gt;We’re working on moving the entire platform over to React including the PDF 
+viewer.  Once this is complete we’ll be able to quickly finish implementing 
+EPUB, dark mode, and some improvements to our chrome extension to enable 
+annotation and capture directly in the browser for web content.&lt;/p&gt;
+
+&lt;p&gt;This will also meant that tablet and phone support can come online as 2.0 is 
+being designed with mobile support in mind.&lt;/p&gt;
+
+&lt;h2 id=&quot;full-changelog&quot;&gt;Full Changelog&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;annotations in the annotation view are now sorted by ‘last updated’ not the
+creation time.&lt;/li&gt;
+  &lt;li&gt;annotations can have tags&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Polar 1.100.12 is now available on the web for all desktop users and will be rolling out over the next week.</summary></entry><entry><title type="html">Top 5 Flashcard Apps for 2020</title><link href="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html" rel="alternate" type="text/html" title="Top 5 Flashcard Apps for 2020" /><published>2020-02-14T09:00:00-07:00</published><updated>2020-02-14T09:00:00-07:00</updated><id>https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020</id><content type="html" xml:base="https://getpolarized.io/2020/02/14/Top-Five-Flashcard-Apps-2020.html">&lt;p&gt;&lt;img class=&quot;img-fluid border&quot; src=&quot;https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpYoHvi9VAz_poWbGTEWUfP6qZR9ya50bw_4wxC3iq4W0B3k8-PS_l0zzSIjCsT4MoK70x9h7e7eI9IaJaf56tb-bQzo5AnWCWTkou_za1&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;top-5-flashcard-apps-for-2020&quot;&gt;Top 5 Flashcard Apps for 2020&lt;/h1&gt;
 
@@ -2035,28 +2078,4 @@ highlight the PDFs and easily manage your reading.&lt;/p&gt;
 &lt;h2 id=&quot;556-the-state-of-homelessness-in-america-pdf&quot;&gt;556. &lt;a href=&quot;https://app.getpolarized.io/add/?file=https://www.whitehouse.gov/wp-content/uploads/2019/09/The-State-of-Homelessness-in-America.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20State%20of%20Homelessness%20in%20America%20%5Bpdf%5D%22%7D&quot;&gt;The State of Homelessness in America [pdf]&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21001300&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;557-the-effect-of-founder-experience-on-labor-market-outcomes-a-field-experiment-pdf&quot;&gt;557. &lt;a href=&quot;https://app.getpolarized.io/add/?file=http://www.tristanbotelho.com/files/BotelhoChang2019_FounderExperienceLaborMarkets.pdf&amp;amp;docInfo=%7B%22title%22%3A%22The%20Effect%20of%20Founder%20Experience%20on%20Labor%20Market%20Outcomes%3A%20A%20Field%20Experiment%20%5Bpdf%5D%22%7D&quot;&gt;The Effect of Founder Experience on Labor Market Outcomes: A Field Experiment [pdf]&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Bill Gates Reads by Writing (in the Margins)</title><link href="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html" rel="alternate" type="text/html" title="Bill Gates Reads by Writing (in the Margins)" /><published>2020-01-19T09:00:00-07:00</published><updated>2020-01-19T09:00:00-07:00</updated><id>https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins</id><content type="html" xml:base="https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html">&lt;h1 id=&quot;bill-gates-reads-by-writing-in-the-margins&quot;&gt;Bill Gates Reads by Writing (in the Margins)&lt;/h1&gt;
-
-&lt;p&gt;Netflix recently release a &lt;a href=&quot;https://www.youtube.com/watch?v=aCv29JKmHNY&quot;&gt;documentary about Bill Gates (Inside Bill’s Brain: Decoding Bill Gates)&lt;/a&gt; where 
-he discussed his strategy of writing in the margins of a book while he reads.&lt;/p&gt;
-
-&lt;p&gt;I really enjoyed this commentary and tracked down a video where he discusses his strategy:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eTFy8RnUkoU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;I think that’s sort of a shame here is that the notes are encoded on paper and not really searchable.&lt;/p&gt;
-
-&lt;p&gt;Polar’s annotation sidebar allows the user to take highlights, add comments to that highlight but also encode the 
-annotation to a flashcard to enhance long term recall via spaced repetition.&lt;/p&gt;
-
-&lt;p&gt;Bill’s comments made me think about another memory encoding strategy regarding the pencil in that studies show that
-tactile feedback of using a pencil actually increases recall.&lt;/p&gt;
-
-&lt;p&gt;We might (at some point) add a margin mode to Polar such that you can use a tablet with a pen and literally write your
-notes (figures, text, etc) in a virtual margin setup where the document has a larger margin that’s indexed via Polar.&lt;/p&gt;
-
-&lt;p&gt;In the mean time the Polar annotation sidebar will work as a GREAT substitute though.&lt;/p&gt;
-
-&lt;p&gt;Here’s a screenshot of my annotations on a book I’m currently reading:&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;https://i.imgur.com/CW6LPOc.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Bill Gates Reads by Writing (in the Margins)</summary></entry></feed>
+&lt;p&gt;score: 3 &lt;a href=&quot;https://news.ycombinator.com/item?id=21123706&quot;&gt; 0 comments&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>

@@ -4,15 +4,13 @@ date: 2020-03-30T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/9iLF7UR.jpg
 description: Tips on how to study productively from home while staying sane. We're used to be in a classroom but with the current coronavirus pandemic we are forced to study from home. Read here for tips how to ace it.
-hidden: true
-visible: false
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/9iLF7UR.jpg">
 
 # How An Astronaut's Experience Can Enable Us To Study Better From Home
 
-Most of us are going into week 2 of studying and working remmotely. Obviously, we humans are not made to stay in a confined space for a long time. That’s why it’s even more important to be deliberate about how we go about our daily lives. Here at <a href="https://getpolarized.io" target="_blank">Polar</a>, we're working on a tool to enable remote studying and knowledge management. We did want to take some time, however, to look at what else we can do to optimize our time at home. 
+Most of us are going into week 2 of studying and working remotely. Obviously, we humans are not made to stay in a confined space for a long time. That’s why it’s even more important to be deliberate about how we go about our daily lives. Here at <a href="https://getpolarized.io" target="_blank">Polar</a>, we're working on a tool to enable remote studying and knowledge management. We did want to take some time, however, to look at what else we can do to optimize our time at home. 
 
 In the subsequent post, we summarize key learnings from an astronaut’s experience in space. Back in 2015 / 2016, Scott Kelly spent nearly a year in space living on the ISS. In an <a href="https://www.nytimes.com/2020/03/21/opinion/scott-kelly-coronavirus-isolation.html" target="_blank">interview</a> with the New York Times, he admits it “wasn’t always easy but I learned some things during my time up there”. His experience clearly shows that there is a way to make this productive.
 
