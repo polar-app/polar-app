@@ -47,19 +47,23 @@ export class PDFApp {
 
         const app = await AppInitializer.init({
             persistenceLayerManager,
-
-            // FIXME: how do I do the init of the repoDocMetaLoader here.. same
-            //  thing for the loader
-
             onNeedsAuthentication: ASYNC_NULL_FUNCTION
-
         });
 
         const rootElement = document.getElementById('root') as HTMLElement;
 
+        // FIXME: full screen mode without a navbar...
+        // FIXME: sidebar that can be toggled on and off with the pdf width
+        // adjusted
+        // FIXME: annotation bar working
+        // FIXME: load the docMeta to determine what doc to load and listen
+        // for changes
+        // FIXME: the sidebar / annotation bar needs to work.
+        // FIXME: dark mode for the PDF (needs changes to pdfjs)
+        // FIXME: verify that it works on mobile...
+
         ReactDOM.render((
-            <div style={{
-                 }}>
+            <div style={{}}>
                 {/*<ViewerContainer/>*/}
                 <PDFDocument target="viewerContainer" url="./test.pdf"/>
             </div>
