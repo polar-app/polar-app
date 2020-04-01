@@ -8,7 +8,7 @@ import {
 } from 'pdfjs-dist/web/pdf_viewer';
 
 import * as foo from 'pdfjs-dist/web/pdf_viewer';
-import PDFJS, {DocumentInitParameters, PDFDocumentProxy} from "pdfjs-dist";
+import PDFJS, {DocumentInitParameters, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { Logger } from 'polar-shared/src/logger/Logger';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -58,8 +58,6 @@ function createDocViewer(): DocViewer {
     // TODO  this isn't actually exported..
     const renderingQueue = new PDFRenderingQueue();
 
-    console.log("FIXME: renderingQueue: ", renderingQueue);
-
     const linkService = new PDFLinkService({
         eventBus,
     });
@@ -83,7 +81,7 @@ function createDocViewer(): DocViewer {
 
     // FIXME: use the proper render mode...
 
-    const viewerOpts = {
+    const viewerOpts: PDFViewerOptions = {
         container: containerElement,
         viewer: viewerElement,
         textLayerMode: 2,
@@ -98,9 +96,11 @@ function createDocViewer(): DocViewer {
         disableStream: false,
         disableAutoFetch: false,
         disableFontFace: false,
+        // renderer: "svg",
         // renderingQueue, // this isn't actually needed when its in a scroll container
         maxCanvasPixels: 16777216,
         enablePrintAutoRotate: false,
+        // renderer: RendererType.SVG,
         // renderer: RenderType
         // removePageBorders: true,
         // defaultViewport: viewport
