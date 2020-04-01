@@ -32,11 +32,12 @@ export const FormattedTags = (props: IProps) => {
     const chicklets = Object.values(tags)
         .map(tag => tag.label)
         .sort()
-        .map(tag => <div className="mr-1">
-            <TagChicklet>
-                {tag}
-            </TagChicklet>
-        </div>);
+        .map(tag =>
+            <div key={tag} className="mr-1">
+                <TagChicklet>
+                    {tag}
+                </TagChicklet>
+            </div>);
 
     // const formatted = joinItems(chicklets, <div className="pl-1 pr-1">, </div>);
 
