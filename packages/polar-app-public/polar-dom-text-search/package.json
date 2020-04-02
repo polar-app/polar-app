@@ -1,0 +1,34 @@
+{
+  "name": "polar-dom-text-search",
+  "version": "1.100.14",
+  "description": "Provides a framework to search text within a DOM.",
+  "scripts": {
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/jsdom": "~16.1.0",
+    "@types/jsdom-global": "3.0.2",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "jsdom": "^16.2.0",
+    "jsdom-global": "3.0.2",
+    "mocha": "^6.2.0",
+    "tslint": "=6.1.1",
+    "typescript": "=3.8.3"
+  },
+  "dependencies": {
+    "@types/node": "^12.11.1",
+    "polar-shared": "^1.100.14",
+    "polar-test": "^1.100.14"
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "package.json"
+  ]
+}
