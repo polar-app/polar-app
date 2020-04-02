@@ -1,5 +1,5 @@
 
-interface FindOpts {
+export interface FindOpts {
     query: string;
     phraseSearch: boolean;
     caseSensitive: boolean;
@@ -7,15 +7,16 @@ interface FindOpts {
     findPrevious: boolean;
 }
 
-export interface FindController {
+export interface Finder {
 
-    // TODO: add an onResults callback which contains the number of hits, etc.
-
-    exec(opts: FindOpts): Promise<Finder>;
+    exec(opts: FindOpts): Promise<FindManager>;
 
 }
 
-export interface Finder {
+/**
+ * Manages the existing find operation.
+ */
+export interface FindManager {
 
     /**
      * Cancel the find

@@ -4,17 +4,15 @@ import {
     PDFFindController,
     PDFLinkService,
     PDFRenderingQueue,
-    PDFViewer,
-    PDFPageView
+    PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
-import PDFJS, {
-    DocumentInitParameters,
-    PDFDocumentProxy,
-    PDFViewerOptions
-} from "pdfjs-dist";
+import PDFJS, {DocumentInitParameters, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
+import {Callback1} from "polar-shared/src/util/Functions";
+import {FindManager, Finder} from "./Finders";
+import {PDFFindControllers} from "./PDFFindControllers";
 
 const log = Logger.create();
 
@@ -99,11 +97,12 @@ interface LoadedDoc {
     readonly scale: number | string;
 }
 
+type OnFinderCallback = Callback1<Finder>;
+
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
-
-    // readonly onFindController(findController: PDFFindController)
+    readonly onFinder: OnFinderCallback;
 }
 
 interface IState {
@@ -158,7 +157,18 @@ export class PDFDocument extends React.Component<IProps, IState> {
         docViewer.viewer.setDocument(doc);
         docViewer.linkService.setDocument(doc, null);
 
-        // docViewer.viewer.update();
+        const finder = PDFFindControllers.createFinder(docViewer.eventBus,
+                                                       docViewer.findController);
+
+        this.props.onFinder(finder);
+
+        finder.exec({
+            query: 'Trace',
+            phraseSearch: false,
+            caseSensitive: false,
+            highlightAll: true,
+            findPrevious: false
+        }).catch(err => console.error(err));
 
         const doResize = () => {
             docViewer.viewer.currentScaleValue = 'page-width';
