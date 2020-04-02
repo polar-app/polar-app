@@ -43,8 +43,6 @@
         "scripts/**/*",
         "web/**/*",
         "apps/**/*",
-        // TODO; this is a hack to get pdfjs-dist types to work.
-        "node_modules/polar-pdf-types"
     ],
     "exclude": [
         "web/spectron.disabled/*"
