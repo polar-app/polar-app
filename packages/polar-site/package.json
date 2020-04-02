@@ -1,0 +1,27 @@
+{
+  "name": "polar-site",
+  "version": "1.100.14",
+  "description": "Polar Website",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo no tests",
+    "compile": "echo nothing to compile",
+    "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"const polar_release = '%s';\n\" > assets/js/release.js",
+    "build": "bundle exec jekyll build",
+    "publish": "npm run-script build && firebase deploy",
+    "push": "npm run-script build && npm run-script publish",
+    "serve": "bundle exec jekyll serve",
+    "prebuild": "npm run-script get-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burtonator/polar-site.git"
+  },
+  "author": "",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/burtonator/polar-site/issues"
+  },
+  "homepage": "https://github.com/burtonator/polar-site#readme"
+}
