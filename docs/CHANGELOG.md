@@ -1,3 +1,7 @@
+# ...
+
+- upgraded to latest version of typescript and tslint
+
 # 1.100.0
 
 - annotations in the annotation view are now sorted by 'last updated' not the
