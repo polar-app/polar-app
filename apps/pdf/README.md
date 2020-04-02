@@ -49,3 +49,77 @@
     "pdfjs-dist": "~2.2.228",
 
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
+
+
+        // FIXME: full screen mode without a navbar...
+        // FIXME: sidebar that can be toggled on and off with the pdf width
+        // adjusted
+        // FIXME: annotation bar working
+        // FIXME: load the docMeta to determine what doc to load and listen
+        // for changes
+        // FIXME: the sidebar / annotation bar needs to work.
+        // FIXME: dark mode for the PDF (needs changes to pdfjs)
+        // FIXME: verify that it works on mobile...
+
+            // FIXME the PDF version of this viewer doesn't seem to handle CPU
+            // properly and continues to composite this on the GPU using 100%
+            // of resources while scrolling.  This is probably the issue we
+            // had with react-pdf
+
+            //
+            // FIXME: it seems that chrome with pdfjs tends to run
+            // "composite layers" too often.  Not sure why.
+
+        // FIXME: jump to page number... 
+        // FIXME: context menu working
+
+## PDFViewer
+
+ - have to use a manual sidbar configuration.
+ - the main app uses CSS transforms to add left and right padding to place
+   sidebars via absolute positioning... I don't think I have the option to use
+   flexbox here... 
+ 
+
+## PDFPageView 
+
+- it IS exported as a symbol
+- I can make it use SVG by specifying render as 'svg'
+- I *think* PDFFindController CAN be used with pages if they share the same
+  document and EventBus but I should verify. 
+
+
+### Open Issues
+
+    - what 'container' should I use??? 
+
+### PROS
+    - no weird use of portals to make this work
+    - no overflow or position CSS required
+    - 
+    
+### CONS
+
+    - The MAIN issue is that 'find' doesn't work properly and with unrendered 
+      pages I'm not sure how this would even work properly... 
+
+    - I don't know if the find controller works
+    - I would have to use react-window to page through large numbers of pages
+    - not sure if text layers would work.
+    - I think I will still have to compute scale
+    - Might have to deal with hidpi displays but have to do that anyway
+    - I have to research the IDEAL way to do react with items that write to the
+      DOM directly
+
+# Dock Issues
+
+    - I could implement a NEW type of doc that doesn't use overflow itself but 
+      instead uses absolute positioning and margins work properly, similar to 
+      how pdfjs works... 
+
+
+## Bugs Effecting Us
+
+https://github.com/mozilla/pdf.js/issues/11626
+
+

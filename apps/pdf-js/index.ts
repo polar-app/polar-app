@@ -318,6 +318,27 @@ async function doLoad() {
     //
     // window.addEventListener('resize', () => doResize());
 
+
+    eventBus.on("updatefindmatchescount", (evt: any) => {
+        console.log("TODO: ", evt);
+    });
+
+    eventBus.on('updatefindcontrolstate', (event: any) => {
+        console.log("find control state: ", event);
+    });
+
+    // FIXME: this won't work because the link service doesn't have a PDFViewer to work with.
+    // to work with...
+
+    findController.setDocument(doc);
+    findController.executeCommand('find', {
+        query: 'Availability',
+        phraseSearch: false,
+        caseSensitive: false,
+        highlightAll: true,
+        findPrevious: false
+    });
+
 }
 
 doLoad()

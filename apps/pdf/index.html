@@ -54,7 +54,10 @@
     <link rel="icon" href="/icon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link href="../../node_modules/polar-google-fonts/Open%20Sans/style.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="/pdfviewer-custom/twitter-bootstrap.css">
 
     <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 
@@ -72,9 +75,19 @@
             position: absolute;
             overflow: auto;
             top: 0;
-            left: 0;
+            width: 100%;
             height: 100%;
-            width: 100%
+        }
+
+        #viewerContainer {
+            /*width: 150px;*/
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
     </style>
@@ -94,15 +107,6 @@
 
     </noscript>
 
-    <main id="viewerContainer" itemProp="mainContentOfPage">
-
-        <div>
-            <div id="viewer" class="pdfViewer">
-                <div/>
-            </div>
-        </div>
-
-    </main>
 
     <div id="root" style="">
 

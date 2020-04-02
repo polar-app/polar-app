@@ -3,46 +3,22 @@ import {
     EventBus,
     PDFFindController,
     PDFLinkService,
-    PDFViewer,
     PDFRenderingQueue,
+    PDFViewer,
+    PDFPageView
 } from 'pdfjs-dist/web/pdf_viewer';
-
-import * as foo from 'pdfjs-dist/web/pdf_viewer';
-import PDFJS, {DocumentInitParameters, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
+import PDFJS, {
+    DocumentInitParameters,
+    PDFDocumentProxy,
+    PDFViewerOptions
+} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
-import { Logger } from 'polar-shared/src/logger/Logger';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Logger} from 'polar-shared/src/logger/Logger';
+import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 const log = Logger.create();
 
-console.log("FIXME PDFRenderingQueue: ", PDFRenderingQueue);
-console.log("FIXME foo: ", foo);
-
 PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.js';
-
-namespace pdfjs {
-
-    export interface FindCommandState {
-        query: string;
-        phraseSearch: boolean;
-        caseSensitive: boolean;
-        highlightAll: boolean;
-        findPrevious: boolean;
-    }
-
-    export interface IFindController {
-        reset(): void;
-        nextMatch(): void;
-        executeCommand(cmd: string, state: FindCommandState): void;
-        setDocument(doc: PDFDocumentProxy): void;
-
-    }
-
-    export interface ILinkService {
-        setDocument(doc: PDFDocumentProxy, baseURL: string | null): void;
-    }
-
-}
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -50,6 +26,7 @@ interface DocViewer {
     readonly viewer: PDFViewer;
     readonly linkService: PDFLinkService;
     readonly renderingQueue: PDFRenderingQueue;
+    readonly containerElement: HTMLElement;
 }
 
 function createDocViewer(): DocViewer {
@@ -78,8 +55,6 @@ function createDocViewer(): DocViewer {
     if (viewerElement === null) {
         throw new Error("No viewerElement");
     }
-
-    // FIXME: use the proper render mode...
 
     const viewerOpts: PDFViewerOptions = {
         container: containerElement,
@@ -113,10 +88,9 @@ function createDocViewer(): DocViewer {
 
     (renderingQueue as any).onIdle = () => {
         viewer.cleanup();
-
     };
 
-    return {eventBus, findController, viewer, linkService, renderingQueue};
+    return {eventBus, findController, viewer, linkService, renderingQueue, containerElement};
 
 }
 
@@ -128,6 +102,8 @@ interface LoadedDoc {
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
+
+    // readonly onFindController(findController: PDFFindController)
 }
 
 interface IState {
@@ -178,26 +154,22 @@ export class PDFDocument extends React.Component<IProps, IState> {
         const scale = calculateScale(window.innerWidth, viewport.width);
 
         docViewer.viewer.setDocument(doc);
-        (docViewer.linkService as pdfjs.ILinkService).setDocument(doc, null);
+        docViewer.linkService.setDocument(doc, null);
 
         // docViewer.viewer.update();
 
-        setTimeout(() => {
-
-            // FIXME the PDF version of this viewer doesn't seem to handle CPU
-            // properly and continues to composite this on the GPU using 100%
-            // of resources while scrolling.  This is probably the issue we
-            // had with react-pdf
-
-            //
-            // FIXME: it seems that chrome with pdfjs tends to run
-            // "composite layers" too often.  Not sure why.
-
-
-            console.log("FIXME: setting page to page-width");
+        const doResize = () => {
             docViewer.viewer.currentScaleValue = 'page-width';
-            // docViewer.viewer.currentScaleValue = '2';
+        };
 
+        const resizeDebouncer = Debouncers.create(() => doResize());
+
+        window.addEventListener('resize', () => {
+            resizeDebouncer();
+        });
+
+        setTimeout(() => {
+            doResize();
         }, 1 );
 
         this.setState({
@@ -206,17 +178,9 @@ export class PDFDocument extends React.Component<IProps, IState> {
             }
         });
 
-        // FIXME: now I need a way to render the pages with react-window ...
-        // right now it just renders them all and with out having a component
-        // on top of every page I can't easily add context menus and so forth
-        // I think.
-
-
     }
 
     public render() {
-        // console.log("FIXME: render");
-        // TODO render single pages...
         return null;
     }
 
