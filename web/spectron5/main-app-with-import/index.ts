@@ -46,14 +46,14 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     await waitForExpect(() => {
         const windows = BrowserWindowRegistry.tagged({name: 'app', value: 'repository'});
-        assert.ok(windows.length === 1);
+        assert.ok(windows.length === 1, "wrong number of windows");
     });
 
     log.info("Waiting for repository app...done");
 
     const rawPath = FilePaths.join(__dirname, "..", "..", "..", "docs", "example.pdf");
     const importFilePath = await Files.realpathAsync(rawPath);
-    assert.ok(await Files.existsAsync(importFilePath));
+    assert.ok(await Files.existsAsync(importFilePath), "file does not exist: " + importFilePath);
 
     const files = [
         importFilePath
@@ -68,7 +68,7 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     await waitForExpect(() => {
         const windows = BrowserWindowRegistry.tagged({name: 'type', value: 'viewer'});
-        assert.ok(windows.length > 0);
+        assert.ok(windows.length > 0, "wrong number of windows ");
     });
 
     log.info("Trying to find viewer...done");
