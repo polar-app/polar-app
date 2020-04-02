@@ -1,0 +1,929 @@
+---
+
+title: POLAR - Easily manage your PDFs, web content, and notes.
+layout: home
+author: Kevin Burton
+image: https://getpolarized.io/assets/logo/icon.png
+---
+
+<style>
+    .main-hero {
+        background: #4096ee; /* Old browsers */
+        background: -moz-linear-gradient(top, #4096ee 0%, #60abf8 56%, #7abcff 100%) !important;; /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #4096ee 0%,#60abf8 56%,#7abcff 100%) !important;; /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #4096ee 0%,#60abf8 56%,#7abcff 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#7abcff',GradientType=0 ); /* IE6-9 */
+    }
+
+    @media only screen and (min-width: 1200px) {
+
+        .img-fluid,
+        img {
+            max-width: 1200px;
+        }
+
+    }
+
+    .img-screenshot {
+        max-width: 800px;
+    }
+
+</style>
+
+
+<style>
+
+    .social-proof-logo img {
+        max-width: 175px;
+        min-width: 115px;
+        max-height: 65px;
+
+        /*max-height: 175px;*/
+
+        /*min-height: 115px;*/
+
+        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%);
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+</style>
+
+
+<div class="">
+
+    {%- include header.html -%}
+
+    <section class="mb-0 "
+             data-block-type="contents"
+             data-id="1"
+             draggable="false">
+
+        <div class="container-fluid max-width-1280">
+            <div class="row mt-5 mb-3" style="margin-top: 30px;  ">
+                <div class="col col-md-6">
+
+                    <div class="">
+
+                        <h1 class="intro">Read. Learn. Study remotely.</h1>
+
+                        <div class="">
+
+                            <h2 class="mt-3 text-muted" style="font-size: 22px;">
+
+                                A powerful knowledge manager for web pages, textbooks, PDFs, to read and study with remotely.
+
+                                <br><br>
+                                Supports <b>tagging</b>, <b>annotating</b>, <b>highlighting</b>,
+                                keeping track of your <b>reading progress</b>, and makes it <i>effortless</i> to
+                                remember what you've learned. By yourself or in groups.
+
+                            </h2>
+
+                            <div class="text-center mb-3">
+
+                                <!--<a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"-->
+                                   <!--onclick="sendEvent('main-cta', 'download-desktop-app')"-->
+                                   <!--href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta&utm_medium=site">Download Desktop App</a>-->
+
+                                <a class="btn btn-success btn-lg font-weight-bold m-3"
+                                   onclick="sendEvent('main-cta', 'open-polar-in-browser')"
+                                   href="https://app.getpolarized.io">Create an Account</a>
+
+                                <div class="text-muted" style="font-size: 14px; ">
+                                    Already using Polar? <a href="https://app.getpolarized.io">Sign In</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <!--<div class="mt-2">-->
+
+                        <!--<a href="https://github.com/burtonator/polar-bookshelf/releases">-->
+                            <!--<img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>-->
+                        <!--</a>-->
+
+                        <!--<a href="https://discord.gg/GT8MhA6">-->
+                            <!--<img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>-->
+                        <!--</a>-->
+
+                        <!--<a href="https://github.com/burtonator/polar-bookshelf">-->
+                            <!--<img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>-->
+                        <!--</a>-->
+
+                        <!--<a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">-->
+                            <!--<img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>-->
+                        <!--</a>-->
+
+                    <!--</div>-->
+
+                    <!--<div class="m-auto mb" style="max-width: 700px;">-->
+
+                        <!--<iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 125px;" scrolling="no"></iframe>-->
+
+                    <!--</div>-->
+
+                </div>
+                <div class="col col-md-6 text-center">
+
+                    <div class="img-shadow-wrapper pb-5">
+
+                        {%- include image.html
+                                    alt="Main Polar PDF document showing an deep learning book"
+                                    class="img-fluid img-shadow img-screenshot"
+                                    style="max-width: 100%; min-width: 350px;"
+                                    src="./assets/screenshots/2019-11-document-view.png" -%}
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/yale.svg" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/rutgers.svg" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/stanford.png" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/ucla.png" style=""/>
+                </div>
+
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/berkeley.png" style=""/>
+                </div>
+                <div class="col text-center social-proof-logo mt-auto mb-auto">
+                    <img class="img-fluid" src="assets/social-proof-logos/illinois.png" style=""/>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<section class="fdb-block mt-4" data-block-type="features" data-id="1" draggable="false" style="padding-top: 0 !important;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12 text-center">
+                <a name="features"></a>
+                <h2>Effortless Reading and Learning</h2>
+
+                <p class="text-h3 text-justify m-auto" style="max-width: 700px;">
+
+                    Discovery why Polar is the new standard for reading and learning.  Easily
+                    <b>manage your reading</b>, track progress, annotate, <b>auto-convert to flashcards</b>,
+                    and learn using <b>spaced repetition</b>.
+                </p>
+
+            </div>
+        </div>
+        <div class="row text-left mt-5">
+            <div class="col-12 col-md-4">
+                <div class="row">
+                    <div class="col-3">
+
+                        <i class="fas fa-book-open fa-4x"></i>
+                    </div>
+                    <div class="col-9">
+
+                        <h3><strong>Organize your Reading</strong></h3>
+
+                        <p>All your documents in one place, <b>synchronized</b> across all your devices, tagged, highlighted,
+                        and secure.</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">
+                <div class="row">
+                    <div class="col-3">
+
+                        <i class="fas fa-brain fa-4x"></i>
+
+
+                    </div>
+                    <div class="col-9">
+                        <h3><strong>Remember Effortlessly</strong></h3>
+                        <p>
+                            Direct flashcard integration and <b>spaced repetition</b> make your reading enjoyable without
+                            having to worry about remembering the important parts.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">
+                <div class="row">
+                    <div class="col-3">
+                        <i class="fas fa-bookmark fa-4x"></i>
+                    </div>
+                    <div class="col-9">
+                        <h3><strong>Incremental Reading</strong></h3>
+
+                        <p>Read multiple documents in <b>parallel</b> and manage a queue of documents.  Track your reading
+                        progress and pick up where you left off.
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--        <div class="row text-left pt-3 pt-sm-4 pt-md-5">-->
+<!--            <div class="col-12 col-md-4">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-3">-->
+<!--                        <i class="fas fa-cloud-download-alt fa-4x"></i>-->
+<!--                    </div>-->
+<!--                    <div class="col-9">-->
+
+<!--                        <h3><strong>Offline-first</strong></h3>-->
+<!--                        <p>All content is stored locally which means you can use-->
+<!--                        Polar while offline.  Polar <b>cloud sync</b> allows you-->
+<!--                        to use Polar with other computers as well.  And our-->
+<!--                        webapp allows you to access your data anywhere.</p>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-3">-->
+
+<!--                        <i class="fas fa-code-branch  fa-4x"></i>-->
+
+<!--                    </div>-->
+<!--                    <div class="col-9">-->
+<!--                        <h3><strong>Hackable</strong></h3>-->
+<!--                        <p>The entire system is based on <code>Electron</code>,-->
+<!--                            <code>Node</code>, <code>pdf.js</code>, <code>React</code> and other-->
+<!--                            web standards.  If you're a developer - welcome home!</p>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-12 col-md-4 pt-3 pt-sm-4 pt-md-0">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-3">-->
+<!--                        <i class="fas fa-code fa-4x"></i>-->
+<!--                    </div>-->
+<!--                    <div class="col-9">-->
+<!--                        <h3><strong>Standards Based</strong></h3>-->
+<!--                        <p>All content is stored as JSON in a well documented schema.-->
+<!--                            Annotations never change the original content which keeps your-->
+<!--                            document repository safe.</p>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col subtitle text-center social-proof p-1">
+
+                <p>
+                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+
+                    <span>This is a must have for
+                    aspiring pre-meds, medical students, and researchers.
+                    Polar allows you to efficiently extract important
+                    material from dense research material / textbooks while
+                    simultaneously creating high-quality flashcards to keep
+                    it in long-term memory.
+
+<!--                        Its great to have these two features-->
+<!--                    connected via [Polar]. This will definitely make my-->
+<!--                    life a lot easier... HUGE time-saver.-->
+                    </span>
+
+                </p>
+
+                <!--<p>-->
+
+                    <!--<i class="fa fa-quote-left" aria-hidden="true"></i>-->
+
+                    <!--<span>-->
+                        <!--Through polar, I've set up a mind map of the content I consume which no other platform has yet done as wonderfully as Polar.-->
+
+                        <!--<a href="https://twitter.com/Aay17ush">Aayush Kucheria - Student</a>-->
+                    <!--</span>-->
+
+                <!--</p>-->
+
+
+                <!--<p>-->
+
+                    <!--<i class="fa fa-quote-left" aria-hidden="true"></i>-->
+
+                    <!--<span>-->
+                        <!--Most of my professors publish their Powerpoints online before class. I'll download this, save it as a PDF, then open it up in Polar. During lecture, I'll pull the PDF up in Polar on my laptop, and take notes and annotations along with the document. I can either create flashcards on the spot, or go back through later. Since Polar shows the flashcards right by the annotation, I always know where I am and what flashcards I have created - no need to go wading through Anki to see where I left off.-->
+
+                        <!--<a href="https://www.reddit.com/r/PolarBookshelf/comments/b6bs1p/using_polar_in_college_courses/">Reddit user kelsaurus89</a>-->
+                    <!--</span>-->
+
+                <!--</p>-->
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="document-repository"  class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+            <div class="col col-xs text-center">
+
+                <div class="subtitle overview text-justify">
+
+                    <h2>All Your Documents in One Place</h2>
+
+                    <p>
+                        All your PDFs, eBooks, and web content are kept in one place
+                        - the <b>Document Repository</b>. Once you're done reading a
+                        document it can be archived and is hidden by default but can
+                        be referenced at any time.
+                    </p>
+                </div>
+
+                <div class="img-shadow-wrapper pb-5 text-center">
+
+                    <div class="ml-auto mr-auto"
+                         style="">
+
+                        {%- include image.html
+                                    alt="Polar Document Repository for all your PDFs and eBooks"
+                                    class="img-fluid img-shadow img-screenshot"
+                                    src=".//assets/screenshots/2019-11-document-view.png"
+                                    style="" -%}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="annotation-viewer" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+            <div class="col col-xs text-center">
+
+                <div class="subtitle overview text-justify">
+
+                    <h2>Annotations Viewer to Track your Highlights and Notes</h2>
+
+                    <p>
+                        Polar includes an integrated annotation viewer to keep
+                        track of all your notes.  Search, filter by tags, and
+                        sort all your highlights, comments, and figures in one
+                        place.
+                    </p>
+                </div>
+
+                <div class="img-shadow-wrapper pb-5">
+
+                    <div class="" style="">
+                        {%- include image.html
+                                    alt="Polar Annotation Viewer"
+                                    class="img-fluid img-shadow img-screenshot"
+                                    src="./assets/screenshots/2019-11-annotation-view.png"
+                                    style="" -%}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+
+            <div class="col col-xs text-center pb-5">
+
+                <div class="m-auto subtitle" style="">
+
+                    <h2>Manage your Reading Queue with Incremental Reading</h2>
+
+                    <p>
+                        Your queue can be managed by <b>both flags and tags</b>.  The
+                        document repository shows the progress of each document
+                        and you can filter by tags to narrow down what you want
+                        to read next.
+                    </p>
+
+
+                </div>
+
+                <div class="mt-5" style="">
+
+                    <figure>
+
+                        {%- include image.html
+                                    alt="Document Repository filtering by tag"
+                                    class="img-fluid img-shadow img-screenshot"
+                                    src="./assets/screenshots/tag-filters-2019-04.png" -%}
+
+                        <!--<figcaption class="m-3 muted">Filter documents by tag</figcaption>-->
+
+                    </figure>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+            <div class="col col-xs text-center">
+
+                <div class="subtitle overview text-justify">
+
+                    <h2>Track Your Reading Progress</h2>
+
+                    <p>
+                        Polar supports integrated statistics to keep track of your reading.  Set a goal
+                        per per day and make sure you're making long term progress.
+                    </p>
+                </div>
+
+                <div class="img-shadow-wrapper pb-5">
+
+                    <div class="" style="">
+                        {%- include image.html
+                                    alt="Polar Reading Progress"
+                                    class="img-fluid img-shadow img-screenshot"
+                                    src="./assets/screenshots/reading-progress.png"
+                                    style="" -%}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+            <div class="col col-xs text-center">
+
+                <div class="subtitle overview text-justify">
+
+                    <h2>Integrated Document Viewer</h2>
+
+                    <p>
+                        Polar's integrated document viewer means you have the <b>best</b> reading experience possible.
+                        We support PDF, HTML and <b style="background-color: yellow;">highlighting</b>, and commenting
+                        so you never leave a state of flow while learning.
+                    </p>
+                </div>
+
+                <div class="img-shadow-wrapper pb-5">
+
+                    <div class="" style="">
+                        {%- include image.html
+                        alt="Polar Reading Progress"
+                        class="img-fluid img-shadow img-screenshot"
+                        src="./assets/screenshots/cnn5.png"
+                        style="" -%}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+
+            <div class="col-12 subtitle p-1">
+
+                <h2>Highlight and Annotate</h2>
+
+                <p class="text-h3 text-justify">
+
+                    Annotations are a central feature to Polar.  While reading documents
+                    you can underline text or create area highlights.  Once created, you
+                    can attach additional metadata to annotations such as comments and
+                    flashcards.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-12 text-center m-3" style="">
+
+                <div class="img-shadow-wrapper pb-3">
+                    {%- include image.html
+                                alt="Polar supports text annotations"
+                                class="img-fluid img-shadow img-screenshot"
+                                src="./assets/screenshots/highlighting-zoomed.png"
+                                style="" -%}
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="fdb-block" data-block-type="features" data-id="1" draggable="false">
+    <div class="container">
+        <div class="row text-center">
+
+            <div class="subtitle col-12 text-center p-1">
+
+                <a name="features"></a>
+                <h2>Desktop, Web, and Fully Cloud Aware</h2>
+
+                <p class="text-justify">
+                    Polar is fully cross-platform and supported on MacOS,
+                    Windows, Linux, Chrome, Firefox, and Safari.
+                </p>
+
+                <p class="text-justify">
+
+                    Polar is also <b>fully cloud-aware</b> and supports
+                    synchronizing your documents across multiple devices.  Based
+                    on Google's Firebase, Polar supports real-time
+                    synchronization of your documents to other devices.
+                </p>
+
+                <p class="text-justify">
+                    But we don't stop there.  Polar also supports the web so you
+                    can access your data anywhere.
+                </p>
+
+                <p class="text-justify">
+                    If you just want to <b>keep your data locally</b> we won't
+                    force you to use the cloud.  Polar allows you to work
+                    local and <i>offline</i> without using any cloud resources
+                    whatsoever.
+                </p>
+
+                <div class="ml-auto mr-auto">
+
+                    {%- include image.html
+                                alt="Polar supports all platforms including MacOS, Windows, Linux, and Firefox."
+                                class="mt-4 img-fluid img-screenshot"
+                                src="/assets/images/platforms.png"
+                                style="" -%}
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+<!--<section id="pagemarks-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
+<!--<div class="container-fluid">-->
+<!--<div class="col col-lg p-4 text-center">-->
+<!--<div class="embed-responsive embed-responsive-16by9">-->
+<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/LfmvrzE7U-M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+
+
+
+<!--<section id="document-repository-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
+<!--<div class="container-fluid">-->
+<!--<div class="col col-lg p-4 text-center">-->
+<!--<div class="embed-responsive embed-responsive-16by9">-->
+<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/QxgDWcMJvRE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+
+
+<section id="capturing-content" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+
+            <div class="col text-center" style="">
+
+                <div class="subtitle">
+
+                    <h2>Captured (and Offline) Web Content</h2>
+
+                    <p>
+                        Polar supports reading and <b>annotating HTML documents</b>.  We
+                        call this process 'capturing' content and we store the document
+                        permanently in your own private archive.
+                    </p>
+
+                    <p>
+                        Since most
+                        pages aren't designed for reading and have ads, chrome, and other
+                        annoyances within the page, we <b>render the content as a tablet
+                        device</b> to make the content more readable.
+                    </p>
+
+                    <div class="feature-list-vertical ml-auto mr-auto" style="max-width: 700px;">
+
+                        <div class="row text-left">
+
+                            <div class="col-3 text-center">
+                                <i class="fab fa-chrome fa-4x"></i>
+                            </div>
+
+                            <div class="col-9">
+
+                                <h3><strong>Browser emulation</strong></h3>
+
+                                <p>
+                                    Emulate multiple browsers and mobile content to make sure
+                                    pages captured are rendered properly.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="feature-list-vertical ml-auto mr-auto" style="max-width: 700px;">
+
+                        <div class="row text-left">
+
+                            <div class="col-3 text-center">
+                                <i class="fas fa-archive fa-4x"></i>
+                            </div>
+
+                            <div class="col-9">
+
+                                <h3><strong>Personal Archive</strong></h3>
+
+                                <p>
+                                    All content is stored in a personal archive which allows you
+                                    to refer back to important documents and view annotations
+                                    over time.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!--<div style="">-->
+                    <!--<figure>-->
+                    <!--<img alt="image" class="img-fluid img-shadow" src="./assets/screenshots/document-repository-filter.png">-->
+                    <!--<figcaption class="m-3 muted">Filter documents by tag</figcaption>-->
+
+                    <!--</figure>-->
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row align-items-top">
+
+            <div class="col text-center">
+
+                <div class="img-shadow-wrapper pb-5">
+
+                    <div style="">
+                        {%- include image.html
+                        alt="Captured Content"
+                        class="img-fluid img-shadow img-screenshot"
+                        src="./assets/screenshots/capture-browser-narrow.png"
+                        style="" -%}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!--<section id="captured-content-video" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">-->
+<!--<div class="container-fluid">-->
+<!--<div class="col col-lg p-4 text-center">-->
+<!--<div class="embed-responsive embed-responsive-16by9">-->
+<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/wx2gRb695yo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+
+<section id="integrated-annotations" class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row align-items-top">
+            <div class="col subtitle">
+
+                <h2>Integrated Annotations Sidebar</h2>
+
+                <p>
+
+                    All annotations are easily accessible in the sidebar.  You can create
+                    flashcards, add comments, and <b>jump to any text highlight</b> in the main
+                    document at any time.
+
+                </p>
+
+                <div class="img-shadow-wrapper pb-5">
+
+                    {%- include image.html
+                                alt="Annotation Sidebar"
+                                class="img-fluid img-shadow img-screenshot"
+                                src="./assets/screenshots/annotation-sidebar-zoomed.png"
+                                style="" -%}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col subtitle text-center social-proof">
+
+
+                <p>
+
+                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+
+                    <span>
+                Through polar, I've set up a mind map of the content I consume which no other platform has yet done as wonderfully as Polar.
+
+                <a href="https://twitter.com/Aay17ush" rel="nofollow">Aayush Kucheria - Student</a>
+                </span>
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{%- include pricing.html -%}
+
+
+<section class="fdb-block" data-block-type="contents" data-id="6" draggable="false">
+    <div class="container">
+
+        <div class="row">
+            <div class="col subtitle mb-4">
+
+                <h2>Used and Trusted by Top Organizations</h2>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/nytimes.jpeg" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/columbia.jpg" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/illinois.png" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/mit.png" style=""/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/berkeley.png" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/rutgers.svg" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/stanford.png" style=""/>
+            </div>
+            <div class="col text-center social-proof-logo mt-auto mb-auto">
+                <img src="assets/social-proof-logos/ucla.png" style=""/>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!--<section id="more-exciting-features" class="fdb-block" data-block-type="contents" data-id="1" draggable="false">-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <div class="col text-center">-->
+
+<!--                <h1>More Exciting Features Are Coming!</h1>-->
+
+<!--                <div class="subtitle p-4 lead" style="max-width: 750px;">-->
+
+<!--                    We update <b>Polar</b> every couple of <i>days</i> with new features and-->
+<!--                    listen to your feedback on our <a-->
+<!--                        href="https://github.com/burtonator/polar-bookshelf">forum</a>. Jump-->
+<!--                    on our <a href="https://discord.gg/GT8MhA6">Discord</a>-->
+<!--                    or suggest a feature in Github and there's a good chance it will be-->
+<!--                    implemented.-->
+
+<!--                </div>-->
+
+<!--                <div class="mt-1 mb-1">-->
+
+<!--                    <a class="btn btn-outline-secondary btn-lg font-weight-bold m-3"-->
+<!--                       onclick="sendEvent('main-cta', 'download-desktop-app-bottom')"-->
+<!--                       href="https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=home-download-cta-bottom&utm_medium=site">Download Desktop App</a>-->
+
+<!--                    <a class="btn btn-success btn-lg font-weight-bold m-3"-->
+<!--                       onclick="sendEvent('main-cta', 'open-polar-in-browser-bottom')"-->
+<!--                       href="https://app.getpolarized.io">Open Polar in your Browser</a>-->
+
+<!--                </div>-->
+
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+
+
+
+
+<!--<div class="container">-->
+    <!--<div class="row justify-content-center">-->
+        <!--<div class="col-12  col-md-10 col-lg-8 col-xl-6 text-center">-->
+
+            <!--<h1>Never miss an update</h1>-->
+
+            <!--<iframe src="./mailchimp-iframe.html" frameborder="0" style="width: 100%; height: 150px;" scrolling="no"></iframe>-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
