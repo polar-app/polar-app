@@ -1,0 +1,142 @@
+<html>
+<head>
+
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
+    <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../pdfviewer-custom/progress.css">
+
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            /*background-color: #3f3f3f;*/
+        }
+
+        #browser-navbar-parent {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #EEEEEE;
+        }
+
+        body {
+            margin-top: 60px;
+        }
+
+        webview {
+            height: 35000px;
+            width: 750px;
+            margin: 0 auto;
+            /*border: 1px solid black;*/
+        }
+
+        #content-parent {
+        }
+
+        #content-parent {
+            border: 9px solid transparent;
+            background-clip: content-box;
+            -o-border-image: url(../../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            border-image: url(../../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            background-color: white;
+        }
+
+        /*.linkbar {*/
+        /*background-color: #EEEEEE;*/
+        /*padding: 3px 0 3px 0;*/
+        /*border-bottom: 1px solid darkgrey;*/
+        /*width: 100%;*/
+        /*overflow: hidden;*/
+        /*height: 30px;*/
+        /*}*/
+
+        /*.linkbar input[type='text'] {*/
+        /*margin: 0 3px 0 3px;*/
+        /*padding: 3px;*/
+        /*width: calc(100% );*/
+        /*!*border-radius: 1px;*!*/
+        /*font-size: 14px;*/
+        /*line-height: 1em;*/
+        /*color: #333333;*/
+        /*}*/
+
+        /*.linkbar {*/
+        /*display: table;*/
+        /*}*/
+
+        /*.linkbar > .linkbar-block {*/
+        /*display: table-cell;*/
+        /*vertical-align: middle;*/
+        /*text-align: center;*/
+        /*}*/
+
+        /*.linkbar-right {*/
+        /*width: 40px;*/
+        /*}*/
+
+        /*.linkbar-left {*/
+        /*width: 30px;*/
+        /*}*/
+
+        /*.linkbar-center {*/
+        /*!*padding: 0 3px 0 3px;*!*/
+        /*}*/
+
+        /*.linkbar .fa {*/
+        /*color: #444444;*/
+        /*font-size: 18px;*/
+        /*}*/
+
+        /*.linkbar-button {*/
+        /*padding: 3px;*/
+        /*}*/
+
+        /*.linkbar-button:hover {*/
+        /*background-color: #CCCCCC;*/
+        /*}*/
+
+    </style>
+
+    <title>Capture Web Content</title>
+
+</head>
+
+<body>
+
+
+<div id="container">
+
+    <div id="browser-navbar-parent">
+
+
+    </div>
+
+    <!--<div id="content-parent">-->
+
+        <!-- NOTE do not set nodeintegration="false" as the presents of the
+             attribute is all that's used, not the actual value -->
+
+        <webview autosize
+                 name="content"
+                 id="content"
+                 src="./splash.html"
+                 disablewebsecurity
+                 class="border mb-2"
+                 preload="../../web/js/capture/renderer/CapturePreload.js"></webview>
+
+    <!--</div>-->
+
+
+</div>
+
+<script>require('polar-loader').load("./js/entry.js");</script>
+
+</body>
+</html>
