@@ -51,6 +51,14 @@
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
 
 
+        // Make resize of the 
+
+        // FIXME: get annotations placed properly when the pdf viewer pages are activated/deactivated
+
+        // FIXME: get find working
+        
+        // FIXME: resize of the doc layout... 
+
         // FIXME: full screen mode without a navbar...
         // FIXME: sidebar that can be toggled on and off with the pdf width
         // adjusted

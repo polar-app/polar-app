@@ -129,6 +129,8 @@ export class PDFDocument extends React.Component<IProps, IState> {
         this.doLoad(this.docViewer)
             .catch(err => log.error("Could not load PDF: ", err));
 
+        // FIXME: remove listeners...
+
     }
 
     private async doLoad(docViewer: DocViewer) {

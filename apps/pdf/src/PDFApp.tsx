@@ -6,6 +6,7 @@ import {AppInitializer} from "../../../web/js/apps/repository/AppInitializer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import Button from 'reactstrap/lib/Button';
+import { TextAreaHighlight } from './TextAreaHighlight';
 
 let iter: number = 0;
 
@@ -46,35 +47,6 @@ const ViewerContainer = () => {
 
         </main>
     );
-
-};
-
-const TextAreaHighlight = () => {
-
-    const pageElement = document.querySelector(".page[data-page-number='1']");
-
-    if (! pageElement) {
-        return null;
-    }
-
-    const textLayerElement = pageElement.querySelector(".textLayer");
-
-    if (! textLayerElement) {
-        return null;
-    }
-
-    return ReactDOM.createPortal(
-        <div style={{
-                 position: 'absolute',
-                 backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                 top: '100px',
-                 left: '100px',
-                 width: '100px',
-                 height: '100px'
-             }}>
-
-        </div>,
-        textLayerElement);
 
 };
 
