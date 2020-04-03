@@ -1,68 +1,9 @@
 import * as React from 'react';
-import {Tags} from 'polar-shared/src/tags/Tags';
-import {Group} from "../../js/datastore/sharing/db/Groups";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Lorems} from "polar-shared/src/util/Lorems";
-import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
-import {Link} from "react-router-dom";
-import {Lightbox} from "../../js/ui/util/Lightbox";
-import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {ActionButton} from "../../js/ui/mobile/ActionButton";
-import {
-    HolidayPromotionButton,
-    HolidayPromotionCopy
-} from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
-import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
-import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
-import milliseconds from "mocha/lib/ms";
-import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
-import {ReviewFinished} from "../../../apps/repository/js/reviewer/ReviewFinished";
-import {BottomSheet} from "../../js/ui/mobile/BottomSheet";
-import {LeftSidebar} from "../../js/ui/motion/LeftSidebar";
 import {FadeIn} from "../../js/ui/motion/FadeIn";
-import {useState} from "react";
-import {Button, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
-
-import {motion, AnimatePresence} from 'framer-motion';
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
-import {HashRouter} from "react-router-dom";
-import {AccountControlSidebar} from "../../../apps/repository/js/AccountControlSidebar";
-import {PolarSVGIcon} from "../../js/ui/svg_icons/PolarSVGIcon";
-import {PageTransition} from "../../js/ui/motion/PageTransition";
-import {IndeterminateProgressBar} from "../../js/ui/progress_bar/IndeterminateProgressBar";
-import {Pulse} from "../../js/ui/motion/Pulse";
-import {SlideFromRight} from "../../js/ui/motion/SlideFromRight";
-import {BlackoutCurtain} from "../../js/ui/BlackoutCurtain";
-import {ReviewerModal} from "../../../apps/repository/js/reviewer/ReviewerModal";
-import {CachedRoute} from "../../js/react/router/CachedRoute";
-import {ReactRouters} from "../../js/react/router/ReactRouters";
-import {Cached} from "../../js/react/Cached";
-import {FadeBlackout} from "../../js/ui/motion/FadeBlackout";
-import {SwitchButton} from "../../js/ui/SwitchButton";
-import {ScaleAndFadeIn} from "../../js/ui/motion/ScaleAndFadeIn";
-import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
-import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
-import {MockDocMetas} from "../../js/metadata/DocMetas";
-import {Preconditions} from "polar-shared/src/Preconditions";
-import {DropBox} from "../../js/ui/drop_box/DropBox";
-import {FilterIcon} from "../../js/ui/icons/FixedWidthIcons";
-import {InputFilter} from "../../js/ui/input_filter/InputFilter2";
-import {AnimatedRoutes} from "./AnimatedRoutes";
-import {Toaster} from "../../js/ui/toaster/Toaster";
-import {FakePagemark} from "./FakePagemark";
-import {AddContentButtonOverlay, devices} from "../../js/apps/viewer/AddContentButtonOverlay";
-import {NewToasts} from "./NewToasts";
-import {ReviewerDemo} from "./ReviewerDemo";
-import {KeyDownDemo} from "./KeyDownDemo";
-import {CreatableSelectDemo} from "./CreatableSelectDemo";
 import {SchoolSelectDemo} from "./SchoolSelectDemo";
-import {TagChicklet} from "../../js/ui/tags/TagChicklet";
-import { TagChickletDemo } from './TagChickletDemo';
+import {KeyBindingDemo} from "./key-bindings/KeyBindingDemo";
 
 const styles = {
     swatch: {
@@ -143,27 +84,34 @@ export class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        const dockPanels: ReadonlyArray<DockPanel> = [
-            {
-                id: "left-sidebar",
-                type: 'fixed',
-                component: <div>left</div>,
-                width: 350
-            },
-            {
-                id: "main",
-                type: 'grow',
-                component: <div>main</div>,
-                grow: 1
-            },
-            {
-                id: "right-sidebar",
-                type: 'fixed',
-                component: <div>right</div>,
-                width: 350
-            }
+        return (
+            <div>
+                <KeyBindingDemo/>
+            </div>
+        );
 
-        ];
+        //
+        // const dockPanels: ReadonlyArray<DockPanel> = [
+        //     {
+        //         id: "left-sidebar",
+        //         type: 'fixed',
+        //         component: <div>left</div>,
+        //         width: 350
+        //     },
+        //     {
+        //         id: "main",
+        //         type: 'grow',
+        //         component: <div>main</div>,
+        //         grow: 1
+        //     },
+        //     {
+        //         id: "right-sidebar",
+        //         type: 'fixed',
+        //         component: <div>right</div>,
+        //         width: 350
+        //     }
+        //
+        // ];
 
         // const LeftSidebar = () => (
         //     <div style={{
