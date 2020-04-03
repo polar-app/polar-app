@@ -56,6 +56,7 @@
         // FIXME: get annotations placed properly when the pdf viewer pages are activated/deactivated
 
         // FIXME: get find working
+        // FIXME: when a PDF is being downloaded we need to track and show progress.
         
         // FIXME: resize of the doc layout... 
 
@@ -74,7 +75,6 @@
         // FIXME: the sidebar / annotation bar needs to work.
         // FIXME: dark mode for the PDF (needs changes to pdfjs)
         // FIXME: verify that it works on mobile...
-
             // FIXME the PDF version of this viewer doesn't seem to handle CPU
             // properly and continues to composite this on the GPU using 100%
             // of resources while scrolling.  This is probably the issue we

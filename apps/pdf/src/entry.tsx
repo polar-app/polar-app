@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Logging} from '../../../web/js/logger/Logging';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PDFApp} from "./PDFApp";
-import {PDFAppURLs} from "./PDFAppURLs";
 
 const log = Logger.create();
 

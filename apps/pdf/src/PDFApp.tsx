@@ -7,6 +7,16 @@ import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import Button from 'reactstrap/lib/Button';
 import { TextAreaHighlight } from './TextAreaHighlight';
+import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
+import {ControlledPopupProps} from "../../../web/js/ui/popup/ControlledPopup";
+import {
+    AnnotationBarCallbacks,
+    OnHighlightedCallback
+} from "../../../web/js/ui/annotationbar/ControlledAnnotationBar";
+import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCreatedEvent";
+import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
+import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
+import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 
 let iter: number = 0;
 
@@ -128,10 +138,13 @@ export class PDFApp {
             onNeedsAuthentication: ASYNC_NULL_FUNCTION
         });
 
+
         const rootElement = document.getElementById('root') as HTMLElement;
 
         // TODO: pass the appURL up so I can use the persistenceLayer to add
         // a snapshot listener for the doc then load it...
+
+        this.startAnnotationBar();
 
         ReactDOM.render((
             <div style={{
@@ -157,6 +170,32 @@ export class PDFApp {
         //     //     <Viewer/>
         //     // </div>
         //     ), rootElement);
+
+    }
+
+
+    private startAnnotationBar() {
+
+        const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
+        const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
+
+        const annotationBarControlledPopupProps: ControlledPopupProps = {
+            id: 'annotationbar',
+            placement: 'top',
+            popupStateEventDispatcher,
+            triggerPopupEventDispatcher
+        };
+
+        const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
+          // noop
+        };
+
+        const annotationBarCallbacks: AnnotationBarCallbacks = {
+            onHighlighted,
+            // onComment
+        };
+
+        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
 
     }
 

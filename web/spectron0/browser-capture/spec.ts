@@ -5,7 +5,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 // we can change the polar data dir with the following
 // PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-describe('Browser Capture', function() {
+describe('browser-capture', function() {
 
     console.log("Setting up spectron...");
     Spectron.setup(__dirname);
