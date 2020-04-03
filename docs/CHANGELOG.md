@@ -1,6 +1,7 @@
 # ...
 
 - upgraded to latest version of typescript and tslint
+- annotations in the annotation viewer can now be rich text.
 
 # 1.100.0
 

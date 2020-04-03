@@ -136,7 +136,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                     </div>
 
                     <div style={Styles.annotationText}>
-                        {repoAnnotation.text}
+                        <div dangerouslySetInnerHTML={{__html: repoAnnotation.html || 'no text'}}/>
                     </div>
 
                     <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
