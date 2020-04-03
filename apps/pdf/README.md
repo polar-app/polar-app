@@ -60,7 +60,6 @@
         
         // FIXME: resize of the doc layout... 
 
-        // FIXME : get the ActiveSelections system working ... 
         
         // FIXME: context menus... 
         
@@ -86,6 +85,9 @@
 
         // FIXME: jump to page number... 
         // FIXME: context menu working
+
+        // DONE : get the ActiveSelections system working ... 
+
 
 ## PDFViewer
 

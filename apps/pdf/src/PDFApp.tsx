@@ -17,6 +17,7 @@ import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCre
 import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
+import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 
 let iter: number = 0;
 
@@ -138,6 +139,7 @@ export class PDFApp {
             onNeedsAuthentication: ASYNC_NULL_FUNCTION
         });
 
+        new ProgressService().start();
 
         const rootElement = document.getElementById('root') as HTMLElement;
 

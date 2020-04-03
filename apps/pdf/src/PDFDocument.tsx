@@ -13,6 +13,8 @@ import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
 import {FindManager, Finder} from "./Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
+import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
+import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 
 const log = Logger.create();
 
@@ -143,7 +145,23 @@ export class PDFDocument extends React.Component<IProps, IState> {
             disableAutoFetch: true,
         };
 
-        const doc = await PDFJS.getDocument(init).promise;
+        const loadingTask = PDFJS.getDocument(init);
+
+        let progressTracker: ProgressTracker | undefined;
+        loadingTask.onProgress = (progress) => {
+
+            if (! progressTracker) {
+                progressTracker = new ProgressTracker({
+                    id: 'pdf-download',
+                    total: progress.total
+                });
+            }
+
+            ProgressMessages.broadcast(progressTracker!.abs(progress.loaded));
+
+        };
+
+        const doc = await loadingTask.promise;
         const page = await doc.getPage(1);
         const viewport = page.getViewport({scale: 1.0});
 

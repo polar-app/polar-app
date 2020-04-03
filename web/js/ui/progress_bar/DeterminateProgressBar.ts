@@ -7,7 +7,7 @@ const ID = 'polar-determinate-progress-bar';
 
 const log = Logger.create();
 
-const FAST_PROGRESS_CUTOFF = 300;
+const FAST_PROGRESS_CUTOFF = 100;
 
 /**
  * Simple progress bar that we can display at any time on a page without
@@ -23,6 +23,7 @@ export class DeterminateProgressBar {
             typeof value === 'number' ? value : value.progress;
 
         if (! progress || progress < 0 || progress > 100) {
+            console.warn("Invalid value: ", progress);
             // this is an invalid value...
             return;
         }
@@ -41,6 +42,7 @@ export class DeterminateProgressBar {
             // it was processing which might happen sometimes if we're given
             // the last job.  Either way even if it's a programmers error there
             // is no need to update the UI here.
+
             return;
         }
 
@@ -48,6 +50,7 @@ export class DeterminateProgressBar {
         progressElement.value = progress;
 
         if (progress >= 100) {
+
             this.destroy();
         }
 
