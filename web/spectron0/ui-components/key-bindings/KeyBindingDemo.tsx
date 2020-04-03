@@ -2,6 +2,13 @@ import {GlobalHotKeys, HotKeys} from "react-hotkeys";
 import * as React from 'react';
 import {Input} from "reactstrap";
 
+// FIXME: add supprt for getting all the active key bindings and showing them
+// via control+?
+//
+// https://github.com/greena13/react-hotkeys#displaying-a-list-of-available-hot-keys
+//
+// use a lightbox for this??
+
 const globalKeyMap = {
     FIND: "f",
 };
