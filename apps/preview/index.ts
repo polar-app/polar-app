@@ -1,7 +1,13 @@
 import PDFJS, {DocumentInitParameters, PDFDocumentProxy} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
-import {PDFViewer, PDFFindController, EventBus, PDFLinkService} from 'pdfjs-dist/web/pdf_viewer';
+import {
+    EventBus,
+    PDFFindController,
+    PDFLinkService,
+    PDFViewer,
+    PDFViewerOptions
+} from 'pdfjs-dist/web/pdf_viewer';
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreviewCached,
@@ -9,35 +15,13 @@ import {
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
-import { Version } from 'polar-shared/src/util/Version';
+import {Version} from 'polar-shared/src/util/Version';
 import {Analytics} from "../../web/js/analytics/Analytics";
 import {Strings} from "polar-shared/src/util/Strings";
+import {Prerenderer} from "./Prerenderer";
+import {UserAgents} from "./UserAgents";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
-
-namespace pdfjs {
-
-    export interface FindCommandState {
-        query: string;
-        phraseSearch: boolean;
-        caseSensitive: boolean;
-        highlightAll: boolean;
-        findPrevious: boolean;
-    }
-
-    export interface IFindController {
-        reset(): void;
-        nextMatch(): void;
-        executeCommand(cmd: string, state: FindCommandState): void;
-        setDocument(doc: PDFDocumentProxy): void;
-
-    }
-
-    export interface ILinkService {
-        setDocument(doc: PDFDocumentProxy, baseURL: string | null): void;
-    }
-
-}
 
 async function getDocPreview(): Promise<DocPreviewCached> {
 
@@ -110,18 +94,6 @@ function handleDocLoad() {
         }
 
     }, true);
-
-}
-
-export class Prerenderer {
-
-    public static loading() {
-        (window as any).prerenderReady = false;
-    }
-
-    public static done() {
-        (window as any).prerenderReady = true;
-    }
 
 }
 
@@ -239,7 +211,7 @@ async function doLoad() {
         eventBus,
     });
 
-    const findController = <pdfjs.IFindController> new PDFFindController({
+    const findController = new PDFFindController({
         linkService,
         eventBus
     });
@@ -249,14 +221,18 @@ async function doLoad() {
 
     // NOTE: if we set textLayerMode: 0 no text is rendered.
 
-    const viewerOpts = {
+    if (UserAgents.isPrerender()) {
+        Prerenderer.injectCSS();
+    }
+
+    const viewerOpts: PDFViewerOptions = {
         container,
         textLayerMode: 2,
         linkService,
         findController,
         eventBus,
-        // removePageBorders: true,
-        // defaultViewport: viewport
+        // renderer: "svg",
+        renderer: 'canvas'
     };
 
     const viewer = new PDFViewer(viewerOpts);
@@ -268,14 +244,8 @@ async function doLoad() {
     // FIXME: title, description, and all other metadata should be shown on the
     // page for proper SEO + user metadata (DOI, author information, etc)
 
-    // TODO: other approaches for pre-rendering:
-    //
-    // - store the textlayer in firestore, and then assemble the HTML on the
-    //   backend in realtime including the metadata like title, link, description,
-    //   etc
-
     viewer.setDocument(doc);
-    (<pdfjs.ILinkService> linkService).setDocument(doc, null);
+    linkService.setDocument(doc, null);
 
     const pageView = viewer.getPageView(1);
 

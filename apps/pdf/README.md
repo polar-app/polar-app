@@ -53,10 +53,12 @@
 
         // Make resize of the 
 
+        // FIXME: context menu
+        // FIXME: area highlights
+
         // FIXME: get annotations placed properly when the pdf viewer pages are activated/deactivated
 
         // FIXME: get find working
-        // FIXME: when a PDF is being downloaded we need to track and show progress.
         
         // FIXME: resize of the doc layout... 
 
@@ -64,11 +66,11 @@
         // FIXME: context menus... 
         
         // FIXME: key bindings
+        // FIXME: area highlights
 
         // FIXME: full screen mode without a navbar...
         // FIXME: sidebar that can be toggled on and off with the pdf width
         // adjusted
-        // FIXME: annotation bar working
         // FIXME: load the docMeta to determine what doc to load and listen
         // for changes
         // FIXME: the sidebar / annotation bar needs to work.
@@ -86,7 +88,8 @@
         // FIXME: jump to page number... 
         // FIXME: context menu working
 
-        // DONE : get the ActiveSelections system working ... 
+        // DONE : get the ActiveSelections / annotation bar system working ... 
+        // DONE: when a PDF is being downloaded we need to track and show progress.
 
 
 ## PDFViewer
