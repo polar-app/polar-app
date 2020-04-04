@@ -1,6 +1,6 @@
-import {GlobalHotKeys, HotKeys} from "react-hotkeys";
+import {GlobalHotKeys, HotKeys, ObserveKeys} from "react-hotkeys";
 import * as React from 'react';
-import {Input} from "reactstrap";
+import {Input, InputGroup} from "reactstrap";
 
 // FIXME: add supprt for getting all the active key bindings and showing them
 // via control+?
@@ -76,6 +76,51 @@ const DocumentFilter = () => {
 
 };
 
+const FindToolbar = () => {
+
+    const doFind = () => {
+        console.log("doFind");
+    };
+
+    const doCancel = () => {
+        console.log("doCancel");
+    };
+
+    const keyMap = {
+        EXECUTE: 'enter',
+        CANCEL: 'escape'
+    };
+
+    const handlers = {
+        EXECUTE: () => doFind(),
+        CANCEL: () => doCancel()
+    };
+
+    return (
+
+        <HotKeys keyMap={keyMap}
+                 handlers={handlers}
+                 style={{flexGrow: 1, display: 'flex'}}>
+            <ObserveKeys
+                only={[
+                    'escape', 'enter'
+                ]}>
+                <InputGroup size="sm" style={{flexGrow: 1}}>
+
+                    <Input placeholder="Enter search terms"
+                           autoFocus={true}
+                           onClick={() => doFind()}
+                           className="p-0 pl-1 pr-1"/>
+
+                </InputGroup>
+            </ObserveKeys>
+
+        </HotKeys>
+
+    );
+
+};
+
 export const KeyBindingDemo = () => {
 
     return (
@@ -85,6 +130,8 @@ export const KeyBindingDemo = () => {
             <GlobalHotKeys keyMap={globalKeyMap}>
 
                 This is a react key binding demo
+
+                <FindToolbar/>
 
                 <DocumentFilter/>
 
