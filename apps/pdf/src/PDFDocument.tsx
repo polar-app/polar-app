@@ -180,14 +180,6 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
         this.props.onFinder(finder);
 
-        finder.exec({
-            query: 'Trace',
-            phraseSearch: false,
-            caseSensitive: false,
-            highlightAll: true,
-            findPrevious: false
-        }).catch(err => console.error(err));
-
         const doResize = () => {
             docViewer.viewer.currentScaleValue = 'page-width';
         };

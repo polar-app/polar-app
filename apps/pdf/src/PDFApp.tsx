@@ -4,9 +4,6 @@ import {PDFDocument} from "./PDFDocument";
 import {PersistenceLayerManager} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AppInitializer} from "../../../web/js/apps/repository/AppInitializer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import Button from 'reactstrap/lib/Button';
-import { TextAreaHighlight } from './TextAreaHighlight';
 import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
 import {ControlledPopupProps} from "../../../web/js/ui/popup/ControlledPopup";
 import {
@@ -18,97 +15,8 @@ import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
-
-let iter: number = 0;
-
-const Toolbar = () => (
-    <div style={{
-             display: 'flex'
-         }}
-         className="border-bottom p-1">
-        {/*<NavLogo/>*/}
-
-        <Button color="clear">
-            <i className="fas fa-expand"/>
-        </Button>
-
-        <Button color="clear">
-            <i className="fas fa-search"/>
-        </Button>
-
-    </div>
-);
-
-const ViewerContainer = () => {
-
-    ++iter;
-
-    return (
-
-        <main id="viewerContainer"
-              itemProp="mainContentOfPage"
-              data-iter={iter}>
-
-            <div>
-                <div id="viewer" className="pdfViewer">
-                    <div/>
-
-                </div>
-            </div>
-
-        </main>
-    );
-
-};
-
-const DocLayout = () => (
-
-    <div style={{
-             display: 'flex',
-             flexDirection: 'column',
-             flexGrow: 1
-         }}>
-        <Toolbar/>
-
-        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-
-            <DockLayout dockPanels={[
-                {
-                    id: "dock-panel-left",
-                    type: 'grow',
-                    style: {
-                        position: 'relative'
-                    },
-                    component:
-                        <div>
-
-                            <ViewerContainer/>
-
-                            <PDFDocument
-                                onFinder={finder => console.log({finder})}
-                                target="viewerContainer"
-                                url="./test.pdf"/>
-
-                            <TextAreaHighlight/>
-
-                        </div>
-                },
-                {
-                    id: "doc-panel-center",
-                    type: 'fixed',
-                    component: <div>this is the right panel</div>,
-                    width: 300,
-                    style: {
-                        overflow: 'none'
-                    }
-                }
-            ]}/>
-        </div>
-
-    </div>
-
-
-);
+import {ViewerContainer} from "./ViewerContainer";
+import {PDFViewer} from './PDFViewer';
 
 const PositionedLayout = () => (
     <div style={{marginRight: '250px'}}>
@@ -122,8 +30,6 @@ const PositionedLayout = () => (
     </div>
 
 );
-
-
 
 export class PDFApp {
 
@@ -155,7 +61,7 @@ export class PDFApp {
                     flexGrow: 1
                  }}>
 
-                <DocLayout/>
+                <PDFViewer/>
 
                 {/*<div style={{*/}
 
