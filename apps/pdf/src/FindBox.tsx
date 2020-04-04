@@ -1,16 +1,19 @@
 import * as React from 'react';
 import Input from 'reactstrap/lib/Input';
-import {Callback1} from "polar-shared/src/util/Functions";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {HotKeys} from "react-hotkeys";
 import Button from 'reactstrap/lib/Button';
+import InputGroup from "reactstrap/lib/InputGroup";
+import {CloseIcon} from "../../../web/js/ui/icons/FixedWidthIcons";
 
 interface IProps {
     readonly active: boolean | undefined;
-    readonly onFindExecute: Callback1<string>;
+    readonly onExecute: Callback1<string>;
+    readonly onCancel: Callback;
 }
 
 const keyMap = {
-    EXECUTE: 'control+enter'
+    EXECUTE: 'enter'
 };
 
 export const FindBox = (props: IProps) => {
@@ -22,7 +25,7 @@ export const FindBox = (props: IProps) => {
     let value: string = "";
 
     const doFind = () => {
-        props.onFindExecute(value);
+        props.onExecute(value);
     };
 
     const handlers = {
@@ -32,41 +35,57 @@ export const FindBox = (props: IProps) => {
     };
 
     return (
+
         <div style={{
-                position: 'absolute',
-                top: '50px',
-                zIndex: 10,
-                backgroundColor: 'var(--primary-background-color)'
+                 position: 'absolute',
+                 top: '50px',
+                 zIndex: 10,
+                 width: '100%',
              }}>
 
-            <HotKeys keyMap={keyMap} handlers={handlers}>
-                <div className="p-1">
+            <div className="p-1 ml-auto mr-auto border rounded shadow"
+                 style={{
+                     maxWidth: '400px',
+                     backgroundColor: 'var(--primary-background-color)'
+                 }}>
 
-                    <div className="mt-1">
-                        <Input placeholder="Enter search terms"
-                               onClick={() => doFind()}
-                               onChange={current => value = current.currentTarget.value}/>
+                <div className="mt-1 p-1" style={{display: 'flex'}}>
 
-                    </div>
+                    <HotKeys keyMap={keyMap}
+                             handlers={handlers}
+                             style={{flexGrow: 1, display: 'flex'}}>
+                        <InputGroup size="sm" style={{flexGrow: 1}}>
 
-                    <div className="mt-2 text-right">
+                            <Input placeholder="Enter search terms"
+                                   autoFocus={true}
+                                   onClick={() => doFind()}
+                                   onChange={current => value = current.currentTarget.value}/>
 
-                        <Button size="sm"
-                                color="clear">
-                            Cancel
-                        </Button>
+                        </InputGroup>
+                    </HotKeys>
 
-                        <Button size="sm"
-                                color="primary"
-                                className="ml-1">
-                            Find
-                        </Button>
+                    <Button size="sm"
+                            color="primary"
+                            onClick={() => doFind()}
+                            className="ml-2">
+                        Find
+                    </Button>
 
-                    </div>
+                    <Button size="sm"
+                            className="m-0 ml-1 p-0"
+                            onClick={() => props.onCancel()}
+                            color="clear">
+
+                        <CloseIcon/>
+
+                    </Button>
 
                 </div>
 
-            </HotKeys>
+
+
+            </div>
+
         </div>
 
     );

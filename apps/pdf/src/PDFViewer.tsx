@@ -47,7 +47,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                             onFind={() => this.onFind()}/>
 
                 <FindBox active={this.state.findActive}
-                         onFindExecute={query => this.onFindExecute(query)}/>
+                         onCancel={() => this.onFindCancel()}
+                         onExecute={query => this.onFindExecute(query)}/>
 
                 <div style={{
                     display: 'flex',
@@ -119,6 +120,13 @@ export class PDFViewer extends React.Component<IProps, IState> {
             findPrevious: false
         }).catch(err => log.error(err));
 
+    }
+
+    private onFindCancel() {
+        this.setState({
+            ...this.state,
+            findActive: false
+        })
     }
 
 }
