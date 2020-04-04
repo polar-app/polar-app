@@ -53,6 +53,11 @@
 
         // Make resize of the 
 
+        // FIXME: zoom/scale changes
+        // FIXME: handle the dock resize issues... 
+
+        // FIXME: debouncers everywhere
+
         // FIXME: context menu
         // FIXME: area highlights
 

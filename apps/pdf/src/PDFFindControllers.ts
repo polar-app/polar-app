@@ -1,11 +1,11 @@
 import {EventBus, PDFFindController} from 'pdfjs-dist/web/pdf_viewer';
-import {Finder, FindManager, FindOpts} from "./Finders";
+import {Finder, FindHandler, FindOpts} from "./Finders";
 
 export namespace PDFFindControllers {
 
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
-        const exec = async (opts: FindOpts): Promise<FindManager> => {
+        const exec = async (opts: FindOpts): Promise<FindHandler> => {
 
             const cancel = () => {
                 eventBus.dispatch('findbarclose');

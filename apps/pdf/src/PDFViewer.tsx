@@ -4,10 +4,11 @@ import {PDFDocument} from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
-import {Finder} from "./Finders";
+import {Finder, FindHandler} from "./Finders";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {FindBox} from "./FindBox";
+import {FindToolbar} from "./FindToolbar";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {GlobalHotKeys} from "react-hotkeys";
 
 const log = Logger.create();
 
@@ -18,7 +19,12 @@ interface IProps {
 interface IState {
     readonly finder?: Finder;
     readonly findActive?: boolean;
+    readonly findHandler?: FindHandler;
 }
+
+const globalKeyMap = {
+    FIND: 'command+f'
+};
 
 export class PDFViewer extends React.Component<IProps, IState> {
 
@@ -35,20 +41,28 @@ export class PDFViewer extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const globalKeyHandlers = {
+            FIND: () => this.onFind()
+        };
+
         return (
 
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flexGrow: 1
-            }}>
+            <GlobalHotKeys
+                keyMap={globalKeyMap}
+                handlers={globalKeyHandlers}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1
+                }}>
 
                 <PDFToolbar onFullScreen={NULL_FUNCTION}
                             onFind={() => this.onFind()}/>
 
-                <FindBox active={this.state.findActive}
-                         onCancel={() => this.onFindCancel()}
-                         onExecute={query => this.onFindExecute(query)}/>
+                <FindToolbar active={this.state.findActive}
+                             onCancel={() => this.onFindCancel()}
+                             onExecute={query => this.onFindExecute(query)}/>
 
                 <div style={{
                     display: 'flex',
@@ -89,7 +103,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                     ]}/>
                 </div>
 
-            </div>
+            </GlobalHotKeys>
 
         );
     }
@@ -112,21 +126,36 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     private onFindExecute(query: string) {
 
-        this.state.finder!.exec({
-            query,
-            phraseSearch: false,
-            caseSensitive: false,
-            highlightAll: true,
-            findPrevious: false
-        }).catch(err => log.error(err));
+        const doHandle = async () => {
+
+            const opts = {
+                query,
+                phraseSearch: false,
+                caseSensitive: false,
+                highlightAll: true,
+                findPrevious: false
+            };
+
+            const findHandler = await this.state.finder!.exec(opts);
+
+            this.setState({...this.state, findHandler});
+
+        };
+
+        doHandle().catch(err => log.error(err));
 
     }
 
     private onFindCancel() {
+
+        this.state.findHandler?.cancel();
+
         this.setState({
             ...this.state,
-            findActive: false
-        })
+            findActive: false,
+            findHandler: undefined
+        });
+
     }
 
 }

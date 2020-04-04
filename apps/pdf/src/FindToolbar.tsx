@@ -1,10 +1,12 @@
 import * as React from 'react';
 import Input from 'reactstrap/lib/Input';
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
-import {HotKeys} from "react-hotkeys";
+import {configure, HotKeys, ObserveKeys, KeyMapOptions} from "react-hotkeys";
 import Button from 'reactstrap/lib/Button';
 import InputGroup from "reactstrap/lib/InputGroup";
 import {CloseIcon} from "../../../web/js/ui/icons/FixedWidthIcons";
+
+configure({logLevel: 'debug'});
 
 interface IProps {
     readonly active: boolean | undefined;
@@ -12,11 +14,18 @@ interface IProps {
     readonly onCancel: Callback;
 }
 
-const keyMap = {
-    EXECUTE: 'enter'
-};
+// FIXME: if I run a search, then come back to it and hit escape, it will
+// fail to work
 
-export const FindBox = (props: IProps) => {
+// FIXME: show the number of matches too.. .
+export const FindToolbar = React.memo((props: IProps) => {
+
+    // FIXME: react-hotkeys won't allow us to specify a description here because
+    // the types are wrong
+    const keyMap = {
+        EXECUTE: 'enter',
+        CANCEL: 'escape'
+    };
 
     if (! props.active) {
         return null;
@@ -29,19 +38,23 @@ export const FindBox = (props: IProps) => {
     };
 
     const handlers = {
-        EXECUTE: () => {
-            doFind();
+        EXECUTE: () => doFind(),
+        CANCEL: () => {
+            console.log("FIXME got it");
+            props.onCancel()
         }
     };
+
+    console.log("FIXME: FIND toolbar rendered");
 
     return (
 
         <div style={{
-                 position: 'absolute',
-                 top: '50px',
-                 zIndex: 10,
-                 width: '100%',
-             }}>
+            position: 'absolute',
+            top: '50px',
+            zIndex: 10,
+            width: '100%',
+        }}>
 
             <div className="p-1 ml-auto mr-auto border rounded shadow"
                  style={{
@@ -54,14 +67,21 @@ export const FindBox = (props: IProps) => {
                     <HotKeys keyMap={keyMap}
                              handlers={handlers}
                              style={{flexGrow: 1, display: 'flex'}}>
-                        <InputGroup size="sm" style={{flexGrow: 1}}>
+                        <ObserveKeys
+                            only={[
+                                'escape', 'enter'
+                            ]}>
+                            <InputGroup size="sm" style={{flexGrow: 1}}>
 
-                            <Input placeholder="Enter search terms"
-                                   autoFocus={true}
-                                   onClick={() => doFind()}
-                                   onChange={current => value = current.currentTarget.value}/>
+                                <Input placeholder="Enter search terms"
+                                       autoFocus={true}
+                                       onClick={() => doFind()}
+                                       className="p-0 pl-1 pr-1"
+                                       onChange={current => value = current.currentTarget.value}/>
 
-                        </InputGroup>
+                            </InputGroup>
+                        </ObserveKeys>
+
                     </HotKeys>
 
                     <Button size="sm"
@@ -82,13 +102,11 @@ export const FindBox = (props: IProps) => {
 
                 </div>
 
-
-
             </div>
 
         </div>
 
     );
 
-};
+}, (before, after) => before.active === after.active);
 

@@ -9,14 +9,15 @@ export interface FindOpts {
 
 export interface Finder {
 
-    exec(opts: FindOpts): Promise<FindManager>;
+    exec(opts: FindOpts): Promise<FindHandler>;
 
 }
 
 /**
- * Manages the existing find operation.
+ * Manages the existing find operation so that it can be cancelled or run again
+ * a second time.
  */
-export interface FindManager {
+export interface FindHandler {
 
     /**
      * Cancel the find
