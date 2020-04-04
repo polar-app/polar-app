@@ -1,6 +1,6 @@
-import {GlobalHotKeys, HotKeys, ObserveKeys} from "react-hotkeys";
+import {GlobalHotKeys, HotKeys, ObserveKeys, IgnoreKeys} from "react-hotkeys";
 import * as React from 'react';
-import {Input, InputGroup} from "reactstrap";
+import {Input, InputGroup, Form} from "reactstrap";
 
 // FIXME: add supprt for getting all the active key bindings and showing them
 // via control+?
@@ -86,36 +86,46 @@ const FindToolbar = () => {
         console.log("doCancel");
     };
 
-    const keyMap = {
-        EXECUTE: 'enter',
-        CANCEL: 'escape'
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log(event.key);
+
+        // Make sure NO other modifiers are enabled.. control+escape for example.
+
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+            return;
+        }
+
+        switch (event.key) {
+
+            case 'Enter':
+                doFind();
+                break;
+
+            case 'Escape':
+                doFind();
+                break;
+
+            default:
+                break;
+
+        }
+
     };
 
-    const handlers = {
-        EXECUTE: () => doFind(),
-        CANCEL: () => doCancel()
-    };
+    // note that react-hotkeys is broken when you listen to 'Enter' on
+    // ObserveKeys when using an <input> but it doesn't matter because we can
+    // just listen to the key directly
 
     return (
 
-        <HotKeys keyMap={keyMap}
-                 handlers={handlers}
-                 style={{flexGrow: 1, display: 'flex'}}>
-            <ObserveKeys
-                only={[
-                    'escape', 'enter'
-                ]}>
-                <InputGroup size="sm" style={{flexGrow: 1}}>
+        <InputGroup size="sm" style={{flexGrow: 1}}>
 
-                    <Input placeholder="Enter search terms"
-                           autoFocus={true}
-                           onClick={() => doFind()}
-                           className="p-0 pl-1 pr-1"/>
+            <Input placeholder="Enter search terms"
+                   autoFocus={true}
+                   onKeyDown={event => handleKeyDown(event)}
+                   className="p-0 pl-1 pr-1"/>
 
-                </InputGroup>
-            </ObserveKeys>
-
-        </HotKeys>
+        </InputGroup>
 
     );
 

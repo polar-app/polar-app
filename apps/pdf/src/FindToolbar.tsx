@@ -1,12 +1,9 @@
 import * as React from 'react';
 import Input from 'reactstrap/lib/Input';
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
-import {configure, HotKeys, ObserveKeys, KeyMapOptions} from "react-hotkeys";
 import Button from 'reactstrap/lib/Button';
 import InputGroup from "reactstrap/lib/InputGroup";
 import {CloseIcon} from "../../../web/js/ui/icons/FixedWidthIcons";
-
-configure({logLevel: 'debug'});
 
 interface IProps {
     readonly active: boolean | undefined;
@@ -18,14 +15,7 @@ interface IProps {
 // fail to work
 
 // FIXME: show the number of matches too.. .
-export const FindToolbar = React.memo((props: IProps) => {
-
-    // FIXME: react-hotkeys won't allow us to specify a description here because
-    // the types are wrong
-    const keyMap = {
-        EXECUTE: 'enter',
-        CANCEL: 'escape'
-    };
+export const FindToolbar = (props: IProps) => {
 
     if (! props.active) {
         return null;
@@ -37,15 +27,37 @@ export const FindToolbar = React.memo((props: IProps) => {
         props.onExecute(value);
     };
 
-    const handlers = {
-        EXECUTE: () => doFind(),
-        CANCEL: () => {
-            console.log("FIXME got it");
-            props.onCancel()
-        }
+    const doCancel = () => {
+        props.onCancel();
     };
 
-    console.log("FIXME: FIND toolbar rendered");
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+
+        // note that react-hotkeys is broken when you listen to 'Enter' on
+        // ObserveKeys when using an <input> but it doesn't matter because we can
+        // just listen to the key directly
+
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+            // Make sure NO other modifiers are enabled.. control+escape for example.
+            return;
+        }
+
+        switch (event.key) {
+
+            case 'Enter':
+                doFind();
+                break;
+
+            case 'Escape':
+                doCancel();
+                break;
+
+            default:
+                break;
+
+        }
+
+    };
 
     return (
 
@@ -64,25 +76,15 @@ export const FindToolbar = React.memo((props: IProps) => {
 
                 <div className="mt-1 p-1" style={{display: 'flex'}}>
 
-                    <HotKeys keyMap={keyMap}
-                             handlers={handlers}
-                             style={{flexGrow: 1, display: 'flex'}}>
-                        <ObserveKeys
-                            only={[
-                                'escape', 'enter'
-                            ]}>
-                            <InputGroup size="sm" style={{flexGrow: 1}}>
+                    <InputGroup size="sm" style={{flexGrow: 1}}>
 
-                                <Input placeholder="Enter search terms"
-                                       autoFocus={true}
-                                       onClick={() => doFind()}
-                                       className="p-0 pl-1 pr-1"
-                                       onChange={current => value = current.currentTarget.value}/>
+                        <Input placeholder="Enter search terms"
+                               autoFocus={true}
+                               className="p-0 pl-1 pr-1"
+                               onKeyDown={event => handleKeyDown(event)}
+                               onChange={current => value = current.currentTarget.value}/>
 
-                            </InputGroup>
-                        </ObserveKeys>
-
-                    </HotKeys>
+                    </InputGroup>
 
                     <Button size="sm"
                             color="primary"
@@ -93,7 +95,7 @@ export const FindToolbar = React.memo((props: IProps) => {
 
                     <Button size="sm"
                             className="m-0 ml-1 p-0"
-                            onClick={() => props.onCancel()}
+                            onClick={() => doCancel()}
                             color="clear">
 
                         <CloseIcon/>
@@ -108,5 +110,4 @@ export const FindToolbar = React.memo((props: IProps) => {
 
     );
 
-}, (before, after) => before.active === after.active);
-
+};

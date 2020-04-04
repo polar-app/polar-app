@@ -126,6 +126,14 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     private onFindExecute(query: string) {
 
+        if (this.state.findHandler) {
+            // there's already a find handler so that means there's an active
+            // search so we should run the search 'again' to find the next match
+
+            this.state.findHandler.again();
+            return;
+        }
+
         const doHandle = async () => {
 
             const opts = {
