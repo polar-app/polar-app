@@ -2,6 +2,7 @@ import * as React from 'react';
 import {MousePositions} from '../dock/MousePositions';
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
 class Styles {
@@ -267,6 +268,8 @@ export class DockLayout extends React.Component<IProps, IState> {
 
         newPanels[resizeTarget.id] = newPanelState;
 
+        (this.props.onResize || NULL_FUNCTION)();
+
         this.setState({
             ...this.state,
             panels: newPanels
@@ -284,6 +287,8 @@ interface IProps {
      * The configuration of the panels.
      */
     readonly dockPanels: ReadonlyArray<DockPanel>;
+
+    readonly onResize?: Callback;
 
 }
 

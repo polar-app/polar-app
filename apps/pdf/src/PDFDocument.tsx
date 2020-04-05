@@ -10,7 +10,7 @@ import PDFJS, {DocumentInitParameters, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {Callback1} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Finder} from "./Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
@@ -99,12 +99,15 @@ interface LoadedDoc {
     readonly scale: number | string;
 }
 
-type OnFinderCallback = Callback1<Finder>;
+export type OnFinderCallback = Callback1<Finder>;
+
+export type Resizer = () => void;
 
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
+    readonly onResizer?: Callback1<Resizer>;
 }
 
 interface IState {
@@ -119,6 +122,7 @@ export class PDFDocument extends React.Component<IProps, IState> {
         super(props, context);
 
         this.doLoad = this.doLoad.bind(this);
+        this.resize = this.resize.bind(this);
 
         this.state = {};
 
@@ -180,25 +184,30 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
         this.props.onFinder(finder);
 
-        const doResize = () => {
-            docViewer.viewer.currentScaleValue = 'page-width';
-        };
-
-        const resizeDebouncer = Debouncers.create(() => doResize());
+        const resizeDebouncer = Debouncers.create(() => this.resize());
 
         window.addEventListener('resize', () => {
             resizeDebouncer();
         });
 
-        setTimeout(() => {
-            doResize();
-        }, 1 );
+        (this.props.onResizer || NULL_FUNCTION)(resizeDebouncer);
+
+        // do first resize async
+        setTimeout(() => this.resize(), 1 );
 
         this.setState({
             loadedDoc: {
                 scale, doc
             }
         });
+
+    }
+
+    public resize() {
+
+        if (this.docViewer) {
+            this.docViewer.viewer.currentScaleValue = 'page-width';
+        }
 
     }
 

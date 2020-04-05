@@ -1,6 +1,6 @@
 import {PDFToolbar} from "./PDFToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {PDFDocument} from "./PDFDocument";
+import {PDFDocument, Resizer} from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
@@ -20,6 +20,7 @@ interface IState {
     readonly finder?: Finder;
     readonly findActive?: boolean;
     readonly findHandler?: FindHandler;
+    readonly resizer?: Resizer;
 }
 
 const globalKeyMap = {
@@ -34,6 +35,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.onFinder = this.onFinder.bind(this);
         this.onFind = this.onFind.bind(this);
         this.onFindExecute = this.onFindExecute.bind(this);
+        this.onDockLayoutResize = this.onDockLayoutResize.bind(this);
+        this.onResizer = this.onResizer.bind(this);
 
         this.state = {
         }
@@ -70,9 +73,11 @@ export class PDFViewer extends React.Component<IProps, IState> {
                     flexGrow: 1
                 }}>
 
-                    <DockLayout dockPanels={[
+                    <DockLayout
+                        onResize={() => this.onDockLayoutResize()}
+                        dockPanels={[
                         {
-                            id: "dock-panel-left",
+                            id: "dock-panel-viewer",
                             type: 'grow',
                             style: {
                                 position: 'relative'
@@ -85,6 +90,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                     <PDFDocument
                                         onFinder={finder => this.onFinder(finder)}
                                         target="viewerContainer"
+                                        onResizer={resizer => this.onResizer(resizer)}
                                         url="./test.pdf"/>
 
                                     <TextAreaHighlight/>
@@ -92,7 +98,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                 </div>
                         },
                         {
-                            id: "doc-panel-center",
+                            id: "doc-panel-sidebar",
                             type: 'fixed',
                             component: <div>this is the right panel</div>,
                             width: 300,
@@ -166,4 +172,27 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     }
 
+    private onDockLayoutResize() {
+        if (this.state.resizer) {
+            this.state.resizer();
+        }
+    }
+
+    private requestFullScreen() {
+        document.body.requestFullscreen()
+            .catch(err => log.error(err));
+    }
+
+
+    private exitFullScreen() {
+        document.exitFullscreen()
+            .catch(err => log.error(err));
+    }
+
+    private onResizer(resizer: () => void) {
+        this.setState({
+            ...this.state,
+            resizer
+        })
+    }
 }

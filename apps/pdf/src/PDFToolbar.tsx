@@ -20,6 +20,22 @@ export const PDFToolbar = (props: IProps) => (
             <i className="fas fa-expand"/>
         </Button>
 
+        <Button color="clear">
+            <i className="fas fa-arrow-up"/>
+        </Button>
+
+        <Button color="clear">
+            <i className="fas fa-arrow-down"/>
+        </Button>
+
+        <Button color="clear">
+            <i className="fas fa-minus"/>
+        </Button>
+
+        <Button color="clear">
+            <i className="fas fa-plus"/>
+        </Button>
+
         <Button color="clear"
                 onClick={() => props.onFind()}>
 
