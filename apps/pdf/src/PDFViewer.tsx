@@ -5,7 +5,7 @@ import {
     PDFDocument,
     Resizer,
     PDFPageNavigator,
-    ScaleLeveler, PDFScaleLevelTuple
+    ScaleLeveler
 } from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
 import * as React from "react";
@@ -15,6 +15,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {FindToolbar} from "./FindToolbar";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {GlobalHotKeys} from "react-hotkeys";
+import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 
 const log = Logger.create();
 

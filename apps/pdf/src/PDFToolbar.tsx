@@ -4,12 +4,15 @@ import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {Input, InputGroup} from "reactstrap";
 import {
-    PDFDocMeta,
-    PDFScaleLevel,
-    PDFScaleLevels,
-    PDFScaleLevelTuple
+    PDFDocMeta
 } from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {
+    PDFScaleLevel,
+    PDFScaleLevelTuple,
+    PDFScaleLevelTuples, PDFScales
+} from "./PDFScaleLevels";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 // configure({logLevel: 'debug'});
 
@@ -48,11 +51,21 @@ export const PDFToolbar = (props: IProps) => {
     const handleScaleChange = (scale: PDFScaleLevel) => {
 
         const value =
-            arrayStream(PDFScaleLevels)
+            arrayStream(PDFScaleLevelTuples)
                 .filter(current => current.value === scale)
                 .first();
 
         props.onScale(value!);
+
+    };
+
+    const handleNextZoomLevel = (delta: number) => {
+
+        const nextScale = computeNextZoomLevel(delta, props.pdfDocMeta?.scale);
+
+        if (nextScale) {
+            props.onScale(nextScale);
+        }
 
     };
 
@@ -92,11 +105,13 @@ export const PDFToolbar = (props: IProps) => {
 
                 {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
 
-                <Button color="clear">
+                <Button color="clear"
+                        onClick={() => handleNextZoomLevel(-1)}>
                     <i className="fas fa-minus"/>
                 </Button>
 
-                <Button color="clear">
+                <Button color="clear"
+                    onClick={() => handleNextZoomLevel(1)}>
                     <i className="fas fa-plus"/>
                 </Button>
 
@@ -106,8 +121,9 @@ export const PDFToolbar = (props: IProps) => {
                             }}>
 
                     <Input type="select"
+                           value={props.pdfDocMeta?.scale.value}
                            onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                        {PDFScaleLevels.map(current => (
+                        {PDFScaleLevelTuples.map(current => (
                             <option key={current.value}
                                     value={current.value}>
                                 {current.label}
