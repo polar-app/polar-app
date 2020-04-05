@@ -1,11 +1,12 @@
 import Button from "reactstrap/lib/Button";
 import * as React from "react";
 import {Callback} from "polar-shared/src/util/Functions";
-import {Finder} from "./Finders";
 
 interface IProps {
     readonly onFind: Callback;
     readonly onFullScreen: Callback;
+    readonly onPagePrev: () => void;
+    readonly onPageNext: () => void;
 }
 
 export const PDFToolbar = (props: IProps) => (
@@ -20,11 +21,13 @@ export const PDFToolbar = (props: IProps) => (
             <i className="fas fa-expand"/>
         </Button>
 
-        <Button color="clear">
+        <Button color="clear"
+                onClick={() => props.onPagePrev()}>
             <i className="fas fa-arrow-up"/>
         </Button>
 
-        <Button color="clear">
+        <Button color="clear"
+                onClick={() => props.onPageNext()}>
             <i className="fas fa-arrow-down"/>
         </Button>
 

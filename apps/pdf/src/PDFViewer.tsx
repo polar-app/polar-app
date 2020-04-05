@@ -1,6 +1,6 @@
 import {PDFToolbar} from "./PDFToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {PDFDocument, Resizer} from "./PDFDocument";
+import {PDFDocMeta, PDFDocument, Resizer, PDFPageNavigator} from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
@@ -21,6 +21,8 @@ interface IState {
     readonly findActive?: boolean;
     readonly findHandler?: FindHandler;
     readonly resizer?: Resizer;
+    readonly pdfDocMeta?: PDFDocMeta
+    readonly pdfPageNavigator?: PDFPageNavigator;
 }
 
 const globalKeyMap = {
@@ -37,6 +39,11 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.onFindExecute = this.onFindExecute.bind(this);
         this.onDockLayoutResize = this.onDockLayoutResize.bind(this);
         this.onResizer = this.onResizer.bind(this);
+        this.onPDFDocMeta = this.onPDFDocMeta.bind(this);
+        this.onPDFPageNavigator = this.onPDFPageNavigator.bind(this);
+        this.onPageNext = this.onPageNext.bind(this);
+        this.onPagePrev = this.onPagePrev.bind(this);
+        this.doPageNav = this.doPageNav.bind(this);
 
         this.state = {
         }
@@ -61,6 +68,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                 }}>
 
                 <PDFToolbar onFullScreen={NULL_FUNCTION}
+                            onPageNext={() => this.onPageNext()}
+                            onPagePrev={() => this.onPagePrev()}
                             onFind={() => this.onFind()}/>
 
                 <FindToolbar active={this.state.findActive}
@@ -91,6 +100,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onFinder={finder => this.onFinder(finder)}
                                         target="viewerContainer"
                                         onResizer={resizer => this.onResizer(resizer)}
+                                        onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
+                                        onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
                                         url="./test.pdf"/>
 
                                     <TextAreaHighlight/>
@@ -195,4 +206,51 @@ export class PDFViewer extends React.Component<IProps, IState> {
             resizer
         })
     }
+
+    private onPDFDocMeta(pdfDocMeta: PDFDocMeta) {
+        this.setState({
+            ...this.state,
+            pdfDocMeta
+        });
+    }
+
+    private onPDFPageNavigator(pdfPageNavigator: PDFPageNavigator) {
+        this.setState({
+            ...this.state,
+            pdfPageNavigator
+        });
+    }
+
+    private doPageNav(delta: number) {
+
+        const {pdfPageNavigator, pdfDocMeta} = this.state;
+
+        if (! pdfPageNavigator || ! pdfDocMeta) {
+            return;
+        }
+
+        const page = pdfPageNavigator.get() + delta;
+
+        if (page <= 0) {
+            // invalid page as we requested to jump too low
+            return;
+        }
+
+        if (page > pdfDocMeta.nrPages) {
+            // went past the end.
+            return;
+        }
+
+        pdfPageNavigator.set(page);
+
+    }
+
+    private onPageNext() {
+        this.doPageNav(1);
+    }
+
+    private onPagePrev() {
+        this.doPageNav(-1);
+    }
+
 }

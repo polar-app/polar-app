@@ -7,7 +7,7 @@ import {
     PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
 import PDFJS, {DocumentInitParameters, PDFViewerOptions} from "pdfjs-dist";
-import {URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -108,6 +108,8 @@ interface IProps {
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
     readonly onResizer?: Callback1<Resizer>;
+    readonly onPDFDocMeta: (pdfDocMeta: PDFDocMeta) => void;
+    readonly onPDFPageNavigator: (pdfPageNavigator: PDFPageNavigator) => void;
 }
 
 interface IState {
@@ -195,6 +197,19 @@ export class PDFDocument extends React.Component<IProps, IState> {
         // do first resize async
         setTimeout(() => this.resize(), 1 );
 
+        const pdfPageNavigator: PDFPageNavigator = {
+            get: () => docViewer.viewer.currentPageNumber,
+            set: (page: number) => docViewer.viewer.currentPageNumber = page
+        };
+
+        const pdfDocMeta: PDFDocMeta = {
+            nrPages: doc.numPages,
+            fingerprint: doc.fingerprint
+        };
+
+        this.props.onPDFDocMeta(pdfDocMeta);
+        this.props.onPDFPageNavigator(pdfPageNavigator);
+        
         this.setState({
             loadedDoc: {
                 scale, doc
@@ -215,6 +230,16 @@ export class PDFDocument extends React.Component<IProps, IState> {
         return null;
     }
 
+}
+
+export interface PDFPageNavigator {
+    readonly get: () => number;
+    readonly set: (page: number) => void;
+}
+
+export interface PDFDocMeta {
+    readonly nrPages: number;
+    readonly fingerprint: IDStr;
 }
 
 //

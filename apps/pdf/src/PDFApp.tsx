@@ -23,9 +23,9 @@ const PositionedLayout = () => (
 
         <ViewerContainer/>
 
-        <PDFDocument target="viewerContainer"
-                     onFinder={finder => console.log({finder})}
-                     url="./test.pdf"/>
+        {/*<PDFDocument target="viewerContainer"*/}
+        {/*             onFinder={finder => console.log({finder})}*/}
+        {/*             url="./test.pdf"/>*/}
 
     </div>
 
