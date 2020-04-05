@@ -1,9 +1,15 @@
 import Button from "reactstrap/lib/Button";
 import * as React from "react";
-import {Callback} from "polar-shared/src/util/Functions";
-import {GlobalHotKeys, configure} from "react-hotkeys";
-import {InputGroup, Input} from "reactstrap";
-import {PDFDocMeta} from "./PDFDocument";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
+import {GlobalHotKeys} from "react-hotkeys";
+import {Input, InputGroup} from "reactstrap";
+import {
+    PDFDocMeta,
+    PDFScaleLevel,
+    PDFScaleLevels,
+    PDFScaleLevelTuple
+} from "./PDFDocument";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 // configure({logLevel: 'debug'});
 
@@ -18,6 +24,8 @@ interface IProps {
     readonly onPagePrev: () => void;
     readonly onPageNext: () => void;
     readonly pdfDocMeta: PDFDocMeta | undefined;
+    readonly onScale: Callback1<PDFScaleLevelTuple>;
+
 }
 
 interface NumPagesProps {
@@ -35,6 +43,17 @@ export const PDFToolbar = (props: IProps) => {
     const globalKeyHandlers = {
         PAGE_NEXT: () => props.onPageNext(),
         PAGE_PREV: () => props.onPagePrev()
+    };
+
+    const handleScaleChange = (scale: PDFScaleLevel) => {
+
+        const value =
+            arrayStream(PDFScaleLevels)
+                .filter(current => current.value === scale)
+                .first();
+
+        props.onScale(value!);
+
     };
 
     return (
@@ -80,6 +99,23 @@ export const PDFToolbar = (props: IProps) => {
                 <Button color="clear">
                     <i className="fas fa-plus"/>
                 </Button>
+
+                <InputGroup size="sm"
+                            style={{
+                                maxWidth: '7em'
+                            }}>
+
+                    <Input type="select"
+                           onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                        {PDFScaleLevels.map(current => (
+                            <option key={current.value}
+                                    value={current.value}>
+                                {current.label}
+                            </option>
+                        ))}
+                    </Input>
+
+                </InputGroup>
 
                 <Button color="clear"
                         onClick={() => props.onFind()}>

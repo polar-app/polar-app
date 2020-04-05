@@ -1,6 +1,12 @@
 import {PDFToolbar} from "./PDFToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {PDFDocMeta, PDFDocument, Resizer, PDFPageNavigator} from "./PDFDocument";
+import {
+    PDFDocMeta,
+    PDFDocument,
+    Resizer,
+    PDFPageNavigator,
+    ScaleLeveler, PDFScaleLevelTuple
+} from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
@@ -23,6 +29,7 @@ interface IState {
     readonly resizer?: Resizer;
     readonly pdfDocMeta?: PDFDocMeta
     readonly pdfPageNavigator?: PDFPageNavigator;
+    readonly scaleLeveler?: ScaleLeveler;
 }
 
 const globalKeyMap = {
@@ -44,6 +51,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.onPageNext = this.onPageNext.bind(this);
         this.onPagePrev = this.onPagePrev.bind(this);
         this.doPageNav = this.doPageNav.bind(this);
+        this.onScale = this.onScale.bind(this);
 
         this.state = {
         }
@@ -68,6 +76,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                 }}>
 
                 <PDFToolbar pdfDocMeta={this.state.pdfDocMeta}
+                            onScale={scale => this.onScale(scale)}
                             onFullScreen={NULL_FUNCTION}
                             onPageNext={() => this.onPageNext()}
                             onPagePrev={() => this.onPagePrev()}
@@ -103,6 +112,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onResizer={resizer => this.onResizer(resizer)}
                                         onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
                                         onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
+                                        onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
                                         url="./test.pdf"/>
 
                                     <TextAreaHighlight/>
@@ -254,4 +264,14 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.doPageNav(-1);
     }
 
+    private onScaleLeveler(scaleLeveler: ScaleLeveler) {
+        this.setState({
+            ...this.state,
+            scaleLeveler
+        })
+    }
+
+    private onScale(scale: PDFScaleLevelTuple) {
+        this.state.scaleLeveler!(scale);
+    }
 }

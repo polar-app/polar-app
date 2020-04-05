@@ -20,6 +20,52 @@ const log = Logger.create();
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
+export interface LabelValueTuple<V> {
+    readonly label: string;
+    readonly value: V;
+}
+
+export type PDFScaleLevel = 'page-width' | 'page-fit' | '0.5' | '0.75' | '1' | '2' | '3' | '4';
+
+export type PDFScaleLevelTuple = LabelValueTuple<PDFScaleLevel>;
+
+export const PDFScaleLevels: ReadonlyArray<PDFScaleLevelTuple> = [
+    {
+        label: 'page width',
+        value: 'page-width'
+    },
+    {
+        label: 'page fit',
+        value: 'page-fit'
+    },
+    {
+        label: '50%',
+        value: '0.5'
+    },
+    {
+        label: '75%',
+        value: '0.75'
+    },
+    {
+        label: '100%',
+        value: '1'
+    },
+    {
+        label: '200%',
+        value: '2'
+    },
+    {
+        label: '300%',
+        value: '3'
+    }
+    ,
+    {
+        label: '400%',
+        value: '4'
+    }
+
+];
+
 interface DocViewer {
     readonly eventBus: EventBus;
     readonly findController: PDFFindController;
@@ -103,11 +149,14 @@ export type OnFinderCallback = Callback1<Finder>;
 
 export type Resizer = () => void;
 
+export type ScaleLeveler = Callback1<PDFScaleLevelTuple>;
+
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
-    readonly onResizer?: Callback1<Resizer>;
+    readonly onResizer: Callback1<Resizer>;
+    readonly onScaleLeveler: Callback1<ScaleLeveler>;
     readonly onPDFDocMeta: (pdfDocMeta: PDFDocMeta) => void;
     readonly onPDFPageNavigator: (pdfPageNavigator: PDFPageNavigator) => void;
 }
@@ -120,11 +169,14 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
     private docViewer: DocViewer | undefined;
 
+    private scale: PDFScaleLevelTuple = PDFScaleLevels[0];
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.doLoad = this.doLoad.bind(this);
         this.resize = this.resize.bind(this);
+        this.setScale = this.setScale.bind(this);
 
         this.state = {};
 
@@ -216,11 +268,17 @@ export class PDFDocument extends React.Component<IProps, IState> {
                 ...pdfDocMeta,
                 currentPage: pdfPageNavigator.get()
             });
-        })
+        });
 
         docViewer.containerElement.addEventListener('scroll', () => {
             scrollDebouncer();
         });
+
+        const scaleLeveler = (scale: PDFScaleLevelTuple) => {
+            this.setScale(scale);
+        };
+
+        this.props.onScaleLeveler(scaleLeveler);
 
         this.setState({
             loadedDoc: {
@@ -232,10 +290,18 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
     public resize() {
 
-        if (this.docViewer) {
-            this.docViewer.viewer.currentScaleValue = 'page-width';
+        if (['page-width', 'page-fit'].includes(this.scale.value)) {
+            this.setScale(this.scale);
         }
 
+    }
+
+    private setScale(scale: PDFScaleLevelTuple) {
+
+        if (this.docViewer) {
+            this.scale = scale;
+            this.docViewer.viewer.currentScaleValue = scale.value;
+        }
     }
 
     public render() {
