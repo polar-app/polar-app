@@ -58,7 +58,9 @@
 
         // FIXME: debouncers everywhere
 
+        // FIXME: implement all pdf keyboard shortcuts. 
         // https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#what-are-the-pdfjs-keyboard-shortcuts
+
 
         // FIXME: context menu
         // FIXME: area highlights

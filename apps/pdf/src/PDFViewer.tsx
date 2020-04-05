@@ -67,7 +67,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                     flexGrow: 1
                 }}>
 
-                <PDFToolbar onFullScreen={NULL_FUNCTION}
+                <PDFToolbar pdfDocMeta={this.state.pdfDocMeta}
+                            onFullScreen={NULL_FUNCTION}
                             onPageNext={() => this.onPageNext()}
                             onPagePrev={() => this.onPagePrev()}
                             onFind={() => this.onFind()}/>
