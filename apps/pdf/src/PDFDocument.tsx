@@ -203,13 +203,25 @@ export class PDFDocument extends React.Component<IProps, IState> {
         };
 
         const pdfDocMeta: PDFDocMeta = {
+            currentPage: 1,
             nrPages: doc.numPages,
             fingerprint: doc.fingerprint
         };
 
         this.props.onPDFDocMeta(pdfDocMeta);
         this.props.onPDFPageNavigator(pdfPageNavigator);
-        
+
+        const scrollDebouncer = Debouncers.create(() => {
+            this.props.onPDFDocMeta({
+                ...pdfDocMeta,
+                currentPage: pdfPageNavigator.get()
+            });
+        })
+
+        docViewer.containerElement.addEventListener('scroll', () => {
+            scrollDebouncer();
+        });
+
         this.setState({
             loadedDoc: {
                 scale, doc
@@ -238,6 +250,7 @@ export interface PDFPageNavigator {
 }
 
 export interface PDFDocMeta {
+    readonly currentPage: number;
     readonly nrPages: number;
     readonly fingerprint: IDStr;
 }

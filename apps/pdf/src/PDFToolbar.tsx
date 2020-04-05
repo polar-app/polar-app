@@ -64,7 +64,10 @@ export const PDFToolbar = (props: IProps) => {
                             style={{
                                 maxWidth: '3em'
                             }}>
-                    <Input value=""
+                    <Input value={props.pdfDocMeta?.currentPage || 1}
+                           style={{
+                               textAlign: 'right'
+                           }}
                            className="p-0 pl-1 pr-1"/>
                 </InputGroup>
 
