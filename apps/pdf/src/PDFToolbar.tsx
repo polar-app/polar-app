@@ -78,65 +78,76 @@ export const PDFToolbar = (props: IProps) => {
                      display: 'flex',
                  }}
                  className="border-bottom p-1">
-                <Button color="clear">
-                    <i className="fas fa-expand"/>
-                </Button>
 
-                <Button color="clear"
-                        onClick={() => props.onPagePrev()}>
-                    <i className="fas fa-arrow-up"/>
-                </Button>
+                <div style={{display: 'flex'}}>
+                    <Button color="clear"
+                            onClick={() => props.onPagePrev()}>
+                        <i className="fas fa-arrow-up"/>
+                    </Button>
 
-                <Button color="clear"
-                        onClick={() => props.onPageNext()}>
-                    <i className="fas fa-arrow-down"/>
-                </Button>
+                    <Button color="clear"
+                            onClick={() => props.onPageNext()}>
+                        <i className="fas fa-arrow-down"/>
+                    </Button>
 
-                <InputGroup size="sm"
-                            style={{
-                                maxWidth: '3em'
-                            }}>
-                    <Input value={props.pdfDocMeta?.currentPage || 1}
-                           style={{
-                               textAlign: 'right'
-                           }}
-                           className="p-0 pl-1 pr-1"/>
-                </InputGroup>
+                    <InputGroup size="sm"
+                                style={{
+                                    maxWidth: '3em'
+                                }}>
+                        <Input value={props.pdfDocMeta?.currentPage || 1}
+                               style={{
+                                   textAlign: 'right'
+                               }}
+                               className="p-0 pl-1 pr-1"/>
+                    </InputGroup>
 
-                {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
+                    {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
 
-                <Button color="clear"
-                        onClick={() => handleNextZoomLevel(-1)}>
-                    <i className="fas fa-minus"/>
-                </Button>
+                </div>
 
-                <Button color="clear"
-                    onClick={() => handleNextZoomLevel(1)}>
-                    <i className="fas fa-plus"/>
-                </Button>
+                <div style={{display: 'flex', flexGrow: 1}}>
+                    <Button color="clear"
+                            onClick={() => handleNextZoomLevel(-1)}>
+                        <i className="fas fa-minus"/>
+                    </Button>
 
-                <InputGroup size="sm"
-                            style={{
-                                maxWidth: '7em'
-                            }}>
+                    <Button color="clear"
+                            onClick={() => handleNextZoomLevel(1)}>
+                        <i className="fas fa-plus"/>
+                    </Button>
 
-                    <Input type="select"
-                           value={props.pdfDocMeta?.scale.value}
-                           onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                        {PDFScaleLevelTuples.map(current => (
-                            <option key={current.value}
-                                    value={current.value}>
-                                {current.label}
-                            </option>
-                        ))}
-                    </Input>
+                    <InputGroup size="sm"
+                                style={{
+                                    maxWidth: '7em'
+                                }}>
 
-                </InputGroup>
+                        <Input type="select"
+                               value={props.pdfDocMeta?.scale.value}
+                               onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                            {PDFScaleLevelTuples.map(current => (
+                                <option key={current.value}
+                                        value={current.value}>
+                                    {current.label}
+                                </option>
+                            ))}
+                        </Input>
 
-                <Button color="clear"
-                        onClick={() => props.onFind()}>
-                    <i className="fas fa-search"/>
-                </Button>
+                    </InputGroup>
+
+                </div>
+
+                <div style={{display: 'flex'}}>
+                    <Button color="clear">
+                        <i className="fas fa-expand"/>
+                    </Button>
+
+                    <Button color="clear"
+                            onClick={() => props.onFind()}>
+                        <i className="fas fa-search"/>
+                    </Button>
+
+                </div>
+
             </div>
 
         </GlobalHotKeys>
