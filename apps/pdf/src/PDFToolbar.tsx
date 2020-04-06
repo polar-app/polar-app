@@ -13,6 +13,7 @@ import {
     PDFScaleLevelTuples, PDFScales
 } from "./PDFScaleLevels";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import {useState} from "react";
 
 // configure({logLevel: 'debug'});
 
@@ -26,10 +27,130 @@ interface IProps {
     readonly onFullScreen: Callback;
     readonly onPagePrev: () => void;
     readonly onPageNext: () => void;
+    readonly onPageJump: (page: number) => void;
     readonly pdfDocMeta: PDFDocMeta | undefined;
     readonly onScale: Callback1<PDFScaleLevelTuple>;
 
 }
+
+interface PageNumberInputProps {
+    readonly pdfDocMeta: PDFDocMeta | undefined;
+    readonly onPageJump: (page: number) => void;
+}
+
+interface PageNumberInputState {
+    readonly changing: boolean;
+    readonly value: string;
+}
+
+const PageNumberInput = (props: PageNumberInputProps) => {
+
+    // yield to the property, except if we're changing the value, then jump
+    // to the right value, and then blur the element...
+
+    const numberToString = (value: number | undefined): string => {
+
+        if (value) {
+            return value.toString();
+        }
+
+        return '';
+
+    };
+
+    const [state, setState] = useState<PageNumberInputState>({
+        changing: false,
+        value: ''
+    });
+
+    const value = state.changing ?
+        state.value :
+        numberToString(props.pdfDocMeta?.currentPage || 1);
+
+    const resetState = () => {
+        setState({
+            changing: false,
+            value: ''
+        });
+    };
+
+    const parsePage = (): number | undefined => {
+
+        try {
+
+            const page = parseInt(value);
+
+            if (page <= 0 || page > (props.pdfDocMeta?.nrPages || 0)) {
+                return undefined;
+            }
+
+            return page;
+
+        } catch (e) {
+            return undefined;
+        }
+
+    };
+
+    const onEnter = () => {
+
+        const newPage = parsePage();
+
+        if (newPage) {
+            // resetState();
+            props.onPageJump(newPage);
+        }
+
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+
+        // note that react-hotkeys is broken when you listen to 'Enter' on
+        // ObserveKeys when using an <input> but it doesn't matter because we can
+        // just listen to the key directly
+
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+            // Make sure NO other modifiers are enabled.. control+escape for example.
+            return;
+        }
+
+        switch (event.key) {
+
+            case 'Enter':
+                onEnter();
+                break;
+
+        }
+
+    };
+
+    const handleChange = (val: string) => {
+        setState({changing: true, value: val});
+    };
+
+    const handleBlur = () => {
+        resetState();
+    };
+
+    return (
+        <InputGroup size="sm"
+                    className="mt-auto mb-auto"
+                    style={{
+                        maxWidth: '3em'
+                    }}>
+            <Input value={value}
+                   onChange={event => handleChange(event.currentTarget.value)}
+                   onBlur={() => handleBlur()}
+                   onKeyDown={event => handleKeyDown(event)}
+                   style={{
+                       textAlign: 'right'
+                   }}
+                   className="p-0 pl-1 pr-1"/>
+        </InputGroup>
+
+    );
+
+};
 
 interface NumPagesProps {
     readonly pdfDocMeta: PDFDocMeta;
@@ -90,17 +211,8 @@ export const PDFToolbar = (props: IProps) => {
                         <i className="fas fa-arrow-down"/>
                     </Button>
 
-                    <InputGroup size="sm"
-                                className="mt-auto mb-auto"
-                                style={{
-                                    maxWidth: '3em'
-                                }}>
-                        <Input value={props.pdfDocMeta?.currentPage || 1}
-                               style={{
-                                   textAlign: 'right'
-                               }}
-                               className="p-0 pl-1 pr-1"/>
-                    </InputGroup>
+                    <PageNumberInput pdfDocMeta={props.pdfDocMeta}
+                                     onPageJump={page => props.onPageJump(page)}/>
 
                     {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
 

@@ -51,6 +51,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.onPDFPageNavigator = this.onPDFPageNavigator.bind(this);
         this.onPageNext = this.onPageNext.bind(this);
         this.onPagePrev = this.onPagePrev.bind(this);
+        this.onPageJump = this.onPageJump.bind(this);
         this.doPageNav = this.doPageNav.bind(this);
         this.onScale = this.onScale.bind(this);
 
@@ -81,6 +82,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                             onFullScreen={NULL_FUNCTION}
                             onPageNext={() => this.onPageNext()}
                             onPagePrev={() => this.onPagePrev()}
+                            onPageJump={page => this.onPageJump(page)}
                             onFind={() => this.onFind()}/>
 
                 <FindToolbar active={this.state.findActive}
@@ -88,10 +90,10 @@ export class PDFViewer extends React.Component<IProps, IState> {
                              onExecute={query => this.onFindExecute(query)}/>
 
                 <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1
-                }}>
+                         display: 'flex',
+                         flexDirection: 'column',
+                         flexGrow: 1
+                     }}>
 
                     <DockLayout
                         onResize={() => this.onDockLayoutResize()}
@@ -265,6 +267,16 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.doPageNav(-1);
     }
 
+    private onPageJump(page: number) {
+
+        const {pdfPageNavigator} = this.state;
+
+        if (pdfPageNavigator) {
+            pdfPageNavigator.set(page);
+        }
+
+    }
+
     private onScaleLeveler(scaleLeveler: ScaleLeveler) {
         this.setState({
             ...this.state,
@@ -275,4 +287,5 @@ export class PDFViewer extends React.Component<IProps, IState> {
     private onScale(scale: PDFScaleLevelTuple) {
         this.state.scaleLeveler!(scale);
     }
+
 }
