@@ -5,7 +5,7 @@ import {
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
-    DocMetaSnapshotEventListener,
+    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     SnapshotResult,
@@ -201,6 +201,28 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         const data = await this.datastore.getDocMeta(fingerprint);
 
+        return this.toDocMeta(fingerprint, data);
+
+    }
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        return this.datastore.getDocMetaSnapshot({
+            ...opts,
+            onSnapshot: (snapshot=> {
+
+                const data = this.toDocMeta(opts.fingerprint, snapshot.data);
+
+                opts.onSnapshot({
+                    ...snapshot, data
+                });
+            })
+        });
+
+    }
+
+    private toDocMeta(fingerprint: string, data: string | undefined | null) {
+
         if (!isPresent(data)) {
             return undefined;
         }
@@ -212,7 +234,6 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
         const docMeta = DocMetas.deserialize(data, fingerprint);
 
         return docMeta;
-
     }
 
     /**

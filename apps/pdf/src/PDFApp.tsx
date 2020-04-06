@@ -33,7 +33,7 @@ const PositionedLayout = () => (
 
 export class PDFApp {
 
-    constructor(private readonly persistenceLayerManager = new PersistenceLayerManager()) {
+    constructor(private readonly persistenceLayerManager = new PersistenceLayerManager({noSync: true, noInitialSnapshot: true})) {
     }
 
     public async start() {
@@ -45,6 +45,7 @@ export class PDFApp {
             onNeedsAuthentication: ASYNC_NULL_FUNCTION
         });
 
+        await persistenceLayerManager.start();
         new ProgressService().start();
 
         const rootElement = document.getElementById('root') as HTMLElement;
@@ -61,7 +62,7 @@ export class PDFApp {
                     flexGrow: 1
                  }}>
 
-                <PDFViewer/>
+                <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>
 
                 {/*<div style={{*/}
 

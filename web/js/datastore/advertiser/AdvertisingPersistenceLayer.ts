@@ -21,10 +21,11 @@ export class AdvertisingPersistenceLayer
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
-    public readonly id = 'advertising';
+    public readonly id: string;
 
     constructor(delegate: PersistenceLayer) {
         super(delegate);
+        this.id = 'advertising:' + delegate.id;
     }
 
     public async init(errorListener?: ErrorListener, opts?: DatastoreInitOpts): Promise<void> {

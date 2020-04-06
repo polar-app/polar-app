@@ -16,11 +16,14 @@ import {FindToolbar} from "./FindToolbar";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {GlobalHotKeys} from "react-hotkeys";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
+import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
+import {PDFAppURLs} from "./PDFAppURLs";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 const log = Logger.create();
 
 interface IProps {
-
+    readonly persistenceLayerProvider: PersistenceLayerProvider;
 }
 
 interface IState {
@@ -31,6 +34,7 @@ interface IState {
     readonly pdfDocMeta?: PDFDocMeta
     readonly pdfPageNavigator?: PDFPageNavigator;
     readonly scaleLeveler?: ScaleLeveler;
+    readonly docMeta?: IDocMeta;
 }
 
 const globalKeyMap = {
@@ -57,6 +61,49 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
         this.state = {
         }
+
+    }
+
+    public componentDidMount(): void {
+
+        const handleLoad = async () => {
+
+            const parsedURL = PDFAppURLs.parse(document.location.href);
+
+            if (! parsedURL) {
+                console.log("No parsed URL")
+                return;
+            }
+
+            // FIXME use DataLoader with this ...
+            // FIXME use a Progress control so the page shows itself loading state
+
+            const persistenceLayer = this.props.persistenceLayerProvider();
+
+            console.log("FIXME: loading...: " + parsedURL.id);
+
+            console.log("FIXME: persistencelayer " + persistenceLayer.id);
+
+            // FIXME: unsubscribe on component unmount
+            // FIXME not getting intial snapshot
+            const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
+                fingerprint: parsedURL.id,
+                onSnapshot: (snapshot => {
+                    console.log("FIXME: got docMeta");
+                    this.setState({
+                        ...this.state,
+                        docMeta: snapshot.data
+                    });
+                }),
+                onError: (err) => {
+                    log.error("Could not handle snapshot: ", err);
+                }
+
+            });
+
+        };
+
+        handleLoad().catch(err => log.error(err));
 
     }
 
@@ -140,10 +187,12 @@ export class PDFViewer extends React.Component<IProps, IState> {
     }
 
     private onFinder(finder: Finder) {
+
         this.setState({
             ...this.state,
             finder
         })
+
     }
 
     private onFind() {

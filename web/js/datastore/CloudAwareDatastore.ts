@@ -8,7 +8,7 @@ import {
     DeleteResult,
     DocMetaSnapshotEvent,
     DocMetaSnapshotEventListener,
-    DocMetaSnapshotEvents,
+    DocMetaSnapshotEvents, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
@@ -163,6 +163,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async getDocMeta(fingerprint: string): Promise<string | null> {
         return this.local.getDocMeta(fingerprint);
+    }
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
+        return this.cloud.getDocMetaSnapshot(opts);
     }
 
     public async writeFile(backend: Backend,
@@ -598,7 +602,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         return {
             networkLayers,
-            permission: {mode: 'rw'}
+            permission: {mode: 'rw'},
+            snapshots: true
         };
 
     }
