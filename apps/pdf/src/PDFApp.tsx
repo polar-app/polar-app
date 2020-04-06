@@ -59,7 +59,8 @@ export class PDFApp {
             <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    flexGrow: 1
+                    flexGrow: 1,
+                    minHeight: 0,
                  }}>
 
                 <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>

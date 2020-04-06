@@ -18,7 +18,7 @@ export const InputFilter = (props: IProps) => {
 
     return (
 
-        <InputGroup>
+        <InputGroup size="sm">
             <InputGroupAddon addonType="prepend">
                 <InputGroupText className="pl-1 pr-1">
                     <SearchIcon/>
@@ -27,7 +27,7 @@ export const InputFilter = (props: IProps) => {
 
             <Input id={props.id}
                    type="text"
-                   className="btn-no-outline "
+                   className="btn-no-outline p-0 pl-1 pr-1"
                    placeholder={props.placeholder}
                    defaultValue={props.defaultValue}
                    onChange={event => handleChange(event)}>

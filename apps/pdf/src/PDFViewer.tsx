@@ -3,8 +3,8 @@ import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {
     PDFDocMeta,
     PDFDocument,
-    Resizer,
     PDFPageNavigator,
+    Resizer,
     ScaleLeveler
 } from "./PDFDocument";
 import {TextAreaHighlight} from "./TextAreaHighlight";
@@ -19,6 +19,11 @@ import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {PDFAppURLs} from "./PDFAppURLs";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
+import {Backend} from "polar-shared/src/datastore/Backend";
+import { URLStr } from "polar-shared/src/util/Strings";
+import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
+import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 
 const log = Logger.create();
 
@@ -35,6 +40,7 @@ interface IState {
     readonly pdfPageNavigator?: PDFPageNavigator;
     readonly scaleLeveler?: ScaleLeveler;
     readonly docMeta?: IDocMeta;
+    readonly docURL?: URLStr;
 }
 
 const globalKeyMap = {
@@ -84,16 +90,18 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
             console.log("FIXME: persistencelayer " + persistenceLayer.id);
 
+            // FIXME: load the file too
+
             // FIXME: unsubscribe on component unmount
             // FIXME not getting intial snapshot
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {
                     console.log("FIXME: got docMeta");
-                    this.setState({
-                        ...this.state,
-                        docMeta: snapshot.data
-                    });
+
+                    this.onDocMeta(snapshot.data);
+
+
                 }),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);
@@ -113,6 +121,10 @@ export class PDFViewer extends React.Component<IProps, IState> {
             FIND: () => this.onFind()
         };
 
+        if (! this.state.docURL) {
+            return <LoadingProgress/>
+        }
+
         return (
 
             <GlobalHotKeys
@@ -121,7 +133,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    flexGrow: 1
+                    flexGrow: 1,
+                    minHeight: 0
                 }}>
 
                 <PDFToolbar pdfDocMeta={this.state.pdfDocMeta}
@@ -139,7 +152,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                 <div style={{
                          display: 'flex',
                          flexDirection: 'column',
-                         flexGrow: 1
+                         flexGrow: 1,
+                         minHeight: 0
                      }}>
 
                     <DockLayout
@@ -163,7 +177,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
                                         onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
                                         onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
-                                        url="./test.pdf"/>
+                                        url={this.state.docURL}/>
 
                                     <TextAreaHighlight/>
 
@@ -172,7 +186,19 @@ export class PDFViewer extends React.Component<IProps, IState> {
                         {
                             id: "doc-panel-sidebar",
                             type: 'fixed',
-                            component: <div>this is the right panel</div>,
+                            component:
+                                <>
+                                {this.state.docMeta &&
+                                    <AnnotationSidebar doc={{
+                                                           docInfo: this.state.docMeta.docInfo,
+                                                           docMeta: this.state.docMeta,
+                                                           permission: {mode: 'rw'},
+                                                           mutable: true,
+                                                           oid: 123,
+                                                       }}
+                                                       tagsProvider={() => []}
+                                                       persistenceLayerProvider={this.props.persistenceLayerProvider}/>}
+                                </>,
                             width: 300,
                             style: {
                                 overflow: 'none'
@@ -337,4 +363,34 @@ export class PDFViewer extends React.Component<IProps, IState> {
         this.state.scaleLeveler!(scale);
     }
 
+    private onDocMeta(docMeta: IDocMeta | undefined) {
+
+        const computeDocURL = (): URLStr | undefined => {
+
+            if (docMeta) {
+
+                const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
+                const persistenceLayer = this.props.persistenceLayerProvider();
+
+                if (docMetaFileRef.docFile) {
+                    const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
+                    return file.url;
+                }
+
+            }
+
+            return undefined;
+
+        };
+
+        const docURL = computeDocURL();
+
+        this.setState({
+            ...this.state,
+            docURL,
+            docMeta
+        });
+
+
+    }
 }

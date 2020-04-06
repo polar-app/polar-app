@@ -72,7 +72,7 @@ export class DockLayout extends React.Component<IProps, IState> {
                     minWidth: '4px',
                     maxWidth: '4px',
                     cursor: 'col-resize',
-                    backgroundColor: 'var(--grey200)',
+                    backgroundColor: 'var(--grey500)',
                     minHeight: 0
                 };
 
