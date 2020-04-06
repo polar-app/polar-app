@@ -51,7 +51,14 @@
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
 
 
-        // Make resize of the 
+        // FIXME: full text search totally working
+        // FIXME: sidebar rendering and reading the PDF from the datastore.
+
+        // FIXME mobile and tablet nodes that disable the sidebar when in
+        //
+         FIXME: properly center the zoom scale information at the top of
+        // the page
+        // FIXME: blur the input after changing them.. 
 
         // FIXME: zoom/scale changes
         // FIXME: handle the dock resize issues... 
