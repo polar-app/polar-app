@@ -18,7 +18,7 @@ export const InputFilter = (props: IProps) => {
 
     return (
 
-        <InputGroup size="sm">
+        <InputGroup>
             <InputGroupAddon addonType="prepend">
                 <InputGroupText className="pl-1 pr-1">
                     <SearchIcon/>

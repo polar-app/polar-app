@@ -7,7 +7,6 @@ import {
     Resizer,
     ScaleLeveler
 } from "./PDFDocument";
-import {TextHighlight} from "./TextHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Finder, FindHandler} from "./Finders";
@@ -21,9 +20,10 @@ import {PDFAppURLs} from "./PDFAppURLs";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import { URLStr } from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
+import {TextHighlightsView} from "./TextHighlightsView";
 
 const log = Logger.create();
 
@@ -179,7 +179,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
                                         url={this.state.docURL}/>
 
-                                    <TextHighlight/>
+                                    <TextHighlightsView docMeta={this.state.docMeta}/>
 
                                 </div>
                         },
