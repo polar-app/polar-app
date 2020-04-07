@@ -1,19 +1,18 @@
 import Button from "reactstrap/lib/Button";
 import * as React from "react";
+import {useState} from "react";
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {Input, InputGroup} from "reactstrap";
-import {
-    PDFDocMeta
-} from "./PDFDocument";
+import {PDFDocMeta} from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {
     PDFScaleLevel,
     PDFScaleLevelTuple,
-    PDFScaleLevelTuples, PDFScales
+    PDFScaleLevelTuples,
+    PDFScales
 } from "./PDFScaleLevels";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
-import {useState} from "react";
 
 // configure({logLevel: 'debug'});
 
@@ -197,6 +196,7 @@ export const PDFToolbar = (props: IProps) => {
             >
             <div style={{
                      display: 'flex',
+                     backgroundColor: 'var(--grey050)'
                  }}
                  className="border-bottom p-1">
 

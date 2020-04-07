@@ -7,7 +7,7 @@ import {
     Resizer,
     ScaleLeveler
 } from "./PDFDocument";
-import {TextAreaHighlight} from "./TextAreaHighlight";
+import {TextHighlight} from "./TextHighlight";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Finder, FindHandler} from "./Finders";
@@ -179,7 +179,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
                                         url={this.state.docURL}/>
 
-                                    <TextAreaHighlight/>
+                                    <TextHighlight/>
 
                                 </div>
                         },

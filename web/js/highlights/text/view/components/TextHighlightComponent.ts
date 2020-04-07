@@ -10,7 +10,6 @@ import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
-import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 const log = Logger.create();

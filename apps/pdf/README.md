@@ -51,61 +51,6 @@
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
 
 
-        // FIXME: full text search totally working
-        // FIXME: sidebar rendering and reading the PDF from the datastore.
-
-        // FIXME mobile and tablet nodes that disable the sidebar when in
-        //
-         FIXME: properly center the zoom scale information at the top of
-        // the page
-        // FIXME: blur the input after changing them.. 
-
-        // FIXME: zoom/scale changes
-        // FIXME: handle the dock resize issues... 
-
-        // FIXME: debouncers everywhere
-
-        // FIXME: implement all pdf keyboard shortcuts. 
-        // https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#what-are-the-pdfjs-keyboard-shortcuts
-
-
-        // FIXME: context menu
-        // FIXME: area highlights
-
-        // FIXME: get annotations placed properly when the pdf viewer pages are activated/deactivated
-
-        // FIXME: get find working
-        
-        // FIXME: resize of the doc layout... 
-
-        
-        // FIXME: context menus... 
-        
-        // FIXME: key bindings
-        // FIXME: area highlights
-
-        // FIXME: full screen mode without a navbar...
-        // FIXME: sidebar that can be toggled on and off with the pdf width
-        // adjusted
-        // FIXME: load the docMeta to determine what doc to load and listen
-        // for changes
-        // FIXME: the sidebar / annotation bar needs to work.
-        // FIXME: dark mode for the PDF (needs changes to pdfjs)
-        // FIXME: verify that it works on mobile...
-            // FIXME the PDF version of this viewer doesn't seem to handle CPU
-            // properly and continues to composite this on the GPU using 100%
-            // of resources while scrolling.  This is probably the issue we
-            // had with react-pdf
-
-            //
-            // FIXME: it seems that chrome with pdfjs tends to run
-            // "composite layers" too often.  Not sure why.
-
-        // FIXME: jump to page number... 
-        // FIXME: context menu working
-
-        // DONE : get the ActiveSelections / annotation bar system working ... 
-        // DONE: when a PDF is being downloaded we need to track and show progress.
 
 
 ## PDFViewer

@@ -1,15 +1,18 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 interface IProps {
+    // readonly page: number;
+    // readonly pagemark: IPagemark;
 }
 
 interface IState {
     readonly container: HTMLElement | undefined;
 }
 
-export class TextAreaHighlight extends React.Component<IProps, IState> {
+export class TextHighlight extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

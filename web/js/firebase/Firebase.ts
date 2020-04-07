@@ -42,24 +42,49 @@ export class Firebase {
 
         try {
 
-            log.notice("Initializing firebase...");
+            this.app = this.initApp();
+            this.initConnectionStateListener();
 
-            const project = process.env.POLAR_TEST_PROJECT || 'prod';
-
-            log.info("Connecting to firebase with project: " + project);
-
-            Preconditions.assertPresent(project, "project");
-
-            const config = PROJECTS[project];
-
-            Preconditions.assertPresent(config, "config");
-
-            return this.app = firebase.initializeApp(config);
+            return this.app;
 
         } finally {
             log.notice("Initializing firebase...done");
         }
 
+    }
+
+    private static initApp() {
+
+        log.notice("Initializing firebase...");
+
+        const project = process.env.POLAR_TEST_PROJECT || 'prod';
+
+        log.info("Connecting to firebase with project: " + project);
+
+        Preconditions.assertPresent(project, "project");
+
+        const config = PROJECTS[project];
+
+        Preconditions.assertPresent(config, "config");
+
+        return firebase.initializeApp(config);
+
+    }
+
+    private static initConnectionStateListener() {
+
+        const connectedRef = firebase.database().ref(".info/connected");
+        connectedRef.on("value", function(snap) {
+
+            const msg = 'Firebase state: ';
+
+            if (snap.val() === true) {
+                console.log(msg, "connected");
+            } else {
+                console.log(msg, "disconnected");
+            }
+
+        });
     }
 
     public static async currentUser(): Promise<firebase.User | null> {

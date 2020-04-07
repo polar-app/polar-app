@@ -2,6 +2,8 @@
 
 - upgraded to latest version of typescript and tslint
 - annotations in the annotation viewer can now be rich text.
+- new state listener for the connection to firebase so we can debug when it 
+  disconnects/connects
 
 # 1.100.0
 
