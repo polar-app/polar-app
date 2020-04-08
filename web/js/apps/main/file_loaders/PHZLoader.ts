@@ -40,7 +40,7 @@ export class PHZLoader extends FileLoader {
 
         const fileMeta = this.fileRegistry.registerFile(path);
 
-        const appURL = PHZLoader.createViewerURL(fileMeta.url, filename);
+        const appURL = PHZLoader.createViewerURL('__unused__', fileMeta.url, filename);
 
         return {
             webResource: WebResource.createURL(appURL)
@@ -48,9 +48,7 @@ export class PHZLoader extends FileLoader {
 
     }
 
-    public static createViewerURL(fileURL: string, filename: string) {
-
-        const fingerprint = Fingerprints.create(filename);
+    public static createViewerURL(fingerprint: string, fileURL: string, filename: string) {
 
         const params = {
             file: encodeURIComponent(fileURL),

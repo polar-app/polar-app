@@ -30,7 +30,7 @@ export class BrowserDocLoader implements IDocLoader {
 
             async load(): Promise<void> {
 
-                const {backendFileRef} = loadDocRequest;
+                const {backendFileRef, fingerprint} = loadDocRequest;
 
                 const datastoreFile = persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
 
@@ -39,9 +39,9 @@ export class BrowserDocLoader implements IDocLoader {
                     const fileName = backendFileRef.name;
 
                     if (FilePaths.hasExtension(fileName, "pdf")) {
-                        return PDFLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
+                        return PDFLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
                     } else if (FilePaths.hasExtension(fileName, "phz")) {
-                        return PHZLoader.createViewerURL(datastoreFile.url, backendFileRef.name);
+                        return PHZLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
                     } else {
                         throw new Error("Unable to handle file: " + fileName);
                     }

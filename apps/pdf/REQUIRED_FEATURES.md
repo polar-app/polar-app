@@ -1,5 +1,11 @@
 List of required features we need in the viewer to replace the current viewer
 
+- the sidebar filtering doesn't work at all.. 
+
+- pointer-events are still enabled on text-highlights for some reason and not
+  sure why.  If I enable them I need SOME way to enable the popover/interaction
+  with the text highlight/annotations though.   
+
 - Fix the side of the input in the menu bar.  
 
 - make sure auto-pagemarks work

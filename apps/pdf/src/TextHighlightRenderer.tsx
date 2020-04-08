@@ -98,6 +98,7 @@ export class TextHighlightRenderer extends React.Component<IProps, IState> {
 
         const {textHighlight, fingerprint, page} = this.props;
 
+        // FIXME: remove this...
         const docFormat = DocFormatFactory.getInstance();
 
         const createScaledRect = (textHighlightRect: IRect): IRect => {
