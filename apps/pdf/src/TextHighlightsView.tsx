@@ -8,6 +8,7 @@ import {TextHighlightRenderer} from "./TextHighlightRenderer";
 
 interface IProps {
     readonly docMeta: IDocMeta | undefined;
+    readonly scaleValue: number | undefined;
 }
 
 export class TextHighlightsView extends React.Component<IProps> {
@@ -15,9 +16,9 @@ export class TextHighlightsView extends React.Component<IProps> {
     // typescript fails to compile this when it's a functional component.
     public render() {
 
-        const {docMeta} = this.props;
+        const {docMeta, scaleValue} = this.props;
 
-        if (!docMeta) {
+        if (!docMeta || ! scaleValue) {
             return null;
         }
 
@@ -51,6 +52,7 @@ export class TextHighlightsView extends React.Component<IProps> {
             <TextHighlightRenderer
                 key={current.textHighlight.id}
                 page={current.page}
+                scaleValue={scaleValue}
                 fingerprint={docMeta?.docInfo.fingerprint}
                 textHighlight={current.textHighlight}/>
         );

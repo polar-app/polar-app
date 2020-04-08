@@ -269,6 +269,7 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
             const pdfDocMeta: PDFDocMeta = {
                 scale: this.scale,
+                scaleValue: this.docViewer.viewer.currentScale,
                 currentPage: this.docViewer.viewer.currentPageNumber,
                 nrPages: this.doc.numPages,
                 fingerprint: this.doc.fingerprint
@@ -294,6 +295,12 @@ export interface PDFPageNavigator {
 export interface PDFDocMeta {
     readonly currentPage: number;
     readonly scale: PDFScaleLevelTuple;
+
+    /**
+     * The applied scale value derived from a string like 'page-width' but
+     * actually computed as something like 1.2
+     */
+    readonly scaleValue: number;
     readonly nrPages: number;
     readonly fingerprint: IDStr;
 }

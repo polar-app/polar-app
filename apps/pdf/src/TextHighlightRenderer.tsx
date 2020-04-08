@@ -1,18 +1,19 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {Rects} from "../../../web/js/Rects";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {DocFormatFactory} from "../../../web/js/docformat/DocFormatFactory";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Rects} from "../../../web/js/Rects";
 
 interface IProps {
     readonly page: number;
     readonly fingerprint: IDStr;
     readonly textHighlight: ITextHighlight;
+    readonly scaleValue: number | undefined;
 }
 
 interface IState {
@@ -32,12 +33,14 @@ export class TextHighlightRenderer extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
 
+        const {page} = this.props;
+
         // update and get the container...
         const doUpdate = () => {
 
             const getContainer = (): HTMLElement | undefined => {
 
-                const pageElement = document.querySelector(".page[data-page-number='14']");
+                const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
 
                 if (! pageElement) {
                     return undefined;
@@ -87,8 +90,9 @@ export class TextHighlightRenderer extends React.Component<IProps, IState> {
     public render() {
 
         const {container} = this.state;
+        const {scaleValue} = this.props;
 
-        if (! container) {
+        if (! container || ! scaleValue) {
             return null;
         }
 
@@ -101,13 +105,12 @@ export class TextHighlightRenderer extends React.Component<IProps, IState> {
             // FIXME: ditch this as we need a way to get the current scale
             // when viewing the PDF...
 
-            // if (docFormat.name === "pdf") {
-            //
-            //     // this is only needed for PDF and we might be able to use a transform
-            //     // in the future which would be easier.
-            //     const currentScale = docFormat.currentScale();
-            //     return Rects.scale(textHighlightRect, currentScale);
-            // }
+            if (docFormat.name === "pdf") {
+
+                // this is only needed for PDF and we might be able to use a transform
+                // in the future which would be easier.
+                return Rects.scale(textHighlightRect, scaleValue);
+            }
 
             return textHighlightRect;
 

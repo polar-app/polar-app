@@ -179,7 +179,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                         onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
                                         url={this.state.docURL}/>
 
-                                    <TextHighlightsView docMeta={this.state.docMeta}/>
+                                    <TextHighlightsView docMeta={this.state.docMeta}
+                                                        scaleValue={this.state.pdfDocMeta?.scaleValue}/>
 
                                 </div>
                         },
