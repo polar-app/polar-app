@@ -261,25 +261,24 @@ export class AnnotationSidebar2 extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-
-        this.init()
-            .catch(err => log.error("Failed init: ", err));
-
+        this.init();
     }
 
-    private async init() {
-
-        await this.buildDocAnnotations();
-
+    private init() {
+        this.buildDocAnnotations();
     }
 
-    private async buildDocAnnotations() {
+    private buildDocAnnotations() {
 
         // TODO: this could be faster by not building them if they're not updated
-        const handleDocMeta = async (docMeta: IDocMeta) => {
+        const handleDocMeta = (docMeta: IDocMeta) => {
+
+            console.time('buildDocAnnotations:handleDocMeta')
 
             const data = this.docAnnotationLoader.load(docMeta);
             const view = DocAnnotationSorter.sort(data);
+
+            console.timeEnd('buildDocAnnotations:handleDocMeta')
 
             this.setState({
                 data,
@@ -289,7 +288,7 @@ export class AnnotationSidebar2 extends React.Component<IProps, IState> {
         };
 
         const docMeta = this.props.doc.docMeta;
-        await handleDocMeta(docMeta);
+        handleDocMeta(docMeta);
 
     }
 
