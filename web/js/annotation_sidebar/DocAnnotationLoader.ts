@@ -11,7 +11,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 /**
- * Handles updating the DocAnnotationIndex when we receive new updates to DocMeta.
+ * Handles converting everything to DocAnnotations from DocMeta.
  */
 export class DocAnnotationLoader {
 
@@ -53,8 +53,8 @@ export class DocAnnotationLoader {
             const flashcardConverter = createFlashcardConverter(pageMeta);
 
             ArrayStreams.ofMapValues(pageMeta.areaHighlights)
-                        .map(current => areaHighlightConverter(current))
-                        .transferTo(values => docAnnotationIndex.put(...values));
+                .map(current => areaHighlightConverter(current))
+                .transferTo(values => docAnnotationIndex.put(...values));
 
             ArrayStreams.ofMapValues(pageMeta.textHighlights)
                 .map(current => textHighlightConverter(current))
