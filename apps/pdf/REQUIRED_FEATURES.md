@@ -1,5 +1,7 @@
 List of required features we need in the viewer to replace the current viewer
 
+- Make sure the page that the user was reading is restored on startup.
+
 - the sidebar filtering doesn't work at all.. 
 
 - pointer-events are still enabled on text-highlights for some reason and not

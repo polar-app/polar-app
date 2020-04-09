@@ -35,6 +35,7 @@ export class AnnotationRepoFilterEngine<D extends IDocAnnotation> {
 
     private doUpdate() {
         const repoAnnotations = this.repoAnnotationsProvider();
+
         this.onUpdated(this.filter(repoAnnotations));
     }
 

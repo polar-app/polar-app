@@ -24,6 +24,7 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {TextHighlightsView} from "./TextHighlightsView";
+import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
 
 const log = Logger.create();
 
@@ -190,7 +191,8 @@ export class PDFViewer extends React.Component<IProps, IState> {
                             component:
                                 <>
                                 {this.state.docMeta &&
-                                    <AnnotationSidebar doc={{
+                                    <AnnotationSidebar2
+                                                       doc={{
                                                            docInfo: this.state.docMeta.docInfo,
                                                            docMeta: this.state.docMeta,
                                                            permission: {mode: 'rw'},

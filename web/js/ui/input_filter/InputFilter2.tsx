@@ -6,14 +6,21 @@ import InputGroup from "reactstrap/lib/InputGroup";
 import Input from "reactstrap/lib/Input";
 import InputGroupText from "reactstrap/lib/InputGroupText";
 import {Props} from "../../react/Props";
+import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 export const InputFilter = (props: IProps) => {
 
     const onChange = props.onChange || NULL_FUNCTION;
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = ('' + event.target.value);
+    const _handleChange = (value: string) => {
         onChange(value);
+    };
+
+    const handleChange = Debouncers.create1(_handleChange);
+
+    const handleChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        handleChange(value);
     };
 
     return (
@@ -30,7 +37,7 @@ export const InputFilter = (props: IProps) => {
                    className="btn-no-outline p-0 pl-1 pr-1"
                    placeholder={props.placeholder}
                    defaultValue={props.defaultValue}
-                   onChange={event => handleChange(event)}>
+                   onChange={event => handleChangeEvent(event)}>
 
             </Input>
 
