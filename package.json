@@ -236,7 +236,8 @@
     "uuid": "~3.3.2",
     "workbox-cli": "=4.3.1",
     "react-hotkeys": "=2.0.0",
-    "react-window": "=1.8.5"
+    "react-window": "=1.8.5",
+    "react-rnd": "=10.1.8"
   },
   "collective": {
     "type": "opencollective",
