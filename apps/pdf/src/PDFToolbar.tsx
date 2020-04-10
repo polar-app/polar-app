@@ -223,7 +223,11 @@ export const PDFToolbar = (props: IProps) => {
 
                 </div>
 
-                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}
+                <div style={{
+                         display: 'flex',
+                         flexGrow: 1,
+                         flexBasis: 0
+                     }}
                      className="vertical-align-children">
 
                     <div style={{display: 'flex'}}
@@ -262,7 +266,11 @@ export const PDFToolbar = (props: IProps) => {
 
                 </div>
 
-                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}
+                <div style={{
+                         display: 'flex',
+                         flexGrow: 1,
+                         flexBasis: 0
+                     }}
                      className="vertical-aligned-children">
 
                     <div style={{display: 'flex'}}
