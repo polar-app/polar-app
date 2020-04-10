@@ -4,6 +4,7 @@ import {FadeIn} from "../../js/ui/motion/FadeIn";
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
 import {SchoolSelectDemo} from "./SchoolSelectDemo";
 import {KeyBindingDemo} from "./key-bindings/KeyBindingDemo";
+import {DragAndResizeDemo} from "./DragAndResizeDemo";
 
 const styles = {
     swatch: {
@@ -86,7 +87,8 @@ export class App<P> extends React.Component<{}, IAppState> {
 
         return (
             <div>
-                <KeyBindingDemo/>
+                {/*<KeyBindingDemo/>*/}
+                <DragAndResizeDemo/>
             </div>
         );
 

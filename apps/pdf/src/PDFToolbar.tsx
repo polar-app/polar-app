@@ -275,14 +275,16 @@ export const PDFToolbar = (props: IProps) => {
 
                     <div style={{display: 'flex'}}
                          className="ml-auto vertical-aligned-children">
-                        <Button color="clear">
-                            <i className="fas fa-expand-arrows-alt"/>
-                        </Button>
 
                         <Button color="clear"
                                 onClick={() => props.onFind()}>
                             <i className="fas fa-search"/>
                         </Button>
+
+                        <Button color="clear">
+                            <i className="fas fa-expand-arrows-alt"/>
+                        </Button>
+
                     </div>
 
                 </div>
