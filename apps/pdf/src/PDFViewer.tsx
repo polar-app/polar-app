@@ -22,9 +22,9 @@ import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
-import {AnnotationSidebar} from "../../../web/js/annotation_sidebar/AnnotationSidebar";
 import {TextHighlightsView} from "./TextHighlightsView";
 import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
+import {PagemarkProgressBar} from "./PagemarkProgressBar";
 
 const log = Logger.create();
 
@@ -164,24 +164,40 @@ export class PDFViewer extends React.Component<IProps, IState> {
                             id: "dock-panel-viewer",
                             type: 'grow',
                             style: {
-                                position: 'relative'
+                                display: 'flex'
                             },
                             component:
-                                <div>
+                                <div style={{
+                                        flexGrow: 1,
+                                        minHeight: 0,
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
 
-                                    <ViewerContainer/>
+                                    <PagemarkProgressBar docMeta={this.state.docMeta!}/>
 
-                                    <PDFDocument
-                                        onFinder={finder => this.onFinder(finder)}
-                                        target="viewerContainer"
-                                        onResizer={resizer => this.onResizer(resizer)}
-                                        onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
-                                        onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
-                                        onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
-                                        url={this.state.docURL}/>
+                                    <div style={{
+                                            minHeight: 0,
+                                            overflow: 'auto',
+                                            flexGrow: 1,
+                                            position: 'relative'
+                                         }}>
 
-                                    <TextHighlightsView docMeta={this.state.docMeta}
-                                                        scaleValue={this.state.pdfDocMeta?.scaleValue}/>
+                                        <ViewerContainer/>
+
+                                        <PDFDocument
+                                            onFinder={finder => this.onFinder(finder)}
+                                            target="viewerContainer"
+                                            onResizer={resizer => this.onResizer(resizer)}
+                                            onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
+                                            onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
+                                            onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
+                                            url={this.state.docURL}/>
+
+                                        <TextHighlightsView docMeta={this.state.docMeta}
+                                                            scaleValue={this.state.pdfDocMeta?.scaleValue}/>
+
+                                    </div>
 
                                 </div>
                         },
