@@ -198,9 +198,14 @@ export const PDFToolbar = (props: IProps) => {
                      display: 'flex',
                      backgroundColor: 'var(--grey050)'
                  }}
-                 className="border-bottom p-1">
+                 className="border-bottom p-1 vertical-aligned-children">
 
-                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}>
+                <div style={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        flexBasis: 0
+                     }}
+                     className="vertical-aligned-children">
                     <Button color="clear"
                             onClick={() => props.onPagePrev()}>
                         <i className="fas fa-arrow-up"/>
@@ -218,9 +223,11 @@ export const PDFToolbar = (props: IProps) => {
 
                 </div>
 
-                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}>
+                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}
+                     className="vertical-align-children">
 
-                    <div style={{display: 'flex'}} className="ml-auto mr-auto">
+                    <div style={{display: 'flex'}}
+                         className="ml-auto mr-auto vertical-align-children">
 
                         <Button color="clear"
                                 onClick={() => handleNextZoomLevel(-1)}>
@@ -255,9 +262,11 @@ export const PDFToolbar = (props: IProps) => {
 
                 </div>
 
-                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}>
+                <div style={{display: 'flex', flexGrow: 1, flexBasis: 0}}
+                     className="vertical-aligned-children">
 
-                    <div style={{display: 'flex'}} className="ml-auto">
+                    <div style={{display: 'flex'}}
+                         className="ml-auto vertical-aligned-children">
                         <Button color="clear">
                             <i className="fas fa-expand"/>
                         </Button>

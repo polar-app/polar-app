@@ -422,3 +422,8 @@ button.dropdown-item:hover {
 .shadow-narrow {
     box-shadow: 0 0 0.25rem 0 rgba(0,0,0,.24);
 }
+
+.vertical-align-children {
+    margin-top: auto;
+    margin-bottom: auto;
+}
