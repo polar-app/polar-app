@@ -70,11 +70,13 @@ export class AnkiSyncEngine implements SyncEngine {
                 fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).getOrElse('');
             });
 
-            const docInfoTags = Optional.of(flashcardDescriptor.docMeta.docInfo.tags);
+            const annotationTagsMap = flashcardDescriptor.flashcard.tags || {};
+            const docInfoTagsMap = flashcardDescriptor.docMeta.docInfo.tags || {};
 
-            const tags = docInfoTags.map(current => Object.values(current))
-                       .getOrElse([])
-                       .map(tag => tag.label);
+            const tagsMap = {...docInfoTagsMap, ...annotationTagsMap};
+
+            const tags = Object.values(tagsMap)
+                               .map(tag => tag.label);
 
             // TODO: implement more model types... not just basic.
 
