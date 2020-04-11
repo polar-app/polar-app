@@ -1,12 +1,12 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {DocFormatFactory} from "../../../web/js/docformat/DocFormatFactory";
+import {DocFormatFactory} from "../../../../web/js/docformat/DocFormatFactory";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../web/js/Rects";
+import {Rects} from "../../../../web/js/Rects";
 import {
     AbstractAnnotationRenderer,
     AbstractAnnotationRendererProps,
@@ -45,22 +45,12 @@ export class TextHighlightRenderer extends AbstractAnnotationRenderer<IProps, IS
 
         const {textHighlight, fingerprint, page} = this.props;
 
-        // FIXME: remove this...
-        const docFormat = DocFormatFactory.getInstance();
-
         const createScaledRect = (textHighlightRect: IRect): IRect => {
 
-            // FIXME: ditch this as we need a way to get the current scale
-            // when viewing the PDF...
-
-            if (docFormat.name === "pdf") {
-
-                // this is only needed for PDF and we might be able to use a transform
-                // in the future which would be easier.
-                return Rects.scale(textHighlightRect, scaleValue);
-            }
-
-            return textHighlightRect;
+            // this is only needed for PDF and we might be able to use a
+            // transform in the future which would be easier.  For all other
+            // document formats the scale should just be '1'
+            return Rects.scale(textHighlightRect, scaleValue);
 
         };
 

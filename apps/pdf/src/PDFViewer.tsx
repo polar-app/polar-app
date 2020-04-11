@@ -22,7 +22,7 @@ import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
-import {TextHighlightsView} from "./TextHighlightsView";
+import {TextHighlightsView} from "./annotations/TextHighlightsView";
 import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
 import {PagemarkProgressBar} from "./PagemarkProgressBar";
 
