@@ -1,23 +1,18 @@
 import * as React from "react";
 import {Rnd} from "react-rnd";
+import { DragAndResizeBox } from "./DragAndResizeBox";
 
-const DragAndResizeBox = () => (
-    <Rnd
-        default={{
-            x: 10,
-            y: 10,
-            width: 320,
-            height: 200,
-        }}
-        style={{
-            backgroundColor: 'rgba(0, 0, 255, 0.6)'
-        }}>
-
-    </Rnd>
-)
+// FIXME: click it and then enable the buttons to the bottom?
 
 export const DragAndResizeDemo = () => (
     <div>
+
+        <br/>
+        <br/>
+        <div>
+            This is some inner text that we need to be able to click.. .
+        </div>
+
         <DragAndResizeBox/>
     </div>
 );
