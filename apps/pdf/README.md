@@ -1,19 +1,3 @@
-- use react-pdf ?
-
-    https://github.com/wojtekmaj/react-pdf
-
-- react-pdf-sample has a demo using react-window
-
-    https://github.com/michaeldzjap/react-pdf-sample
-
-- we use 2.2.228 and so does react-pdf but we want to upgrade to the 
-  latest so I might have to fork this in the future.  That and 
-  it doesn't support typescript.
-
-- there is a @types/react-pdf but it's slightly out of date
-
-- going with something like react-pdf might be better anyway especially  
-  if I webpack the full thing
 
 - the problem now is that if I import react-pdf it won't compile due to module 
   dependency issues. Maybe for now I need to have my OWN @types/pdfjs-dist 
@@ -97,9 +81,33 @@
       instead uses absolute positioning and margins work properly, similar to 
       how pdfjs works... 
 
-
 ## Bugs Effecting Us
 
 https://github.com/mozilla/pdf.js/issues/11626
 
 
+
+# Pushing a new build of pdf.js custom sources
+
+
+
+git remote show origin
+
+```bash
+cd ~/projects/pdf.js-master
+npx gulp dist
+cd build/dist
+rm -r .git
+git init
+git add *
+git remote add origin https://github.com/burtonator/package-polar-pdfjs-dist.git
+git push --set-upstream origin master --force
+```
+
+NOTE that in order to pull the most RECENT version down into modules we have to
+run ```npm run purge-node-modules``` otherwise the cached version is used.
+
+- AT&T signal booster
+
+
+https://www.amazon.com/Booster-Cellular-T-Mobile-Amplifier-Antennas/dp/B081GMFKKG/ref=sr_1_4?dchild=1&keywords=AT%26T%2B4G%2BLTE%2Bsignal%2Bbooster&qid=1586629708&sr=8-4&th=1
