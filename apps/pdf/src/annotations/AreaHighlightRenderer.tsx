@@ -16,6 +16,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IRect} from "polar-shared/src/util/rects/IRect";
+import { ResizeBox } from "./ResizeBox";
 
 const log = Logger.create();
 
@@ -93,7 +94,8 @@ export class AreaHighlightRenderer extends AbstractAnnotationRenderer<IProps, IS
             const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
             return ReactDOM.createPortal(
-                <div id={id}
+                <ResizeBox
+                     id={id}
                      data-type="area-highlight"
                      data-doc-fingerprint={fingerprint}
                      data-area-highlight-id={areaHighlight.id}
@@ -106,15 +108,15 @@ export class AreaHighlightRenderer extends AbstractAnnotationRenderer<IProps, IS
                      data-annotation-doc-fingerprint={fingerprint}
                      data-annotation-color={color}
                      className={className}
+                     left={overlayRect.left}
+                     top={overlayRect.top}
+                     width={overlayRect.width}
+                     height={overlayRect.height}
                      style={{
                          position: 'absolute',
                          backgroundColor,
                          mixBlendMode: 'multiply',
                          border: `1px solid #c6c6c6`,
-                         left: `${overlayRect.left}px`,
-                         top: `${overlayRect.top}px`,
-                         width: `${overlayRect.width}px`,
-                         height: `${overlayRect.height}px`,
                          zIndex: 1
                      }}/>,
                 container);
