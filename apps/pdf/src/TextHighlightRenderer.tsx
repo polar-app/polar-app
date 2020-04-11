@@ -1,6 +1,5 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {DocFormatFactory} from "../../../web/js/docformat/DocFormatFactory";
 import {IRect} from "polar-shared/src/util/rects/IRect";
@@ -8,19 +7,23 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../web/js/Rects";
+import {
+    AbstractAnnotationRenderer,
+    AbstractAnnotationRendererProps,
+    AbstractAnnotationRendererState
+} from "./AbstractAnnotationRenderer";
 
-interface IProps {
-    readonly page: number;
+interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
     readonly textHighlight: ITextHighlight;
     readonly scaleValue: number | undefined;
 }
 
-interface IState {
+interface IState extends AbstractAnnotationRendererState {
     readonly container: HTMLElement | undefined;
 }
 
-export class TextHighlightRenderer extends React.Component<IProps, IState> {
+export class TextHighlightRenderer extends AbstractAnnotationRenderer<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -30,62 +33,6 @@ export class TextHighlightRenderer extends React.Component<IProps, IState> {
         };
 
     }
-
-    public componentDidMount(): void {
-
-        const {page} = this.props;
-
-        // update and get the container...
-        const doUpdate = () => {
-
-            const getContainer = (): HTMLElement | undefined => {
-
-                const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
-
-                if (! pageElement) {
-                    return undefined;
-                }
-
-                const textLayerElement = pageElement.querySelector(".textLayer");
-
-                if (! textLayerElement) {
-                    return undefined;
-                }
-
-                return textLayerElement as HTMLElement;
-
-            };
-
-            const container = getContainer();
-
-            if (this.state.container !== container) {
-                this.setState({container});
-            }
-
-        };
-
-        doUpdate();
-
-        const doUpdateDebouncer = Debouncers.create(() => doUpdate());
-
-        const registerScrollListener = () => {
-            const viewerContainer = document.getElementById('viewerContainer');
-            viewerContainer!.addEventListener('scroll', () => doUpdateDebouncer());
-        };
-
-        const registerResizeListener = () => {
-            window.addEventListener('resize', () => doUpdateDebouncer());
-        };
-
-        // FIXME this can not be a pure component becaomse it depends on the scroll
-        // FIXME: should I use effect?
-
-        registerScrollListener();
-        registerResizeListener();
-
-    }
-
-    // FIXME: remove event listeners on unmount...
 
     public render() {
 
