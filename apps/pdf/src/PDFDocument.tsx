@@ -16,6 +16,7 @@ import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {PDFScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
+import {PageContextMenus} from "./context_menus/PageContextMenus";
 
 const log = Logger.create();
 
@@ -201,6 +202,10 @@ export class PDFDocument extends React.Component<IProps, IState> {
                                                        docViewer.findController);
 
         this.props.onFinder(finder);
+
+        docViewer.eventBus.on('pagesinit', () => {
+            PageContextMenus.start();
+        });
 
         const resizeDebouncer = Debouncers.create(() => this.resize());
 

@@ -1,9 +1,7 @@
-import {ContextMenuWrapper, addContextMenuEventListener} from '@burtonator/react-context-menu-wrapper';
-import {TestMenu} from '../../../spectron0/ui-components/TestMenu';
+import {addContextMenuEventListener} from '@burtonator/react-context-menu-wrapper';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {ContextMenu} from '../../ui/context_menu/ContextMenu';
-import Dropdown, {DropdownMenu, MenuItem} from "@burtonator/react-dropdown";
+import {DropdownMenu, MenuItem} from "@burtonator/react-dropdown";
 import {TriggerEvent} from '../TriggerEvent';
 import {ContextMenuMessages} from '../ContextMenuMessages';
 import {ContextMenuType} from '../ContextMenuType';

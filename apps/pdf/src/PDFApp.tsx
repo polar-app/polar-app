@@ -1,6 +1,5 @@
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import {PDFDocument} from "./PDFDocument";
 import {PersistenceLayerManager} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AppInitializer} from "../../../web/js/apps/repository/AppInitializer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -15,21 +14,7 @@ import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
-import {ViewerContainer} from "./ViewerContainer";
 import {PDFViewer} from './PDFViewer';
-
-const PositionedLayout = () => (
-    <div style={{marginRight: '250px'}}>
-
-        <ViewerContainer/>
-
-        {/*<PDFDocument target="viewerContainer"*/}
-        {/*             onFinder={finder => console.log({finder})}*/}
-        {/*             url="./test.pdf"/>*/}
-
-    </div>
-
-);
 
 export class PDFApp {
 
@@ -40,12 +25,19 @@ export class PDFApp {
 
         const persistenceLayerManager = this.persistenceLayerManager;
 
+        console.time('AppInitializer.init');
+
         const app = await AppInitializer.init({
             persistenceLayerManager,
             onNeedsAuthentication: ASYNC_NULL_FUNCTION
         });
 
+        console.timeEnd('AppInitializer.init');
+
+        console.time('persistenceLayerManager.start');
         await persistenceLayerManager.start();
+        console.timeEnd('persistenceLayerManager.start');;
+
         new ProgressService().start();
 
         const rootElement = document.getElementById('root') as HTMLElement;

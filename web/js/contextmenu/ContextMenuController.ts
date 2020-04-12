@@ -9,10 +9,8 @@ import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {forDict} from 'polar-shared/src/util/Functions';
-import {ElectronContextMenus} from './electron/ElectronContextMenus';
 import {BrowserContextMenus} from './browser/BrowserContextMenus';
-import {BrowserContextMenu} from './browser/BrowserContextMenu';
-import {Platforms} from "polar-shared/src/util/Platforms";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 
@@ -49,8 +47,7 @@ export class ContextMenuController {
 
         log.info("Starting ContextMenuController");
 
-
-        if (Platforms.isDesktop()) {
+        if (Devices.isDesktop()) {
 
             BrowserContextMenus.create();
 
