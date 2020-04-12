@@ -11,7 +11,6 @@ interface IProps {
     readonly top: number;
     readonly width: number;
     readonly height: number;
-
 }
 
 interface IState {

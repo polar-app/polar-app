@@ -26,6 +26,7 @@ import {TextHighlightsView} from "./annotations/TextHighlightsView";
 import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
 import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
+import {PagemarksView} from "./annotations/PagemarksView";
 
 const log = Logger.create();
 
@@ -200,6 +201,9 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
                                         <AreaHighlightsView docMeta={this.state.docMeta}
                                                             scaleValue={this.state.pdfDocMeta?.scaleValue}/>
+
+                                        <PagemarksView docMeta={this.state.docMeta}
+                                                       scaleValue={this.state.pdfDocMeta?.scaleValue}/>
 
                                     </div>
 
