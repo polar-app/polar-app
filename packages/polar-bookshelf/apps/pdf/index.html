@@ -1,0 +1,174 @@
+<html dir="ltr" itemtype="https://schema.org/WebPage">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+
+    <meta name="polar-doc-format" content="pdf">
+    <meta name="app_version" content="" >
+
+    <link rel="stylesheet" href="../../node_modules/pdfjs-dist/web/pdf_viewer.css">
+
+    <!-- TODO: these need to load locally before we enable firebase in production -->
+    <script src="/node_modules/firebase/firebase-app.js"></script>
+    <script src="/node_modules/firebase/firebase-auth.js"></script>
+    <script src="/node_modules/firebase/firebase-database.js"></script>
+    <script src="/node_modules/firebase/firebase-firestore.js"></script>
+    <script src="/node_modules/firebase/firebase-storage.js"></script>
+
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
+
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.css">
+    <link rel="stylesheet" href="/node_modules/@burtonator/react-dropdown/dist/react-dropdown.css">
+
+    <style>
+        * {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        *:before,
+        *:after {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+
+        main {
+            padding-bottom: 0;
+        }
+
+        .pdfViewer .page {
+            margin: 5px auto 5px auto
+        }
+
+        /*.pdfViewer:first-child {*/
+        /*    margin-top: 50px;*/
+        /*}*/
+
+    </style>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <!--
+
+        - TODO:
+            - twitter microdata
+            - title, summary,
+    -->
+
+    <link rel="canonical" href="" />
+    <meta name="description" content="">
+
+    <link rel="icon" href="/icon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link href="../../node_modules/polar-google-fonts/Open%20Sans/style.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="/pdfviewer-custom/twitter-bootstrap.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/annotation-sidebar.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/progress.css">
+
+    <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+
+    <style>
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #viewerContainer {
+            /*width: 150px;*/
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+    </style>
+
+    <title itemprop="headline"></title>
+
+
+  </head>
+  <body>
+
+    <noscript>
+
+      <a href="https://getpolarized.io/">Polar</a> allows you to easily manage
+      your PDFs, web content, and notes and supports advanced features like
+      <a href="https://app.getpolarized.io/groups">group sharing</a> of
+      documents.
+
+    </noscript>
+
+
+    <div id="root" style="">
+
+    </div>
+
+  </body>
+
+  <script src="/apps/service-worker-registration.js"></script>
+  <script src="/apps/init.js"></script>
+
+  <script>
+
+      function displayError(msg) {
+
+          // TODO: we need to also include the error stack trace in the future I think.
+
+          const errorElement = document.getElementById("error");
+          errorElement.style.display = 'block';
+          errorElement.textContent = msg;
+
+      }
+
+      function withErrorHandler(delegate) {
+
+          try {
+
+            delegate();
+
+          } catch (e) {
+            displayError(e.message);
+          }
+
+      }
+
+      const fallbackLoader = () => {
+
+          withErrorHandler(() => {
+
+            // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
+            // loading over HTTP we can't find node_modules until we require().  We can
+            // only find standard modules like 'fs' and 'electron' but not custom
+            // modules so we have to just have these four lines repeated over and over
+            // for each of our main apps.  In the future we should try to track down
+            // why this is happening but I spent 1-2 hours on trying to figure out
+            // the root cause with no resolution and this is a temporary workaround.
+            const {remote} = require('electron');
+            const path = require('path');
+            const appPath = remote.getGlobal("appPath");
+            require(path.join(appPath, "apps", "pdf", "src", "entry.js"));
+
+          });
+
+      };
+
+      injectApp('/web/dist/pdf-bundle.js', fallbackLoader);
+
+  </script>
+
+</html>
