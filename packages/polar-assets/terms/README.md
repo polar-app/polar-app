@@ -1,0 +1,3 @@
+I paid $15 to getterms.io to generate these:
+
+https://u2312817.ct.sendgrid.net/wf/click?upn=W-2FNIPf0FJdFk81z7eq21-2Bzq8boAcFEpq0yZ-2F6adS0ayQfs6SFCRoh6v20a2f8q6S_mYS3BD-2FmFshdwch4ll8n-2BYB0ERttCXk6furnJZvwAtu-2FdBgvp2kq9F-2BPhVPaCZWopBWbnCCIaf4SgEMryKAaY6-2FVAHcG2JgARyJhuR-2FzYfD-2FH3W-2F4X1YyvuktNnOqiNb323aP4Wc3lBTRkGG8Dk7PW-2BO39cF-2F1olcuCRa4hNf85MsJZJKpTxvjPTARt9-2BNnammg-2BY590yCMm-2FbE6ue-2FEigqkDz-2FAsREpz4wMXuaVq5c-3D
