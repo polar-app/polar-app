@@ -3,6 +3,7 @@ import {MousePositions} from '../dock/MousePositions';
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 
 class Styles {
@@ -90,7 +91,6 @@ export class DockLayout extends React.Component<IProps, IState> {
                 </div>
             );
         };
-
 
         const createDockPanels = (): ReadonlyArray<JSX.Element> => {
 
@@ -199,11 +199,16 @@ export class DockLayout extends React.Component<IProps, IState> {
 
         const docPanels = createDockPanels();
 
+        // I'm not sure how much CPU this is going to save. It might be test
+        // to show a sort of live preview of where the bar would go, then drop
+        // it there when completed
+        const handleMouseMove = Debouncers.create(() => this.onMouseMove());
+
         return (
 
             <div className="dock-layout"
                  style={{...Styles.Dock}}
-                 onMouseMove={() => this.onMouseMove()}
+                 onMouseMove={() => handleMouseMove()}
                  draggable={false}>
 
                 {...docPanels}

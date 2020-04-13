@@ -5,6 +5,7 @@ import {RightSidebar} from "../../js/ui/motion/RightSidebar";
 import {SchoolSelectDemo} from "./SchoolSelectDemo";
 import {KeyBindingDemo} from "./key-bindings/KeyBindingDemo";
 import {DragAndResizeDemo} from "./DragAndResizeDemo";
+import { ReactWindowDemo } from './ReactWindowDemo';
 
 const styles = {
     swatch: {
@@ -86,10 +87,12 @@ export class App<P> extends React.Component<{}, IAppState> {
     public render() {
 
         return (
-            <div>
-                {/*<KeyBindingDemo/>*/}
-                <DragAndResizeDemo/>
-            </div>
+            <ReactWindowDemo/>
+            // <div>
+            //     {/*<KeyBindingDemo/>*/}
+            //     {/*<DragAndResizeDemo/>*/}
+            //
+            // </div>
         );
 
         //
