@@ -11,6 +11,7 @@ description: NYC has been hit hard by the COVID-19 crises with remote studying a
 # A rare glimpse into NYC’s hospitals from a resident during the COVID-19 pandemic
 
 The COVID-19 pandemic has significantly impacted all of our lives. NYC residents have been particularly hard stricken. As of April 10, the total number of confirmed cases is over 100,000, with almost seven thousand fatalities.
+
 We had a rare chance to talk about the current situation to a anesthesiology resident in NYC. Sarah (name changed) is in her late twenties and a third year resident in a large hospital in NYC.
 
 ## The daily struggle is pushing everyone to the limit
