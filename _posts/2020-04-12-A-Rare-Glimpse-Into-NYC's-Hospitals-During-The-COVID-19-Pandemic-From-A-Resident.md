@@ -1,11 +1,9 @@
 ---
 title: A rare glimpse into NYC’s hospitals from a resident during the COVID-19 pandemic
-date: 2020-04-13T08:00:00.000-08:00
+date: 2020-04-12T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/eVZdJcC.jpg
 description: NYC has been hit hard by the COVID-19 crises with remote studying and learning implement several weeks ago. Read this medical resident's first account of what is going on.
-hidden: true
-visible: false
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/eVZdJcC.jpg">
