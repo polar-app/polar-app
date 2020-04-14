@@ -57,21 +57,8 @@ export class PDFApp {
 
                 <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>
 
-                {/*<div style={{*/}
-
-                {/*     }}>*/}
-                {/*    <PositionedLayout/>*/}
-                {/*</div>*/}
-                {/*<ViewerContainer/>*/}
-
             </div>
             ), rootElement);
-
-        // ReactDOM.render((
-        //     // <div>
-        //     //     <Viewer/>
-        //     // </div>
-        //     ), rootElement);
 
     }
 

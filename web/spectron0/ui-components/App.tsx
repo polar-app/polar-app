@@ -6,6 +6,7 @@ import {SchoolSelectDemo} from "./SchoolSelectDemo";
 import {KeyBindingDemo} from "./key-bindings/KeyBindingDemo";
 import {DragAndResizeDemo} from "./DragAndResizeDemo";
 import { ReactWindowDemo } from './ReactWindowDemo';
+import { ScrollAutoLoaderDemo } from './ScrollAutoLoaderDemo';
 
 const styles = {
     swatch: {
@@ -87,7 +88,7 @@ export class App<P> extends React.Component<{}, IAppState> {
     public render() {
 
         return (
-            <ReactWindowDemo/>
+            <ScrollAutoLoaderDemo/>
             // <div>
             //     {/*<KeyBindingDemo/>*/}
             //     {/*<DragAndResizeDemo/>*/}

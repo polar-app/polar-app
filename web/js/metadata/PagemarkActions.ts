@@ -2,20 +2,23 @@ import {DocMetas} from "./DocMetas";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {TriggerEvent} from "../contextmenu/TriggerEvent";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {Pagemarks} from "./Pagemarks";
 
 const log = Logger.create();
 
 export namespace PagemarkActions {
 
-    export async function contextMenuCreatePagemarkToPoint(triggerEvent: TriggerEvent) {
+    export async function contextMenuCreatePagemarkToPoint(docMeta: IDocMeta,
+                                                           pageNum: number,
+                                                           pageElement: HTMLElement,
+                                                           triggerEvent: TriggerEvent) {
 
         try {
 
-            const pageElement = this.docFormat.getPageElementFromPageNum(triggerEvent.pageNum);
-            const pageNum = triggerEvent.pageNum;
             const verticalOffsetWithinPageElement = triggerEvent.points.pageOffset.y;
 
-            createPagemarkAtPoint(pageNum, pageElement, verticalOffsetWithinPageElement)
+            createPagemarkAtPoint(docMeta, pageNum, pageElement, verticalOffsetWithinPageElement)
                 .catch(err => log.error("Failed to create pagemark: ", err));
 
         } finally {
@@ -24,7 +27,8 @@ export namespace PagemarkActions {
 
     }
 
-    export async function createPagemarkAtPoint(pageNum: number,
+    export async function createPagemarkAtPoint(docMeta: IDocMeta,
+                                                pageNum: number,
                                                 pageElement: HTMLElement,
                                                 verticalOffsetWithinPageElement: number) {
 
@@ -34,13 +38,9 @@ export namespace PagemarkActions {
 
         log.info("percentage for pagemark: ", percentage);
 
-        const docMeta = this.model.docMeta;
-
         await DocMetas.withBatchedMutations(docMeta, async () => {
-            // TODO: do not use the model here and instead move this to the Pagemarks code which
-            // we can test better...
-            this.model.erasePagemark(pageNum);
-            await this.model.createPagemarksForRange(pageNum, percentage);
+            Pagemarks.deletePagemark(docMeta, pageNum);
+            Pagemarks.updatePagemarksForRange(docMeta, pageNum, percentage);
         });
 
     }

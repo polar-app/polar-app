@@ -89,10 +89,6 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
             const persistenceLayer = this.props.persistenceLayerProvider();
 
-            console.log("FIXME: loading...: " + parsedURL.id);
-
-            console.log("FIXME: persistencelayer " + persistenceLayer.id);
-
             // FIXME: load the file too
 
             // FIXME: unsubscribe on component unmount

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocAnnotations} from './DocAnnotations';
 import {DocAnnotation} from './DocAnnotation';
-import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
@@ -10,32 +8,21 @@ import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
-import {Firebase} from "../firebase/Firebase";
-import {
-    DocMetaListeners,
-    DocMetaRecords
-} from "../datastore/sharing/db/DocMetaListeners";
-import {DocMetas} from "../metadata/DocMetas";
-import {UserProfiles} from "../datastore/sharing/db/UserProfiles";
-import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FeatureToggle} from "../ui/FeatureToggle";
 import {InputFilter} from '../ui/input_filter/InputFilter2';
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
-import {
-    DatastoreCapabilities,
-    DocMetaSnapshot,
-    DocMetaSnapshotError
-} from "../datastore/Datastore";
+import {DatastoreCapabilities} from "../datastore/Datastore";
 import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
-import {DocMetaTransformer} from "../metadata/DocMetaTransformer";
 import {DocAnnotationLoader} from "./DocAnnotationLoader";
 import {DocAnnotationSorter} from "./DocAnnotationSorter";
+import AutoSizer from "react-virtualized-auto-sizer";
+import {VariableSizeList} from "react-window";
 
 const log = Logger.create();
 

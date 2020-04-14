@@ -8,7 +8,11 @@ const rowHeights = new Array(1000)
     .fill(true)
     .map(() => 25 + Math.round(Math.random() * 50));
 
-const getItemSize = (index: number) => rowHeights[index];
+const getItemSize = (index: number) => {
+    const id = 'row:' + index;
+    console.log(`FIXME: checking if it exists: ${id}` , document.getElementById(id))
+    return rowHeights[index];
+};
 
 interface RowProps {
     readonly index: number;
@@ -16,7 +20,7 @@ interface RowProps {
 }
 
 const Row = (props: RowProps) => (
-    <div style={props.style}>Row {props.index}</div>
+    <div style={props.style} id={'row:' + props.index}>Row {props.index}</div>
 );
 
 export const ReactWindowDemo = () => (
