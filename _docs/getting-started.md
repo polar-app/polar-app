@@ -77,7 +77,7 @@ If you're in China (which blocks our cloud provider) you will need to use this m
 Otherwise we recommend using the cloud version which is used automatically if you're using the web version of Polar
 or if you login to cloud sync on the desktop app.
 
-Cloud sync also allows you to use the [mobile](/docs/mobile.html) versions of Polar as well.
+Cloud sync also allows you to use the <a href="/docs/mobile.html" target="_blank"> versions of Polar as well.
 
 # Footnotes
 
