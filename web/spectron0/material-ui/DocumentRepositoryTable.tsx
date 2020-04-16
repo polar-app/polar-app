@@ -26,124 +26,110 @@ import Grid from "@material-ui/core/Grid";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {TimeDurations} from "polar-shared/src/util/TimeDurations";
+import {DateTimeTableCell} from "../../../apps/repository/js/DateTimeTableCell";
+import Box from "@material-ui/core/Box";
 
 interface Doc {
     readonly title: string;
-    readonly calories: number;
-    readonly fat: number;
+    readonly added: ISODateTimeString;
+    readonly lastUpdated: ISODateTimeString;
     readonly tags: ReadonlyArray<string>;
     readonly progress: number;
 }
 
 function createDoc(title: string,
-                   calories: number,
-                   fat: number,
+                   added: ISODateTimeString,
+                   lastUpdated: ISODateTimeString,
                    tags: ReadonlyArray<string>,
                    progress: number): Doc {
 
-    return { title: title + ": " + Math.random(), calories, fat, tags, progress };
+    return { title: title + ": " + Math.random(), added, lastUpdated, tags, progress };
 
 }
 
+const now = new Date();
+const today = ISODateTimeStrings.create();
+const yesterday = ISODateTimeStrings.create(TimeDurations.compute('-1d', now));
+
 const rows = [
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', yesterday, today, [], 4.9),
+    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', yesterday, today, [], 4.9),
+    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', yesterday, today, [], 4.9),
+    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', yesterday, today, [], 4.9),
+    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', yesterday, today, [], 4.9),
+    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', 452, 25.0, [], 4.9),
-    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -204,8 +190,8 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
-    { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-    { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+    { id: 'added', numeric: false, disablePadding: false, label: 'Added' },
+    { id: 'lastUpdated', numeric: false, disablePadding: false, label: 'Last Updated' },
     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
     { id: 'progress', numeric: true, disablePadding: false, label: 'Progress' },
 ];
@@ -240,7 +226,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
+                        // align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -353,35 +339,64 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     };
 
     return (
-        <Grid container direction="row" justify="space-between" alignItems="center">
+        <Grid container
+              direction="row"
+              justify="space-between"
+              alignItems="center">
 
-            <div style={{display: 'flex'}}>
+            <Grid item>
 
-                <Checkbox
-                    // indeterminate={numSelected > 0 && numSelected < rowCount}
-                    // checked={rowCount > 0 && numSelected === rowCount}
-                    // onChange={onSelectAllClick}
-                    inputProps={{ 'aria-label': 'select all desserts' }}
-                />
+                <Box pl={1}>
 
-                {numSelected > 0 && (
-                    <Grid container direction="row" justify="space-between">
-                        <Tooltip title="Tag">
-                            <IconButton>
-                                <LocalOfferIcon/>
-                            </IconButton>
-                        </Tooltip>
+                    <Grid container
+                          direction="row"
+                          justify="flex-start"
+                          alignItems="center">
 
-                        <Divider orientation="vertical" flexItem/>
+                        <Grid item>
+                            <Checkbox
+                                // indeterminate={numSelected > 0 && numSelected < rowCount}
+                                // checked={rowCount > 0 && numSelected === rowCount}
+                                // onChange={onSelectAllClick}
+                                //     onChange={onSelectAllClick}
 
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
+                                inputProps={{ 'aria-label': 'select all documents' }}
+                            />
+                        </Grid>
+
+                        {numSelected > 0 && (
+                            <Grid item>
+                                <Grid container
+                                      spacing={1}
+                                      direction="row"
+                                      justify="flex-start"
+                                      alignItems="center">
+
+                                    <Grid item>
+                                        <Tooltip title="Tag">
+                                            <IconButton>
+                                                <LocalOfferIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Grid>
+
+                                    <Divider orientation="vertical" flexItem/>
+
+                                    <Grid item>
+                                        <Tooltip title="Delete">
+                                            <IconButton aria-label="delete">
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Grid>
+
+                                </Grid>
+                            </Grid>
+                        )}
                     </Grid>
-                )}
-            </div>
+                </Box>
+
+            </Grid>
 
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
@@ -396,6 +411,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
+
         </Grid>
 
         // <Toolbar
@@ -575,16 +591,20 @@ export default function DocumentRepositoryTable() {
                                             <TableCell component="th" id={labelId} scope="row" padding="none">
                                                 {row.title}
                                             </TableCell>
-                                            <TableCell align="right">{row.calories}</TableCell>
-                                            <TableCell align="right">{row.fat}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell >
+                                                <DateTimeTableCell datetime={row.added}/>
+                                            </TableCell>
+                                            <TableCell >
+                                                <DateTimeTableCell datetime={row.lastUpdated}/>
+                                            </TableCell>
+                                            <TableCell>
                                                 {/*{row.tags.join(', ')}*/}
 
 
                                                 <Grid container
                                                       spacing={1}
                                                       direction="row"
-                                                      justify="flex-end"
+                                                      justify="flex-start"
                                                       alignItems="center">
                                                     {row.tags.map(current => (
                                                         <Grid item key={current}>
@@ -595,7 +615,7 @@ export default function DocumentRepositoryTable() {
                                                     ))}
                                                 </Grid>
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell>
                                                 <progress value={row.progress} max={100}/>
                                             </TableCell>
 

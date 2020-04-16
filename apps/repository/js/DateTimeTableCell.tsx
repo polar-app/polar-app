@@ -15,7 +15,7 @@ export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 
             return (
 
-                <div className={this.props.className}>
+                <div className={this.props.className || ''}>
                     <Moment withTitle={true}
                             titleFormat="D MMM YYYY hh:MM A"
                             filter={(value) => value.replace(/^an? /g, '1 ')}
@@ -36,5 +36,5 @@ export class DateTimeTableCell extends React.PureComponent<IProps, any> {
 
 interface IProps {
     readonly datetime: ISODateTimeString | null | undefined;
-    readonly className: string;
+    readonly className?: string;
 }

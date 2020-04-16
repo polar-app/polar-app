@@ -52,6 +52,9 @@ import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import DocumentRepositoryTable
+    from "../../../../web/spectron0/material-ui/DocumentRepositoryTable";
+import Container from "@material-ui/core/Container";
 
 const log = Logger.create();
 
@@ -66,7 +69,12 @@ namespace main {
     }
 
     export const Documents = (props: DocumentsProps) => (
-        <DocRepoTable {...props}/>
+        <DocumentRepositoryTable/>
+
+
+        // <DocRepoTable {...props}/>
+
+
     );
 
     export interface FoldersProps extends FoldersSidebarProps {
