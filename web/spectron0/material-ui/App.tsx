@@ -4,11 +4,14 @@ import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FolderTree from "./FolderTree";
-import EnhancedTable from "./SelectTable";
+import DocumentRepositoryTable from "./DocumentRepositoryTable";
 import ReactVirtualizedTable from "./ReactVirtualizedTable";
 import TabsDemo from "./TabsDemo";
 import DropdownMenuDemo from "./DropdownMenuDemo";
 import {IconsDemo} from "./IconsDemo";
+import Grid from "@material-ui/core/Grid";
+import TableCell from "@material-ui/core/TableCell";
+import Chip from "@material-ui/core/Chip";
 
 
 export const App = () => {
@@ -42,9 +45,25 @@ export const App = () => {
             <Container component="main" maxWidth={false} disableGutters>
                 {/*<ReactVirtualizedTable/>*/}
 
+                {/*<Grid*/}
+                {/*      container*/}
+                {/*      spacing={1}*/}
+                {/*      direction="row"*/}
+                {/*      alignItems="center"*/}
+                {/*>*/}
+                {/*    <Grid item>*/}
+                {/*        <Chip label="hello"/>*/}
+                {/*    </Grid>*/}
 
-                <FolderTree/>
-                {/*<EnhancedTable/>*/}
+
+                {/*    <Grid item>*/}
+                {/*        <Chip label="world"/>*/}
+                {/*    </Grid>*/}
+
+                {/*</Grid>*/}
+
+                {/*<FolderTree/>*/}
+                <DocumentRepositoryTable/>
 
                 {/*<Button variant="contained" color="primary">*/}
                 {/*    Hello World*/}

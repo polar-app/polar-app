@@ -1,6 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+    createStyles,
+    lighten,
+    makeStyles,
+    Theme
+} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,135 +20,147 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Grid from "@material-ui/core/Grid";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Divider from "@material-ui/core/Divider";
+import Chip from "@material-ui/core/Chip";
 
-interface Data {
-    calories: number;
-    carbs: number;
-    fat: number;
-    name: string;
-    protein: number;
+interface Doc {
+    readonly title: string;
+    readonly calories: number;
+    readonly fat: number;
+    readonly tags: ReadonlyArray<string>;
+    readonly progress: number;
 }
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-): Data {
-    return { name: name + ": " + Math.random(), calories, fat, carbs, protein };
+function createDoc(title: string,
+                   calories: number,
+                   fat: number,
+                   tags: ReadonlyArray<string>,
+                   progress: number): Doc {
+
+    return { title: title + ": " + Math.random(), calories, fat, tags, progress };
+
 }
 
 const rows = [
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Jelly Bean', 375, 0.0, 94, 0.0),
-    createData('KitKat', 518, 26.0, 65, 7.0),
-    createData('Lollipop', 392, 0.2, 98, 0.0),
-    createData('Marshmallow', 318, 0, 81, 2.0),
-    createData('Nougat', 360, 19.0, 9, 37.0),
-    createData('Oreo', 437, 18.0, 63, 4.0),
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
+
+    createDoc('Cupcake', 305, 3.7, ['linux', 'microsoft'], 4.3),
+    createDoc('Donut', 452, 25.0, [], 4.9),
+    createDoc('Eclair', 262, 16.0, ['linux', 'google'], 6.0),
+    createDoc('Frozen yoghurt', 159, 6.0, ['google', 'intel'], 4.0),
+    createDoc('Gingerbread', 356, 16.0, ['cloud', 'aws'], 3.9),
+    createDoc('Honeycomb', 408, 3.2, ['amazon', 'aws'], 6.5),
+    createDoc('Ice cream sandwich', 237, 9.0, ['microsoft', 'amazon'], 4.3),
+    createDoc('Jelly Bean', 375, 0.0, ['microsoft', 'aws', 'cloud'], 0.0),
+    createDoc('KitKat', 518, 26.0, ['intel', 'cloud'], 7.0),
+    createDoc('Lollipop', 392, 0.2, ['internet', 'microsoft'], 0.0),
+    createDoc('Marshmallow', 318, 0, ['sanfrancisco', 'investors'], 2.0),
+    createDoc('Nougat', 360, 19.0, ['boulder', 'startups'], 37.0),
+    createDoc('Oreo', 437, 18.0, ['startups'], 4.0),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+
+    // const toVal = (value: number | string | ReadonlyArray<string>): number | string => {
+    //
+    //     if (typeof value ==='array') {
+    //         return value.join(', ');
+    //     }
+    //
+    //     return value;
+    //
+    // };
+    //
+    // const aVal = toVal(a[orderBy]);
+    // const bVal = toVal(b[orderBy]);
+
     if (b[orderBy] < a[orderBy]) {
         return -1;
     }
@@ -155,13 +172,17 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 type Order = 'asc' | 'desc';
 
-function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+function getComparator<Key extends keyof any>(order: Order,
+                                              orderBy: Key): (a: { [key in Key]: number | string | ReadonlyArray<string> },
+                                                              b: { [key in Key]: number | string | ReadonlyArray<string> }) => number {
+
+    // TODO: this is kind of ugly in that it specifices a NEGATIVE value andit's
+    // not completely clear.
+
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
+
 }
 
 function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
@@ -176,23 +197,23 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof Data;
+    id: keyof Doc;
     label: string;
     numeric: boolean;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
     { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
     { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-    { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-    { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+    { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
+    { id: 'progress', numeric: true, disablePadding: false, label: 'Progress' },
 ];
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Doc) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
@@ -201,7 +222,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-    const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof Doc) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -363,7 +384,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             </div>
 
             <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
@@ -439,18 +460,16 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-
-
-export default function EnhancedTable() {
+export default function DocumentRepositoryTable() {
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+    const [order, setOrder] = React.useState<Order>('desc');
+    const [orderBy, setOrderBy] = React.useState<keyof Doc>('progress');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(25);
+    const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Doc) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -458,7 +477,7 @@ export default function EnhancedTable() {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
+            const newSelecteds = rows.map((n) => n.title);
             setSelected(newSelecteds);
             return;
         }
@@ -502,6 +521,9 @@ export default function EnhancedTable() {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+    stableSort(rows, getComparator(order, orderBy))
+        // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
@@ -515,7 +537,7 @@ export default function EnhancedTable() {
                         stickyHeader
                         className={classes.table}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        size={'small'}
                         aria-label="enhanced table"
                     >
                         <EnhancedTableHead
@@ -531,19 +553,19 @@ export default function EnhancedTable() {
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.title);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(event, row.title)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
-                                            selected={isItemSelected}
-                                        >
+                                            key={row.title}
+                                            selected={isItemSelected}>
+
                                             <TableCell padding="checkbox">
                                                 <Checkbox
                                                     checked={isItemSelected}
@@ -551,12 +573,32 @@ export default function EnhancedTable() {
                                                 />
                                             </TableCell>
                                             <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                {row.name}
+                                                {row.title}
                                             </TableCell>
                                             <TableCell align="right">{row.calories}</TableCell>
                                             <TableCell align="right">{row.fat}</TableCell>
-                                            <TableCell align="right">{row.carbs}</TableCell>
-                                            <TableCell align="right">{row.protein}</TableCell>
+                                            <TableCell align="right">
+                                                {/*{row.tags.join(', ')}*/}
+
+
+                                                <Grid container
+                                                      spacing={1}
+                                                      direction="row"
+                                                      justify="flex-end"
+                                                      alignItems="center">
+                                                    {row.tags.map(current => (
+                                                        <Grid item key={current}>
+                                                            <Chip size="small"
+                                                                  label={current}
+                                                                  />
+                                                        </Grid>
+                                                    ))}
+                                                </Grid>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <progress value={row.progress} max={100}/>
+                                            </TableCell>
+
                                         </TableRow>
                                     );
                                 })}
@@ -569,10 +611,6 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
             </Paper>
-            {/*<FormControlLabel*/}
-            {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
-            {/*    label="Dense padding"*/}
-            {/*/>*/}
         </div>
     );
 }

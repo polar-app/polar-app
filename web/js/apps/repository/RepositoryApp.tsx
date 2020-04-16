@@ -55,6 +55,10 @@ import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 import {App, AppInitializer} from "./AppInitializer";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {useState} from "react";
+import Container from "@material-ui/core/Container";
 
 const log = Logger.create();
 
@@ -296,11 +300,27 @@ export class RepositoryApp {
 
         const rootElement = getRootElement();
 
+        const theme: any = {
+            typography: {
+                htmlFontSize: 12,
+                fontSize: 12
+            },
+            palette: {
+                type: "dark"
+            }
+        };
+
+        const muiTheme = createMuiTheme(theme);
+
+        //     // <Container component="main" maxWidth={false} disableGutters>
+
         ReactDOM.render([
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline/>
 
-                <Splashes key="splashes" persistenceLayerManager={persistenceLayerManager}/>,
+                <Splashes key="splashes" persistenceLayerManager={persistenceLayerManager}/>
 
-                <SyncBar key="sync-bar" progress={app.syncBarProgress}/>,
+                <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
                 <>
 
@@ -400,6 +420,10 @@ export class RepositoryApp {
                            height: 0,
                            opacity: 0
                        }}/>
+
+                </MuiThemeProvider>
+                // </Container>
+
 
             ],
 
