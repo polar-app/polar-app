@@ -9,13 +9,13 @@
  */
 function injectApp(scriptSrc, fallbackLoader) {
 
-    if (typeof require === 'function') {
-        console.log("Loading via fallbackLoader");
-        fallbackLoader();
-    } else {
+    // if (typeof require === 'function') {
+    //     console.log("Loading via fallbackLoader");
+    //     fallbackLoader();
+    // } else {
         console.log("Loading via script");
         injectScript(scriptSrc);
-    }
+    // }
 
 }
 

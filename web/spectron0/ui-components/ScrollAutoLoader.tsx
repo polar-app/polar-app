@@ -67,6 +67,10 @@ export const ScrollAutoLoader = (props: IProps) => {
     // FIXME: then there's the other issue of what happens if we get a snapshot
     // update from firebase and the component is updated...
 
+    // FIXME: on resize, reset EVERY item to the default height, take the 'top'
+    // item, position and scroll to the top.  the problem is that scrolling  up
+    // would be WEIRD
+
     const [state, setState] = useState<IState>({
         isVisible: false,
         height: props.defaultHeight
