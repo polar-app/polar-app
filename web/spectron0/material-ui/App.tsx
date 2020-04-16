@@ -12,6 +12,7 @@ import {IconsDemo} from "./IconsDemo";
 import Grid from "@material-ui/core/Grid";
 import TableCell from "@material-ui/core/TableCell";
 import Chip from "@material-ui/core/Chip";
+import AutocompleteTags from "./AutocompleteTags";
 
 
 export const App = () => {
@@ -63,7 +64,9 @@ export const App = () => {
                 {/*</Grid>*/}
 
                 {/*<FolderTree/>*/}
-                <DocumentRepositoryTable/>
+
+                <AutocompleteTags/>
+                {/*<DocumentRepositoryTable/>*/}
 
                 {/*<Button variant="contained" color="primary">*/}
                 {/*    Hello World*/}

@@ -787,7 +787,7 @@ export interface DocRepoTableProps {
     readonly writeDocInfoTitle: (repoDocInfo: RepoDocInfo, title: string) => Promise<void>;
     readonly writeDocInfo: (docInfo: IDocInfo) => Promise<void>;
     readonly onMultiDeleted: () => void;
-    readonly onDocDeleted: (repoDocInfos: RepoDocInfo[]) => void;
+    readonly onDocDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocDeleteRequested: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;

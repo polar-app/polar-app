@@ -321,6 +321,7 @@ interface EnhancedTableToolbarProps {
     readonly rowsPerPage: number;
     readonly onChangePage: (page: number) => void;
     readonly onChangeRowsPerPage: (rowsPerPAge: number) => void;
+    readonly onSelectAllRows: (selected: boolean) => void;
 }
 
 
@@ -358,8 +359,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                                 // indeterminate={numSelected > 0 && numSelected < rowCount}
                                 // checked={rowCount > 0 && numSelected === rowCount}
                                 // onChange={onSelectAllClick}
-                                //     onChange={onSelectAllClick}
-
+                                onChange={event => props.onSelectAllRows(event.target.checked)}
                                 inputProps={{ 'aria-label': 'select all documents' }}
                             />
                         </Grid>
@@ -491,10 +491,11 @@ export default function DocumentRepositoryTable() {
         setOrderBy(property);
     };
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.title);
-            setSelected(newSelecteds);
+    const handleSelectAllRows = (selected: boolean) => {
+        if (selected) {
+            // TODO: migrate to using an ID not a title.
+            const newSelected = rows.map((n) => n.title);
+            setSelected(newSelected);
             return;
         }
         setSelected([]);
@@ -547,6 +548,7 @@ export default function DocumentRepositoryTable() {
                                       rowsPerPage={rowsPerPage}
                                       onChangePage={handleChangePage}
                                       onChangeRowsPerPage={handleChangeRowsPerPage}
+                                      onSelectAllRows={handleSelectAllRows}
                                       page={page}/>
                 <TableContainer style={{flexGrow: 1}}>
                     <Table
@@ -561,7 +563,7 @@ export default function DocumentRepositoryTable() {
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
+                            onSelectAllClick={handleSelectAllRows}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                         />
