@@ -15,13 +15,7 @@ It provides tools to manage documents annotations, and simplify learning from di
 
 Polar's starting point is the document repository.
 
-<div class="pb-3">
-{%- include image.html
-            alt="Document Repository"
-            class="img-fluid img-shadow"
-            src="/assets/screenshots/2019-11-document-view.png"
-            style="" -%}
-</div>
+<img class="img-fluid" src="../assets/screenshots/2019-11-document-view.png">
 
 This holds all your documents in one place, supports tags, folders, filtering the view by flags or showing archived documents, etc.
 
