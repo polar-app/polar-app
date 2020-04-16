@@ -32,13 +32,7 @@ You can also sort by any column to build reading queues and mix and match the ab
 When reading your documents with Polar you can create highlights, comment on highlights, (text & area highlights) and manage them
 using the annotation viewer.
 
-<div class="pb-3">
-{%- include image.html
-            alt="Document Repository"
-            class="img-fluid img-shadow"
-            src="/assets/screenshots/2019-11-annotation-view.png"
-            style="" -%}
-</div>
+<img class="img-fluid" src="../assets/screenshots/2019-11-annotation-view.png">
 
 Like the document repository, the annotation viewer allows you to filter the view, sort by columns, etc.
 
