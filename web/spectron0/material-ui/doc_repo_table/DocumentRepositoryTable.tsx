@@ -1,375 +1,23 @@
 import React from 'react';
-import clsx from 'clsx';
-import {
-    createStyles,
-    lighten,
-    makeStyles,
-    Theme
-} from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from "@material-ui/core/Grid";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {DateTimeTableCell} from "../../../../apps/repository/js/DateTimeTableCell";
-import Box from "@material-ui/core/Box";
 import {DocButtons} from "../DocButtonsDemo";
 import {RepoDocInfo} from ".././../../../apps/repository/js/RepoDocInfo";
 import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {MUIDocDropdownContextMenu} from "../MUIDocDropdownContextMenu";
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-
-    // const toVal = (value: number | string | ReadonlyArray<string>): number | string => {
-    //
-    //     if (typeof value ==='array') {
-    //         return value.join(', ');
-    //     }
-    //
-    //     return value;
-    //
-    // };
-    //
-    // const aVal = toVal(a[orderBy]);
-    // const bVal = toVal(b[orderBy]);
-
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator(order: Order,
-                       orderBy: string): (a: { [key: string]: any},
-                                          b: { [key: string]: any}) => number {
-
-    // FIXME: make sure I can sort by tag
-
-    // TODO: this is kind of ugly in that it specifices a NEGATIVE value andit's
-    // not completely clear.
-
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-
-}
-
-function stableSort<T>(array: ReadonlyArray<T>, comparator: (a: T, b: T) => number): ReadonlyArray<T> {
-
-    return arrayStream(array)
-        .sort(comparator)
-        .collect();
-
-    //
-    //
-    // const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    // stabilizedThis.sort((a, b) => {
-    //     const order = comparator(a[0], b[0]);
-    //     if (order !== 0) return order;
-    //     return a[1] - b[1];
-    // });
-    // return stabilizedThis.map((el) => el[0]);
-}
-
-interface HeadCell {
-    disablePadding: boolean;
-    id: keyof RepoDocInfo;
-    label: string;
-    numeric: boolean;
-}
-
-const headCells: HeadCell[] = [
-    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-    { id: 'added', numeric: false, disablePadding: false, label: 'Added' },
-    { id: 'lastUpdated', numeric: false, disablePadding: false, label: 'Last Updated' },
-    { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
-    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress' },
-];
-
-interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
-    numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
-    onSelectAllClick: (selectAll: boolean) => void;
-    order: Order;
-    orderBy: string;
-    rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-    const createSortHandler = (property: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                <TableCell padding="checkbox">
-                    {/*<Checkbox*/}
-                    {/*    indeterminate={numSelected > 0 && numSelected < rowCount}*/}
-                    {/*    checked={rowCount > 0 && numSelected === rowCount}*/}
-                    {/*    onChange={onSelectAllClick}*/}
-                    {/*    inputProps={{ 'aria-label': 'select all desserts' }}*/}
-                    {/*/>*/}
-                </TableCell>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        // align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-                <TableCell />
-
-            </TableRow>
-        </TableHead>
-    );
-}
-
-const useToolbarStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            // paddingLeft: theme.spacing(2),
-            // paddingRight: theme.spacing(1),
-        },
-        highlight:
-            theme.palette.type === 'light'
-                ? {
-                    color: theme.palette.secondary.main,
-                    backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                }
-                : {
-                    color: theme.palette.text.primary,
-                    backgroundColor: theme.palette.secondary.dark,
-                },
-        title: {
-            flex: '1 1 100%',
-        },
-    }),
-);
-
-const EnhancedTableToolbar2 = (props: EnhancedTableToolbarProps) => {
-    const classes = useToolbarStyles();
-    const { numSelected } = props;
-
-    return (
-        <Toolbar
-            className={clsx(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
-        >
-            {numSelected > 0 ? (
-                <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Nutrition
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <div style={{display: 'flex'}}>
-                    <Tooltip title="Tag">
-                        <IconButton>
-                            <LocalOfferIcon color="primary"/>
-                        </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton aria-label="filter list">
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-};
-
-interface EnhancedTableToolbarProps {
-    readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly numSelected: number;
-    readonly page: number;
-    readonly rowsPerPage: number;
-    readonly onChangePage: (page: number) => void;
-    readonly onChangeRowsPerPage: (rowsPerPAge: number) => void;
-    readonly onSelectAllRows: (selected: boolean) => void;
-}
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const classes = useToolbarStyles();
-    const { numSelected, rowsPerPage, page, data } = props;
-
-    const handleChangePage = (event: unknown, newPage: number) => {
-        props.onChangePage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const rowsPerPage = parseInt(event.target.value, 10);
-        props.onChangeRowsPerPage(rowsPerPage);
-
-    };
-
-    return (
-        <Grid container
-              direction="row"
-              justify="space-between"
-              alignItems="center">
-
-            <Grid item>
-
-                <Box pl={1}>
-
-                    <Grid container
-                          direction="row"
-                          justify="flex-start"
-                          alignItems="center">
-
-                        <Grid item>
-                            <Checkbox
-                                // indeterminate={numSelected > 0 && numSelected < rowCount}
-                                // checked={rowCount > 0 && numSelected === rowCount}
-                                // onChange={onSelectAllClick}
-                                onChange={event => props.onSelectAllRows(event.target.checked)}
-                                inputProps={{ 'aria-label': 'select all documents' }}
-                            />
-                        </Grid>
-
-                        {numSelected > 0 && (
-                            <Grid item>
-                                <Grid container
-                                      spacing={1}
-                                      direction="row"
-                                      justify="flex-start"
-                                      alignItems="center">
-
-                                    <Grid item>
-                                        <Tooltip title="Tag">
-                                            <IconButton>
-                                                <LocalOfferIcon/>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Grid>
-
-                                    <Divider orientation="vertical" flexItem/>
-
-                                    <Grid item>
-                                        <Tooltip title="Delete">
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Grid>
-
-                                </Grid>
-                            </Grid>
-                        )}
-                    </Grid>
-                </Box>
-
-            </Grid>
-
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50]}
-                component="div"
-                count={data.length}
-                rowsPerPage={rowsPerPage}
-                style={{
-                    padding: 0,
-                    minHeight: 0
-                }}
-                // onDoubleClick={event => {
-                //     event.stopPropagation();
-                //     event.preventDefault();
-                // }}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-
-        </Grid>
-
-        // <Toolbar
-        //     className={clsx(classes.root, {
-        //         [classes.highlight]: numSelected > 0,
-        //     })}
-        // >
-        //     {numSelected > 0 ? (
-        //         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-        //             {numSelected} selected
-        //         </Typography>
-        //     ) : (
-        //         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-        //             Nutrition
-        //         </Typography>
-        //     )}
-        //     {numSelected > 0 && (
-        //         <div style={{display: 'flex'}}>
-        //             <Tooltip title="Tag">
-        //                 <IconButton>
-        //                     <LocalOfferIcon color="primary"/>
-        //                 </IconButton>
-        //             </Tooltip>
-        //
-        //             <Tooltip title="Delete">
-        //                 <IconButton aria-label="delete">
-        //                     <DeleteIcon />
-        //                 </IconButton>
-        //             </Tooltip>
-        //         </div>
-        //     )}
-        // </Toolbar>
-    );
-};
-
+import {Order, stableSort, getComparator} from "./Sorting";
+import { EnhancedTableToolbar } from './EnhancedTableToolbar';
+import {EnhancedTableHead} from "./EnhancedTableHead";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -394,17 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
         colProgress: {
             width: '100px'
         },
-        visuallyHidden: {
-            border: 0,
-            clip: 'rect(0 0 0 0)',
-            height: 1,
-            margin: -1,
-            overflow: 'hidden',
-            padding: 0,
-            position: 'absolute',
-            top: 20,
-            width: 1,
-        },
+        colTitle: {
+            width: '100%'
+        }
+
     }),
 );
 
@@ -513,7 +154,6 @@ export default function DocumentRepositoryTable(props: IProps) {
                         aria-label="enhanced table"
                     >
                         <EnhancedTableHead
-                            classes={classes}
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
@@ -552,6 +192,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                 <TableCell component="th"
                                                            id={labelId}
                                                            scope="row"
+                                                           className={classes.colTitle}
                                                            // padding="none"
                                                 >
                                                     {row.title}
@@ -598,8 +239,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                     </Grid>
                                                 </TableCell>
                                                 <TableCell className={classes.colProgress}
-                                                           padding="none"
-                                                >
+                                                           padding="none">
                                                     <progress value={row.progress}
                                                               max={100}/>
                                                 </TableCell>
@@ -637,4 +277,3 @@ export default function DocumentRepositoryTable(props: IProps) {
         </div>
     );
 };
-
