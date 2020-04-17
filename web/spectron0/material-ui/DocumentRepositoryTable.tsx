@@ -33,6 +33,7 @@ import {
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {DateTimeTableCell} from "../../../apps/repository/js/DateTimeTableCell";
 import Box from "@material-ui/core/Box";
+import {DocButtons} from "./DocButtonsDemo";
 
 interface Doc {
     readonly title: string;
@@ -193,14 +194,14 @@ const headCells: HeadCell[] = [
     { id: 'added', numeric: false, disablePadding: false, label: 'Added' },
     { id: 'lastUpdated', numeric: false, disablePadding: false, label: 'Last Updated' },
     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
-    { id: 'progress', numeric: true, disablePadding: false, label: 'Progress' },
+    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress' },
 ];
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Doc) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelectAllClick: (selectAll: boolean) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -244,6 +245,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell padding="none"/>
             </TableRow>
         </TableHead>
     );
@@ -617,8 +619,24 @@ export default function DocumentRepositoryTable() {
                                                     ))}
                                                 </Grid>
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell
+                                                padding="none"
+                                            >
                                                 <progress value={row.progress} max={100}/>
+                                            </TableCell>
+
+                                            <TableCell align="right"
+                                                       padding="none"
+                                            >
+                                                <div onClick={event => {
+                                                        // don't allow these events
+                                                        // to ALSO select the row.
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                    }}>
+                                                    <DocButtons/>
+
+                                                </div>
                                             </TableCell>
 
                                         </TableRow>

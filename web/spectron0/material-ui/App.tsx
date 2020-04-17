@@ -16,6 +16,7 @@ import AutocompleteTags from "./AutocompleteTags";
 import Button from '@material-ui/core/Button';
 import DialogDemo from "./DialogDemo";
 import Box from "@material-ui/core/Box";
+import {DocButtons, DocButtonsDemo} from "./DocButtonsDemo";
 
 
 export const App = () => {
@@ -70,10 +71,12 @@ export const App = () => {
 
                 {/*<DialogDemo/>*/}
 
-                <Box m={1}>
-                    <AutocompleteTags/>
-                </Box>
-                {/*<DocumentRepositoryTable/>*/}
+                {/*<Box m={1}>*/}
+                {/*    <AutocompleteTags/>*/}
+                {/*</Box>*/}
+                <DocumentRepositoryTable/>
+
+                {/*<DocButtonsDemo/>*/}
 
                 {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
                 {/*    Hello World*/}
