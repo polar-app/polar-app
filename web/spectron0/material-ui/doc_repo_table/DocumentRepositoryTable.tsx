@@ -206,7 +206,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                 </TableCell>
                                                 <TableCell
                                                     className={classes.td}
-                                                    // padding="none"
+                                                    padding="none"
                                                 >
                                                     <DateTimeTableCell
                                                         datetime={row.lastUpdated}/>
@@ -240,15 +240,16 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                 </TableCell>
                                                 <TableCell className={classes.colProgress}
                                                            padding="none">
+
                                                     <progress value={row.progress}
                                                               max={100}/>
+
                                                 </TableCell>
 
                                                 <TableCell align="right"
                                                            padding="none"
                                                            onClick={event => event.stopPropagation()}
-                                                           onDoubleClick={event => event.stopPropagation()}
-                                                >
+                                                           onDoubleClick={event => event.stopPropagation()}>
 
                                                     <DocButtons flagged={row.flagged}
                                                                 archived={row.archived}
