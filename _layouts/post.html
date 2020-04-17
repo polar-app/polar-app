@@ -45,6 +45,8 @@
 
               {{ content }}
 
+              <b>Posted on: {{ page.date | date_to_string }}</b>
+
               {%- include mailing-list.html -%}
 
               {%- include comments.html -%}
