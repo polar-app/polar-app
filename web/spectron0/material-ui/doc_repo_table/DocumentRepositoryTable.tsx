@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         colTitle: {
             width: '100%'
+        },
+        docButtons: {
+            marginLeft: '5px',
+            display: 'flex',
+            justifyContent: 'flex-end'
         }
 
     }),
@@ -251,7 +256,8 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                            onClick={event => event.stopPropagation()}
                                                            onDoubleClick={event => event.stopPropagation()}>
 
-                                                    <DocButtons flagged={row.flagged}
+                                                    <DocButtons className={classes.docButtons}
+                                                                flagged={row.flagged}
                                                                 archived={row.archived}
                                                                 onArchive={NULL_FUNCTION}
                                                                 onFlag={NULL_FUNCTION}

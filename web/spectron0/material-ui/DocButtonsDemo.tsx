@@ -9,6 +9,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 
 interface IProps {
+    readonly className?: string;
     readonly flagged: boolean;
     readonly archived: boolean;
     readonly onTag: () => void;
@@ -27,10 +28,7 @@ export const DocButtons = React.memo((props: IProps) => {
 
     return (
 
-        <div style={{
-            display: 'flex',
-            justifyContent: 'flex-end'
-        }}>
+        <div className={props.className || ''}>
 
             <IconButton size="small"
                         style={{color: grey[500]}}>
