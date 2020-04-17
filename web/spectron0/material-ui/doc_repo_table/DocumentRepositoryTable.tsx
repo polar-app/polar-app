@@ -110,7 +110,7 @@ const headCells: HeadCell[] = [
     { id: 'added', numeric: false, disablePadding: false, label: 'Added' },
     { id: 'lastUpdated', numeric: false, disablePadding: false, label: 'Last Updated' },
     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
-    { id: 'progress', numeric: true, disablePadding: false, label: 'Progress' },
+    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress' },
 ];
 
 interface EnhancedTableProps {
@@ -391,6 +391,9 @@ const useStyles = makeStyles((theme: Theme) =>
         td: {
             whitespace: 'nowrap'
         },
+        colProgress: {
+            width: '100px'
+        },
         visuallyHidden: {
             border: 0,
             clip: 'rect(0 0 0 0)',
@@ -594,8 +597,8 @@ export default function DocumentRepositoryTable(props: IProps) {
 
                                                     </Grid>
                                                 </TableCell>
-                                                <TableCell
-                                                    // padding="none"
+                                                <TableCell className={classes.colProgress}
+                                                           padding="none"
                                                 >
                                                     <progress value={row.progress}
                                                               max={100}/>

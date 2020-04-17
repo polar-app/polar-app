@@ -306,7 +306,7 @@ export class RepositoryApp {
                 fontSize: 12
             },
             palette: {
-                type: "dark"
+                type: "light"
             }
         };
 

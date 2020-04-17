@@ -1,3 +1,9 @@
+
+- table work:
+    - get column width working
+    - get proper events dispatched 
+
+
 - proper row handling
 
     - single click (with no modifiers) will select one row 
