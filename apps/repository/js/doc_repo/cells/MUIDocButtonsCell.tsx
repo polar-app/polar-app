@@ -7,6 +7,7 @@ import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTags
 import {Tag} from "polar-shared/src/tags/Tags";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {RepoDocInfo} from "../../RepoDocInfo";
+// FIXME: this needs MUI
 import {OnRemoveFromFolderCallback} from "../../DocDropdownItems";
 import {Filters} from "../DocRepoFilters";
 import {SelectRowType} from "../DocRepoScreen";

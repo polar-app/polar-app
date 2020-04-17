@@ -13,6 +13,9 @@ import Grid from "@material-ui/core/Grid";
 import TableCell from "@material-ui/core/TableCell";
 import Chip from "@material-ui/core/Chip";
 import AutocompleteTags from "./AutocompleteTags";
+import Button from '@material-ui/core/Button';
+import DialogDemo from "./DialogDemo";
+import Box from "@material-ui/core/Box";
 
 
 export const App = () => {
@@ -65,10 +68,14 @@ export const App = () => {
 
                 {/*<FolderTree/>*/}
 
-                <AutocompleteTags/>
+                {/*<DialogDemo/>*/}
+
+                <Box m={1}>
+                    <AutocompleteTags/>
+                </Box>
                 {/*<DocumentRepositoryTable/>*/}
 
-                {/*<Button variant="contained" color="primary">*/}
+                {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
                 {/*    Hello World*/}
                 {/*</Button>*/}
 

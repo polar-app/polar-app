@@ -208,6 +208,7 @@ const TagInputBody = (props: IRenderProps) => {
                     isMulti
                     isClearable
                     autoFocus
+                    catDog={101}
                     onKeyDown={event => props.onKeyDown(event)}
                     className="basic-multi-select"
                     classNamePrefix="select"
@@ -217,6 +218,8 @@ const TagInputBody = (props: IRenderProps) => {
                     placeholder="Create or select tags ..."
                     options={props.availableTagOptions}
                     ref={ref => props.onSelect(ref)}
+                    // onKeyDown={() => console.log("FIXME onKeyDown1")}
+                    // onKeyPress={() => console.log("FIXME onKeyPress1")}
                     />
 
                 <div className="pt-1">
