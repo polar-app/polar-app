@@ -193,7 +193,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                            id={labelId}
                                                            scope="row"
                                                            className={classes.colTitle}
-                                                           // padding="none"
+                                                           padding="none"
                                                 >
                                                     {row.title}
                                                 </TableCell>
