@@ -21,8 +21,6 @@ export interface RepoDocInfo {
 
     readonly lastUpdated?: ISODateTimeString;
 
-    // lastUpdated?: string;
-
     flagged: boolean;
 
     archived: boolean;

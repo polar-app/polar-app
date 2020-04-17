@@ -34,104 +34,9 @@ import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {DateTimeTableCell} from "../../../apps/repository/js/DateTimeTableCell";
 import Box from "@material-ui/core/Box";
 import {DocButtons} from "./DocButtonsDemo";
-
-interface Doc {
-    readonly title: string;
-    readonly added: ISODateTimeString;
-    readonly lastUpdated: ISODateTimeString;
-    readonly tags: ReadonlyArray<string>;
-    readonly progress: number;
-}
-
-function createDoc(title: string,
-                   added: ISODateTimeString,
-                   lastUpdated: ISODateTimeString,
-                   tags: ReadonlyArray<string>,
-                   progress: number): Doc {
-
-    return { title: title + ": " + Math.random(), added, lastUpdated, tags, progress };
-
-}
-
-const now = new Date();
-const today = ISODateTimeStrings.create();
-const yesterday = ISODateTimeStrings.create(TimeDurations.compute('-1d', now));
-
-const rows = [
-
-    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', yesterday, today, [], 4.9),
-    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
-
-    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', yesterday, today, [], 4.9),
-    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
-
-    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', yesterday, today, [], 4.9),
-    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
-
-    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', yesterday, today, [], 4.9),
-    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
-
-    createDoc('Cupcake', yesterday, today, ['linux', 'microsoft'], 4.3),
-    createDoc('Donut', yesterday, today, [], 4.9),
-    createDoc('Eclair', yesterday, today, ['linux', 'google'], 6.0),
-    createDoc('Frozen yoghurt', yesterday, today, ['google', 'intel'], 4.0),
-    createDoc('Gingerbread', yesterday, today, ['cloud', 'aws'], 3.9),
-    createDoc('Honeycomb', yesterday, today, ['amazon', 'aws'], 6.5),
-    createDoc('Ice cream sandwich', yesterday, today, ['microsoft', 'amazon'], 4.3),
-    createDoc('Jelly Bean', yesterday, today, ['microsoft', 'aws', 'cloud'], 0.0),
-    createDoc('KitKat', yesterday, today, ['intel', 'cloud'], 7.0),
-    createDoc('Lollipop', yesterday, today, ['internet', 'microsoft'], 0.0),
-    createDoc('Marshmallow', yesterday, today, ['sanfrancisco', 'investors'], 2.0),
-    createDoc('Nougat', yesterday, today, ['boulder', 'startups'], 37.0),
-    createDoc('Oreo', yesterday, today, ['startups'], 4.0),
-
-
-
-];
+import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
+import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
@@ -159,9 +64,11 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 type Order = 'asc' | 'desc';
 
-function getComparator<Key extends keyof any>(order: Order,
-                                              orderBy: Key): (a: { [key in Key]: number | string | ReadonlyArray<string> },
-                                                              b: { [key in Key]: number | string | ReadonlyArray<string> }) => number {
+function getComparator(order: Order,
+                       orderBy: string): (a: { [key: string]: any},
+                                          b: { [key: string]: any}) => number {
+
+    // FIXME: make sure I can sort by tag
 
     // TODO: this is kind of ugly in that it specifices a NEGATIVE value andit's
     // not completely clear.
@@ -172,19 +79,26 @@ function getComparator<Key extends keyof any>(order: Order,
 
 }
 
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
+function stableSort<T>(array: ReadonlyArray<T>, comparator: (a: T, b: T) => number): ReadonlyArray<T> {
+
+    return arrayStream(array)
+        .sort(comparator)
+        .collect();
+
+    //
+    //
+    // const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    // stabilizedThis.sort((a, b) => {
+    //     const order = comparator(a[0], b[0]);
+    //     if (order !== 0) return order;
+    //     return a[1] - b[1];
+    // });
+    // return stabilizedThis.map((el) => el[0]);
 }
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof Doc;
+    id: keyof RepoDocInfo;
     label: string;
     numeric: boolean;
 }
@@ -200,7 +114,7 @@ const headCells: HeadCell[] = [
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Doc) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
     onSelectAllClick: (selectAll: boolean) => void;
     order: Order;
     orderBy: string;
@@ -209,7 +123,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-    const createSortHandler = (property: keyof Doc) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -318,6 +232,7 @@ const EnhancedTableToolbar2 = (props: EnhancedTableToolbarProps) => {
 };
 
 interface EnhancedTableToolbarProps {
+    readonly data: ReadonlyArray<RepoDocInfo>;
     readonly numSelected: number;
     readonly page: number;
     readonly rowsPerPage: number;
@@ -326,10 +241,9 @@ interface EnhancedTableToolbarProps {
     readonly onSelectAllRows: (selected: boolean) => void;
 }
 
-
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     const classes = useToolbarStyles();
-    const { numSelected, rowsPerPage, page } = props;
+    const { numSelected, rowsPerPage, page, data } = props;
 
     const handleChangePage = (event: unknown, newPage: number) => {
         props.onChangePage(newPage);
@@ -403,7 +317,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"
-                count={rows.length}
+                count={data.length}
                 rowsPerPage={rowsPerPage}
                 style={{
                     padding: 0,
@@ -478,16 +392,24 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function DocumentRepositoryTable() {
+interface IProps {
+    readonly data: ReadonlyArray<RepoDocInfo>;
+}
+
+export default function DocumentRepositoryTable(props: IProps) {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('desc');
-    const [orderBy, setOrderBy] = React.useState<keyof Doc>('progress');
+    const [orderBy, setOrderBy] = React.useState<keyof RepoDocInfo>('progress');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Doc) => {
+    let {data} = props;
+
+    Preconditions.assertPresent(data, 'data');
+
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -496,7 +418,7 @@ export default function DocumentRepositoryTable() {
     const handleSelectAllRows = (selected: boolean) => {
         if (selected) {
             // TODO: migrate to using an ID not a title.
-            const newSelected = rows.map((n) => n.title);
+            const newSelected = data.map((n) => n.title);
             setSelected(newSelected);
             return;
         }
@@ -538,15 +460,16 @@ export default function DocumentRepositoryTable() {
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-    stableSort(rows, getComparator(order, orderBy))
-        // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    // TODO: refactor this to be more functional
+    data = stableSort(data, getComparator(order, orderBy));
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
-                <EnhancedTableToolbar numSelected={selected.length}
+                <EnhancedTableToolbar data={data}
+                                      numSelected={selected.length}
                                       rowsPerPage={rowsPerPage}
                                       onChangePage={handleChangePage}
                                       onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -567,10 +490,10 @@ export default function DocumentRepositoryTable() {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllRows}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={data.length}
                         />
                         <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
+                            {stableSort(data, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     const isItemSelected = isSelected(row.title);
@@ -610,13 +533,21 @@ export default function DocumentRepositoryTable() {
                                                       direction="row"
                                                       justify="flex-start"
                                                       alignItems="center">
-                                                    {row.tags.map(current => (
-                                                        <Grid item key={current}>
-                                                            <Chip size="small"
-                                                                  label={current}
-                                                                  />
-                                                        </Grid>
+
+                                                    {ArrayStreams
+                                                        .ofMapValues(row.tags || {})
+                                                        .collect()
+                                                        .map(current => (
+                                                            <Grid item
+                                                                  key={current.id}>
+
+                                                                <Chip size="small"
+                                                                      label={current.label}
+                                                                      />
+
+                                                            </Grid>
                                                     ))}
+
                                                 </Grid>
                                             </TableCell>
                                             <TableCell

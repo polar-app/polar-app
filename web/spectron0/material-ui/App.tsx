@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import DialogDemo from "./DialogDemo";
 import Box from "@material-ui/core/Box";
 import {DocButtons, DocButtonsDemo} from "./DocButtonsDemo";
+import {MockRepoDocInfos} from "./MockRepoDocInfos";
 
 
 export const App = () => {
@@ -74,7 +75,7 @@ export const App = () => {
                 {/*<Box m={1}>*/}
                 {/*    <AutocompleteTags/>*/}
                 {/*</Box>*/}
-                <DocumentRepositoryTable/>
+                <DocumentRepositoryTable data={MockRepoDocInfos.create()}/>
 
                 {/*<DocButtonsDemo/>*/}
 
