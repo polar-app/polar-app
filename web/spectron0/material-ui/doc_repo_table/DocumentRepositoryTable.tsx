@@ -199,7 +199,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                 </TableCell>
                                                 <TableCell
                                                     className={classes.td}
-                                                    // padding="none"
+                                                    padding="none"
                                                 >
                                                     <DateTimeTableCell
                                                         datetime={row.added}/>

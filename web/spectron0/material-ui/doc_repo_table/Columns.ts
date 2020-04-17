@@ -15,7 +15,7 @@ export interface ColumnDescriptorMap {
 
 export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-    { id: 'added', numeric: false, disablePadding: false, label: 'Added', width: 75 },
+    { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: 75 },
     { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Last Updated' },
     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress' },
