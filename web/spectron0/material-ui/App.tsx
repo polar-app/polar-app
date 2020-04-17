@@ -4,7 +4,7 @@ import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FolderTree from "./FolderTree";
-import DocumentRepositoryTable from "./DocumentRepositoryTable";
+import DocumentRepositoryTable from "./doc_repo_table/DocumentRepositoryTable";
 import ReactVirtualizedTable from "./ReactVirtualizedTable";
 import TabsDemo from "./TabsDemo";
 import DropdownMenuDemo from "./DropdownMenuDemo";
@@ -18,6 +18,8 @@ import DialogDemo from "./DialogDemo";
 import Box from "@material-ui/core/Box";
 import {DocButtons, DocButtonsDemo} from "./DocButtonsDemo";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
+// import {DocDropdownMenu} from "./MUIDocDropdownMenu";
+import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 
 
 export const App = () => {
@@ -29,7 +31,7 @@ export const App = () => {
             fontSize: 12
         },
         palette: {
-            type: "dark"
+            type: "light"
         }
     });
 
@@ -75,7 +77,19 @@ export const App = () => {
                 {/*<Box m={1}>*/}
                 {/*    <AutocompleteTags/>*/}
                 {/*</Box>*/}
-                <DocumentRepositoryTable data={MockRepoDocInfos.create()}/>
+                <DocumentRepositoryTable data={MockRepoDocInfos.create()}
+                                         onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
+                />
+
+
+                {/*<div style={{display: 'flex'}}>*/}
+                {/*    <div style={{flexGrow: 1}}>*/}
+
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <MUIDocDropdownButton/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
                 {/*<DocButtonsDemo/>*/}
 

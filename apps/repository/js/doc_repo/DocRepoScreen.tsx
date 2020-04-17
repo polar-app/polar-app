@@ -53,7 +53,7 @@ import {Button} from "reactstrap";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import DocumentRepositoryTable
-    from "../../../../web/spectron0/material-ui/DocumentRepositoryTable";
+    from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTable";
 import Container from "@material-ui/core/Container";
 
 const log = Logger.create();
@@ -69,7 +69,7 @@ namespace main {
     }
 
     export const Documents = (props: DocumentsProps) => (
-        <DocumentRepositoryTable/>
+        <DocumentRepositoryTable data={props.data} onLoadDoc={NULL_FUNCTION}/>
 
 
         // <DocRepoTable {...props}/>

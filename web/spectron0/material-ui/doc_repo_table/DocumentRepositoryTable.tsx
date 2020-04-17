@@ -31,12 +31,14 @@ import {
     ISODateTimeStrings
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
-import {DateTimeTableCell} from "../../../apps/repository/js/DateTimeTableCell";
+import {DateTimeTableCell} from "../../../../apps/repository/js/DateTimeTableCell";
 import Box from "@material-ui/core/Box";
-import {DocButtons} from "./DocButtonsDemo";
-import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
+import {DocButtons} from "../DocButtonsDemo";
+import {RepoDocInfo} from ".././../../../apps/repository/js/RepoDocInfo";
 import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MUIDocDropdownContextMenu} from "../MUIDocDropdownContextMenu";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
@@ -104,11 +106,11 @@ interface HeadCell {
 }
 
 const headCells: HeadCell[] = [
-    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
+    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
     { id: 'added', numeric: false, disablePadding: false, label: 'Added' },
     { id: 'lastUpdated', numeric: false, disablePadding: false, label: 'Last Updated' },
     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags' },
-    { id: 'progress', numeric: true, disablePadding: true, label: 'Progress' },
+    { id: 'progress', numeric: true, disablePadding: false, label: 'Progress' },
 ];
 
 interface EnhancedTableProps {
@@ -159,7 +161,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell padding="none"/>
+                <TableCell />
+
             </TableRow>
         </TableHead>
     );
@@ -323,6 +326,10 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     padding: 0,
                     minHeight: 0
                 }}
+                // onDoubleClick={event => {
+                //     event.stopPropagation();
+                //     event.preventDefault();
+                // }}
                 page={page}
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -393,7 +400,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
+
     readonly data: ReadonlyArray<RepoDocInfo>;
+
+    // called when the user wants to view a doc
+    readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
+
 }
 
 export default function DocumentRepositoryTable(props: IProps) {
@@ -403,11 +415,17 @@ export default function DocumentRepositoryTable(props: IProps) {
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(50);
+    const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
     let {data} = props;
 
     Preconditions.assertPresent(data, 'data');
+
+    const selectedProvider = (): ReadonlyArray<RepoDocInfo> => {
+        return arrayStream(data)
+            .filter(current => selected.includes(current.fingerprint))
+            .collect();
+    };
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -418,19 +436,20 @@ export default function DocumentRepositoryTable(props: IProps) {
     const handleSelectAllRows = (selected: boolean) => {
         if (selected) {
             // TODO: migrate to using an ID not a title.
-            const newSelected = data.map((n) => n.title);
+            const newSelected = data.map((n) => n.fingerprint);
             setSelected(newSelected);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name);
+    const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+
+        const selectedIndex = selected.indexOf(id);
         let newSelected: string[] = [];
 
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
+            newSelected = newSelected.concat(selected, id);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -443,6 +462,7 @@ export default function DocumentRepositoryTable(props: IProps) {
         }
 
         setSelected(newSelected);
+
     };
 
     const handleChangePage = (newPage: number) => {
@@ -493,84 +513,103 @@ export default function DocumentRepositoryTable(props: IProps) {
                             rowCount={data.length}
                         />
                         <TableBody>
-                            {stableSort(data, getComparator(order, orderBy))
+                            {data
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.title);
+                                    const isItemSelected = isSelected(row.fingerprint);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, row.title)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.title}
-                                            selected={isItemSelected}>
+                                        // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => event.stopPropagation()}
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={row.fingerprint}
+                                                onDoubleClick={() => props.onLoadDoc(row)}
+                                                selected={isItemSelected}>
 
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    checked={isItemSelected}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                {row.title}
-                                            </TableCell>
-                                            <TableCell >
-                                                <DateTimeTableCell datetime={row.added}/>
-                                            </TableCell>
-                                            <TableCell >
-                                                <DateTimeTableCell datetime={row.lastUpdated}/>
-                                            </TableCell>
-                                            <TableCell>
-                                                {/*{row.tags.join(', ')}*/}
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{'aria-labelledby': labelId}}
+                                                        onClick={(event) => handleClick(event, row.fingerprint)}
 
+                                                    />
+                                                </TableCell>
+                                                <TableCell component="th"
+                                                           id={labelId}
+                                                           scope="row"
+                                                           // padding="none"
+                                                >
+                                                    {row.title}
+                                                </TableCell>
+                                                <TableCell
+                                                    // padding="none"
+                                                >
+                                                    <DateTimeTableCell
+                                                        datetime={row.added}/>
+                                                </TableCell>
+                                                <TableCell
+                                                    // padding="none"
+                                                >
+                                                    <DateTimeTableCell
+                                                        datetime={row.lastUpdated}/>
+                                                </TableCell>
+                                                <TableCell
+                                                    // padding="none"
+                                                >
 
-                                                <Grid container
-                                                      spacing={1}
-                                                      direction="row"
-                                                      justify="flex-start"
-                                                      alignItems="center">
+                                                    <Grid container
+                                                          spacing={1}
+                                                          direction="row"
+                                                          justify="flex-start"
+                                                          alignItems="center">
 
-                                                    {ArrayStreams
-                                                        .ofMapValues(row.tags || {})
-                                                        .collect()
-                                                        .map(current => (
-                                                            <Grid item
-                                                                  key={current.id}>
+                                                        {ArrayStreams
+                                                            .ofMapValues(row.tags || {})
+                                                            .collect()
+                                                            .map(current => (
+                                                                <Grid item
+                                                                      key={current.id}>
 
-                                                                <Chip size="small"
-                                                                      label={current.label}
-                                                                      />
+                                                                    <Chip size="small"
+                                                                          label={current.label}
+                                                                    />
 
-                                                            </Grid>
-                                                    ))}
+                                                                </Grid>
+                                                            ))}
 
-                                                </Grid>
-                                            </TableCell>
-                                            <TableCell
-                                                padding="none"
-                                            >
-                                                <progress value={row.progress} max={100}/>
-                                            </TableCell>
+                                                    </Grid>
+                                                </TableCell>
+                                                <TableCell
+                                                    // padding="none"
+                                                >
+                                                    <progress value={row.progress}
+                                                              max={100}/>
+                                                </TableCell>
 
-                                            <TableCell align="right"
-                                                       padding="none"
-                                            >
-                                                <div onClick={event => {
-                                                        // don't allow these events
-                                                        // to ALSO select the row.
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                    }}>
-                                                    <DocButtons/>
+                                                <TableCell align="right"
+                                                           padding="none"
+                                                           onClick={event => event.stopPropagation()}
+                                                           onDoubleClick={event => event.stopPropagation()}
+                                                >
 
-                                                </div>
-                                            </TableCell>
+                                                    <DocButtons flagged={row.flagged}
+                                                                archived={row.archived}
+                                                                onArchive={NULL_FUNCTION}
+                                                                onFlag={NULL_FUNCTION}
+                                                                onTag={NULL_FUNCTION}
+                                                                onDropdown={NULL_FUNCTION}
+                                                    />
 
-                                        </TableRow>
+                                                </TableCell>
+
+                                            </TableRow>
+                                        // </MUIDocDropdownContextMenu>
+
                                     );
                                 })}
                             {emptyRows > 0 && (
@@ -584,4 +623,5 @@ export default function DocumentRepositoryTable(props: IProps) {
             </Paper>
         </div>
     );
-}
+};
+

@@ -5,39 +5,57 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import FlagIcon from '@material-ui/icons/Flag';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import grey from "@material-ui/core/colors/grey";
+import useTheme from "@material-ui/core/styles/useTheme";
+import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 
-export const DocButtons = React.memo(() => (
+interface IProps {
+    readonly flagged: boolean;
+    readonly archived: boolean;
+    readonly onTag: () => void;
+    readonly onArchive: () => void;
+    readonly onFlag: () => void;
+    readonly onDropdown: () => void;
+}
 
-    <div style={{
+export const DocButtons = React.memo((props: IProps) => {
+
+    const theme = useTheme();
+
+    const activeColor = (active: boolean) => {
+        return active ? theme.palette.text.primary : theme.palette.text.secondary;
+    };
+
+    return (
+
+        <div style={{
             display: 'flex',
             justifyContent: 'flex-end'
-         }}>
+        }}>
 
-        <IconButton size="small"
-                    style={{color: grey[500]}}>
-            <LocalOfferIcon/>
-        </IconButton>
+            <IconButton size="small"
+                        style={{color: grey[500]}}>
+                <LocalOfferIcon/>
+            </IconButton>
 
-        <IconButton size="small"
-                    style={{color: grey[500]}}>
-            <CheckIcon/>
-        </IconButton>
+            <IconButton size="small"
+                        style={{color: activeColor(props.archived)}}>
+                <CheckIcon/>
+            </IconButton>
 
-        <IconButton size="small"
-                    style={{color: grey[500]}}>
-            <FlagIcon/>
-        </IconButton>
+            <IconButton size="small"
+                        style={{color: activeColor(props.flagged)}}>
+                <FlagIcon/>
+            </IconButton>
 
-        <IconButton size="small"
-                    style={{color: grey[500]}}>
-            <MoreVertIcon/>
-        </IconButton>
+            <MUIDocDropdownButton/>
 
-    </div>
+        </div>
+    );
 
-));
+});
 
 export const DocButtonsDemo = () => (
-    <DocButtons/>
+    // <DocButtons archived={false} flagged={false}/>
+    <div></div>
 );
 
