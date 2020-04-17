@@ -385,6 +385,12 @@ const useStyles = makeStyles((theme: Theme) =>
         table: {
             minWidth: 750,
         },
+        tr: {
+            // borderSpacing: '100px'
+        },
+        td: {
+            whitespace: 'nowrap'
+        },
         visuallyHidden: {
             border: 0,
             clip: 'rect(0 0 0 0)',
@@ -523,6 +529,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                         // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
                                             <TableRow
                                                 hover
+                                                className={classes.tr}
                                                 onClick={(event) => event.stopPropagation()}
                                                 role="checkbox"
                                                 aria-checked={isItemSelected}
@@ -547,12 +554,14 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                     {row.title}
                                                 </TableCell>
                                                 <TableCell
+                                                    className={classes.td}
                                                     // padding="none"
                                                 >
                                                     <DateTimeTableCell
                                                         datetime={row.added}/>
                                                 </TableCell>
                                                 <TableCell
+                                                    className={classes.td}
                                                     // padding="none"
                                                 >
                                                     <DateTimeTableCell
@@ -563,6 +572,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                 >
 
                                                     <Grid container
+                                                          wrap="nowrap"
                                                           spacing={1}
                                                           direction="row"
                                                           justify="flex-start"

@@ -1,3 +1,8 @@
+- proper row handling
+
+    - single click (with no modifiers) will select one row 
+
+
 - test a full screen component so that light/dark mode can be used properly
 
 - label on the right side of the node.
