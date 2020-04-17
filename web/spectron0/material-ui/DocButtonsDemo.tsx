@@ -22,7 +22,7 @@ export const DocButtons = React.memo((props: IProps) => {
     const theme = useTheme();
 
     const activeColor = (active: boolean) => {
-        return active ? theme.palette.text.primary : theme.palette.text.secondary;
+        return active ? theme.palette.primary.main : theme.palette.text.secondary;
     };
 
     return (
