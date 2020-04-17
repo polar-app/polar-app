@@ -19,7 +19,7 @@ import Box from "@material-ui/core/Box";
 import {DocButtons, DocButtonsDemo} from "./DocButtonsDemo";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
-import { MUIDocDropdownButton } from './MUIDocDropdownButton';
+// import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 
 
 export const App = () => {
