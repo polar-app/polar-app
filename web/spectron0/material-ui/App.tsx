@@ -81,6 +81,8 @@ export const App = () => {
                                          onDelete={() => console.log('onDelete')}
                                          onCopyDocumentID={() => console.log('onCopyDocumentID')}
                                          onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
+                                         onFlagged={() => console.log('onFlagged')}
+                                         onArchived={() => console.log('onArchived')}
                 />
 
                 {/*<Foo/>*/}

@@ -145,8 +145,6 @@ export default function DocumentRepositoryTable(props: IProps) {
 
     const docContextMenuCallbacks: DocContextMenuCallbacks = {
 
-        // onFlagged: NULL_FUNCTION,
-        // onTagRequested: NULL_FUNCTION,
         onOpen: NULL_FUNCTION,
         onRename: NULL_FUNCTION,
         onShowFile: NULL_FUNCTION,
@@ -154,6 +152,8 @@ export default function DocumentRepositoryTable(props: IProps) {
         onDelete: NULL_FUNCTION,
         onCopyDocumentID: NULL_FUNCTION,
         onCopyFilePath: NULL_FUNCTION,
+        onFlagged: NULL_FUNCTION,
+        onArchived: NULL_FUNCTION,
 
     };
 

@@ -1,8 +1,9 @@
 
 - table work:
-    - get column width working
-    - get proper events dispatched 
-
+    - the header bar needs to work with delete and tag
+    - header bar needs archive and flag too
+    - unify the item handling functions... 
+    - tag sorting doesn't work
 
 - proper row handling
 

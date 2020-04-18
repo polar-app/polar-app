@@ -8,6 +8,8 @@ import TitleIcon from '@material-ui/icons/Title';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Divider from "@material-ui/core/Divider";
+import FlagIcon from "@material-ui/icons/Flag";
+import ArchiveIcon from "@material-ui/icons/Archive";
 import {Callback1} from "polar-shared/src/util/Functions";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {AppRuntime} from "../../../js/AppRuntime";
@@ -21,6 +23,8 @@ export interface DocContextMenuCallbacks {
     readonly onCopyFilePath: Callback1<RepoDocInfo>;
     readonly onCopyDocumentID: Callback1<RepoDocInfo>;
     readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 }
 
 export interface DocContextMenuProps extends DocContextMenuCallbacks {
@@ -57,6 +61,20 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                         </ListItemIcon>
                         <ListItemText primary="Open Document" />
                     </MenuItem>}
+
+                <MenuItem onClick={() => this.props.onFlagged(selected)}>
+                    <ListItemIcon>
+                        <FlagIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Flag" />
+                </MenuItem>
+
+                <MenuItem onClick={() => this.props.onArchived(selected)}>
+                    <ListItemIcon>
+                        <ArchiveIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Archive" />
+                </MenuItem>
 
                 {isSingle &&
                     <MenuItem onClick={() => this.props.onRename(repoDocInfo)}>

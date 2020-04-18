@@ -19,11 +19,11 @@ interface IProps extends DocContextMenuProps {
 
     readonly repoDocInfo: RepoDocInfo;
 
-    readonly onTagRequested: Callback1<RepoDocInfo>;
+    readonly onTagRequested: Callback1<ReadonlyArray<RepoDocInfo>>;
 
-    readonly onArchived: Callback1<RepoDocInfo>;
+    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
 
-    readonly onFlagged: Callback1<RepoDocInfo>;
+    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 
 }
 
@@ -41,7 +41,7 @@ export const MUIDocButtons = React.memo((props: IProps) => {
 
             <Tooltip title="Tag">
                 <IconButton size="small"
-                            onClick={() => props.onTagRequested(props.repoDocInfo)}
+                            onClick={() => props.onTagRequested([props.repoDocInfo])}
                             style={{color: grey[500]}}>
                     <LocalOfferIcon/>
                 </IconButton>
@@ -49,7 +49,7 @@ export const MUIDocButtons = React.memo((props: IProps) => {
 
             <Tooltip title="Archive">
                 <IconButton size="small"
-                            onClick={() => props.onArchived(props.repoDocInfo)}
+                            onClick={() => props.onArchived([props.repoDocInfo])}
                             style={{color: activeColor(props.archived)}}>
                     <ArchiveIcon/>
                 </IconButton>
@@ -57,7 +57,7 @@ export const MUIDocButtons = React.memo((props: IProps) => {
 
             <Tooltip title="Flag">
                 <IconButton size="small"
-                            onClick={() => props.onFlagged(props.repoDocInfo)}
+                            onClick={() => props.onFlagged([props.repoDocInfo])}
                             style={{color: activeColor(props.flagged)}}>
                     <FlagIcon/>
                 </IconButton>

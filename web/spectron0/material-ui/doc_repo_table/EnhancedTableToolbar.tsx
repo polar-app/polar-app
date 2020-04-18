@@ -44,7 +44,7 @@ interface IProps {
     readonly page: number;
     readonly rowsPerPage: number;
     readonly onChangePage: (page: number) => void;
-    readonly onChangeRowsPerPage: (rowsPerPAge: number) => void;
+    readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
     readonly onSelectAllRows: (selected: boolean) => void;
 }
 
