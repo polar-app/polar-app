@@ -5,13 +5,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import TitleIcon from '@material-ui/icons/Title';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 interface IProps {
     readonly onClose: () => void;
 }
 
+// NOTE that this CAN NOT be a functional component as it breaks MUI menu
+// component.
 export class MUIDocDropdownMenuItems extends React.Component<IProps> {
-    render() {
+
+    public render() {
 
         return (
             <>
@@ -23,33 +28,33 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <DraftsIcon fontSize="small" />
+                        <TitleIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <DraftsIcon fontSize="small" />
+                        <FileCopyIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Copy Original URL" />
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <DraftsIcon fontSize="small" />
+                        <InsertDriveFileIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Show File" />
                 </MenuItem>
 
                 <MenuItem>
                     <ListItemIcon>
-                        <DraftsIcon fontSize="small" />
+                        <FileCopyIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Copy File Path" />
                 </MenuItem>
 
                 <MenuItem>
                     <ListItemIcon>
-                        <DraftsIcon fontSize="small" />
+                        <FileCopyIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Copy Document ID" />
                 </MenuItem>
