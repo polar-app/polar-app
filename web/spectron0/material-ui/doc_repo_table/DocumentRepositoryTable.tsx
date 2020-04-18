@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         docButtons: {
             marginLeft: '5px',
+            marginRight: '5px',
             display: 'flex',
             justifyContent: 'flex-end'
         }
