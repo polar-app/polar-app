@@ -15,18 +15,10 @@ export interface ColumnDescriptorMap {
     [id: string]: ColumnDescriptor;
 }
 
-// export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
-//     { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: '100%' },
-//     { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: '8em' },
-//     { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Last Updated', width: '8em' },
-//     { id: 'tags', numeric: true, disablePadding: false, label: 'Tags', width: 'auto' },
-//     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px' },
-// ];
-
 export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: 'auto', defaultOrder: 'asc' },
-    { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: '8em', defaultOrder: 'desc' },
-    { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Last Updated', width: '8em', defaultOrder: 'desc' },
+    { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: '7em', defaultOrder: 'desc' },
+    { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
     { id: 'tags', numeric: true, disablePadding: true, label: 'Tags', width: '250px', defaultOrder: 'asc' },
     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px', defaultOrder: 'desc' },
 ];
