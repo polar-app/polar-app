@@ -3,7 +3,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 import {DocContextMenuProps} from "./MUIDocDropdownMenuItems";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {Callback1} from "polar-shared/src/util/Functions";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {
     MUIDocArchiveButton,
     MUIDocFlagButton,
@@ -22,6 +22,8 @@ interface IProps extends DocContextMenuProps {
     readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
     readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 
+    readonly onDocDropdown: Callback1<React.MouseEvent>;
+
 }
 
 export const MUIDocButtonBar = React.memo((props: IProps) => {
@@ -39,7 +41,7 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
                               active={props.flagged}/>
 
             <Tooltip title="More options...">
-                <MUIDocDropdownButton {...props}/>
+                <MUIDocDropdownButton onClick={props.onDocDropdown} {...props}/>
             </Tooltip>
 
         </div>

@@ -5,9 +5,11 @@ import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {DocActions} from "./DocActions";
+import { Callback1 } from "polar-shared/src/util/Functions";
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+    readonly onClick: Callback1<React.MouseEvent>;
 }
 
 interface IState {
@@ -28,6 +30,9 @@ export class MUIDocDropdownButton extends React.Component<IProps, IState> {
     public render() {
 
         const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+
+            this.props.onClick(event);
+
             this.setState({
                 anchorEl: event.currentTarget
             });

@@ -173,6 +173,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                     .join(', ')}
 
             </TableCell>
+
             <TableCell className={classes.colProgress}
                        onClick={selectRowClickHandler}
                        onContextMenu={contextMenuHandler}
@@ -195,6 +196,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                                  repoDocInfo={row}
                                  flagged={row.flagged}
                                  archived={row.archived}
+                                 onDocDropdown={(event) => props.selectRow(viewIndex, event, 'click')}
                                  onArchived={NULL_FUNCTION}
                                  onFlagged={NULL_FUNCTION}
                                  onTagRequested={NULL_FUNCTION}
