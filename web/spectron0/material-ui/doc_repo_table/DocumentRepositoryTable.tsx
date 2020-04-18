@@ -18,6 +18,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Order, stableSort, getComparator} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
+import {MUIDocDropdownContextMenu} from "./MUIDocDropdownContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -143,143 +144,151 @@ export default function DocumentRepositoryTable(props: IProps) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
-                <EnhancedTableToolbar data={data}
-                                      numSelected={selected.length}
-                                      rowsPerPage={rowsPerPage}
-                                      onChangePage={handleChangePage}
-                                      onChangeRowsPerPage={handleChangeRowsPerPage}
-                                      onSelectAllRows={handleSelectAllRows}
-                                      page={page}/>
-                <TableContainer style={{flexGrow: 1}}>
-                    <Table
-                        stickyHeader
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        size={'small'}
-                        aria-label="enhanced table"
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllRows}
-                            onRequestSort={handleRequestSort}
-                            rowCount={data.length}
-                        />
-                        <TableBody>
-                            {data
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    const isItemSelected = isSelected(row.fingerprint);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+                <MUIDocDropdownContextMenu onClose={NULL_FUNCTION}
+                                           render={contextMenuHandler => (
+                    <>
+                        <EnhancedTableToolbar data={data}
+                                              numSelected={selected.length}
+                                              rowsPerPage={rowsPerPage}
+                                              onChangePage={handleChangePage}
+                                              onChangeRowsPerPage={handleChangeRowsPerPage}
+                                              onSelectAllRows={handleSelectAllRows}
+                                              page={page}/>
+                        <TableContainer style={{flexGrow: 1}}>
+                            <Table
+                                stickyHeader
+                                className={classes.table}
+                                aria-labelledby="tableTitle"
+                                size={'small'}
+                                aria-label="enhanced table"
+                            >
+                                <EnhancedTableHead
+                                    numSelected={selected.length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={handleSelectAllRows}
+                                    onRequestSort={handleRequestSort}
+                                    rowCount={data.length}
+                                />
+                                <TableBody>
+                                    {data
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((row, index) => {
+                                            const isItemSelected = isSelected(row.fingerprint);
+                                            const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    return (
-                                        // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
-                                            <TableRow
-                                                hover
-                                                className={classes.tr}
-                                                onClick={(event) => event.stopPropagation()}
-                                                role="checkbox"
-                                                aria-checked={isItemSelected}
-                                                tabIndex={-1}
-                                                key={row.fingerprint}
-                                                onDoubleClick={() => props.onLoadDoc(row)}
-                                                selected={isItemSelected}>
+                                            return (
+                                                // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
+                                                    <TableRow
+                                                        hover
+                                                        className={classes.tr}
+                                                        onClick={(event) => event.stopPropagation()}
+                                                        role="checkbox"
+                                                        aria-checked={isItemSelected}
+                                                        tabIndex={-1}
+                                                        key={row.fingerprint}
+                                                        onDoubleClick={() => props.onLoadDoc(row)}
+                                                        selected={isItemSelected}>
 
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        checked={isItemSelected}
-                                                        inputProps={{'aria-labelledby': labelId}}
-                                                        onClick={(event) => handleClick(event, row.fingerprint)}
+                                                        <TableCell padding="checkbox">
+                                                            <Checkbox
+                                                                checked={isItemSelected}
+                                                                inputProps={{'aria-labelledby': labelId}}
+                                                                onClick={(event) => handleClick(event, row.fingerprint)}
 
-                                                    />
-                                                </TableCell>
-                                                <TableCell component="th"
-                                                           id={labelId}
-                                                           scope="row"
-                                                           className={classes.colTitle}
-                                                           padding="none"
-                                                >
-                                                    {row.title}
-                                                </TableCell>
-                                                <TableCell
-                                                    className={classes.td}
-                                                    padding="none"
-                                                >
-                                                    <DateTimeTableCell
-                                                        datetime={row.added}/>
-                                                </TableCell>
-                                                <TableCell
-                                                    className={classes.td}
-                                                    padding="none"
-                                                >
-                                                    <DateTimeTableCell
-                                                        datetime={row.lastUpdated}/>
-                                                </TableCell>
-                                                <TableCell
-                                                    // padding="none"
-                                                >
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell component="th"
+                                                                   id={labelId}
+                                                                   scope="row"
+                                                                   className={classes.colTitle}
+                                                                   padding="none"
+                                                                   onContextMenu={contextMenuHandler}>
+                                                            {row.title}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className={classes.td}
+                                                            padding="none"
+                                                            onContextMenu={contextMenuHandler}>
 
-                                                    <Grid container
-                                                          wrap="nowrap"
-                                                          spacing={1}
-                                                          direction="row"
-                                                          justify="flex-start"
-                                                          alignItems="center">
+                                                            <DateTimeTableCell datetime={row.added}/>
 
-                                                        {ArrayStreams
-                                                            .ofMapValues(row.tags || {})
-                                                            .collect()
-                                                            .map(current => (
-                                                                <Grid item
-                                                                      key={current.id}>
+                                                        </TableCell>
+                                                        <TableCell className={classes.td}
+                                                                   padding="none"
+                                                                   onContextMenu={contextMenuHandler}>
 
-                                                                    <Chip size="small"
-                                                                          label={current.label}
-                                                                    />
+                                                            <DateTimeTableCell datetime={row.lastUpdated}/>
 
-                                                                </Grid>
-                                                            ))}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            // padding="none"
+                                                            onContextMenu={contextMenuHandler}>
 
-                                                    </Grid>
-                                                </TableCell>
-                                                <TableCell className={classes.colProgress}
-                                                           padding="none">
+                                                            <Grid container
+                                                                  wrap="nowrap"
+                                                                  spacing={1}
+                                                                  direction="row"
+                                                                  justify="flex-start"
+                                                                  alignItems="center">
 
-                                                    <progress value={row.progress}
-                                                              max={100}/>
+                                                                {ArrayStreams
+                                                                    .ofMapValues(row.tags || {})
+                                                                    .collect()
+                                                                    .map(current => (
+                                                                        <Grid item
+                                                                              key={current.id}>
 
-                                                </TableCell>
+                                                                            <Chip size="small"
+                                                                                  label={current.label}
+                                                                            />
 
-                                                <TableCell align="right"
-                                                           padding="none"
-                                                           onClick={event => event.stopPropagation()}
-                                                           onDoubleClick={event => event.stopPropagation()}>
+                                                                        </Grid>
+                                                                    ))}
 
-                                                    <DocButtons className={classes.docButtons}
-                                                                flagged={row.flagged}
-                                                                archived={row.archived}
-                                                                onArchive={NULL_FUNCTION}
-                                                                onFlag={NULL_FUNCTION}
-                                                                onTag={NULL_FUNCTION}
-                                                                onDropdown={NULL_FUNCTION}
-                                                    />
+                                                            </Grid>
+                                                        </TableCell>
+                                                        <TableCell className={classes.colProgress}
+                                                                   onContextMenu={contextMenuHandler}
+                                                                   padding="none">
 
-                                                </TableCell>
+                                                            <progress value={row.progress}
+                                                                      max={100}/>
 
-                                            </TableRow>
-                                        // </MUIDocDropdownContextMenu>
+                                                        </TableCell>
 
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                                        <TableCell align="right"
+                                                                   padding="none"
+                                                                   onClick={event => event.stopPropagation()}
+                                                                   onDoubleClick={event => event.stopPropagation()}>
+
+                                                            <DocButtons className={classes.docButtons}
+                                                                        flagged={row.flagged}
+                                                                        archived={row.archived}
+                                                                        onArchive={NULL_FUNCTION}
+                                                                        onFlag={NULL_FUNCTION}
+                                                                        onTag={NULL_FUNCTION}
+                                                                        onDropdown={NULL_FUNCTION}
+                                                            />
+
+                                                        </TableCell>
+
+                                                    </TableRow>
+                                                // </MUIDocDropdownContextMenu>
+
+                                            );
+                                        })}
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                                            <TableCell colSpan={6} />
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                </>
+                )}/>
+
             </Paper>
         </div>
     );

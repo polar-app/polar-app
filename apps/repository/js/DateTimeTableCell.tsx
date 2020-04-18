@@ -17,7 +17,8 @@ export const DateTimeTableCell = React.memo((props: IProps) => {
             <Moment withTitle={true}
                     className={props.className || ''}
                     style={{
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        userSelect: "none"
                     }}
                     titleFormat="D MMM YYYY hh:MM A"
                     filter={(value) => value.replace(/^an? /g, '1 ')}

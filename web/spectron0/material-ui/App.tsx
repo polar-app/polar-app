@@ -3,21 +3,10 @@ import {useState} from 'react';
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FolderTree from "./FolderTree";
 import DocumentRepositoryTable from "./doc_repo_table/DocumentRepositoryTable";
-import ReactVirtualizedTable from "./ReactVirtualizedTable";
-import TabsDemo from "./TabsDemo";
-import DropdownMenuDemo from "./DropdownMenuDemo";
-import {IconsDemo} from "./IconsDemo";
-import Grid from "@material-ui/core/Grid";
-import TableCell from "@material-ui/core/TableCell";
-import Chip from "@material-ui/core/Chip";
-import AutocompleteTags from "./AutocompleteTags";
-import Button from '@material-ui/core/Button';
-import DialogDemo from "./DialogDemo";
-import Box from "@material-ui/core/Box";
-import {DocButtons, DocButtonsDemo} from "./DocButtonsDemo";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
+import {ContextMenus} from "./ContextMenus";
+import withContextMenu = ContextMenus.withContextMenu;
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 
@@ -46,6 +35,12 @@ export const App = () => {
     };
 
     const muiTheme = createMuiTheme(theme);
+
+    const MyDiv = (props: React.HTMLAttributes<HTMLDivElement>) => (
+        <div {...props}>this is the component</div>
+    );
+
+    const Foo = withContextMenu(MyDiv);
 
     return (
         <MuiThemeProvider theme={muiTheme}>
@@ -81,6 +76,9 @@ export const App = () => {
                                          onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
                 />
 
+                {/*<Foo/>*/}
+                {/*<Foo/>*/}
+                {/*<Foo/>*/}
 
                 {/*<div style={{display: 'flex'}}>*/}
                 {/*    <div style={{flexGrow: 1}}>*/}
