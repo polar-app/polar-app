@@ -9,6 +9,9 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import Divider from "@material-ui/core/Divider";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TablePagination from "@material-ui/core/TablePagination";
+import FlagIcon from "@material-ui/icons/Flag";
+import ArchiveIcon from "@material-ui/icons/Archive";
+
 import {
     createStyles,
     lighten,
@@ -92,15 +95,31 @@ export const EnhancedTableToolbar = (props: IProps) => {
                         {numSelected > 0 && (
                             <Grid item>
                                 <Grid container
-                                      spacing={1}
+                                      spacing={0}
                                       direction="row"
                                       justify="flex-start"
                                       alignItems="center">
 
                                     <Grid item>
                                         <Tooltip title="Tag">
-                                            <IconButton>
+                                            <IconButton size="medium">
                                                 <LocalOfferIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Grid>
+
+                                    <Grid item>
+                                        <Tooltip title="Archive">
+                                            <IconButton size="medium">
+                                                <ArchiveIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Grid>
+
+                                    <Grid item>
+                                        <Tooltip title="Flag">
+                                            <IconButton size="medium">
+                                                <FlagIcon/>
                                             </IconButton>
                                         </Tooltip>
                                     </Grid>

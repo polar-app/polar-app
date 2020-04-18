@@ -21,7 +21,7 @@ export const DateTimeTableCell = React.memo((props: IProps) => {
                         userSelect: "none"
                     }}
                     titleFormat="D MMM YYYY hh:MM A"
-                    filter={(value) => value.replace(/^an? /g, '1 ')}
+                    // filter={(value) => value.replace(/^an? /g, '1 ')}
                     fromNow ago>
                 {props.datetime!}
             </Moment>
