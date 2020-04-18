@@ -7,6 +7,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import {Callback} from "polar-shared/src/util/Functions";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import grey from "@material-ui/core/colors/grey";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 const activeColor = (active: boolean) => {
@@ -32,6 +33,7 @@ const StandardButton = (props: StandardButtonProps) => (
     <Tooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
                     onClick={() => props.onClick()}
+                    aria-label={props.tooltip.toLowerCase()}
                     style={{color: grey[500]}}>
             {props.children}
         </IconButton>
@@ -48,10 +50,17 @@ const StandardToggleButton = (props: StandardToggleButtonProps) => (
     <Tooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
                     onClick={() => props.onClick()}
+                    aria-label={props.tooltip.toLowerCase()}
                     style={{color: activeColor(props.active || false)}}>
             {props.children}
         </IconButton>
     </Tooltip>
+);
+
+export const MUIDocDeleteButton = (props: ButtonProps) => (
+    <StandardButton tooltip="Delete" {...props}>
+        <DeleteIcon />
+    </StandardButton>
 );
 
 export const MUIDocTagButton = (props: ButtonProps) => (

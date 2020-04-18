@@ -19,7 +19,11 @@ import {
     Theme
 } from "@material-ui/core/styles";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {MUIDocFlagButton} from "./MUIDocButtons";
+import {
+    MUIDocArchiveButton,
+    MUIDocDeleteButton,
+    MUIDocFlagButton, MUIDocTagButton
+} from "./MUIDocButtons";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -103,19 +107,11 @@ export const EnhancedTableToolbar = (props: IProps) => {
                                       alignItems="center">
 
                                     <Grid item>
-                                        <Tooltip title="Tag">
-                                            <IconButton size="medium">
-                                                <LocalOfferIcon/>
-                                            </IconButton>
-                                        </Tooltip>
+                                        <MUIDocTagButton onClick={NULL_FUNCTION} size="medium"/>
                                     </Grid>
 
                                     <Grid item>
-                                        <Tooltip title="Archive">
-                                            <IconButton size="medium">
-                                                <ArchiveIcon/>
-                                            </IconButton>
-                                        </Tooltip>
+                                        <MUIDocArchiveButton onClick={NULL_FUNCTION} size="medium"/>
                                     </Grid>
 
                                     <Grid item>
@@ -125,11 +121,8 @@ export const EnhancedTableToolbar = (props: IProps) => {
                                     <Divider orientation="vertical" flexItem/>
 
                                     <Grid item>
-                                        <Tooltip title="Delete">
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
+                                        <MUIDocDeleteButton size="medium"
+                                                            onClick={NULL_FUNCTION}/>
                                     </Grid>
 
                                 </Grid>
