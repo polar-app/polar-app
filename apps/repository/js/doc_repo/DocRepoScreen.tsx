@@ -71,6 +71,7 @@ namespace main {
     export const Documents = (props: DocumentsProps) => (
 
         <DocumentRepositoryTable data={props.data}
+                                 selected={props.selected}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
                                  onRename={() => console.log('onRename')}
@@ -82,6 +83,8 @@ namespace main {
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}
         />
+
+        // <DocRepoTable {...props}/>
 
     );
 

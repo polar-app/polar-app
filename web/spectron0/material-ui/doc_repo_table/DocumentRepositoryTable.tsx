@@ -93,6 +93,8 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
+    readonly selected: ReadonlyArray<number>;
+
     // called when the user wants to view a doc
     readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
 
@@ -102,18 +104,18 @@ export default function DocumentRepositoryTable(props: IProps) {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Sorting.Order>('desc');
     const [orderBy, setOrderBy] = React.useState<keyof RepoDocInfo>('progress');
-    const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
+    const {selected} = props;
     let {data} = props;
 
     Preconditions.assertPresent(data, 'data');
 
     const selectedProvider = (): ReadonlyArray<RepoDocInfo> => {
-        return arrayStream(data)
-            .filter(current => selected.includes(current.fingerprint))
+        return arrayStream(selected)
+            .map(current => data[current])
             .collect();
     };
 
@@ -125,34 +127,34 @@ export default function DocumentRepositoryTable(props: IProps) {
     };
 
     const handleSelectAllRows = (selected: boolean) => {
-        if (selected) {
-            // TODO: migrate to using an ID not a title.
-            const newSelected = data.map((n) => n.fingerprint);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
+        // if (selected) {
+        //     // TODO: migrate to using an ID not a title.
+        //     const newSelected = data.map((n) => n.fingerprint);
+        //     setSelected(newSelected);
+        //     return;
+        // }
+        // setSelected([]);
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
 
-        const selectedIndex = selected.indexOf(id);
-        let newSelected: string[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
+        // const selectedIndex = selected.indexOf(id);
+        // let newSelected: string[] = [];
+        //
+        // if (selectedIndex === -1) {
+        //     newSelected = newSelected.concat(selected, id);
+        // } else if (selectedIndex === 0) {
+        //     newSelected = newSelected.concat(selected.slice(1));
+        // } else if (selectedIndex === selected.length - 1) {
+        //     newSelected = newSelected.concat(selected.slice(0, -1));
+        // } else if (selectedIndex > 0) {
+        //     newSelected = newSelected.concat(
+        //         selected.slice(0, selectedIndex),
+        //         selected.slice(selectedIndex + 1),
+        //     );
+        // }
+        //
+        // setSelected(newSelected);
 
     };
 
@@ -169,7 +171,7 @@ export default function DocumentRepositoryTable(props: IProps) {
         setDense(event.target.checked);
     };
 
-    const isSelected = (name: string) => selected.indexOf(name) !== -1;
+    const isSelected = (viewIndex: number) => selected.indexOf(viewIndex) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -226,9 +228,9 @@ export default function DocumentRepositoryTable(props: IProps) {
                                 <TableBody>
                                     {data
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row, index) => {
-                                            const isItemSelected = isSelected(row.fingerprint);
-                                            const labelId = `enhanced-table-checkbox-${index}`;
+                                        .map((row, viewIndex) => {
+                                            const isItemSelected = isSelected(viewIndex);
+                                            const labelId = `enhanced-table-checkbox-${viewIndex}`;
 
                                             return (
                                                 // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>

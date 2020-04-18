@@ -72,6 +72,7 @@ export const App = () => {
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
                     <DocumentRepositoryTable data={MockRepoDocInfos.create()}
+                                             selected={[0, 1]}
                                              onOpen={() => console.log('onOpen')}
                                              onShowFile={() => console.log('onShowFile')}
                                              onRename={() => console.log('onRename')}
