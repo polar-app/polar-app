@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-    readonly onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
+    readonly onRequestSort: (event: React.MouseEvent<unknown>,
+                             property: keyof RepoDocInfo,
+                             order: Sorting.Order) => void;
     readonly order: Order;
     readonly orderBy: string;
 }
@@ -38,8 +40,10 @@ export function EnhancedTableHead(props: IProps) {
     const classes = useStyles();
 
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
+
+    const createSortHandler = (property: keyof RepoDocInfo,
+                               order: Sorting.Order) => (event: React.MouseEvent<unknown>) => {
+        onRequestSort(event, property, order);
     };
 
     return (
@@ -47,29 +51,34 @@ export function EnhancedTableHead(props: IProps) {
             <TableRow>
                 <TableCell padding="checkbox">
                 </TableCell>
-                {COLUMNS.map((column) => (
-                    <TableCell key={column.id}
-                               className={classes.th}
-                               style={{
-                                   width: column.width,
-                                   minWidth: column.width
-                               }}
-                               padding={column.disablePadding ? 'none' : 'default'}
-                               sortDirection={orderBy === column.id ? order : false}>
+                {COLUMNS.map((column) => {
 
-                        <TableSortLabel
-                            active={orderBy === column.id}
-                            direction={orderBy === column.id ? order : 'asc'}
-                            onClick={createSortHandler(column.id)}>
-                            {column.label}
-                            {orderBy === column.id ? (
-                                <span className={classes.visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </span>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
+                    const direction = orderBy === column.id ? order : column.defaultOrder;
+
+                    return (
+                        <TableCell key={column.id}
+                                   className={classes.th}
+                                   style={{
+                                       width: column.width,
+                                       minWidth: column.width
+                                   }}
+                                   padding={column.disablePadding ? 'none' : 'default'}
+                                   sortDirection={orderBy === column.id ? order : false}>
+
+                            <TableSortLabel
+                                active={orderBy === column.id}
+                                direction={direction}
+                                onClick={createSortHandler(column.id, direction)}>
+                                {column.label}
+                                {orderBy === column.id ? (
+                                    <span className={classes.visuallyHidden}>
+                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    </span>
+                                ) : null}
+                            </TableSortLabel>
+                        </TableCell>
+                    )
+                })}
 
                 <TableCell style={{width: DOC_BUTTON_COLUMN_WIDTH}}/>
 

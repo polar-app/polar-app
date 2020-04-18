@@ -116,9 +116,10 @@ export default function DocumentRepositoryTable(props: IProps) {
             .collect();
     };
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+    const handleRequestSort = (event: React.MouseEvent<unknown>,
+                               property: keyof RepoDocInfo,
+                               order: Sorting.Order) => {
+        setOrder(order);
         setOrderBy(property);
     };
 

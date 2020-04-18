@@ -4,9 +4,7 @@
     - header bar needs archive and flag too
     - unify the per-item context menu handling functions... 
     - progress sorting should be descending by default
-    - force tags back to text
     - long click for context menu should work..
-    - UI only containing tags (not folders) 
 - verify mobile UI works... 
 
 - proper row handling
