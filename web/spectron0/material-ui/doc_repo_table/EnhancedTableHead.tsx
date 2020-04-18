@@ -28,12 +28,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-    numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
-    onSelectAllClick: (selectAll: boolean) => void;
-    order: Order;
-    orderBy: string;
-    rowCount: number;
+    readonly numSelected: number;
+    readonly onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
+    readonly onSelectAllClick: (selectAll: boolean) => void;
+    readonly order: Order;
+    readonly orderBy: string;
+    readonly rowCount: number;
 }
 
 export function EnhancedTableHead(props: IProps) {

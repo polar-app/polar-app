@@ -62,6 +62,8 @@ export const EnhancedTableToolbar = (props: IProps) => {
 
     };
 
+    const rowCount = data.length;
+
     return (
         <Grid container
               direction="row"
@@ -79,8 +81,8 @@ export const EnhancedTableToolbar = (props: IProps) => {
 
                         <Grid item>
                             <Checkbox
-                                // indeterminate={numSelected > 0 && numSelected < rowCount}
-                                // checked={rowCount > 0 && numSelected === rowCount}
+                                indeterminate={numSelected > 0 && numSelected < rowCount}
+                                checked={rowCount > 0 && numSelected === rowCount}
                                 // onChange={onSelectAllClick}
                                 onChange={event => props.onSelectAllRows(event.target.checked)}
                                 inputProps={{ 'aria-label': 'select all documents' }}
