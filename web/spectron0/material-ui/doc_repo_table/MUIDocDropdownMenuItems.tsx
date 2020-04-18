@@ -66,7 +66,7 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                         <ListItemText primary="Rename" />
                     </MenuItem>}
 
-                {repoDocInfo.url && isSingle &&
+                {isSingle && ! AppRuntime.isBrowser() &&
                     <MenuItem onClick={() => this.props.onShowFile(repoDocInfo)}>
                         <ListItemIcon>
                             <InsertDriveFileIcon fontSize="small" />
@@ -74,7 +74,7 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                         <ListItemText primary="Show File" />
                     </MenuItem>}
 
-                {repoDocInfo.url && isSingle &&
+                {isSingle && repoDocInfo.url &&
                     <MenuItem onClick={() => this.props.onCopyOriginalURL(repoDocInfo)}>
                         <ListItemIcon>
                             <FileCopyIcon fontSize="small" />
