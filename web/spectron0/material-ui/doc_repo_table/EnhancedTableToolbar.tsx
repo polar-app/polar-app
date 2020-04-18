@@ -18,6 +18,8 @@ import {
     makeStyles,
     Theme
 } from "@material-ui/core/styles";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MUIDocFlagButton} from "./MUIDocButtons";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -117,11 +119,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
                                     </Grid>
 
                                     <Grid item>
-                                        <Tooltip title="Flag">
-                                            <IconButton size="medium">
-                                                <FlagIcon/>
-                                            </IconButton>
-                                        </Tooltip>
+                                        <MUIDocFlagButton onClick={NULL_FUNCTION} size="medium"/>
                                     </Grid>
 
                                     <Divider orientation="vertical" flexItem/>
