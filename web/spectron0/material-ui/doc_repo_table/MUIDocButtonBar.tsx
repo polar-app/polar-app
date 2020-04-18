@@ -27,7 +27,7 @@ interface IProps extends DocContextMenuProps {
 
 }
 
-export const MUIDocButtons = React.memo((props: IProps) => {
+export const MUIDocButtonBar = React.memo((props: IProps) => {
 
     const theme = useTheme();
 

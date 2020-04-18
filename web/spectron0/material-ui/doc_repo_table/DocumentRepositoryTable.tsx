@@ -19,7 +19,7 @@ import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
-import {MUIDocButtons} from "./MUIDocButtons";
+import {MUIDocButtonBar} from "./MUIDocButtonBar";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Tags} from "polar-shared/src/tags/Tags";
 
@@ -300,21 +300,21 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                    onClick={event => event.stopPropagation()}
                                                                    onDoubleClick={event => event.stopPropagation()}>
 
-                                                            <MUIDocButtons className={classes.docButtons}
-                                                                           selectedProvider={selectedProvider}
-                                                                           repoDocInfo={row}
-                                                                           flagged={row.flagged}
-                                                                           archived={row.archived}
-                                                                           onArchived={NULL_FUNCTION}
-                                                                           onFlagged={NULL_FUNCTION}
-                                                                           onTagRequested={NULL_FUNCTION}
-                                                                           onOpen={NULL_FUNCTION}
-                                                                           onRename={NULL_FUNCTION}
-                                                                           onShowFile={NULL_FUNCTION}
-                                                                           onCopyOriginalURL={NULL_FUNCTION}
-                                                                           onDelete={NULL_FUNCTION}
-                                                                           onCopyDocumentID={NULL_FUNCTION}
-                                                                           onCopyFilePath={NULL_FUNCTION}
+                                                            <MUIDocButtonBar className={classes.docButtons}
+                                                                             selectedProvider={selectedProvider}
+                                                                             repoDocInfo={row}
+                                                                             flagged={row.flagged}
+                                                                             archived={row.archived}
+                                                                             onArchived={NULL_FUNCTION}
+                                                                             onFlagged={NULL_FUNCTION}
+                                                                             onTagRequested={NULL_FUNCTION}
+                                                                             onOpen={NULL_FUNCTION}
+                                                                             onRename={NULL_FUNCTION}
+                                                                             onShowFile={NULL_FUNCTION}
+                                                                             onCopyOriginalURL={NULL_FUNCTION}
+                                                                             onDelete={NULL_FUNCTION}
+                                                                             onCopyDocumentID={NULL_FUNCTION}
+                                                                             onCopyFilePath={NULL_FUNCTION}
                                                                            />
 
                                                         </TableCell>
