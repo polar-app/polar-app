@@ -57,7 +57,7 @@ export class MUIDocDropdownButton extends React.Component<IProps, IState> {
                 </IconButton>
                 {anchorEl &&
                 <MUIDocDropdownMenu anchorEl={anchorEl}
-                                    onClose={NULL_FUNCTION}
+                                    onClose={handleClose}
                                     {...this.props}/>
                 }
             </div>

@@ -200,7 +200,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                     <TableRow
                                                         hover
                                                         className={classes.tr}
-                                                        onClick={(event) => event.stopPropagation()}
+                                                        onClick={(event) => handleClick(event, row.fingerprint)}
                                                         role="checkbox"
                                                         aria-checked={isItemSelected}
                                                         tabIndex={-1}

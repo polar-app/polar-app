@@ -82,7 +82,7 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                         <ListItemText primary="Copy Original URL" />
                     </MenuItem>}
 
-                {isSingle || ! AppRuntime.isBrowser() &&
+                {isSingle && ! AppRuntime.isBrowser() &&
                     <MenuItem onClick={() => this.props.onCopyFilePath(repoDocInfo)}>
                         <ListItemIcon>
                             <FileCopyIcon fontSize="small" />
