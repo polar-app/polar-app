@@ -5,7 +5,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {COLUMNS} from "./Columns";
+import {COLUMNS, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
 import Order = Sorting.Order;
 
@@ -50,6 +50,10 @@ export function EnhancedTableHead(props: IProps) {
                 {COLUMNS.map((column) => (
                     <TableCell key={column.id}
                                className={classes.th}
+                               style={{
+                                   width: column.width,
+                                   minWidth: column.width
+                               }}
                                padding={column.disablePadding ? 'none' : 'default'}
                                sortDirection={orderBy === column.id ? order : false}>
 
@@ -66,7 +70,8 @@ export function EnhancedTableHead(props: IProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell />
+
+                <TableCell style={{width: DOC_BUTTON_COLUMN_WIDTH}}/>
 
             </TableRow>
         </TableHead>

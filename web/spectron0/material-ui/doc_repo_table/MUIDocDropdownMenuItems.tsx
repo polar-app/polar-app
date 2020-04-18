@@ -62,6 +62,14 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                         <ListItemText primary="Open Document" />
                     </MenuItem>}
 
+                {isSingle &&
+                    <MenuItem onClick={() => this.props.onRename(repoDocInfo)}>
+                        <ListItemIcon>
+                            <TitleIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Rename" />
+                    </MenuItem>}
+
                 <MenuItem onClick={() => this.props.onFlagged(selected)}>
                     <ListItemIcon>
                         <FlagIcon fontSize="small" />
@@ -75,14 +83,6 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
                     </ListItemIcon>
                     <ListItemText primary="Archive" />
                 </MenuItem>
-
-                {isSingle &&
-                    <MenuItem onClick={() => this.props.onRename(repoDocInfo)}>
-                        <ListItemIcon>
-                            <TitleIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Rename" />
-                    </MenuItem>}
 
                 {isSingle && ! AppRuntime.isBrowser() &&
                     <MenuItem onClick={() => this.props.onShowFile(repoDocInfo)}>

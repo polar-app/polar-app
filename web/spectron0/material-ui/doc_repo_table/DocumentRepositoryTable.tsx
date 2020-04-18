@@ -20,6 +20,8 @@ import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
 import {MUIDocButtons} from "./MUIDocButtons";
+import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
+import {Tags} from "polar-shared/src/tags/Tags";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -33,19 +35,48 @@ const useStyles = makeStyles((theme: Theme) =>
             // marginBottom: theme.spacing(2),
         },
         table: {
-            minWidth: 750,
+            minWidth: 0,
+            maxWidth: '100%',
+            tableLayout: 'auto'
         },
         tr: {
             // borderSpacing: '100px'
         },
         td: {
-            whitespace: 'nowrap'
+            whiteSpace: 'nowrap'
+        },
+        progress: {
+            width: COLUMN_MAP.progress.width
         },
         colProgress: {
-            width: '100px'
+            width: COLUMN_MAP.progress.width,
+            minWidth: COLUMN_MAP.progress.width
+        },
+        colAdded: {
+            whiteSpace: 'nowrap',
+            width: COLUMN_MAP.added.width,
+        },
+        colLastUpdated: {
+            whiteSpace: 'nowrap',
+            width: COLUMN_MAP.lastUpdated.width,
         },
         colTitle: {
-            width: '100%'
+            width: COLUMN_MAP.title.width,
+
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colTags: {
+            width: COLUMN_MAP.tags.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colDocButtons: {
+            width: DOC_BUTTON_COLUMN_WIDTH
         },
         docButtons: {
             marginLeft: '5px',
@@ -177,7 +208,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                 stickyHeader
                                 className={classes.table}
                                 aria-labelledby="tableTitle"
-                                size={'small'}
+                                size={'medium'}
                                 aria-label="enhanced table"
                             >
                                 <EnhancedTableHead
@@ -222,22 +253,24 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                             {row.title}
                                                         </TableCell>
                                                         <TableCell
-                                                            className={classes.td}
+                                                            className={classes.colAdded}
                                                             padding="none"
                                                             onContextMenu={contextMenuHandler}>
 
                                                             <DateTimeTableCell datetime={row.added}/>
 
                                                         </TableCell>
-                                                        <TableCell className={classes.td}
-                                                                   padding="none"
-                                                                   onContextMenu={contextMenuHandler}>
+                                                        <TableCell
+                                                            className={classes.colLastUpdated}
+                                                            padding="none"
+                                                            onContextMenu={contextMenuHandler}>
 
                                                             <DateTimeTableCell datetime={row.lastUpdated}/>
 
                                                         </TableCell>
                                                         <TableCell
                                                             // padding="none"
+                                                            className={classes.colTags}
                                                             onContextMenu={contextMenuHandler}>
 
                                                             <Grid container
@@ -245,25 +278,35 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                   spacing={1}
                                                                   direction="row"
                                                                   justify="flex-start"
+                                                                  className={classes.colTitle}
                                                                   alignItems="center">
 
                                                                 {/*TODO: this sorting and mapping might be better done */}
                                                                 {/*at the RepoDocInfo level so it's done once not per*/}
                                                                 {/*display render.*/}
-                                                                {ArrayStreams
-                                                                    .ofMapValues(row.tags || {})
+                                                                {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
                                                                     .sort((a, b) => a.label.localeCompare(b.label))
+                                                                    .map(current => current.label)
                                                                     .collect()
-                                                                    .map(current => (
-                                                                        <Grid item
-                                                                              key={current.id}>
+                                                                    .join(', ')}
 
-                                                                            <Chip size="small"
-                                                                                  label={current.label}
-                                                                            />
+                                                                {/*/!*TODO: this sorting and mapping might be better done *!/*/}
+                                                                {/*/!*at the RepoDocInfo level so it's done once not per*!/*/}
+                                                                {/*/!*display render.*!/*/}
+                                                                {/*{ArrayStreams*/}
+                                                                {/*    .ofMapValues(row.tags || {})*/}
+                                                                {/*    .sort((a, b) => a.label.localeCompare(b.label))*/}
+                                                                {/*    .collect()*/}
+                                                                {/*    .map(current => (*/}
+                                                                {/*        <Grid item*/}
+                                                                {/*              key={current.id}>*/}
 
-                                                                        </Grid>
-                                                                    ))}
+                                                                {/*            <Chip size="small"*/}
+                                                                {/*                  label={current.label}*/}
+                                                                {/*            />*/}
+
+                                                                {/*        </Grid>*/}
+                                                                {/*    ))}*/}
 
                                                             </Grid>
                                                         </TableCell>
@@ -271,13 +314,15 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                    onContextMenu={contextMenuHandler}
                                                                    padding="none">
 
-                                                            <progress value={row.progress}
+                                                            <progress className={classes.progress}
+                                                                      value={row.progress}
                                                                       max={100}/>
 
                                                         </TableCell>
 
                                                         <TableCell align="right"
                                                                    padding="none"
+                                                                   className={classes.colDocButtons}
                                                                    onClick={event => event.stopPropagation()}
                                                                    onDoubleClick={event => event.stopPropagation()}>
 
