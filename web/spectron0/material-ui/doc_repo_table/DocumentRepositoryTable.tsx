@@ -18,7 +18,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Order, stableSort, getComparator} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
-import {MUIDocDropdownContextMenu} from "./MUIDocDropdownContextMenu";
+import {MUIDocContextMenu} from "./MUIDocContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -144,8 +144,8 @@ export default function DocumentRepositoryTable(props: IProps) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
-                <MUIDocDropdownContextMenu onClose={NULL_FUNCTION}
-                                           render={contextMenuHandler => (
+                <MUIDocContextMenu onClose={NULL_FUNCTION}
+                                   render={contextMenuHandler => (
                     <>
                         <EnhancedTableToolbar data={data}
                                               numSelected={selected.length}

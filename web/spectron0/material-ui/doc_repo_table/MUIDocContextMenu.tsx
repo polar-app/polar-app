@@ -17,7 +17,7 @@ interface IState {
     readonly mouseY?: number;
 }
 
-export const MUIDocDropdownContextMenu = (props: IProps) => {
+export const MUIDocContextMenu = (props: IProps) => {
 
     const [state, setState] = React.useState<IState>({});
 

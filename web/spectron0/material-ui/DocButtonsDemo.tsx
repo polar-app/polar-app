@@ -6,6 +6,7 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import grey from "@material-ui/core/colors/grey";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {MUIDocDropdownButton} from "./doc_repo_table/MUIDocDropdownButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 interface IProps {
     readonly className?: string;
@@ -29,22 +30,30 @@ export const DocButtons = React.memo((props: IProps) => {
 
         <div className={props.className || ''}>
 
-            <IconButton size="small"
-                        style={{color: grey[500]}}>
-                <LocalOfferIcon/>
-            </IconButton>
+            <Tooltip title="Tag">
+                <IconButton size="small"
+                            style={{color: grey[500]}}>
+                    <LocalOfferIcon/>
+                </IconButton>
+            </Tooltip>
 
-            <IconButton size="small"
-                        style={{color: activeColor(props.archived)}}>
-                <ArchiveIcon/>
-            </IconButton>
+            <Tooltip title="Archive">
+                <IconButton size="small"
+                            style={{color: activeColor(props.archived)}}>
+                    <ArchiveIcon/>
+                </IconButton>
+            </Tooltip>
 
-            <IconButton size="small"
-                        style={{color: activeColor(props.flagged)}}>
-                <FlagIcon/>
-            </IconButton>
+            <Tooltip title="Flag">
+                <IconButton size="small"
+                            style={{color: activeColor(props.flagged)}}>
+                    <FlagIcon/>
+                </IconButton>
+            </Tooltip>
 
-            <MUIDocDropdownButton/>
+            <Tooltip title="More options...">
+                <MUIDocDropdownButton/>
+            </Tooltip>
 
         </div>
     );
