@@ -24,6 +24,7 @@ import {Tags} from "polar-shared/src/tags/Tags";
 import {DocActions} from "./DocActions";
 import {AutoBlur} from "./AutoBlur";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
+import {DocRepoTableRow} from "./DocRepoTableRow";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -237,119 +238,15 @@ export default function DocumentRepositoryTable(props: IProps) {
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((row, viewIndex) => {
 
-                                                const contextMenuHandler: ContextMenuHandler = (event) => {
-                                                    props.selectRow(viewIndex, event, 'context');
-                                                    rawContextMenuHandler(event);
-                                                };
-
-                                                const selectRowClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-                                                    props.selectRow(viewIndex, event, 'click');
-                                                };
-
-                                                const isItemSelected = isSelected(viewIndex);
-                                                const labelId = `enhanced-table-checkbox-${viewIndex}`;
-
                                                 return (
-                                                    // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
-                                                        <TableRow
-                                                            hover
-                                                            className={classes.tr}
-                                                            onClick={(event) => handleClick(event, row.fingerprint)}
-                                                            role="checkbox"
-                                                            aria-checked={isItemSelected}
-                                                            tabIndex={-1}
-                                                            key={row.fingerprint}
-                                                            onDoubleClick={() => props.onLoadDoc(row)}
-                                                            selected={isItemSelected}>
-
-                                                            <TableCell padding="checkbox">
-                                                                <AutoBlur>
-                                                                    <Checkbox
-                                                                        checked={isItemSelected}
-                                                                        inputProps={{'aria-labelledby': labelId}}
-                                                                        onClick={(event) => props.selectRow(viewIndex, event, 'checkbox')}
-
-                                                                    />
-                                                                </AutoBlur>
-                                                            </TableCell>
-                                                            <TableCell component="th"
-                                                                       id={labelId}
-                                                                       scope="row"
-                                                                       className={classes.colTitle}
-                                                                       padding="none"
-                                                                       onClick={selectRowClickHandler}
-                                                                       onContextMenu={contextMenuHandler}>
-                                                                {row.title}
-                                                            </TableCell>
-                                                            <TableCell className={classes.colAdded}
-                                                                       padding="none"
-                                                                       onClick={selectRowClickHandler}
-                                                                       onContextMenu={contextMenuHandler}>
-
-                                                                <DateTimeTableCell datetime={row.added}/>
-
-                                                            </TableCell>
-                                                            <TableCell className={classes.colLastUpdated}
-                                                                       padding="none"
-                                                                       onClick={selectRowClickHandler}
-                                                                       onContextMenu={contextMenuHandler}>
-
-                                                                <DateTimeTableCell datetime={row.lastUpdated}/>
-
-                                                            </TableCell>
-                                                            <TableCell padding="none"
-                                                                       className={classes.colTags}
-                                                                       onClick={selectRowClickHandler}
-                                                                       onContextMenu={contextMenuHandler}>
-
-                                                            {/*TODO: this sorting and mapping might be better done */}
-                                                                {/*at the RepoDocInfo level so it's done once not per*/}
-                                                                {/*display render.*/}
-                                                                {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
-                                                                    .sort((a, b) => a.label.localeCompare(b.label))
-                                                                    .map(current => current.label)
-                                                                    .collect()
-                                                                    .join(', ')}
-
-                                                            </TableCell>
-                                                            <TableCell className={classes.colProgress}
-                                                                       onClick={selectRowClickHandler}
-                                                                       onContextMenu={contextMenuHandler}
-                                                                       padding="none">
-
-                                                                <progress className={classes.progress}
-                                                                          value={row.progress}
-                                                                          max={100}/>
-
-                                                            </TableCell>
-
-                                                            <TableCell align="right"
-                                                                       padding="none"
-                                                                       className={classes.colDocButtons}
-                                                                       onClick={event => event.stopPropagation()}
-                                                                       onDoubleClick={event => event.stopPropagation()}>
-
-                                                                <MUIDocButtonBar className={classes.docButtons}
-                                                                                 selectedProvider={selectedProvider}
-                                                                                 repoDocInfo={row}
-                                                                                 flagged={row.flagged}
-                                                                                 archived={row.archived}
-                                                                                 onArchived={NULL_FUNCTION}
-                                                                                 onFlagged={NULL_FUNCTION}
-                                                                                 onTagRequested={NULL_FUNCTION}
-                                                                                 onOpen={NULL_FUNCTION}
-                                                                                 onRename={NULL_FUNCTION}
-                                                                                 onShowFile={NULL_FUNCTION}
-                                                                                 onCopyOriginalURL={NULL_FUNCTION}
-                                                                                 onDelete={NULL_FUNCTION}
-                                                                                 onCopyDocumentID={NULL_FUNCTION}
-                                                                                 onCopyFilePath={NULL_FUNCTION}
-                                                                               />
-
-                                                            </TableCell>
-
-                                                        </TableRow>
-
+                                                    <DocRepoTableRow viewIndex={viewIndex}
+                                                                     rawContextMenuHandler={rawContextMenuHandler}
+                                                                     selectRow={props.selectRow}
+                                                                     isSelected={isSelected}
+                                                                     onLoadDoc={props.onLoadDoc}
+                                                                     row={row}
+                                                                     selectedProvider={selectedProvider}
+                                                                     />
                                                 );
                                             })}
                                         {emptyRows > 0 && (
