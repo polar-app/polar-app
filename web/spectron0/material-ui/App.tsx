@@ -7,6 +7,7 @@ import DocumentRepositoryTable from "./doc_repo_table/DocumentRepositoryTable";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
 import {ContextMenus} from "./ContextMenus";
 import {configure, GlobalHotKeys} from "react-hotkeys";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 
@@ -73,6 +74,7 @@ export const App = () => {
                     {/*</Box>*/}
                     <DocumentRepositoryTable data={MockRepoDocInfos.create()}
                                              selected={[0, 1]}
+                                             selectRow={NULL_FUNCTION}
                                              onOpen={() => console.log('onOpen')}
                                              onShowFile={() => console.log('onShowFile')}
                                              onRename={() => console.log('onRename')}

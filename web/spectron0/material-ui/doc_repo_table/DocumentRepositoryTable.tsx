@@ -17,12 +17,13 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Sorting} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
-import {MUIDocContextMenu} from "./MUIDocContextMenu";
+import {ContextMenuHandler, MUIDocContextMenu} from "./MUIDocContextMenu";
 import {MUIDocButtonBar} from "./MUIDocButtonBar";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DocActions} from "./DocActions";
 import {AutoBlur} from "./AutoBlur";
+import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -97,6 +98,8 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
 
     // called when the user wants to view a doc
     readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
+
+    readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
 
 }
 
@@ -192,157 +195,168 @@ export default function DocumentRepositoryTable(props: IProps) {
 
     };
 
+    // FIXME: the context menu handler should select the current row
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
                 <MUIDocContextMenu {...docContextMenuCallbacks}
                                    selectedProvider={selectedProvider}
-                                   render={contextMenuHandler => (
-                    <>
-                        <EnhancedTableToolbar data={data}
-                                              selectedProvider={selectedProvider}
-                                              numSelected={selected.length}
-                                              rowsPerPage={rowsPerPage}
-                                              onChangePage={handleChangePage}
-                                              onChangeRowsPerPage={handleChangeRowsPerPage}
-                                              onSelectAllRows={handleSelectAllRows}
-                                              page={page}
-                                              onDelete={() => console.log('FIXME: DELETE ==============' + Date.now())}
-                                              onFlagged={() => console.log('FIXME: FLAGGED ==============' + Date.now())}
-                                              onArchived={() => console.log('FIXME: ARCHIVED ==============' + Date.now())}
-                                              />
+                                   render={rawContextMenuHandler => {
 
-                        <TableContainer style={{flexGrow: 1}}>
-                            <Table
-                                stickyHeader
-                                className={classes.table}
-                                aria-labelledby="tableTitle"
-                                size={'medium'}
-                                aria-label="enhanced table"
-                            >
-                                <EnhancedTableHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    onRequestSort={handleRequestSort}
-                                />
-                                <TableBody>
-                                    {data
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row, viewIndex) => {
-                                            const isItemSelected = isSelected(viewIndex);
-                                            const labelId = `enhanced-table-checkbox-${viewIndex}`;
+                    return (
+                        <>
+                            <EnhancedTableToolbar data={data}
+                                                  selectedProvider={selectedProvider}
+                                                  numSelected={selected.length}
+                                                  rowsPerPage={rowsPerPage}
+                                                  onChangePage={handleChangePage}
+                                                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                                                  onSelectAllRows={handleSelectAllRows}
+                                                  page={page}
+                                                  onDelete={() => console.log('FIXME: DELETE ==============' + Date.now())}
+                                                  onFlagged={() => console.log('FIXME: FLAGGED ==============' + Date.now())}
+                                                  onArchived={() => console.log('FIXME: ARCHIVED ==============' + Date.now())}
+                                                  />
 
-                                            return (
-                                                // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
-                                                    <TableRow
-                                                        hover
-                                                        className={classes.tr}
-                                                        onClick={(event) => handleClick(event, row.fingerprint)}
-                                                        role="checkbox"
-                                                        aria-checked={isItemSelected}
-                                                        tabIndex={-1}
-                                                        key={row.fingerprint}
-                                                        onDoubleClick={() => props.onLoadDoc(row)}
-                                                        selected={isItemSelected}>
+                            <TableContainer style={{flexGrow: 1}}>
+                                <Table
+                                    stickyHeader
+                                    className={classes.table}
+                                    aria-labelledby="tableTitle"
+                                    size={'medium'}
+                                    aria-label="enhanced table"
+                                >
+                                    <EnhancedTableHead
+                                        order={order}
+                                        orderBy={orderBy}
+                                        onRequestSort={handleRequestSort}
+                                    />
+                                    <TableBody>
+                                        {data
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row, viewIndex) => {
 
-                                                        <TableCell padding="checkbox">
-                                                            <AutoBlur>
-                                                                <Checkbox
-                                                                    checked={isItemSelected}
-                                                                    inputProps={{'aria-labelledby': labelId}}
-                                                                    onClick={(event) => handleClick(event, row.fingerprint)}
+                                                const contextMenuHandler: ContextMenuHandler = (event) => {
+                                                    props.selectRow(viewIndex, event, 'context');
+                                                    rawContextMenuHandler(event);
+                                                };
 
-                                                                />
-                                                            </AutoBlur>
-                                                        </TableCell>
-                                                        <TableCell component="th"
-                                                                   id={labelId}
-                                                                   scope="row"
-                                                                   className={classes.colTitle}
-                                                                   padding="none"
-                                                                   onContextMenu={contextMenuHandler}>
-                                                            {row.title}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            className={classes.colAdded}
-                                                            padding="none"
-                                                            onContextMenu={contextMenuHandler}>
+                                                const isItemSelected = isSelected(viewIndex);
+                                                const labelId = `enhanced-table-checkbox-${viewIndex}`;
 
-                                                            <DateTimeTableCell datetime={row.added}/>
+                                                return (
+                                                    // <MUIDocDropdownContextMenu onClose={NULL_FUNCTION} key={row.fingerprint}>
+                                                        <TableRow
+                                                            hover
+                                                            className={classes.tr}
+                                                            onClick={(event) => handleClick(event, row.fingerprint)}
+                                                            role="checkbox"
+                                                            aria-checked={isItemSelected}
+                                                            tabIndex={-1}
+                                                            key={row.fingerprint}
+                                                            onDoubleClick={() => props.onLoadDoc(row)}
+                                                            selected={isItemSelected}>
 
-                                                        </TableCell>
-                                                        <TableCell
-                                                            className={classes.colLastUpdated}
-                                                            padding="none"
-                                                            onContextMenu={contextMenuHandler}>
+                                                            <TableCell padding="checkbox">
+                                                                <AutoBlur>
+                                                                    <Checkbox
+                                                                        checked={isItemSelected}
+                                                                        inputProps={{'aria-labelledby': labelId}}
+                                                                        onClick={(event) => props.selectRow(viewIndex, event, 'checkbox')}
 
-                                                            <DateTimeTableCell datetime={row.lastUpdated}/>
+                                                                    />
+                                                                </AutoBlur>
+                                                            </TableCell>
+                                                            <TableCell component="th"
+                                                                       id={labelId}
+                                                                       scope="row"
+                                                                       className={classes.colTitle}
+                                                                       padding="none"
+                                                                       onContextMenu={contextMenuHandler}>
+                                                                {row.title}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                className={classes.colAdded}
+                                                                padding="none"
+                                                                onContextMenu={contextMenuHandler}>
 
-                                                        </TableCell>
-                                                        <TableCell
-                                                            padding="none"
-                                                            className={classes.colTags}
-                                                            onContextMenu={contextMenuHandler}>
+                                                                <DateTimeTableCell datetime={row.added}/>
 
-                                                            {/*TODO: this sorting and mapping might be better done */}
-                                                            {/*at the RepoDocInfo level so it's done once not per*/}
-                                                            {/*display render.*/}
-                                                            {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
-                                                                .sort((a, b) => a.label.localeCompare(b.label))
-                                                                .map(current => current.label)
-                                                                .collect()
-                                                                .join(', ')}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                className={classes.colLastUpdated}
+                                                                padding="none"
+                                                                onContextMenu={contextMenuHandler}>
 
-                                                        </TableCell>
-                                                        <TableCell className={classes.colProgress}
-                                                                   onContextMenu={contextMenuHandler}
-                                                                   padding="none">
+                                                                <DateTimeTableCell datetime={row.lastUpdated}/>
 
-                                                            <progress className={classes.progress}
-                                                                      value={row.progress}
-                                                                      max={100}/>
+                                                            </TableCell>
+                                                            <TableCell
+                                                                padding="none"
+                                                                className={classes.colTags}
+                                                                onContextMenu={contextMenuHandler}>
 
-                                                        </TableCell>
+                                                                {/*TODO: this sorting and mapping might be better done */}
+                                                                {/*at the RepoDocInfo level so it's done once not per*/}
+                                                                {/*display render.*/}
+                                                                {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
+                                                                    .sort((a, b) => a.label.localeCompare(b.label))
+                                                                    .map(current => current.label)
+                                                                    .collect()
+                                                                    .join(', ')}
 
-                                                        <TableCell align="right"
-                                                                   padding="none"
-                                                                   className={classes.colDocButtons}
-                                                                   onClick={event => event.stopPropagation()}
-                                                                   onDoubleClick={event => event.stopPropagation()}>
+                                                            </TableCell>
+                                                            <TableCell className={classes.colProgress}
+                                                                       onContextMenu={contextMenuHandler}
+                                                                       padding="none">
 
-                                                            <MUIDocButtonBar className={classes.docButtons}
-                                                                             selectedProvider={selectedProvider}
-                                                                             repoDocInfo={row}
-                                                                             flagged={row.flagged}
-                                                                             archived={row.archived}
-                                                                             onArchived={NULL_FUNCTION}
-                                                                             onFlagged={NULL_FUNCTION}
-                                                                             onTagRequested={NULL_FUNCTION}
-                                                                             onOpen={NULL_FUNCTION}
-                                                                             onRename={NULL_FUNCTION}
-                                                                             onShowFile={NULL_FUNCTION}
-                                                                             onCopyOriginalURL={NULL_FUNCTION}
-                                                                             onDelete={NULL_FUNCTION}
-                                                                             onCopyDocumentID={NULL_FUNCTION}
-                                                                             onCopyFilePath={NULL_FUNCTION}
-                                                                           />
+                                                                <progress className={classes.progress}
+                                                                          value={row.progress}
+                                                                          max={100}/>
 
-                                                        </TableCell>
+                                                            </TableCell>
 
-                                                    </TableRow>
+                                                            <TableCell align="right"
+                                                                       padding="none"
+                                                                       className={classes.colDocButtons}
+                                                                       onClick={event => event.stopPropagation()}
+                                                                       onDoubleClick={event => event.stopPropagation()}>
 
-                                            );
-                                        })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                </>
-                )}/>
+                                                                <MUIDocButtonBar className={classes.docButtons}
+                                                                                 selectedProvider={selectedProvider}
+                                                                                 repoDocInfo={row}
+                                                                                 flagged={row.flagged}
+                                                                                 archived={row.archived}
+                                                                                 onArchived={NULL_FUNCTION}
+                                                                                 onFlagged={NULL_FUNCTION}
+                                                                                 onTagRequested={NULL_FUNCTION}
+                                                                                 onOpen={NULL_FUNCTION}
+                                                                                 onRename={NULL_FUNCTION}
+                                                                                 onShowFile={NULL_FUNCTION}
+                                                                                 onCopyOriginalURL={NULL_FUNCTION}
+                                                                                 onDelete={NULL_FUNCTION}
+                                                                                 onCopyDocumentID={NULL_FUNCTION}
+                                                                                 onCopyFilePath={NULL_FUNCTION}
+                                                                               />
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+
+                                                );
+                                            })}
+                                        {emptyRows > 0 && (
+                                            <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                                                <TableCell colSpan={6} />
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </>
+                    );
+                }}/>
 
             </Paper>
         </div>

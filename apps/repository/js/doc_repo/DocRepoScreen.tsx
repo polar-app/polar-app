@@ -8,7 +8,10 @@ import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {MessageBanner} from '../MessageBanner';
 import {DocRepoTableDropdown} from './DocRepoTableDropdown';
-import {DocRepoTableColumns, DocRepoTableColumnsMap} from './DocRepoTableColumns';
+import {
+    DocRepoTableColumns,
+    DocRepoTableColumnsMap
+} from './DocRepoTableColumns';
 import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
@@ -28,7 +31,7 @@ import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
-import {DocRepoTable, DocRepoTableProps} from './DocRepoTable';
+import {DocRepoTableProps} from './DocRepoTable';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -54,7 +57,6 @@ import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import DocumentRepositoryTable
     from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTable";
-import Container from "@material-ui/core/Container";
 
 const log = Logger.create();
 
@@ -72,6 +74,7 @@ namespace main {
 
         <DocumentRepositoryTable data={props.data}
                                  selected={props.selected}
+                                 selectRow={props.selectRow}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
                                  onRename={() => console.log('onRename')}
@@ -360,7 +363,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     public selectRow(selectedIdx: number,
-                     event: MouseEvent,
+                     event: React.MouseEvent,
                      type: SelectRowType) {
 
         selectedIdx = Numbers.toNumber(selectedIdx);

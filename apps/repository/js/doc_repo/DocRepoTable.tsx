@@ -791,7 +791,7 @@ export interface DocRepoTableProps {
     readonly onDocDeleteRequested: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly selectRow: (selectedIdx: number, event: MouseEvent, type: SelectRowType) => void;
+    readonly selectRow: (selectedIdx: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
