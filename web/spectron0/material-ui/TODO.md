@@ -4,6 +4,7 @@
     - header bar needs archive and flag too
     - unify the item handling functions... 
     - tag sorting doesn't work
+    - progress sorting should be descending by default
 
 - proper row handling
 

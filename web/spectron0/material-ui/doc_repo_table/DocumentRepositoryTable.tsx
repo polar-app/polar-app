@@ -181,12 +181,9 @@ export default function DocumentRepositoryTable(props: IProps) {
                                 aria-label="enhanced table"
                             >
                                 <EnhancedTableHead
-                                    numSelected={selected.length}
                                     order={order}
                                     orderBy={orderBy}
-                                    onSelectAllClick={handleSelectAllRows}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={data.length}
                                 />
                                 <TableBody>
                                     {data

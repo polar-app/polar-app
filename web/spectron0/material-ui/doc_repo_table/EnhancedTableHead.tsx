@@ -28,18 +28,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-    readonly numSelected: number;
     readonly onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RepoDocInfo) => void;
-    readonly onSelectAllClick: (selectAll: boolean) => void;
     readonly order: Order;
     readonly orderBy: string;
-    readonly rowCount: number;
 }
 
 export function EnhancedTableHead(props: IProps) {
     const classes = useStyles();
 
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -48,16 +45,9 @@ export function EnhancedTableHead(props: IProps) {
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    {/*<Checkbox*/}
-                    {/*    indeterminate={numSelected > 0 && numSelected < rowCount}*/}
-                    {/*    checked={rowCount > 0 && numSelected === rowCount}*/}
-                    {/*    onChange={onSelectAllClick}*/}
-                    {/*    inputProps={{ 'aria-label': 'select all desserts' }}*/}
-                    {/*/>*/}
                 </TableCell>
                 {COLUMNS.map((column) => (
                     <TableCell key={column.id}
-                              // align={headCell.numeric ? 'right' : 'left'}
                                className={classes.th}
                                padding={column.disablePadding ? 'none' : 'default'}
                                sortDirection={orderBy === column.id ? order : false}>
