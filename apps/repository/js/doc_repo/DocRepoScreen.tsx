@@ -69,11 +69,11 @@ namespace main {
     }
 
     export const Documents = (props: DocumentsProps) => (
-        <DocumentRepositoryTable data={props.data} onLoadDoc={NULL_FUNCTION}/>
+        // <DocumentRepositoryTable data={props.data} onLoadDoc={NULL_FUNCTION}/>
 
 
         // <DocRepoTable {...props}/>
-
+        <div></div>
 
     );
 

@@ -10,8 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import {DateTimeTableCell} from "../../../../apps/repository/js/DateTimeTableCell";
-import {DocButtons} from "../DocButtonsDemo";
-import {RepoDocInfo} from ".././../../../apps/repository/js/RepoDocInfo";
+import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -19,6 +18,8 @@ import {Order, stableSort, getComparator} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
+import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
+import {MUIDocButtons} from "./MUIDocButtons";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {
+interface IProps extends DocContextMenuCallbacks {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
@@ -142,10 +143,25 @@ export default function DocumentRepositoryTable(props: IProps) {
     // TODO: refactor this to be more functional
     data = stableSort(data, getComparator(order, orderBy));
 
+    const docContextMenuCallbacks: DocContextMenuCallbacks = {
+
+        // onFlagged: NULL_FUNCTION,
+        // onTagRequested: NULL_FUNCTION,
+        onOpen: NULL_FUNCTION,
+        onRename: NULL_FUNCTION,
+        onShowFile: NULL_FUNCTION,
+        onCopyOriginalURL: NULL_FUNCTION,
+        onDelete: NULL_FUNCTION,
+        onCopyDocumentID: NULL_FUNCTION,
+        onCopyFilePath: NULL_FUNCTION,
+
+    };
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
-                <MUIDocContextMenu onClose={NULL_FUNCTION}
+                <MUIDocContextMenu {...docContextMenuCallbacks}
+                                   selectedProvider={selectedProvider}
                                    render={contextMenuHandler => (
                     <>
                         <EnhancedTableToolbar data={data}
@@ -155,6 +171,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                               onChangeRowsPerPage={handleChangeRowsPerPage}
                                               onSelectAllRows={handleSelectAllRows}
                                               page={page}/>
+
                         <TableContainer style={{flexGrow: 1}}>
                             <Table
                                 stickyHeader
@@ -263,19 +280,26 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                    onClick={event => event.stopPropagation()}
                                                                    onDoubleClick={event => event.stopPropagation()}>
 
-                                                            <DocButtons className={classes.docButtons}
-                                                                        flagged={row.flagged}
-                                                                        archived={row.archived}
-                                                                        onArchive={NULL_FUNCTION}
-                                                                        onFlag={NULL_FUNCTION}
-                                                                        onTag={NULL_FUNCTION}
-                                                                        onDropdown={NULL_FUNCTION}
-                                                            />
+                                                            <MUIDocButtons className={classes.docButtons}
+                                                                           selectedProvider={selectedProvider}
+                                                                           repoDocInfo={row}
+                                                                           flagged={row.flagged}
+                                                                           archived={row.archived}
+                                                                           onArchived={NULL_FUNCTION}
+                                                                           onFlagged={NULL_FUNCTION}
+                                                                           onTagRequested={NULL_FUNCTION}
+                                                                           onOpen={NULL_FUNCTION}
+                                                                           onRename={NULL_FUNCTION}
+                                                                           onShowFile={NULL_FUNCTION}
+                                                                           onCopyOriginalURL={NULL_FUNCTION}
+                                                                           onDelete={NULL_FUNCTION}
+                                                                           onCopyDocumentID={NULL_FUNCTION}
+                                                                           onCopyFilePath={NULL_FUNCTION}
+                                                                           />
 
                                                         </TableCell>
 
                                                     </TableRow>
-                                                // </MUIDocDropdownContextMenu>
 
                                             );
                                         })}

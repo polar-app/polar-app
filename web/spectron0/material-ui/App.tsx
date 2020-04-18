@@ -73,6 +73,13 @@ export const App = () => {
                 {/*    <AutocompleteTags/>*/}
                 {/*</Box>*/}
                 <DocumentRepositoryTable data={MockRepoDocInfos.create()}
+                                         onOpen={() => console.log('onOpen')}
+                                         onShowFile={() => console.log('onShowFile')}
+                                         onRename={() => console.log('onRename')}
+                                         onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
+                                         onCopyFilePath={() => console.log('onCopyFilePath')}
+                                         onDelete={() => console.log('onDelete')}
+                                         onCopyDocumentID={() => console.log('onCopyDocumentID')}
                                          onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
                 />
 

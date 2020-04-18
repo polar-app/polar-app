@@ -1,41 +1,68 @@
-import Button from "@material-ui/core/Button";
 import React from "react";
 import {MUIDocDropdownMenu} from "./MUIDocDropdownMenu";
 import IconButton from "@material-ui/core/IconButton";
 import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
+import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-export const MUIDocDropdownButton = React.forwardRef(() => {
+interface IProps extends DocContextMenuCallbacks {
+    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+}
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+interface IState {
+    readonly anchorEl: HTMLElement | null;
+}
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+export class MUIDocDropdownButton extends React.Component<IProps, IState> {
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    constructor(props: Readonly<IProps>) {
+        super(props);
 
-    return (
-        <div>
-
-            <IconButton
-                aria-controls="doc-dropdown-menu"
-                aria-haspopup="true"
-                // variant="contained"
-                color="default"
-                onClick={handleClick}
-                size="small"
-                style={{color: grey[500]}}
-            >
-                <MoreVertIcon/>
-            </IconButton>
-        {anchorEl &&
-            <MUIDocDropdownMenu anchorEl={anchorEl}
-                                onClose={() => handleClose()}/>
+        this.state = {
+            anchorEl: null
         }
-        </div>
-    );
 
-});
+    }
+
+    public render() {
+
+        const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+            this.setState({
+                anchorEl: event.currentTarget
+            });
+        };
+
+        const handleClose = () => {
+            this.setState({
+                anchorEl: null
+            });
+        };
+
+        const {anchorEl} = this.state;
+
+        return (
+            <div>
+
+                <IconButton
+                    aria-controls="doc-dropdown-menu"
+                    aria-haspopup="true"
+                    // variant="contained"
+                    color="default"
+                    onClick={handleClick}
+                    size="small"
+                    style={{color: grey[500]}}>
+                    <MoreVertIcon/>
+                </IconButton>
+                {anchorEl &&
+                <MUIDocDropdownMenu anchorEl={anchorEl}
+                                    onClose={NULL_FUNCTION}
+                                    {...this.props}/>
+                }
+            </div>
+        );
+
+    }
+
+}

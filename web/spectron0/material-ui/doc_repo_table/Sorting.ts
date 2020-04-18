@@ -4,26 +4,27 @@ export type Order = 'asc' | 'desc';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
-    // const toVal = (value: number | string | ReadonlyArray<string>): number | string => {
-    //
-    //     if (typeof value ==='array') {
-    //         return value.join(', ');
-    //     }
-    //
-    //     return value;
-    //
-    // };
-    //
-    // const aVal = toVal(a[orderBy]);
-    // const bVal = toVal(b[orderBy]);
+    const toVal = (value: number | string | ReadonlyArray<string>): number | string => {
 
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
+        if (typeof value === 'number' || typeof value === 'string') {
+            return value;
+        }
+
+        return Object.values(value)
+                     .sort()
+                     .join(', ');
+
+    };
+
+    const aVal = toVal(<any> a[orderBy]);
+    const bVal = toVal(<any> b[orderBy]);
+
+    if (typeof aVal === 'number') {
+        return <number> bVal - <number> aVal;
     }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
+
+    return (<string> bVal).localeCompare(<string> aVal);
+
 }
 
 export function getComparator(order: Order,

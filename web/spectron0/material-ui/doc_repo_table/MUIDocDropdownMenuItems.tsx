@@ -8,15 +8,12 @@ import TitleIcon from '@material-ui/icons/Title';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Divider from "@material-ui/core/Divider";
-import {Callback, Callback1} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {AppRuntime} from "../../../js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 
-interface IProps {
-
-    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
-
+export interface DocContextMenuCallbacks {
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: Callback1<RepoDocInfo>;
     readonly onShowFile: Callback1<RepoDocInfo>;
@@ -24,7 +21,13 @@ interface IProps {
     readonly onCopyFilePath: Callback1<RepoDocInfo>;
     readonly onCopyDocumentID: Callback1<RepoDocInfo>;
     readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+}
 
+export interface DocContextMenuProps extends DocContextMenuCallbacks {
+    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+}
+
+interface IProps extends DocContextMenuProps {
 }
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
@@ -35,10 +38,10 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
 
         const selected = this.props.selectedProvider();
 
-        if (selected.length === 0) {
-            // there's nothing to render now...
-            return null;
-        }
+        // if (selected.length === 0) {
+        //     // there's nothing to render now...
+        //     return null;
+        // }
 
         const isMulti = selected.length > 1;
         const isSingle = selected.length === 1;

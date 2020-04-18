@@ -1,14 +1,13 @@
 import React from "react";
 import Menu from "@material-ui/core/Menu";
-import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
+import {
+    DocContextMenuCallbacks, DocContextMenuProps,
+    MUIDocDropdownMenuItems
+} from "./MUIDocDropdownMenuItems";
 
 export type ContextMenuHandler = (event: React.MouseEvent<HTMLElement>) => void;
 
-// FIXME: maybe I want to use react context for this... then I get the
-// context menu handler, and then set it with a HOC
-
-interface IProps {
-    readonly onClose: () => void;
+interface IProps extends DocContextMenuProps {
     readonly render: (contextMenuHandler: ContextMenuHandler) => void;
 }
 
@@ -33,8 +32,6 @@ export const MUIDocContextMenu = (props: IProps) => {
         setState({})
     };
 
-    // FIXME how do I create a component to JUST add a new event handler?
-
     return (
         <>
             {state.mouseX !== undefined && state.mouseY !== undefined &&
@@ -48,11 +45,13 @@ export const MUIDocContextMenu = (props: IProps) => {
                         left: state.mouseX
                     }}>
 
-                    <MUIDocDropdownMenuItems onClose={props.onClose}/>
+                    <MUIDocDropdownMenuItems {...props}/>
 
                 </Menu>
             }
+
             {props.render(handleContextMenu)}
+
         </>
     );
 
