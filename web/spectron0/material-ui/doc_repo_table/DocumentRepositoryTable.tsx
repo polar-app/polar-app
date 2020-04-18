@@ -14,7 +14,7 @@ import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Order, stableSort, getComparator} from "./Sorting";
+import {Sorting} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
@@ -68,7 +68,7 @@ interface IProps extends DocContextMenuCallbacks {
 
 export default function DocumentRepositoryTable(props: IProps) {
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('desc');
+    const [order, setOrder] = React.useState<Sorting.Order>('desc');
     const [orderBy, setOrderBy] = React.useState<keyof RepoDocInfo>('progress');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
@@ -141,7 +141,7 @@ export default function DocumentRepositoryTable(props: IProps) {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     // TODO: refactor this to be more functional
-    data = stableSort(data, getComparator(order, orderBy));
+    data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
 
     const docContextMenuCallbacks: DocContextMenuCallbacks = {
 
@@ -247,8 +247,12 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                   justify="flex-start"
                                                                   alignItems="center">
 
+                                                                {/*TODO: this sorting and mapping might be better done */}
+                                                                {/*at the RepoDocInfo level so it's done once not per*/}
+                                                                {/*display render.*/}
                                                                 {ArrayStreams
                                                                     .ofMapValues(row.tags || {})
+                                                                    .sort((a, b) => a.label.localeCompare(b.label))
                                                                     .collect()
                                                                     .map(current => (
                                                                         <Grid item

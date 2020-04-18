@@ -16,12 +16,11 @@ const yesterday = ISODateTimeStrings.create(TimeDurations.compute('-1d', now));
 
 export namespace MockRepoDocInfos {
 
-
-    function createDoc(title: string,
-                       added: ISODateTimeString,
-                       lastUpdated: ISODateTimeString,
-                       tags: ReadonlyArray<string>,
-                       progress: number): RepoDocInfo {
+    export function createDoc(title: string,
+                              added: ISODateTimeString,
+                              lastUpdated: ISODateTimeString,
+                              tags: ReadonlyArray<string>,
+                              progress: number): RepoDocInfo {
 
         function toTag(tag: string) {
             return {

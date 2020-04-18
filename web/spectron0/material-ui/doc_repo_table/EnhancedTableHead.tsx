@@ -4,9 +4,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import {Order} from "./Sorting";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {COLUMNS} from "./Columns";
+import {Sorting} from "./Sorting";
+import Order = Sorting.Order;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
