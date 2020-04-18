@@ -1,8 +1,8 @@
-import CheckIcon from '@material-ui/icons/Check';
 import React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import FlagIcon from '@material-ui/icons/Flag';
+import ArchiveIcon from '@material-ui/icons/Archive';
 import grey from "@material-ui/core/colors/grey";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {MUIDocDropdownButton} from "./doc_repo_table/MUIDocDropdownButton";
@@ -36,7 +36,7 @@ export const DocButtons = React.memo((props: IProps) => {
 
             <IconButton size="small"
                         style={{color: activeColor(props.archived)}}>
-                <CheckIcon/>
+                <ArchiveIcon/>
             </IconButton>
 
             <IconButton size="small"

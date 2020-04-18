@@ -20,7 +20,7 @@ export const App = () => {
             fontSize: 12
         },
         palette: {
-            type: "light"
+            type: "dark"
         }
     });
 

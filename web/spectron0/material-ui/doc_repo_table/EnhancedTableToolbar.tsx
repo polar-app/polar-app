@@ -124,6 +124,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"
+                size="small"
                 count={data.length}
                 rowsPerPage={rowsPerPage}
                 style={{
