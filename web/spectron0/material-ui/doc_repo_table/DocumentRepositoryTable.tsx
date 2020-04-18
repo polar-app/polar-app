@@ -242,6 +242,10 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                     rawContextMenuHandler(event);
                                                 };
 
+                                                const selectRowClickHandler = (event: React.MouseEvent<HTMLElement>) => {
+                                                    props.selectRow(viewIndex, event, 'click');
+                                                };
+
                                                 const isItemSelected = isSelected(viewIndex);
                                                 const labelId = `enhanced-table-checkbox-${viewIndex}`;
 
@@ -273,31 +277,32 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                        scope="row"
                                                                        className={classes.colTitle}
                                                                        padding="none"
+                                                                       onClick={selectRowClickHandler}
                                                                        onContextMenu={contextMenuHandler}>
                                                                 {row.title}
                                                             </TableCell>
-                                                            <TableCell
-                                                                className={classes.colAdded}
-                                                                padding="none"
-                                                                onContextMenu={contextMenuHandler}>
+                                                            <TableCell className={classes.colAdded}
+                                                                       padding="none"
+                                                                       onClick={selectRowClickHandler}
+                                                                       onContextMenu={contextMenuHandler}>
 
                                                                 <DateTimeTableCell datetime={row.added}/>
 
                                                             </TableCell>
-                                                            <TableCell
-                                                                className={classes.colLastUpdated}
-                                                                padding="none"
-                                                                onContextMenu={contextMenuHandler}>
+                                                            <TableCell className={classes.colLastUpdated}
+                                                                       padding="none"
+                                                                       onClick={selectRowClickHandler}
+                                                                       onContextMenu={contextMenuHandler}>
 
                                                                 <DateTimeTableCell datetime={row.lastUpdated}/>
 
                                                             </TableCell>
-                                                            <TableCell
-                                                                padding="none"
-                                                                className={classes.colTags}
-                                                                onContextMenu={contextMenuHandler}>
+                                                            <TableCell padding="none"
+                                                                       className={classes.colTags}
+                                                                       onClick={selectRowClickHandler}
+                                                                       onContextMenu={contextMenuHandler}>
 
-                                                                {/*TODO: this sorting and mapping might be better done */}
+                                                            {/*TODO: this sorting and mapping might be better done */}
                                                                 {/*at the RepoDocInfo level so it's done once not per*/}
                                                                 {/*display render.*/}
                                                                 {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
@@ -308,6 +313,7 @@ export default function DocumentRepositoryTable(props: IProps) {
 
                                                             </TableCell>
                                                             <TableCell className={classes.colProgress}
+                                                                       onClick={selectRowClickHandler}
                                                                        onContextMenu={contextMenuHandler}
                                                                        padding="none">
 
