@@ -19,9 +19,7 @@ interface IProps extends DocContextMenuProps {
     readonly repoDocInfo: RepoDocInfo;
 
     readonly onTagRequested: Callback1<ReadonlyArray<RepoDocInfo>>;
-
     readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
-
     readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 
 }

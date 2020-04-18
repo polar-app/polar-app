@@ -3,11 +3,10 @@ import {MUIDocDropdownMenu} from "./MUIDocDropdownMenu";
 import IconButton from "@material-ui/core/IconButton";
 import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {DocActions} from "./DocActions";
 
-interface IProps extends DocContextMenuCallbacks {
+interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
 }
 

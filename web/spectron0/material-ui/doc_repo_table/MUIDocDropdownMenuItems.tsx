@@ -14,20 +14,9 @@ import {Callback1} from "polar-shared/src/util/Functions";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {AppRuntime} from "../../../js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {DocActions} from "./DocActions";
 
-export interface DocContextMenuCallbacks {
-    readonly onOpen: Callback1<RepoDocInfo>;
-    readonly onRename: Callback1<RepoDocInfo>;
-    readonly onShowFile: Callback1<RepoDocInfo>;
-    readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
-    readonly onCopyFilePath: Callback1<RepoDocInfo>;
-    readonly onCopyDocumentID: Callback1<RepoDocInfo>;
-    readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
-    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
-    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
-}
-
-export interface DocContextMenuProps extends DocContextMenuCallbacks {
+export interface DocContextMenuProps extends DocActions.DocContextMenu.Callbacks {
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
 }
 

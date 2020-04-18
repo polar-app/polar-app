@@ -18,10 +18,10 @@ import {Sorting} from "./Sorting";
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
-import {DocContextMenuCallbacks} from "./MUIDocDropdownMenuItems";
 import {MUIDocButtonBar} from "./MUIDocButtonBar";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Tags} from "polar-shared/src/tags/Tags";
+import {DocActions} from "./DocActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps extends DocContextMenuCallbacks {
+interface IProps extends DocActions.DocContextMenu.Callbacks {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
@@ -175,7 +175,7 @@ export default function DocumentRepositoryTable(props: IProps) {
     // TODO: refactor this to be more functional
     data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
 
-    const docContextMenuCallbacks: DocContextMenuCallbacks = {
+    const docContextMenuCallbacks: DocActions.DocContextMenu.Callbacks = {
 
         onOpen: NULL_FUNCTION,
         onRename: NULL_FUNCTION,
@@ -197,12 +197,14 @@ export default function DocumentRepositoryTable(props: IProps) {
                                    render={contextMenuHandler => (
                     <>
                         <EnhancedTableToolbar data={data}
+                                              selectedProvider={selectedProvider}
                                               numSelected={selected.length}
                                               rowsPerPage={rowsPerPage}
                                               onChangePage={handleChangePage}
                                               onChangeRowsPerPage={handleChangeRowsPerPage}
                                               onSelectAllRows={handleSelectAllRows}
-                                              page={page}/>
+                                              page={page}
+                                              onDelete={() => console.log('deleted')}/>
 
                         <TableContainer style={{flexGrow: 1}}>
                             <Table

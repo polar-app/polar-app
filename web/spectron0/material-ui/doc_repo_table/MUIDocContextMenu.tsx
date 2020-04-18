@@ -1,7 +1,7 @@
 import React from "react";
 import Menu from "@material-ui/core/Menu";
 import {
-    DocContextMenuCallbacks, DocContextMenuProps,
+    DocContextMenuProps,
     MUIDocDropdownMenuItems
 } from "./MUIDocDropdownMenuItems";
 

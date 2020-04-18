@@ -1,13 +1,11 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
-import {
-    DocContextMenuCallbacks,
-    MUIDocDropdownMenuItems
-} from './MUIDocDropdownMenuItems';
+import {MUIDocDropdownMenuItems} from './MUIDocDropdownMenuItems';
 import {Callback} from "polar-shared/src/util/Functions";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
+import {DocActions} from "./DocActions";
 
-interface IProps extends DocContextMenuCallbacks {
+interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
     readonly anchorEl: HTMLElement;
     readonly onClose: Callback;
