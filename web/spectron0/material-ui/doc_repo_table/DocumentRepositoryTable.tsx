@@ -270,26 +270,27 @@ export default function DocumentRepositoryTable(props: IProps) {
 
                                                         </TableCell>
                                                         <TableCell
-                                                            // padding="none"
+                                                            padding="none"
                                                             className={classes.colTags}
                                                             onContextMenu={contextMenuHandler}>
 
-                                                            <Grid container
-                                                                  wrap="nowrap"
-                                                                  spacing={1}
-                                                                  direction="row"
-                                                                  justify="flex-start"
-                                                                  className={classes.colTitle}
-                                                                  alignItems="center">
 
-                                                                {/*TODO: this sorting and mapping might be better done */}
-                                                                {/*at the RepoDocInfo level so it's done once not per*/}
-                                                                {/*display render.*/}
-                                                                {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
-                                                                    .sort((a, b) => a.label.localeCompare(b.label))
-                                                                    .map(current => current.label)
-                                                                    .collect()
-                                                                    .join(', ')}
+                                                            {/*TODO: this sorting and mapping might be better done */}
+                                                            {/*at the RepoDocInfo level so it's done once not per*/}
+                                                            {/*display render.*/}
+                                                            {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
+                                                                .sort((a, b) => a.label.localeCompare(b.label))
+                                                                .map(current => current.label)
+                                                                .collect()
+                                                                .join(', ')}
+
+                                                            {/*<Grid container*/}
+                                                            {/*      wrap="nowrap"*/}
+                                                            {/*      spacing={1}*/}
+                                                            {/*      direction="row"*/}
+                                                            {/*      justify="flex-start"*/}
+                                                            {/*      className={classes.colTitle}*/}
+                                                            {/*      alignItems="center">*/}
 
                                                                 {/*/!*TODO: this sorting and mapping might be better done *!/*/}
                                                                 {/*/!*at the RepoDocInfo level so it's done once not per*!/*/}
@@ -309,7 +310,7 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                 {/*        </Grid>*/}
                                                                 {/*    ))}*/}
 
-                                                            </Grid>
+                                                            {/*</Grid>*/}
                                                         </TableCell>
                                                         <TableCell className={classes.colProgress}
                                                                    onContextMenu={contextMenuHandler}
