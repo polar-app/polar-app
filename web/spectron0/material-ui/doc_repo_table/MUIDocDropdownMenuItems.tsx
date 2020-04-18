@@ -10,55 +10,57 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const MUIDocDropdownMenuItems = (props: IProps) => {
+export class MUIDocDropdownMenuItems extends React.Component<IProps> {
+    render() {
 
-    return (
-        <>
-            <MenuItem onClick={() => console.log('click')}>
-                <ListItemIcon>
-                    <SendIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Open Document" />
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Rename" />
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Copy Original URL" />
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Show File" />
-            </MenuItem>
+        return (
+            <>
+                <MenuItem onClick={() => console.log('click')}>
+                    <ListItemIcon>
+                        <SendIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Open Document" />
+                </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Rename" />
+                </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Copy Original URL" />
+                </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Show File" />
+                </MenuItem>
 
-            <MenuItem>
-                <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Copy File Path" />
-            </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Copy File Path" />
+                </MenuItem>
 
-            <MenuItem>
-                <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Copy Document ID" />
-            </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Copy Document ID" />
+                </MenuItem>
 
-            <MenuItem>
-                <ListItemIcon>
-                    <DeleteIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Delete" />
-            </MenuItem>
-        </>
-    );
+                <MenuItem>
+                    <ListItemIcon>
+                        <DeleteIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Delete" />
+                </MenuItem>
+            </>
+        );
+    }
 }

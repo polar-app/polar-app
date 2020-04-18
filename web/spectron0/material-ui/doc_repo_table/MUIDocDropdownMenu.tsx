@@ -7,7 +7,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const MUIDocDropdownMenu = React.forwardRef((props: IProps) => {
+export const MUIDocDropdownMenu = (props: IProps) => {
 
     const {anchorEl} = props;
 
@@ -26,4 +26,4 @@ export const MUIDocDropdownMenu = React.forwardRef((props: IProps) => {
 
         </Menu>
     );
-});
+};
