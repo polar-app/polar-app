@@ -274,7 +274,6 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                             className={classes.colTags}
                                                             onContextMenu={contextMenuHandler}>
 
-
                                                             {/*TODO: this sorting and mapping might be better done */}
                                                             {/*at the RepoDocInfo level so it's done once not per*/}
                                                             {/*display render.*/}
@@ -284,33 +283,6 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                                 .collect()
                                                                 .join(', ')}
 
-                                                            {/*<Grid container*/}
-                                                            {/*      wrap="nowrap"*/}
-                                                            {/*      spacing={1}*/}
-                                                            {/*      direction="row"*/}
-                                                            {/*      justify="flex-start"*/}
-                                                            {/*      className={classes.colTitle}*/}
-                                                            {/*      alignItems="center">*/}
-
-                                                                {/*/!*TODO: this sorting and mapping might be better done *!/*/}
-                                                                {/*/!*at the RepoDocInfo level so it's done once not per*!/*/}
-                                                                {/*/!*display render.*!/*/}
-                                                                {/*{ArrayStreams*/}
-                                                                {/*    .ofMapValues(row.tags || {})*/}
-                                                                {/*    .sort((a, b) => a.label.localeCompare(b.label))*/}
-                                                                {/*    .collect()*/}
-                                                                {/*    .map(current => (*/}
-                                                                {/*        <Grid item*/}
-                                                                {/*              key={current.id}>*/}
-
-                                                                {/*            <Chip size="small"*/}
-                                                                {/*                  label={current.label}*/}
-                                                                {/*            />*/}
-
-                                                                {/*        </Grid>*/}
-                                                                {/*    ))}*/}
-
-                                                            {/*</Grid>*/}
                                                         </TableCell>
                                                         <TableCell className={classes.colProgress}
                                                                    onContextMenu={contextMenuHandler}
