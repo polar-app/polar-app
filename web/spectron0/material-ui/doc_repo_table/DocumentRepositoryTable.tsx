@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
         table: {
             minWidth: 0,
             maxWidth: '100%',
-            tableLayout: 'auto'
+            tableLayout: 'fixed'
         },
         tr: {
             // borderSpacing: '100px'

@@ -25,11 +25,11 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title', width: 'auto' },
     { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: '8em' },
     { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Last Updated', width: '8em' },
-    { id: 'tags', numeric: true, disablePadding: false, label: 'Tags', width: 'auto' },
+    { id: 'tags', numeric: true, disablePadding: false, label: 'Tags', width: '250px' },
     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px' },
 ];
 
-export const DOC_BUTTON_COLUMN_WIDTH = '125px'
+export const DOC_BUTTON_COLUMN_WIDTH = '135px';
 
 export const COLUMN_MAP: ColumnDescriptorMap =
     arrayStream(COLUMNS)
