@@ -22,9 +22,13 @@ import {
 import {DocActions} from "./DocActions";
 import {Provider} from "polar-shared/src/util/Providers";
 import {GlobalHotKeys} from "react-hotkeys";
+import { AutoBlur } from "./AutoBlur";
 
 const globalKeyMap = {
-    DELETE: 'd'
+    TAG: 'd',
+    DELETE: 'd',
+    FLAG: 'f',
+    ARCHIVE: 'a'
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,12 +67,12 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
 export const EnhancedTableToolbar = (props: IProps) => {
     const classes = useStyles();
     const { numSelected, rowsPerPage, page, data } = props;
-
-
     const actions = DocActions.createDocToolbar(props.selectedProvider, props);
 
     const globalKeyHandlers = {
-        DELETE: () => actions.onDelete()
+        DELETE: () => actions.onDelete(),
+        FLAG: () => actions.onFlagged(),
+        ARCHIVE: () => actions.onArchived()
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -84,9 +88,10 @@ export const EnhancedTableToolbar = (props: IProps) => {
     const rowCount = data.length;
 
     return (
-        <GlobalHotKeys
-            keyMap={globalKeyMap}
-            handlers={globalKeyHandlers}>
+        <>
+            <GlobalHotKeys allowChanges={true}
+                           keyMap={globalKeyMap}
+                           handlers={globalKeyHandlers}/>
             <Grid container
                   direction="row"
                   justify="space-between"
@@ -102,13 +107,14 @@ export const EnhancedTableToolbar = (props: IProps) => {
                               alignItems="center">
 
                             <Grid item>
-                                <Checkbox
-                                    indeterminate={numSelected > 0 && numSelected < rowCount}
-                                    checked={rowCount > 0 && numSelected === rowCount}
-                                    // onChange={onSelectAllClick}
-                                    onChange={event => props.onSelectAllRows(event.target.checked)}
-                                    inputProps={{ 'aria-label': 'select all documents' }}
-                                />
+                                <AutoBlur>
+                                    <Checkbox
+                                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                                        checked={rowCount > 0 && numSelected === rowCount}
+                                        onChange={event => props.onSelectAllRows(event.target.checked)}
+                                        inputProps={{ 'aria-label': 'select all documents' }}
+                                    />
+                                </AutoBlur>
                             </Grid>
 
                             {numSelected > 0 && (
@@ -166,6 +172,6 @@ export const EnhancedTableToolbar = (props: IProps) => {
                 />
 
             </Grid>
-        </GlobalHotKeys>
+        </>
     );
 };

@@ -22,6 +22,7 @@ import {MUIDocButtonBar} from "./MUIDocButtonBar";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DocActions} from "./DocActions";
+import {AutoBlur} from "./AutoBlur";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -204,7 +205,10 @@ export default function DocumentRepositoryTable(props: IProps) {
                                               onChangeRowsPerPage={handleChangeRowsPerPage}
                                               onSelectAllRows={handleSelectAllRows}
                                               page={page}
-                                              onDelete={() => console.log('deleted')}/>
+                                              onDelete={() => console.log('FIXME: DELETE ==============' + Date.now())}
+                                              onFlagged={() => console.log('FIXME: FLAGGED ==============' + Date.now())}
+                                              onArchived={() => console.log('FIXME: ARCHIVED ==============' + Date.now())}
+                                              />
 
                         <TableContainer style={{flexGrow: 1}}>
                             <Table
@@ -240,12 +244,14 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                         selected={isItemSelected}>
 
                                                         <TableCell padding="checkbox">
-                                                            <Checkbox
-                                                                checked={isItemSelected}
-                                                                inputProps={{'aria-labelledby': labelId}}
-                                                                onClick={(event) => handleClick(event, row.fingerprint)}
+                                                            <AutoBlur>
+                                                                <Checkbox
+                                                                    checked={isItemSelected}
+                                                                    inputProps={{'aria-labelledby': labelId}}
+                                                                    onClick={(event) => handleClick(event, row.fingerprint)}
 
-                                                            />
+                                                                />
+                                                            </AutoBlur>
                                                         </TableCell>
                                                         <TableCell component="th"
                                                                    id={labelId}

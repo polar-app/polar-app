@@ -18,24 +18,28 @@ export namespace DocActions {
 
         export interface Actions {
             readonly onDelete: () => void;
+            readonly onArchived: () => void;
+            readonly onFlagged: () => void;
         }
 
         export interface Callbacks {
             readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+            readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
+            readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
         }
     }
 
     export function createDocToolbar(selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>,
-                                     callbacks: DocToolbar.Callbacks) {
+                                     callbacks: DocToolbar.Callbacks): DocToolbar.Actions {
 
         const selected = selectedProvider();
         const first = selected.length >= 1 ? selected[0] : undefined;
 
         return {
 
-            onDelete: () => {
-                callbacks.onDelete(selected);
-            },
+            onDelete: () => callbacks.onDelete(selected),
+            onArchived: () => callbacks.onArchived(selected),
+            onFlagged: () => callbacks.onFlagged(selected),
 
         };
     }
@@ -77,41 +81,15 @@ export namespace DocActions {
 
         return {
 
-            onOpen: () => {
-                callbacks.onOpen(first!);
-            },
-
-            onRename: () => {
-                callbacks.onRename(first!);
-            },
-
-            onShowFile: () => {
-                callbacks.onShowFile(first!);
-            },
-
-            onCopyOriginalURL: () => {
-                callbacks.onCopyOriginalURL(first!);
-            },
-
-            onCopyFilePath: () => {
-                callbacks.onCopyFilePath(first!);
-            },
-
-            onCopyDocumentID: () => {
-                callbacks.onCopyDocumentID(first!);
-            },
-
-            onDelete: () => {
-                callbacks.onDelete(selected);
-            },
-
-            onArchived: () => {
-                callbacks.onArchived(selected);
-            },
-
-            onFlagged: () => {
-                callbacks.onFlagged(selected);
-            },
+            onOpen: () => callbacks.onOpen(first!),
+            onRename: () => callbacks.onRename(first!),
+            onShowFile: () => callbacks.onShowFile(first!),
+            onCopyOriginalURL: () => callbacks.onCopyOriginalURL(first!),
+            onCopyFilePath: () => callbacks.onCopyFilePath(first!),
+            onCopyDocumentID: () => callbacks.onCopyDocumentID(first!),
+            onDelete: () => callbacks.onDelete(selected),
+            onArchived: () => callbacks.onArchived(selected),
+            onFlagged: () => callbacks.onFlagged(selected),
 
         };
 

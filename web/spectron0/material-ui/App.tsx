@@ -6,10 +6,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import DocumentRepositoryTable from "./doc_repo_table/DocumentRepositoryTable";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
 import {ContextMenus} from "./ContextMenus";
-import withContextMenu = ContextMenus.withContextMenu;
+import {configure, GlobalHotKeys} from "react-hotkeys";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 
+// configure({logLevel: "debug"});
 
 export const App = () => {
 
@@ -36,86 +37,85 @@ export const App = () => {
 
     const muiTheme = createMuiTheme(theme);
 
-    const MyDiv = (props: React.HTMLAttributes<HTMLDivElement>) => (
-        <div {...props}>this is the component</div>
-    );
-
-    const Foo = withContextMenu(MyDiv);
-
     return (
-        <MuiThemeProvider theme={muiTheme}>
-            <CssBaseline/>
-            <Container component="main" maxWidth={false} disableGutters>
-                {/*<ReactVirtualizedTable/>*/}
+        // <GlobalHotKeys
+        //     allowChanges={true}
+        //     keyMap={globalKeyMap}>
 
-                {/*<Grid*/}
-                {/*      container*/}
-                {/*      spacing={1}*/}
-                {/*      direction="row"*/}
-                {/*      alignItems="center"*/}
-                {/*>*/}
-                {/*    <Grid item>*/}
-                {/*        <Chip label="hello"/>*/}
-                {/*    </Grid>*/}
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline/>
+                <Container component="main" maxWidth={false} disableGutters>
+                    {/*<ReactVirtualizedTable/>*/}
+
+                    {/*<Grid*/}
+                    {/*      container*/}
+                    {/*      spacing={1}*/}
+                    {/*      direction="row"*/}
+                    {/*      alignItems="center"*/}
+                    {/*>*/}
+                    {/*    <Grid item>*/}
+                    {/*        <Chip label="hello"/>*/}
+                    {/*    </Grid>*/}
 
 
-                {/*    <Grid item>*/}
-                {/*        <Chip label="world"/>*/}
-                {/*    </Grid>*/}
+                    {/*    <Grid item>*/}
+                    {/*        <Chip label="world"/>*/}
+                    {/*    </Grid>*/}
 
-                {/*</Grid>*/}
+                    {/*</Grid>*/}
 
-                {/*<FolderTree/>*/}
+                    {/*<FolderTree/>*/}
 
-                {/*<DialogDemo/>*/}
+                    {/*<DialogDemo/>*/}
 
-                {/*<Box m={1}>*/}
-                {/*    <AutocompleteTags/>*/}
-                {/*</Box>*/}
-                <DocumentRepositoryTable data={MockRepoDocInfos.create()}
-                                         onOpen={() => console.log('onOpen')}
-                                         onShowFile={() => console.log('onShowFile')}
-                                         onRename={() => console.log('onRename')}
-                                         onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
-                                         onCopyFilePath={() => console.log('onCopyFilePath')}
-                                         onDelete={() => console.log('onDelete')}
-                                         onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                         onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
-                                         onFlagged={() => console.log('onFlagged')}
-                                         onArchived={() => console.log('onArchived')}
-                />
+                    {/*<Box m={1}>*/}
+                    {/*    <AutocompleteTags/>*/}
+                    {/*</Box>*/}
+                    <DocumentRepositoryTable data={MockRepoDocInfos.create()}
+                                             onOpen={() => console.log('onOpen')}
+                                             onShowFile={() => console.log('onShowFile')}
+                                             onRename={() => console.log('onRename')}
+                                             onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
+                                             onCopyFilePath={() => console.log('onCopyFilePath')}
+                                             onDelete={() => console.log('FIXME: onDelete ' + Date.now())}
+                                             onCopyDocumentID={() => console.log('onCopyDocumentID')}
+                                             onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
+                                             onFlagged={() => console.log('onFlagged')}
+                                             onArchived={() => console.log('onArchived')}
+                    />
 
-                {/*<Foo/>*/}
-                {/*<Foo/>*/}
-                {/*<Foo/>*/}
+                    {/*<Foo/>*/}
+                    {/*<Foo/>*/}
+                    {/*<Foo/>*/}
 
-                {/*<div style={{display: 'flex'}}>*/}
-                {/*    <div style={{flexGrow: 1}}>*/}
+                    {/*<div style={{display: 'flex'}}>*/}
+                    {/*    <div style={{flexGrow: 1}}>*/}
 
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        <MUIDocDropdownButton/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                    {/*    </div>*/}
+                    {/*    <div>*/}
+                    {/*        <MUIDocDropdownButton/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
-                {/*<DocButtonsDemo/>*/}
+                    {/*<DocButtonsDemo/>*/}
 
-                {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
-                {/*    Hello World*/}
-                {/*</Button>*/}
+                    {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
+                    {/*    Hello World*/}
+                    {/*</Button>*/}
 
-                {/*<Tags/>*/}
+                    {/*<Tags/>*/}
 
-                {/*<ReactVirtualizedTable/>*/}
+                    {/*<ReactVirtualizedTable/>*/}
 
-                {/*<TreeControl/>*/}
-                {/*<TabsDemo/>*/}
-                {/*<IconsDemo/>*/}
+                    {/*<TreeControl/>*/}
+                    {/*<TabsDemo/>*/}
+                    {/*<IconsDemo/>*/}
 
-                {/*<DropdownMenuDemo/>*/}
+                    {/*<DropdownMenuDemo/>*/}
 
-            </Container>
-        </MuiThemeProvider>
+                </Container>
+            </MuiThemeProvider>
+        // </GlobalHotKeys>
     );
 }
 
