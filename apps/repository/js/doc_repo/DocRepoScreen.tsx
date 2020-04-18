@@ -69,11 +69,19 @@ namespace main {
     }
 
     export const Documents = (props: DocumentsProps) => (
-        // <DocumentRepositoryTable data={props.data} onLoadDoc={NULL_FUNCTION}/>
 
-
-        // <DocRepoTable {...props}/>
-        <div></div>
+        <DocumentRepositoryTable data={props.data}
+                                 onOpen={() => console.log('onOpen')}
+                                 onShowFile={() => console.log('onShowFile')}
+                                 onRename={() => console.log('onRename')}
+                                 onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
+                                 onCopyFilePath={() => console.log('onCopyFilePath')}
+                                 onDelete={() => console.log('onDelete')}
+                                 onCopyDocumentID={() => console.log('onCopyDocumentID')}
+                                 onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
+                                 onFlagged={() => console.log('onFlagged')}
+                                 onArchived={() => console.log('onArchived')}
+        />
 
     );
 

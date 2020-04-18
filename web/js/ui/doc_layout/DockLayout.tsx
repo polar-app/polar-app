@@ -240,6 +240,21 @@ export class DockLayout extends React.Component<IProps, IState> {
     }
 
     private markResizing(resizeTarget: ResizeTarget | undefined) {
+
+        const toggleUserSelect = (resizing: boolean) => {
+            // this is a hack to disable user select of the document to prevent
+            // parts of the UI from being selected
+
+            if (resizing) {
+                document.body.style.userSelect = 'none';
+            } else {
+                document.body.style.userSelect = 'auto';
+            }
+
+        };
+
+        toggleUserSelect(resizeTarget !== undefined);
+
         this.mouseDown = resizeTarget !== undefined;
         this.setState({...this.state, resizing: resizeTarget});
     }
