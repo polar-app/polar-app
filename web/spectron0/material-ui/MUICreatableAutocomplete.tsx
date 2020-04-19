@@ -72,20 +72,26 @@ interface IProps<T> {
 
 }
 
+interface IState<T> {
+    readonly values: ReadonlyArray<InternalAutocompleteOption<T>>;
+    readonly options: ReadonlyArray<AutocompleteOption<T>>;
+}
+
 export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
     const classes = useStyles();
 
-    const [values, setValues] = useState<ReadonlyArray<InternalAutocompleteOption<T>>>(props.defaultOptions || []);
+    const [state, setState] = useState<IState<T>>({
+        values: props.defaultOptions || [],
+        options: props.options
+    });
 
     const handleChange = (event: React.ChangeEvent<{}>,
                           newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[],
                           reason: AutocompleteChangeReason,
                           details: AutocompleteChangeDetails<InternalAutocompleteOption<T>> | undefined) => {
 
-        console.log("FIXME: converting now");
-
-        const convertToOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<AutocompleteOption<T>> => {
+        const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<AutocompleteOption<T>> => {
 
             const toAutocompleteOption = (option: InternalAutocompleteOption<T>): AutocompleteOption<T> => {
                 if (isCreateAutocompleteOption(option)) {
@@ -101,9 +107,32 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
         };
 
+        // make sure any new values are in the options map because MUI gets mad
+        // if there's a value thats not in the options.
+        const convertToOptions = (newValues: ReadonlyArray<AutocompleteOption<T>>) => {
+
+            const optionsMap = arrayStream(state.options)
+                .toMap(current => current.id);
+
+            // force the new options into the map
+
+            for (const newValue of newValues) {
+                optionsMap[newValue.id] = newValue;
+            }
+
+            return Object.values(optionsMap);
+
+        };
+
         if (newValues === null) {
-            setValues([]);
+
+            setState({
+                ...state,
+                values: []
+            });
+
             return;
+
         }
 
         const toArray = () => {
@@ -116,27 +145,30 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
         };
 
-        const convertedValues = convertToOptions(toArray());
+        const convertedValues = convertToAutocompleteOptions(toArray());
+        const convertedOptions = convertToOptions(convertedValues);
 
         props.onChange(convertedValues.map(current => current.value));
 
-        setValues(convertedValues);
+        setState({
+            ...state,
+            values: convertedValues,
+            options: convertedOptions
+        });
 
     };
 
     const filter = createFilterOptions<InternalAutocompleteOption<T>>();
 
     // FIXME: autofocus
-    // FIXME: onChange callback for selected items
-    // FIXME: set default values
 
     return (
         <div className={classes.root}>
             <Autocomplete
                 multiple
                 // freeSolo
-                value={[...values]}
-                options={[...props.options]}
+                value={[...state.values]}
+                options={[...state.options]}
                 getOptionLabel={(option) => option.label}
                 onChange={(event, value, reason, details) => handleChange(event, value, reason, details)}
                 filterSelectedOptions
