@@ -102,12 +102,13 @@ export const PromptDialog = (props: IProps) => {
     };
 
     return (
-        <InputCompleteListener onComplete={handleDone}>
 
-            <div>
-                <Dialog open={state.open}
-                        onClose={handleClose}
-                        aria-labelledby="form-dialog-title">
+        <Dialog open={state.open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title">
+
+            <InputCompleteListener onComplete={handleDone}>
+                <>
                     <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
                     <DialogContent>
 
@@ -143,10 +144,10 @@ export const PromptDialog = (props: IProps) => {
                             Subscribe
                         </Button>
                     </DialogActions>
+                </>
+            </InputCompleteListener>
 
-                </Dialog>
-            </div>
-        </InputCompleteListener>
+        </Dialog>
     );
 };
 
