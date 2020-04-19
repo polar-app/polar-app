@@ -254,7 +254,9 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                     <TableBody>
                                         {data
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((row, viewIndex) => {
+                                            .map((row, index) => {
+
+                                                const viewIndex = (page * rowsPerPage) + index;
 
                                                 return (
                                                     <DocRepoTableRow
