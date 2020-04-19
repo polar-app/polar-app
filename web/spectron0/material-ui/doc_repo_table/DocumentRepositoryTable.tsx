@@ -62,6 +62,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         this.isSelected = this.isSelected.bind(this);
         this.onTagged = this.onTagged.bind(this);
         this.onRename = this.onRename.bind(this);
+        this.onArchived = this.onArchived.bind(this);
 
         // keep a copy of JUST the callbacks so we can pass these without
         // breaking memoization
@@ -76,7 +77,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             onCopyDocumentID: props.onCopyDocumentID,
             onCopyFilePath: props.onCopyFilePath,
             onFlagged: this.props.onFlagged,
-            onArchived: this.props.onArchived,
+            onArchived: this.onArchived,
 
         };
 
@@ -266,6 +267,22 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             onCancel: NULL_FUNCTION,
             type: 'danger',
             onConfirm: () => this.props.onDeleted(repoDocInfos),
+        });
+
+    }
+
+    private onArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+
+        if (repoDocInfos.length === 0) {
+            return;
+        }
+
+        Dialogs.confirm({
+            title: "Are you sure you want to archive these document(s)?",
+            subtitle: "They won't be deleted but will be hidden by default..",
+            onCancel: NULL_FUNCTION,
+            type: 'warning',
+            onConfirm: () => this.props.onArchived(repoDocInfos),
         });
 
     }
