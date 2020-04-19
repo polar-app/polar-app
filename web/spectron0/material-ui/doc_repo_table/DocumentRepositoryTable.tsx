@@ -30,60 +30,7 @@ import {DocActions} from "./DocActions";
 import {AutoBlur} from "./AutoBlur";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 import {DocRepoTableRow} from "./DocRepoTableRow";
-
-const styles = {
-    table: {
-        minWidth: 0,
-        maxWidth: '100%',
-        tableLayout: 'fixed'
-    },
-    tr: {
-        // borderSpacing: '100px'
-    },
-    td: {
-        whiteSpace: 'nowrap'
-    },
-    progress: {
-        width: COLUMN_MAP.progress.width
-    },
-    colProgress: {
-        width: COLUMN_MAP.progress.width,
-        minWidth: COLUMN_MAP.progress.width
-    },
-    colAdded: {
-        whiteSpace: 'nowrap',
-        width: COLUMN_MAP.added.width,
-    },
-    colLastUpdated: {
-        whiteSpace: 'nowrap',
-        width: COLUMN_MAP.lastUpdated.width,
-    },
-    colTitle: {
-        width: COLUMN_MAP.title.width,
-
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        textOverflow: 'ellipsis'
-    },
-    colTags: {
-        width: COLUMN_MAP.tags.width,
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        textOverflow: 'ellipsis'
-    },
-    colDocButtons: {
-        width: DOC_BUTTON_COLUMN_WIDTH
-    },
-    docButtons: {
-        marginLeft: '5px',
-        marginRight: '5px',
-        display: 'flex',
-        justifyContent: 'flex-end'
-    }
-
-};
+import { Numbers } from 'polar-shared/src/util/Numbers';
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
 
@@ -95,6 +42,8 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
 
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
+
+    readonly selectRows: (selected: ReadonlyArray<number>) => void;
 
 }
 
@@ -162,13 +111,16 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         };
 
         const handleSelectAllRows = (selected: boolean) => {
-            // if (selected) {
-            //     // TODO: migrate to using an ID not a title.
-            //     const newSelected = data.map((n) => n.fingerprint);
-            //     setSelected(newSelected);
-            //     return;
-            // }
-            // setSelected([]);
+
+            if (selected) {
+                const start = page * rowsPerPage;
+                const end = Math.min(data.length, start + rowsPerPage);
+                this.props.selectRows(Numbers.range(start, end));
+                return;
+            }
+
+            this.props.selectRows([]);
+
         };
 
         const handleChangePage = (newPage: number) => {
@@ -204,6 +156,8 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         };
 
+        const pageData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
         return (
             <div style={{
                     width: '100%',
@@ -224,6 +178,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                             <EnhancedTableToolbar data={data}
                                                   selectedProvider={this.selectedProvider}
                                                   numSelected={selected.length}
+                                                  rowsOnPage={pageData.length}
                                                   rowsPerPage={rowsPerPage}
                                                   onChangePage={handleChangePage}
                                                   onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -252,8 +207,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                         onRequestSort={handleRequestSort}
                                     />
                                     <TableBody>
-                                        {data
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        {pageData
                                             .map((row, index) => {
 
                                                 const viewIndex = (page * rowsPerPage) + index;

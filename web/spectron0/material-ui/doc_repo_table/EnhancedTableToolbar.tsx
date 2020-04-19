@@ -58,6 +58,7 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
     readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>
     readonly numSelected: number;
     readonly page: number;
+    readonly rowsOnPage: number;
     readonly rowsPerPage: number;
     readonly onChangePage: (page: number) => void;
     readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
@@ -66,7 +67,7 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
 
 export const EnhancedTableToolbar = (props: IProps) => {
     const classes = useStyles();
-    const { numSelected, rowsPerPage, page, data } = props;
+    const { numSelected, rowsOnPage, rowsPerPage, page, data } = props;
     const actions = DocActions.createDocToolbar(props.selectedProvider, props);
 
     const globalKeyHandlers = {
@@ -85,7 +86,12 @@ export const EnhancedTableToolbar = (props: IProps) => {
 
     };
 
-    const rowCount = data.length;
+    // FIXME the math here is all wrog, we need the total number of items on
+    // the page, and then only teh selected count of items on the page
+
+    // FIXME: select only per pages or select ALL the pages..
+
+    // const selectedOnPage = sel
 
     return (
         <>
@@ -109,8 +115,8 @@ export const EnhancedTableToolbar = (props: IProps) => {
                             <Grid item>
                                 <AutoBlur>
                                     <Checkbox
-                                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                                        checked={rowCount > 0 && numSelected === rowCount}
+                                        indeterminate={numSelected > 0 && numSelected < rowsPerPage}
+                                        checked={rowsOnPage === rowsPerPage}
                                         onChange={event => props.onSelectAllRows(event.target.checked)}
                                         inputProps={{ 'aria-label': 'select all documents' }}
                                     />

@@ -75,6 +75,7 @@ namespace main {
         <DocumentRepositoryTable data={props.data}
                                  selected={props.selected}
                                  selectRow={props.selectRow}
+                                 selectRows={props.onSelected}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
                                  onRename={() => console.log('onRename')}
