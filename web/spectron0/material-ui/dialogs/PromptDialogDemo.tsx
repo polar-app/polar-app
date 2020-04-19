@@ -8,9 +8,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {InputValidator} from "../../../js/ui/dialogs/InputValidators";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
 import {InputValidationErrorSnackbar} from "./InputValidationErrorSnackbar";
+import {InputCompleteListener} from "./InputCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,6 +46,8 @@ interface IState {
 export const PromptDialog = (props: IProps) => {
 
     const classes = useStyles();
+
+    let value: string = props.defaultValue || "";
 
     const [state, setState] = React.useState<IState>({
         open: true
@@ -100,51 +101,52 @@ export const PromptDialog = (props: IProps) => {
         value = text;
     };
 
-    let value: string = props.defaultValue;
-
     return (
-        <div>
-            <Dialog open={state.open}
-                    onClose={handleClose}
-                    aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
-                <DialogContent>
+        <InputCompleteListener onComplete={handleDone}>
 
-                    {state.validationError &&
-                        <InputValidationErrorSnackbar message={state.validationError}/>}
+            <div>
+                <Dialog open={state.open}
+                        onClose={handleClose}
+                        aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
+                    <DialogContent>
 
-                    {props.description &&
-                        <DialogContentText className={classes.description}>
-                            {props.description}
-                        </DialogContentText>}
+                        {state.validationError &&
+                            <InputValidationErrorSnackbar message={state.validationError}/>}
 
-                    <TextField className={classes.textField}
-                               autoFocus={props.autoFocus}
-                               onChange={event => handleInput(event.currentTarget.value)}
-                               margin="dense"
-                               id="name"
-                               defaultValue={props.defaultValue}
-                               placeholder={props.placeholder}
-                               label={props.label}
-                               type={props.type}
-                               fullWidth/>
+                        {props.description &&
+                            <DialogContentText className={classes.description}>
+                                {props.description}
+                            </DialogContentText>}
 
-                </DialogContent>
+                        <TextField className={classes.textField}
+                                   autoFocus={props.autoFocus}
+                                   onChange={event => handleInput(event.currentTarget.value)}
+                                   margin="dense"
+                                   id="name"
+                                   defaultValue={props.defaultValue}
+                                   placeholder={props.placeholder}
+                                   label={props.label}
+                                   type={props.type}
+                                   fullWidth/>
 
-                <DialogActions>
-                    <Button onClick={handleCancel}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDone}
-                            size="large"
-                            variant="contained"
-                            color="primary">
-                        Subscribe
-                    </Button>
-                </DialogActions>
+                    </DialogContent>
 
-            </Dialog>
-        </div>
+                    <DialogActions>
+                        <Button onClick={handleCancel}>
+                            Cancel
+                        </Button>
+                        <Button onClick={handleDone}
+                                size="large"
+                                variant="contained"
+                                color="primary">
+                            Subscribe
+                        </Button>
+                    </DialogActions>
+
+                </Dialog>
+            </div>
+        </InputCompleteListener>
     );
 };
 
@@ -165,9 +167,10 @@ export const PromptDialogDemo = () => {
                                placeholder="Enter a title for this document: "
                                // defaultValue="Fahrenheit 451"
                                label="Title"
-                               inputValidator={() => ({
-                                   message: 'bad input bro'
-                               })}
+                               autoFocus
+                               // inputValidator={() => ({
+                               //     message: 'bad input bro'
+                               // })}
                                onCancel={() => console.log('cancel')}
                                onDone={(value) => console.log('done: ', value)}/>}
     </>;
