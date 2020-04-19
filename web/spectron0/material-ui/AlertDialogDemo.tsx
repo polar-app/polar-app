@@ -8,19 +8,43 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        button: {
+        error: {
             backgroundColor: theme.palette.error.main,
-            color: theme.palette.text.primary,
+            color: theme.palette.error.contrastText,
         },
+        warning: {
+            backgroundColor: theme.palette.warning.main,
+            color: theme.palette.warning.contrastText,
+        },
+        success: {
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.success.contrastText,
+        },
+        info: {
+            backgroundColor: theme.palette.info.main,
+            color: theme.palette.info.contrastText,
+        },
+        root: {
+        },
+        subtitle: {
+            fontSize: '1.25rem'
+        }
     }),
 );
+
+export type AlertType = 'error' | 'warning' | 'success' | 'info';
 
 interface IProps {
     readonly onCancel: Callback;
     readonly onAccept: Callback;
+    readonly title: string;
+    readonly subtitle: string | JSX.Element;
+    readonly type?: AlertType;
+    readonly autoFocus?: boolean;
 }
 
 export const AlertDialog = (props: IProps) => {
@@ -52,6 +76,11 @@ export const AlertDialog = (props: IProps) => {
         setOpen(false);
     };
 
+    const type: AlertType = props.type || 'error';
+
+    // tslint:disable-next-line:no-string-literal
+    const palette = classes[type];
+
     return (
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -63,33 +92,31 @@ export const AlertDialog = (props: IProps) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description">
 
-                <Box bgcolor="error.main"
-                     color="text.primary">
-                    <DialogTitle id="alert-dialog-title">
-                            {"Use Google's location service?"}
-                    </DialogTitle>
-                </Box>
+                <DialogTitle id="alert-dialog-title" className={palette}>
+                    {props.title}
+                </DialogTitle>
 
                 <DialogContent>
 
                     <Box pt={1}>
-                        <DialogContentText id="alert-dialog-description">
-
-                            Let Google help apps determine location. This means
-                            sending anonymous location data to Google, even when
-                            no apps are running.
+                        <DialogContentText id="alert-dialog-description"
+                                           className={classes.subtitle}>
+                            {props.subtitle}
                         </DialogContentText>
                     </Box>
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel}>
+                    <Button onClick={handleCancel}
+                            size="large">
                         Cancel
                     </Button>
 
-                        <Button className={classes.button}
+                        <Button className={palette}
                                 onClick={handleAccept}
-                                variant="contained" autoFocus>
+                                size="large"
+                                variant="contained"
+                                autoFocus={props.autoFocus}>
                             Accept
                         </Button>
 
@@ -97,9 +124,12 @@ export const AlertDialog = (props: IProps) => {
             </Dialog>
         </div>
     );
-}
+};
 
 export const AlertDialogDemo = () => (
     <AlertDialog onAccept={() => console.log('accept')}
-                 onCancel={() => console.log('cancel')}/>
+                 onCancel={() => console.log('cancel')}
+                 title="You sure you want to do something dangerous?"
+                 subtitle="This is a dangerous action and can't be undone bro."
+                 type='success' />
 );
