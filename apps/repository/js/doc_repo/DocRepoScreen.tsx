@@ -76,6 +76,7 @@ namespace main {
                                  selected={props.selected}
                                  selectRow={props.selectRow}
                                  selectRows={props.onSelected}
+                                 tagsProvider={props.tagsProvider}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
                                  onRename={() => console.log('onRename')}
@@ -83,6 +84,7 @@ namespace main {
                                  onCopyFilePath={() => console.log('onCopyFilePath')}
                                  onDeleted={() => console.log('onDelete')}
                                  onCopyDocumentID={() => console.log('onCopyDocumentID')}
+                                 onTagged={NULL_FUNCTION}
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}
         />

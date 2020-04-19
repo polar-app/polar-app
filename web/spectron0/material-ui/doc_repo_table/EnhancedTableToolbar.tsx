@@ -22,7 +22,9 @@ import {
 import {DocActions} from "./DocActions";
 import {Provider} from "polar-shared/src/util/Providers";
 import {GlobalHotKeys} from "react-hotkeys";
-import { AutoBlur } from "./AutoBlur";
+import {AutoBlur} from "./AutoBlur";
+
+// FIXME:  delete doesn't work.
 
 const globalKeyMap = {
     TAG: 't',

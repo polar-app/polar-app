@@ -18,6 +18,9 @@ import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScre
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {Numbers} from 'polar-shared/src/util/Numbers';
 import {Dialogs} from "../../../js/ui/dialogs/Dialogs";
+import {MUITagInputControls} from "../../../../apps/repository/js/MUITagInputControls";
+import {Provider} from "polar-shared/src/util/Providers";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 interface IProps {
 
@@ -29,7 +32,10 @@ interface IProps {
 
     readonly selectRows: (selected: ReadonlyArray<number>) => void;
 
-    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
+
+    readonly onTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
+
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onShowFile: Callback1<RepoDocInfo>;
@@ -252,6 +258,21 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
     };
 
     private onTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+
+        const availableTags = this.props.tagsProvider();
+
+        // FIXME: not sure how we should handle this...  adding NEW tags
+        // to existing items.
+
+        const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
+
+        MUITagInputControls.prompt({
+            availableTags,
+            existingTags: () => existingTags,
+            onChange: NULL_FUNCTION,
+            onCancel: NULL_FUNCTION,
+            onDone: tags => this.props.onTagged(repoDocInfos, tags)
+        });
 
     }
 

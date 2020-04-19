@@ -57,8 +57,7 @@ class Styles {
 
 }
 
-interface IProps {
-
+export interface BaseProps {
     readonly className?: string;
 
     /**
@@ -76,7 +75,15 @@ interface IProps {
      */
     readonly relatedTagsManager?: RelatedTagsManager;
 
-    readonly onChange?: (values: ReadonlyArray<Tag>) => void;
+    readonly onChange: (values: ReadonlyArray<Tag>) => void;
+
+    readonly onCancel: () => any;
+
+}
+
+export interface IProps extends BaseProps {
+
+    readonly onDone: () => any;
 
 }
 
@@ -113,7 +120,7 @@ interface IRenderProps extends IState, IProps {
 
     readonly onDone: () => any;
 
-    readonly onChange?: (values: ReadonlyArray<Tag>) => void;
+    readonly onChange: (values: ReadonlyArray<Tag>) => void;
 
 }
 
@@ -399,6 +406,7 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
     private onCancel() {
         this.setState({...this.state, open: false});
+        this.props.onCancel();
     }
 
     private onDone() {
@@ -412,6 +420,8 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
         // disk.
 
         onChange(this.state.pendingTags);
+
+        this.props.onDone();
 
     }
 

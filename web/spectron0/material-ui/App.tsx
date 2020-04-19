@@ -108,7 +108,7 @@ export const App = () => {
 
                     {/*<InputValidationErrorSnackbar message="This is a bad message bro"/>*/}
 
-                    <MUITagInputControl availableTags={tags}/>
+                    {/*<MUITagInputControl availableTags={tags}/>*/}
 
                     {/*<Snackbar open={true} autoHideDuration={1000} onClose={NULL_FUNCTION}>*/}
                     {/*    <Alert severity="error" onClose={NULL_FUNCTION}>*/}

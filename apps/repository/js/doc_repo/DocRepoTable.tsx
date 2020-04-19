@@ -33,6 +33,7 @@ import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-tabl
 import {Checkbox} from "../../../../web/js/ui/Checkbox";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Devices} from "polar-shared/src/util/Devices";
+import {Provider} from "polar-shared/src/util/Providers";
 
 const log = Logger.create();
 
@@ -781,7 +782,7 @@ export interface DocRepoTableProps {
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly relatedTagsManager: RelatedTagsManager;
     readonly synchronizingDocLoader: SynchronizingDocLoader;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
+    readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
     readonly writeDocInfoTags: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly deleteDocInfo: (repoDocInfo: RepoDocInfo) => void;
     readonly writeDocInfoTitle: (repoDocInfo: RepoDocInfo, title: string) => Promise<void>;
