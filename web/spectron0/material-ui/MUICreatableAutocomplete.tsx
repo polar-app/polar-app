@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import Autocomplete, {
     AutocompleteChangeDetails,
-    AutocompleteChangeReason, createFilterOptions
+    AutocompleteChangeReason, createFilterOptions, RenderInputParams
 } from '@material-ui/lab/Autocomplete';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -61,6 +61,8 @@ interface IProps<T> {
     readonly defaultOptions?: ReadonlyArray<AutocompleteOption<T>>;
 
     readonly placeholder?: string
+
+    readonly autoFocus?: boolean;
 
     /**
      * Used when converting an option entered by the user to an object with
@@ -160,14 +162,13 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
     const filter = createFilterOptions<InternalAutocompleteOption<T>>();
 
-    // FIXME: autofocus
-
     return (
         <div className={classes.root}>
             <Autocomplete
                 multiple
                 // freeSolo
                 value={[...state.values]}
+                // renderInput={props => renderInput(props)}
                 options={[...state.options]}
                 getOptionLabel={(option) => option.label}
                 onChange={(event, value, reason, details) => handleChange(event, value, reason, details)}
@@ -191,6 +192,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                     <TextField
                         {...params}
                         variant="outlined"
+                        autoFocus={props.autoFocus}
                         label={props.label}
                         placeholder={props.placeholder || ''}
                     />
