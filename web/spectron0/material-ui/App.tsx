@@ -14,6 +14,7 @@ import SearchBox from "./SearchBox";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 import FlagIcon from "@material-ui/icons/Flag";
 import { TagAutocompleteDemo } from './TagAutocompleteDemo';
+import {AlertDialogDemo} from "./AlertDialogDemo";
 
 // configure({logLevel: "debug"});
 
@@ -26,7 +27,7 @@ export const App = () => {
             fontSize: 12
         },
         palette: {
-            type: "light"
+            type: "dark"
         }
     });
 
@@ -90,8 +91,8 @@ export const App = () => {
                     {/*    )*/}
                     {/*}}/>*/}
 
-                    <TagAutocompleteDemo/>
-
+                    {/*<TagAutocompleteDemo/>*/}
+                    <AlertDialogDemo/>
 
                     {/*<DocumentRepositoryTable data={MockRepoDocInfos.create()}*/}
                     {/*                         selected={[0, 1]}*/}
