@@ -185,21 +185,6 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                 <DateTimeTableCell datetime={row.lastUpdated}/>
 
             </TableCell>
-            <TableCell padding="none"
-                       className={classes.colTags}
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
-
-                {/*TODO: this sorting and mapping might be better done */}
-                {/*at the RepoDocInfo level so it's done once not per*/}
-                {/*display render.*/}
-                {arrayStream(Tags.onlyRegular(Object.values(row.tags || {})))
-                    .sort((a, b) => a.label.localeCompare(b.label))
-                    .map(current => current.label)
-                    .collect()
-                    .join(', ')}
-
-            </TableCell>
 
             <TableCellTags contextMenuHandler={contextMenuHandler}
                            selectRow={props.selectRow}
