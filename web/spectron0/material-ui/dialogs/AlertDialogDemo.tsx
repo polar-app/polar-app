@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -27,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
         info: {
             backgroundColor: theme.palette.info.main,
             color: theme.palette.info.contrastText,
+        },
+        cancelButton: {
+            color: theme.palette.text.secondary,
         },
         root: {
         },
@@ -107,7 +109,8 @@ export const AlertDialog = (props: IProps) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel}
+                    <Button className={classes.cancelButton}
+                            onClick={handleCancel}
                             size="large">
                         Cancel
                     </Button>

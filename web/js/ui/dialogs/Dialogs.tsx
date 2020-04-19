@@ -81,7 +81,6 @@ export interface AlertProps {
 
 }
 
-
 export interface ConfirmProps {
 
     readonly title: string;
