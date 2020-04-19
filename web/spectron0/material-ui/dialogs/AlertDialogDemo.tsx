@@ -8,6 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
+import {InputCompleteListener} from "../complete_listeners/InputCompleteListener";
+import { GlobalCompleteListener } from '../complete_listeners/GlobalCompleteListener';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,13 +53,9 @@ interface IProps {
 
 export const AlertDialog = (props: IProps) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
     const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
 
@@ -84,48 +82,46 @@ export const AlertDialog = (props: IProps) => {
     const palette = classes[type];
 
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open alert dialog
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description">
 
-                <DialogTitle id="alert-dialog-title" className={palette}>
-                    {props.title}
-                </DialogTitle>
+            <GlobalCompleteListener onComplete={handleAccept}/>
 
-                <DialogContent>
+            <DialogTitle id="alert-dialog-title" className={palette}>
+                {props.title}
+            </DialogTitle>
 
-                    <Box pt={1}>
-                        <DialogContentText id="alert-dialog-description"
-                                           className={classes.subtitle}>
-                            {props.subtitle}
-                        </DialogContentText>
-                    </Box>
+            <DialogContent>
 
-                </DialogContent>
-                <DialogActions>
-                    <Button className={classes.cancelButton}
-                            onClick={handleCancel}
-                            size="large">
-                        Cancel
+                <Box pt={1}>
+                    <DialogContentText id="alert-dialog-description"
+                                       className={classes.subtitle}>
+                        {props.subtitle}
+                    </DialogContentText>
+                </Box>
+
+            </DialogContent>
+            <DialogActions>
+                <Button className={classes.cancelButton}
+                        onClick={handleCancel}
+                        size="large">
+                    Cancel
+                </Button>
+
+                    <Button className={palette}
+                            onClick={handleAccept}
+                            size="large"
+                            variant="contained"
+                            autoFocus={props.autoFocus}>
+                        Accept
                     </Button>
 
-                        <Button className={palette}
-                                onClick={handleAccept}
-                                size="large"
-                                variant="contained"
-                                autoFocus={props.autoFocus}>
-                            Accept
-                        </Button>
+            </DialogActions>
 
-                </DialogActions>
-            </Dialog>
-        </div>
+        </Dialog>
     );
 };
 
