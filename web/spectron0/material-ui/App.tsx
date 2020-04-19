@@ -8,8 +8,12 @@ import {MockRepoDocInfos} from "./MockRepoDocInfos";
 import {ContextMenus} from "./ContextMenus";
 import {configure, GlobalHotKeys} from "react-hotkeys";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import TextField from "@material-ui/core/TextField";
+import SearchBox from "./SearchBox";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
+import FlagIcon from "@material-ui/icons/Flag";
+import { TagAutocompleteDemo } from './TagAutocompleteDemo';
 
 // configure({logLevel: "debug"});
 
@@ -72,20 +76,37 @@ export const App = () => {
                     {/*<Box m={1}>*/}
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
-                    <DocumentRepositoryTable data={MockRepoDocInfos.create()}
-                                             selected={[0, 1]}
-                                             selectRow={NULL_FUNCTION}
-                                             onOpen={() => console.log('onOpen')}
-                                             onShowFile={() => console.log('onShowFile')}
-                                             onRename={() => console.log('onRename')}
-                                             onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
-                                             onCopyFilePath={() => console.log('onCopyFilePath')}
-                                             onDelete={() => console.log('FIXME: onDelete ' + Date.now())}
-                                             onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                             onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
-                                             onFlagged={() => console.log('onFlagged')}
-                                             onArchived={() => console.log('onArchived')}
-                    />
+
+
+                    {/*<div style={{margin: '5px'}}>*/}
+                    {/*    <SearchBox/>*/}
+
+                    {/*</div>*/}
+
+
+                    {/*<TextField id="standard-search" type="search" InputProps={{*/}
+                    {/*    startAdornment: (*/}
+                    {/*        <FlagIcon/>*/}
+                    {/*    )*/}
+                    {/*}}/>*/}
+
+                    <TagAutocompleteDemo/>
+
+
+                    {/*<DocumentRepositoryTable data={MockRepoDocInfos.create()}*/}
+                    {/*                         selected={[0, 1]}*/}
+                    {/*                         selectRow={NULL_FUNCTION}*/}
+                    {/*                         onOpen={() => console.log('onOpen')}*/}
+                    {/*                         onShowFile={() => console.log('onShowFile')}*/}
+                    {/*                         onRename={() => console.log('onRename')}*/}
+                    {/*                         onCopyOriginalURL={() => console.log('onCopyOriginalURL')}*/}
+                    {/*                         onCopyFilePath={() => console.log('onCopyFilePath')}*/}
+                    {/*                         onDelete={() => console.log('FIXME: onDelete ' + Date.now())}*/}
+                    {/*                         onCopyDocumentID={() => console.log('onCopyDocumentID')}*/}
+                    {/*                         onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}*/}
+                    {/*                         onFlagged={() => console.log('onFlagged')}*/}
+                    {/*                         onArchived={() => console.log('onArchived')}*/}
+                    {/*/>*/}
 
                     {/*<Foo/>*/}
                     {/*<Foo/>*/}

@@ -28,7 +28,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
     }
 
     public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<{}>): boolean {
-        return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState))
+        return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState);
     }
 
     private handleContextMenu(event: React.MouseEvent<HTMLElement>) {

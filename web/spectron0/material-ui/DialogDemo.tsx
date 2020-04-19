@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import AutocompleteTags from "./AutocompleteTags";
+import MUICreatableAutocomplete from "./MUICreatableAutocomplete";
 
 export default function DialogDemo() {
 
@@ -20,7 +20,7 @@ export default function DialogDemo() {
         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title"
                 open={open}>
             <DialogContent>
-                <AutocompleteTags/>
+                <MUICreatableAutocomplete/>
             </DialogContent>
             {/*<DialogActions>*/}
             {/*    <Button autoFocus onClick={handleClose} color="primary">*/}

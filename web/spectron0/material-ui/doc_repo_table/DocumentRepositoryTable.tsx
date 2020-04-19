@@ -1,36 +1,22 @@
 import React from 'react';
-import {
-    createStyles,
-    makeStyles,
-    Theme,
-    withStyles
-} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from "@material-ui/core/Grid";
-import Chip from "@material-ui/core/Chip";
-import {DateTimeTableCell} from "../../../../apps/repository/js/DateTimeTableCell";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {arrayStream, ArrayStreams} from "polar-shared/src/util/ArrayStreams";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Sorting} from "./Sorting";
-import { EnhancedTableToolbar } from './EnhancedTableToolbar';
+import {EnhancedTableToolbar} from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
-import {ContextMenuHandler, MUIDocContextMenu} from "./MUIDocContextMenu";
-import {MUIDocButtonBar} from "./MUIDocButtonBar";
-import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
-import {Tags} from "polar-shared/src/tags/Tags";
+import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocActions} from "./DocActions";
-import {AutoBlur} from "./AutoBlur";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 import {DocRepoTableRow} from "./DocRepoTableRow";
-import { Numbers } from 'polar-shared/src/util/Numbers';
+import {Numbers} from 'polar-shared/src/util/Numbers';
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
 
@@ -96,13 +82,6 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             })
         };
 
-        const setRowsPerPage = (rowsPerPage: number) => {
-            this.setState({
-                ...this.state,
-                rowsPerPage
-            });
-        };
-
         const handleRequestSort = (event: React.MouseEvent<unknown>,
                                    property: keyof RepoDocInfo,
                                    order: Sorting.Order) => {
@@ -128,9 +107,11 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         };
 
         const handleChangeRowsPerPage = (rowsPerPage: number) => {
-            // FIXME: set both of these as one call...
-            setRowsPerPage(rowsPerPage);
-            setPage(0);
+            this.setState({
+                ...this.state,
+                rowsPerPage,
+                page: 0
+            });
         };
 
         // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,7 +120,6 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-        // TODO: refactor this to be more functional
         data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
 
         const docContextMenuCallbacks: DocActions.DocContextMenu.Callbacks = {
@@ -151,8 +131,8 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             onDelete: NULL_FUNCTION,
             onCopyDocumentID: NULL_FUNCTION,
             onCopyFilePath: NULL_FUNCTION,
-            onFlagged: NULL_FUNCTION,
-            onArchived: NULL_FUNCTION,
+            onFlagged: this.props.onFlagged,
+            onArchived: this.props.onArchived,
 
         };
 
@@ -184,10 +164,9 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                                   onChangeRowsPerPage={handleChangeRowsPerPage}
                                                   onSelectAllRows={handleSelectAllRows}
                                                   page={page}
-                                                  onDelete={() => console.log('FIXME: DELETE ==============' + Date.now())}
-                                                  onFlagged={() => console.log('FIXME: FLAGGED ==============' + Date.now())}
-                                                  onArchived={() => console.log('FIXME: ARCHIVED ==============' + Date.now())}
-                            />
+                                                  onDelete={this.props.onDelete}
+                                                  onFlagged={this.props.onFlagged}
+                                                  onArchived={this.props.onArchived}/>
 
                             <TableContainer style={{flexGrow: 1}}>
                                 <Table
@@ -199,13 +178,13 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                     }}
                                     aria-labelledby="tableTitle"
                                     size={'medium'}
-                                    aria-label="enhanced table"
-                                >
+                                    aria-label="enhanced table">
+
                                     <EnhancedTableHead
                                         order={order}
                                         orderBy={orderBy}
-                                        onRequestSort={handleRequestSort}
-                                    />
+                                        onRequestSort={handleRequestSort}/>
+                                        
                                     <TableBody>
                                         {pageData
                                             .map((row, index) => {
