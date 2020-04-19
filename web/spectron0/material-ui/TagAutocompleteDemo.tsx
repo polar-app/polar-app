@@ -30,6 +30,7 @@ export const TagAutocompleteDemo = () => (
         <MUICreatableAutocomplete label="Create or select tags: "
                                   options={tagOptions}
                                   defaultOptions={defaultOptions}
+                                  onChange={selected => console.log('selected: ', selected)}
                                   createOption={createOption}/>
     </div>
 );
