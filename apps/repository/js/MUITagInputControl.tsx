@@ -208,7 +208,6 @@ const TagInputBody = (props: IRenderProps) => {
                     isMulti
                     isClearable
                     autoFocus
-                    catDog={101}
                     onKeyDown={event => props.onKeyDown(event)}
                     className="basic-multi-select"
                     classNamePrefix="select"

@@ -58,6 +58,8 @@ function isCreateAutocompleteOption<T>(option: InternalAutocompleteOption<T>): o
 interface IProps<T> {
     readonly label: string;
     readonly options: ReadonlyArray<AutocompleteOption<T>>;
+    readonly defaultOptions?: ReadonlyArray<AutocompleteOption<T>>;
+
     readonly placeholder?: string
 
     /**
@@ -112,16 +114,20 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
     const filter = createFilterOptions<InternalAutocompleteOption<T>>();
 
     const options: ReadonlyArray<InternalAutocompleteOption<T>> = props.options;
+    const defaultOptions = props.defaultOptions || [];
+
+    // FIXME: autofocus
+    // FIXME: onChange callback for selected items
+    // FIXME: set default values
 
     return (
         <div className={classes.root}>
             <Autocomplete
                 multiple
                 // freeSolo
-                value={Object.values(values)}
+                // defaultValue={defaultValue}
                 options={[...options]}
                 getOptionLabel={(option) => option.label}
-                defaultValue={[]}
                 onChange={(event, value, reason, details) => handleChange(event, value, reason, details)}
                 filterSelectedOptions
                 filterOptions={(options, params) => {
