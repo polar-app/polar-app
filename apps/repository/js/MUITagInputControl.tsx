@@ -1,22 +1,25 @@
 import * as React from 'react';
-import CreatableSelect from 'react-select/creatable';
 import {TagOption} from './TagOption';
 import {TagOptions} from './TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
-import Button from 'reactstrap/lib/Button';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
-import {Lightbox} from "../../../web/js/ui/util/Lightbox";
 import {
     InheritedTag,
     isInheritedTag
 } from "polar-shared/src/tags/InheritedTags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {TagChicklet} from "../../../web/js/ui/tags/TagChicklet";
+import Chip from '@material-ui/core/Chip';
+import Button from "@material-ui/core/Button";
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import MUICreatableAutocomplete
+    , {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
 
 const log = Logger.create();
 
@@ -52,19 +55,11 @@ class Styles {
         marginBottom: 'auto'
     };
 
-    public static button: React.CSSProperties = {
-        fontSize: '14px'
-    };
-
 }
 
 interface IProps {
 
-    readonly size?: 'sm' | 'md' | 'lg';
-
     readonly className?: string;
-
-    readonly container?: string;
 
     /**
      * The tags that can be selected.
@@ -104,7 +99,9 @@ interface IRenderProps extends IState, IProps {
 
     readonly relatedTags: ReadonlyArray<string>;
 
-    readonly availableTagOptions: ReadonlyArray<TagOption>;
+    readonly availableTagOptions: ReadonlyArray<AutocompleteOption<Tag>>;
+
+    readonly createOption: (input: string) => AutocompleteOption<Tag>;
 
     readonly onKeyDown: (event: any) => any;
 
@@ -117,8 +114,6 @@ interface IRenderProps extends IState, IProps {
     readonly onDone: () => any;
 
     readonly onChange?: (values: ReadonlyArray<Tag>) => void;
-
-    readonly onSelect: (select: CreatableSelect<TagOption> | null) => void;
 
 }
 
@@ -144,11 +139,9 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
         return null;
     }
 
-    const toTagChicklet = (tag: Tag) => (
+    const toChip = (tag: Tag) => (
         <div key={tag.id} className="mr-1">
-            <TagChicklet>
-                {tag.label}
-            </TagChicklet>
+            <Chip label={tag.label}/>
         </div>
     );
 
@@ -160,7 +153,7 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
         </div>
 
         <div style={{display: 'flex'}}>
-            {props.docTags.map(toTagChicklet)}
+            {props.docTags.map(toChip)}
         </div>
 
     </div>;
@@ -173,8 +166,6 @@ const RelatedTagsItems = (props: IRenderProps) => {
                     <Button className="mr-1"
                             key={item}
                             style={{...Styles.relatedTag}}
-                            color="light"
-                            size={props.size || 'sm'}
                             onClick={() => props.addRelatedTag(item)}>{item}</Button>)}
             </span>;
 
@@ -183,43 +174,37 @@ const RelatedTagsItems = (props: IRenderProps) => {
 
 const TagInputBody = (props: IRenderProps) => {
 
-    if (! props.open) {
-        return null;
-    }
+    return <Dialog open={true}>
 
-    return <Lightbox container={props.container}>
-
-        <div style={{
-                 width: '500px',
-                 maxWidth: 'calc(100vw - 5px)',
-                 backgroundColor: 'var(--primary-background-color)',
-                 color: 'var(--primary-text-color)',
-                 borderRadius: '5px'
-             }}
-             className="">
-
-            <div className="p-2">
+            <DialogContent>
 
                 <div className="pt-1 pb-1">
                     <strong>Assign tags:</strong>
                 </div>
 
-                <CreatableSelect
-                    isMulti
-                    isClearable
-                    autoFocus
-                    onKeyDown={event => props.onKeyDown(event)}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
-                    value={props.pendingTagOptions}
-                    defaultValue={props.pendingTagOptions}
-                    placeholder="Create or select tags ..."
-                    options={props.availableTagOptions}
-                    ref={ref => props.onSelect(ref)}
-                    // onKeyDown={() => console.log("FIXME onKeyDown1")}
-                    // onKeyPress={() => console.log("FIXME onKeyPress1")}
-                    />
+                <MUICreatableAutocomplete label="Create or select tags ..."
+                                          options={props.availableTagOptions}
+                                          // defaultValue={props.pendingTagOptions}
+                                          autoFocus
+                                          placeholder="Create or select tags ..."
+                                          createOption={props.createOption}
+                                          onChange={NULL_FUNCTION}/>
+
+                {/*<CreatableSelect*/}
+                {/*    isMulti*/}
+                {/*    isClearable*/}
+                {/*    autoFocus*/}
+                {/*    onKeyDown={event => props.onKeyDown(event)}*/}
+                {/*    className="basic-multi-select"*/}
+                {/*    classNamePrefix="select"*/}
+                {/*    onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}*/}
+                {/*    value={props.pendingTagOptions}*/}
+                {/*    defaultValue={props.pendingTagOptions}*/}
+                {/*    placeholder="Create or select tags ..."*/}
+                {/*    options={props.availableTagOptions}*/}
+                {/*    // onKeyDown={() => console.log("FIXME onKeyDown1")}*/}
+                {/*    // onKeyPress={() => console.log("FIXME onKeyPress1")}*/}
+                {/*    />*/}
 
                 <div className="pt-1">
 
@@ -231,34 +216,26 @@ const TagInputBody = (props: IRenderProps) => {
 
                 <DocTagsTagsWidget {...props}/>
 
-                <div className="mt-2">
 
-                    <div style={{display: 'flex'}}>
+            </DialogContent>
 
-                        <div className="ml-auto"/>
+        <DialogActions>
 
-                        <Button color="clear"
-                                size="sm"
-                                style={Styles.button}
-                                onClick={() => props.onCancel()}>
-                            Cancel
-                        </Button>
+            <Button size="large"
+                    onClick={() => props.onCancel()}>
+                Cancel
+            </Button>
 
-                        <div className="ml-1"/>
+            <Button color="primary"
+                    size="large"
+                    variant="contained"
+                    onClick={() => props.onDone()}>
+                Done
+            </Button>
 
-                        <Button color="primary"
-                                size="sm"
-                                style={Styles.button}
-                                onClick={() => props.onDone()}>
-                            Done
-                        </Button>
-                    </div>
-                </div>
+        </DialogActions>
 
-            </div>
-
-        </div>
-    </Lightbox>;
+    </Dialog>;
 
 };
 
@@ -294,11 +271,9 @@ class TagUtils {
 
 }
 
-export class TagInputControl extends React.Component<IProps, IState> {
+export class MUITagInputControl extends React.Component<IProps, IState> {
 
     private readonly id = IDs.create("popover-");
-
-    private select: CreatableSelect<TagOption> | null = null;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -340,10 +315,26 @@ export class TagInputControl extends React.Component<IProps, IState> {
         const relatedTagsManager = this.props.relatedTagsManager || new RelatedTagsManager();
 
         const availableTags = Tags.regularTagsThenFolderTagsSorted(this.props.availableTags);
-        const availableTagOptions = TagOptions.fromTags(availableTags, true);
 
         const pendingTags = TagOptions.fromTags(this.state.pendingTags);
 
+        const availableTagOptions: ReadonlyArray<AutocompleteOption<Tag>> =
+            arrayStream(availableTags)
+                .map(current => ({
+                    id: current.id,
+                    label: current.label,
+                    value: current
+                }))
+                .collect();
+
+        const createOption = (input: string): AutocompleteOption<Tag> => ({
+            id: input,
+            label: input,
+            value: {
+                id: input,
+                label: input,
+            }
+        });
         const computeRelatedTags = () => {
 
             const input = [...this.state.pendingTags]
@@ -362,8 +353,6 @@ export class TagInputControl extends React.Component<IProps, IState> {
 
                 <Button id={this.id}
                         onClick={() => this.activate()}
-                        color="clear"
-                        size={this.props.size}
                         style={{
                             lineHeight: 1.0
                         }}
@@ -376,11 +365,11 @@ export class TagInputControl extends React.Component<IProps, IState> {
                     pendingTagOptions={pendingTags}
                     relatedTags={relatedTags}
                     handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
+                    createOption={createOption}
                     onKeyDown={(event) => this.onKeyDown(event)}
                     addRelatedTag={label => this.addRelatedTag(label)}
                     onCancel={() => this.onCancel()}
                     onDone={() => this.onDone()}
-                    onSelect={select => this.select = select}
                     {...this.props}
                     {...this.state}/>
 
@@ -402,7 +391,7 @@ export class TagInputControl extends React.Component<IProps, IState> {
         this.handleChange(TagOptions.fromTags(tags));
 
         // need or else the button has focus now...
-        this.select!.focus();
+        // this.select!.focus();
 
     }
 

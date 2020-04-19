@@ -19,6 +19,11 @@ import {PromptDialogDemo} from "./dialogs/PromptDialogDemo";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import {InputValidationErrorSnackbar} from "./dialogs/InputValidationErrorSnackbar";
+import {MUITagInputControl} from "../../../apps/repository/js/MUITagInputControl";
+import {MockTags} from "./MockTags";
+import {AutocompleteOption} from "./MUICreatableAutocomplete";
+import {Tag} from "polar-shared/src/tags/Tags";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 // configure({logLevel: "debug"});
 
@@ -46,6 +51,8 @@ export const App = () => {
     };
 
     const muiTheme = createMuiTheme(theme);
+
+    const tags = MockTags.create();
 
     return (
         // <GlobalHotKeys
@@ -96,10 +103,12 @@ export const App = () => {
                     {/*}}/>*/}
 
                     {/*<TagAutocompleteDemo/>*/}
-                    <AlertDialogDemo/>
-                    <PromptDialogDemo/>
+                    {/*<AlertDialogDemo/>*/}
+                    {/*<PromptDialogDemo/>*/}
 
-                    <InputValidationErrorSnackbar message="This is a bad message bro"/>
+                    {/*<InputValidationErrorSnackbar message="This is a bad message bro"/>*/}
+
+                    <MUITagInputControl availableTags={tags}/>
 
                     {/*<Snackbar open={true} autoHideDuration={1000} onClose={NULL_FUNCTION}>*/}
                     {/*    <Alert severity="error" onClose={NULL_FUNCTION}>*/}

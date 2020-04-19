@@ -105,19 +105,20 @@ export const AlertDialog = (props: IProps) => {
 
             </DialogContent>
             <DialogActions>
+
                 <Button className={classes.cancelButton}
                         onClick={handleCancel}
                         size="large">
                     Cancel
                 </Button>
 
-                    <Button className={palette}
-                            onClick={handleAccept}
-                            size="large"
-                            variant="contained"
-                            autoFocus={props.autoFocus}>
-                        Accept
-                    </Button>
+                <Button className={palette}
+                        onClick={handleAccept}
+                        size="large"
+                        variant="contained"
+                        autoFocus={props.autoFocus}>
+                    Accept
+                </Button>
 
             </DialogActions>
 
