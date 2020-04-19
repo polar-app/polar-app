@@ -41,21 +41,27 @@ export const PromptDialog = (props: IProps) => {
 
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    const [open, setOpen] = React.useState(true);
 
     const handleClose = () => {
+        props.onCancel();
         setOpen(false);
     };
 
+    const handleCancel = () => {
+        props.onCancel();
+        setOpen(false);
+    };
+
+    const handleDone = () => {
+        props.onDone(value);
+        setOpen(false);
+    };
+
+    let value: string = "";
+
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open prompt dialog
-            </Button>
             <Dialog open={open}
                     onClose={handleClose}
                     aria-labelledby="form-dialog-title">
@@ -69,34 +75,56 @@ export const PromptDialog = (props: IProps) => {
 
                     <TextField className={classes.textField}
                                autoFocus={props.autoFocus}
+                               onChange={event => value = event.currentTarget.value}
                                margin="dense"
                                id="name"
+                               defaultValue={props.defaultValue}
+                               placeholder={props.placeholder}
                                label={props.label}
                                type={props.type}
                                fullWidth/>
 
                 </DialogContent>
+
                 <DialogActions>
-                    <Button onClick={handleClose}>
+                    <Button onClick={handleCancel}>
                         Cancel
                     </Button>
-                    <Button onClick={handleClose}
+                    <Button onClick={handleDone}
                             size="large"
                             variant="contained"
                             color="primary">
                         Subscribe
                     </Button>
                 </DialogActions>
+
             </Dialog>
         </div>
     );
 };
 
-export const PromptDialogDemo = () => (
-    <PromptDialog title="Enter a title"
-                  description="Enter a title for this document: "
-                  label="Title"
-                  onCancel={() => console.log('cancel')}
-                  onDone={() => console.log('done')}/>
-);
+export const PromptDialogDemo = () => {
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    return (
+        <>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Open prompt dialog
+            </Button>
+
+            {open && <PromptDialog title="Enter a title"
+                                   placeholder="Enter a title for this document: "
+                                   // defaultValue="Fahrenheit 451"
+                                   label="Title"
+                                   onCancel={() => console.log('cancel')}
+                                   onDone={(value) => console.log('done: ', value)}/>}
+        </>
+    );
+
+};
 
