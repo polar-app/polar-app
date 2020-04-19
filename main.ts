@@ -1,4 +1,4 @@
-import {app} from 'electron';
+import {app, BrowserWindow} from 'electron';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
 import {Cmdline} from './web/js/electron/Cmdline';
@@ -53,6 +53,20 @@ async function launch() {
 }
 
 app.on('ready', async () => {
+
+    const configureReactDevTools = () => {
+
+        const path = process.env.POLAR_REACT_DEV_TOOLS;
+
+        if (path) {
+            console.log("Enabling react dev tools");
+            // /Users/burton/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.6.0_0/
+            BrowserWindow.addDevToolsExtension(path);
+        }
+
+    };
+
+    configureReactDevTools();
 
     launch().catch(err => console.error("Unable to launch app: ", err));
 
