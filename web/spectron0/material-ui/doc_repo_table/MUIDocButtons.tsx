@@ -46,7 +46,7 @@ interface StandardToggleButtonProps extends ToggleButtonProps {
     readonly children: JSX.Element;
 }
 
-const StandardToggleButton = (props: StandardToggleButtonProps) => (
+const StandardToggleButton = React.memo((props: StandardToggleButtonProps) => (
     <Tooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
                     onClick={() => props.onClick()}
@@ -55,28 +55,28 @@ const StandardToggleButton = (props: StandardToggleButtonProps) => (
             {props.children}
         </IconButton>
     </Tooltip>
-);
+));
 
-export const MUIDocDeleteButton = (props: ButtonProps) => (
+export const MUIDocDeleteButton = React.memo((props: ButtonProps) => (
     <StandardButton tooltip="Delete" {...props}>
         <DeleteIcon />
     </StandardButton>
-);
+));
 
-export const MUIDocTagButton = (props: ButtonProps) => (
+export const MUIDocTagButton = React.memo((props: ButtonProps) => (
     <StandardButton tooltip="Tag" {...props}>
         <LocalOfferIcon/>
     </StandardButton>
-);
+));
 
-export const MUIDocArchiveButton = (props: ToggleButtonProps) => (
+export const MUIDocArchiveButton = React.memo((props: ToggleButtonProps) => (
     <StandardToggleButton tooltip="Archive" {...props}>
         <ArchiveIcon/>
     </StandardToggleButton>
-);
+));
 
-export const MUIDocFlagButton = (props: ToggleButtonProps) => (
+export const MUIDocFlagButton = React.memo((props: ToggleButtonProps) => (
     <StandardToggleButton tooltip="Flag" {...props}>
         <FlagIcon/>
     </StandardToggleButton>
-);
+));

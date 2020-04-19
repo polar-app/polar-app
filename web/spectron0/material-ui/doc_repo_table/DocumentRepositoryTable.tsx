@@ -1,5 +1,10 @@
 import React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {
+    createStyles,
+    makeStyles,
+    Theme,
+    withStyles
+} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,70 +31,59 @@ import {AutoBlur} from "./AutoBlur";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            height: '100%',
-        },
-        paper: {
-            width: '100%',
-            height: '100%',
-            // marginBottom: theme.spacing(2),
-        },
-        table: {
-            minWidth: 0,
-            maxWidth: '100%',
-            tableLayout: 'fixed'
-        },
-        tr: {
-            // borderSpacing: '100px'
-        },
-        td: {
-            whiteSpace: 'nowrap'
-        },
-        progress: {
-            width: COLUMN_MAP.progress.width
-        },
-        colProgress: {
-            width: COLUMN_MAP.progress.width,
-            minWidth: COLUMN_MAP.progress.width
-        },
-        colAdded: {
-            whiteSpace: 'nowrap',
-            width: COLUMN_MAP.added.width,
-        },
-        colLastUpdated: {
-            whiteSpace: 'nowrap',
-            width: COLUMN_MAP.lastUpdated.width,
-        },
-        colTitle: {
-            width: COLUMN_MAP.title.width,
+const styles = {
+    table: {
+        minWidth: 0,
+        maxWidth: '100%',
+        tableLayout: 'fixed'
+    },
+    tr: {
+        // borderSpacing: '100px'
+    },
+    td: {
+        whiteSpace: 'nowrap'
+    },
+    progress: {
+        width: COLUMN_MAP.progress.width
+    },
+    colProgress: {
+        width: COLUMN_MAP.progress.width,
+        minWidth: COLUMN_MAP.progress.width
+    },
+    colAdded: {
+        whiteSpace: 'nowrap',
+        width: COLUMN_MAP.added.width,
+    },
+    colLastUpdated: {
+        whiteSpace: 'nowrap',
+        width: COLUMN_MAP.lastUpdated.width,
+    },
+    colTitle: {
+        width: COLUMN_MAP.title.width,
 
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-        colTags: {
-            width: COLUMN_MAP.tags.width,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-        colDocButtons: {
-            width: DOC_BUTTON_COLUMN_WIDTH
-        },
-        docButtons: {
-            marginLeft: '5px',
-            marginRight: '5px',
-            display: 'flex',
-            justifyContent: 'flex-end'
-        }
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        textOverflow: 'ellipsis'
+    },
+    colTags: {
+        width: COLUMN_MAP.tags.width,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        textOverflow: 'ellipsis'
+    },
+    colDocButtons: {
+        width: DOC_BUTTON_COLUMN_WIDTH
+    },
+    docButtons: {
+        marginLeft: '5px',
+        marginRight: '5px',
+        display: 'flex',
+        justifyContent: 'flex-end'
+    }
 
-    }),
-);
+};
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
 
@@ -104,111 +98,131 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
 
 }
 
-export default function DocumentRepositoryTable(props: IProps) {
-    const classes = useStyles();
-    const [order, setOrder] = React.useState<Sorting.Order>('desc');
-    const [orderBy, setOrderBy] = React.useState<keyof RepoDocInfo>('progress');
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(25);
+interface IState {
+    readonly order: Sorting.Order;
+    readonly orderBy: keyof RepoDocInfo;
+    readonly page: number;
+    readonly dense: boolean;
+    readonly rowsPerPage: number;
+}
 
-    const {selected} = props;
-    let {data} = props;
+export default class DocumentRepositoryTable extends React.Component<IProps, IState> {
 
-    Preconditions.assertPresent(data, 'data');
+    constructor(props: Readonly<IProps>) {
+        super(props);
 
-    const selectedProvider = (): ReadonlyArray<RepoDocInfo> => {
-        return arrayStream(selected)
-            .map(current => data[current])
-            .collect();
-    };
+        this.selectedProvider = this.selectedProvider.bind(this);
+        this.isSelected = this.isSelected.bind(this);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>,
-                               property: keyof RepoDocInfo,
-                               order: Sorting.Order) => {
-        setOrder(order);
-        setOrderBy(property);
-    };
+        this.state = {
+            order: 'desc',
+            orderBy: 'progress',
+            page: 0,
+            dense: true,
+            rowsPerPage: 25
+        }
 
-    const handleSelectAllRows = (selected: boolean) => {
-        // if (selected) {
-        //     // TODO: migrate to using an ID not a title.
-        //     const newSelected = data.map((n) => n.fingerprint);
-        //     setSelected(newSelected);
-        //     return;
-        // }
-        // setSelected([]);
-    };
+    }
 
-    const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+    public render() {
 
-        // const selectedIndex = selected.indexOf(id);
-        // let newSelected: string[] = [];
-        //
-        // if (selectedIndex === -1) {
-        //     newSelected = newSelected.concat(selected, id);
-        // } else if (selectedIndex === 0) {
-        //     newSelected = newSelected.concat(selected.slice(1));
-        // } else if (selectedIndex === selected.length - 1) {
-        //     newSelected = newSelected.concat(selected.slice(0, -1));
-        // } else if (selectedIndex > 0) {
-        //     newSelected = newSelected.concat(
-        //         selected.slice(0, selectedIndex),
-        //         selected.slice(selectedIndex + 1),
-        //     );
-        // }
-        //
-        // setSelected(newSelected);
 
-    };
+        const {order, orderBy, page, rowsPerPage, dense} = this.state;
+        const {selected} = this.props;
+        let {data} = this.props;
 
-    const handleChangePage = (newPage: number) => {
-        setPage(newPage);
-    };
+        Preconditions.assertPresent(data, 'data');
 
-    const handleChangeRowsPerPage = (rowsPerPage: number) => {
-        setRowsPerPage(rowsPerPage);
-        setPage(0);
-    };
+        const setOrder = (order: Sorting.Order, orderBy: keyof RepoDocInfo) => {
+            this.setState({
+                ...this.state,
+                order, orderBy
+            })
+        };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
-    };
+        const setPage = (page: number) => {
+            this.setState({
+                ...this.state,
+                page
+            })
+        };
 
-    const isSelected = (viewIndex: number) => selected.indexOf(viewIndex) !== -1;
+        const setRowsPerPage = (rowsPerPage: number) => {
+            this.setState({
+                ...this.state,
+                rowsPerPage
+            });
+        };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+        const handleRequestSort = (event: React.MouseEvent<unknown>,
+                                   property: keyof RepoDocInfo,
+                                   order: Sorting.Order) => {
 
-    // TODO: refactor this to be more functional
-    data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
+            setOrder(order, property);
+        };
 
-    const docContextMenuCallbacks: DocActions.DocContextMenu.Callbacks = {
+        const handleSelectAllRows = (selected: boolean) => {
+            // if (selected) {
+            //     // TODO: migrate to using an ID not a title.
+            //     const newSelected = data.map((n) => n.fingerprint);
+            //     setSelected(newSelected);
+            //     return;
+            // }
+            // setSelected([]);
+        };
 
-        onOpen: NULL_FUNCTION,
-        onRename: NULL_FUNCTION,
-        onShowFile: NULL_FUNCTION,
-        onCopyOriginalURL: NULL_FUNCTION,
-        onDelete: NULL_FUNCTION,
-        onCopyDocumentID: NULL_FUNCTION,
-        onCopyFilePath: NULL_FUNCTION,
-        onFlagged: NULL_FUNCTION,
-        onArchived: NULL_FUNCTION,
+        const handleChangePage = (newPage: number) => {
+            setPage(newPage);
+        };
 
-    };
+        const handleChangeRowsPerPage = (rowsPerPage: number) => {
+            // FIXME: set both of these as one call...
+            setRowsPerPage(rowsPerPage);
+            setPage(0);
+        };
 
-    // FIXME: the context menu handler should select the current row
+        // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+        //     setDense(event.target.checked);
+        // };
 
-    return (
-        <div className={classes.root}>
-            <Paper className={classes.paper} style={{display: 'flex', flexDirection: 'column'}}>
-                <MUIDocContextMenu {...docContextMenuCallbacks}
-                                   selectedProvider={selectedProvider}
-                                   render={rawContextMenuHandler => {
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+        // TODO: refactor this to be more functional
+        data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
+
+        const docContextMenuCallbacks: DocActions.DocContextMenu.Callbacks = {
+
+            onOpen: NULL_FUNCTION,
+            onRename: NULL_FUNCTION,
+            onShowFile: NULL_FUNCTION,
+            onCopyOriginalURL: NULL_FUNCTION,
+            onDelete: NULL_FUNCTION,
+            onCopyDocumentID: NULL_FUNCTION,
+            onCopyFilePath: NULL_FUNCTION,
+            onFlagged: NULL_FUNCTION,
+            onArchived: NULL_FUNCTION,
+
+        };
+
+        return (
+            <div style={{
+                    width: '100%',
+                    height: '100%'
+                 }}>
+                <Paper style={{
+                           width: '100%',
+                           height: '100%',
+                           display: 'flex',
+                           flexDirection: 'column'
+                       }}>
+                    <MUIDocContextMenu {...docContextMenuCallbacks}
+                                       selectedProvider={this.selectedProvider}
+                                       render={rawContextMenuHandler => {
 
                     return (
                         <>
                             <EnhancedTableToolbar data={data}
-                                                  selectedProvider={selectedProvider}
+                                                  selectedProvider={this.selectedProvider}
                                                   numSelected={selected.length}
                                                   rowsPerPage={rowsPerPage}
                                                   onChangePage={handleChangePage}
@@ -218,12 +232,16 @@ export default function DocumentRepositoryTable(props: IProps) {
                                                   onDelete={() => console.log('FIXME: DELETE ==============' + Date.now())}
                                                   onFlagged={() => console.log('FIXME: FLAGGED ==============' + Date.now())}
                                                   onArchived={() => console.log('FIXME: ARCHIVED ==============' + Date.now())}
-                                                  />
+                            />
 
                             <TableContainer style={{flexGrow: 1}}>
                                 <Table
                                     stickyHeader
-                                    className={classes.table}
+                                    style={{
+                                        minWidth: 0,
+                                        maxWidth: '100%',
+                                        tableLayout: 'fixed'
+                                    }}
                                     aria-labelledby="tableTitle"
                                     size={'medium'}
                                     aria-label="enhanced table"
@@ -239,29 +257,43 @@ export default function DocumentRepositoryTable(props: IProps) {
                                             .map((row, viewIndex) => {
 
                                                 return (
-                                                    <DocRepoTableRow viewIndex={viewIndex}
-                                                                     rawContextMenuHandler={rawContextMenuHandler}
-                                                                     selectRow={props.selectRow}
-                                                                     isSelected={isSelected}
-                                                                     onLoadDoc={props.onLoadDoc}
-                                                                     row={row}
-                                                                     selectedProvider={selectedProvider}
-                                                                     />
+                                                    <DocRepoTableRow
+                                                        viewIndex={viewIndex}
+                                                        key={viewIndex}
+                                                        rawContextMenuHandler={rawContextMenuHandler}
+                                                        selectRow={this.props.selectRow}
+                                                        selected={this.isSelected(viewIndex)}
+                                                        onLoadDoc={this.props.onLoadDoc}
+                                                        row={row}
+                                                        selectedProvider={this.selectedProvider}
+                                                    />
                                                 );
                                             })}
                                         {emptyRows > 0 && (
-                                            <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                                <TableCell colSpan={6} />
+                                            <TableRow
+                                                style={{height: (dense ? 33 : 53) * emptyRows}}>
+                                                <TableCell colSpan={6}/>
                                             </TableRow>
                                         )}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </>
-                    );
-                }}/>
+                        </>);
+                    }}/>
 
-            </Paper>
-        </div>
-    );
+                </Paper>
+            </div>
+        );
+    }
+
+    private selectedProvider(): ReadonlyArray<RepoDocInfo> {
+        return arrayStream(this.props.selected)
+            .map(current => this.props.data[current])
+            .collect();
+    }
+
+    private isSelected(viewIndex: number): boolean {
+        return this.props.selected.indexOf(viewIndex) !== -1;
+    };
+
 };

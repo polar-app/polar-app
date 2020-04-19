@@ -82,7 +82,7 @@ namespace main {
                                  onCopyFilePath={() => console.log('onCopyFilePath')}
                                  onDelete={() => console.log('onDelete')}
                                  onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                 onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}
+                                 onLoadDoc={NULL_FUNCTION}
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}
         />
@@ -499,7 +499,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             onDocSetTitle: (repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title),
             onDocTagged: (repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags),
             onMultiDeleted: () => this.onMultiDeleted(),
-            selectRow: (selectedIdx, event, type) => this.selectRow(selectedIdx, event, type),
+            selectRow: this.selectRow,
             onSelected: selected => this.onSelected(selected),
             onReactTable: reactTable => this.reactTable = reactTable,
             onDragStart: event => this.onDragStart(event),

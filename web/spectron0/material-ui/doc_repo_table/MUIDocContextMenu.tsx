@@ -4,6 +4,7 @@ import {
     DocContextMenuProps,
     MUIDocDropdownMenuItems
 } from "./MUIDocDropdownMenuItems";
+import isEqual from "react-fast-compare";
 
 export type ContextMenuHandler = (event: React.MouseEvent<HTMLElement>) => void;
 
@@ -16,43 +17,58 @@ interface IState {
     readonly mouseY?: number;
 }
 
-export const MUIDocContextMenu = (props: IProps) => {
+export class MUIDocContextMenu extends React.Component<IProps, IState> {
 
-    const [state, setState] = React.useState<IState>({});
+    constructor(props: Readonly<IProps>) {
+        super(props);
 
-    const handleContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+        this.handleContextMenu = this.handleContextMenu.bind(this);
+
+        this.state = {};
+    }
+
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<{}>): boolean {
+        return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState))
+    }
+
+    private handleContextMenu(event: React.MouseEvent<HTMLElement>) {
         event.preventDefault();
-        setState({
+        this.setState({
             mouseX: event.clientX - 2,
             mouseY: event.clientY - 4,
         });
-    };
+    }
 
-    const handleClose = () => {
-        setState({})
-    };
+    public render() {
 
-    return (
-        <>
-            {state.mouseX !== undefined && state.mouseY !== undefined &&
-                <Menu
-                    keepMounted
-                    open={state.mouseX !== undefined}
-                    onClose={handleClose}
-                    anchorReference="anchorPosition"
-                    anchorPosition={{
-                        top: state.mouseY,
-                        left: state.mouseX
-                    }}>
+        const handleClose = () => {
+            this.setState({
+                mouseX: undefined,
+                mouseY: undefined
+            });
+        };
 
-                    <MUIDocDropdownMenuItems {...props}/>
+        return (
+            <>
+                {this.state.mouseX !== undefined && this.state.mouseY !== undefined &&
+                    <Menu
+                        keepMounted
+                        open={this.state.mouseX !== undefined}
+                        onClose={() => handleClose()}
+                        anchorReference="anchorPosition"
+                        anchorPosition={{
+                            top: this.state.mouseY,
+                            left: this.state.mouseX
+                        }}>
 
-                </Menu>
-            }
+                        <MUIDocDropdownMenuItems {...this.props}/>
 
-            {props.render(handleContextMenu)}
+                    </Menu>}
 
-        </>
-    );
+                {this.props.render(this.handleContextMenu)}
 
-};
+            </>
+        );
+
+    }
+}
