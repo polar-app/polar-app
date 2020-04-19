@@ -125,7 +125,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
             <Autocomplete
                 multiple
                 // freeSolo
-                // defaultValue={defaultValue}
+                defaultValue={[...defaultOptions]}
                 options={[...options]}
                 getOptionLabel={(option) => option.label}
                 onChange={(event, value, reason, details) => handleChange(event, value, reason, details)}

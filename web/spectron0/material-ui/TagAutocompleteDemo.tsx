@@ -22,11 +22,14 @@ const createOption = (input: string): AutocompleteOption<Tag> => ({
     }
 });
 
+const defaultOptions = tagOptions.slice(0, 2);
+
 export const TagAutocompleteDemo = () => (
 
     <div style={{margin: '10px'}}>
         <MUICreatableAutocomplete label="Create or select tags: "
                                   options={tagOptions}
+                                  defaultOptions={defaultOptions}
                                   createOption={createOption}/>
     </div>
 );
