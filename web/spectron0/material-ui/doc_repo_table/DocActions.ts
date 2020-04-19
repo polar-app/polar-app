@@ -23,7 +23,8 @@ export namespace DocActions {
         }
 
         export interface Callbacks {
-            readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+            readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+            readonly onDelete: Callback1<ReadonlyArray<RepoDocInfo>>;
             readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
             readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
         }

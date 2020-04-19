@@ -167,9 +167,10 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                                   onChangeRowsPerPage={handleChangeRowsPerPage}
                                                   onSelectAllRows={handleSelectAllRows}
                                                   page={page}
-                                                  onDelete={this.props.onDelete}
-                                                  onFlagged={this.props.onFlagged}
-                                                  onArchived={this.props.onArchived}/>
+                                                  onTagged={NULL_FUNCTION}
+                                                  onDelete={this.callbacks.onDelete}
+                                                  onFlagged={this.callbacks.onFlagged}
+                                                  onArchived={this.callbacks.onArchived}/>
 
                             <TableContainer style={{flexGrow: 1}}>
                                 <Table
@@ -240,7 +241,10 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
     }
 
     private onDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
-        console.log('FIXME1: handling deleted: ', repoDocInfos);
+
+        if (repoDocInfos.length === 0) {
+            return;
+        }
 
         Dialogs.confirm({
             title: "Are you sure you want to delete these document(s)?",

@@ -25,8 +25,8 @@ import {GlobalHotKeys} from "react-hotkeys";
 import { AutoBlur } from "./AutoBlur";
 
 const globalKeyMap = {
-    TAG: 'd',
-    DELETE: 'd',
+    TAG: 't',
+    DELETE: ['d', 'del'],
     FLAG: 'f',
     ARCHIVE: 'a'
 };
