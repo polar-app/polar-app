@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Sorting} from "./Sorting";
 import {EnhancedTableToolbar} from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
@@ -19,7 +19,7 @@ import {DocRepoTableRow} from "./DocRepoTableRow";
 import {Numbers} from 'polar-shared/src/util/Numbers';
 import {Dialogs} from "../../../js/ui/dialogs/Dialogs";
 
-interface IProps extends DocActions.DocContextMenu.Callbacks {
+interface IProps {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
@@ -28,6 +28,18 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
 
     readonly selectRows: (selected: ReadonlyArray<number>) => void;
+
+    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onOpen: Callback1<RepoDocInfo>;
+    readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
+    readonly onShowFile: Callback1<RepoDocInfo>;
+    readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
+    readonly onCopyFilePath: Callback1<RepoDocInfo>;
+    readonly onCopyDocumentID: Callback1<RepoDocInfo>;
+    readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+
 
 }
 
@@ -49,16 +61,18 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         this.selectedProvider = this.selectedProvider.bind(this);
         this.isSelected = this.isSelected.bind(this);
         this.onTagged = this.onTagged.bind(this);
+        this.onRename = this.onRename.bind(this);
 
         // keep a copy of JUST the callbacks so we can pass these without
         // breaking memoization
         this.callbacks = {
 
+            onTagged: this.onTagged,
             onOpen: props.onOpen,
-            onRename: props.onRename,
+            onRename: this.onRename,
             onShowFile: props.onShowFile,
             onCopyOriginalURL: props.onCopyOriginalURL,
-            onDelete: this.onDeleted,
+            onDeleted: this.onDeleted,
             onCopyDocumentID: props.onCopyDocumentID,
             onCopyFilePath: props.onCopyFilePath,
             onFlagged: this.props.onFlagged,
@@ -168,7 +182,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                                   onSelectAllRows={handleSelectAllRows}
                                                   page={page}
                                                   onTagged={NULL_FUNCTION}
-                                                  onDelete={this.callbacks.onDelete}
+                                                  onDelete={this.callbacks.onDeleted}
                                                   onFlagged={this.callbacks.onFlagged}
                                                   onArchived={this.callbacks.onArchived}/>
 
@@ -251,8 +265,20 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
             onCancel: NULL_FUNCTION,
             type: 'danger',
-            onConfirm: () => this.props.onDelete(repoDocInfos),
+            onConfirm: () => this.props.onDeleted(repoDocInfos),
         });
+
+    }
+
+    private onRename(repoDocInfo: RepoDocInfo) {
+
+        Dialogs.prompt({
+            title: "Enter a new title for the document:",
+            defaultValue: repoDocInfo.title,
+            onCancel: NULL_FUNCTION,
+            onDone: (value) => this.props.onRename(repoDocInfo, value)
+        });
+
     }
 
 };

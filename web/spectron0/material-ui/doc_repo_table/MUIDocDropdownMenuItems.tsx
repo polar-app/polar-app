@@ -107,7 +107,7 @@ export class MUIDocDropdownMenuItems extends React.Component<IProps> {
 
                 <Divider/>
 
-                <MenuItem onClick={() => this.props.onDelete(selected)}>
+                <MenuItem onClick={() => this.props.onDeleted(selected)}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>

@@ -81,7 +81,7 @@ namespace main {
                                  onRename={() => console.log('onRename')}
                                  onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
                                  onCopyFilePath={() => console.log('onCopyFilePath')}
-                                 onDelete={() => console.log('onDelete')}
+                                 onDeleted={() => console.log('onDelete')}
                                  onCopyDocumentID={() => console.log('onCopyDocumentID')}
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}
@@ -642,6 +642,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     private onDocDeleteRequested(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+
+        // FIXME: this is now obsolte
 
         Dialogs.confirm({
             title: "Are you sure you want to delete these document(s)?",

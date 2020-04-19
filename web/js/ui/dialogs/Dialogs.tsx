@@ -1,9 +1,9 @@
-import {Confirm} from './Confirm';
 import * as React from 'react';
 import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
-import {Prompt, PromptProps} from './Prompt';
+import {PromptProps} from './Prompt';
 import {Alert} from "./Alert";
-import { ConfirmDialog } from './ConfirmDialog';
+import {ConfirmDialog} from './ConfirmDialog';
+import {PromptDialog} from "./PromptDialog";
 
 export class Dialogs {
 
@@ -69,7 +69,7 @@ export class Dialogs {
             opts.onDone(value);
         };
 
-        injected = ReactInjector.inject(<Prompt {...opts} onCancel={onCancel} onDone={onDone}/>);
+        injected = ReactInjector.inject(<PromptDialog {...opts} onCancel={onCancel} onDone={onDone}/>);
 
     }
 

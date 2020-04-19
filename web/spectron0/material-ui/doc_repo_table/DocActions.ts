@@ -60,13 +60,14 @@ export namespace DocActions {
         }
 
         export interface Callbacks {
+            readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
             readonly onOpen: Callback1<RepoDocInfo>;
             readonly onRename: Callback1<RepoDocInfo>;
             readonly onShowFile: Callback1<RepoDocInfo>;
             readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
             readonly onCopyFilePath: Callback1<RepoDocInfo>;
             readonly onCopyDocumentID: Callback1<RepoDocInfo>;
-            readonly onDelete: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+            readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
             readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
             readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
         }
@@ -88,7 +89,7 @@ export namespace DocActions {
             onCopyOriginalURL: () => callbacks.onCopyOriginalURL(first!),
             onCopyFilePath: () => callbacks.onCopyFilePath(first!),
             onCopyDocumentID: () => callbacks.onCopyDocumentID(first!),
-            onDelete: () => callbacks.onDelete(selected),
+            onDelete: () => callbacks.onDeleted(selected),
             onArchived: () => callbacks.onArchived(selected),
             onFlagged: () => callbacks.onFlagged(selected),
 
