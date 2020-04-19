@@ -25,7 +25,8 @@ export class MUIDocDropdownMenu extends React.Component<IProps> {
                 anchorOrigin={{vertical: "bottom", horizontal: "center"}}
                 transformOrigin={{vertical: "top", horizontal: "center"}}
                 open={Boolean(anchorEl)}
-                onClose={() => this.props.onClose()}>
+                onClose={() => this.props.onClose()}
+                onClick={() => this.props.onClose()}>
 
                 <MUIDocDropdownMenuItems {...this.props}/>
 

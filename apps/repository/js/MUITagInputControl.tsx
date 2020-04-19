@@ -174,7 +174,9 @@ const RelatedTagsItems = (props: IRenderProps) => {
 
 const TagInputBody = (props: IRenderProps) => {
 
-    return <Dialog open={true}>
+    // FIXME: command+enter...
+
+    return <Dialog open={props.open}>
 
             <DialogContent>
 

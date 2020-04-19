@@ -16,6 +16,7 @@ export const InputCompleteListener = (props: IProps) => {
 
         if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
             props.onComplete();
+            event.stopPropagation();
             return;
         }
 
