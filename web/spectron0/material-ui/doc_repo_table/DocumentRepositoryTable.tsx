@@ -17,15 +17,13 @@ import {DocActions} from "./DocActions";
 import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {Numbers} from 'polar-shared/src/util/Numbers';
+import {Dialogs} from "../../../js/ui/dialogs/Dialogs";
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
     readonly selected: ReadonlyArray<number>;
-
-    // called when the user wants to view a doc
-    readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
 
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
 
@@ -43,11 +41,30 @@ interface IState {
 
 export default class DocumentRepositoryTable extends React.Component<IProps, IState> {
 
+    private callbacks: DocActions.DocContextMenu.Callbacks;
+
     constructor(props: Readonly<IProps>) {
         super(props);
 
         this.selectedProvider = this.selectedProvider.bind(this);
         this.isSelected = this.isSelected.bind(this);
+        this.onTagged = this.onTagged.bind(this);
+
+        // keep a copy of JUST the callbacks so we can pass these without
+        // breaking memoization
+        this.callbacks = {
+
+            onOpen: props.onOpen,
+            onRename: props.onRename,
+            onShowFile: props.onShowFile,
+            onCopyOriginalURL: props.onCopyOriginalURL,
+            onDelete: this.onDeleted,
+            onCopyDocumentID: props.onCopyDocumentID,
+            onCopyFilePath: props.onCopyFilePath,
+            onFlagged: this.props.onFlagged,
+            onArchived: this.props.onArchived,
+
+        };
 
         this.state = {
             order: 'desc',
@@ -55,7 +72,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             page: 0,
             dense: true,
             rowsPerPage: 25
-        }
+        };
 
     }
 
@@ -122,20 +139,6 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
 
-        const docContextMenuCallbacks: DocActions.DocContextMenu.Callbacks = {
-
-            onOpen: NULL_FUNCTION,
-            onRename: NULL_FUNCTION,
-            onShowFile: NULL_FUNCTION,
-            onCopyOriginalURL: NULL_FUNCTION,
-            onDelete: NULL_FUNCTION,
-            onCopyDocumentID: NULL_FUNCTION,
-            onCopyFilePath: NULL_FUNCTION,
-            onFlagged: this.props.onFlagged,
-            onArchived: this.props.onArchived,
-
-        };
-
         const pageData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
         return (
@@ -149,7 +152,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                            display: 'flex',
                            flexDirection: 'column'
                        }}>
-                    <MUIDocContextMenu {...docContextMenuCallbacks}
+                    <MUIDocContextMenu {...this.callbacks}
                                        selectedProvider={this.selectedProvider}
                                        render={rawContextMenuHandler => {
 
@@ -198,7 +201,8 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                                         rawContextMenuHandler={rawContextMenuHandler}
                                                         selectRow={this.props.selectRow}
                                                         selected={this.isSelected(viewIndex)}
-                                                        onLoadDoc={this.props.onLoadDoc}
+                                                        {...this.callbacks}
+                                                        onTagged={this.onTagged}
                                                         row={row}
                                                         selectedProvider={this.selectedProvider}
                                                     />
@@ -230,5 +234,21 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
     private isSelected(viewIndex: number): boolean {
         return this.props.selected.indexOf(viewIndex) !== -1;
     };
+
+    private onTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+
+    }
+
+    private onDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+        console.log('FIXME1: handling deleted: ', repoDocInfos);
+
+        Dialogs.confirm({
+            title: "Are you sure you want to delete these document(s)?",
+            subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
+            onCancel: NULL_FUNCTION,
+            type: 'danger',
+            onConfirm: () => this.props.onDelete(repoDocInfos),
+        });
+    }
 
 };

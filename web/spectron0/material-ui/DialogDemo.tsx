@@ -20,7 +20,7 @@ export default function DialogDemo() {
         <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title"
                 open={open}>
             <DialogContent>
-                <MUICreatableAutocomplete/>
+                {/*<MUICreatableAutocomplete/>*/}
             </DialogContent>
             {/*<DialogActions>*/}
             {/*    <Button autoFocus onClick={handleClose} color="primary">*/}

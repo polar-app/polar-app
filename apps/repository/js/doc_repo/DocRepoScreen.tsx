@@ -83,7 +83,6 @@ namespace main {
                                  onCopyFilePath={() => console.log('onCopyFilePath')}
                                  onDelete={() => console.log('onDelete')}
                                  onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                 onLoadDoc={NULL_FUNCTION}
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}
         />

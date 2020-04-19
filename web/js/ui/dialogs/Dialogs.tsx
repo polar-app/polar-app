@@ -3,6 +3,7 @@ import * as React from 'react';
 import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
 import {Prompt, PromptProps} from './Prompt';
 import {Alert} from "./Alert";
+import { ConfirmDialog } from './ConfirmDialog';
 
 export class Dialogs {
 
@@ -22,12 +23,14 @@ export class Dialogs {
             }
         };
 
-        const onConfirm = () => {
+        const onAccept = () => {
             cleanup();
             opts.onConfirm();
         };
 
-        injected = ReactInjector.inject(<Confirm {...opts} onCancel={onCancel} onConfirm={onConfirm}/>);
+        injected = ReactInjector.inject(<ConfirmDialog {...opts}
+                                                       onCancel={onCancel}
+                                                       onAccept={onAccept}/>);
 
     }
 
@@ -87,7 +90,7 @@ export interface ConfirmProps {
     readonly subtitle: string | JSX.Element;
     readonly onCancel?: () => void;
     readonly onConfirm: () => void;
-    readonly type?: 'danger' | 'warning' | 'success' | 'info';
+    readonly type?: 'danger' | 'error' | 'warning' | 'success' | 'info';
     readonly noCancel?: boolean;
 
 }

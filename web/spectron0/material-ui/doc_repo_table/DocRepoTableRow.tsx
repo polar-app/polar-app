@@ -12,8 +12,9 @@ import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tags, Tag} from "polar-shared/src/tags/Tags";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
+import {DocActions} from "./DocActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -109,14 +110,15 @@ export const TableCellTags = React.memo((props: TableCellTagsProps) => {
     );
 }, isEqual);
 
-interface IProps {
+interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly viewIndex: number;
     readonly rawContextMenuHandler: ContextMenuHandler;
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly selected: boolean;
-    readonly onLoadDoc: (repoDocInfo: RepoDocInfo) => void;
+    readonly onOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly row: RepoDocInfo;
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 }
 
 // FIXME: enter keyboard command should open the current row...
@@ -147,7 +149,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             role="checkbox"
             aria-checked={selected}
             tabIndex={-1}
-            onDoubleClick={() => props.onLoadDoc(row)}
+            onDoubleClick={() => props.onOpen(row)}
             selected={selected}>
 
             <TableCell padding="checkbox">
@@ -214,17 +216,8 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                                  flagged={row.flagged}
                                  archived={row.archived}
                                  onDocDropdown={(event) => props.selectRow(viewIndex, event, 'click')}
-                                 onArchived={NULL_FUNCTION}
-                                 onFlagged={NULL_FUNCTION}
-                                 onTagRequested={NULL_FUNCTION}
-                                 onOpen={NULL_FUNCTION}
-                                 onRename={NULL_FUNCTION}
-                                 onShowFile={NULL_FUNCTION}
-                                 onCopyOriginalURL={NULL_FUNCTION}
-                                 onDelete={NULL_FUNCTION}
-                                 onCopyDocumentID={NULL_FUNCTION}
-                                 onCopyFilePath={NULL_FUNCTION}
-                />
+                                 onTagged={props.onTagged}
+                                 {...props}/>
 
             </TableCell>
 

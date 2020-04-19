@@ -8,10 +8,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import {GlobalCompleteListener} from '../complete_listeners/GlobalCompleteListener';
+import {GlobalCompleteListener} from "../../../spectron0/material-ui/complete_listeners/GlobalCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        danger: {
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.error.contrastText,
+        },
         error: {
             backgroundColor: theme.palette.error.main,
             color: theme.palette.error.contrastText,
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export type AlertType = 'error' | 'warning' | 'success' | 'info';
+export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info';
 
 interface IProps {
     readonly onCancel: Callback;
@@ -124,11 +128,3 @@ export const ConfirmDialog = (props: IProps) => {
         </Dialog>
     );
 };
-
-export const AlertDialogDemo = () => (
-    <ConfirmDialog onAccept={() => console.log('accept')}
-                   onCancel={() => console.log('cancel')}
-                   title="You sure you want to do something dangerous?"
-                   subtitle="This is a dangerous action and can't be undone bro."
-                   type='success' />
-);
