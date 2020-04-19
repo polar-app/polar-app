@@ -16,6 +16,9 @@ import FlagIcon from "@material-ui/icons/Flag";
 import { TagAutocompleteDemo } from './TagAutocompleteDemo';
 import {AlertDialogDemo} from "./dialogs/AlertDialogDemo";
 import {PromptDialogDemo} from "./dialogs/PromptDialogDemo";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import {InputValidationErrorSnackbar} from "./dialogs/InputValidationErrorSnackbar";
 
 // configure({logLevel: "debug"});
 
@@ -95,6 +98,14 @@ export const App = () => {
                     {/*<TagAutocompleteDemo/>*/}
                     <AlertDialogDemo/>
                     <PromptDialogDemo/>
+
+                    <InputValidationErrorSnackbar message="This is a bad message bro"/>
+
+                    {/*<Snackbar open={true} autoHideDuration={1000} onClose={NULL_FUNCTION}>*/}
+                    {/*    <Alert severity="error" onClose={NULL_FUNCTION}>*/}
+                    {/*        This is a very very bad error message.*/}
+                    {/*    </Alert>*/}
+                    {/*</Snackbar>*/}
 
                     {/*<DocumentRepositoryTable data={MockRepoDocInfos.create()}*/}
                     {/*                         selected={[0, 1]}*/}

@@ -8,7 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {InputValidator} from "../../../js/ui/dialogs/InputValidators";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import {InputValidationErrorSnackbar} from "./InputValidationErrorSnackbar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,42 +33,85 @@ interface IProps {
     defaultValue?: string;
     placeholder?: string;
     autoFocus?: boolean;
-    validator?: InputValidator;
+    inputValidator?: InputValidator;
     type?: 'email' | 'number' | 'search' | 'password'
     onCancel: () => void;
     onDone: (value: string) => void;
+}
+
+interface IState {
+    readonly open: boolean;
+    readonly validationError?: string;
 }
 
 export const PromptDialog = (props: IProps) => {
 
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(true);
+    const [state, setState] = React.useState<IState>({
+        open: true
+    });
+
+    const closeDialog = () => {
+        setState({open: false});
+    };
 
     const handleClose = () => {
         props.onCancel();
-        setOpen(false);
+        closeDialog();
     };
 
     const handleCancel = () => {
         props.onCancel();
-        setOpen(false);
+        closeDialog();
     };
 
     const handleDone = () => {
+
+        if (props.inputValidator) {
+
+            const validationError = props.inputValidator(value);
+
+            if (validationError) {
+
+                setState({
+                    ...state,
+                    validationError: validationError.message
+                });
+
+                return;
+            }
+
+        }
+
         props.onDone(value);
-        setOpen(false);
+        closeDialog();
     };
 
-    let value: string = "";
+    const handleInput = (text: string) => {
+
+        if (state.validationError) {
+            setState({
+                ...state,
+                validationError: undefined
+            })
+        }
+
+        value = text;
+    };
+
+    let value: string = props.defaultValue;
 
     return (
         <div>
-            <Dialog open={open}
+            <Dialog open={state.open}
                     onClose={handleClose}
                     aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
                 <DialogContent>
+
+                    {state.validationError &&
+                        <InputValidationErrorSnackbar message={state.validationError}/>}
 
                     {props.description &&
                         <DialogContentText className={classes.description}>
@@ -75,7 +120,7 @@ export const PromptDialog = (props: IProps) => {
 
                     <TextField className={classes.textField}
                                autoFocus={props.autoFocus}
-                               onChange={event => value = event.currentTarget.value}
+                               onChange={event => handleInput(event.currentTarget.value)}
                                margin="dense"
                                id="name"
                                defaultValue={props.defaultValue}
@@ -111,20 +156,21 @@ export const PromptDialogDemo = () => {
         setOpen(true);
     };
 
-    return (
-        <>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open prompt dialog
-            </Button>
+    return <>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            Open prompt dialog
+        </Button>
 
-            {open && <PromptDialog title="Enter a title"
-                                   placeholder="Enter a title for this document: "
-                                   // defaultValue="Fahrenheit 451"
-                                   label="Title"
-                                   onCancel={() => console.log('cancel')}
-                                   onDone={(value) => console.log('done: ', value)}/>}
-        </>
-    );
+        {open && <PromptDialog title="Enter a title"
+                               placeholder="Enter a title for this document: "
+                               // defaultValue="Fahrenheit 451"
+                               label="Title"
+                               inputValidator={() => ({
+                                   message: 'bad input bro'
+                               })}
+                               onCancel={() => console.log('cancel')}
+                               onDone={(value) => console.log('done: ', value)}/>}
+    </>;
 
 };
 
