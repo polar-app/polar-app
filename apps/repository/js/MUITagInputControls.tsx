@@ -29,6 +29,8 @@ export namespace MUITagInputControls {
      */
     export function prompt(opts: Opts) {
 
+        // FIXME: this is not injecting under the root and break themes..
+
         let injected: InjectedComponent | undefined;
 
         const cleanup = () => {

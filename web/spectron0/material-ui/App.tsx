@@ -25,6 +25,7 @@ import {AutocompleteOption} from "./MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
+import MUITreeView from './treeview/MUITreeView';
 
 // configure({logLevel: "debug"});
 
@@ -55,13 +56,13 @@ export const App = () => {
 
     const tags = MockTags.create();
     //
-    MUITagInputControls.prompt({
-        availableTags: tags,
-        existingTags: () => [],
-        onChange: NULL_FUNCTION,
-        onCancel: NULL_FUNCTION,
-        onDone: NULL_FUNCTION
-    });
+    // MUITagInputControls.prompt({
+    //     availableTags: tags,
+    //     existingTags: () => [],
+    //     onChange: NULL_FUNCTION,
+    //     onCancel: NULL_FUNCTION,
+    //     onDone: NULL_FUNCTION
+    // });
 
     return (
         // <GlobalHotKeys
@@ -90,7 +91,7 @@ export const App = () => {
 
                     {/*</Grid>*/}
 
-                    {/*<FolderTree/>*/}
+                    <MUITreeView/>
 
                     {/*<DialogDemo/>*/}
 
