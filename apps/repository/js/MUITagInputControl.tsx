@@ -172,10 +172,11 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
 const RelatedTagsItems = (props: IRenderProps) => {
     return <span>
                 {props.relatedTags.map(item =>
-                    <Button className="mr-1"
-                            key={item}
-                            style={{...Styles.relatedTag}}
-                            onClick={() => props.addRelatedTag(item)}>{item}</Button>)}
+                    <Chip key={item}
+                          className="mr-1"
+                          style={{...Styles.relatedTag}}
+                          label={item}
+                          onClick={() => props.addRelatedTag(item)}/>)}
             </span>;
 
 };
@@ -277,39 +278,27 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.activate = this.activate.bind(this);
-        this.deactivate = this.deactivate.bind(this);
-
         this.onCancel = this.onCancel.bind(this);
         this.onDone = this.onDone.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
 
+        const existingTags = this.props.existingTags ? this.props.existingTags() : [];
+        const pendingTags = TagUtils.selfTags(existingTags);
+        const docTags = TagUtils.docTags(existingTags);
+
         this.state = {
             open: true,
-            pendingTags: [],
-            docTags: []
+            pendingTags, docTags
         };
 
     }
 
-    private activate() {
-
-        const existingTags = this.props.existingTags ? this.props.existingTags() : [];
-        const pendingTags = TagUtils.selfTags(existingTags);
-        const docTags = TagUtils.docTags(existingTags);
-        this.setState({
-            open: true,
-            pendingTags, docTags
-        });
-
-    }
-
-    private deactivate() {
-        this.setState({open: false});
-    }
-
     public render() {
+
+        if (! this.props.relatedTagsManager) {
+            log.warn("No relatedTagsManager");
+        }
 
         const relatedTagsManager = this.props.relatedTagsManager || new RelatedTagsManager();
 

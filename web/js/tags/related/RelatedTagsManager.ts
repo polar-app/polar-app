@@ -91,6 +91,8 @@ export class RelatedTagsManager {
 
         };
 
+        tags = tags.filter(tag => ! tag.startsWith('/'));
+
         for (const tag of tags) {
             updateHits(tag);
         }
