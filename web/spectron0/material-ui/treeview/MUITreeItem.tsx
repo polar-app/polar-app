@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {MinusSquare, PlusSquare} from "./MUITreeIcons";
 import {NodeSelectToggleType} from "./MUITreeView";
+import Box from "@material-ui/core/Box";
 
 function TransitionComponent(props: TransitionProps) {
     const style = useSpring({
@@ -59,23 +60,26 @@ export const MUITreeItem = withStyles((theme: Theme) =>
                            alignItems: 'center'
                        }}>
 
-                      <Checkbox checked={props.selected}
-                                onClick={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}
-                                />
+                      <Box pt={1} pb={1} onClick={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}>
+                          <Checkbox checked={props.selected}
+                                    style={{padding: 0}}
 
-                      <div style={{flexGrow: 1}}
-                           onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}
-                           >
-                          {props.label}
+                                    />
+                      </Box>
+
+                      <div style={{flexGrow: 1}}>
+                          <Box pl={1} pt={1} pb={1}
+                               onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
+                            {props.label}
+                          </Box>
                       </div>
 
-                      <div
-                          onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}
-                          >
+                      <Box pt={1} pb={1}  onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
+
                           <Typography variant="caption" color="textSecondary">
                               {props.info}
                           </Typography>
-                      </div>
+                      </Box>
 
                   </div>
               }
