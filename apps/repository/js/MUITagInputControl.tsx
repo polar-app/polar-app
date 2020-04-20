@@ -115,7 +115,7 @@ const RelatedTagsWidget = (props: IRenderProps) => {
 
     return <Box>
 
-        <Box pt={1} pb={1}>
+        <Box pb={1}>
             <strong>Related tags: </strong>
         </Box>
 
