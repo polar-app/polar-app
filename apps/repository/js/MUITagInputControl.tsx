@@ -163,6 +163,12 @@ const TagInputBody = (props: IRenderProps) => {
 
     // FIXME: command+enter...
 
+    console.log("FIXME: props; ", props);
+
+    // FIXME: this isn't working because
+    // the autocomplete widget itself has state so we need to control
+    // it directly
+
     return <Dialog open={props.open}
                    onClose={props.onCancel}>
 
@@ -286,7 +292,10 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
             return {
                 id: tag.id,
                 label: tag.label,
-                value: tag
+                value: {
+                    id: tag.id,
+                    label: tag.label,
+                }
             };
         };
 
@@ -316,18 +325,17 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
         return (
 
-            <TagInputBody
-                availableTagOptions={availableTagOptions}
-                pendingTagOptions={pendingTags}
-                relatedTags={relatedTags}
-                handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
-                createOption={createOption}
-                onKeyDown={NULL_FUNCTION}
-                addRelatedTag={label => this.addRelatedTag(label)}
-                {...this.props}
-                {...this.state}
-                onCancel={() => this.onCancel()}
-                onDone={() => this.onDone()}/>
+            <TagInputBody availableTagOptions={availableTagOptions}
+                          pendingTagOptions={pendingTags}
+                          relatedTags={relatedTags}
+                          handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
+                          createOption={createOption}
+                          onKeyDown={NULL_FUNCTION}
+                          addRelatedTag={label => this.addRelatedTag(label)}
+                          {...this.props}
+                          {...this.state}
+                          onCancel={() => this.onCancel()}
+                          onDone={() => this.onDone()}/>
 
         );
 

@@ -92,9 +92,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
     });
 
     const handleChange = (event: React.ChangeEvent<{}>,
-                          newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[],
-                          reason: AutocompleteChangeReason,
-                          details: AutocompleteChangeDetails<InternalAutocompleteOption<T>> | undefined) => {
+                          newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
 
         const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<AutocompleteOption<T>> => {
 
@@ -106,14 +104,12 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                 }
             };
 
-            return arrayStream(rawOptions)
-                .map(toAutocompleteOption)
-                .collect();
+            return rawOptions.map(toAutocompleteOption);
 
         };
 
         // make sure any new values are in the options map because MUI gets mad
-        // if there's a value thats not in the options.
+        // if there's a value that's not in the options.
         const convertToOptions = (newValues: ReadonlyArray<AutocompleteOption<T>>) => {
 
             const optionsMap = arrayStream(state.options)
@@ -174,7 +170,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
                 getOptionLabel={(option) => option.label}
-                onChange={(event, value, reason, details) => handleChange(event, value, reason, details)}
+                onChange={(event, value, reason, details) => handleChange(event, value)}
                 filterSelectedOptions
                 filterOptions={(options, params) => {
 
