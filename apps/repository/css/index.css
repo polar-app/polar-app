@@ -1,9 +1,6 @@
 @import "./App.css";
-@import "./App.css";
 
-@import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-/* @import "../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css"; */
-@import "../../../node_modules/font-awesome/css/font-awesome.min.css";
+/*@import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";*/
 
 html, body {
     /* -apple-system, BlinkMacSystemFont,  */

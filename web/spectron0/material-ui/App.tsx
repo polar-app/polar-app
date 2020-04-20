@@ -26,7 +26,11 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
 import MUITreeView from './treeview/MUITreeView';
-
+import {MUIHelpMenu} from "./MUIHelpMenu";
+import {MUIDropdownMenu} from "./dropdown_menu/MUIDropdownMenu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import SettingsIcon from '@material-ui/icons/Settings';
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -91,7 +95,7 @@ export const App = () => {
 
                     {/*</Grid>*/}
 
-                    <MUITreeView/>
+                    {/*<MUITreeView/>*/}
 
                     {/*<DialogDemo/>*/}
 
@@ -101,7 +105,19 @@ export const App = () => {
 
 
                     {/*<div style={{margin: '5px'}}>*/}
-                    {/*    <SearchBox/>*/}
+                    {/*<SearchBox onChange={NULL_FUNCTION}/>*/}
+
+                    {/*<MUIHelpMenu/>*/}
+
+                    <MUIDropdownMenu button={{
+                                        icon: <SettingsIcon/>
+                                     }}>
+                        <div>
+                            <MenuItem >Profile</MenuItem>
+                            <MenuItem >My account</MenuItem>
+                            <MenuItem >Logout</MenuItem>
+                        </div>
+                    </MUIDropdownMenu>
 
                     {/*</div>*/}
 

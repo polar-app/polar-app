@@ -1,8 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Button} from 'reactstrap';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {SimpleTooltip} from '../tooltip/SimpleTooltip';
+import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
 
@@ -20,10 +20,11 @@ export class EnableCloudSyncButton extends React.PureComponent<IProps, IState> {
 
                     <Button id="enable-cloud-sync"
                             color="primary"
-                            size="md"
+                            variant="contained"
                             onClick={() => this.props.onClick()}>
 
-                        <i className="fas fa-sign-in-alt" style={{marginRight: '5px'}}/>
+                        {/*FIXME: this needs an icon*/}
+                        {/*<i className="fas fa-sign-in-alt" style={{marginRight: '5px'}}/>*/}
 
                         <span className="d-none-mobile">Login</span>
 

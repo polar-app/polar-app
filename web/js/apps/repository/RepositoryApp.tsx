@@ -406,7 +406,7 @@ export class RepositoryApp {
 
                     </BrowserRouter>
 
-                </>,
+                </>
 
                 <Input key="file-upload"
                        type="file"

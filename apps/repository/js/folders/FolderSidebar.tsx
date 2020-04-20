@@ -9,6 +9,7 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 import { Strings } from 'polar-shared/src/util/Strings';
 import TextField from '@material-ui/core/TextField';
+import SearchBox from '../../../../web/spectron0/material-ui/SearchBox';
 
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
@@ -98,14 +99,14 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                             {/*             }}*/}
                             {/*             onChange={value => this.setFilter(value)}/>*/}
 
-                            <TextField type="search"
+                            <SearchBox
+                                       // type="search"
                                        placeholder="Filter by tag or folder"
                                        style={{
                                            flexGrow: 1
                                        }}
                                        size="small"
-                                       variant="outlined"
-                                       onChange={event => this.setFilter(event.currentTarget.value)}/>
+                                       onChange={text => this.setFilter(text)}/>
 
                             {/*<Button className="ml-1 mt-auto mb-auto pl-1 pr-1"*/}
                             {/*        style={{outline: 'none', boxShadow: 'none'}}*/}
