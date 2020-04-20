@@ -56,8 +56,11 @@ function isCreateAutocompleteOption<T>(option: InternalAutocompleteOption<T>): o
 }
 
 interface IProps<T> {
+
     readonly label: string;
+
     readonly options: ReadonlyArray<AutocompleteOption<T>>;
+
     readonly defaultOptions?: ReadonlyArray<AutocompleteOption<T>>;
 
     readonly placeholder?: string

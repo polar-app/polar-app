@@ -21,6 +21,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import MUICreatableAutocomplete
     , {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 const log = Logger.create();
 
@@ -34,26 +35,6 @@ class Styles {
 
     public static label: React.CSSProperties = {
         fontWeight: 'bold'
-    };
-
-    public static relatedTags: React.CSSProperties = {
-        display: 'flex',
-    };
-
-    public static relatedTagsLabel: React.CSSProperties = {
-        marginTop: 'auto',
-        marginBottom: 'auto'
-    };
-
-    public static relatedTag: React.CSSProperties = {
-        display: 'inline-block',
-        backgroundColor: 'var(--grey100)',
-        color: 'hsl(0,0%,20%)',
-        fontSize: '12px',
-        padding: '3px',
-        paddingTop: '5px',
-        marginTop: 'auto',
-        marginBottom: 'auto'
     };
 
 }
@@ -132,13 +113,15 @@ const RelatedTagsWidget = (props: IRenderProps) => {
         return null;
     }
 
-    return <div style={Styles.relatedTags}>
-        <div className="mr-1 pt-1"
-             style={Styles.relatedTagsLabel}>
+    return <Box>
+
+        <Box pt={1} pb={1}>
             <strong>Related tags: </strong>
-        </div>
+        </Box>
+
         <RelatedTagsItems {...props}/>
-    </div>;
+
+    </Box>;
 
 };
 
@@ -154,30 +137,35 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
         </div>
     );
 
-    return <div className="mt-1">
+    return <Box mt={1}>
 
-        <div className="mr-1 pt-1 pb-1"
-             style={Styles.relatedTagsLabel}>
+        <Box pt={1} pb={1}>
             <strong>Tags inherited from document: </strong>
-        </div>
+        </Box>
 
         <div style={{display: 'flex'}}>
             {props.docTags.map(toChip)}
         </div>
 
-    </div>;
+    </Box>;
 
 };
 
 const RelatedTagsItems = (props: IRenderProps) => {
-    return <span>
-                {props.relatedTags.map(item =>
-                    <Chip key={item}
-                          className="mr-1"
-                          style={{...Styles.relatedTag}}
-                          label={item}
-                          onClick={() => props.addRelatedTag(item)}/>)}
-            </span>;
+
+    return (
+        <Grid container
+              direction="row"
+              justify="flex-start"
+              alignItems="center"
+              spacing={1}>
+            {props.relatedTags.map(item =>
+                <Grid item key={item}>
+                    <Chip label={item}
+                          onClick={() => props.addRelatedTag(item)}/>
+                </Grid>)}
+        </Grid>
+    );
 
 };
 
@@ -201,7 +189,7 @@ const TagInputBody = (props: IRenderProps) => {
                                               options={props.availableTagOptions}
                                               defaultOptions={props.pendingTagOptions}
                                               autoFocus
-                                              placeholder="Create or select tags ..."
+                                              // placeholder="Create or select tags ..."
                                               createOption={props.createOption}
                                               onChange={NULL_FUNCTION}/>
 
