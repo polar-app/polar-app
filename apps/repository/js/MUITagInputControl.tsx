@@ -117,7 +117,9 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
     }
 
     const toChip = (tag: Tag) => (
-        <Chip key={tag.id} label={tag.label}/>
+        <Chip key={tag.id}
+              size="small"
+              label={tag.label}/>
     );
 
     return (
@@ -151,6 +153,7 @@ const RelatedTagsItems = (props: IRenderProps) => {
             {props.relatedTags.map(item =>
                 <Grid item key={item}>
                     <Chip label={item}
+                          size="small"
                           onClick={() => props.addRelatedTag(item)}/>
                 </Grid>)}
         </Grid>

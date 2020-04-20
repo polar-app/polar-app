@@ -11,6 +11,7 @@ import Popper from "@material-ui/core/Popper";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -186,6 +187,14 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                     return filtered;
 
                 }}
+                renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                        <Chip key={option.label}
+                              label={option.label}
+                              size="small"
+                              {...getTagProps({ index })} />
+                    ))
+                }
                 // noOptionsText={<Button onClick={() => handleOptionCreated()}>Create "{value}"</Button>}
                 renderInput={(params) => (
                     <TextField
