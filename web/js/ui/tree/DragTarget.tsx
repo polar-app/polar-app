@@ -4,7 +4,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 class Styles {
 
     public static DROP_ACTIVE: React.CSSProperties = {
-        backgroundColor: 'var(--grey100)',
+        // backgroundColor: 'var(--grey100)',
         borderColor: 'var(--primary)',
         borderWidth: '1px',
         borderStyle: 'solid'

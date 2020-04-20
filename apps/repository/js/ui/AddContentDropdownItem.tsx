@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {SimpleTooltip} from '../../../../web/js/ui/tooltip/SimpleTooltip';
-import {AppRuntime} from '../../../../web/js/AppRuntime';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {ManualDropdown} from '../doc_repo/ManaulDropdown';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 
 export class AddContentDropdownItem extends React.PureComponent<IProps, IState> {

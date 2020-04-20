@@ -39,29 +39,6 @@ export class DocRepoButtonBar extends React.Component<IProps, IState> {
 
                 </DeviceRouter.Desktop>
 
-                <div className="mr-1"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                    <div style={{display: 'flex'}}>
-
-                        <div>
-
-                            <TagButton id="tag-multiple-documents"
-                                       disabled={! this.props.hasSelected}
-                                       tagsProvider={this.props.tagsProvider}
-                                       onSelectedTags={this.props.onMultiTagged}/>
-
-                        </div>
-
-                        <div className="ml-1">
-                            <MultiDeleteButton disabled={! this.props.hasSelected}
-                                               onClick={() => this.props.onMultiDeleted()}/>
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
 

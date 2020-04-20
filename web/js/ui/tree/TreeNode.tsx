@@ -25,7 +25,7 @@ class Styles {
         marginRight: '0px',
         fontSize: '0.8em',
         lineHeight: '1.5',
-        color: 'var(--secondary)',
+        // color: 'var(--secondary)',
         cursor: 'pointer',
         userSelect: 'none',
         // this has to be fixed width or each layer doesn't line up.
@@ -45,6 +45,8 @@ class Styles {
         paddingRight: '5px',
         fontFamily: 'sans-serif',
         boxShadow: 'none',
+
+        color: 'var(--secondary)',
 
         outline: 'none',
 
@@ -219,7 +221,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
 
                                 <button style={Styles.NODE_BUTTON}
                                         className={"p-0 pl-1 pr-1 border-0 no-outline " + nodeButtonClazz}
-                                        color="light">
+                                        >
 
                                     {this.props.title || node.name}
 

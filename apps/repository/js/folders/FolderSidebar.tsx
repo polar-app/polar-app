@@ -8,6 +8,7 @@ import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 import { Strings } from 'polar-shared/src/util/Strings';
+import TextField from '@material-ui/core/TextField';
 
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
@@ -91,11 +92,20 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                                  display: 'flex'
                              }}>
 
-                            <InputFilter placeholder="Filter by tag or folder"
-                                         style={{
-                                             flexGrow: 1
-                                         }}
-                                         onChange={value => this.setFilter(value)}/>
+                            {/*<InputFilter placeholder="Filter by tag or folder"*/}
+                            {/*             style={{*/}
+                            {/*                 flexGrow: 1*/}
+                            {/*             }}*/}
+                            {/*             onChange={value => this.setFilter(value)}/>*/}
+
+                            <TextField type="search"
+                                       placeholder="Filter by tag or folder"
+                                       style={{
+                                           flexGrow: 1
+                                       }}
+                                       size="small"
+                                       variant="outlined"
+                                       onChange={event => this.setFilter(event.currentTarget.value)}/>
 
                             {/*<Button className="ml-1 mt-auto mb-auto pl-1 pr-1"*/}
                             {/*        style={{outline: 'none', boxShadow: 'none'}}*/}

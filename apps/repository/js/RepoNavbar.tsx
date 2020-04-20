@@ -6,6 +6,10 @@ import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
 import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
 import { FeatureToggle } from '../../../web/js/ui/FeatureToggle';
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
+import Tabs from "@material-ui/core/Tabs";
+import {Link} from "react-router-dom";
+import Tab from "@material-ui/core/Tab";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const Styles: IStyleMap = {
 
@@ -56,20 +60,39 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                 <div className="mt-auto mb-auto">
 
                     <div className="ml-4">
-                        <SimpleTabs>
-                            <SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>
-                            <SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>
-                            <SimpleTab id="nav-tab-statistics" target={{pathname: "/stats"}} text="Statistics"/>
+                        {/*<SimpleTabs>*/}
+                        {/*    <SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
+                        {/*    <SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
+                        {/*    <SimpleTab id="nav-tab-statistics" target={{pathname: "/stats"}} text="Statistics"/>*/}
 
-                            <FeatureToggle name='groups'>
-                                <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>
-                            </FeatureToggle>
+                        {/*    <FeatureToggle name='groups'>*/}
+                        {/*        <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>*/}
+                        {/*    </FeatureToggle>*/}
 
-                            <FeatureToggle name='dev'>
-                                <SimpleTab id="nav-tab-ui" target={{pathname: "/ui-components"}} text="UI Components"/>
-                            </FeatureToggle>
+                        {/*    <FeatureToggle name='dev'>*/}
+                        {/*        <SimpleTab id="nav-tab-ui" target={{pathname: "/ui-components"}} text="UI Components"/>*/}
+                        {/*    </FeatureToggle>*/}
 
-                        </SimpleTabs>
+                        {/*</SimpleTabs>*/}
+
+
+                        <Tabs value={1}
+                              indicatorColor="primary"
+                              textColor="primary"
+                              onChange={NULL_FUNCTION}
+                            >
+
+                            {/*<SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
+                            {/*<SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
+
+                            {/*<Link to={{pathname: "/annotations"}}>*/}
+                                <Tab label="Annotations"/>
+                            {/*</Link>*/}
+
+
+
+                        </Tabs>
+
                     </div>
 
                 </div>;
