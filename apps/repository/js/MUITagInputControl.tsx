@@ -186,7 +186,8 @@ const TagInputBody = (props: IRenderProps) => {
 
     // FIXME: command+enter...
 
-    return <Dialog open={props.open}>
+    return <Dialog open={props.open}
+                   onClose={props.onCancel}>
 
             <DialogContent>
 
