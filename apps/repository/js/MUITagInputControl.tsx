@@ -59,6 +59,7 @@ class Styles {
 }
 
 export interface BaseProps {
+
     readonly className?: string;
 
     /**

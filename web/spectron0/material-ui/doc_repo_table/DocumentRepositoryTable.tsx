@@ -21,6 +21,7 @@ import {Dialogs} from "../../../js/ui/dialogs/Dialogs";
 import {MUITagInputControls} from "../../../../apps/repository/js/MUITagInputControls";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Tag} from "polar-shared/src/tags/Tags";
+import {RelatedTagsManager} from "../../../js/tags/related/RelatedTagsManager";
 
 interface IProps {
 
@@ -33,6 +34,8 @@ interface IProps {
     readonly selectRows: (selected: ReadonlyArray<number>) => void;
 
     readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
+
+    readonly relatedTagsManager: RelatedTagsManager;
 
     readonly onTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
 
@@ -269,6 +272,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         MUITagInputControls.prompt({
             availableTags,
             existingTags: () => existingTags,
+            relatedTagsManager: this.props.relatedTagsManager,
             onChange: NULL_FUNCTION,
             onCancel: NULL_FUNCTION,
             onDone: tags => this.props.onTagged(repoDocInfos, tags)

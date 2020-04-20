@@ -77,6 +77,7 @@ namespace main {
                                  selectRow={props.selectRow}
                                  selectRows={props.onSelected}
                                  tagsProvider={props.tagsProvider}
+                                 relatedTagsManager={props.relatedTagsManager}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
                                  onRename={() => console.log('onRename')}
