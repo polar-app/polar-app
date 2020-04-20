@@ -104,7 +104,7 @@ interface IState {
 
 interface IRenderProps extends IState, IProps {
 
-    readonly pendingTagOptions: ReadonlyArray<TagOption>;
+    readonly pendingTagOptions: ReadonlyArray<AutocompleteOption<Tag>>;
 
     readonly relatedTags: ReadonlyArray<string>;
 
@@ -199,7 +199,7 @@ const TagInputBody = (props: IRenderProps) => {
 
                     <MUICreatableAutocomplete label="Create or select tags ..."
                                               options={props.availableTagOptions}
-                                              // defaultValue={props.pendingTagOptions}
+                                              defaultOptions={props.pendingTagOptions}
                                               autoFocus
                                               placeholder="Create or select tags ..."
                                               createOption={props.createOption}
@@ -305,16 +305,16 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
         const availableTags = Tags.regularTagsThenFolderTagsSorted(this.props.availableTags);
 
-        const pendingTags = TagOptions.fromTags(this.state.pendingTags);
+        const toAutocompleteOption = (tag: Tag): AutocompleteOption<Tag> => {
+            return {
+                id: tag.id,
+                label: tag.label,
+                value: tag
+            };
+        };
 
-        const availableTagOptions: ReadonlyArray<AutocompleteOption<Tag>> =
-            arrayStream(availableTags)
-                .map(current => ({
-                    id: current.id,
-                    label: current.label,
-                    value: current
-                }))
-                .collect();
+        const availableTagOptions = availableTags.map(toAutocompleteOption);
+        const pendingTags = Tags.onlyRegular(this.state.pendingTags).map(toAutocompleteOption);
 
         const createOption = (input: string): AutocompleteOption<Tag> => ({
             id: input,
@@ -324,6 +324,7 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
                 label: input,
             }
         });
+
         const computeRelatedTags = () => {
 
             const input = [...this.state.pendingTags]
