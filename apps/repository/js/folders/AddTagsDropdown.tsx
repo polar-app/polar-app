@@ -3,6 +3,14 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "
 import {FolderIcon, PlusIcon, TagIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {CreateUserTagCallback} from "./FolderContextMenus";
+import {MUIDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import AddIcon from '@material-ui/icons/Add';
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import SendIcon from "@material-ui/icons/Send";
+import ListItemText from "@material-ui/core/ListItemText";
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 export class AddTagsDropdown extends React.Component<IProps, IState> {
 
@@ -16,31 +24,29 @@ export class AddTagsDropdown extends React.Component<IProps, IState> {
 
         return (
 
-            <UncontrolledDropdown>
+            <MUIDropdownMenu button={{
+                                icon: <AddIcon/>
+                             }}
+                             placement="bottom-end">
 
-                <DropdownToggle id="add-tags-dropdown"
-                                color="light"
-                                className="ml-1 pl-1 pr-1 border"
-                                style={{outline: 'none', boxShadow: 'none'}}
-                                caret>
+                <div>
+                    <MenuItem onClick={() => this.props.createUserTagCallback('folder')}>
+                        <ListItemIcon>
+                            <CreateNewFolderIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Create Folder" />
+                    </MenuItem>
 
-                    <PlusIcon/>
+                    <MenuItem onClick={() => this.props.createUserTagCallback('tag')}>
+                        <ListItemIcon>
+                            <LocalOfferIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Create Tag" />
+                    </MenuItem>
 
-                </DropdownToggle>
+                </div>
 
-                <DropdownMenu className="shadow" right>
-
-                    <DropdownItem onClick={() => this.props.createUserTagCallback('folder')}>
-                        <FolderIcon/> Create Folder
-                    </DropdownItem>
-
-                    <DropdownItem onClick={() => this.props.createUserTagCallback('tag')}>
-                        <TagIcon/> Create Tag
-                    </DropdownItem>
-
-                </DropdownMenu>
-
-            </UncontrolledDropdown>
+            </MUIDropdownMenu>
 
         );
     }

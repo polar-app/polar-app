@@ -4,13 +4,18 @@ import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import {ManualDropdown} from '../doc_repo/ManaulDropdown';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
-import {AddContentDropdownItem} from './AddContentDropdownItem';
+import {AddContentMenuItem} from './AddContentMenuItem';
 import {AddContentButtons} from "./AddContentButtons";
 import {FloatingAction} from "../../../../web/js/ui/mobile/FloatingAction";
 import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
-import {Button} from "reactstrap";
 import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
-
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import {MUIDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Container from "@material-ui/core/Container";
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import {ExampleDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/ExampleDropdownMenu";
 namespace runtime {
 
     function doAddFilesFromDisk(props: IProps) {
@@ -32,65 +37,33 @@ namespace runtime {
 
     const Browser = () => (
             <Button id="add-content-dropdown"
-                    color="success"
-                    size="md">
+                    color="primary"
+                    size="medium">
                 <label htmlFor="file-upload" className="m-0">
-                    <i className="fas fa-plus mr-1" /> Add &nbsp;
+                    <AddIcon/> Add &nbsp;
                 </label>
             </Button>
     );
 
     const Electron = (props: IProps) => (
-        <ManualDropdown id="add-content-dropdown"
-                        direction="down"
-                        size="md">
 
-            <SimpleTooltipEx text="Add content by importing PDFs from your local drive or capturing web pages from the Internet."
-                             placement="bottom">
+        <MUIDropdownMenu button={{
+                             icon: <AddIcon/>,
+                             text: 'Add ',
+                             color: 'primary',
+                             size: 'large'
+                         }}>
+            <div>
 
-                <DropdownToggle size="md" style={{fontWeight: 'bold'}} color="success" caret>
-                    <i className="fas fa-plus mr-1" /> Add &nbsp;
-                </DropdownToggle>
+                <AddContentMenuItem id="add-content-import-from-disk"
+                                    hidden={AppRuntime.isBrowser()}
+                                    tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+                                    icon={<InsertDriveFileIcon/>}
+                                    text="Add Files from Disk"
+                                    onClick={() => doAddFilesFromDisk(props)}/>
 
-            </SimpleTooltipEx>
-
-            <DropdownMenu className="shadow">
-
-                <AddContentDropdownItem id="add-content-import-from-disk"
-                                        hidden={AppRuntime.isBrowser()}
-                                        tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
-                                        onClick={() => doAddFilesFromDisk(props)}>
-
-                    <i className="fas fa-hdd"/>
-                    &nbsp; Add Files from Disk
-
-                </AddContentDropdownItem>
-
-                <AddContentDropdownItem id="add-content-import-from-disk-via-file-upload"
-                                        hidden={AppRuntime.isElectron()}
-                                        tooltip="Upload PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
-                                        onClick={() => doFileUpload()}>
-
-                    <label htmlFor="file-upload">
-                        <i className="fas fa-hdd"/>
-                        &nbsp; Upload Documents
-                    </label>
-
-                </AddContentDropdownItem>
-
-                <AddContentDropdownItem id="add-content-capture-web-page"
-                                        hidden={AppRuntime.isBrowser()}
-                                        tooltip="Capture a web page from the web and save it for annotation and long term archival."
-                                        onClick={() => doCaptureWebPage(props)}>
-
-                    <i className="fab fa-chrome"/>
-                    &nbsp; Capture Web Page
-
-                </AddContentDropdownItem>
-
-            </DropdownMenu>
-
-        </ManualDropdown>
+            </div>
+        </MUIDropdownMenu>
     );
 
 }

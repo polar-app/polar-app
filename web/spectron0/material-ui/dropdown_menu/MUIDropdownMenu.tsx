@@ -3,10 +3,9 @@ import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
+import Popper, {PopperPlacementType} from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {IButtonProps, MUIDropdownButton} from "./MUIDropdownButton";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -22,9 +21,19 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
+export interface IButtonProps {
+    readonly onClick?: () => void;
+    readonly icon?: JSX.Element;
+    readonly text?: string;
+    readonly color?: 'primary' | 'secondary' | 'default'
+    readonly size?: 'small' | 'medium' | 'large';
+    readonly ref?: React.RefObject<HTMLButtonElement>;
+}
+
 interface IProps {
     readonly button: IButtonProps;
     readonly children: JSX.Element;
+    readonly placement?: PopperPlacementType;
 }
 
 export const MUIDropdownMenu = (props: IProps) => {
@@ -76,6 +85,8 @@ export const MUIDropdownMenu = (props: IProps) => {
         ref: anchorRef,
     };
 
+    const placement = props.placement || 'bottom';
+
     return (
         <div className={classes.root}>
             <div>
@@ -94,24 +105,31 @@ export const MUIDropdownMenu = (props: IProps) => {
                 {/*                   onClick={handleToggle}/>*/}
 
                 {props.button.text && props.button.icon &&
-                    <Button {...buttonProps}>
+                    <Button {...buttonProps} variant="contained">
                         {props.button.icon} {props.button.text}
                     </Button>}
 
                 {props.button.icon && ! props.button.text &&
-                    <IconButton {...buttonProps}>
+                    <IconButton {...buttonProps}
+                                size={buttonProps.size === 'large' ? 'medium' : buttonProps.size}>
                         {props.button.icon}
                     </IconButton>}
 
                 {! props.button.icon && props.button.text &&
-                    <Button {...buttonProps}>
+                    <Button {...buttonProps} size="large" variant="contained">
                         {props.button.text}
                     </Button>}
 
-                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                <Popper open={open}
+                        anchorEl={anchorRef.current}
+                        role={undefined}
+                        transition
+                        placement={placement}
+                        disablePortal>
                     {({ TransitionProps, placement }) => (
                         <Grow {...TransitionProps}
-                              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                              // style={{ transformOrigin: placement === 'bottom' ? 'left bottom' : 'left bottom' }}
+                        >
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
 

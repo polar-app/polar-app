@@ -31,6 +31,7 @@ import {MUIDropdownMenu} from "./dropdown_menu/MUIDropdownMenu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import SettingsIcon from '@material-ui/icons/Settings';
+import {ExampleDropdownMenu} from "./dropdown_menu/ExampleDropdownMenu";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -75,7 +76,7 @@ export const App = () => {
 
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
-                <Container component="main" maxWidth={false} disableGutters>
+                {/*<Container component="main" maxWidth={false} disableGutters>*/}
                     {/*<ReactVirtualizedTable/>*/}
 
                     {/*<Grid*/}
@@ -109,6 +110,16 @@ export const App = () => {
 
                     {/*<MUIHelpMenu/>*/}
 
+
+                {/*    <ExampleDropdownMenu/>*/}
+
+                {/*    asdf*/}
+
+                {/*asdfasfda*/}
+
+                {/*asdf*/}
+
+                <div style={{marginLeft: '250px'}}>
                     <MUIDropdownMenu button={{
                                         icon: <SettingsIcon/>
                                      }}>
@@ -118,6 +129,7 @@ export const App = () => {
                             <MenuItem >Logout</MenuItem>
                         </div>
                     </MUIDropdownMenu>
+                </div>
 
                     {/*</div>*/}
 
@@ -186,7 +198,7 @@ export const App = () => {
 
                     {/*<DropdownMenuDemo/>*/}
 
-                </Container>
+                {/*</Container>*/}
             </MuiThemeProvider>
         // </GlobalHotKeys>
     );

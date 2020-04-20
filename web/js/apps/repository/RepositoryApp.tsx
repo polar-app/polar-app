@@ -312,10 +312,10 @@ export class RepositoryApp {
 
         const muiTheme = createMuiTheme(theme);
 
-        //     // <Container component="main" maxWidth={false} disableGutters>
-
         ReactDOM.render([
             <MuiThemeProvider theme={muiTheme}>
+                {/*<Container component="main" maxWidth={false} disableGutters>*/}
+
                 <CssBaseline/>
 
                 <Splashes key="splashes" persistenceLayerManager={persistenceLayerManager}/>
@@ -421,8 +421,9 @@ export class RepositoryApp {
                            opacity: 0
                        }}/>
 
-                </MuiThemeProvider>
-                // </Container>
+                {/*</Container>*/}
+
+            </MuiThemeProvider>
 
 
             ],

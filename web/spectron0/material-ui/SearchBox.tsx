@@ -5,6 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -12,10 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '2px 4px',
             display: 'flex',
             alignItems: 'center',
-            width: 400,
         },
         input: {
-            margin: theme.spacing(1),
+            // margin: theme.spacing(1),
             flex: 1,
         },
         divider: {
@@ -50,15 +50,20 @@ export default function SearchBox(props: IProps) {
         <Paper component="form"
                style={props.style || {}}
                className={classes.root}>
+
             <SearchIcon />
+
+            {/*FIXME: this is a weird bug here... it uses position relative and*/}
+            {/*that causes the UI to break.*/}
 
             <InputBase
                 className={classes.input}
                 placeholder={props.placeholder}
                 value={text}
                 onChange={event => handleChange(event.currentTarget.value)}
-                inputProps={{ 'aria-label': 'search google maps' }}
+                inputProps={{ 'aria-label': props.placeholder }}
             />
+
             {text !== '' &&
                 <IconButton size={size}
                             onClick={() => handleChange("")}
