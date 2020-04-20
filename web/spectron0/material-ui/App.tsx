@@ -24,6 +24,7 @@ import {MockTags} from "./MockTags";
 import {AutocompleteOption} from "./MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
 
 // configure({logLevel: "debug"});
 
@@ -53,6 +54,14 @@ export const App = () => {
     const muiTheme = createMuiTheme(theme);
 
     const tags = MockTags.create();
+    //
+    MUITagInputControls.prompt({
+        availableTags: tags,
+        existingTags: () => [],
+        onChange: NULL_FUNCTION,
+        onCancel: NULL_FUNCTION,
+        onDone: NULL_FUNCTION
+    });
 
     return (
         // <GlobalHotKeys

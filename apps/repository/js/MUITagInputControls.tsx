@@ -19,9 +19,7 @@ export namespace MUITagInputControls {
         return (
             <MUITagInputControl {...props}
                                 onChange={_tags => tags = _tags}
-                                onDone={() => props.onDone(tags)}>
-
-            </MUITagInputControl>
+                                onDone={() => props.onDone(tags)}/>
         );
 
     };

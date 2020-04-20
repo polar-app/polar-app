@@ -20,6 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import MUICreatableAutocomplete
     , {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
+import Box from '@material-ui/core/Box';
 
 const log = Logger.create();
 
@@ -183,6 +184,8 @@ const TagInputBody = (props: IRenderProps) => {
 
     // FIXME: command+enter...
 
+    console.log("FIXME here at least");
+
     return <Dialog open={props.open}>
 
             <DialogContent>
@@ -191,13 +194,18 @@ const TagInputBody = (props: IRenderProps) => {
                     <strong>Assign tags:</strong>
                 </div>
 
-                <MUICreatableAutocomplete label="Create or select tags ..."
-                                          options={props.availableTagOptions}
-                                          // defaultValue={props.pendingTagOptions}
-                                          autoFocus
-                                          placeholder="Create or select tags ..."
-                                          createOption={props.createOption}
-                                          onChange={NULL_FUNCTION}/>
+                <Box pt={1} pb={1}>
+
+                    <MUICreatableAutocomplete label="Create or select tags ..."
+                                              options={props.availableTagOptions}
+                                              // defaultValue={props.pendingTagOptions}
+                                              autoFocus
+                                              placeholder="Create or select tags ..."
+                                              createOption={props.createOption}
+                                              onChange={NULL_FUNCTION}/>
+
+                </Box>
+
 
                 {/*<CreatableSelect*/}
                 {/*    isMulti*/}
@@ -296,7 +304,7 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
         this.handleChange = this.handleChange.bind(this);
 
         this.state = {
-            open: false,
+            open: true,
             pendingTags: [],
             docTags: []
         };
@@ -358,31 +366,18 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="mt-auto mb-auto">
-
-                <Button id={this.id}
-                        onClick={() => this.activate()}
-                        style={{
-                            lineHeight: 1.0
-                        }}
-                        className={this.props.className || ''}>
-                    <span className="fas fa-tag"/>
-                </Button>
-
-                <TagInputBody
-                    availableTagOptions={availableTagOptions}
-                    pendingTagOptions={pendingTags}
-                    relatedTags={relatedTags}
-                    handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
-                    createOption={createOption}
-                    onKeyDown={(event) => this.onKeyDown(event)}
-                    addRelatedTag={label => this.addRelatedTag(label)}
-                    onCancel={() => this.onCancel()}
-                    onDone={() => this.onDone()}
-                    {...this.props}
-                    {...this.state}/>
-
-            </div>
+            <TagInputBody
+                availableTagOptions={availableTagOptions}
+                pendingTagOptions={pendingTags}
+                relatedTags={relatedTags}
+                handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
+                createOption={createOption}
+                onKeyDown={(event) => this.onKeyDown(event)}
+                addRelatedTag={label => this.addRelatedTag(label)}
+                onCancel={() => this.onCancel()}
+                onDone={() => this.onDone()}
+                {...this.props}
+                {...this.state}/>
 
         );
 
