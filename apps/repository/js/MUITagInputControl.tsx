@@ -18,26 +18,11 @@ import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import MUICreatableAutocomplete
-    , {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
 const log = Logger.create();
-
-class Styles {
-
-    public static popover: React.CSSProperties = {
-        backgroundColor: 'var(--primary-background-color)',
-        width: '500px !important',
-        maxWidth: '9999px !important'
-    };
-
-    public static label: React.CSSProperties = {
-        fontWeight: 'bold'
-    };
-
-}
 
 export interface BaseProps {
 
@@ -132,22 +117,26 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
     }
 
     const toChip = (tag: Tag) => (
-        <div key={tag.id} className="mr-1">
-            <Chip label={tag.label}/>
-        </div>
+        <Chip key={tag.id} label={tag.label}/>
     );
 
-    return <Box mt={1}>
+    return (
+        <Box mt={1}>
 
-        <Box pt={1} pb={1}>
-            <strong>Tags inherited from document: </strong>
+            <Box pt={1} pb={1}>
+                <strong>Tags inherited from document: </strong>
+            </Box>
+
+            <Grid container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="center"
+                  spacing={1}>
+                {props.docTags.map(toChip)}
+            </Grid>
+
         </Box>
-
-        <div style={{display: 'flex'}}>
-            {props.docTags.map(toChip)}
-        </div>
-
-    </Box>;
+    );
 
 };
 
