@@ -184,15 +184,13 @@ const TagInputBody = (props: IRenderProps) => {
 
     // FIXME: command+enter...
 
-    console.log("FIXME here at least");
-
     return <Dialog open={props.open}>
 
             <DialogContent>
 
-                <div className="pt-1 pb-1">
-                    <strong>Assign tags:</strong>
-                </div>
+                {/*<div className="pt-1 pb-1">*/}
+                {/*    <strong>Assign tags:</strong>*/}
+                {/*</div>*/}
 
                 <Box pt={1} pb={1}>
 
@@ -205,23 +203,6 @@ const TagInputBody = (props: IRenderProps) => {
                                               onChange={NULL_FUNCTION}/>
 
                 </Box>
-
-
-                {/*<CreatableSelect*/}
-                {/*    isMulti*/}
-                {/*    isClearable*/}
-                {/*    autoFocus*/}
-                {/*    onKeyDown={event => props.onKeyDown(event)}*/}
-                {/*    className="basic-multi-select"*/}
-                {/*    classNamePrefix="select"*/}
-                {/*    onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}*/}
-                {/*    value={props.pendingTagOptions}*/}
-                {/*    defaultValue={props.pendingTagOptions}*/}
-                {/*    placeholder="Create or select tags ..."*/}
-                {/*    options={props.availableTagOptions}*/}
-                {/*    // onKeyDown={() => console.log("FIXME onKeyDown1")}*/}
-                {/*    // onKeyPress={() => console.log("FIXME onKeyPress1")}*/}
-                {/*    />*/}
 
                 <div className="pt-1">
 
@@ -372,12 +353,12 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
                 relatedTags={relatedTags}
                 handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
                 createOption={createOption}
-                onKeyDown={(event) => this.onKeyDown(event)}
+                onKeyDown={NULL_FUNCTION}
                 addRelatedTag={label => this.addRelatedTag(label)}
-                onCancel={() => this.onCancel()}
-                onDone={() => this.onDone()}
                 {...this.props}
-                {...this.state}/>
+                {...this.state}
+                onCancel={() => this.onCancel()}
+                onDone={() => this.onDone()}/>
 
         );
 
@@ -400,13 +381,22 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
     }
 
     private onCancel() {
-        this.setState({...this.state, open: false});
+
+        this.setState({
+            ...this.state,
+            open: false
+        });
+
         this.props.onCancel();
+
     }
 
     private onDone() {
 
-        this.setState({...this.state, open: false});
+        this.setState({
+            ...this.state,
+            open: false
+        });
 
         const onChange = this.props.onChange || NULL_FUNCTION;
 
@@ -420,17 +410,19 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
     }
 
-    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    // FIXME: make sure escape and enter work here...
 
-        if (event.key === "Escape") {
-            this.onCancel();
-        }
-
-        if (event.getModifierState("Control") && event.key === "Enter") {
-            this.onDone();
-        }
-
-    }
+    // private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    //
+    //     if (event.key === "Escape") {
+    //         this.onCancel();
+    //     }
+    //
+    //     if (event.getModifierState("Control") && event.key === "Enter") {
+    //         this.onDone();
+    //     }
+    //
+    // }
 
     private handleChange(selectedOptions: ReadonlyArray<TagOption>) {
 
