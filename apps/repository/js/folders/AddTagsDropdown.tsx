@@ -11,6 +11,7 @@ import SendIcon from "@material-ui/icons/Send";
 import ListItemText from "@material-ui/core/ListItemText";
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import {MUIDropdownItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownItem";
 
 export class AddTagsDropdown extends React.Component<IProps, IState> {
 
@@ -30,19 +31,15 @@ export class AddTagsDropdown extends React.Component<IProps, IState> {
                              placement="bottom-end">
 
                 <div>
-                    <MenuItem onClick={() => this.props.createUserTagCallback('folder')}>
-                        <ListItemIcon>
-                            <CreateNewFolderIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Create Folder" />
-                    </MenuItem>
 
-                    <MenuItem onClick={() => this.props.createUserTagCallback('tag')}>
-                        <ListItemIcon>
-                            <LocalOfferIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Create Tag" />
-                    </MenuItem>
+                    <MUIDropdownItem onClick={() => this.props.createUserTagCallback('folder')}
+                                     icon={<CreateNewFolderIcon />}
+                                     text="Create Folder"/>
+
+
+                    <MUIDropdownItem onClick={() => this.props.createUserTagCallback('tag')}
+                                     icon={<LocalOfferIcon />}
+                                     text="Create Tag"/>
 
                 </div>
 

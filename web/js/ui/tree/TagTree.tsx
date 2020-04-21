@@ -22,7 +22,7 @@ class Styles {
     public static FILTER_INPUT: React.CSSProperties = {
         height: 'auto',
         fontFamily: 'sans-serif',
-        fontSize: '14px'
+        fontSize: '1.0em'
     };
 
 }

@@ -92,24 +92,24 @@ export class SyncBar extends React.Component<IProps, IState> {
 
         const isOpen = progress !== 0;
 
+        if (! isOpen) {
+            return null;
+        }
+
         return (
 
             <div style={Styles.root} className="">
 
-                <Collapse timeout={0} isOpen={isOpen}>
+                <div style={Styles.textBox} className="border-top border-right">
+                    {this.state.message}
+                </div>
 
-                    <div style={Styles.textBox} className="border-top border-right">
-                        {this.state.message}
-                    </div>
-
-                    {/*the title string doesn't render properly and looks horrible*/}
-                    <Progress style={Styles.progress}
-                              className="rounded-0 border-top border-left border-secondary progress-bar-striped"
-                              value={progress}>
-                        {/*{Math.floor(progress)}%*/}
-                    </Progress>
-
-                </Collapse>
+                {/*the title string doesn't render properly and looks horrible*/}
+                <Progress style={Styles.progress}
+                          className="rounded-0 border-top border-left border-secondary progress-bar-striped"
+                          value={progress}>
+                    {/*{Math.floor(progress)}%*/}
+                </Progress>
 
             </div>
 

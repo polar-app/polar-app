@@ -45,16 +45,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info';
 
-interface IProps {
-    readonly onCancel: Callback;
-    readonly onAccept: Callback;
+export interface ConfirmDialogProps {
     readonly title: string;
     readonly subtitle: string | JSX.Element;
+    readonly onCancel: Callback;
+    readonly onAccept: Callback;
     readonly type?: AlertType;
     readonly autoFocus?: boolean;
+
+    // TOD: we need noCancel
+
 }
 
-export const ConfirmDialog = (props: IProps) => {
+export const ConfirmDialog = (props: ConfirmDialogProps) => {
 
     const [open, setOpen] = React.useState(true);
 

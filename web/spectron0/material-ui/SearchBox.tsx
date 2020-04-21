@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme: Theme) =>
             height: 28,
             margin: 4,
         },
+
+        searchIcon: {
+            marginLeft: theme.spacing(1),
+            marginRight: theme.spacing(1),
+        },
+
     }),
 );
 
@@ -51,7 +57,9 @@ export default function SearchBox(props: IProps) {
                style={props.style || {}}
                className={classes.root}>
 
-            <SearchIcon />
+            <div className={classes.searchIcon}>
+                <SearchIcon />
+            </div>
 
             {/*FIXME: this is a weird bug here... it uses position relative and*/}
             {/*that causes the UI to break.*/}

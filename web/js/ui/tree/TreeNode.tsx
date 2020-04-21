@@ -23,7 +23,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: '0px',
-        fontSize: '0.8em',
+        fontSize: '1.0em',
         lineHeight: '1.5',
         // color: 'var(--secondary)',
         cursor: 'pointer',
@@ -44,6 +44,7 @@ class Styles {
         whiteSpace: 'nowrap',
         paddingRight: '5px',
         fontFamily: 'sans-serif',
+        fontSize: '1.0em',
         boxShadow: 'none',
 
         color: 'var(--secondary)',
@@ -114,7 +115,7 @@ class Styles {
         marginTop: 'auto',
         marginBottom: 'auto',
 
-        fontSize: '0.8em',
+        fontSize: '1.0em',
         lineHeight: '1.5',
         userSelect: 'none',
         whiteSpace: 'nowrap',
@@ -207,7 +208,7 @@ export class TreeNode<V> extends React.Component<IProps<V>, IState<V>> {
                                           checked={selected}
                                           style={{
                                               display: 'block',
-                                              fontSize: '1.1em',
+                                              fontSize: '1.0em',
                                           }}
                                           onContextMenu={(event) => this.onClick(event)}
                                           onClick={() => this.onCheckbox(! selected)}/>

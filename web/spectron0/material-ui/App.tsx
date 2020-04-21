@@ -32,6 +32,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import SettingsIcon from '@material-ui/icons/Settings';
 import {ExampleDropdownMenu} from "./dropdown_menu/ExampleDropdownMenu";
+import {MUIDialogController} from "./dialogs/MUIDialogController";
+import dialog = Electron.dialog;
+import Button from "@material-ui/core/Button";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -119,17 +122,30 @@ export const App = () => {
 
                 {/*asdf*/}
 
-                <div style={{marginLeft: '250px'}}>
-                    <MUIDropdownMenu button={{
-                                        icon: <SettingsIcon/>
-                                     }}>
-                        <div>
-                            <MenuItem >Profile</MenuItem>
-                            <MenuItem >My account</MenuItem>
-                            <MenuItem >Logout</MenuItem>
-                        </div>
-                    </MUIDropdownMenu>
-                </div>
+                <MUIDialogController render={dialogs => (
+
+                    <Button onClick={() => dialogs.confirm({
+                                         title: 'are you sure?',
+                                         subtitle: 'because you better be',
+                                         onAccept: NULL_FUNCTION,
+                                         onCancel: NULL_FUNCTION
+                                    })}>
+                        Click me
+                    </Button>
+
+                )}/>
+
+                {/*<div style={{marginLeft: '250px'}}>*/}
+                {/*    <MUIDropdownMenu button={{*/}
+                {/*                        icon: <SettingsIcon/>*/}
+                {/*                     }}>*/}
+                {/*        <div>*/}
+                {/*            <MenuItem >Profile</MenuItem>*/}
+                {/*            <MenuItem >My account</MenuItem>*/}
+                {/*            <MenuItem >Logout</MenuItem>*/}
+                {/*        </div>*/}
+                {/*    </MUIDropdownMenu>*/}
+                {/*</div>*/}
 
                     {/*</div>*/}
 
