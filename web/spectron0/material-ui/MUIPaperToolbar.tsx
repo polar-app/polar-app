@@ -70,6 +70,7 @@ export const MUIPaperToolbar = (props: IProps) => {
     return (
         <Paper square
                id={props.id}
+               style={props.style}
                className={props.className}
                elevation={props.elevation || 0}>
 

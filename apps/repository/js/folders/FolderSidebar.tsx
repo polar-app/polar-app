@@ -7,7 +7,7 @@ import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMuta
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 import {Strings} from 'polar-shared/src/util/Strings';
-import SearchBox from '../../../../web/spectron0/material-ui/SearchBox';
+import MUISearchBox from '../../../../web/spectron0/material-ui/MUISearchBox';
 import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
@@ -102,7 +102,7 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                             {/*             }}*/}
                             {/*             onChange={value => this.setFilter(value)}/>*/}
 
-                            <SearchBox
+                            <MUISearchBox
                                    // type="search"
                                    placeholder="Filter by tag or folder"
                                    style={{

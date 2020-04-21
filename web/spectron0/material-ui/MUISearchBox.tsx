@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
         input: {
             // margin: theme.spacing(1),
             flex: 1,
+            marginTop: theme.spacing(1),
+            marginBottom: theme.spacing(1),
         },
         searchIcon: {
             marginLeft: theme.spacing(1),
@@ -34,18 +36,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
+    readonly id?: string;
     readonly placeholder?: string;
     readonly style?: React.CSSProperties;
     readonly onChange: (text: string) => void;
 }
 
-export default function SearchBox(props: IProps) {
+export default function MUISearchBox(props: IProps) {
 
     const classes = useStyles();
 
     const [text, setText] = useState("");
     const [active, setActive] = useState(false);
 
+    // FIXME: need a debouncer here...
     const handleChange = (text: string) => {
         setText(text);
         props.onChange(text);
@@ -55,6 +59,7 @@ export default function SearchBox(props: IProps) {
 
         <ClickAwayListener onClickAway={() => setActive(false)}>
             <Paper component="form"
+                   id={props.id}
                    onClick={() => setActive(true)}
                    elevation={active ? 1 : 0}
                    style={props.style || {}}

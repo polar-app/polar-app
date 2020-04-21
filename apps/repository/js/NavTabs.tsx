@@ -7,12 +7,29 @@ import {
 import Tabs from '@material-ui/core/Tabs';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Tab from "@material-ui/core/Tab";
-import { useLocation } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import isEqual from 'react-fast-compare';
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 // const NavTab = () => (
 //
 // )
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+
+        link: {
+            textDecoration: 'none',
+            color: theme.palette.text.secondary
+        },
+
+        linkActive: {
+            textDecoration: 'none',
+            color: theme.palette.text.primary,
+        },
+
+    })
+);
 
 export interface ITabProps {
     readonly id: number;
@@ -26,6 +43,8 @@ interface IProps {
 
 export const NavTabs = React.memo((props: IProps) => {
 
+    const classes = useStyles();
+
     const location = useLocation();
 
     const activeTab =
@@ -33,22 +52,22 @@ export const NavTabs = React.memo((props: IProps) => {
             .filter(tab => ReactRouterLinks.isActive(tab.link, location))
             .first();
 
-    const activeTagID = activeTab ? activeTab.id : 0;
+    const activeTabID = activeTab ? activeTab.id : 0;
 
     return (
 
-        <Tabs value={activeTagID}
+        <Tabs value={activeTabID}
               textColor="inherit"
               onChange={NULL_FUNCTION}>
 
-            {/*<SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
-            {/*<SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
-
-            {props.tabs.map(tag => (
-                <Tab key={tag.id}
-                     disableFocusRipple
-                     disableRipple
-                     label={tag.label}/>
+            {props.tabs.map(tab => (
+                <Link key={tab.id}
+                      className={tab.id === activeTabID ? classes.linkActive : classes.link}
+                      to={tab.link}>
+                    <Tab disableFocusRipple
+                         disableRipple
+                         label={tab.label}/>
+                </Link>
             ))}
 
         </Tabs>

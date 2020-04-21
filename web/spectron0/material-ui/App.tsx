@@ -9,7 +9,7 @@ import {ContextMenus} from "./ContextMenus";
 import {configure, GlobalHotKeys} from "react-hotkeys";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import TextField from "@material-ui/core/TextField";
-import SearchBox from "./SearchBox";
+import MUISearchBox from "./MUISearchBox";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 import FlagIcon from "@material-ui/icons/Flag";
@@ -41,6 +41,7 @@ import {MUIPaperToolbar} from "./MUIPaperToolbar";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import {MUIToggleButton} from "../../js/ui/MUIToggleButton";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -115,9 +116,12 @@ export const App = () => {
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
 
+                    <MUIToggleButton label="test"
+                                     size="small"
+                                     onChange={NULL_FUNCTION}/>
 
                     {/*<div style={{margin: '5px'}}>*/}
-                    <SearchBox onChange={NULL_FUNCTION}/>
+                    <MUISearchBox onChange={NULL_FUNCTION}/>
 
                     <br/>
                     <br/>

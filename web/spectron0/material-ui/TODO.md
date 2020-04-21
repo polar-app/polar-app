@@ -1,5 +1,10 @@
 
 - table work:
+    - search box needs a debouncer
+    - search box layout sucks and is irrational when the close button is displayed
+    - don't think it's alignCenter 
+
+
     - long click for context menu should work..
     - put the related tags into the autocomplete widget directly since
       it maintains its own state. this will be a lot easier than refactoring it
@@ -8,6 +13,9 @@
     - the autocomplete needs to use the dialogs api
         - since this is now generic we can make it autocomplete books too
         - 
+    - tooltips are transparent... also, give them a pointer if possible
+    - 
+        
     - the macro checkbox at the top does NOT work with all the items on the page
     - get tab navigation to work
     - port over the annotations page too
