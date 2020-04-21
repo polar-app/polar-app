@@ -7,6 +7,9 @@ import {PromptDialog} from "./PromptDialog";
 
 export class Dialogs {
 
+    /**
+     * @Deprecated MUI
+     */
     public static confirm(opts: ConfirmProps) {
 
         let injected: InjectedComponent | undefined;
@@ -34,6 +37,9 @@ export class Dialogs {
 
     }
 
+    /**
+     * @Deprecated MUI
+     */
     public static alert(opts: AlertProps) {
 
         let injected: InjectedComponent | undefined;
@@ -51,6 +57,9 @@ export class Dialogs {
 
     }
 
+    /**
+     * @Deprecated MUI
+     */
     public static prompt(opts: PromptProps) {
 
         let injected: InjectedComponent | undefined;

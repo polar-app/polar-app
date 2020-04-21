@@ -8,7 +8,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Popper from "@material-ui/core/Popper";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag} from "../../../polar-shared/src/tags/Tags";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
 import Chip from '@material-ui/core/Chip';
@@ -48,13 +48,11 @@ export interface AutocompleteOption<T> {
 
 type InternalAutocompleteOption<T> = CreateAutocompleteOption | AutocompleteOption<T>;
 
-interface AutocompleteOptionMap<T> {
-    [key: string]: AutocompleteOption<T>;
-}
-
 function isCreateAutocompleteOption<T>(option: InternalAutocompleteOption<T>): option is CreateAutocompleteOption {
     return isPresent((option as any).inputValue);
 }
+
+export type RelatedTagsCalculator<T> = (values: ReadonlyArray<T>) => ReadonlyArray<T>;
 
 interface IProps<T> {
 
@@ -75,6 +73,8 @@ interface IProps<T> {
     readonly createOption: (label: string) => AutocompleteOption<T>;
 
     readonly onChange: (selected: ReadonlyArray<T>) => void;
+
+    readonly relatedTagsCalculator?: RelatedTagsCalculator<T>;
 
 }
 

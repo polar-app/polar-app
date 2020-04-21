@@ -13,9 +13,15 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
+            zIndex: 1000
+        },
+        popper: {
+            zIndex: 1000
         },
         paper: {
-            marginRight: theme.spacing(2),
+            // marginRight: theme.spacing(2),
+            // marginTop: theme.spacing(1),
+            marginTop: '2px'
         },
     }),
 );
@@ -31,6 +37,7 @@ export interface IButtonProps {
 }
 
 interface IProps {
+    readonly id?: string;
     readonly button: IButtonProps;
     readonly children: JSX.Element;
     readonly placement?: PopperPlacementType;
@@ -87,6 +94,10 @@ export const MUIDropdownMenu = (props: IProps) => {
 
     const placement = props.placement || 'bottom';
 
+    const id = props.id || 'dropdown';
+
+    const menuListID = id + "-menu-list-grow";
+
     return (
         <div className={classes.root}>
             <div>
@@ -121,20 +132,30 @@ export const MUIDropdownMenu = (props: IProps) => {
                     </Button>}
 
                 <Popper open={open}
+                        className={classes.popper}
                         anchorEl={anchorRef.current}
                         role={undefined}
                         transition
+                        popperOptions={{
+                            offsets: {
+                                popper: {
+                                    top: 10
+                                }
+                            }
+                        }}
                         placement={placement}
                         disablePortal>
+
                     {({ TransitionProps, placement }) => (
                         <Grow {...TransitionProps}
                               // style={{ transformOrigin: placement === 'bottom' ? 'left bottom' : 'left bottom' }}
                         >
-                            <Paper>
+                            <Paper elevation={10}
+                                   className={classes.paper}>
                                 <ClickAwayListener onClickAway={handleClose}>
 
                                     <MenuList autoFocusItem={open}
-                                              id="menu-list-grow"
+                                              id={menuListID}
                                               onClick={handleClose}
                                               onKeyDown={handleListKeyDown}>
                                         {props.children}

@@ -18,7 +18,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import MUICreatableAutocomplete, {AutocompleteOption} from "../../../web/spectron0/material-ui/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {AutocompleteOption} from "../../../web/spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
