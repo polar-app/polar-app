@@ -57,6 +57,7 @@ import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import DocumentRepositoryTable
     from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTable";
+import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
 const log = Logger.create();
 
@@ -540,51 +541,49 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                 persistenceLayerProvider={this.props.persistenceLayerProvider}
                                 persistenceLayerController={this.props.persistenceLayerController}/>
 
-                    <div id="header-filter" className="border-bottom">
+                    <MUIPaperToolbar id="header-filter"
+                                     style={{display: 'flex'}}
+                                     borderBottom
+                                     padding={1}>
 
-                        <div style={{display: 'flex'}}
-                             className="p-1">
+                        <div className=""
+                             style={{
+                                 whiteSpace: 'nowrap',
+                                 marginTop: 'auto',
+                                 marginBottom: 'auto',
+                                 display: 'flex'
+                             }}>
 
-                            <div className=""
-                                 style={{
-                                     whiteSpace: 'nowrap',
-                                     marginTop: 'auto',
-                                     marginBottom: 'auto',
-                                     display: 'flex'
-                                 }}>
-
-                                <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
-                                                  tagsProvider={tagsProvider}
-                                                  onMultiTagged={tags => this.onMultiTagged(tags)}
-                                                  onMultiDeleted={() => this.onMultiDeleted()}/>
-
-                            </div>
-
-                            <div style={{marginLeft: 'auto'}}>
-
-                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
-                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                                  refresher={() => this.refresh()}
-                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
-                                                  docSidebarVisible={this.state.docSidebarVisible}
-                                                  onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
-                                                  right={
-                                               <div className="d-none-phone d-none-tablet"
-                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                                   <DocRepoTableDropdown id="table-dropdown"
-                                                                         options={Object.values(this.state.columns)}
-                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                               </div>
-                                           }
-                                />
-
-                            </div>
+                            <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
+                                              tagsProvider={tagsProvider}
+                                              onMultiTagged={tags => this.onMultiTagged(tags)}
+                                              onMultiDeleted={() => this.onMultiDeleted()}/>
 
                         </div>
 
-                    </div>
+                        <div style={{marginLeft: 'auto'}}>
+
+                            <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
+                                              onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
+                                              onFilterByTitle={(title) => this.onFilterByTitle(title)}
+                                              refresher={() => this.refresh()}
+                                              filteredTags={this.docRepoFilters.filters.filteredTags}
+                                              docSidebarVisible={this.state.docSidebarVisible}
+                                              onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
+                                              right={
+                                           <div className="d-none-phone d-none-tablet"
+                                                style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+
+                                               <DocRepoTableDropdown id="table-dropdown"
+                                                                     options={Object.values(this.state.columns)}
+                                                                     onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
+                                           </div>
+                                       }
+                            />
+
+                        </div>
+
+                    </MUIPaperToolbar>
 
                     <MessageBanner/>
 

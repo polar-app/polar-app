@@ -5,7 +5,6 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
-import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -18,11 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
             // margin: theme.spacing(1),
             flex: 1,
         },
-        divider: {
-            height: 28,
-            margin: 4,
-        },
-
         searchIcon: {
             marginLeft: theme.spacing(1),
             marginRight: theme.spacing(1),

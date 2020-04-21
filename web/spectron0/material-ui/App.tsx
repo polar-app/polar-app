@@ -21,7 +21,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import {InputValidationErrorSnackbar} from "./dialogs/InputValidationErrorSnackbar";
 import {MUITagInputControl} from "../../../apps/repository/js/MUITagInputControl";
 import {MockTags} from "./MockTags";
-import {AutocompleteOption} from "./MUICreatableAutocomplete";
+import {AutocompleteOption} from "./autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
@@ -35,6 +35,9 @@ import {ExampleDropdownMenu} from "./dropdown_menu/ExampleDropdownMenu";
 import {MUIDialogController} from "./dialogs/MUIDialogController";
 import dialog = Electron.dialog;
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
+import { GlobalCss } from './GlobalCss';
+import {MUIPaperToolbar} from "./MUIPaperToolbar";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -46,7 +49,7 @@ export const App = () => {
             fontSize: 12
         },
         palette: {
-            type: "light"
+            type: "dark"
         }
     });
 
@@ -79,6 +82,8 @@ export const App = () => {
 
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
+                <GlobalCss />
+
                 {/*<Container component="main" maxWidth={false} disableGutters>*/}
                     {/*<ReactVirtualizedTable/>*/}
 
@@ -114,7 +119,10 @@ export const App = () => {
                     {/*<MUIHelpMenu/>*/}
 
 
-                {/*    <ExampleDropdownMenu/>*/}
+                <MUIPaperToolbar borderTop
+                                 borderBottom>
+                    <ExampleDropdownMenu/>
+                </MUIPaperToolbar>
 
                 {/*    asdf*/}
 
@@ -122,18 +130,36 @@ export const App = () => {
 
                 {/*asdf*/}
 
-                <MUIDialogController render={dialogs => (
+                <Tooltip title="hello world this is a long tooltip">
+                    <Button>help</Button>
+                </Tooltip>
+                <br/>
 
-                    <Button onClick={() => dialogs.confirm({
-                                         title: 'are you sure?',
-                                         subtitle: 'because you better be',
-                                         onAccept: NULL_FUNCTION,
-                                         onCancel: NULL_FUNCTION
-                                    })}>
-                        Click me
-                    </Button>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
 
-                )}/>
+                {/*<MUIDialogController render={dialogs => (*/}
+
+                {/*    <Button onClick={() => dialogs.confirm({*/}
+                {/*                         title: 'are you sure?',*/}
+                {/*                         subtitle: 'because you better be',*/}
+                {/*                         onAccept: NULL_FUNCTION,*/}
+                {/*                         onCancel: NULL_FUNCTION*/}
+                {/*                    })}>*/}
+                {/*        Click me*/}
+                {/*    </Button>*/}
+
+                {/*)}/>*/}
 
                 {/*<div style={{marginLeft: '250px'}}>*/}
                 {/*    <MUIDropdownMenu button={{*/}

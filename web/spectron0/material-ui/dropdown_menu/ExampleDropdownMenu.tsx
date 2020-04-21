@@ -13,8 +13,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
         },
+        popper: {
+            zIndex: 1000
+        },
         paper: {
-            marginRight: theme.spacing(2),
+            // marginRight: theme.spacing(2),
+            marginTop: theme.spacing(1),
         },
     }),
 );
@@ -64,13 +68,19 @@ export function ExampleDropdownMenu() {
                 >
                     Toggle Menu Grow
                 </Button>
-                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                <Popper open={open}
+                        className={classes.popper}
+                        anchorEl={anchorRef.current}
+                        role={undefined}
+                        transition
+                        disablePortal>
                     {({ TransitionProps, placement }) => (
                         <Grow
                             {...TransitionProps}
                             style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                         >
-                            <Paper>
+                            <Paper elevation={10}
+                                   className={classes.paper}>
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={open} id="menu-list-grow"
                                               style={{backgroundColor: 'white'}}

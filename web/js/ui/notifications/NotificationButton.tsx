@@ -43,8 +43,6 @@ const NotificationBody = (props: IProps) => {
 
 };
 
-
-
 export class NotificationButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {

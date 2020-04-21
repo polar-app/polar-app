@@ -1,11 +1,12 @@
 import React from 'react';
-import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
-import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
+import {
+    GroupMemberInvitation,
+    GroupMemberInvitations
+} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
 import {NotificationButton} from './NotificationButton';
-import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();

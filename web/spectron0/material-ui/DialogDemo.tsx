@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import MUICreatableAutocomplete from "./MUICreatableAutocomplete";
+import MUICreatableAutocomplete from "./autocomplete/MUICreatableAutocomplete";
 
 export default function DialogDemo() {
 

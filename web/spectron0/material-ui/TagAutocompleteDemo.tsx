@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {MockTags} from "./MockTags";
-import MUICreatableAutocomplete, {AutocompleteOption} from "./MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {AutocompleteOption} from "./autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 
 const tags = MockTags.create();

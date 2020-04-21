@@ -8,6 +8,8 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 import {Strings} from 'polar-shared/src/util/Strings';
 import SearchBox from '../../../../web/spectron0/material-ui/SearchBox';
+import Paper from '@material-ui/core/Paper';
+import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
@@ -68,26 +70,28 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
 
         return (
 
-            <div style={{
-                     display: 'flex' ,
-                     flexDirection: 'column',
-                     height: '100%'
-                }}>
+            <Paper square
+                   style={{
+                       display: 'flex' ,
+                       flexDirection: 'column',
+                       height: '100%'
+                    }}>
 
-                <div className=""
-                     style={{
-                         height: '100%',
-                         display: 'flex' ,
-                         flexDirection: 'column',
-                     }}>
+                <Paper square
+                       className=""
+                       style={{
+                           height: '100%',
+                           display: 'flex' ,
+                           flexDirection: 'column',
+                       }}>
 
                     {this.folderContextMenuComponents.contextMenu()}
 
                     {this.tagContextMenuComponents.contextMenu()}
 
-                    <div className="border-bottom">
-                        <div className="p-1"
-                             style={{
+                    <MUIPaperToolbar borderBottom
+                                     padding={1}>
+                        <div style={{
                                  display: 'flex'
                              }}>
 
@@ -112,7 +116,7 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                             </div>
 
                         </div>
-                    </div>
+                    </MUIPaperToolbar>
 
                     <div style={{
                             flexGrow: 1,
@@ -136,9 +140,9 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                                  noCreate={true}/>
                     </div>
 
-                </div>
+                </Paper>
 
-            </div>
+            </Paper>
         );
     }
 
