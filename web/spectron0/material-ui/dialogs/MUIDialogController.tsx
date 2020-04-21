@@ -5,21 +5,26 @@ import {
     ConfirmDialog,
     ConfirmDialogProps
 } from "../../../js/ui/dialogs/ConfirmDialog";
-
+import {
+    PromptDialog,
+    PromptDialogProps
+} from "../../../js/ui/dialogs/PromptDialog";
+import {Prompt} from "../../../js/ui/dialogs/Prompt";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
+    prompt: (promptDialogProps: PromptDialogProps) => void;
 }
 
 interface DialogHostProps {
     readonly onDialogManager: Callback1<DialogManager>;
 }
 
-type DialogType = 'confirm';
+type DialogType = 'confirm' | 'prompt';
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps;
+    readonly props: ConfirmDialogProps | PromptDialogProps;
     readonly iter: number;
 }
 
@@ -35,14 +40,22 @@ const DialogHost = React.memo((props: DialogHostProps) => {
         const confirm = (confirmDialogProps: ConfirmDialogProps) => {
             setState({
                 type: 'confirm',
-                props:
-                confirmDialogProps,
+                props: confirmDialogProps,
+                iter: iter++
+            });
+        };
+
+        const prompt = (promptDialogProps: PromptDialogProps) => {
+            setState({
+                type: 'prompt',
+                props: promptDialogProps,
                 iter: iter++
             });
         };
 
         const dialogManager = {
-            confirm
+            confirm,
+            prompt
         };
 
         // tell the parent about the dialog manager now.
@@ -61,8 +74,16 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 
         case "confirm":
             return (
-                <ConfirmDialog key={state.iter} {...state.props}/>
+                <ConfirmDialog key={state.iter}
+                               {...(state.props as ConfirmDialogProps)}/>
             );
+
+        case "prompt":
+            return (
+                <PromptDialog key={state.iter}
+                              {...(state.props as PromptDialogProps)}/>
+            );
+
 
     }
 

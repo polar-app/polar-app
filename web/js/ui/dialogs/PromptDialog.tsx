@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {
+export interface PromptDialogProps {
     readonly title: string;
     readonly label?: string;
     readonly description?: string;
@@ -45,7 +45,7 @@ interface IState {
     readonly validationError?: string;
 }
 
-export const PromptDialog = (props: IProps) => {
+export const PromptDialog = (props: PromptDialogProps) => {
 
     const classes = useStyles();
 

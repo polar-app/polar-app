@@ -317,19 +317,19 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
             return;
         }
 
-        Dialogs.confirm({
+        this.dialogs!.confirm({
             title: "Are you sure you want to archive these document(s)?",
             subtitle: "They won't be deleted but will be hidden by default..",
             onCancel: NULL_FUNCTION,
             type: 'warning',
-            onConfirm: () => this.props.onArchived(repoDocInfos),
+            onAccept: () => this.props.onArchived(repoDocInfos),
         });
 
     }
 
     private onRename(repoDocInfo: RepoDocInfo) {
 
-        Dialogs.prompt({
+        this.dialogs!.prompt({
             title: "Enter a new title for the document:",
             defaultValue: repoDocInfo.title,
             onCancel: NULL_FUNCTION,
