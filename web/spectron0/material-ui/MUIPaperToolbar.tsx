@@ -58,6 +58,8 @@ interface IProps {
  */
 export const MUIPaperToolbar = (props: IProps) => {
 
+    // TODO: instead of CSS this could use Dividers as these use the right colors
+
     const classes = useStyles();
 
     const boxClasses = [

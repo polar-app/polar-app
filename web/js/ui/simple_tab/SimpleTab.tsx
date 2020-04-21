@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
-import {ReactRouterLinks, Target} from "../ReactRouterLinks";
+import {ReactRouterLinks, RouterLink} from "../ReactRouterLinks";
 
 export class SimpleTab extends React.Component<IProps, IState> {
 
@@ -71,7 +71,7 @@ export class SimpleTab extends React.Component<IProps, IState> {
 
 export interface IProps {
     readonly id: string;
-    readonly target: Target;
+    readonly target: RouterLink;
     readonly text: string;
 }
 

@@ -90,7 +90,7 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                     {this.tagContextMenuComponents.contextMenu()}
 
                     <MUIPaperToolbar borderBottom
-                                     padding={1}>
+                                     padding={0.5}>
                         <div style={{
                                  display: 'flex'
                              }}>
@@ -108,7 +108,6 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                                    style={{
                                        flexGrow: 1
                                    }}
-                                   size="small"
                                    onChange={text => this.setFilter(text)}/>
 
                             <div className="ml-1">

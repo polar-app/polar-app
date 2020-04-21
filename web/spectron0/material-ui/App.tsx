@@ -38,6 +38,9 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import { GlobalCss } from './GlobalCss';
 import {MUIPaperToolbar} from "./MUIPaperToolbar";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -114,7 +117,25 @@ export const App = () => {
 
 
                     {/*<div style={{margin: '5px'}}>*/}
-                    {/*<SearchBox onChange={NULL_FUNCTION}/>*/}
+                    <SearchBox onChange={NULL_FUNCTION}/>
+
+                    <br/>
+                    <br/>
+
+                    <IconButton size={'small'}>
+                        <CloseIcon/>
+                    </IconButton>
+
+                    <br/>
+                    <br/>
+
+                    <IconButton size={'medium'}>
+                        <CloseIcon/>
+                    </IconButton>
+
+                <Paper variant="outlined">
+                        hello world
+                    </Paper>
 
                     {/*<MUIHelpMenu/>*/}
 

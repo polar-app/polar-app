@@ -1,6 +1,18 @@
+
+
+export interface RouterLink {
+    readonly pathname: string;
+    readonly hash?: string;
+}
+
+interface ILocation {
+    readonly pathname: string;
+    readonly hash?: string;
+}
+
 export class ReactRouterLinks {
 
-    public static isActive(target: Target) {
+    public static isActive(target: RouterLink, location: ILocation = document.location) {
 
         const {pathname, hash} = target;
 
@@ -18,14 +30,9 @@ export class ReactRouterLinks {
 
         };
 
-        return document.location.pathname === pathname &&
-               canonicalizeHash(document.location.hash) === canonicalizeHash(hash);
+        return location.pathname === pathname &&
+               canonicalizeHash(location.hash) === canonicalizeHash(hash);
 
     }
 
-}
-
-export interface Target {
-    readonly pathname: string;
-    readonly hash?: string;
 }

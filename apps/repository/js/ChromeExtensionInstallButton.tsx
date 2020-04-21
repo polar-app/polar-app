@@ -1,67 +1,56 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
-import Button from 'reactstrap/lib/Button';
-import {Nav} from '../../../web/js/ui/util/Nav';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Browsers} from "polar-browsers/src/Browsers";
 import {Analytics} from "../../../web/js/analytics/Analytics";
+import Button from "@material-ui/core/Button";
+import {Nav} from "../../../web/js/ui/util/Nav";
 
 const log = Logger.create();
 
-export class ChromeExtensionInstallButton extends React.Component<IProps, IState> {
+export class ChromeExtensionInstallButton extends React.Component<any, any> {
 
     private open: boolean = false;
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
 
-        this.onClick = this.onClick.bind(this);
 
-        this.state = {
-            open: this.open,
-        };
-
-    }
+    // constructor() {
+    //
+    //     this.onClick = this.onClick.bind(this);
+    //
+    //     this.state = {
+    //         open: this.open,
+    //     };
+    //
+    // }
 
     public render() {
 
-        const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
-        const hidden = AppRuntime.isElectron() || ! Platforms.isDesktop() || ! isChrome;
+        return null;
 
-        return (
-
-            <div className="ml-1 mr-1 d-none-mobile">
-
-                <Button hidden={hidden}
-                        onClick={() => this.onClick()}
-                        color="light"
-                        className="border"
-                        size="md">
-
-                    <div style={{display: 'flex'}}>
-
-                        <div>
-                            {/*TODO: make this a inline SVG button not a URL*/}
-                            <img style={{
-                                    height: '22px',
-                                    marginRight: '5px'
-                                 }}
-                                 src="/web/assets/images/chrome.svg" title="chrome"/>
-                        </div>
-
-                        <div>
-                            Install Chrome Extension
-                        </div>
-
-                    </div>
-
-                </Button>
-
-            </div>
-
-        );
+        // const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
+        // const hidden = AppRuntime.isElectron() || ! Platforms.isDesktop() || ! isChrome;
+        //
+        // return (
+        //
+        //     // <div className="d-none-mobile">
+        //     //
+        //     //     <Button hidden={hidden}
+        //     //             onClick={() => this.onClick()}
+        //     //             variant="contained">
+        //     //
+        //     //         <div style={{display: 'flex'}}>
+        //     //
+        //     //
+        //     //             Install Chrome Extension
+        //     //
+        //     //     </Button>
+        //     //
+        //     // </div>
+        //
+        // );
 
     }
 
@@ -82,11 +71,3 @@ export class ChromeExtensionInstallButton extends React.Component<IProps, IState
     }
 
 }
-
-interface IProps {
-}
-
-interface IState {
-
-}
-

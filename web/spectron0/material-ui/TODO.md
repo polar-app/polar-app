@@ -1,12 +1,21 @@
 
 - table work:
-    - the header bar needs to work with delete and tag
-    - header bar needs archive and flag too
-    - unify the per-item context menu handling functions... 
-    - progress sorting should be descending by default
     - long click for context menu should work..
+    - put the related tags into the autocomplete widget directly since
+      it maintains its own state. this will be a lot easier than refactoring it
+    - remove all references to Dialogs.tsx
+    - finish the rest of the dropdowns
+    - the autocomplete needs to use the dialogs api
+        - since this is now generic we can make it autocomplete books too
+        - 
+    - the macro checkbox at the top does NOT work with all the items on the page
+    - get tab navigation to work
+    - port over the annotations page too
+    - consider fixing the tree control too.
+    - folder sidebar context menu is now broken 
+    - events in the table aren't tied to the screen properly
+              
     
-- dropdown menus are transparent... 
 - verify mobile UI works... 
 
 - proper row handling

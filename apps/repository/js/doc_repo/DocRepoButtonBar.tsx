@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {AddContentActions} from '../ui/AddContentActions';
-import {TagButton} from './TagButton';
-import {MultiDeleteButton} from './multi_buttons/MultiDeleteButton';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {DeviceRouter} from '../../../../web/js/ui/DeviceRouter';
 import {AddContent} from '../ui/AddContentButton';
