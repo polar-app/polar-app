@@ -6,7 +6,7 @@ import RateReviewIcon from '@material-ui/icons/RateReview';
 import {MUIRouterLink} from "../../../../../web/spectron0/material-ui/MUIRouterLink";
 import {MUIDropdownItem} from "../../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownItem";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
-
+import FlashOnIcon from '@material-ui/icons/FlashOn';
 
 export interface IProps {
     readonly onReading: () => void;
@@ -26,7 +26,8 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
     public render() {
 
         return (
-            <MUIDropdownMenu button={{
+            <MUIDropdownMenu id="start-review-dropdown"
+                             button={{
                                 color: "primary",
                                 text: 'Start Review',
                                 size: 'large',
@@ -39,46 +40,14 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
                         <MUIDropdownItem text="Reading" icon={<LocalLibraryIcon/>}/>
                     </MUIRouterLink>
 
+                    <MUIRouterLink to={{pathname: '/annotations', hash: '#review-flashcards'}}>
+                        <MUIDropdownItem text="Flashcards" icon={<FlashOnIcon/>} onClick={this.props.onFlashcards}/>
+                    </MUIRouterLink>
+
                 </div>
 
             </MUIDropdownMenu>
 
-            
-            //
-            // <UncontrolledDropdown size="md"
-            //                       direction="down"
-            //                       id="start-review-dropdown">
-            //
-            //     <DropdownToggle size="md"
-            //                     style={{fontWeight: 'bold'}}
-            //                     color="success" caret>
-            //
-            //         <i className="fas fa-graduation-cap mr-1"/> Start Review
-            //
-            //     </DropdownToggle>
-            //
-            //     <DropdownMenu>
-            //
-            //         <Link to={{pathname: '/annotations', hash: '#review-reading'}} className="no-underline">
-            //
-            //             <DropdownItem size="sm"
-            //                           style={{width: '100%'}}>
-            //                 <i className="fas fa-book-reader" style={ICON_STYLE}/> Reading
-            //             </DropdownItem>
-            //
-            //         </Link>
-            //
-            //         <Link to={{pathname: '/annotations', hash: '#review-flashcards'}} className="no-underline">
-            //             <DropdownItem size="sm"
-            //                           style={{width: '100%'}}
-            //                           onClick={this.props.onFlashcards}>
-            //                 <i className="fas fa-bolt" style={ICON_STYLE}/> Flashcards
-            //             </DropdownItem>
-            //         </Link>
-            //
-            //     </DropdownMenu>
-            //
-            // </UncontrolledDropdown>
 
         );
 
