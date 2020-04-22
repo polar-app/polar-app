@@ -110,6 +110,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
                     <Box pl={1}>
 
                         <Grid container
+                              spacing={1}
                               direction="row"
                               justify="flex-start"
                               alignItems="center">
@@ -117,6 +118,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
                             <Grid item>
                                 <AutoBlur>
                                     <Checkbox
+                                        size="medium"
                                         indeterminate={numSelected > 0 && numSelected < rowsPerPage}
                                         checked={rowsOnPage === rowsPerPage}
                                         onChange={event => props.onSelectAllRows(event.target.checked)}
@@ -126,34 +128,26 @@ export const EnhancedTableToolbar = (props: IProps) => {
                             </Grid>
 
                             {numSelected > 0 && (
-                                <Grid item>
-                                    <Grid container
-                                          spacing={0}
-                                          direction="row"
-                                          justify="flex-start"
-                                          alignItems="center">
-
-                                        <Grid item>
-                                            <MUIDocTagButton onClick={NULL_FUNCTION} size="medium"/>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <MUIDocArchiveButton onClick={NULL_FUNCTION} size="medium"/>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <MUIDocFlagButton onClick={NULL_FUNCTION} size="medium"/>
-                                        </Grid>
-
-                                        <Divider orientation="vertical" flexItem/>
-
-                                        <Grid item>
-                                            <MUIDocDeleteButton size="medium"
-                                                                onClick={actions.onDelete}/>
-                                        </Grid>
-
+                                <>
+                                    <Grid item>
+                                        <MUIDocTagButton onClick={NULL_FUNCTION} size="medium"/>
                                     </Grid>
-                                </Grid>
+
+                                    <Grid item>
+                                        <MUIDocArchiveButton onClick={NULL_FUNCTION} size="medium"/>
+                                    </Grid>
+
+                                    <Grid item>
+                                        <MUIDocFlagButton onClick={NULL_FUNCTION} size="medium"/>
+                                    </Grid>
+
+                                     <Divider orientation="vertical" variant="middle" flexItem/>
+
+                                    <Grid item>
+                                        <MUIDocDeleteButton size="medium"
+                                                            onClick={actions.onDelete}/>
+                                    </Grid>
+                                </>
                             )}
                         </Grid>
                     </Box>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -48,6 +48,8 @@ export default function MUISearchBox(props: IProps) {
 
     const [text, setText] = useState("");
     const [active, setActive] = useState(false);
+
+    // const handleChange = useCallback()
 
     // FIXME: need a debouncer here...
     const handleChange = (text: string) => {

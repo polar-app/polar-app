@@ -57,8 +57,7 @@ import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/Pr
 import {App, AppInitializer} from "./AppInitializer";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {useState} from "react";
-import Container from "@material-ui/core/Container";
+import {GlobalCss} from "../../../spectron0/material-ui/GlobalCss";
 
 const log = Logger.create();
 
@@ -317,6 +316,7 @@ export class RepositoryApp {
                 {/*<Container component="main" maxWidth={false} disableGutters>*/}
 
                 <CssBaseline/>
+                <GlobalCss/>
 
                 <Splashes key="splashes" persistenceLayerManager={persistenceLayerManager}/>
 

@@ -4,6 +4,9 @@
     - search box layout sucks and is irrational when the close button is displayed
     - don't think it's alignCenter 
 
+    - dark scrollbars:
+        https://stackoverflow.com/questions/53772429/material-ui-how-can-i-style-the-scrollbar-with-css-in-js
+
 
     - long click for context menu should work..
     - put the related tags into the autocomplete widget directly since
