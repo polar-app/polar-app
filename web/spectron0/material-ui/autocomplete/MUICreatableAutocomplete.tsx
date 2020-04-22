@@ -60,7 +60,7 @@ export type RelatedOptionsCalculator<T> = (options: ReadonlyArray<ValueAutocompl
 
 export interface MUICreatableAutocompleteProps<T> {
 
-    readonly label: string;
+    readonly label?: string;
 
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 

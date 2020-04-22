@@ -10,21 +10,26 @@ import {
     PromptDialogProps
 } from "../../../js/ui/dialogs/PromptDialog";
 import {Prompt} from "../../../js/ui/dialogs/Prompt";
+import {
+    AutocompleteDialog,
+    AutocompleteDialogProps
+} from "../../../js/ui/dialogs/AutocompleteDialog";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
     prompt: (promptDialogProps: PromptDialogProps) => void;
+    autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
 }
 
 interface DialogHostProps {
     readonly onDialogManager: Callback1<DialogManager>;
 }
 
-type DialogType = 'confirm' | 'prompt';
+type DialogType = 'confirm' | 'prompt' | 'autocomplete';
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any>;
     readonly iter: number;
 }
 
@@ -53,9 +58,18 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             });
         };
 
-        const dialogManager = {
+        const autocomplete = function<T>(autocompleteProps: AutocompleteDialogProps<T>) {
+            setState({
+                type: 'autocomplete',
+                props: autocompleteProps,
+                iter: iter++
+            });
+        };
+
+        const dialogManager: DialogManager = {
             confirm,
-            prompt
+            prompt,
+            autocomplete
         };
 
         // WARN: not sure if this is the appropriate way to do this but we need
@@ -85,6 +99,11 @@ const DialogHost = React.memo((props: DialogHostProps) => {
                               {...(state.props as PromptDialogProps)}/>
             );
 
+        case "autocomplete":
+            return (
+                <AutocompleteDialog key={state.iter}
+                                    {...(state.props as AutocompleteDialogProps<any>)}/>
+            );
 
     }
 

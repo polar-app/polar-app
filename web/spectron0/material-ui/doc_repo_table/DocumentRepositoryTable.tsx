@@ -285,12 +285,13 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
 
-        MUITagInputControls.prompt({
-            availableTags,
-            existingTags: () => existingTags,
-            relatedTagsManager: this.props.relatedTagsManager,
-            onChange: NULL_FUNCTION,
+        this.dialogs!.autocomplete({
+            options: availableTags.map(MUITagInputControls.toAutocompleteOption),
+            defaultOptions: existingTags.map(MUITagInputControls.toAutocompleteOption),
+            createOption: MUITagInputControls.createOption,
+            // relatedTagsManager: this.props.relatedTagsManager,
             onCancel: NULL_FUNCTION,
+            onChange: NULL_FUNCTION,
             onDone: tags => this.props.onTagged(repoDocInfos, tags)
         });
 

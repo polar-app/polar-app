@@ -1,18 +1,11 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {InputValidator} from "./InputValidators";
 import {InputCompleteListener} from "../../../spectron0/material-ui/complete_listeners/InputCompleteListener";
-import {InputValidationErrorSnackbar} from "../../../spectron0/material-ui/dialogs/InputValidationErrorSnackbar";
 import MUICreatableAutocomplete, {MUICreatableAutocompleteProps} from "../../../spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
-import {AutocompleteBody} from "./AutocompleteBody";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export interface AutocompleteDialog<T> extends MUICreatableAutocompleteProps<T> {
+export interface AutocompleteDialogProps<T> extends MUICreatableAutocompleteProps<T> {
     readonly onCancel: () => void;
     readonly onDone: (values: ReadonlyArray<T>) => void;
 
@@ -41,7 +34,7 @@ interface IState {
     readonly validationError?: string;
 }
 
-export function AutocompleteDialog<T>(props: AutocompleteDialog<T>) {
+export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
 
     const classes = useStyles();
 
