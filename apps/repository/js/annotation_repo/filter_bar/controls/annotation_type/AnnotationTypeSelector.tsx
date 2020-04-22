@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationTypeDropdownItem} from "./AnnotationTypeDropdownItem";
 import {Buttons} from "../Buttons";
+import NoteIcon from '@material-ui/icons/Note';
+import {MUIDropdownMenu} from "../../../../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {AnnotationTypeMenuItem} from "./AnnotationTypeMenuItem";
 
 export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> {
 
@@ -38,30 +39,24 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
         ];
 
-        const buttonProps = Buttons.activeProps(this.props.selected.length > 0);
+        // const buttonProps = Buttons.activeProps(this.props.selected.length > 0);
 
         return (
 
-            <UncontrolledDropdown>
+            <MUIDropdownMenu caret
+                             button={{
+                                 text: "Annotation Types",
+                                 icon: <NoteIcon/>
+                             }}>
 
-                <DropdownToggle color={buttonProps.color}
-                                className="btn-no-outline"
-                                outline={buttonProps.outline}
-                                size="md"
-                                caret>
-
-                    <i className="fas fa-filter"/> <span className="d-none-mobile">Annotation Types</span>
-
-                </DropdownToggle>
-
-                <DropdownMenu className="shadow" right>
+                <div>
                     {options.map((current, idx) => {
 
                         const selected = this.props.selected.includes(current.annotationType);
 
                         const computeNewSelected = () => {
                             const newSelected = selected ?
-                                this.props.selected.filter(item => item != current.annotationType) :
+                                this.props.selected.filter(item => item !== current.annotationType) :
                                 [...this.props.selected, current.annotationType];
 
                             return newSelected;
@@ -72,16 +67,17 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
                         const onClick = () => this.props.onSelected(newSelected);
 
-                        return <AnnotationTypeDropdownItem key={idx}
-                                                           selected={selected}
-                                                           onClick={onClick}>
+                        return <AnnotationTypeMenuItem key={idx}
+                                                       selected={selected}
+                                                       onClick={onClick}>
                             {current.label}
-                        </AnnotationTypeDropdownItem>;
+                        </AnnotationTypeMenuItem>;
 
                     })}
-                </DropdownMenu>
+                </div>
 
-            </UncontrolledDropdown>
+            </MUIDropdownMenu>
+
         );
 
     }

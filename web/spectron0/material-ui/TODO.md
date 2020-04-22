@@ -7,6 +7,9 @@
     - dark scrollbars:
         https://stackoverflow.com/questions/53772429/material-ui-how-can-i-style-the-scrollbar-with-css-in-js
 
+    - color dropdown has no clear
+    - color dropdown can't highlight the blue as being selected... 
+
 
     - long click for context menu should work..
     - put the related tags into the autocomplete widget directly since

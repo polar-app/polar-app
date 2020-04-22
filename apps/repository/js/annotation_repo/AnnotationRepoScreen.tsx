@@ -44,6 +44,7 @@ import {Button} from "reactstrap";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import Grid from '@material-ui/core/Grid';
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -299,18 +300,38 @@ namespace screen {
                 <RepoHeader persistenceLayerProvider={props.persistenceLayerProvider}
                             persistenceLayerController={props.persistenceLayerManager}/>
 
-                <MUIPaperToolbar id="header-filter" borderBottom>
-                    <Row.Main>
-                        {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
-                        <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
-                                             onReading={() => props.onStartReview('reading')}/>
-                    </Row.Main>
+                <MUIPaperToolbar id="header-filter"
+                                 padding={1}
+                                 borderBottom>
 
-                    <Row.Right>
+                        <Grid spacing={1}
+                              container
+                              direction="row"
+                              justify="flex-start"
+                              alignItems="center">
 
-                        <FilterBar {...props}/>
+                        <Grid item>
+                            {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
+                            <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
+                                                 onReading={() => props.onStartReview('reading')}/>
+                        </Grid>
 
-                    </Row.Right>
+                        <Grid item style={{flexGrow: 1}}>
+
+                            <Grid container
+                                  direction="row"
+                                  justify="flex-end"
+                                  alignItems="center">
+
+                                <Grid item>
+                                    <FilterBar {...props}/>
+                                </Grid>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Grid>
 
                 </MUIPaperToolbar>
 
