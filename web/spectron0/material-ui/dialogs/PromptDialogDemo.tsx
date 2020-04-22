@@ -129,7 +129,8 @@ export const PromptDialog = (props: IProps) => {
                                    placeholder={props.placeholder}
                                    label={props.label}
                                    type={props.type}
-                                   fullWidth/>
+                                   // fullWidth
+                                    />
 
                     </DialogContent>
 
