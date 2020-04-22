@@ -18,7 +18,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import MUICreatableAutocomplete, {AutocompleteOption} from "../../../web/spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../web/spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
@@ -70,17 +70,15 @@ interface IState {
 
 interface IRenderProps extends IState, IProps {
 
-    readonly pendingTagOptions: ReadonlyArray<AutocompleteOption<Tag>>;
+    readonly pendingTagOptions: ReadonlyArray<ValueAutocompleteOption<Tag>>;
 
     readonly relatedTags: ReadonlyArray<string>;
 
-    readonly availableTagOptions: ReadonlyArray<AutocompleteOption<Tag>>;
+    readonly availableTagOptions: ReadonlyArray<ValueAutocompleteOption<Tag>>;
 
-    readonly createOption: (input: string) => AutocompleteOption<Tag>;
+    readonly createOption: (input: string) => ValueAutocompleteOption<Tag>;
 
     readonly onKeyDown: (event: any) => any;
-
-    readonly addRelatedTag: (item: string) => any;
 
     readonly handleChange: (selectedOptions: TagOption[]) => any;
 
@@ -91,24 +89,6 @@ interface IRenderProps extends IState, IProps {
     readonly onChange: (values: ReadonlyArray<Tag>) => void;
 
 }
-
-const RelatedTagsWidget = (props: IRenderProps) => {
-
-    if (props.relatedTags.length === 0) {
-        return null;
-    }
-
-    return <Box>
-
-        <Box pb={1}>
-            <strong>Related tags: </strong>
-        </Box>
-
-        <RelatedTagsItems {...props}/>
-
-    </Box>;
-
-};
 
 const DocTagsTagsWidget = (props: IRenderProps) => {
 
@@ -142,26 +122,6 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
 
 };
 
-const RelatedTagsItems = (props: IRenderProps) => {
-
-    return (
-        <Grid container
-              direction="row"
-              justify="flex-start"
-              alignItems="center"
-              spacing={1}>
-            {props.relatedTags.map(item =>
-                <Grid item key={item}>
-                    <Chip label={item}
-                          size="small"
-                          onClick={() => props.addRelatedTag(item)}/>
-                </Grid>)}
-        </Grid>
-    );
-
-};
-
-
 const TagInputBody = (props: IRenderProps) => {
 
     // FIXME: command+enter...
@@ -192,14 +152,6 @@ const TagInputBody = (props: IRenderProps) => {
                                               onChange={NULL_FUNCTION}/>
 
                 </Box>
-
-                <div className="pt-1">
-
-                    <PremiumFeature required='bronze' size='sm' feature="related tags">
-                        <RelatedTagsWidget {...props}/>
-                    </PremiumFeature>
-
-                </div>
 
                 <DocTagsTagsWidget {...props}/>
 
@@ -291,7 +243,7 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
         const availableTags = Tags.regularTagsThenFolderTagsSorted(this.props.availableTags);
 
-        const toAutocompleteOption = (tag: Tag): AutocompleteOption<Tag> => {
+        const toAutocompleteOption = (tag: Tag): ValueAutocompleteOption<Tag> => {
             return {
                 id: tag.id,
                 label: tag.label,
@@ -305,7 +257,7 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
         const availableTagOptions = availableTags.map(toAutocompleteOption);
         const pendingTags = Tags.onlyRegular(this.state.pendingTags).map(toAutocompleteOption);
 
-        const createOption = (input: string): AutocompleteOption<Tag> => ({
+        const createOption = (input: string): ValueAutocompleteOption<Tag> => ({
             id: input,
             label: input,
             value: {
@@ -334,29 +286,12 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
                           handleChange={(selectedOptions) => this.handleChange(selectedOptions)}
                           createOption={createOption}
                           onKeyDown={NULL_FUNCTION}
-                          addRelatedTag={label => this.addRelatedTag(label)}
                           {...this.props}
                           {...this.state}
                           onCancel={() => this.onCancel()}
                           onDone={() => this.onDone()}/>
 
         );
-
-    }
-
-    private addRelatedTag(label: string) {
-
-        const tag: Tag = {
-            id: label,
-            label
-        };
-
-        const tags = [tag, ...this.state.pendingTags];
-
-        this.handleChange(TagOptions.fromTags(tags));
-
-        // need or else the button has focus now...
-        // this.select!.focus();
 
     }
 

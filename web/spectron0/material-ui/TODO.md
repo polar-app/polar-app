@@ -12,6 +12,8 @@
 
     - Dialog should blur the background via CSS blur like our current dialog 
 
+    - move all MUI* classes out of the spectron directory
+
     - long click for context menu should work..
     - put the related tags into the autocomplete widget directly since
       it maintains its own state. this will be a lot easier than refactoring it
@@ -21,7 +23,7 @@
         - since this is now generic we can make it autocomplete books too
         - 
     - tooltips are transparent... also, give them a pointer if possible
-    - 
+    - pref to toggle full-screen mode...
         
     - the macro checkbox at the top does NOT work with all the items on the page
     - get tab navigation to work

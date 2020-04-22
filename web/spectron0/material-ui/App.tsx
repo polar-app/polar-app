@@ -21,7 +21,10 @@ import Snackbar from "@material-ui/core/Snackbar";
 import {InputValidationErrorSnackbar} from "./dialogs/InputValidationErrorSnackbar";
 import {MUITagInputControl} from "../../../apps/repository/js/MUITagInputControl";
 import {MockTags} from "./MockTags";
-import {AutocompleteOption} from "./autocomplete/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {
+    RelatedOptionsCalculator,
+    ValueAutocompleteOption
+} from "./autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
@@ -76,7 +79,13 @@ export const App = () => {
     const muiTheme = createMuiTheme(theme);
 
     const tags = MockTags.create();
-    //
+
+    const tagOptions = tags.map(MUITagInputControls.toAutocompleteOption);
+
+    const relatedOptionsCalculator: RelatedOptionsCalculator<Tag> = () => {
+        return tagOptions.slice(1, 3);
+    }
+
     // MUITagInputControls.prompt({
     //     availableTags: tags,
     //     existingTags: () => [],
@@ -84,6 +93,8 @@ export const App = () => {
     //     onCancel: NULL_FUNCTION,
     //     onDone: NULL_FUNCTION
     // });
+
+
 
     return (
         // <GlobalHotKeys
@@ -122,6 +133,11 @@ export const App = () => {
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
 
+                    <MUICreatableAutocomplete label="tags bro"
+                                              options={tagOptions}
+                                              createOption={MUITagInputControls.createOption}
+                                              relatedOptionsCalculator={relatedOptionsCalculator}
+                                              onChange={NULL_FUNCTION}/>
 
                     <OutlinedInput startAdornment={
                         <InputAdornment position="start">
@@ -130,9 +146,9 @@ export const App = () => {
                     }
                                    type="search"/>
 
-                       <br/>
-                <br/>                   <br/>
-                <br/>
+                    <br/>
+                    <br/>                   <br/>
+                    <br/>
 
 
                     <MUISearchBox2 placeholder="This is a placeholder"

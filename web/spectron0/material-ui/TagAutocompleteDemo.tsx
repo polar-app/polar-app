@@ -1,19 +1,19 @@
 import * as React from 'react';
 import {MockTags} from "./MockTags";
-import MUICreatableAutocomplete, {AutocompleteOption} from "./autocomplete/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {ValueAutocompleteOption} from "./autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 
 const tags = MockTags.create();
 
-const toAutocompleteOption = (tag: Tag): AutocompleteOption<Tag> => ({
+const toAutocompleteOption = (tag: Tag): ValueAutocompleteOption<Tag> => ({
     id: tag.id,
     label: tag.label,
     value: tag
 });
 
-const tagOptions: ReadonlyArray<AutocompleteOption<Tag>> = tags.map(toAutocompleteOption);
+const tagOptions: ReadonlyArray<ValueAutocompleteOption<Tag>> = tags.map(toAutocompleteOption);
 
-const createOption = (input: string): AutocompleteOption<Tag> => ({
+const createOption = (input: string): ValueAutocompleteOption<Tag> => ({
     id: input,
     label: input,
     value: {

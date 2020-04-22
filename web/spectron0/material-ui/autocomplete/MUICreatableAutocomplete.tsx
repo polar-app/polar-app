@@ -1,17 +1,14 @@
 /* eslint-disable no-use-before-define */
 import React, {useState} from 'react';
-import Autocomplete, {
-    AutocompleteChangeDetails,
-    AutocompleteChangeReason, createFilterOptions, RenderInputParams
-} from '@material-ui/lab/Autocomplete';
+import Autocomplete, {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Popper from "@material-ui/core/Popper";
-import {Tag} from "polar-shared/src/tags/Tags";
 import {isPresent} from "polar-shared/src/Preconditions";
-import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
+import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
 import Chip from '@material-ui/core/Chip';
+import {MUIRelatedOptions} from "./MUIRelatedOptions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {PremiumFeature} from "../../../js/ui/premium_feature/PremiumFeature";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -27,7 +24,10 @@ interface CreateAutocompleteOption {
     readonly label: string;
 }
 
-export interface AutocompleteOption<T> {
+/**
+ * An option with a value.
+ */
+export interface ValueAutocompleteOption<T> {
 
     /**
      * A unique internal ID to prevent duplicates being selected.
@@ -46,21 +46,25 @@ export interface AutocompleteOption<T> {
 
 }
 
-type InternalAutocompleteOption<T> = CreateAutocompleteOption | AutocompleteOption<T>;
+type InternalAutocompleteOption<T> = CreateAutocompleteOption | ValueAutocompleteOption<T>;
 
 function isCreateAutocompleteOption<T>(option: InternalAutocompleteOption<T>): option is CreateAutocompleteOption {
     return isPresent((option as any).inputValue);
 }
 
-export type RelatedTagsCalculator<T> = (values: ReadonlyArray<T>) => ReadonlyArray<T>;
+function isValueAutocompleteOption<T>(option: InternalAutocompleteOption<T>): option is ValueAutocompleteOption<T> {
+    return isPresent((option as any).value);
+}
+
+export export type RelatedOptionsCalculator<T> = (options: ReadonlyArray<ValueAutocompleteOption<T>>) => ReadonlyArray<ValueAutocompleteOption<T>>;
 
 interface IProps<T> {
 
     readonly label: string;
 
-    readonly options: ReadonlyArray<AutocompleteOption<T>>;
+    readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 
-    readonly defaultOptions?: ReadonlyArray<AutocompleteOption<T>>;
+    readonly defaultOptions?: ReadonlyArray<ValueAutocompleteOption<T>>;
 
     readonly placeholder?: string
 
@@ -70,17 +74,17 @@ interface IProps<T> {
      * Used when converting an option entered by the user to an object with
      * a label.
      */
-    readonly createOption: (label: string) => AutocompleteOption<T>;
+    readonly createOption: (label: string) => ValueAutocompleteOption<T>;
 
     readonly onChange: (selected: ReadonlyArray<T>) => void;
 
-    readonly relatedTagsCalculator?: RelatedTagsCalculator<T>;
+    readonly relatedOptionsCalculator?: RelatedOptionsCalculator<T>;
 
 }
 
 interface IState<T> {
     readonly values: ReadonlyArray<InternalAutocompleteOption<T>>;
-    readonly options: ReadonlyArray<AutocompleteOption<T>>;
+    readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 }
 
 export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
@@ -92,12 +96,11 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
         options: props.options
     });
 
-    const handleChange = (event: React.ChangeEvent<{}>,
-                          newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
+    const handleChange = (newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
 
-        const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<AutocompleteOption<T>> => {
+        const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<ValueAutocompleteOption<T>> => {
 
-            const toAutocompleteOption = (option: InternalAutocompleteOption<T>): AutocompleteOption<T> => {
+            const toAutocompleteOption = (option: InternalAutocompleteOption<T>): ValueAutocompleteOption<T> => {
                 if (isCreateAutocompleteOption(option)) {
                     return props.createOption(option.inputValue);
                 } else {
@@ -111,7 +114,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
         // make sure any new values are in the options map because MUI gets mad
         // if there's a value that's not in the options.
-        const convertToOptions = (newValues: ReadonlyArray<AutocompleteOption<T>>) => {
+        const convertToOptions = (newValues: ReadonlyArray<ValueAutocompleteOption<T>>) => {
 
             const optionsMap = arrayStream(state.options)
                 .toMap(current => current.id);
@@ -162,6 +165,26 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
 
     const filter = createFilterOptions<InternalAutocompleteOption<T>>();
 
+    const computeRelatedOptions = (): ReadonlyArray<ValueAutocompleteOption<T>> => {
+        
+        if (props.relatedOptionsCalculator) {
+
+            const values =
+                arrayStream(state.values)
+                    .filter(isValueAutocompleteOption)
+                    .map(current => current as ValueAutocompleteOption<T>)
+                    .collect();
+
+            return props.relatedOptionsCalculator(values);
+
+        }
+        
+        return [];
+        
+    };
+    
+    const relatedOptions = computeRelatedOptions();
+
     return (
         <div className={classes.root}>
             <Autocomplete
@@ -171,7 +194,7 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
                 getOptionLabel={(option) => option.label}
-                onChange={(event, value, reason, details) => handleChange(event, value)}
+                onChange={(event, value, reason, details) => handleChange(value)}
                 filterSelectedOptions
                 filterOptions={(options, params) => {
 
@@ -207,6 +230,11 @@ export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
                 )}
             />
 
+            <PremiumFeature required='bronze' size='sm' feature="related tags">
+                <MUIRelatedOptions relatedOptions={relatedOptions}
+                                   onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
+            </PremiumFeature>
+            
         </div>
     );
 }

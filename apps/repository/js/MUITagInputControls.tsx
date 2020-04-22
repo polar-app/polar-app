@@ -5,7 +5,11 @@ import {
     ReactInjector
 } from "../../../web/js/ui/util/ReactInjector";
 import * as React from "react";
+import {ValueAutocompleteOption} from "../../../web/spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
 
+/**
+ * @Deprecated MUI
+ */
 export namespace MUITagInputControls {
 
     interface Opts extends BaseProps {
@@ -53,4 +57,25 @@ export namespace MUITagInputControls {
 
     }
 
+    export function toAutocompleteOption(tag: Tag): ValueAutocompleteOption<Tag> {
+        return {
+            id: tag.id,
+            label: tag.label,
+            value: {
+                id: tag.id,
+                label: tag.label,
+            }
+        };
+    };
+
+    export function createOption(input: string): ValueAutocompleteOption<Tag> {
+        return {
+            id: input,
+            label: input,
+            value: {
+                id: input,
+                label: input,
+            }
+        };
+    }
 }
