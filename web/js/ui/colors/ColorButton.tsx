@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Button} from 'reactstrap';
 
 export class ColorButton extends React.PureComponent<IProps, IState> {
 
@@ -43,22 +42,19 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
                     style={{
                         display: 'flex',
                     }}>
-            <Button size="lg"
-                       id={props.id}
-                       type="button"
-                       className={"p-0"}
-                       title=""
-                       aria-label=""
-                       color="light"
-                       onClick={() => onSelected(props.color)}
-                       style={{
-                           backgroundColor,
-                           border,
-                           width: size,
-                           height: size
-                       }}>
+            <button id={props.id}
+                    className={"p-0"}
+                    title=""
+                    aria-label=""
+                    onClick={() => onSelected(props.color)}
+                    style={{
+                        backgroundColor,
+                        border,
+                        width: size,
+                        height: size
+                    }}>
 
-            </Button>
+            </button>
         </div>;
 
     }
