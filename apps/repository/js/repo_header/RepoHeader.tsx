@@ -12,6 +12,11 @@ import {NavIcon} from "../nav/NavIcon";
 import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
 import {Devices} from "polar-shared/src/util/Devices";
+import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from "@material-ui/core/IconButton";
+import Grid from "@material-ui/core/Grid";
+import Paper from '@material-ui/core/Paper';
+import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -87,11 +92,14 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                 return (
                     <Link to="/settings">
-                        <Button size="md"
-                                className="border ml-1 text-muted"
-                                color="clear">
-                            <i className="fas fa-cog" style={{fontSize: '17px'}}/>
-                        </Button>
+                        <IconButton>
+                            <SettingsIcon
+                                // size="md"
+                                //         className="border ml-1 text-muted"
+                                //             color="clear"
+                            >
+                            </SettingsIcon>
+                        </IconButton>
                     </Link>
                 );
 
@@ -101,9 +109,10 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="border-bottom">
+                <MUIPaperToolbar borderBottom
+                                 padding={1}>
 
-                    <div className="ml-1 mr-1 mt-1"
+                    <div className=""
                          style={{
                              display: 'flex'
                          }}>
@@ -114,34 +123,49 @@ export class RepoHeader extends React.Component<IProps, IState> {
                         </div>
 
                         <div style={{
-                            flexGrow: 1,
-                            display: 'flex'
-                        }}>
+                                 flexGrow: 1,
+                                 display: 'flex'
+                             }}>
 
-                            <div className="ml-auto mt-auto mb-auto"
-                                 style={{display: 'flex'}}>
 
-                                {this.props.right}
+                            <Grid
+                                container
+                                spacing={1}
+                                direction="row"
+                                justify="flex-end"
+                                alignItems="center">
 
-                                <ChromeExtensionInstallButton/>
+                                <Grid item>
+                                    {this.props.right}
+                                </Grid>
 
-                                <Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>
+                                <Grid item>
+                                    <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
+                                </Grid>
 
-                                <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
+                                <Grid item>
+                                    <HelpDropdown/>
+                                </Grid>
 
-                                <LinkDropdown hidden={! isDesktop}/>
+                                <Grid item>
+                                    <Settings/>
+                                </Grid>
 
-                                <HelpDropdown/>
+                            </Grid>
 
-                                <Settings/>
 
-                            </div>
+                                {/*<ChromeExtensionInstallButton/>*/}
+
+                                {/*<Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>*/}
+
+
+                                {/*<LinkDropdown hidden={! isDesktop}/>*/}
 
                         </div>
 
                     </div>
 
-                </div>
+                </MUIPaperToolbar>
 
             );
 

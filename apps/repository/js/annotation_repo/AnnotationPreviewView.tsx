@@ -89,7 +89,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                                         {repoAnnotation.created}
                                     </Moment>
 
-                                    <div className="text-secondary pl-1">
+                                    <Box color="textSecondary">
 
                                         (
 
@@ -101,7 +101,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                                         )
 
-                                    </div>
+                                    </Box>
 
                                 </div>
 
@@ -171,7 +171,8 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
             return (
 
                 <Box p={1}
-                     className="text-muted text-center">
+                     color="textSecondary"
+                     className="text-center">
 
                     No annotation selected.
 

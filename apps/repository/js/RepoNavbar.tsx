@@ -10,6 +10,22 @@ import Tabs from "@material-ui/core/Tabs";
 import {Link} from "react-router-dom";
 import Tab from "@material-ui/core/Tab";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {ITabProps, NavTabs} from "./NavTabs";
+import Grid from '@material-ui/core/Grid';
+
+const TABS: ReadonlyArray<ITabProps> = [
+    {
+        id: 0,
+        label: "Documents",
+        link: {pathname: "/"},
+    },
+    {
+        id: 1,
+        label: "Annotations",
+        link: {pathname: "/annotations"},
+    }
+
+];
 
 const Styles: IStyleMap = {
 
@@ -54,12 +70,15 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
-        const NavTabs = () => {
+        const Nav = () => {
 
             const Delegate =
                 <div className="mt-auto mb-auto">
 
-                    <div className="ml-4">
+                    <div>
+
+                        <NavTabs tabs={TABS}/>
+
                         {/*<SimpleTabs>*/}
                         {/*    <SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
                         {/*    <SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
@@ -76,22 +95,22 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                         {/*</SimpleTabs>*/}
 
 
-                        <Tabs value={1}
-                              indicatorColor="primary"
-                              textColor="primary"
-                              onChange={NULL_FUNCTION}
-                            >
 
-                            {/*<SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
-                            {/*<SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
+                        {/*<Tabs value={0}*/}
+                        {/*      indicatorColor="primary"*/}
+                        {/*      textColor="primary"*/}
+                        {/*      onChange={NULL_FUNCTION}*/}
+                        {/*    >*/}
 
-                            {/*<Link to={{pathname: "/annotations"}}>*/}
-                                <Tab label="Annotations"/>
-                            {/*</Link>*/}
+                        {/*    /!*<SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*!/*/}
+                        {/*    /!*<SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*!/*/}
 
+                        {/*    /!*<Link to={{pathname: "/annotations"}}>*!/*/}
+                        {/*        <Tab label="Documents"/>*/}
+                        {/*        <Tab label="Notes"/>*/}
+                        {/*    /!*</Link>*!/*/}
 
-
-                        </Tabs>
+                        {/*</Tabs>*/}
 
                     </div>
 
@@ -103,15 +122,21 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
         const NavFirstRow = () => (
 
-            <div style={{display: 'flex'}}>
+            <Grid spacing={2}
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="center">
 
-                <div className="mt-auto mb-auto">
+                <Grid item>
                     <NavLogo/>
-                </div>
+                </Grid>
 
-                <NavTabs/>
+                <Grid item>
+                    <Nav/>
+                </Grid>
 
-            </div>
+            </Grid>
         );
 
         return (
