@@ -26,6 +26,7 @@ import {
     DialogManager,
     MUIDialogController
 } from "../dialogs/MUIDialogController";
+import {AutocompleteDialogProps} from "../../../js/ui/dialogs/AutocompleteDialog";
 
 interface IProps {
 
@@ -280,21 +281,43 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         const availableTags = this.props.tagsProvider();
 
-        // FIXME: not sure how we should handle this...  adding NEW tags
-        // to existing items.
-
         const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
 
-        this.dialogs!.autocomplete({
+        const toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
+
+        const {relatedTagsManager, tagsProvider} = this.props;
+
+        const relatedOptionsCalculator = (tags: ReadonlyArray<Tag>) => {
+
+            // TODO convert this to NOT use tag strings but to use tag objects
+
+            const computed = relatedTagsManager.compute(tags.map(current => current.id))
+                                               .map(current => current.tag);
+
+            // now look this up directly.
+            const resolved = arrayStream(tagsProvider())
+                .filter(current => computed.includes(current.id))
+                .map(toAutocompleteOption)
+                .collect();
+
+            return resolved;
+
+        };
+
+        const autocompleteProps: AutocompleteDialogProps<Tag> = {
             title: "Assign Tags to Document",
-            options: availableTags.map(MUITagInputControls.toAutocompleteOption),
-            defaultOptions: existingTags.map(MUITagInputControls.toAutocompleteOption),
+            options: availableTags.map(toAutocompleteOption),
+            defaultOptions: existingTags.map(toAutocompleteOption),
             createOption: MUITagInputControls.createOption,
-            // relatedTagsManager: this.props.relatedTagsManager,
+            // relatedOptionsCalculator: (tags) => this.props.relatedTagsManager.compute(tags),
+            // relatedOptionsCalculator: (tags) => [],
+            relatedOptionsCalculator,
             onCancel: NULL_FUNCTION,
             onChange: NULL_FUNCTION,
             onDone: tags => this.props.onTagged(repoDocInfos, tags)
-        });
+        };
+
+        this.dialogs!.autocomplete(autocompleteProps);
 
     }
 
