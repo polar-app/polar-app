@@ -1,11 +1,19 @@
 
 - table work:
+    - autocomplete needs to work for annotations again
+        - must use the doc annotations a tthe bottom o the autocomplete widget
+         - these never change
+
+    - finish the rest of the dropdowns
+  
     - search box needs a debouncer
     - search box layout sucks and is irrational when the close button is displayed
     - don't think it's alignCenter 
 
     - dark scrollbars:
         https://stackoverflow.com/questions/53772429/material-ui-how-can-i-style-the-scrollbar-with-css-in-js
+
+    - long click for context menu should work..
 
     - color dropdown has no clear
     - color dropdown can't highlight the blue as being selected... 
@@ -14,19 +22,11 @@
 
     - move all MUI* classes out of the spectron directory
 
-    - long click for context menu should work..
-    - put the related tags into the autocomplete widget directly since
-      it maintains its own state. this will be a lot easier than refactoring it
     - remove all references to Dialogs.tsx
-    - finish the rest of the dropdowns
-    - the autocomplete needs to use the dialogs api
-        - since this is now generic we can make it autocomplete books too
-        - 
     - tooltips are transparent... also, give them a pointer if possible
     - pref to toggle full-screen mode...
         
     - the macro checkbox at the top does NOT work with all the items on the page
-    - get tab navigation to work
     - port over the annotations page too
     - consider fixing the tree control too.
     - folder sidebar context menu is now broken 

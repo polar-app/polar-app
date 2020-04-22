@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface ITabProps {
-    readonly id: number;
+    readonly id: string;
+    readonly idx: number;
     readonly label: string;
     readonly link: RouterLink;
 }
@@ -52,7 +53,7 @@ export const NavTabs = React.memo((props: IProps) => {
             .filter(tab => ReactRouterLinks.isActive(tab.link, location))
             .first();
 
-    const activeTabID = activeTab ? activeTab.id : 0;
+    const activeTabID = activeTab ? activeTab.idx : 0;
 
     return (
 
@@ -62,7 +63,8 @@ export const NavTabs = React.memo((props: IProps) => {
               onChange={NULL_FUNCTION}>
 
             {props.tabs.map(tab => (
-                <Tab key={tab.id}
+                <Tab key={tab.idx}
+                     id={tab.id}
                      disableFocusRipple
                      component={Link}
                      disableRipple

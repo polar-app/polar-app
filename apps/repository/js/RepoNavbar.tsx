@@ -2,30 +2,28 @@ import * as React from 'react';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {NavLogo} from './nav/NavLogo';
 import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
-import {SimpleTabs} from "../../../web/js/ui/simple_tab/SimpleTabs";
-import {SimpleTab} from "../../../web/js/ui/simple_tab/SimpleTab";
-import { FeatureToggle } from '../../../web/js/ui/FeatureToggle';
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
-import Tabs from "@material-ui/core/Tabs";
-import {Link} from "react-router-dom";
-import Tab from "@material-ui/core/Tab";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ITabProps, NavTabs} from "./NavTabs";
 import Grid from '@material-ui/core/Grid';
 
 const TABS: ReadonlyArray<ITabProps> = [
     {
-        id: 0,
+        id: "nav-tab-document-repository",
         label: "Documents",
         link: {pathname: "/"},
     },
     {
-        id: 1,
+        id: "nav-tab-annotations",
         label: "Annotations",
         link: {pathname: "/annotations"},
     }
-
-];
+    ,
+    {
+        id: "nav-tab-statistics",
+        label: "Statistics",
+        link: {pathname: "/stats"},
+    }
+].map((current, index) => ({...current, idx: index})) ;
 
 const Styles: IStyleMap = {
 
@@ -78,39 +76,6 @@ export class RepoNavbar extends React.Component<IProps, IState> {
                     <div>
 
                         <NavTabs tabs={TABS}/>
-
-                        {/*<SimpleTabs>*/}
-                        {/*    <SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*/}
-                        {/*    <SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*/}
-                        {/*    <SimpleTab id="nav-tab-statistics" target={{pathname: "/stats"}} text="Statistics"/>*/}
-
-                        {/*    <FeatureToggle name='groups'>*/}
-                        {/*        <SimpleTab id="nav-tab-groups" target={{pathname: "/groups"}} text="Groups"/>*/}
-                        {/*    </FeatureToggle>*/}
-
-                        {/*    <FeatureToggle name='dev'>*/}
-                        {/*        <SimpleTab id="nav-tab-ui" target={{pathname: "/ui-components"}} text="UI Components"/>*/}
-                        {/*    </FeatureToggle>*/}
-
-                        {/*</SimpleTabs>*/}
-
-
-
-                        {/*<Tabs value={0}*/}
-                        {/*      indicatorColor="primary"*/}
-                        {/*      textColor="primary"*/}
-                        {/*      onChange={NULL_FUNCTION}*/}
-                        {/*    >*/}
-
-                        {/*    /!*<SimpleTab id="nav-tab-document-repository" target={{pathname: "/"}} text="Document Repository"/>*!/*/}
-                        {/*    /!*<SimpleTab id="nav-tab-annotations" target={{pathname: "/annotations"}} text="Annotations"/>*!/*/}
-
-                        {/*    /!*<Link to={{pathname: "/annotations"}}>*!/*/}
-                        {/*        <Tab label="Documents"/>*/}
-                        {/*        <Tab label="Notes"/>*/}
-                        {/*    /!*</Link>*!/*/}
-
-                        {/*</Tabs>*/}
 
                     </div>
 
