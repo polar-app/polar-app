@@ -8,6 +8,7 @@ import MenuList from '@material-ui/core/MenuList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
+import {MUIDropdownChevron} from "../MUIDropdownChevron";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,6 +42,7 @@ interface IProps {
     readonly button: IButtonProps;
     readonly children: JSX.Element;
     readonly placement?: PopperPlacementType;
+    readonly caret?: boolean;
 }
 
 export const MUIDropdownMenu = (props: IProps) => {
@@ -116,8 +118,11 @@ export const MUIDropdownMenu = (props: IProps) => {
                 {/*                   onClick={handleToggle}/>*/}
 
                 {props.button.text && props.button.icon &&
-                    <Button {...buttonProps} variant="contained">
-                        {props.button.icon} {props.button.text}
+                    <Button {...buttonProps}
+                            startIcon={props.button.icon}
+                            endIcon={props.caret ? <MUIDropdownChevron/> : undefined}
+                            variant="contained">
+                        {props.button.text}
                     </Button>}
 
                 {props.button.icon && ! props.button.text &&

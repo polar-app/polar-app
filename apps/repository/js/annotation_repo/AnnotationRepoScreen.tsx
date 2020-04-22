@@ -43,6 +43,7 @@ import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Button} from "reactstrap";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
+import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -298,8 +299,7 @@ namespace screen {
                 <RepoHeader persistenceLayerProvider={props.persistenceLayerProvider}
                             persistenceLayerController={props.persistenceLayerManager}/>
 
-                <Row id="header-filter"
-                     className="border-bottom p-1">
+                <MUIPaperToolbar id="header-filter" borderBottom>
                     <Row.Main>
                         {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
                         <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
@@ -312,7 +312,7 @@ namespace screen {
 
                     </Row.Right>
 
-                </Row>
+                </MUIPaperToolbar>
 
             </header>
 

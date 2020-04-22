@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {Button} from "reactstrap";
 
+/**
+ * @Deprecated MUI
+ */
 export class StartReviewButton extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {

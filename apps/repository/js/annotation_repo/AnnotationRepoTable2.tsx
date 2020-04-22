@@ -146,7 +146,8 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
         const handleChangePage = (page: number) => {
             this.setState({
                 ...this.state,
-                page
+                page,
+                selected: undefined
             })
         };
 
@@ -154,7 +155,8 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
             this.setState({
                 ...this.state,
                 rowsPerPage,
-                page: 0
+                page: 0,
+                selected: undefined
             });
         };
 
@@ -170,7 +172,11 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
             <Paper square id="doc-repo-table">
 
-                <div id="doc-table">
+                <div id="doc-table"
+                     style={{
+                         display: 'flex',
+                         flexDirection: 'column'
+                     }}>
 
                     <Toolbar
                         nrRows={data.length}
@@ -182,7 +188,10 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
                     <Divider orientation="horizontal"/>
 
-                    <TableContainer style={{flexGrow: 1}}>
+                    <TableContainer style={{
+                                        flexGrow: 1,
+                                        overflow: 'auto'
+                                    }}>
                         <Table
                             stickyHeader
                             style={{

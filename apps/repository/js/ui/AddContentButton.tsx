@@ -47,9 +47,10 @@ namespace runtime {
 
     const Electron = (props: IProps) => (
 
-        <MUIDropdownMenu button={{
+        <MUIDropdownMenu caret
+                         button={{
                              icon: <AddIcon/>,
-                             text: 'Add ',
+                             text: 'Add',
                              color: 'primary',
                              size: 'large'
                          }}>
