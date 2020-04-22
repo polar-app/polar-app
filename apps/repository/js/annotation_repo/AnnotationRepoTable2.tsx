@@ -1,26 +1,67 @@
 import * as React from 'react';
-import ReactTable from "react-table";
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
-import {ExtendedReactTable, IReactTableState} from '../util/ExtendedReactTable';
+import {ExtendedReactTable} from '../util/ExtendedReactTable';
 import {AnnotationPreview} from './AnnotationPreview';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
-import {EnhancedTableHead} from "../../../../web/spectron0/material-ui/doc_repo_table/EnhancedTableHead";
 import TableBody from "@material-ui/core/TableBody";
-import {DocRepoTableRow} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTableRow";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {AutoBlur} from "../../../../web/spectron0/material-ui/doc_repo_table/AutoBlur";
-import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
+import TablePagination from "@material-ui/core/TablePagination";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import Divider from "@material-ui/core/Divider";
+import isEqual from "react-fast-compare";
+
+interface ToolbarProps {
+    readonly nrRows: number;
+    readonly page: number;
+    readonly rowsPerPage: number;
+    readonly onChangePage: (page: number) => void;
+    readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
+}
+
+const Toolbar = React.memo((props: ToolbarProps) => {
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        props.onChangePage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const rowsPerPage = parseInt(event.target.value, 10);
+        props.onChangeRowsPerPage(rowsPerPage);
+
+    };
+
+    return (
+        <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            component="div"
+            size="small"
+            count={props.nrRows}
+            rowsPerPage={props.rowsPerPage}
+            style={{
+                padding: 0,
+                minHeight: 0
+            }}
+            // onDoubleClick={event => {
+            //     event.stopPropagation();
+            //     event.preventDefault();
+            // }}
+            page={props.page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+    )
+
+}, isEqual);
 
 
 interface IProps {
@@ -74,7 +115,11 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
     public onSelected(selected: number,
                       repoAnnotation: IDocAnnotation) {
 
-        this.setState({...this.state, selected, repoAnnotation});
+        this.setState({
+            ...this.state,
+            selected,
+            repoAnnotation
+        });
         this.props.onSelected(repoAnnotation);
 
     }
@@ -98,6 +143,21 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
             this.onSelected(viewIndex, annotation);
         };
 
+        const handleChangePage = (page: number) => {
+            this.setState({
+                ...this.state,
+                page
+            })
+        };
+
+        const handleChangeRowsPerPage = (rowsPerPage: number) => {
+            this.setState({
+                ...this.state,
+                rowsPerPage,
+                page: 0
+            });
+        };
+
         // const onNextPage = () => this.setState({
         //     ...this.state,
         //     pageSize: this.state.pageSize + 50
@@ -111,6 +171,16 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
             <Paper square id="doc-repo-table">
 
                 <div id="doc-table">
+
+                    <Toolbar
+                        nrRows={data.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+
+                    <Divider orientation="horizontal"/>
 
                     <TableContainer style={{flexGrow: 1}}>
                         <Table
@@ -130,17 +200,17 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
                                         const viewIndex = (page * rowsPerPage) + index;
                                         const id = 'annotation-title' + viewIndex;
+                                        const rowSelected = this.state.selected === viewIndex;
 
                                         return (
                                             <TableRow
                                                 hover
                                                 // className={classes.tr}
                                                 role="checkbox"
-                                                // aria-checked={selected}
                                                 tabIndex={-1}
                                                 onClick={() => handleSelect(viewIndex, annotation)}
                                                 // onDoubleClick={() => props.onOpen(row)}
-                                                // selected={selected}
+                                                selected={rowSelected}
                                                 >
 
                                                 <TableCell padding="checkbox">
@@ -158,12 +228,6 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
                                     })}
 
-                                {/*{emptyRows > 0 && (*/}
-                                {/*    <TableRow*/}
-                                {/*        style={{height: (dense ? 33 : 53) * emptyRows}}>*/}
-                                {/*        <TableCell colSpan={6}/>*/}
-                                {/*    </TableRow>*/}
-                                {/*)}*/}
                             </TableBody>
                         </Table>
                     </TableContainer>

@@ -42,6 +42,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Button} from "reactstrap";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import Paper from "@material-ui/core/Paper";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -161,19 +162,31 @@ namespace main {
             {
                 id: 'dock-panel-center',
                 type: 'fixed',
-                component: <AnnotationListView data={props.data}
-                                               updateFilters={filters => props.filtersHandler.update(filters)}
-                                               onSelected={repoAnnotation => props.onSelected(repoAnnotation)}
-                                               {...props}/>,
+                style: {
+                    display: 'flex'
+                },
+                component:
+                    <Paper square style={{flexGrow: 1}}>
+                        <AnnotationListView data={props.data}
+                                            updateFilters={filters => props.filtersHandler.update(filters)}
+                                            onSelected={repoAnnotation => props.onSelected(repoAnnotation)}
+                                            {...props}/>
+                    </Paper>,
                 width: 450
             },
             {
                 id: 'dock-panel-right',
                 type: 'grow',
-                component: <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
-                                                  repoDocMetaUpdater={props.repoDocMetaLoader}
-                                                  tagsProvider={props.tagsProvider}
-                                                  repoAnnotation={props.repoAnnotation}/>
+                style: {
+                    display: 'flex'
+                },
+                component:
+                    <Paper square style={{flexGrow: 1}}>
+                        <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
+                                                      repoDocMetaUpdater={props.repoDocMetaLoader}
+                                                      tagsProvider={props.tagsProvider}
+                                                      repoAnnotation={props.repoAnnotation}/>
+                    </Paper>
 
             }
         ]}/>

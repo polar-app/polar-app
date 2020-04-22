@@ -89,10 +89,10 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                       }
                       right={
                           <div className="mt-2 pl-1 pr-1">
-                              <AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}
-                                                     repoDocMetaUpdater={this.props.repoDocMetaUpdater}
-                                                     tagsProvider={this.props.tagsProvider}
-                                                     repoAnnotation={this.props.repoAnnotation}/>
+                              {/*<AnnotationPreviewView persistenceLayerManager={this.props.persistenceLayerManager}*/}
+                              {/*                       repoDocMetaUpdater={this.props.repoDocMetaUpdater}*/}
+                              {/*                       tagsProvider={this.props.tagsProvider}*/}
+                              {/*                       repoAnnotation={this.props.repoAnnotation}/>*/}
                           </div>
                       }
                       side='left'

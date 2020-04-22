@@ -11,21 +11,24 @@ import {Img} from 'polar-shared/src/metadata/Img';
 import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {Button} from "reactstrap";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import {DeleteIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
+import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from "react-moment";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {TagInputControl} from "../TagInputControl";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaUpdater} from "../RepoDocMetaLoader";
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 
 const log = Logger.create();
 
 const Styles: IStyleMap = {
 
     annotationText: {
-        paddingTop: '5px'
+        paddingTop: '5px',
     },
 
 };
@@ -66,97 +69,100 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="pl-2 pr-2 pt-1 pb-1">
+                <Paper square
+                       elevation={0}
+                       className="">
 
-                    <div style={{display: 'flex'}} className="mb-1">
+                    <Box p={1}>
 
-                        <div className="mt-auto mb-auto"
-                             style={{flexGrow: 1}}>
+                        <div style={{display: 'flex'}} className="mb-1">
 
-                            <div style={{display: 'flex'}}>
+                            <div className="mt-auto mb-auto"
+                                 style={{flexGrow: 1}}>
 
-                                <Moment withTitle={true}
-                                        titleFormat="D MMM YYYY hh:MM A"
-                                        format="MMM DD YYYY HH:mm A"
-                                        filter={(value) => value.replace(/^an? /g, '1 ')}>
-                                    {repoAnnotation.created}
-                                </Moment>
-
-                                <div className="text-secondary pl-1">
-
-                                    (
+                                <div style={{display: 'flex'}}>
 
                                     <Moment withTitle={true}
                                             titleFormat="D MMM YYYY hh:MM A"
-                                            fromNow>
+                                            format="MMM DD YYYY HH:mm A"
+                                            filter={(value) => value.replace(/^an? /g, '1 ')}>
                                         {repoAnnotation.created}
                                     </Moment>
 
-                                    )
+                                    <div className="text-secondary pl-1">
+
+                                        (
+
+                                        <Moment withTitle={true}
+                                                titleFormat="D MMM YYYY hh:MM A"
+                                                fromNow>
+                                            {repoAnnotation.created}
+                                        </Moment>
+
+                                        )
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
+                            <div className="mt-auto mb-auto">
+                                <TagInputControl className='ml-1 p-1 text-muted'
+                                                 container="body"
+                                                 availableTags={this.props.tagsProvider()}
+                                                 existingTags={() => this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
+                                                 onChange={(tags) => this.onTagged(tags)}/>
+                            </div>
 
-                        <div className="mt-auto mb-auto">
-                            <TagInputControl className='ml-1 p-1 text-muted'
-                                             container="body"
-                                             availableTags={this.props.tagsProvider()}
-                                             existingTags={() => this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
-                                             onChange={(tags) => this.onTagged(tags)}/>
-                        </div>
-
-                        <div className="mt-auto mb-auto">
-                            <Button size="md"
-                                    color="clear"
-                                    className="m-0 p-0 text-muted"
-                                    onClick={() => this.onDelete()}>
-                                <DeleteIcon/>
-                            </Button>
-                        </div>
-
-                    </div>
-
-                    <div style={{display: 'flex'}}>
-
-                        <div style={{flexGrow: 1, verticalAlign: 'top'}}>
-
-                            <DocPropTable repoAnnotation={repoAnnotation}
-                                          onDocumentLoadRequested={docInfo => this.onDocumentLoadRequested(docInfo)}/>
+                            <div className="mt-auto mb-auto">
+                                <IconButton onClick={() => this.onDelete()}>
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </div>
 
                         </div>
 
-                        <div>
-                            {/*<DocThumbnail thumbnails={repoAnnotation.docInfo.thumbnails}*/}
-                            {/*              persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
+                        <div style={{display: 'flex'}}>
+
+                            <div style={{flexGrow: 1, verticalAlign: 'top'}}>
+
+                                <DocPropTable repoAnnotation={repoAnnotation}
+                                              onDocumentLoadRequested={docInfo => this.onDocumentLoadRequested(docInfo)}/>
+
+                            </div>
+
+                            <div>
+                                {/*<DocThumbnail thumbnails={repoAnnotation.docInfo.thumbnails}*/}
+                                {/*              persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div style={Styles.annotationText}>
+                            <div dangerouslySetInnerHTML={{__html: repoAnnotation.html || 'no text'}}/>
+                        </div>
 
-                    <div style={Styles.annotationText}>
-                        <div dangerouslySetInnerHTML={{__html: repoAnnotation.html || 'no text'}}/>
-                    </div>
+                        <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
 
-                    <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
+                        {/*<DocAnnotationComponent persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
+                        {/*                        annotation={repoAnnotation}*/}
+                        {/*                        doc={{*/}
+                        {/*                            oid: 123,*/}
+                        {/*                            docInfo: repoAnnotation.docInfo,*/}
+                        {/*                            docMeta: repoAnnotation.docMeta,*/}
+                        {/*                            permission: {*/}
+                        {/*                                mode: 'rw'*/}
+                        {/*                            },*/}
+                        {/*                            mutable: true*/}
+                        {/*                        }}/>*/}
 
-                    {/*<DocAnnotationComponent persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
-                    {/*                        annotation={repoAnnotation}*/}
-                    {/*                        doc={{*/}
-                    {/*                            oid: 123,*/}
-                    {/*                            docInfo: repoAnnotation.docInfo,*/}
-                    {/*                            docMeta: repoAnnotation.docMeta,*/}
-                    {/*                            permission: {*/}
-                    {/*                                mode: 'rw'*/}
-                    {/*                            },*/}
-                    {/*                            mutable: true*/}
-                    {/*                        }}/>*/}
+                        {/*FIXME: I need to figure out how to get the 'doc' now*/}
+                        {/*<AnnotationControlBar doc={} annotation={}/>*/}
 
-                    {/*FIXME: I need to figure out how to get the 'doc' now*/}
-                    {/*<AnnotationControlBar doc={} annotation={}/>*/}
+                    </Box>
 
-                </div>
+                </Paper>
 
             );
 
@@ -164,9 +170,12 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             return (
 
-                <div className="text-muted text-center text-xl m-3">
+                <Box p={1}
+                     className="text-muted text-center">
+
                     No annotation selected.
-                </div>
+
+                </Box>
 
             );
 
