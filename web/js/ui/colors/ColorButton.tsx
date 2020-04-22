@@ -34,6 +34,7 @@ export class ColorButton extends React.PureComponent<IProps, IState> {
 
         const size = props.size || '30px';
 
+        // FIXME: this isn't picking / highlighting the item as being active
         const border = this.props.selected ?
             '1pt solid var(--primary)' :
             '1pt solid rgba(0, 0, 0, 0.1)';

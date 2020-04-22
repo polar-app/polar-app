@@ -8,7 +8,9 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {Devices} from "polar-shared/src/util/Devices";
-
+import {MUIDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {MUIDropdownItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownItem";
 const log = Logger.create();
 
 export class AnnotationRepoTableDropdown extends React.Component<IProps, IState> {
@@ -26,34 +28,23 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
 
         return (
 
-            <div className="text-right">
+            <div>
 
-                <UncontrolledDropdown size="md">
+                <MUIDropdownMenu caret
+                                 placement="bottom-end"
+                                 button={{
+                                    icon: <MoreVertIcon/>
+                                 }}>
 
-                    <DropdownToggle color="light"
-                                    size="md"
-                                    className="table-dropdown-button btn text-muted p-1 m-0">
+                    <div>
+                        <MUIDropdownItem text="Download as Markdown"
+                                         onClick={() => this.onExport('markdown')}/>
 
-                        <i className="fas fa-ellipsis-h"/>
+                        <MUIDropdownItem text="Download as JSON"
+                                         onClick={() => this.onExport('json')}/>
+                    </div>
 
-                    </DropdownToggle>
-
-                    <DropdownMenu className="shadow" right>
-
-                        <DropdownItem header>Download annotations as:</DropdownItem>
-
-                        <DropdownItem onClick={() => this.onExport('markdown')}>
-                            Markdown
-                        </DropdownItem>
-
-                        <DropdownItem onClick={() => this.onExport('json')}>
-                            JSON
-                        </DropdownItem>
-
-                    </DropdownMenu>
-
-
-                </UncontrolledDropdown>
+                </MUIDropdownMenu>
 
             </div>
         );
