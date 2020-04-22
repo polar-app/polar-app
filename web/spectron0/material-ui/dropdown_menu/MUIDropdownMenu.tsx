@@ -8,7 +8,7 @@ import MenuList from '@material-ui/core/MenuList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
-import {MUIDropdownChevron} from "../MUIDropdownChevron";
+import {MUIDropdownCaret} from "../MUIDropdownCaret";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -120,7 +120,7 @@ export const MUIDropdownMenu = (props: IProps) => {
                 {props.button.text && props.button.icon &&
                     <Button {...buttonProps}
                             startIcon={props.button.icon}
-                            endIcon={props.caret ? <MUIDropdownChevron/> : undefined}
+                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}
                             variant="contained">
                         {props.button.text}
                     </Button>}
