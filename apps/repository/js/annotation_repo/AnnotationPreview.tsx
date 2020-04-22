@@ -4,6 +4,7 @@ import {DateTimeTableCell} from '../DateTimeTableCell';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import Box from '@material-ui/core/Box';
 
 interface IProps {
     readonly id: string;
@@ -55,6 +56,8 @@ const Body = (props: IProps) => {
 export const AnnotationPreview = (props: IProps) => (
     <div id={props.id}>
         <Body {...props}/>
-        <DateTimeTableCell datetime={props.lastUpdated || props.created} className="text-muted text-xs"/>
+        <Box pt={1}>
+            <DateTimeTableCell datetime={props.lastUpdated || props.created} className="text-muted text-xs"/>
+        </Box>
     </div>
 );

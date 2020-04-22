@@ -9,6 +9,7 @@ import {UpdateFiltersCallback} from './AnnotationRepoFiltersHandler';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {Devices} from "polar-shared/src/util/Devices";
+import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
 
 export class AnnotationListView extends React.Component<IProps, IState> {
 
@@ -61,12 +62,12 @@ export class AnnotationListView extends React.Component<IProps, IState> {
                         flexDirection: 'column'
                     }}>
 
-                    <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                         updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                         repoDocMetaManager={this.props.repoDocMetaManager}
-                                         repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                         data={this.props.data}
-                                         onSelected={this.props.onSelected || NULL_FUNCTION}/>
+                    <AnnotationRepoTable2 persistenceLayerManager={this.props.persistenceLayerManager}
+                                          updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                          repoDocMetaManager={this.props.repoDocMetaManager}
+                                          repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                          data={this.props.data}
+                                          onSelected={this.props.onSelected || NULL_FUNCTION}/>
 
                 </div>
 
