@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {ColorButton} from './ColorButton';
+import Box from '@material-ui/core/Box';
 
 interface ColorButtonsRowProps extends IProps {
     readonly colors: ReadonlyArray<string>;
@@ -44,21 +45,21 @@ const ColorButtonsRow2 = (props: IProps) => {
 
 const ColorButtons = (props: IProps) => {
 
-    return <div className="pt-1 pb-1"
-                style={{
-                }}>
+    return (
+        <Box pt={1} pb={1}>
 
-        <ColorButtonsRow0 {...props}/>
+            <ColorButtonsRow0 {...props}/>
 
-        <div className="mt-2">
-            <ColorButtonsRow1 {...props}/>
-        </div>
+            <Box mt={1}>
+                <ColorButtonsRow1 {...props}/>
+            </Box>
 
-        <div className="mt-2">
-            <ColorButtonsRow2 {...props}/>
-        </div>
+            <Box mt={1}>
+                <ColorButtonsRow2 {...props}/>
+            </Box>
 
-    </div>;
+        </Box>
+    );
 
 };
 
