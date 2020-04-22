@@ -311,7 +311,7 @@ export class RepositoryApp {
 
         const muiTheme = createMuiTheme(theme);
 
-        ReactDOM.render([
+        ReactDOM.render(
             <MuiThemeProvider theme={muiTheme}>
                 {/*<Container component="main" maxWidth={false} disableGutters>*/}
 
@@ -424,10 +424,7 @@ export class RepositoryApp {
                 {/*</Container>*/}
 
             </MuiThemeProvider>
-
-
-            ],
-
+            ,
             rootElement
 
         );
