@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../../web/js/react/IStyleMap';
-import Moment from 'react-moment';
 import {FormattedTags} from '../../FormattedTags';
-import Button from 'reactstrap/lib/Button';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
+import Button from '@material-ui/core/Button';
 
 const Styles: IStyleMap = {
 
@@ -108,10 +107,10 @@ export class DocPropTable extends React.Component<IProps, IState> {
                             {/*TODO: make this into a TextLink component*/}
 
                             <Button onClick={() => this.props.onDocumentLoadRequested(repoAnnotation.docInfo)}
-                                    style={{whiteSpace: 'normal', textAlign: 'left'}}
-                                    className="p-0"
-                                    size="md"
-                                    color="link">
+                                    style={{
+                                        whiteSpace: 'normal',
+                                        textAlign: 'left'
+                                    }}>
 
                                 {repoAnnotation.docInfo.title}
 

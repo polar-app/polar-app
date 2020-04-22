@@ -204,6 +204,7 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
                                         return (
                                             <TableRow
+                                                key={viewIndex}
                                                 hover
                                                 // className={classes.tr}
                                                 role="checkbox"
