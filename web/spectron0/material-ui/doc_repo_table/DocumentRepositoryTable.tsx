@@ -286,6 +286,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
 
         this.dialogs!.autocomplete({
+            title: "Assign Tags to Document",
             options: availableTags.map(MUITagInputControls.toAutocompleteOption),
             defaultOptions: existingTags.map(MUITagInputControls.toAutocompleteOption),
             createOption: MUITagInputControls.createOption,
