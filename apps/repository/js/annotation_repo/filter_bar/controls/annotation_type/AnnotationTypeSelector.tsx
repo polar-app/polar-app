@@ -46,7 +46,8 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
             <MUIDropdownMenu caret
                              button={{
                                  text: "Annotation Types",
-                                 icon: <NoteIcon/>
+                                 icon: <NoteIcon/>,
+                                 size: 'small'
                              }}>
 
                 <div>

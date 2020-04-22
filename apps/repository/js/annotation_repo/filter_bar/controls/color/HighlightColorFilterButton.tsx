@@ -72,6 +72,7 @@ export const HighlightColorFilterButton = (props: IProps) => {
                     style={{
                         whiteSpace: 'nowrap'
                     }}
+                    size="small"
                     startIcon={<PaletteIcon/>}
                     endIcon={<MUIDropdownCaret/>}
                     onClick={handleClick}>

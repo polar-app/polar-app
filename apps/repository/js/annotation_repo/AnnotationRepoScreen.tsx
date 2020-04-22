@@ -304,34 +304,24 @@ namespace screen {
                                  padding={1}
                                  borderBottom>
 
-                        <Grid spacing={1}
-                              container
-                              direction="row"
-                              justify="flex-start"
-                              alignItems="center">
+                    <div style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                         }}>
 
-                        <Grid item>
-                            {/*<StartReviewButton onClick={() => this.startReview('flashcard')}/>*/}
-                            <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
-                                                 onReading={() => props.onStartReview('reading')}/>
-                        </Grid>
+                        <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
+                                             onReading={() => props.onStartReview('reading')}/>
 
-                        <Grid item style={{flexGrow: 1}}>
+                        <div style={{
+                                 flexGrow: 1,
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'flex-end'
+                             }}>
+                            <FilterBar {...props}/>
+                        </div>
 
-                            <Grid container
-                                  direction="row"
-                                  justify="flex-end"
-                                  alignItems="center">
-
-                                <Grid item>
-                                    <FilterBar {...props}/>
-                                </Grid>
-
-                            </Grid>
-
-                        </Grid>
-
-                    </Grid>
+                    </div>
 
                 </MUIPaperToolbar>
 

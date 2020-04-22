@@ -33,7 +33,8 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
                 <MUIDropdownMenu caret
                                  placement="bottom-end"
                                  button={{
-                                    icon: <MoreVertIcon/>
+                                    icon: <MoreVertIcon/>,
+                                    size: 'small'
                                  }}>
 
                     <div>
