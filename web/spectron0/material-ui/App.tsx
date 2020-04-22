@@ -51,6 +51,7 @@ import Input from "@material-ui/core/Input";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
+import {AutocompleteDialog} from "../../js/ui/dialogs/AutocompleteDialog";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -133,22 +134,31 @@ export const App = () => {
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
 
-                    <MUICreatableAutocomplete label="tags bro"
-                                              options={tagOptions}
-                                              createOption={MUITagInputControls.createOption}
-                                              relatedOptionsCalculator={relatedOptionsCalculator}
-                                              onChange={NULL_FUNCTION}/>
+                    {/*<MUICreatableAutocomplete label="tags bro"*/}
+                    {/*                          options={tagOptions}*/}
+                    {/*                          createOption={MUITagInputControls.createOption}*/}
+                    {/*                          relatedOptionsCalculator={relatedOptionsCalculator}*/}
+                    {/*                          onChange={NULL_FUNCTION}/>*/}
 
-                    <OutlinedInput startAdornment={
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    }
-                                   type="search"/>
+                    <AutocompleteDialog label="tags bro"
+                                        options={tagOptions}
+                                        createOption={MUITagInputControls.createOption}
+                                        relatedOptionsCalculator={relatedOptionsCalculator}
+                                        onChange={NULL_FUNCTION}
+                                        onCancel={NULL_FUNCTION}
+                                        onDone={NULL_FUNCTION}/>
 
-                    <br/>
-                    <br/>                   <br/>
-                    <br/>
+
+                    {/*<OutlinedInput startAdornment={*/}
+                    {/*    <InputAdornment position="start">*/}
+                    {/*        <SearchIcon />*/}
+                    {/*    </InputAdornment>*/}
+                    {/*}*/}
+                    {/*               type="search"/>*/}
+
+                    {/*<br/>*/}
+                    {/*<br/>                   <br/>*/}
+                    {/*<br/>*/}
 
 
                     <MUISearchBox2 placeholder="This is a placeholder"

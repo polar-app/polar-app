@@ -14,9 +14,9 @@ export function MUIRelatedOptions<T>(props: IProps<T>) {
         return null;
     }
 
-    return <Box>
+    return <Box mt={1}>
 
-        <Box pb={1}>
+        <Box mb={1} color="text.secondary">
             <strong>Related tags: </strong>
         </Box>
 

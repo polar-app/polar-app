@@ -56,9 +56,9 @@ function isValueAutocompleteOption<T>(option: InternalAutocompleteOption<T>): op
     return isPresent((option as any).value);
 }
 
-export export type RelatedOptionsCalculator<T> = (options: ReadonlyArray<ValueAutocompleteOption<T>>) => ReadonlyArray<ValueAutocompleteOption<T>>;
+export type RelatedOptionsCalculator<T> = (options: ReadonlyArray<ValueAutocompleteOption<T>>) => ReadonlyArray<ValueAutocompleteOption<T>>;
 
-interface IProps<T> {
+export interface MUICreatableAutocompleteProps<T> {
 
     readonly label: string;
 
@@ -87,7 +87,7 @@ interface IState<T> {
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 }
 
-export default function MUICreatableAutocomplete<T>(props: IProps<T>) {
+export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {
 
     const classes = useStyles();
 
