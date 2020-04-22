@@ -1,5 +1,3 @@
-console.log("FIXME 111");
-
 import {FileLoader} from './FileLoader';
 import {WebResource} from '../../../electron/webresource/WebResource';
 import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';

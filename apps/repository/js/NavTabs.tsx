@@ -58,16 +58,16 @@ export const NavTabs = React.memo((props: IProps) => {
 
         <Tabs value={activeTabID}
               textColor="inherit"
+              variant="standard"
               onChange={NULL_FUNCTION}>
 
             {props.tabs.map(tab => (
-                <Link key={tab.id}
-                      className={tab.id === activeTabID ? classes.linkActive : classes.link}
-                      to={tab.link}>
-                    <Tab disableFocusRipple
-                         disableRipple
-                         label={tab.label}/>
-                </Link>
+                <Tab key={tab.id}
+                     disableFocusRipple
+                     component={Link}
+                     disableRipple
+                     to={tab.link}
+                     label={tab.label}/>
             ))}
 
         </Tabs>

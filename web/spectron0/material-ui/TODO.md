@@ -10,6 +10,7 @@
     - color dropdown has no clear
     - color dropdown can't highlight the blue as being selected... 
 
+    - Dialog should blur the background via CSS blur like our current dialog 
 
     - long click for context menu should work..
     - put the related tags into the autocomplete widget directly since

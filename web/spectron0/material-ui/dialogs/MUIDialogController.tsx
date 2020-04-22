@@ -58,13 +58,14 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             prompt
         };
 
-        // tell the parent about the dialog manager now.
-        props.onDialogManager(dialogManager);
+        // WARN: not sure if this is the appropriate way to do this but we need
+        // to have this run after the component renders and this way it can
+        // continue
+        setTimeout(() => props.onDialogManager(dialogManager), 1);
 
         return undefined;
 
     });
-
 
     if (state === undefined) {
         return null;
@@ -101,14 +102,14 @@ interface IProps {
  */
 export const MUIDialogController = (props: IProps) => {
 
-    const [dialogManger, setDialogManager] = useState<DialogManager | undefined>(undefined);
+    const [dialogManager, setDialogManager] = useState<DialogManager | undefined>(undefined);
 
     return (
 
         <>
             <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
 
-            {dialogManger && props.render(dialogManger)}
+            {dialogManager && props.render(dialogManager)}
         </>
     );
 
