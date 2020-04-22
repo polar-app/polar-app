@@ -1,7 +1,6 @@
 import * as React from 'react';
-import InputGroup from 'reactstrap/lib/InputGroup';
 import {UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
-import {InputFilter} from "../../../../../web/js/ui/input_filter/InputFilter2";
+import {MUISearchBox2} from "../../../../../web/spectron0/material-ui/MUISearchBox2";
 
 export class TextFilter extends React.PureComponent<IProps, IState> {
 
@@ -15,19 +14,12 @@ export class TextFilter extends React.PureComponent<IProps, IState> {
         const width = '250px';
 
         return (
-            <InputGroup size="md">
 
-                {/*<Input id="filter_title"*/}
-                {/*       type="text"*/}
-                {/*       placeholder="Filter by text"*/}
-                {/*       onChange={(value) => this.props.updateFilters({text: value.target.value})}/>*/}
+            <MUISearchBox2 id="filter_title"
+                           placeholder="Filter by text"
+                           style={{width}}
+                           onChange={(value) => this.props.updateFilters({text: value})}/>
 
-                <InputFilter id="filter_title"
-                              placeholder="Filter by text"
-                              style={{width}}
-                              onChange={(value) => this.props.updateFilters({text: value})}/>
-
-            </InputGroup>
 
         );
 

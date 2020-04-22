@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
-import {Link} from "react-router-dom";
 import {MUIDropdownMenu} from "../../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
 import RateReviewIcon from '@material-ui/icons/RateReview';
 import {MUIRouterLink} from "../../../../../web/spectron0/material-ui/MUIRouterLink";
@@ -17,6 +15,7 @@ interface IState {
 
 }
 
+// TODO: move to functional component
 export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
