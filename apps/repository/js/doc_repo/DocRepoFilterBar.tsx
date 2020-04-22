@@ -41,14 +41,15 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                       alignItems="center">
 
                     <Grid item>
-                        <Tooltip title="Only show flagged items">
+                        {/*FIXME: add tooltips back in */}
+                        {/*<Tooltip title="Only show flagged items">*/}
                             <MUIToggleButton id="toggle-flagged"
                                              size="small"
                                              label="flagged"
                                              icon={<FlagIcon/>}
                                              initialValue={false}
                                              onChange={value => this.props.onToggleFlaggedOnly(value)}/>
-                        </Tooltip>
+                        {/*</Tooltip>*/}
                     </Grid>
 
                     <Grid item>
