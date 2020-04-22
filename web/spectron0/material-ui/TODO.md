@@ -8,23 +8,24 @@
   
     - search box needs a debouncer
     - search box layout sucks and is irrational when the close button is displayed
-    - don't think it's alignCenter 
+    - " no anotation selected" is too small
+    - remove all references to Dialogs.tsx
+    - dark mode pref
+    
+    - item navigation (tab for each item??)
+    - [enter] to open the currently selected item.
 
-    - dark scrollbars:
-        https://stackoverflow.com/questions/53772429/material-ui-how-can-i-style-the-scrollbar-with-css-in-js
 
     - long click for context menu should work..
 
     - color dropdown has no clear
     - color dropdown can't highlight the blue as being selected... 
-
     - Dialog should blur the background via CSS blur like our current dialog 
 
     - move all MUI* classes out of the spectron directory
 
-    - remove all references to Dialogs.tsx
     - tooltips are transparent... also, give them a pointer if possible
-    - pref to toggle full-screen mode...
+    - key binding to toggle full-screen mode...
         
     - the macro checkbox at the top does NOT work with all the items on the page
     - port over the annotations page too

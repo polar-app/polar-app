@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -42,16 +43,27 @@ export const MUIToggleButton = (props: IProps) => {
     const size = props.size || 'medium';
     const icon = props.icon || <CheckIcon/>;
 
+    // return (
+    //     <Chip id={props.id}
+    //           variant={active ? 'default' : 'outlined'}
+    //           color={active ? 'primary' : 'default'}
+    //           onClick={handleToggle}
+    //           label={props.label}
+    //           icon={icon} />
+    // );
+
+    //
     return (
 
         <Button id={props.id}
                 startIcon={icon}
                 className={active ? classes.buttonActive : undefined}
                 onClick={handleToggle}
-                variant="contained"
+                variant={active ? "contained" : "outlined"}
                 disableFocusRipple
                 disableRipple
-                size={size}>
+                size={size}
+        >
             {props.label}
         </Button>
 

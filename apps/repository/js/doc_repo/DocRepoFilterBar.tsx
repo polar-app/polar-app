@@ -44,7 +44,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
                         {/*FIXME: add tooltips back in */}
                         {/*<Tooltip title="Only show flagged items">*/}
                             <MUIToggleButton id="toggle-flagged"
-                                             size="small"
+                                             size="medium"
                                              label="flagged"
                                              icon={<FlagIcon/>}
                                              initialValue={false}
@@ -54,7 +54,7 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
                     <Grid item>
                         <MUIToggleButton id="toggle-archived"
-                                         size="small"
+                                         size="medium"
                                          label="archived"
                                          initialValue={false}
                                          onChange={value => this.props.onToggleFilterArchived(value)}/>
