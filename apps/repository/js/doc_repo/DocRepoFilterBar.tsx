@@ -1,14 +1,9 @@
 import * as React from 'react';
-import {ToggleButton} from '../../../../web/js/ui/ToggleButton';
 import {FilteredTags} from '../FilteredTags';
-import InputGroup from 'reactstrap/lib/InputGroup';
-import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
-import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
 import FlagIcon from '@material-ui/icons/Flag';
 import Grid from "@material-ui/core/Grid";
 import Tooltip from '@material-ui/core/Tooltip';
-import MUISearchBox from "../../../../web/spectron0/material-ui/MUISearchBox";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
 
 export class DocRepoFilterBar extends React.Component<IProps, IState> {

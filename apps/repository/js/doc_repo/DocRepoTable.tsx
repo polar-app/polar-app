@@ -152,7 +152,9 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
                 return <CheckCell viewIndex={viewIndex}
                                   selected={this.props.selected}
-                                  selectRow={this.props.selectRow}/>;
+                                  // selectRow={this.props.selectRow}
+                                  selectRow={NULL_FUNCTION}
+                                  />;
             }
         };
 
@@ -374,12 +376,14 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
                 const repoDocInfo: RepoDocInfo = row.original;
                 const viewIndex = row.viewIndex;
 
-                return <DocButtonsCell viewIndex={viewIndex}
-                                       flagged={repoDocInfo.flagged}
-                                       archived={repoDocInfo.archived}
-                                       doHandleToggleField={this.doHandleToggleField}
-                                       onDocumentLoadRequested={this.onDocumentLoadRequested}
-                                       {...this.props}/>;
+                // return <DocButtonsCell viewIndex={viewIndex}
+                //                        flagged={repoDocInfo.flagged}
+                //                        archived={repoDocInfo.archived}
+                //                        doHandleToggleField={this.doHandleToggleField}
+                //                        onDocumentLoadRequested={this.onDocumentLoadRequested}
+                //                        {...this.props}/>;
+
+                return <div/>;
 
             }
         };
@@ -508,7 +512,7 @@ export class DocRepoTable extends ReleasingReactComponent<DocRepoTableProps, ISt
 
             const handleSelect = (event: MouseEvent, type: SelectRowType) => {
                 if (rowInfo) {
-                    this.props.selectRow(rowInfo.viewIndex as number, event, type);
+                    // this.props.selectRow(rowInfo.viewIndex as number, event, type);
                 }
             };
 
