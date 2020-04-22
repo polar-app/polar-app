@@ -42,6 +42,12 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {MUIToggleButton} from "../../js/ui/MUIToggleButton";
+import {MUISearchBox2} from "./MUISearchBox2";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Input from "@material-ui/core/Input";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -115,6 +121,22 @@ export const App = () => {
                     {/*<Box m={1}>*/}
                     {/*    <AutocompleteTags/>*/}
                     {/*</Box>*/}
+
+
+                    <OutlinedInput startAdornment={
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
+                    }
+                                   type="search"/>
+
+                       <br/>
+                <br/>                   <br/>
+                <br/>
+
+
+                    <MUISearchBox2 placeholder="This is a placeholder"
+                                   onChange={NULL_FUNCTION}/>
 
                     <MUIToggleButton label="test"
                                      size="small"

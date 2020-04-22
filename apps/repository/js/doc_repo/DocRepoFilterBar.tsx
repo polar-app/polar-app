@@ -4,6 +4,12 @@ import {FilteredTags} from '../FilteredTags';
 import InputGroup from 'reactstrap/lib/InputGroup';
 import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {InputFilter} from "../../../../web/js/ui/input_filter/InputFilter2";
+import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
+import FlagIcon from '@material-ui/icons/Flag';
+import Grid from "@material-ui/core/Grid";
+import Tooltip from '@material-ui/core/Tooltip';
+import MUISearchBox from "../../../../web/spectron0/material-ui/MUISearchBox";
+import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
 
 export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
@@ -31,82 +37,116 @@ export class DocRepoFilterBar extends React.Component<IProps, IState> {
 
             <div id="filter-bar"
                  style={{
-                     display: 'flex',
-                     marginLeft: 'auto',
-                     justifyContent: 'flex-end'
                  }}>
 
-                <div className="mr-2"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                <Grid spacing={1}
+                      container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center">
 
-                    <div className="checkbox-group">
+                    <Grid item>
+                        <Tooltip title="Only show flagged items">
+                            <MUIToggleButton id="toggle-flagged"
+                                             size="small"
+                                             label="flagged"
+                                             icon={<FlagIcon/>}
+                                             initialValue={false}
+                                             onChange={value => this.props.onToggleFlaggedOnly(value)}/>
+                        </Tooltip>
+                    </Grid>
 
-                        <SimpleTooltipEx text="Only show flagged documents.">
+                    <Grid item>
+                        <MUIToggleButton id="toggle-archived"
+                                         size="small"
+                                         label="archived"
+                                         initialValue={false}
+                                         onChange={value => this.props.onToggleFilterArchived(value)}/>
+                    </Grid>
 
-                            <ToggleButton id="toggle-flagged"
-                                          size="md"
-                                          label="flagged"
-                                          iconClassName="fas fa-flag"
-                                          initialValue={false}
-                                          onChange={value => this.props.onToggleFlaggedOnly(value)}/>
+                    <Grid item>
+                        <MUISearchBox2 id="filter_title"
+                                       placeholder="Search by title"
+                                       //    style={{
+                                       //     width: '20em'
+                                       // }}
+                                       onChange={(value) => this.props.onFilterByTitle(value)}/>
 
-                        </SimpleTooltipEx>
+                    </Grid>
 
-                    </div>
+                </Grid>
 
-                </div>
+                {/*<div className="mr-2"*/}
+                {/*     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>*/}
 
-                <div className="header-filter-box mr-1"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                {/*    <div className="checkbox-group">*/}
 
-                    <div className="checkbox-group">
+                {/*        <SimpleTooltipEx text="Only show flagged documents.">*/}
 
-                        <SimpleTooltipEx text={`
-                                           Show both archived and unarchived
-                                           documents.  Archived documents are
-                                           hidden by default.
-                                         `}>
+                {/*            <ToggleButton id="toggle-flagged"*/}
+                {/*                          size="md"*/}
+                {/*                          label="flagged"*/}
+                {/*                          iconClassName="fas fa-flag"*/}
+                {/*                          initialValue={false}*/}
+                {/*                          onChange={value => this.props.onToggleFlaggedOnly(value)}/>*/}
 
-                            <ToggleButton id="toggle-archived"
-                                          size="md"
-                                          label="archived"
-                                          iconClassName="fas fa-check"
-                                          initialValue={false}
-                                          onChange={value => this.props.onToggleFilterArchived(value)}/>
+                {/*        </SimpleTooltipEx>*/}
 
-                        </SimpleTooltipEx>
+                {/*    </div>*/}
 
-                    </div>
+                {/*</div>*/}
 
-                </div>
+                {/*<div className="header-filter-box mr-1"*/}
+                {/*     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>*/}
 
-                <div className="header-filter-box mr-1 d-none-mobile"
-                     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                {/*    <div className="checkbox-group">*/}
 
-                    <div className="header-filter-box">
+                {/*        <SimpleTooltipEx text={`*/}
+                {/*                           Show both archived and unarchived*/}
+                {/*                           documents.  Archived documents are*/}
+                {/*                           hidden by default.*/}
+                {/*                         `}>*/}
 
-                        <SimpleTooltipEx text={`
-                                            Filter the document list by the title of the document.
-                                         `}>
+                {/*            <ToggleButton id="toggle-archived"*/}
+                {/*                          size="md"*/}
+                {/*                          label="archived"*/}
+                {/*                          iconClassName="fas fa-check"*/}
+                {/*                          initialValue={false}*/}
+                {/*                          onChange={value => this.props.onToggleFilterArchived(value)}/>*/}
 
-                            <InputGroup size="md">
+                {/*        </SimpleTooltipEx>*/}
 
-                                <InputFilter id="filter_title"
-                                             placeholder="Search by title"
-                                             style={{
-                                                 width: '20em'
-                                             }}
-                                             onChange={(value) => this.props.onFilterByTitle(value)}/>
+                {/*    </div>*/}
 
-                            </InputGroup>
+                {/*</div>*/}
 
-                        </SimpleTooltipEx>
+                {/*<div className="header-filter-box mr-1 d-none-mobile"*/}
+                {/*     style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>*/}
 
-                    </div>
+                {/*    <div className="header-filter-box">*/}
 
-                </div>
+                {/*        <SimpleTooltipEx text={`*/}
+                {/*                            Filter the document list by the title of the document.*/}
+                {/*                         `}>*/}
 
-                <Right/>
+                {/*            <InputGroup size="md">*/}
+
+                {/*                <InputFilter id="filter_title"*/}
+                {/*                             placeholder="Search by title"*/}
+                {/*                             style={{*/}
+                {/*                                 width: '20em'*/}
+                {/*                             }}*/}
+                {/*                             onChange={(value) => this.props.onFilterByTitle(value)}/>*/}
+
+                {/*            </InputGroup>*/}
+
+                {/*        </SimpleTooltipEx>*/}
+
+                {/*    </div>*/}
+
+                {/*</div>*/}
+
+                {/*<Right/>*/}
 
             </div>
 

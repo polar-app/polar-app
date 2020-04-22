@@ -40,7 +40,6 @@ const StandardButton = (props: StandardButtonProps) => (
     </Tooltip>
 );
 
-
 interface StandardToggleButtonProps extends ToggleButtonProps {
     readonly tooltip: string;
     readonly children: JSX.Element;

@@ -10,6 +10,7 @@ import {Strings} from 'polar-shared/src/util/Strings';
 import MUISearchBox from '../../../../web/spectron0/material-ui/MUISearchBox';
 import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import { MUISearchBox2 } from '../../../../web/spectron0/material-ui/MUISearchBox2';
 
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
@@ -102,7 +103,7 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
                             {/*             }}*/}
                             {/*             onChange={value => this.setFilter(value)}/>*/}
 
-                            <MUISearchBox
+                            <MUISearchBox2
                                    // type="search"
                                    placeholder="Filter by tag or folder"
                                    style={{
