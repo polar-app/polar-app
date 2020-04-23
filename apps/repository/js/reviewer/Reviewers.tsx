@@ -61,6 +61,8 @@ export class Reviewers {
                         mode: RepetitionMode,
                         limit: number = DEFAULT_LIMIT) {
 
+        // FIXME: use the new component injector here...
+
         this.createAndInject(datastoreCapabilities, prefs, repoDocAnnotations, mode, limit)
             .catch(err => console.error("Unable to start review: ", err));
 

@@ -106,22 +106,15 @@ export class DocPropTable extends React.Component<IProps, IState> {
 
                             {/*TODO: make this into a TextLink component*/}
 
-                            <Button onClick={() => this.props.onDocumentLoadRequested(repoAnnotation.docInfo)}
-                                    style={{
-                                        whiteSpace: 'normal',
-                                        textAlign: 'left'
-                                    }}>
-
-                                {repoAnnotation.docInfo.title}
-
-                            </Button>
+                            {repoAnnotation.docInfo.title}
 
                         </div>
 
                     </div>
 
                 </div>
-                <div className="mt-auto mb-auto">
+
+                <div className="mt-auto mb-auto mt-1">
                     <FormattedTags tags={repoAnnotation.tags || {}}/>
                 </div>
 

@@ -23,6 +23,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 const log = Logger.create();
 
@@ -43,8 +44,22 @@ const AnnotationImage = (props: AnnotationImageProps) => {
     return <ResponsiveImg id={props.id} img={props.img} defaultText=" "/>;
 };
 
+export interface IProps {
+
+    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
+    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly repoAnnotation?: IDocAnnotation;
+
+}
+
+export interface IState {
+
+}
+
 export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
+    // FIXME: this shouldn't be here... pass up an event.
     private readonly synchronizingDocLoader: SynchronizingDocLoader;
 
     constructor(props: IProps, context: any) {
@@ -76,7 +91,8 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                     <Box p={1}>
 
-                        <div style={{display: 'flex'}} className="mb-1">
+                        <div style={{display: 'flex'}}
+                             className="mb-1">
 
                             <div className="mt-auto mb-auto"
                                  style={{flexGrow: 1}}>
@@ -119,6 +135,12 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                             <div className="mt-auto mb-auto">
                                 <IconButton onClick={() => this.onDelete()}>
                                     <DeleteIcon/>
+                                </IconButton>
+                            </div>
+
+                            <div className="mt-auto mb-auto">
+                                <IconButton onClick={() => this.onDocumentLoadRequested(this.props.repoAnnotation?.docInfo!)}>
+                                    <OpenInNewIcon/>
                                 </IconButton>
                             </div>
 
@@ -275,15 +297,4 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
-
-    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
-    readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly repoAnnotation?: IDocAnnotation;
-}
-
-export interface IState {
-
-}
 

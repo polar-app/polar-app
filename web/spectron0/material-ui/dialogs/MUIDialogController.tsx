@@ -9,7 +9,6 @@ import {
     PromptDialog,
     PromptDialogProps
 } from "../../../js/ui/dialogs/PromptDialog";
-import {Prompt} from "../../../js/ui/dialogs/Prompt";
 import {
     AutocompleteDialog,
     AutocompleteDialogProps
@@ -116,12 +115,14 @@ interface IProps {
 }
 
 /**
- * Component to use at the root to enable context to inject dialog components
- * with callbacks.
+ * Component to allow us to inject new components like snackbars, dialog boxes,
+ * modals, etc but still use the react tree.
  */
 export const MUIDialogController = (props: IProps) => {
 
     const [dialogManager, setDialogManager] = useState<DialogManager | undefined>(undefined);
+
+    // FIXME: use MUIComponentInjector
 
     return (
 

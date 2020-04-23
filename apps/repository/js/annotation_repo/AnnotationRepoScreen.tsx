@@ -186,9 +186,9 @@ namespace main {
                 component:
                     <Paper square style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
-                                                      repoDocMetaUpdater={props.repoDocMetaLoader}
-                                                      tagsProvider={props.tagsProvider}
-                                                      repoAnnotation={props.repoAnnotation}/>
+                                               repoDocMetaUpdater={props.repoDocMetaLoader}
+                                               tagsProvider={props.tagsProvider}
+                                               repoAnnotation={props.repoAnnotation}/>
                     </Paper>
 
             }

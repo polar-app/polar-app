@@ -1,6 +1,7 @@
 import * as React from "react";
 import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
 import {Devices} from "polar-shared/src/util/Devices";
+import Dialog from "@material-ui/core/Dialog";
 
 interface IProps {
     readonly className?: string;
@@ -16,7 +17,6 @@ export const ReviewerModal = (props: IProps) => {
         const style: React.CSSProperties = {
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: 'var(--primary-background-color)',
         };
 
         if (['phone', 'tablet'].includes(Devices.get())) {
@@ -37,12 +37,12 @@ export const ReviewerModal = (props: IProps) => {
     const className = "ml-auto mr-auto h-100 border p-1 " + (props.className || '');
 
     return (
-        <BlackoutCurtain>
+        <Dialog open={true}>
             <div style={style}
                  className={className}>
                 {props.children}
             </div>
-        </BlackoutCurtain>
+        </Dialog>
     );
 
 };

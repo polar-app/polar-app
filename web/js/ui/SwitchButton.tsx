@@ -31,5 +31,5 @@ export const SwitchButton = (props: IProps) => {
     );
 
 
-}
+};
 

@@ -300,6 +300,7 @@ export class RepositoryApp {
         const rootElement = getRootElement();
 
         const theme: any = {
+            // FIXME on mobile we use 16px ...
             typography: {
                 htmlFontSize: 12,
                 fontSize: 12
