@@ -1,5 +1,7 @@
 
 - table work:
+    - cloud sync dialog is fucked - and isn't accurate... any longer
+
     - autocomplete needs to work for annotations again
         - must use the doc annotations a tthe bottom o the autocomplete widget
          - these never change
@@ -11,6 +13,8 @@
     - " no anotation selected" is too small
     - remove all references to Dialogs.tsx
     - dark mode pref
+    - doc button in annotation preview is dumb... 
+    - can not tag in the annotation preview view
     
     - item navigation (tab for each item??)
     - [enter] to open the currently selected item.
@@ -32,7 +36,7 @@
     - consider fixing the tree control too.
     - folder sidebar context menu is now broken 
     - events in the table aren't tied to the screen properly
-              
+    - login isn't in drak mode
     
 - verify mobile UI works... 
 

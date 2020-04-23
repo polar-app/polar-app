@@ -1,28 +1,22 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
+import Typography from '@material-ui/core/Typography';
 
-const log = Logger.create();
+interface IProps {
+    readonly children: string;
+}
 
-export default class StatTitle extends React.Component<any, any> {
+export default function StatTitle(props: IProps) {
 
-    constructor(props: any, context: any) {
-        super(props, context);
+    return (
 
-    }
+        <Typography align="center"
+                    color="textPrimary"
+                    variant="h4">
 
-    public render() {
+            {props.children}
 
-        return (
+        </Typography>
 
-            <div className="pt-1 pb-1 w-100 text-center"
-                 style={{fontWeight: 'bold', fontSize: '18px'}}>
-
-                {this.props.children}
-
-            </div>
-
-        );
-    }
-
+    );
 }
 

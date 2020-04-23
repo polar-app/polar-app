@@ -109,7 +109,8 @@ export class FixedNavBody extends React.Component<IProps> {
                     flexGrow: 1,
                     overflowY: 'auto',
                     height: '100%',
-                    width: '100%'
+                    width: '100%',
+                     ...this.props.style
                  }}>
 
                 {this.props.children}

@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 
         buttonActive: {
+            textTransform: 'none',
             backgroundColor: theme.palette.info.main,
             color: theme.palette.info.contrastText,
             "&:hover": {
@@ -15,6 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
                 color: theme.palette.info.contrastText,
             }
         },
+        button: {
+            color: theme.palette.text.secondary,
+            textTransform: 'none'
+        }
 
     })
 );
@@ -37,7 +42,7 @@ export const MUIToggleButton = (props: IProps) => {
     const handleToggle = () => {
         const newActive = ! active;
         setActive(newActive);
-        props.onChange(newActive);
+        setTimeout(() => props.onChange(newActive), 1);
     };
 
     const size = props.size || 'medium';
@@ -57,14 +62,15 @@ export const MUIToggleButton = (props: IProps) => {
 
         <Button id={props.id}
                 startIcon={icon}
-                className={active ? classes.buttonActive : undefined}
+                className={active ? classes.buttonActive : classes.button}
                 onClick={handleToggle}
                 variant={active ? "contained" : "outlined"}
                 disableFocusRipple
                 disableRipple
-                size={size}
-        >
+                size={size}>
+
             {props.label}
+
         </Button>
 
     );

@@ -59,8 +59,9 @@ export class AnnotationListView extends React.Component<IProps, IState> {
 
                 <div style={{
                         display: 'flex' ,
-                        flexDirection: 'column'
-                    }}>
+                        flexDirection: 'column',
+                        minHeight: 0
+                     }}>
 
                     <AnnotationRepoTable2 persistenceLayerManager={this.props.persistenceLayerManager}
                                           updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}

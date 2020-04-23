@@ -52,6 +52,9 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import {AutocompleteDialog} from "../../js/ui/dialogs/AutocompleteDialog";
+import {MyResponsivePie} from "./PieDemo";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -140,13 +143,47 @@ export const App = () => {
                     {/*                          relatedOptionsCalculator={relatedOptionsCalculator}*/}
                     {/*                          onChange={NULL_FUNCTION}/>*/}
 
-                    <AutocompleteDialog label="tags bro"
-                                        options={tagOptions}
-                                        createOption={MUITagInputControls.createOption}
-                                        relatedOptionsCalculator={relatedOptionsCalculator}
-                                        onChange={NULL_FUNCTION}
-                                        onCancel={NULL_FUNCTION}
-                                        onDone={NULL_FUNCTION}/>
+                <LinearProgress value={50} variant="determinate"/>
+
+                <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={true}
+                        autoHideDuration={5000}
+                        // onClose={handleClose}
+                        // message="Note archived"
+                        // action={
+                        //     <React.Fragment>
+                        //         {/*<Button color="secondary" size="small" >*/}
+                        //         {/*    UNDO*/}
+                        //         {/*</Button>*/}
+                        //         {/*<IconButton size="small" aria-label="close" color="inherit" >*/}
+                        //         {/*    <CloseIcon fontSize="small" />*/}
+                        //         {/*</IconButton>*/}
+                        //
+                        //     </React.Fragment>
+                        // }
+                    >
+                        {/*<Alert onClose={NULL_FUNCTION} severity="success">*/}
+                        {/*    This is a success message!*/}
+                        {/*</Alert>*/}
+
+                        {/*<SnackbarContent message={<LinearProgress value={50} variant="determinate"/>}/>*/}
+                    <SnackbarContent message={<progress max={100} value={50}></progress>}/>
+
+                    </Snackbar>
+
+                    {/*<AutocompleteDialog label="tags bro"*/}
+                    {/*                    options={tagOptions}*/}
+                    {/*                    createOption={MUITagInputControls.createOption}*/}
+                    {/*                    relatedOptionsCalculator={relatedOptionsCalculator}*/}
+                    {/*                    onChange={NULL_FUNCTION}*/}
+                    {/*                    onCancel={NULL_FUNCTION}*/}
+                    {/*                    onDone={NULL_FUNCTION}/>*/}
+
+                    {/*<MyResponsivePie/>*/}
 
 
                     {/*<OutlinedInput startAdornment={*/}
@@ -161,41 +198,41 @@ export const App = () => {
                     {/*<br/>*/}
 
 
-                    <MUISearchBox2 placeholder="This is a placeholder"
-                                   onChange={NULL_FUNCTION}/>
+                    {/*<MUISearchBox2 placeholder="This is a placeholder"*/}
+                    {/*               onChange={NULL_FUNCTION}/>*/}
 
-                    <MUIToggleButton label="test"
-                                     size="small"
-                                     onChange={NULL_FUNCTION}/>
+                    {/*<MUIToggleButton label="test"*/}
+                    {/*                 size="small"*/}
+                    {/*                 onChange={NULL_FUNCTION}/>*/}
 
-                    {/*<div style={{margin: '5px'}}>*/}
-                    <MUISearchBox onChange={NULL_FUNCTION}/>
+                    {/*/!*<div style={{margin: '5px'}}>*!/*/}
+                    {/*<MUISearchBox onChange={NULL_FUNCTION}/>*/}
 
-                    <br/>
-                    <br/>
+                    {/*<br/>*/}
+                    {/*<br/>*/}
 
-                    <IconButton size={'small'}>
-                        <CloseIcon/>
-                    </IconButton>
+                    {/*<IconButton size={'small'}>*/}
+                    {/*    <CloseIcon/>*/}
+                    {/*</IconButton>*/}
 
-                    <br/>
-                    <br/>
+                    {/*<br/>*/}
+                    {/*<br/>*/}
 
-                    <IconButton size={'medium'}>
-                        <CloseIcon/>
-                    </IconButton>
+                    {/*<IconButton size={'medium'}>*/}
+                    {/*    <CloseIcon/>*/}
+                    {/*</IconButton>*/}
 
-                <Paper variant="outlined">
-                        hello world
-                    </Paper>
+                {/*<Paper variant="outlined">*/}
+                {/*        hello world*/}
+                {/*    </Paper>*/}
 
-                    {/*<MUIHelpMenu/>*/}
+                {/*    /!*<MUIHelpMenu/>*!/*/}
 
 
-                <MUIPaperToolbar borderTop
-                                 borderBottom>
-                    <ExampleDropdownMenu/>
-                </MUIPaperToolbar>
+                {/*<MUIPaperToolbar borderTop*/}
+                {/*                 borderBottom>*/}
+                {/*    <ExampleDropdownMenu/>*/}
+                {/*</MUIPaperToolbar>*/}
 
                 {/*    asdf*/}
 
@@ -203,23 +240,23 @@ export const App = () => {
 
                 {/*asdf*/}
 
-                <Tooltip title="hello world this is a long tooltip">
-                    <Button>help</Button>
-                </Tooltip>
-                <br/>
+                {/*<Tooltip title="hello world this is a long tooltip">*/}
+                {/*    <Button>help</Button>*/}
+                {/*</Tooltip>*/}
+                {/*<br/>*/}
 
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
-                adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
 
                 {/*<MUIDialogController render={dialogs => (*/}
 

@@ -49,7 +49,11 @@ const Toolbar = React.memo((props: ToolbarProps) => {
             rowsPerPage={props.rowsPerPage}
             style={{
                 padding: 0,
-                minHeight: 0
+                overflow: "hidden",
+                minHeight: '4.5em',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end'
             }}
             // onDoubleClick={event => {
             //     event.stopPropagation();
@@ -170,12 +174,18 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
 
         return (
 
-            <Paper square id="doc-repo-table">
+            <Paper square id="doc-repo-table"
+                   style={{
+                       display: 'flex',
+                       flexDirection: 'column',
+                       minHeight: 0
+                   }}>
 
                 <div id="doc-table"
                      style={{
                          display: 'flex',
-                         flexDirection: 'column'
+                         flexDirection: 'column',
+                         minHeight: 0
                      }}>
 
                     <Toolbar

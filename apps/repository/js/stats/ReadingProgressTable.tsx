@@ -70,7 +70,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                             data={data}
                             from={from}
                             to={to}
-                            domain={domain}
+                            // domain={domain}
                             emptyColor="#eeeeee"
                             colors={[
                                 "rgba(0,0,255,0.1)",
@@ -84,6 +84,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                                 "rgba(0,0,255,0.9)",
                                 "rgba(0,0,255,1.0)",
                             ]}
+                            // colors={{scheme: 'nivo'}}
                             margin={{
                                 "top": 20,
                                 "right": 10,

@@ -11,10 +11,6 @@ import {Link, useLocation} from 'react-router-dom';
 import isEqual from 'react-fast-compare';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
-// const NavTab = () => (
-//
-// )
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 

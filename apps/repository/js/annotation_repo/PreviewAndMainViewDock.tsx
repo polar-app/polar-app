@@ -56,19 +56,15 @@ export default class PreviewAndMainViewDock extends React.Component<IProps, ISta
                 <div style={{
                         display: 'flex' ,
                         flexDirection: 'column',
-                        height: '100%'
+                        minHeight: 0
                     }}>
 
-                    <div style={{overflowY: 'auto'}}>
-
-                        <AnnotationRepoTable2 persistenceLayerManager={this.props.persistenceLayerManager}
-                                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                              repoDocMetaManager={this.props.repoDocMetaManager}
-                                              repoDocMetaLoader={this.props.repoDocMetaLoader}
-                                              data={this.props.data}
-                                              onSelected={this.props.onSelected || NULL_FUNCTION}/>
-
-                    </div>
+                    <AnnotationRepoTable2 persistenceLayerManager={this.props.persistenceLayerManager}
+                                          updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                          repoDocMetaManager={this.props.repoDocMetaManager}
+                                          repoDocMetaLoader={this.props.repoDocMetaLoader}
+                                          data={this.props.data}
+                                          onSelected={this.props.onSelected || NULL_FUNCTION}/>
 
                 </div>
 

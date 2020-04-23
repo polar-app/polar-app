@@ -1,6 +1,6 @@
 import * as React from 'react';
 import StatTitle from './StatTitle';
-import {LineDatum, LineSerieData, ResponsiveLine} from '@nivo/line';
+import {ResponsiveLine, Serie, Datum} from '@nivo/line';
 import {SpacedRepStat, SpacedRepStatRecord, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -103,7 +103,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
             //     }
             // };
 
-            const toDataPoint = (spacedRepStat: SpacedRepStat, id: StatID): LineDatum => {
+            const toDataPoint = (spacedRepStat: SpacedRepStat, id: StatID): Datum => {
 
                 const x = ISODateTimeStrings.parse(spacedRepStat.created);
                 // const y = spacedRepStat.nrLearning;
@@ -112,7 +112,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
             };
 
-            const computeLine = (id: StatID): LineSerieData => {
+            const computeLine = (id: StatID): Serie => {
                 return {
                     id,
                     data: stats.map(current => toDataPoint(current, id))
@@ -127,7 +127,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         };
 
-        const lineData: LineSerieData[] = computeLineData();
+        const lineData: Serie[] = computeLineData();
 
         const NeedChardData = () => {
             // return <div className="text-lg text-muted mt-2"
@@ -174,7 +174,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
                             }}
                             // padding={0.3}
                             colors="set1"
-                            colorBy="id"
+                            // colorBy="id"
                             enableArea={true}
                             yScale={{
                                 type: 'linear'

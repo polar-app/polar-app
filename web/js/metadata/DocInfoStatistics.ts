@@ -3,6 +3,7 @@ import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {HitMap} from 'polar-shared/src/util/HitMap';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Tags} from "polar-shared/src/tags/Tags";
 
 /**
  * Main entrypoint for computing stats on underlying metadata...
@@ -47,7 +48,7 @@ export class DocInfoStatistics {
 
         for (const docInfo of docInfos) {
 
-            const tags = Object.values(docInfo.tags || {});
+            const tags = Tags.onlyRegular(Object.values(docInfo.tags || {}));
 
             for (const tag of tags) {
                 hitMap.registerHit(tag.label);

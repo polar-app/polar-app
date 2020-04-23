@@ -168,7 +168,8 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <Paper square style={{flexGrow: 1}}>
+                    <Paper square
+                           style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationListView data={props.data}
                                             updateFilters={filters => props.filtersHandler.update(filters)}
                                             onSelected={repoAnnotation => props.onSelected(repoAnnotation)}
@@ -183,7 +184,7 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <Paper square style={{flexGrow: 1}}>
+                    <Paper square style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
                                                       repoDocMetaUpdater={props.repoDocMetaLoader}
                                                       tagsProvider={props.tagsProvider}

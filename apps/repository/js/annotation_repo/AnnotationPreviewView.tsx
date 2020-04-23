@@ -22,6 +22,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from "@material-ui/core/Typography";
 
 const log = Logger.create();
 
@@ -170,11 +171,14 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
             return (
 
-                <Box p={1}
-                     color="textSecondary"
-                     className="text-center">
+                <Box p={1}>
 
-                    No annotation selected.
+                    <Typography align="center"
+                                variant="h5"
+                                color="textPrimary">
+                        No annotation selected.
+                    </Typography>
+
 
                 </Box>
 

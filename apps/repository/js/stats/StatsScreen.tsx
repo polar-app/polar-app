@@ -1,13 +1,10 @@
 import * as React from 'react';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import NewDocumentRateChart from './NewDocumentRateChart';
 import TopTagsChart from './TopTagsChart';
-import TopTagsTable from './TopTagsTable';
 import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import ReadingProgressTable from './ReadingProgressTable';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -17,6 +14,7 @@ import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import Paper from '@material-ui/core/Paper';
 
 const log = Logger.create();
 
@@ -181,80 +179,81 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                     </header>
 
-                    <FixedNavBody>
+                    <FixedNavBody style={{display: 'flex'}}>
 
-                        <div className="container mt-3 pb-2">
-
-                            <SectionHeader>
-                                <h1>Statistics</h1>
-
-                                <SectionText>
-                                    Polar keeps track of statistics of your document repository so you can better understand
-                                    your reading habits and what types of documents are stored in your repository.
-                                </SectionText>
-                            </SectionHeader>
+                        <Paper square
+                               style={{
+                                   flexGrow: 1,
+                                   overflow: 'auto'
+                               }}>
 
                             <ReviewerStats isReviewer={this.state.isReviewer}/>
 
-                            <SectionHeader>
-                                <h2>Reading</h2>
+                            <PremiumFeature required='bronze'
+                                            feature="statistics"
+                                            size="lg">
+                                <TopTagsChart docInfos={docInfos}/>
+                            </PremiumFeature>
 
-                                <SectionText>
-                                    Polar keeps track of your reading progress by counting pagemarks and number of pages
-                                    you've read per day so you can focus setting a reading/study goal.
-                                </SectionText>
-                            </SectionHeader>
+                        </Paper>
 
-                            <div className="row mt-2">
+                        {/*<Container maxWidth="md">*/}
 
-                                <div className="col-lg-12">
-                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
-                                        <ReadingProgressTable docInfos={docInfos}/>
-                                    </PremiumFeature>
-                                </div>
+                            {/*<TopTagsChart docInfos={docInfos}/>*/}
 
-                            </div>
+                            {/*<SectionHeader>*/}
+                            {/*    <h1>Statistics</h1>*/}
 
-                            <SectionHeader>
-                                <h2>Documents</h2>
+                            {/*    <SectionText>*/}
+                            {/*        Polar keeps track of statistics of your document repository so you can better understand*/}
+                            {/*        your reading habits and what types of documents are stored in your repository.*/}
+                            {/*    </SectionText>*/}
+                            {/*</SectionHeader>*/}
 
-                                <SectionText>
-                                    Statistics on the number and type of documents you've added to your repository.
-                                </SectionText>
-                            </SectionHeader>
+                            {/*<ReviewerStats isReviewer={this.state.isReviewer}/>*/}
 
-                            <div className="row mt-2 tag-statistics">
+                            {/*<SectionHeader>*/}
+                            {/*    <h2>Reading</h2>*/}
 
-                                <div className="col-lg-8">
-                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
-                                        <TopTagsChart docInfos={docInfos}/>
-                                    </PremiumFeature>
-                                </div>
+                            {/*    <SectionText>*/}
+                            {/*            Polar keeps track of your reading progress by counting pagemarks and number of pages*/}
+                            {/*        you've read per day so you can focus setting a reading/study goal.*/}
+                            {/*    </SectionText>*/}
+                            {/*</SectionHeader>*/}
 
-                                <div className="col-lg-4">
-                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
-                                        <TopTagsTable docInfos={docInfos}/>
-                                    </PremiumFeature>
-                                </div>
+                            {/*<div className="row mt-2">*/}
 
-                            </div>
+                            {/*    <div className="col-lg-12">*/}
+                            {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
+                            {/*            <ReadingProgressTable docInfos={docInfos}/>*/}
+                            {/*        </PremiumFeature>*/}
+                            {/*    </div>*/}
 
-                            <div className="row mt-2">
+                            {/*</div>*/}
 
-                                <div className="col-lg-12">
-                                    <PremiumFeature required='bronze' feature="statistics" size="lg">
-                                        <NewDocumentRateChart docInfos={docInfos}/>
-                                    </PremiumFeature>
-                                </div>
+                            {/*<SectionHeader>*/}
+                            {/*    <h2>Documents</h2>*/}
 
-                            </div>
+                            {/*    <SectionText>*/}
+                            {/*        Statistics on the number and type of documents you've added to your repository.*/}
+                            {/*    </SectionText>*/}
+                            {/*</SectionHeader>*/}
 
-                        </div>
+                            {/*<div className="row mt-2">*/}
+
+                            {/*    <div className="col-lg-12">*/}
+                            {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
+                            {/*            <NewDocumentRateChart docInfos={docInfos}/>*/}
+                            {/*        </PremiumFeature>*/}
+                            {/*    </div>*/}
+
+                            {/*</div>*/}
+
+                        {/*</Container>*/}
 
                     </FixedNavBody>
 
                 </FixedNav>
-
             );
         }
 

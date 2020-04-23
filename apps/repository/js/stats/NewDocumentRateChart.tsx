@@ -54,8 +54,8 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
                             left: 40
                         }}
                         padding={0.3}
-                        colors="category10"
-                        colorBy="id"
+                        colors="nivo"
+                        // indexBy="id"
                         defs={[
                             {
                                 "id": "dots",

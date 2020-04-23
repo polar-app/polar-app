@@ -4,7 +4,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper, {PopperPlacementType} from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
@@ -28,26 +27,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export interface IButtonProps {
-    readonly onClick?: () => void;
+interface IProps {
+    readonly id?: string;
+
+    readonly onClick?: (event: React.MouseEvent<EventTarget>) => void;
+    readonly variant?: "contained";
     readonly icon?: JSX.Element;
     readonly text?: string;
     readonly color?: 'primary' | 'secondary' | 'default'
     readonly size?: 'small' | 'medium' | 'large';
     readonly ref?: React.RefObject<HTMLButtonElement>;
-}
+    readonly style?: React.CSSProperties;
 
-interface IProps {
-    readonly id?: string;
-    readonly button: IButtonProps;
-    readonly children: JSX.Element;
-    readonly placement?: PopperPlacementType;
     readonly caret?: boolean;
+    readonly placement?: PopperPlacementType;
+
+    readonly children: JSX.Element;
+
 }
 
-// FIXME: move this to MUIPopper
-
-export const MUIDropdownMenu = (props: IProps) => {
+export const MUIPopper = (props: IProps) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -64,13 +63,6 @@ export const MUIDropdownMenu = (props: IProps) => {
         setOpen(false);
     };
 
-    function handleListKeyDown(event: React.KeyboardEvent) {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            setOpen(false);
-        }
-    }
-
     // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
 
@@ -84,8 +76,8 @@ export const MUIDropdownMenu = (props: IProps) => {
 
     const buttonProps = {
         onClick: handleToggle || NULL_FUNCTION,
-        color: props.button.color,
-        size: props.button.size,
+        color: props.color,
+        size: props.size,
         ref: anchorRef,
     };
 
@@ -93,29 +85,27 @@ export const MUIDropdownMenu = (props: IProps) => {
 
     const id = props.id || 'dropdown';
 
-    const menuListID = id + "-menu-list-grow";
-
     return (
         <div className={classes.root}>
             <div>
 
-                {props.button.text && props.button.icon &&
+                {props.text && props.icon &&
                     <Button {...buttonProps}
-                            startIcon={props.button.icon}
+                            startIcon={props.icon}
                             endIcon={props.caret ? <MUIDropdownCaret/> : undefined}
                             variant="contained">
-                        {props.button.text}
+                        {props.text}
                     </Button>}
 
-                {props.button.icon && ! props.button.text &&
+                {props.icon && ! props.text &&
                     <IconButton {...buttonProps}
                                 size={buttonProps.size === 'large' ? 'medium' : buttonProps.size}>
-                        {props.button.icon}
+                        {props.icon}
                     </IconButton>}
 
-                {! props.button.icon && props.button.text &&
+                {! props.icon && props.text &&
                     <Button {...buttonProps} size="large" variant="contained">
-                        {props.button.text}
+                        {props.text}
                     </Button>}
 
                 <Popper open={open}
@@ -138,14 +128,7 @@ export const MUIDropdownMenu = (props: IProps) => {
                             <Paper elevation={10}
                                    className={classes.paper}>
                                 <ClickAwayListener onClickAway={handleClose}>
-
-                                    <MenuList autoFocusItem={open}
-                                              id={menuListID}
-                                              onClick={handleClose}
-                                              onKeyDown={handleListKeyDown}>
-                                        {props.children}
-
-                                    </MenuList>
+                                    {props.children}
                                 </ClickAwayListener>
                             </Paper>
                         </Grow>

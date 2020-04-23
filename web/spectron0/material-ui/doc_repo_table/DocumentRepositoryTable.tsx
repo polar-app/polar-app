@@ -124,10 +124,15 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
         };
 
         const setPage = (page: number) => {
+
             this.setState({
                 ...this.state,
                 page
-            })
+            });
+
+            // FIXME: this would trigger two renders right?
+            this.props.selectRows([]);
+
         };
 
         const handleRequestSort = (event: React.MouseEvent<unknown>,
@@ -135,6 +140,8 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                    order: Sorting.Order) => {
 
             setOrder(order, property);
+            this.props.selectRows([]);
+
         };
 
         const handleSelectAllRows = (selected: boolean) => {
@@ -160,6 +167,9 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                 rowsPerPage,
                 page: 0
             });
+
+            this.props.selectRows([]);
+
         };
 
         // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
