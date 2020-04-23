@@ -1,0 +1,80 @@
+import Avatar from "@material-ui/core/Avatar";
+import React from "react";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {createStyles} from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import isEqual from "react-fast-compare";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            '& > *': {
+                margin: theme.spacing(1),
+            },
+        },
+        small: {
+            width: theme.spacing(3),
+            height: theme.spacing(3),
+        },
+        medium: {
+            width: theme.spacing(5),
+            height: theme.spacing(5),
+        },
+        large: {
+            width: theme.spacing(7),
+            height: theme.spacing(7),
+        },
+    }),
+);
+
+interface IProps {
+    readonly photoURL: URLStr | undefined;
+    readonly displayName: string | undefined;
+    readonly size?: 'small' | 'medium' | 'large';
+
+}
+
+export const UserAvatar = React.memo((props: IProps) => {
+
+    const classes = useStyles();
+
+    const size = props.size || 'small';
+
+    const displayName = props.displayName ? props.displayName.trim() : "";
+
+    const classNameMap = {
+        small: classes.small,
+        medium: undefined,
+        large: classes.large,
+    };
+
+    const className = classNameMap[size];
+
+    if (props.photoURL) {
+
+        return (
+            <Avatar src={props.photoURL}
+                    className={className}>
+            </Avatar>
+        );
+
+    } else if (displayName !== '') {
+
+        // Revert to letter avatars...
+
+        const letter = displayName[0].toUpperCase();
+
+        return (
+            <Avatar className={className}>
+                {letter}
+            </Avatar>
+        );
+
+    } else {
+        // else use a blank account image
+        return <AccountCircleIcon/>;
+    }
+
+}, isEqual);

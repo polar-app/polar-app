@@ -5,6 +5,8 @@ import Button from 'reactstrap/lib/Button';
 import {Link} from "react-router-dom";
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";
+import Avatar from '@material-ui/core/Avatar';
+import {UserAvatar} from "./UserAvatar";
 
 const LogoutButton = (props: IProps) => {
 
@@ -25,20 +27,20 @@ const LogoutButton = (props: IProps) => {
 
 const UserImage = (props: IProps) => {
 
+    // FIXME revert to letter avatars...
+
     if (props.userInfo.photoURL) {
 
         return (
-            <div className="ml-auto mr-auto"
-                 style={{
-                     height: '125px',
-                     width: '125px'
-                 }}>
-                <img className="rounded border m-auto"
-                     style={{
-                         maxHeight: '125px',
-                         maxWidth: '125px'
-                     }}
-                     src={props.userInfo.photoURL}/>
+            <div style={{display: 'flex'}}>
+                <div className="ml-auto mr-auto">
+                    <Avatar src={props.userInfo.photoURL}
+                            style={{
+                                width: '75px',
+                                height: '75px'
+                            }}>
+                    </Avatar>
+                </div>
             </div>
         );
     } else {
@@ -98,14 +100,14 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div>
+            <div className="p-2">
 
                 <div>
-                    <div className="text-center"
-                        style={{
-                    }}>
+                    <div className="text-center">
 
-                        <UserImage {...props}/>
+                        <UserAvatar size="large"
+                                    displayName={props.userInfo.displayName}
+                                    photoURL={props.userInfo.photoURL}/>
 
                         <div className="p-1">
 
@@ -139,7 +141,8 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
 
                     <div className="mt-2 pt-2 pb-2 border-top text-right">
 
-                        <div style={{display: 'flex', whiteSpace: 'nowrap'}} className="mt-2">
+                        <div style={{display: 'flex', whiteSpace: 'nowrap'}}
+                             className="mt-2">
 
 
                             <div className="ml-auto mr-1">

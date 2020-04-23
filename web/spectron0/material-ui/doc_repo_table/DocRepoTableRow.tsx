@@ -111,6 +111,7 @@ export const TableCellTags = React.memo((props: TableCellTagsProps) => {
 }, isEqual);
 
 interface IProps extends DocActions.DocContextMenu.Callbacks {
+
     readonly viewIndex: number;
     readonly rawContextMenuHandler: ContextMenuHandler;
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
@@ -119,6 +120,10 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly row: RepoDocInfo;
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
     readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+
+    readonly onDragStart?: () => void;
+    readonly onDragEnd?: () => void;
+
 }
 
 // FIXME: enter keyboard command should open the current row...
@@ -144,11 +149,15 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     return (
         <TableRow
+
             hover
             className={classes.tr}
             role="checkbox"
             aria-checked={selected}
-            tabIndex={-1}
+            draggable
+            onDragStart={event => (props.onDragStart || NULL_FUNCTION)()}
+            onDragEnd={event => (props.onDragEnd || NULL_FUNCTION)()}
+            tabIndex={props.viewIndex}
             onDoubleClick={() => props.onOpen(row)}
             selected={selected}>
 

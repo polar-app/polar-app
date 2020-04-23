@@ -74,8 +74,9 @@ const SettingEntry = (props: SettingEntryProps) => {
                 </div>
 
                 <div className="mt-auto mb-auto">
-                    <SwitchButton size="lg"
-                                  onChange={value => onChange(value)} initialValue={value}/>
+                    <SwitchButton size="medium"
+                                  initialValue={value}
+                                  onChange={value => onChange(value)} />
                 </div>
 
             </div>

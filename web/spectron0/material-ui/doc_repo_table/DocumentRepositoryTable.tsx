@@ -44,6 +44,9 @@ interface IProps {
 
     readonly onTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
 
+    readonly onDragStart?: (event: DragEvent) => void;
+    readonly onDragEnd?: (event: DragEvent) => void;
+
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onShowFile: Callback1<RepoDocInfo>;
@@ -53,6 +56,7 @@ interface IProps {
     readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
     readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+
 
 
 }

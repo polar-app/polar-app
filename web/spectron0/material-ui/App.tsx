@@ -145,35 +145,35 @@ export const App = () => {
 
                 <LinearProgress value={50} variant="determinate"/>
 
-                <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={true}
-                        autoHideDuration={5000}
-                        // onClose={handleClose}
-                        // message="Note archived"
-                        // action={
-                        //     <React.Fragment>
-                        //         {/*<Button color="secondary" size="small" >*/}
-                        //         {/*    UNDO*/}
-                        //         {/*</Button>*/}
-                        //         {/*<IconButton size="small" aria-label="close" color="inherit" >*/}
-                        //         {/*    <CloseIcon fontSize="small" />*/}
-                        //         {/*</IconButton>*/}
-                        //
-                        //     </React.Fragment>
-                        // }
-                    >
-                        {/*<Alert onClose={NULL_FUNCTION} severity="success">*/}
-                        {/*    This is a success message!*/}
-                        {/*</Alert>*/}
+                {/*<Snackbar*/}
+                {/*        anchorOrigin={{*/}
+                {/*            vertical: 'bottom',*/}
+                {/*            horizontal: 'left',*/}
+                {/*        }}*/}
+                {/*        open={true}*/}
+                {/*        autoHideDuration={5000}*/}
+                {/*        // onClose={handleClose}*/}
+                {/*        // message="Note archived"*/}
+                {/*        // action={*/}
+                {/*        //     <React.Fragment>*/}
+                {/*        //         /!*<Button color="secondary" size="small" >*!/*/}
+                {/*        //         /!*    UNDO*!/*/}
+                {/*        //         /!*</Button>*!/*/}
+                {/*        //         /!*<IconButton size="small" aria-label="close" color="inherit" >*!/*/}
+                {/*        //         /!*    <CloseIcon fontSize="small" />*!/*/}
+                {/*        //         /!*</IconButton>*!/*/}
+                {/*        //*/}
+                {/*        //     </React.Fragment>*/}
+                {/*        // }*/}
+                {/*    >*/}
+                {/*        /!*<Alert onClose={NULL_FUNCTION} severity="success">*!/*/}
+                {/*        /!*    This is a success message!*!/*/}
+                {/*        /!*</Alert>*!/*/}
 
-                        {/*<SnackbarContent message={<LinearProgress value={50} variant="determinate"/>}/>*/}
-                    <SnackbarContent message={<progress max={100} value={50}></progress>}/>
+                {/*        /!*<SnackbarContent message={<LinearProgress value={50} variant="determinate"/>}/>*!/*/}
+                {/*    <SnackbarContent message={<progress max={100} value={50}></progress>}/>*/}
 
-                    </Snackbar>
+                {/*    </Snackbar>*/}
 
                     {/*<AutocompleteDialog label="tags bro"*/}
                     {/*                    options={tagOptions}*/}

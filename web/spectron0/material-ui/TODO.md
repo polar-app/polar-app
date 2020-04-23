@@ -1,18 +1,20 @@
 
 - table work:
     - cloud sync dialog is fucked - and isn't accurate... any longer
+    - make sure pricing page works
+    - finish the rest of the dropdowns
+    - search box needs a debouncer - too slow
+    - dark mode pref in settings
+    
 
     - autocomplete needs to work for annotations again
         - must use the doc annotations a tthe bottom o the autocomplete widget
          - these never change
 
-    - finish the rest of the dropdowns
   
-    - search box needs a debouncer
     - search box layout sucks and is irrational when the close button is displayed
     - " no anotation selected" is too small
     - remove all references to Dialogs.tsx
-    - dark mode pref
     - doc button in annotation preview is dumb... 
     - can not tag in the annotation preview view
     
@@ -48,7 +50,8 @@
       should trigger a scroll to top 
         
         https://stackoverflow.com/questions/33188994/scroll-to-the-top-of-the-page-after-render-in-react-js
-        
+    
+    - migrate to floating action buttons for the MAIN buttons in polar.    
     
 - verify mobile UI works... 
 

@@ -60,6 +60,7 @@ export const NavTabs = React.memo((props: IProps) => {
 
             {props.tabs.map(tab => (
                 <Tab key={tab.idx}
+                     draggable={false}
                      id={tab.id}
                      disableFocusRipple
                      component={Link}
