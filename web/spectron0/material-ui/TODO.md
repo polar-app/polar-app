@@ -20,6 +20,8 @@
     - [enter] to open the currently selected item.
 
 
+  
+
     - long click for context menu should work..
 
     - color dropdown has no clear
@@ -31,12 +33,22 @@
     - tooltips are transparent... also, give them a pointer if possible
     - key binding to toggle full-screen mode...
         
+    - drag and drop not working for the sidebar anymore... 
+        
     - the macro checkbox at the top does NOT work with all the items on the page
     - port over the annotations page too
     - consider fixing the tree control too.
     - folder sidebar context menu is now broken 
     - events in the table aren't tied to the screen properly
     - login isn't in drak mode
+    
+    - create a scroll to top component but I think it has to analyze the before
+      and after state change because some changes (like the selected item) 
+      shouldn't trigger scroll but changing the page number or rows per page
+      should trigger a scroll to top 
+        
+        https://stackoverflow.com/questions/33188994/scroll-to-the-top-of-the-page-after-render-in-react-js
+        
     
 - verify mobile UI works... 
 

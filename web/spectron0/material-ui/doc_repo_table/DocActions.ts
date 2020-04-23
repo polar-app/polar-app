@@ -17,6 +17,7 @@ export namespace DocActions {
     export namespace DocToolbar {
 
         export interface Actions {
+            readonly onTagged: () => void;
             readonly onDelete: () => void;
             readonly onArchived: () => void;
             readonly onFlagged: () => void;
@@ -38,6 +39,7 @@ export namespace DocActions {
 
         return {
 
+            onTagged: () => callbacks.onTagged(selected),
             onDelete: () => callbacks.onDelete(selected),
             onArchived: () => callbacks.onArchived(selected),
             onFlagged: () => callbacks.onFlagged(selected),

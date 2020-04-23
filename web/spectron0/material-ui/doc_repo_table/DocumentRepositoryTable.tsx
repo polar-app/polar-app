@@ -214,7 +214,7 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                                                           onChangeRowsPerPage={handleChangeRowsPerPage}
                                                           onSelectAllRows={handleSelectAllRows}
                                                           page={page}
-                                                          onTagged={NULL_FUNCTION}
+                                                          onTagged={this.callbacks.onTagged}
                                                           onDelete={this.callbacks.onDeleted}
                                                           onFlagged={this.callbacks.onFlagged}
                                                           onArchived={this.callbacks.onArchived}/>

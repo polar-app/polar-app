@@ -73,6 +73,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
     const actions = DocActions.createDocToolbar(props.selectedProvider, props);
 
     const globalKeyHandlers = {
+        TAG: () => actions.onTagged(),
         DELETE: () => actions.onDelete(),
         FLAG: () => actions.onFlagged(),
         ARCHIVE: () => actions.onArchived()
