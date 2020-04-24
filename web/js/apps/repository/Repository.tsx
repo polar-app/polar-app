@@ -22,7 +22,7 @@ import {LocalPrefs} from '../../util/LocalPrefs';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
-import {RepositoryApp2} from './RepositoryApp2';
+import {RepositoryApp} from './RepositoryApp';
 
 const log = Logger.create();
 
@@ -81,12 +81,12 @@ export class Repository {
         const rootElement = getRootElement();
 
         ReactDOM.render(
-            <RepositoryApp2 app={app}
-                            persistenceLayerManager={persistenceLayerManager}
-                            repoDocMetaManager={this.repoDocMetaManager}
-                            repoDocMetaLoader={this.repoDocMetaLoader}
-                            updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                            onFileUpload={this.onFileUpload}/>
+            <RepositoryApp app={app}
+                           persistenceLayerManager={persistenceLayerManager}
+                           repoDocMetaManager={this.repoDocMetaManager}
+                           repoDocMetaLoader={this.repoDocMetaLoader}
+                           updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                           onFileUpload={this.onFileUpload}/>
             ,
             rootElement
         );
