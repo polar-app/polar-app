@@ -30,6 +30,8 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
                                 color: "primary",
                                 text: 'Start Review',
                                 size: 'large',
+                                disableRipple: true,
+                                disableFocusRipple: true,
                                 icon: <RateReviewIcon/>
                              }}
                              caret>

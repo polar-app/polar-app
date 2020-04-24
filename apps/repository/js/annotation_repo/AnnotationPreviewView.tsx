@@ -88,102 +88,103 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                 <Paper square
                        elevation={0}
-                       className="">
+                       className="p-1"
+                       style={{
+                           display: 'flex',
+                           flexGrow: 1,
+                           flexDirection: 'column'
+                       }}>
 
-                    <Box p={1}>
+                    <div style={{display: 'flex'}}
+                         className="mb-1">
 
-                        <div style={{display: 'flex'}}
-                             className="mb-1">
+                        <div className="mt-auto mb-auto"
+                             style={{flexGrow: 1}}>
 
-                            <div className="mt-auto mb-auto"
-                                 style={{flexGrow: 1}}>
+                            <div style={{display: 'flex'}}>
 
-                                <div style={{display: 'flex'}}>
+                                <Moment withTitle={true}
+                                        titleFormat="D MMM YYYY hh:MM A"
+                                        format="MMM DD YYYY HH:mm A"
+                                        filter={(value) => value.replace(/^an? /g, '1 ')}>
+                                    {repoAnnotation.created}
+                                </Moment>
+
+                                <Box color="textSecondary">
+
+                                    (
 
                                     <Moment withTitle={true}
                                             titleFormat="D MMM YYYY hh:MM A"
-                                            format="MMM DD YYYY HH:mm A"
-                                            filter={(value) => value.replace(/^an? /g, '1 ')}>
+                                            fromNow>
                                         {repoAnnotation.created}
                                     </Moment>
 
-                                    <Box color="textSecondary">
+                                    )
 
-                                        (
+                                </Box>
 
-                                        <Moment withTitle={true}
-                                                titleFormat="D MMM YYYY hh:MM A"
-                                                fromNow>
-                                            {repoAnnotation.created}
-                                        </Moment>
-
-                                        )
-
-                                    </Box>
-
-                                </div>
-
-                            </div>
-
-                            <div className="ml-auto mt-auto mb-auto">
-                                <AnnotationTagsButton tagProvider={this.props.tagsProvider}
-                                                      existingTags={this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
-                                                      onTagged={this.onTagged}/>
-                            </div>
-
-                            <div className="mt-auto mb-auto">
-                                <AnnotationDeleteButton onDelete={this.onDelete}/>
-                            </div>
-
-                            <Divider orientation="vertical"/>
-
-                            <div className="mt-auto mb-auto">
-                                <IconButton onClick={() => this.onDocumentLoadRequested(this.props.repoAnnotation?.docInfo!)}>
-                                    <OpenInNewIcon/>
-                                </IconButton>
                             </div>
 
                         </div>
 
-                        <div style={{display: 'flex'}}>
+                        <div className="ml-auto mt-auto mb-auto">
+                            <AnnotationTagsButton tagProvider={this.props.tagsProvider}
+                                                  existingTags={this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
+                                                  onTagged={this.onTagged}/>
+                        </div>
 
-                            <div style={{flexGrow: 1, verticalAlign: 'top'}}>
+                        <div className="mt-auto mb-auto">
+                            <AnnotationDeleteButton onDelete={this.onDelete}/>
+                        </div>
 
-                                <DocPropTable repoAnnotation={repoAnnotation}
-                                              onDocumentLoadRequested={docInfo => this.onDocumentLoadRequested(docInfo)}/>
+                        <Divider orientation="vertical"/>
 
-                            </div>
+                        <div className="mt-auto mb-auto">
+                            <IconButton onClick={() => this.onDocumentLoadRequested(this.props.repoAnnotation?.docInfo!)}>
+                                <OpenInNewIcon/>
+                            </IconButton>
+                        </div>
 
-                            <div>
-                                {/*<DocThumbnail thumbnails={repoAnnotation.docInfo.thumbnails}*/}
-                                {/*              persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
-                            </div>
+                    </div>
+
+                    <div style={{display: 'flex'}}>
+
+                        <div style={{flexGrow: 1, verticalAlign: 'top'}}>
+
+                            <DocPropTable repoAnnotation={repoAnnotation}
+                                          onDocumentLoadRequested={docInfo => this.onDocumentLoadRequested(docInfo)}/>
 
                         </div>
 
-                        <div style={Styles.annotationText}>
-                            <div dangerouslySetInnerHTML={{__html: repoAnnotation.html || 'no text'}}/>
+                        <div>
+                            {/*<DocThumbnail thumbnails={repoAnnotation.docInfo.thumbnails}*/}
+                            {/*              persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}/>*/}
                         </div>
 
-                        <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
+                    </div>
 
-                        {/*<DocAnnotationComponent persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
-                        {/*                        annotation={repoAnnotation}*/}
-                        {/*                        doc={{*/}
-                        {/*                            oid: 123,*/}
-                        {/*                            docInfo: repoAnnotation.docInfo,*/}
-                        {/*                            docMeta: repoAnnotation.docMeta,*/}
-                        {/*                            permission: {*/}
-                        {/*                                mode: 'rw'*/}
-                        {/*                            },*/}
-                        {/*                            mutable: true*/}
-                        {/*                        }}/>*/}
+                    <div style={Styles.annotationText}>
+                        <div dangerouslySetInnerHTML={{__html: repoAnnotation.html || 'no text'}}/>
+                    </div>
 
-                        {/*FIXME: I need to figure out how to get the 'doc' now*/}
-                        {/*<AnnotationControlBar doc={} annotation={}/>*/}
+                    <AnnotationImage id={repoAnnotation.id} img={repoAnnotation.img}/>
 
-                    </Box>
+                    {/*<DocAnnotationComponent persistenceLayerProvider={() => this.props.persistenceLayerManager.get()}*/}
+                    {/*                        annotation={repoAnnotation}*/}
+                    {/*                        doc={{*/}
+                    {/*                            oid: 123,*/}
+                    {/*                            docInfo: repoAnnotation.docInfo,*/}
+                    {/*                            docMeta: repoAnnotation.docMeta,*/}
+                    {/*                            permission: {*/}
+                    {/*                                mode: 'rw'*/}
+                    {/*                            },*/}
+                    {/*                            mutable: true*/}
+                    {/*                        }}/>*/}
 
+                    {/*FIXME: I need to figure out how to get the 'doc' now*/}
+                    {/*<AnnotationControlBar doc={} annotation={}/>*/}
+                    
                 </Paper>
             );
 

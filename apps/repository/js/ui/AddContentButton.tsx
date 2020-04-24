@@ -52,7 +52,9 @@ namespace runtime {
                              icon: <AddIcon/>,
                              text: 'Add',
                              color: 'primary',
-                             size: 'large'
+                             size: 'large',
+                             disableRipple: true,
+                             disableFocusRipple: true,
                          }}>
             <div>
 

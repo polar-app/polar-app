@@ -35,6 +35,8 @@ export interface IButtonProps {
     readonly color?: 'primary' | 'secondary' | 'default'
     readonly size?: 'small' | 'medium' | 'large';
     readonly ref?: React.RefObject<HTMLButtonElement>;
+    readonly disableRipple?: boolean,
+    readonly disableFocusRipple?: boolean,
 }
 
 interface IProps {
@@ -87,6 +89,8 @@ export const MUIDropdownMenu = (props: IProps) => {
         color: props.button.color,
         size: props.button.size,
         ref: anchorRef,
+        disableRipple: props.button.disableRipple,
+        disableFocusRipple: props.button.disableFocusRipple,
     };
 
     const placement = props.placement || 'bottom';
