@@ -207,7 +207,9 @@ export const PDFToolbar = (props: IProps) => {
         <GlobalHotKeys
             keyMap={globalKeyMap}
             handlers={globalKeyHandlers}>
+
             <MUIPaperToolbar borderBottom>
+
                 <div style={{
                          display: 'flex',
                      }}
