@@ -94,27 +94,20 @@ const NoAnnotations = () => {
     );
 };
 
-function createItems(props: IRenderProps) {
-
-    // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
-
-    // TODO: I'm not sure what type of class a <div> or React element uses
-    // so using 'any' for now.
-
-    return props.view.map(annotation => (
-        <DocAnnotationComponent key={annotation.id}
-                                annotation={annotation}
-                                tagsProvider={props.tagsProvider}
-                                persistenceLayerProvider={props.persistenceLayerProvider}
-                                doc={props.doc}/>
-    ));
-
-}
-
 const AnnotationsBlock = (props: IRenderProps) => {
 
     if (props.view.length > 0) {
-        return createItems(props);
+        return (
+            <>
+                {props.view.map(annotation => (
+                    <DocAnnotationComponent key={annotation.id}
+                                            annotation={annotation}
+                                            tagsProvider={props.tagsProvider}
+                                            persistenceLayerProvider={props.persistenceLayerProvider}
+                                            doc={props.doc}/>))}
+            </>
+        );
+
     } else {
         return <NoAnnotations/>;
     }
@@ -123,15 +116,17 @@ const AnnotationsBlock = (props: IRenderProps) => {
 
 const Annotations = (props: IRenderProps) => {
 
-    return <div className="annotations"
-                style={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'auto'
-                }}>
-        <AnnotationsBlock {...props}/>
-    </div>;
+    return (
+        <div className="annotations"
+             style={{
+                 flexGrow: 1,
+                 display: 'flex',
+                 flexDirection: 'column',
+                 overflow: 'auto'
+             }}>
+            <AnnotationsBlock {...props}/>
+        </div>
+    );
 
 };
 

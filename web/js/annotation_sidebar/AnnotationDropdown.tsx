@@ -1,146 +1,18 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocAnnotation} from './DocAnnotation';
-import {Dialogs} from '../ui/dialogs/Dialogs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {DropdownIcon} from "../ui/standard_icons/DropdownIcon";
+import {MUIDropdownMenu} from "../../spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
 
-const log = Logger.create();
-
-class Styles {
-
-    public static DropdownMenu: React.CSSProperties = {
-        zIndex: 999,
-        fontSize: '16px'
-    };
-
-    public static DropdownItem: React.CSSProperties = {
-        fontSize: '15px'
-    };
-
-}
-
-export class AnnotationDropdown extends React.Component<IProps, IState> {
-
-    private open: boolean = false;
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.toggle = this.toggle.bind(this);
-        this.onDelete = this.onDelete.bind(this);
-
-        this.onCreateComment = this.onCreateComment.bind(this);
-        this.onCreateFlashcard = this.onCreateFlashcard.bind(this);
-        this.onJumpToContext = this.onJumpToContext.bind(this);
-
-        this.state = {
-            open: this.open,
-        };
-
-    }
-
-    public render() {
-
-        const toggleID = this.props.id + '-dropdown-toggle';
-
-        return (
-
-            <div className="text-right">
-
-                <Dropdown id={this.props.id}
-                          isOpen={this.state.open}
-                          toggle={this.toggle}>
-
-                    <DropdownToggle color="clear"
-                                    disabled={this.props.disabled}
-                                    className="doc-dropdown-button btn text-muted pl-1 pr-1"
-                                    id={toggleID}>
-
-                        <DropdownIcon/>
-
-                    </DropdownToggle>
-
-                    <DropdownMenu right>
-
-                        <DropdownItem style={Styles.DropdownItem} onClick={() => this.onCreateComment()}>
-                            Create comment
-                        </DropdownItem>
-
-                        <DropdownItem style={Styles.DropdownItem} onClick={() => this.onCreateFlashcard()}>
-                            Create flashcard
-                        </DropdownItem>
-
-                        <DropdownItem style={Styles.DropdownItem} onClick={() => this.onJumpToContext()}>
-                            Jump to context
-                        </DropdownItem>
-
-                        <DropdownItem divider />
-
-                        <DropdownItem style={Styles.DropdownItem}
-                                      className="text-danger"
-                                      disabled={this.props.annotation.immutable}
-                                      onClick={() => this.onDeleteSelected()}>
-                            Delete
-                        </DropdownItem>
-
-                    </DropdownMenu>
-
-
-                </Dropdown>
-
-            </div>
-
-        );
-
-    }
-
-    private onDeleteSelected() {
-
-        Dialogs.confirm({
-            title: "Are you sure you want to delete this annotation? ",
-            subtitle: "This will also delete all associated comments and flashcards.",
-            type: 'danger',
-            onCancel: NULL_FUNCTION,
-            onConfirm: () => this.onDelete()
-        });
-
-    }
-
-    private onCreateComment() {
-        this.props.onCreateComment(this.props.annotation);
-    }
-
-    private onCreateFlashcard() {
-        this.props.onCreateFlashcard(this.props.annotation);
-    }
-
-    private onJumpToContext() {
-        this.props.onJumpToContext(this.props.annotation);
-    }
-
-    private onDelete() {
-        this.props.onDelete(this.props.annotation);
-    }
-
-    private toggle() {
-
-        this.open = ! this.state.open;
-
-        this.refresh();
-
-    }
-
-    private refresh() {
-
-        this.setState({
-          open: this.open,
-      });
-
-    }
-
-}
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import {MUIDropdownItem} from "../../spectron0/material-ui/dropdown_menu/MUIDropdownItem";
+import CommentIcon from '@material-ui/icons/Comment';
+import Divider from '@material-ui/core/Divider';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {ConfirmDialogProps} from '../ui/dialogs/ConfirmDialog';
+import {
+    DialogManager,
+    MUIDialogController
+} from "../../spectron0/material-ui/dialogs/MUIDialogController";
 
 interface IProps {
     readonly id: string;
@@ -152,9 +24,87 @@ interface IProps {
     readonly disabled?: boolean;
 }
 
-interface IState {
+export const AnnotationDropdown = (props: IProps) => {
 
-    open: boolean;
+    const handleDelete = (dialogs: DialogManager) => {
 
-}
+        const dialogProps: ConfirmDialogProps = {
+            title: "Are you sure you want to delete this annotation? ",
+            subtitle: "This will also delete all associated comments and flashcards.",
+            type: 'danger',
+            onCancel: NULL_FUNCTION,
+            onAccept: () => props.onDelete(props.annotation)
+        }
 
+        dialogs.confirm(dialogProps);
+
+    };
+
+    return (
+
+        <MUIDialogController>
+            {(dialogs) => (
+
+                <>
+
+                    <MUIDropdownMenu button={{
+                                         icon: <MoreVertIcon/>,
+                                         disabled: props.disabled,
+                                         size: 'small'
+                                     }}
+                                     placement='bottom-end'>
+                        <div>
+
+                            {/*TODO: for now don't create the same items as the toolbar */}
+
+                            <MUIDropdownItem text="Create comment"
+                                             icon={<CommentIcon/>}
+                                             onClick={() => props.onCreateComment(props.annotation)}/>
+
+                            <Divider/>
+
+                            <MUIDropdownItem text="Delete"
+                                             icon={<DeleteIcon/>}
+                                             onClick={() => handleDelete(dialogs)}/>
+                        </div>
+                    </MUIDropdownMenu>
+
+                </>
+            )}
+        </MUIDialogController>
+
+    );
+};
+
+//
+//     <Dropdown id={this.props.id}
+//               isOpen={this.state.open}
+//               toggle={this.toggle}>
+//
+
+//
+//             <DropdownItem style={Styles.DropdownItem} onClick={() => this.onCreateFlashcard()}>
+//                 Create flashcard
+//             </DropdownItem>
+//
+//             <DropdownItem style={Styles.DropdownItem} onClick={() => this.onJumpToContext()}>
+//                 Jump to context
+//             </DropdownItem>
+//
+//             <DropdownItem divider />
+//
+//             <DropdownItem style={Styles.DropdownItem}
+//                           className="text-danger"
+//                           disabled={this.props.annotation.immutable}
+//                           onClick={() => this.onDeleteSelected()}>
+//                 Delete
+//             </DropdownItem>
+//
+//         </DropdownMenu>
+//
+//
+//     </Dropdown>
+//
+// </div>
+
+// );

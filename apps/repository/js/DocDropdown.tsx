@@ -4,6 +4,9 @@ import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
 import {DocDropdownItems, OnRemoveFromFolderCallback} from './DocDropdownItems';
 import {Filters} from "./doc_repo/DocRepoFilters";
 
+/**
+ * @Deprecated MUI
+ */
 export class DocDropdown extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

@@ -84,6 +84,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
             return (
                 <IconButton disabled={! this.props.doc.mutable}
+                            size="small"
                             onClick={() => this.toggleActiveInputComponent('text-highlight')}>
 
                     <EditIcon/>
@@ -95,6 +96,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         const CreateCommentButton = () => {
             return (
                 <IconButton disabled={! this.props.doc.mutable}
+                            size="small"
                             onClick={() => this.toggleActiveInputComponent('comment')}>
 
                     <CommentIcon/>
@@ -106,6 +108,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         const CreateFlashcardButton = () => {
             return (
                 <IconButton disabled={! this.props.doc.mutable}
+                            size="small"
                             onClick={() => this.toggleActiveInputComponent('flashcard')}>
 
                     <FlashOnIcon/>
@@ -161,15 +164,15 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                            color={this.props.annotation.color || 'yellow'}
                                            onSelected={color => this.onColor(color)}/>}
 
-                        {/*<div className="ml-1">*/}
-                        {/*    <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}*/}
-                        {/*                        disabled={this.props.annotation.immutable}*/}
-                        {/*                        annotation={annotation}*/}
-                        {/*                        onDelete={() => this.onDelete(annotation)}*/}
-                        {/*                        onCreateComment={() => this.toggleActiveInputComponent('comment')}*/}
-                        {/*                        onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}*/}
-                        {/*                        onJumpToContext={() => this.onJumpToContext(annotation)}/>*/}
-                        {/*</div>*/}
+                        <div className="ml-1">
+                            <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
+                                                disabled={this.props.annotation.immutable}
+                                                annotation={annotation}
+                                                onDelete={() => this.onDelete(annotation)}
+                                                onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                        </div>
 
                     </div>
 
