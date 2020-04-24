@@ -63,6 +63,35 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                          text="Support"/>
                     </MUIRouterLink>
 
+                    <MUIRouterLink to="https://discord.gg/GT8MhA6">
+                        <MUIDropdownItem id="chat-link"
+                                         icon={<LocalLibraryIcon/>}
+                                         text="Chat"/>
+                    </MUIRouterLink>
+
+                    {DistConfig.ENABLE_PURCHASES &&
+                        <MUIRouterLink to="/plans">
+                            <MUIDropdownItem id="upgrade-to-premium-link"
+                                             icon={<LocalLibraryIcon/>}
+                                             text="Upgrade to Premium"/>
+                        </MUIRouterLink>}
+
+
+                    {updatesEnabled &&
+                        <MUIRouterLink to="/plans">
+                            <MUIDropdownItem id="electron-check-for-update"
+                                             icon={<LocalLibraryIcon/>}
+                                             event="help-check-for-update"
+                                             text="Check For App Update"
+                                             onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
+                        </MUIRouterLink>}
+
+                     {/*TODO: only enable this for dev users*/}
+                     <MUIDropdownItem id="sidebar-item-device"
+                                      text="Device"
+                                      icon={<LocalLibraryIcon/>}
+                                      link="/device"/>
+
                 </div>
 
             </MUIDropdownMenu>
@@ -85,53 +114,8 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
         //             {/*<DropdownItem header>Extensions and Addons</DropdownItem>*/}
         //
 
-        //             <HelpDropdownItem id="support-link"
-        //                               title="Support"
-        //                               tooltip="Get support on Polar"
-        //                               link="/support"
-        //                               icon="fas fa-hands-helping"/>
         //
-        //             <HelpDropdownItem id="chat-link"
-        //                               hidden={! isDesktop}
-        //                               title="Chat"
-        //                               tooltip="Chat with other Polar users live via chat (Discord)"
-        //                               link="https://discord.gg/GT8MhA6"
-        //                               icon="fab fa-discord"/>
         //
-        //             <HelpDropdownItem id="create-issue-link"
-        //                               hidden={! isDesktop}
-        //                               title="Create Issue"
-        //                               tooltip="Create an issue (bug or feature) for the developer to investigate."
-        //                               link="https://github.com/burtonator/polar-bookshelf/issues/new/choose"
-        //                               icon="fas fa-bug"/>
-        //
-        //             <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
-        //
-        //             <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES}
-        //                               id="upgrade-to-premium-link"
-        //                               title="Upgrade to Premium"
-        //                               tooltip="Upgrade to Polar Premium and get the best Polar experience possible."
-        //                               link="/plans"
-        //                               icon="fas fa-certificate"/>
-        //
-        //             <DropdownItem divider hidden={! DistConfig.ENABLE_PURCHASES} />
-        //
-        //             <HelpDropdownItem hidden={! DistConfig.ENABLE_PURCHASES || ! isDesktop}
-        //                               id="donate-link"
-        //                               title="Donate"
-        //                               tooltip="Donate to Polar to support development."
-        //                               link="https://opencollective.com/polar-bookshelf"
-        //                               icon="fas fa-donate"/>
-        //
-        //             <DropdownItem divider hidden={!updatesEnabled}/>
-        //
-        //             <TrackedDropdownItem id="electron-check-for-update"
-        //                                  title="Check For App Update"
-        //                                  tooltip="Check for a new update of the Polar Desktop app."
-        //                                  icon="fas fa-file-download"
-        //                                  trackingCategory="help-check-for-update"
-        //                                  hidden={!updatesEnabled}
-        //                                  onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
         //
         //             <DropdownItem divider/>
         //

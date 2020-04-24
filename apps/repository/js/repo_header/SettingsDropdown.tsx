@@ -4,6 +4,9 @@ import {SettingsDropdownItem} from './SettingsDropdownItem';
 import {Prefs} from '../../../../web/js/util/prefs/Prefs';
 import {SettingsFeatureToggleDropdown} from "./SettingsFeatureToggleDropdown";
 
+/**
+ * Deprecated MUI
+ */
 export class SettingsDropdown extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {
