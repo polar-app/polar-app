@@ -1,15 +1,15 @@
 import {assert} from 'chai';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {RepositoryApp} from '../../js/apps/repository/RepositoryApp';
 
 import {wait} from 'dom-testing-library';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
+import {Repository} from "../../js/apps/repository/Repository";
 
 SpectronRenderer.run(async (state) => {
 
     await PolarDataDir.useFreshDirectory('.test-repository-app');
 
-    await new RepositoryApp().start();
+    await new Repository().start();
 
     console.log("Running within SpectronRenderer now.");
 

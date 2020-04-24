@@ -1,16 +1,16 @@
 import * as React from 'react';
-import {UIModeContext} from './UIModeContext';
+import {MUIThemeTypeContext} from './MUIThemeTypeContext';
 import Button from "@material-ui/core/Button";
-
-export const ChildComponent = () => (
-    <UIModeContext.Consumer>
-        {
-            ({mode, setMode}) => (
-                <div>
-                    <div>mode: {mode}</div>
-                    <Button onClick={() => setMode('light')}>toggle</Button>
-                </div>
-            )
-        }
-    </UIModeContext.Consumer>
-);
+//
+// export const ChildComponent = () => (
+//     <MUIThemeTypeContext.Consumer>
+//         {
+//             ({mode, setMode}) => (
+//                 <div>
+//                     <div>mode: {mode}</div>
+//                     <Button onClick={() => setMode('light')}>toggle</Button>
+//                 </div>
+//             )
+//         }
+//     </MUIThemeTypeContext.Consumer>
+// );

@@ -310,6 +310,9 @@ export class RepositoryApp {
             }
         };
 
+        // FIXME: this RepositoryApp needs to be broken out and then I need to use
+        // MUIThemeTypeContext
+
         const muiTheme = createMuiTheme(theme);
 
         ReactDOM.render(

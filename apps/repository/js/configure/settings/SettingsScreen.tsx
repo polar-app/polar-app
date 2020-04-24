@@ -9,8 +9,9 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {Devices} from "polar-shared/src/util/Devices";
-import { ConfigureNavbar } from '../ConfigureNavbar';
+import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
+import {MUIThemeTypeContext} from "../../../../../web/spectron0/test-context/MUIThemeTypeContext";
 
 const log = Logger.create();
 
@@ -21,6 +22,11 @@ interface SettingEntryProps {
     readonly prefs: PersistentPrefs | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
+
+    /**
+     * Optional callback to listen to settings.
+     */
+    readonly onChange?: (value: boolean) => void;
 }
 
 const PreviewWarning = (props: SettingEntryProps) => {
@@ -54,6 +60,10 @@ const SettingEntry = (props: SettingEntryProps) => {
         console.log("Setting " + name);
         FeatureToggles.set(name, value);
         prefs.mark(name, value);
+
+        if (props.onChange) {
+            props.onChange(value);
+        }
 
         const doCommit = async () => {
             await prefs.commit();
@@ -114,55 +124,82 @@ export const SettingsScreen = (props: IProps) => {
 
     const prefs = getPrefs();
 
+
     return (
 
         <DefaultPageLayout {...props}>
+            <MUIThemeTypeContext.Consumer>
+                {
+                    ({theme, setTheme}) => {
 
-            <ConfigureBody>
-                <ConfigureNavbar/>
+                        const handleDarkModeToggle = (enabled: boolean) => {
+                            const theme = enabled ? 'dark' : 'light';
+                            console.log("FIXME changint mode: " + theme);
+                            setTheme(theme);
+                        };
 
-                <div className="">
-                    <h2>General</h2>
+                        return (
 
-                    <p>
-                        General settings. Note that some of these may require you to reload.
-                    </p>
+                            <ConfigureBody>
+                                <ConfigureNavbar/>
 
-                    <SettingEntry title="Automatically resume reading position"
-                                  description="This feature restores the document reading position using pagemarks when reopening a document."
-                                  name="settings-auto-resume"
-                                  defaultValue={true}
-                                  prefs={prefs}/>
+                                <div className="">
+                                    <h2>General</h2>
 
-                    <SettingEntry title="Enable groups"
-                                  description="Enables the new groups functionality for sharing documents with other users."
-                                  name="groups"
-                                  prefs={prefs}
-                                  preview={true}/>
+                                    <p>
+                                        General settings. Note that some of
+                                        these may require you to reload.
+                                    </p>
 
-                    <SettingEntry title="Automatic pagemarks"
-                                  description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
-                                  name={KnownPrefs.AUTO_PAGEMARKS}
-                                  prefs={prefs}
-                                  preview={true}/>
+                                    <SettingEntry title="Dark Mode"
+                                                  description="Enable dark mode"
+                                                  name="dark-mode"
+                                                  defaultValue={theme === 'dark'}
+                                                  prefs={prefs}
+                                                  onChange={handleDarkModeToggle}
+                                    />
 
-                    <NullCollapse open={ ! Devices.isDesktop()}>
-                        <SettingEntry title="Table and phone reading"
-                                      description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
-                                      name="mobile-reading"
-                                      prefs={prefs}
-                                      preview={true}/>
-                    </NullCollapse>
+                                    <SettingEntry
+                                        title="Automatically resume reading position"
+                                        description="This feature restores the document reading position using pagemarks when reopening a document."
+                                        name="settings-auto-resume"
+                                        defaultValue={true}
+                                        prefs={prefs}/>
 
-                    <SettingEntry title="Development"
-                                  description="Enables general development features for software engineers working on Polar."
-                                  name="dev"
-                                  prefs={prefs}
-                                  preview={true}/>
+                                    <SettingEntry title="Enable groups"
+                                                  description="Enables the new groups functionality for sharing documents with other users."
+                                                  name="groups"
+                                                  prefs={prefs}
+                                                  preview={true}/>
 
-                </div>
+                                    <SettingEntry title="Automatic pagemarks"
+                                                  description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
+                                                  name={KnownPrefs.AUTO_PAGEMARKS}
+                                                  prefs={prefs}
+                                                  preview={true}/>
 
-            </ConfigureBody>
+                                    <NullCollapse open={!Devices.isDesktop()}>
+                                        <SettingEntry
+                                            title="Table and phone reading"
+                                            description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
+                                            name="mobile-reading"
+                                            prefs={prefs}
+                                            preview={true}/>
+                                    </NullCollapse>
+
+                                    <SettingEntry title="Development"
+                                                  description="Enables general development features for software engineers working on Polar."
+                                                  name="dev"
+                                                  prefs={prefs}
+                                                  preview={true}/>
+
+                                </div>
+
+                            </ConfigureBody>
+                        );
+                    }
+                }
+            </MUIThemeTypeContext.Consumer>
 
         </DefaultPageLayout>
     );
