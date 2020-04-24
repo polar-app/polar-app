@@ -7,7 +7,6 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {SyncBar} from '../../ui/sync_bar/SyncBar';
 import AnnotationRepoScreen
     from '../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
