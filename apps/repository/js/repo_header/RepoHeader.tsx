@@ -154,12 +154,11 @@ export class RepoHeader extends React.Component<IProps, IState> {
                             </Grid>
 
 
-                                {/*<ChromeExtensionInstallButton/>*/}
+                            {/*<ChromeExtensionInstallButton/>*/}
 
-                                {/*<Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>*/}
+                            {/*<Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>*/}
 
-
-                                {/*<LinkDropdown hidden={! isDesktop}/>*/}
+                            {/*<LinkDropdown hidden={! isDesktop}/>*/}
 
                         </div>
 

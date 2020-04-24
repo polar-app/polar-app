@@ -1,17 +1,18 @@
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
-import {URLStr} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 
-
-export interface RouterLinkObj {
+interface ILocation {
     readonly pathname: string;
     readonly hash?: string;
+}
+
+export interface RouterLinkObj extends ILocation {
 }
 
 export type RouterLink = URLPathStr | RouterLinkObj;
 
 function isRouterLinkObj(routerLink: RouterLink): routerLink is RouterLinkObj {
-    return isPresent((routerLink as any).pathName);
+    return isPresent((routerLink as any).pathname);
 }
 
 function toRouterLinkObj(routerLink: RouterLink): RouterLinkObj {
@@ -24,35 +25,38 @@ function toRouterLinkObj(routerLink: RouterLink): RouterLinkObj {
 
 }
 
-interface ILocation {
-    readonly pathname: string;
-    readonly hash?: string;
+namespace ILocations {
+
+    export function canonicalizeHash(hash?: string): string {
+
+        if (! hash) {
+            return "#";
+        }
+
+        if (! hash.startsWith("#")) {
+            return "#" + hash;
+        }
+
+        return hash;
+
+    }
+
+    export function toString(location: ILocation) {
+        const hash = canonicalizeHash(location.hash);
+        return `${location.pathname}${hash}`
+    }
 }
 
-export class ReactRouterLinks {
+export namespace ReactRouterLinks {
 
-    public static isActive(target: RouterLink, location: ILocation = document.location) {
+    export function isActive(target: RouterLink, location: ILocation = document.location) {
 
         const targetObj = toRouterLinkObj(target);
 
         const {pathname, hash} = targetObj;
 
-        const canonicalizeHash = (hash?: string): string => {
-
-            if (! hash) {
-                return "#";
-            }
-
-            if (! hash.startsWith("#")) {
-                return "#" + hash;
-            }
-
-            return hash;
-
-        };
-
         return location.pathname === pathname &&
-               canonicalizeHash(location.hash) === canonicalizeHash(hash);
+               ILocations.canonicalizeHash(location.hash) === ILocations.canonicalizeHash(hash);
 
     }
 

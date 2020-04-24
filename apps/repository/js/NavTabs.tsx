@@ -8,24 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Tab from "@material-ui/core/Tab";
 import {Link, useLocation} from 'react-router-dom';
-import isEqual from 'react-fast-compare';
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-
-        link: {
-            textDecoration: 'none',
-            color: theme.palette.text.secondary
-        },
-
-        linkActive: {
-            textDecoration: 'none',
-            color: theme.palette.text.primary,
-        },
-
-    })
-);
+import isEqual from "react-fast-compare";
 
 export interface ITabProps {
     readonly id: string;
@@ -39,8 +22,6 @@ interface IProps {
 }
 
 export const NavTabs = React.memo((props: IProps) => {
-
-    const classes = useStyles();
 
     const location = useLocation();
 

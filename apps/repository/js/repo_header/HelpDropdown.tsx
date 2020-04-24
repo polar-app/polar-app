@@ -15,6 +15,7 @@ import {MUIDropdownItem} from "../../../../web/spectron0/material-ui/dropdown_me
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import InfoIcon from '@material-ui/icons/Info';
 import {Link} from "react-router-dom";
+import {MUIRouterLink} from "../../../../web/spectron0/material-ui/MUIRouterLink";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
@@ -56,11 +57,11 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
                                      text="Documentation"
                                      link="https://getpolarized.io/docs/"/>
 
-                    <Link to="/support" className='no-underline'>
+                    <MUIRouterLink to="/support">
                         <MUIDropdownItem id="support-link"
                                          icon={<LocalLibraryIcon/>}
                                          text="Support"/>
-                    </Link>
+                    </MUIRouterLink>
 
                 </div>
 
