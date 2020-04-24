@@ -11,7 +11,6 @@ import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FeatureToggle} from "../ui/FeatureToggle";
-import {InputFilter} from '../ui/input_filter/InputFilter2';
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
 import {DatastoreCapabilities} from "../datastore/Datastore";
@@ -21,9 +20,9 @@ import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DocAnnotationLoader} from "./DocAnnotationLoader";
 import {DocAnnotationSorter} from "./DocAnnotationSorter";
-import AutoSizer from "react-virtualized-auto-sizer";
-import {VariableSizeList} from "react-window";
 import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
+import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
+import Box from "@material-ui/core/Box";
 
 const log = Logger.create();
 
@@ -102,20 +101,13 @@ function createItems(props: IRenderProps) {
     // TODO: I'm not sure what type of class a <div> or React element uses
     // so using 'any' for now.
 
-    const result: any = [];
-
-    const {view} = props;
-
-    view.map(annotation => {
-        result.push (<DocAnnotationComponent key={annotation.id}
-                                             annotation={annotation}
-                                             tagsProvider={props.tagsProvider}
-                                             persistenceLayerProvider={props.persistenceLayerProvider}
-                                             doc={props.doc}/>);
-    });
-
-
-    return result;
+    return props.view.map(annotation => (
+        <DocAnnotationComponent key={annotation.id}
+                                annotation={annotation}
+                                tagsProvider={props.tagsProvider}
+                                persistenceLayerProvider={props.persistenceLayerProvider}
+                                doc={props.doc}/>
+    ));
 
 }
 
@@ -160,22 +152,16 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
     return (
 
-        <div className="p-1 border-bottom pl-1 pr-1 text-md">
+        <MUIPaperToolbar borderBottom>
 
-            <div style={{
+            <Box p={1}
+                 style={{
                      display: 'flex'
                  }}>
 
-                <div style={{
-                         flexGrow: 1
-                     }}
-                     className="pr-1">
-
-                    <MUISearchBox2 style={{flexGrow: 1}}
-                                   onChange={text => props.onFiltered(text)}
-                                   placeholder="Filter annotations by text"/>
-
-                </div>
+                <MUISearchBox2 style={{flexGrow: 1}}
+                               onChange={text => props.onFiltered(text)}
+                               placeholder="Filter annotations by text"/>
 
                 <div style={{display: 'flex'}}>
 
@@ -201,9 +187,9 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
                 </div>
 
-            </div>
+            </Box>
 
-        </div>
+        </MUIPaperToolbar>
 
     );
 
