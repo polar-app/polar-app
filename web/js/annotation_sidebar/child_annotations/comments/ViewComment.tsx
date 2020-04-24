@@ -2,28 +2,14 @@ import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
 import {CommentDropdown} from '../CommentDropdown';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
-import { AnnotationTagInputButton } from '../AnnotationTagInputButton';
-import { Tag } from 'polar-shared/src/tags/Tags';
+import {AnnotationTagInputButton} from '../AnnotationTagInputButton';
+import {Tag} from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-    barBody: {
-        display: 'flex'
-    },
-
-    barChild: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    }
-
-};
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -60,16 +46,24 @@ export class ViewComment extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div style={Styles.barBody}
-                         className="flexbar comment-bar border-bottom pt-0 pb-0 mb-1">
+                    <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                         }}
+                         className="p-1">
 
                         <DocAuthor author={comment.author}/>
 
-                        <div style={Styles.barChild} className="text-muted">
+                        <div className="text-muted">
                             <DocAnnotationMoment created={comment.created}/>
                         </div>
 
-                        <div style={Styles.barChild} className="flexbar-right muted-color">
+                        <div style={{
+                                 flexGrow: 1,
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'flex-end'
+                             }}>
 
                             <AnnotationTagInputButton tagsProvider={this.props.tagsProvider}
                                                       annotation={this.props.comment}/>
@@ -78,12 +72,10 @@ export class ViewComment extends React.Component<IProps, IState> {
                                 {this.props.editButton}
                             </NullCollapse>
 
-                            <div className="ml-1">
-                                <CommentDropdown id={'comment-dropdown-' + comment.id}
-                                                 disabled={comment.immutable}
-                                                 comment={comment}
-                                                 onDelete={() => this.onDelete(comment)}/>
-                            </div>
+                            <CommentDropdown id={'comment-dropdown-' + comment.id}
+                                             disabled={comment.immutable}
+                                             comment={comment}
+                                             onDelete={() => this.onDelete(comment)}/>
 
                         </div>
 

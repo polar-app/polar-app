@@ -5,7 +5,6 @@ import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import CommentIcon from '@material-ui/icons/Comment';
-import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {
     ClozeFields,
@@ -28,31 +27,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Analytics} from "../analytics/Analytics";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {TagInputControl} from "../../../apps/repository/js/TagInputControl";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
-
-const Styles: IStyleMap = {
-
-    button: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        fontSize: '15px'
-    },
-
-    barBody: {
-        display: 'flex'
-    },
-
-    barChild: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    }
-
-};
 
 export class AnnotationControlBar extends React.Component<IProps, IState> {
 
@@ -120,7 +98,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         return (
 
             <div style={{userSelect: 'none'}}
-                 className="annotation-control-bar mb-3">
+                 className="p-1">
 
                 <div style={{display: 'flex'}}>
 

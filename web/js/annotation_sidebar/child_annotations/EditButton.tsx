@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
-import {EditIcon} from '../../../../web/js/ui/standard_icons/EditIcon';
 import {Analytics} from "../../analytics/Analytics";
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 
 /**
  */
@@ -15,17 +15,15 @@ export class EditButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <Button id={this.props.id}
-                    className="text-muted p-1"
-                    size="sm"
-                    color="clear"
-                    disabled={this.props.disabled}
-                    title={'Edit ' + this.props.type}
-                    onClick={() => this.onClick()}>
+            <IconButton id={this.props.id}
+                        size="small"
+                        disabled={this.props.disabled}
+                        title={'Edit ' + this.props.type}
+                        onClick={() => this.onClick()}>
 
                 <EditIcon/>
 
-            </Button>
+            </IconButton>
         );
 
     }
