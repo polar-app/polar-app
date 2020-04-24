@@ -60,10 +60,10 @@ export const HighlightColorFilterButton = (props: IProps) => {
                        icon={<PaletteIcon/>}
                        >
 
-            <ColorSelectorBox selected={props.selected}
-                              onSelected={(color) => handleSelected(color)}/>
+                <ColorSelectorBox selected={props.selected}
+                                  onSelected={(color) => handleSelected(color)}/>
 
-        </MUIPopper>
+            </MUIPopper>
         </div>
 
     );

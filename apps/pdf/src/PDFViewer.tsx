@@ -95,13 +95,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
             // FIXME not getting intial snapshot
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
-                onSnapshot: (snapshot => {
-                    console.log("FIXME: got docMeta");
-
-                    this.onDocMeta(snapshot.data);
-
-
-                }),
+                onSnapshot: (snapshot => this.onDocMeta(snapshot.data)),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);
                 }

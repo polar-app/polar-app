@@ -259,7 +259,7 @@ export const PDFToolbar = (props: IProps) => {
                             </IconButton>
 
                             <FormControl variant="outlined" size="small">
-                                <Select value={props.pdfDocMeta?.scale.value}
+                                <Select value={props.pdfDocMeta?.scale.value || 'page-width'}
                                         onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
                                     {PDFScaleLevelTuples.map(current => (
                                         <MenuItem key={current.value}

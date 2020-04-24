@@ -4,8 +4,7 @@ import {AnnotationSidebars} from './AnnotationSidebars';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {Button} from 'reactstrap';
-import {CommentIcon} from '../ui/standard_icons/CommentIcon';
+import CommentIcon from '@material-ui/icons/Comment';
 import {FlashcardIcon} from '../ui/standard_icons/FlashcardIcon';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {
@@ -23,15 +22,18 @@ import {TextHighlights} from '../metadata/TextHighlights';
 import {AreaHighlights} from '../metadata/AreaHighlights';
 import {DocAnnotationMoment} from "./DocAnnotationMoment";
 import {DocAuthor} from "./DocAuthor";
-import {NullCollapse} from "../ui/null_collapse/NullCollapse";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
-import {EditIcon} from "../ui/standard_icons/EditIcon";
+import EditIcon from '@material-ui/icons/Edit';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Analytics} from "../analytics/Analytics";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {TagInputControl} from "../../../apps/repository/js/TagInputControl";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
+import Button from "@material-ui/core/Button";
+import IconButton from '@material-ui/core/IconButton';
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
 
 const Styles: IStyleMap = {
 
@@ -80,45 +82,36 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 return null;
             }
 
-            return <Button className="text-muted p-1"
-                           title="Edit text highlight"
-                           size="sm"
-                           color="clear"
-                           style={Styles.button}
-                           disabled={! this.props.doc.mutable}
-                           onClick={() => this.toggleActiveInputComponent('text-highlight')}>
+            return (
+                <IconButton disabled={! this.props.doc.mutable}
+                            onClick={() => this.toggleActiveInputComponent('text-highlight')}>
 
-                <EditIcon/>
+                    <EditIcon/>
 
-            </Button>;
+                </IconButton>
+            );
         };
 
         const CreateCommentButton = () => {
-            return <Button className="ml-1 text-muted p-1"
-                           title="Create comment"
-                           size="sm"
-                           color="clear"
-                           style={Styles.button}
-                           disabled={! this.props.doc.mutable}
-                           onClick={() => this.toggleActiveInputComponent('comment')}>
+            return (
+                <IconButton disabled={! this.props.doc.mutable}
+                            onClick={() => this.toggleActiveInputComponent('comment')}>
 
-                <CommentIcon/>
+                    <CommentIcon/>
 
-            </Button>;
+                </IconButton>
+            );
         };
 
         const CreateFlashcardButton = () => {
-            return <Button className="ml-1 text-muted p-1"
-                           title="Create flashcard"
-                           style={Styles.button}
-                           size="sm"
-                           color="clear"
-                           disabled={! this.props.doc.mutable}
-                           onClick={() => this.toggleActiveInputComponent('flashcard')}>
+            return (
+                <IconButton disabled={! this.props.doc.mutable}
+                            onClick={() => this.toggleActiveInputComponent('flashcard')}>
 
-                <FlashcardIcon/>
+                    <FlashOnIcon/>
 
-            </Button>;
+                </IconButton>
+            );
         };
 
         return (
@@ -126,52 +119,57 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
             <div style={{userSelect: 'none'}}
                  className="annotation-control-bar mb-3">
 
-                <div style={Styles.barBody}
-                     className="flexbar annotation-buttons border-bottom pt-0 pb-0">
+                <div style={{display: 'flex'}}>
 
+                    {/*FIXME: migrate this to use UserAvatar of size small*/}
                     <DocAuthor author={annotation.author}/>
 
-                    <div style={Styles.barChild}
-                         className="text-muted annotation-context-link">
-                        {/*TODO: make this into its own component... */}
-                        <a href="#" onClick={() => this.onJumpToContext(annotation)}>
+                    <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                         }}>
+
+                        <MUIAnchor href="#"
+                                   onClick={() => this.onJumpToContext(annotation)}>
                             <DocAnnotationMoment created={annotation.created}/>
-                        </a>
+                        </MUIAnchor>
+
                     </div>
 
-                    <div style={Styles.barChild}
-                         className="flexbar-right muted-color">
-
+                    <div style={{
+                             display: 'flex',
+                             alignItems: 'center',
+                             justifyContent: 'flex-end',
+                             flexGrow: 1
+                         }}>
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
                         <ChangeTextHighlightButton/>
 
-                        <TagInputControl className='ml-1 p-1 text-muted'
-                                         container="body"
-                                         availableTags={this.props.tagsProvider()}
-                                         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
-                                         onChange={(tags) => this.onTagged(tags)}/>
+                        {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
+                        {/*                 container="body"*/}
+                        {/*                 availableTags={this.props.tagsProvider()}*/}
+                        {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
+                        {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
 
                         <CreateCommentButton/>
 
                         <CreateFlashcardButton/>
 
-                        <NullCollapse open={!annotation.immutable}>
-                            <ColorSelector className="mt-auto mb-auto muted-color-target-bg"
-                                           size='16px'
+                        {! annotation.immutable &&
+                            <ColorSelector className=""
                                            color={this.props.annotation.color || 'yellow'}
-                                           onSelected={color => this.onColor(color)}/>
-                        </NullCollapse>
+                                           onSelected={color => this.onColor(color)}/>}
 
-                        <div className="ml-1">
-                            <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
-                                                disabled={this.props.annotation.immutable}
-                                                annotation={annotation}
-                                                onDelete={() => this.onDelete(annotation)}
-                                                onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
-                        </div>
+                        {/*<div className="ml-1">*/}
+                        {/*    <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}*/}
+                        {/*                        disabled={this.props.annotation.immutable}*/}
+                        {/*                        annotation={annotation}*/}
+                        {/*                        onDelete={() => this.onDelete(annotation)}*/}
+                        {/*                        onCreateComment={() => this.toggleActiveInputComponent('comment')}*/}
+                        {/*                        onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}*/}
+                        {/*                        onJumpToContext={() => this.onJumpToContext(annotation)}/>*/}
+                        {/*</div>*/}
 
                     </div>
 
