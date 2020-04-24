@@ -2,7 +2,7 @@
 
 import $ from '../../../../ui/JQuery';
 import 'bootstrap';
-import 'summernote/dist/summernote-bs4';
+import 'summernote/dist/summernote-lite';
 
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
