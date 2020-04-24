@@ -28,15 +28,15 @@ export const AnnotationDropdown = (props: IProps) => {
 
     const handleDelete = (dialogs: DialogManager) => {
 
-        const dialogProps: ConfirmDialogProps = {
+        const confirmProps: ConfirmDialogProps = {
             title: "Are you sure you want to delete this annotation? ",
             subtitle: "This will also delete all associated comments and flashcards.",
             type: 'danger',
             onCancel: NULL_FUNCTION,
             onAccept: () => props.onDelete(props.annotation)
-        }
+        };
 
-        dialogs.confirm(dialogProps);
+        dialogs.confirm(confirmProps);
 
     };
 
