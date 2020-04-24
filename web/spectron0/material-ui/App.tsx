@@ -55,6 +55,8 @@ import {AutocompleteDialog} from "../../js/ui/dialogs/AutocompleteDialog";
 import {MyResponsivePie} from "./PieDemo";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import {UserAvatar} from "../../js/ui/cloud_auth/UserAvatar";
+import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -113,7 +115,32 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <Button onClick={() => changeTheme()}>Go Light mode</Button>
+                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
+                            displayName="Kevin Burton"
+                            size="small"/>
+
+                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
+                            displayName="Kevin Burton"
+                            size="large"/>
+
+                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
+                            displayName="Kevin Burton"
+                            style={{
+                                width: '150px',
+                                height: '150px'
+                            }}/>
+
+                <AccountControl userInfo={{
+                    photoURL: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",
+                    displayName: "Kevin Burton",
+                    email: 'foo@example.com',
+                    subscription: {
+                        plan: 'gold',
+                        interval: 'month'
+                    }
+                }} onLogout={NULL_FUNCTION}/>
+
+                {/*<Button onClick={() => changeTheme()}>Go Light mode</Button>*/}
 
                 {/*<Container component="main" maxWidth={false} disableGutters>*/}
                     {/*<ReactVirtualizedTable/>*/}
@@ -149,7 +176,7 @@ export const App = () => {
                     {/*                          relatedOptionsCalculator={relatedOptionsCalculator}*/}
                     {/*                          onChange={NULL_FUNCTION}/>*/}
 
-                <LinearProgress value={50} variant="determinate"/>
+                {/*<LinearProgress value={50} variant="determinate"/>*/}
 
                 {/*<Snackbar*/}
                 {/*        anchorOrigin={{*/}

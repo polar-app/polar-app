@@ -1,8 +1,27 @@
+import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 
-export interface RouterLink {
+export interface RouterLinkObj {
     readonly pathname: string;
     readonly hash?: string;
+}
+
+export type RouterLink = URLPathStr | RouterLinkObj;
+
+function isRouterLinkObj(routerLink: RouterLink): routerLink is RouterLinkObj {
+    return isPresent((routerLink as any).pathName);
+}
+
+function toRouterLinkObj(routerLink: RouterLink): RouterLinkObj {
+
+    if (isRouterLinkObj(routerLink)) {
+        return routerLink;
+    }
+
+    return {pathname: routerLink};
+
 }
 
 interface ILocation {
@@ -14,7 +33,9 @@ export class ReactRouterLinks {
 
     public static isActive(target: RouterLink, location: ILocation = document.location) {
 
-        const {pathname, hash} = target;
+        const targetObj = toRouterLinkObj(target);
+
+        const {pathname, hash} = targetObj;
 
         const canonicalizeHash = (hash?: string): string => {
 

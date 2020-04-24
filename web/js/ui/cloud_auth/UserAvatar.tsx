@@ -26,13 +26,18 @@ const useStyles = makeStyles((theme) =>
             width: theme.spacing(7),
             height: theme.spacing(7),
         },
+        xlarge: {
+            width: theme.spacing(9),
+            height: theme.spacing(9),
+        },
     }),
 );
 
 interface IProps {
     readonly photoURL: URLStr | undefined;
     readonly displayName: string | undefined;
-    readonly size?: 'small' | 'medium' | 'large';
+    readonly size?: 'small' | 'medium' | 'large' | 'xlarge';
+    readonly style?: React.CSSProperties;
 
 }
 
@@ -48,6 +53,7 @@ export const UserAvatar = React.memo((props: IProps) => {
         small: classes.small,
         medium: undefined,
         large: classes.large,
+        xlarge: classes.xlarge,
     };
 
     const className = classNameMap[size];
@@ -56,7 +62,8 @@ export const UserAvatar = React.memo((props: IProps) => {
 
         return (
             <Avatar src={props.photoURL}
-                    className={className}>
+                    className={className}
+                    style={props.style}>
             </Avatar>
         );
 
@@ -67,14 +74,20 @@ export const UserAvatar = React.memo((props: IProps) => {
         const letter = displayName[0].toUpperCase();
 
         return (
-            <Avatar className={className}>
+            <Avatar className={className}
+                    style={props.style}>
                 {letter}
             </Avatar>
         );
 
     } else {
         // else use a blank account image
-        return <AccountCircleIcon/>;
+        return (
+            <Avatar className={className}
+                    style={props.style}>
+                <AccountCircleIcon/>
+            </Avatar>
+        );
     }
 
 }, isEqual);

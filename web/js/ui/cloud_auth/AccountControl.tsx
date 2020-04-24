@@ -1,70 +1,42 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
-import Button from 'reactstrap/lib/Button';
-import {Link} from "react-router-dom";
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";
-import Avatar from '@material-ui/core/Avatar';
 import {UserAvatar} from "./UserAvatar";
+import Button from "@material-ui/core/Button";
+import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
+import {accounts} from "polar-accounts/src/accounts";
+import {MUIRouterLink} from "../../../spectron0/material-ui/MUIRouterLink";
+import Subscription = accounts.Subscription;
 
 const LogoutButton = (props: IProps) => {
 
     return <Button id="cloud-sync-logout"
-                   color="danger"
-                   outline
-                   size="md"
-                   onClick={() => props.onLogout()}
-                   className="ml-1">
-
-        <i className="fas fa-sign-out-alt mr-1"/>
+                   color="secondary"
+                   onClick={() => props.onLogout()}>
 
         Logout
 
     </Button>;
 
 };
-
-const UserImage = (props: IProps) => {
-
-    // FIXME revert to letter avatars...
-
-    if (props.userInfo.photoURL) {
-
-        return (
-            <div style={{display: 'flex'}}>
-                <div className="ml-auto mr-auto">
-                    <Avatar src={props.userInfo.photoURL}
-                            style={{
-                                width: '75px',
-                                height: '75px'
-                            }}>
-                    </Avatar>
-                </div>
-            </div>
-        );
-    } else {
-        return <div/>;
-    }
-
-};
-
-const InviteUsersButton = () => {
-
-    return <Link to={{pathname: '/invite'}}>
-        <Button id="cloud-sync-invite-users"
-                color="secondary"
-                outline
-                size="md">
-
-            <i className="fas fa-user-plus mr-1"/>
-
-            Invite Users
-
-        </Button>
-    </Link>;
-
-};
+//
+// const InviteUsersButton = () => {
+//
+//     return <Link to={{pathname: '/invite'}}>
+//         <Button id="cloud-sync-invite-users"
+//                 color="secondary"
+//                 outline
+//                 size="md">
+//
+//             <i className="fas fa-user-plus mr-1"/>
+//
+//             Invite Users
+//
+//         </Button>
+//     </Link>;
+//
+// };
 
 const ViewPlansAndPricingButton = () => {
 
@@ -73,9 +45,10 @@ const ViewPlansAndPricingButton = () => {
     };
 
     return (
-        <Link to='/plans'>
-            <Button color="success"
-                    size="lg"
+        <MUIRouterLink to='/plans'>
+            <Button color="secondary"
+                    variant="contained"
+                    size="large"
                     onClick={handler}>
 
                 <i className="fas fa-certificate"/>
@@ -83,7 +56,7 @@ const ViewPlansAndPricingButton = () => {
                 View Plans and Pricing
 
             </Button>
-        </Link>
+        </MUIRouterLink>
     );
 };
 
@@ -105,9 +78,16 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
                 <div>
                     <div className="text-center">
 
-                        <UserAvatar size="large"
-                                    displayName={props.userInfo.displayName}
-                                    photoURL={props.userInfo.photoURL}/>
+                        <div style={{
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'center'
+                             }}>
+                            <UserAvatar size="large"
+                                        displayName={props.userInfo.displayName}
+                                        style={{width: '100px', height: '100px'}}
+                                        photoURL={props.userInfo.photoURL}/>
+                        </div>
 
                         <div className="p-1">
 
@@ -167,9 +147,16 @@ export class AccountControl extends React.PureComponent<IProps, IState> {
 
 }
 
+interface IBasicUserInfo {
+    readonly photoURL?: URLStr;
+    readonly displayName?: string | undefined;
+    readonly email?: EmailStr;
+    readonly subscription: Subscription;
+}
+
 interface IProps {
 
-    readonly userInfo: UserInfo;
+    readonly userInfo: IBasicUserInfo;
 
     readonly onLogout: () => void;
 
