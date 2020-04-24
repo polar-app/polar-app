@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
-import {MUITagInputControls} from "../MUITagInputControls";
+import {AutocompleteDialogProps} from "../../../../../web/js/ui/dialogs/AutocompleteDialog";
+import {MUITagInputControls} from "../../MUITagInputControls";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {
     DialogManager,
     MUIDialogController
-} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+} from "../../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";

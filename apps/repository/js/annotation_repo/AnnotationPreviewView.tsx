@@ -23,7 +23,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Divider from "@material-ui/core/Divider";
-import {AnnotationTagsButton} from "./AnnotationTagsButton";
+import {AnnotationTagsButton} from "./buttons/AnnotationTagsButton";
+import { AnnotationDeleteButton } from './buttons/AnnotationDeleteButton';
 
 const log = Logger.create();
 
@@ -131,9 +132,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                             </div>
 
                             <div className="mt-auto mb-auto">
-                                <IconButton onClick={() => this.onDelete()}>
-                                    <DeleteIcon/>
-                                </IconButton>
+                                <AnnotationDeleteButton onDelete={this.onDelete}/>
                             </div>
 
                             <Divider orientation="vertical"/>
@@ -219,30 +218,19 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
         const {docMeta, annotationType, original} = this.props.repoAnnotation;
 
-        const onConfirm = () => {
+        AnnotationMutations.delete(docMeta, annotationType, original);
 
-            AnnotationMutations.delete(docMeta, annotationType, original);
+        const doPersist = async () => {
 
-            const doPersist = async () => {
+            await this.props.repoDocMetaUpdater.update(docMeta, 'deleted');
 
-                await this.props.repoDocMetaUpdater.update(docMeta, 'deleted');
-
-                const persistenceLayer = this.props.persistenceLayerManager.get();
-                await persistenceLayer.writeDocMeta(docMeta);
-
-            };
-
-            doPersist()
-                .catch(err => log.error(err));
+            const persistenceLayer = this.props.persistenceLayerManager.get();
+            await persistenceLayer.writeDocMeta(docMeta);
 
         };
 
-        Dialogs.confirm({
-            title: "Are you sure you want to delete this item? ",
-            subtitle: "This is a permanent operation and can't be undone. ",
-            type: "danger",
-            onConfirm: ()  => onConfirm()
-        });
+        doPersist()
+            .catch(err => log.error(err));
 
     }
 

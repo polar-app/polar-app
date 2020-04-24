@@ -133,7 +133,8 @@ export class DeterminateProgressBar {
         element.style.borderRight = '0';
         element.style.borderBottom = '0';
         // element.style.webkitAppearance = 'none';
-        // element.style.borderRadius = '0';
+        element.style.padding = '0';
+        element.style.borderRadius = '0';
 
         document.body.appendChild(element);
 
