@@ -23,6 +23,7 @@ import {DocAnnotationSorter} from "./DocAnnotationSorter";
 import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
 import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
 import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
 
 const log = Logger.create();
 
@@ -117,15 +118,16 @@ const AnnotationsBlock = (props: IRenderProps) => {
 const Annotations = (props: IRenderProps) => {
 
     return (
-        <div className="annotations"
-             style={{
-                 flexGrow: 1,
-                 display: 'flex',
-                 flexDirection: 'column',
-                 overflow: 'auto'
-             }}>
+        <Paper square
+               className="annotations pt-1 pl-1 pr-1"
+               style={{
+                   flexGrow: 1,
+                   display: 'flex',
+                   flexDirection: 'column',
+                   overflow: 'auto'
+               }}>
             <AnnotationsBlock {...props}/>
-        </div>
+        </Paper>
     );
 
 };

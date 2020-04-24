@@ -98,7 +98,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         return (
 
             <div style={{userSelect: 'none'}}
-                 className="p-1">
+                 className="pt-1">
 
                 <div style={{display: 'flex'}}>
 

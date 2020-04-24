@@ -31,11 +31,11 @@ export class ViewComment extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="m-1 mb-2">
+            <div className="m-1">
 
                 <div key={key} className="comment muted-color-root">
 
-                    <div className="pb-1 pt-1" onDoubleClick={() => this.props.onEdit()}>
+                    <div className="p-1" onDoubleClick={() => this.props.onEdit()}>
 
                         {/*TODO: based on the state determine if we should be*/}
                         {/*editing or just displaying the comment*/}

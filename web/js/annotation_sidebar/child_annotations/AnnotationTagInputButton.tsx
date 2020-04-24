@@ -5,6 +5,7 @@ import {DocAnnotation} from "../DocAnnotation";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {DocMetas} from "../../metadata/DocMetas";
+import {MUIDialogController} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 
 interface IProps {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
@@ -35,12 +36,31 @@ export const AnnotationTagInputButton = (props: IProps) => {
 
     };
 
+    const handleClick = () => {
+
+    };
+
+
     return (
-        <TagInputControl className='ml-1 p-1 text-muted'
-                         container="body"
-                         availableTags={props.tagsProvider()}
-                         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}
-                         onChange={(tags) => onTagged(tags)}/>
+
+        <MUIDialogController>
+            {(dialogs) => (
+
+                <>
+
+
+
+                {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
+                {/*         container="body"*/}
+                {/*         availableTags={props.tagsProvider()}*/}
+                {/*         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
+                {/*         onChange={(tags) => onTagged(tags)}/>*/}
+
+                </>
+            )}
+        </MUIDialogController>
+
+
     );
 
 };
