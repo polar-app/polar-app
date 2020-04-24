@@ -26,13 +26,7 @@ export const ColorSelector  = (props: IProps) => {
 
     return (
 
-        <MUIPopper variant="contained"
-                   style={{
-                       whiteSpace: 'nowrap'
-                   }}
-                   size="small"
-                   caret={true}
-                   text="Colors"
+        <MUIPopper size="small"
                    icon={<PaletteIcon/>}>
 
             <ColorSelectorBox selected={[props.color]}
