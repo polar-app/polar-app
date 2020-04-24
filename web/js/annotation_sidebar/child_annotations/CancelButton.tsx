@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
+import Button from '@material-ui/core/Button';
 
 /**
  */
@@ -13,10 +13,7 @@ export class CancelButton extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <Button color="clear"
-                    size="md"
-                    className="ml-1"
-                    onClick={() => this.onClick()}>
+            <Button onClick={() => this.onClick()}>
 
                 Cancel
 

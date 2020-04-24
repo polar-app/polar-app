@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
 import {RichTextArea} from "../../RichTextArea";
 import {Comment} from '../../../metadata/Comment';
 import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
+import Button from '@material-ui/core/Button';
 
 export class EditComment extends React.Component<IProps, IState> {
 
@@ -32,7 +32,8 @@ export class EditComment extends React.Component<IProps, IState> {
 
                 <RichTextFeatureIntro/>
 
-                <div id="annotation-comment-box" className="mt-1">
+                <div id="annotation-comment-box"
+                     className="mt-1">
 
                     <div className="">
 
@@ -44,15 +45,14 @@ export class EditComment extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div className="flexbar w-100">
+                    <div className="p-1">
 
-                        <div className="flexbar-right mt-1 mb-1">
+                        <div className="text-right">
 
                             {this.props.cancelButton}
 
                             <Button color="primary"
-                                    size="sm"
-                                    className="ml-1"
+                                    variant="contained"
                                     onClick={() => this.onComment()}>
 
                                 {this.props.existingComment ? 'Update' : 'Comment'}

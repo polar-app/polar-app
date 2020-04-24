@@ -294,7 +294,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         // which I need to fix in the HTML sanitizer.
         // html = HTMLSanitizer.sanitize(html);
 
+        // FIXME: nothing is actually persisted here...
+
         CommentActions.create(this.props.doc.docMeta, this.props.annotation, html);
+
+        // FIXME: nothing is actually persisted here...
 
         this.setState({
             activeInputComponent: 'none'
@@ -307,6 +311,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         Analytics.event({category: 'annotations', action: 'flashcard-created'});
 
         FlashcardActions.create(this.props.annotation, type, fields);
+
+        // FIXME: nothing is actually persisted here...
 
         this.setState({
             activeInputComponent: 'none'
