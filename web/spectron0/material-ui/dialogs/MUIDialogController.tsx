@@ -65,6 +65,10 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             });
         };
 
+        // const snackbar = () => {
+        //
+        // };
+
         const dialogManager: DialogManager = {
             confirm,
             prompt,
@@ -111,7 +115,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 }, isEqual);
 
 interface IProps {
-    readonly render: (dialogs: DialogManager) => JSX.Element;
+    readonly children: (dialogs: DialogManager) => JSX.Element;
 }
 
 /**
@@ -129,7 +133,7 @@ export const MUIDialogController = (props: IProps) => {
         <>
             <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
 
-            {dialogManager && props.render(dialogManager)}
+            {dialogManager && props.children(dialogManager)}
         </>
     );
 

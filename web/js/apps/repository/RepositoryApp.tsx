@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
@@ -38,15 +37,11 @@ import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 import {App} from "./AppInitializer";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {GlobalCss} from "../../../spectron0/material-ui/GlobalCss";
+import {createMuiTheme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import {
-    MUIThemeTypeContext,
-    ThemeType
-} from "../../../spectron0/test-context/MUIThemeTypeContext";
+import {ThemeType} from "../../../spectron0/test-context/MUIThemeTypeContext";
 import createPersistedState from "use-persisted-state";
+import {MUIAppRoot} from "../../MUIAppRoot";
 
 interface IProps {
     readonly app: App;
@@ -276,12 +271,8 @@ export const RepositoryApp = (props: IProps) => {
     });
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
-            <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
-
-            <CssBaseline/>
-            <GlobalCss/>
-
+        <MUIAppRoot>
+            <>
             <Splashes key="splashes"
                       persistenceLayerManager={persistenceLayerManager}/>
 
@@ -406,10 +397,8 @@ export const RepositoryApp = (props: IProps) => {
                        opacity: 0
                    }}/>
 
-            {/*</Container>*/}
-
-            </MUIThemeTypeContext.Provider>
-        </MuiThemeProvider>
+            </>
+        </MUIAppRoot>
     );
 
 };

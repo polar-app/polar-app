@@ -15,15 +15,15 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from "react-moment";
 import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
-import {TagInputControl} from "../TagInputControl";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaUpdater} from "../RepoDocMetaLoader";
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from "@material-ui/core/Typography";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import Divider from "@material-ui/core/Divider";
+import {AnnotationTagsButton} from "./AnnotationTagsButton";
 
 const log = Logger.create();
 
@@ -124,12 +124,10 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                             </div>
 
-                            <div className="mt-auto mb-auto">
-                                <TagInputControl className='ml-1 p-1 text-muted'
-                                                 container="body"
-                                                 availableTags={this.props.tagsProvider()}
-                                                 existingTags={() => this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
-                                                 onChange={(tags) => this.onTagged(tags)}/>
+                            <div className="ml-auto mt-auto mb-auto">
+                                <AnnotationTagsButton tagProvider={this.props.tagsProvider}
+                                                      existingTags={this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
+                                                      onTagged={this.onTagged}/>
                             </div>
 
                             <div className="mt-auto mb-auto">
@@ -137,6 +135,8 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                                     <DeleteIcon/>
                                 </IconButton>
                             </div>
+
+                            <Divider orientation="vertical"/>
 
                             <div className="mt-auto mb-auto">
                                 <IconButton onClick={() => this.onDocumentLoadRequested(this.props.repoAnnotation?.docInfo!)}>
@@ -186,7 +186,6 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                     </Box>
 
                 </Paper>
-
             );
 
         } else {
@@ -195,12 +194,13 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                 <Box p={1}>
 
-                    <Typography align="center"
-                                variant="h5"
-                                color="textPrimary">
-                        No annotation selected.
-                    </Typography>
-
+                    <div className="text-center">
+                        <Typography align="center"
+                                    variant="h5"
+                                    color="textPrimary">
+                            No annotation selected.
+                        </Typography>
+                    </div>
 
                 </Box>
 

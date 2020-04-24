@@ -176,10 +176,6 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
 
         };
 
-        // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        //     setDense(event.target.checked);
-        // };
-
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         data = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
@@ -198,83 +194,85 @@ export default class DocumentRepositoryTable extends React.Component<IProps, ISt
                            display: 'flex',
                            flexDirection: 'column'
                        }}>
-                    <MUIDialogController render={dialogs => {
+                    <MUIDialogController>
+                        {dialogs => {
 
-                        this.dialogs = dialogs;
-
-                        return (
-                            <MUIDocContextMenu {...this.callbacks}
-                                               selectedProvider={this.selectedProvider}
-                                               render={rawContextMenuHandler => {
+                            this.dialogs = dialogs;
 
                             return (
-                                <>
-                                    <EnhancedTableToolbar data={data}
-                                                          selectedProvider={this.selectedProvider}
-                                                          numSelected={selected.length}
-                                                          rowsOnPage={pageData.length}
-                                                          rowsPerPage={rowsPerPage}
-                                                          onChangePage={handleChangePage}
-                                                          onChangeRowsPerPage={handleChangeRowsPerPage}
-                                                          onSelectAllRows={handleSelectAllRows}
-                                                          page={page}
-                                                          onTagged={this.callbacks.onTagged}
-                                                          onDelete={this.callbacks.onDeleted}
-                                                          onFlagged={this.callbacks.onFlagged}
-                                                          onArchived={this.callbacks.onArchived}/>
+                                <MUIDocContextMenu {...this.callbacks}
+                                                   selectedProvider={this.selectedProvider}
+                                                   render={rawContextMenuHandler => {
 
-                                    <TableContainer style={{flexGrow: 1}}>
-                                        <Table
-                                            stickyHeader
-                                            style={{
-                                                minWidth: 0,
-                                                maxWidth: '100%',
-                                                tableLayout: 'fixed'
-                                            }}
-                                            aria-labelledby="tableTitle"
-                                            size={'medium'}
-                                            aria-label="enhanced table">
+                                return (
+                                    <>
+                                        <EnhancedTableToolbar data={data}
+                                                              selectedProvider={this.selectedProvider}
+                                                              numSelected={selected.length}
+                                                              rowsOnPage={pageData.length}
+                                                              rowsPerPage={rowsPerPage}
+                                                              onChangePage={handleChangePage}
+                                                              onChangeRowsPerPage={handleChangeRowsPerPage}
+                                                              onSelectAllRows={handleSelectAllRows}
+                                                              page={page}
+                                                              onTagged={this.callbacks.onTagged}
+                                                              onDelete={this.callbacks.onDeleted}
+                                                              onFlagged={this.callbacks.onFlagged}
+                                                              onArchived={this.callbacks.onArchived}/>
 
-                                            <EnhancedTableHead
-                                                order={order}
-                                                orderBy={orderBy}
-                                                onRequestSort={handleRequestSort}/>
+                                        <TableContainer style={{flexGrow: 1}}>
+                                            <Table
+                                                stickyHeader
+                                                style={{
+                                                    minWidth: 0,
+                                                    maxWidth: '100%',
+                                                    tableLayout: 'fixed'
+                                                }}
+                                                aria-labelledby="tableTitle"
+                                                size={'medium'}
+                                                aria-label="enhanced table">
 
-                                            <TableBody>
-                                                {pageData
-                                                    .map((row, index) => {
+                                                <EnhancedTableHead
+                                                    order={order}
+                                                    orderBy={orderBy}
+                                                    onRequestSort={handleRequestSort}/>
 
-                                                        const viewIndex = (page * rowsPerPage) + index;
+                                                <TableBody>
+                                                    {pageData
+                                                        .map((row, index) => {
 
-                                                        return (
-                                                            <DocRepoTableRow
-                                                                viewIndex={viewIndex}
-                                                                key={viewIndex}
-                                                                rawContextMenuHandler={rawContextMenuHandler}
-                                                                selectRow={this.props.selectRow}
-                                                                selected={this.isSelected(viewIndex)}
-                                                                {...this.callbacks}
-                                                                onTagged={this.onTagged}
-                                                                row={row}
-                                                                selectedProvider={this.selectedProvider}
-                                                            />
-                                                        );
-                                                    })}
-                                                {emptyRows > 0 && (
-                                                    <TableRow
-                                                        style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                                        <TableCell colSpan={6}/>
-                                                    </TableRow>
-                                                )}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </>);
-                            }}/>
+                                                            const viewIndex = (page * rowsPerPage) + index;
 
-                        );
+                                                            return (
+                                                                <DocRepoTableRow
+                                                                    viewIndex={viewIndex}
+                                                                    key={viewIndex}
+                                                                    rawContextMenuHandler={rawContextMenuHandler}
+                                                                    selectRow={this.props.selectRow}
+                                                                    selected={this.isSelected(viewIndex)}
+                                                                    {...this.callbacks}
+                                                                    onTagged={this.onTagged}
+                                                                    row={row}
+                                                                    selectedProvider={this.selectedProvider}
+                                                                />
+                                                            );
+                                                        })}
+                                                    {emptyRows > 0 && (
+                                                        <TableRow
+                                                            style={{height: (dense ? 33 : 53) * emptyRows}}>
+                                                            <TableCell colSpan={6}/>
+                                                        </TableRow>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </>);
+                                }}/>
 
-                    }}/>
+                            );
+
+                        }}
+                    </MUIDialogController>
 
                 </Paper>
             </div>
