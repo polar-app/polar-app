@@ -23,6 +23,7 @@ import {DocAnnotationLoader} from "./DocAnnotationLoader";
 import {DocAnnotationSorter} from "./DocAnnotationSorter";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {VariableSizeList} from "react-window";
+import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
 
 const log = Logger.create();
 
@@ -170,9 +171,9 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
                      }}
                      className="pr-1">
 
-                    <InputFilter style={{flexGrow: 1}}
-                                 onChange={text => props.onFiltered(text)}
-                                 placeholder="Filter annotations by text"/>
+                    <MUISearchBox2 style={{flexGrow: 1}}
+                                   onChange={text => props.onFiltered(text)}
+                                   placeholder="Filter annotations by text"/>
 
                 </div>
 
@@ -297,7 +298,9 @@ export class AnnotationSidebar2 extends React.Component<IProps, IState> {
                  className="annotation-sidebar"
                  style={{
                      display: "flex",
-                     flexDirection: "column"
+                     flexDirection: "column",
+                     minHeight: 0,
+                     flexGrow: 1
                  }}>
 
                 <AnnotationHeader {...this.state} {...this.props}

@@ -202,6 +202,12 @@ export class PDFViewer extends React.Component<IProps, IState> {
                         {
                             id: "doc-panel-sidebar",
                             type: 'fixed',
+                            style: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                minHeight: 0,
+                                flexGrow: 1
+                            },
                             component:
                                 <>
                                 {this.state.docMeta &&
@@ -217,9 +223,6 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                                        persistenceLayerProvider={this.props.persistenceLayerProvider}/>}
                                 </>,
                             width: 300,
-                            style: {
-                                overflow: 'none'
-                            }
                         }
                     ]}/>
                 </div>
