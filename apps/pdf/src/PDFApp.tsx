@@ -15,6 +15,7 @@ import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PDFViewer} from './PDFViewer';
+import {MUIAppRoot} from "../../../web/js/MUIAppRoot";
 
 export class PDFApp {
 
@@ -55,7 +56,9 @@ export class PDFApp {
                     minHeight: 0,
                  }}>
 
-                <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>
+                <MUIAppRoot>
+                    <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>
+                </MUIAppRoot>
 
             </div>
             ), rootElement);

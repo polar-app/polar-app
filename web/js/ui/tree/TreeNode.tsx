@@ -43,7 +43,7 @@ class Styles {
         userSelect: 'none',
         whiteSpace: 'nowrap',
         paddingRight: '5px',
-        fontFamily: 'sans-serif',
+        // fontFamily: 'sans-serif',
         fontSize: '1.0em',
         boxShadow: 'none',
 
@@ -89,7 +89,7 @@ class Styles {
         userSelect: 'none',
         whiteSpace: 'nowrap',
         marginRight: '5px',
-        fontFamily: 'sans-serif',
+        // fontFamily: 'sans-serif',
         boxShadow: 'none',
         color: 'var(--grey300)',
 

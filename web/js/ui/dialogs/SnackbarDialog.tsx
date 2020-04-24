@@ -7,7 +7,7 @@ interface SnackbarDialogProps {
     readonly autoHideDuration?: number;
 }
 
-export const SnackbarDialog = () => {
+export const SnackbarDialog = (props: SnackbarDialogProps) => {
 
     return (
         <Snackbar open={true}

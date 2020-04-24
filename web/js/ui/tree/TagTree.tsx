@@ -21,7 +21,7 @@ class Styles {
 
     public static FILTER_INPUT: React.CSSProperties = {
         height: 'auto',
-        fontFamily: 'sans-serif',
+        // fontFamily: 'sans-serif',
         fontSize: '1.0em'
     };
 

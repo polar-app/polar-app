@@ -1,9 +1,7 @@
-import Button from "reactstrap/lib/Button";
 import * as React from "react";
 import {useState} from "react";
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
-import {Input, InputGroup} from "reactstrap";
 import {PDFDocMeta} from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {
@@ -13,6 +11,20 @@ import {
     PDFScales
 } from "./PDFScaleLevels";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import IconButton from "@material-ui/core/IconButton";
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
+import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+
 
 // configure({logLevel: 'debug'});
 
@@ -102,7 +114,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
         // note that react-hotkeys is broken when you listen to 'Enter' on
         // ObserveKeys when using an <input> but it doesn't matter because we can
@@ -132,20 +144,22 @@ const PageNumberInput = (props: PageNumberInputProps) => {
     };
 
     return (
-        <InputGroup size="sm"
-                    className="mt-auto mb-auto"
-                    style={{
-                        maxWidth: '3em'
-                    }}>
-            <Input value={value}
-                   onChange={event => handleChange(event.currentTarget.value)}
-                   onBlur={() => handleBlur()}
-                   onKeyDown={event => handleKeyDown(event)}
-                   style={{
-                       textAlign: 'right'
-                   }}
-                   className="p-0 pl-1 pr-1"/>
-        </InputGroup>
+        <div style={{
+                 maxWidth: '3em'
+             }}
+             className="mt-auto mb-auto">
+
+            <TextField value={value}
+                       onChange={event => handleChange(event.currentTarget.value)}
+                       onBlur={() => handleBlur()}
+                       onKeyDown={event => handleKeyDown(event)}
+                       type="text"
+                       size="small"
+                       variant="outlined"
+                       style={{
+                           textAlign: 'right'
+                       }}/>
+        </div>
 
     );
 
@@ -192,105 +206,104 @@ export const PDFToolbar = (props: IProps) => {
     return (
         <GlobalHotKeys
             keyMap={globalKeyMap}
-            handlers={globalKeyHandlers}
-            >
-            <div style={{
-                     display: 'flex',
-                     backgroundColor: 'var(--grey050)'
-                 }}
-                 className="border-bottom p-1 vertical-aligned-children">
-
-                <div style={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        flexBasis: 0
-                     }}
-                     className="vertical-aligned-children">
-                    <Button color="clear"
-                            onClick={() => props.onPagePrev()}>
-                        <i className="fas fa-arrow-up"/>
-                    </Button>
-
-                    <Button color="clear"
-                            onClick={() => props.onPageNext()}>
-                        <i className="fas fa-arrow-down"/>
-                    </Button>
-
-                    <PageNumberInput pdfDocMeta={props.pdfDocMeta}
-                                     onPageJump={page => props.onPageJump(page)}/>
-
-                    {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
-
-                </div>
-
+            handlers={globalKeyHandlers}>
+            <MUIPaperToolbar borderBottom>
                 <div style={{
                          display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0
                      }}
-                     className="vertical-align-children">
+                     className="p-1 vertical-aligned-children">
 
-                    <div style={{display: 'flex'}}
-                         className="ml-auto mr-auto vertical-align-children">
+                    <div style={{
+                            display: 'flex',
+                            flexGrow: 1,
+                            flexBasis: 0
+                         }}
+                         className="vertical-aligned-children">
 
-                        <Button color="clear"
-                                onClick={() => handleNextZoomLevel(-1)}>
-                            <i className="fas fa-minus"/>
-                        </Button>
+                        <IconButton onClick={() => props.onPagePrev()}>
+                            <ArrowUpwardIcon/>
+                        </IconButton>
 
-                        <Button color="clear"
-                                onClick={() => handleNextZoomLevel(1)}>
-                            <i className="fas fa-plus"/>
-                        </Button>
+                        <IconButton onClick={() => props.onPageNext()}>
+                            <ArrowDownwardIcon/>
+                        </IconButton>
 
-                        <InputGroup size="sm"
-                                    className="mt-auto mb-auto"
-                                    style={{
-                                        maxWidth: '7em'
-                                    }}>
+                        <PageNumberInput pdfDocMeta={props.pdfDocMeta}
+                                         onPageJump={page => props.onPageJump(page)}/>
 
-                            <Input type="select"
-                                   value={props.pdfDocMeta?.scale.value}
-                                   onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                                {PDFScaleLevelTuples.map(current => (
-                                    <option key={current.value}
-                                            value={current.value}>
-                                        {current.label}
-                                    </option>
-                                ))}
-                            </Input>
+                        {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
 
-                        </InputGroup>
+                    </div>
+
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             flexBasis: 0
+                         }}
+                         className="vertical-align-children">
+
+                        <div style={{
+                                 display: 'flex',
+                                 alignItems: 'center'
+                             }}
+                             className="ml-auto mr-auto vertical-align-children">
+
+                            <IconButton onClick={() => handleNextZoomLevel(-1)}>
+                                <RemoveIcon/>
+                            </IconButton>
+
+                            <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                <AddIcon/>
+                            </IconButton>
+
+                            {/*<InputGroup size="sm"*/}
+                            {/*            className="mt-auto mb-auto"*/}
+                            {/*            style={{*/}
+                            {/*                maxWidth: '7em'*/}
+                            {/*            }}>*/}
+
+                            <FormControl variant="outlined">
+                                <Select value={props.pdfDocMeta?.scale.value}
+                                        onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                                    {PDFScaleLevelTuples.map(current => (
+                                        <MenuItem key={current.value}
+                                                  value={current.value}>
+                                            {current.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            {/*</InputGroup>*/}
+
+                        </div>
+
+                    </div>
+
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             flexBasis: 0
+                         }}
+                         className="vertical-aligned-children">
+
+                        <div style={{display: 'flex'}}
+                             className="ml-auto vertical-aligned-children">
+
+                            <IconButton onClick={() => props.onFind()}>
+                                <SearchIcon/>
+                            </IconButton>
+
+                            <IconButton>
+                                <FullscreenIcon/>
+                            </IconButton>
+
+                        </div>
 
                     </div>
 
                 </div>
-
-                <div style={{
-                         display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0
-                     }}
-                     className="vertical-aligned-children">
-
-                    <div style={{display: 'flex'}}
-                         className="ml-auto vertical-aligned-children">
-
-                        <Button color="clear"
-                                onClick={() => props.onFind()}>
-                            <i className="fas fa-search"/>
-                        </Button>
-
-                        <Button color="clear">
-                            <i className="fas fa-expand-arrows-alt"/>
-                        </Button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            </MUIPaperToolbar>
         </GlobalHotKeys>
     );
 };
