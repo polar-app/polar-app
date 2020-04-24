@@ -88,7 +88,7 @@ export const App = () => {
 
     const relatedOptionsCalculator: RelatedOptionsCalculator<Tag> = () => {
         return tagOptions.slice(1, 3);
-    }
+    };
 
     // MUITagInputControls.prompt({
     //     availableTags: tags,
@@ -98,7 +98,11 @@ export const App = () => {
     //     onDone: NULL_FUNCTION
     // });
 
-
+    const changeTheme = () => {
+        // muiTheme.palette.type = 'light';
+        console.log("light");
+        toggleDarkTheme();
+    };
 
     return (
         // <GlobalHotKeys
@@ -108,6 +112,8 @@ export const App = () => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
                 <GlobalCss />
+
+                <Button onClick={() => changeTheme()}>Go Light mode</Button>
 
                 {/*<Container component="main" maxWidth={false} disableGutters>*/}
                     {/*<ReactVirtualizedTable/>*/}
