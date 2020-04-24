@@ -134,7 +134,6 @@ export const SettingsScreen = (props: IProps) => {
 
                         const handleDarkModeToggle = (enabled: boolean) => {
                             const theme = enabled ? 'dark' : 'light';
-                            console.log("FIXME changint mode: " + theme);
                             setTheme(theme);
                         };
 

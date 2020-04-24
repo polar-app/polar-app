@@ -46,6 +46,7 @@ import {
     MUIThemeTypeContext,
     ThemeType
 } from "../../../spectron0/test-context/MUIThemeTypeContext";
+import createPersistedState from "use-persisted-state";
 
 interface IProps {
     readonly app: App;
@@ -259,7 +260,9 @@ export const RepositoryApp = (props: IProps) => {
                     plan={app.account?.plan}/>;
     };
 
-    const [theme, setTheme] = useState<ThemeType>("light");
+
+    const usePersistedTheme = createPersistedState('count');
+    const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
 
     const muiTheme = createMuiTheme({
         // FIXME on mobile we use 16px ...
