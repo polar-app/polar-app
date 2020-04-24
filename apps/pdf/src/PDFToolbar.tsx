@@ -256,13 +256,7 @@ export const PDFToolbar = (props: IProps) => {
                                 <AddIcon/>
                             </IconButton>
 
-                            {/*<InputGroup size="sm"*/}
-                            {/*            className="mt-auto mb-auto"*/}
-                            {/*            style={{*/}
-                            {/*                maxWidth: '7em'*/}
-                            {/*            }}>*/}
-
-                            <FormControl variant="outlined">
+                            <FormControl variant="outlined" size="small">
                                 <Select value={props.pdfDocMeta?.scale.value}
                                         onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
                                     {PDFScaleLevelTuples.map(current => (
@@ -273,8 +267,6 @@ export const PDFToolbar = (props: IProps) => {
                                     ))}
                                 </Select>
                             </FormControl>
-
-                            {/*</InputGroup>*/}
 
                         </div>
 
