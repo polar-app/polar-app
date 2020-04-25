@@ -3,8 +3,8 @@ import {DocAnnotation} from '../DocAnnotation';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {AreaHighlightAnnotationComponent} from './AreaHighlightAnnotationComponent';
-import {TextHighlightAnnotationComponent} from './TextHighlightAnnotationComponent';
+import {AreaHighlightAnnotationView} from './AreaHighlightAnnotationView';
+import {TextHighlightAnnotationView} from './TextHighlightAnnotationView';
 import {Doc} from '../../metadata/Doc';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Tag} from 'polar-shared/src/tags/Tags';
@@ -28,9 +28,7 @@ interface IProps {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export const DocAnnotationComponent = React.memo((props: IProps) => {
-
-    // FIXME: this is constantly re-rendering...
+export const AnnotationView = React.memo((props: IProps) => {
 
     const { annotation } = props;
 
@@ -48,17 +46,17 @@ export const DocAnnotationComponent = React.memo((props: IProps) => {
         if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
             return (
-                <AreaHighlightAnnotationComponent annotation={annotation}
-                                                  tagsProvider={props.tagsProvider}
-                                                  doc={props.doc}/>
+                <AreaHighlightAnnotationView annotation={annotation}
+                                             tagsProvider={props.tagsProvider}
+                                             doc={props.doc}/>
             );
 
         } else {
 
             return (
-                <TextHighlightAnnotationComponent annotation={annotation}
-                                                  tagsProvider={props.tagsProvider}
-                                                  doc={props.doc}/>
+                <TextHighlightAnnotationView annotation={annotation}
+                                             tagsProvider={props.tagsProvider}
+                                             doc={props.doc}/>
             );
 
         }

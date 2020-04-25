@@ -3,7 +3,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocAnnotations} from './DocAnnotations';
 import {DocAnnotation} from './DocAnnotation';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
-import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
+import {AnnotationView} from './annotations/AnnotationView';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
@@ -117,11 +117,11 @@ function createItems(props: IRenderProps) {
     const {annotations} = props;
 
     annotations.map(annotation => {
-        result.push (<DocAnnotationComponent key={annotation.id}
-                                             annotation={annotation}
-                                             tagsProvider={props.tagsProvider}
-                                             persistenceLayerProvider={props.persistenceLayerProvider}
-                                             doc={props.doc}/>);
+        result.push (<AnnotationView key={annotation.id}
+                                     annotation={annotation}
+                                     tagsProvider={props.tagsProvider}
+                                     persistenceLayerProvider={props.persistenceLayerProvider}
+                                     doc={props.doc}/>);
     });
 
 

@@ -9,7 +9,7 @@ import {LazyProps, LazyState} from '../../react/LazyComponents';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {Tag} from "polar-shared/src/tags/Tags";
 
-export class TextHighlightAnnotationComponent extends React.Component<IProps, IState> {
+export class TextHighlightAnnotationView extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

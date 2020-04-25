@@ -26,7 +26,7 @@ const Image = (props: IProps) => {
 
 };
 
-export class AreaHighlightAnnotationComponent extends React.Component<IProps, IState> {
+export class AreaHighlightAnnotationView extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

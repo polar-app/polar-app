@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocAnnotation} from './DocAnnotation';
-import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
+import {AnnotationView} from './annotations/AnnotationView';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
@@ -101,11 +101,11 @@ const AnnotationsBlock = (props: IRenderProps) => {
         return (
             <>
                 {props.view.map(annotation => (
-                    <DocAnnotationComponent key={annotation.id}
-                                            annotation={annotation}
-                                            tagsProvider={props.tagsProvider}
-                                            persistenceLayerProvider={props.persistenceLayerProvider}
-                                            doc={props.doc}/>))}
+                    <AnnotationView key={annotation.id}
+                                    annotation={annotation}
+                                    tagsProvider={props.tagsProvider}
+                                    persistenceLayerProvider={props.persistenceLayerProvider}
+                                    doc={props.doc}/>))}
             </>
         );
 
