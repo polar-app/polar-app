@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUIThemeTypeContext} from './MUIThemeTypeContext';
+import {MUIThemeTypeContext} from '../../js/mui/context/MUIThemeTypeContext';
 import Button from "@material-ui/core/Button";
 //
 // export const ChildComponent = () => (

@@ -11,7 +11,7 @@ import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {Devices} from "polar-shared/src/util/Devices";
 import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
-import {MUIThemeTypeContext} from "../../../../../web/spectron0/test-context/MUIThemeTypeContext";
+import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 
 const log = Logger.create();
 

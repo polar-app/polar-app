@@ -39,7 +39,7 @@ import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/Pr
 import {App} from "./AppInitializer";
 import {createMuiTheme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import {ThemeType} from "../../../spectron0/test-context/MUIThemeTypeContext";
+import {ThemeType} from "../../mui/context/MUIThemeTypeContext";
 import createPersistedState from "use-persisted-state";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 
