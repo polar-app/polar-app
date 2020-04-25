@@ -37,10 +37,17 @@ export const MUIHoverController = (props: IProps) => {
 
 };
 
+interface MUIHoverListenerProps {
+    readonly id?: string;
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
+    readonly children: JSX.Element;
+}
+
 /**
  * Only renders when the parent context component is active.
  */
-export const MUIHoverListener = (props: IProps) => (
+export const MUIHoverListener = (props: MUIHoverListenerProps) => (
     <MUIHoverTypeContext.Consumer>
         {
             (active) => active && props.children

@@ -199,6 +199,8 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
      */
     public async getDocMeta(fingerprint: string): Promise<IDocMeta | undefined> {
 
+        console.log("FIXME: DefautPersistenceLayer: 1");
+
         const data = await this.datastore.getDocMeta(fingerprint);
 
         return this.toDocMeta(fingerprint, data);
@@ -206,6 +208,9 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
     }
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
+
+        console.log("FIXME: DefautPersistenceLayer: 2");
+
 
         return this.datastore.getDocMetaSnapshot({
             ...opts,

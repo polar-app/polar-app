@@ -309,6 +309,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const source = snapshot.metadata.fromCache ? 'cache' : 'server';
 
+            console.log('DocMeta snapshot source: ', source);
+
             const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
             opts.onSnapshot({data: recordHolder?.value?.value, source, unsubscriber});

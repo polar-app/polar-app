@@ -4,7 +4,7 @@ import {
     DatastoreID,
     DatastoreInitOpts,
     DatastoreOverview,
-    DeleteResult,
+    DeleteResult, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     InitResult,
@@ -62,6 +62,10 @@ export class TracedDatastore extends DelegatedDatastore {
 
     public async getDocMeta(fingerprint: string): Promise<string | null> {
         return tracer.traceAsync('getDocMeta', () => this.delegate.getDocMeta(fingerprint));
+    }
+
+    public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
+        return tracer.traceAsync('getDocMetaSnapshot', () => this.delegate.getDocMetaSnapshot(opts));
     }
 
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {

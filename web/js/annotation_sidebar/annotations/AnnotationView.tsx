@@ -10,6 +10,7 @@ import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
+import {MUIHoverController} from "../../mui/context/MUIHoverContext";
 
 const log = Logger.create();
 
@@ -66,8 +67,12 @@ export const AnnotationView = React.memo((props: IProps) => {
 
     return (
         <div key={key}>
-            <AnnotationTypeComponent/>
-            <Divider/>
+            <MUIHoverController>
+                <>
+                    <AnnotationTypeComponent/>
+                    <Divider/>
+                </>
+            </MUIHoverController>
         </div>
     );
 
