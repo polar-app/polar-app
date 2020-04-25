@@ -2,10 +2,10 @@ import createPersistedState from "use-persisted-state";
 import {
     MUIThemeTypeContext,
     ThemeType
-} from "../spectron0/test-context/MUIThemeTypeContext";
+} from "../../spectron0/test-context/MUIThemeTypeContext";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {GlobalCss} from "../spectron0/material-ui/GlobalCss";
+import {GlobalCss} from "../../spectron0/material-ui/GlobalCss";
 import * as React from "react";
 
 interface IProps {

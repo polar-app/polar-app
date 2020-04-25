@@ -15,7 +15,7 @@ import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PDFViewer} from './PDFViewer';
-import {MUIAppRoot} from "../../../web/js/MUIAppRoot";
+import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
 import {PersistenceLayerApp} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {AuthRequired} from "../../repository/js/AuthRequired";
 
