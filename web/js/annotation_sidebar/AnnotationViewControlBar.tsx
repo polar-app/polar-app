@@ -125,12 +125,11 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
                                            <ChangeTextHighlightButton key="highlight-button"/>,
                                            <CreateCommentButton key="comment-button"/>,
                                            <CreateFlashcardButton key="flashcard-button"/>,
-                                           <>
+                                           <React.Fragment key="color-selector">
                                                 {! annotation.immutable &&
-                                                    <ColorSelector key="color-selector"
-                                                                   color={this.props.annotation.color || 'yellow'}
+                                                    <ColorSelector color={this.props.annotation.color || 'yellow'}
                                                                    onSelected={color => this.onColor(color)}/>}
-                                           </>,
+                                           </React.Fragment>,
                                            <AnnotationDropdown key="annotation-dropdown"
                                                                id={'annotation-dropdown-' + annotation.id}
                                                                disabled={this.props.annotation.immutable}
@@ -140,6 +139,7 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
                                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
                                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
                                        ]}/>
+
                             {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
 

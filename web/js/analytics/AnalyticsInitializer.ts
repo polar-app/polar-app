@@ -14,6 +14,8 @@ export class AnalyticsInitializer {
 
     public static doInit() {
 
+        // FIXME: at least SOME if these operations are taking too long...
+
         this.init()
             .catch(err => log.error("Could not init analytics: ", err));
 
