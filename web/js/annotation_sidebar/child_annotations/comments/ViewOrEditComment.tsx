@@ -7,6 +7,7 @@ import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
 import {Doc} from '../../../metadata/Doc';
 import {Tag} from "polar-shared/src/tags/Tags";
+import Fade from "@material-ui/core/Fade";
 
 export class ViewOrEditComment extends React.Component<IProps, IState> {
 
@@ -33,6 +34,12 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 
         const existingComment = this.props.comment.original as Comment;
 
+        // return (
+        //     <>
+        //
+        //     </>
+        // );
+
         if (this.state.mode === 'view') {
 
             return <CommentAnnotationView comment={this.props.comment}
@@ -42,10 +49,14 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
                                           editButton={editButton}/>;
 
         } else {
-            return <EditComment id={'edit-comment-for' + this.props.id}
-                                onComment={(html) => this.props.onComment(html, existingComment)}
-                                existingComment={existingComment}
-                                cancelButton={cancelButton}/>;
+            return (
+                // <Fade in={this.state.mode === 'edit'}>
+                    <EditComment id={'edit-comment-for' + this.props.id}
+                                    onComment={(html) => this.props.onComment(html, existingComment)}
+                                    existingComment={existingComment}
+                                    cancelButton={cancelButton}/>
+                // </Fade>
+            );
         }
 
     }

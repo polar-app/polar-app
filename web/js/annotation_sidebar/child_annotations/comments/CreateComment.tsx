@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {EditComment} from "./EditComment";
 import {CancelButton} from "../CancelButton";
+import Fade from "@material-ui/core/Fade";
 
 
 interface IProps {
@@ -18,8 +19,9 @@ export const CreateComment  = (props: IProps) => {
 
     const cancelButton = <CancelButton onClick={() => props.onCancel()}/>;
 
-    return (
+    // FIXME try to use Fade here
 
+    return (
         <EditComment id={'edit-comment-for' + props.id}
                      onComment={(html) => props.onComment(html)}
                      cancelButton={cancelButton}/>

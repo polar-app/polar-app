@@ -58,6 +58,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import {UserAvatar} from "../../js/ui/cloud_auth/UserAvatar";
 import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {MUIGridLayoutTest} from "./dropdown_menu/MUIGridLayoutTest";
+import {FadeDemo} from "./FadeDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -116,7 +117,9 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <MUIGridLayoutTest/>
+                <FadeDemo/>
+
+                {/*<MUIGridLayoutTest/>*/}
 
                 {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
                 {/*            displayName="Kevin Burton"*/}
