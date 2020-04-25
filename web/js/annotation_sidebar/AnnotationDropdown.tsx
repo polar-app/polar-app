@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {MUIDropdownMenu} from "../../spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "../../spectron0/material-ui/dropdown_menu/MUIMenu";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {MUIDropdownItem} from "../../spectron0/material-ui/dropdown_menu/MUIDropdownItem";
+import {MUIMenuItem} from "../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -46,28 +46,29 @@ export const AnnotationDropdown = (props: IProps) => {
             {(dialogs) => (
 
                 <>
-
-                    <MUIDropdownMenu button={{
+                    {/*FIXME: move to MUIMenuIconButton*/}
+                    <MUIMenu button={{
                                          icon: <MoreVertIcon/>,
                                          disabled: props.disabled,
                                          size: 'small'
                                      }}
-                                     placement='bottom-end'>
+                             placement='bottom-end'>
                         <div>
 
                             {/*TODO: for now don't create the same items as the toolbar */}
 
-                            <MUIDropdownItem text="Create comment"
-                                             icon={<CommentIcon/>}
-                                             onClick={() => props.onCreateComment(props.annotation)}/>
+                            <MUIMenuItem text="Create comment"
+                                         icon={<CommentIcon/>}
+                                         onClick={() => props.onCreateComment(props.annotation)}/>
 
                             <Divider/>
 
-                            <MUIDropdownItem text="Delete"
-                                             icon={<DeleteIcon/>}
-                                             onClick={() => handleDelete(dialogs)}/>
+                            {/*FIXME: migrate to MIUMenuDeleteIteon*/}
+                            <MUIMenuItem text="Delete"
+                                         icon={<DeleteIcon/>}
+                                         onClick={() => handleDelete(dialogs)}/>
                         </div>
-                    </MUIDropdownMenu>
+                    </MUIMenu>
 
                 </>
             )}

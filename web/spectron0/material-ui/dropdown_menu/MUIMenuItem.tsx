@@ -48,7 +48,7 @@ const onClick = (props: IProps) => {
 
 };
 
-export const MUIDropdownItem = (props: IProps) => (
+export const MUIMenuItem = (props: IProps) => (
 
     <MenuItem id={props.id}
               onClick={() => onClick(props)}>

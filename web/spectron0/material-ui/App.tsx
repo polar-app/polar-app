@@ -30,7 +30,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
 import MUITreeView from './treeview/MUITreeView';
 import {MUIHelpMenu} from "./MUIHelpMenu";
-import {MUIDropdownMenu} from "./dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "./dropdown_menu/MUIMenu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import SettingsIcon from '@material-ui/icons/Settings';

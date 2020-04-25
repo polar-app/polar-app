@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
-import {FlashcardDropdown} from './FlashcardDropdown';
+import {FlashcardViewDropdown} from './FlashcardViewDropdown';
 import {Doc} from '../../../metadata/Doc';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
@@ -43,8 +43,13 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
                 ]}/>
 
                 <MUIGridLayout key="right-bar"
+                               style={{
+                                   justifyContent: 'flex-end',
+                                   flexGrow: 1
+                               }}
                                items={[
 
+                                   // FIXME need a new button that works on all components
                                    <AnnotationTagInputButton key="tags"
                                                              tagsProvider={props.tagsProvider}
                                                              annotation={props.flashcard}/>,
@@ -52,11 +57,11 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
                                    // FIXME
                                    //         {props.editButton}
 
-                                   <FlashcardDropdown key="dropdown"
-                                                      id={'flashcard-dropdown-' + flashcard.id}
-                                                      disabled={! props.doc.mutable}
-                                                      flashcard={flashcard}
-                                                      onDelete={() => handleDelete()}/>
+                                   <FlashcardViewDropdown key="dropdown"
+                                                          id={'flashcard-dropdown-' + flashcard.id}
+                                                          disabled={! props.doc.mutable}
+                                                          flashcard={flashcard}
+                                                          onDelete={() => handleDelete()}/>
 
                                ]}/>
 

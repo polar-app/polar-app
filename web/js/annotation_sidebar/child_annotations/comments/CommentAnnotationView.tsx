@@ -28,7 +28,7 @@ export class CommentAnnotationView extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="m-1">
+            <div className="ml-1">
 
                 <div key={key} className="comment muted-color-root">
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {MUIDropdownMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
 import {
     DialogManager,
     MUIDialogController
 } from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
-import {MUIDropdownItem} from "../../../spectron0/material-ui/dropdown_menu/MUIDropdownItem";
+import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 
@@ -42,22 +42,22 @@ export const CommentDropdown = (props: IProps) => {
 
                 <>
 
-                    <MUIDropdownMenu id={props.id}
-                                     button={{
+                    <MUIMenu id={props.id}
+                             button={{
                                          icon: <MoreVertIcon/>,
                                          disabled: props.disabled,
                                          size: 'small'
                                      }}
-                                     placement='bottom-end'>
+                             placement='bottom-end'>
 
                         <div>
-                            <MUIDropdownItem text="Delete"
-                                             icon={<DeleteIcon/>}
-                                             onClick={() => handleDelete(dialogs)}/>
+                            <MUIMenuItem text="Delete"
+                                         icon={<DeleteIcon/>}
+                                         onClick={() => handleDelete(dialogs)}/>
 
                         </div>
 
-                    </MUIDropdownMenu>
+                    </MUIMenu>
 
                 </>
             )}

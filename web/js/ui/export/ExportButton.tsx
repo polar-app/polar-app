@@ -1,8 +1,8 @@
 import React from 'react';
 import {ExportFormat} from '../../metadata/exporter/Exporters';
-import {MUIDropdownMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {MUIDropdownItem} from "../../../spectron0/material-ui/dropdown_menu/MUIDropdownItem";
+import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 
 interface IProps {
     readonly onExport: (format: ExportFormat) => void;
@@ -11,19 +11,19 @@ interface IProps {
 export const ExportButton = (props: IProps) =>  {
 
     return (
-        <MUIDropdownMenu button={{
+        <MUIMenu button={{
                             icon: <GetAppIcon/>
                          }}>
 
             <div>
-                <MUIDropdownItem text="Download as markdown"
-                                 onClick={() => props.onExport('markdown')}/>
+                <MUIMenuItem text="Download as markdown"
+                             onClick={() => props.onExport('markdown')}/>
 
-                <MUIDropdownItem text="Download as JSON"
-                                 onClick={() => props.onExport('json')}/>
+                <MUIMenuItem text="Download as JSON"
+                             onClick={() => props.onExport('json')}/>
             </div>
 
-        </MUIDropdownMenu>
+        </MUIMenu>
 
     );
 

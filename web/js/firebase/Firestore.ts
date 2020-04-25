@@ -32,6 +32,7 @@ export class Firestore {
 
                 const settings = {
                     // timestampsInSnapshots: true
+                    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
                 };
 
                 firestore.settings(settings);
@@ -62,7 +63,10 @@ export class Firestore {
                 // but the viewer windows complain that they do not have access to
                 // work with the disk persistence.
 
+
+                console.time('enable-firestore-persistence');
                 await firestore.enablePersistence({synchronizeTabs: true});
+                console.timeEnd('enable-firestore-persistence');
 
             } catch (e) {
                 // we've probably exceeded the local quota so we can't run with caching for now.

@@ -9,9 +9,9 @@ import {AppUpdates} from '../../../../web/js/updates/AppUpdates';
 import {DistConfig} from '../../../../web/js/dist_config/DistConfig';
 import {AboutDialogs} from "./AboutDialogs";
 import {Devices} from "polar-shared/src/util/Devices";
-import {MUIDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import HelpIcon from '@material-ui/icons/Help';
-import {MUIDropdownItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownItem";
+import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import InfoIcon from '@material-ui/icons/Info';
 import {Link} from "react-router-dom";
@@ -36,65 +36,65 @@ export class HelpDropdown extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <MUIDropdownMenu id="help-dropdown"
-                             placement="bottom-end"
-                             button={{
+            <MUIMenu id="help-dropdown"
+                     placement="bottom-end"
+                     button={{
                                  icon: <HelpIcon/>,
                                  size: 'medium'
                              }}>
 
                 <div>
 
-                    <MUIDropdownItem id="about-link" icon={<InfoIcon/>} text="About" onClick={() => this.onAbout()}/>
+                    <MUIMenuItem id="about-link" icon={<InfoIcon/>} text="About" onClick={() => this.onAbout()}/>
 
-                    <MUIDropdownItem id="documentation-link"
-                                     icon={<LocalLibraryIcon/>}
-                                     text="Documentation"
-                                     link="https://getpolarized.io/docs/"/>
+                    <MUIMenuItem id="documentation-link"
+                                 icon={<LocalLibraryIcon/>}
+                                 text="Documentation"
+                                 link="https://getpolarized.io/docs/"/>
 
-                    <MUIDropdownItem id="documentation-link"
-                                     icon={<LocalLibraryIcon/>}
-                                     text="Documentation"
-                                     link="https://getpolarized.io/docs/"/>
+                    <MUIMenuItem id="documentation-link"
+                                 icon={<LocalLibraryIcon/>}
+                                 text="Documentation"
+                                 link="https://getpolarized.io/docs/"/>
 
                     <MUIRouterLink to="/support">
-                        <MUIDropdownItem id="support-link"
-                                         icon={<LocalLibraryIcon/>}
-                                         text="Support"/>
+                        <MUIMenuItem id="support-link"
+                                     icon={<LocalLibraryIcon/>}
+                                     text="Support"/>
                     </MUIRouterLink>
 
                     <MUIRouterLink to="https://discord.gg/GT8MhA6">
-                        <MUIDropdownItem id="chat-link"
-                                         icon={<LocalLibraryIcon/>}
-                                         text="Chat"/>
+                        <MUIMenuItem id="chat-link"
+                                     icon={<LocalLibraryIcon/>}
+                                     text="Chat"/>
                     </MUIRouterLink>
 
                     {DistConfig.ENABLE_PURCHASES &&
                         <MUIRouterLink to="/plans">
-                            <MUIDropdownItem id="upgrade-to-premium-link"
-                                             icon={<LocalLibraryIcon/>}
-                                             text="Upgrade to Premium"/>
+                            <MUIMenuItem id="upgrade-to-premium-link"
+                                         icon={<LocalLibraryIcon/>}
+                                         text="Upgrade to Premium"/>
                         </MUIRouterLink>}
 
 
                     {updatesEnabled &&
                         <MUIRouterLink to="/plans">
-                            <MUIDropdownItem id="electron-check-for-update"
-                                             icon={<LocalLibraryIcon/>}
-                                             event="help-check-for-update"
-                                             text="Check For App Update"
-                                             onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
+                            <MUIMenuItem id="electron-check-for-update"
+                                         icon={<LocalLibraryIcon/>}
+                                         event="help-check-for-update"
+                                         text="Check For App Update"
+                                         onClick={() => ipcRenderer.send('app-update:check-for-update')}/>
                         </MUIRouterLink>}
 
                      {/*TODO: only enable this for dev users*/}
-                     <MUIDropdownItem id="sidebar-item-device"
-                                      text="Device"
-                                      icon={<LocalLibraryIcon/>}
-                                      link="/device"/>
+                     <MUIMenuItem id="sidebar-item-device"
+                                  text="Device"
+                                  icon={<LocalLibraryIcon/>}
+                                  link="/device"/>
 
                 </div>
 
-            </MUIDropdownMenu>
+            </MUIMenu>
         );
 
         //     <UncontrolledDropdown className="ml-1"

@@ -46,6 +46,8 @@ export class MUIDocDropdownButton extends React.Component<IProps, IState> {
 
         const {anchorEl} = this.state;
 
+        // FIXME: move to MUIMenu
+
         return (
             <div>
 

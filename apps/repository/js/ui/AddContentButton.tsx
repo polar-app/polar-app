@@ -11,7 +11,7 @@ import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
 import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import {MUIDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIDropdownMenu";
+import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Container from "@material-ui/core/Container";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
@@ -47,8 +47,8 @@ namespace runtime {
 
     const Electron = (props: IProps) => (
 
-        <MUIDropdownMenu caret
-                         button={{
+        <MUIMenu caret
+                 button={{
                              icon: <AddIcon/>,
                              text: 'Add',
                              color: 'primary',
@@ -66,7 +66,7 @@ namespace runtime {
                                     onClick={() => doAddFilesFromDisk(props)}/>
 
             </div>
-        </MUIDropdownMenu>
+        </MUIMenu>
     );
 
 }

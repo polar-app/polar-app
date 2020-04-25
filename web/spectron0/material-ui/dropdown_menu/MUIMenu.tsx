@@ -43,7 +43,7 @@ export interface IButtonProps {
 interface IProps {
     readonly id?: string;
     readonly button: IButtonProps;
-    readonly children: JSX.Element;
+    readonly children: React.ReactElement;
     readonly placement?: PopperPlacementType;
     readonly caret?: boolean;
     readonly disabled?: boolean;
@@ -51,7 +51,7 @@ interface IProps {
 
 // FIXME: move this to MUIPopper
 
-export const MUIDropdownMenu = (props: IProps) => {
+export const MUIMenu = (props: IProps) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
