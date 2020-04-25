@@ -1,54 +1,15 @@
 import * as React from 'react';
 import {CancelButton} from "../CancelButton";
-import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
-import {FlashcardInput} from './flashcard_input/FlashcardInput';
-import {FlashcardCallback} from './flashcard_input/FlashcardInput';
+import {
+    FlashcardCallback,
+    FlashcardInput
+} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-export class CreateFlashcard extends React.PureComponent<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.onCancel = this.onCancel.bind(this);
-
-        this.state = {
-            active: this.props.active || false
-        };
-
-    }
-
-    public render() {
-
-        const cancelButton = <CancelButton onClick={() => this.onCancel()}/>;
-
-        return <NullCollapse open={this.props.active}>
-
-            <ScrollIntoView>
-                <FlashcardInput id={'edit-flashcard-for' + this.props.id}
-                                onFlashcard={this.props.onFlashcardCreated}
-                                defaultValue={this.props.defaultValue}
-                                cancelButton={cancelButton}/>
-            </ScrollIntoView>
-
-        </NullCollapse>;
-
-    }
-
-    private onCancel() {
-
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-
-    }
-
-}
 interface IProps {
 
     readonly id: string;
-
-    readonly active: boolean;
 
     readonly onFlashcardCreated: FlashcardCallback;
 
@@ -58,7 +19,23 @@ interface IProps {
 
 }
 
-interface IState {
-}
+export const CreateFlashcard = (props: IProps) => {
+
+    const onCancel = props.onCancel || NULL_FUNCTION;
+
+    const cancelButton = <CancelButton onClick={() => onCancel()}/>;
+
+    return (
+
+        <ScrollIntoView>
+            <FlashcardInput id={'edit-flashcard-for' + props.id}
+                            onFlashcard={props.onFlashcardCreated}
+                            defaultValue={props.defaultValue}
+                            cancelButton={cancelButton}/>
+        </ScrollIntoView>
+
+    );
+
+};
 
 

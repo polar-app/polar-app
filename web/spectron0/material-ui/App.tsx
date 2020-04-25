@@ -57,6 +57,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import {UserAvatar} from "../../js/ui/cloud_auth/UserAvatar";
 import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
+import {MUIGridLayoutTest} from "./dropdown_menu/MUIGridLayoutTest";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -115,30 +116,32 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
-                            displayName="Kevin Burton"
-                            size="small"/>
+                <MUIGridLayoutTest/>
 
-                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
-                            displayName="Kevin Burton"
-                            size="large"/>
+                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+                {/*            displayName="Kevin Burton"*/}
+                {/*            size="small"/>*/}
 
-                <UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"
-                            displayName="Kevin Burton"
-                            style={{
-                                width: '150px',
-                                height: '150px'
-                            }}/>
+                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+                {/*            displayName="Kevin Burton"*/}
+                {/*            size="large"/>*/}
 
-                <AccountControl userInfo={{
-                    photoURL: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",
-                    displayName: "Kevin Burton",
-                    email: 'foo@example.com',
-                    subscription: {
-                        plan: 'gold',
-                        interval: 'month'
-                    }
-                }} onLogout={NULL_FUNCTION}/>
+                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+                {/*            displayName="Kevin Burton"*/}
+                {/*            style={{*/}
+                {/*                width: '150px',*/}
+                {/*                height: '150px'*/}
+                {/*            }}/>*/}
+
+                {/*<AccountControl userInfo={{*/}
+                {/*    photoURL: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",*/}
+                {/*    displayName: "Kevin Burton",*/}
+                {/*    email: 'foo@example.com',*/}
+                {/*    subscription: {*/}
+                {/*        plan: 'gold',*/}
+                {/*        interval: 'month'*/}
+                {/*    }*/}
+                {/*}} onLogout={NULL_FUNCTION}/>*/}
 
                 {/*<Button onClick={() => changeTheme()}>Go Light mode</Button>*/}
 

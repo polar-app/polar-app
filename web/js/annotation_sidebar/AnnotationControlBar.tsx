@@ -30,6 +30,11 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
+import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
+
+// tslint:disable-next-line:variable-name
+
+
 
 export class AnnotationControlBar extends React.Component<IProps, IState> {
 
@@ -102,57 +107,48 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <div style={{display: 'flex'}}>
 
-                    {/*FIXME: migrate this to use UserAvatar of size small*/}
-                    <DocAuthor author={annotation.author}/>
+                    <MUIGridLayout items={[
+                        <DocAuthor key="author" author={annotation.author}/>,
 
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                         }}>
-
-                        <MUIAnchor href="#"
+                        <MUIAnchor key="moment"
+                                   href="#"
                                    onClick={() => this.onJumpToContext(annotation)}>
                             <DocAnnotationMoment created={annotation.created}/>
                         </MUIAnchor>
 
-                    </div>
+                    ]}/>
 
-                    <div style={{
-                             display: 'flex',
-                             alignItems: 'center',
-                             justifyContent: 'flex-end',
-                             flexGrow: 1
-                         }}>
+                    <MUIGridLayout style={{
+                                      justifyContent: 'flex-end',
+                                      flexGrow: 1
+                                   }}
+                                   items={[
+                                       <ChangeTextHighlightButton key="highlight-button"/>,
+                                       <CreateCommentButton key="comment-button"/>,
+                                       <CreateFlashcardButton key="flashcard-button"/>,
+                                       <>
+                                            {! annotation.immutable &&
+                                                <ColorSelector key="color-selector"
+                                                               color={this.props.annotation.color || 'yellow'}
+                                                               onSelected={color => this.onColor(color)}/>}
+                                       </>,
+                                       <AnnotationDropdown key="annotation-dropdown"
+                                                           id={'annotation-dropdown-' + annotation.id}
+                                                           disabled={this.props.annotation.immutable}
+                                                           annotation={annotation}
+                                                           onDelete={() => this.onDelete(annotation)}
+                                                           onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                           onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                           onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                                   ]}/>
                         {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        <ChangeTextHighlightButton/>
 
                         {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
                         {/*                 container="body"*/}
                         {/*                 availableTags={this.props.tagsProvider()}*/}
                         {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
                         {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
-
-                        <CreateCommentButton/>
-
-                        <CreateFlashcardButton/>
-
-                        {! annotation.immutable &&
-                            <ColorSelector className=""
-                                           color={this.props.annotation.color || 'yellow'}
-                                           onSelected={color => this.onColor(color)}/>}
-
-                        <div className="ml-1">
-                            <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
-                                                disabled={this.props.annotation.immutable}
-                                                annotation={annotation}
-                                                onDelete={() => this.onDelete(annotation)}
-                                                onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                                onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                                onJumpToContext={() => this.onJumpToContext(annotation)}/>
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -169,11 +165,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                                onCancel={() => this.toggleActiveInputComponent('none')}
                                onComment={(html) => this.onCommentCreated(html)}/>
 
-                <CreateFlashcard id={annotation.id}
-                                 active={this.state.activeInputComponent === 'flashcard'}
-                                 defaultValue={this.props.annotation.html}
-                                 onCancel={() => this.toggleActiveInputComponent('none')}
-                                 onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>
+                {this.state.activeInputComponent === 'flashcard' &&
+                    <CreateFlashcard id={annotation.id}
+                                     defaultValue={this.props.annotation.html}
+                                     onCancel={() => this.toggleActiveInputComponent('none')}
+                                     onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>}
 
             </div>
 

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             color: theme.palette.text.secondary,
-            textTransform: 'none'
+            // textTransform: 'none'
         }
 
     })
