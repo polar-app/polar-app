@@ -3,7 +3,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
 import {Proxies} from '../../js/proxies/Proxies';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
-import {ViewFlashcard} from '../../js/annotation_sidebar/child_annotations/flashcards/ViewFlashcard';
+import {FlashcardAnnotationView} from '../../js/annotation_sidebar/child_annotations/flashcards/FlashcardAnnotationView';
 
 export class FlashcardComponentExample extends React.Component<IProps, IState> {
 

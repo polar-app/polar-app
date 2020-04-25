@@ -116,7 +116,8 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
                         ]}/>
 
-                        <MUIGridLayout style={{
+                        <MUIGridLayout key="right-bar"
+                                       style={{
                                           justifyContent: 'flex-end',
                                           flexGrow: 1
                                        }}

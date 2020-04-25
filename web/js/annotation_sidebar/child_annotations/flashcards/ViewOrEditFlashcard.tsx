@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
-import {ViewFlashcard} from './ViewFlashcard';
+import {FlashcardAnnotationView} from './FlashcardAnnotationView';
 import {FlashcardCallback, FlashcardInput} from './flashcard_input/FlashcardInput';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {Doc} from '../../../metadata/Doc';
@@ -35,11 +35,11 @@ export class ViewOrEditFlashcard extends React.Component<IProps, IState> {
 
         if (this.state.mode === 'view') {
 
-            return <ViewFlashcard flashcard={this.props.flashcard}
-                                  tagsProvider={this.props.tagsProvider}
-                                  doc={this.props.doc}
-                                  onEdit={() => this.onEdit()}
-                                  editButton={editButton}/>;
+            return <FlashcardAnnotationView flashcard={this.props.flashcard}
+                                            tagsProvider={this.props.tagsProvider}
+                                            doc={this.props.doc}
+                                            onEdit={() => this.onEdit()}
+                                            editButton={editButton}/>;
 
         } else {
             return <FlashcardInput id={'edit-flashcard-for' + this.props.id}
