@@ -256,20 +256,6 @@ export const RepositoryApp = (props: IProps) => {
     };
 
 
-    const usePersistedTheme = createPersistedState('count');
-    const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
-
-    const muiTheme = createMuiTheme({
-        // FIXME on mobile we use 16px ...
-        typography: {
-            htmlFontSize: 12,
-            fontSize: 12
-        },
-        palette: {
-            type: theme
-        }
-    });
-
     return (
         <MUIAppRoot>
             <>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {AnnotationSidebars} from './AnnotationSidebars';
-import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -51,6 +50,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     }
 
     public render() {
+
         const { annotation } = this.props;
 
         const ChangeTextHighlightButton = () => {

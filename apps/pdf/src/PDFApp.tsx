@@ -16,6 +16,8 @@ import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PDFViewer} from './PDFViewer';
 import {MUIAppRoot} from "../../../web/js/MUIAppRoot";
+import {PersistenceLayerApp} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {AuthRequired} from "../../repository/js/AuthRequired";
 
 export class PDFApp {
 
@@ -48,6 +50,13 @@ export class PDFApp {
 
         this.startAnnotationBar();
 
+        // FIXME: I need docTag and userTags here to pass them up ...
+
+        // {/*<PersistenceLayerApp repoDocMetaManager={app.repoDocMetaManager}*/}
+        // {/*                     repoDocMetaLoader={repoDocMetaLoader}*/}
+        // {/*                     persistenceLayerManager={persistenceLayerManager}*/}
+        // {/*                     render={(docRepo) => (*/}
+
         ReactDOM.render((
             <div style={{
                     display: 'flex',
@@ -57,7 +66,10 @@ export class PDFApp {
                  }}>
 
                 <MUIAppRoot>
-                    <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}/>
+
+                     <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
+                                tagsProvider={() => []}/>
+
                 </MUIAppRoot>
 
             </div>

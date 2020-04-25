@@ -27,11 +27,13 @@ import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationS
 import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 const log = Logger.create();
 
 interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 interface IState {
@@ -219,7 +221,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
                                                            mutable: true,
                                                            oid: 123,
                                                        }}
-                                                       tagsProvider={() => []}
+                                                       tagsProvider={this.props.tagsProvider}
                                                        persistenceLayerProvider={this.props.persistenceLayerProvider}/>}
                                 </>,
                             width: 300,
