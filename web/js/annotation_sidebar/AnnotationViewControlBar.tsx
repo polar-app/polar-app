@@ -31,12 +31,9 @@ import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
 import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
+import Divider from "@material-ui/core/Divider";
 
-// tslint:disable-next-line:variable-name
-
-
-
-export class AnnotationControlBar extends React.Component<IProps, IState> {
+export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -102,77 +99,79 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         return (
 
-            <div style={{userSelect: 'none'}}
-                 className="pt-1">
+            <>
+                <div style={{userSelect: 'none'}}
+                     className="pt-1 pb-1">
 
-                <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex'}}>
 
-                    <MUIGridLayout items={[
-                        <DocAuthor key="author" author={annotation.author}/>,
+                        <MUIGridLayout items={[
+                            <DocAuthor key="author" author={annotation.author}/>,
 
-                        <MUIAnchor key="moment"
-                                   href="#"
-                                   onClick={() => this.onJumpToContext(annotation)}>
-                            <DocAnnotationMoment created={annotation.created}/>
-                        </MUIAnchor>
+                            <MUIAnchor key="moment"
+                                       href="#"
+                                       onClick={() => this.onJumpToContext(annotation)}>
+                                <DocAnnotationMoment created={annotation.created}/>
+                            </MUIAnchor>
 
-                    ]}/>
+                        ]}/>
 
-                    <MUIGridLayout style={{
-                                      justifyContent: 'flex-end',
-                                      flexGrow: 1
-                                   }}
-                                   items={[
-                                       <ChangeTextHighlightButton key="highlight-button"/>,
-                                       <CreateCommentButton key="comment-button"/>,
-                                       <CreateFlashcardButton key="flashcard-button"/>,
-                                       <>
-                                            {! annotation.immutable &&
-                                                <ColorSelector key="color-selector"
-                                                               color={this.props.annotation.color || 'yellow'}
-                                                               onSelected={color => this.onColor(color)}/>}
-                                       </>,
-                                       <AnnotationDropdown key="annotation-dropdown"
-                                                           id={'annotation-dropdown-' + annotation.id}
-                                                           disabled={this.props.annotation.immutable}
-                                                           annotation={annotation}
-                                                           onDelete={() => this.onDelete(annotation)}
-                                                           onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                                           onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                                           onJumpToContext={() => this.onJumpToContext(annotation)}/>
-                                   ]}/>
-                        {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
+                        <MUIGridLayout style={{
+                                          justifyContent: 'flex-end',
+                                          flexGrow: 1
+                                       }}
+                                       items={[
+                                           <ChangeTextHighlightButton key="highlight-button"/>,
+                                           <CreateCommentButton key="comment-button"/>,
+                                           <CreateFlashcardButton key="flashcard-button"/>,
+                                           <>
+                                                {! annotation.immutable &&
+                                                    <ColorSelector key="color-selector"
+                                                                   color={this.props.annotation.color || 'yellow'}
+                                                                   onSelected={color => this.onColor(color)}/>}
+                                           </>,
+                                           <AnnotationDropdown key="annotation-dropdown"
+                                                               id={'annotation-dropdown-' + annotation.id}
+                                                               disabled={this.props.annotation.immutable}
+                                                               annotation={annotation}
+                                                               onDelete={() => this.onDelete(annotation)}
+                                                               onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                               onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                               onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                                       ]}/>
+                            {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
 
-                        {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
-                        {/*                 container="body"*/}
-                        {/*                 availableTags={this.props.tagsProvider()}*/}
-                        {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
-                        {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
+                            {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
+                            {/*                 container="body"*/}
+                            {/*                 availableTags={this.props.tagsProvider()}*/}
+                            {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
+                            {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
+
+                    </div>
+
+                    <EditTextHighlight id={annotation.id}
+                                       hidden={this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT}
+                                       active={this.state.activeInputComponent === 'text-highlight'}
+                                       html={this.props.annotation.html || ""}
+                                       onReset={() => this.onTextHighlightReset()}
+                                       onChanged={text => this.onTextHighlightEdited(text)}
+                                       onCancel={() => this.toggleActiveInputComponent('none')}/>
+
+                    <CreateComment id={annotation.id}
+                                   active={this.state.activeInputComponent === 'comment'}
+                                   onCancel={() => this.toggleActiveInputComponent('none')}
+                                   onComment={(html) => this.onCommentCreated(html)}/>
+
+                    {this.state.activeInputComponent === 'flashcard' &&
+                        <CreateFlashcard id={annotation.id}
+                                         defaultValue={this.props.annotation.html}
+                                         onCancel={() => this.toggleActiveInputComponent('none')}
+                                         onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>}
 
                 </div>
-
-                <EditTextHighlight id={annotation.id}
-                                   hidden={this.props.annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT}
-                                   active={this.state.activeInputComponent === 'text-highlight'}
-                                   html={this.props.annotation.html || ""}
-                                   onReset={() => this.onTextHighlightReset()}
-                                   onChanged={text => this.onTextHighlightEdited(text)}
-                                   onCancel={() => this.toggleActiveInputComponent('none')}/>
-
-                <CreateComment id={annotation.id}
-                               active={this.state.activeInputComponent === 'comment'}
-                               onCancel={() => this.toggleActiveInputComponent('none')}
-                               onComment={(html) => this.onCommentCreated(html)}/>
-
-                {this.state.activeInputComponent === 'flashcard' &&
-                    <CreateFlashcard id={annotation.id}
-                                     defaultValue={this.props.annotation.html}
-                                     onCancel={() => this.toggleActiveInputComponent('none')}
-                                     onFlashcardCreated={(type, fields) => this.onFlashcardCreated(type, fields)}/>}
-
-            </div>
-
+                <Divider/>
+            </>
         );
     }
 

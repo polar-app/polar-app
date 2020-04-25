@@ -60,92 +60,6 @@ const ViewPlansAndPricingButton = () => {
     );
 };
 
-export class AccountControl extends React.PureComponent<IProps, IState> {
-
-    constructor(props: IProps) {
-        super(props);
-
-    }
-
-    public render() {
-
-        const props = this.props;
-
-        return (
-
-            <div className="p-2">
-
-                <div>
-                    <div className="text-center">
-
-                        <div style={{
-                                 display: 'flex',
-                                 alignItems: 'center',
-                                 justifyContent: 'center'
-                             }}>
-                            <UserAvatar size="large"
-                                        displayName={props.userInfo.displayName}
-                                        style={{width: '100px', height: '100px'}}
-                                        photoURL={props.userInfo.photoURL}/>
-                        </div>
-
-                        <div className="p-1">
-
-                            <div className="text-lg"
-                                 style={{fontWeight: 'bold'}}>
-
-                                {this.props.userInfo.displayName || 'Anonymous'}
-
-                            </div>
-
-                            <div className="text-muted text-md"
-                                 style={{}}>
-                                {this.props.userInfo.email || ''}
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-
-                    <div className="mt-2 pt-2 pb-2 border-top text-center">
-
-                        <div className="mt-2 mb-3">
-                            <AccountOverview plan={this.props.userInfo.subscription.plan}/>
-                        </div>
-
-                        <ViewPlansAndPricingButton/>
-
-                    </div>
-
-                    <div className="mt-2 pt-2 pb-2 border-top text-right">
-
-                        <div style={{display: 'flex', whiteSpace: 'nowrap'}}
-                             className="mt-2">
-
-
-                            <div className="ml-auto mr-1">
-                                {/*<InviteUsersButton/>*/}
-                            </div>
-
-                            <div>
-                                <LogoutButton {...props}/>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        );
-
-    }
-
-}
 
 interface IBasicUserInfo {
     readonly photoURL?: URLStr;
@@ -162,5 +76,79 @@ interface IProps {
 
 }
 
-interface IState {
+export function AccountControl(props: IProps) {
+
+    return (
+
+        <div className="p-2">
+
+            <div>
+                <div className="text-center">
+
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <UserAvatar size="large"
+                                    displayName={props.userInfo.displayName}
+                                    style={{width: '100px', height: '100px'}}
+                                    photoURL={props.userInfo.photoURL}/>
+                    </div>
+
+                    <div className="p-1">
+
+                        <div className="text-lg"
+                             style={{fontWeight: 'bold'}}>
+
+                            {props.userInfo.displayName || 'Anonymous'}
+
+                        </div>
+
+                        <div className="text-muted text-md"
+                             style={{}}>
+                            {props.userInfo.email || ''}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <div className="mt-2 pt-2 pb-2 border-top text-center">
+
+                    <div className="mt-2 mb-3">
+                        <AccountOverview
+                            plan={props.userInfo.subscription.plan}/>
+                    </div>
+
+                    <ViewPlansAndPricingButton/>
+
+                </div>
+
+                <div className="mt-2 pt-2 pb-2 border-top text-right">
+
+                    <div style={{display: 'flex', whiteSpace: 'nowrap'}}
+                         className="mt-2">
+
+
+                        <div className="ml-auto mr-1">
+                            {/*<InviteUsersButton/>*/}
+                        </div>
+
+                        <div>
+                            <LogoutButton {...props}/>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    );
+
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
-import {AnnotationControlBar} from '../AnnotationControlBar';
+import {AnnotationViewControlBar} from '../AnnotationViewControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
 import {ResponsiveImg} from '../ResponsiveImg';
@@ -58,9 +58,9 @@ export const AreaHighlightAnnotationView = React.memo((props: IProps) => {
 
                 </div>
 
-                <AnnotationControlBar doc={props.doc}
-                                      tagsProvider={props.tagsProvider}
-                                      annotation={annotation}/>
+                <AnnotationViewControlBar doc={props.doc}
+                                          tagsProvider={props.tagsProvider}
+                                          annotation={annotation}/>
 
             </div>
 

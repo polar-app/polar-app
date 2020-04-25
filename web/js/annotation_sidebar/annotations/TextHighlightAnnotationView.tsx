@@ -2,7 +2,7 @@ import * as React from 'react';
 import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {AnnotationControlBar} from '../AnnotationControlBar';
+import {AnnotationViewControlBar} from '../AnnotationViewControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
 import {LazyProps, LazyState} from '../../react/LazyComponents';
@@ -68,9 +68,9 @@ export class TextHighlightAnnotationView extends React.Component<IProps, IState>
                             </div>
 
                             <div>
-                                <AnnotationControlBar doc={this.props.doc}
-                                                      tagsProvider={this.props.tagsProvider}
-                                                      annotation={annotation}/>
+                                <AnnotationViewControlBar doc={this.props.doc}
+                                                          tagsProvider={this.props.tagsProvider}
+                                                          annotation={annotation}/>
 
                             </div>
                         </div>

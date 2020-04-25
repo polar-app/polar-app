@@ -11,10 +11,7 @@ import {Tag} from 'polar-shared/src/tags/Tags';
 
 const log = Logger.create();
 
-/**
- * A generic wrapper that determines which sub-component to render.
- */
-export class ViewComment extends React.Component<IProps, IState> {
+export class CommentAnnotationView extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {EditComment} from "./EditComment";
-import {ViewComment} from "./ViewComment";
+import {CommentAnnotationView} from "./CommentAnnotationView";
 import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
 import {Doc} from '../../../metadata/Doc';
@@ -35,11 +35,11 @@ export class ViewOrEditComment extends React.Component<IProps, IState> {
 
         if (this.state.mode === 'view') {
 
-            return <ViewComment comment={this.props.comment}
-                                tagsProvider={this.props.tagsProvider}
-                                doc={this.props.doc}
-                                onEdit={() => this.onEdit()}
-                                editButton={editButton}/>;
+            return <CommentAnnotationView comment={this.props.comment}
+                                          tagsProvider={this.props.tagsProvider}
+                                          doc={this.props.doc}
+                                          onEdit={() => this.onEdit()}
+                                          editButton={editButton}/>;
 
         } else {
             return <EditComment id={'edit-comment-for' + this.props.id}
