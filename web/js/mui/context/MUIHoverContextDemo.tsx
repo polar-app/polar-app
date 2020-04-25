@@ -1,5 +1,9 @@
 import React from "react";
-import {MUIHoverController, MUIHoverListener} from "./MUIHoverContext";
+import {
+    MUIHoverController,
+    MUIHoverListener,
+    MUIHoverTypeContext
+} from "./MUIHoverContext";
 
 const ListeningComponent = () => (
     <MUIHoverListener>
@@ -26,3 +30,12 @@ export const MUIHoverContextDemo = () => (
 
 );
 
+const Foo = (value: boolean) => (
+    <div>foo</div>
+);
+
+export const TestRenderer = () => (
+    <MUIHoverTypeContext.Consumer>
+        {Foo}
+    </MUIHoverTypeContext.Consumer>
+);

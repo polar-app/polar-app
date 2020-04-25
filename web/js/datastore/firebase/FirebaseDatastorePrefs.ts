@@ -6,6 +6,7 @@ import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
+import { Tracer } from "polar-shared/src/util/Tracer";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
@@ -20,7 +21,10 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
 
     public async init() {
 
-        const userPref = await UserPrefs.get();
+        // FIXME: This is slow and forces a server read first... we should make
+        // this use snapshots so that after the FIRST snapshot we're just
+        // updating internally
+        const userPref = await Tracer.async('user-prefs', UserPrefs.get());
         this.update(userPref.toPrefDict());
 
         this.firestore = await Firestore.getInstance();
