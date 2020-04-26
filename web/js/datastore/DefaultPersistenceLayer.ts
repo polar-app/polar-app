@@ -209,9 +209,6 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<IDocMeta>): Promise<DocMetaSnapshotResult> {
 
-        console.log("FIXME: DefautPersistenceLayer: 2");
-
-
         return this.datastore.getDocMetaSnapshot({
             ...opts,
             onSnapshot: (snapshot=> {
