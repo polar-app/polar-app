@@ -29,6 +29,7 @@ import * as ReactDOM from "react-dom";
 import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import * as React from "react";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
+import {Tracer} from "polar-shared/src/util/Tracer";
 
 const log = Logger.create();
 
@@ -59,6 +60,8 @@ export class AppInitializer {
 
         const {persistenceLayerManager} = opts;
 
+        console.time("AppInitializer.init");
+
         const syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
         log.info("Running with Polar version: " + Version.get());
@@ -85,11 +88,11 @@ export class AppInitializer {
 
         const authHandler = AuthHandlers.get();
 
-        const authStatus = await authHandler.status();
+        const authStatus = await Tracer.async('auth-handler', authHandler.status());
 
-        const account = await Accounts.get();
+        const account = await Tracer.async('accounts', Accounts.get());
         await AccountProvider.init(account);
-        const userInfo = await authHandler.userInfo();
+        const userInfo = await Tracer.async('user-info', authHandler.userInfo());
 
         const platform = Platforms.get();
 
@@ -113,7 +116,7 @@ export class AppInitializer {
 
             new ProgressService().start();
 
-            await PrefetchedUserGroupsBackgroundListener.start();
+            await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
 
             MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
 
@@ -122,6 +125,8 @@ export class AppInitializer {
             await opts.onNeedsAuthentication(app);
 
         }
+
+        console.timeEnd("AppInitializer.init");
 
         return app;
 

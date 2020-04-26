@@ -71,19 +71,45 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
             return super.getDocMetaSnapshot(opts);
         }
 
-        const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
+        const handleCurr = async (unsubscriber: () => void) => {
 
-            opts.onSnapshot({
-                data: event.docMeta,
-                source: 'server',
-                unsubscriber: () => releasable.release()
+            const onError = opts.onError || NULL_FUNCTION;
+
+            try {
+                const data = await this.getDocMeta(opts.fingerprint);
+                opts.onSnapshot({
+                    data,
+                    source: 'server',
+                    unsubscriber
+                });
+
+            } catch (e) {
+                onError(e);
+            }
+
+        }
+
+        const handleNext = () => {
+
+            const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
+
+                opts.onSnapshot({
+                    data: event.docMeta,
+                    source: 'server',
+                    unsubscriber: () => releasable.release()
+                });
+
             });
 
-        });
+            return {
+                unsubscriber: () => releasable.release()
+            };
 
-        return {
-            unsubscriber: () => releasable.release()
-        };
+        }
+
+        const result = handleNext();
+        await handleCurr(result.unsubscriber);
+        return result;
 
     }
 
