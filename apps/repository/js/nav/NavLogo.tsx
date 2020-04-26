@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
-import {Link} from "react-router-dom";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {Devices} from "polar-shared/src/util/Devices";
+import {MUIRouterLink} from "../../../../web/spectron0/material-ui/MUIRouterLink";
 
 const Styles: IStyleMap = {
     parent: {
@@ -27,62 +27,51 @@ const Styles: IStyleMap = {
 
 /**
  */
-export class NavLogo extends React.PureComponent<IProps, IState> {
+export const NavLogo = React.memo(() => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
+    const createLink = () => {
 
-    public render() {
+        if (Devices.get() === 'desktop') {
+            return '/';
+        } else {
+            return '/annotations';
+        }
 
-        const createLink = () => {
+    };
 
-            if (Devices.get() === 'desktop') {
-                return '/';
-            } else {
-                return '/annotations';
-            }
+    const link = createLink();
 
-        };
-
-        const link = createLink();
-
-        const NavLink = (props: any) => {
-            return <Link to={{pathname: link, hash: '#'}}>
-                {props.children}
-            </Link>;
-        };
-
+    const NavLink = (props: any) => {
         return (
-            <div style={Styles.parent}>
-                <div style={Styles.child}>
-                    <NavLink>
-
-                        <div style={{
-                                 height: '50px',
-                                 width: '50px'
-                             }}>
-                            <PolarSVGIcon/>
-                        </div>
-
-                    </NavLink>
-                </div>
-
-                <div style={Styles.child}>
-                    <div className="" style={Styles.textLogo}>POLAR</div>
-                </div>
-
-            </div>
+            <MUIRouterLink to={{pathname: link, hash: '#'}}>
+                {props.children}
+            </MUIRouterLink>
         );
+    };
 
-    }
+    return (
+        <div style={Styles.parent}>
+            <div style={Styles.child}>
+                <NavLink>
 
-}
+                    <div style={{
+                        height: '50px',
+                        width: '50px'
+                    }}>
+                        <PolarSVGIcon/>
+                    </div>
 
-interface IProps {
+                </NavLink>
+            </div>
 
-}
+            <div style={Styles.child}>
+                <NavLink>
+                    <div style={Styles.textLogo}>POLAR</div>
+                </NavLink>
+            </div>
 
-interface IState {
+        </div>
+    );
 
-}
+});
+

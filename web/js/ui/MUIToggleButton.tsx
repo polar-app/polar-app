@@ -2,13 +2,11 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
 
         buttonActive: {
-            textTransform: 'none',
             backgroundColor: theme.palette.info.main,
             color: theme.palette.info.contrastText,
             "&:hover": {
@@ -18,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             color: theme.palette.text.secondary,
-            // textTransform: 'none'
         }
 
     })
