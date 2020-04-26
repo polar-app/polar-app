@@ -99,11 +99,11 @@ export const FlashcardAnnotationView = React.memo((props: IProps) => {
 
     return (
 
-        <div key={key} className="mt-1 muted-color-root">
+        <div key={key} className="mt-1 ml-2">
 
-            <div className="flashcard card shadow-sm mb-1">
+            <div className="">
 
-                <div className="card-body p-1" onDoubleClick={props.onEdit}>
+                <div onDoubleClick={props.onEdit}>
 
                     <RenderFields {...props}/>
 

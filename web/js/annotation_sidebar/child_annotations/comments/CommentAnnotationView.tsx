@@ -26,7 +26,7 @@ export const CommentAnnotationView = (props: IProps) => {
 
     return (
 
-        <div className="ml-1">
+        <div className="ml-2">
 
             <div className="comment muted-color-root">
 

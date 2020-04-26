@@ -33,7 +33,7 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
     return (
         <>
 
-            <div style={{display: 'flex', flexGrow: 1}}>
+            <div style={{display: 'flex', flexGrow: 1}} className="pt-1 pb-1">
 
                 <MUIGridLayout items={[
 
@@ -54,8 +54,9 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
                                                              tagsProvider={props.tagsProvider}
                                                              annotation={props.flashcard}/>,
 
-                                   // FIXME
-                                   //         {props.editButton}
+                                   <React.Fragment key="edit-button">
+                                       {props.editButton}
+                                   </React.Fragment>,
 
                                    <FlashcardViewDropdown key="dropdown"
                                                           id={'flashcard-dropdown-' + flashcard.id}
