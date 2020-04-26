@@ -11,6 +11,7 @@ packages/polar-app-private
 packages/polar-app-public
 packages/polar-app-private.wiki
 packages/polar-app-public.wiki
+packages/polar-bookshelf.wiki
 packages
 node_modules
 lerna-debug.log
