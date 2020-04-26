@@ -14,7 +14,6 @@ import {FeatureToggle} from "../ui/FeatureToggle";
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
 import {DatastoreCapabilities} from "../datastore/Datastore";
-import Button from "reactstrap/lib/Button";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
@@ -24,6 +23,7 @@ import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
 import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
+import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
 
@@ -43,7 +43,11 @@ const LoadRepositoryExplainer = () => (
 
         <div className="mt-3 mb-3">
              <a href="https://app.getpolarized.io">
-                 <Button size="lg" color="success">Load My Doc Repository</Button>
+                 <Button size="large"
+                         variant="contained"
+                         color="primary">
+                     Load My Doc Repository
+                 </Button>
              </a>
          </div>
 
