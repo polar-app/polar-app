@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {DocAnnotation} from '../../DocAnnotation';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {IStyleMap} from '../../../react/IStyleMap';
 import {Doc} from '../../../metadata/Doc';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import isEqual from "react-fast-compare";

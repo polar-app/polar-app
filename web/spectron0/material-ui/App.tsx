@@ -60,6 +60,7 @@ import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {MUIGridLayoutTest} from "./dropdown_menu/MUIGridLayoutTest";
 import {FadeDemo} from "./FadeDemo";
 import {MUIHoverContextDemo} from "../../js/mui/context/MUIHoverContextDemo";
+import {AppBarDemo} from "./AppBarDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -118,9 +119,11 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <FadeDemo/>
 
-                <MUIHoverContextDemo/>
+                <AppBarDemo/>
+                {/*<FadeDemo/>*/}
+
+                {/*<MUIHoverContextDemo/>*/}
 
                 {/*<MUIGridLayoutTest/>*/}
 
