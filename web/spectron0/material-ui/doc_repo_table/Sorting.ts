@@ -4,6 +4,10 @@ export namespace Sorting {
 
     export type Order = 'asc' | 'desc';
 
+    export function reverse(order: Order) {
+        return order === 'asc' ? 'desc' : 'asc';
+    }
+
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
         const toVal = (value: number | string | any): number | string => {

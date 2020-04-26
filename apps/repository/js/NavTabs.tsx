@@ -30,7 +30,7 @@ export const NavTabs = React.memo((props: IProps) => {
             .filter(tab => ReactRouterLinks.isActive(tab.link, location))
             .first();
 
-    const activeTabID = activeTab ? activeTab.idx : 0;
+    const activeTabID = activeTab ? activeTab.idx : -1;
 
     return (
 

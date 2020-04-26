@@ -1,8 +1,5 @@
 import createPersistedState from "use-persisted-state";
-import {
-    MUIThemeTypeContext,
-    ThemeType
-} from "./context/MUIThemeTypeContext";
+import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {GlobalCss} from "../../spectron0/material-ui/GlobalCss";
@@ -14,7 +11,7 @@ interface IProps {
 
 export const MUIAppRoot = (props: IProps) => {
 
-    const usePersistedTheme = createPersistedState('count');
+    const usePersistedTheme = createPersistedState('theme');
     const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
 
     const muiTheme = createMuiTheme({
