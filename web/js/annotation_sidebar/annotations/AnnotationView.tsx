@@ -70,7 +70,6 @@ export const AnnotationView = React.memo((props: IProps) => {
             <MUIHoverController>
                 <>
                     <AnnotationTypeComponent/>
-                    <Divider/>
                 </>
             </MUIHoverController>
         </div>
