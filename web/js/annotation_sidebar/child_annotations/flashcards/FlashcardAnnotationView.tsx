@@ -6,6 +6,9 @@ import {Doc} from '../../../metadata/Doc';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import isEqual from "react-fast-compare";
 import {FlashcardAnnotationControlBar} from "./FlashcardAnnotationControlBar";
+import Card from "@material-ui/core/Card";
+import CardContent from '@material-ui/core/CardContent';
+import Divider from "@material-ui/core/Divider";
 
 const log = Logger.create();
 
@@ -28,25 +31,31 @@ const RenderFrontAndBackFields = (props: IProps) => {
     const { flashcard } = props;
 
     return (
-        <div>
+        <Card variant="outlined">
 
-            <div className="pb-2 pt-2">
+            <CardContent>
 
-                    <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+                <div className="pb-2">
 
-                    </span>
+                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
 
-            </div>
+                </span>
 
-            <div className="pb-2 pt-2 border-top">
+                </div>
 
-                    <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
+                <Divider/>
 
-                    </span>
+                <div className="pt-2">
 
-            </div>
+                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
 
-        </div>
+                </span>
+
+                </div>
+
+            </CardContent>
+
+        </Card>
     );
 
 };
