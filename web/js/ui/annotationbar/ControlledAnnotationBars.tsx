@@ -54,7 +54,7 @@ export class ControlledAnnotationBars {
                         const pageElement = Elements.untilRoot(activeSelectionEvent.element, ".page");
 
                         if (! pageElement) {
-                            log.warn("Not found within .page element");
+                            // log.warn("Not found within .page element");
                             return undefined;
                         }
 
