@@ -66,7 +66,7 @@ export const AnnotationView = React.memo((props: IProps) => {
     const key = 'doc-annotation-' + annotation.id;
 
     return (
-        <div key={key}>
+        <div key={key} className="mt-1">
             <MUIHoverController>
                 <>
                     <AnnotationTypeComponent/>
