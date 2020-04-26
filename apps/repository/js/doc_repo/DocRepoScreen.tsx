@@ -62,8 +62,6 @@ import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material
 
 const log = Logger.create();
 
-// TODO: go back to ExtendedReactTable
-
 namespace main {
 
     export interface DocumentsProps extends DocRepoTableProps {
@@ -92,8 +90,6 @@ namespace main {
                                  onTagged={props.onDocTagged}
                                  onFlagged={() => console.log('onFlagged')}
                                  onArchived={() => console.log('onArchived')}/>
-
-        // <DocRepoTable {...props}/>
 
     );
 
@@ -157,6 +153,7 @@ namespace devices {
 
 }
 
+// REFACTOR move away from ReleasingReactComponent and cleen this up...
 export default class DocRepoScreen extends ReleasingReactComponent<IProps, IState> {
 
     private readonly treeState: TreeState<TagDescriptor>;
@@ -214,7 +211,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             docSidebarVisible: false
         };
 
-        const onRefreshed: RefreshedCallback = repoDocInfos => this.doRefresh(repoDocInfos);
+        const onRefreshed: RefreshedCallback = repoDocInfos => this.onData(repoDocInfos);
 
         const repoDocInfosProvider = () => this.props.repoDocMetaManager.repoDocInfoIndex.values();
         this.tagsProvider = this.props.tags;
@@ -640,8 +637,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onDocDeleteRequested(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
 
-        // FIXME: this is now obsolte
-
+        // FIXME legacy crap
         Dialogs.confirm({
             title: "Are you sure you want to delete these document(s)?",
             subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
@@ -692,8 +688,10 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             this.clearSelected();
 
             if (stats.failures === 0) {
+                // FIXME legacy crap
                 Toaster.success(`${stats.successes} documents successfully deleted.`);
             } else {
+                // FIXME legacy crap
                 Toaster.error(`Failed to delete ${stats.failures} with ${stats.successes} successful.`);
             }
 
@@ -764,7 +762,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     /**
      * Perform the actual refresh.
      */
-    private doRefresh(data: ReadonlyArray<RepoDocInfo>) {
+    private onData(data: ReadonlyArray<RepoDocInfo>) {
 
         setTimeout(() => {
 
@@ -819,7 +817,6 @@ interface IState {
  * a checkbox for selecting multiple.
  */
 export type SelectRowType = 'click' | 'context' | 'checkbox';
-
 
 interface TableItem {
     readonly _original: RepoDocInfo;
