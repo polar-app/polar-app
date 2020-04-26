@@ -37,28 +37,28 @@ export const AnnotationTagInputButton = (props: IProps) => {
     };
 
     const handleClick = () => {
-
+        // noop
     };
 
-
     return (
+        <div/>
 
-        <MUIDialogController>
-            {(dialogs) => (
-
-                <>
-
-
-
-                {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
-                {/*         container="body"*/}
-                {/*         availableTags={props.tagsProvider()}*/}
-                {/*         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
-                {/*         onChange={(tags) => onTagged(tags)}/>*/}
-
-                </>
-            )}
-        </MUIDialogController>
+        // <MUIDialogController>
+        //     {(dialogs) => (
+        //
+        //         <>
+        //
+        //
+        //
+        //         {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
+        //         {/*         container="body"*/}
+        //         {/*         availableTags={props.tagsProvider()}*/}
+        //         {/*         existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
+        //         {/*         onChange={(tags) => onTagged(tags)}/>*/}
+        //
+        //         </>
+        //     )}
+        // </MUIDialogController>
 
 
     );

@@ -16,6 +16,21 @@
 
     <link rel="icon" href="/icon.ico">
 
+    <script>
+
+      function configureThemeBackground() {
+        const mode = localStorage.getItem('theme') || 'light';
+        const style = document.createElement("style");
+        document.head.appendChild(style);
+        const backgroundColor = mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(66,66,66)';
+
+        style.sheet.insertRule(`html { background-color: ${backgroundColor}; }`);
+      }
+
+      configureThemeBackground();
+
+    </script>
+
     <!-- TODO: these need to load locally before we enable firebase in production -->
     <script src="/node_modules/firebase/firebase.js"></script>
     <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
@@ -43,6 +58,8 @@
     <link rel="stylesheet" href="/apps/repository/css/index.css">
 <!--    <link rel="stylesheet" href="/apps/repository/css/light-theme.css">-->
 <!--    <link rel="stylesheet" href="/node_modules/polar-dark-mode/src/index.css">-->
+
+    <script>configureThemeBackground()</script>
 
     <title>Polar: Document Repository</title>
 

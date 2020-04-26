@@ -11,6 +11,8 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly onClose: Callback;
 }
 
+// FIXME: memoize this as the props don't change very often and it's
+// being regenerated.
 export class MUIDocDropdownMenu extends React.Component<IProps> {
     public render() {
 

@@ -1,10 +1,10 @@
 import React from "react";
-import {MUIDialogController} from "./MUIDialogController";
+import {MUIDialogControllerContext} from "./MUIDialogController";
 
 const MUIDialogControllerTest = () => (
-    <MUIDialogController>
+    <MUIDialogControllerContext.Consumer>
         {(dialogs) => (
             <div>hello world</div>
         )}
-    </MUIDialogController>
+    </MUIDialogControllerContext.Consumer>
 );

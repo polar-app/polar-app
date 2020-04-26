@@ -1,11 +1,9 @@
 import * as React from 'react';
+import {useCallback} from 'react';
 import {AutocompleteDialogProps} from "../../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {MUITagInputControls} from "../../MUITagInputControls";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {
-    DialogManager,
-    MUIDialogController
-} from "../../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {useDialogManager} from "../../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
@@ -20,7 +18,9 @@ interface IProps {
 
 export const AnnotationTagsButton = (props: IProps) => {
 
-    const handleClick = (dialogs: DialogManager) => {
+    const dialogs = useDialogManager();
+
+    const handleClick = useCallback(() => {
 
         const availableTags = props.tagProvider();
 
@@ -36,18 +36,12 @@ export const AnnotationTagsButton = (props: IProps) => {
 
         dialogs.autocomplete(autocompleteProps);
 
-    };
+    }, [dialogs]);
 
     return (
-        <MUIDialogController>
-
-            {dialogs => (
-                <IconButton onClick={() => handleClick(dialogs)}>
-                    <LocalOfferIcon/>
-                </IconButton>
-
-            )}
-        </MUIDialogController>
+        <IconButton onClick={() => handleClick()}>
+            <LocalOfferIcon/>
+        </IconButton>
     );
 
 };

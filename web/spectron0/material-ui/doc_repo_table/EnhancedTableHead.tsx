@@ -41,9 +41,11 @@ export function EnhancedTableHead(props: IProps) {
 
     const { order, orderBy, onRequestSort } = props;
 
-    const createSortHandler = (property: keyof RepoDocInfo,
-                               order: Sorting.Order) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property, order);
+    const createSortHandler = (order: Sorting.Order,
+                               orderBy: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
+
+        onRequestSort(event, orderBy, order);
+
     };
 
     return (
@@ -53,7 +55,7 @@ export function EnhancedTableHead(props: IProps) {
                 </TableCell>
                 {COLUMNS.map((column) => {
 
-                    const direction = orderBy === column.id ? order : column.defaultOrder;
+                    const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
 
                     return (
                         <TableCell key={column.id}
@@ -67,8 +69,8 @@ export function EnhancedTableHead(props: IProps) {
 
                             <TableSortLabel
                                 active={orderBy === column.id}
-                                direction={direction}
-                                onClick={createSortHandler(column.id, direction)}>
+                                direction={order}
+                                onClick={createSortHandler(newOrder, column.id)}>
                                 {column.label}
                                 {orderBy === column.id ? (
                                     <span className={classes.visuallyHidden}>

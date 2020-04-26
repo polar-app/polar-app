@@ -2,10 +2,7 @@ import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
-import {
-    DialogManager,
-    MUIDialogController
-} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
+import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
@@ -21,7 +18,9 @@ interface IProps {
 
 export const CommentDropdown = (props: IProps) => {
 
-    const handleDelete = (dialogs: DialogManager) => {
+    const dialogs = useDialogManager();
+
+    const handleDelete = React.useCallback(() => {
 
         const confirmProps: ConfirmDialogProps = {
             title: "Are you sure you want to delete this comment? ",
@@ -33,35 +32,30 @@ export const CommentDropdown = (props: IProps) => {
 
         dialogs.confirm(confirmProps);
 
-    };
+    }, [dialogs]);
 
     return (
 
-        <MUIDialogController>
-            {(dialogs) => (
+        <>
 
-                <>
+            <MUIMenu id={props.id}
+                     button={{
+                                 icon: <MoreVertIcon/>,
+                                 disabled: props.disabled,
+                                 size: 'small'
+                             }}
+                     placement='bottom-end'>
 
-                    <MUIMenu id={props.id}
-                             button={{
-                                         icon: <MoreVertIcon/>,
-                                         disabled: props.disabled,
-                                         size: 'small'
-                                     }}
-                             placement='bottom-end'>
+                <div>
+                    <MUIMenuItem text="Delete"
+                                 icon={<DeleteIcon/>}
+                                 onClick={() => handleDelete()}/>
 
-                        <div>
-                            <MUIMenuItem text="Delete"
-                                         icon={<DeleteIcon/>}
-                                         onClick={() => handleDelete(dialogs)}/>
+                </div>
 
-                        </div>
+            </MUIMenu>
 
-                    </MUIMenu>
-
-                </>
-            )}
-        </MUIDialogController>
+        </>
 
     );
 

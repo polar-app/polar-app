@@ -1,4 +1,4 @@
-import {Callback1} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
 import isEqual from "react-fast-compare";
 import {
@@ -18,6 +18,16 @@ export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
     prompt: (promptDialogProps: PromptDialogProps) => void;
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
+}
+
+function nullDialog() {
+    console.warn("WARNING using null dialog manager");
+}
+
+export const NullDialogManager: DialogManager = {
+    confirm: nullDialog,
+    prompt: nullDialog,
+    autocomplete: nullDialog
 }
 
 interface DialogHostProps {
@@ -115,7 +125,13 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 }, isEqual);
 
 interface IProps {
-    readonly children: (dialogs: DialogManager) => JSX.Element;
+    readonly children: JSX.Element;
+}
+
+export const MUIDialogControllerContext = React.createContext<DialogManager>(NullDialogManager);
+
+export function useDialogManager() {
+    return React.useContext(MUIDialogControllerContext);
 }
 
 /**
@@ -126,14 +142,17 @@ export const MUIDialogController = (props: IProps) => {
 
     const [dialogManager, setDialogManager] = useState<DialogManager | undefined>(undefined);
 
-    // FIXME: use MUIComponentInjector
-
     return (
-
         <>
+
             <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
 
-            {dialogManager && props.children(dialogManager)}
+            {dialogManager && (
+                <MUIDialogControllerContext.Provider value={dialogManager}>
+                    {props.children}
+                </MUIDialogControllerContext.Provider>
+            )}
+
         </>
     );
 

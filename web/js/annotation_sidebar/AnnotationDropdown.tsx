@@ -9,10 +9,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {ConfirmDialogProps} from '../ui/dialogs/ConfirmDialog';
-import {
-    DialogManager,
-    MUIDialogController
-} from "../../spectron0/material-ui/dialogs/MUIDialogController";
+import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogController";
 
 interface IProps {
     readonly id: string;
@@ -26,7 +23,9 @@ interface IProps {
 
 export const AnnotationDropdown = (props: IProps) => {
 
-    const handleDelete = (dialogs: DialogManager) => {
+    const dialogs = useDialogManager();
+
+    const handleDelete = React.useCallback(() => {
 
         const confirmProps: ConfirmDialogProps = {
             title: "Are you sure you want to delete this annotation? ",
@@ -38,41 +37,37 @@ export const AnnotationDropdown = (props: IProps) => {
 
         dialogs.confirm(confirmProps);
 
-    };
+    }, [dialogs]);
 
     return (
 
-        <MUIDialogController>
-            {(dialogs) => (
+        <>
+            {/*FIXME: move to MUIMenuIconButton*/}
+            <MUIMenu button={{
+                                 icon: <MoreVertIcon/>,
+                                 disabled: props.disabled,
+                                 size: 'small'
+                             }}
+                     placement='bottom-end'>
+                <div>
 
-                <>
-                    {/*FIXME: move to MUIMenuIconButton*/}
-                    <MUIMenu button={{
-                                         icon: <MoreVertIcon/>,
-                                         disabled: props.disabled,
-                                         size: 'small'
-                                     }}
-                             placement='bottom-end'>
-                        <div>
+                    {/*TODO: for now don't create the same items as the toolbar */}
 
-                            {/*TODO: for now don't create the same items as the toolbar */}
+                    <MUIMenuItem text="Create comment"
+                                 icon={<CommentIcon/>}
+                                 onClick={() => props.onCreateComment(props.annotation)}/>
 
-                            <MUIMenuItem text="Create comment"
-                                         icon={<CommentIcon/>}
-                                         onClick={() => props.onCreateComment(props.annotation)}/>
+                    <Divider/>
 
-                            <Divider/>
+                    {/*FIXME: need jump to context*/}
+                    {/*FIXME: migrate to MIUMenuDeleteIteon*/}
+                    <MUIMenuItem text="Delete"
+                                 icon={<DeleteIcon/>}
+                                 onClick={() => handleDelete()}/>
+                </div>
+            </MUIMenu>
 
-                            {/*FIXME: migrate to MIUMenuDeleteIteon*/}
-                            <MUIMenuItem text="Delete"
-                                         icon={<DeleteIcon/>}
-                                         onClick={() => handleDelete(dialogs)}/>
-                        </div>
-                    </MUIMenu>
-
-                </>
-            )}
-        </MUIDialogController>
+        </>
 
     );
 };

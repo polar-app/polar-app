@@ -58,6 +58,7 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import DocumentRepositoryTable
     from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTable";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTableActions";
 
 const log = Logger.create();
 
@@ -71,6 +72,8 @@ namespace main {
         readonly selected: ReadonlyArray<number>;
     }
 
+    const documentActions = DocumentRepositoryTableActions.create();
+
     export const Documents = (props: DocumentsProps) => (
 
         <DocumentRepositoryTable data={props.data}
@@ -81,15 +84,14 @@ namespace main {
                                  relatedTagsManager={props.relatedTagsManager}
                                  onOpen={() => console.log('onOpen')}
                                  onShowFile={() => console.log('onShowFile')}
-                                 onRename={() => console.log('onRename')}
-                                 onCopyOriginalURL={() => console.log('onCopyOriginalURL')}
-                                 onCopyFilePath={() => console.log('onCopyFilePath')}
-                                 onDeleted={() => console.log('onDelete')}
+                                 onRename={props.onDocSetTitle}
+                                 onCopyOriginalURL={documentActions.onCopyOriginalURL}
+                                 onCopyFilePath={documentActions.onCopyFilePath}
+                                 onDeleted={props.onDocDeleted}
                                  onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                 onTagged={NULL_FUNCTION}
+                                 onTagged={props.onDocTagged}
                                  onFlagged={() => console.log('onFlagged')}
-                                 onArchived={() => console.log('onArchived')}
-        />
+                                 onArchived={() => console.log('onArchived')}/>
 
         // <DocRepoTable {...props}/>
 
@@ -192,7 +194,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.onSelected = this.onSelected.bind(this);
         this.selectRow = this.selectRow.bind(this);
 
-        this.onMultiTagged = this.onMultiTagged.bind(this);
+        this.onDocTagged = this.onDocTagged.bind(this);
         this.onMultiDeleted = this.onMultiDeleted.bind(this);
 
         this.getSelected = this.getSelected.bind(this);
@@ -227,7 +229,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.docRepoFilters = new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 
         const onSelected = (tags: ReadonlyArray<TagStr>) => this.docRepoFilters.onTagged(tags.map(current => Tags.create(current)));
-        const onDropped = (tag: TagDescriptor) => this.onMultiTagged([tag], DraggingSelectedDocs.get());
+        const onDropped = (tag: TagDescriptor) => this.onDocTagged(DraggingSelectedDocs.get() || [], [tag]);
 
         this.treeState = new TreeState(onSelected, onDropped);
 
@@ -294,14 +296,19 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     }
 
-    private onMultiTagged(tags: ReadonlyArray<Tag>,
-                          repoDocInfos: ReadonlyArray<RepoDocInfo> = this.getSelected()) {
+    private onDocTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>,
+                     tags: ReadonlyArray<Tag>) {
+
+        const doTag = async (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => {
+            await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
+            this.refresh();
+        };
 
         for (const repoDocInfo of repoDocInfos) {
             const existingTags = Object.values(repoDocInfo.tags || {});
             const effectiveTags = Tags.union(existingTags, tags || []);
 
-            this.onDocTagged(repoDocInfo, effectiveTags)
+            doTag(repoDocInfo, effectiveTags)
                 .catch(err => log.error(err));
 
         }
@@ -314,10 +321,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             const existingTags = Object.values(repoDocInfo.tags || {});
             const newTags = Tags.difference(existingTags, [rawTag]);
 
-            // TODO: this does N at once but we should really be using a queue for
-            // this operation.
-            this.onDocTagged(repoDocInfo, newTags)
-                .catch(err => log.error(err));
+            this.onDocTagged([repoDocInfo], newTags)
 
         }
 
@@ -501,7 +505,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             onDocDeleteRequested: repoDocInfos => this.onDocDeleteRequested(repoDocInfos),
             onDocDeleted: repoDocInfos => this.onDocDeleted(repoDocInfos),
             onDocSetTitle: (repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title),
-            onDocTagged: (repoDocInfo, tags) => this.onDocTagged(repoDocInfo, tags),
+            onDocTagged: this.onDocTagged,
             onMultiDeleted: () => this.onMultiDeleted(),
             selectRow: this.selectRow,
             onSelected: selected => this.onSelected(selected),
@@ -556,10 +560,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                      display: 'flex'
                                  }}>
 
-                                <DocRepoButtonBar hasSelected={this.state.selected.length > 0}
-                                                  tagsProvider={tagsProvider}
-                                                  onMultiTagged={tags => this.onMultiTagged(tags)}
-                                                  onMultiDeleted={() => this.onMultiDeleted()}/>
+                                <DocRepoButtonBar tagsProvider={tagsProvider}/>
 
                             </div>
 
@@ -635,15 +636,6 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private onDragEnd() {
         DraggingSelectedDocs.clear();
-    }
-
-    private async onDocTagged(repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) {
-
-        // Analytics.event({category: 'user', action: 'doc-tagged'});
-
-        await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
-        this.refresh();
-
     }
 
     private onDocDeleteRequested(repoDocInfos: ReadonlyArray<RepoDocInfo>) {

@@ -1,10 +1,14 @@
 import * as React from 'react';
-import ReactTable, {Column, ColumnRenderProps, Instance, RowInfo} from "react-table";
+import ReactTable, {
+    Column,
+    ColumnRenderProps,
+    Instance,
+    RowInfo
+} from "react-table";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {SynchronizingDocLoader} from '../util/SynchronizingDocLoader';
 import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
@@ -20,18 +24,19 @@ import {
     ContextMenuWrapper,
     prepareContextMenuHandlers
 } from '@burtonator/react-context-menu-wrapper';
-import {DocDropdownItems, OnRemoveFromFolderCallback} from "../DocDropdownItems";
+import {
+    DocDropdownItems,
+    OnRemoveFromFolderCallback
+} from "../DocDropdownItems";
 import {Filters} from "./DocRepoFilters";
 import {SelectRowType} from "./DocRepoScreen";
 import {TitleCell} from "./cells/TitleCell";
 import {CheckCell} from "./cells/CheckCell";
-import {DocButtonsCell} from "./cells/DocButtonsCell";
 import {ReactTableRowInfo} from "../../../../web/js/ui/react-table/ReactTables";
 import {RepoDocInfos} from "../RepoDocInfos";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {ReactTablePaginationPropsFactory} from "../../../../web/js/ui/react-table/paginators/ReactTablePaginationProps";
 import {Checkbox} from "../../../../web/js/ui/Checkbox";
-import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Devices} from "polar-shared/src/util/Devices";
 import {Provider} from "polar-shared/src/util/Providers";
 
@@ -786,17 +791,19 @@ export interface DocRepoTableProps {
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly relatedTagsManager: RelatedTagsManager;
     readonly synchronizingDocLoader: SynchronizingDocLoader;
+    readonly selectRow: (selectedIdx: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
+
     readonly writeDocInfoTags: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
     readonly deleteDocInfo: (repoDocInfo: RepoDocInfo) => void;
     readonly writeDocInfoTitle: (repoDocInfo: RepoDocInfo, title: string) => Promise<void>;
     readonly writeDocInfo: (docInfo: IDocInfo) => Promise<void>;
+
     readonly onMultiDeleted: () => void;
     readonly onDocDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly onDocDeleteRequested: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
-    readonly onDocTagged: (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => void;
+    readonly onDocTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
     readonly onDocSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly selectRow: (selectedIdx: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly onSelected: (selected: ReadonlyArray<number>) => void;
     readonly onReactTable: (reactTable: Instance) => void;
     readonly refresh: () => void;
