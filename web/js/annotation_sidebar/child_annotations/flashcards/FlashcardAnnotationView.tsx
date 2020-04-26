@@ -10,22 +10,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from '@material-ui/core/CardContent';
 import Divider from "@material-ui/core/Divider";
 
-const log = Logger.create();
-
-const Styles: IStyleMap = {
-
-    barBody: {
-        display: 'flex'
-    },
-
-    barChild: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    }
-
-};
-
-
 const RenderFrontAndBackFields = (props: IProps) => {
 
     const { flashcard } = props;
@@ -66,12 +50,12 @@ const RenderClozeFields = (props: IProps) => {
     const { flashcard } = props;
 
     return (
-        <div>
-            <div className="pb-2 pt-2">
-                    <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
-                    </span>
-            </div>
-        </div>
+        <Card>
+            <CardContent>
+                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
+                </span>
+            </CardContent>
+        </Card>
     );
 
 };
