@@ -23,6 +23,7 @@ import {
 } from "polar-shared/src/util/Functions";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Mappers} from "polar-shared/src/util/Mapper";
+import {useDeleteConfirmation} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 
 interface IDocRepoStore {
 
@@ -235,6 +236,27 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
+interface WithDialogsProps {
+    readonly children: React.ReactNode;
+}
+
+const WithDialogs = (props: WithDialogsProps) => {
+
+    const callbacks = useDocRepoCallbacks();
+
+    const dialogCallbacks = {
+        ...callbacks,
+        onDeleted: useDeleteConfirmation(callbacks.onDeleted)
+    }
+
+    return (
+        <DocRepoCallbacksContext.Provider value={dialogCallbacks}>
+            {props.children}
+        </DocRepoCallbacksContext.Provider>
+    );
+
+}
+
 export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     private eventListener: Callback = NULL_FUNCTION;
@@ -367,7 +389,9 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             <DocRepoStoreContext.Provider value={store}>
                 <DocRepoActionsContext.Provider value={actions}>
                     <DocRepoCallbacksContext.Provider value={callbacks}>
-                        {this.props.children}
+                        <WithDialogs>
+                            {this.props.children}
+                        </WithDialogs>
                     </DocRepoCallbacksContext.Provider>
                 </DocRepoActionsContext.Provider>
             </DocRepoStoreContext.Provider>
