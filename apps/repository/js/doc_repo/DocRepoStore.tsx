@@ -23,6 +23,7 @@ import {
 } from "polar-shared/src/util/Functions";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Mappers} from "polar-shared/src/util/Mapper";
+import {useSharedState} from "../../../../web/js/hooks/use-shared-state";
 
 interface IDocRepoStore {
 
@@ -220,13 +221,19 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
     // order to the results, then update the view + viewPage
 
     const view = Mappers.create(data)
-                        // .map(current => DocRepoFilters2.execute(current, filters))
+                        .map(current => DocRepoFilters2.execute(current, filters))
                         .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
                         .collect()
 
     const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-    return {...tmpState, view, viewPage};
+    console.log(`FIXME: viewPage on page: ${page}: `, viewPage);
+
+    const newState = {...tmpState, view, viewPage};
+
+    console.log("FIXME: setting newState: ", newState);
+
+    return newState;
 
 }
 
@@ -252,15 +259,28 @@ export const DocRepoStore = (props: IProps) => {
 
     // FIXME: how can we have the state update itself?.... createInitialState function??
 
+    // FIXMEL this is bullshit.. I have no idea why this isn't working!!!
+
     const {repoDocMetaLoader, repoDocMetaManager} = props;
     const [state, setState] = useState<IDocRepoStore>({...initialStore});
 
     const doUpdate = () => {
         setTimeout(() => {
             const data = repoDocMetaManager.repoDocInfoIndex.values();
-            setState(reduce({...state, data}));
+            doReduceAndUpdateState({...state, data});
         }, 1)
-    }
+    };
+
+    /**
+     * Update the state but we always have to reduce first.
+     */
+    const doReduceAndUpdateState = (tmpState: IDocRepoStore) => {
+        setTimeout(() => {
+            const newState = reduce({...tmpState});
+            setState(newState);
+        }, 1)
+    };
+
 
     // the debouncer here is VERY important... otherwise we lock up completely
     const eventListener = Debouncers.create(() => {
@@ -275,13 +295,14 @@ export const DocRepoStore = (props: IProps) => {
     });
 
     useComponentWillUnmount(() => {
+        console.log("FIXME unmounted");
         Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(eventListener),
                                       "Failed to remove event listener");
     });
 
-    const selectRow = React.useCallback((selectedIdx: number,
-                                         event: React.MouseEvent,
-                                         type: SelectRowType) => {
+    const selectRow = (selectedIdx: number,
+                       event: React.MouseEvent,
+                       type: SelectRowType) => {
 
         const selected = Callbacks.selectRow(selectedIdx, event, type);
 
@@ -289,28 +310,26 @@ export const DocRepoStore = (props: IProps) => {
             ...state,
             selected: selected || []
         });
-    }, []);
+    };
 
-    const selectedProvider = React.useCallback((): ReadonlyArray<RepoDocInfo> => {
+    const selectedProvider = (): ReadonlyArray<RepoDocInfo> => {
         return arrayStream(state.selected)
             .map(current => state.view[current])
             .collect();
-    }, []);
+    };
 
-    const setPage = React.useCallback((page: number) => {
+    const setPage = (page: number) => {
 
         console.log("FIXME: setting page with state: ", state);
 
-        // FIXME: the wrong state is being referenced here...
-
-        setState({
+        doReduceAndUpdateState({
             ...state,
-            page
+            page,
+            selected: []
         });
+    };
 
-        // FIXME as  soon as I make the state a dependency this updated properly
-        //
-    }, [state]);
+    console.log("FIXME555: computing new store from state: ", state);
 
     const store: IDocRepoStore = {
         ...state,

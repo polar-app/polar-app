@@ -1,6 +1,6 @@
 interface InternalSharedState<T> {
-    readonly iter: number;
-    readonly value: T;
+    iter: number;
+    value: T;
 }
 
 export interface SharedState<T> {
@@ -17,7 +17,7 @@ export interface SharedState<T> {
  */
 export function useSharedState<T>(value: T): [SharedState<T>, (value: T) => void] {
 
-    let state: InternalSharedState<T> = {
+    const state: InternalSharedState<T> = {
         iter: 0,
         value
     };
@@ -26,10 +26,9 @@ export function useSharedState<T>(value: T): [SharedState<T>, (value: T) => void
 
         // update the result so it can be referenced again next time and return
         // the updated state
-        state = {
-            iter: state.iter + 1,
-            value,
-        }
+
+        state.iter = state.iter + 1;
+        state.value = value;
 
         return state;
 
