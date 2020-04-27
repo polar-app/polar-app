@@ -12,6 +12,7 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 interface DocRepoStore {
 
@@ -60,6 +61,10 @@ interface DocRepoStore {
     readonly rowsPerPage: number;
 
     readonly filters: DocRepoFilters2.Filters;
+
+    readonly setFilters: (filters: DocRepoFilters2.Filters) => {
+
+    }
 
 }
 
@@ -126,7 +131,26 @@ function reduce(tmpState: DocRepoStore) {
 
 }
 
+// function createInitialState() {
+//
+//     const state = {
+//         ...initialState
+//     };
+//
+//     return {
+//         ...state,
+//     }
+//
+// }
+
 export const DocRepoStore = (props: IProps) => {
+
+    // FIXME: what functions do I need
+
+    // delete(repoDocInfos: ReadonlyArray<RepoDocInfo>)
+    //
+
+    // FIXME: how can we have the state update itself?.... createInitialState function??
 
     const {repoDocMetaLoader, repoDocMetaManager} = props;
     const [state, setState] = useState<DocRepoStore>({...initialState});
@@ -138,14 +162,12 @@ export const DocRepoStore = (props: IProps) => {
         }, 1)
     }
 
-    const eventListener = () => {
-
-        // FIXME: use a debouncer here...
+    // the debouncer here is VERY important... otherwise we lock up completely
+    const eventListener = Debouncers.create(() => {
         // FIXME: we seem to get aLL the docs all at once even though
         // I'm getting the callbacks properly..
         doUpdate();
-
-    };
+    });
 
     useComponentDidMount(() => {
         doUpdate();
