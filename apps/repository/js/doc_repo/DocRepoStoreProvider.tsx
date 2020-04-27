@@ -19,7 +19,7 @@ import { Arrays } from "polar-shared/src/util/Arrays";
 import { SetArrays } from "polar-shared/src/util/SetArrays";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-interface DocRepoState {
+interface IDocRepoState {
 
     readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
 
@@ -73,7 +73,7 @@ interface DocRepoState {
 
 }
 
-export interface DocRepoStore extends DocRepoState {
+export interface IDocRepoStore extends IDocRepoState {
 
     readonly selectedProvider: Provider<ReadonlyArray<number>>;
 
@@ -87,7 +87,7 @@ export function useDocRepoStore() {
     return React.useContext(DocRepoStoreContext);
 }
 
-const initialStore: DocRepoStore = {
+const initialStore: IDocRepoStore = {
     data: [],
     view: [],
     viewPage: [],
@@ -110,7 +110,7 @@ const initialStore: DocRepoStore = {
     selectRow: NULL_FUNCTION
 }
 
-export const DocRepoStoreContext = React.createContext<DocRepoStore>(initialStore)
+export const DocRepoStoreContext = React.createContext<IDocRepoStore>(initialStore)
 
 function useComponentDidMount<T>(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
@@ -131,7 +131,7 @@ interface IProps {
 /**
  * Apply a reducer a temporary state, to compute the effective state.
  */
-function reduce(tmpState: DocRepoState): DocRepoState {
+function reduce(tmpState: IDocRepoState): IDocRepoState {
 
     // compute the view, then the viewPage
 
@@ -160,7 +160,7 @@ function reduce(tmpState: DocRepoState): DocRepoState {
 //
 // }
 
-export const DocRepoStore = (props: IProps) => {
+export const DocRepoStoreProvider = (props: IProps) => {
 
     // FIXME: what functions do I need
 
@@ -170,7 +170,7 @@ export const DocRepoStore = (props: IProps) => {
     // FIXME: how can we have the state update itself?.... createInitialState function??
 
     const {repoDocMetaLoader, repoDocMetaManager} = props;
-    const [state, setState] = useState<DocRepoState>({...initialStore});
+    const [state, setState] = useState<IDocRepoState>({...initialStore});
 
     const doUpdate = () => {
         setTimeout(() => {
@@ -211,7 +211,7 @@ export const DocRepoStore = (props: IProps) => {
         });
     }
 
-    const store: DocRepoStore = {
+    const store: IDocRepoStore = {
         ...state,
         selectedProvider,
         selectRow
@@ -222,8 +222,6 @@ export const DocRepoStore = (props: IProps) => {
             {props.children}
         </DocRepoStoreContext.Provider>
     );
-
-
 
 }
 

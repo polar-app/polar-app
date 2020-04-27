@@ -38,7 +38,7 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
-import {DocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStoreContext";
+import {DocRepoStoreProvider} from "../../../../apps/repository/js/doc_repo/DocRepoStoreProvider";
 
 interface IProps {
     readonly app: App;

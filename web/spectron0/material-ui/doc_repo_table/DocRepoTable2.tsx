@@ -20,7 +20,7 @@ import {
     MUIDialogController,
     useDialogManager
 } from "../dialogs/MUIDialogController";
-import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStoreContext";
+import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStoreProvider";
 
 interface IProps {
 
