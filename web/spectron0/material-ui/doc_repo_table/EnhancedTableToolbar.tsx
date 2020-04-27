@@ -51,7 +51,6 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
 export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const store = useDocRepoStore();
-    const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
 
     const {rowsPerPage, viewPage} = store;
@@ -63,10 +62,10 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
     // FIXME: migrate these to callbacks that use getSelected...
 
     const globalKeyHandlers = {
-        TAG: () => callbacks.onTagged,
-        DELETE: () => callbacks.onDeleted,
-        FLAG: () => callbacks.onFlagged,
-        ARCHIVE: () => callbacks.onArchived
+        TAG: callbacks.onTagged,
+        DELETE: callbacks.onDeleted,
+        FLAG: callbacks.onFlagged,
+        ARCHIVE: callbacks.onArchived
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
