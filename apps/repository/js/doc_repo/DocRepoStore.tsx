@@ -452,8 +452,10 @@ namespace Callbacks {
             }
 
             if (type === 'context') {
+                console.log("FIXME1: ", selected, selectedIdx);
 
                 if (selected.includes(selectedIdx)) {
+                    console.log("FIXME2: ");
                     return 'none';
                 }
 
@@ -495,7 +497,7 @@ namespace Callbacks {
             return [selectedIdx];
         };
 
-        const doStrategy = (): SelectedRows | undefined => {
+        const doStrategy = (): SelectedRows => {
 
             const strategy = computeStrategy();
 
@@ -507,7 +509,7 @@ namespace Callbacks {
                 case "toggle":
                     return doStrategyToggle();
                 case "none":
-                    return undefined;
+                    return selected;
             }
 
         };
