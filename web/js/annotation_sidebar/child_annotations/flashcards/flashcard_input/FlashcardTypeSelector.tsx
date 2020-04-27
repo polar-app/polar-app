@@ -1,9 +1,6 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import Input from 'reactstrap/lib/Input';
-
-const log = Logger.create();
 
 class Styles {
 

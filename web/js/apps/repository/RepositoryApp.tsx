@@ -16,8 +16,6 @@ import Input from 'reactstrap/lib/Input';
 import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
-import DocRepoScreen
-    from '../../../../apps/repository/js/doc_repo/DocRepoScreen';
 import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
 import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
 import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
@@ -37,11 +35,9 @@ import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 import {App} from "./AppInitializer";
-import {createMuiTheme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import {ThemeType} from "../../mui/context/MUIThemeTypeContext";
-import createPersistedState from "use-persisted-state";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
+import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
 
 interface IProps {
     readonly app: App;
@@ -65,12 +61,12 @@ export const RepositoryApp = (props: IProps) => {
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(docRepo) =>
-                                             <DocRepoScreen
+                                             <DocRepoScreen2
                                                  persistenceLayerProvider={app.persistenceLayerProvider}
                                                  persistenceLayerController={app.persistenceLayerController}
                                                  tags={docRepo.docTags}
                                                  docRepo={docRepo}
-                                                 updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                                 // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                                  repoDocMetaManager={repoDocMetaManager}
                                                  repoDocMetaLoader={repoDocMetaLoader}/>
                                          }/>

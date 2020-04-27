@@ -3,7 +3,7 @@ import {CancelButton} from "../CancelButton";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import {RichTextFeatureIntro} from "../../RichTextFeatureIntro";
 import {RichTextArea} from "../../RichTextArea";
-import {Button} from "reactstrap";
+import Button from "@material-ui/core/Button";
 
 export class EditTextHighlight extends React.PureComponent<IProps, IState> {
 
@@ -51,18 +51,13 @@ export class EditTextHighlight extends React.PureComponent<IProps, IState> {
                             <div className="flexbar-right mt-1 mb-1">
                                 <CancelButton onClick={() => this.props.onCancel()}/>
 
-                                <Button color="clear"
-                                        size="md"
-                                        className="ml-1"
-                                        onClick={() => this.props.onReset()}>
+                                <Button onClick={() => this.props.onReset()}>
 
                                     Revert
 
                                 </Button>
 
                                 <Button color="primary"
-                                        size="md"
-                                        className="ml-1"
                                         onClick={() => this.props.onChanged(this.html)}>
 
                                     Change

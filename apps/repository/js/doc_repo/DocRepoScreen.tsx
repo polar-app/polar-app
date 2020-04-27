@@ -265,6 +265,8 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
 
     private async initAsync(): Promise<void> {
 
+        // FIXME: this should be completely replaced with context
+
         const settingProvider = await SettingsStore.load();
 
         log.info("Settings loaded: ", settingProvider);
