@@ -3,7 +3,6 @@ import {useState} from 'react';
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import DocRepoTable2 from "./doc_repo_table/DocRepoTable2";
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
 import {ContextMenus} from "./ContextMenus";
 import {configure, GlobalHotKeys} from "react-hotkeys";

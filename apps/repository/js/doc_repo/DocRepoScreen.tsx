@@ -31,7 +31,7 @@ import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {ProgressMessages} from '../../../../web/js/ui/progress_bar/ProgressMessages';
 import {Dialogs} from '../../../../web/js/ui/dialogs/Dialogs';
 import {DocRepoButtonBar} from './DocRepoButtonBar';
-import {DocRepoTableProps} from './DocRepoTable';
+import {DocRepoTableProps, DocRepoTable} from './DocRepoTable';
 import {Instance} from "react-table";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -55,8 +55,6 @@ import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import DocRepoTable2
-    from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTableActions";
 
@@ -73,23 +71,24 @@ namespace main {
     const documentActions = DocumentRepositoryTableActions.create();
 
     export const Documents = (props: DocumentsProps) => (
-
-        <DocRepoTable2 data={props.data}
-                       selected={props.selected}
-                       selectRow={props.selectRow}
-                       selectRows={props.onSelected}
-                       tagsProvider={props.tagsProvider}
-                       relatedTagsManager={props.relatedTagsManager}
-                       onOpen={() => console.log('onOpen')}
-                       onShowFile={() => console.log('onShowFile')}
-                       onRename={props.onDocSetTitle}
-                       onCopyOriginalURL={documentActions.onCopyOriginalURL}
-                       onCopyFilePath={documentActions.onCopyFilePath}
-                       onDeleted={props.onDocDeleted}
-                       onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                       onTagged={props.onDocTagged}
-                       onFlagged={() => console.log('onFlagged')}
-                       onArchived={() => console.log('onArchived')}/>
+        <>
+            {/*<DocRepoTable data={props.data}*/}
+            {/*              selected={props.selected}*/}
+            {/*              selectRow={props.selectRow}*/}
+            {/*              // selectRows={props.onSelected}*/}
+            {/*              tagsProvider={props.tagsProvider}*/}
+            {/*              relatedTagsManager={props.relatedTagsManager}*/}
+            {/*              // onOpen={() => console.log('onOpen')}*/}
+            {/*              // onShowFile={() => console.log('onShowFile')}*/}
+            {/*              onRename={props.onDocSetTitle}*/}
+            {/*              onCopyOriginalURL={documentActions.onCopyOriginalURL}*/}
+            {/*              onCopyFilePath={documentActions.onCopyFilePath}*/}
+            {/*              onDeleted={props.onDocDeleted}*/}
+            {/*              onCopyDocumentID={() => console.log('onCopyDocumentID')}*/}
+            {/*              onTagged={props.onDocTagged}*/}
+            {/*              onFlagged={() => console.log('onFlagged')}*/}
+            {/*              onArchived={() => console.log('onArchived')}/>*/}
+        </>
 
     );
 

@@ -7,22 +7,23 @@ import React, {useEffect, useState} from "react";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Provider} from "polar-shared/src/util/Providers";
-import {Tag} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {SelectRowType} from "./DocRepoScreen";
-import { Numbers } from "polar-shared/src/util/Numbers";
-import { Arrays } from "polar-shared/src/util/Arrays";
-import { SetArrays } from "polar-shared/src/util/SetArrays";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import {Numbers} from "polar-shared/src/util/Numbers";
+import {Arrays} from "polar-shared/src/util/Arrays";
+import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {
+    Callback,
+    Callback1,
+    NULL_FUNCTION
+} from "polar-shared/src/util/Functions";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-interface IDocRepoState {
-
-    readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
+interface IDocRepoStore {
 
     readonly data: ReadonlyArray<RepoDocInfo>;
 
@@ -68,17 +69,9 @@ interface IDocRepoState {
 
     readonly filters: DocRepoFilters2.Filters;
 
-    // readonly setFilters: (filters: DocRepoFilters2.Filters) => {
-    //
-    // }
-
 }
 
-interface IDocRepoActions {
-
-}
-
-export interface IDocRepoStore extends IDocRepoState {
+export interface IDocRepoActions {
 
     readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>;
 
@@ -86,10 +79,44 @@ export interface IDocRepoStore extends IDocRepoState {
                          event: React.MouseEvent,
                          type: SelectRowType) => void;
 
+    readonly setPage: (page: number) => void;
+
+    // FIXME: not sure if these are actually needed or we can use Callbacks
+    // here...
+    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onOpen: Callback1<RepoDocInfo>;
+    readonly onRename: Callback1<RepoDocInfo>;
+    readonly onShowFile: Callback1<RepoDocInfo>;
+    readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
+    readonly onCopyFilePath: Callback1<RepoDocInfo>;
+    readonly onCopyDocumentID: Callback1<RepoDocInfo>;
+    readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+
+
+    // readonly setFilters: (filters: DocRepoFilters2.Filters) => {
+    //
+    // }
+
 }
 
-export function useDocRepoStore() {
-    return React.useContext(DocRepoStoreContext);
+/**
+ * These take the currently selected items, and use the store ctions on them
+ * directly so that the logic around selected vs first is centralized in
+ * the store.
+ */
+interface IDocRepoCallbacks {
+    readonly onTagged: Callback;
+    readonly onOpen: Callback;
+    readonly onRename: Callback;
+    readonly onShowFile: Callback;
+    readonly onCopyOriginalURL: Callback;
+    readonly onCopyFilePath: Callback;
+    readonly onCopyDocumentID: Callback;
+    readonly onDeleted: Callback;
+    readonly onArchived: Callback;
+    readonly onFlagged: Callback;
 }
 
 const initialStore: IDocRepoStore = {
@@ -107,15 +134,59 @@ const initialStore: IDocRepoStore = {
     orderBy: 'progress',
     order: 'desc',
     page: 0,
-    rowsPerPage: 24,
+    rowsPerPage: 25,
 
     filters: {},
+}
+
+const initialActions: IDocRepoActions = {
+    selectRow: NULL_FUNCTION,
     selectedProvider: () => [],
-    tagsProvider: () => [],
-    selectRow: NULL_FUNCTION
+
+    setPage: NULL_FUNCTION,
+
+    onTagged: NULL_FUNCTION,
+    onOpen: NULL_FUNCTION,
+    onRename: NULL_FUNCTION,
+    onShowFile: NULL_FUNCTION,
+    onCopyOriginalURL: NULL_FUNCTION,
+    onCopyFilePath: NULL_FUNCTION,
+    onCopyDocumentID: NULL_FUNCTION,
+    onDeleted: NULL_FUNCTION,
+    onArchived: NULL_FUNCTION,
+    onFlagged: NULL_FUNCTION,
+}
+
+const initialCallbacks: IDocRepoCallbacks = {
+    onTagged: NULL_FUNCTION,
+    onOpen: NULL_FUNCTION,
+    onRename: NULL_FUNCTION,
+    onShowFile: NULL_FUNCTION,
+    onCopyOriginalURL: NULL_FUNCTION,
+    onCopyFilePath: NULL_FUNCTION,
+    onCopyDocumentID: NULL_FUNCTION,
+    onDeleted: NULL_FUNCTION,
+    onArchived: NULL_FUNCTION,
+    onFlagged: NULL_FUNCTION,
 }
 
 export const DocRepoStoreContext = React.createContext<IDocRepoStore>(initialStore)
+
+export const DocRepoActionsContext = React.createContext<IDocRepoActions>(initialActions)
+
+export const DocRepoCallbacksContext = React.createContext<IDocRepoCallbacks>(initialCallbacks)
+
+export function useDocRepoStore() {
+    return React.useContext(DocRepoStoreContext);
+}
+
+export function useDocRepoActions() {
+    return React.useContext(DocRepoActionsContext);
+}
+
+export function useDocRepoCallbacks() {
+    return React.useContext(DocRepoCallbacksContext);
+}
 
 function useComponentDidMount<T>(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
@@ -136,7 +207,7 @@ interface IProps {
 /**
  * Apply a reducer a temporary state, to compute the effective state.
  */
-function reduce(tmpState: IDocRepoState): IDocRepoState {
+function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     // compute the view, then the viewPage
 
@@ -176,7 +247,7 @@ export const DocRepoStore = (props: IProps) => {
     // FIXME: how can we have the state update itself?.... createInitialState function??
 
     const {repoDocMetaLoader, repoDocMetaManager} = props;
-    const [state, setState] = useState<IDocRepoState>({...initialStore});
+    const [state, setState] = useState<IDocRepoStore>({...initialStore});
 
     const doUpdate = () => {
         setTimeout(() => {
@@ -220,18 +291,59 @@ export const DocRepoStore = (props: IProps) => {
             .collect();
     }, []);
 
+    const setPage = React.useCallback((page: number) => {
+
+        setState({
+            ...state,
+            page
+        });
+
+    }, []);
+
     const store: IDocRepoStore = {
         ...state,
-        selectedProvider,
-        selectRow
     };
+
+    const actions: IDocRepoActions = {
+        ...initialActions,
+        selectedProvider,
+        selectRow,
+        setPage
+    };
+
+    const callbacks = React.useMemo((): IDocRepoCallbacks => {
+
+        // must be created on init we have a stable copy
+        const selected = selectedProvider();
+        const first = selected.length >= 1 ? selected[0] : undefined;
+
+        return {
+
+            onOpen: () => actions.onOpen(first!),
+            onRename: () => actions.onRename(first!),
+            onShowFile: () => actions.onShowFile(first!),
+            onCopyOriginalURL: () => actions.onCopyOriginalURL(first!),
+            onCopyFilePath: () => actions.onCopyFilePath(first!),
+            onCopyDocumentID: () => actions.onCopyDocumentID(first!),
+            onDeleted: () => actions.onDeleted(selected),
+            onArchived: () => actions.onArchived(selected),
+            onFlagged: () => actions.onFlagged(selected),
+            onTagged: () => actions.onTagged(selected),
+
+        };
+
+    }, []);
 
     // FIXME now the main problem is whether we're going to create actions
     // implementations each time... and how would I know..
 
     return (
         <DocRepoStoreContext.Provider value={store}>
-            {props.children}
+            <DocRepoActionsContext.Provider value={actions}>
+                <DocRepoCallbacksContext.Provider value={callbacks}>
+                {props.children}
+                </DocRepoCallbacksContext.Provider>
+            </DocRepoActionsContext.Provider>
         </DocRepoStoreContext.Provider>
     );
 

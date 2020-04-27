@@ -23,6 +23,10 @@ import {DocActions} from "./DocActions";
 import {Provider} from "polar-shared/src/util/Providers";
 import {GlobalHotKeys} from "react-hotkeys";
 import {AutoBlur} from "./AutoBlur";
+import {
+    useDocRepoActions, useDocRepoCallbacks,
+    useDocRepoStore
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 // FIXME:  delete doesn't work.
 
@@ -33,50 +37,38 @@ const globalKeyMap = {
     ARCHIVE: 'a'
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            // paddingLeft: theme.spacing(2),
-            // paddingRight: theme.spacing(1),
-        },
-        highlight:
-            theme.palette.type === 'light'
-                ? {
-                    color: theme.palette.secondary.main,
-                    backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                }
-                : {
-                    color: theme.palette.text.primary,
-                    backgroundColor: theme.palette.secondary.dark,
-                },
-        title: {
-            flex: '1 1 100%',
-        },
-    }),
-);
-
 interface IProps extends DocActions.DocToolbar.Callbacks {
     readonly data: ReadonlyArray<RepoDocInfo>;
     readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>
     readonly numSelected: number;
     readonly page: number;
     readonly rowsOnPage: number;
-    readonly rowsPerPage: number;
     readonly onChangePage: (page: number) => void;
     readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
     readonly onSelectAllRows: (selected: boolean) => void;
 }
 
 export const EnhancedTableToolbar = (props: IProps) => {
-    const classes = useStyles();
-    const { numSelected, rowsOnPage, rowsPerPage, page, data } = props;
-    const actions = DocActions.createDocToolbar(props.selectedProvider, props);
+
+    const store = useDocRepoStore();
+    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
+
+    const {rowsPerPage, viewPage} = store;
+
+    const { numSelected, page, data } = props;
+
+    const rowsOnPage = viewPage.length;
+
+    // const actions = DocActions.createDocToolbar(props.selectedProvider, props);
+
+    // FIXME: migrate these to callbacks that use getSelected...
 
     const globalKeyHandlers = {
-        TAG: () => actions.onTagged(),
-        DELETE: () => actions.onDelete(),
-        FLAG: () => actions.onFlagged(),
-        ARCHIVE: () => actions.onArchived()
+        TAG: () => callbacks.onTagged,
+        DELETE: () => callbacks.onDeleted,
+        FLAG: () => callbacks.onFlagged,
+        ARCHIVE: () => callbacks.onArchived
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -146,7 +138,7 @@ export const EnhancedTableToolbar = (props: IProps) => {
 
                                     <Grid item>
                                         <MUIDocDeleteButton size="medium"
-                                                            onClick={actions.onDelete}/>
+                                                            onClick={callbacks.onDeleted}/>
                                     </Grid>
                                 </>
                             )}

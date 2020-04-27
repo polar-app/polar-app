@@ -20,7 +20,10 @@ import {
     MUIDialogController,
     useDialogManager
 } from "../dialogs/MUIDialogController";
-import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import {
+    useDocRepoActions,
+    useDocRepoStore
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 interface IProps {
 
@@ -56,12 +59,12 @@ interface IProps {
 export const DocRepoTable2 = () => {
 
     const state = useDocRepoStore();
+    const actions = useDocRepoActions();
     const dialogs = useDialogManager();
 
-    const {
-        order, orderBy, page, rowsPerPage, view,
-        viewPage, selected, selectedProvider, selectRow
-    } = state;
+    const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = state;
+
+    const {selectedProvider, selectRow} = actions;
 
     const dense = true;
 
@@ -72,18 +75,6 @@ export const DocRepoTable2 = () => {
         //     order,
         //     orderBy
         // })
-    };
-
-    const setPage = (page: number) => {
-
-        // this.setState({
-        //     ...this.state,
-        //     page
-        // });
-        //
-        // // FIXME: this would trigger two renders right?
-        // this.props.selectRows([]);
-
     };
 
     const handleRequestSort = (event: React.MouseEvent<unknown>,
@@ -106,10 +97,6 @@ export const DocRepoTable2 = () => {
         //
         // this.props.selectRows([]);
 
-    };
-
-    const handleChangePage = (newPage: number) => {
-        setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (rowsPerPage: number) => {
@@ -138,18 +125,18 @@ export const DocRepoTable2 = () => {
                        flexDirection: 'column'
                    }}>
                 <MUIDialogController>
-                        <MUIDocContextMenu selectedProvider={selectedProvider}
+                        <MUIDocContextMenu {...actions}
                                            render={rawContextMenuHandler => {
 
                         return (
                             <>
+                                {/*FIXME: some of these don't need to be passed as I can use store and actions*/}
                                 <EnhancedTableToolbar data={view}
                                                       // selectedProvider={selectedProvider}
                                                       selectedProvider={() => []}
                                                       numSelected={selected.length}
                                                       rowsOnPage={viewPage.length}
-                                                      rowsPerPage={rowsPerPage}
-                                                      onChangePage={handleChangePage}
+                                                      onChangePage={actions.setPage}
                                                       onChangeRowsPerPage={handleChangeRowsPerPage}
                                                       onSelectAllRows={handleSelectAllRows}
                                                       page={page}
@@ -194,7 +181,7 @@ export const DocRepoTable2 = () => {
                                                             rawContextMenuHandler={rawContextMenuHandler}
                                                             selectRow={selectRow}
                                                             selected={selected.includes(viewIndex)}
-                                                            onTagged={NULL_FUNCTION}
+                                                            {...actions}
                                                             row={row}
                                                             selectedProvider={selectedProvider}
                                                         />
@@ -324,5 +311,5 @@ export const DocRepoTable2 = () => {
     //     });
     //
     // }
-
-};
+//
+// };

@@ -116,9 +116,10 @@ interface IProps extends DocActions.DocContextMenu.Callbacks {
     readonly rawContextMenuHandler: ContextMenuHandler;
     readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly selected: boolean;
-    readonly onOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly row: RepoDocInfo;
     readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+
+    readonly onOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 
     readonly onDragStart?: () => void;
