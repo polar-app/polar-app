@@ -217,8 +217,6 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     // compute the view, then the viewPage
 
-    console.log("FIXME: working with tmpState: ", tmpState);
-
     const {data, page, rowsPerPage, order, orderBy, filters} = tmpState;
 
     // Now that we have new data, we have to also apply the filters and sort
@@ -261,6 +259,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     public componentDidMount(): void {
         const {repoDocMetaLoader} = this.props;
+        this.doUpdate();
         repoDocMetaLoader.addEventListener(this.eventListener)
     }
 
