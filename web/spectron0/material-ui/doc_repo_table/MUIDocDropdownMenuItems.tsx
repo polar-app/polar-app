@@ -20,11 +20,19 @@ import {
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
-export const MUIDocDropdownMenuItems = React.memo(() => {
 
-    const store = useDocRepoStore();
+interface IProps {
+
+}
+
+export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProps, ref) => {
+
     const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
+
+    // FIXME: break out selected into a dedicated component... these functions
+    // only have to be injected ONCE not on every render though to be careful
+
 
     const selected = actions.selectedProvider();
 
@@ -111,4 +119,4 @@ export const MUIDocDropdownMenuItems = React.memo(() => {
             </MenuItem>
         </>
     );
-});
+}));
