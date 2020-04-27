@@ -60,11 +60,6 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const rowsOnPage = viewPage.length;
 
-    console.log("FIXME: data.lenght", data.length);
-    console.log("FIXME2: ", {page, viewPage, data});
-
-    // const actions = DocActions.createDocToolbar(props.selectedProvider, props);
-
     // FIXME: migrate these to callbacks that use getSelected...
 
     const globalKeyHandlers = {

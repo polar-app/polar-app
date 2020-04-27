@@ -140,35 +140,40 @@ const initialStore: IDocRepoStore = {
     filters: {},
 }
 
+// create tracer function for actions...
+function tracer(name: string) {
+    return (arg?: any) => console.info(name, arg);
+}
+
 const initialActions: IDocRepoActions = {
     selectRow: NULL_FUNCTION,
     selectedProvider: () => [],
 
     setPage: NULL_FUNCTION,
 
-    onTagged: NULL_FUNCTION,
-    onOpen: NULL_FUNCTION,
-    onRename: NULL_FUNCTION,
-    onShowFile: NULL_FUNCTION,
-    onCopyOriginalURL: NULL_FUNCTION,
-    onCopyFilePath: NULL_FUNCTION,
-    onCopyDocumentID: NULL_FUNCTION,
-    onDeleted: NULL_FUNCTION,
-    onArchived: NULL_FUNCTION,
-    onFlagged: NULL_FUNCTION,
+    onTagged: tracer('onTagged'),
+    onOpen: tracer('onOpen'),
+    onRename: tracer('onRename'),
+    onShowFile: tracer('onShowFile'),
+    onCopyOriginalURL: tracer('onCopyOriginalURL'),
+    onCopyFilePath: tracer('onCopyFilePath'),
+    onCopyDocumentID: tracer('onCopyDocumentID'),
+    onDeleted: tracer('onDeleted'),
+    onArchived: tracer('onArchived'),
+    onFlagged: tracer('onFlagged'),
 }
 
 const initialCallbacks: IDocRepoCallbacks = {
-    onTagged: NULL_FUNCTION,
-    onOpen: NULL_FUNCTION,
-    onRename: NULL_FUNCTION,
-    onShowFile: NULL_FUNCTION,
-    onCopyOriginalURL: NULL_FUNCTION,
-    onCopyFilePath: NULL_FUNCTION,
-    onCopyDocumentID: NULL_FUNCTION,
-    onDeleted: NULL_FUNCTION,
-    onArchived: NULL_FUNCTION,
-    onFlagged: NULL_FUNCTION,
+    onTagged: tracer('onTagged'),
+    onOpen: tracer('onOpen'),
+    onRename: tracer('onRename'),
+    onShowFile: tracer('onShowFile'),
+    onCopyOriginalURL: tracer('onCopyOriginalURL'),
+    onCopyFilePath: tracer('onCopyFilePath'),
+    onCopyDocumentID: tracer('onCopyDocumentID'),
+    onDeleted: tracer('onDeleted'),
+    onArchived: tracer('onArchived'),
+    onFlagged: tracer('onFlagged'),
 }
 
 export const DocRepoStoreContext = React.createContext<IDocRepoStore>(initialStore)
@@ -226,11 +231,7 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-    console.log(`FIXME: viewPage on page: ${page}: `, viewPage);
-
     const newState = {...tmpState, view, viewPage};
-
-    console.log("FIXME: setting newState: ", newState);
 
     return newState;
 
