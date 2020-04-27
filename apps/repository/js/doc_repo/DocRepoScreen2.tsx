@@ -5,7 +5,7 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import React from "react";
-import { DocRepoStore } from "./DocRepoStoreContext";
+import {DocRepoStore, useDocRepoStore} from "./DocRepoStoreContext";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 import {RepoHeader} from "../repo_header/RepoHeader";
@@ -146,75 +146,77 @@ export const DocRepoScreen2 = (props: IProps) => {
 
     const tagsProvider = props.tags;
 
+    const store = useDocRepoStore();
+
     return (
-        <DocRepoStore {...props}>
 
-            <FixedNav id="doc-repository">
+        <FixedNav id="doc-repository">
 
-                <RepositoryTour/>
-                <header>
+            <RepositoryTour/>
+            <header>
 
-                    <RepoHeader toggle={(
-                                    <Link to="#folders">
-                                        <Button color="clear">
-                                            <i className="fas fa-bars"/>
-                                        </Button>
-                                    </Link>
-                                )}
-                                persistenceLayerProvider={props.persistenceLayerProvider}
-                                persistenceLayerController={props.persistenceLayerController}/>
+                <RepoHeader toggle={(
+                                <Link to="#folders">
+                                    <Button color="clear">
+                                        <i className="fas fa-bars"/>
+                                    </Button>
+                                </Link>
+                            )}
+                            persistenceLayerProvider={props.persistenceLayerProvider}
+                            persistenceLayerController={props.persistenceLayerController}/>
 
-                    <MUIPaperToolbar id="header-filter"
-                                     borderBottom
-                                     padding={1}>
+                <MUIPaperToolbar id="header-filter"
+                                 borderBottom
+                                 padding={1}>
 
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center'
-                        }}>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
 
-                            <div className=""
-                                 style={{
-                                     whiteSpace: 'nowrap',
-                                     display: 'flex'
-                                 }}>
+                        <div className=""
+                             style={{
+                                 whiteSpace: 'nowrap',
+                                 display: 'flex'
+                             }}>
 
-                                <DocRepoButtonBar tagsProvider={tagsProvider}/>
-
-                            </div>
-
-                            <div style={{marginLeft: 'auto'}}>
-
-                                <DocRepoFilterBar onToggleFlaggedOnly={NULL_FUNCTION}
-                                                  onToggleFilterArchived={NULL_FUNCTION}
-                                                  onFilterByTitle={NULL_FUNCTION}
-                                                  refresher={NULL_FUNCTION}
-                                                  filteredTags={new FilteredTags()}
-                                                  docSidebarVisible={false}
-                                                  onDocSidebarVisible={NULL_FUNCTION}
-                                                  right={
-                                                      <div className="d-none-phone d-none-tablet"
-                                                           style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                                          {/*<DocRepoTableDropdown id="table-dropdown"*/}
-                                                          {/*                      options={Object.values(this.state.columns)}*/}
-                                                          {/*                      onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>*/}
-                                                      </div>
-                                                  }
-                                />
-
-                            </div>
+                            <DocRepoButtonBar tagsProvider={tagsProvider}/>
 
                         </div>
-                    </MUIPaperToolbar>
 
-                    <MessageBanner/>
+                        <div style={{marginLeft: 'auto'}}>
 
-                </header>
+                            <DocRepoFilterBar onToggleFlaggedOnly={NULL_FUNCTION}
+                                              onToggleFilterArchived={NULL_FUNCTION}
+                                              onFilterByTitle={NULL_FUNCTION}
+                                              refresher={NULL_FUNCTION}
+                                              filteredTags={new FilteredTags()}
+                                              docSidebarVisible={false}
+                                              onDocSidebarVisible={NULL_FUNCTION}
+                                              right={
+                                                  <div className="d-none-phone d-none-tablet"
+                                                       style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 
-            </FixedNav>
+                                                      {/*<DocRepoTableDropdown id="table-dropdown"*/}
+                                                      {/*                      options={Object.values(this.state.columns)}*/}
+                                                      {/*                      onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>*/}
+                                                  </div>
+                                              }
+                            />
 
-        </DocRepoStore>
+                        </div>
+
+                    </div>
+                </MUIPaperToolbar>
+
+                <MessageBanner/>
+
+            </header>
+
+            FIXME: nr data items {store.data.length}
+
+        </FixedNav>
+
 
     )
 

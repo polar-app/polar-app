@@ -127,11 +127,20 @@ export const DocRepoStore = (props: IProps) => {
     useComponentDidMount(() => {
 
         const eventListener = () => {
-            const data = repoDocMetaManager.repoDocInfoIndex.values();
-            setState(reduce({...state, data}));
+
+            // FIXME: use a debouncer here...
+            // FIXME: we seem to get aLL the docs all at once even though
+            // I'm getting the callbacks properly.. 
+
+            setTimeout(() => {
+                const data = repoDocMetaManager.repoDocInfoIndex.values();
+                setState(reduce({...state, data}));
+            }, 1)
+
         };
 
-        // repoDocMetaLoader.addEventListener(eventListener);
+        repoDocMetaLoader.addEventListener(eventListener);
+
         //
         // useComponentWillUnmount(() => repoDocMetaLoader.removeEventListener(eventListener));
 

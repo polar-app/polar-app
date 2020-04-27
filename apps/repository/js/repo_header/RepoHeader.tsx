@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {LinkDropdown} from './LinkDropdown';
 import {HelpDropdown} from './HelpDropdown';
-import {ChromeExtensionInstallButton} from '../ChromeExtensionInstallButton';
-import {Notifications} from '../../../../web/js/ui/notifications/Notifications';
 import {RepoNavbar} from "../RepoNavbar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
@@ -15,7 +12,6 @@ import {Devices} from "polar-shared/src/util/Devices";
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
-import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 
 /**
