@@ -25,8 +25,8 @@ import {DocRepoTableProps} from "./DocRepoTable";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTableActions";
-import DocumentRepositoryTable
-    from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTable";
+import DocRepoTable2
+    from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
 import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
@@ -46,22 +46,22 @@ namespace main {
 
     export const Documents = (props: DocumentsProps) => (
 
-        <DocumentRepositoryTable data={props.data}
-                                 selected={props.selected}
-                                 selectRow={props.selectRow}
-                                 selectRows={props.onSelected}
-                                 tagsProvider={props.tagsProvider}
-                                 relatedTagsManager={props.relatedTagsManager}
-                                 onOpen={() => console.log('onOpen')}
-                                 onShowFile={() => console.log('onShowFile')}
-                                 onRename={props.onDocSetTitle}
-                                 onCopyOriginalURL={documentActions.onCopyOriginalURL}
-                                 onCopyFilePath={documentActions.onCopyFilePath}
-                                 onDeleted={props.onDocDeleted}
-                                 onCopyDocumentID={() => console.log('onCopyDocumentID')}
-                                 onTagged={props.onDocTagged}
-                                 onFlagged={() => console.log('onFlagged')}
-                                 onArchived={() => console.log('onArchived')}/>
+        <DocRepoTable2 data={props.data}
+                       selected={props.selected}
+                       selectRow={props.selectRow}
+                       selectRows={props.onSelected}
+                       tagsProvider={props.tagsProvider}
+                       relatedTagsManager={props.relatedTagsManager}
+                       onOpen={() => console.log('onOpen')}
+                       onShowFile={() => console.log('onShowFile')}
+                       onRename={props.onDocSetTitle}
+                       onCopyOriginalURL={documentActions.onCopyOriginalURL}
+                       onCopyFilePath={documentActions.onCopyFilePath}
+                       onDeleted={props.onDocDeleted}
+                       onCopyDocumentID={() => console.log('onCopyDocumentID')}
+                       onTagged={props.onDocTagged}
+                       onFlagged={() => console.log('onFlagged')}
+                       onArchived={() => console.log('onArchived')}/>
 
     );
 
