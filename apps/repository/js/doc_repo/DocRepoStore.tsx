@@ -22,6 +22,7 @@ import {
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Mappers} from "polar-shared/src/util/Mapper";
 
 interface IDocRepoStore {
 
@@ -211,13 +212,18 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     // compute the view, then the viewPage
 
+    console.log("FIXME: working with tmpState: ", tmpState);
+
     const {data, page, rowsPerPage, order, orderBy, filters} = tmpState;
 
     // Now that we have new data, we have to also apply the filters and sort
     // order to the results, then update the view + viewPage
 
-    const dataFiltered = DocRepoFilters2.execute(data, filters);
-    const view = Sorting.stableSort(dataFiltered, Sorting.getComparator(order, orderBy));
+    const view = Mappers.create(data)
+                        // .map(current => DocRepoFilters2.execute(current, filters))
+                        .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
+                        .collect()
+
     const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return {...tmpState, view, viewPage};
@@ -293,12 +299,18 @@ export const DocRepoStore = (props: IProps) => {
 
     const setPage = React.useCallback((page: number) => {
 
+        console.log("FIXME: setting page with state: ", state);
+
+        // FIXME: the wrong state is being referenced here...
+
         setState({
             ...state,
             page
         });
 
-    }, []);
+        // FIXME as  soon as I make the state a dependency this updated properly
+        //
+    }, [state]);
 
     const store: IDocRepoStore = {
         ...state,

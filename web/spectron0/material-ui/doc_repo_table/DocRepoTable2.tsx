@@ -56,7 +56,7 @@ interface IProps {
 
 }
 
-export const DocRepoTable2 = () => {
+export const DocRepoTable2 = React.memo(() => {
 
     const state = useDocRepoStore();
     const actions = useDocRepoActions();
@@ -204,7 +204,7 @@ export const DocRepoTable2 = () => {
         </div>
     )
 
-};
+});
 
 
     // private selectedProvider(): ReadonlyArray<RepoDocInfo> {

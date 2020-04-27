@@ -61,6 +61,7 @@ import {FadeDemo} from "./FadeDemo";
 import {MUIHoverContextDemo} from "../../js/mui/context/MUIHoverContextDemo";
 import {AppBarDemo} from "./AppBarDemo";
 import { SharedStateTest } from './SharedStateTest';
+import {SharedIntermediateContextTest} from "./SharedIntermediateContextTest";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -120,7 +121,7 @@ export const App = () => {
                 <GlobalCss />
 
 
-                <SharedStateTest/>
+                <SharedIntermediateContextTest/>
                 {/*<FadeDemo/>*/}
 
                 {/*<MUIHoverContextDemo/>*/}

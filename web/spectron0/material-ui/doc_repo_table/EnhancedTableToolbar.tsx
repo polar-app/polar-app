@@ -48,7 +48,7 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
     readonly onSelectAllRows: (selected: boolean) => void;
 }
 
-export const EnhancedTableToolbar = (props: IProps) => {
+export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const store = useDocRepoStore();
     const actions = useDocRepoActions();
@@ -59,6 +59,9 @@ export const EnhancedTableToolbar = (props: IProps) => {
     const { numSelected, page, data } = props;
 
     const rowsOnPage = viewPage.length;
+
+    console.log("FIXME: data.lenght", data.length);
+    console.log("FIXME2: ", {page, viewPage, data});
 
     // const actions = DocActions.createDocToolbar(props.selectedProvider, props);
 
@@ -169,4 +172,4 @@ export const EnhancedTableToolbar = (props: IProps) => {
             </Grid>
         </>
     );
-};
+});

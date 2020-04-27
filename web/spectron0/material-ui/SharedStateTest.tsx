@@ -25,6 +25,10 @@ const ChildComponent = (props: IProps) => {
 
 }
 
+// const IntermediateComponent = () => (
+//
+// )
+
 export const SharedStateTest = () => {
 
     const [state, setState] = useState(1);
