@@ -38,6 +38,7 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
+import {DocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStoreContext";
 
 interface IProps {
     readonly app: App;
@@ -61,14 +62,16 @@ export const RepositoryApp = (props: IProps) => {
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(docRepo) =>
-                                             <DocRepoScreen2
-                                                 persistenceLayerProvider={app.persistenceLayerProvider}
-                                                 persistenceLayerController={app.persistenceLayerController}
-                                                 tags={docRepo.docTags}
-                                                 docRepo={docRepo}
-                                                 // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}/>
+                                             <DocRepoStore {...props}>
+                                                 <DocRepoScreen2
+                                                     persistenceLayerProvider={app.persistenceLayerProvider}
+                                                     persistenceLayerController={app.persistenceLayerController}
+                                                     tags={docRepo.docTags}
+                                                     docRepo={docRepo}
+                                                     // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                                     repoDocMetaManager={repoDocMetaManager}
+                                                     repoDocMetaLoader={repoDocMetaLoader}/>
+                                             </DocRepoStore>
                                          }/>
                 </AuthRequired>
             </Cached>

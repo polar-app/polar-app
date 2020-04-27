@@ -10,6 +10,8 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
+import {DocRepoFilters2} from "./DocRepoFilters2";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface DocRepoStore {
 
@@ -57,6 +59,8 @@ interface DocRepoStore {
      */
     readonly rowsPerPage: number;
 
+    readonly filters: DocRepoFilters2.Filters;
+
 }
 
 export function useDocRepoStore() {
@@ -79,12 +83,14 @@ const initialState: DocRepoStore = {
     orderBy: 'progress',
     order: 'desc',
     page: 0,
-    rowsPerPage: 24
+    rowsPerPage: 24,
+
+    filters: {}
 }
 
 export const DocRepoStoreContext = React.createContext<DocRepoStore>(initialState)
 
-function useComponentDidMount(delegate: () => void) {
+function useComponentDidMount<T>(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
     useEffect(() => delegate(), []);
 }
@@ -107,12 +113,13 @@ function reduce(tmpState: DocRepoStore) {
 
     // compute the view, then the viewPage
 
-    const {data, page, rowsPerPage, order, orderBy} = tmpState;
+    const {data, page, rowsPerPage, order, orderBy, filters} = tmpState;
 
     // Now that we have new data, we have to also apply the filters and sort
     // order to the results, then update the view + viewPage
 
-    const view = Sorting.stableSort(data, Sorting.getComparator(order, orderBy));
+    const dataFiltered = DocRepoFilters2.execute(data, filters);
+    const view = Sorting.stableSort(dataFiltered, Sorting.getComparator(order, orderBy));
     const pageData = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return {...tmpState, view, pageData};
@@ -124,31 +131,31 @@ export const DocRepoStore = (props: IProps) => {
     const {repoDocMetaLoader, repoDocMetaManager} = props;
     const [state, setState] = useState<DocRepoStore>({...initialState});
 
+    const doUpdate = () => {
+        setTimeout(() => {
+            const data = repoDocMetaManager.repoDocInfoIndex.values();
+            setState(reduce({...state, data}));
+        }, 1)
+    }
+
+    const eventListener = () => {
+
+        // FIXME: use a debouncer here...
+        // FIXME: we seem to get aLL the docs all at once even though
+        // I'm getting the callbacks properly..
+        doUpdate();
+
+    };
+
     useComponentDidMount(() => {
+        doUpdate();
+        repoDocMetaLoader.addEventListener(eventListener)
+    });
 
-        const eventListener = () => {
-
-            // FIXME: use a debouncer here...
-            // FIXME: we seem to get aLL the docs all at once even though
-            // I'm getting the callbacks properly.. 
-
-            setTimeout(() => {
-                const data = repoDocMetaManager.repoDocInfoIndex.values();
-                setState(reduce({...state, data}));
-            }, 1)
-
-        };
-
-        repoDocMetaLoader.addEventListener(eventListener);
-
-        //
-        // useComponentWillUnmount(() => repoDocMetaLoader.removeEventListener(eventListener));
-
-    })
-
-    // useComponentWillUnmount(() => repoDocMetaLoader.removeEventListener(eventListener));
-
-    useComponentWillUnmount(() => console.log("FIXME: unmounted"));
+    useComponentWillUnmount(() => {
+        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(eventListener),
+                                      "Failed to remove event listener");
+    });
 
     return (
         <DocRepoStoreContext.Provider value={state}>

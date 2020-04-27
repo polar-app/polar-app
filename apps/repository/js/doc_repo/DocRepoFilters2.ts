@@ -21,16 +21,16 @@ export namespace DocRepoFilters2 {
         /**
          * When true, only show flagged documents.
          */
-        readonly flagged: boolean;
+        readonly flagged?: boolean;
 
         /**
          *  When true, show both archived and non-archived documents.
          */
-        readonly archived: boolean;
+        readonly archived?: boolean;
 
-        readonly title: string;
+        readonly title?: string;
 
-        readonly tags: ReadonlyArray<Tag>;
+        readonly tags?: ReadonlyArray<Tag>;
 
     }
 
@@ -105,7 +105,9 @@ export namespace DocRepoFilters2 {
 
     function doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo>  {
 
-        // Analytics.event({category: 'user', action: 'filter-by-tags'});
+        if (! filters.tags) {
+            return repoDocs;
+        }
 
         const tags = filters.tags.filter(current => current.id !== '/');
 
