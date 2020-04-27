@@ -1,14 +1,13 @@
 import React from "react";
 import Menu from "@material-ui/core/Menu";
 import {
-    DocContextMenuProps,
     MUIDocDropdownMenuItems
 } from "./MUIDocDropdownMenuItems";
 import isEqual from "react-fast-compare";
 
 export type ContextMenuHandler = (event: React.MouseEvent<HTMLElement>) => void;
 
-interface IProps extends DocContextMenuProps {
+interface IProps {
     readonly render: (contextMenuHandler: ContextMenuHandler) => void;
 }
 
@@ -62,7 +61,9 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                             left: this.state.mouseX
                         }}>
 
-                        <MUIDocDropdownMenuItems {...this.props}/>
+                        <div>
+                            <MUIDocDropdownMenuItems/>
+                        </div>
 
                     </Menu>}
 

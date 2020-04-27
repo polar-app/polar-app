@@ -7,8 +7,7 @@ import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {DocActions} from "./DocActions";
 import { Callback1 } from "polar-shared/src/util/Functions";
 
-interface IProps extends DocActions.DocContextMenu.Callbacks {
-    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
+interface IProps {
     readonly onClick: Callback1<React.MouseEvent>;
 }
 
@@ -63,8 +62,7 @@ export class MUIDocDropdownButton extends React.Component<IProps, IState> {
                 </IconButton>
                 {anchorEl &&
                 <MUIDocDropdownMenu anchorEl={anchorEl}
-                                    onClose={handleClose}
-                                    {...this.props}/>
+                                    onClose={handleClose}/>
                 }
             </div>
         );

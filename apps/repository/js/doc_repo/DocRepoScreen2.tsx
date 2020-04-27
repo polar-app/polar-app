@@ -126,8 +126,6 @@ export const DocRepoScreen2 = (props: IProps) => {
 
     const tagsProvider = props.tags;
 
-    const store = useDocRepoStore();
-
     return (
 
         <FixedNav id="doc-repository">
@@ -196,7 +194,6 @@ export const DocRepoScreen2 = (props: IProps) => {
             <DocRepoTable2/>
 
         </FixedNav>
-
 
     )
 

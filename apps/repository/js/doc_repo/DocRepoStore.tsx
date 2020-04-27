@@ -73,6 +73,8 @@ interface IDocRepoStore {
 
 }
 
+// FIXME: move selected into its own context...
+
 export interface IDocRepoActions {
 
     readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>;

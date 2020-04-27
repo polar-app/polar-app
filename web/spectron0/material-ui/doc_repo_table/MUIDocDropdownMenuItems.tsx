@@ -10,110 +10,105 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Divider from "@material-ui/core/Divider";
 import FlagIcon from "@material-ui/icons/Flag";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import {Callback1} from "polar-shared/src/util/Functions";
-import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {AppRuntime} from "../../../js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
-import {DocActions} from "./DocActions";
+import {
+    useDocRepoActions, useDocRepoCallbacks,
+    useDocRepoStore
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
-export interface DocContextMenuProps extends DocActions.DocContextMenu.Callbacks {
-    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
-}
-
-interface IProps extends DocContextMenuProps {
-}
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
-export class MUIDocDropdownMenuItems extends React.Component<IProps> {
+export const MUIDocDropdownMenuItems = React.memo(() => {
 
-    public render() {
+    const store = useDocRepoStore();
+    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
 
-        const selected = this.props.selectedProvider();
+    const selected = actions.selectedProvider();
 
-        // if (selected.length === 0) {
-        //     // there's nothing to render now...
-        //     return null;
-        // }
+    // if (selected.length === 0) {
+    //     // there's nothing to render now...
+    //     return null;
+    // }
 
-        const isMulti = selected.length > 1;
-        const isSingle = selected.length === 1;
+    const isSingle = selected.length === 1;
 
-        const repoDocInfo = selected[0];
+    const single = selected.length === 1 ? selected[0] : undefined;
 
-        return (
-            <>
-                {isSingle &&
-                    <MenuItem onClick={() => this.props.onOpen(repoDocInfo)}>
-                        <ListItemIcon>
-                            <SendIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Open Document" />
-                    </MenuItem>}
+    return (
+        <>
+            {isSingle &&
+            <MenuItem onClick={callbacks.onOpen}>
+                <ListItemIcon>
+                    <SendIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Open Document"/>
+            </MenuItem>}
 
-                {isSingle &&
-                    <MenuItem onClick={() => this.props.onRename(repoDocInfo)}>
-                        <ListItemIcon>
-                            <TitleIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Rename" />
-                    </MenuItem>}
+            {isSingle &&
+            <MenuItem onClick={callbacks.onRename}>
+                <ListItemIcon>
+                    <TitleIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Rename"/>
+            </MenuItem>}
 
-                <MenuItem onClick={() => this.props.onFlagged(selected)}>
+            <MenuItem onClick={callbacks.onFlagged}>
+                <ListItemIcon>
+                    <FlagIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Flag"/>
+            </MenuItem>
+
+            <MenuItem onClick={callbacks.onArchived}>
+                <ListItemIcon>
+                    <ArchiveIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Archive"/>
+            </MenuItem>
+
+            {isSingle && !AppRuntime.isBrowser() &&
+                <MenuItem onClick={callbacks.onShowFile}>
                     <ListItemIcon>
-                        <FlagIcon fontSize="small" />
+                        <InsertDriveFileIcon fontSize="small"/>
                     </ListItemIcon>
-                    <ListItemText primary="Flag" />
-                </MenuItem>
+                    <ListItemText primary="Show File"/>
+                </MenuItem>}
 
-                <MenuItem onClick={() => this.props.onArchived(selected)}>
+            {single && single.url &&
+                <MenuItem onClick={callbacks.onCopyOriginalURL}>
                     <ListItemIcon>
-                        <ArchiveIcon fontSize="small" />
+                        <FileCopyIcon fontSize="small"/>
                     </ListItemIcon>
-                    <ListItemText primary="Archive" />
-                </MenuItem>
+                    <ListItemText primary="Copy Original URL"/>
+                </MenuItem>}
 
-                {isSingle && ! AppRuntime.isBrowser() &&
-                    <MenuItem onClick={() => this.props.onShowFile(repoDocInfo)}>
-                        <ListItemIcon>
-                            <InsertDriveFileIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Show File" />
-                    </MenuItem>}
+            {isSingle && !AppRuntime.isBrowser() &&
+            <MenuItem onClick={callbacks.onCopyFilePath}>
+                <ListItemIcon>
+                    <FileCopyIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Copy File Path"/>
+            </MenuItem>}
 
-                {isSingle && repoDocInfo.url &&
-                    <MenuItem onClick={() => this.props.onCopyOriginalURL(repoDocInfo)}>
-                        <ListItemIcon>
-                            <FileCopyIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Copy Original URL" />
-                    </MenuItem>}
+            {isSingle && FeatureToggles.get('dev') &&
+            <MenuItem onClick={callbacks.onCopyDocumentID}>
+                <ListItemIcon>
+                    <FileCopyIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Copy Document ID"/>
+            </MenuItem>}
 
-                {isSingle && ! AppRuntime.isBrowser() &&
-                    <MenuItem onClick={() => this.props.onCopyFilePath(repoDocInfo)}>
-                        <ListItemIcon>
-                            <FileCopyIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Copy File Path" />
-                    </MenuItem>}
+            <Divider/>
 
-                {isSingle && FeatureToggles.get('dev') &&
-                    <MenuItem onClick={() => this.props.onCopyDocumentID(repoDocInfo)}>
-                        <ListItemIcon>
-                            <FileCopyIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Copy Document ID" />
-                    </MenuItem>}
-
-                <Divider/>
-
-                <MenuItem onClick={() => this.props.onDeleted(selected)}>
-                    <ListItemIcon>
-                        <DeleteIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Delete" />
-                </MenuItem>
-            </>
-        );
-    }
-}
+            <MenuItem onClick={callbacks.onDeleted}>
+                <ListItemIcon>
+                    <DeleteIcon fontSize="small"/>
+                </ListItemIcon>
+                <ListItemText primary="Delete"/>
+            </MenuItem>
+        </>
+    );
+});

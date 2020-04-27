@@ -58,11 +58,8 @@ interface IProps {
 
 export const DocRepoTable2 = React.memo(() => {
 
-    console.log("FIXME: DocRepoTable2 rendering");
-
     const state = useDocRepoStore();
     const actions = useDocRepoActions();
-    const dialogs = useDialogManager();
 
     const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = state;
 
