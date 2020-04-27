@@ -26,7 +26,7 @@ import {AutoBlur} from "./AutoBlur";
 import {
     useDocRepoActions, useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStoreManager";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 // FIXME:  delete doesn't work.
 

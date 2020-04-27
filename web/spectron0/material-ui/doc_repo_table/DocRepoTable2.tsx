@@ -22,7 +22,7 @@ import {
 import {
     useDocRepoActions,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStoreManager";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 import {useDialogManager} from "../dialogs/MUIDialogControllers";
 
 interface IProps {

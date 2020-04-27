@@ -236,22 +236,7 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
-// FIXME: write up an internal class test that tests this out...
-
-//
-// interface IFoo {
-//     readonly bar: string;
-// }
-//
-// class Foo implements IFoo {
-//     readonly bar = 'hello';
-// }
-//
-// const foo = new Foo();
-//
-// const dog = {...foo, bar: 'asdf'};
-
-export class DocRepoStoreManager extends React.Component<IProps, IDocRepoStore> {
+export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     private eventListener: Callback = NULL_FUNCTION;
 
