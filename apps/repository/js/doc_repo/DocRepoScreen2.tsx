@@ -5,7 +5,7 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import React from "react";
-import {DocRepoStoreProvider, useDocRepoStore} from "./DocRepoStoreProvider";
+import {DocRepoStore, useDocRepoStore} from "./DocRepoStore";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 import {RepoHeader} from "../repo_header/RepoHeader";

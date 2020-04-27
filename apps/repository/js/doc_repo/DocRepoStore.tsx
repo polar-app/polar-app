@@ -18,6 +18,7 @@ import { Numbers } from "polar-shared/src/util/Numbers";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import { SetArrays } from "polar-shared/src/util/SetArrays";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 interface IDocRepoState {
 
@@ -73,9 +74,13 @@ interface IDocRepoState {
 
 }
 
+interface IDocRepoActions {
+
+}
+
 export interface IDocRepoStore extends IDocRepoState {
 
-    readonly selectedProvider: Provider<ReadonlyArray<number>>;
+    readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>;
 
     readonly selectRow: (selectedIdx: number,
                          event: React.MouseEvent,
@@ -160,7 +165,8 @@ function reduce(tmpState: IDocRepoState): IDocRepoState {
 //
 // }
 
-export const DocRepoStoreProvider = (props: IProps) => {
+
+export const DocRepoStore = (props: IProps) => {
 
     // FIXME: what functions do I need
 
@@ -196,12 +202,9 @@ export const DocRepoStoreProvider = (props: IProps) => {
                                       "Failed to remove event listener");
     });
 
-    // callback implementations...
-    const selectedProvider = () => state.selected;
-
-    const selectRow = (selectedIdx: number,
-                       event: React.MouseEvent,
-                       type: SelectRowType) => {
+    const selectRow = React.useCallback((selectedIdx: number,
+                                         event: React.MouseEvent,
+                                         type: SelectRowType) => {
 
         const selected = Callbacks.selectRow(selectedIdx, event, type);
 
@@ -209,13 +212,22 @@ export const DocRepoStoreProvider = (props: IProps) => {
             ...state,
             selected: selected || []
         });
-    }
+    }, []);
+
+    const selectedProvider = React.useCallback((): ReadonlyArray<RepoDocInfo> => {
+        return arrayStream(state.selected)
+            .map(current => state.view[current])
+            .collect();
+    }, []);
 
     const store: IDocRepoStore = {
         ...state,
         selectedProvider,
         selectRow
     };
+
+    // FIXME now the main problem is whether we're going to create actions
+    // implementations each time... and how would I know..
 
     return (
         <DocRepoStoreContext.Provider value={store}>

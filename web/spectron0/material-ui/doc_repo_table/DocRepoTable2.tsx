@@ -20,7 +20,7 @@ import {
     MUIDialogController,
     useDialogManager
 } from "../dialogs/MUIDialogController";
-import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStoreProvider";
+import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 interface IProps {
 
@@ -194,7 +194,6 @@ export const DocRepoTable2 = () => {
                                                             rawContextMenuHandler={rawContextMenuHandler}
                                                             selectRow={selectRow}
                                                             selected={selected.includes(viewIndex)}
-                                                            {/*{...this.callbacks}*/}
                                                             onTagged={NULL_FUNCTION}
                                                             row={row}
                                                             selectedProvider={selectedProvider}
