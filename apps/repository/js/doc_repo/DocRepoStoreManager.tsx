@@ -268,8 +268,6 @@ export class DocRepoStoreManager extends React.Component<IProps, IDocRepoStore> 
 
         // the debouncer here is VERY important... otherwise we lock up completely
         this.eventListener = Debouncers.create(() => {
-            // FIXME: we seem to get aLL the docs all at once even though
-            // I'm getting the callbacks properly..
             this.doUpdate();
         });
 
@@ -380,9 +378,6 @@ export class DocRepoStoreManager extends React.Component<IProps, IDocRepoStore> 
 
         const callbacks = this.createCallbacks(actions);
 
-        // FIXME now the main problem is whether we're going to create actions
-        // implementations each time... and how would I know..
-
         return (
             <DocRepoStoreContext.Provider value={store}>
                 <DocRepoActionsContext.Provider value={actions}>
@@ -397,7 +392,7 @@ export class DocRepoStoreManager extends React.Component<IProps, IDocRepoStore> 
 
 }
 
-// FIXME: move this outside...
+// FIXME: move this outside this classs..
 namespace Callbacks {
 
     export function selectRow(selectedIdx: number,

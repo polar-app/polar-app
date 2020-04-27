@@ -1,10 +1,10 @@
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from "react";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import {MUIDeleteAction} from "../actions/MUIDeleteAction";
 import {Callback} from "polar-shared/src/util/Functions";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
+import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
 
 interface IProps {
     readonly onCancel?: Callback;

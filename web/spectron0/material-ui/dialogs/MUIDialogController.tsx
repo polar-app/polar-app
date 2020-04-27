@@ -1,4 +1,4 @@
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
 import isEqual from "react-fast-compare";
 import {
@@ -129,10 +129,6 @@ interface IProps {
 }
 
 export const MUIDialogControllerContext = React.createContext<DialogManager>(NullDialogManager);
-
-export function useDialogManager() {
-    return React.useContext(MUIDialogControllerContext);
-}
 
 /**
  * Component to allow us to inject new components like snackbars, dialog boxes,

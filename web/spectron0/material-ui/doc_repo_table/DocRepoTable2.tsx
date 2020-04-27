@@ -17,13 +17,13 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {RelatedTagsManager} from "../../../js/tags/related/RelatedTagsManager";
 import {
-    MUIDialogController,
-    useDialogManager
+    MUIDialogController
 } from "../dialogs/MUIDialogController";
 import {
     useDocRepoActions,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStoreManager";
+import {useDialogManager} from "../dialogs/MUIDialogControllers";
 
 interface IProps {
 

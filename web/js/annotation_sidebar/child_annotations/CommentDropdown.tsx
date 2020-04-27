@@ -2,11 +2,11 @@ import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
 
 
 interface IProps {
