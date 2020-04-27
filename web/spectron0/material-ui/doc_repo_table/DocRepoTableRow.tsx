@@ -15,6 +15,8 @@ import {Tags, Tag} from "polar-shared/src/tags/Tags";
 import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
 import {DocActions} from "./DocActions";
+import {DeepEquals} from "./DeepEquals";
+import debugIsEqual = DeepEquals.debugIsEqual;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -89,6 +91,7 @@ interface TableCellTagsProps {
 }
 
 export const TableCellTags = React.memo((props: TableCellTagsProps) => {
+
     const classes = useStyles();
 
     return (

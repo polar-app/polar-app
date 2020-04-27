@@ -23,7 +23,7 @@ import {
 import {
     useDocRepoActions,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStoreManager";
 
 interface IProps {
 
@@ -57,6 +57,8 @@ interface IProps {
 }
 
 export const DocRepoTable2 = React.memo(() => {
+
+    console.log("FIXME: DocRepoTable2 rendering");
 
     const state = useDocRepoStore();
     const actions = useDocRepoActions();
@@ -110,7 +112,7 @@ export const DocRepoTable2 = React.memo(() => {
         //
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, view.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - viewPage.length;
 
     return (
         <div style={{

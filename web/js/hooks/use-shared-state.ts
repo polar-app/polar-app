@@ -1,9 +1,12 @@
+import React, {useRef} from "react";
+
 interface InternalSharedState<T> {
     iter: number;
     value: T;
 }
 
 export interface SharedState<T> {
+    readonly iter: number;
     readonly value: T;
 }
 
@@ -17,23 +20,25 @@ export interface SharedState<T> {
  */
 export function useSharedState<T>(value: T): [SharedState<T>, (value: T) => void] {
 
-    const state: InternalSharedState<T> = {
+    const state = useRef<InternalSharedState<T>>({
         iter: 0,
         value
-    };
+    });
 
     const setState = (value: T) => {
 
         // update the result so it can be referenced again next time and return
         // the updated state
 
-        state.iter = state.iter + 1;
-        state.value = value;
+        state.current = {
+            iter: state.current.iter + 1,
+            value
+        };
 
         return state;
 
     }
 
-    return [state, setState];
+    return [state.current, setState];
 
 }

@@ -38,7 +38,7 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
-import {DocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import {DocRepoStoreManager} from "../../../../apps/repository/js/doc_repo/DocRepoStoreManager";
 
 interface IProps {
     readonly app: App;
@@ -62,7 +62,7 @@ export const RepositoryApp = (props: IProps) => {
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(docRepo) =>
-                                             <DocRepoStore {...props}>
+                                             <DocRepoStoreManager {...props}>
                                                  <DocRepoScreen2
                                                      persistenceLayerProvider={app.persistenceLayerProvider}
                                                      persistenceLayerController={app.persistenceLayerController}
@@ -71,7 +71,7 @@ export const RepositoryApp = (props: IProps) => {
                                                      // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                                      repoDocMetaManager={repoDocMetaManager}
                                                      repoDocMetaLoader={repoDocMetaLoader}/>
-                                             </DocRepoStore>
+                                             </DocRepoStoreManager>
                                          }/>
                 </AuthRequired>
             </Cached>

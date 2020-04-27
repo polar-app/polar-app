@@ -3,7 +3,7 @@ import {
     DocRepoTableColumns,
     DocRepoTableColumnsMap
 } from "./DocRepoTableColumns";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -23,7 +23,6 @@ import {
 } from "polar-shared/src/util/Functions";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {useSharedState} from "../../../../web/js/hooks/use-shared-state";
 
 interface IDocRepoStore {
 
@@ -237,156 +236,174 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
-// function createInitialState() {
+// FIXME: write up an internal class test that tests this out...
+
 //
-//     const state = {
-//         ...initialState
-//     };
-//
-//     return {
-//         ...state,
-//     }
-//
+// interface IFoo {
+//     readonly bar: string;
 // }
+//
+// class Foo implements IFoo {
+//     readonly bar = 'hello';
+// }
+//
+// const foo = new Foo();
+//
+// const dog = {...foo, bar: 'asdf'};
 
+export class DocRepoStoreManager extends React.Component<IProps, IDocRepoStore> {
 
-export const DocRepoStore = (props: IProps) => {
+    private eventListener: Callback = NULL_FUNCTION;
 
-    // FIXME: what functions do I need
+    constructor(props: Readonly<IProps>) {
+        super(props);
 
-    // delete(repoDocInfos: ReadonlyArray<RepoDocInfo>)
-    //
+        this.state = {...initialStore};
 
-    // FIXME: how can we have the state update itself?.... createInitialState function??
+        this.doUpdate = this.doUpdate.bind(this);
+        this.doReduceAndUpdateState = this.doReduceAndUpdateState.bind(this);
+        this.selectRow = this.selectRow.bind(this);
+        this.selectedProvider = this.selectedProvider.bind(this);
+        this.setPage = this.setPage.bind(this);
 
-    // FIXMEL this is bullshit.. I have no idea why this isn't working!!!
+        // the debouncer here is VERY important... otherwise we lock up completely
+        this.eventListener = Debouncers.create(() => {
+            // FIXME: we seem to get aLL the docs all at once even though
+            // I'm getting the callbacks properly..
+            this.doUpdate();
+        });
 
-    const {repoDocMetaLoader, repoDocMetaManager} = props;
-    const [state, setState] = useState<IDocRepoStore>({...initialStore});
+    }
 
-    const doUpdate = () => {
+    public componentDidMount(): void {
+        const {repoDocMetaLoader} = this.props;
+        repoDocMetaLoader.addEventListener(this.eventListener)
+    }
+
+    public componentWillUnmount(): void {
+        const {repoDocMetaLoader} = this.props;
+        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(this.eventListener),
+                                      "Failed to remove event listener");
+    }
+
+    private doUpdate() {
+
+        const {repoDocMetaManager} = this.props;
+
         setTimeout(() => {
             const data = repoDocMetaManager.repoDocInfoIndex.values();
-            doReduceAndUpdateState({...state, data});
-        }, 1)
-    };
+            this.doReduceAndUpdateState({...this.state, data});
+        }, 1);
 
-    /**
-     * Update the state but we always have to reduce first.
-     */
-    const doReduceAndUpdateState = (tmpState: IDocRepoStore) => {
+    }
+
+    private doReduceAndUpdateState(tmpState: IDocRepoStore) {
+
         setTimeout(() => {
             const newState = reduce({...tmpState});
-            setState(newState);
+            this.setState(newState);
         }, 1)
+
     };
 
+    public selectRow(selectedIdx: number,
+                     event: React.MouseEvent,
+                     type: SelectRowType) {
 
-    // the debouncer here is VERY important... otherwise we lock up completely
-    const eventListener = Debouncers.create(() => {
-        // FIXME: we seem to get aLL the docs all at once even though
-        // I'm getting the callbacks properly..
-        doUpdate();
-    });
 
-    useComponentDidMount(() => {
-        doUpdate();
-        repoDocMetaLoader.addEventListener(eventListener)
-    });
+        const selected = Callbacks.selectRow(selectedIdx,
+                                             event,
+                                             type,
+                                             this.state.selected);
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME unmounted");
-        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(eventListener),
-                                      "Failed to remove event listener");
-    });
-
-    const selectRow = (selectedIdx: number,
-                       event: React.MouseEvent,
-                       type: SelectRowType) => {
-
-        const selected = Callbacks.selectRow(selectedIdx, event, type);
-
-        setState({
-            ...state,
+        this.setState({
+            ...this.state,
             selected: selected || []
         });
-    };
 
-    const selectedProvider = (): ReadonlyArray<RepoDocInfo> => {
-        return arrayStream(state.selected)
-            .map(current => state.view[current])
+    }
+
+    public selectedProvider(): ReadonlyArray<RepoDocInfo> {
+        return arrayStream(this.state.selected)
+            .map(current => this.state.view[current])
             .collect();
     };
 
-    const setPage = (page: number) => {
-
-        console.log("FIXME: setting page with state: ", state);
-
-        doReduceAndUpdateState({
-            ...state,
+    public setPage(page: number) {
+        this.doReduceAndUpdateState({
+            ...this.state,
             page,
             selected: []
         });
     };
 
-    console.log("FIXME555: computing new store from state: ", state);
 
-    const store: IDocRepoStore = {
-        ...state,
-    };
+    private createCallbacks(actions: IDocRepoActions): IDocRepoCallbacks {
 
-    const actions: IDocRepoActions = {
-        ...initialActions,
-        selectedProvider,
-        selectRow,
-        setPage
-    };
-
-    const callbacks = React.useMemo((): IDocRepoCallbacks => {
-
-        // must be created on init we have a stable copy
-        const selected = selectedProvider();
-        const first = selected.length >= 1 ? selected[0] : undefined;
+        const first = () => {
+            const selected = this.selectedProvider();
+            return selected.length >= 1 ? selected[0] : undefined
+        }
 
         return {
 
-            onOpen: () => actions.onOpen(first!),
-            onRename: () => actions.onRename(first!),
-            onShowFile: () => actions.onShowFile(first!),
-            onCopyOriginalURL: () => actions.onCopyOriginalURL(first!),
-            onCopyFilePath: () => actions.onCopyFilePath(first!),
-            onCopyDocumentID: () => actions.onCopyDocumentID(first!),
-            onDeleted: () => actions.onDeleted(selected),
-            onArchived: () => actions.onArchived(selected),
-            onFlagged: () => actions.onFlagged(selected),
-            onTagged: () => actions.onTagged(selected),
+            onOpen: () => actions.onOpen(first()!),
+            onRename: () => actions.onRename(first()!),
+            onShowFile: () => actions.onShowFile(first()!),
+            onCopyOriginalURL: () => actions.onCopyOriginalURL(first()!),
+            onCopyFilePath: () => actions.onCopyFilePath(first()!),
+            onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
+            onDeleted: () => actions.onDeleted(this.selectedProvider()),
+            onArchived: () => actions.onArchived(this.selectedProvider()),
+            onFlagged: () => actions.onFlagged(this.selectedProvider()),
+            onTagged: () => actions.onTagged(this.selectedProvider()),
 
         };
 
-    }, []);
+    }
 
-    // FIXME now the main problem is whether we're going to create actions
-    // implementations each time... and how would I know..
 
-    return (
-        <DocRepoStoreContext.Provider value={store}>
-            <DocRepoActionsContext.Provider value={actions}>
-                <DocRepoCallbacksContext.Provider value={callbacks}>
-                {props.children}
-                </DocRepoCallbacksContext.Provider>
-            </DocRepoActionsContext.Provider>
-        </DocRepoStoreContext.Provider>
-    );
+    public render() {
+
+        const {repoDocMetaLoader, repoDocMetaManager} = this.props;
+
+        const store: IDocRepoStore = {
+            ...this.state,
+        };
+
+        const actions: IDocRepoActions = {
+            ...initialActions,
+            selectedProvider: this.selectedProvider,
+            selectRow: this.selectRow,
+            setPage: this.setPage
+        };
+
+        const callbacks = this.createCallbacks(actions);
+
+        // FIXME now the main problem is whether we're going to create actions
+        // implementations each time... and how would I know..
+
+        return (
+            <DocRepoStoreContext.Provider value={store}>
+                <DocRepoActionsContext.Provider value={actions}>
+                    <DocRepoCallbacksContext.Provider value={callbacks}>
+                        {this.props.children}
+                    </DocRepoCallbacksContext.Provider>
+                </DocRepoActionsContext.Provider>
+            </DocRepoStoreContext.Provider>
+        );
+
+    }
 
 }
-
 
 // FIXME: move this outside...
 namespace Callbacks {
 
     export function selectRow(selectedIdx: number,
                               event: React.MouseEvent,
-                              type: SelectRowType) {
+                              type: SelectRowType,
+                              selected: ReadonlyArray<number>) {
 
         selectedIdx = Numbers.toNumber(selectedIdx);
 
@@ -430,7 +447,7 @@ namespace Callbacks {
 
             if (type === 'context') {
 
-                if (this.state.selected.includes(selectedIdx)) {
+                if (selected.includes(selectedIdx)) {
                     return 'none';
                 }
 
@@ -447,21 +464,18 @@ namespace Callbacks {
             let min: number = 0;
             let max: number = 0;
 
-            if (this.state.selected.length > 0) {
-                const sorted = [...this.state.selected].sort((a, b) => a - b);
+            if (selected.length > 0) {
+                const sorted = [...selected].sort((a, b) => a - b);
                 min = Arrays.first(sorted)!;
                 max = Arrays.last(sorted)!;
             }
 
-            const selected = [...Numbers.range(Math.min(min, selectedIdx),
-                Math.max(max, selectedIdx))];
-
-            return selected;
+            return [...Numbers.range(Math.min(min, selectedIdx),
+                                     Math.max(max, selectedIdx))];
 
         };
 
         const doStrategyToggle = (): SelectedRows => {
-            const selected = [...this.state.selected];
 
             if (selected.includes(selectedIdx)) {
                 return SetArrays.difference(selected, [selectedIdx]);

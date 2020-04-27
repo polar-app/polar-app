@@ -1,12 +1,13 @@
 import React, {useCallback, useState} from "react";
 import Button from "@material-ui/core/Button";
+import {DeepEquals} from "./doc_repo_table/DeepEquals";
+import debugIsEqual = DeepEquals.debugIsEqual;
 
 interface IProps {
     readonly value: number;
     readonly setValue: (value: number) => void;
-
 }
-const ChildComponent = (props: IProps) => {
+const ChildComponent = React.memo((props: IProps) => {
 
     const value = props.value;
 
@@ -23,7 +24,7 @@ const ChildComponent = (props: IProps) => {
         </>
     )
 
-}
+}, debugIsEqual);
 
 // const IntermediateComponent = () => (
 //
