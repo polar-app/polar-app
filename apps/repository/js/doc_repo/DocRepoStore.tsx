@@ -181,7 +181,9 @@ const initialStore: IDocRepoStore = {
 
 // create tracer function for actions...
 function tracer(name: string) {
-    return (arg?: any) => console.info(name, arg);
+    return (arg0?: any, arg1?: any) => {
+        console.info(name, arg0, arg1);
+    }
 }
 
 const defaultActions: IDocRepoActions = {
@@ -458,6 +460,13 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             DraggingSelectedDocs.clear();
         };
 
+        const onDropped = (tag: TagDescriptor) => {
+            const dragged = DraggingSelectedDocs.get();
+            if (dragged) {
+                actions.onDropped(dragged, tag);
+            }
+        }
+
         const onRename = () => {
 
             const repoDocInfo = first()!;
@@ -567,7 +576,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
             onArchived: () => actions.onArchived(this.selectedProvider(), false),
             onFlagged: () => actions.onFlagged(this.selectedProvider(), false),
-            onDropped: defaultCallbacks.onDropped,
+            onDropped,
             onTagSelected: actions.onTagSelected,
             onDragStart,
             onDragEnd,
