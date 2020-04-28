@@ -5,7 +5,6 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {DocRepoRenderProps} from "../persistence_layer/PersistenceLayerApp";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import React from "react";
-import {useDocRepoStore} from "./DocRepoStore";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 import {RepoHeader} from "../repo_header/RepoHeader";
@@ -15,20 +14,18 @@ import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToo
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MessageBanner} from "../MessageBanner";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {FilteredTags} from "../FilteredTags";
 import {DocRepoTableProps} from "./DocRepoTable";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
-import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTableActions";
 import {DocRepoTable2} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
 import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import { FolderSidebar2 } from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {AddContent} from "../ui/AddContentButton";
+import { AddContent } from "../ui/AddContentButton";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 
 
@@ -40,7 +37,7 @@ namespace main {
         readonly selected: ReadonlyArray<number>;
     }
 
-    export const Documents = (props: DocumentsProps) => (
+    export const Documents = () => (
 
         <DocRepoTable2 />
 
@@ -50,22 +47,22 @@ namespace main {
 
     }
 
-    export const Folders = (props: FoldersSidebarProps) => (
-        <FolderSidebar {...props}/>
+    export const Folders = () => (
+        <FolderSidebar2/>
     );
 
 }
 
 const onClose = () => window.history.back();
 
-const Router = (props: main.FoldersProps) => (
+const Router = () => (
 
     <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
         <Route path='#folders'
                render={() => (
                    <LeftSidebar onClose={onClose}>
-                       <main.Folders {...props}/>
+                       <main.Folders/>
                    </LeftSidebar>
                )}/>
 
@@ -79,17 +76,17 @@ namespace devices {
 
     }
 
-    export const PhoneAndTablet = (props: DeviceProps) => (
-        <main.Documents {...props}/>
-    );
+    export const PhoneAndTablet = React.memo(() => (
+        <main.Documents/>
+    ));
 
-    export const Desktop = (props: DeviceProps) => (
+    export const Desktop = React.memo(() => (
 
         <DockLayout dockPanels={[
             {
                 id: "dock-panel-left",
                 type: 'fixed',
-                component: <FolderSidebar {...props}/>,
+                component: <FolderSidebar2/>,
                 width: 300,
                 style: {
                     overflow: 'none'
@@ -98,11 +95,11 @@ namespace devices {
             {
                 id: "doc-panel-center",
                 type: 'grow',
-                component: <main.Documents {...props}/>
+                component: <main.Documents/>
             }
         ]}/>
 
-    );
+    ));
 
 }
 
@@ -189,22 +186,20 @@ export const DocRepoScreen2 = (props: IProps) => {
 
             </header>
 
-            <DocRepoTable2/>
+            <Router {...deviceProps}/>
 
-            {/*<Router {...deviceProps}/>*/}
+            <DeviceRouter phone={<devices.PhoneAndTablet/>}
+                          tablet={<devices.PhoneAndTablet/>}
+                          desktop={<devices.Desktop/>}/>
 
-            {/*<DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}*/}
-            {/*              tablet={<devices.PhoneAndTablet {...deviceProps}/>}*/}
-            {/*              desktop={<devices.Desktop {...deviceProps}/>}/>*/}
+            <FixedNav.Footer>
 
-            {/*<FixedNav.Footer>*/}
+                <DeviceRouter.Handheld>
+                    <AddContent.Handheld/>
+                </DeviceRouter.Handheld>
 
-            {/*    <DeviceRouter.Handheld>*/}
-            {/*        <AddContent.Handheld/>*/}
-            {/*    </DeviceRouter.Handheld>*/}
-
-            {/*    <RepoFooter/>*/}
-            {/*</FixedNav.Footer>*/}
+                <RepoFooter/>
+            </FixedNav.Footer>
 
         </FixedNav>
 

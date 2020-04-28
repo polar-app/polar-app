@@ -35,6 +35,7 @@ import {
     createContextMemo,
     useContextMemo
 } from "../../../../web/js/react/ContextMemo";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 interface IDocRepoStore {
 
@@ -111,6 +112,13 @@ export interface IDocRepoActions {
     readonly onFlagged: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
 
 
+    readonly onDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: TagDescriptor) => void;
+    readonly onTagSelected: (tags: ReadonlyArray<string>) => void;
+
+
+    // drag and drop support
+
+
     // readonly setFilters: (filters: DocRepoFilters2.Filters) => {
     //
     // }
@@ -133,6 +141,21 @@ interface IDocRepoCallbacks {
     readonly onDeleted: Callback;
     readonly onArchived: Callback;
     readonly onFlagged: Callback;
+
+    readonly onDragStart: (event: DragEvent) => void;
+    readonly onDragEnd: () => void;
+
+    /**
+     * Called when an doc is actually dropped on a tag.
+     */
+    readonly onDropped: (tag: TagDescriptor) => void;
+
+    /**
+     * Called when the user is filtering the UI based on a tag and is narrowing
+     * down what's displayed by one or more tag.
+     */
+    readonly onTagSelected: (tags: ReadonlyArray<string>) => void;
+
 }
 
 const initialStore: IDocRepoStore = {
@@ -180,6 +203,8 @@ const defaultActions: IDocRepoActions = {
     onDeleted: tracer('action:onDeleted FIXME1'),
     onArchived: tracer('action:onArchived'),
     onFlagged: tracer('action:onFlagged'),
+    onDropped: tracer('action:onDropped'),
+    onTagSelected: tracer('action:onTagSelected')
 }
 
 const defaultCallbacks: IDocRepoCallbacks = {
@@ -193,6 +218,13 @@ const defaultCallbacks: IDocRepoCallbacks = {
     onDeleted: tracer('callback:onDeleted'),
     onArchived: tracer('callback:onArchived'),
     onFlagged: tracer('callback:onFlagged'),
+
+    onDragStart: tracer('callback:onDragStart'),
+    onDragEnd: tracer('callback:onDragEnd'),
+    onDropped: tracer('callback:onDropped'),
+
+    onTagSelected: tracer('callback:onTagSelected'),
+
 }
 
 export const DocRepoStoreContext = createContextMemo<IDocRepoStore>(initialStore)
@@ -501,7 +533,10 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
             onArchived: () => actions.onArchived(this.selectedProvider(), false),
             onFlagged: () => actions.onFlagged(this.selectedProvider(), false),
-
+            onDragStart: defaultCallbacks.onDragStart,
+            onDragEnd: defaultCallbacks.onDragEnd,
+            onDropped: defaultCallbacks.onDropped,
+            onTagSelected: defaultCallbacks. onTagSelected
         };
 
     }

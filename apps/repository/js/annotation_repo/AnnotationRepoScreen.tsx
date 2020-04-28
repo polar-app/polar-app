@@ -45,6 +45,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import Grid from '@material-ui/core/Grid';
+import {FolderSidebar2} from "../folders/FolderSidebar2";
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -120,9 +121,11 @@ namespace main {
     }
 
     export const Folders = (props: MainProps) => (
-        <FolderSidebar tags={props.tags()}
-                       persistenceLayerMutator={props.persistenceLayerMutator}
-                       treeState={props.treeState}/>
+        // <FolderSidebar tags={props.tags()}
+        //                persistenceLayerMutator={props.persistenceLayerMutator}
+        //                treeState={props.treeState}/>
+
+        <FolderSidebar2 />
     );
 
     export const Phone = (props: MainProps) => (

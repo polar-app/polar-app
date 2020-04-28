@@ -59,7 +59,8 @@ export const RepositoryApp = (props: IProps) => {
         return (
             <Cached>
                 <AuthRequired authStatus={app.authStatus}>
-                    <PersistenceLayerApp repoDocMetaManager={repoDocMetaManager}
+                    <PersistenceLayerApp tagsType="documents"
+                                         repoDocMetaManager={repoDocMetaManager}
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(docRepo) =>
@@ -110,7 +111,8 @@ export const RepositoryApp = (props: IProps) => {
         return (
             <Cached>
                 <AuthRequired authStatus={app.authStatus}>
-                    <PersistenceLayerApp repoDocMetaManager={repoDocMetaManager}
+                    <PersistenceLayerApp tagsType="annotations"
+                                         repoDocMetaManager={repoDocMetaManager}
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(props) =>

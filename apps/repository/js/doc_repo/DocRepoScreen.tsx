@@ -512,9 +512,9 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
             getSelected: () => this.getSelected(),
             getRow: (viewIndex) => this.getRow(viewIndex),
             onRemoveFromFolder: (folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos),
-            persistenceLayerMutator: this.persistenceLayerMutator,
+            // persistenceLayerMutator: null!,
             treeState: this.treeState,
-            tags: this.props.tags()
+            // tags: this.props.tags()
         };
 
     }

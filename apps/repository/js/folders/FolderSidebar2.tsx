@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {TagTree} from '../../../../web/js/ui/tree/TagTree';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
@@ -7,13 +8,9 @@ import {Strings} from 'polar-shared/src/util/Strings';
 import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import {MUISearchBox2} from '../../../../web/spectron0/material-ui/MUISearchBox2';
-import {useState} from "react";
 import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-
-export interface FoldersSidebarProps {
-    readonly treeState: TreeState<TagDescriptor>;
-}
+import {useDocRepoCallbacks} from "../doc_repo/DocRepoStore";
 
 export interface IState {
     readonly treeState: TreeState<TagDescriptor>;
@@ -21,11 +18,13 @@ export interface IState {
 }
 
 // FIXME: react memo this including state...
-export const FolderSidebar = (props: FoldersSidebarProps) => {
+export const FolderSidebar2 = () => {
+
+    const callbacks = useDocRepoCallbacks();
 
     const [state, setState] = useState<IState>({
         filter: undefined,
-        treeState: new TreeState(NULL_FUNCTION, NULL_FUNCTION)
+        treeState: new TreeState(NULL_FUNCTION, callbacks.onDropped)
     });
 
     const tagsContext = useTagsContext()
@@ -34,7 +33,7 @@ export const FolderSidebar = (props: FoldersSidebarProps) => {
     //
     // private tagContextMenuComponents: ContextMenuComponents;
 
-    const {treeState} = props;
+    const {treeState} = state;
 
     // this.folderContextMenuComponents
     //     = FolderContextMenus.create({
