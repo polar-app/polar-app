@@ -12,17 +12,17 @@ import {RepoDataLoader} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 
-interface IPersistenceLayer {
+interface IPersistence {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
-    readonly docTags: () => ReadonlyArray<TagDescriptor> | undefined;
-    readonly annotationTags: () => ReadonlyArray<TagDescriptor> | undefined;
+    readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
 
 }
 
-const PersistenceLayerContext = React.createContext<IPersistenceLayer | undefined>(undefined);
+const PersistenceContext = React.createContext<IPersistence | undefined>(undefined);
 
 
 export interface IProps {
@@ -59,12 +59,27 @@ export const PersistenceLayerApp = (props: IProps) => {
                                             const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
                                             const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
-                                            return props.render({
+                                            const persistence: IPersistence = {
+                                                repoDocMetaLoader: props.repoDocMetaLoader,
+                                                repoDocMetaManager: props.repoDocMetaManager,
+                                                persistenceLayerProvider,
+                                                userTagsProvider: () => userTags,
+                                                docTagsProvider: docTags,
+                                                annotationTagsProvider: annotationTags
+                                            }
+
+                                            const docRepoRenderProps: DocRepoRenderProps = {
                                                 persistenceLayerProvider,
                                                 docTags,
                                                 annotationTags,
                                                 userTags: () => userTags || []
-                                            });
+                                            }
+
+                                            return (
+                                                <PersistenceContext.Provider value={persistence}>
+                                                    {props.render(docRepoRenderProps)}
+                                                </PersistenceContext.Provider>
+                                            );
 
                                         }}/>
 

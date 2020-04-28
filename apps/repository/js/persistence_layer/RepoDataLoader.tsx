@@ -59,7 +59,7 @@ class RepoDocMetaLoaderSnapshots {
 
         return (onNext: (value: boolean) => void, onError: ErrorHandlerCallback) => {
 
-            // const releaser = repoDocMetaLoader.addEventListener(onNext);
+            // FIXME use the debouncer API here...
             const releaser = RepoDocMetaLoaders.addThrottlingEventListener(repoDocMetaLoader, () => onNext(true));
 
             return () => {
@@ -95,7 +95,6 @@ class RepoDocMetaManagerSnapshots {
         };
 
     }
-
 
 }
 

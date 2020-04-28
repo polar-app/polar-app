@@ -391,6 +391,11 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
             const repoDocInfos = this.selectedProvider();
 
+            if (repoDocInfos.length === 0) {
+                // no work to do
+                return;
+            }
+
             this.dialogs!.confirm({
                 title: "Are you sure you want to delete these item(s)?",
                 subtitle: "This is a permanent operation and can't be undone.  ",
@@ -402,9 +407,14 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
         const onTagged = () => {
 
-            const {repoDocMetaManager, tagsProvider} = this.props;
-
             const repoDocInfos = this.selectedProvider();
+
+            if (repoDocInfos.length === 0) {
+                // no work to do
+                return;
+            }
+
+            const {repoDocMetaManager, tagsProvider} = this.props;
 
             const availableTags = tagsProvider();
             const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
