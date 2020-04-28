@@ -37,19 +37,15 @@ namespace main {
         readonly selected: ReadonlyArray<number>;
     }
 
-    export const Documents = () => (
+    export const Documents = React.memo(() => (
 
         <DocRepoTable2 />
 
-    );
+    ));
 
-    export interface FoldersProps extends FoldersSidebarProps {
-
-    }
-
-    export const Folders = () => (
+    export const Folders = React.memo(() => (
         <FolderSidebar2/>
-    );
+    ));
 
 }
 
@@ -60,21 +56,17 @@ const Router = () => (
     <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
         <Route path='#folders'
-               render={() => (
+               render={React.memo(() => (
                    <LeftSidebar onClose={onClose}>
                        <main.Folders/>
                    </LeftSidebar>
-               )}/>
+               ))}/>
 
     </Switch>
 
 );
 
 namespace devices {
-
-    export interface DeviceProps extends main.DocumentsProps, main.FoldersProps {
-
-    }
 
     export const PhoneAndTablet = React.memo(() => (
         <main.Documents/>
@@ -121,12 +113,6 @@ interface IProps {
 }
 
 export const DocRepoScreen2 = (props: IProps) => {
-
-    const {tagsProvider} = props;
-
-    const deviceProps = {
-
-    };
 
     return (
 
@@ -186,7 +172,7 @@ export const DocRepoScreen2 = (props: IProps) => {
 
             </header>
 
-            <Router {...deviceProps}/>
+            <Router/>
 
             <DeviceRouter phone={<devices.PhoneAndTablet/>}
                           tablet={<devices.PhoneAndTablet/>}

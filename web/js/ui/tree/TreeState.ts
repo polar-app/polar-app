@@ -9,8 +9,6 @@ import {MarkSet} from "./TreeView";
  */
 export class TreeState<V> {
 
-    /**
-     */
     constructor(private readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void,
                 private readonly onDropped: (node: V) => void = NULL_FUNCTION) {
 

@@ -3,14 +3,14 @@ import {
     DocRepoTableColumns,
     DocRepoTableColumnsMap
 } from "./DocRepoTableColumns";
-import React, {useEffect, createContext} from "react";
+import React, {useEffect} from "react";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Provider} from "polar-shared/src/util/Providers";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DocRepoFilters2} from "./DocRepoFilters2";
-import {Preconditions, isPresent} from "polar-shared/src/Preconditions";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {SelectRowType} from "./DocRepoScreen";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -35,8 +35,9 @@ import {
     createContextMemo,
     useContextMemo
 } from "../../../../web/js/react/ContextMemo";
-import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {DraggingSelectedDocs} from "./SelectedDocs";
+import {TreeState} from "../../../../web/js/ui/tree/TreeState";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 
 interface IDocRepoStore {
 
@@ -86,6 +87,12 @@ interface IDocRepoStore {
 
 }
 
+interface IDocRepoFolderStore {
+    readonly treeState: TreeState<TagDescriptor>;
+    readonly sidebarFilter: string;
+    readonly setSidebarFilter: (sidebarFilter: string) => void;
+}
+
 // FIXME: move selected into its own context...
 
 export interface IDocRepoActions {
@@ -113,7 +120,7 @@ export interface IDocRepoActions {
     readonly onFlagged: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
 
 
-    readonly onDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: TagDescriptor) => void;
+    readonly onDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
     readonly onTagSelected: (tags: ReadonlyArray<string>) => void;
 
 
@@ -149,7 +156,7 @@ interface IDocRepoCallbacks {
     /**
      * Called when an doc is actually dropped on a tag.
      */
-    readonly onDropped: (tag: TagDescriptor) => void;
+    readonly onDropped: (tag: Tag) => void;
 
     /**
      * Called when the user is filtering the UI based on a tag and is narrowing
@@ -236,6 +243,12 @@ export const DocRepoActionsContext = createContextMemo<IDocRepoActions>(defaultA
 
 export const DocRepoCallbacksContext = createContextMemo<IDocRepoCallbacks>(defaultCallbacks)
 
+export const DocRepoFolderStoreContext = createContextMemo<IDocRepoFolderStore>({
+    treeState: new TreeState<TagDescriptor>(NULL_FUNCTION, NULL_FUNCTION),
+    sidebarFilter: "",
+    setSidebarFilter: NULL_FUNCTION
+})
+
 export function useDocRepoStore() {
     return useContextMemo(DocRepoStoreContext);
 }
@@ -247,6 +260,10 @@ export function useDocRepoActions() {
 export function useDocRepoCallbacks() {
     return useContextMemo(DocRepoCallbacksContext);
 }
+export function useDocRepoFolderStore() {
+    return useContextMemo(DocRepoFolderStoreContext);
+}
+
 
 function useComponentDidMount<T>(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
@@ -263,6 +280,10 @@ interface IProps {
     readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
 
     readonly children: React.ReactNode;
+}
+
+interface IState extends IDocRepoStore, IDocRepoFolderStore {
+
 }
 
 /**
@@ -294,7 +315,8 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 }
 
 
-export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
+
+export class DocRepoStore extends React.Component<IProps, IState> {
 
     private eventListener: Callback = NULL_FUNCTION;
     private callbacks: IDocRepoCallbacks;
@@ -303,8 +325,6 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     constructor(props: Readonly<IProps>) {
         super(props);
-
-        this.state = {...initialStore};
 
         this.doUpdate = this.doUpdate.bind(this);
         this.doReduceAndUpdateState = this.doReduceAndUpdateState.bind(this);
@@ -315,6 +335,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.setSelected = this.setSelected.bind(this);
         this.setFilters = this.setFilters.bind(this);
         this.setSort = this.setSort.bind(this);
+        this.setSidebarFilter = this.setSidebarFilter.bind(this);
 
         // the debouncer here is VERY important... otherwise we lock up completely
         this.eventListener = Debouncers.create(() => {
@@ -324,6 +345,13 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.actions = this.createActions();
         this.callbacks = this.createCallbacks(this.actions);
 
+        this.state = {
+            ...initialStore,
+            treeState: new TreeState<TagDescriptor>(this.callbacks.onTagSelected,
+                                                    this.callbacks.onDropped),
+            sidebarFilter: "",
+            setSidebarFilter: this.setSidebarFilter
+        };
     }
 
     public componentDidMount(): void {
@@ -425,6 +453,11 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     }
 
+    public setSidebarFilter(sidebarFilter: string) {
+        console.log("FIXME: sidebarFilter: ", {sidebarFilter});
+        this.setState({sidebarFilter});
+    }
+
     private createCallbacks(actions: IDocRepoActions): IDocRepoCallbacks {
 
         const first = () => {
@@ -460,7 +493,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             DraggingSelectedDocs.clear();
         };
 
-        const onDropped = (tag: TagDescriptor) => {
+        const onDropped = (tag: Tag) => {
             const dragged = DraggingSelectedDocs.get();
             if (dragged) {
                 actions.onDropped(dragged, tag);
@@ -627,8 +660,23 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
     public render() {
 
         const store: IDocRepoStore = {
-            ...this.state,
+            data: this.state.data,
+            view: this.state.view,
+            viewPage: this.state.viewPage,
+            columns: this.state.columns,
+            selected: this.state.selected,
+            order: this.state.order,
+            orderBy: this.state.orderBy,
+            page: this.state.page,
+            rowsPerPage: this.state.rowsPerPage,
+            filters: this.state.filters
         };
+
+        const folderStore: IDocRepoFolderStore = {
+            treeState: this.state.treeState,
+            sidebarFilter: this.state.sidebarFilter,
+            setSidebarFilter: this.setSidebarFilter
+        }
 
         // FIXME: all the callbacks here will be updated too I think and that is
         // going to cause us to rerender menu items too.. which freaking sucks
@@ -673,7 +721,9 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
                         <DocRepoStoreContext.Provider value={store}>
                             <DocRepoActionsContext.Provider value={this.actions}>
                                 <DocRepoCallbacksContext.Provider value={this.callbacks}>
-                                    {this.props.children}
+                                    <DocRepoFolderStoreContext.Provider value={folderStore}>
+                                        {this.props.children}
+                                    </DocRepoFolderStoreContext.Provider>
                                 </DocRepoCallbacksContext.Provider>
                             </DocRepoActionsContext.Provider>
                         </DocRepoStoreContext.Provider>
