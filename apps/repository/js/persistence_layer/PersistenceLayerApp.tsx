@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
 import {UserTagsDataLoader} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
@@ -11,7 +11,10 @@ import {
 import {RepoDataLoader} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {PersistenceLayerMutator} from "./PersistenceLayerMutator";
+import {
+    createContextMemo,
+    useContextMemo
+} from "../../../../web/js/react/ContextMemo";
 
 export interface IPersistence {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
@@ -23,10 +26,10 @@ export interface IPersistence {
     // readonly persistenceLayerMutator: PersistenceLayerMutator:
 }
 
-export const PersistenceContext = React.createContext<IPersistence | undefined>(undefined);
+export const PersistenceContext = createContextMemo<IPersistence | undefined>(undefined);
 
 export function usePersistence() {
-    return useContext(PersistenceContext);
+    return useContextMemo(PersistenceContext);
 }
 
 export interface IProps {

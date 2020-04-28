@@ -58,10 +58,11 @@ interface IProps {
 
 export const DocRepoTable2 = React.memo(() => {
 
-    const state = useDocRepoStore();
+    // FIXME: rename this to store...
+    const store = useDocRepoStore();
     const actions = useDocRepoActions();
 
-    const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = state;
+    const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = store;
 
     const {selectedProvider, selectRow} = actions;
 

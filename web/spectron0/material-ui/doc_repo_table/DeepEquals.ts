@@ -15,6 +15,8 @@ export namespace DeepEquals {
 
         let broken = false;
 
+        console.log("Comparing keys: ", keys)
+
         for (const key of keys) {
             if (! isEqual(a[key], b[key])) {
                 console.log(`values for key: ${key} differ: `, a[key], b[key]);

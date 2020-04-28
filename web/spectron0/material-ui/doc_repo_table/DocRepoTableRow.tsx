@@ -227,10 +227,9 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                        onDoubleClick={event => event.stopPropagation()}>
 
                 <MUIDocButtonBar className={classes.docButtons}
-                                 repoDocInfo={row}
                                  flagged={row.flagged}
                                  archived={row.archived}
-                                 onDocDropdown={(event) => selectRow(viewIndex, event, 'click')}
+                                 viewIndex={viewIndex}
                                  {...props}/>
 
             </TableCell>

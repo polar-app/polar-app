@@ -3,7 +3,7 @@ import {
     DocRepoTableColumns,
     DocRepoTableColumnsMap
 } from "./DocRepoTableColumns";
-import React, {useEffect} from "react";
+import React, {useEffect, createContext} from "react";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -31,6 +31,10 @@ import {
 } from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {MUITagInputControls} from "../MUITagInputControls";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
+import {
+    createContextMemo,
+    useContextMemo
+} from "../../../../web/js/react/ContextMemo";
 
 interface IDocRepoStore {
 
@@ -190,22 +194,22 @@ const defaultCallbacks: IDocRepoCallbacks = {
     onFlagged: tracer('callback:onFlagged'),
 }
 
-export const DocRepoStoreContext = React.createContext<IDocRepoStore>(initialStore)
+export const DocRepoStoreContext = createContextMemo<IDocRepoStore>(initialStore)
 
-export const DocRepoActionsContext = React.createContext<IDocRepoActions>(defaultActions)
+export const DocRepoActionsContext = createContextMemo<IDocRepoActions>(defaultActions)
 
-export const DocRepoCallbacksContext = React.createContext<IDocRepoCallbacks>(defaultCallbacks)
+export const DocRepoCallbacksContext = createContextMemo<IDocRepoCallbacks>(defaultCallbacks)
 
 export function useDocRepoStore() {
-    return React.useContext(DocRepoStoreContext);
+    return useContextMemo(DocRepoStoreContext);
 }
 
 export function useDocRepoActions() {
-    return React.useContext(DocRepoActionsContext);
+    return useContextMemo(DocRepoActionsContext);
 }
 
 export function useDocRepoCallbacks() {
-    return React.useContext(DocRepoCallbacksContext);
+    return useContextMemo(DocRepoCallbacksContext);
 }
 
 function useComponentDidMount<T>(delegate: () => void) {
