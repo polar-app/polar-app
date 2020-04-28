@@ -27,6 +27,7 @@ import {
     useDocRepoActions, useDocRepoCallbacks,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import isEqual from "react-fast-compare";
 
 // FIXME:  delete doesn't work.
 
@@ -37,9 +38,8 @@ const globalKeyMap = {
     ARCHIVE: 'a'
 };
 
-interface IProps extends DocActions.DocToolbar.Callbacks {
+interface IProps {
     readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>
     readonly numSelected: number;
     readonly page: number;
     readonly rowsOnPage: number;
@@ -50,9 +50,10 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
 
 export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
-    console.log("FIXME EnhancedTableToolbar: rendering");
-
+    // FIXME: consider using a HOC to skip re-rendering when these contexts
+    // change.
     const store = useDocRepoStore();
+    const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
 
     // FIXME this is where mobx would rock because only these two variables
@@ -61,6 +62,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
     // FIXME: the only other thing I have to do is fix callbacks here so that
     // it's not rendered too often...
     const {rowsPerPage, viewPage} = store;
+    const {setRowsPerPage} = actions;
 
     const { numSelected, page, data } = props;
 
@@ -81,8 +83,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const rowsPerPage = parseInt(event.target.value, 10);
-        props.onChangeRowsPerPage(rowsPerPage);
-
+        setRowsPerPage(rowsPerPage);
     };
 
     // FIXME the math here is all wrog, we need the total number of items on
@@ -173,4 +174,4 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
             </Grid>
         </>
     );
-});
+}, isEqual);

@@ -90,6 +90,8 @@ export interface IDocRepoActions {
 
     readonly setPage: (page: number) => void;
 
+    readonly setRowsPerPage: (rowsPerPage: number) => void;
+
     readonly onTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
@@ -155,7 +157,8 @@ const defaultActions: IDocRepoActions = {
     selectRow: NULL_FUNCTION,
     selectedProvider: () => [],
 
-    setPage: NULL_FUNCTION,
+    setPage: tracer('action:setPage'),
+    setRowsPerPage: tracer('action:setRowsPerPage'),
 
     onTagged: tracer('action:onTagged'),
     onOpen: tracer('action:onOpen'),
@@ -223,6 +226,9 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     // compute the view, then the viewPage
 
+    // FIXME: we only have to resort and recompute the view when the filters
+    // or the sort order changes.
+
     const {data, page, rowsPerPage, order, orderBy, filters} = tmpState;
 
     // Now that we have new data, we have to also apply the filters and sort
@@ -259,6 +265,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.selectRow = this.selectRow.bind(this);
         this.selectedProvider = this.selectedProvider.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.setRowsPerPage = this.setRowsPerPage.bind(this);
 
         // the debouncer here is VERY important... otherwise we lock up completely
         this.eventListener = Debouncers.create(() => {
@@ -306,7 +313,6 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
                      event: React.MouseEvent,
                      type: SelectRowType) {
 
-
         const selected = Callbacks.selectRow(selectedIdx,
                                              event,
                                              type,
@@ -333,6 +339,14 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         });
     };
 
+    public setRowsPerPage(rowsPerPage: number) {
+        this.doReduceAndUpdateState({
+            ...this.state,
+            rowsPerPage,
+            page: 0,
+            selected: []
+        });
+    };
 
     private createCallbacks(actions: IDocRepoActions): IDocRepoCallbacks {
 
@@ -389,7 +403,8 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             ...defaultActions,
             selectedProvider: this.selectedProvider,
             selectRow: this.selectRow,
-            setPage: this.setPage
+            setPage: this.setPage,
+            setRowsPerPage: this.setRowsPerPage
         };
     }
 
