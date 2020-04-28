@@ -178,11 +178,8 @@ export const DocRepoTable2 = React.memo(() => {
                                                             viewIndex={viewIndex}
                                                             key={viewIndex}
                                                             rawContextMenuHandler={rawContextMenuHandler}
-                                                            selectRow={selectRow}
                                                             selected={selected.includes(viewIndex)}
-                                                            {...actions}
                                                             row={row}
-                                                            selectedProvider={selectedProvider}
                                                         />
                                                     );
                                                 })}
@@ -264,25 +261,6 @@ export const DocRepoTable2 = React.memo(() => {
     //
     // }
     //
-    // private onDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
-    //
-    //     // FIXME copy over the AppInitializer timings.
-    //
-    //     // REFACTOR: rework these methods into dedicated callbacks.
-    //
-    //     if (repoDocInfos.length === 0) {
-    //         return;
-    //     }
-    //
-    //     this.dialogs!.confirm({
-    //         title: "Are you sure you want to delete these document(s)?",
-    //         subtitle: "This is a permanent operation and can't be undone.  All associated annotations will also be removed.",
-    //         onCancel: NULL_FUNCTION,
-    //         type: 'danger',
-    //         onAccept: () => this.props.onDeleted(repoDocInfos),
-    //     });
-    //
-    // }
     //
     // private onArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
     //
@@ -307,6 +285,7 @@ export const DocRepoTable2 = React.memo(() => {
     //         defaultValue: repoDocInfo.title,
     //         onCancel: NULL_FUNCTION,
     //         onDone: (value) => this.props.onRename(repoDocInfo, value)
+
     //     });
     //
     // }

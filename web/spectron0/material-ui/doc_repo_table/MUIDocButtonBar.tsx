@@ -2,12 +2,13 @@ import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {Callback1} from "polar-shared/src/util/Functions";
 import {
     MUIDocArchiveButton,
     MUIDocFlagButton,
     MUIDocTagButton
 } from "./MUIDocButtons";
+import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import {Callback1} from "polar-shared/src/util/Functions";
 
 interface IProps {
 
@@ -17,26 +18,24 @@ interface IProps {
 
     readonly repoDocInfo: RepoDocInfo;
 
-    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
-    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
-    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
-
     readonly onDocDropdown: Callback1<React.MouseEvent>;
 
 }
 
 export const MUIDocButtonBar = React.memo((props: IProps) => {
 
+    const callbacks = useDocRepoCallbacks();
+
     return (
 
         <div className={props.className || ''}>
 
-            <MUIDocTagButton onClick={() => props.onTagged([props.repoDocInfo])}/>
+            <MUIDocTagButton onClick={callbacks.onTagged}/>
 
-            <MUIDocArchiveButton onClick={() => props.onArchived([props.repoDocInfo])}
+            <MUIDocArchiveButton onClick={callbacks.onArchived}
                                  active={props.archived}/>
 
-            <MUIDocFlagButton onClick={() => props.onFlagged([props.repoDocInfo])}
+            <MUIDocFlagButton onClick={callbacks.onFlagged}
                               active={props.flagged}/>
 
             <Tooltip title="More options...">

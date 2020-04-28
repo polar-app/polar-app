@@ -50,9 +50,16 @@ interface IProps extends DocActions.DocToolbar.Callbacks {
 
 export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
+    console.log("FIXME EnhancedTableToolbar: rendering");
+
     const store = useDocRepoStore();
     const callbacks = useDocRepoCallbacks();
 
+    // FIXME this is where mobx would rock because only these two variables
+    // would be re-rendered.
+
+    // FIXME: the only other thing I have to do is fix callbacks here so that
+    // it's not rendered too often...
     const {rowsPerPage, viewPage} = store;
 
     const { numSelected, page, data } = props;

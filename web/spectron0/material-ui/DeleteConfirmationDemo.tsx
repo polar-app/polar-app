@@ -6,10 +6,12 @@ import {MUIDialogController} from "./dialogs/MUIDialogController";
 const ChildComponent = () => {
     const onClick = useDeleteConfirmation(() => console.log("Deleted"));
 
-    return (
-        <Button onClick={onClick}
-                variant="contained">delete it</Button>
-    );
+    // return (
+    //     <Button onClick={onClick}
+    //             variant="contained">delete it</Button>
+    // );
+
+    return <div/>
 
 }
 

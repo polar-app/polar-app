@@ -19,11 +19,16 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {
     Callback,
     Callback1,
+    Callback2,
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {useDeleteConfirmation} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {Tag} from "polar-shared/src/tags/Tags";
+import {
+    DialogManager,
+    MUIDialogControllerContext
+} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 
 interface IDocRepoStore {
 
@@ -85,18 +90,16 @@ export interface IDocRepoActions {
 
     readonly setPage: (page: number) => void;
 
-    // FIXME: not sure if these are actually needed or we can use Callbacks
-    // here...
-    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
     readonly onOpen: Callback1<RepoDocInfo>;
-    readonly onRename: Callback1<RepoDocInfo>;
+    readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly onShowFile: Callback1<RepoDocInfo>;
     readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
     readonly onCopyFilePath: Callback1<RepoDocInfo>;
     readonly onCopyDocumentID: Callback1<RepoDocInfo>;
     readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
-    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
-    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
+    readonly onArchived: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
+    readonly onFlagged: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
 
 
     // readonly setFilters: (filters: DocRepoFilters2.Filters) => {
@@ -148,42 +151,42 @@ function tracer(name: string) {
     return (arg?: any) => console.info(name, arg);
 }
 
-const initialActions: IDocRepoActions = {
+const defaultActions: IDocRepoActions = {
     selectRow: NULL_FUNCTION,
     selectedProvider: () => [],
 
     setPage: NULL_FUNCTION,
 
-    onTagged: tracer('onTagged'),
-    onOpen: tracer('onOpen'),
-    onRename: tracer('onRename'),
-    onShowFile: tracer('onShowFile'),
-    onCopyOriginalURL: tracer('onCopyOriginalURL'),
-    onCopyFilePath: tracer('onCopyFilePath'),
-    onCopyDocumentID: tracer('onCopyDocumentID'),
-    onDeleted: tracer('onDeleted'),
-    onArchived: tracer('onArchived'),
-    onFlagged: tracer('onFlagged'),
+    onTagged: tracer('action:onTagged'),
+    onOpen: tracer('action:onOpen'),
+    onRename: tracer('action:onRename'),
+    onShowFile: tracer('action:onShowFile'),
+    onCopyOriginalURL: tracer('action:onCopyOriginalURL'),
+    onCopyFilePath: tracer('action:onCopyFilePath'),
+    onCopyDocumentID: tracer('action:onCopyDocumentID'),
+    onDeleted: tracer('action:onDeleted FIXME1'),
+    onArchived: tracer('action:onArchived'),
+    onFlagged: tracer('action:onFlagged'),
 }
 
-const initialCallbacks: IDocRepoCallbacks = {
-    onTagged: tracer('onTagged'),
-    onOpen: tracer('onOpen'),
-    onRename: tracer('onRename'),
-    onShowFile: tracer('onShowFile'),
-    onCopyOriginalURL: tracer('onCopyOriginalURL'),
-    onCopyFilePath: tracer('onCopyFilePath'),
-    onCopyDocumentID: tracer('onCopyDocumentID'),
-    onDeleted: tracer('onDeleted'),
-    onArchived: tracer('onArchived'),
-    onFlagged: tracer('onFlagged'),
+const defaultCallbacks: IDocRepoCallbacks = {
+    onTagged: tracer('callback:onTagged'),
+    onOpen: tracer('callback:onOpen'),
+    onRename: tracer('callback:onRename'),
+    onShowFile: tracer('callback:onShowFile'),
+    onCopyOriginalURL: tracer('callback:onCopyOriginalURL'),
+    onCopyFilePath: tracer('callback:onCopyFilePath'),
+    onCopyDocumentID: tracer('callback:onCopyDocumentID'),
+    onDeleted: tracer('callback:onDeleted'),
+    onArchived: tracer('callback:onArchived'),
+    onFlagged: tracer('callback:onFlagged'),
 }
 
 export const DocRepoStoreContext = React.createContext<IDocRepoStore>(initialStore)
 
-export const DocRepoActionsContext = React.createContext<IDocRepoActions>(initialActions)
+export const DocRepoActionsContext = React.createContext<IDocRepoActions>(defaultActions)
 
-export const DocRepoCallbacksContext = React.createContext<IDocRepoCallbacks>(initialCallbacks)
+export const DocRepoCallbacksContext = React.createContext<IDocRepoCallbacks>(defaultCallbacks)
 
 export function useDocRepoStore() {
     return React.useContext(DocRepoStoreContext);
@@ -238,30 +241,13 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
-interface WithDialogsProps {
-    readonly children: React.ReactNode;
-}
-
-const WithDialogs = (props: WithDialogsProps) => {
-
-    const callbacks = useDocRepoCallbacks();
-
-    const dialogCallbacks = {
-        ...callbacks,
-        onDeleted: useDeleteConfirmation(callbacks.onDeleted)
-    }
-
-    return (
-        <DocRepoCallbacksContext.Provider value={dialogCallbacks}>
-            {props.children}
-        </DocRepoCallbacksContext.Provider>
-    );
-
-}
 
 export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     private eventListener: Callback = NULL_FUNCTION;
+    private callbacks: IDocRepoCallbacks;
+    private actions: IDocRepoActions;
+    private dialogs: DialogManager | undefined;
 
     constructor(props: Readonly<IProps>) {
         super(props);
@@ -278,6 +264,9 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.eventListener = Debouncers.create(() => {
             this.doUpdate();
         });
+
+        this.actions = this.createActions();
+        this.callbacks = this.createCallbacks(this.actions);
 
     }
 
@@ -352,51 +341,116 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             return selected.length >= 1 ? selected[0] : undefined
         }
 
+        const onRename = () => {
+
+            const repoDocInfo = first()!;
+
+            this.dialogs!.prompt({
+                title: "Enter a new title for the document:",
+                defaultValue: repoDocInfo.title,
+                onCancel: NULL_FUNCTION,
+                onDone: (value) => actions.onRename(repoDocInfo, value)
+            });
+
+        };
+
+        const onDeleted = () => {
+
+            const repoDocInfos = this.selectedProvider();
+
+            this.dialogs!.confirm({
+                title: "Are you sure you want to delete these item(s)?",
+                subtitle: "This is a permanent operation and can't be undone.  ",
+                type: 'danger',
+                onAccept: () => actions.onDeleted(repoDocInfos),
+            });
+
+        }
+
         return {
 
+            onRename,
+            onDeleted,
             onOpen: () => actions.onOpen(first()!),
-            onRename: () => actions.onRename(first()!),
             onShowFile: () => actions.onShowFile(first()!),
             onCopyOriginalURL: () => actions.onCopyOriginalURL(first()!),
             onCopyFilePath: () => actions.onCopyFilePath(first()!),
             onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
-            onDeleted: () => actions.onDeleted(this.selectedProvider()),
-            onArchived: () => actions.onArchived(this.selectedProvider()),
-            onFlagged: () => actions.onFlagged(this.selectedProvider()),
-            onTagged: () => actions.onTagged(this.selectedProvider()),
+            onArchived: () => actions.onArchived(this.selectedProvider(), false),
+            onFlagged: () => actions.onFlagged(this.selectedProvider(), false),
+            onTagged: () => actions.onTagged(this.selectedProvider(), []),
 
         };
 
     }
 
+    private createActions(): IDocRepoActions {
+        return {
+            ...defaultActions,
+            selectedProvider: this.selectedProvider,
+            selectRow: this.selectRow,
+            setPage: this.setPage
+        };
+    }
 
     public render() {
-
-        const {repoDocMetaLoader, repoDocMetaManager} = this.props;
 
         const store: IDocRepoStore = {
             ...this.state,
         };
 
-        const actions: IDocRepoActions = {
-            ...initialActions,
-            selectedProvider: this.selectedProvider,
-            selectRow: this.selectRow,
-            setPage: this.setPage
-        };
+        // FIXME: all the callbacks here will be updated too I think and that is
+        // going to cause us to rerender menu items too.. which freaking sucks
 
-        const callbacks = this.createCallbacks(actions);
+        // FIXME: now the main problem is that we ahve to rewrite the actions
+        // and the callbacks BUT:
+        //
+        //
+        // - when state is open we ONLY want to trigger components that need
+        //   to be re-rendered - not smaller components that listen to the
+        //   callbacks
+        //
+        //  - we can't access getSelected easily...
+        //
+        //  - callbacks are created EACH render which isn't efficient...
+
+        //  - I don't have an EASY way to to get access to dialogs...
+        //
+        //  - If I use react.useMemo that might work if I have a smaller
+        //    set of 1-2 root components which then call the store...
+
+        // FIXME: I'm giving it callbacks but they're already created and we're
+        // changing the actions but they're already wired up...
+        //
+        //
+        //
+        // rework it like this:
+
+        // create initial actions in the root, copied from the defaults...
+        // then augment them down the line, copying them from context...
+
+        // FIXME: another idea is to just use the dialog context directly...
+        // and a render prop and then update a global variable... then use
+        // those dialogs directly
 
         return (
-            <DocRepoStoreContext.Provider value={store}>
-                <DocRepoActionsContext.Provider value={actions}>
-                    <DocRepoCallbacksContext.Provider value={callbacks}>
-                        <WithDialogs>
-                            {this.props.children}
-                        </WithDialogs>
-                    </DocRepoCallbacksContext.Provider>
-                </DocRepoActionsContext.Provider>
-            </DocRepoStoreContext.Provider>
+            <MUIDialogControllerContext.Consumer>
+                {dialogs => {
+                    this.dialogs = dialogs;
+
+                    return (
+                        <DocRepoStoreContext.Provider value={store}>
+                            <DocRepoActionsContext.Provider value={this.actions}>
+                                <DocRepoCallbacksContext.Provider value={this.callbacks}>
+                                    {this.props.children}
+                                </DocRepoCallbacksContext.Provider>
+                            </DocRepoActionsContext.Provider>
+                        </DocRepoStoreContext.Provider>
+                    )
+
+                }}
+            </MUIDialogControllerContext.Consumer>
+
         );
 
     }

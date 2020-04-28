@@ -17,6 +17,10 @@ import isEqual from "react-fast-compare";
 import {DocActions} from "./DocActions";
 import {DeepEquals} from "./DeepEquals";
 import debugIsEqual = DeepEquals.debugIsEqual;
+import {
+    useDocRepoActions, useDocRepoCallbacks,
+    useDocRepoStore
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -113,17 +117,13 @@ export const TableCellTags = React.memo((props: TableCellTagsProps) => {
     );
 }, isEqual);
 
-interface IProps extends DocActions.DocContextMenu.Callbacks {
+interface IProps {
 
     readonly viewIndex: number;
     readonly rawContextMenuHandler: ContextMenuHandler;
-    readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
     readonly selected: boolean;
     readonly row: RepoDocInfo;
-    readonly selectedProvider: () => ReadonlyArray<RepoDocInfo>;
 
-    readonly onOpen: (repoDocInfo: RepoDocInfo) => void;
-    readonly onTagged: Callback1<ReadonlyArray<RepoDocInfo>>;
 
     readonly onDragStart?: () => void;
     readonly onDragEnd?: () => void;
@@ -138,22 +138,25 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
-    const {viewIndex, rawContextMenuHandler, selected, row, selectedProvider} = props;
+    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
+
+    const {selectRow} = actions;
+    const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
     const contextMenuHandler: ContextMenuHandler = (event) => {
-        props.selectRow(viewIndex, event, 'context');
+        selectRow(viewIndex, event, 'context');
         rawContextMenuHandler(event);
     };
 
     const selectRowClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-        props.selectRow(viewIndex, event, 'click');
+        selectRow(viewIndex, event, 'click');
     };
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
 
     return (
         <TableRow
-
             hover
             className={classes.tr}
             role="checkbox"
@@ -162,7 +165,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             onDragStart={event => (props.onDragStart || NULL_FUNCTION)()}
             onDragEnd={event => (props.onDragEnd || NULL_FUNCTION)()}
             tabIndex={props.viewIndex}
-            onDoubleClick={() => props.onOpen(row)}
+            onDoubleClick={callbacks.onOpen}
             selected={selected}>
 
             <TableCell padding="checkbox">
@@ -170,7 +173,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                     <Checkbox
                         checked={selected}
                         inputProps={{'aria-labelledby': labelId}}
-                        onClick={(event) => props.selectRow(viewIndex, event, 'checkbox')}
+                        onClick={(event) => selectRow(viewIndex, event, 'checkbox')}
 
                     />
                 </AutoBlur>
@@ -202,7 +205,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             </TableCell>
 
             <TableCellTags contextMenuHandler={contextMenuHandler}
-                           selectRow={props.selectRow}
+                           selectRow={selectRow}
                            viewIndex={viewIndex}
                            tags={row.tags}/>
 
@@ -224,12 +227,10 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                        onDoubleClick={event => event.stopPropagation()}>
 
                 <MUIDocButtonBar className={classes.docButtons}
-                                 selectedProvider={selectedProvider}
                                  repoDocInfo={row}
                                  flagged={row.flagged}
                                  archived={row.archived}
-                                 onDocDropdown={(event) => props.selectRow(viewIndex, event, 'click')}
-                                 onTagged={props.onTagged}
+                                 onDocDropdown={(event) => selectRow(viewIndex, event, 'click')}
                                  {...props}/>
 
             </TableCell>
