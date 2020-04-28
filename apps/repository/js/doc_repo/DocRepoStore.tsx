@@ -787,10 +787,8 @@ namespace Callbacks {
             }
 
             if (type === 'context') {
-                console.log("FIXME1: ", selected, selectedIdx);
 
                 if (selected.includes(selectedIdx)) {
-                    console.log("FIXME2: ");
                     return 'none';
                 }
 
