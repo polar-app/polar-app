@@ -60,7 +60,9 @@ export const MUITreeItem = withStyles((theme: Theme) =>
                            alignItems: 'center'
                        }}>
 
-                      <Box pt={1} pb={1} onClick={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}>
+                      <Box pt={1}
+                           pb={1}
+                           onClick={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}>
                           <Checkbox checked={props.selected}
                                     style={{padding: 0}}
 

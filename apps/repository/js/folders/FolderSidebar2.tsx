@@ -7,6 +7,8 @@ import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToo
 import {MUISearchBox2} from '../../../../web/spectron0/material-ui/MUISearchBox2';
 import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {useDocRepoFolderStore} from "../doc_repo/DocRepoStore";
+import MUITreeView
+    from "../../../../web/spectron0/material-ui/treeview/MUITreeView";
 
 export const FolderSidebar2 = () => {
 
@@ -109,6 +111,8 @@ export const FolderSidebar2 = () => {
                         flexGrow: 1,
                         overflow: 'auto',
                     }}>
+
+                    <MUITreeView/>
 
                     <TagTree tags={tags}
                              treeState={treeState}

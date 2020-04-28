@@ -1,7 +1,6 @@
 import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
-import {MinusSquare, PlusSquare} from "./MUITreeIcons";
 import {MUITreeItem} from './MUITreeItem';
 
 const useStyles = makeStyles(

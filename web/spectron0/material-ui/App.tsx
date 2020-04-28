@@ -122,7 +122,8 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <ContextMemoTest/>
+                <MUITreeView/>
+                {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}
 
