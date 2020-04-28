@@ -63,6 +63,7 @@ import {AppBarDemo} from "./AppBarDemo";
 import { SharedStateTest } from './SharedStateTest';
 import {SharedIntermediateContextTest} from "./SharedIntermediateContextTest";
 import {DeleteConfirmationDemo} from "./DeleteConfirmationDemo";
+import {ContextMemoTest} from "./ContextTest";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -121,7 +122,7 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <DeleteConfirmationDemo/>
+                <ContextMemoTest/>
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}
 

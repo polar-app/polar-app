@@ -218,9 +218,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         this.persistenceLayerMutator
             = new PersistenceLayerMutator(this.props.repoDocMetaManager,
                                           this.props.persistenceLayerProvider,
-                                          this.tagsProvider,
-                                          repoDocInfosProvider,
-                                          () => this.refresh());
+                                          this.tagsProvider);
 
         this.docRepoFilters = new DocRepoFilters(onRefreshed, repoDocInfosProvider);
 

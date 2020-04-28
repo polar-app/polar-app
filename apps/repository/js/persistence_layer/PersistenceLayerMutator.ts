@@ -1,8 +1,7 @@
-import {RepoDocInfo} from "../RepoDocInfo";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags, TagStr} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -15,7 +14,6 @@ import {
     ProgressCallback,
     ProgressTracker
 } from "polar-shared/src/util/ProgressTracker";
-import {ProgressCalculator} from "../../../../web/js/util/ProgressCalculator";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 
@@ -28,9 +26,7 @@ export class PersistenceLayerMutator {
 
     public constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
                        private readonly persistenceLayerProvider: PersistenceLayerProvider,
-                       private readonly tagsProvider: () => ReadonlyArray<Tag>,
-                       private readonly repoDocInfosProvider: () => ReadonlyArray<RepoDocInfo>,
-                       private readonly refresher: Callback) {
+                       private readonly tagsProvider: () => ReadonlyArray<Tag>) {
 
     }
 

@@ -398,9 +398,7 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
         this.persistenceLayerMutator
             = new PersistenceLayerMutator(this.props.repoDocMetaManager,
                                           this.props.persistenceLayerProvider,
-                                          this.props.tags,
-                                          repoDocInfosProvider,
-                                          () => doRefresh());
+                                          this.props.tags);
 
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 

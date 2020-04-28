@@ -11,6 +11,7 @@ import {
 import {RepoDataLoader} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
+import {PersistenceLayerMutator} from "./PersistenceLayerMutator";
 
 export interface IPersistence {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
@@ -19,6 +20,7 @@ export interface IPersistence {
     readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
     readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
     readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    // readonly persistenceLayerMutator: PersistenceLayerMutator:
 }
 
 export const PersistenceContext = React.createContext<IPersistence | undefined>(undefined);
@@ -58,6 +60,8 @@ export const PersistenceLayerApp = (props: IProps) => {
                                         persistenceLayerProvider={persistenceLayerProvider}
                                         render={userTags => {
 
+                                            const {repoDocMetaLoader, repoDocMetaManager} = props;
+
                                             const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
                                             const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
@@ -67,7 +71,7 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                 persistenceLayerProvider,
                                                 userTagsProvider: () => userTags,
                                                 docTagsProvider: docTags,
-                                                annotationTagsProvider: annotationTags
+                                                annotationTagsProvider: annotationTags,
                                             }
 
                                             const docRepoRenderProps: DocRepoRenderProps = {
