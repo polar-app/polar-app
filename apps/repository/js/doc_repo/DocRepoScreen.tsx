@@ -558,29 +558,29 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
                                      display: 'flex'
                                  }}>
 
-                                <DocRepoButtonBar tagsProvider={tagsProvider}/>
+                                <DocRepoButtonBar />
 
                             </div>
 
                             <div style={{marginLeft: 'auto'}}>
 
-                                <DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}
-                                                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}
-                                                  onFilterByTitle={(title) => this.onFilterByTitle(title)}
-                                                  refresher={() => this.refresh()}
-                                                  filteredTags={this.docRepoFilters.filters.filteredTags}
-                                                  docSidebarVisible={this.state.docSidebarVisible}
-                                                  onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}
-                                                  right={
-                                               <div className="d-none-phone d-none-tablet"
-                                                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
+                                {/*<DocRepoFilterBar onToggleFlaggedOnly={value => this.onToggleFlaggedOnly(value)}*/}
+                                {/*                  onToggleFilterArchived={value => this.onToggleFilterArchived(value)}*/}
+                                {/*                  onFilterByTitle={(title) => this.onFilterByTitle(title)}*/}
+                                {/*                  refresher={() => this.refresh()}*/}
+                                {/*                  filteredTags={this.docRepoFilters.filters.filteredTags}*/}
+                                {/*                  docSidebarVisible={this.state.docSidebarVisible}*/}
+                                {/*                  onDocSidebarVisible={visible => this.onDocSidebarVisible(visible)}*/}
+                                {/*                  right={*/}
+                                {/*               <div className="d-none-phone d-none-tablet"*/}
+                                {/*                    style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>*/}
 
-                                                   <DocRepoTableDropdown id="table-dropdown"
-                                                                         options={Object.values(this.state.columns)}
-                                                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>
-                                               </div>
-                                           }
-                                />
+                                {/*                   <DocRepoTableDropdown id="table-dropdown"*/}
+                                {/*                                         options={Object.values(this.state.columns)}*/}
+                                {/*                                         onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>*/}
+                                {/*               </div>*/}
+                                {/*           }*/}
+                                {/*/>*/}
 
                             </div>
 

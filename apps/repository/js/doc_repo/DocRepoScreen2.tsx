@@ -158,20 +158,13 @@ export const DocRepoScreen2 = (props: IProps) => {
                                  display: 'flex'
                              }}>
 
-                            <DocRepoButtonBar tagsProvider={tagsProvider}/>
+                            <DocRepoButtonBar />
 
                         </div>
 
                         <div style={{marginLeft: 'auto'}}>
 
-                            <DocRepoFilterBar onToggleFlaggedOnly={NULL_FUNCTION}
-                                              onToggleFilterArchived={NULL_FUNCTION}
-                                              onFilterByTitle={NULL_FUNCTION}
-                                              refresher={NULL_FUNCTION}
-                                              filteredTags={new FilteredTags()}
-                                              docSidebarVisible={false}
-                                              onDocSidebarVisible={NULL_FUNCTION}
-                                              right={
+                            <DocRepoFilterBar right={
                                                   <div className="d-none-phone d-none-tablet"
                                                        style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
 

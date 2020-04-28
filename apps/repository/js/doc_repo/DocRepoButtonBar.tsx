@@ -5,10 +5,9 @@ import {DeviceRouter} from '../../../../web/js/ui/DeviceRouter';
 import {AddContent} from '../ui/AddContentButton';
 
 export interface IProps {
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
-export function DocRepoButtonBar(pros: IProps) {
+export function DocRepoButtonBar(props: IProps) {
 
     return (
 
