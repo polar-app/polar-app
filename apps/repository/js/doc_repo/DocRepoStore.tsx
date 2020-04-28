@@ -91,8 +91,8 @@ export interface IDocRepoActions {
                          type: SelectRowType) => void;
 
     readonly setPage: (page: number) => void;
-
     readonly setRowsPerPage: (rowsPerPage: number) => void;
+    readonly setSelected: (selected: ReadonlyArray<number>) => void;
 
     readonly onTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
     readonly onOpen: Callback1<RepoDocInfo>;
@@ -161,6 +161,7 @@ const defaultActions: IDocRepoActions = {
 
     setPage: tracer('action:setPage'),
     setRowsPerPage: tracer('action:setRowsPerPage'),
+    setSelected: tracer('action:setSelected'),
 
     onTagged: tracer('action:onTagged'),
     onOpen: tracer('action:onOpen'),
@@ -269,6 +270,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.selectedProvider = this.selectedProvider.bind(this);
         this.setPage = this.setPage.bind(this);
         this.setRowsPerPage = this.setRowsPerPage.bind(this);
+        this.setSelected = this.setSelected.bind(this);
 
         // the debouncer here is VERY important... otherwise we lock up completely
         this.eventListener = Debouncers.create(() => {
@@ -350,6 +352,13 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             selected: []
         });
     };
+
+    public setSelected(selected: ReadonlyArray<number>) {
+        this.setState({
+            ...this.state,
+            selected
+        });
+    }
 
     private createCallbacks(actions: IDocRepoActions): IDocRepoCallbacks {
 
@@ -453,7 +462,8 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             selectedProvider: this.selectedProvider,
             selectRow: this.selectRow,
             setPage: this.setPage,
-            setRowsPerPage: this.setRowsPerPage
+            setRowsPerPage: this.setRowsPerPage,
+            setSelected: this.setSelected
         };
     }
 

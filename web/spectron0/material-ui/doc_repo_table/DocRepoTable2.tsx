@@ -130,14 +130,9 @@ export const DocRepoTable2 = React.memo(() => {
                         return (
                             <>
                                 {/*FIXME: some of these don't need to be passed as I can use store and actions*/}
-                                <EnhancedTableToolbar data={view}
-                                                      // selectedProvider={selectedProvider}
-                                                      numSelected={selected.length}
-                                                      rowsOnPage={viewPage.length}
-                                                      onChangePage={actions.setPage}
+                                <EnhancedTableToolbar onChangePage={actions.setPage}
                                                       onChangeRowsPerPage={handleChangeRowsPerPage}
                                                       onSelectAllRows={handleSelectAllRows}
-                                                      page={page}
                                                       />
 
                                 <TableContainer style={{flexGrow: 1}}>

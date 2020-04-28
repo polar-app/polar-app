@@ -28,6 +28,7 @@ import {
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 import isEqual from "react-fast-compare";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 // FIXME:  delete doesn't work.
 
@@ -39,10 +40,6 @@ const globalKeyMap = {
 };
 
 interface IProps {
-    readonly data: ReadonlyArray<RepoDocInfo>;
-    readonly numSelected: number;
-    readonly page: number;
-    readonly rowsOnPage: number;
     readonly onChangePage: (page: number) => void;
     readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
     readonly onSelectAllRows: (selected: boolean) => void;
@@ -61,12 +58,8 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     // FIXME: the only other thing I have to do is fix callbacks here so that
     // it's not rendered too often...
-    const {rowsPerPage, viewPage} = store;
-    const {setRowsPerPage} = actions;
-
-    const { numSelected, page, data } = props;
-
-    const rowsOnPage = viewPage.length;
+    const {rowsPerPage, viewPage, data, selected, page} = store;
+    const {setRowsPerPage, setSelected} = actions;
 
     // FIXME: migrate these to callbacks that use getSelected...
 
@@ -86,12 +79,16 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
         setRowsPerPage(rowsPerPage);
     };
 
+    const handleCheckbox = (checked: boolean) => {
+        if (checked) {
+            setSelected(Numbers.range(0, rowsPerPage - 1))
+        } else {
+            setSelected([]);
+        }
+    }
+
     // FIXME the math here is all wrog, we need the total number of items on
     // the page, and then only teh selected count of items on the page
-
-    // FIXME: select only per pages or select ALL the pages..
-
-    // const selectedOnPage = sel
 
     return (
         <>
@@ -117,15 +114,15 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
                                 <AutoBlur>
                                     <Checkbox
                                         size="medium"
-                                        indeterminate={numSelected > 0 && numSelected < rowsPerPage}
-                                        checked={rowsOnPage === rowsPerPage}
-                                        onChange={event => props.onSelectAllRows(event.target.checked)}
+                                        indeterminate={selected.length > 0 && selected.length < rowsPerPage}
+                                        checked={selected.length === rowsPerPage}
+                                        onChange={event => handleCheckbox(event.target.checked)}
                                         inputProps={{ 'aria-label': 'select all documents' }}
                                     />
                                 </AutoBlur>
                             </Grid>
 
-                            {numSelected > 0 && (
+                            {selected.length > 0 && (
                                 <>
                                     <Grid item>
                                         <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
