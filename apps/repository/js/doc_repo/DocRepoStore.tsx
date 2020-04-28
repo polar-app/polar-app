@@ -10,7 +10,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DocRepoFilters2} from "./DocRepoFilters2";
-import {Preconditions} from "polar-shared/src/Preconditions";
+import {Preconditions, isPresent} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {SelectRowType} from "./DocRepoScreen";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -536,12 +536,37 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             onDragStart: defaultCallbacks.onDragStart,
             onDragEnd: defaultCallbacks.onDragEnd,
             onDropped: defaultCallbacks.onDropped,
-            onTagSelected: defaultCallbacks. onTagSelected
+            onTagSelected: actions.onTagSelected
         };
 
     }
 
     private createActions(): IDocRepoActions {
+
+        // TODO: this should be refactored
+        const onTagSelected = (tagLiterals: ReadonlyArray<string>) => {
+
+            const tags = this.props.tagsProvider();
+
+            const tagsMap = arrayStream(tags).toMap(current => current.id);
+
+            const filteredTags = arrayStream(tagLiterals)
+                .map(current => tagsMap[current])
+                .filter(current => isPresent(current))
+                .collect();
+
+            const isRootTag = () => {
+                return filteredTags.length === 1 && filteredTags[0].id === '/';
+            };
+
+            if (isRootTag()) {
+                this.setFilters({...this.state.filters, tags: []});
+            } else {
+                this.setFilters({...this.state.filters, tags: filteredTags});
+            }
+
+        };
+
         return {
             ...defaultActions,
             selectedProvider: this.selectedProvider,
@@ -550,7 +575,8 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             setRowsPerPage: this.setRowsPerPage,
             setSelected: this.setSelected,
             setFilters: this.setFilters,
-            setSort: this.setSort
+            setSort: this.setSort,
+            onTagSelected
         };
     }
 
