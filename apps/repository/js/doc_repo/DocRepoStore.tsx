@@ -98,7 +98,7 @@ export interface IDocRepoActions {
     readonly setRowsPerPage: (rowsPerPage: number) => void;
     readonly setSelected: (selected: ReadonlyArray<number>) => void;
     readonly setFilters: (filters: DocRepoFilters2.Filters) => void;
-
+    readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
     readonly onTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
@@ -168,6 +168,7 @@ const defaultActions: IDocRepoActions = {
     setRowsPerPage: tracer('action:setRowsPerPage'),
     setSelected: tracer('action:setSelected'),
     setFilters: tracer('action:setFilters'),
+    setSort: tracer('action:setSort'),
 
     onTagged: tracer('action:onTagged'),
     onOpen: tracer('action:onOpen'),
@@ -278,6 +279,7 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
         this.setRowsPerPage = this.setRowsPerPage.bind(this);
         this.setSelected = this.setSelected.bind(this);
         this.setFilters = this.setFilters.bind(this);
+        this.setSort = this.setSort.bind(this);
 
         // the debouncer here is VERY important... otherwise we lock up completely
         this.eventListener = Debouncers.create(() => {
@@ -369,6 +371,18 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
     public setFilters(filters: DocRepoFilters2.Filters) {
         this.doReduceAndUpdateState({...this.state, filters});
+    }
+
+    public setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
+
+        this.doReduceAndUpdateState({
+            ...this.state,
+            order,
+            orderBy,
+            page: 0,
+            selected: []
+        });
+
     }
 
     private createCallbacks(actions: IDocRepoActions): IDocRepoCallbacks {
@@ -500,7 +514,8 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             setPage: this.setPage,
             setRowsPerPage: this.setRowsPerPage,
             setSelected: this.setSelected,
-            setFilters: this.setFilters
+            setFilters: this.setFilters,
+            setSort: this.setSort
         };
     }
 

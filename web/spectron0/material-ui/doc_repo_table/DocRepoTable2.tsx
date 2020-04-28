@@ -6,55 +6,16 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Sorting} from "./Sorting";
 import {EnhancedTableToolbar} from './EnhancedTableToolbar';
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
-import {SelectRowType} from "../../../../apps/repository/js/doc_repo/DocRepoScreen";
 import {DocRepoTableRow} from "./DocRepoTableRow";
-import {Provider} from "polar-shared/src/util/Providers";
-import {Tag} from "polar-shared/src/tags/Tags";
-import {RelatedTagsManager} from "../../../js/tags/related/RelatedTagsManager";
-import {
-    MUIDialogController
-} from "../dialogs/MUIDialogController";
+import {MUIDialogController} from "../dialogs/MUIDialogController";
 import {
     useDocRepoActions,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore";
-import {useDialogManager} from "../dialogs/MUIDialogControllers";
-
-interface IProps {
-
-    readonly data: ReadonlyArray<RepoDocInfo>;
-
-    readonly selected: ReadonlyArray<number>;
-
-    readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
-
-    readonly selectRows: (selected: ReadonlyArray<number>) => void;
-
-    readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
-
-    readonly relatedTagsManager: RelatedTagsManager;
-
-    readonly onTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
-
-    readonly onDragStart?: (event: DragEvent) => void;
-    readonly onDragEnd?: (event: DragEvent) => void;
-
-    readonly onOpen: Callback1<RepoDocInfo>;
-    readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly onShowFile: Callback1<RepoDocInfo>;
-    readonly onCopyOriginalURL: Callback1<RepoDocInfo>;
-    readonly onCopyFilePath: Callback1<RepoDocInfo>;
-    readonly onCopyDocumentID: Callback1<RepoDocInfo>;
-    readonly onDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
-    readonly onArchived: Callback1<ReadonlyArray<RepoDocInfo>>;
-    readonly onFlagged: Callback1<ReadonlyArray<RepoDocInfo>>;
-
-}
 
 export const DocRepoTable2 = React.memo(() => {
 
@@ -66,15 +27,6 @@ export const DocRepoTable2 = React.memo(() => {
     const {setPage} = actions;
 
     const dense = true;
-
-    const setOrder = (order: Sorting.Order, orderBy: keyof RepoDocInfo) => {
-        // this.setState({
-        //     ...this.state,
-        //     page: 0,
-        //     order,
-        //     orderBy
-        // })
-    };
 
     const handleRequestSort = (event: React.MouseEvent<unknown>,
                                property: keyof RepoDocInfo,
@@ -146,10 +98,7 @@ export const DocRepoTable2 = React.memo(() => {
                                         size={'medium'}
                                         aria-label="enhanced table">
 
-                                        <EnhancedTableHead
-                                            order={order}
-                                            orderBy={orderBy}
-                                            onRequestSort={handleRequestSort}/>
+                                        <EnhancedTableHead/>
 
                                         <TableBody>
                                             {viewPage

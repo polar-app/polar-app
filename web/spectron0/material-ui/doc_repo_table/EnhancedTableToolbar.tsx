@@ -1,30 +1,20 @@
-import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 import TablePagination from "@material-ui/core/TablePagination";
-
-import {
-    createStyles,
-    lighten,
-    makeStyles,
-    Theme
-} from "@material-ui/core/styles";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     MUIDocArchiveButton,
     MUIDocDeleteButton,
     MUIDocFlagButton,
     MUIDocTagButton
 } from "./MUIDocButtons";
-import {DocActions} from "./DocActions";
-import {Provider} from "polar-shared/src/util/Providers";
 import {GlobalHotKeys} from "react-hotkeys";
 import {AutoBlur} from "./AutoBlur";
 import {
-    useDocRepoActions, useDocRepoCallbacks,
+    useDocRepoActions,
+    useDocRepoCallbacks,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 import isEqual from "react-fast-compare";

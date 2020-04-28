@@ -1,5 +1,4 @@
 import React from "react";
-import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,7 +6,10 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {COLUMNS, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
-import Order = Sorting.Order;
+import {
+    useDocRepoActions,
+    useDocRepoStore
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,25 +30,15 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {
-    readonly onRequestSort: (event: React.MouseEvent<unknown>,
-                             property: keyof RepoDocInfo,
-                             order: Sorting.Order) => void;
-    readonly order: Order;
-    readonly orderBy: string;
-}
+export function EnhancedTableHead() {
 
-export function EnhancedTableHead(props: IProps) {
     const classes = useStyles();
 
-    const { order, orderBy, onRequestSort } = props;
+    const store = useDocRepoStore();
+    const actions = useDocRepoActions();
 
-    const createSortHandler = (order: Sorting.Order,
-                               orderBy: keyof RepoDocInfo) => (event: React.MouseEvent<unknown>) => {
-
-        onRequestSort(event, orderBy, order);
-
-    };
+    const { order, orderBy} = store;
+    const {setSort} = actions;
 
     return (
         <TableHead>
@@ -70,7 +62,7 @@ export function EnhancedTableHead(props: IProps) {
                             <TableSortLabel
                                 active={orderBy === column.id}
                                 direction={order}
-                                onClick={createSortHandler(newOrder, column.id)}>
+                                onClick={() => setSort(newOrder, column.id)}>
                                 {column.label}
                                 {orderBy === column.id ? (
                                     <span className={classes.visuallyHidden}>
