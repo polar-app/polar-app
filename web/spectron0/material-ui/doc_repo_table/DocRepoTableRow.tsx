@@ -162,8 +162,8 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             role="checkbox"
             aria-checked={selected}
             draggable
-            onDragStart={event => (props.onDragStart || NULL_FUNCTION)()}
-            onDragEnd={event => (props.onDragEnd || NULL_FUNCTION)()}
+            onDragStart={callbacks.onDragStart}
+            onDragEnd={callbacks.onDragEnd}
             tabIndex={props.viewIndex}
             onDoubleClick={callbacks.onOpen}
             selected={selected}>

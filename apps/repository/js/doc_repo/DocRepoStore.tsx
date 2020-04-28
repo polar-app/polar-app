@@ -36,6 +36,7 @@ import {
     useContextMemo
 } from "../../../../web/js/react/ContextMemo";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {DraggingSelectedDocs} from "./SelectedDocs";
 
 interface IDocRepoStore {
 
@@ -142,7 +143,7 @@ interface IDocRepoCallbacks {
     readonly onArchived: Callback;
     readonly onFlagged: Callback;
 
-    readonly onDragStart: (event: DragEvent) => void;
+    readonly onDragStart: (event: React.DragEvent) => void;
     readonly onDragEnd: () => void;
 
     /**
@@ -402,7 +403,12 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
     }
 
     public setFilters(filters: DocRepoFilters2.Filters) {
-        this.doReduceAndUpdateState({...this.state, filters});
+        this.doReduceAndUpdateState({
+            ...this.state,
+            filters,
+            page: 0,
+            selected: []
+        });
     }
 
     public setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
@@ -423,6 +429,34 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             const selected = this.selectedProvider();
             return selected.length >= 1 ? selected[0] : undefined
         }
+
+        const onDragStart = (event: React.DragEvent) => {
+
+            console.log("onDragStart");
+
+            const configureDragImage = () => {
+                // TODO: this actually DOES NOT work but it's a better effect than the
+                // default and a lot less confusing.  In the future we should migrate
+                // to showing the thumbnail of the doc once we have this feature
+                // implemented.
+
+                const src: HTMLElement = document.createElement("div");
+
+                // https://kryogenix.org/code/browser/custom-drag-image.html
+                event.dataTransfer!.setDragImage(src, 0, 0);
+            };
+
+            configureDragImage();
+
+            const selected = this.selectedProvider();
+            DraggingSelectedDocs.set(selected);
+
+        }
+
+        const onDragEnd = () => {
+            console.log("onDragEnd");
+            DraggingSelectedDocs.clear();
+        };
 
         const onRename = () => {
 
@@ -533,17 +567,18 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
             onArchived: () => actions.onArchived(this.selectedProvider(), false),
             onFlagged: () => actions.onFlagged(this.selectedProvider(), false),
-            onDragStart: defaultCallbacks.onDragStart,
-            onDragEnd: defaultCallbacks.onDragEnd,
             onDropped: defaultCallbacks.onDropped,
-            onTagSelected: actions.onTagSelected
+            onTagSelected: actions.onTagSelected,
+            onDragStart,
+            onDragEnd,
         };
 
     }
 
     private createActions(): IDocRepoActions {
 
-        // TODO: this should be refactored
+
+        // TODO: this should be refactored to use tags even in the TreeState
         const onTagSelected = (tagLiterals: ReadonlyArray<string>) => {
 
             const tags = this.props.tagsProvider();
