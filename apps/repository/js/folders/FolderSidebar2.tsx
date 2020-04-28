@@ -24,7 +24,7 @@ export const FolderSidebar2 = () => {
 
     const [state, setState] = useState<IState>({
         filter: undefined,
-        treeState: new TreeState(NULL_FUNCTION, callbacks.onDropped)
+        treeState: new TreeState(callbacks.onTagSelected, callbacks.onDropped)
     });
 
     const tagsContext = useTagsContext()
