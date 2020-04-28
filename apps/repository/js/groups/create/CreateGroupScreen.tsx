@@ -26,7 +26,7 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
     public render() {
 
         const tagsProvider = this.createTagsProvider();
-        const relatedTags = this.props.repoDocMetaManager!.relatedTags;
+        const relatedTags = this.props.repoDocMetaManager!.relatedTagsManager;
 
         return (
 

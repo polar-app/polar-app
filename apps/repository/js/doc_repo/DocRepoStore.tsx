@@ -29,6 +29,8 @@ import {
     DialogManager,
     MUIDialogControllerContext
 } from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {MUITagInputControls} from "../MUITagInputControls";
+import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 
 interface IDocRepoStore {
 
@@ -215,6 +217,7 @@ function useComponentWillUnmount(delegate: () => void) {
 interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly tagsProvider: Provider<ReadonlyArray<Tag>>;
 
     readonly children: React.ReactNode;
 }
@@ -381,10 +384,57 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
         }
 
+        const onTagged = () => {
+
+            const {repoDocMetaManager, tagsProvider} = this.props;
+
+            const repoDocInfos = this.selectedProvider();
+
+            const availableTags = tagsProvider();
+            const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
+
+            const toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
+
+            const {relatedTagsManager} = repoDocMetaManager;
+
+            const relatedOptionsCalculator = (tags: ReadonlyArray<Tag>) => {
+
+                // TODO convert this to NOT use tag strings but to use tag objects
+
+                const computed = relatedTagsManager.compute(tags.map(current => current.id))
+                                                   .map(current => current.tag);
+
+                // now look this up directly.
+                const resolved = arrayStream(tagsProvider())
+                    .filter(current => computed.includes(current.id))
+                    .map(toAutocompleteOption)
+                    .collect();
+
+                return resolved;
+
+            };
+
+            const autocompleteProps: AutocompleteDialogProps<Tag> = {
+                title: "Assign Tags to Document",
+                options: availableTags.map(toAutocompleteOption),
+                defaultOptions: existingTags.map(toAutocompleteOption),
+                createOption: MUITagInputControls.createOption,
+                // FIXME: add this back in...
+                // relatedOptionsCalculator: (tags) => relatedTagsManager.compute(tags.map(current => current.label)),
+                onCancel: NULL_FUNCTION,
+                onChange: NULL_FUNCTION,
+                onDone: tags => actions.onTagged(repoDocInfos, tags)
+            };
+
+            this.dialogs!.autocomplete(autocompleteProps);
+
+        }
+
         return {
 
             onRename,
             onDeleted,
+            onTagged,
             onOpen: () => actions.onOpen(first()!),
             onShowFile: () => actions.onShowFile(first()!),
             onCopyOriginalURL: () => actions.onCopyOriginalURL(first()!),
@@ -392,7 +442,6 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
             onCopyDocumentID: () => actions.onCopyDocumentID(first()!),
             onArchived: () => actions.onArchived(this.selectedProvider(), false),
             onFlagged: () => actions.onFlagged(this.selectedProvider(), false),
-            onTagged: () => actions.onTagged(this.selectedProvider(), []),
 
         };
 

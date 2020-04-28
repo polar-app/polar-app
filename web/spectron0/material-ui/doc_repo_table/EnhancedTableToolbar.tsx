@@ -128,15 +128,15 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
                             {numSelected > 0 && (
                                 <>
                                     <Grid item>
-                                        <MUIDocTagButton onClick={NULL_FUNCTION} size="medium"/>
+                                        <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
                                     </Grid>
 
                                     <Grid item>
-                                        <MUIDocArchiveButton onClick={NULL_FUNCTION} size="medium"/>
+                                        <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
                                     </Grid>
 
                                     <Grid item>
-                                        <MUIDocFlagButton onClick={NULL_FUNCTION} size="medium"/>
+                                        <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
                                     </Grid>
 
                                      <Divider orientation="vertical" variant="middle" flexItem/>

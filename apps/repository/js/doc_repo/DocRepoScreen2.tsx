@@ -116,7 +116,7 @@ interface IProps {
 
     readonly repoDocMetaLoader: RepoDocMetaLoader;
 
-    readonly tags: () => ReadonlyArray<TagDescriptor>;
+    readonly tagsProvider: () => ReadonlyArray<TagDescriptor>;
 
     readonly docRepo: DocRepoRenderProps;
 
@@ -124,7 +124,7 @@ interface IProps {
 
 export const DocRepoScreen2 = (props: IProps) => {
 
-    const tagsProvider = props.tags;
+    const {tagsProvider} = props;
 
     return (
 

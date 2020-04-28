@@ -64,11 +64,12 @@ export const RepositoryApp = (props: IProps) => {
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(docRepo) =>
                                              <MUIDialogController>
-                                                 <DocRepoStore {...props}>
+                                                 <DocRepoStore {...props}
+                                                               tagsProvider={docRepo.docTags}>
                                                      <DocRepoScreen2
                                                          persistenceLayerProvider={app.persistenceLayerProvider}
                                                          persistenceLayerController={app.persistenceLayerController}
-                                                         tags={docRepo.docTags}
+                                                         tagsProvider={docRepo.docTags}
                                                          docRepo={docRepo}
                                                          // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                                          repoDocMetaManager={repoDocMetaManager}

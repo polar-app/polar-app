@@ -43,7 +43,7 @@ export class RepoDocMetaManager {
 
     public readonly repoDocAnnotationIndex: RepoDocAnnotationDataObjectIndex = new RepoDocAnnotationDataObjectIndex();
 
-    public readonly relatedTags = new RelatedTagsManager();
+    public readonly relatedTagsManager = new RelatedTagsManager();
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
@@ -58,7 +58,7 @@ export class RepoDocMetaManager {
 
             this.repoDocInfoIndex.put(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
 
-            this.relatedTags.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
+            this.relatedTagsManager.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
                                                                  .map(current => current.label));
 
             const updateAnnotations = () => {

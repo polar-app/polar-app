@@ -204,52 +204,7 @@ export const DocRepoTable2 = React.memo(() => {
     //     return this.props.selected.indexOf(viewIndex) !== -1;
     // };
     //
-    // private onTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
-    //
-    //     console.log("FIXME: tagging: ", repoDocInfos);
-    //
-    //     const availableTags = this.props.tagsProvider();
-    //
-    //     const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
-    //
-    //     const toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-    //
-    //     const {relatedTagsManager, tagsProvider} = this.props;
-    //
-    //     const relatedOptionsCalculator = (tags: ReadonlyArray<Tag>) => {
-    //
-    //         // TODO convert this to NOT use tag strings but to use tag objects
-    //
-    //         const computed = relatedTagsManager.compute(tags.map(current => current.id))
-    //                                            .map(current => current.tag);
-    //
-    //         // now look this up directly.
-    //         const resolved = arrayStream(tagsProvider())
-    //             .filter(current => computed.includes(current.id))
-    //             .map(toAutocompleteOption)
-    //             .collect();
-    //
-    //         return resolved;
-    //
-    //     };
-    //
-    //     const autocompleteProps: AutocompleteDialogProps<Tag> = {
-    //         title: "Assign Tags to Document",
-    //         options: availableTags.map(toAutocompleteOption),
-    //         defaultOptions: existingTags.map(toAutocompleteOption),
-    //         createOption: MUITagInputControls.createOption,
-    //         // FIXME: add back in related tags...
-    //         // relatedOptionsCalculator: (tags) => this.props.relatedTagsManager.compute(tags),
-    //         // relatedOptionsCalculator: (tags) => [],
-    //         relatedOptionsCalculator,
-    //         onCancel: NULL_FUNCTION,
-    //         onChange: NULL_FUNCTION,
-    //         onDone: tags => this.props.onTagged(repoDocInfos, tags)
-    //     };
-    //
-    //     this.dialogs!.autocomplete(autocompleteProps);
-    //
-    // }
+
     //
     //
     // private onArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
