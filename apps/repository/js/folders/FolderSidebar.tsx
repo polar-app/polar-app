@@ -12,6 +12,18 @@ import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import { MUISearchBox2 } from '../../../../web/spectron0/material-ui/MUISearchBox2';
 
+export interface FoldersSidebarProps {
+
+    readonly persistenceLayerMutator: PersistenceLayerMutator;
+    readonly treeState: TreeState<TagDescriptor>;
+    readonly tags: ReadonlyArray<TagDescriptor>;
+
+}
+
+export interface IState {
+    readonly filter?: string;
+}
+
 export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> {
 
     private folderContextMenuComponents: ContextMenuComponents;
@@ -154,16 +166,3 @@ export class FolderSidebar extends React.Component<FoldersSidebarProps, IState> 
     }
 
 }
-
-export interface FoldersSidebarProps {
-
-    readonly persistenceLayerMutator: PersistenceLayerMutator;
-    readonly treeState: TreeState<TagDescriptor>;
-    readonly tags: ReadonlyArray<TagDescriptor>;
-
-}
-
-export interface IState {
-    readonly filter?: string;
-}
-

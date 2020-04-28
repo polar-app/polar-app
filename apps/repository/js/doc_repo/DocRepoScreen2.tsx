@@ -27,6 +27,9 @@ import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {AddContent} from "../ui/AddContentButton";
+import {RepoFooter} from "../repo_footer/RepoFooter";
 
 
 namespace main {
@@ -36,8 +39,6 @@ namespace main {
         readonly columns: DocRepoTableColumnsMap;
         readonly selected: ReadonlyArray<number>;
     }
-
-    const documentActions = DocumentRepositoryTableActions.create();
 
     export const Documents = (props: DocumentsProps) => (
 
@@ -126,6 +127,10 @@ export const DocRepoScreen2 = (props: IProps) => {
 
     const {tagsProvider} = props;
 
+    const deviceProps = {
+
+    };
+
     return (
 
         <FixedNav id="doc-repository">
@@ -185,6 +190,21 @@ export const DocRepoScreen2 = (props: IProps) => {
             </header>
 
             <DocRepoTable2/>
+
+            {/*<Router {...deviceProps}/>*/}
+
+            {/*<DeviceRouter phone={<devices.PhoneAndTablet {...deviceProps}/>}*/}
+            {/*              tablet={<devices.PhoneAndTablet {...deviceProps}/>}*/}
+            {/*              desktop={<devices.Desktop {...deviceProps}/>}/>*/}
+
+            {/*<FixedNav.Footer>*/}
+
+            {/*    <DeviceRouter.Handheld>*/}
+            {/*        <AddContent.Handheld/>*/}
+            {/*    </DeviceRouter.Handheld>*/}
+
+            {/*    <RepoFooter/>*/}
+            {/*</FixedNav.Footer>*/}
 
         </FixedNav>
 

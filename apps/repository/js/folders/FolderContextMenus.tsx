@@ -100,6 +100,8 @@ export class FolderContextMenus {
 
                 const newTag = createNewTag();
 
+                // FIXME: refactor this to pass createTag as part of context...
+
                 persistenceLayerMutator.createTag(newTag)
                     .catch(err => log.error("Unable to create tag: " + newTag, err));
 

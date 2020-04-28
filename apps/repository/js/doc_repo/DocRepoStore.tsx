@@ -446,6 +446,21 @@ export class DocRepoStore extends React.Component<IProps, IDocRepoStore> {
 
         }
 
+
+        // private onArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>) {
+        //
+        //     if (repoDocInfos.length === 0) {
+        //         return;
+        //     }
+        //
+        //     this.dialogs!.confirm({
+        //         title: "Are you sure you want to archive these document(s)?",
+        //         subtitle: "They won't be deleted but will be hidden by default..",
+        //         onCancel: NULL_FUNCTION,
+        //         type: 'warning',
+        //         onAccept: () => this.props.onArchived(repoDocInfos),
+        //     });
+
         return {
 
             onRename,
