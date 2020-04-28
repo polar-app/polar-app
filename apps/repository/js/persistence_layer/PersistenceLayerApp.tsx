@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
 import {UserTagsDataLoader} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
@@ -12,18 +12,20 @@ import {RepoDataLoader} from "./RepoDataLoader";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 
-interface IPersistence {
+export interface IPersistence {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
     readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
     readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
-
 }
 
-const PersistenceContext = React.createContext<IPersistence | undefined>(undefined);
+export const PersistenceContext = React.createContext<IPersistence | undefined>(undefined);
 
+export function usePersistence() {
+    return useContext(PersistenceContext);
+}
 
 export interface IProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
