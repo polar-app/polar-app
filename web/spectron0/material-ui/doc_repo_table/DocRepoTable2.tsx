@@ -63,8 +63,7 @@ export const DocRepoTable2 = React.memo(() => {
     const actions = useDocRepoActions();
 
     const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = store;
-
-    const {selectedProvider, selectRow} = actions;
+    const {setPage} = actions;
 
     const dense = true;
 
@@ -125,13 +124,12 @@ export const DocRepoTable2 = React.memo(() => {
                        flexDirection: 'column'
                    }}>
                 <MUIDialogController>
-                        <MUIDocContextMenu {...actions}
-                                           render={rawContextMenuHandler => {
+                        <MUIDocContextMenu render={rawContextMenuHandler => {
 
                         return (
                             <>
                                 {/*FIXME: some of these don't need to be passed as I can use store and actions*/}
-                                <EnhancedTableToolbar onChangePage={actions.setPage}
+                                <EnhancedTableToolbar onChangePage={setPage}
                                                       onChangeRowsPerPage={handleChangeRowsPerPage}
                                                       onSelectAllRows={handleSelectAllRows}
                                                       />
