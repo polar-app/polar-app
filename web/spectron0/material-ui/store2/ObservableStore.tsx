@@ -89,7 +89,7 @@ interface ObservableStoreProps<V> {
     readonly children: React.ReactNode;
 }
 
-type ObservableStoreComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element);
+type ObservableStoreComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
 export function createObservableStore<V>(initialValue: V): ObservableStoreComponent<V> {
 
