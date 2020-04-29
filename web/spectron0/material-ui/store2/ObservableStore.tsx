@@ -1,5 +1,6 @@
 import {Subject, Subscription} from "rxjs";
 import React, {useContext, useEffect, useState} from "react";
+import {Provider} from "polar-shared/src/util/Providers";
 
 interface InternalObservableStore<V> {
 
@@ -87,17 +88,17 @@ function createObservableStoreContext<V>(initialValue: V): InternalStoreContext<
 
 interface ObservableStoreProps<V> {
     readonly value?: V;
-    readonly children: React.ReactNode;
+    readonly children: JSX.Element | Provider<JSX.Element>;
 }
 
-export type ObservableStoreProvider<V> = (props: ObservableStoreProps<V>) => JSX.Element;
+export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
 export type UseContextHook<V> = () => V;
 
 export type UseCallbacksHook<C> = () => C;
 
 export type ObservableStoreTuple<V, C> = [
-    ObservableStoreProvider<V>,
+    ObservableStoreProviderComponent<V>,
     UseContextHook<V>,
     UseCallbacksHook<C>,
     C

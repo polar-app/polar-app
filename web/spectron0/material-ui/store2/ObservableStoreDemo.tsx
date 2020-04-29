@@ -5,7 +5,6 @@ import {
     useObservableStore
 } from "./ObservableStore";
 import Button from "@material-ui/core/Button";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface MyInvitation {
     readonly invited: boolean;
@@ -94,7 +93,6 @@ const ChildComponent = () => {
 }
 
 const IntermediateComponent = () => {
-    console.log("FIXME IntermediateComponent: render");
 
     return (
         <div>
