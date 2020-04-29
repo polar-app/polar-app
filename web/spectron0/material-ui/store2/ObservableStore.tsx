@@ -3,6 +3,9 @@ import React, {useContext, useEffect, useState} from "react";
 
 interface InternalObservableStore<V> {
 
+    /**
+     * The underlying rxjs observable for sending off updates to components.
+     */
     readonly subject: Subject<V>;
 
     /**
@@ -65,6 +68,8 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
     })
 
+    // FIXME: this shold NOT return a setter here, I think, as the store, itself
+    // should export it's own setters/mutators
     const setStore = React.useMemo(() => {
 
         return (value: V) => {
@@ -87,9 +92,11 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
 }
 
+export type InternalStoreContext<V> = [React.Context<ObservableStore<V>>, InternalObservableStore<V>];
+
 export type StoreContext<V> = [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
-function createObservableStoreContext<V>(initialValue: V): StoreContext<V> {
+function createObservableStoreContext<V>(initialValue: V): InternalStoreContext<V> {
 
     const subject = new Subject<V>();
     subject.next(initialValue);
@@ -112,11 +119,31 @@ interface ObservableStoreProps<V> {
 
 export type ObservableStoreProvider<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
-export type ObservableStoreTuple<V> = [ObservableStoreProvider<V>, React.Context<ObservableStore<V>>];
+export type ObservableStoreTuple<V> = [ObservableStoreProvider<V>, React.Context<ObservableStore<V>>, SetStore<V>];
 
+// FIXME: this doesn't return a setter so we're unable to make our core
+// mutator functions there...
 export function createObservableStore<V>(initialValue: V): ObservableStoreTuple<V> {
 
     const [context, store] = createObservableStoreContext(initialValue);
+
+    const setStore = () => {
+
+        return (value: V) => {
+
+            // the current value needs to be set because we have to first update
+            // the value for other components which will be created with the
+            // internal value
+            store.current = value;
+
+            // now we have to send the next value which will cause the
+            // subscriber to update, which will increment the state iter, and
+            // cause a new render with updated data.
+            store.subject.next(value);
+
+        };
+
+    };
 
     const provider = (props: ObservableStoreProps<V>) => {
 
@@ -131,7 +158,7 @@ export function createObservableStore<V>(initialValue: V): ObservableStoreTuple<
 
     }
 
-    return [provider, context];
+    return [provider, context, setStore];
 
 }
 
