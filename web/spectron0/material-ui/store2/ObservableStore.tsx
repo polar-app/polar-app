@@ -54,7 +54,6 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
     useComponentDidMount(() => {
 
         subscriptionRef.current = internalObservableStore.subject.subscribe((value) => {
-            console.log("FIXME: subscribed value is", value)
             // the internal current in the context is already updated.
             return setValue(value);
         });
@@ -69,7 +68,6 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
     })
 
-    console.log("FIXME: returning ", value);
     return value;
 
 }
@@ -114,16 +112,12 @@ export type ObservableStoreTuple<V, C> = [
 
 export type CallbacksFactory<V, C> = (store: ObservableStore<V>, setStore: SetStore<V>) => C;
 
-// FIXME: this doesn't return a setter so we're unable to make our core
-// mutator functions there...
 export function createObservableStore<V, C>(initialValue: V,
                                             callbacksFactory: CallbacksFactory<V, C>): ObservableStoreTuple<V, C> {
 
     const [storeContext, store] = createObservableStoreContext(initialValue);
 
     const setStore = (value: V) => {
-
-        console.log("FIXME: within setStore: ", value);
 
         // the current value needs to be set because we have to first update
         // the value for other components which will be created with the
@@ -151,10 +145,13 @@ export function createObservableStore<V, C>(initialValue: V,
 
     const provider = (props: ObservableStoreProps<V>) => {
 
-        const value: ObservableStore<V> = props.value ? {...store, current: props.value} : store;
+        if (props.value) {
+            // change the value to start with...
+            setStore(props.value);
+        }
 
         return (
-            <storeContext.Provider value={value}>
+            <storeContext.Provider value={store}>
                 <callbacksContext.Provider value={callbacks}>
                     {props.children}
                 </callbacksContext.Provider>
