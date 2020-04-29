@@ -1,5 +1,5 @@
-import {Subject} from "rxjs";
-import React, {useContext, useState} from "react";
+import {Subject, Subscription} from "rxjs";
+import React, {useContext, useEffect, useState} from "react";
 
 interface InternalObservableStore<V> {
 
@@ -27,20 +27,43 @@ interface ObservableStore<V> {
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
+function useComponentDidMount<T>(delegate: () => void) {
+    // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
+
+    // will only execute the first time.
+    useEffect(() => delegate(), []);
+}
+
+function useComponentWillUnmount(delegate: () => void) {
+    // if we return a function it will only execute on unmount
+    useEffect(() => delegate, []);
+}
+
+
 export function useObservableStore<V>(context: React.Context<ObservableStore<V>>): Store<V> {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
-    const iter = React.useRef(0);
+    const iterRef = React.useRef(0);
+    const subscriptionRef = React.useRef<Subscription | undefined>(undefined);
     const [, setIter] = useState();
 
-    // FIXMEL must have component unmount support...
+    useComponentDidMount(() => {
 
-    React.useEffect(() => {
-        internalObservableStore.subject.subscribe(value => {
-            setIter(++iter.current);
-        })
-    }, [])
+        subscriptionRef.current = internalObservableStore.subject.subscribe(() => {
+            // the internal current in the context is already updated.
+            setIter(++iterRef.current);
+        });
+
+    });
+
+    useComponentWillUnmount(() => {
+
+        if (subscriptionRef.current) {
+            subscriptionRef.current.unsubscribe();
+        }
+
+    })
 
     const setStore = React.useMemo(() => {
 
@@ -66,9 +89,7 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
 export type StoreContext<V> = [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
-// TODO: consider returning an component like ObservableStore value= with just the
-// raw value.
-export function createObservableStoreContext<V>(initialValue: V): StoreContext<V> {
+function createObservableStoreContext<V>(initialValue: V): StoreContext<V> {
 
     const subject = new Subject<V>();
     subject.next(initialValue);
