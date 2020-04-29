@@ -27,6 +27,7 @@ class Styles {
 
 }
 
+// FIXME: migrate this to a functional component...
 export class TagTree extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

@@ -27,6 +27,7 @@ import { FolderSidebar2 } from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import { AddContent } from "../ui/AddContentButton";
 import {RepoFooter} from "../repo_footer/RepoFooter";
+import isEqual from "react-fast-compare";
 
 
 namespace main {
@@ -112,7 +113,7 @@ interface IProps {
 
 }
 
-export const DocRepoScreen2 = (props: IProps) => {
+export const DocRepoScreen2 = React.memo((props: IProps) => {
 
     return (
 
@@ -191,7 +192,7 @@ export const DocRepoScreen2 = (props: IProps) => {
 
     )
 
-}
+}, isEqual);
 
 
 

@@ -27,7 +27,7 @@ import MUICreatableAutocomplete, {
 import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
-import MUITreeView from './treeview/MUITreeView';
+import {MUITreeView} from './treeview2/MUITreeView';
 import {MUIHelpMenu} from "./MUIHelpMenu";
 import {MUIMenu} from "./dropdown_menu/MUIMenu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -64,6 +64,8 @@ import { SharedStateTest } from './SharedStateTest';
 import {SharedIntermediateContextTest} from "./SharedIntermediateContextTest";
 import {DeleteConfirmationDemo} from "./DeleteConfirmationDemo";
 import {ContextMemoTest} from "./ContextTest";
+import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {TagNodes} from "../../js/tags/TagNodes";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -113,6 +115,22 @@ export const App = () => {
         toggleDarkTheme();
     };
 
+    function createTagDescriptor(tag: string, count: number): TagDescriptor {
+        return {
+            id: tag,
+            label: tag,
+            count,
+            members: []
+        };
+    }
+
+    const tagDescriptors: ReadonlyArray<TagDescriptor> = [
+        createTagDescriptor('hello', 101),
+        createTagDescriptor('world', 101),
+    ];
+
+    const root = TagNodes.createTagsRoot(tagDescriptors);
+
     return (
         // <GlobalHotKeys
         //     allowChanges={true}
@@ -122,7 +140,7 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <MUITreeView/>
+                <MUITreeView root={root}/>
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}

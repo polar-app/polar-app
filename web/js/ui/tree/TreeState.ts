@@ -12,6 +12,8 @@ export class TreeState<V> {
     constructor(private readonly onSelected: (nodes: ReadonlyArray<TagStr>) => void,
                 private readonly onDropped: (node: V) => void = NULL_FUNCTION) {
 
+        console.log("FIXME101 constructor");
+
     }
 
     public readonly closed = new MarkSet();
@@ -40,6 +42,9 @@ export class TreeState<V> {
         const selectedTags = this.tags.map(current => current.id);
 
         const selected = [...selectedTags, ...selectedFolders];
+
+
+        console.log("FIXME101 dispatching selected...");
 
         this.onSelected(selected);
 

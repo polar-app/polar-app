@@ -12,6 +12,8 @@ import MUITreeView
 
 export const FolderSidebar2 = () => {
 
+    console.log("FIXME101 render");
+
     const folderStore = useDocRepoFolderStore();
 
     const {treeState, sidebarFilter, setSidebarFilter} = folderStore;
