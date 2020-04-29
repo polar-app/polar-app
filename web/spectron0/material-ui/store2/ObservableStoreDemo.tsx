@@ -1,16 +1,17 @@
 import React from 'react';
 import {
     createObservableStoreContext,
-    useObservableStore
+    useObservableStore,
+    createObservableStore
 } from "./ObservableStore";
 import Button from "@material-ui/core/Button";
 
-const [InvitedContext, InvitedContextValue] = createObservableStoreContext(false);
+const [ObservableStoreProvider, ObservableStoreContext] = createObservableStore(false);
 
 const ChildComponent = () => {
     console.log("FIXME ChildComponent: render");
 
-    const [store, setStore] = useObservableStore(InvitedContext);
+    const [store, setStore] = useObservableStore(ObservableStoreContext);
 
     return (
         <div>
@@ -38,9 +39,9 @@ const IntermediateComponent = () => {
 export const ObservableStoreDemo = () => {
 
     return (
-        <InvitedContext.Provider value={InvitedContextValue}>
+        <ObservableStoreProvider value={true}>
             <IntermediateComponent/>
-        </InvitedContext.Provider>
+        </ObservableStoreProvider>
     );
 
 }

@@ -89,13 +89,15 @@ interface ObservableStoreProps<V> {
     readonly children: React.ReactNode;
 }
 
-type ObservableStoreComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
+export type ObservableStoreProvider<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
-export function createObservableStore<V>(initialValue: V): ObservableStoreComponent<V> {
+export type ObservableStoreTuple<V> = [ObservableStoreProvider<V>, React.Context<ObservableStore<V>>];
 
-    return (props: ObservableStoreProps<V>) => {
+export function createObservableStore<V>(initialValue: V): ObservableStoreTuple<V> {
 
-        const [context, store] = createObservableStoreContext(initialValue);
+    const [context, store] = createObservableStoreContext(initialValue);
+
+    const provider = (props: ObservableStoreProps<V>) => {
 
         const value: ObservableStore<V> = props.value ? {...store, current: props.value} : store;
 
@@ -107,6 +109,8 @@ export function createObservableStore<V>(initialValue: V): ObservableStoreCompon
         )
 
     }
+
+    return [provider, context];
 
 }
 
