@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,10 +16,10 @@ import {
     useDocRepoActions,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import isEqual from "react-fast-compare";
 
 export const DocRepoTable2 = React.memo(() => {
 
-    // FIXME: rename this to store...
     const store = useDocRepoStore();
     const actions = useDocRepoActions();
 
@@ -133,4 +133,4 @@ export const DocRepoTable2 = React.memo(() => {
         </div>
     )
 
-});
+}, isEqual);

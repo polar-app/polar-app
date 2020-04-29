@@ -30,19 +30,6 @@ interface ObservableStore<V> {
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
-function useComponentDidMount<T>(delegate: () => void) {
-    // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
-
-    // will only execute the first time.
-    useEffect(() => delegate(), []);
-}
-
-function useComponentWillUnmount(delegate: () => void) {
-    // if we return a function it will only execute on unmount
-    useEffect(() => delegate, []);
-}
-
-
 export function useObservableStore<V>(context: React.Context<ObservableStore<V>>): V {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
@@ -51,22 +38,28 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
     const [value, setValue] = useState<V>(internalObservableStore.current);
 
-    useComponentDidMount(() => {
+    useEffect(() => {
 
+        // this is effectively componentDidMount
         subscriptionRef.current = internalObservableStore.subject.subscribe((value) => {
             // the internal current in the context is already updated.
             return setValue(value);
         });
 
-    });
+        return () => {
 
-    useComponentWillUnmount(() => {
+            // this is effectively componentWillUnmount... however it's a bit
+            // different as the component can't have any reference.  It seems
+            // functional component are still referenced don't have this
+            // evaluated
 
-        if (subscriptionRef.current) {
-            subscriptionRef.current.unsubscribe();
+            if (subscriptionRef.current) {
+                subscriptionRef.current.unsubscribe();
+            }
+
         }
 
-    })
+    },[]);
 
     return value;
 
