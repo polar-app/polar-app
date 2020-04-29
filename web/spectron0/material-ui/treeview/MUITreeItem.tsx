@@ -12,8 +12,8 @@ import Box from "@material-ui/core/Box";
 
 function TransitionComponent(props: TransitionProps) {
     const style = useSpring({
-        from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
-        to: { opacity: props.in ? 1 : 0, transform: `translate3d(${props.in ? 0 : 20}px,0,0)` },
+        // from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
+        // to: { opacity: props.in ? 1 : 0, transform: `translate3d(${props.in ? 0 : 20}px,0,0)` },
     });
 
     return (
@@ -35,7 +35,7 @@ interface StyledTreeItemProps extends TreeItemProps {
     readonly onNodeSelectToggle: (node: string, type: NodeSelectToggleType) => void;
 }
 
-export const MUITreeItem = withStyles((theme: Theme) =>
+const WithStyles = withStyles((theme: Theme) =>
     createStyles({
         iconContainer: {
             '& .close': {
@@ -48,7 +48,9 @@ export const MUITreeItem = withStyles((theme: Theme) =>
             borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
         },
     }),
-)((props: StyledTreeItemProps) => (
+);
+
+export const MUITreeItem = WithStyles((props: StyledTreeItemProps) => (
     <TreeItem style={{userSelect: 'none'}}
               nodeId={props.nodeId}
               children={props.children}
