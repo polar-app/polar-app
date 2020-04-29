@@ -66,6 +66,9 @@ import {DeleteConfirmationDemo} from "./DeleteConfirmationDemo";
 import {ContextMemoTest} from "./ContextTest";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TagNodes} from "../../js/tags/TagNodes";
+import {MyContextStoreComponent} from "./store2/ContextStore";
+import {HookStateDemo} from "./store2/HookState";
+import {ObservableStoreDemo} from "./store2/ObservableStoreDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -140,7 +143,13 @@ export const App = () => {
                 <CssBaseline/>
                 <GlobalCss />
 
-                <MUITreeView root={root}/>
+                {/*<MUITreeView root={root}/>*/}
+
+                {/*<MyContextStoreComponent/>*/}
+
+                {/*<HookStateDemo/>*/}
+                <ObservableStoreDemo/>
+
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}

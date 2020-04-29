@@ -312,8 +312,6 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
-
-
 export class DocRepoStore extends React.Component<IProps, IState> {
 
     private eventListener: Callback = NULL_FUNCTION;
@@ -452,7 +450,6 @@ export class DocRepoStore extends React.Component<IProps, IState> {
     }
 
     public setSidebarFilter(sidebarFilter: string) {
-        console.log("FIXME: sidebarFilter: ", {sidebarFilter});
         this.setState({sidebarFilter});
     }
 
@@ -617,7 +614,6 @@ export class DocRepoStore extends React.Component<IProps, IState> {
 
     private createActions(): IDocRepoActions {
 
-
         // TODO: this should be refactored to use tags even in the TreeState
         const onTagSelected = (tagLiterals: ReadonlyArray<string>) => {
 
@@ -676,39 +672,35 @@ export class DocRepoStore extends React.Component<IProps, IState> {
             setSidebarFilter: this.setSidebarFilter
         }
 
-        // FIXME: all the callbacks here will be updated too I think and that is
-        // going to cause us to rerender menu items too.. which freaking sucks
+        // FIXME: what if instead of having the functions with the data, that
+        // I just had nested contexts providing the functions.  The funcitons
+        // themselves would only have setState and we can use nested functions
+        // by having them call an earlier component level.
 
-        // FIXME: now the main problem is that we ahve to rewrite the actions
-        // and the callbacks BUT:
-        //
-        //
-        // - when state is open we ONLY want to trigger components that need
-        //   to be re-rendered - not smaller components that listen to the
-        //   callbacks
-        //
-        //  - we can't access getSelected easily...
-        //
-        //  - callbacks are created EACH render which isn't efficient...
+        // it would be nice to share functions like setFilters not just setState
 
-        //  - I don't have an EASY way to to get access to dialogs...
+        // no actions.. just use delegate... no nesting... only thing we export
+        // is the store, and callbacks that would mutate the state.
         //
-        //  - If I use react.useMemo that might work if I have a smaller
-        //    set of 1-2 root components which then call the store...
+        // the reason to split up the callbacks and the store is that most of
+        // the time the callbacks are immuntable...
+        //
+        // I could use multiple objects but use a 'ref' or provider to access
+        // the underlying state... basically I could/would use a functional
+        // component BUT I can create the ref, and state, and share it as
+        // context and really ANY sub-component could mutate the same state
+        //
+        // I coudl create a new Store object that has an internal ref and a
+        // setState object... the only thing exposed would be the value, and
+        // setState...
+        //
+        // - the main thing this wouldn't solve very well is components that
+        //   selectively access various bits of the state...
 
-        // FIXME: I'm giving it callbacks but they're already created and we're
-        // changing the actions but they're already wired up...
-        //
-        //
-        //
-        // rework it like this:
+        // context store... it's just using ref and state and then we setup
+        // a subcomponent that defines its own context, with one functions to
+        // access ot.
 
-        // create initial actions in the root, copied from the defaults...
-        // then augment them down the line, copying them from context...
-
-        // FIXME: another idea is to just use the dialog context directly...
-        // and a render prop and then update a global variable... then use
-        // those dialogs directly
 
         return (
             <MUIDialogControllerContext.Consumer>
@@ -725,7 +717,7 @@ export class DocRepoStore extends React.Component<IProps, IState> {
                                 </DocRepoCallbacksContext.Provider>
                             </DocRepoActionsContext.Provider>
                         </DocRepoStoreContext.Provider>
-                    )
+                    );
 
                 }}
             </MUIDialogControllerContext.Consumer>
