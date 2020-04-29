@@ -83,3 +83,31 @@ export function createObservableStoreContext<V>(initialValue: V): StoreContext<V
     return [context, store];
 
 }
+
+interface ObservableStoreProps<V> {
+    readonly value?: V;
+    readonly children: React.ReactNode;
+}
+
+type ObservableStoreComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element);
+
+export function createObservableStore<V>(initialValue: V): ObservableStoreComponent<V> {
+
+    return (props: ObservableStoreProps<V>) => {
+
+        const [context, store] = createObservableStoreContext(initialValue);
+
+        const value: ObservableStore<V> = props.value ? {...store, current: props.value} : store;
+
+        return (
+            <context.Provider value={value}>
+                {props.children}
+            </context.Provider>
+
+        )
+
+    }
+
+}
+
+

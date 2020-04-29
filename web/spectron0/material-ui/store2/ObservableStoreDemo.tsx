@@ -5,7 +5,6 @@ import {
 } from "./ObservableStore";
 import Button from "@material-ui/core/Button";
 
-
 const [InvitedContext, InvitedContextValue] = createObservableStoreContext(false);
 
 const ChildComponent = () => {
