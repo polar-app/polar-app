@@ -1,23 +1,51 @@
 import React from 'react';
 import {
-    createObservableStoreContext,
-    useObservableStore,
-    createObservableStore
+    CallbacksFactory,
+    createObservableStore,
+    useObservableStore
 } from "./ObservableStore";
 import Button from "@material-ui/core/Button";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-const [ObservableStoreProvider, ObservableStoreContext] = createObservableStore(false);
+interface MyInvitation {
+    readonly invited: boolean;
+}
+
+interface MyInvitationCallbacks {
+    readonly toggleInvited: () => void;
+}
+
+// FIXME: would be nice to provide a factory that can make the callbacks and
+// automaticaly set them up and then just provide useFoo functions back to
+// me...
+
+const invitationStore: MyInvitation = {
+    invited: false
+}
+
+const callbacksFactory: CallbacksFactory<MyInvitation, MyInvitationCallbacks> = (store, setStore) => {
+    return {
+        toggleInvited: () => {
+            console.log("FIXME: toggling invited");
+            const invited = ! store.current.invited;
+            setStore({invited});
+        }
+    }
+};
+
+const [MyInvitationStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks]
+    = createObservableStore<MyInvitation, MyInvitationCallbacks>(invitationStore, callbacksFactory);
 
 const ChildComponent = () => {
-    console.log("FIXME ChildComponent: render");
 
-    const [store, setStore] = useObservableStore(ObservableStoreContext);
+    const store = useMyInvitationStore();
+    const callbacks = useMyInvitationStoreCallbacks();
 
     return (
         <div>
-            <div>child component: {store ? 'true' : 'false'}</div>
+            <div>child component: {store.invited ? 'true' : 'false'}</div>
             <Button variant="contained"
-                    onClick={() => setStore(! store)}>
+                    onClick={callbacks.toggleInvited}>
                 toggle
             </Button>
         </div>
@@ -39,9 +67,9 @@ const IntermediateComponent = () => {
 export const ObservableStoreDemo = () => {
 
     return (
-        <ObservableStoreProvider value={true}>
+        <MyInvitationStoreProvider value={{invited: true}}>
             <IntermediateComponent/>
-        </ObservableStoreProvider>
+        </MyInvitationStoreProvider>
     );
 
 }

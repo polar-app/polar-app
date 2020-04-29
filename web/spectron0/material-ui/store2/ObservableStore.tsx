@@ -43,19 +43,20 @@ function useComponentWillUnmount(delegate: () => void) {
 }
 
 
-export function useObservableStore<V>(context: React.Context<ObservableStore<V>>): Store<V> {
+export function useObservableStore<V>(context: React.Context<ObservableStore<V>>): V {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
-    const iterRef = React.useRef(0);
     const subscriptionRef = React.useRef<Subscription | undefined>(undefined);
-    const [, setIter] = useState();
+
+    const [value, setValue] = useState<V>(internalObservableStore.current);
 
     useComponentDidMount(() => {
 
-        subscriptionRef.current = internalObservableStore.subject.subscribe(() => {
+        subscriptionRef.current = internalObservableStore.subject.subscribe((value) => {
+            console.log("FIXME: subscribed value is", value)
             // the internal current in the context is already updated.
-            setIter(++iterRef.current);
+            return setValue(value);
         });
 
     });
@@ -68,27 +69,8 @@ export function useObservableStore<V>(context: React.Context<ObservableStore<V>>
 
     })
 
-    // FIXME: this shold NOT return a setter here, I think, as the store, itself
-    // should export it's own setters/mutators
-    const setStore = React.useMemo(() => {
-
-        return (value: V) => {
-
-            // the current value needs to be set because we have to first update
-            // the value for other components which will be created with the
-            // internal value
-            internalObservableStore.current = value;
-
-            // now we have to send the next value which will cause the
-            // subscriber to update, which will increment the state iter, and
-            // cause a new render with updated data.
-            internalObservableStore.subject.next(value);
-
-        };
-
-    }, []);
-
-    return [internalObservableStore.current, setStore];
+    console.log("FIXME: returning ", value);
+    return value;
 
 }
 
@@ -119,46 +101,70 @@ interface ObservableStoreProps<V> {
 
 export type ObservableStoreProvider<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
-export type ObservableStoreTuple<V> = [ObservableStoreProvider<V>, React.Context<ObservableStore<V>>, SetStore<V>];
+export type UseContextHook<V> = () => V;
+
+export type UseCallbacksHook<C> = () => C;
+
+export type ObservableStoreTuple<V, C> = [
+    ObservableStoreProvider<V>,
+    UseContextHook<V>,
+    UseCallbacksHook<C>,
+    C
+];
+
+export type CallbacksFactory<V, C> = (store: ObservableStore<V>, setStore: SetStore<V>) => C;
 
 // FIXME: this doesn't return a setter so we're unable to make our core
 // mutator functions there...
-export function createObservableStore<V>(initialValue: V): ObservableStoreTuple<V> {
+export function createObservableStore<V, C>(initialValue: V,
+                                            callbacksFactory: CallbacksFactory<V, C>): ObservableStoreTuple<V, C> {
 
-    const [context, store] = createObservableStoreContext(initialValue);
+    const [storeContext, store] = createObservableStoreContext(initialValue);
 
-    const setStore = () => {
+    const setStore = (value: V) => {
 
-        return (value: V) => {
+        console.log("FIXME: within setStore: ", value);
 
-            // the current value needs to be set because we have to first update
-            // the value for other components which will be created with the
-            // internal value
-            store.current = value;
+        // the current value needs to be set because we have to first update
+        // the value for other components which will be created with the
+        // internal value
+        store.current = value;
 
-            // now we have to send the next value which will cause the
-            // subscriber to update, which will increment the state iter, and
-            // cause a new render with updated data.
-            store.subject.next(value);
-
-        };
+        // now we have to send the next value which will cause the
+        // subscriber to update, which will increment the state iter, and
+        // cause a new render with updated data.
+        store.subject.next(value);
 
     };
+
+    const useContextHook: UseContextHook<V> = () => {
+        return useObservableStore(storeContext);
+    }
+
+    const callbacks = callbacksFactory(store, setStore);
+
+    const callbacksContext = React.createContext(callbacks);
+
+    const useCallbacksHook: UseContextHook<C> = () => {
+        return React.useContext(callbacksContext);
+    }
 
     const provider = (props: ObservableStoreProps<V>) => {
 
         const value: ObservableStore<V> = props.value ? {...store, current: props.value} : store;
 
         return (
-            <context.Provider value={value}>
-                {props.children}
-            </context.Provider>
+            <storeContext.Provider value={value}>
+                <callbacksContext.Provider value={callbacks}>
+                    {props.children}
+                </callbacksContext.Provider>
+            </storeContext.Provider>
 
         )
 
     }
 
-    return [provider, context, setStore];
+    return [provider, useContextHook, useCallbacksHook, callbacks];
 
 }
 
