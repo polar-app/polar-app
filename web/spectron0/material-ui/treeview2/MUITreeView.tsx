@@ -78,8 +78,6 @@ export const MUITreeView = (props: IProps) => {
 
     };
 
-    // FIXME: should be toggleSelected
-
     const itemProps = {
         onNodeExpand,
         onNodeCollapse,
@@ -93,10 +91,8 @@ export const MUITreeView = (props: IProps) => {
             multiSelect
             className={classes.root}
             defaultExpanded={['1']}
-
             selected={selected}
-            expanded={expanded}
-            >
+            expanded={expanded}>
             <MUITreeItem {...itemProps}
                          nodeId={root.id}
                          selected={selected.includes(root.id)}
@@ -105,26 +101,13 @@ export const MUITreeView = (props: IProps) => {
 
                 {root.children.map((child) => (
                     <MUITreeItem {...itemProps}
+                                 key={child.id}
                                  nodeId={child.id}
                                  selected={selected.includes(child.id)}
                                  label={child.value.label}
                                  info={child.count}/>
                 ))}
-
-                {/*<MUITreeItem {...itemProps} nodeId="2" selected={selected.includes("2")} label="Hello" info={245}/>*/}
-                {/*<MUITreeItem {...itemProps} nodeId="3" selected={selected.includes("3")} label="Subtree with children" info={442}>*/}
-                {/*    <MUITreeItem {...itemProps} nodeId="6" selected={selected.includes("6")} label="Hello" info={153}/>*/}
-                {/*    <MUITreeItem {...itemProps} nodeId="7" selected={selected.includes("7")} label="World" info={124}/>*/}
-                {/*</MUITreeItem>*/}
             </MUITreeItem>
-
-            {/*<MUITreeItem nodeId="1" label="Main" info={123}>*/}
-            {/*    <MUITreeItem nodeId="2" label="Hello" info={245}/>*/}
-            {/*    <MUITreeItem nodeId="3" label="Subtree with children" info={442}>*/}
-            {/*        <MUITreeItem nodeId="6" label="Hello" info={153}/>*/}
-            {/*        <MUITreeItem nodeId="7" label="Sub-subtree with children" info={124}/>*/}
-            {/*    </MUITreeItem>*/}
-            {/*</MUITreeItem>*/}
 
         </TreeView>
     );
