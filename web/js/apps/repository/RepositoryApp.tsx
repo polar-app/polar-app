@@ -125,15 +125,11 @@ export const RepositoryApp = (props: IProps) => {
         );
     };
 
-    const RenderDefaultScreenByDevice = () => {
-
-        return (
-            <Cached>
-                <RenderDocRepoScreen/>
-            </Cached>
-        );
-
-    };
+    const RenderDefaultScreen = () => (
+        <Cached>
+            <RenderDocRepoScreen/>
+        </Cached>
+    );
 
     const renderWhatsNewScreen = () => (
         <WhatsNewScreen persistenceLayerProvider={app.persistenceLayerProvider}
@@ -323,7 +319,11 @@ export const RepositoryApp = (props: IProps) => {
                                component={renderDeviceScreen}/>
 
                         <Route exact path='/'
-                               component={RenderDefaultScreenByDevice}/>
+                               component={RenderDefaultScreen}/>
+
+                        <Route exact path='/'>
+                            <RenderDefaultScreen/>
+                        </Route>
 
                     </Switch>
 

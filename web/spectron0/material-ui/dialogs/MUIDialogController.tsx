@@ -136,18 +136,18 @@ export const MUIDialogControllerContext = React.createContext<DialogManager>(Nul
  */
 export const MUIDialogController = (props: IProps) => {
 
-    const [dialogManager, setDialogManager] = useState<DialogManager | undefined>(undefined);
+    // FIXME this should be the ROOT of the app so that we replace it with a
+    // REAL dialog manager before anything else starts.
+    const [dialogManager, setDialogManager] = useState<DialogManager>(NullDialogManager);
 
     return (
         <>
 
             <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
 
-            {dialogManager && (
-                <MUIDialogControllerContext.Provider value={dialogManager}>
-                    {props.children}
-                </MUIDialogControllerContext.Provider>
-            )}
+            <MUIDialogControllerContext.Provider value={dialogManager}>
+                {props.children}
+            </MUIDialogControllerContext.Provider>
 
         </>
     );
