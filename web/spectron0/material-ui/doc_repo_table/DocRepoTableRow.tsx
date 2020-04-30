@@ -11,16 +11,9 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Tags, Tag} from "polar-shared/src/tags/Tags";
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import isEqual from "react-fast-compare";
-import {DocActions} from "./DocActions";
-import {DeepEquals} from "./DeepEquals";
-import debugIsEqual = DeepEquals.debugIsEqual;
-import {
-    useDocRepoActions, useDocRepoCallbacks,
-    useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -138,10 +131,9 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
-    const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
 
-    const {selectRow} = actions;
+    const {selectRow} = callbacks;
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
     const contextMenuHandler: ContextMenuHandler = (event) => {

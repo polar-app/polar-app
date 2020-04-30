@@ -1,6 +1,5 @@
 import React from 'react';
 import {useDeleteConfirmation} from './dialogs/MUIDialogControllers';
-import Button from "@material-ui/core/Button";
 import {MUIDialogController} from "./dialogs/MUIDialogController";
 
 const ChildComponent = () => {

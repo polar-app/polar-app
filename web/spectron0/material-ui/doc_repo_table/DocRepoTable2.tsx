@@ -13,18 +13,18 @@ import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {MUIDialogController} from "../dialogs/MUIDialogController";
 import {
-    useDocRepoActions,
+    useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
 
 export const DocRepoTable2 = React.memo(() => {
 
     const store = useDocRepoStore();
-    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
 
     const {order, orderBy, page, rowsPerPage, view, viewPage, selected} = store;
-    const {setPage} = actions;
+    const {setPage} = callbacks;
 
     const dense = true;
 

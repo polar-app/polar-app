@@ -13,9 +13,9 @@ import ArchiveIcon from "@material-ui/icons/Archive";
 import {AppRuntime} from "../../../js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {
-    useDocRepoActions, useDocRepoCallbacks,
+    useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
@@ -27,14 +27,9 @@ interface IProps {
 
 export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProps, ref) => {
 
-    const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
 
-    // FIXME: break out selected into a dedicated component... these functions
-    // only have to be injected ONCE not on every render though to be careful
-
-
-    const selected = actions.selectedProvider();
+    const selected = callbacks.selectedProvider();
 
     // if (selected.length === 0) {
     //     // there's nothing to render now...

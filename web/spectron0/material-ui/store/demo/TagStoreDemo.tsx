@@ -9,7 +9,15 @@ interface ITagCallbacks {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
-const callbacksFactory: CallbacksFactory<ITagStore, ITagCallbacks> = (storeProvider, setStore) => {
+interface Mutator {
+
+}
+
+function mutatorFactory() {
+    return {};
+}
+
+const callbacksFactory: CallbacksFactory<ITagStore, ITagCallbacks, Mutator> = (storeProvider, setStore, mutator) => {
     return class {
         public static tagsProvider() {
             const store = storeProvider();
@@ -23,4 +31,4 @@ const tagStore: ITagStore = {
 }
 
 export const [TagStoreProvider, useTagStore, useTagStoreCallbacks]
-    = createObservableStore<ITagStore, ITagCallbacks>(tagStore, callbacksFactory);
+    = createObservableStore<ITagStore, ITagCallbacks, Mutator>(tagStore, mutatorFactory, callbacksFactory);

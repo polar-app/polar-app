@@ -7,9 +7,8 @@ import {
     MUIDocTagButton
 } from "./MUIDocButtons";
 import {
-    useDocRepoActions,
     useDocRepoCallbacks
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
 
 interface IProps {
@@ -27,8 +26,6 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
     const callbacks = useDocRepoCallbacks();
 
     // FIXME: new useDocRepoSelected()
-    const actions = useDocRepoActions();
-
     const {viewIndex} = props;
 
     return (
@@ -44,7 +41,7 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
                               active={props.flagged}/>
 
             <Tooltip title="More options...">
-                <MUIDocDropdownButton onClick={(event) => actions.selectRow(viewIndex, event, 'click')}/>
+                <MUIDocDropdownButton onClick={(event) => callbacks.selectRow(viewIndex, event, 'click')}/>
             </Tooltip>
 
         </div>

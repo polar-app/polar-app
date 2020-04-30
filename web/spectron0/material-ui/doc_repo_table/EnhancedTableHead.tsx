@@ -7,9 +7,8 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {COLUMNS, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
 import {
-    useDocRepoActions,
-    useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+    useDocRepoStore, useDocRepoCallbacks
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,10 +34,10 @@ export function EnhancedTableHead() {
     const classes = useStyles();
 
     const store = useDocRepoStore();
-    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
 
     const { order, orderBy} = store;
-    const {setSort} = actions;
+    const {setSort} = callbacks;
 
     return (
         <TableHead>

@@ -13,10 +13,9 @@ import {
 import {GlobalHotKeys} from "react-hotkeys";
 import {AutoBlur} from "./AutoBlur";
 import {
-    useDocRepoActions,
     useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore";
+} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
@@ -40,7 +39,6 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
     // FIXME: consider using a HOC to skip re-rendering when these contexts
     // change.
     const store = useDocRepoStore();
-    const actions = useDocRepoActions();
     const callbacks = useDocRepoCallbacks();
 
     // FIXME this is where mobx would rock because only these two variables
@@ -49,7 +47,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
     // FIXME: the only other thing I have to do is fix callbacks here so that
     // it's not rendered too often...
     const {rowsPerPage, viewPage, data, selected, page} = store;
-    const {setRowsPerPage, setSelected} = actions;
+    const {setRowsPerPage, setSelected} = callbacks;
 
     // FIXME: migrate these to callbacks that use getSelected...
 

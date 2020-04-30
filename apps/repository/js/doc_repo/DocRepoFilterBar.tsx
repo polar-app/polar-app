@@ -3,8 +3,7 @@ import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
 import FlagIcon from '@material-ui/icons/Flag';
 import Grid from "@material-ui/core/Grid";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
-import {useDocRepoActions, useDocRepoStore} from "./DocRepoStore";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 
 export interface IProps {
 
@@ -19,10 +18,10 @@ export interface IProps {
 export const DocRepoFilterBar = (props: IProps) => {
 
     const store = useDocRepoStore();
-    const actions = useDocRepoActions();
+    const callbacks = useDocRepoCallbacks();
 
     const {filters} = store;
-    const {setFilters} = actions;
+    const {setFilters} = callbacks;
 
     const Right = () => {
 

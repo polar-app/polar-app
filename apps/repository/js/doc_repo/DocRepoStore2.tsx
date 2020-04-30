@@ -193,17 +193,18 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
 }
 
-function createCallbacks(storeProvider: Provider<IDocRepoStore>,
-                         setStore: (store: IDocRepoStore) => void,
-                         repoDocMetaManager: RepoDocMetaManager,
-                         tagsProvider: () => ReadonlyArray<Tag>,
-                         dialogs: DialogManager): IDocRepoCallbacks {
+//
+// FIXME might neeed a new object type... mutator... which we can give to the
+// callbacks object so that it can mutate the store without using hooks.
 
-    function first() {
-        const selected = selectedProvider();
-        return selected.length >= 1 ? selected[0] : undefined
-    }
+interface Mutator {
+    doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
+    doUpdate: (provider: () => ReadonlyArray<RepoDocInfo>) => void;
+}
 
+function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
+                       setStore: (store: IDocRepoStore) => void) {
+    
     function doReduceAndUpdateState(tmpState: IDocRepoStore) {
 
         setTimeout(() => {
@@ -217,15 +218,36 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
      * Fetch the latest values from the repoDocMetaManager, then reduce, and
      * apply state.
      */
-    function doUpdate() {
+    function doUpdate(provider: () => ReadonlyArray<RepoDocInfo>) {
 
         const store = storeProvider();
         setTimeout(() => {
-            const data = repoDocMetaManager.repoDocInfoIndex.values();
+            const data = provider();
             doReduceAndUpdateState({...store, data});
         }, 1);
 
     }
+
+    return {
+        doReduceAndUpdateState,
+        doUpdate
+    };
+
+}
+
+function createCallbacks(storeProvider: Provider<IDocRepoStore>,
+                         setStore: (store: IDocRepoStore) => void,
+                         mutator: Mutator,
+                         repoDocMetaManager: RepoDocMetaManager,
+                         tagsProvider: () => ReadonlyArray<Tag>,
+                         dialogs: DialogManager): IDocRepoCallbacks {
+
+    function first() {
+        const selected = selectedProvider();
+        return selected.length >= 1 ? selected[0] : undefined
+    }
+
+
 
     function selectRow(selectedIdx: number,
                        event: React.MouseEvent,
@@ -258,7 +280,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const store = storeProvider();
 
-        doReduceAndUpdateState({
+        mutator.doReduceAndUpdateState({
             ...store,
             page,
             selected: []
@@ -268,7 +290,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function setRowsPerPage(rowsPerPage: number) {
         const store = storeProvider();
 
-        doReduceAndUpdateState({
+        mutator.doReduceAndUpdateState({
             ...store,
             rowsPerPage,
             page: 0,
@@ -288,7 +310,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function setFilters(filters: DocRepoFilters2.Filters) {
         const store = storeProvider();
 
-        doReduceAndUpdateState({
+        mutator.doReduceAndUpdateState({
             ...store,
             filters,
             page: 0,
@@ -299,7 +321,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
         const store = storeProvider();
 
-        doReduceAndUpdateState({
+        mutator.doReduceAndUpdateState({
             ...store,
             order,
             orderBy,
@@ -308,8 +330,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         });
 
     }
-
-
 
     // public setSidebarFilter(sidebarFilter: string) {
     //     const store = store.current;
@@ -569,18 +589,19 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 }
 
 const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
-                          setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
+                          setStore: (store: IDocRepoStore) => void,
+                          mutator: Mutator): IDocRepoCallbacks => {
 
     const dialogs = useDialogManager();
     const repoDocMetaManager = useRepoDocMetaManager();
     const tagsProvider = useTagsProvider();
 
-    return createCallbacks(storeProvider, setStore, repoDocMetaManager, tagsProvider, dialogs);
+    return createCallbacks(storeProvider, setStore, mutator, repoDocMetaManager, tagsProvider, dialogs);
 
 }
 
-const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, callbacks]
-    = createObservableStore<IDocRepoStore, IDocRepoCallbacks>(docRepoStore, callbacksFactory);
+export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, docRepoMutator]
+    = createObservableStore<IDocRepoStore, IDocRepoCallbacks, Mutator>(docRepoStore, mutatorFactory, callbacksFactory);
 
 interface IProps {
     readonly children: JSX.Element;
@@ -589,10 +610,10 @@ interface IProps {
 export const DocRepoStore2 = React.memo((props: IProps) => {
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
+    const repoDocMetaManager = useRepoDocMetaManager();
 
     const doUpdate = React.useCallback(Debouncers.create(() => {
-        const internalCallbacks = callbacks as IDocRepoCallbacksInternal;
-        internalCallbacks.doUpdate();
+        docRepoMutator.doUpdate(() => repoDocMetaManager.repoDocInfoIndex.values());
     }), []);
 
     useComponentDidMount(() => {
