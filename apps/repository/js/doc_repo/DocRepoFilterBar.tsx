@@ -51,7 +51,7 @@ export const DocRepoFilterBar = (props: IProps) => {
                                      size="medium"
                                      label="flagged"
                                      icon={<FlagIcon/>}
-                                     initialValue={false}
+                                     initialValue={filters.flagged}
                                      onChange={value => setFilters({...filters, flagged: value})}/>
                     {/*</Tooltip>*/}
                 </Grid>
@@ -60,16 +60,14 @@ export const DocRepoFilterBar = (props: IProps) => {
                     <MUIToggleButton id="toggle-archived"
                                      size="medium"
                                      label="archived"
-                                     initialValue={false}
+                                     initialValue={filters.archived}
                                      onChange={value => setFilters({...filters, archived: value})}/>
                 </Grid>
 
                 <Grid item>
                     <MUISearchBox2 id="filter_title"
                                    placeholder="Search by title"
-                        //    style={{
-                        //     width: '20em'
-                        // }}
+                                   initialValue={filters.title}
                                    onChange={text => setFilters({...filters, title: text})}/>
 
                 </Grid>

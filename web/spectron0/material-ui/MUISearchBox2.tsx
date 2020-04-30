@@ -7,6 +7,7 @@ interface IProps {
     readonly id?: string;
     readonly label?: string;
     readonly placeholder?: string;
+    readonly initialValue?: string;
     readonly style?: React.CSSProperties;
     readonly onChange: (text: string) => void;
 }
@@ -29,6 +30,7 @@ export const MUISearchBox2 = (props: IProps) => {
                        id={props.id}
                        style={props.style}
                        label={props.label}
+                       defaultValue={props.initialValue}
                        placeholder={props.placeholder}
                        onChange={event => handleChange(event.currentTarget.value)}/>
     );

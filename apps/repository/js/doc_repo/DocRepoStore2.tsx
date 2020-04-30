@@ -622,6 +622,7 @@ export const DocRepoStore2 = React.memo((props: IProps) => {
     });
 
     useComponentWillUnmount(() => {
+
         Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doUpdate),
             "Failed to remove event listener");
     });
