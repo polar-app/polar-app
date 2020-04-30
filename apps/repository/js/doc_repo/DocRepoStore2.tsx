@@ -8,7 +8,7 @@ import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sort
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -22,9 +22,11 @@ import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/Autocomplet
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {
+    usePersistence,
     useRepoDocMetaLoader,
     useRepoDocMetaManager,
-    useTagsProvider
+    useTagsProvider,
+    IPersistence
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -32,6 +34,13 @@ import {
 } from "../../../../web/js/hooks/lifecycle";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
+import { Logger } from "polar-shared/src/logger/Logger";
+import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
+import {Either} from "../../../../web/js/util/Either";
+import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
+import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+
+const log = Logger.create();
 
 interface IDocRepoStore {
 
@@ -79,6 +88,12 @@ interface IDocRepoStore {
 
     readonly filters: DocRepoFilters2.Filters;
 
+    /**
+     * Only used to trigger a store refresh.  This is not strictly necessary
+     * but might in the future if we want to FORCE a refresh for some reason.
+     */
+    readonly _refresh: number;
+    
 }
 
 interface IDocRepoCallbacks {
@@ -110,7 +125,6 @@ interface IDocRepoCallbacks {
 
 
     readonly doDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
-    readonly doTagSelected: (tags: ReadonlyArray<string>) => void;
 
     // ** callbacks that might need prompts, confirmation, etc.
     readonly onTagged: () => void;
@@ -140,10 +154,6 @@ interface IDocRepoCallbacks {
 
 }
 
-interface IDocRepoCallbacksInternal extends IDocRepoCallbacks {
-    readonly doUpdate: () => void;
-}
-
 // the default state of the store...
 const docRepoStore: IDocRepoStore = {
     data: [],
@@ -163,6 +173,7 @@ const docRepoStore: IDocRepoStore = {
     rowsPerPage: 25,
 
     filters: {},
+    _refresh: 0
 }
 
 /**
@@ -198,13 +209,18 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 // callbacks object so that it can mutate the store without using hooks.
 
 interface Mutator {
+    setDataProvider: (dataProvider: DataProvider) => void;
+    refresh: () => void;
     doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
-    doUpdate: (provider: () => ReadonlyArray<RepoDocInfo>) => void;
 }
 
+type DataProvider = Provider<ReadonlyArray<RepoDocInfo>>;
+
 function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
-                       setStore: (store: IDocRepoStore) => void) {
-    
+                        setStore: (store: IDocRepoStore) => void) {
+
+    let dataProvider: DataProvider = () => [];
+
     function doReduceAndUpdateState(tmpState: IDocRepoStore) {
 
         setTimeout(() => {
@@ -218,19 +234,22 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
      * Fetch the latest values from the repoDocMetaManager, then reduce, and
      * apply state.
      */
-    function doUpdate(provider: () => ReadonlyArray<RepoDocInfo>) {
-
+    function refresh() {
         const store = storeProvider();
         setTimeout(() => {
-            const data = provider();
+            const data = dataProvider();
             doReduceAndUpdateState({...store, data});
         }, 1);
+    }
 
+    function setDataProvider(newDataProvider: DataProvider) {
+        dataProvider = newDataProvider;
     }
 
     return {
         doReduceAndUpdateState,
-        doUpdate
+        refresh,
+        setDataProvider
     };
 
 }
@@ -240,14 +259,16 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                          mutator: Mutator,
                          repoDocMetaManager: RepoDocMetaManager,
                          tagsProvider: () => ReadonlyArray<Tag>,
-                         dialogs: DialogManager): IDocRepoCallbacks {
+                         dialogs: DialogManager,
+                         persistence: IPersistence): IDocRepoCallbacks {
+
+    const synchronizingDocLoader
+        = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
     function first() {
         const selected = selectedProvider();
         return selected.length >= 1 ? selected[0] : undefined
     }
-
-
 
     function selectRow(selectedIdx: number,
                        event: React.MouseEvent,
@@ -341,11 +362,68 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     // **** action / mutators
 
     function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
-        // noop
+
+        const doTag = async (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => {
+            await repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
+        };
+
+        for (const repoDocInfo of repoDocInfos) {
+            const existingTags = Object.values(repoDocInfo.tags || {});
+            const effectiveTags = Tags.union(existingTags, tags || []);
+
+            doTag(repoDocInfo, effectiveTags)
+                .catch(err => log.error(err));
+
+        }
+
+        // FIXME theres's a race now
+
+        mutator.refresh();
+
     }
 
     function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
-        // noop
+
+        const doMutation = (repoDocInfo: RepoDocInfo) => {
+            repoDocInfo.archived = !repoDocInfo.archived;
+            repoDocInfo.docInfo.archived = repoDocInfo.archived;
+        }
+
+        //
+        // // FIXME: implement some type of AsyncMapper that also broadcasts
+        // // progress or updates a snackbar with the progress of the operation
+        // // and does things concurrently
+        //
+        // mutated = true;
+        //
+        // // used so the user can tell something actually happened because if
+        // // the row just vanishes it's hard to tell that something actually
+        // // changed.
+        // if (repoDocInfo.archived) {
+        //     Toaster.success(`Document has been archived.`);
+        // }
+
+        // FIXME: refresh...
+
+        //
+        // if (field === 'flagged') {
+        //
+        //     // Analytics.event({category: 'user', action: 'flagged-doc'});
+        //     repoDocInfo.flagged = !repoDocInfo.flagged;
+        //     repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
+        //
+        //     mutated = true;
+        // }
+        //
+        // if (mutated) {
+        //
+        //     await this.props.writeDocInfo(repoDocInfo.docInfo)
+        //         .catch(err => log.error("Failed to write DocInfo", err));
+        //
+        //     this.props.refresh();
+        // }
+
+
     }
 
     function doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
@@ -365,26 +443,36 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
-        // noop
+        doTagged(repoDocInfos, [tag]);
     }
+
 
     function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
         // noop
     }
 
     function doOpen(repoDocInfo: RepoDocInfo): void {
-        // noop
+
+        const fingerprint = repoDocInfo.fingerprint;
+
+        const docInfo = repoDocInfo.docInfo;
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
+
+        synchronizingDocLoader.load(fingerprint, backendFileRef!)
+            .catch(err => log.error("Unable to load doc: ", err));
+
     }
 
     function doRename(repoDocInfo: RepoDocInfo, title: string): void {
-        // noop
+
+        repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)
+            .catch(err => log.error("Could not write doc title: ", err));
+
+        // FIXME: refresh??
+
     }
 
     function doShowFile(repoDocInfo: RepoDocInfo): void {
-        // noop
-    }
-
-    function doTagSelected(tags: ReadonlyArray<string>): void {
         // noop
     }
 
@@ -438,6 +526,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
             // https://kryogenix.org/code/browser/custom-drag-image.html
             event.dataTransfer!.setDragImage(src, 0, 0);
+
         };
 
         configureDragImage();
@@ -566,7 +655,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doFlagged,
 
         doDropped,
-        doTagSelected,
 
         onTagged,
         onOpen,
@@ -595,10 +683,15 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     const dialogs = useDialogManager();
     const repoDocMetaManager = useRepoDocMetaManager();
     const tagsProvider = useTagsProvider();
+    const persistence = usePersistence();
 
-    return createCallbacks(storeProvider, setStore, mutator, repoDocMetaManager, tagsProvider, dialogs);
+    return createCallbacks(storeProvider,
+        setStore, mutator, repoDocMetaManager, tagsProvider, dialogs, persistence);
 
 }
+
+// FIXME: I want to rework this so that, untilyou use the provider DocRepoStoreProvider,
+// a MOCK object is returned... mock/proxy objects would be great here..
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, docRepoMutator]
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>(docRepoStore, mutatorFactory, callbacksFactory);
@@ -612,18 +705,19 @@ export const DocRepoStore2 = React.memo((props: IProps) => {
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
 
-    const doUpdate = React.useCallback(Debouncers.create(() => {
-        docRepoMutator.doUpdate(() => repoDocMetaManager.repoDocInfoIndex.values());
+    const doRefresh = React.useCallback(Debouncers.create(() => {
+        docRepoMutator.refresh();
     }), []);
 
     useComponentDidMount(() => {
-        doUpdate();
-        repoDocMetaLoader.addEventListener(doUpdate)
+        docRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocInfoIndex.values());
+        doRefresh();
+        repoDocMetaLoader.addEventListener(doRefresh)
     });
 
     useComponentWillUnmount(() => {
 
-        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doUpdate),
+        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doRefresh),
             "Failed to remove event listener");
     });
 

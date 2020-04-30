@@ -33,11 +33,10 @@ export interface IPersistence extends ITags {
     readonly persistenceLayerMutator: PersistenceLayerMutator;
 }
 
-
-export const PersistenceContext = createContextMemo<IPersistence | undefined>(undefined);
+export const PersistenceContext = createContextMemo<IPersistence>(null!);
 export const TagsContext = createContextMemo<ITags | undefined>(undefined);
 
-export function usePersistenceContext() {
+export function usePersistence() {
     return useContextMemo(PersistenceContext);
 }
 

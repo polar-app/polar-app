@@ -293,7 +293,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     private onDocTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>,
-                     tags: ReadonlyArray<Tag>) {
+                       tags: ReadonlyArray<Tag>) {
 
         const doTag = async (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => {
             await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
