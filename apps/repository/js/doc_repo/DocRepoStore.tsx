@@ -106,6 +106,7 @@ export interface IDocRepoActions {
     readonly setSelected: (selected: ReadonlyArray<number>) => void;
     readonly setFilters: (filters: DocRepoFilters2.Filters) => void;
     readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
+
     readonly onTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
     readonly onOpen: Callback1<RepoDocInfo>;
     readonly onRename: (repoDocInfo: RepoDocInfo, title: string) => void;

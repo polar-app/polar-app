@@ -19,7 +19,7 @@ interface InternalObservableStore<V> {
 }
 
 
-interface ObservableStore<V> {
+export interface ObservableStore<V> {
 
     /**
      * The current value, used for the the initial render of each component.
