@@ -335,9 +335,9 @@ export class DocRepoStore extends React.Component<IProps, IState> {
         this.setSidebarFilter = this.setSidebarFilter.bind(this);
 
         // the debouncer here is VERY important... otherwise we lock up completely
-        this.eventListener = Debouncers.create(() => {
-            this.doUpdate();
-        });
+            this.eventListener = Debouncers.create(() => {
+                this.doUpdate();
+            });
 
         this.actions = this.createActions();
         this.callbacks = this.createCallbacks(this.actions);
