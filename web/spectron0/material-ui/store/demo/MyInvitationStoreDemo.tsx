@@ -17,10 +17,11 @@ const invitationStore: MyInvitation = {
 }
 
 const callbacksFactory: CallbacksFactory<MyInvitation, MyInvitationCallbacks> = (store, setStore) => {
+
+    const tagStore = useTagStore()
+
     return {
         toggleInvited: () => {
-            const tagStore = useTagStore()
-            console.log("FIXME2: toggling invited: ", tagStore);
             const invited = ! store.current.invited;
             setStore({invited});
         }

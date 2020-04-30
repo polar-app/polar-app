@@ -100,10 +100,14 @@ export type UseCallbacksHook<C> = () => C;
 export type ObservableStoreTuple<V, C> = [
     ObservableStoreProviderComponent<V>,
     UseContextHook<V>,
-    UseCallbacksHook<C>,
-    C
+    UseCallbacksHook<C>
 ];
 
+/**
+ * Create the callbacks. Called for every useCallbacks function so that we can
+ * call hooks when the callbacks are created. This allows us to use other hooks
+ * in our created callbacks.
+ */
 export type CallbacksFactory<V, C> = (store: ObservableStore<V>, setStore: SetStore<V>) => C;
 
 export function createObservableStore<V, C>(initialValue: V,
@@ -129,12 +133,12 @@ export function createObservableStore<V, C>(initialValue: V,
         return useObservableStore(storeContext);
     }
 
-    const callbacks = callbacksFactory(store, setStore);
-
-    const callbacksContext = React.createContext(callbacks);
+    const deferredCallbacksFactory = () => callbacksFactory(store, setStore);
+    const callbacksContext = React.createContext(deferredCallbacksFactory);
 
     const useCallbacksHook: UseContextHook<C> = () => {
-        return React.useContext(callbacksContext);
+        const callbacksContextFactory = React.useContext(callbacksContext);
+        return callbacksContextFactory();
     }
 
     const provider = (props: ObservableStoreProps<V>) => {
@@ -146,7 +150,7 @@ export function createObservableStore<V, C>(initialValue: V,
 
         return (
             <storeContext.Provider value={store}>
-                <callbacksContext.Provider value={callbacks}>
+                <callbacksContext.Provider value={deferredCallbacksFactory}>
                     {props.children}
                 </callbacksContext.Provider>
             </storeContext.Provider>
@@ -155,7 +159,7 @@ export function createObservableStore<V, C>(initialValue: V,
 
     }
 
-    return [provider, useContextHook, useCallbacksHook, callbacks];
+    return [provider, useContextHook, useCallbacksHook];
 
 }
 

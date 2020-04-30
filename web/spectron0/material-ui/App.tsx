@@ -68,7 +68,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TagNodes} from "../../js/tags/TagNodes";
 import {MyContextStoreComponent} from "./store2/ContextStore";
 import {HookStateDemo} from "./store2/HookState";
-import {ObservableStoreDemo} from "./store/ObservableStoreDemo";
+import {ObservableStoreDemo} from "./store/demo/ObservableStoreDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {

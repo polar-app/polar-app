@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Button from "@material-ui/core/Button";
-import {TagStoreProvider} from './TagStoreDemo';
+import {TagStoreProvider, useTagStore} from './TagStoreDemo';
 import { useMyInvitationStore, useMyInvitationStoreCallbacks, MyInvitationStoreProvider } from './MyInvitationStoreDemo';
 
 interface ToggleMountedProps {
@@ -40,10 +40,41 @@ const ToggleMounted = (props: ToggleMountedProps) => {
 
 }
 
+function myHook() {
+    const tagStore = useTagStore()
+    console.log("FIXME: got my tagStore: ", tagStore);
+}
+
+const createdHook = () => myHook();
+
+interface IMyCallbacks {
+    readonly myCallback: () => void;
+}
+//
+// const myCallback = () => {
+//     useTagStore();
+//     console.log("FIXME it worked");
+// }
+
+function myCallback() {
+    const tagStore = useTagStore();
+    console.log("FIXME it worked");
+}
+
+
+const myCallbacks: IMyCallbacks = {
+    // myCallback: () => {
+    //     useTagStore();
+    //     console.log("FIXME it worked");
+    // }
+    myCallback
+}
+
 const ChildComponent = () => {
 
     const store = useMyInvitationStore();
     const callbacks = useMyInvitationStoreCallbacks();
+    const tagStore = useTagStore()
 
     return (
         <ToggleMounted>
@@ -51,6 +82,7 @@ const ChildComponent = () => {
                 <div>child component: {store.invited ? 'true' : 'false'}</div>
                 <Button variant="contained"
                         onClick={callbacks.toggleInvited}>
+                        {/*// onClick={myHook}>*/}
                     toggle
                 </Button>
             </div>
