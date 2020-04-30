@@ -27,9 +27,9 @@ export class DeviceRouter extends React.Component<IProps> {
         this.device = Devices.get();
     }
 
-    public shouldComponentUpdate(): boolean {
-        // the device will never change
-        return false;
+    shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<{}>): boolean {
+        // the device will never change so all we care about is props
+        return ! isEqual(this.props, nextProps);
     }
 
     public render() {
