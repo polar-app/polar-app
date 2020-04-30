@@ -133,6 +133,7 @@ interface IDocRepoCallbacks {
 
 }
 
+// the default state of the store...
 const docRepoStore: IDocRepoStore = {
     data: [],
     view: [],
@@ -180,24 +181,6 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
     return newState;
 
 }
-//
-// function foo() {
-//
-//     // class Foo {
-//     //     static bar() {
-//     //         console.log("asdf");
-//     //     }
-//     // }
-//     //
-//     // return Foo;
-//
-//     return class Foo {
-//         static bar() {
-//             console.log("asdf");
-//         }
-//     }
-//
-// }
 
 function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                          setStore: (store: IDocRepoStore) => void,
