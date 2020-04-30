@@ -101,7 +101,8 @@ export type UseCallbacksHook<C> = () => C;
 export type ObservableStoreTuple<V, C> = [
     ObservableStoreProviderComponent<V>,
     UseContextHook<V>,
-    UseCallbacksHook<C>
+    UseCallbacksHook<C>,
+    C
 ];
 
 /**
@@ -164,7 +165,9 @@ export function createObservableStore<V, C>(initialValue: V,
 
     }
 
-    return [provider, useContextHook, useCallbacksHook];
+    const callbacks = callbacksFactory(storeProvider, setStore);
+
+    return [provider, useContextHook, useCallbacksHook, callbacks];
 
 }
 

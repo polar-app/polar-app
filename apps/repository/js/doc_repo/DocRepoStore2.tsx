@@ -22,9 +22,16 @@ import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/Autocomplet
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {
+    useRepoDocMetaLoader,
     useRepoDocMetaManager,
     useTagsProvider
 } from "../persistence_layer/PersistenceLayerApp";
+import {
+    useComponentDidMount,
+    useComponentWillUnmount
+} from "../../../../web/js/hooks/lifecycle";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {Debouncers} from "polar-shared/src/util/Debouncers";
 
 interface IDocRepoStore {
 
@@ -133,6 +140,10 @@ interface IDocRepoCallbacks {
 
 }
 
+interface IDocRepoCallbacksInternal extends IDocRepoCallbacks {
+    readonly doUpdate: () => void;
+}
+
 // the default state of the store...
 const docRepoStore: IDocRepoStore = {
     data: [],
@@ -200,8 +211,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             setStore(newState);
         }, 1)
 
-    };
+    }
 
+    /**
+     * Fetch the latest values from the repoDocMetaManager, then reduce, and
+     * apply state.
+     */
     function doUpdate() {
 
         const store = storeProvider();
@@ -237,7 +252,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         return arrayStream(store.selected)
             .map(current => store.view[current])
             .collect();
-    };
+    }
 
     function setPage(page: number) {
 
@@ -248,7 +263,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             page,
             selected: []
         });
-    };
+    }
 
     function setRowsPerPage(rowsPerPage: number) {
         const store = storeProvider();
@@ -259,7 +274,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             page: 0,
             selected: []
         });
-    };
+    }
 
     function setSelected(selected: ReadonlyArray<number>) {
         const store = storeProvider();
@@ -550,6 +565,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         onTagSelected,
 
     };
+
 }
 
 const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
@@ -563,7 +579,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
 }
 
-const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks]
+const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, callbacks]
     = createObservableStore<IDocRepoStore, IDocRepoCallbacks>(docRepoStore, callbacksFactory);
 
 interface IProps {
@@ -571,6 +587,23 @@ interface IProps {
 }
 
 export const DocRepoStore2 = React.memo((props: IProps) => {
+
+    const repoDocMetaLoader = useRepoDocMetaLoader();
+
+    const doUpdate = React.useCallback(Debouncers.create(() => {
+        const internalCallbacks = callbacks as IDocRepoCallbacksInternal;
+        internalCallbacks.doUpdate();
+    }), []);
+
+    useComponentDidMount(() => {
+        doUpdate();
+        repoDocMetaLoader.addEventListener(doUpdate)
+    });
+
+    useComponentWillUnmount(() => {
+        Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doUpdate),
+            "Failed to remove event listener");
+    });
 
     return (
         <DocRepoStoreProvider>
