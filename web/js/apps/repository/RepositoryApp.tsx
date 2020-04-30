@@ -54,7 +54,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager, updatedDocInfoEventDispatcher} = props;
 
-    const renderDocRepoScreen = () => (
+    const RenderDocRepoScreen = () => (
             <Cached>
                 <AuthRequired authStatus={app.authStatus}>
                     <PersistenceLayerApp tagsType="documents"
@@ -131,7 +131,7 @@ export const RepositoryApp = (props: IProps) => {
 
             return (
                 <FeatureToggleRouter name="mobile-reading"
-                                     enabled={renderDocRepoScreen()}
+                                     enabled={<RenderDocRepoScreen/>}
                                      disabled={renderAnnotationRepoScreen()}/>
             );
 
@@ -141,7 +141,7 @@ export const RepositoryApp = (props: IProps) => {
             <Cached>
                 <DeviceRouter phone={<PhoneAndTablet/>}
                               tablet={<PhoneAndTablet/>}
-                              desktop={renderDocRepoScreen()}/>
+                              desktop={<RenderDocRepoScreen/>}/>
             </Cached>
         );
 
