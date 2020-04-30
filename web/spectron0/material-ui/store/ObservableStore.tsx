@@ -1,6 +1,7 @@
 import {Subject, Subscription} from "rxjs";
 import React, {useContext, useEffect, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface InternalObservableStore<V> {
 
@@ -108,7 +109,7 @@ export type ObservableStoreTuple<V, C> = [
  * call hooks when the callbacks are created. This allows us to use other hooks
  * in our created callbacks.
  */
-export type CallbacksFactory<V, C> = (store: ObservableStore<V>, setStore: SetStore<V>) => C;
+export type CallbacksFactory<V, C> = (storeProvider: Provider<V>, setStore: SetStore<V>) => C;
 
 export function createObservableStore<V, C>(initialValue: V,
                                             callbacksFactory: CallbacksFactory<V, C>): ObservableStoreTuple<V, C> {
@@ -133,12 +134,16 @@ export function createObservableStore<V, C>(initialValue: V,
         return useObservableStore(storeContext);
     }
 
-    const deferredCallbacksFactory = () => callbacksFactory(store, setStore);
+    const storeProvider = () => store.current;
+
+    const deferredCallbacksFactory = () => callbacksFactory(storeProvider, setStore);
     const callbacksContext = React.createContext(deferredCallbacksFactory);
 
     const useCallbacksHook: UseContextHook<C> = () => {
         const callbacksContextFactory = React.useContext(callbacksContext);
-        return callbacksContextFactory();
+        const callbacks = callbacksContextFactory();
+        Preconditions.assertPresent(callbacks, "callbacks");
+        return callbacks;
     }
 
     const provider = (props: ObservableStoreProps<V>) => {

@@ -9,10 +9,13 @@ interface ITagCallbacks {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
-const callbacksFactory: CallbacksFactory<ITagStore, ITagCallbacks> = (store, setStore) => {
-    return {
-        tagsProvider: () => store.current.tags
-    }
+const callbacksFactory: CallbacksFactory<ITagStore, ITagCallbacks> = (storeProvider, setStore) => {
+    return class {
+        public static tagsProvider() {
+            const store = storeProvider();
+            return store.tags;
+        }
+    };
 };
 
 const tagStore: ITagStore = {

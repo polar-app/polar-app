@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Button from "@material-ui/core/Button";
 import {TagStoreProvider, useTagStore} from './TagStoreDemo';
 import { useMyInvitationStore, useMyInvitationStoreCallbacks, MyInvitationStoreProvider } from './MyInvitationStoreDemo';
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface ToggleMountedProps {
     readonly children: React.ReactNode;
@@ -74,7 +75,8 @@ const ChildComponent = () => {
 
     const store = useMyInvitationStore();
     const callbacks = useMyInvitationStoreCallbacks();
-    const tagStore = useTagStore()
+
+    Preconditions.assertPresent(callbacks, "callbacks");
 
     return (
         <ToggleMounted>

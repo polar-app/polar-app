@@ -23,6 +23,7 @@ import {DraggingSelectedDocs} from "./SelectedDocs";
 import {MUITagInputControls} from "../MUITagInputControls";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 
 interface IDocRepoStore {
 
@@ -178,81 +179,104 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
     return newState;
 
 }
+//
+// function foo() {
+//
+//     // class Foo {
+//     //     static bar() {
+//     //         console.log("asdf");
+//     //     }
+//     // }
+//     //
+//     // return Foo;
+//
+//     return class Foo {
+//         static bar() {
+//             console.log("asdf");
+//         }
+//     }
+//
+// }
 
-class DocRepoCallbacks implements IDocRepoCallbacks {
+const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
+                          setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
 
-    constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
-                private readonly tagsProvider: () => ReadonlyArray<Tag>,
-                private readonly store: ObservableStore<IDocRepoStore>,
-                private readonly setStore: (store: IDocRepoStore) => void) {
+    // constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
+    //             private readonly tagsProvider: () => ReadonlyArray<Tag>,
+    //             private readonly store: ObservableStore<IDocRepoStore>,
+    //             private readonly setStore: (store: IDocRepoStore) => void,
+    //             private readonly dialogs: DialogManager = useDialogManager()) {
+    //
+    // }
 
-    }
+    const dialogs = useDialogManager();
 
-    private first() {
-        const selected = this.selectedProvider();
+    function first() {
+        const selected = selectedProvider();
         return selected.length >= 1 ? selected[0] : undefined
     }
 
-    private doReduceAndUpdateState(tmpState: IDocRepoStore) {
+    function doReduceAndUpdateState(tmpState: IDocRepoStore) {
 
         setTimeout(() => {
             const newState = reduce({...tmpState});
-            this.setStore(newState);
+            setStore(newState);
         }, 1)
 
     };
 
-    private doUpdate() {
+    function doUpdate() {
 
+        const store = storeProvider();
         setTimeout(() => {
-            const data = this.repoDocMetaManager.repoDocInfoIndex.values();
-            this.doReduceAndUpdateState({...this.store.current, data});
+            const data = repoDocMetaManager.repoDocInfoIndex.values();
+            doReduceAndUpdateState({...store, data});
         }, 1);
 
     }
 
-    public selectRow(selectedIdx: number,
-                     event: React.MouseEvent,
-                     type: SelectRowType) {
+    function selectRow(selectedIdx: number,
+                       event: React.MouseEvent,
+                       type: SelectRowType) {
 
-        const store = this.store.current;
+        const store = storeProvider();
 
         const selected = TableSelection.selectRow(selectedIdx,
             event,
             type,
             store.selected);
 
-        this.setStore({
+        setStore({
             ...store,
             selected: selected || []
         });
 
     }
 
-    public selectedProvider(): ReadonlyArray<RepoDocInfo> {
+    function selectedProvider(): ReadonlyArray<RepoDocInfo> {
 
-        const store = this.store.current;
+        const store = storeProvider();
 
         return arrayStream(store.selected)
             .map(current => store.view[current])
             .collect();
     };
 
-    public setPage(page: number) {
+    function setPage(page: number) {
 
-        const store = this.store.current;
+        const store = storeProvider();
 
-        this.doReduceAndUpdateState({
+        doReduceAndUpdateState({
             ...store,
             page,
             selected: []
         });
     };
 
-    public setRowsPerPage(rowsPerPage: number) {
-        const store = this.store.current;
+    function setRowsPerPage(rowsPerPage: number) {
+        const store = storeProvider();
 
-        this.doReduceAndUpdateState({
+        doReduceAndUpdateState({
             ...store,
             rowsPerPage,
             page: 0,
@@ -260,19 +284,19 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
         });
     };
 
-    public setSelected(selected: ReadonlyArray<number>) {
+    function setSelected(selected: ReadonlyArray<number>) {
+        const store = storeProvider();
 
-        const store = this.store.current;
-
-        this.setStore({
+        setStore({
             ...store,
             selected
         });
     }
 
-    public setFilters(filters: DocRepoFilters2.Filters) {
-        const store = this.store.current;
-        this.doReduceAndUpdateState({
+    function setFilters(filters: DocRepoFilters2.Filters) {
+        const store = storeProvider();
+
+        doReduceAndUpdateState({
             ...store,
             filters,
             page: 0,
@@ -280,11 +304,10 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
         });
     }
 
-    public setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
+    function setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
+        const store = storeProvider();
 
-        const store = this.store.current;
-
-        this.doReduceAndUpdateState({
+        doReduceAndUpdateState({
             ...store,
             order,
             orderBy,
@@ -297,59 +320,59 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
 
     // public setSidebarFilter(sidebarFilter: string) {
-    //     const store = this.store.current;
+    //     const store = store.current;
     //
-    //     this.setStore({...store, sidebarFilter});
+    //     setStore({...store, sidebarFilter});
     // }
     //
 
     // **** action / mutators
 
-    public doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
+    function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
         // noop
     }
 
-    public doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
+    function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
         // noop
     }
 
-    public doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
+    function doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
         // noop
     }
 
-    public doCopyFilePath(repoDocInfo: RepoDocInfo): void {
+    function doCopyFilePath(repoDocInfo: RepoDocInfo): void {
         // noop
     }
 
-    public doCopyOriginalURL(repoDocInfo: RepoDocInfo): void {
+    function doCopyOriginalURL(repoDocInfo: RepoDocInfo): void {
         // noop
     }
 
-    public doDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
+    function doDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
         // noop
     }
 
-    public doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
+    function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
         // noop
     }
 
-    public doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
+    function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
         // noop
     }
 
-    public doOpen(repoDocInfo: RepoDocInfo): void {
+    function doOpen(repoDocInfo: RepoDocInfo): void {
         // noop
     }
 
-    public doRename(repoDocInfo: RepoDocInfo, title: string): void {
+    function doRename(repoDocInfo: RepoDocInfo, title: string): void {
         // noop
     }
 
-    public doShowFile(repoDocInfo: RepoDocInfo): void {
+    function doShowFile(repoDocInfo: RepoDocInfo): void {
         // noop
     }
 
-    public doTagSelected(tags: ReadonlyArray<string>): void {
+    function doTagSelected(tags: ReadonlyArray<string>): void {
         // noop
     }
 
@@ -357,39 +380,39 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
 
 
-    public onArchived(): void {
+    function onArchived(): void {
         // noop
     }
 
-    public onCopyDocumentID(): void {
+    function onCopyDocumentID(): void {
         // noop
     }
 
-    public onCopyFilePath(): void {
+    function onCopyFilePath(): void {
         // noop
     }
 
-    public onCopyOriginalURL(): void {
+    function onCopyOriginalURL(): void {
         // noop
     }
 
-    public onFlagged(): void {
+    function onFlagged(): void {
         // noop
     }
 
-    public onOpen(): void {
+    function onOpen(): void {
         // noop
     }
 
-    public onShowFile(): void {
+    function onShowFile(): void {
         // noop
     }
 
-    public onTagSelected(tags: ReadonlyArray<string>): void {
+    function onTagSelected(tags: ReadonlyArray<string>): void {
         // noop
     }
 
-    public onDragStart(event: React.DragEvent) {
+    function onDragStart(event: React.DragEvent) {
 
         console.log("onDragStart");
 
@@ -412,25 +435,23 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     }
 
-    public onDragEnd() {
+    function onDragEnd() {
         console.log("onDragEnd");
         DraggingSelectedDocs.clear();
     };
 
-    public onDropped(tag: Tag) {
+    function onDropped(tag: Tag) {
         const dragged = DraggingSelectedDocs.get();
         if (dragged) {
             this.doDropped(dragged, tag);
         }
     }
 
-    public onRename() {
+    function onRename() {
 
         const repoDocInfo = this.first()!;
 
-        const dialogs = useDialogManager();
-
-        dialogs.prompt({
+        this.dialogs.prompt({
             title: "Enter a new title for the document:",
             defaultValue: repoDocInfo.title,
             onCancel: NULL_FUNCTION,
@@ -439,9 +460,7 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     };
 
-    public onDeleted() {
-
-        const dialogs = useDialogManager();
+    function onDeleted() {
 
         const repoDocInfos = this.selectedProvider();
 
@@ -450,7 +469,7 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
             return;
         }
 
-        dialogs.confirm({
+        this.dialogs.confirm({
             title: "Are you sure you want to delete these item(s)?",
             subtitle: "This is a permanent operation and can't be undone.  ",
             type: 'danger',
@@ -459,9 +478,7 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     }
 
-    public onTagged() {
-
-        const dialogs = useDialogManager();
+    function onTagged() {
 
         const repoDocInfos = this.selectedProvider();
 
@@ -508,18 +525,13 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
             onDone: tags => this.doTagged(repoDocInfos, tags)
         };
 
-        dialogs.autocomplete(autocompleteProps);
+        this.dialogs.autocomplete(autocompleteProps);
 
     }
 
 
 }
 
-const callbacksFactory = (store: ObservableStore<IDocRepoStore>,
-                          setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
-
-
-};
 
 const [DocRepoStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks]
     = createObservableStore<IDocRepoStore, IDocRepoCallbacks>(docRepoStore, callbacksFactory);

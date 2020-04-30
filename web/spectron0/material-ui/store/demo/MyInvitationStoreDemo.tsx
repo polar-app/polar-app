@@ -1,32 +1,59 @@
 import React, {useState} from 'react';
-import {CallbacksFactory, createObservableStore} from "../ObservableStore";
+import {
+    CallbacksFactory,
+    createObservableStore,
+    ObservableStore, SetStore
+} from "../ObservableStore";
 import Button from "@material-ui/core/Button";
 import { TagStoreProvider, useTagStore } from './TagStoreDemo';
 import {useTagsContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
-interface MyInvitation {
+interface IInvitation {
     readonly invited: boolean;
 }
 
-interface MyInvitationCallbacks {
+interface IInvitationCallbacks {
     readonly toggleInvited: () => void;
 }
 
-const invitationStore: MyInvitation = {
+const invitationStore: IInvitation = {
     invited: false
 }
 
-const callbacksFactory: CallbacksFactory<MyInvitation, MyInvitationCallbacks> = (store, setStore) => {
+class InvitationCallbacks {
+
+    // private readonly tagStore = useTagStore()
+    constructor(private readonly store: ObservableStore<IInvitation>,
+                private readonly setStore: SetStore<IInvitation>) {
+
+    }
+
+    public toggleInvited() {
+        const invited = ! this.store.current.invited;
+        this.setStore({invited});
+    }
+
+}
+
+const callbacksFactory: CallbacksFactory<IInvitation, IInvitationCallbacks> = (storeProvider, setStore) => {
 
     const tagStore = useTagStore()
 
-    return {
-        toggleInvited: () => {
-            const invited = ! store.current.invited;
+    return class {
+        public static toggleInvited() {
+            const store = storeProvider();
+            const invited = ! store.invited;
             setStore({invited});
         }
-    }
+    };
 };
 
+// const callbacksFactory2: CallbacksFactory<IInvitation, IInvitationCallbacks> = (storeProvider, setStore) => {
+//
+//     return new InvitationCallbacks(storeProvider, setStore);
+//
+// };
+
+
 export const [MyInvitationStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks]
-    = createObservableStore<MyInvitation, MyInvitationCallbacks>(invitationStore, callbacksFactory);
+    = createObservableStore<IInvitation, IInvitationCallbacks>(invitationStore, callbacksFactory);
