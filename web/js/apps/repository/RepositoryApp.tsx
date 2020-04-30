@@ -78,7 +78,7 @@ export const RepositoryApp = (props: IProps) => {
             </Cached>
         );
 
-    const renderSettingsScreen = () => (
+    const RenderSettingsScreen = () => (
         <Cached>
             <SettingsScreen
                 persistenceLayerProvider={app.persistenceLayerProvider}
@@ -125,23 +125,11 @@ export const RepositoryApp = (props: IProps) => {
         );
     };
 
-    const renderDefaultScreenByDevice = () => {
-
-        const PhoneAndTablet = () => {
-
-            return (
-                <FeatureToggleRouter name="mobile-reading"
-                                     enabled={<RenderDocRepoScreen/>}
-                                     disabled={renderAnnotationRepoScreen()}/>
-            );
-
-        };
+    const RenderDefaultScreenByDevice = () => {
 
         return (
             <Cached>
-                <DeviceRouter phone={<PhoneAndTablet/>}
-                              tablet={<PhoneAndTablet/>}
-                              desktop={<RenderDocRepoScreen/>}/>
+                <RenderDocRepoScreen/>
             </Cached>
         );
 
@@ -326,7 +314,7 @@ export const RepositoryApp = (props: IProps) => {
                                component={renderAnnotationRepoScreen}/>
 
                         <Route exact path="/settings"
-                               component={renderSettingsScreen}/>
+                               component={RenderSettingsScreen}/>
 
                         <Route exact path="/profile"
                                component={renderProfileScreen}/>
@@ -335,7 +323,7 @@ export const RepositoryApp = (props: IProps) => {
                                component={renderDeviceScreen}/>
 
                         <Route exact path='/'
-                               component={renderDefaultScreenByDevice}/>
+                               component={RenderDefaultScreenByDevice}/>
 
                     </Switch>
 
