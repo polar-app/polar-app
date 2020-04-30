@@ -9,10 +9,9 @@ import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {useDocRepoFolderStore} from "../doc_repo/DocRepoStore";
 import MUITreeView
     from "../../../../web/spectron0/material-ui/treeview/MUITreeView";
+import isEqual from "react-fast-compare";
 
-export const FolderSidebar2 = () => {
-
-    console.log("FIXME101 render");
+export const FolderSidebar2 = React.memo(() => {
 
     const folderStore = useDocRepoFolderStore();
 
@@ -138,4 +137,4 @@ export const FolderSidebar2 = () => {
         </Paper>
     );
 
-};
+}, isEqual);

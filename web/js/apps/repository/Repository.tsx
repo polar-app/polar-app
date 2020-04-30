@@ -35,6 +35,8 @@ export class Repository {
 
     public async start() {
 
+        console.log("Starting repository");
+
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
         const persistenceLayerManager = this.persistenceLayerManager;
