@@ -1,5 +1,22 @@
 import * as React from 'react';
 import {Device, Devices} from "polar-shared/src/util/Devices";
+import isEqual from 'react-fast-compare';
+
+export interface IProps {
+
+    readonly handheld?: React.ReactNode | null;
+
+    readonly phone?: React.ReactNode | null;
+
+    readonly tablet?: React.ReactNode | null;
+
+    readonly desktop?: React.ReactNode | null;
+
+}
+
+interface IChildrenProps {
+    readonly children: React.ReactElement | null;
+}
 
 export class DeviceRouter extends React.Component<IProps> {
 
@@ -8,6 +25,11 @@ export class DeviceRouter extends React.Component<IProps> {
     constructor(props: IProps, context: any) {
         super(props, context);
         this.device = Devices.get();
+    }
+
+    public shouldComponentUpdate(): boolean {
+        // the device will never change
+        return false;
     }
 
     public render() {
@@ -27,7 +49,7 @@ export class DeviceRouter extends React.Component<IProps> {
 
     }
 
-    public static Desktop = (props: any) => {
+    public static Desktop = React.memo((props: IChildrenProps) => {
 
         if (Devices.isDesktop()) {
             return props.children;
@@ -35,9 +57,9 @@ export class DeviceRouter extends React.Component<IProps> {
             return null;
         }
 
-    };
+    }, isEqual);
 
-    public static Handheld = (props: any) => {
+    public static Handheld = React.memo((props: IChildrenProps) => {
 
         if (Devices.isPhone() || Devices.isTablet()) {
             return props.children;
@@ -45,19 +67,6 @@ export class DeviceRouter extends React.Component<IProps> {
             return null;
         }
 
-    }
-
-
-}
-
-export interface IProps {
-
-    readonly handheld?: React.ReactElement | null;
-
-    readonly phone?: React.ReactElement | null;
-
-    readonly tablet?: React.ReactElement | null;
-
-    readonly desktop?: React.ReactElement | null;
+    }, isEqual);
 
 }
