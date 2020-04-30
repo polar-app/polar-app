@@ -1,7 +1,4 @@
-import {
-    createObservableStore,
-    ObservableStore
-} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {
     DocRepoTableColumns,
@@ -24,6 +21,10 @@ import {MUITagInputControls} from "../MUITagInputControls";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {
+    useRepoDocMetaManager,
+    useTagsProvider
+} from "../persistence_layer/PersistenceLayerApp";
 
 interface IDocRepoStore {
 
@@ -571,22 +572,15 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
                           setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
 
-    // constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
-    //             private readonly tagsProvider: () => ReadonlyArray<Tag>,
-    //             private readonly store: ObservableStore<IDocRepoStore>,
-    //             private readonly setStore: (store: IDocRepoStore) => void,
-    //             private readonly dialogs: DialogManager = useDialogManager()) {
-    //
-    // }
-
     const dialogs = useDialogManager();
+    const repoDocMetaManager = useRepoDocMetaManager();
+    const tagsProvider = useTagsProvider();
 
-    return createCallbacks(storeProvider, setStore, dialogs);
+    return createCallbacks(storeProvider, setStore, repoDocMetaManager, tagsProvider, dialogs);
 
 }
 
-
-const [DocRepoStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks]
+const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks]
     = createObservableStore<IDocRepoStore, IDocRepoCallbacks>(docRepoStore, callbacksFactory);
 
 interface IProps {
