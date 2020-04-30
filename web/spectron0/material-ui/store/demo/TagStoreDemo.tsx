@@ -17,7 +17,7 @@ function mutatorFactory() {
     return {};
 }
 
-const callbacksFactory: CallbacksFactory<ITagStore, ITagCallbacks, Mutator> = (storeProvider, setStore, mutator) => {
+const callbacksFactory: CallbacksFactory<ITagStore, Mutator, ITagCallbacks> = (storeProvider, setStore, mutator) => {
     return class {
         public static tagsProvider() {
             const store = storeProvider();
@@ -31,4 +31,4 @@ const tagStore: ITagStore = {
 }
 
 export const [TagStoreProvider, useTagStore, useTagStoreCallbacks]
-    = createObservableStore<ITagStore, ITagCallbacks, Mutator>(tagStore, mutatorFactory, callbacksFactory);
+    = createObservableStore<ITagStore, Mutator, ITagCallbacks>(tagStore, mutatorFactory, callbacksFactory);

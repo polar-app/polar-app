@@ -105,7 +105,7 @@ export interface StoreMutator {
 
 }
 
-export type ObservableStoreTuple<V, C, M extends StoreMutator> = [
+export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     ObservableStoreProviderComponent<V>,
     UseContextHook<V>,
     UseCallbacksHook<C>,
@@ -117,13 +117,13 @@ export type ObservableStoreTuple<V, C, M extends StoreMutator> = [
  * call hooks when the callbacks are created. This allows us to use other hooks
  * in our created callbacks.
  */
-export type CallbacksFactory<V, C, M> = (storeProvider: Provider<V>, setStore: SetStore<V>, mutator: M) => C;
+export type CallbacksFactory<V, M, C> = (storeProvider: Provider<V>, setStore: SetStore<V>, mutator: M) => C;
 
 export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetStore<V>) => M;
 
-export function createObservableStore<V, C, M>(initialValue: V,
+export function createObservableStore<V, M, C>(initialValue: V,
                                                mutatorFactory: MutatorFactory<V, M>,
-                                               callbacksFactory: CallbacksFactory<V, C, M>): ObservableStoreTuple<V, C, M> {
+                                               callbacksFactory: CallbacksFactory<V, M, C>): ObservableStoreTuple<V, M, C> {
 
     const [storeContext, store] = createObservableStoreContext(initialValue);
 

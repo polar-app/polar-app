@@ -601,7 +601,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 }
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, docRepoMutator]
-    = createObservableStore<IDocRepoStore, IDocRepoCallbacks, Mutator>(docRepoStore, mutatorFactory, callbacksFactory);
+    = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>(docRepoStore, mutatorFactory, callbacksFactory);
 
 interface IProps {
     readonly children: JSX.Element;
