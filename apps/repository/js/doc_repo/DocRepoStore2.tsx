@@ -198,18 +198,11 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 //
 // }
 
-const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
-                          setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
-
-    // constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
-    //             private readonly tagsProvider: () => ReadonlyArray<Tag>,
-    //             private readonly store: ObservableStore<IDocRepoStore>,
-    //             private readonly setStore: (store: IDocRepoStore) => void,
-    //             private readonly dialogs: DialogManager = useDialogManager()) {
-    //
-    // }
-
-    const dialogs = useDialogManager();
+function createCallbacks(storeProvider: Provider<IDocRepoStore>,
+                         setStore: (store: IDocRepoStore) => void,
+                         repoDocMetaManager: RepoDocMetaManager,
+                         tagsProvider: () => ReadonlyArray<Tag>,
+                         dialogs: DialogManager): IDocRepoCallbacks {
 
     function first() {
         const selected = selectedProvider();
@@ -430,7 +423,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
         configureDragImage();
 
-        const selected = this.selectedProvider();
+        const selected = selectedProvider();
         DraggingSelectedDocs.set(selected);
 
     }
@@ -443,51 +436,49 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     function onDropped(tag: Tag) {
         const dragged = DraggingSelectedDocs.get();
         if (dragged) {
-            this.doDropped(dragged, tag);
+            doDropped(dragged, tag);
         }
     }
 
     function onRename() {
 
-        const repoDocInfo = this.first()!;
+        const repoDocInfo = first()!;
 
-        this.dialogs.prompt({
+        dialogs.prompt({
             title: "Enter a new title for the document:",
             defaultValue: repoDocInfo.title,
             onCancel: NULL_FUNCTION,
-            onDone: (value) => this.doRename(repoDocInfo, value)
+            onDone: (value) => doRename(repoDocInfo, value)
         });
 
     };
 
     function onDeleted() {
 
-        const repoDocInfos = this.selectedProvider();
+        const repoDocInfos = selectedProvider();
 
         if (repoDocInfos.length === 0) {
             // no work to do
             return;
         }
 
-        this.dialogs.confirm({
+        dialogs.confirm({
             title: "Are you sure you want to delete these item(s)?",
             subtitle: "This is a permanent operation and can't be undone.  ",
             type: 'danger',
-            onAccept: () => this.doDeleted(repoDocInfos),
+            onAccept: () => doDeleted(repoDocInfos),
         });
 
     }
 
     function onTagged() {
 
-        const repoDocInfos = this.selectedProvider();
+        const repoDocInfos = selectedProvider();
 
         if (repoDocInfos.length === 0) {
             // no work to do
             return;
         }
-
-        const {repoDocMetaManager, tagsProvider} = this;
 
         const availableTags = tagsProvider();
         const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
@@ -522,13 +513,75 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
             // relatedOptionsCalculator: (tags) => relatedTagsManager.compute(tags.map(current => current.label)),
             onCancel: NULL_FUNCTION,
             onChange: NULL_FUNCTION,
-            onDone: tags => this.doTagged(repoDocInfos, tags)
+            onDone: tags => doTagged(repoDocInfos, tags)
         };
 
-        this.dialogs.autocomplete(autocompleteProps);
+        dialogs.autocomplete(autocompleteProps);
 
     }
 
+    // I don't know of a better way to return / organize the callbacks here
+    // and think this is a bit ugly but I can't think of a better way to handle
+    // this.
+
+    return {
+
+        selectedProvider,
+
+        selectRow,
+        setPage,
+        setRowsPerPage,
+        setSelected,
+        setFilters,
+        setSort,
+
+        doTagged,
+        doOpen,
+        doRename,
+        doShowFile,
+        doCopyOriginalURL,
+        doCopyFilePath,
+        doCopyDocumentID,
+        doDeleted,
+        doArchived,
+        doFlagged,
+
+        doDropped,
+        doTagSelected,
+
+        onTagged,
+        onOpen,
+        onRename,
+        onShowFile,
+        onCopyOriginalURL,
+        onCopyFilePath,
+        onCopyDocumentID,
+        onDeleted,
+        onArchived,
+        onFlagged,
+
+        onDragStart,
+        onDragEnd,
+        onDropped,
+        onTagSelected,
+
+    };
+}
+
+const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
+                          setStore: (store: IDocRepoStore) => void): IDocRepoCallbacks => {
+
+    // constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
+    //             private readonly tagsProvider: () => ReadonlyArray<Tag>,
+    //             private readonly store: ObservableStore<IDocRepoStore>,
+    //             private readonly setStore: (store: IDocRepoStore) => void,
+    //             private readonly dialogs: DialogManager = useDialogManager()) {
+    //
+    // }
+
+    const dialogs = useDialogManager();
+
+    return createCallbacks(storeProvider, setStore, dialogs);
 
 }
 
