@@ -56,12 +56,11 @@ const Router = () => (
 
     <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-        <Route path='#folders'
-               render={React.memo(() => (
-                   <LeftSidebar onClose={onClose}>
-                       <main.Folders/>
-                   </LeftSidebar>
-               ))}/>
+        <Route path='#folders'>
+            <LeftSidebar onClose={onClose}>
+                <main.Folders/>
+            </LeftSidebar>
+        </Route>
 
     </Switch>
 

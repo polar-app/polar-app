@@ -54,9 +54,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager, updatedDocInfoEventDispatcher} = props;
 
-    const renderDocRepoScreen = () => {
-
-        return (
+    const renderDocRepoScreen = () => (
             <Cached>
                 <AuthRequired authStatus={app.authStatus}>
                     <PersistenceLayerApp tagsType="documents"
@@ -71,7 +69,6 @@ export const RepositoryApp = (props: IProps) => {
                                                          persistenceLayerController={app.persistenceLayerController}
                                                          tagsProvider={docRepo.docTags}
                                                          docRepo={docRepo}
-                                                         // updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                                          repoDocMetaManager={repoDocMetaManager}
                                                          repoDocMetaLoader={repoDocMetaLoader}/>
                                                  </DocRepoStore2>
@@ -80,7 +77,6 @@ export const RepositoryApp = (props: IProps) => {
                 </AuthRequired>
             </Cached>
         );
-    };
 
     const renderSettingsScreen = () => (
         <Cached>
