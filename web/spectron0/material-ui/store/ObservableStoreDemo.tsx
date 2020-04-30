@@ -1,10 +1,7 @@
 import React, {useState} from 'react';
-import {
-    CallbacksFactory,
-    createObservableStore,
-    useObservableStore
-} from "./ObservableStore";
+import {CallbacksFactory, createObservableStore} from "./ObservableStore";
 import Button from "@material-ui/core/Button";
+import { TagStoreProvider } from './demo/TagStoreDemo';
 
 interface MyInvitation {
     readonly invited: boolean;
@@ -105,9 +102,11 @@ const IntermediateComponent = () => {
 export const ObservableStoreDemo = () => {
 
     return (
-        <MyInvitationStoreProvider value={{invited: true}}>
-            <IntermediateComponent/>
-        </MyInvitationStoreProvider>
+        <TagStoreProvider>
+            <MyInvitationStoreProvider value={{invited: true}}>
+                <IntermediateComponent/>
+            </MyInvitationStoreProvider>
+        </TagStoreProvider>
     );
 
 }

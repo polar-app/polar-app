@@ -1,7 +1,7 @@
 import {
     createObservableStore,
     ObservableStore
-} from "../../../../web/spectron0/material-ui/store2/ObservableStore";
+} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {
     DocRepoTableColumns,
@@ -10,19 +10,13 @@ import {
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
-import {
-    Callback,
-    Callback1,
-    Callback2,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TableSelection} from "./TableSelection";
 import {Mappers} from "polar-shared/src/util/Mapper";
-import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {DraggingSelectedDocs} from "./SelectedDocs";
@@ -94,32 +88,32 @@ interface IDocRepoCallbacks {
     readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
 
     // *** actual actions that manipulate the backend
-    readonly doTagged: Callback2<ReadonlyArray<RepoDocInfo>, ReadonlyArray<Tag>>;
-    readonly doOpen: Callback1<RepoDocInfo>;
+    readonly doTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
+    readonly doOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly doRename: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly doShowFile: Callback1<RepoDocInfo>;
-    readonly doCopyOriginalURL: Callback1<RepoDocInfo>;
-    readonly doCopyFilePath: Callback1<RepoDocInfo>;
-    readonly doCopyDocumentID: Callback1<RepoDocInfo>;
+    readonly doShowFile: (repoDocInfo: RepoDocInfo) => void;
+    readonly doCopyOriginalURL: (repoDocInfo: RepoDocInfo) => void;
+    readonly doCopyFilePath: (repoDocInfo: RepoDocInfo) => void;
+    readonly doCopyDocumentID: (repoDocInfo: RepoDocInfo) => void;
     readonly doDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
-    readonly doArchived: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
-    readonly doFlagged: Callback2<ReadonlyArray<RepoDocInfo>, boolean>;
+    readonly doArchived: (repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean) => void;
+    readonly doFlagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean) => void;
 
 
     readonly doDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
     readonly doTagSelected: (tags: ReadonlyArray<string>) => void;
 
     // ** callbacks that might need prompts, confirmation, etc.
-    readonly onTagged: Callback;
-    readonly onOpen: Callback;
-    readonly onRename: Callback;
-    readonly onShowFile: Callback;
-    readonly onCopyOriginalURL: Callback;
-    readonly onCopyFilePath: Callback;
-    readonly onCopyDocumentID: Callback;
-    readonly onDeleted: Callback;
-    readonly onArchived: Callback;
-    readonly onFlagged: Callback;
+    readonly onTagged: () => void;
+    readonly onOpen: () => void;
+    readonly onRename: () => void;
+    readonly onShowFile: () => void;
+    readonly onCopyOriginalURL: () => void;
+    readonly onCopyFilePath: () => void;
+    readonly onCopyDocumentID: () => void;
+    readonly onDeleted: () => void;
+    readonly onArchived: () => void;
+    readonly onFlagged: () => void;
 
     readonly onDragStart: (event: React.DragEvent) => void;
     readonly onDragEnd: () => void;
@@ -188,6 +182,7 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 class DocRepoCallbacks implements IDocRepoCallbacks {
 
     constructor(private readonly repoDocMetaManager: RepoDocMetaManager,
+                private readonly tagsProvider: () => ReadonlyArray<Tag>,
                 private readonly store: ObservableStore<IDocRepoStore>,
                 private readonly setStore: (store: IDocRepoStore) => void) {
 
@@ -299,6 +294,8 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     }
 
+
+
     // public setSidebarFilter(sidebarFilter: string) {
     //     const store = this.store.current;
     //
@@ -306,10 +303,93 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
     // }
     //
 
+    // **** action / mutators
+
+    public doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
+        // noop
+    }
+
+    public doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
+        // noop
+    }
+
+    public doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
+        // noop
+    }
+
+    public doCopyFilePath(repoDocInfo: RepoDocInfo): void {
+        // noop
+    }
+
+    public doCopyOriginalURL(repoDocInfo: RepoDocInfo): void {
+        // noop
+    }
+
+    public doDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
+        // noop
+    }
+
+    public doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
+        // noop
+    }
+
+    public doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
+        // noop
+    }
+
+    public doOpen(repoDocInfo: RepoDocInfo): void {
+        // noop
+    }
+
+    public doRename(repoDocInfo: RepoDocInfo, title: string): void {
+        // noop
+    }
+
+    public doShowFile(repoDocInfo: RepoDocInfo): void {
+        // noop
+    }
+
+    public doTagSelected(tags: ReadonlyArray<string>): void {
+        // noop
+    }
+
+    // **** event handlers
 
 
 
-    private onDragStart(event: React.DragEvent) {
+    public onArchived(): void {
+        // noop
+    }
+
+    public onCopyDocumentID(): void {
+        // noop
+    }
+
+    public onCopyFilePath(): void {
+        // noop
+    }
+
+    public onCopyOriginalURL(): void {
+        // noop
+    }
+
+    public onFlagged(): void {
+        // noop
+    }
+
+    public onOpen(): void {
+        // noop
+    }
+
+    public onShowFile(): void {
+        // noop
+    }
+
+    public onTagSelected(tags: ReadonlyArray<string>): void {
+        // noop
+    }
+
+    public onDragStart(event: React.DragEvent) {
 
         console.log("onDragStart");
 
@@ -332,19 +412,19 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     }
 
-    private onDragEnd() {
+    public onDragEnd() {
         console.log("onDragEnd");
         DraggingSelectedDocs.clear();
     };
 
-    private onDropped(tag: Tag) {
+    public onDropped(tag: Tag) {
         const dragged = DraggingSelectedDocs.get();
         if (dragged) {
             this.doDropped(dragged, tag);
         }
     }
 
-    private onRename() {
+    public onRename() {
 
         const repoDocInfo = this.first()!;
 
@@ -359,7 +439,7 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     };
 
-    private onDeleted() {
+    public onDeleted() {
 
         const dialogs = useDialogManager();
 
@@ -379,7 +459,7 @@ class DocRepoCallbacks implements IDocRepoCallbacks {
 
     }
 
-    private onTagged() {
+    public onTagged() {
 
         const dialogs = useDialogManager();
 
