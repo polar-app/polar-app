@@ -74,7 +74,6 @@ const ChildComponent = () => {
     const store = useMyInvitationStore();
     const callbacks = useMyInvitationStoreCallbacks();
 
-
     return (
         <ToggleMounted>
             <div>

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {CallbacksFactory, createObservableStore} from "../ObservableStore";
 import Button from "@material-ui/core/Button";
-import { TagStoreProvider } from './TagStoreDemo';
+import { TagStoreProvider, useTagStore } from './TagStoreDemo';
+import {useTagsContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 interface MyInvitation {
     readonly invited: boolean;
@@ -18,7 +19,8 @@ const invitationStore: MyInvitation = {
 const callbacksFactory: CallbacksFactory<MyInvitation, MyInvitationCallbacks> = (store, setStore) => {
     return {
         toggleInvited: () => {
-            console.log("FIXME: toggling invited");
+            const tagStore = useTagStore()
+            console.log("FIXME2: toggling invited: ", tagStore);
             const invited = ! store.current.invited;
             setStore({invited});
         }
