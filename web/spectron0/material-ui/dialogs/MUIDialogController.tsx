@@ -13,6 +13,8 @@ import {
     AutocompleteDialog,
     AutocompleteDialogProps
 } from "../../../js/ui/dialogs/AutocompleteDialog";
+import Snackbar from "@material-ui/core/Snackbar";
+import {SnackbarDialog, SnackbarDialogProps} from "../../../js/ui/dialogs/SnackbarDialog";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
@@ -34,11 +36,11 @@ interface DialogHostProps {
     readonly onDialogManager: Callback1<DialogManager>;
 }
 
-type DialogType = 'confirm' | 'prompt' | 'autocomplete';
+type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar';
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any>;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps;
     readonly iter: number;
 }
 
@@ -71,6 +73,14 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             setState({
                 type: 'autocomplete',
                 props: autocompleteProps,
+                iter: iter++
+            });
+        };
+
+        const snackbar = function(snackbarProps: SnackbarDialogProps) {
+            setState({
+                type: 'snackbar',
+                props: snackbarProps,
                 iter: iter++
             });
         };
@@ -116,6 +126,11 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             return (
                 <AutocompleteDialog key={state.iter}
                                     {...(state.props as AutocompleteDialogProps<any>)}/>
+            );
+
+        case "snackbar":
+            return (
+                <SnackbarDialog {...(state.props as SnackbarDialogProps)}/>
             );
 
     }
