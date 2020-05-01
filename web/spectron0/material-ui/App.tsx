@@ -71,6 +71,7 @@ import {HookStateDemo} from "./store2/HookState";
 import {ObservableStoreDemo} from "./store/demo/ObservableStoreDemo";
 import { ObservableStoreDemo2 } from './store/demo2/ObservableStoreDemo2';
 import {MUITreeViewDemo} from "./treeview2/MUITreeViewDemo";
+import {ComponentCacheDemo} from "./ComponentCacheDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -152,8 +153,8 @@ export const App = () => {
                 {/*<HookStateDemo/>*/}
                 {/*<ObservableStoreDemo/>*/}
                 {/*<ObservableStoreDemo2/>*/}
-                <MUITreeViewDemo/>
-
+                {/*<MUITreeViewDemo/>*/}
+                <ComponentCacheDemo/>
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}

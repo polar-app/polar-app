@@ -18,7 +18,7 @@ interface IFolderSidebarStore {
     /**
      * The tags used to build the store. Used for rebuilding.
      */
-    readonly tags: ReadonlyArray<Tag>;
+    readonly tags: ReadonlyArray<TagDescriptor>;
 
     readonly foldersRoot: TRoot<TagDescriptor> | undefined;
 
@@ -78,7 +78,7 @@ function reduce(store: IFolderSidebarStore,
 
     // always sort the tags so that if they change slightly we at least have a
     // deterministic layout.
-    tags = [...tags].sort((a, b) => a.count - b.count)
+    tags = [...tags].sort((a, b) => b.count - a.count)
 
     if (! isEqual(store.tags, tags)) {
         const [foldersRoot, tagsRoot] = rebuildTree();

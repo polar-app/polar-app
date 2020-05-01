@@ -11,8 +11,24 @@ import {MUITreeView}
     from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
 import isEqual from "react-fast-compare";
 import {FolderSidebarStore, useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
+import {MUITagList} from "./MUITagList";
 
 export const FolderSidebar2 = () => {
+
+    const store = useFolderSidebarStore();
+    const callbacks = useFolderSidebarCallbacks();
+
+    return (
+        <MUITagList tags={store.tags}/>
+    )
+
+}
+
+export const FolderSidebar4 = () => (
+    <div>disabled folder sidebar</div>
+);
+
+export const FolderSidebar3 = () => {
 
     const store = useFolderSidebarStore();
     const callbacks = useFolderSidebarCallbacks();
