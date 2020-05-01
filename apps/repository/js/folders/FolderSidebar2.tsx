@@ -7,22 +7,37 @@ import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToo
 import {MUISearchBox2} from '../../../../web/spectron0/material-ui/MUISearchBox2';
 import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 // import {useDocRepoFolderStore} from "../doc_repo/DocRepoStore2";
-import MUITreeView
-    from "../../../../web/spectron0/material-ui/treeview/MUITreeView";
+import {MUITreeView}
+    from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
 import isEqual from "react-fast-compare";
-import {FolderSidebarStore, useFolderSidebarCallbacks} from "../folder_sidebar/FolderSidebarStore";
+import {FolderSidebarStore, useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
 
 export const FolderSidebar2 = () => {
 
-    const folderSidebarCallbacks = useFolderSidebarCallbacks();
+    const store = useFolderSidebarStore();
+    const callbacks = useFolderSidebarCallbacks();
+
+    // FIXME this works BUT:
+    //
+    // - super slow
+    // - no callbacks to change the doc repo store for selected tags...
+    // - selected/expanded not persisted
+    // - needs padding
+    // - paper doesn't expand
+    // - no overflow
+    // - does the full UI re-render?
 
     return (
+        <Paper square>
+            {store.foldersRoot &&
+                <MUITreeView root={store.foldersRoot}/>}
 
+            {store.tagsRoot &&
+                <MUITreeView root={store.tagsRoot}/>}
 
-        <div>placeholder for sidebar ... rev2 </div>
+        </Paper>
     );
 };
-
 
 // export const FolderSidebar2 = React.memo(() => {
 //
