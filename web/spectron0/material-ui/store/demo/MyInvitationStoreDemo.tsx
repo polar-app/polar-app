@@ -56,12 +56,6 @@ const callbacksFactory: CallbacksFactory<IInvitation, Mutator, IInvitationCallba
     };
 };
 
-// const callbacksFactory2: CallbacksFactory<IInvitation, IInvitationCallbacks> = (storeProvider, setStore) => {
-//
-//     return new InvitationCallbacks(storeProvider, setStore);
-//
-// };
-
 export const [MyInvitationStoreProvider, useMyInvitationStore, useMyInvitationStoreCallbacks]
     = createObservableStore<IInvitation, Mutator, IInvitationCallbacks>({
         initialValue: invitationStore,
