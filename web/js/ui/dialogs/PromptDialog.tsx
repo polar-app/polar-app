@@ -51,6 +51,8 @@ export const PromptDialog = (props: PromptDialogProps) => {
 
     let value: string = props.defaultValue || "";
 
+    const autoFocus = props.autoFocus || true;
+
     const [state, setState] = React.useState<IState>({
         open: true
     });
@@ -125,7 +127,7 @@ export const PromptDialog = (props: PromptDialogProps) => {
                         </DialogContentText>}
 
                         <TextField className={classes.textField}
-                                   autoFocus={props.autoFocus}
+                                   autoFocus={autoFocus}
                                    onChange={event => handleInput(event.currentTarget.value)}
                                    margin="dense"
                                    id="name"
