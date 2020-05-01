@@ -1,7 +1,8 @@
 import {CallbacksFactory, createObservableStore} from "../ObservableStore";
-import {useBetaStore} from "./BetaStoreDemo";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {useAlphaStore} from "./AlphaStoreDemo";
 
-interface IAlphaStore {
+interface IBetaStore {
     readonly name: string;
 }
 
@@ -10,9 +11,10 @@ interface StoreNames {
     readonly beta: string;
 }
 
-interface IAlphaCallbacks {
+interface IBetaCallbacks {
     readonly setName: (name: string) => void;
     readonly names: () => StoreNames;
+
 }
 
 interface Mutator {
@@ -23,9 +25,9 @@ function mutatorFactory() {
     return {};
 }
 
-const callbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> = (storeProvider, setStore, mutator) => {
+const callbacksFactory: CallbacksFactory<IBetaStore, Mutator, IBetaCallbacks> = (storeProvider, setStore, mutator) => {
 
-    const betaStore = useBetaStore();
+    const alphaStore = useAlphaStore();
 
     function setName(name: string) {
 
@@ -38,8 +40,8 @@ const callbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> 
         const store = storeProvider();
 
         return {
-            alpha: store.name,
-            beta: betaStore.name
+            alpha: alphaStore.name,
+            beta: store.name
         }
     }
 
@@ -48,9 +50,9 @@ const callbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> 
     };
 };
 
-const store: IAlphaStore = {
-    name: "alpha-default"
+const store: IBetaStore = {
+    name: "beta-default"
 }
 
-export const [AlphaStoreProvider, useAlphaStore, useAlphaStoreCallbacks]
-    = createObservableStore<IAlphaStore, Mutator, IAlphaCallbacks>(store, mutatorFactory, callbacksFactory);
+export const [BetaStoreProvider, useBetaStore, useBetaStoreCallbacks]
+    = createObservableStore<IBetaStore, Mutator, IBetaCallbacks>(store, mutatorFactory, callbacksFactory);

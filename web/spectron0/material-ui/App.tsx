@@ -69,6 +69,7 @@ import {TagNodes} from "../../js/tags/TagNodes";
 import {MyContextStoreComponent} from "./store2/ContextStore";
 import {HookStateDemo} from "./store2/HookState";
 import {ObservableStoreDemo} from "./store/demo/ObservableStoreDemo";
+import { ObservableStoreDemo2 } from './store/demo2/ObservableStoreDemo2';
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -148,7 +149,9 @@ export const App = () => {
                 {/*<MyContextStoreComponent/>*/}
 
                 {/*<HookStateDemo/>*/}
-                <ObservableStoreDemo/>
+                {/*<ObservableStoreDemo/>*/}
+                <ObservableStoreDemo2/>
+
 
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}

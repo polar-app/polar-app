@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
 
+        "incremental": true,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,

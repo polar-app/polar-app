@@ -88,6 +88,9 @@ rules:
   # cause bugs in production.
   no-shadowed-variable: false
 
+  # used to prevent unused imports and other variables.
+  no-unused-variable: true
+
 jsRules:
   max-line-length:
     options: [140]
