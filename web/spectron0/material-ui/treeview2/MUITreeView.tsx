@@ -1,11 +1,15 @@
 import React from 'react';
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
-import {MUITreeItem} from './MUITreeItem';
 import {TagNode} from "../../../js/tags/TagNode";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import TreeItem from "@material-ui/lab/TreeItem";
-import Collapse from "@material-ui/core/Collapse";
+import {MUITreeItem} from "./MUITreeItem";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+
+// FIXME:
+// - the MUITreeItem needs to recurse itself... should not be done here.
+//   use our own toggleExpanded I think..
 
 const useStyles = makeStyles(
     createStyles({
@@ -25,6 +29,10 @@ interface IProps {
     readonly root: TagNode<TagDescriptor>;
     readonly toggleExpanded: (nodes: ReadonlyArray<string>) => void;
     readonly toggleSelected: (nodes: ReadonlyArray<string>) => void;
+
+    readonly collapseNode: (node: string) => void;
+    readonly expandNode: (node: string) => void;
+
     readonly selected: ReadonlyArray<string>;
     readonly expanded: ReadonlyArray<string>;
 }
@@ -32,45 +40,6 @@ interface IProps {
 export const MUITreeView = (props: IProps) => {
 
     const classes = useStyles();
-
-    //
-    // const onNodeSelectToggle = (node: NodeID, type: NodeSelectToggleType) => {
-    //
-    //     const isSelected = selected.includes(node);
-    //
-    //     const toggleCheckbox = () => {
-    //
-    //         if (isSelected) {
-    //             const newSelected = selected.filter(current => node !== current)
-    //             setSelected(newSelected);
-    //         } else {
-    //             const newSelected = [...selected, node];
-    //             setSelected(newSelected);
-    //         }
-    //
-    //     };
-    //
-    //     const toggleClick = () => {
-    //
-    //         if (isSelected && selected.length === 1) {
-    //             setSelected([]);
-    //         } else {
-    //             const newSelected = [node];
-    //             setSelected(newSelected);
-    //         }
-    //
-    //     };
-    //
-    //     switch (type) {
-    //         case "click":
-    //             toggleClick();
-    //             break;
-    //         case "checkbox":
-    //             toggleCheckbox();
-    //             break;
-    //     }
-    //
-    // };
 
     const itemProps = {
         onNodeExpand: props.toggleExpanded,
@@ -84,37 +53,19 @@ export const MUITreeView = (props: IProps) => {
 
     return (
         <TreeView
-            // className={classes.root}
             selected={[...props.selected]}
-            expanded={[...props.expanded]}
-            onNodeToggle={(event, nodes) => props.toggleExpanded(nodes)}
-            // expanded={["/#tags"]}
+            // expanded={[...props.expanded]}
+            // onNodeToggle={(event, nodes) => props.toggleExpanded(nodes)}
+            expanded={["/#tags"]}
             // onNodeSelect={}
             >
-            {/*<MUITreeItem {...itemProps}*/}
-            {/*             nodeId={root.id}*/}
-            {/*             label={`${root.name} (${root.id})`}*/}
-            {/*             info={root.count}>*/}
 
-            <TreeItem nodeId={root.id}
-                      label={`${root.name} (${root.id})`}
-                      // info={root.count}
-                      // TransitionComponent={<Collapse timeout={50}/>}
-                      TransitionProps={{timeout: 50}}
-                      >
-
-            {root.children.map((child) => {
-
-                    // console.log("FIXME adding child");
-                    return (
-
-                        <TreeItem key={child.id}
-                                  nodeId={child.id}
-                                  label={`${child.name} (${child.id})`}
-                                  />
-                    );
-                })}
-            </TreeItem>
+            <MUITreeItem nodeId={props.root.id}
+                         label={props.root.name}
+                         onNodeExpand={NULL_FUNCTION}
+                         onNodeCollapse={NULL_FUNCTION}
+                         onNodeSelectToggle={NULL_FUNCTION}
+                         childNodes={props.root.children}/>
 
         </TreeView>
     );

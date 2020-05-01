@@ -41,6 +41,10 @@ interface IFolderSidebarCallbacks {
     readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
     readonly toggleExpanded: (nodes: ReadonlyArray<NodeID>) => void;
 
+    readonly collapseNode: (node: NodeID) => void;
+    readonly expandNode: (node: NodeID) => void;
+
+
 }
 
 const folderStore: IFolderSidebarStore = {
@@ -72,13 +76,16 @@ function reduce(store: IFolderSidebarStore,
         return [foldersRoot, tagsRoot];
     }
 
+    // always sort the tags so that if they change slightly we at least have a
+    // deterministic layout.
+    tags = [...tags].sort((a, b) => a.count - b.count)
+
     if (! isEqual(store.tags, tags)) {
-        console.log("FIXME FolderSidebarStore: reduce");
         const [foldersRoot, tagsRoot] = rebuildTree();
 
         setStore({...store, tags, foldersRoot, tagsRoot});
     } else {
-        console.log("FIXME FolderSidebarStore: reduce SKIPPED");
+        // noop
     }
 
 }
@@ -91,6 +98,9 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     // used so that we listen to repoDocInfos and get them for every update
     // so that we can build a new store.
+    //
+    // TODO: This isn't an amazingly good way to listen for updates since we're
+    // just trying to get the tagsContext working..
     useRepoDocInfos();
 
     const tagsContext = useTagsContext();
@@ -125,8 +135,31 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         });
     }
 
+    function collapseNode(node: NodeID) {
+        const store = storeProvider();
+
+        const expanded = [...store.expanded]
+            .filter(current => current !== node);
+
+        setStore({...store, expanded});
+
+    }
+
+    function expandNode(node: NodeID) {
+        const store = storeProvider();
+
+        const expanded = [...store.expanded];
+
+        if (! expanded.includes(node)) {
+            expanded.push(node);
+        }
+
+        setStore({...store, expanded});
+
+    }
+
     return {
-        toggleSelected, toggleExpanded
+        toggleSelected, toggleExpanded, collapseNode, expandNode
     };
 
 }
