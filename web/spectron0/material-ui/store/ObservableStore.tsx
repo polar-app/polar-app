@@ -124,6 +124,9 @@ export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetSto
 // FIXME: refactor this to take opts and include an initialValue and value ...
 // initialValue can be the mock
 
+// FIXME: since mutator isn't always needed make it optional and just use defaults
+// otherwise
+
 export function createObservableStore<V, M, C>(initialValue: V,
                                                mutatorFactory: MutatorFactory<V, M>,
                                                callbacksFactory: CallbacksFactory<V, M, C>): ObservableStoreTuple<V, M, C> {

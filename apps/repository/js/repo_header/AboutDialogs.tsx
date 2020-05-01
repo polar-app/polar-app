@@ -7,6 +7,10 @@ export class AboutDialogs {
 
     public static create() {
 
+        // FIXME: need to figure out how to inject this... dialogManager
+        //  could/should have a dedicated Dialog method to display a raw
+        // dialog
+
         const body = <DeviceInfo/>;
 
         Dialogs.alert({
