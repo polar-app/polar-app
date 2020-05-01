@@ -13,13 +13,16 @@ import {
     AutocompleteDialog,
     AutocompleteDialogProps
 } from "../../../js/ui/dialogs/AutocompleteDialog";
-import Snackbar from "@material-ui/core/Snackbar";
-import {SnackbarDialog, SnackbarDialogProps} from "../../../js/ui/dialogs/SnackbarDialog";
+import {
+    SnackbarDialog,
+    SnackbarDialogProps
+} from "../../../js/ui/dialogs/SnackbarDialog";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
     prompt: (promptDialogProps: PromptDialogProps) => void;
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
+    snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
 }
 
 function nullDialog() {
@@ -29,7 +32,8 @@ function nullDialog() {
 export const NullDialogManager: DialogManager = {
     confirm: nullDialog,
     prompt: nullDialog,
-    autocomplete: nullDialog
+    autocomplete: nullDialog,
+    snackbar: nullDialog
 }
 
 interface DialogHostProps {
@@ -92,7 +96,8 @@ const DialogHost = React.memo((props: DialogHostProps) => {
         const dialogManager: DialogManager = {
             confirm,
             prompt,
-            autocomplete
+            autocomplete,
+            snackbar
         };
 
         // WARN: not sure if this is the appropriate way to do this but we need

@@ -270,6 +270,17 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         return selected.length >= 1 ? selected[0] : undefined
     }
 
+    async function batchMutator<T>(promises: ReadonlyArray<Promise<T>>) {
+
+        for (const promise of promises) {
+            // TODO update progress of this operation using a snackbar
+            await promise;
+        }
+
+        mutator.refresh();
+
+    }
+
     function selectRow(selectedIdx: number,
                        event: React.MouseEvent,
                        type: SelectRowType) {
@@ -363,66 +374,47 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
 
-        const doTag = async (repoDocInfo: RepoDocInfo, tags: ReadonlyArray<Tag>) => {
-            await repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
-        };
-
-        for (const repoDocInfo of repoDocInfos) {
-            const existingTags = Object.values(repoDocInfo.tags || {});
-            const effectiveTags = Tags.union(existingTags, tags || []);
-
-            doTag(repoDocInfo, effectiveTags)
-                .catch(err => log.error(err));
-
+        function toPromise(repoDocInfo: RepoDocInfo) {
+            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
         }
 
-        // FIXME theres's a race now
-
-        mutator.refresh();
+        batchMutator(repoDocInfos.map(toPromise))
+            .catch(err => log.error(err));
 
     }
 
     function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
 
-        const doMutation = (repoDocInfo: RepoDocInfo) => {
-            repoDocInfo.archived = !repoDocInfo.archived;
-            repoDocInfo.docInfo.archived = repoDocInfo.archived;
+        const toPromise = (repoDocInfo: RepoDocInfo) => {
+            repoDocInfo.archived = archived;
+            repoDocInfo.docInfo.archived = archived;
+            return this.props.writeDocInfo(repoDocInfo.docInfo)
         }
 
-        //
-        // // FIXME: implement some type of AsyncMapper that also broadcasts
-        // // progress or updates a snackbar with the progress of the operation
-        // // and does things concurrently
-        //
-        // mutated = true;
-        //
-        // // used so the user can tell something actually happened because if
-        // // the row just vanishes it's hard to tell that something actually
-        // // changed.
-        // if (repoDocInfo.archived) {
-        //     Toaster.success(`Document has been archived.`);
-        // }
+        async function doHandle() {
+            await batchMutator(repoDocInfos.map(toPromise));
+            dialogs.snackbar({message: "Documents successfully archived"});
+        }
 
-        // FIXME: refresh...
+        doHandle()
+            .catch(err => log.error(err));
 
-        //
-        // if (field === 'flagged') {
-        //
-        //     // Analytics.event({category: 'user', action: 'flagged-doc'});
-        //     repoDocInfo.flagged = !repoDocInfo.flagged;
-        //     repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
-        //
-        //     mutated = true;
-        // }
-        //
-        // if (mutated) {
-        //
-        //     await this.props.writeDocInfo(repoDocInfo.docInfo)
-        //         .catch(err => log.error("Failed to write DocInfo", err));
-        //
-        //     this.props.refresh();
-        // }
+    }
 
+    function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
+        const toPromise = (repoDocInfo: RepoDocInfo) => {
+            repoDocInfo.archived = flagged;
+            repoDocInfo.docInfo.archived = flagged;
+            return this.props.writeDocInfo(repoDocInfo.docInfo)
+        }
+
+        async function doHandle() {
+            await batchMutator(repoDocInfos.map(toPromise));
+            dialogs.snackbar({message: "Documents successfully flagged"});
+        }
+
+        doHandle()
+            .catch(err => log.error(err));
 
     }
 
@@ -446,11 +438,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doTagged(repoDocInfos, [tag]);
     }
 
-
-    function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
-        // noop
-    }
-
     function doOpen(repoDocInfo: RepoDocInfo): void {
 
         const fingerprint = repoDocInfo.fingerprint;
@@ -465,10 +452,13 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function doRename(repoDocInfo: RepoDocInfo, title: string): void {
 
-        repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)
-            .catch(err => log.error("Could not write doc title: ", err));
+        async function doHandle() {
+            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
+            mutator.refresh();
+        }
 
-        // FIXME: refresh??
+        doHandle()
+            .catch(err => log.error("Could not write doc title: ", err));
 
     }
 
@@ -479,9 +469,22 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     // **** event handlers
 
 
+    function onArchived() {
 
-    function onArchived(): void {
-        // noop
+        const repoDocInfos = selectedProvider();
+
+        if (repoDocInfos.length === 0) {
+            return;
+        }
+
+        dialogs.confirm({
+            title: "Are you sure you want to archive these document(s)?",
+            subtitle: "They won't be deleted but will be hidden by default.",
+            onCancel: NULL_FUNCTION,
+            type: 'warning',
+            onAccept: () => doArchived(repoDocInfos, true),
+        });
+
     }
 
     function onCopyDocumentID(): void {
