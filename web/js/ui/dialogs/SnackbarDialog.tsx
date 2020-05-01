@@ -10,7 +10,7 @@ export interface SnackbarDialogProps {
 }
 
 export const SnackbarDialog = (props: SnackbarDialogProps) => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
         if (reason === 'clickaway') {

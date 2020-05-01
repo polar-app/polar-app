@@ -22,11 +22,11 @@ import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/Autocomplet
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {
+    IPersistence,
     usePersistence,
     useRepoDocMetaLoader,
     useRepoDocMetaManager,
-    useTagsProvider,
-    IPersistence
+    useTagsProvider
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -34,11 +34,15 @@ import {
 } from "../../../../web/js/hooks/lifecycle";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import { Logger } from "polar-shared/src/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
 import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
-import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
+import {Directories} from "../../../../web/js/datastore/Directories";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {shell} from "electron";
+import {Optional} from "polar-shared/src/util/ts/Optional";
 
 const log = Logger.create();
 
@@ -265,9 +269,18 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
-    function first() {
+    function firstSelected() {
         const selected = selectedProvider();
         return selected.length >= 1 ? selected[0] : undefined
+    }
+
+    function copyText(text: string, message?: string) {
+        Clipboards.getInstance().writeText(text)
+
+        if (message) {
+            dialogs.snackbar({message});
+        }
+
     }
 
     async function batchMutator<T>(promises: ReadonlyArray<Promise<T>>) {
@@ -419,22 +432,42 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
-        // noop
+        const text = repoDocInfo.fingerprint;
+
+        copyText(text, "Document ID copied to clipboard");
     }
 
     function doCopyFilePath(repoDocInfo: RepoDocInfo): void {
-        // noop
+
+        function toText() {
+            const directories = new Directories();
+            const filename = repoDocInfo.filename!;
+            return FilePaths.join(directories.stashDir, filename);
+        }
+
+        const text = toText();
+        copyText(text, "File path copied to clipboard");
+
     }
 
     function doCopyOriginalURL(repoDocInfo: RepoDocInfo): void {
-        // noop
+
+        function toText() {
+            return repoDocInfo.url!;
+        }
+
+        const text = toText();
+        copyText(text, "URL copied to clipboard");
+
     }
 
     function doDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
         // noop
+        // FIXME
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
+        // this basically tags the document.
         doTagged(repoDocInfos, [tag]);
     }
 
@@ -463,17 +496,25 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doShowFile(repoDocInfo: RepoDocInfo): void {
-        // noop
+        const filename = repoDocInfo.filename!;
+        const directories = new Directories();
+        const path = FilePaths.join(directories.stashDir, filename);
+        shell.showItemInFolder(path);
     }
 
     // **** event handlers
-
 
     function onArchived() {
 
         const repoDocInfos = selectedProvider();
 
         if (repoDocInfos.length === 0) {
+            return;
+        }
+
+        if (repoDocInfos.length === 1) {
+            const repoDocInfo = repoDocInfos[0];
+            doArchived(repoDocInfos, ! repoDocInfo.archived);
             return;
         }
 
@@ -488,31 +529,56 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function onCopyDocumentID(): void {
-        // noop
+        Optional.of(firstSelected()).map(doCopyDocumentID);
     }
 
     function onCopyFilePath(): void {
-        // noop
+        Optional.of(firstSelected()).map(doCopyFilePath);
     }
 
     function onCopyOriginalURL(): void {
-        // noop
+        Optional.of(firstSelected()).map(doCopyOriginalURL);
     }
 
     function onFlagged(): void {
-        // noop
+
+        const repoDocInfos = selectedProvider();
+
+        if (repoDocInfos.length === 0) {
+            return;
+        }
+
+        if (repoDocInfos.length === 1) {
+            const repoDocInfo = repoDocInfos[0];
+            doFlagged(repoDocInfos, ! repoDocInfo.flagged);
+            return;
+        }
+
+        dialogs.confirm({
+            title: "Are you sure you want to flag these document(s)?",
+            subtitle: "Flagging will allow these documents to stand out and prioritized among your other documents.",
+            onCancel: NULL_FUNCTION,
+            type: 'warning',
+            onAccept: () => doFlagged(repoDocInfos, true),
+        });
+
     }
 
     function onOpen(): void {
-        // noop
+        doOpen(firstSelected()!);
     }
 
     function onShowFile(): void {
-        // noop
+        doShowFile(firstSelected()!);
     }
 
-    function onTagSelected(tags: ReadonlyArray<string>): void {
-        // noop
+    function onTagSelected(filteredTags: ReadonlyArray<string>): void {
+
+        const store = storeProvider();
+        const tags = Tags.lookup(tagsProvider(), filteredTags);
+
+        setFilters({...store.filters, tags});
+
     }
 
     function onDragStart(event: React.DragEvent) {
@@ -542,7 +608,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function onDragEnd() {
         console.log("onDragEnd");
         DraggingSelectedDocs.clear();
-    };
+    }
 
     function onDropped(tag: Tag) {
         const dragged = DraggingSelectedDocs.get();
@@ -553,7 +619,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onRename() {
 
-        const repoDocInfo = first()!;
+        const repoDocInfo = firstSelected()!;
 
         dialogs.prompt({
             title: "Enter a new title for the document:",
@@ -562,7 +628,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             onDone: (value) => doRename(repoDocInfo, value)
         });
 
-    };
+    }
 
     function onDeleted() {
 

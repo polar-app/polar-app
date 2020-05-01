@@ -4,7 +4,7 @@ import isEqual from 'react-fast-compare';
 
 const MAX_INTEGER = 1073741823;
 
-const ENABLED = true;
+const ENABLED = false;
 
 /**
  * Like React createContext but operates like React.useMemo or React.memo and

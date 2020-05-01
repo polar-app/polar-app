@@ -134,6 +134,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             );
 
         case "snackbar":
+
             return (
                 <SnackbarDialog {...(state.props as SnackbarDialogProps)}/>
             );
