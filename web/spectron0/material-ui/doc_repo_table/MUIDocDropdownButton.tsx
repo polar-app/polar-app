@@ -15,6 +15,7 @@ interface IState {
     readonly anchorEl: HTMLElement | null;
 }
 
+// FIXME: migrate this to a cached functional component...
 export class MUIDocDropdownButton extends React.Component<IProps, IState> {
 
     constructor(props: Readonly<IProps>) {

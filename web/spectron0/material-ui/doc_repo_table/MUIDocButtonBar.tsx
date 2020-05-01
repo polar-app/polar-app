@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 import {
@@ -21,23 +21,42 @@ interface IProps {
 
 }
 
+type SelectRowCallback = (event: React.MouseEvent) => void;
+
+function useSelectRowCallback(viewIndex: number,
+                              delegate: () => void) {
+
+    const callbacks = useDocRepoCallbacks();
+
+    return useCallback<SelectRowCallback>((event) => {
+
+        callbacks.selectRow(viewIndex, event, 'click');
+        delegate();
+
+    }, [viewIndex, delegate]);
+
+}
+
 export const MUIDocButtonBar = React.memo((props: IProps) => {
 
     const callbacks = useDocRepoCallbacks();
 
-    // FIXME: new useDocRepoSelected()
     const {viewIndex} = props;
+
+    const onTagged = useSelectRowCallback(viewIndex, callbacks.onTagged);
+    const onArchived = useSelectRowCallback(viewIndex, callbacks.onArchived);
+    const onFlagged = useSelectRowCallback(viewIndex, callbacks.onFlagged);
 
     return (
 
-        <div className={props.className || ''}>
+        <div className={props.className || ''} onClick={() => callbacks.setSelected([viewIndex])}>
 
-            <MUIDocTagButton onClick={callbacks.onTagged}/>
+            <MUIDocTagButton onClick={onTagged}/>
 
-            <MUIDocArchiveButton onClick={callbacks.onArchived}
+            <MUIDocArchiveButton onClick={onArchived}
                                  active={props.archived}/>
 
-            <MUIDocFlagButton onClick={callbacks.onFlagged}
+            <MUIDocFlagButton onClick={onFlagged}
                               active={props.flagged}/>
 
             <Tooltip title="More options...">

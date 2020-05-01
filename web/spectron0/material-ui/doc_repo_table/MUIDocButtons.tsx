@@ -4,7 +4,7 @@ import ArchiveIcon from "@material-ui/icons/Archive";
 import FlagIcon from "@material-ui/icons/Flag";
 import React from "react";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {Callback} from "polar-shared/src/util/Functions";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import grey from "@material-ui/core/colors/grey";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -16,7 +16,7 @@ const activeColor = (active: boolean) => {
 };
 
 interface ButtonProps {
-    readonly onClick: Callback;
+    readonly onClick: Callback1<React.MouseEvent>;
     readonly size?: 'small' | 'medium' ;
 }
 
@@ -32,7 +32,7 @@ interface StandardButtonProps extends ButtonProps {
 const StandardButton = (props: StandardButtonProps) => (
     <Tooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
-                    onClick={() => props.onClick()}
+                    onClick={props.onClick}
                     aria-label={props.tooltip.toLowerCase()}
                     style={{color: grey[500]}}>
             {props.children}
@@ -48,7 +48,7 @@ interface StandardToggleButtonProps extends ToggleButtonProps {
 const StandardToggleButton = React.memo((props: StandardToggleButtonProps) => (
     <Tooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
-                    onClick={() => props.onClick()}
+                    onClick={props.onClick}
                     aria-label={props.tooltip.toLowerCase()}
                     style={{color: activeColor(props.active || false)}}>
             {props.children}
