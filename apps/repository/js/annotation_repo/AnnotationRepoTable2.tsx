@@ -175,6 +175,7 @@ export class AnnotationRepoTable2 extends ExtendedReactTable<IProps, IState> {
         return (
 
             <Paper square id="doc-repo-table"
+                   elevation={0}
                    style={{
                        display: 'flex',
                        flexDirection: 'column',

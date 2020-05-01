@@ -80,6 +80,7 @@ export const FolderSidebar = (props: FoldersSidebarProps) => {
     return (
 
         <Paper square
+               elevation={0}
                style={{
                    display: 'flex' ,
                    flexDirection: 'column',
@@ -87,6 +88,7 @@ export const FolderSidebar = (props: FoldersSidebarProps) => {
                 }}>
 
             <Paper square
+                   elevation={0}
                    className=""
                    style={{
                        height: '100%',

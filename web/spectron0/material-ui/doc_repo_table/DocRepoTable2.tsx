@@ -69,6 +69,7 @@ export const DocRepoTable2 = React.memo(() => {
                 height: '100%'
              }}>
             <Paper square
+                   elevation={0}
                    style={{
                        width: '100%',
                        height: '100%',

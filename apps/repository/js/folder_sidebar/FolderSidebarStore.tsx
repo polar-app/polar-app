@@ -5,16 +5,11 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
-import {
-    useTagsContext,
-    useTagsProvider
-} from "../persistence_layer/PersistenceLayerApp";
+import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 
-interface MarkMap {
-    [id: string]: boolean
-}
+export type NodeID = string;
 
 interface IFolderSidebarStore {
 
@@ -32,22 +27,19 @@ interface IFolderSidebarStore {
     /**
      * The state of selected nodes.
      */
-    readonly selected: Readonly<MarkMap>;
+    readonly selected: ReadonlyArray<NodeID>;
 
     /**
      * The state of expanded nodes.
      */
-    readonly expanded: Readonly<MarkMap>;
+    readonly expanded: ReadonlyArray<NodeID>;
 
 }
 
 interface IFolderSidebarCallbacks {
 
-    readonly isSelected: (id: string) => boolean;
-    readonly isExpanded: (id: string) => boolean;
-
-    readonly toggleSelected: (id: string) => void;
-    readonly toggleExpanded: (id: string) => void;
+    readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
+    readonly toggleExpanded: (nodes: ReadonlyArray<NodeID>) => void;
 
 }
 
@@ -56,8 +48,8 @@ const folderStore: IFolderSidebarStore = {
     tags: [],
     foldersRoot: undefined,
     tagsRoot: undefined,
-    selected: {},
-    expanded: {}
+    selected: [],
+    expanded: []
 }
 
 interface Mutator {
@@ -106,21 +98,12 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     // FIXME which tags type do we want? userTags or docTags???
     reduce(storeProvider(), setStore, tagsContext?.tagsProvider() || []);
 
-    function isSelected(id: string): boolean {
-        const store = storeProvider();
-        return store.selected[id] === true;
-    }
+    function toggleSelected(nodes: ReadonlyArray<NodeID>): void {
 
-    function isExpanded(id: string): boolean {
-        const store = storeProvider();
-        return store.expanded[id] === true;
-    }
-
-    function toggleSelected(id: string): void {
+        console.log("FiXME toggleSelected: ", nodes);
         const store = storeProvider();
 
-        const selected = {...store.selected};
-        selected[id] = ! selected[id]
+        const selected = nodes;
 
         setStore({
             ...store,
@@ -128,21 +111,22 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         });
     }
 
-    function toggleExpanded(id: string): void {
+    function toggleExpanded(nodes: ReadonlyArray<NodeID>): void {
+
+        console.log("FiXME toggleExpanded: ", nodes);
 
         const store = storeProvider();
 
-        const expanded = {...store.expanded};
-        expanded[id] = ! expanded[id]
+        // const expanded = doToggle(store.expanded, nodes);
 
         setStore({
             ...store,
-            expanded
+            expanded: nodes
         });
     }
 
     return {
-        isSelected, isExpanded, toggleSelected, toggleExpanded
+        toggleSelected, toggleExpanded
     };
 
 }

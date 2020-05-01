@@ -70,6 +70,7 @@ import {MyContextStoreComponent} from "./store2/ContextStore";
 import {HookStateDemo} from "./store2/HookState";
 import {ObservableStoreDemo} from "./store/demo/ObservableStoreDemo";
 import { ObservableStoreDemo2 } from './store/demo2/ObservableStoreDemo2';
+import {MUITreeViewTest} from "./treeview2/MUITreeViewTest";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -150,8 +151,8 @@ export const App = () => {
 
                 {/*<HookStateDemo/>*/}
                 {/*<ObservableStoreDemo/>*/}
-                <ObservableStoreDemo2/>
-
+                {/*<ObservableStoreDemo2/>*/}
+                <MUITreeViewTest/>
 
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}

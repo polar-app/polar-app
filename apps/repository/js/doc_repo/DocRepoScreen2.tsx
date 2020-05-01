@@ -81,7 +81,9 @@ namespace devices {
                 component: <FolderSidebar2/>,
                 width: 300,
                 style: {
-                    overflow: 'none'
+                    overflow: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column'
                 }
             },
             {

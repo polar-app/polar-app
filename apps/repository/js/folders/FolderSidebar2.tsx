@@ -19,21 +19,34 @@ export const FolderSidebar2 = () => {
 
     // FIXME this works BUT:
     //
-    // - super slow
+    // - super slow... this is our tree item though... not theirs...
     // - no callbacks to change the doc repo store for selected tags...
     // - selected/expanded not persisted
     // - needs padding
     // - paper doesn't expand
     // - no overflow
     // - does the full UI re-render?
+    // - nested folders aren't being expanded...
+
+    // const expanded = store.expanded
 
     return (
-        <Paper square>
+        <Paper square elevation={0} style={{flexGrow: 1}}>
             {store.foldersRoot &&
-                <MUITreeView root={store.foldersRoot}/>}
+                <MUITreeView root={store.foldersRoot}
+                             toggleExpanded={callbacks.toggleExpanded}
+                             toggleSelected={callbacks.toggleSelected}
+                             selected={Object.keys(store.selected)}
+                             expanded={Object.keys(store.expanded)}
+                             />}
 
             {store.tagsRoot &&
-                <MUITreeView root={store.tagsRoot}/>}
+                <MUITreeView root={store.tagsRoot}
+                             toggleExpanded={callbacks.toggleExpanded}
+                             toggleSelected={callbacks.toggleSelected}
+                             selected={Object.keys(store.selected)}
+                             expanded={Object.keys(store.expanded)}
+                             />}
 
         </Paper>
     );

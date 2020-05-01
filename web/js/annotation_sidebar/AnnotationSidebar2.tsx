@@ -123,6 +123,7 @@ const Annotations = (props: IRenderProps) => {
 
     return (
         <Paper square
+               elevation={0}
                className="pb-1 pl-1 pr-1"
                style={{
                    flexGrow: 1,

@@ -162,6 +162,7 @@ namespace main {
                 id: 'dock-panel-left',
                 type: 'fixed',
                 component: <main.Folders {...props}/>,
+                style: {overflow: 'auto'},
                 width: 300
             },
             {
@@ -172,6 +173,7 @@ namespace main {
                 },
                 component:
                     <Paper square
+                           elevation={0}
                            style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationListView data={props.data}
                                             updateFilters={filters => props.filtersHandler.update(filters)}
@@ -187,7 +189,9 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <Paper square style={{flexGrow: 1, display: 'flex'}}>
+                    <Paper square
+                           elevation={0}
+                           style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
                                                repoDocMetaUpdater={props.repoDocMetaLoader}
                                                tagsProvider={props.tagsProvider}

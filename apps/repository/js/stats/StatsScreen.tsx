@@ -182,6 +182,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                     <FixedNavBody style={{display: 'flex'}}>
 
                         <Paper square
+                               elevation={0}
                                style={{
                                    flexGrow: 1,
                                    overflow: 'auto'
