@@ -133,6 +133,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function collapseNode(node: NodeID) {
 
+        console.log("FIXME collapseNode: ", node);
+
         const store = storeProvider();
 
         const expanded = [...store.expanded]
@@ -143,6 +145,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     }
 
     function expandNode(node: NodeID) {
+
+        console.log("FIXME expandNode: ", node);
 
         const store = storeProvider();
 

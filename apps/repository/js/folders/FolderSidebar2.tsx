@@ -30,6 +30,7 @@ export const FolderSidebar2 = () => {
 
     // const expanded = store.expanded
 
+
     return (
         <Paper square
                elevation={0}
@@ -43,8 +44,8 @@ export const FolderSidebar2 = () => {
                              toggleSelected={callbacks.toggleSelected}
                              collapseNode={callbacks.collapseNode}
                              expandNode={callbacks.expandNode}
-                             selected={Object.keys(store.selected)}
-                             expanded={Object.keys(store.expanded)}
+                             selected={store.selected}
+                             expanded={store.expanded}
                              />}
 
             {store.tagsRoot &&
