@@ -6,6 +6,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import TreeItem from "@material-ui/lab/TreeItem";
 import {MUITreeItem} from "./MUITreeItem";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import isEqual from "react-fast-compare";
 
 // FIXME:
 // - the MUITreeItem needs to recurse itself... should not be done here.
@@ -37,7 +38,7 @@ interface IProps {
     readonly expanded: ReadonlyArray<string>;
 }
 
-export const MUITreeView = (props: IProps) => {
+export const MUITreeView = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -48,8 +49,6 @@ export const MUITreeView = (props: IProps) => {
     };
 
     const {root} = props;
-
-    console.log("props expanded is: ", props.expanded);
 
     return (
         <TreeView
@@ -69,7 +68,7 @@ export const MUITreeView = (props: IProps) => {
 
         </TreeView>
     );
-}
+}, isEqual);
 
 
 // {/*<MUITreeItem {...itemProps}*/}

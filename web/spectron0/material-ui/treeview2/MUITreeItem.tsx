@@ -6,6 +6,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TNode} from "../../../js/ui/tree/TreeView";
 import {MinusSquare} from "./MUITreeIcons";
 import {PlusSquare} from "../treeview/MUITreeIcons";
+import isEqual from "react-fast-compare";
 
 
 // export const MUITreeItem = React.memo((props: IProps) => (
@@ -101,23 +102,22 @@ interface CollapseIconProps {
     readonly onNodeCollapse: (node: string) => void;
 }
 
-export const CollapseIcon = (props: CollapseIconProps) => {
+export const CollapseIcon = React.memo((props: CollapseIconProps) => {
     return (
         <MinusSquare onClick={() => props.onNodeCollapse(props.nodeId)}/>
     );
-};
+}, isEqual);
 
 interface ExpandIconProps {
     readonly nodeId: string;
     readonly onNodeExpand: (node: string) => void;
 }
 
-export const ExpandIcon = (props: ExpandIconProps) => {
+export const ExpandIcon = React.memo((props: ExpandIconProps) => {
     return (
         <PlusSquare onClick={() => props.onNodeExpand(props.nodeId)}/>
     );
-};
-
+}, isEqual);
 
 interface IProps {
 
@@ -132,7 +132,7 @@ interface IProps {
 
 }
 
-export const MUITreeItem = (props: IProps) => {
+export const MUITreeItem = React.memo((props: IProps) => {
     return (
         <TreeItem nodeId={props.nodeId}
                   label={props.label}
@@ -155,4 +155,4 @@ export const MUITreeItem = (props: IProps) => {
             )}
         </TreeItem>
     )
-}
+}, isEqual);

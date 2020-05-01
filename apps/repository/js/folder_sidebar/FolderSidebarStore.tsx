@@ -94,7 +94,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                           setStore: (store: IFolderSidebarStore) => void,
                           mutator: Mutator): IFolderSidebarCallbacks {
 
-    console.log("FIXME callbacksFactory...");
 
     // used so that we listen to repoDocInfos and get them for every update
     // so that we can build a new store.
@@ -110,7 +109,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function toggleSelected(nodes: ReadonlyArray<NodeID>): void {
 
-        console.log("FiXME toggleSelected: ", nodes);
         const store = storeProvider();
 
         const selected = nodes;
@@ -123,8 +121,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function toggleExpanded(nodes: ReadonlyArray<NodeID>): void {
 
-        console.log("FiXME toggleExpanded: ", nodes);
-
         const store = storeProvider();
 
         // const expanded = doToggle(store.expanded, nodes);
@@ -136,22 +132,17 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     }
 
     function collapseNode(node: NodeID) {
-        console.log("FIXME: collapseNode: " + node);
 
         const store = storeProvider();
 
         const expanded = [...store.expanded]
             .filter(current => current !== node);
 
-        console.log("FIXME: expanded is now: " , expanded);
-
         setStore({...store, expanded});
 
     }
 
     function expandNode(node: NodeID) {
-
-        console.log("FIXME: expandNode: " + node);
 
         const store = storeProvider();
 
@@ -160,8 +151,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         if (! expanded.includes(node)) {
             expanded.push(node);
         }
-
-        console.log("FIXME: expanded is now: " , expanded);
 
         setStore({...store, expanded});
 
