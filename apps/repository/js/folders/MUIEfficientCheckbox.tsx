@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.secondary.main
         },
         inactive: {
-
+            color: theme.palette.text.secondary,
+            // color: theme.palette.secondary.main
         }
     }),
 );

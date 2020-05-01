@@ -10,11 +10,31 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        checkbox: {
+            color: theme.palette.text.secondary,
+        },
         label: {
-            flexGrow: 1
+            paddingLeft: '5px',
+            flexGrow: 1,
         },
         info: {
-            color: theme.palette.text.secondary
+            color: theme.palette.text.hint,
+        },
+        row: {
+            // color: theme.palette.text.primary,
+            userSelect: 'none',
+            fontSize: '1.1em',
+            display: "flex",
+            alignItems: "center",
+            padding: '5px',
+            paddingTop: '7px',
+            paddingBottom: '7px',
+            cursor: 'pointer',
+
+            // background: "#f1f1f1",
+            '&:hover': {
+                background: theme.palette.action.hover
+            },
         }
     }),
 );
@@ -32,6 +52,8 @@ export const MUITagListItem = React.memo((props: IProps) => {
 
     // FIXME: the checkbox is painfully slow... a basic <input type=checkbox is
     // way faster... maybe try a fontawesome icon
+
+    // FIXME: change row background color when active
 
     return (
         // <ListItem role={undefined}
@@ -55,11 +77,7 @@ export const MUITagListItem = React.memo((props: IProps) => {
         //     {/*</ListItemSecondaryAction>*/}
         // </ListItem>
 
-        <div style={{
-                 display: "flex",
-                 alignItems: "center",
-                 padding: '5px'
-             }}>
+        <div className={classes.row}>
 
             {/*<Checkbox size="small"/>*/}
 
@@ -70,7 +88,8 @@ export const MUITagListItem = React.memo((props: IProps) => {
             {/*    margin: '2px'*/}
             {/*}}/>*/}
 
-            <MUIEfficientCheckbox checked={true}/>
+            <MUIEfficientCheckbox checked={props.selected}
+                                  className={classes.checkbox}/>
 
             <div className={classes.label}>
                 {props.label}

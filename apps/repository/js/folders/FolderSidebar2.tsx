@@ -12,6 +12,7 @@ import {MUITreeView}
 import isEqual from "react-fast-compare";
 import {FolderSidebarStore, useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
 import {MUITagList} from "./MUITagList";
+import {MUITagTable} from "./MUITagTable";
 
 export const FolderSidebar2 = () => {
 
@@ -19,7 +20,14 @@ export const FolderSidebar2 = () => {
     const callbacks = useFolderSidebarCallbacks();
 
     return (
-        <MUITagList tags={store.tags}/>
+        <Paper square
+               elevation={0}
+               style={{
+                   flexGrow: 1,
+                   flexDirection: "column",
+               }}>
+            <MUITagList tags={store.tags} selected={store.selected}/>
+        </Paper>
     )
 
 }
@@ -28,7 +36,7 @@ export const FolderSidebar4 = () => (
     <div>disabled folder sidebar</div>
 );
 
-export const FolderSidebar3 = () => {
+export const FolderSidebar5 = () => {
 
     const store = useFolderSidebarStore();
     const callbacks = useFolderSidebarCallbacks();

@@ -7,7 +7,7 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {SvgIcon, SvgIconProps} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 import isEqual from "react-fast-compare";
-import {faSquare} from "@fortawesome/free-solid-svg-icons/faSquare";
+import {faSquare} from "@fortawesome/free-regular-svg-icons";
 
 library.add(faCheckSquare, faCoffee, faTag, faCheckSquare, faSquare);
 
@@ -35,14 +35,14 @@ export const IconsDemo = () => (
 
 export const FACheckSquare = React.memo((props: SvgIconProps) => (
     <SvgIcon {...props}>
-        <FontAwesomeIcon icon="check-square" />
+        <FontAwesomeIcon icon={faCheckSquare} />
     </SvgIcon>
 
 ), isEqual);
 
 export const FASquare = React.memo((props: SvgIconProps) => (
     <SvgIcon {...props}>
-        <FontAwesomeIcon icon="square" />
+        <FontAwesomeIcon icon={faSquare} />
     </SvgIcon>
 
 ), isEqual);

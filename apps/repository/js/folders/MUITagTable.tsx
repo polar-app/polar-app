@@ -2,6 +2,10 @@ import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {MUITagListItem} from "./MUITagListItem";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
+import {MUITagRow} from "./MUITagRow";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableBody from "@material-ui/core/TableBody";
+import Table from "@material-ui/core/Table";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,21 +45,21 @@ const useStyles = makeStyles((theme: Theme) =>
 //         </List>
 
 interface IProps {
-    readonly tags: ReadonlyArray<TagDescriptor>;
-    readonly selected: ReadonlyArray<string>;
+    readonly tags: ReadonlyArray<TagDescriptor>
 }
 
-export const MUITagList = (props: IProps) => {
-
-    const {selected} = props;
-
+export const MUITagTable = (props: IProps) => {
     return (
-        <>
-            {props.tags.map(tag => <MUITagListItem key={tag.id}
-                                                  selected={selected.includes(tag.id)}
-                                                  nodeId={tag.id}
-                                                  label={tag.label}
-                                                  info={tag.count}/>)}
-        </>
+        <TableContainer>
+            <Table size="small">
+                <TableBody>
+                    {props.tags.map(tag => <MUITagRow key={tag.id}
+                                                      selected={false}
+                                                      nodeId={tag.id}
+                                                      label={tag.label}
+                                                      info={tag.count}/>)}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
