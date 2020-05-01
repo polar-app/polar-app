@@ -40,6 +40,7 @@ import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
 import {MUIDialogController} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {FolderSidebarStore} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 
 interface IProps {
     readonly app: App;
@@ -64,13 +65,15 @@ export const RepositoryApp = (props: IProps) => {
                                          render={(docRepo) =>
                                              <MUIDialogController>
                                                  <DocRepoStore2>
-                                                     <DocRepoScreen2
-                                                         persistenceLayerProvider={app.persistenceLayerProvider}
-                                                         persistenceLayerController={app.persistenceLayerController}
-                                                         tagsProvider={docRepo.docTags}
-                                                         docRepo={docRepo}
-                                                         repoDocMetaManager={repoDocMetaManager}
-                                                         repoDocMetaLoader={repoDocMetaLoader}/>
+                                                     <FolderSidebarStore>
+                                                         <DocRepoScreen2
+                                                             persistenceLayerProvider={app.persistenceLayerProvider}
+                                                             persistenceLayerController={app.persistenceLayerController}
+                                                             tagsProvider={docRepo.docTags}
+                                                             docRepo={docRepo}
+                                                             repoDocMetaManager={repoDocMetaManager}
+                                                             repoDocMetaLoader={repoDocMetaLoader}/>
+                                                     </FolderSidebarStore>
                                                  </DocRepoStore2>
                                              </MUIDialogController>
                                          }/>

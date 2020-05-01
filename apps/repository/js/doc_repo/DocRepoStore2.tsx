@@ -186,14 +186,14 @@ const docRepoStore: IDocRepoStore = {
 /**
  * Apply a reducer a temporary state, to compute the effective state.
  */
-function reduce(tmpState: IDocRepoStore): IDocRepoStore {
+function reduce(tmpStore: IDocRepoStore): IDocRepoStore {
 
     // compute the view, then the viewPage
 
     // FIXME: we only have to resort and recompute the view when the filters
     // or the sort order changes.
 
-    const {data, page, rowsPerPage, order, orderBy, filters} = tmpState;
+    const {data, page, rowsPerPage, order, orderBy, filters} = tmpStore;
 
     // Now that we have new data, we have to also apply the filters and sort
     // order to the results, then update the view + viewPage
@@ -205,9 +205,9 @@ function reduce(tmpState: IDocRepoStore): IDocRepoStore {
 
     const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-    const newState = {...tmpState, view, viewPage};
+    const newStore = {...tmpStore, view, viewPage};
 
-    return newState;
+    return newStore;
 
 }
 

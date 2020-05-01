@@ -10,8 +10,18 @@ import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import MUITreeView
     from "../../../../web/spectron0/material-ui/treeview/MUITreeView";
 import isEqual from "react-fast-compare";
+import {FolderSidebarStore, useFolderSidebarCallbacks} from "../folder_sidebar/FolderSidebarStore";
 
-export const FolderSidebar2 = () => <div>placeholder for sidebar</div>
+export const FolderSidebar2 = () => {
+
+    const folderSidebarCallbacks = useFolderSidebarCallbacks();
+
+    return (
+
+
+        <div>placeholder for sidebar ... rev2 </div>
+    );
+};
 
 
 // export const FolderSidebar2 = React.memo(() => {
