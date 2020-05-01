@@ -127,9 +127,43 @@ export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetSto
 // FIXME: since mutator isn't always needed make it optional and just use defaults
 // otherwise
 
-export function createObservableStore<V, M, C>(initialValue: V,
-                                               mutatorFactory: MutatorFactory<V, M>,
-                                               callbacksFactory: CallbacksFactory<V, M, C>): ObservableStoreTuple<V, M, C> {
+// FIXME: since callbacks were designed to work with hooks using it outside of
+// a component means it will break.  A mutator can be used if you want to work
+// with the store outside of a component.
+
+export interface ObservableStoreOpts<V, M, C> {
+
+    /**
+     * The initial value for the store including defaults for every value.
+     */
+    readonly initialValue: V;
+
+    readonly mutatorFactory: MutatorFactory<V, M>;
+
+    /**
+     * Used to create high level callbacks that can be injected into your
+     * components with a useXCallbacks hook to mutate your store.  The callback
+     * is a singleton and never updated so component memo works.
+     */
+    readonly callbacksFactory: CallbacksFactory<V, M, C>;
+
+    /**
+     * Same functionality as callbacksFactory but used with mocks so that you
+     * can work with components using the mock without complex initialization.
+     *
+     * Used with more production apps so other developers don't need to worry
+     * about configuration of our component system.
+     *
+     * Usually these mocks should just print to the console or perform some
+     * action to note that they were called and with what arguments.
+     */
+    readonly mockCallbacksFactory?: CallbacksFactory<V, M, C>;
+
+}
+
+export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
+
+    const {initialValue, mutatorFactory, callbacksFactory} = opts;
 
     const [storeContext, store] = createObservableStoreContext(initialValue);
 

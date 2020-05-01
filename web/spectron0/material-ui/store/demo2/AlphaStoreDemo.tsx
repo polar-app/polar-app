@@ -53,4 +53,8 @@ const store: IAlphaStore = {
 }
 
 export const [AlphaStoreProvider, useAlphaStore, useAlphaStoreCallbacks]
-    = createObservableStore<IAlphaStore, Mutator, IAlphaCallbacks>(store, mutatorFactory, callbacksFactory);
+    = createObservableStore<IAlphaStore, Mutator, IAlphaCallbacks>({
+        initialValue: store,
+        mutatorFactory,
+        callbacksFactory
+    });

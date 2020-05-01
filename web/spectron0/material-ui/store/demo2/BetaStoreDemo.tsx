@@ -55,4 +55,8 @@ const store: IBetaStore = {
 }
 
 export const [BetaStoreProvider, useBetaStore, useBetaStoreCallbacks]
-    = createObservableStore<IBetaStore, Mutator, IBetaCallbacks>(store, mutatorFactory, callbacksFactory);
+    = createObservableStore<IBetaStore, Mutator, IBetaCallbacks>({
+        initialValue: store,
+        mutatorFactory,
+        callbacksFactory
+    });

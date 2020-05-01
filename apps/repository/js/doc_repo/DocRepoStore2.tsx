@@ -861,7 +861,11 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 // a MOCK object is returned... mock/proxy objects would be great here..
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, docRepoMutator]
-    = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>(docRepoStore, mutatorFactory, callbacksFactory);
+    = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
+        initialValue: docRepoStore,
+        mutatorFactory,
+        callbacksFactory
+    });
 
 interface IProps {
     readonly children: JSX.Element;

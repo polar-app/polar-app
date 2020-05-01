@@ -31,4 +31,8 @@ const tagStore: ITagStore = {
 }
 
 export const [TagStoreProvider, useTagStore, useTagStoreCallbacks]
-    = createObservableStore<ITagStore, Mutator, ITagCallbacks>(tagStore, mutatorFactory, callbacksFactory);
+    = createObservableStore<ITagStore, Mutator, ITagCallbacks>({
+        initialValue: tagStore,
+        mutatorFactory,
+        callbacksFactory
+    });
