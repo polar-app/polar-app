@@ -31,7 +31,12 @@ export const FolderSidebar2 = () => {
     // const expanded = store.expanded
 
     return (
-        <Paper square elevation={0} style={{flexGrow: 1}}>
+        <Paper square
+               elevation={0}
+               style={{
+                   flexGrow: 1,
+                   padding: '5px'
+               }}>
             {store.foldersRoot &&
                 <MUITreeView root={store.foldersRoot}
                              toggleExpanded={callbacks.toggleExpanded}
@@ -48,8 +53,8 @@ export const FolderSidebar2 = () => {
                              toggleSelected={callbacks.toggleSelected}
                              collapseNode={callbacks.collapseNode}
                              expandNode={callbacks.expandNode}
-                             selected={Object.keys(store.selected)}
-                             expanded={Object.keys(store.expanded)}
+                             selected={store.selected}
+                             expanded={store.expanded}
                              />}
 
         </Paper>

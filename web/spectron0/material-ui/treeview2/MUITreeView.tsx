@@ -54,16 +54,16 @@ export const MUITreeView = (props: IProps) => {
     return (
         <TreeView
             selected={[...props.selected]}
-            // expanded={[...props.expanded]}
+            expanded={[...props.expanded]}
             // onNodeToggle={(event, nodes) => props.toggleExpanded(nodes)}
-            expanded={["/#tags"]}
+            // expanded={["/#tags"]}
             // onNodeSelect={}
             >
 
             <MUITreeItem nodeId={props.root.id}
                          label={props.root.name}
-                         onNodeExpand={NULL_FUNCTION}
-                         onNodeCollapse={NULL_FUNCTION}
+                         onNodeExpand={props.expandNode}
+                         onNodeCollapse={props.collapseNode}
                          onNodeSelectToggle={NULL_FUNCTION}
                          childNodes={props.root.children}/>
 
