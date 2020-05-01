@@ -7,11 +7,7 @@ import {
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
-import {
-    Callback,
-    Callback1,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
@@ -48,9 +44,8 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {shell} from "electron";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
-import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
+import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 
 const log = Logger.create();
 
@@ -475,7 +470,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const toPromise = (repoDocInfo: RepoDocInfo) => {
             repoDocInfo.archived = archived;
             repoDocInfo.docInfo.archived = archived;
-            return this.props.writeDocInfo(repoDocInfo.docInfo)
+            return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
         }
 
         const success = "Documents successfully archived";
@@ -493,9 +488,9 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
 
         const toPromise = (repoDocInfo: RepoDocInfo) => {
-            repoDocInfo.archived = flagged;
-            repoDocInfo.docInfo.archived = flagged;
-            return this.props.writeDocInfo(repoDocInfo.docInfo)
+            repoDocInfo.flagged = flagged;
+            repoDocInfo.docInfo.flagged = flagged;
+            return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
         }
 
         const success = "Documents successfully flagged";
@@ -545,7 +540,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         function doDeleteBatch() {
 
             const toPromise = (repoDocInfo: RepoDocInfo) => {
-                return this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo);
+                return repoDocMetaManager.deleteDocInfo(repoDocInfo);
             }
 
             const success = `${repoDocInfos.length} documents successfully deleted.`;
@@ -647,6 +642,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const repoDocInfos = selectedProvider();
 
         if (repoDocInfos.length === 0) {
+
             return;
         }
 
@@ -872,6 +868,8 @@ interface IProps {
 }
 
 export const DocRepoStore2 = React.memo((props: IProps) => {
+
+    // TODO: migrate to useRepoDocInfos
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
