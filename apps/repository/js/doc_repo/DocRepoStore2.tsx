@@ -7,7 +7,11 @@ import {
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {
+    Callback,
+    Callback1,
+    NULL_FUNCTION
+} from "polar-shared/src/util/Functions";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
@@ -43,6 +47,10 @@ import {Directories} from "../../../../web/js/datastore/Directories";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {shell} from "electron";
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
+import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {Progress, ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 
 const log = Logger.create();
 
@@ -283,14 +291,80 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    async function batchMutator<T>(promises: ReadonlyArray<Promise<T>>) {
+    interface BatchMutatorOpts {
+        readonly success?: string;
+        readonly error?: string;
+        readonly id?: string;
+    }
 
-        for (const promise of promises) {
-            // TODO update progress of this operation using a snackbar
-            await promise;
+    async function batchMutator<T>(promises: ReadonlyArray<Promise<T>>,
+                                   opts: BatchMutatorOpts = {}) {
+
+        const id = opts.id || Hashcodes.createRandomID();
+
+        interface ProgressReporter {
+            readonly incr: () => void;
+            readonly terminate: () => void;
         }
 
-        mutator.refresh();
+        function createProgressReporter(): ProgressReporter {
+
+            if (promises.length <= 1) {
+                return {
+                    incr: NULL_FUNCTION,
+                    terminate: NULL_FUNCTION
+                };
+            }
+
+            const progressTracker = new ProgressTracker({
+                total: promises.length,
+                id
+            });
+
+            const incr = () => {
+                const progress = progressTracker.incr();
+                ProgressMessages.broadcast(progress);
+            }
+
+            const terminate = () => {
+                ProgressMessages.broadcast(progressTracker.terminate());
+            }
+
+            return {incr, terminate};
+
+        }
+
+        const progressReporter = createProgressReporter();
+
+        try {
+
+            for (const promise of promises) {
+                // TODO update progress of this operation using a snackbar
+                await promise;
+
+                // now refresh the UI
+                mutator.refresh();
+                progressReporter.incr();
+
+            }
+
+            if (opts.success) {
+                dialogs.snackbar({message: opts.success});
+            }
+
+        } catch (e) {
+
+            if (opts.error) {
+                dialogs.snackbar({
+                    message: opts.error + e.message,
+                    type: 'error'
+                });
+            }
+
+        }
+
+        // final must be sent...
+        progressReporter.terminate();
 
     }
 
@@ -404,9 +478,11 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return this.props.writeDocInfo(repoDocInfo.docInfo)
         }
 
+        const success = "Documents successfully archived";
+        const error = "Failed to some documents: ";
+
         async function doHandle() {
-            await batchMutator(repoDocInfos.map(toPromise));
-            dialogs.snackbar({message: "Documents successfully archived"});
+            await batchMutator(repoDocInfos.map(toPromise), {success, error});
         }
 
         doHandle()
@@ -415,15 +491,18 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
+
         const toPromise = (repoDocInfo: RepoDocInfo) => {
             repoDocInfo.archived = flagged;
             repoDocInfo.docInfo.archived = flagged;
             return this.props.writeDocInfo(repoDocInfo.docInfo)
         }
 
+        const success = "Documents successfully flagged";
+        const error = "Failed to flag some documents: ";
+
         async function doHandle() {
-            await batchMutator(repoDocInfos.map(toPromise));
-            dialogs.snackbar({message: "Documents successfully flagged"});
+            await batchMutator(repoDocInfos.map(toPromise), {success, error});
         }
 
         doHandle()
@@ -462,8 +541,31 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function doDeleted(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
-        // noop
-        // FIXME
+
+        function doDeleteBatch() {
+
+            const toPromise = (repoDocInfo: RepoDocInfo) => {
+                return this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo);
+            }
+
+            const success = `${repoDocInfos.length} documents successfully deleted.`;
+            const error = `Failed to delete document: `;
+
+            async function doHandle() {
+                await batchMutator(repoDocInfos.map(toPromise), {success, error});
+            }
+
+            doHandle()
+                .catch(err => log.error(err));
+
+        }
+
+        setSelected([]);
+
+        doDeleteBatch();
+
+        setSelected([]);
+
     }
 
     function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
