@@ -44,7 +44,6 @@ import {Button} from "reactstrap";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
-import Grid from '@material-ui/core/Grid';
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 
 interface AnnotationsListProps extends IProps, IState {

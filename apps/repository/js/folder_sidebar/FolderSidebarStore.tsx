@@ -17,10 +17,6 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
 
-interface TagDescriptorSelected extends TagDescriptor {
-    readonly selected: boolean;
-}
-
 interface IFolderSidebarStore {
 
     /**
@@ -35,7 +31,7 @@ interface IFolderSidebarStore {
 
     readonly tagsView: ReadonlyArray<TagDescriptor>;
 
-    readonly foldersRoot: TRoot<TagDescriptorSelected> | undefined;
+    readonly foldersRoot: TRoot<TagDescriptor> | undefined;
 
     /**
      * The state of selected nodes.

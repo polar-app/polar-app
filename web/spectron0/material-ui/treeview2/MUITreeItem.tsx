@@ -53,6 +53,7 @@ export const MUITreeItem = React.memo((props: IProps) => {
                                      nodeId={child.id}
                                      label={child.name}
                                      info={child.count}
+                                     selected={false}
                                      childNodes={child.children}
                                      onNodeExpand={props.onNodeExpand}
                                      onNodeCollapse={props.onNodeCollapse}

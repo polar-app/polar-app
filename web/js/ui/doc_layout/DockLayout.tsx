@@ -101,7 +101,6 @@ export class DockLayout extends React.Component<IProps, IState> {
             const createBaseStyle = (): React.CSSProperties => {
 
                 const style = {
-                    minHeight: 0,
                     overflow: 'auto',
                 };
 
@@ -123,8 +122,10 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 const {width} = panelState;
 
+                const baseStyle = createBaseStyle();
+
                 const style: React.CSSProperties = {
-                    ...createBaseStyle(),
+                    ...baseStyle,
                     width,
                     maxWidth: width,
                     minWidth: width,
