@@ -114,6 +114,7 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
             function buildFoldersRoot() {
 
                 function toTagDescriptorSelected(tag: TagDescriptor): TagDescriptorSelected {
+
                     return {
                         ...tag,
                         selected: mutation.selected.includes(tag.id)

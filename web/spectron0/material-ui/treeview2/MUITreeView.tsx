@@ -26,13 +26,11 @@ interface IProps {
 export const MUITreeView = React.memo((props: IProps) => {
 
     return (
-        <TreeView
-            selected={[...props.selected]}
-            expanded={[...props.expanded]}
-            >
+        <TreeView selected={[...props.selected]}
+                  expanded={[...props.expanded]}>
 
             <MUITreeItem nodeId={props.root.id}
-                         label={props.root.name}
+                         label="Folders"
                          info={props.root.value.count}
                          selected={props.root.value.selected}
                          onNodeExpand={props.expandNode}
