@@ -673,7 +673,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function onTagSelected(filteredTags: ReadonlyArray<string>): void {
 
         const store = storeProvider();
-        const tags = Tags.lookup(tagsProvider(), filteredTags);
+        const tags = Tags.lookupByTagLiteral(tagsProvider(), filteredTags);
 
         setFilters({...store.filters, tags});
 

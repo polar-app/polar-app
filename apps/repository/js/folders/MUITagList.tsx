@@ -2,7 +2,8 @@ import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {MUITagListItem} from "./MUITagListItem";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {NodeID} from "../folder_sidebar/FolderSidebarStore";
+import {Tags} from "polar-shared/src/tags/Tags";
+import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<string>;
-    readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
 }
 
 export const MUITagList = (props: IProps) => {
@@ -55,7 +56,7 @@ export const MUITagList = (props: IProps) => {
         <>
             {props.tags.map(tag => <MUITagListItem key={tag.id}
                                                    selected={selected.includes(tag.id)}
-                                                   toggleSelected={props.toggleSelected}
+                                                   selectRow={props.selectRow}
                                                    nodeId={tag.id}
                                                    label={tag.label}
                                                    info={tag.count}/>)}

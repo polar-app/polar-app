@@ -33,6 +33,8 @@ export const IconsDemo = () => (
     </div>
 );
 
+// FIXME: move this out of demo as it's being actually used now..
+// MUIFontAwesomeIcons
 export const FACheckSquare = React.memo((props: SvgIconProps) => (
     <SvgIcon {...props}>
         <FontAwesomeIcon icon={faCheckSquare} />

@@ -2,6 +2,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {FACheckSquare} from "../../../../web/spectron0/material-ui/IconsDemo";
 import {FASquare} from "../../../../web/spectron0/material-ui/IconsDemo";
 import React from "react";
+import isEqual from "react-fast-compare";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,7 +22,7 @@ interface IProps {
     readonly checked: boolean;
 }
 
-export const MUIEfficientCheckbox = (props: IProps) => {
+export const MUIEfficientCheckbox = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -31,7 +32,8 @@ export const MUIEfficientCheckbox = (props: IProps) => {
                            style={{
                                fontSize: '1.2em',
                                margin: '2px'
-                           }}/>
+                           }}
+                           />
         )
     } else {
         return (
@@ -39,9 +41,10 @@ export const MUIEfficientCheckbox = (props: IProps) => {
                       style={{
                           fontSize: '1.2em',
                           margin: '2px'
-                      }}/>
+                      }}
+                      />
         )
 
     }
 
-}
+}, isEqual);

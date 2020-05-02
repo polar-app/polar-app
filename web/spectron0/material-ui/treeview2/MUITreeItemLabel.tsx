@@ -4,19 +4,32 @@ import {NodeSelectToggleType} from "./MUITreeView";
 import isEqual from "react-fast-compare";
 import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {MUIEfficientCheckbox} from "../../../../apps/repository/js/folders/MUIEfficientCheckbox";
 
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            display: 'flex',
-            alignItems: 'center'
+            userSelect: 'none',
+            fontSize: '1.1em',
+            display: "flex",
+            alignItems: "center",
+            padding: '5px',
+            paddingTop: '7px',
+            paddingBottom: '7px',
+            cursor: 'pointer',
+            '&:hover': {
+                background: theme.palette.action.hover
+            },
         },
         label: {
             flexGrow: 1,
         },
         info: {
             color: theme.palette.text.hint,
+        },
+        checkbox: {
+            color: theme.palette.text.secondary,
         },
     }),
 );
@@ -38,6 +51,11 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
             {/*<Checkbox checked={props.selected}*/}
             {/*          onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}*/}
             {/*          style={{padding: 0}}*/}
+
+            <MUIEfficientCheckbox checked={props.selected}
+                                  // FIXME add this back in.
+                                  // onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}
+                                  />
 
             {/*/>*/}
 

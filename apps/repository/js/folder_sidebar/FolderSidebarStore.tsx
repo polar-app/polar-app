@@ -11,8 +11,11 @@ import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
-
-export type NodeID = string;
+import {useTagSelector} from "../store/TagSelector";
+import TagID = Tags.TagID;
+import {FolderSelectionEvents} from "./FolderSelectionEvents";
+import Selected = FolderSelectionEvents.Selected;
+import SelfSelected = FolderSelectionEvents.SelfSelected;
 
 interface IFolderSidebarStore {
 
@@ -33,22 +36,24 @@ interface IFolderSidebarStore {
     /**
      * The state of selected nodes.
      */
-    readonly selected: ReadonlyArray<NodeID>;
+    readonly selected: ReadonlyArray<TagID>;
 
     /**
      * The state of expanded nodes.
      */
-    readonly expanded: ReadonlyArray<NodeID>;
+    readonly expanded: ReadonlyArray<TagID>;
 
 }
 
 interface IFolderSidebarCallbacks {
 
-    readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
-    readonly toggleExpanded: (nodes: ReadonlyArray<NodeID>) => void;
+    readonly toggleSelected: (nodes: ReadonlyArray<TagID>) => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
 
-    readonly collapseNode: (node: NodeID) => void;
-    readonly expandNode: (node: NodeID) => void;
+    readonly toggleExpanded: (nodes: ReadonlyArray<TagID>) => void;
+
+    readonly collapseNode: (node: TagID) => void;
+    readonly expandNode: (node: TagID) => void;
 
     readonly setFilter: (text: string) => void;
 
@@ -159,15 +164,14 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                           setStore: (store: IFolderSidebarStore) => void,
                           mutator: Mutator): IFolderSidebarCallbacks {
 
-
     // used so that we listen to repoDocInfos and get them for every update
     // so that we can build a new store.
     //
     // TODO: This isn't an amazingly good way to listen for updates since we're
     // just trying to get the tagsContext working..
-    useRepoDocInfos();
-
+    const repoDocInfos = useRepoDocInfos();
     const tagsContext = useTagsContext();
+    const tagSelector = useTagSelector();
 
     function doHookUpdate() {
 
@@ -181,19 +185,50 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     doHookUpdate();
 
-    function toggleSelected(nodes: ReadonlyArray<NodeID>): void {
+    function handleSelected(nodes: ReadonlyArray<TagID>) {
 
         const store = storeProvider();
 
-        const selected = nodes;
+        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
+        // tagSelector.onTagSelected(selectedTags);
 
-        setStore({
-            ...store,
-            selected
-        });
     }
 
-    function toggleExpanded(nodes: ReadonlyArray<NodeID>): void {
+    function selectRow(node: TagID,
+                       event: React.MouseEvent,
+                       source: 'checkbox' | 'click'): void {
+
+        const store = storeProvider();
+
+        function toSelected(): Selected {
+
+            if (store.selected.length > 1) {
+                return 'multiple';
+            } else if (store.selected.length === 1) {
+                return 'single';
+            } else {
+                return 'none';
+            }
+
+        }
+
+        function toSelfSelected(): SelfSelected {
+            return store.selected.includes(node) ? 'yes' : 'no';
+        }
+
+        const eventType = FolderSelectionEvents.toEventType(event, source);
+        const selected = toSelected();
+        const selfSelected = toSelfSelected();
+
+        const strategy = FolderSelectionEvents.toStrategy({eventType, selected, selfSelected});
+
+        const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
+
+        setStore({...store, selected: newSelected});
+
+    }
+
+    function toggleExpanded(nodes: ReadonlyArray<TagID>): void {
 
         const store = storeProvider();
 
@@ -205,7 +240,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         });
     }
 
-    function collapseNode(node: NodeID) {
+    function collapseNode(node: TagID) {
 
         console.log("FIXME collapseNode: ", node);
 
@@ -218,7 +253,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
-    function expandNode(node: NodeID) {
+    function expandNode(node: TagID) {
 
         console.log("FIXME expandNode: ", node);
 
@@ -243,7 +278,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     }
 
     return {
-        toggleSelected, toggleExpanded, collapseNode, expandNode, setFilter
+        toggleExpanded, collapseNode, expandNode, setFilter, selectRow
     };
 
 }

@@ -1,21 +1,13 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {MUIEfficientCheckbox} from "./MUIEfficientCheckbox";
 import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
-import {NodeID} from "../folder_sidebar/FolderSidebarStore";
+import {Tags} from "polar-shared/src/tags/Tags";
+import TagID = Tags.TagID;
+import isEqual from "react-fast-compare";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        checkbox: {
-            color: theme.palette.text.secondary,
-        },
-        label: {
-            paddingLeft: '5px',
-            flexGrow: 1,
-        },
-        info: {
-            color: theme.palette.text.hint,
-        },
-        row: {
+        root: {
             // color: theme.palette.text.primary,
             userSelect: 'none',
             fontSize: '1.1em',
@@ -31,6 +23,17 @@ const useStyles = makeStyles((theme: Theme) =>
                 background: theme.palette.action.hover
             },
         },
+        label: {
+            paddingLeft: '5px',
+            flexGrow: 1,
+        },
+        checkbox: {
+            display: "flex",
+            alignItems: "center",
+        },
+        info: {
+            color: theme.palette.text.hint,
+        },
         active: {
             backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
         }
@@ -42,7 +45,7 @@ interface IProps {
     readonly nodeId: string;
     readonly label: string;
     readonly info: string | number;
-    readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
 }
 
 export const MUITagListItem = React.memo((props: IProps) => {
@@ -54,7 +57,12 @@ export const MUITagListItem = React.memo((props: IProps) => {
 
     // FIXME: change row background color when active
 
-    const classNames = props.selected ? [classes.row, classes.active] : [classes.row];
+    const classNames = props.selected ? [classes.root, classes.active] : [classes.root];
+
+    const onCheckbox = useCallback((event: React.MouseEvent) => {
+        props.selectRow(props.nodeId, event, 'checkbox');
+        event.stopPropagation();
+    }, []);
 
     return (
         // <ListItem role={undefined}
@@ -79,20 +87,12 @@ export const MUITagListItem = React.memo((props: IProps) => {
         // </ListItem>
 
         <div className={classNames.join(' ')}
-             onClick={() => props.toggleSelected([props.nodeId])}>
+             onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
-            {/*<Checkbox size="small"/>*/}
-
-            {/*<input type="checkbox"/>*/}
-
-            {/*<FACheckSquare style={{*/}
-            {/*    fontSize: '1.0em',*/}
-            {/*    margin: '2px'*/}
-            {/*}}/>*/}
-
-            <MUIEfficientCheckbox checked={props.selected}
-                                  // className={classes.checkbox}
-                                  />
+            <div onClick={onCheckbox}
+                 className={classes.checkbox}>
+                <MUIEfficientCheckbox checked={props.selected}/>
+            </div>
 
             <div className={classes.label}>
                 {props.label}
@@ -105,4 +105,4 @@ export const MUITagListItem = React.memo((props: IProps) => {
         </div>
     )
 
-});
+}, isEqual);
