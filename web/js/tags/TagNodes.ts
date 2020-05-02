@@ -154,6 +154,24 @@ export class TagNodes {
 
     }
 
+    public static decorate<T extends TagDescriptor>(node: TagNode<TagDescriptor>,
+                                                    decorator: (descriptor: TagDescriptor) => T ): TagNode<T> {
+
+        const value = decorator(node.value);
+
+        const children = node.children.map(child => this.decorate(child, decorator));
+
+        return {
+            id: node.id,
+            name: node.name,
+            path: node.path,
+            count: node.count,
+            children,
+            value
+        };
+
+    }
+
 }
 
 export interface TagMembership {

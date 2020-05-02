@@ -17,6 +17,10 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
 
+export interface TagDescriptorSelected extends TagDescriptor {
+    readonly selected: boolean
+}
+
 interface IFolderSidebarStore {
 
     /**
@@ -31,7 +35,7 @@ interface IFolderSidebarStore {
 
     readonly tagsView: ReadonlyArray<TagDescriptor>;
 
-    readonly foldersRoot: TRoot<TagDescriptor> | undefined;
+    readonly foldersRoot: TRoot<TagDescriptorSelected> | undefined;
 
     /**
      * The state of selected nodes.
@@ -52,6 +56,7 @@ interface IFolderSidebarCallbacks {
     readonly toggleExpanded: (nodes: ReadonlyArray<TagID>) => void;
 
     readonly collapseNode: (node: TagID) => void;
+
     readonly expandNode: (node: TagID) => void;
 
     readonly setFilter: (text: string) => void;
@@ -70,6 +75,7 @@ const folderStore: IFolderSidebarStore = {
 interface Mutation {
     readonly filter: string;
     readonly tags: ReadonlyArray<TagDescriptor>;
+    readonly selected: ReadonlyArray<TagID>;
 }
 
 interface Mutator {
@@ -104,11 +110,27 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
             const filtered = computeFiltered(tags);
 
             const tagsView = Tags.onlyRegular(filtered);
-            const foldersRoot = TagNodes.createFoldersRoot({tags: filtered, type: 'folder'})
+
+            function buildFoldersRoot() {
+
+                function toTagDescriptorSelected(tag: TagDescriptor): TagDescriptorSelected {
+                    return {
+                        ...tag,
+                        selected: mutation.selected.includes(tag.id)
+                    };
+                }
+
+                const rawFoldersRoot = TagNodes.createFoldersRoot({tags: filtered, type: 'folder'});
+                return TagNodes.decorate(rawFoldersRoot, toTagDescriptorSelected);
+
+            }
+
+            const foldersRoot = buildFoldersRoot();
 
             return {
                 ...store,
                 filter: mutation.filter,
+                selected: mutation.selected,
                 tags,
                 tagsView,
                 foldersRoot
@@ -122,6 +144,10 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
         function hasChanged() {
 
             if (! isEqual(store.tags, tags)) {
+                return true;
+            }
+
+            if (! isEqual(store.selected, mutation.selected)) {
                 return true;
             }
 
@@ -178,7 +204,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const tags = tagsContext?.tagsProvider() || [];
 
-        mutator.doUpdate({tags, filter: store.filter});
+        mutator.doUpdate({...store, tags});
 
     }
 
@@ -223,7 +249,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
 
-        setStore({...store, selected: newSelected});
+        mutator.doUpdate({...store, selected: newSelected});
 
     }
 
@@ -254,8 +280,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function expandNode(node: TagID) {
 
-        console.log("FIXME expandNode: ", node);
-
         const store = storeProvider();
 
         const expanded = [...store.expanded];
@@ -272,7 +296,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const store = storeProvider();
 
-        mutator.doUpdate({tags: store.tags, filter});
+        mutator.doUpdate({...store, filter});
 
     }
 

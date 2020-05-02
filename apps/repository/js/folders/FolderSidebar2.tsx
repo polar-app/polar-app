@@ -66,7 +66,7 @@ export const FolderSidebar2 = () => {
                     <div style={{marginLeft: '8px'}}>
                         <MUITreeView root={store.foldersRoot}
                                      toggleExpanded={callbacks.toggleExpanded}
-                                     toggleSelected={NULL_FUNCTION}
+                                     selectRow={callbacks.selectRow}
                                      collapseNode={callbacks.collapseNode}
                                      expandNode={callbacks.expandNode}
                                      selected={store.selected}
@@ -117,15 +117,15 @@ export const FolderSidebar5 = () => {
                }}>
 
 
-            {store.foldersRoot &&
-                <MUITreeView root={store.foldersRoot}
-                             toggleExpanded={callbacks.toggleExpanded}
-                             toggleSelected={NULL_FUNCTION}
-                             collapseNode={callbacks.collapseNode}
-                             expandNode={callbacks.expandNode}
-                             selected={store.selected}
-                             expanded={store.expanded}
-                             />}
+            {/*{store.foldersRoot &&*/}
+            {/*    <MUITreeView root={store.foldersRoot}*/}
+            {/*                 toggleExpanded={callbacks.toggleExpanded}*/}
+            {/*                 toggleSelected={NULL_FUNCTION}*/}
+            {/*                 collapseNode={callbacks.collapseNode}*/}
+            {/*                 expandNode={callbacks.expandNode}*/}
+            {/*                 selected={store.selected}*/}
+            {/*                 expanded={store.expanded}*/}
+            {/*                 />}*/}
 
             {/*{store.tagsRoot &&*/}
             {/*    <MUITreeView root={store.tagsRoot}*/}

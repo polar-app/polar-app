@@ -7,6 +7,10 @@ import {CollapseIcon, ExpandIcon} from "./MUITreeIcons";
 import isEqual from "react-fast-compare";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import {MUITreeItemLabel} from "./MUITreeItemLabel";
+import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
+import {Tags} from "polar-shared/src/tags/Tags";
+import TagID = Tags.TagID;
+import {useCallback} from "@types/react";
 
 const useStyles = makeStyles(
     createStyles({
@@ -26,8 +30,9 @@ interface IProps {
 
     readonly onNodeExpand: (node: string) => void;
     readonly onNodeCollapse: (node: string) => void;
-    readonly onNodeSelectToggle: (node: string, type: NodeSelectToggleType) => void;
-    readonly childNodes: ReadonlyArray<TNode<TagDescriptor>>;
+    readonly childNodes: ReadonlyArray<TNode<TagDescriptorSelected>>;
+
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
 
 }
 
@@ -37,7 +42,7 @@ export const MUITreeItem = React.memo((props: IProps) => {
 
     return (
         <TreeItem nodeId={props.nodeId}
-                        label={<MUITreeItemLabel onNodeSelectToggle={props.onNodeSelectToggle}
+                        label={<MUITreeItemLabel selectRow={props.selectRow}
                                                  nodeId={props.nodeId}
                                                  selected={props.selected}
                                                  label={props.label}
@@ -53,11 +58,11 @@ export const MUITreeItem = React.memo((props: IProps) => {
                                      nodeId={child.id}
                                      label={child.name}
                                      info={child.count}
-                                     selected={false}
+                                     selected={child.value.selected}
                                      childNodes={child.children}
                                      onNodeExpand={props.onNodeExpand}
                                      onNodeCollapse={props.onNodeCollapse}
-                                     onNodeSelectToggle={props.onNodeSelectToggle}
+                                     selectRow={props.selectRow}
                                      />
                     );
                 }

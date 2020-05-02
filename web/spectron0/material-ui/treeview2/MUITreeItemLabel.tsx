@@ -1,9 +1,10 @@
-import React from "react";
-import {NodeSelectToggleType} from "./MUITreeView";
+import React, {useCallback} from "react";
 import isEqual from "react-fast-compare";
 import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {MUIEfficientCheckbox} from "../../../../apps/repository/js/folders/MUIEfficientCheckbox";
+import {Tags} from "polar-shared/src/tags/Tags";
+import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -29,12 +30,15 @@ const useStyles = makeStyles((theme) =>
             paddingRight: '5px',
         },
         checkbox: {
+            display: "flex",
+            alignItems: "center",
             color: theme.palette.text.secondary,
         },
     }),
 );
 interface IProps {
-    readonly onNodeSelectToggle: (node: string, type: NodeSelectToggleType) => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+
     readonly nodeId: string;
     readonly selected: boolean;
     readonly label: string;
@@ -45,21 +49,24 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
+    const onCheckbox = useCallback((event: React.MouseEvent) => {
+        props.selectRow(props.nodeId, event, 'checkbox');
+        event.stopPropagation();
+    }, []);
+
     return (
-        <div className={classes.root}>
+        <div className={classes.root} onClick={event => props.selectRow(props.nodeId, event, 'click')}>
 
-            <MUIEfficientCheckbox checked={props.selected}
-                                  // FIXME add this back in.
-                                  // onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}
-                                  />
+            <div className={classes.checkbox}
+                 onClick={event => onCheckbox(event)}>
+                <MUIEfficientCheckbox checked={props.selected}/>
+            </div>
 
-            <div className={classes.label}
-                 onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
+            <div className={classes.label}>
                 {props.label}
             </div>
 
-            <div className={classes.info}
-                 onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
+            <div className={classes.info}>
                 {props.info}
             </div>
 
