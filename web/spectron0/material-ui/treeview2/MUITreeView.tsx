@@ -61,6 +61,7 @@ export const MUITreeView = React.memo((props: IProps) => {
 
             <MUITreeItem nodeId={props.root.id}
                          label={props.root.name}
+                         info={props.root.value.count}
                          onNodeExpand={props.expandNode}
                          onNodeCollapse={props.collapseNode}
                          onNodeSelectToggle={NULL_FUNCTION}

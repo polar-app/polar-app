@@ -3,7 +3,7 @@ import React from "react";
 import {NodeSelectToggleType} from "./MUITreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TNode} from "../../../js/ui/tree/TreeView";
-import {MinusSquare} from "./MUITreeIcons";
+import {CollapseIcon, ExpandIcon, MinusSquare} from "./MUITreeIcons";
 import {PlusSquare} from "../treeview/MUITreeIcons";
 import isEqual from "react-fast-compare";
 import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
@@ -18,27 +18,6 @@ const useStyles = makeStyles(
     }),
 );
 
-interface CollapseIconProps {
-    readonly nodeId: string;
-    readonly onNodeCollapse: (node: string) => void;
-}
-
-export const CollapseIcon = React.memo((props: CollapseIconProps) => {
-    return (
-        <MinusSquare onClick={() => props.onNodeCollapse(props.nodeId)}/>
-    );
-}, isEqual);
-
-interface ExpandIconProps {
-    readonly nodeId: string;
-    readonly onNodeExpand: (node: string) => void;
-}
-
-export const ExpandIcon = React.memo((props: ExpandIconProps) => {
-    return (
-        <PlusSquare onClick={() => props.onNodeExpand(props.nodeId)}/>
-    );
-}, isEqual);
 
 interface IProps {
 
@@ -89,6 +68,7 @@ export const MUITreeItem = React.memo((props: IProps) => {
                         <MUITreeItem key={child.id}
                                      nodeId={child.id}
                                      label={child.name}
+                                     info={child.count}
                                      childNodes={child.children}
                                      onNodeExpand={props.onNodeExpand}
                                      onNodeCollapse={props.onNodeCollapse}

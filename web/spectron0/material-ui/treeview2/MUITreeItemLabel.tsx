@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             userSelect: 'none',
-            fontSize: '1.1em',
+            fontSize: '1.1rem',
             display: "flex",
             alignItems: "center",
             padding: '5px',

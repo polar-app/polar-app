@@ -59,7 +59,7 @@ export const FolderSidebar2 = () => {
             {store.foldersRoot &&
                 <MUITreeView root={store.foldersRoot}
                              toggleExpanded={callbacks.toggleExpanded}
-                             toggleSelected={callbacks.toggleSelected}
+                             toggleSelected={NULL_FUNCTION}
                              collapseNode={callbacks.collapseNode}
                              expandNode={callbacks.expandNode}
                              selected={store.selected}
@@ -110,7 +110,7 @@ export const FolderSidebar5 = () => {
             {store.foldersRoot &&
                 <MUITreeView root={store.foldersRoot}
                              toggleExpanded={callbacks.toggleExpanded}
-                             toggleSelected={callbacks.toggleSelected}
+                             toggleSelected={NULL_FUNCTION}
                              collapseNode={callbacks.collapseNode}
                              expandNode={callbacks.expandNode}
                              selected={store.selected}

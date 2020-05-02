@@ -47,7 +47,6 @@ interface IFolderSidebarStore {
 
 interface IFolderSidebarCallbacks {
 
-    readonly toggleSelected: (nodes: ReadonlyArray<TagID>) => void;
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
 
     readonly toggleExpanded: (nodes: ReadonlyArray<TagID>) => void;

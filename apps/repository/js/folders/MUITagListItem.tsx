@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             // color: theme.palette.text.primary,
             userSelect: 'none',
-            fontSize: '1.1em',
+            fontSize: '1.1rem',
             display: "flex",
             alignItems: "center",
             padding: '5px',
