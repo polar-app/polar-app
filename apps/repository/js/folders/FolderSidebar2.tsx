@@ -26,6 +26,7 @@ export const FolderSidebar2 = () => {
                    flexDirection: "column",
                }}>
 
+            {/*FIXME: this isn't overflowing properly.. the header should be fixed*/}
 
             <MUIPaperToolbar borderBottom
                              padding={0.5}>

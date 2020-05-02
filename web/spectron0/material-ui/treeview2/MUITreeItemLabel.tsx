@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) =>
             fontSize: '1.1rem',
             display: "flex",
             alignItems: "center",
-            padding: '5px',
+            // padding: '5px',
             paddingTop: '7px',
             paddingBottom: '7px',
             cursor: 'pointer',
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) =>
         },
         info: {
             color: theme.palette.text.hint,
+            paddingRight: '5px',
         },
         checkbox: {
             color: theme.palette.text.secondary,
@@ -48,16 +49,10 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
     return (
         <div className={classes.root}>
 
-            {/*<Checkbox checked={props.selected}*/}
-            {/*          onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}*/}
-            {/*          style={{padding: 0}}*/}
-
             <MUIEfficientCheckbox checked={props.selected}
                                   // FIXME add this back in.
                                   // onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}
                                   />
-
-            {/*/>*/}
 
             <div className={classes.label}
                  onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
