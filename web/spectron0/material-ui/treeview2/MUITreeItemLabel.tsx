@@ -5,6 +5,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {MUIEfficientCheckbox} from "../../../../apps/repository/js/folders/MUIEfficientCheckbox";
 import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
+import {fade} from "@material-ui/core/styles";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -20,6 +22,9 @@ const useStyles = makeStyles((theme) =>
             '&:hover': {
                 background: theme.palette.action.hover
             },
+            '&$selected, &$selected:hover': {
+                backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
+            },
         },
         label: {
             paddingLeft: '5px',
@@ -34,6 +39,8 @@ const useStyles = makeStyles((theme) =>
             alignItems: "center",
             color: theme.palette.text.secondary,
         },
+        /* Pseudo-class applied to the root element if `selected={true}`. */
+        selected: {},
     }),
 );
 interface IProps {
@@ -56,8 +63,15 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
 
     // FIXME: double click should expand the node...
 
+    const className = clsx(
+        classes.root,
+        {
+            [classes.selected]: props.selected,
+        },
+    );
+
     return (
-        <div className={classes.root} onClick={event => props.selectRow(props.nodeId, event, 'click')}>
+        <div className={className} onClick={event => props.selectRow(props.nodeId, event, 'click')}>
 
             <div className={classes.checkbox}
                  onClick={event => onCheckbox(event)}>

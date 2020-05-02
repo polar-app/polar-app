@@ -39,15 +39,15 @@ export const MUITreeItem = React.memo((props: IProps) => {
 
     return (
         <TreeItem nodeId={props.nodeId}
-                        label={<MUITreeItemLabel selectRow={props.selectRow}
-                                                 nodeId={props.nodeId}
-                                                 selected={props.selected}
-                                                 label={props.label}
-                                                 info={props.info}/>}
-                        collapseIcon={<CollapseIcon nodeId={props.nodeId} onNodeCollapse={props.onNodeCollapse} />}
-                        expandIcon={<ExpandIcon nodeId={props.nodeId} onNodeExpand={props.onNodeExpand}/>}
-                        TransitionProps={{timeout: 75}}
-                        >
+                  label={<MUITreeItemLabel selectRow={props.selectRow}
+                                           nodeId={props.nodeId}
+                                           selected={props.selected}
+                                           label={props.label}
+                                           info={props.info}/>}
+                  collapseIcon={<CollapseIcon nodeId={props.nodeId} onNodeCollapse={props.onNodeCollapse} />}
+                  expandIcon={<ExpandIcon nodeId={props.nodeId} onNodeExpand={props.onNodeExpand}/>}
+                  TransitionProps={{timeout: 75}}
+                  >
 
             {props.childNodes.map((child) => {
                  return (
