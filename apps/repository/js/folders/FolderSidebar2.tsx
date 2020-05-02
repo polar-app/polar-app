@@ -9,7 +9,6 @@ import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
 import {AddTagsDropdown} from "./AddTagsDropdown";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 // FIXME this works BUT:
 //

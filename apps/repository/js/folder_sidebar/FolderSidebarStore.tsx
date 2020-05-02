@@ -224,12 +224,12 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     doHookUpdate();
 
-    function handleSelected(nodes: ReadonlyArray<TagID>) {
+    function doSelectRow(nodes: ReadonlyArray<TagID>) {
+        //
+        // const store = storeProvider();
 
-        const store = storeProvider();
-
-        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
-        // tagSelector.onTagSelected(selectedTags);
+        // const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
+        tagSelector.onTagSelected(nodes);
 
     }
 
@@ -264,6 +264,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
 
         mutator.doUpdate({...store, selected: newSelected});
+        doSelectRow(newSelected);
 
     }
 
