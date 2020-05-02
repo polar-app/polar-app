@@ -16,6 +16,8 @@ import TagID = Tags.TagID;
 import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
+import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -60,6 +62,8 @@ interface IFolderSidebarCallbacks {
     readonly expandNode: (node: TagID) => void;
 
     readonly setFilter: (text: string) => void;
+
+    readonly onCreateUserTag: (type: 'folder' | 'tag') => void;
 
 }
 
@@ -198,6 +202,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const repoDocInfos = useRepoDocInfos();
     const tagsContext = useTagsContext();
     const tagSelector = useTagSelector();
+    const dialogs = useDialogManager();
 
     function doHookUpdate() {
 
@@ -301,8 +306,20 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function onCreateUserTag(type: 'folder' | 'tag') {
+
+        dialogs.prompt({
+            title: "Create new " + type,
+            description: "May not create spaces and some extended unicode characters.",
+            autoFocus: true,
+            onCancel: NULL_FUNCTION,
+            onDone: NULL_FUNCTION
+        });
+
+    }
+
     return {
-        toggleExpanded, collapseNode, expandNode, setFilter, selectRow
+        toggleExpanded, collapseNode, expandNode, setFilter, selectRow, onCreateUserTag
     };
 
 }

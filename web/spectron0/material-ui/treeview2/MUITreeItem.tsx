@@ -1,7 +1,5 @@
 import TreeItem from "@material-ui/lab/TreeItem";
 import React from "react";
-import {NodeSelectToggleType} from "./MUITreeView";
-import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TNode} from "../../../js/ui/tree/TreeView";
 import {CollapseIcon, ExpandIcon} from "./MUITreeIcons";
 import isEqual from "react-fast-compare";
@@ -10,7 +8,6 @@ import {MUITreeItemLabel} from "./MUITreeItemLabel";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
-import {useCallback} from "@types/react";
 
 const useStyles = makeStyles(
     createStyles({

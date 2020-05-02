@@ -7,8 +7,17 @@ import {
 } from "../folder_sidebar/FolderSidebarStore";
 import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
+import {AddTagsDropdown} from "./AddTagsDropdown";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+
+// FIXME this works BUT:
+//
+// - no callbacks to change the doc repo store for selected tags...
+// - no drop down for creating new tags...
+// - nested folders aren't being expanded by default on init.
+// - the 'active' color for the folders is wrong
+// - the 'active' color for items isn't right on hover.
 
 export const FolderSidebar2 = () => {
     //
@@ -47,8 +56,7 @@ export const FolderSidebar2 = () => {
                         onChange={callbacks.setFilter}/>
 
                     <div className="ml-1">
-                        {/*FIXME add this back in ...*/}
-                        {/*<AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>*/}
+                        <AddTagsDropdown/>
                     </div>
 
                 </div>
@@ -93,19 +101,6 @@ export const FolderSidebar5 = () => {
 
     const store = useFolderSidebarStore();
     const callbacks = useFolderSidebarCallbacks();
-
-    // FIXME this works BUT:
-    //
-    // - super slow... this is our tree item though... not theirs...
-    // - no callbacks to change the doc repo store for selected tags...
-    // - selected/expanded not persisted
-    // - needs padding
-    // - paper doesn't expand
-    // - no overflow
-    // - does the full UI re-render?
-    // - nested folders aren't being expanded...
-
-    // const expanded = store.expanded
 
 
     return (
