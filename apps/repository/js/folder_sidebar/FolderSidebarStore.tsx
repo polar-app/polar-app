@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tags} from "polar-shared/src/tags/Tags";
+import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
@@ -10,14 +10,21 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
-import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
+import {
+    usePersistence,
+    useTagsContext
+} from "../persistence_layer/PersistenceLayerApp";
 import {useTagSelector} from "../store/TagSelector";
-import TagID = Tags.TagID;
 import {FolderSelectionEvents} from "./FolderSelectionEvents";
-import Selected = FolderSelectionEvents.Selected;
-import SelfSelected = FolderSelectionEvents.SelfSelected;
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Paths} from "polar-shared/src/util/Paths";
+import TagID = Tags.TagID;
+import Selected = FolderSelectionEvents.Selected;
+import SelfSelected = FolderSelectionEvents.SelfSelected;
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -203,6 +210,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const tagsContext = useTagsContext();
     const tagSelector = useTagSelector();
     const dialogs = useDialogManager();
+    const persistence = usePersistence();
 
     function doHookUpdate() {
 
@@ -306,14 +314,51 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
-    function onCreateUserTag(type: 'folder' | 'tag') {
+    function doCreateUserTag(userTag: string, type: TagType) {
+
+        // FIXME: the context menu, for tags, MUST only create on the first
+        // folder...
+
+        const createNewTag = (): TagStr => {
+
+            const store = storeProvider();
+            const selectedTags = store.selected;
+
+            switch (type) {
+                case "tag":
+                    return userTag;
+                case "folder":
+                    const parent = selectedTags.length > 0 ? selectedTags[0] : '/';
+                    return Paths.create(parent, userTag);
+            }
+
+        };
+
+        const newTag = createNewTag();
+
+        async function doHandle() {
+
+            const {persistenceLayerMutator} = persistence;
+            await persistenceLayerMutator.createTag(newTag);
+
+            dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
+
+        }
+
+        // FIXME: use dialogs.error here() if this fails
+        doHandle()
+            .catch(err => log.error("Unable to create tag: " + newTag, err));
+
+    }
+
+    function onCreateUserTag(type: TagType) {
 
         dialogs.prompt({
             title: "Create new " + type,
             description: "May not create spaces and some extended unicode characters.",
             autoFocus: true,
             onCancel: NULL_FUNCTION,
-            onDone: NULL_FUNCTION
+            onDone: (text) => doCreateUserTag(text, type);
         });
 
     }

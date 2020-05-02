@@ -54,6 +54,8 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
         event.stopPropagation();
     }, []);
 
+    // FIXME: double click should expand the node...
+
     return (
         <div className={classes.root} onClick={event => props.selectRow(props.nodeId, event, 'click')}>
 

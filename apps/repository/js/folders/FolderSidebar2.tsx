@@ -18,6 +18,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 // - nested folders aren't being expanded by default on init.
 // - the 'active' color for the folders is wrong
 // - the 'active' color for items isn't right on hover.
+// FIXME: needs a context menu...
 
 export const FolderSidebar2 = () => {
     //
