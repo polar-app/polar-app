@@ -18,14 +18,13 @@ import {DocRepoTableProps} from "./DocRepoTable";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {DocRepoTable2} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
-import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
-import { FolderSidebar2 } from "../folders/FolderSidebar2";
+import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import { AddContent } from "../ui/AddContentButton";
+import {AddContent} from "../ui/AddContentButton";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import isEqual from "react-fast-compare";
 
@@ -81,9 +80,10 @@ namespace devices {
                 component: <FolderSidebar2/>,
                 width: 300,
                 style: {
-                    overflow: 'auto',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    minHeight: 0
                 }
             },
             {

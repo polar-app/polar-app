@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) =>
         icon: {
             userSelect: 'none',
             color: theme.palette.text.secondary,
+            fontSize: '1.1rem'
         },
     })
 );

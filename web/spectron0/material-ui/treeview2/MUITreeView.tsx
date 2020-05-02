@@ -1,28 +1,10 @@
 import React from 'react';
-import {createStyles, makeStyles} from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import {TagNode} from "../../../js/tags/TagNode";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import TreeItem from "@material-ui/lab/TreeItem";
 import {MUITreeItem} from "./MUITreeItem";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
-
-// FIXME:
-// - the MUITreeItem needs to recurse itself... should not be done here.
-//   use our own toggleExpanded I think..
-
-const useStyles = makeStyles(
-    createStyles({
-        root: {
-            // height: 264,
-            // flexGrow: 1,
-            // maxWidth: 1000,
-        },
-    }),
-);
-
-type NodeID = string;
 
 export type NodeSelectToggleType = 'click' | 'checkbox';
 
@@ -40,23 +22,10 @@ interface IProps {
 
 export const MUITreeView = React.memo((props: IProps) => {
 
-    const classes = useStyles();
-
-    const itemProps = {
-        onNodeExpand: props.toggleExpanded,
-        onNodeCollapse: props.toggleExpanded,
-        onNodeSelectToggle: props.toggleSelected
-    };
-
-    const {root} = props;
-
     return (
         <TreeView
             selected={[...props.selected]}
             expanded={[...props.expanded]}
-            // onNodeToggle={(event, nodes) => props.toggleExpanded(nodes)}
-            // expanded={["/#tags"]}
-            // onNodeSelect={}
             >
 
             <MUITreeItem nodeId={props.root.id}
@@ -70,10 +39,3 @@ export const MUITreeView = React.memo((props: IProps) => {
         </TreeView>
     );
 }, isEqual);
-
-
-// {/*<MUITreeItem {...itemProps}*/}
-// {/*             key={child.id}*/}
-// {/*             nodeId={child.id}*/}
-// {/*             label={child.name}*/}
-// {/*             info={child.count}/>*/}

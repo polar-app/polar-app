@@ -87,7 +87,7 @@ export class TagNodes {
     /**
      * Create a hierarchical structure of tags from the tag descriptors.
      */
-    public static createFoldersRoot(opts: CreateOpts): TagNode<TagDescriptor> {
+    public static createFoldersRoot<T extends TagDescriptor>(opts: CreateOpts<T>): TagNode<T> {
 
         const {tags} = opts;
 
@@ -163,8 +163,8 @@ export interface TagMembership {
 
 export type TagType = 'folder' | 'regular';
 
-export interface CreateOpts {
-    readonly tags: ReadonlyArray<TagDescriptor>;
+export interface CreateOpts<T extends TagDescriptor> {
+    readonly tags: ReadonlyArray<T>;
     readonly type: TagType;
 }
 

@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) =>
             },
         },
         label: {
+            paddingLeft: '5px',
             flexGrow: 1,
         },
         info: {

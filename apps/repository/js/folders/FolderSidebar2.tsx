@@ -10,9 +10,6 @@ import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToo
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
 
-
-
-
 export const FolderSidebar2 = () => {
     //
     const store = useFolderSidebarStore();
@@ -22,11 +19,11 @@ export const FolderSidebar2 = () => {
         <Paper square
                elevation={0}
                style={{
+                   display: 'flex',
                    flexGrow: 1,
                    flexDirection: "column",
+                   minHeight: 0
                }}>
-
-            {/*FIXME: this isn't overflowing properly.. the header should be fixed*/}
 
             <MUIPaperToolbar borderBottom
                              padding={0.5}>
@@ -57,22 +54,32 @@ export const FolderSidebar2 = () => {
                 </div>
             </MUIPaperToolbar>
 
-            {store.foldersRoot &&
-                <div style={{marginLeft: '8px'}}>
-                    <MUITreeView root={store.foldersRoot}
-                                 toggleExpanded={callbacks.toggleExpanded}
-                                 toggleSelected={NULL_FUNCTION}
-                                 collapseNode={callbacks.collapseNode}
-                                 expandNode={callbacks.expandNode}
-                                 selected={store.selected}
-                                 expanded={store.expanded}
-                    />
-                </div>}
+            {/*FIXME: the root folder needs to have a special name of 'Folders'*/}
 
-            <MUITagList tags={store.tagsView}
-                        selected={store.selected}
-                        selectRow={callbacks.selectRow}
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     overflow: 'auto'
+                 }}>
+
+                {store.foldersRoot &&
+                    <div style={{marginLeft: '8px'}}>
+                        <MUITreeView root={store.foldersRoot}
+                                     toggleExpanded={callbacks.toggleExpanded}
+                                     toggleSelected={NULL_FUNCTION}
+                                     collapseNode={callbacks.collapseNode}
+                                     expandNode={callbacks.expandNode}
+                                     selected={store.selected}
+                                     expanded={store.expanded}
                         />
+                    </div>}
+
+                <MUITagList tags={store.tagsView}
+                            selected={store.selected}
+                            selectRow={callbacks.selectRow}
+                            />
+            </div>
+
         </Paper>
     )
 
