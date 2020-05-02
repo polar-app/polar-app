@@ -12,12 +12,8 @@ import {AddTagsDropdown} from "./AddTagsDropdown";
 
 // FIXME this works BUT:
 //
-// - no callbacks to change the doc repo store for selected tags...
-// - no drop down for creating new tags...
 // - nested folders aren't being expanded by default on init.
-// - the 'active' color for the folders is wrong
-// - the 'active' color for items isn't right on hover.
-// FIXME: needs a context menu...
+// - no context menu...
 
 export const FolderSidebar2 = () => {
     //
