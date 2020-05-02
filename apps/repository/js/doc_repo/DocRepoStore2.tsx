@@ -12,7 +12,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
-import {TableSelection} from "./TableSelection";
+import {SelectionEvents} from "./SelectionEvents";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -369,10 +369,10 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const store = storeProvider();
 
-        const selected = TableSelection.selectRow(selectedIdx,
-            event,
-            type,
-            store.selected);
+        const selected = SelectionEvents.selectRow(selectedIdx,
+                                                   event,
+                                                   type,
+                                                   store.selected);
 
         setStore({
             ...store,

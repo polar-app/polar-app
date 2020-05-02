@@ -1,10 +1,25 @@
-import Box from "@material-ui/core/Box";
-import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {NodeSelectToggleType} from "./MUITreeView";
 import isEqual from "react-fast-compare";
+import {createStyles} from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            alignItems: 'center'
+        },
+        label: {
+            flexGrow: 1,
+        },
+        info: {
+            color: theme.palette.text.hint,
+        },
+    }),
+);
 interface IProps {
     readonly onNodeSelectToggle: (node: string, type: NodeSelectToggleType) => void;
     readonly nodeId: string;
@@ -14,28 +29,26 @@ interface IProps {
 }
 
 export const MUITreeItemLabel = React.memo((props: IProps) => {
+
+    const classes = useStyles();
+
     return (
-        <div style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
+        <div className={classes.root}>
 
-            <Checkbox checked={props.selected}
-                      onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}
-                      style={{padding: 0}}
+            {/*<Checkbox checked={props.selected}*/}
+            {/*          onChange={() => props.onNodeSelectToggle(props.nodeId, 'checkbox')}*/}
+            {/*          style={{padding: 0}}*/}
 
-            />
+            {/*/>*/}
 
-            <div style={{flexGrow: 1}}
+            <div className={classes.label}
                  onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
                 {props.label}
             </div>
 
-            <div onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
-
-                <Typography variant="caption" color="textSecondary">
-                    {props.info}
-                </Typography>
+            <div className={classes.info}
+                 onClick={() => props.onNodeSelectToggle(props.nodeId, 'click')}>
+                {props.info}
             </div>
 
         </div>

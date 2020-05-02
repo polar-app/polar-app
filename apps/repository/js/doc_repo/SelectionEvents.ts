@@ -4,12 +4,20 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 
-export namespace TableSelection {
+/**
+ * Code to allow the user to select multiple items.
+ */
+export namespace SelectionEvents {
 
     export function selectRow(selectedIdx: number,
                               event: React.MouseEvent,
                               type: SelectRowType,
                               selected: ReadonlyArray<number>) {
+
+        // FIXME the behavior here is basically teh same betweek click and
+        // checkbox except unmodified single clicks.  unmodified single clicks
+        // toggle the current item for checkbox and focus the selection for
+        // click
 
         selectedIdx = Numbers.toNumber(selectedIdx);
 
@@ -29,11 +37,55 @@ export namespace TableSelection {
         // - none: do nothing.  this is used when the context menu is being used and no additional
         //         items are being changed.
 
+        // modifier:
+        //
+        //    - shift: shift key
+        //    - control: control or meta key (Apple key on MacOS)
+        //
+        //    - type:
+        //         - click
+        //         - context
+        //         -
+
+        //    type    |  modifier |
+        // |----------|-----------|
+        // | checkbox |  shift    |
+
         type SelectionStrategy = 'one' | 'range' | 'toggle' | 'none';
 
         type SelectedRows = ReadonlyArray<number>;
 
         const computeStrategy = (): SelectionStrategy => {
+
+            if (type === 'checkbox') {
+                return 'toggle';
+            }
+
+            if (type === 'click') {
+
+                if (event.getModifierState("Shift")) {
+                    return 'range';
+                }
+
+                if (event.getModifierState("Control") || event.getModifierState("Meta")) {
+                    return 'toggle';
+                }
+
+            }
+
+            if (type === 'context') {
+
+                if (selected.includes(selectedIdx)) {
+                    return 'none';
+                }
+
+            }
+
+            return 'one';
+
+        };
+
+        const computeStrategy2 = (): SelectionStrategy => {
 
             if (type === 'checkbox') {
                 return 'toggle';

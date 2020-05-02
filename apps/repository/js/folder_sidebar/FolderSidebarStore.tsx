@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {TNode, TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
@@ -11,8 +11,14 @@ import isEqual from "react-fast-compare";
 
 export type NodeID = string;
 
-interface IFolderSidebarStore {
+/**
+ * The primary fields from which the store is derived.
+ */
+interface IFolderSidebarStoreSource {
 
+    /**
+     * The filter of the current tags.
+     */
     readonly filter: string;
 
     /**
@@ -20,9 +26,13 @@ interface IFolderSidebarStore {
      */
     readonly tags: ReadonlyArray<TagDescriptor>;
 
-    readonly foldersRoot: TRoot<TagDescriptor> | undefined;
+}
 
-    readonly tagsRoot: TRoot<TagDescriptor> | undefined;
+interface IFolderSidebarStore extends IFolderSidebarStoreSource {
+
+    readonly tagsView: ReadonlyArray<TagDescriptor>;
+
+    readonly foldersRoot: TRoot<TagDescriptor> | undefined;
 
     /**
      * The state of selected nodes.
@@ -44,14 +54,15 @@ interface IFolderSidebarCallbacks {
     readonly collapseNode: (node: NodeID) => void;
     readonly expandNode: (node: NodeID) => void;
 
+    readonly setFilter: (text: string) => void;
 
 }
 
 const folderStore: IFolderSidebarStore = {
     filter: "",
     tags: [],
+    tagsView: [],
     foldersRoot: undefined,
-    tagsRoot: undefined,
     selected: [],
     expanded: []
 }
@@ -65,28 +76,48 @@ function mutatorFactory(): Mutator {
 }
 
 function reduce(store: IFolderSidebarStore,
-                setStore: (store: IFolderSidebarStore) => void,
-                tags: ReadonlyArray<TagDescriptor>) {
+                source: IFolderSidebarStoreSource): IFolderSidebarStore {
 
-    type TNodeTuple = [TNode<TagDescriptor>, TNode<TagDescriptor>];
+    function computeFiltered(tags: ReadonlyArray<TagDescriptor>) {
 
-    function rebuildTree(): TNodeTuple {
-        const foldersRoot = TagNodes.createFoldersRoot({tags, type: 'folder'})
-        const tagsRoot = TagNodes.createTagsRoot(tags);
-        return [foldersRoot, tagsRoot];
+        const filterPredicate = (tag: TagDescriptor) => {
+            return tag.label.toLowerCase().indexOf(source.filter) !== -1
+        }
+
+        if (source.filter.trim() !== '') {
+            return tags.filter(filterPredicate);
+        }
+
+        return tags;
+
+    }
+
+    function rebuildStore(tags: ReadonlyArray<TagDescriptor>): IFolderSidebarStore {
+
+        const filtered = computeFiltered(tags);
+
+        const tagsView = Tags.onlyRegular(filtered);
+        const foldersRoot = TagNodes.createFoldersRoot({tags: filtered, type: 'folder'})
+
+        return {
+            ...store,
+            filter: source.filter,
+            tags,
+            tagsView,
+            foldersRoot
+        }
+
     }
 
     // always sort the tags so that if they change slightly we at least have a
     // deterministic layout.
-    tags = [...tags].sort((a, b) => b.count - a.count)
+    const tags = [...source.tags].sort((a, b) => b.count - a.count)
 
-    if (! isEqual(store.tags, tags)) {
-        const [foldersRoot, tagsRoot] = rebuildTree();
-
-        setStore({...store, tags, foldersRoot, tagsRoot});
-    } else {
-        // noop
+    if (! isEqual(store.tags, tags) || store.filter.trim() !== source.filter.trim()) {
+        return rebuildStore(tags);
     }
+
+    return store
 
 }
 
@@ -104,8 +135,19 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     const tagsContext = useTagsContext();
 
-    // FIXME which tags type do we want? userTags or docTags???
-    reduce(storeProvider(), setStore, tagsContext?.tagsProvider() || []);
+    function doHookReduce() {
+        const store = storeProvider();
+
+        const newStore = reduce(store, {
+            tags: tagsContext?.tagsProvider() || [],
+            filter: store.filter
+        });
+
+        setStore(newStore);
+
+    }
+
+    doHookReduce();
 
     function toggleSelected(nodes: ReadonlyArray<NodeID>): void {
 
@@ -160,8 +202,15 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function setFilter(filter: string) {
+
+        const store = storeProvider();
+
+        setStore(reduce(store, {...store, filter}));
+    }
+
     return {
-        toggleSelected, toggleExpanded, collapseNode, expandNode
+        toggleSelected, toggleExpanded, collapseNode, expandNode, setFilter
     };
 
 }

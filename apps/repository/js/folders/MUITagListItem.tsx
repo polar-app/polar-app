@@ -1,12 +1,7 @@
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Checkbox from "@material-ui/core/Checkbox";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import React from "react";
-import {FACheckSquare} from "../../../../web/spectron0/material-ui/IconsDemo";
 import {MUIEfficientCheckbox} from "./MUIEfficientCheckbox";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
+import {NodeID} from "../folder_sidebar/FolderSidebarStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
             '&:hover': {
                 background: theme.palette.action.hover
             },
+        },
+        active: {
+            backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
         }
     }),
 );
@@ -44,6 +42,7 @@ interface IProps {
     readonly nodeId: string;
     readonly label: string;
     readonly info: string | number;
+    readonly toggleSelected: (nodes: ReadonlyArray<NodeID>) => void;
 }
 
 export const MUITagListItem = React.memo((props: IProps) => {
@@ -54,6 +53,8 @@ export const MUITagListItem = React.memo((props: IProps) => {
     // way faster... maybe try a fontawesome icon
 
     // FIXME: change row background color when active
+
+    const classNames = props.selected ? [classes.row, classes.active] : [classes.row];
 
     return (
         // <ListItem role={undefined}
@@ -77,7 +78,8 @@ export const MUITagListItem = React.memo((props: IProps) => {
         //     {/*</ListItemSecondaryAction>*/}
         // </ListItem>
 
-        <div className={classes.row}>
+        <div className={classNames.join(' ')}
+             onClick={() => props.toggleSelected([props.nodeId])}>
 
             {/*<Checkbox size="small"/>*/}
 
@@ -89,7 +91,8 @@ export const MUITagListItem = React.memo((props: IProps) => {
             {/*}}/>*/}
 
             <MUIEfficientCheckbox checked={props.selected}
-                                  className={classes.checkbox}/>
+                                  // className={classes.checkbox}
+                                  />
 
             <div className={classes.label}>
                 {props.label}

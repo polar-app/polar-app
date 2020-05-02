@@ -1,18 +1,17 @@
 import * as React from 'react';
-import {TagTree} from '../../../../web/js/ui/tree/TagTree';
-import {Tag} from "polar-shared/src/tags/Tags";
-import {Strings} from 'polar-shared/src/util/Strings';
 import Paper from '@material-ui/core/Paper';
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
-import {MUISearchBox2} from '../../../../web/spectron0/material-ui/MUISearchBox2';
-import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
-// import {useDocRepoFolderStore} from "../doc_repo/DocRepoStore2";
-import {MUITreeView}
-    from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
-import isEqual from "react-fast-compare";
-import {FolderSidebarStore, useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
+import {MUITreeView} from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
+import {
+    useFolderSidebarCallbacks,
+    useFolderSidebarStore
+} from "../folder_sidebar/FolderSidebarStore";
 import {MUITagList} from "./MUITagList";
-import {MUITagTable} from "./MUITagTable";
+import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
+
+
+
 
 export const FolderSidebar2 = () => {
 
@@ -26,7 +25,51 @@ export const FolderSidebar2 = () => {
                    flexGrow: 1,
                    flexDirection: "column",
                }}>
-            <MUITagList tags={store.tags} selected={store.selected}/>
+
+
+            <MUIPaperToolbar borderBottom
+                             padding={0.5}>
+                <div style={{
+                    display: 'flex'
+                }}>
+
+
+                    {/*<InputFilter placeholder="Filter by tag or folder"*/}
+                    {/*             style={{*/}
+                    {/*                 flexGrow: 1*/}
+                    {/*             }}*/}
+                    {/*             onChange={value => this.setFilter(value)}/>*/}
+
+                    <MUISearchBox2
+                        // type="search"
+                        placeholder="Filter by tag or folder"
+                        style={{
+                            flexGrow: 1
+                        }}
+                        onChange={NULL_FUNCTION}/>
+
+                    <div className="ml-1">
+                        {/*FIXME add this back in ...*/}
+                        {/*<AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>*/}
+                    </div>
+
+                </div>
+            </MUIPaperToolbar>
+
+            {store.foldersRoot &&
+                <MUITreeView root={store.foldersRoot}
+                             toggleExpanded={callbacks.toggleExpanded}
+                             toggleSelected={callbacks.toggleSelected}
+                             collapseNode={callbacks.collapseNode}
+                             expandNode={callbacks.expandNode}
+                             selected={store.selected}
+                             expanded={store.expanded}
+                />}
+
+            <MUITagList tags={store.tagsView}
+                        selected={store.selected}
+                        toggleSelected={callbacks.toggleSelected}
+                        />
         </Paper>
     )
 
@@ -62,6 +105,8 @@ export const FolderSidebar5 = () => {
                    flexGrow: 1,
                    padding: '5px'
                }}>
+
+
             {store.foldersRoot &&
                 <MUITreeView root={store.foldersRoot}
                              toggleExpanded={callbacks.toggleExpanded}
@@ -72,15 +117,15 @@ export const FolderSidebar5 = () => {
                              expanded={store.expanded}
                              />}
 
-            {store.tagsRoot &&
-                <MUITreeView root={store.tagsRoot}
-                             toggleExpanded={callbacks.toggleExpanded}
-                             toggleSelected={callbacks.toggleSelected}
-                             collapseNode={callbacks.collapseNode}
-                             expandNode={callbacks.expandNode}
-                             selected={store.selected}
-                             expanded={store.expanded}
-                             />}
+            {/*{store.tagsRoot &&*/}
+            {/*    <MUITreeView root={store.tagsRoot}*/}
+            {/*                 toggleExpanded={callbacks.toggleExpanded}*/}
+            {/*                 toggleSelected={callbacks.toggleSelected}*/}
+            {/*                 collapseNode={callbacks.collapseNode}*/}
+            {/*                 expandNode={callbacks.expandNode}*/}
+            {/*                 selected={store.selected}*/}
+            {/*                 expanded={store.expanded}*/}
+            {/*                 />}*/}
 
         </Paper>
     );
