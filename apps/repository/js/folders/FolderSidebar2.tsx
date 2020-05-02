@@ -58,14 +58,16 @@ export const FolderSidebar2 = () => {
             </MUIPaperToolbar>
 
             {store.foldersRoot &&
-                <MUITreeView root={store.foldersRoot}
-                             toggleExpanded={callbacks.toggleExpanded}
-                             toggleSelected={NULL_FUNCTION}
-                             collapseNode={callbacks.collapseNode}
-                             expandNode={callbacks.expandNode}
-                             selected={store.selected}
-                             expanded={store.expanded}
-                />}
+                <div style={{marginLeft: '8px'}}>
+                    <MUITreeView root={store.foldersRoot}
+                                 toggleExpanded={callbacks.toggleExpanded}
+                                 toggleSelected={NULL_FUNCTION}
+                                 collapseNode={callbacks.collapseNode}
+                                 expandNode={callbacks.expandNode}
+                                 selected={store.selected}
+                                 expanded={store.expanded}
+                    />
+                </div>}
 
             <MUITagList tags={store.tagsView}
                         selected={store.selected}

@@ -1,11 +1,9 @@
-import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {NodeSelectToggleType} from "./MUITreeView";
 import isEqual from "react-fast-compare";
 import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {MUIEfficientCheckbox} from "../../../../apps/repository/js/folders/MUIEfficientCheckbox";
-
 
 const useStyles = makeStyles((theme) =>
     createStyles({
