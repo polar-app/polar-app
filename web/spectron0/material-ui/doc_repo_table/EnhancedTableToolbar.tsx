@@ -46,7 +46,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     // FIXME: the only other thing I have to do is fix callbacks here so that
     // it's not rendered too often...
-    const {rowsPerPage, viewPage, data, selected, page} = store;
+    const {rowsPerPage, viewPage, view, selected, page} = store;
     const {setRowsPerPage, setSelected} = callbacks;
 
     // FIXME: migrate these to callbacks that use getSelected...
@@ -141,7 +141,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
                     rowsPerPageOptions={[5, 10, 25, 50]}
                     component="div"
                     size="small"
-                    count={data.length}
+                    count={view.length}
                     rowsPerPage={rowsPerPage}
                     style={{
                         padding: 0,

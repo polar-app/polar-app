@@ -36,7 +36,7 @@ export function EnhancedTableHead() {
     const store = useDocRepoStore();
     const callbacks = useDocRepoCallbacks();
 
-    const { order, orderBy} = store;
+    const {order, orderBy} = store;
     const {setSort} = callbacks;
 
     return (
