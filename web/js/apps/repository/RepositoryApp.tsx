@@ -114,14 +114,16 @@ export const RepositoryApp = (props: IProps) => {
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(props) =>
-                                             <AnnotationRepoScreen
-                                                 persistenceLayerManager={persistenceLayerManager}
-                                                 persistenceLayerProvider={app.persistenceLayerProvider}
-                                                 tags={props.annotationTags}
-                                                 updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                                 repoDocMetaManager={repoDocMetaManager}
-                                                 repoDocMetaLoader={repoDocMetaLoader}
-                                                 syncBarProgress={app.syncBarProgress}/>
+                                             <FolderSidebarStore>
+                                                 <AnnotationRepoScreen
+                                                     persistenceLayerManager={persistenceLayerManager}
+                                                     persistenceLayerProvider={app.persistenceLayerProvider}
+                                                     tags={props.annotationTags}
+                                                     updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                                     repoDocMetaManager={repoDocMetaManager}
+                                                     repoDocMetaLoader={repoDocMetaLoader}
+                                                     syncBarProgress={app.syncBarProgress}/>
+                                             </FolderSidebarStore>
                                          }/>
                 </AuthRequired>
             </Cached>

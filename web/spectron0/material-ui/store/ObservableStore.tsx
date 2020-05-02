@@ -71,7 +71,7 @@ export type InternalStoreContext<V> = [React.Context<ObservableStore<V>>, Intern
 
 export type StoreContext<V> = [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
-function createObservableStoreContext<V>(initialValue: V): InternalStoreContext<V> {
+function createInternalObservableStore<V>(initialValue: V): InternalObservableStore<V> {
 
     const subject = new Subject<V>();
     subject.next(initialValue);
@@ -80,6 +80,12 @@ function createObservableStoreContext<V>(initialValue: V): InternalStoreContext<
         subject,
         current: initialValue
     }
+
+    return store;
+
+}
+
+function createObservableStoreContext<V>(store: InternalObservableStore<V>): InternalStoreContext<V> {
 
     const context = React.createContext(store as ObservableStore<V>);
 
@@ -96,8 +102,6 @@ export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V
 
 export type UseContextHook<V> = () => V;
 
-export type UseCallbacksHook<C> = () => C;
-
 /**
  * Tag interface just for documentation right now.
  */
@@ -108,8 +112,8 @@ export interface StoreMutator {
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     ObservableStoreProviderComponent<V>,
     UseContextHook<V>,
-    UseCallbacksHook<C>,
-    M
+    UseContextHook<C>,
+    UseContextHook<M>,
 ];
 
 /**
@@ -161,11 +165,23 @@ export interface ObservableStoreOpts<V, M, C> {
 
 }
 
-export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
+type ComponentCallbacksFactory<C> = () => C;
+
+type InitialContextValues<V, M, C> = [
+    InternalObservableStore<V>,
+    SetStore<V>,
+    M,
+    ComponentCallbacksFactory<C>];
+
+/**
+ * Create the initial values of the components we're working with (store
+ * and callbacks)
+ */
+function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>): InitialContextValues<V, M, C> {
 
     const {initialValue, mutatorFactory, callbacksFactory} = opts;
 
-    const [storeContext, store] = createObservableStoreContext(initialValue);
+    const store = createInternalObservableStore(initialValue);
 
     const setStore = (value: V) => {
 
@@ -181,15 +197,27 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     };
 
-    const useContextHook: UseContextHook<V> = () => {
-        return useObservableStore(storeContext);
-    }
-
     const storeProvider = () => store.current;
 
     const mutator = mutatorFactory(storeProvider, setStore);
 
     const componentCallbacksFactory = () => callbacksFactory(storeProvider, setStore, mutator);
+
+    return [store, setStore, mutator, componentCallbacksFactory];
+
+}
+
+export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
+
+    const [store, setStore, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
+
+    // FIXME: just use the one variable here?
+    const [storeContext,] = createObservableStoreContext(store);
+
+    const useContextHook: UseContextHook<V> = () => {
+        return useObservableStore(storeContext);
+    }
+
     const callbacksContext = React.createContext(componentCallbacksFactory);
 
     const useCallbacksHook: UseContextHook<C> = () => {
@@ -199,7 +227,13 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return callbacks;
     }
 
-    const provider = (props: ObservableStoreProps<V>) => {
+    const mutatorContext = React.createContext(mutator);
+
+    const useMutatorHook: UseContextHook<M> = () => {
+        return React.useContext(mutatorContext);
+    }
+
+    const providerComponent = (props: ObservableStoreProps<V>) => {
 
         if (props.value) {
             // change the value to start with...
@@ -209,7 +243,9 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return (
             <storeContext.Provider value={store}>
                 <callbacksContext.Provider value={componentCallbacksFactory}>
-                    {props.children}
+                    <mutatorContext.Provider value={mutator}>
+                        {props.children}
+                    </mutatorContext.Provider>
                 </callbacksContext.Provider>
             </storeContext.Provider>
 
@@ -217,7 +253,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [provider, useContextHook, useCallbacksHook, mutator];
+    return [providerComponent, useContextHook, useCallbacksHook, useMutatorHook];
 
 }
 

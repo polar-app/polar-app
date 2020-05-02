@@ -860,7 +860,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 // FIXME: I want to rework this so that, untilyou use the provider DocRepoStoreProvider,
 // a MOCK object is returned... mock/proxy objects would be great here..
 
-export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, docRepoMutator]
+export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: docRepoStore,
         mutatorFactory,
@@ -877,6 +877,7 @@ export const DocRepoStore2 = React.memo((props: IProps) => {
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
+    const docRepoMutator = useDocRepoMutator();
 
     const doRefresh = React.useCallback(Debouncers.create(() => {
         docRepoMutator.refresh();
