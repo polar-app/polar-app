@@ -1,20 +1,20 @@
 import React from 'react';
-import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {TNode, TRoot} from "../../../../web/js/ui/tree/TreeView";
+import {Tags} from "polar-shared/src/tags/Tags";
+import {TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
-import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+import {
+    createObservableStore,
+    SetStore
+} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
-import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
+import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 
 export type NodeID = string;
 
-/**
- * The primary fields from which the store is derived.
- */
-interface IFolderSidebarStoreSource {
+interface IFolderSidebarStore {
 
     /**
      * The filter of the current tags.
@@ -25,10 +25,6 @@ interface IFolderSidebarStoreSource {
      * The tags used to build the store. Used for rebuilding.
      */
     readonly tags: ReadonlyArray<TagDescriptor>;
-
-}
-
-interface IFolderSidebarStore extends IFolderSidebarStoreSource {
 
     readonly tagsView: ReadonlyArray<TagDescriptor>;
 
@@ -67,57 +63,95 @@ const folderStore: IFolderSidebarStore = {
     expanded: []
 }
 
+interface Mutation {
+    readonly filter: string;
+    readonly tags: ReadonlyArray<TagDescriptor>;
+}
+
 interface Mutator {
 
+    readonly doUpdate: (mutation: Mutation) => void;
+
 }
 
-function mutatorFactory(): Mutator {
-    return {};
-}
+function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
+                        setStore: SetStore<IFolderSidebarStore>): Mutator {
 
-function reduce(store: IFolderSidebarStore,
-                source: IFolderSidebarStoreSource): IFolderSidebarStore {
+    function reduce(mutation: Mutation): IFolderSidebarStore | undefined {
 
-    function computeFiltered(tags: ReadonlyArray<TagDescriptor>) {
+        const store = storeProvider();
 
-        const filterPredicate = (tag: TagDescriptor) => {
-            return tag.label.toLowerCase().indexOf(source.filter) !== -1
+        function computeFiltered(tags: ReadonlyArray<TagDescriptor>) {
+
+            const filterPredicate = (tag: TagDescriptor) => {
+                return tag.label.toLowerCase().indexOf(mutation.filter) !== -1
+            }
+
+            if (mutation.filter.trim() !== '') {
+                return tags.filter(filterPredicate);
+            }
+
+            return tags;
+
         }
 
-        if (source.filter.trim() !== '') {
-            return tags.filter(filterPredicate);
+        function rebuildStore(tags: ReadonlyArray<TagDescriptor>): IFolderSidebarStore | undefined{
+
+            const filtered = computeFiltered(tags);
+
+            const tagsView = Tags.onlyRegular(filtered);
+            const foldersRoot = TagNodes.createFoldersRoot({tags: filtered, type: 'folder'})
+
+            return {
+                ...store,
+                filter: mutation.filter,
+                tags,
+                tagsView,
+                foldersRoot
+            }
+
         }
 
-        return tags;
+        /**
+         * Return true if our data has changed and needs to be reduced.
+         */
+        function hasChanged() {
+
+            if (! isEqual(store.tags, tags)) {
+                return true;
+            }
+
+            if (store.filter.trim() !== mutation.filter.trim()) {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        // always sort the tags so that if they change slightly we at least have a
+        // deterministic layout.
+        const tags = [...mutation.tags].sort((a, b) => b.count - a.count)
+
+        if (hasChanged()) {
+            return rebuildStore(tags);
+        }
+
+        return undefined;
 
     }
 
-    function rebuildStore(tags: ReadonlyArray<TagDescriptor>): IFolderSidebarStore {
+    function doUpdate(mutation: Mutation) {
 
-        const filtered = computeFiltered(tags);
+        const newStore = reduce(mutation);
 
-        const tagsView = Tags.onlyRegular(filtered);
-        const foldersRoot = TagNodes.createFoldersRoot({tags: filtered, type: 'folder'})
-
-        return {
-            ...store,
-            filter: source.filter,
-            tags,
-            tagsView,
-            foldersRoot
+        if (newStore) {
+            setStore(newStore);
         }
 
     }
 
-    // always sort the tags so that if they change slightly we at least have a
-    // deterministic layout.
-    const tags = [...source.tags].sort((a, b) => b.count - a.count)
-
-    if (! isEqual(store.tags, tags) || store.filter.trim() !== source.filter.trim()) {
-        return rebuildStore(tags);
-    }
-
-    return store
+    return {doUpdate};
 
 }
 
@@ -135,19 +169,17 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     const tagsContext = useTagsContext();
 
-    function doHookReduce() {
+    function doHookUpdate() {
+
         const store = storeProvider();
 
-        const newStore = reduce(store, {
-            tags: tagsContext?.tagsProvider() || [],
-            filter: store.filter
-        });
+        const tags = tagsContext?.tagsProvider() || [];
 
-        setStore(newStore);
+        mutator.doUpdate({tags, filter: store.filter});
 
     }
 
-    doHookReduce();
+    doHookUpdate();
 
     function toggleSelected(nodes: ReadonlyArray<NodeID>): void {
 
@@ -206,7 +238,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const store = storeProvider();
 
-        setStore(reduce(store, {...store, filter}));
+        mutator.doUpdate({tags: store.tags, filter});
+
     }
 
     return {

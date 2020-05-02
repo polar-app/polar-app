@@ -14,7 +14,7 @@ import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2
 
 
 export const FolderSidebar2 = () => {
-
+    //
     const store = useFolderSidebarStore();
     const callbacks = useFolderSidebarCallbacks();
 
@@ -46,7 +46,7 @@ export const FolderSidebar2 = () => {
                         style={{
                             flexGrow: 1
                         }}
-                        onChange={NULL_FUNCTION}/>
+                        onChange={callbacks.setFilter}/>
 
                     <div className="ml-1">
                         {/*FIXME add this back in ...*/}
