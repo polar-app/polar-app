@@ -4,6 +4,7 @@ import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
 import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
 import isEqual from "react-fast-compare";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
             '&:hover': {
                 background: theme.palette.action.hover
             },
+            '&$selected, &$selected:hover': {
+                backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
+            },
         },
         label: {
             paddingLeft: '5px',
@@ -34,9 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
         info: {
             color: theme.palette.text.hint,
         },
-        active: {
-            backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
-        }
+        /* Pseudo-class applied to the root element if `selected={true}`. */
+        selected: {},
     }),
 );
 
@@ -55,39 +58,22 @@ export const MUITagListItem = React.memo((props: IProps) => {
     // FIXME: the checkbox is painfully slow... a basic <input type=checkbox is
     // way faster... maybe try a fontawesome icon
 
-    // FIXME: change row background color when active
-
-    const classNames = props.selected ? [classes.root, classes.active] : [classes.root];
-
     const onCheckbox = useCallback((event: React.MouseEvent) => {
         props.selectRow(props.nodeId, event, 'checkbox');
         event.stopPropagation();
     }, []);
 
-    return (
-        // <ListItem role={undefined}
-        //           dense
-        //           button>
-        //     <ListItemIcon>
-        //         <Checkbox
-        //             edge="start"
-        //             checked={props.selected}
-        //             tabIndex={-1}
-        //             disableRipple
-        //
-        //         />
-        //     </ListItemIcon>
-        //     <ListItemText id={props.nodeId}
-        //                   primary={props.label} />
-        //     {/*<ListItemSecondaryAction>*/}
-        //
-        //     {/*    {props.info}*/}
-        //
-        //     {/*</ListItemSecondaryAction>*/}
-        // </ListItem>
+    const className = clsx(
+        classes.root,
+        {
+            [classes.selected]: props.selected,
+        },
+    );
 
-        <div className={classNames.join(' ')}
-             onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
+    return (
+
+        <div className={className}
+            onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
             <div onClick={onCheckbox}
                  className={classes.checkbox}>

@@ -358,7 +358,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             description: "May not create spaces and some extended unicode characters.",
             autoFocus: true,
             onCancel: NULL_FUNCTION,
-            onDone: (text) => doCreateUserTag(text, type);
+            onDone: (text) => doCreateUserTag(text, type)
         });
 
     }
