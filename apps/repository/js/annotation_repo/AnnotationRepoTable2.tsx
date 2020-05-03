@@ -126,17 +126,19 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                     const id = 'annotation-title' + viewIndex;
                                     const rowSelected = selected.includes(viewIndex);
 
+                                    // FIXME: migrate this to a dedicated
+                                    // component so it can be cached easier.
                                     return (
                                         <TableRow
                                             key={viewIndex}
                                             hover
                                             // className={classes.tr}
                                             role="checkbox"
-                                            tabIndex={-1}
+                                            tabIndex={1}
+                                            onFocus={() => handleSelect(viewIndex, annotation)}
                                             onClick={() => handleSelect(viewIndex, annotation)}
                                             // onDoubleClick={() => props.onOpen(row)}
-                                            selected={rowSelected}
-                                            >
+                                            selected={rowSelected}>
 
                                             <TableCell padding="checkbox">
                                                 <Box p={1}>

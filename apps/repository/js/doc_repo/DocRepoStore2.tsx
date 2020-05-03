@@ -702,10 +702,15 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onDragEnd() {
         console.log("onDragEnd");
+        // FIXME no dropped method...
         DraggingSelectedDocs.clear();
     }
 
     function onDropped(tag: Tag) {
+
+        // FIXME: we have to hook this into the sidebar so that we can listen
+        // to when something is dropped on it...
+
         const dragged = DraggingSelectedDocs.get();
         if (dragged) {
             doDropped(dragged, tag);

@@ -295,24 +295,31 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function doDeleted(annotation: IDocAnnotation) {
+    function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
 
-        const {docMeta, annotationType, original} = annotation;
+        for (const annotation of annotations) {
 
-        AnnotationMutations.delete(docMeta, annotationType, original);
+            // TODO: migrate this to something that can have a progress
+            // listener
 
-        async function doAsync() {
+            const {docMeta, annotationType, original} = annotation;
 
-            await repoDocMetaLoader.update(docMeta, 'deleted');
+            AnnotationMutations.delete(docMeta, annotationType, original);
 
-            const {persistenceLayerProvider} = persistence;
-            const persistenceLayer = persistenceLayerProvider();
-            await persistenceLayer.writeDocMeta(docMeta);
+            async function doAsync() {
+
+                await repoDocMetaLoader.update(docMeta, 'deleted');
+
+                const {persistenceLayerProvider} = persistence;
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            }
+
+            doAsync()
+            .catch(err => log.error(err));
 
         }
-
-        doAsync()
-            .catch(err => log.error(err));
 
     }
 
@@ -458,7 +465,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         dialogs.confirm({
             title: "Are you sure you want to delete this item?",
             subtitle: "This is a permanent operation and can't be undone.",
-            onAccept: () => doDeleted(annotation)
+            onAccept: () => doDeleted([annotation])
         })
 
     }

@@ -23,7 +23,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 
 const globalKeyMap = {
     TAG: 't',
-    DELETE: ['d', 'del'],
+    DELETE: ['del', 'backspace'],
     FLAG: 'f',
     ARCHIVE: 'a'
 };

@@ -133,7 +133,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     const callbacks = useDocRepoCallbacks();
 
-    const {selectRow} = callbacks;
+    const {selectRow, setSelected} = callbacks;
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
     const contextMenuHandler: ContextMenuHandler = (event) => {
@@ -156,7 +156,8 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             draggable
             onDragStart={callbacks.onDragStart}
             onDragEnd={callbacks.onDragEnd}
-            tabIndex={props.viewIndex}
+            tabIndex={1}
+            onFocus={() => setSelected([viewIndex])}
             onDoubleClick={callbacks.onOpen}
             selected={selected}>
 

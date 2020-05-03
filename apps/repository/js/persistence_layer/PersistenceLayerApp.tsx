@@ -34,7 +34,7 @@ export interface IPersistence extends ITags {
 }
 
 export const PersistenceContext = createContextMemo<IPersistence>(null!);
-export const TagsContext = createContextMemo<ITags | undefined>(undefined);
+export const TagsContext = createContextMemo<ITags>(null!);
 
 export function usePersistence() {
     return useContextMemo(PersistenceContext);
