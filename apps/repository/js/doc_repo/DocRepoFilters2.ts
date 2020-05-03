@@ -1,13 +1,9 @@
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
-import {FilteredTags} from '../FilteredTags';
-import {Provider} from 'polar-shared/src/util/Providers';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import {TagMatcherFactory} from '../../../../web/js/tags/TagMatcher';
 import {Strings} from "polar-shared/src/util/Strings";
-import {Analytics} from "../../../../web/js/analytics/Analytics";
-import {Preconditions} from "polar-shared/src/Preconditions";
+import {TagMatcher2} from "../../../../web/js/tags/TagMatcher2";
 
 
 /**
@@ -16,7 +12,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
  */
 export namespace DocRepoFilters2 {
 
-    export interface Filters {
+    export interface Filter {
 
         /**
          * When true, only show flagged documents.
@@ -35,27 +31,27 @@ export namespace DocRepoFilters2 {
     }
 
     export function execute(repoDocInfos: ReadonlyArray<RepoDocInfo>,
-                            filters: Filters): ReadonlyArray<RepoDocInfo> {
+                            filter: Filter): ReadonlyArray<RepoDocInfo> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
-        repoDocInfos = doFilterValid(repoDocInfos, filters);
-        repoDocInfos = doFilterByTitle(repoDocInfos, filters);
-        repoDocInfos = doFilterFlagged(repoDocInfos, filters);
-        repoDocInfos = doFilterArchived(repoDocInfos, filters);
-        repoDocInfos = doFilterByTags(repoDocInfos, filters);
+        repoDocInfos = doFilterValid(repoDocInfos, filter);
+        repoDocInfos = doFilterByTitle(repoDocInfos, filter);
+        repoDocInfos = doFilterFlagged(repoDocInfos, filter);
+        repoDocInfos = doFilterArchived(repoDocInfos, filter);
+        repoDocInfos = doFilterByTags(repoDocInfos, filter);
 
         return repoDocInfos;
 
     }
 
-    function doFilterValid(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo> {
+    function doFilterValid(repoDocs: ReadonlyArray<RepoDocInfo>, filter: Filter): ReadonlyArray<RepoDocInfo> {
         return repoDocs.filter(current => RepoDocInfos.isValid(current));
     }
 
-    function doFilterByTitle(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo> {
+    function doFilterByTitle(repoDocs: ReadonlyArray<RepoDocInfo>, filter: Filter): ReadonlyArray<RepoDocInfo> {
 
-        if (! Strings.empty(filters.title)) {
+        if (! Strings.empty(filter.title)) {
 
             // the string we are searching for
             const toSTR = (value: string | undefined): string => {
@@ -66,7 +62,7 @@ export namespace DocRepoFilters2 {
 
             };
 
-            const searchString = toSTR(filters.title);
+            const searchString = toSTR(filter.title);
 
             return repoDocs.filter(current => {
 
@@ -83,9 +79,9 @@ export namespace DocRepoFilters2 {
 
     }
 
-    function doFilterFlagged(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo> {
+    function doFilterFlagged(repoDocs: ReadonlyArray<RepoDocInfo>, filter: Filter): ReadonlyArray<RepoDocInfo> {
 
-        if (filters.flagged) {
+        if (filter.flagged) {
             return repoDocs.filter(current => current.flagged);
         }
 
@@ -93,9 +89,9 @@ export namespace DocRepoFilters2 {
 
     }
 
-    function doFilterArchived(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo> {
+    function doFilterArchived(repoDocs: ReadonlyArray<RepoDocInfo>, filter: Filter): ReadonlyArray<RepoDocInfo> {
 
-        if (! filters.archived) {
+        if (! filter.archived) {
             return repoDocs.filter(current => !current.archived);
         }
 
@@ -103,23 +99,15 @@ export namespace DocRepoFilters2 {
 
     }
 
-    function doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>, filters: Filters): ReadonlyArray<RepoDocInfo>  {
+    function doFilterByTags(repoDocs: ReadonlyArray<RepoDocInfo>, filter: Filter): ReadonlyArray<RepoDocInfo>  {
 
-        if (! filters.tags) {
+        if (! filter.tags || filter.tags.length === 0) {
             return repoDocs;
         }
 
-        const tags = filters.tags.filter(current => current.id !== '/');
+        const tags = filter.tags.filter(current => current.id !== '/');
 
-        const tagMatcherFactory = new TagMatcherFactory(tags);
-
-        if (tags.length === 0) {
-            // we're done as there are no tags.
-            return repoDocs;
-        }
-
-        return tagMatcherFactory.filter(repoDocs,
-                                        current => Object.values(current.docInfo.tags || {}));
+        return TagMatcher2.filter(repoDocs, tags);
 
     }
 

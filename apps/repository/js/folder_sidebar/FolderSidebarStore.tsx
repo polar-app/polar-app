@@ -225,11 +225,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     doHookUpdate();
 
     function doSelectRow(nodes: ReadonlyArray<TagID>) {
-        //
-        // const store = storeProvider();
+        const store = storeProvider();
 
-        // const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
-        tagSelector.onTagSelected(nodes);
+        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
+        tagSelector.onTagSelected(selectedTags);
 
     }
 

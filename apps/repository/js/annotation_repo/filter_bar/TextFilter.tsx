@@ -2,6 +2,9 @@ import * as React from 'react';
 import {UpdateFiltersCallback} from '../AnnotationRepoFiltersHandler';
 import {MUISearchBox2} from "../../../../../web/spectron0/material-ui/MUISearchBox2";
 
+/**
+ * @Deprecated MUI
+ */
 export class TextFilter extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps, context: any) {

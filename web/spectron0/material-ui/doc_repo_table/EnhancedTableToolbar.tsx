@@ -29,9 +29,6 @@ const globalKeyMap = {
 };
 
 interface IProps {
-    readonly onChangePage: (page: number) => void;
-    readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
-    readonly onSelectAllRows: (selected: boolean) => void;
 }
 
 export const EnhancedTableToolbar = React.memo((props: IProps) => {
@@ -46,7 +43,7 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     // FIXME: the only other thing I have to do is fix callbacks here so that
     // it's not rendered too often...
-    const {rowsPerPage, viewPage, view, selected, page} = store;
+    const {rowsPerPage, view, selected, page} = store;
     const {setRowsPerPage, setSelected} = callbacks;
 
     // FIXME: migrate these to callbacks that use getSelected...
@@ -58,8 +55,8 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
         ARCHIVE: callbacks.onArchived
     };
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        props.onChangePage(newPage);
+    const handleChangePage = (event: any, newPage: number) => {
+        callbacks.setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {

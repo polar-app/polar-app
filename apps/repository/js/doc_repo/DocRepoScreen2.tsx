@@ -105,14 +105,6 @@ interface IProps {
 
     readonly persistenceLayerController: PersistenceLayerController;
 
-    readonly repoDocMetaManager: RepoDocMetaManager;
-
-    readonly repoDocMetaLoader: RepoDocMetaLoader;
-
-    readonly tagsProvider: () => ReadonlyArray<TagDescriptor>;
-
-    readonly docRepo: DocRepoRenderProps;
-
 }
 
 export const DocRepoScreen2 = React.memo((props: IProps) => {
@@ -124,6 +116,7 @@ export const DocRepoScreen2 = React.memo((props: IProps) => {
             <RepositoryTour/>
             <header>
 
+                {/*FIXME: RepoHeader2*/}
                 <RepoHeader toggle={(
                                 <Link to="#folders">
                                     <Button color="clear">

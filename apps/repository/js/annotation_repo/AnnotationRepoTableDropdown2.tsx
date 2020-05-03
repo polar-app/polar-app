@@ -1,11 +1,6 @@
 import * as React from 'react';
-import {
-    Exporters,
-    ExportFormat
-} from "../../../../web/js/metadata/exporter/Exporters";
+import {ExportFormat} from "../../../../web/js/metadata/exporter/Exporters";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {Devices} from "polar-shared/src/util/Devices";
 import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -14,20 +9,11 @@ import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/M
 const log = Logger.create();
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly annotations: ReadonlyArray<IDocAnnotation>;
+    readonly onExport: (format: ExportFormat) => void;
 }
 
-interface IState {
 
-}
-
-export class AnnotationRepoTableDropdown extends React.Component<IProps, IState> {
-
-    constructor(props: Readonly<IProps>) {
-        super(props);
-        this.onExport = this.onExport.bind(this);
-    }
+export class AnnotationRepoTableDropdown2 extends React.Component<IProps> {
 
     public render() {
 
@@ -48,10 +34,10 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
 
                     <div>
                         <MUIMenuItem text="Download as Markdown"
-                                     onClick={() => this.onExport('markdown')}/>
+                                     onClick={() => this.props.onExport('markdown')}/>
 
                         <MUIMenuItem text="Download as JSON"
-                                     onClick={() => this.onExport('json')}/>
+                                     onClick={() => this.props.onExport('json')}/>
                     </div>
 
                 </MUIMenu>
@@ -61,9 +47,5 @@ export class AnnotationRepoTableDropdown extends React.Component<IProps, IState>
 
     }
 
-    private onExport(format: ExportFormat) {
-        Exporters.doExportForAnnotations(this.props.persistenceLayerProvider, this.props.annotations, format)
-            .catch(err => log.error("Unable to download: ", err));
-    }
 
 }

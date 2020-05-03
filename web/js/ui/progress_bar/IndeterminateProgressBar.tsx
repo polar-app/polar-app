@@ -1,11 +1,12 @@
 import * as React from 'react';
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 export class IndeterminateProgressBar extends React.PureComponent<IProps, IState> {
 
     public render() {
 
         return (
-            <div className="polar-indeterminate-progress" style={this.props.style}/>
+            <LinearProgress />
         );
     }
 

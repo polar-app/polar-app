@@ -8,7 +8,7 @@ import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sort
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -46,7 +46,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import { TagSelectorContext } from "../store/TagSelector";
+import {TagSelectorContext} from "../store/TagSelector";
 
 const log = Logger.create();
 
@@ -94,7 +94,7 @@ interface IDocRepoStore {
      */
     readonly rowsPerPage: number;
 
-    readonly filters: DocRepoFilters2.Filters;
+    readonly filters: DocRepoFilters2.Filter;
 
     /**
      * Only used to trigger a store refresh.  This is not strictly necessary
@@ -116,7 +116,7 @@ interface IDocRepoCallbacks {
     readonly setPage: (page: number) => void;
     readonly setRowsPerPage: (rowsPerPage: number) => void;
     readonly setSelected: (selected: ReadonlyArray<number>) => void;
-    readonly setFilters: (filters: DocRepoFilters2.Filters) => void;
+    readonly setFilters: (filters: DocRepoFilters2.Filter) => void;
     readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
 
     // *** actual actions that manipulate the backend
@@ -158,12 +158,12 @@ interface IDocRepoCallbacks {
      * Called when the user is filtering the UI based on a tag and is narrowing
      * down what's displayed by one or more tag.
      */
-    readonly onTagSelected: (tags: ReadonlyArray<string>) => void;
+    readonly onTagSelected: (tags: ReadonlyArray<Tag>) => void;
 
 }
 
 // the default state of the store...
-const docRepoStore: IDocRepoStore = {
+const initialStore: IDocRepoStore = {
     data: [],
     view: [],
     viewPage: [],
@@ -184,50 +184,50 @@ const docRepoStore: IDocRepoStore = {
     _refresh: 0
 }
 
-/**
- * Apply a reducer a temporary state, to compute the effective state.
- */
-function reduce(tmpStore: IDocRepoStore): IDocRepoStore {
-
-    // compute the view, then the viewPage
-
-    // FIXME: we only have to resort and recompute the view when the filters
-    // or the sort order changes.
-
-    const {data, page, rowsPerPage, order, orderBy, filters} = tmpStore;
-
-    // Now that we have new data, we have to also apply the filters and sort
-    // order to the results, then update the view + viewPage
-
-    const view = Mappers.create(data)
-        .map(current => DocRepoFilters2.execute(current, filters))
-        .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
-        .collect()
-
-    const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-    const newStore = {...tmpStore, view, viewPage};
-
-    return newStore;
-
-}
 
 //
 // FIXME might neeed a new object type... mutator... which we can give to the
 // callbacks object so that it can mutate the store without using hooks.
 
 interface Mutator {
+    doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
     setDataProvider: (dataProvider: DataProvider) => void;
     refresh: () => void;
-    doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
 }
 
 type DataProvider = Provider<ReadonlyArray<RepoDocInfo>>;
 
 function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
-                        setStore: (store: IDocRepoStore) => void) {
+                        setStore: (store: IDocRepoStore) => void): Mutator {
 
     let dataProvider: DataProvider = () => [];
+
+
+    /**
+     * Apply a reducer a temporary state, to compute the effective state.
+     */
+    function reduce(tmpStore: IDocRepoStore): IDocRepoStore {
+
+        // compute the view, then the viewPage
+
+        // FIXME: we only have to resort and recompute the view when the filters
+        // or the sort order changes.
+
+        const {data, page, rowsPerPage, order, orderBy, filters} = tmpStore;
+
+        // Now that we have new data, we have to also apply the filters and sort
+        // order to the results, then update the view + viewPage
+
+        const view = Mappers.create(data)
+            .map(current => DocRepoFilters2.execute(current, filters))
+            .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
+            .collect()
+
+        const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+        return {...tmpStore, view, viewPage};
+
+    }
 
     function doReduceAndUpdateState(tmpState: IDocRepoStore) {
 
@@ -422,7 +422,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         });
     }
 
-    function setFilters(filters: DocRepoFilters2.Filters) {
+    function setFilters(filters: DocRepoFilters2.Filter) {
         const store = storeProvider();
 
         mutator.doReduceAndUpdateState({
@@ -671,13 +671,9 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doShowFile(firstSelected()!);
     }
 
-    function onTagSelected(filteredTags: ReadonlyArray<string>): void {
-
+    function onTagSelected(tags: ReadonlyArray<Tag>): void {
         const store = storeProvider();
-        const tags = Tags.lookupByTagLiteral(tagsProvider(), filteredTags);
-
         setFilters({...store.filters, tags});
-
     }
 
     function onDragStart(event: React.DragEvent) {
@@ -854,7 +850,12 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     const persistence = usePersistence();
 
     return createCallbacks(storeProvider,
-        setStore, mutator, repoDocMetaManager, tagsProvider, dialogs, persistence);
+                           setStore,
+                           mutator,
+                           repoDocMetaManager,
+                           tagsProvider,
+                           dialogs,
+                           persistence);
 
 }
 
@@ -863,7 +864,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
-        initialValue: docRepoStore,
+        initialValue: initialStore,
         mutatorFactory,
         callbacksFactory
     });
