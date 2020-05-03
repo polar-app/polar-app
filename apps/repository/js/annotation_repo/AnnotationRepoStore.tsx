@@ -297,7 +297,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             const persistenceLayer = persistenceLayerProvider();
             await persistenceLayer.writeDocMeta(docMeta);
 
-        };
+        }
 
         doAsync()
             .catch(err => log.error(err));
@@ -355,15 +355,22 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doUpdated(annotation: IDocAnnotation) {
 
-        if (! this.props.repoAnnotation) {
-            return;
-        }
-
-        const {docMeta, annotationType, original} = this.props.repoAnnotation;
+        const {docMeta, annotationType, original} = annotation;
 
         AnnotationMutations.update(docMeta, annotationType, original);
 
-        // FIXME: this doesn't write to the store though...
+        async function doAsync() {
+
+            await repoDocMetaLoader.update(docMeta, 'updated');
+
+            const {persistenceLayerProvider} = persistence;
+            const persistenceLayer = persistenceLayerProvider();
+            await persistenceLayer.writeDocMeta(docMeta);
+
+        }
+
+        doAsync()
+            .catch(err => log.error(err));
 
     }
 
@@ -438,7 +445,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         })
 
     }
-
 
     return {
         doOpen,
