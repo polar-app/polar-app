@@ -6,10 +6,10 @@ import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
 import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import React from "react";
 import {
-    IPersistence,
+    IPersistence, ITags,
     usePersistence,
     useRepoDocMetaLoader,
-    useRepoDocMetaManager
+    useRepoDocMetaManager, useTagsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -27,7 +27,7 @@ import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MU
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {MUITagInputControls} from "../MUITagInputControls";
 import {
@@ -35,6 +35,9 @@ import {
     ExportFormat
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
+import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
+import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const log = Logger.create();
 
@@ -216,7 +219,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          mutator: Mutator,
                          dialogs: DialogManager,
                          persistence: IPersistence,
-                         repoDocMetaLoader: RepoDocMetaLoader): IAnnotationRepoCallbacks => {
+                         repoDocMetaLoader: RepoDocMetaLoader,
+                         tagsContext: ITags): IAnnotationRepoCallbacks => {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -251,6 +255,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         mutator.doReduceAndUpdateState({
             ...store,
+            page: 0,
+            selected: [],
             filter: {
                 ...store.filter,
                 tags
@@ -306,50 +312,55 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doTagged(annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) {
 
-        // const annotation = this.props.repoAnnotation!;
-        // const docMeta = annotation.docMeta;
-        // const updates = {tags: Tags.toMap(tags)};
-        //
-        // setTimeout(() => {
-        //
-        //     AnnotationMutations.update(docMeta,
-        //                                annotation.annotationType,
-        //                                {...annotation.original, ...updates});
-        //
-        //     const doPersist = async () => {
-        //
-        //         await this.props.repoDocMetaUpdater.update(docMeta, 'updated');
-        //
-        //         const persistenceLayer = this.props.persistenceLayerManager.get();
-        //         await persistenceLayer.writeDocMeta(docMeta);
-        //
-        //     };
-        //
-        //     doPersist()
-        //         .catch(err => log.error(err));
-        //
-        // }, 1);
+        const docMeta = annotation.docMeta;
+        const updates = {
+            tags: Tags.toMap(tags)
+        };
+
+        AnnotationMutations.update(docMeta,
+                                   annotation.annotationType,
+                                   {...annotation.original, ...updates});
+
+        const doAsync = async () => {
+
+            await repoDocMetaLoader.update(docMeta, 'updated');
+
+            const {persistenceLayerProvider} = persistence;
+            const persistenceLayer = persistenceLayerProvider();
+            await persistenceLayer.writeDocMeta(docMeta);
+
+        };
+
+        doAsync()
+            .catch(err => log.error(err));
 
     }
 
     function onTagged() {
 
-        // FIXME: get the selected items/items, then prompt for the new tags
-        // on it...
-        //
-        // const availableTags = tagProvider();
-        //
-        // const autocompleteProps: AutocompleteDialogProps<Tag> = {
-        //     title: "Assign Tags to Annotation",
-        //     options: availableTags.map(toAutocompleteOption),
-        //     defaultOptions: props.existingTags.map(toAutocompleteOption),
-        //     createOption: MUITagInputControls.createOption,
-        //     onCancel: NULL_FUNCTION,
-        //     onChange: NULL_FUNCTION,
-        //     onDone: tags => doTagged(tags)
-        // };
-        //
-        // dialogs.autocomplete(autocompleteProps);
+        const annotation = selectedAnnotation();
+
+        if (! annotation) {
+            return;
+        }
+
+        const {tagsProvider} = tagsContext;
+
+        const availableTags = tagsProvider();
+
+        const existingTags = Object.values(annotation.tags || {});
+
+        const autocompleteProps: AutocompleteDialogProps<Tag> = {
+            title: "Assign Tags to Annotation",
+            options: availableTags.map(toAutocompleteOption),
+            defaultOptions: existingTags.map(toAutocompleteOption),
+            createOption: MUITagInputControls.createOption,
+            onCancel: NULL_FUNCTION,
+            onChange: NULL_FUNCTION,
+            onDone: tags => doTagged(annotation, tags)
+        };
+
+        dialogs.autocomplete(autocompleteProps);
 
     }
 
@@ -470,13 +481,15 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const dialogs = useDialogManager();
     const persistence = usePersistence();
     const repoDocMetaLoader = useRepoDocMetaLoader();
+    const tagsContext = useTagsContext();
 
     return createCallbacks(storeProvider,
                            setStore,
                            mutator,
                            dialogs,
                            persistence,
-                           repoDocMetaLoader);
+                           repoDocMetaLoader,
+                           tagsContext);
 
 };
 

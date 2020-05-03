@@ -79,7 +79,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
 
         persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
 
-            const eventHandler = async () => {
+            const doAsync = async () => {
 
                 const {progress, docMetaMutations} = docMetaSnapshotEvent;
 
@@ -93,11 +93,11 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
                     DeterminateProgressBar.update(100);
                 }
 
-                this.dispatchMutations(docMetaMutations, progress);
+                await this.dispatchMutations(docMetaMutations, progress);
 
             };
 
-            eventHandler()
+            doAsync()
                 .catch(err => log.error("Could not handle snapshot: ", err));
 
         });
@@ -130,7 +130,7 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
 
         const progress = ProgressTrackers.singleTaskTerminated('doc-meta-update:' + fingerprint);
 
-        this.dispatchMutations([docMetaMutation], progress);
+        await this.dispatchMutations([docMetaMutation], progress);
 
     }
 
