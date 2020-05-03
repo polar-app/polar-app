@@ -117,12 +117,15 @@ export const DocRepoTable2 = React.memo(() => {
                                                         />
                                                     );
                                                 })}
-                                            {emptyRows > 0 && (
-                                                <TableRow
-                                                    style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                                    <TableCell colSpan={6}/>
-                                                </TableRow>
-                                            )}
+                                            {/*FIXME: I think we should show that the user*/}
+                                            {/*has N more archived documents here that we */}
+                                            {/*can show them*/}
+                                            {/*{emptyRows > 0 && (*/}
+                                            {/*    <TableRow*/}
+                                            {/*        style={{height: (dense ? 33 : 53) * emptyRows}}>*/}
+                                            {/*        <TableCell colSpan={6}/>*/}
+                                            {/*    </TableRow>*/}
+                                            {/*)}*/}
                                         </TableBody>
                                     </Table>
                                 </TableContainer>

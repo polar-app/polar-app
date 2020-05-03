@@ -94,7 +94,6 @@ function createObservableStoreContext<V>(store: InternalObservableStore<V>): Int
 }
 
 interface ObservableStoreProps<V> {
-    readonly value?: V;
     readonly children: JSX.Element | Provider<JSX.Element>;
 }
 
@@ -169,7 +168,6 @@ type ComponentCallbacksFactory<C> = () => C;
 
 type InitialContextValues<V, M, C> = [
     InternalObservableStore<V>,
-    SetStore<V>,
     M,
     ComponentCallbacksFactory<C>];
 
@@ -203,22 +201,22 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
     const componentCallbacksFactory = () => callbacksFactory(storeProvider, setStore, mutator);
 
-    return [store, setStore, mutator, componentCallbacksFactory];
+    return [store, mutator, componentCallbacksFactory];
 
 }
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    const [store, setStore, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
+    // const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
 
     // FIXME: just use the one variable here?
-    const [storeContext,] = createObservableStoreContext(store);
+    const [storeContext,] = createObservableStoreContext<V>(null!);
 
     const useContextHook: UseContextHook<V> = () => {
         return useObservableStore(storeContext);
     }
 
-    const callbacksContext = React.createContext(componentCallbacksFactory);
+    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(null!);
 
     const useCallbacksHook: UseContextHook<C> = () => {
         const callbacksContextFactory = React.useContext(callbacksContext);
@@ -227,7 +225,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return callbacks;
     }
 
-    const mutatorContext = React.createContext(mutator);
+    const mutatorContext = React.createContext<M>(null!);
 
     const useMutatorHook: UseContextHook<M> = () => {
         return React.useContext(mutatorContext);
@@ -235,14 +233,9 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const providerComponent = (props: ObservableStoreProps<V>) => {
 
-        // if (props.value) {
-        //     // change the value to start with...
-        //     setStore(props.value);
-        // }
-
-        // FIXME: this actually breaks the main view...
-        // const [store,, mutator, componentCallbacksFactory]
-        //     = useMemo(() => createInitialContextValues(opts), []);
+        // FIXME: this actually breaks the main view now but not sure why
+        const [store, mutator, componentCallbacksFactory]
+            = useMemo(() => createInitialContextValues(opts), []);
 
         return (
             <storeContext.Provider value={store}>

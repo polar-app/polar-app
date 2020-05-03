@@ -46,6 +46,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
+import { TagSelectorContext } from "../store/TagSelector";
 
 const log = Logger.create();
 
@@ -871,13 +872,17 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const DocRepoStore2 = React.memo((props: IProps) => {
+/**
+ * Once the provider is in place, we load the repo which uses the observer store.
+ */
+const DocRepoStoreLoader = React.memo((props: IProps) => {
 
     // TODO: migrate to useRepoDocInfos
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
     const docRepoMutator = useDocRepoMutator();
+    const callbacks = useDocRepoCallbacks();
 
     const doRefresh = React.useCallback(Debouncers.create(() => {
         docRepoMutator.refresh();
@@ -892,12 +897,24 @@ export const DocRepoStore2 = React.memo((props: IProps) => {
     useComponentWillUnmount(() => {
 
         Preconditions.assertCondition(repoDocMetaLoader.removeEventListener(doRefresh),
-            "Failed to remove event listener");
+                                      "Failed to remove event listener");
     });
 
     return (
-        <DocRepoStoreProvider>
+        <TagSelectorContext.Provider value={{onTagSelected: callbacks.onTagSelected}}>
             {props.children}
+        </TagSelectorContext.Provider>
+    );
+
+});
+
+export const DocRepoStore2 = React.memo((props: IProps) => {
+
+    return (
+        <DocRepoStoreProvider>
+            <DocRepoStoreLoader>
+                {props.children}
+            </DocRepoStoreLoader>
         </DocRepoStoreProvider>
     )
 

@@ -1,19 +1,15 @@
-import { useDocRepoCallbacks } from "../doc_repo/DocRepoStore2";
+import React from 'react';
 
 interface TagSelector {
     readonly onTagSelected: (tags: ReadonlyArray<string>) => void;
 }
 
+const NullTagSelector: TagSelector = {
+    onTagSelected: (tags: ReadonlyArray<string>) => console.log("WARN: using null tag selector: ", tags)
+}
+
+export const TagSelectorContext = React.createContext<TagSelector>(NullTagSelector);
+
 export function useTagSelector(): TagSelector {
-
-    // FIXME use a context to determine which is the active store/screen.  This is
-    // just a simple context to toggle us back and forth
-    const docRepoCallbacks = useDocRepoCallbacks();
-
-    function onTagSelected(tags: ReadonlyArray<string>) {
-        docRepoCallbacks.onTagSelected(tags);
-    }
-
-    return {onTagSelected};
-
+    return React.useContext(TagSelectorContext);
 }
