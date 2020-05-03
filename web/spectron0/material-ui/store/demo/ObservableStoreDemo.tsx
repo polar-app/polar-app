@@ -107,7 +107,7 @@ export const ObservableStoreDemo = () => {
 
     return (
         <TagStoreProvider>
-            <MyInvitationStoreProvider value={{invited: true}}>
+            <MyInvitationStoreProvider>
                 <IntermediateComponent/>
             </MyInvitationStoreProvider>
         </TagStoreProvider>
