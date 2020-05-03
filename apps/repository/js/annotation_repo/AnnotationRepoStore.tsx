@@ -9,7 +9,7 @@ import {
     IPersistence,
     usePersistence,
     useRepoDocMetaLoader,
-    useRepoDocMetaManager, useTagsProvider
+    useRepoDocMetaManager
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -25,19 +25,16 @@ import {Either} from "../../../../web/js/util/Either";
 import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
-import { Logger } from "polar-shared/src/logger/Logger";
+import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {MUITagInputControls} from "../MUITagInputControls";
-import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     Exporters,
     ExportFormat
 } from "../../../../web/js/metadata/exporter/Exporters";
-import {DocRepoFilters2} from "../doc_repo/DocRepoFilters2";
+import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 
 const log = Logger.create();
 
@@ -171,7 +168,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
         // Now that we have new data, we have to also apply the filters and sort
         // order to the results, then update the view + viewPage
 
-        // FIXME: dont' use AnnotationRepoFilters2 ...
+        // FIXME: sort with Sorting.stableSort.
         const view = Mappers.create(data)
             .map(current => AnnotationRepoFilters2.execute(current, filter))
             // .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
@@ -218,7 +215,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          setStore: (store: IAnnotationRepoStore) => void,
                          mutator: Mutator,
                          dialogs: DialogManager,
-                         persistence: IPersistence): IAnnotationRepoCallbacks => {
+                         persistence: IPersistence,
+                         repoDocMetaLoader: RepoDocMetaLoader): IAnnotationRepoCallbacks => {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -285,28 +283,24 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
+    function doDeleted(annotation: IDocAnnotation) {
 
-        // if (! this.props.repoAnnotation) {
-        //     log.warn("no repoAnnotation");
-        //     return;
-        // }
-        //
-        // const {docMeta, annotationType, original} = this.props.repoAnnotation;
-        //
-        // AnnotationMutations.delete(docMeta, annotationType, original);
-        //
-        // const doPersist = async () => {
-        //
-        //     await this.props.repoDocMetaUpdater.update(docMeta, 'deleted');
-        //
-        //     const persistenceLayer = this.props.persistenceLayerManager.get();
-        //     await persistenceLayer.writeDocMeta(docMeta);
-        //
-        // };
-        //
-        // doPersist()
-        //     .catch(err => log.error(err));
+        const {docMeta, annotationType, original} = annotation;
+
+        AnnotationMutations.delete(docMeta, annotationType, original);
+
+        async function doAsync() {
+
+            await repoDocMetaLoader.update(docMeta, 'deleted');
+
+            const {persistenceLayerProvider} = persistence;
+            const persistenceLayer = persistenceLayerProvider();
+            await persistenceLayer.writeDocMeta(docMeta);
+
+        };
+
+        doAsync()
+            .catch(err => log.error(err));
 
     }
 
@@ -398,10 +392,51 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function setFilter(filter: Partial<AnnotationRepoFilters2.Filter>) {
 
+        const store = storeProvider();
+
+        mutator.doReduceAndUpdateState({
+            ...store,
+            filter: {
+                ...store.filter,
+                ... filter
+            }
+        });
+
+    }
+
+    function selectedAnnotation(): IDocAnnotation | undefined {
+
+        const store = storeProvider();
+
+        const {selected, viewPage} = store;
+
+        if (selected.length === 0) {
+            return undefined;
+        }
+
+        if (selected.length > 1) {
+            throw new Error("Too many selected");
+        }
+
+        return viewPage[selected[0]];
+
     }
 
     function onDeleted() {
-        // noop
+
+        const annotation = selectedAnnotation();
+
+        if (! annotation) {
+            log.warn("no repoAnnotation");
+            return;
+        }
+
+        dialogs.confirm({
+            title: "Are you sure you want to delete this item?",
+            subtitle: "This is a permanent operation and can't be undone.",
+            onAccept: () => doDeleted(annotation)
+        })
+
     }
 
 
@@ -428,12 +463,14 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
 
     const dialogs = useDialogManager();
     const persistence = usePersistence();
+    const repoDocMetaLoader = useRepoDocMetaLoader();
 
     return createCallbacks(storeProvider,
                            setStore,
                            mutator,
                            dialogs,
-                           persistence);
+                           persistence,
+                           repoDocMetaLoader);
 
 };
 
