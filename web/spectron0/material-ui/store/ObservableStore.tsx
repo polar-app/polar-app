@@ -207,16 +207,15 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    // const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
+    const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
 
-    // FIXME: just use the one variable here?
-    const [storeContext,] = createObservableStoreContext<V>(null!);
+    const [storeContext,] = createObservableStoreContext<V>(store);
 
     const useContextHook: UseContextHook<V> = () => {
         return useObservableStore(storeContext);
     }
 
-    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(null!);
+    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
 
     const useCallbacksHook: UseContextHook<C> = () => {
         const callbacksContextFactory = React.useContext(callbacksContext);
@@ -225,7 +224,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return callbacks;
     }
 
-    const mutatorContext = React.createContext<M>(null!);
+    const mutatorContext = React.createContext<M>(mutator);
 
     const useMutatorHook: UseContextHook<M> = () => {
         return React.useContext(mutatorContext);
@@ -233,9 +232,11 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const providerComponent = (props: ObservableStoreProps<V>) => {
 
-        // FIXME: this actually breaks the main view now but not sure why
-        const [store, mutator, componentCallbacksFactory]
-            = useMemo(() => createInitialContextValues(opts), []);
+        // FIXME this now breaks because when I restore and go back to the
+        // document view all the data is gone and a new context is created.
+
+        // const [store, mutator, componentCallbacksFactory]
+        //     = useMemo(() => createInitialContextValues(opts), []);
 
         return (
             <storeContext.Provider value={store}>
