@@ -233,7 +233,14 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onSelected(viewIndex: number, docAnnotation: IDocAnnotation) {
-        // noop
+
+        const store = storeProvider();
+
+        mutator.doReduceAndUpdateState({
+            ...store,
+            selected: [viewIndex]
+        });
+
     }
 
     /**
@@ -366,26 +373,32 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
+    function doExport(format: ExportFormat) {
+
+        const store = storeProvider();;
+
+        async function doAsync() {
+
+            const {persistenceLayerProvider} = persistence;
+            await Exporters.doExportForAnnotations(persistenceLayerProvider,
+                                                   store.view,
+                                                   format);
+        }
+
+        doAsync()
+        .catch(err => log.error("Unable to download: ", err));
+
+    }
+
     function onExport(format: ExportFormat) {
-        // noop
-
-        // FIXME: this probably needs to prompt for the download path
-        // Exporters.doExportForAnnotations(this.props.persistenceLayerProvider, this.props.annotations, format)
-        // .catch(err => log.error("Unable to download: ", err));
-
+        // TODO: we might want to confirm if they are downloading a LARGE
+        // number of annotations
+        doExport(format);
     }
 
     function setFilter(filter: Partial<AnnotationRepoFilters2.Filter>) {
 
     }
-
-    // function doUpdated(annotation: IDocAnnotation) {
-    //     // noop
-    // }
-    //
-    // function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
-    //     // noop
-    // }
 
     function onDeleted() {
         // noop
