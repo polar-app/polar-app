@@ -33,21 +33,14 @@ interface IProps {
 
 export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
-    // FIXME: consider using a HOC to skip re-rendering when these contexts
-    // change.
     const store = useDocRepoStore();
     const callbacks = useDocRepoCallbacks();
 
-    // FIXME this is where mobx would rock because only these two variables
-    // would be re-rendered.
-
-    // FIXME: the only other thing I have to do is fix callbacks here so that
-    // it's not rendered too often...
     const {rowsPerPage, view, selected, page} = store;
     const {setRowsPerPage, setSelected} = callbacks;
 
-    // FIXME: migrate these to callbacks that use getSelected...
-
+    // FIXME: migrate the key bindings to their own component since they can
+    // just depend on the key bindings now.
     const globalKeyHandlers = {
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,

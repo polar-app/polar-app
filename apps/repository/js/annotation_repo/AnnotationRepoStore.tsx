@@ -166,7 +166,13 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
         // FIXME: we only have to resort and recompute the view when the filters
         // or the sort order changes.
 
-        const {data, page, rowsPerPage, order, orderBy, filter} = tmpStore;
+        // FIXME: more sort options...
+
+        // FIXME: try to auto select the first item BUT the problem is that we
+        // might not want to do this due to updates that aren't reloading the
+        // page.  Make sure all the mutation type would work with this.
+
+        const {data, page, rowsPerPage, filter} = tmpStore;
 
         // Now that we have new data, we have to also apply the filters and sort
         // order to the results, then update the view + viewPage

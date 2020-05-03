@@ -8,10 +8,7 @@ import {EnhancedTableHead} from "./EnhancedTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {MUIDialogController} from "../dialogs/MUIDialogController";
-import {
-    useDocRepoCallbacks,
-    useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
 
 export const DocRepoTable2 = React.memo(() => {
