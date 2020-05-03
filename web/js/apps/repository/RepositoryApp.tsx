@@ -30,8 +30,6 @@ import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
 import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
-import {DeviceRouter} from "../../ui/DeviceRouter";
-import {FeatureToggleRouter} from "../../ui/FeatureToggleRouter";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 import {App} from "./AppInitializer";
@@ -40,7 +38,8 @@ import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
 import {MUIDialogController} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
-import {FolderSidebarStore} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
+import {DocRepoSidebarTagStore} from "../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore";
+import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
 
 interface IProps {
     readonly app: App;
@@ -65,7 +64,7 @@ export const RepositoryApp = (props: IProps) => {
                                          render={(docRepo) =>
                                              <MUIDialogController>
                                                  <DocRepoStore2>
-                                                     <FolderSidebarStore>
+                                                     <DocRepoSidebarTagStore>
                                                          <DocRepoScreen2
                                                              persistenceLayerProvider={app.persistenceLayerProvider}
                                                              persistenceLayerController={app.persistenceLayerController}
@@ -73,7 +72,7 @@ export const RepositoryApp = (props: IProps) => {
                                                              docRepo={docRepo}
                                                              repoDocMetaManager={repoDocMetaManager}
                                                              repoDocMetaLoader={repoDocMetaLoader}/>
-                                                     </FolderSidebarStore>
+                                                     </DocRepoSidebarTagStore>
                                                  </DocRepoStore2>
                                              </MUIDialogController>
                                          }/>
@@ -114,7 +113,7 @@ export const RepositoryApp = (props: IProps) => {
                                          repoDocMetaLoader={repoDocMetaLoader}
                                          persistenceLayerManager={persistenceLayerManager}
                                          render={(props) =>
-                                             <FolderSidebarStore>
+                                             <AnnotationRepoSidebarTagStore>
                                                  <AnnotationRepoScreen
                                                      persistenceLayerManager={persistenceLayerManager}
                                                      persistenceLayerProvider={app.persistenceLayerProvider}
@@ -123,7 +122,7 @@ export const RepositoryApp = (props: IProps) => {
                                                      repoDocMetaManager={repoDocMetaManager}
                                                      repoDocMetaLoader={repoDocMetaLoader}
                                                      syncBarProgress={app.syncBarProgress}/>
-                                             </FolderSidebarStore>
+                                             </AnnotationRepoSidebarTagStore>
                                          }/>
                 </AuthRequired>
             </Cached>

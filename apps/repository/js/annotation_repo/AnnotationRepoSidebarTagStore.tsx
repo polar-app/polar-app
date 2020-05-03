@@ -5,8 +5,11 @@ import {
     FolderSidebarStoreContext
 } from "../folder_sidebar/FolderSidebarStore";
 
-export const [DocRepoSidebarTagStoreProvider, useDocRepoSidebarTagStoreStore, useDocRepoSidebarTagStoreCallbacks] =
-    createFolderSidebarStore();
+export const [
+    AnnotationRepoSidebarTagStoreProvider,
+    useAnnotationRepoSidebarTagStoreStore,
+    useAnnotationRepoSidebarTagStoreCallbacks
+] = createFolderSidebarStore();
 
 interface IProps {
     readonly children: JSX.Element;
@@ -14,8 +17,8 @@ interface IProps {
 
 const StoreBinder = (props: IProps) => {
 
-    const store = useDocRepoSidebarTagStoreStore();
-    const callbacks = useDocRepoSidebarTagStoreCallbacks();
+    const store = useAnnotationRepoSidebarTagStoreStore();
+    const callbacks = useAnnotationRepoSidebarTagStoreCallbacks();
 
     return (
         <FolderSidebarStoreContext.Provider value={store}>
@@ -28,14 +31,14 @@ const StoreBinder = (props: IProps) => {
 
 }
 
-export const DocRepoSidebarTagStore = (props: IProps) => {
+export const AnnotationRepoSidebarTagStore = (props: IProps) => {
 
     return (
-        <DocRepoSidebarTagStoreProvider>
+        <AnnotationRepoSidebarTagStoreProvider>
             <StoreBinder>
                 {props.children}
             </StoreBinder>
-        </DocRepoSidebarTagStoreProvider>
+        </AnnotationRepoSidebarTagStoreProvider>
     )
 
 }

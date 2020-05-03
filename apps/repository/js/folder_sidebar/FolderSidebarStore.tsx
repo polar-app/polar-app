@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
@@ -380,19 +380,30 @@ export function createFolderSidebarStore() {
     });
 }
 
-export const [FolderSidebarStoreProvider, useFolderSidebarStore, useFolderSidebarCallbacks]
-    = createFolderSidebarStore();
+export const FolderSidebarStoreContext = React.createContext<IFolderSidebarStore>(null!);
+export const FolderSidebarCallbacksContext = React.createContext<IFolderSidebarCallbacks>(null!);
 
-interface IProps {
-    readonly children: JSX.Element;
+export function useFolderSidebarStore() {
+    return useContext(FolderSidebarStoreContext);
 }
 
-export const FolderSidebarStore = (props: IProps) => {
-
-    return (
-        <FolderSidebarStoreProvider>
-            {props.children}
-        </FolderSidebarStoreProvider>
-    )
-
+export function useFolderSidebarCallbacks() {
+    return useContext(FolderSidebarCallbacksContext);
 }
+
+// export const [FolderSidebarStoreProvider, useFolderSidebarStore, useFolderSidebarCallbacks]
+//     = createFolderSidebarStore();
+
+// interface IProps {
+//     readonly children: JSX.Element;
+// }
+//
+// export const FolderSidebarStore = (props: IProps) => {
+//
+//     return (
+//         <FolderSidebarStoreProvider>
+//             {props.children}
+//         </FolderSidebarStoreProvider>
+//     )
+//
+// }
