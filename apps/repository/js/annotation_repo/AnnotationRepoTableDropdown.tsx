@@ -1,9 +1,8 @@
 import * as React from 'react';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import {UncontrolledDropdown} from "reactstrap";
-import {Exporters, ExportFormat} from "../../../../web/js/metadata/exporter/Exporters";
+import {
+    Exporters,
+    ExportFormat
+} from "../../../../web/js/metadata/exporter/Exporters";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
@@ -11,6 +10,7 @@ import {Devices} from "polar-shared/src/util/Devices";
 import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+
 const log = Logger.create();
 
 export class AnnotationRepoTableDropdown extends React.Component<IProps, IState> {

@@ -3,9 +3,7 @@ import {MUIDocDropdownMenu} from "./MUIDocDropdownMenu";
 import IconButton from "@material-ui/core/IconButton";
 import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
-import {DocActions} from "./DocActions";
-import { Callback1 } from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 
 interface IProps {
     readonly onClick: Callback1<React.MouseEvent>;

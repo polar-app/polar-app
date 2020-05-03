@@ -48,7 +48,7 @@ const onClick = (props: IProps) => {
 
 };
 
-export const MUIMenuItem = (props: IProps) => (
+export const MUIMenuItem = React.forwardRef((props: IProps, ref) => (
 
     <MenuItem id={props.id}
               onClick={() => onClick(props)}>
@@ -62,4 +62,4 @@ export const MUIMenuItem = (props: IProps) => (
 
     </MenuItem>
 
-);
+));

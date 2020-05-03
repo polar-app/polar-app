@@ -1,5 +1,5 @@
 import {Subject, Subscription} from "rxjs";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
@@ -235,10 +235,14 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const providerComponent = (props: ObservableStoreProps<V>) => {
 
-        if (props.value) {
-            // change the value to start with...
-            setStore(props.value);
-        }
+        // if (props.value) {
+        //     // change the value to start with...
+        //     setStore(props.value);
+        // }
+
+        // FIXME: this actually breaks the main view...
+        // const [store,, mutator, componentCallbacksFactory]
+        //     = useMemo(() => createInitialContextValues(opts), []);
 
         return (
             <storeContext.Provider value={store}>

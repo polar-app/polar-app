@@ -311,7 +311,9 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const store = storeProvider();
 
-        mutator.doUpdate({...store, filter});
+        // TODO: it might be nice if this was a state, which can be restore
+        // after the filter but not sure about that
+        mutator.doUpdate({...store, filter, selected: []});
 
     }
 
@@ -370,12 +372,16 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
 }
 
+export function createFolderSidebarStore() {
+    return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
+          initialValue: folderStore,
+          mutatorFactory,
+          callbacksFactory
+    });
+}
+
 export const [FolderSidebarStoreProvider, useFolderSidebarStore, useFolderSidebarCallbacks]
-    = createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
-    initialValue: folderStore,
-    mutatorFactory,
-    callbacksFactory
-});
+    = createFolderSidebarStore();
 
 interface IProps {
     readonly children: JSX.Element;

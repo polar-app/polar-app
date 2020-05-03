@@ -1,38 +1,40 @@
 import * as React from 'react';
-import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import AddIcon from '@material-ui/icons/Add';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
-import {useFolderSidebarCallbacks} from '../folder_sidebar/FolderSidebarStore';
+import {MUIPopper} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIPopper";
+import isEqual from "react-fast-compare";
+import Menu from '@material-ui/core/Menu';
 
-export const AddTagsDropdown = () => {
+interface IProps {
+    readonly onCreateFolder: () => void;
+    readonly onCreateTag: () => void;
+}
 
-    const callbacks = useFolderSidebarCallbacks();
+export const AddTagsDropdown = React.memo((props: IProps) => {
 
     return (
 
-        <MUIMenu button={{
-            icon: <AddIcon/>
-        }}
-                 placement="bottom-end">
+        <div>
+            <MUIPopper icon={<AddIcon/>}
+                       placement="bottom-end">
 
-            <div>
+                <div>
 
-                <MUIMenuItem
-                    onClick={() => callbacks.onCreateUserTag('folder')}
-                    icon={<CreateNewFolderIcon/>}
-                    text="Create Folder"/>
+                    <MUIMenuItem onClick={props.onCreateFolder}
+                                 icon={<CreateNewFolderIcon/>}
+                                 text="Create Folder"/>
 
+                    <MUIMenuItem onClick={props.onCreateTag}
+                                 icon={<LocalOfferIcon/>}
+                                 text="Create Tag"/>
 
-                <MUIMenuItem onClick={() => callbacks.onCreateUserTag('tag')}
-                             icon={<LocalOfferIcon/>}
-                             text="Create Tag"/>
+                </div>
 
-            </div>
-
-        </MUIMenu>
+            </MUIPopper>
+        </div>
 
     );
-};
+}, isEqual);
 

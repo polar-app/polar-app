@@ -52,7 +52,8 @@ export const FolderSidebar2 = () => {
                         onChange={callbacks.setFilter}/>
 
                     <div className="ml-1">
-                        <AddTagsDropdown/>
+                        <AddTagsDropdown onCreateFolder={() => callbacks.onCreateUserTag('folder')}
+                                         onCreateTag={() => callbacks.onCreateUserTag('tag')}/>
                     </div>
 
                 </div>
@@ -87,7 +88,7 @@ export const FolderSidebar2 = () => {
         </Paper>
     )
 
-}
+};
 
 export const FolderSidebar4 = () => (
     <div>disabled folder sidebar</div>

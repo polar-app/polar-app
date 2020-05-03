@@ -44,10 +44,10 @@ export const AnnotationDropdown = (props: IProps) => {
         <>
             {/*FIXME: move to MUIMenuIconButton*/}
             <MUIMenu button={{
-                                 icon: <MoreVertIcon/>,
-                                 disabled: props.disabled,
-                                 size: 'small'
-                             }}
+                         icon: <MoreVertIcon/>,
+                         disabled: props.disabled,
+                         size: 'small'
+                     }}
                      placement='bottom-end'>
                 <div>
 
@@ -71,36 +71,3 @@ export const AnnotationDropdown = (props: IProps) => {
 
     );
 };
-
-//
-//     <Dropdown id={this.props.id}
-//               isOpen={this.state.open}
-//               toggle={this.toggle}>
-//
-
-//
-//             <DropdownItem style={Styles.DropdownItem} onClick={() => this.onCreateFlashcard()}>
-//                 Create flashcard
-//             </DropdownItem>
-//
-//             <DropdownItem style={Styles.DropdownItem} onClick={() => this.onJumpToContext()}>
-//                 Jump to context
-//             </DropdownItem>
-//
-//             <DropdownItem divider />
-//
-//             <DropdownItem style={Styles.DropdownItem}
-//                           className="text-danger"
-//                           disabled={this.props.annotation.immutable}
-//                           onClick={() => this.onDeleteSelected()}>
-//                 Delete
-//             </DropdownItem>
-//
-//         </DropdownMenu>
-//
-//
-//     </Dropdown>
-//
-// </div>
-
-// );

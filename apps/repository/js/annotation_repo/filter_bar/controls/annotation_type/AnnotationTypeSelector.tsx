@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {Buttons} from "../Buttons";
 import NoteIcon from '@material-ui/icons/Note';
 import {MUIMenu} from "../../../../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 import {AnnotationTypeMenuItem} from "./AnnotationTypeMenuItem";
@@ -45,10 +44,10 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
 
             <MUIMenu caret
                      button={{
-                                 text: "Annotation Types",
-                                 icon: <NoteIcon/>,
-                                 size: 'small'
-                             }}>
+                         text: "Annotation Types",
+                         icon: <NoteIcon/>,
+                         size: 'small'
+                     }}>
 
                 <div>
                     {options.map((current, idx) => {

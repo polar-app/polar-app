@@ -1,9 +1,5 @@
 import * as React from 'react';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import {ManualDropdown} from '../doc_repo/ManaulDropdown';
-import {SimpleTooltipEx} from '../../../../web/js/ui/tooltip/SimpleTooltipEx';
 import {AddContentMenuItem} from './AddContentMenuItem';
 import {AddContentButtons} from "./AddContentButtons";
 import {FloatingAction} from "../../../../web/js/ui/mobile/FloatingAction";
@@ -12,10 +8,8 @@ import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
-import SettingsIcon from "@material-ui/icons/Settings";
-import Container from "@material-ui/core/Container";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import {ExampleDropdownMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/ExampleDropdownMenu";
+
 namespace runtime {
 
     function doAddFilesFromDisk(props: IProps) {
@@ -49,13 +43,13 @@ namespace runtime {
 
         <MUIMenu caret
                  button={{
-                             icon: <AddIcon/>,
-                             text: 'Add',
-                             color: 'primary',
-                             size: 'large',
-                             disableRipple: true,
-                             disableFocusRipple: true,
-                         }}>
+                     icon: <AddIcon/>,
+                     text: 'Add',
+                     color: 'primary',
+                     size: 'large',
+                     disableRipple: true,
+                     disableFocusRipple: true,
+                 }}>
             <div>
 
                 <AddContentMenuItem id="add-content-import-from-disk"
