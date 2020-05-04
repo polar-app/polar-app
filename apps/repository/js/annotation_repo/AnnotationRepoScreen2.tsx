@@ -17,6 +17,7 @@ import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationPreviewView2} from "./AnnotationPreviewView2";
 import {RepoHeader2} from "../repo_header/RepoHeader2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
+import { AnnotationRepoKeyBindings } from './AnnotationRepoKeyBindings';
 
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
@@ -249,6 +250,8 @@ namespace screen {
             {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
             {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
             {/*        {...props}/>*/}
+
+            <AnnotationRepoKeyBindings/>
 
             <main.Desktop />
 

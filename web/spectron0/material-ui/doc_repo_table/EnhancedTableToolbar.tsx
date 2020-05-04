@@ -19,8 +19,6 @@ import {
 import isEqual from "react-fast-compare";
 import {Numbers} from "polar-shared/src/util/Numbers";
 
-// FIXME:  delete doesn't work.
-
 const globalKeyMap = {
     TAG: 't',
     DELETE: ['del', 'backspace'],
