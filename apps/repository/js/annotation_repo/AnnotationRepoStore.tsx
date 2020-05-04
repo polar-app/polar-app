@@ -397,9 +397,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function onTagged() {
 
-        const annotation = selectedAnnotation();
+        const annotations = selectedAnnotations();
 
-        if (! annotation) {
+        if (annotations.length === 0) {
             return;
         }
 
@@ -407,19 +407,60 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         const availableTags = tagsProvider();
 
-        const existingTags = Object.values(annotation.tags || {});
+        // FIXME: move this to a storeHelpers class which does all the work
+        // necessary to determine the mode.
 
         // FIXME: make this SET and APPEND here by looking at the
         // mode and whether we're working with 1 item or N items...
 
+        interface AutocompleteStrategy {
+            readonly strategy: ComputeNewTagsStrategy;
+            readonly existingTags: ReadonlyArray<Tag>;
+            readonly description?: string | JSX.Element;
+        }
+
+        function computeAutocompleteStrategy(): AutocompleteStrategy {
+
+            if (annotations.length > 1) {
+
+                return {
+                    strategy: 'add',
+                    existingTags: [],
+                    description: (
+                        <>
+                            This will <b>ADD</b> the selected tags to <b>{annotations.length}</b> items.
+                        </>
+                    )
+                };
+
+
+            }
+
+            const annotation = annotations[0];
+
+            return {
+                strategy: 'set',
+                existingTags: Object.values(annotation.tags || {}),
+                description: (
+                    <>
+                        This will <b>ADD</b> the selected tags to <b>{annotations.length}</b> items.
+                    </>
+                )
+            };
+
+        }
+
+        const autocompleteStrategy = computeAutocompleteStrategy();
+
         const autocompleteProps: AutocompleteDialogProps<Tag> = {
             title: "Assign Tags to Annotation",
+            description: autocompleteStrategy.description,
             options: availableTags.map(toAutocompleteOption),
-            defaultOptions: existingTags.map(toAutocompleteOption),
+            defaultOptions: autocompleteStrategy.existingTags.map(toAutocompleteOption),
             createOption: MUITagInputControls.createOption,
             onCancel: NULL_FUNCTION,
             onChange: NULL_FUNCTION,
-            onDone: tags => doTagged([annotation], tags)
+            onDone: tags => doTagged(annotations, tags, autocompleteStrategy.strategy)
         };
 
         dialogs.autocomplete(autocompleteProps);

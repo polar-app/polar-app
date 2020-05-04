@@ -7,6 +7,8 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputCompleteListener} from "../../../spectron0/material-ui/complete_listeners/InputCompleteListener";
 import MUICreatableAutocomplete, {MUICreatableAutocompleteProps} from "../../../spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Box from "@material-ui/core/Box";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface AutocompleteDialogProps<T> extends MUICreatableAutocompleteProps<T> {
     readonly title?: string;
+    readonly description?: string | JSX.Element;
     readonly onCancel: () => void;
     readonly onDone: (values: ReadonlyArray<T>) => void;
 
@@ -86,7 +89,15 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
 
                     <DialogContent>
 
+                        {props.description &&
+                            <Box pt={1}>
+                                <DialogContentText className={classes.description}>
+                                    {props.description}
+                                </DialogContentText>
+                            </Box>}
+
                         <MUICreatableAutocomplete {...props}
+                                                  autoFocus={true}
                                                   onChange={handleChange}/>
 
                     </DialogContent>
