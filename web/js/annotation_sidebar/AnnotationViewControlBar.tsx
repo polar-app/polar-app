@@ -292,6 +292,10 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
         // FIXME: nothing is actually persisted here...
 
+        // FIXME: we're going to have to use a context method to handle this
+        // because we need to now break off the methods here so that we can
+        // place child components in different places.
+
         this.setState({
             activeInputComponent: 'none'
         });

@@ -52,7 +52,9 @@ const log = Logger.create();
 interface IAnnotationRepoStore {
 
     readonly data: ReadonlyArray<IDocAnnotation>;
+
     readonly view: ReadonlyArray<IDocAnnotation>;
+
     readonly viewPage: ReadonlyArray<IDocAnnotation>;
     /**
      * The selected records as pointers in to viewPage
@@ -262,12 +264,15 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                        event: React.MouseEvent,
                        type: SelectRowType) {
 
+
         const store = storeProvider();
 
         const selected = SelectionEvents.selectRow(selectedIdx,
                                                    event,
                                                    type,
                                                    store.selected);
+
+        console.log("FIXME: selectRow: ", selected);
 
         mutator.doReduceAndUpdateState({
             ...store,
