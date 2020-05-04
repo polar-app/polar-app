@@ -86,38 +86,37 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
         },
     );
 
-    const onDrop = useCallback(() => {
-        props.onDrop(props.nodeId)
-    }, [])
-
     // FIXME: needs tabindex and focus...
     return (
-        <DragTarget2 onDrop={onDrop}>
-            <div className={className}
-                 onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
+        <div className={className}
+             onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
-                <div onClick={onCheckbox}
-                     className={classes.checkbox}>
-                    <MUIEfficientCheckbox checked={props.selected}/>
-                </div>
-
-                <div className={classes.label}>
-                    {props.label}
-                </div>
-
-                <div className={classes.info}>
-                    {props.info}
-                </div>
-
+            <div onClick={onCheckbox}
+                 className={classes.checkbox}>
+                <MUIEfficientCheckbox checked={props.selected}/>
             </div>
-        </DragTarget2>
-    )
+
+            <div className={classes.label}>
+                {props.label}
+            </div>
+
+            <div className={classes.info}>
+                {props.info}
+            </div>
+
+        </div>
+    );
 
 }, isEqual);
 
 export const MUITagListItem = React.memo((props: IProps) => {
+
+    const onDrop = useCallback(() => {
+        props.onDrop(props.nodeId)
+    }, [])
+
     return (
-        <DragTarget2 onDrop={() => props.onDrop(props.nodeId)}>
+        <DragTarget2 onDrop={onDrop}>
             <MUITagListItemInner {...props}/>
         </DragTarget2>
     )

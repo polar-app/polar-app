@@ -26,6 +26,7 @@ interface IState {
     readonly active: boolean;
 }
 
+// TODO: this might be better as a HOC for performance.
 export class DragTarget2 extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

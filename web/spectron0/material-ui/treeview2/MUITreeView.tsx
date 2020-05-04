@@ -1,15 +1,11 @@
 import React from 'react';
 import TreeView from '@material-ui/lab/TreeView';
 import {TagNode} from "../../../js/tags/TagNode";
-import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {MUITreeItem} from "./MUITreeItem";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
-
-export type NodeSelectToggleType = 'click' | 'checkbox';
 
 interface IProps {
     readonly root: TagNode<TagDescriptorSelected>;
@@ -21,6 +17,8 @@ interface IProps {
 
     readonly selected: ReadonlyArray<string>;
     readonly expanded: ReadonlyArray<string>;
+    readonly onDrop: (tagID: TagID) => void;
+
 }
 
 export const MUITreeView = React.memo((props: IProps) => {
@@ -36,7 +34,8 @@ export const MUITreeView = React.memo((props: IProps) => {
                          onNodeExpand={props.expandNode}
                          onNodeCollapse={props.collapseNode}
                          selectRow={props.selectRow}
-                         childNodes={props.root.children}/>
+                         childNodes={props.root.children}
+                         onDrop={props.onDrop}/>
 
         </TreeView>
     );

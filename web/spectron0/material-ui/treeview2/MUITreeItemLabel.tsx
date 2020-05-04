@@ -7,6 +7,7 @@ import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
 import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
+import {useDragContext} from "../../../js/ui/tree/DragTarget2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -25,7 +26,13 @@ const useStyles = makeStyles((theme) =>
             '&$selected, &$selected:hover': {
                 backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
             },
-        },
+            '&$drag, &$drag:hover': {
+                // backgroundColor: fade(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+
+                backgroundColor: theme.palette.primary.light,
+                color: theme.palette.primary.contrastText,
+            },
+       },
         label: {
             paddingLeft: '5px',
             flexGrow: 1,
@@ -41,6 +48,8 @@ const useStyles = makeStyles((theme) =>
         },
         /* Pseudo-class applied to the root element if `selected={true}`. */
         selected: {},
+        /* Pseudo-class applied to the root element if `drag={true}`. */
+        drag: {},
     }),
 );
 interface IProps {
@@ -50,11 +59,13 @@ interface IProps {
     readonly selected: boolean;
     readonly label: string;
     readonly info?: string | number;
+
 }
 
 export const MUITreeItemLabel = React.memo((props: IProps) => {
 
     const classes = useStyles();
+    const drag = useDragContext();
 
     const onCheckbox = useCallback((event: React.MouseEvent) => {
         props.selectRow(props.nodeId, event, 'checkbox');
@@ -67,6 +78,7 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
         classes.root,
         {
             [classes.selected]: props.selected,
+            [classes.drag]: drag.active,
         },
     );
 

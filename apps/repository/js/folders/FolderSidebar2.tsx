@@ -76,7 +76,8 @@ export const FolderSidebar2 = () => {
                                      expandNode={callbacks.expandNode}
                                      selected={store.selected}
                                      expanded={store.expanded}
-                        />
+                                     onDrop={callbacks.onDrop}
+                                     />
                     </div>}
 
                 <MUITagList tags={store.tagsView}
