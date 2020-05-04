@@ -6,10 +6,12 @@ import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
 import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import React from "react";
 import {
-    IPersistence, ITags,
+    IPersistence,
+    ITags,
     usePersistence,
     useRepoDocMetaLoader,
-    useRepoDocMetaManager, useTagsContext
+    useRepoDocMetaManager,
+    useTagsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -39,8 +41,9 @@ import {
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
-import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
 
@@ -78,7 +81,6 @@ interface IAnnotationRepoStore {
 
 }
 
-
 interface IAnnotationRepoCallbacks {
 
     readonly onSelected: (viewIndex: number, docAnnotation: IDocAnnotation) => void;
@@ -97,7 +99,9 @@ interface IAnnotationRepoCallbacks {
 
     readonly doUpdated: (annotation: IDocAnnotation) => void;
 
-    readonly doTagged: (annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) => void;
+    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotation>,
+                        tags: ReadonlyArray<Tag>,
+                        strategy: ComputeNewTagsStrategy) => void;
 
     readonly onTagged: () => void;
 
@@ -108,6 +112,11 @@ interface IAnnotationRepoCallbacks {
     readonly onExport: (format: ExportFormat) => void;
 
     readonly setFilter: (filter: Partial<AnnotationRepoFilters2.Filter>) => void;
+
+    readonly onDragStart: (event: React.DragEvent) => void;
+    readonly onDragEnd: () => void;
+
+    readonly doDropped: (annotations: ReadonlyArray<IDocAnnotation>, tag: Tag) => void;
 
     readonly onDropped: (tag: Tag) => void;
 
@@ -328,29 +337,45 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function doTagged(annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) {
+    function doTagged(annotations: ReadonlyArray<IDocAnnotation>,
+                      tags: ReadonlyArray<Tag>,
+                      strategy: ComputeNewTagsStrategy = 'set') {
 
-        const docMeta = annotation.docMeta;
-        const updates = {
-            tags: Tags.toMap(tags)
-        };
+        if (annotations.length === 0) {
+            log.warn("No annotations");
+            return;
+        }
 
-        AnnotationMutations.update(docMeta,
-                                   annotation.annotationType,
-                                   {...annotation.original, ...updates});
+        if (tags.length === 0) {
+            log.warn("No tags");
+            return;
+        }
 
-        const doAsync = async () => {
+        for (const annotation of annotations) {
 
-            await repoDocMetaLoader.update(docMeta, 'updated');
+            const docMeta = annotation.docMeta;
+            const updates = {
+                tags: Tags.toMap(tags)
+            };
 
-            const {persistenceLayerProvider} = persistence;
-            const persistenceLayer = persistenceLayerProvider();
-            await persistenceLayer.writeDocMeta(docMeta);
+            AnnotationMutations.update(docMeta,
+                                       annotation.annotationType,
+                                       {...annotation.original, ...updates});
 
-        };
+            const doAsync = async () => {
 
-        doAsync()
-            .catch(err => log.error(err));
+                await repoDocMetaLoader.update(docMeta, 'updated');
+
+                const {persistenceLayerProvider} = persistence;
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            };
+
+            doAsync()
+                .catch(err => log.error(err));
+
+        }
 
     }
 
@@ -375,7 +400,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             createOption: MUITagInputControls.createOption,
             onCancel: NULL_FUNCTION,
             onChange: NULL_FUNCTION,
-            onDone: tags => doTagged(annotation, tags)
+            onDone: tags => doTagged([annotation], tags)
         };
 
         dialogs.autocomplete(autocompleteProps);
@@ -440,21 +465,29 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotation(): IDocAnnotation | undefined {
+    function selectedAnnotations(): ReadonlyArray<IDocAnnotation> {
 
         const store = storeProvider();
 
         const {selected, viewPage} = store;
 
-        if (selected.length === 0) {
+        return selected.map(current => viewPage[current]);
+
+    }
+
+    function selectedAnnotation(): IDocAnnotation | undefined {
+
+        const annotations = selectedAnnotations();
+
+        if (annotations.length === 0) {
             return undefined;
         }
 
-        if (selected.length > 1) {
+        if (annotations.length > 1) {
             throw new Error("Too many selected");
         }
 
-        return viewPage[selected[0]];
+        return annotations[0];
 
     }
 
@@ -474,10 +507,23 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         })
 
     }
-    function onDropped(tag: Tag) {
+
+    function onDragStart(event: React.DragEvent) {
         // noop
     }
 
+    function onDragEnd() {
+        // noop
+    }
+
+    function doDropped(annotations: ReadonlyArray<IDocAnnotation>, tag: Tag) {
+        doTagged(annotations, [tag], 'add');
+    }
+
+    function onDropped(tag: Tag) {
+        const selected = selectedAnnotations();
+        doDropped(selected, tag);
+    }
 
     return {
         doOpen,
@@ -492,7 +538,10 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         doUpdated,
         doDeleted,
         onDeleted,
-        onDropped
+        onDragStart,
+        onDragEnd,
+        doDropped,
+        onDropped,
     };
 
 }
@@ -514,7 +563,7 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
                            repoDocMetaLoader,
                            tagsContext);
 
-};
+}
 
 export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotationRepoCallbacks, useAnnotationRepoMutator]
     = createObservableStore<IAnnotationRepoStore, Mutator, IAnnotationRepoCallbacks>({

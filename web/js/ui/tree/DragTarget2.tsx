@@ -67,6 +67,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
         }
 
         event.preventDefault(); // called to allow the drop.
+        event.stopPropagation();
     }
 
     private onDragLeave(event: React.DragEvent<HTMLDivElement>) {
@@ -78,6 +79,8 @@ export class DragTarget2 extends React.Component<IProps, IState> {
         if (this.state.active) {
             this.setState({active: false});
         }
+
+        event.stopPropagation();
 
     }
 

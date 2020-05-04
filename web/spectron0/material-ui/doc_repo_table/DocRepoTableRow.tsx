@@ -111,16 +111,10 @@ export const TableCellTags = React.memo((props: TableCellTagsProps) => {
 }, isEqual);
 
 interface IProps {
-
     readonly viewIndex: number;
     readonly rawContextMenuHandler: ContextMenuHandler;
     readonly selected: boolean;
     readonly row: RepoDocInfo;
-
-
-    readonly onDragStart?: () => void;
-    readonly onDragEnd?: () => void;
-
 }
 
 // FIXME: enter keyboard command should open the current row...
@@ -136,7 +130,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     const {selectRow, setSelected} = callbacks;
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
-    const contextMenuHandler: ContextMenuHandler = (event) => {
+        const contextMenuHandler: ContextMenuHandler = (event) => {
         selectRow(viewIndex, event, 'context');
         rawContextMenuHandler(event);
     };
@@ -156,8 +150,8 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             draggable
             onDragStart={callbacks.onDragStart}
             onDragEnd={callbacks.onDragEnd}
-            tabIndex={1}
-            onFocus={() => setSelected([viewIndex])}
+            // tabIndex={1}
+            // onFocus={() => setSelected([viewIndex])}
             onDoubleClick={callbacks.onOpen}
             selected={selected}>
 

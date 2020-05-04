@@ -213,7 +213,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     // just trying to get the tagsContext working..
     const repoDocInfos = useRepoDocInfos();
     const tagsContext = useTagsContext();
-    const tagSelector = useTagSidebarEventForwarder();
+    const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
     const persistence = usePersistence();
 
@@ -233,7 +233,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         const store = storeProvider();
 
         const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
-        tagSelector.onTagSelected(selectedTags);
+        tagSidebarEventForwarder.onTagSelected(selectedTags);
 
     }
 
@@ -285,8 +285,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     }
 
     function collapseNode(node: TagID) {
-
-        console.log("FIXME collapseNode: ", node);
 
         const store = storeProvider();
 
@@ -371,6 +369,19 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     }
 
     function onDrop(tagID: TagID) {
+
+        const store = storeProvider();
+
+        const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID]);
+
+        if (selectedTags.length === 0) {
+            return;
+        }
+
+        const selectedTag = selectedTags[0];
+
+        tagSidebarEventForwarder.onDropped(selectedTag);
+
     }
 
     return {

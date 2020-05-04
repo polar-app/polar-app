@@ -8,7 +8,7 @@ import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sort
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Tag} from "polar-shared/src/tags/Tags";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -16,7 +16,6 @@ import {SelectionEvents} from "./SelectionEvents";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {DraggingSelectedDocs} from "./SelectedDocs";
 import {MUITagInputControls} from "../MUITagInputControls";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
@@ -46,7 +45,11 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {TagSidebarEventForwarderContext, TagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
+import {
+    TagSidebarEventForwarder,
+    TagSidebarEventForwarderContext
+} from "../store/TagSidebarEventForwarder";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
 
@@ -120,7 +123,10 @@ interface IDocRepoCallbacks {
     readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
 
     // *** actual actions that manipulate the backend
-    readonly doTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>) => void;
+    readonly doTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>,
+                        tags: ReadonlyArray<Tag>,
+                        strategy: ComputeNewTagsStrategy) => void;
+
     readonly doOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly doRename: (repoDocInfo: RepoDocInfo, title: string) => void;
     readonly doShowFile: (repoDocInfo: RepoDocInfo) => void;
@@ -130,9 +136,6 @@ interface IDocRepoCallbacks {
     readonly doDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly doArchived: (repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean) => void;
     readonly doFlagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean) => void;
-
-
-    readonly doDrop: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
 
     // ** callbacks that might need prompts, confirmation, etc.
     readonly onTagged: () => void;
@@ -149,10 +152,12 @@ interface IDocRepoCallbacks {
     readonly onDragStart: (event: React.DragEvent) => void;
     readonly onDragEnd: () => void;
 
+    readonly doDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
+
     /**
      * Called when an doc is actually dropped on a tag.
      */
-    readonly onDrop: (tag: Tag) => void;
+    readonly onDropped: (tag: Tag) => void;
 
     /**
      * Called when the user is filtering the UI based on a tag and is narrowing
@@ -455,10 +460,13 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     // **** action / mutators
 
-    function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, tags: ReadonlyArray<Tag>): void {
+    function doTagged(repoDocInfos: ReadonlyArray<RepoDocInfo>,
+                      tags: ReadonlyArray<Tag>,
+                      strategy: ComputeNewTagsStrategy = 'set'): void {
 
         function toPromise(repoDocInfo: RepoDocInfo) {
-            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
+            const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
+            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
         }
 
         batchMutator(repoDocInfos.map(toPromise))
@@ -564,9 +572,9 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    function doDrop(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
+    function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
         // this basically tags the document.
-        doTagged(repoDocInfos, [tag]);
+        doTagged(repoDocInfos, [tag], 'add');
     }
 
     function doOpen(repoDocInfo: RepoDocInfo): void {
@@ -695,22 +703,16 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         configureDragImage();
 
-        const selected = selectedProvider();
-        DraggingSelectedDocs.set(selected);
-
     }
 
     function onDragEnd() {
-        console.log("onDragEnd");
-        DraggingSelectedDocs.clear();
+        // noop
     }
 
-    function onDrop(tag: Tag) {
+    function onDropped(tag: Tag) {
 
-        const dragged = DraggingSelectedDocs.get();
-        if (dragged) {
-            doDrop(dragged, tag);
-        }
+        const selected = selectedProvider();
+        doDropped(selected, tag);
 
     }
 
@@ -820,7 +822,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doArchived,
         doFlagged,
 
-        doDrop,
+        doDropped,
 
         onTagged,
         onOpen,
@@ -835,7 +837,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         onDragStart,
         onDragEnd,
-        onDrop,
+        onDropped,
+
         onTagSelected,
 
     };
@@ -903,12 +906,10 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
                                       "Failed to remove event listener");
     });
 
-
-
     const tagSidebarEventForwarder = React.useMemo<TagSidebarEventForwarder>(() => {
         return {
             onTagSelected: callbacks.onTagSelected,
-            onDropped: callbacks.onDrop
+            onDropped: callbacks.onDropped
         }
     }, [callbacks]);
 

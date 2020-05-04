@@ -70,6 +70,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const callbacks = useAnnotationRepoCallbacks();
 
     const {page, rowsPerPage, view, viewPage, selected} = store;
+    const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
 
     const handleSelect = React.useCallback((viewIndex: number, annotation: IDocAnnotation) => {
         callbacks.onSelected(viewIndex, annotation);
@@ -92,13 +93,11 @@ export const AnnotationRepoTable2 = React.memo(() => {
                      minHeight: 0
                  }}>
 
-                <Toolbar
-                    nrRows={view.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={callbacks.setPage}
-                    onChangeRowsPerPage={callbacks.setRowsPerPage}
-                />
+                <Toolbar nrRows={view.length}
+                         rowsPerPage={rowsPerPage}
+                         page={page}
+                         onChangePage={setPage}
+                         onChangeRowsPerPage={setRowsPerPage}/>
 
                 <Divider orientation="horizontal"/>
 
@@ -106,17 +105,15 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                     flexGrow: 1,
                                     overflow: 'auto'
                                 }}>
-                    <Table
-                        stickyHeader
-                        style={{
-                            minWidth: 0,
-                            maxWidth: '100%',
-                            tableLayout: 'fixed'
-                        }}
-                        aria-labelledby="tableTitle"
-                        size={'medium'}
-                        aria-label="enhanced table">
-
+                    <Table stickyHeader
+                           style={{
+                               minWidth: 0,
+                               maxWidth: '100%',
+                               tableLayout: 'fixed'
+                           }}
+                           aria-labelledby="tableTitle"
+                           size={'medium'}
+                           aria-label="enhanced table">
 
                         {/*FIXME: migrate the TableRow to its own component that can be cached.*/}
                         <TableBody>
@@ -129,16 +126,18 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                     // FIXME: migrate this to a dedicated
                                     // component so it can be cached easier.
                                     return (
-                                        <TableRow
-                                            key={viewIndex}
-                                            hover
-                                            // className={classes.tr}
-                                            role="checkbox"
-                                            tabIndex={1}
-                                            onFocus={() => handleSelect(viewIndex, annotation)}
-                                            onClick={() => handleSelect(viewIndex, annotation)}
-                                            // onDoubleClick={() => props.onOpen(row)}
-                                            selected={rowSelected}>
+                                        <TableRow key={viewIndex}
+                                                  hover
+                                                  // className={classes.tr}
+                                                  role="checkbox"
+                                                  // tabIndex={1}
+                                                  // onFocus={() => handleSelect(viewIndex, annotation)}
+                                                  onClick={() => handleSelect(viewIndex, annotation)}
+                                                  // onDoubleClick={() => props.onOpen(row)}
+                                                  draggable
+                                                  onDragStart={onDragStart}
+                                                  onDragEnd={onDragEnd}
+                                                  selected={rowSelected}>
 
                                             <TableCell padding="checkbox">
                                                 <Box p={1}>
