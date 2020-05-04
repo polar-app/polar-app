@@ -43,7 +43,12 @@
         }
 
         .pdfViewer .page {
-            margin: 5px auto 5px auto
+            margin: 5px auto 5px auto;
+
+            /*
+             * Used to fix a conflict with material UI
+             */
+            box-sizing: content-box;
         }
 
         /*.pdfViewer:first-child {*/
