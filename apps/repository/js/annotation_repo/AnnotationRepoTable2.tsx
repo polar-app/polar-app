@@ -72,8 +72,8 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const {page, rowsPerPage, view, viewPage, selected} = store;
     const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
 
-    const handleSelect = React.useCallback((viewIndex: number, annotation: IDocAnnotation) => {
-        callbacks.onSelected(viewIndex, annotation);
+    const handleSelect = React.useCallback((viewIndex: number, event: React.MouseEvent) => {
+        callbacks.selectRow(viewIndex, event, 'click');
     }, [callbacks]);
 
     return (
@@ -132,7 +132,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                                   role="checkbox"
                                                   // tabIndex={1}
                                                   // onFocus={() => handleSelect(viewIndex, annotation)}
-                                                  onClick={() => handleSelect(viewIndex, annotation)}
+                                                  onClick={(event) => handleSelect(viewIndex, event)}
                                                   // onDoubleClick={() => props.onOpen(row)}
                                                   draggable
                                                   onDragStart={onDragStart}

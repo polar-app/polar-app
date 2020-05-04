@@ -44,6 +44,8 @@ import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/Autocomplet
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {SelectRowType} from "../doc_repo/DocRepoScreen";
+import { SelectionEvents } from "../doc_repo/SelectionEvents";
 
 const log = Logger.create();
 
@@ -83,7 +85,9 @@ interface IAnnotationRepoStore {
 
 interface IAnnotationRepoCallbacks {
 
-    readonly onSelected: (viewIndex: number, docAnnotation: IDocAnnotation) => void;
+    readonly selectRow: (selectedIdx: number,
+                         event: React.MouseEvent,
+                         type: SelectRowType) => void;
 
     /**
      * Called when the user is filtering the UI based on a tag and is narrowing
@@ -254,13 +258,20 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function onSelected(viewIndex: number, docAnnotation: IDocAnnotation) {
+    function selectRow(selectedIdx: number,
+                       event: React.MouseEvent,
+                       type: SelectRowType) {
 
         const store = storeProvider();
 
+        const selected = SelectionEvents.selectRow(selectedIdx,
+                                                   event,
+                                                   type,
+                                                   store.selected);
+
         mutator.doReduceAndUpdateState({
             ...store,
-            selected: [viewIndex]
+            selected
         });
 
     }
@@ -527,7 +538,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     return {
         doOpen,
-        onSelected,
+        selectRow,
         onTagSelected,
         setPage,
         setRowsPerPage,
