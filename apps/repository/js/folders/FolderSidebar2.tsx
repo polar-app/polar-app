@@ -82,6 +82,7 @@ export const FolderSidebar2 = () => {
                 <MUITagList tags={store.tagsView}
                             selected={store.selected}
                             selectRow={callbacks.selectRow}
+                            onDrop={callbacks.onDrop}
                             />
             </div>
 

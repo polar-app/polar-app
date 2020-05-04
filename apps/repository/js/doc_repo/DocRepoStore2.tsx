@@ -46,7 +46,7 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {TagSelectorContext} from "../store/TagSelector";
+import {TagSidebarEventForwarderContext, TagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
 
 const log = Logger.create();
 
@@ -132,7 +132,7 @@ interface IDocRepoCallbacks {
     readonly doFlagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean) => void;
 
 
-    readonly doDropped: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
+    readonly doDrop: (repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag) => void;
 
     // ** callbacks that might need prompts, confirmation, etc.
     readonly onTagged: () => void;
@@ -152,7 +152,7 @@ interface IDocRepoCallbacks {
     /**
      * Called when an doc is actually dropped on a tag.
      */
-    readonly onDropped: (tag: Tag) => void;
+    readonly onDrop: (tag: Tag) => void;
 
     /**
      * Called when the user is filtering the UI based on a tag and is narrowing
@@ -564,7 +564,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    function doDropped(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
+    function doDrop(repoDocInfos: ReadonlyArray<RepoDocInfo>, tag: Tag): void {
         // this basically tags the document.
         doTagged(repoDocInfos, [tag]);
     }
@@ -610,11 +610,11 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return;
         }
 
-        if (repoDocInfos.length === 1) {
-            const repoDocInfo = repoDocInfos[0];
-            doArchived(repoDocInfos, ! repoDocInfo.archived);
-            return;
-        }
+        // if (repoDocInfos.length === 1) {
+        //     const repoDocInfo = repoDocInfos[0];
+        //     doArchived(repoDocInfos, ! repoDocInfo.archived);
+        //     return;
+        // }
 
         dialogs.confirm({
             title: "Are you sure you want to archive these document(s)?",
@@ -702,19 +702,16 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onDragEnd() {
         console.log("onDragEnd");
-        // FIXME no dropped method...
         DraggingSelectedDocs.clear();
     }
 
-    function onDropped(tag: Tag) {
-
-        // FIXME: we have to hook this into the sidebar so that we can listen
-        // to when something is dropped on it...
+    function onDrop(tag: Tag) {
 
         const dragged = DraggingSelectedDocs.get();
         if (dragged) {
-            doDropped(dragged, tag);
+            doDrop(dragged, tag);
         }
+
     }
 
     function onRename() {
@@ -823,7 +820,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doArchived,
         doFlagged,
 
-        doDropped,
+        doDrop,
 
         onTagged,
         onOpen,
@@ -838,7 +835,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         onDragStart,
         onDragEnd,
-        onDropped,
+        onDrop,
         onTagSelected,
 
     };
@@ -906,10 +903,19 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
                                       "Failed to remove event listener");
     });
 
+
+
+    const tagSidebarEventForwarder = React.useMemo<TagSidebarEventForwarder>(() => {
+        return {
+            onTagSelected: callbacks.onTagSelected,
+            onDropped: callbacks.onDrop
+        }
+    }, [callbacks]);
+
     return (
-        <TagSelectorContext.Provider value={{onTagSelected: callbacks.onTagSelected}}>
+        <TagSidebarEventForwarderContext.Provider value={tagSidebarEventForwarder}>
             {props.children}
-        </TagSelectorContext.Provider>
+        </TagSidebarEventForwarderContext.Provider>
     );
 
 });

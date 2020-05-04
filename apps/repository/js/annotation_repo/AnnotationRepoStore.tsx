@@ -15,7 +15,10 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../../../../web/js/hooks/lifecycle";
-import {TagSelectorContext} from "../store/TagSelector";
+import {
+    TagSidebarEventForwarder,
+    TagSidebarEventForwarderContext
+} from "../store/TagSidebarEventForwarder";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -105,6 +108,8 @@ interface IAnnotationRepoCallbacks {
     readonly onExport: (format: ExportFormat) => void;
 
     readonly setFilter: (filter: Partial<AnnotationRepoFilters2.Filter>) => void;
+
+    readonly onDropped: (tag: Tag) => void;
 
 }
 
@@ -469,6 +474,10 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         })
 
     }
+    function onDropped(tag: Tag) {
+        // noop
+    }
+
 
     return {
         doOpen,
@@ -482,7 +491,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         setFilter,
         doUpdated,
         doDeleted,
-        onDeleted
+        onDeleted,
+        onDropped
     };
 
 }
@@ -545,10 +555,17 @@ const AnnotationRepoStoreLoader = React.memo((props: IProps) => {
                                       "Failed to remove event listener");
     });
 
+    const tagSidebarEventForwarder = React.useMemo<TagSidebarEventForwarder>(() => {
+        return {
+            onTagSelected: callbacks.onTagSelected,
+            onDropped: callbacks.onDropped
+        }
+    }, [callbacks]);
+
     return (
-        <TagSelectorContext.Provider value={{onTagSelected: callbacks.onTagSelected}}>
+        <TagSidebarEventForwarderContext.Provider value={tagSidebarEventForwarder}>
             {props.children}
-        </TagSelectorContext.Provider>
+        </TagSidebarEventForwarderContext.Provider>
     );
 
 });

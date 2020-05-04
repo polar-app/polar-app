@@ -14,7 +14,7 @@ import {
     usePersistence,
     useTagsContext
 } from "../persistence_layer/PersistenceLayerApp";
-import {useTagSelector} from "../store/TagSelector";
+import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
 import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -71,6 +71,11 @@ interface IFolderSidebarCallbacks {
     readonly setFilter: (text: string) => void;
 
     readonly onCreateUserTag: (type: 'folder' | 'tag') => void;
+
+    /**
+     * Dropped an item on the tag with the given viewIndex.
+     */
+    readonly onDrop: (tagID: TagID) => void;
 
 }
 
@@ -208,7 +213,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     // just trying to get the tagsContext working..
     const repoDocInfos = useRepoDocInfos();
     const tagsContext = useTagsContext();
-    const tagSelector = useTagSelector();
+    const tagSelector = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
     const persistence = usePersistence();
 
@@ -365,8 +370,17 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function onDrop(tagID: TagID) {
+    }
+
     return {
-        toggleExpanded, collapseNode, expandNode, setFilter, selectRow, onCreateUserTag
+        toggleExpanded,
+        collapseNode,
+        expandNode,
+        setFilter,
+        selectRow,
+        onCreateUserTag,
+        onDrop
     };
 
 }

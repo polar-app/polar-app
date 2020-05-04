@@ -5,6 +5,10 @@ import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
 import isEqual from "react-fast-compare";
 import clsx from "clsx";
+import {
+    DragTarget2,
+    useDragContext
+} from "../../../../web/js/ui/tree/DragTarget2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,6 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
             '&$selected, &$selected:hover': {
                 backgroundColor: fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity),
             },
+            '&$drag, &$drag:hover': {
+                // backgroundColor: fade(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+
+                backgroundColor: theme.palette.primary.light,
+                color: theme.palette.primary.contrastText,
+            },
         },
         label: {
             paddingLeft: '5px',
@@ -40,6 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         /* Pseudo-class applied to the root element if `selected={true}`. */
         selected: {},
+        /* Pseudo-class applied to the root element if `drag={true}`. */
+        drag: {},
     }),
 );
 
@@ -48,12 +60,15 @@ interface IProps {
     readonly nodeId: string;
     readonly label: string;
     readonly info: string | number;
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly onDrop: (tagID: TagID) => void;
 }
 
-export const MUITagListItem = React.memo((props: IProps) => {
+export const MUITagListItemInner = React.memo((props: IProps) => {
 
     const classes = useStyles();
+
+    const drag = useDragContext();
 
     // FIXME: the checkbox is painfully slow... a basic <input type=checkbox is
     // way faster... maybe try a fontawesome icon
@@ -67,28 +82,40 @@ export const MUITagListItem = React.memo((props: IProps) => {
         classes.root,
         {
             [classes.selected]: props.selected,
+            [classes.drag]: drag.active,
         },
     );
 
+    // FIXME: needs tabindex and focus...
     return (
+        <DragTarget2 onDrop={() => props.onDrop(props.nodeId)}>
+            <div className={className}
+                 onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
-        <div className={className}
-            onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
+                <div onClick={onCheckbox}
+                     className={classes.checkbox}>
+                    <MUIEfficientCheckbox checked={props.selected}/>
+                </div>
 
-            <div onClick={onCheckbox}
-                 className={classes.checkbox}>
-                <MUIEfficientCheckbox checked={props.selected}/>
+                <div className={classes.label}>
+                    {props.label}
+                </div>
+
+                <div className={classes.info}>
+                    {props.info}
+                </div>
+
             </div>
+        </DragTarget2>
+    )
 
-            <div className={classes.label}>
-                {props.label}
-            </div>
+}, isEqual);
 
-            <div className={classes.info}>
-                {props.info}
-            </div>
-
-        </div>
+export const MUITagListItem = React.memo((props: IProps) => {
+    return (
+        <DragTarget2 onDrop={() => props.onDrop(props.nodeId)}>
+            <MUITagListItemInner {...props}/>
+        </DragTarget2>
     )
 
 }, isEqual);

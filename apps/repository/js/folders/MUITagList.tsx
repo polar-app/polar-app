@@ -46,6 +46,7 @@ interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<string>;
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
+    readonly onDrop: (tagID: TagID) => void;
 }
 
 export const MUITagList = (props: IProps) => {
@@ -59,6 +60,7 @@ export const MUITagList = (props: IProps) => {
                                                    selectRow={props.selectRow}
                                                    nodeId={tag.id}
                                                    label={tag.label}
+                                                   onDrop={props.onDrop}
                                                    info={tag.count}/>)}
         </>
     );

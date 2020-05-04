@@ -52,7 +52,7 @@ interface IProps {
 
 export const RepositoryApp = (props: IProps) => {
 
-    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager, updatedDocInfoEventDispatcher} = props;
+    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
     const RenderDocRepoScreen = () => (
             <Cached>

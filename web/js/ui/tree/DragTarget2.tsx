@@ -1,24 +1,31 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-class Styles {
+interface IDragContext {
+    readonly active: boolean;
+}
 
-    public static DROP_ACTIVE: React.CSSProperties = {
-        // backgroundColor: 'var(--grey100)',
-        borderColor: 'var(--primary)',
-        borderWidth: '1px',
-        borderStyle: 'solid'
-    };
+export const DragContext = React.createContext<IDragContext>({active: false});
 
-    public static DROP_INACTIVE: React.CSSProperties = {
-        borderColor: 'transparent',
-        borderWidth: '1px',
-        borderStyle: 'solid'
-    };
+export function useDragContext() {
+    return React.useContext(DragContext);
+}
+
+interface IProps {
+
+    /**
+     * Function to call when a drag has finished.
+     */
+    readonly onDrop: () => void;
+    readonly acceptDrag?: () => boolean;
 
 }
 
-export class DragTarget extends React.Component<IProps, IState> {
+interface IState {
+    readonly active: boolean;
+}
+
+export class DragTarget2 extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -27,7 +34,9 @@ export class DragTarget extends React.Component<IProps, IState> {
         this.onDrop = this.onDrop.bind(this);
         this.acceptDrag = this.acceptDrag.bind(this);
 
-        this.state = {};
+        this.state = {
+            active: false
+        };
 
     }
 
@@ -47,7 +56,10 @@ export class DragTarget extends React.Component<IProps, IState> {
             return;
         }
 
-        this.setState({active: true});
+        if (! this.state.active) {
+            this.setState({active: true});
+        }
+
         event.preventDefault(); // called to allow the drop.
     }
 
@@ -57,7 +69,9 @@ export class DragTarget extends React.Component<IProps, IState> {
             return;
         }
 
-        this.setState({active: false});
+        if (this.state.active) {
+            this.setState({active: false});
+        }
 
     }
 
@@ -69,9 +83,7 @@ export class DragTarget extends React.Component<IProps, IState> {
 
         this.setState({active: false});
 
-        const onDropped = this.props.onDropped || NULL_FUNCTION;
-
-        onDropped();
+        this.props.onDrop();
     }
 
     public render() {
@@ -80,12 +92,13 @@ export class DragTarget extends React.Component<IProps, IState> {
 
         return (
 
-            <div style={active ? Styles.DROP_ACTIVE : Styles.DROP_INACTIVE}
-                 onDragOver={(event) => this.onDragOver(event)}
+            <div onDragOver={(event) => this.onDragOver(event)}
                  onDragLeave={(event) => this.onDragLeave(event)}
                  onDrop={() => this.onDrop()}>
 
-                {this.props.children}
+                <DragContext.Provider value={{active}}>
+                    {this.props.children}
+                </DragContext.Provider>
 
             </div>
 
@@ -95,19 +108,3 @@ export class DragTarget extends React.Component<IProps, IState> {
 
 
 }
-
-interface IProps {
-
-    /**
-     * Function to call when a drag has finished.
-     */
-    readonly onDropped?: () => void;
-    readonly acceptDrag?: () => boolean;
-
-}
-
-interface IState {
-    readonly active?: boolean;
-}
-
-
