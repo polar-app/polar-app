@@ -224,9 +224,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 ];
 
                 setValues(values);
-                setOpen(false);
-
-                highlighted.current = undefined;
+                handleClose();
 
             }
 
@@ -240,9 +238,6 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         highlighted.current = undefined;
         setOpen(false);
     }
-
-    // FIXME: I can fix this BUT I have to update the typescript definition OR
-    // I need to hack the types.
 
     return (
         <div className={classes.root}>

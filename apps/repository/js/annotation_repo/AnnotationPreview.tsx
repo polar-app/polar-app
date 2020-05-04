@@ -48,7 +48,7 @@ const Body = React.memo((props: IProps) => {
         return (
             <div id={props.id} style={style}>
                 <div style={{
-                         userSelect: "none"
+                         userSelect: "none",
                      }}
                      dangerouslySetInnerHTML={{__html: text || 'no text'}}/>
             </div>
