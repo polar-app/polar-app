@@ -86,9 +86,13 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
         },
     );
 
+    const onDrop = useCallback(() => {
+        props.onDrop(props.nodeId)
+    }, [])
+
     // FIXME: needs tabindex and focus...
     return (
-        <DragTarget2 onDrop={() => props.onDrop(props.nodeId)}>
+        <DragTarget2 onDrop={onDrop}>
             <div className={className}
                  onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 

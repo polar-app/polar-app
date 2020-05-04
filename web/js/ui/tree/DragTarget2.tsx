@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import isEqual from "react-fast-compare";
 
 interface IDragContext {
     readonly active: boolean;
@@ -38,6 +39,10 @@ export class DragTarget2 extends React.Component<IProps, IState> {
             active: false
         };
 
+    }
+
+    public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, context: any): boolean {
+        return ! isEqual(this.props, nextProps) || ! isEqual(this.state, nextState);
     }
 
     private acceptDrag(): boolean {
@@ -105,6 +110,5 @@ export class DragTarget2 extends React.Component<IProps, IState> {
         );
 
     }
-
 
 }
