@@ -83,28 +83,33 @@ export const AnnotationRepoTable2 = React.memo(() => {
                style={{
                    display: 'flex',
                    flexDirection: 'column',
-                   minHeight: 0
+                   minHeight: 0,
+                   flexGrow: 1
                }}>
+
+            <Toolbar nrRows={view.length}
+                     rowsPerPage={rowsPerPage}
+                     page={page}
+                     onChangePage={setPage}
+                     onChangeRowsPerPage={setRowsPerPage}/>
+
+            <Divider orientation="horizontal"/>
 
             <div id="doc-table"
                  style={{
                      display: 'flex',
                      flexDirection: 'column',
-                     minHeight: 0
+                     minHeight: 0,
+                     flexGrow: 1,
+                     overflow: 'auto'
                  }}>
 
-                <Toolbar nrRows={view.length}
-                         rowsPerPage={rowsPerPage}
-                         page={page}
-                         onChangePage={setPage}
-                         onChangeRowsPerPage={setRowsPerPage}/>
-
-                <Divider orientation="horizontal"/>
 
                 <TableContainer style={{
                                     flexGrow: 1,
                                     overflow: 'auto'
                                 }}>
+
                     <Table stickyHeader
                            style={{
                                minWidth: 0,

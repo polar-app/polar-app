@@ -404,6 +404,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         const existingTags = Object.values(annotation.tags || {});
 
+        // FIXME: make this SET and APPEND here by looking at the
+        // mode and whether we're working with 1 item or N items...
+
         const autocompleteProps: AutocompleteDialogProps<Tag> = {
             title: "Assign Tags to Annotation",
             options: availableTags.map(toAutocompleteOption),
@@ -504,9 +507,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function onDeleted() {
 
-        const annotation = selectedAnnotation();
+        const annotations = selectedAnnotations();
 
-        if (! annotation) {
+        if (annotations.length === 0) {
             log.warn("no repoAnnotation");
             return;
         }
@@ -514,7 +517,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         dialogs.confirm({
             title: "Are you sure you want to delete this item?",
             subtitle: "This is a permanent operation and can't be undone.",
-            onAccept: () => doDeleted([annotation])
+            onAccept: () => doDeleted(annotations)
         })
 
     }

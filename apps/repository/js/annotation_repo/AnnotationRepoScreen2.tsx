@@ -118,14 +118,20 @@ namespace main {
                 id: 'dock-panel-center',
                 type: 'fixed',
                 style: {
+                    overflow: 'visible',
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
+                    minHeight: 0,
                 },
                 component:
                     <Paper square
                            elevation={0}
-                           style={{flexGrow: 1, display: 'flex'}}>
+                           style={{
+                               flexGrow: 1,
+                               display: 'flex',
+                               minHeight: 0
+                           }}>
                         <AnnotationListView2 />
                     </Paper>,
                 width: 450

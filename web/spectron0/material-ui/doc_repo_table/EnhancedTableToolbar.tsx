@@ -39,6 +39,9 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     // FIXME: migrate the key bindings to their own component since they can
     // just depend on the key bindings now.
+    //
+    // FIXME migrate to DocRepoKeyBindings
+
     const globalKeyHandlers = {
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
