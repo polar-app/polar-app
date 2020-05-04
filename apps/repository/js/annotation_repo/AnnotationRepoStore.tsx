@@ -441,11 +441,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             return {
                 strategy: 'set',
                 existingTags: Object.values(annotation.tags || {}),
-                description: (
-                    <>
-                        This will <b>ADD</b> the selected tags to <b>{annotations.length}</b> items.
-                    </>
-                )
             };
 
         }

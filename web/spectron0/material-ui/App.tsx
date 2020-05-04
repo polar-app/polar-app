@@ -155,6 +155,8 @@ export const App = () => {
                 {/*<ObservableStoreDemo2/>*/}
                 {/*<MUITreeViewDemo/>*/}
                 <ComponentCacheDemo/>
+                <TagAutocompleteDemo/>
+
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}
                 {/*<FadeDemo/>*/}

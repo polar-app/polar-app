@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Autocomplete, {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -7,8 +7,10 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
 import Chip from '@material-ui/core/Chip';
 import {MUIRelatedOptions} from "./MUIRelatedOptions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PremiumFeature} from "../../../js/ui/premium_feature/PremiumFeature";
+import isEqual from "react-fast-compare";
+import {AutocompleteProps} from "@material-ui/lab/Autocomplete/Autocomplete";
+import {UseAutocompleteProps} from "@material-ui/lab/useAutocomplete";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -83,18 +85,53 @@ export interface MUICreatableAutocompleteProps<T> {
 }
 
 interface IState<T> {
-    readonly values: ReadonlyArray<InternalAutocompleteOption<T>>;
+    readonly values: ReadonlyArray<ValueAutocompleteOption<T>>;
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 }
 
+interface IHighlightChangeAutocompleteProps<T> {
+    readonly onHighlightChange: (event: object,
+                                 option: T,
+                                 reason: 'keyboard' | 'auto' | 'mouse' ) => void;
+}
+
+type IFixedAutocomplete<T> = (props: AutocompleteProps<T> & UseAutocompleteProps<T> & IHighlightChangeAutocompleteProps<T>) => JSX.Element;
+
 export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {
+
+    // TODO this is an ugly hack from 04/2020 that can be removed in the future
+    // when Autocomplete adds back onHighlightChange
+    const FixedAutocomplete: IFixedAutocomplete<any> = Autocomplete
 
     const classes = useStyles();
 
     const [state, setState] = useState<IState<T>>({
         values: props.defaultOptions || [],
-        options: props.options
+        options: props.options,
     });
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const highlighted = useRef<ValueAutocompleteOption<T> | undefined>(undefined);
+
+    /**
+     * Centrally set the values so we can also reset other states, fire events,
+     * etc.
+     */
+    function setValues(values: ReadonlyArray<ValueAutocompleteOption<T>>,
+                       options?: ReadonlyArray<ValueAutocompleteOption<T>>) {
+
+        setState({
+            ...state,
+            values,
+            options: options || state.options
+        });
+
+        props.onChange(values.map(current => current.value));
+
+        highlighted.current = undefined;
+
+    }
 
     const handleChange = (newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
 
@@ -131,11 +168,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         if (newValues === null) {
 
-            setState({
-                ...state,
-                values: []
-            });
-
+            setValues([]);
             return;
 
         }
@@ -153,13 +186,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         const convertedValues = convertToAutocompleteOptions(toArray());
         const convertedOptions = convertToOptions(convertedValues);
 
-        props.onChange(convertedValues.map(current => current.value));
-
-        setState({
-            ...state,
-            values: convertedValues,
-            options: convertedOptions
-        });
+        setValues(convertedValues, convertedOptions);
 
     };
 
@@ -185,14 +212,51 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     
     const relatedOptions = computeRelatedOptions();
 
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+
+        if (event.key === 'Tab') {
+
+            if (highlighted.current) {
+
+                const values = [
+                    ...state.values,
+                    highlighted.current
+                ];
+
+                setValues(values);
+                setOpen(false);
+
+                highlighted.current = undefined;
+
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+    };
+
+    function handleClose() {
+        highlighted.current = undefined;
+        setOpen(false);
+    }
+
+    // FIXME: I can fix this BUT I have to update the typescript definition OR
+    // I need to hack the types.
+
     return (
         <div className={classes.root}>
-            <Autocomplete
+            <FixedAutocomplete
                 multiple
+                getOptionSelected={isEqual}
                 // freeSolo
+                onKeyDown={handleKeyDown}
                 value={[...state.values]}
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
+                open={open}
+                onClose={handleClose}
+                onOpen={() => setOpen(true)}
                 getOptionLabel={(option) => option.label}
                 onChange={(event, value, reason, details) => handleChange(value)}
                 filterSelectedOptions
@@ -218,6 +282,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                               {...getTagProps({ index })} />
                     ))
                 }
+                onHighlightChange={(event, option, reason) => highlighted.current = option}
                 // noOptionsText={<Button onClick={() => handleOptionCreated()}>Create "{value}"</Button>}
                 renderInput={(params) => (
                     <TextField
