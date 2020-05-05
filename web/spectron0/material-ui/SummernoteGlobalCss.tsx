@@ -9,33 +9,33 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
         // @global is handled by jss-plugin-global.
         '@global': {
             ".note-frame *": {
-                color: "#000",
+                color: theme.palette.text.primary,
             },
             "kbd": {
                 color: "rgb(255,0,0)",
                 backgroundColor: "#000",
             },
             ".note-btn": {
-                color: "#333",
+                color: theme.palette.text.primary,
                 backgroundColor: theme.palette.background.default,
-                borderColor: "rgb(255,0,0)",
+                borderColor: theme.palette.background.default,
             },
             ".note-btn:focus,.note-btn.focus": {
-                color: "#333",
+                color: theme.palette.text.primary,
                 backgroundColor: "#ebebeb",
-                borderColor: "rgb(255,0,0)",
+                borderColor: theme.palette.background.default,
             },
             ".note-btn:hover": {
-                color: "#333",
+                color: theme.palette.text.primary,
                 backgroundColor: "#ebebeb",
-                borderColor: "rgb(255,0,0)",
+                borderColor: theme.palette.background.default,
             },
             ".note-btn.disabled:focus,.note-btn[disabled]:focus,fieldset[disabled] .note-btn:focus,.note-btn.disabled.focus,.note-btn[disabled].focus,fieldset[disabled] .note-btn.focus": {
                 backgroundColor: theme.palette.background.default,
-                borderColor: "rgb(255,0,0)",
+                borderColor: theme.palette.background.default,
             },
             ".note-btn:hover,.note-btn:focus,.note-btn.focus": {
-                color: "#333",
+                color: theme.palette.text.primary,
                 backgroundColor: "#ebebeb",
             },
             ".note-btn-primary": {
@@ -52,7 +52,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 backgroundColor: "#ebebeb",
             },
             "a.note-dropdown-item,a.note-dropdown-item:hover": {
-                color: "#000",
+                color: theme.palette.text.primary,
             },
             ".note-modal-footer a": {
                 color: "#337ab7",
@@ -68,16 +68,16 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 color: "#42515f",
             },
             ".note-input::-webkit-input-placeholder": {
-                color: "#eee",
+                color: theme.palette.text.primary,
             },
             ".note-input:-moz-placeholder": {
-                color: "#eee",
+                color: theme.palette.text.primary,
             },
             ".note-input::-moz-placeholder": {
-                color: "#eee",
+                color: theme.palette.text.primary,
             },
             ".note-input:-ms-input-placeholder": {
-                color: "#eee",
+                color: theme.palette.text.primary,
             },
             ".note-tooltip.bottom .note-tooltip-arrow": {
                 borderBottomColor: "#000",
@@ -130,7 +130,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 borderColor: "transparent",
             },
             ".note-popover-content": {
-                color: "#000",
+                color: theme.palette.text.primary,
                 backgroundColor: theme.palette.background.default,
             },
             ".note-editor .note-dropzone": {
@@ -148,7 +148,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 color: "#23527c",
             },
             ".note-editor.note-frame .note-editing-area .note-editable": {
-                color: "#000",
+                color: theme.palette.text.primary,
                 backgroundColor: theme.palette.background.default,
             },
             '.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"]': {
@@ -162,7 +162,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 backgroundColor: theme.palette.background.default,
             },
             ".note-editor.note-frame .note-status-output": {
-                color: "#000",
+                color: theme.palette.text.primary,
             },
             ".note-editor.note-frame .note-status-output .text-muted": {
                 color: "#777",
@@ -183,7 +183,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
                 color: "#a94442",
             },
             ".note-editor.note-frame .note-status-output .alert": {
-                color: "#000",
+                color: theme.palette.text.primary,
                 backgroundColor: "#f5f5f5",
             },
             ".note-editor.note-frame .note-status-output .alert-success": {
@@ -236,8 +236,7 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
             },
         }
     };
-    }
-);
+});
 
 export const SummernoteGlobalCssDark = SummernoteGlobalCssStyles(() => null);
 
