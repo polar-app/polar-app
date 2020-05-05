@@ -12,7 +12,6 @@ import {
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
-import Button from '@material-ui/core/Button';
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from '@material-ui/core/IconButton';
 
