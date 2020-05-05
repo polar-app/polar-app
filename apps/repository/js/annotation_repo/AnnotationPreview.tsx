@@ -6,10 +6,13 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import Box from '@material-ui/core/Box';
 import isEqual from "react-fast-compare";
+import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
+
+const MAX_TEXT_LENGTH = 300;
 
 interface IProps {
     readonly id: string;
-    readonly text?: string;
+    readonly text?: PlainTextStr;
     readonly img?: Img;
     readonly lastUpdated: ISODateTimeString;
     readonly created: ISODateTimeString;
@@ -37,6 +40,8 @@ const Body = React.memo((props: IProps) => {
 
     const {text, img} = props;
 
+    const truncated = text ? Strings.truncateOnWordBoundary(text, MAX_TEXT_LENGTH, true) : undefined;
+
     const style = createStyle(props.color);
 
     if (img) {
@@ -50,7 +55,7 @@ const Body = React.memo((props: IProps) => {
                 <div style={{
                          userSelect: "none",
                      }}
-                     dangerouslySetInnerHTML={{__html: text || 'no text'}}/>
+                     dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
             </div>
         );
     }

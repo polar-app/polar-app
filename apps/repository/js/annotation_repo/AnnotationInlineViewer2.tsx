@@ -11,9 +11,9 @@ import {
 } from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotation_sidebar/AnnotationActiveInputContext";
-import {AnnotationViewControlBar2} from "../../../../web/js/annotation_sidebar/AnnotationViewControlBar2";
 import {DocMetaContext} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {AnnotationInputView} from "../../../../web/js/annotation_sidebar/AnnotationInputView";
+import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
 
 const Styles: IStyleMap = {
 
@@ -77,8 +77,9 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
             <AnnotationActiveInputContextProvider>
                 <>
                     <DocMetaContext.Provider value={docMetaContext}>
-                        <AnnotationViewControlBar2 annotation={annotation}/>
-                        <div>this is the new provider</div>
+                        {/*<AnnotationViewControlBar2 annotation={annotation}/>*/}
+
+                        <AnnotationView2 annotation={annotation}/>
 
                         <AnnotationInputView annotation={annotation}/>
                     </DocMetaContext.Provider>
