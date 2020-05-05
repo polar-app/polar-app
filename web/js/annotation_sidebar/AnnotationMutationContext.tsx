@@ -16,6 +16,9 @@ export interface IAnnotationMutation {
     readonly onComment: (annotation: IDocAnnotation) => void
     readonly onDelete: (annotation: IDocAnnotation) => void;
 
+    readonly onTextHighlightContentRevert: (annotation: IDocAnnotation) => void;
+    readonly onTextHighlightContent: (annotation: IDocAnnotation, html: string) => void;
+
 }
 
 export const AnnotationMutationContext = React.createContext<IAnnotationMutation>({
@@ -25,7 +28,9 @@ export const AnnotationMutationContext = React.createContext<IAnnotationMutation
     onFlashcardCreated: NULL_FUNCTION,
     onColor: NULL_FUNCTION,
     onComment: NULL_FUNCTION,
-    onDelete: NULL_FUNCTION
+    onDelete: NULL_FUNCTION,
+    onTextHighlightContentRevert: NULL_FUNCTION,
+    onTextHighlightContent: NULL_FUNCTION,
 });
 
 export function useAnnotationMutationContext() {

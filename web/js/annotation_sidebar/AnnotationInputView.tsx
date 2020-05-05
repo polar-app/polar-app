@@ -2,6 +2,8 @@ import * as React from "react";
 import {IDocAnnotation} from "./DocAnnotation";
 import {CreateComment2} from "./child_annotations/comments/CreateComment2";
 import isEqual from "react-fast-compare";
+import {EditTextHighlight} from "./child_annotations/comments/EditTextHighlight";
+import {EditTextHighlight2} from "./child_annotations/comments/EditTextHighlight2";
 
 interface IProps {
     readonly annotation: IDocAnnotation;
@@ -13,14 +15,10 @@ export const AnnotationInputView = React.memo((props: IProps) => {
 
     return (
         <>
-            {/*{annotationInputContext.active === 'text-highlight' &&*/}
-            {/*    <EditTextHighlight id={annotation.id}*/}
-            {/*                       hidden={annotation.annotationType !== AnnotationType.TEXT_HIGHLIGHT}*/}
-            {/*                       active={annotationInputContext.active === 'text-highlight'}*/}
-            {/*                       html={annotation.html || ""}*/}
-            {/*                       onReset={() => this.onTextHighlightReset()}*/}
-            {/*                       onChanged={text => this.onTextHighlightEdited(text)}*/}
-            {/*                       onCancel={() => annotationInputContext.setActive('none')}/>*/}
+            <EditTextHighlight2 id={annotation.id}
+                                html={annotation.html || ""}
+                                annotation={annotation}
+                                />
 
             <CreateComment2/>
 
