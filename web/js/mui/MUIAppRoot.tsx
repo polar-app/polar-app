@@ -4,6 +4,7 @@ import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {GlobalCss} from "../../spectron0/material-ui/GlobalCss";
 import * as React from "react";
+import {SummernoteGlobalCss} from "../../spectron0/material-ui/SummernoteGlobalCss";
 
 interface IProps {
     readonly children: JSX.Element;
@@ -32,6 +33,7 @@ export const MUIAppRoot = (props: IProps) => {
 
                 <CssBaseline/>
                 <GlobalCss/>
+                <SummernoteGlobalCss/>
 
                 {props.children}
 
