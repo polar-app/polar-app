@@ -9,37 +9,37 @@ export const SummernoteGlobalCssStyles = withStyles({
             color: "#000",
         },
         "kbd": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
             backgroundColor: "#000",
         },
         ".note-btn": {
             color: "#333",
-            backgroundColor: "#fff",
-            borderColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
+            borderColor: "rgb(255,0,0)",
         },
         ".note-btn:focus,.note-btn.focus": {
             color: "#333",
             backgroundColor: "#ebebeb",
-            borderColor: "#fff",
+            borderColor: "rgb(255,0,0)",
         },
         ".note-btn:hover": {
             color: "#333",
             backgroundColor: "#ebebeb",
-            borderColor: "#fff",
+            borderColor: "rgb(255,0,0)",
         },
         ".note-btn.disabled:focus,.note-btn[disabled]:focus,fieldset[disabled] .note-btn:focus,.note-btn.disabled.focus,.note-btn[disabled].focus,fieldset[disabled] .note-btn.focus": {
-            backgroundColor: "#fff",
-            borderColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
+            borderColor: "rgb(255,0,0)",
         },
         ".note-btn:hover,.note-btn:focus,.note-btn.focus": {
             color: "#333",
             backgroundColor: "#ebebeb",
         },
         ".note-btn-primary": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
         },
         ".note-btn-primary:hover,.note-btn-primary:focus,.note-btn-primary.focus": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
             backgroundColor: "#fa6362",
         },
         ".close": {
@@ -93,7 +93,7 @@ export const SummernoteGlobalCssStyles = withStyles({
             borderColor: "transparent",
         },
         ".note-tooltip-content": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
             backgroundColor: "#000",
         },
         ".note-popover.bottom .note-popover-arrow": {
@@ -101,39 +101,39 @@ export const SummernoteGlobalCssStyles = withStyles({
             // borderBottomColor: "rgba(0,0,0,0.25)",
         },
         ".note-popover.bottom .note-popover-arrow::after": {
-            borderBottomColor: "#fff",
+            borderBottomColor: "rgb(255,0,0)",
         },
         ".note-popover.top .note-popover-arrow": {
             borderTopColor: "#999",
             // borderTopColor: "rgba(0,0,0,0.25)",
         },
         ".note-popover.top .note-popover-arrow::after": {
-            borderTopColor: "#fff",
+            borderTopColor: "rgb(255,0,0)",
         },
         ".note-popover.right .note-popover-arrow": {
             borderRightColor: "#999",
             // borderRightColor: "rgba(0,0,0,0.25)",
         },
         ".note-popover.right .note-popover-arrow::after": {
-            borderRightColor: "#fff",
+            borderRightColor: "rgb(255,0,0)",
         },
         ".note-popover.left .note-popover-arrow": {
             borderLeftColor: "#999",
             // borderLeftColor: "rgba(0,0,0,0.25)",
         },
         ".note-popover.left .note-popover-arrow::after": {
-            borderLeftColor: "#fff",
+            borderLeftColor: "rgb(255,0,0)",
         },
         ".note-popover-arrow::after": {
             borderColor: "transparent",
         },
         ".note-popover-content": {
             color: "#000",
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-editor .note-dropzone": {
             color: "#87cefa",
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-editor .note-dropzone.hover": {
             color: "#098ddf",
@@ -147,7 +147,7 @@ export const SummernoteGlobalCssStyles = withStyles({
         },
         ".note-editor.note-frame .note-editing-area .note-editable": {
             color: "#000",
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         '.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"]': {
             backgroundColor: "#e5e5e5",
@@ -157,7 +157,7 @@ export const SummernoteGlobalCssStyles = withStyles({
             backgroundColor: "#222",
         },
         ".note-editor.note-frame.fullscreen .note-editable": {
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-editor.note-frame .note-status-output": {
             color: "#000",
@@ -204,10 +204,10 @@ export const SummernoteGlobalCssStyles = withStyles({
             backgroundColor: "#f5f5f5",
         },
         ".note-popover .note-popover-content,.note-toolbar": {
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-popover .note-popover-content .note-color .note-dropdown-menu .note-palette .note-color-reset,.note-toolbar .note-color .note-dropdown-menu .note-palette .note-color-reset": {
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-popover .note-popover-content .note-dropdown-menu.note-check .note-dropdown-item i,.note-toolbar .note-dropdown-menu.note-check .note-dropdown-item i": {
             color: "deepskyblue",
@@ -222,14 +222,14 @@ export const SummernoteGlobalCssStyles = withStyles({
             backgroundColor: "#000",
         },
         ".note-handle .note-control-selection .note-control-sizing": {
-            backgroundColor: "#fff",
+            backgroundColor: "rgb(255,0,0)",
         },
         ".note-handle .note-control-selection .note-control-selection-info": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
             backgroundColor: "#000",
         },
         ".note-hint-popover .note-popover-content .note-hint-group .note-hint-item.active,.note-hint-popover .note-popover-content .note-hint-group .note-hint-item:hover": {
-            color: "#fff",
+            color: "rgb(255,0,0)",
             backgroundColor: "#428bca",
         },
     }
