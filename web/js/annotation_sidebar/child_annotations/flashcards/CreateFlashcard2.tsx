@@ -13,8 +13,6 @@ interface IProps {
 
     readonly id?: string;
 
-    readonly onCancel?: () => void;
-
     readonly defaultValue?: string;
 
 }
@@ -28,9 +26,7 @@ export const CreateFlashcard2 = (props: IProps) => {
         return null;
     }
 
-    const onCancel = props.onCancel || NULL_FUNCTION;
-
-    const cancelButton = <CancelButton onClick={() => onCancel()}/>;
+    const cancelButton = <CancelButton onClick={annotationInputContext.reset}/>;
 
     return (
 
