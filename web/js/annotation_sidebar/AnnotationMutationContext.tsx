@@ -5,6 +5,10 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
 import {Flashcard} from "../metadata/Flashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {Comment} from "../metadata/Comment";
+import {CommentActions} from "./child_annotations/comments/CommentActions";
+import {FlashcardActions} from "./child_annotations/flashcards/FlashcardActions";
+import {DocMetas} from "../metadata/DocMetas";
 
 
 export interface IAnnotationMutation {
@@ -55,3 +59,47 @@ interface IProps {
 //     );
 //
 // }, isEqual);
+//
+// private onComment(html: string, existingComment: Comment) {
+//     CommentActions.update(this.props.doc.docMeta, this.props.parent, html, existingComment);
+// }
+//
+// private onFlashcard(flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>, existingFlashcard?: Flashcard) {
+//     FlashcardActions.update(this.props.doc.docMeta, this.props.parent, flashcardType, fields, existingFlashcard);
+// }
+
+
+// const onTagged = (tags: ReadonlyArray<Tag>) => {
+//
+//     setTimeout(() => {
+//
+//         const updates = {tags: Tags.toMap(tags)};
+//
+//         DocMetas.withBatchedMutations(docMeta, () => {
+//
+//             AnnotationMutations.update(docMeta,
+//                                        annotation.annotationType,
+//                                        {...annotation.original, ...updates});
+//
+//         });
+//
+//
+//     }, 1);
+//
+// };
+
+
+// const handleDelete = () => {
+//     log.info("Comment deleted: ", comment);
+//     delete comment.pageMeta.comments[comment.id];
+// }
+
+// private onComment(): void {
+//
+//     this.props.onComment(this.html, this.props.existingComment);
+//
+//     this.setState({
+//                       iter: this.state.iter + 1
+//                   });
+//
+// }

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {EditComment} from "./EditComment";
 import {CancelButton} from "../CancelButton";
 import {useAnnotationMutationContext} from "../../AnnotationMutationContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
+import {EditComment2} from './EditComment2';
 
 export const CreateComment2 = React.memo(() => {
 
@@ -17,8 +17,7 @@ export const CreateComment2 = React.memo(() => {
     }
 
     return (
-        <EditComment onComment={annotationMutationContext.onCommentCreated}
-                     cancelButton={cancelButton}/>
+        <EditComment2 cancelButton={cancelButton}/>
     );
 
 });

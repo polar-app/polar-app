@@ -305,6 +305,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         const store = storeProvider();
 
+        // FIXME: auto-select the first row on the next page when changing
+        // so that we have an item to view.
+
         mutator.doReduceAndUpdateState({
             ...store,
             page,

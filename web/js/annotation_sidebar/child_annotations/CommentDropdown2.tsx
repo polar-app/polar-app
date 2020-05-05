@@ -1,38 +1,20 @@
 import * as React from 'react';
 import {DocAnnotation} from '../DocAnnotation';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import isEqual from "react-fast-compare";
 
 
 interface IProps {
     readonly id: string;
     readonly comment: DocAnnotation;
-    readonly onDelete: (comment: DocAnnotation) => void;
+    readonly onDelete: () => void;
     readonly disabled?: boolean;
 }
 
-export const CommentDropdown = (props: IProps) => {
-
-    const dialogs = useDialogManager();
-
-    const handleDelete = React.useCallback(() => {
-
-        const confirmProps: ConfirmDialogProps = {
-            title: "Are you sure you want to delete this comment? ",
-            subtitle: 'This will permanently delete this comment.',
-            type: 'error',
-            onCancel: NULL_FUNCTION,
-            onAccept: () => props.onDelete(props.comment)
-        };
-
-        dialogs.confirm(confirmProps);
-
-    }, [dialogs]);
+export const CommentDropdown2 = React.memo((props: IProps) => {
 
     return (
 
@@ -49,7 +31,7 @@ export const CommentDropdown = (props: IProps) => {
                 <div>
                     <MUIMenuItem text="Delete"
                                  icon={<DeleteIcon/>}
-                                 onClick={() => handleDelete()}/>
+                                 onClick={props.onDelete}/>
 
                 </div>
 
@@ -59,5 +41,5 @@ export const CommentDropdown = (props: IProps) => {
 
     );
 
-};
+}, isEqual);
 
