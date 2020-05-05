@@ -8,7 +8,6 @@ import {TextHighlightAnnotationView} from './TextHighlightAnnotationView';
 import {Doc} from '../../metadata/Doc';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Tag} from 'polar-shared/src/tags/Tags';
-import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
 import {MUIHoverController} from "../../mui/context/MUIHoverContext";
 

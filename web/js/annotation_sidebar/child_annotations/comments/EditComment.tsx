@@ -102,7 +102,7 @@ export class EditComment extends React.Component<IProps, IState> {
 
 interface IProps {
 
-    readonly id: string;
+    readonly id?: string;
 
     /**
      * When given a comment we're editing an existing comment.

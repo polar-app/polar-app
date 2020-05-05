@@ -162,7 +162,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
     );
 });
 
-export const AnnotationPreviewView2 = React.memo(() => {
+export const AnnotationInlineViewer = React.memo(() => {
 
     const store = useAnnotationRepoStore();
 

@@ -89,10 +89,12 @@ interface IState<T> {
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 }
 
+type HighlightChangeReason = 'keyboard' | 'auto' | 'mouse';
+
 interface IHighlightChangeAutocompleteProps<T> {
     readonly onHighlightChange: (event: object,
                                  option: T,
-                                 reason: 'keyboard' | 'auto' | 'mouse' ) => void;
+                                 reason: HighlightChangeReason) => void;
 }
 
 type IFixedAutocomplete<T> = (props: AutocompleteProps<T> & UseAutocompleteProps<T> & IHighlightChangeAutocompleteProps<T>) => JSX.Element;
@@ -277,7 +279,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                               {...getTagProps({ index })} />
                     ))
                 }
-                onHighlightChange={(event, option, reason) => highlighted.current = option}
+                onHighlightChange={(event: object, option: any, reason: any) => highlighted.current = option}
                 // noOptionsText={<Button onClick={() => handleOptionCreated()}>Create "{value}"</Button>}
                 renderInput={(params) => (
                     <TextField

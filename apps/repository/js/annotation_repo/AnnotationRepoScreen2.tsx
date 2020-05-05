@@ -14,10 +14,12 @@ import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
-import {AnnotationPreviewView2} from "./AnnotationPreviewView2";
+import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {RepoHeader2} from "../repo_header/RepoHeader2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import { AnnotationRepoKeyBindings } from './AnnotationRepoKeyBindings';
+import {AnnotationRepoKeyBindings} from './AnnotationRepoKeyBindings';
+import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
+import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
@@ -28,7 +30,7 @@ interface AnnotationsPreviewProps {
 }
 
 const AnnotationPreview = (props: AnnotationsPreviewProps) => (
-    <AnnotationPreviewView2 />
+    <AnnotationInlineViewer />
 );
 //
 // interface RouterProps extends main.MainProps {
@@ -68,10 +70,6 @@ const onClose = () => window.history.back();
 
 namespace main {
 
-    export const Folders = () => (
-        <FolderSidebar2 />
-    );
-
     export const Phone = () => (
         <DockLayout dockPanels={[
             {
@@ -104,7 +102,6 @@ namespace main {
             {
                 id: 'dock-panel-left',
                 type: 'fixed',
-                component: <main.Folders />,
                 style: {
                     overflow: 'visible',
                     display: 'flex',
@@ -112,6 +109,7 @@ namespace main {
                     flexGrow: 1,
                     minHeight: 0,
                 },
+                component: <FolderSidebar2 />,
                 width: 300
             },
             {
@@ -130,9 +128,10 @@ namespace main {
                            style={{
                                flexGrow: 1,
                                display: 'flex',
+                               flexDirection: 'column',
                                minHeight: 0
                            }}>
-                        <AnnotationListView2 />
+                        <AnnotationRepoTable2/>
                     </Paper>,
                 width: 450
             },
@@ -146,7 +145,7 @@ namespace main {
                     <Paper square
                            elevation={0}
                            style={{flexGrow: 1, display: 'flex'}}>
-                        <AnnotationPreviewView2 />
+                        <AnnotationInlineViewer2 />
                     </Paper>
 
             }
