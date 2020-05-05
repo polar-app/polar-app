@@ -28,8 +28,6 @@ export const EditTextHighlight2 = (props: IProps) => {
         return null;
     }
 
-    // onTextHighlightContent
-
     function handleKeyDown(event: KeyboardEvent) {
 
         // if (event.key === "Escape") {
@@ -77,6 +75,7 @@ export const EditTextHighlight2 = (props: IProps) => {
                         </Button>
 
                         <Button color="primary"
+                                variant="contained"
                                 onClick={() => annotationMutation.onTextHighlightContent(annotation, htmlRef.current)}>
 
                             Change
@@ -92,21 +91,3 @@ export const EditTextHighlight2 = (props: IProps) => {
         </div>
     );
 };
-//
-//     private onKeyDown(event: KeyboardEvent) {
-//
-//         // if (event.key === "Escape") {
-//         //     this.toggle();
-//         // }
-//
-//         if (event.getModifierState("Control") && event.key === "Enter") {
-//             this.props.onChanged(this.html);
-//         }
-//
-//     }
-//
-//     private onChange(html: string): void {
-//         this.html = html;
-//     }
-//
-// }
