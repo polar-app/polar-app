@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import Button from 'reactstrap/lib/Button';
 import {Flashcard} from '../../../../metadata/Flashcard';
+import Button from "@material-ui/core/Button";
 
 export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
@@ -22,8 +21,7 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
                 {this.props.cancelButton}
 
                 <Button color="primary"
-                        size="md"
-                        className="ml-1"
+                        variant="contained"
                         onClick={() => this.props.onCreate()}>
 
                     {this.props.existingFlashcard ? 'Update' : 'Create'}

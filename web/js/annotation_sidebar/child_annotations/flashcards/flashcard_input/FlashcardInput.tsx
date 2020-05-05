@@ -73,7 +73,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
     }
 
     private setDefaultFlashcardType(flashcardType: FlashcardType) {
-        window.localStorage.setItem('default-flashcard-type', flashcardType);
+        localStorage.setItem('default-flashcard-type', flashcardType);
     }
 
     private onFlashcard(flashcardType: FlashcardType,

@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
-import {FlashcardInputFieldsType, FlashcardInputs, FrontAndBackFields} from './FlashcardInputs';
+import {
+    FlashcardInputFieldsType,
+    FlashcardInputs,
+    FrontAndBackFields
+} from './FlashcardInputs';
 import {FlashcardStyles} from './FlashcardStyles';
 import {Flashcard} from '../../../../metadata/Flashcard';
-
-const log = Logger.create();
 
 export class FlashcardInputForFrontAndBack extends React.Component<IProps, IState> {
 
