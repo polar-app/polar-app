@@ -72,16 +72,16 @@ const foo = {
     color:#eee
 },
 ".note-tooltip.bottom .note-tooltip-arrow": {
-    border-bottom-color: "#000",
+    borderBottomColor: "#000",
 },
 ".note-tooltip.top .note-tooltip-arrow": {
-    border-top-color: "#000",
+    borderTopColor: "#000",
 },
 ".note-tooltip.right .note-tooltip-arrow": {
-    border-right-color: "#000",
+    borderRightColor: "#000",
 },
 ".note-tooltip.left .note-tooltip-arrow": {
-    border-left-color: "#000",
+    borderLeftColor: "#000",
 },
 ".note-tooltip-arrow": {
     borderColor: "transparent",
@@ -91,32 +91,32 @@ const foo = {
     backgroundColor:#000
 },
 ".note-popover.bottom .note-popover-arrow": {
-    border-bottom-color: "#999",
-    border-bottom-color: "rgba(0,0,0,0.25)",
+    borderBottomColor: "#999",
+    borderBottomColor: "rgba(0,0,0,0.25)",
 },
 ".note-popover.bottom .note-popover-arrow::after": {
-    border-bottom-color: "#fff",
+    borderBottomColor: "#fff",
 },
 ".note-popover.top .note-popover-arrow": {
-    border-top-color: "#999",
-    border-top-color: "rgba(0,0,0,0.25)",
+    borderTopColor: "#999",
+    borderTopColor: "rgba(0,0,0,0.25)",
 },
 ".note-popover.top .note-popover-arrow::after": {
-    border-top-color: "#fff",
+    borderTopColor: "#fff",
 },
 ".note-popover.right .note-popover-arrow": {
-    border-right-color: "#999",
-    border-right-color: "rgba(0,0,0,0.25)",
+    borderRightColor: "#999",
+    borderRightColor: "rgba(0,0,0,0.25)",
 },
 ".note-popover.right .note-popover-arrow::after": {
-    border-right-color: "#fff",
+    borderRightColor: "#fff",
 },
 ".note-popover.left .note-popover-arrow": {
-    border-left-color: "#999",
-    border-left-color: "rgba(0,0,0,0.25)",
+    borderLeftColor: "#999",
+    borderLeftColor: "rgba(0,0,0,0.25)",
 },
 ".note-popover.left .note-popover-arrow::after": {
-    border-left-color: "#fff",
+    borderLeftColor: "#fff",
 },
 ".note-popover-arrow::after": {
     borderColor: "transparent",
