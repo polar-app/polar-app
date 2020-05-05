@@ -2,7 +2,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Point} from '../Point';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
-import {Ref} from 'polar-shared/src/metadata/Refs';
+import {Ref, Refs} from 'polar-shared/src/metadata/Refs';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
@@ -19,6 +19,7 @@ import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {InheritedTag} from 'polar-shared/src/tags/InheritedTags';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {DocAnnotations} from "./DocAnnotations";
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
@@ -61,6 +62,8 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      */
     readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
+    readonly children: () => ReadonlyArray<IDocAnnotation>;
+
 }
 
 // TODO we need a full doc annotation including children and a way to manage
@@ -77,6 +80,65 @@ export interface DocAnnotation extends IDocAnnotation {
     addChild(docAnnotation: DocAnnotation): void;
 
     removeChild(id: string): void;
+
+}
+
+/**
+ *
+ */
+export function createChildren(original: IAreaHighlight | ITextHighlight,
+                               docMeta: IDocMeta,
+                               pageMeta: IPageMeta): () => ReadonlyArray<IDocAnnotation> {
+
+    // FIXME the react component cache will not work here I think as the
+    // children will change... It WILL work BUT we have to analyze the
+    // children as part of the isEqual method and we will probably need to
+    // make sure lastUpdated is always mutated on each subcomponent so that
+    // we can have efficient caching.
+    //
+    // FIXME lastUpdated isn't enough because that only has 1s resolution.
+    //
+    // We might need more resolution than that.
+
+    // normally this is used from react and the react com
+
+    // use the original annotation, and the pageMeta to find the
+    // children... should we cache these so that lookups are fast
+
+    return () => {
+
+        const flashcards = Object.values(pageMeta.flashcards || {});
+        const comments = Object.values(pageMeta.comments || {});
+
+        function isReferenced(annotation: IComment | IFlashcard): boolean {
+
+            if (! annotation.ref) {
+                return false;
+            }
+
+            const parsedRef = Refs.parse(annotation.ref);
+
+            return parsedRef.value === original.id || parsedRef.value === original.guid;
+
+        }
+
+        const flashcardAnnotations
+            = flashcards.filter(isReferenced)
+                        .map(annotation => DocAnnotations.createFromFlashcard(docMeta, annotation, pageMeta));
+
+        const commentAnnotations
+            = comments.filter(isReferenced)
+                        .map(annotation => DocAnnotations.createFromComment(docMeta, annotation, pageMeta));
+
+
+        const resolved = [
+            ...flashcardAnnotations,
+            ...commentAnnotations
+        ];
+
+        return resolved;
+
+    };
 
 }
 
@@ -156,6 +218,10 @@ export class DefaultDocAnnotation implements DocAnnotation {
         return arrayStream(this.getIndex()._getChildren(this.id))
                 .unique(current => current.id)
                 .collect();
+    }
+
+    public children() {
+        return this.getChildren();
     }
 
     public setChildren(children: ReadonlyArray<DocAnnotation>): void {

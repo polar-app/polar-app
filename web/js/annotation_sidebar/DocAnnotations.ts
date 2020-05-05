@@ -1,5 +1,5 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {IDocAnnotation} from './DocAnnotation';
+import {createChildren, IDocAnnotation} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
@@ -95,6 +95,7 @@ export class DocAnnotations {
             color: undefined,
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
+            children: () => [],
         };
 
     }
@@ -132,6 +133,7 @@ export class DocAnnotations {
             color: undefined,
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
+            children: () => [],
         };
 
     }
@@ -160,6 +162,8 @@ export class DocAnnotations {
 
         const init = this.createInit(docMeta);
 
+        const children = createChildren(annotation, docMeta, pageMeta);
+
         return {
             ...init,
             oid: ObjectIDs.create(),
@@ -184,6 +188,7 @@ export class DocAnnotations {
             author: annotation.author,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             immutable: this.isImmutable(annotation.author),
+            children
         };
 
     }
@@ -195,6 +200,8 @@ export class DocAnnotations {
         const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation);
 
         const init = this.createInit(docMeta);
+
+        const children = createChildren(annotation, docMeta, pageMeta);
 
         return {
             ...init,
@@ -218,7 +225,8 @@ export class DocAnnotations {
             author: annotation.author,
             immutable: this.isImmutable(annotation.author),
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
-            img: undefined
+            img: undefined,
+            children
         };
 
     }

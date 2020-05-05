@@ -498,7 +498,8 @@ function createAnnotation(id: string,
         immutable: false,
         color: undefined,
         img: undefined,
-        tags: {}
+        tags: {},
+        children: () => []
 
     };
 
