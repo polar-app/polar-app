@@ -32,7 +32,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
                                    onClick={onEdit}
                                    type="comment"/>;
 
-    const cancelButton = <CancelButton onClick={() => onCancel}/>;
+    const cancelButton = <CancelButton onClick={onCancel}/>;
 
     const existingComment = props.comment.original as Comment;
 
