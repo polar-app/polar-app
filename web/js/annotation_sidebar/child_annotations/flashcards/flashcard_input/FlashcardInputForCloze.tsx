@@ -1,18 +1,20 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import Button from 'reactstrap/lib/Button';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardButtons} from './FlashcardButtons';
 import {FlashcardTypeSelector} from './FlashcardTypeSelector';
 import {RichTextArea} from '../../../RichTextArea';
 import {RichTextMutator} from '../../../../apps/card_creator/elements/schemaform/RichTextMutator';
-import {ClozeFields, FlashcardInputFieldsType, FlashcardInputs} from './FlashcardInputs';
-import {UncontrolledTooltip} from 'reactstrap';
+import {
+    ClozeFields,
+    FlashcardInputFieldsType,
+    FlashcardInputs
+} from './FlashcardInputs';
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
-
-const log = Logger.create();
+import Button from '@material-ui/core/Button';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from '@material-ui/core/IconButton';
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
@@ -69,20 +71,15 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                     <div style={FlashcardStyles.BottomBarItem} className="ml-1">
 
-                        <Button id={`button-${this.props.id}`}
-                                color="light"
-                                size="md"
-                                onClick={() => this.onClozeDelete()}
-                                className="ml-1 p-1 border">[…]</Button>
+                        <Tooltip title="Create cloze deletion for text">
 
-                        <UncontrolledTooltip placement="bottom"
-                                             delay={{show: 750, hide: 0}}
-                                             target={`button-${this.props.id}`}>
-                            Create cloze deletion for text <span className="text-muted">Control+Shift+C</span>
-                        </UncontrolledTooltip>
+                            <IconButton id={`button-${this.props.id}`}
+                                        onClick={() => this.onClozeDelete()}>
+                                […]
+                            </IconButton>
+                        </Tooltip>
 
                     </div>
-
 
                     <div style={FlashcardStyles.BottomBarItemRight}
                          className="text-right">

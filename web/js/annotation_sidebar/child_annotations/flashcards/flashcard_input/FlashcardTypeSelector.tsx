@@ -1,15 +1,7 @@
 import * as React from 'react';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import Input from 'reactstrap/lib/Input';
-
-class Styles {
-
-    public static SelectCardType: React.CSSProperties = {
-        minWidth: '10em',
-        fontSize: '14px'
-    };
-
-}
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 export class FlashcardTypeSelector extends React.Component<IProps, IState> {
 
@@ -25,17 +17,15 @@ export class FlashcardTypeSelector extends React.Component<IProps, IState> {
 
         return (
 
-            <Input type="select"
-                   style={Styles.SelectCardType}
-                   defaultValue={this.props.flashcardType}
-                   className="p-0"
-                   onChange={htmlInputElement => this.props.onChangeFlashcardType(htmlInputElement.target.value as FlashcardType)}>
-
-                <option value={FlashcardType.BASIC_FRONT_BACK}>Front and back</option>
-
-                <option value={FlashcardType.CLOZE}>Cloze</option>
-
-            </Input>
+            <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={this.props.flashcardType}
+                // variant="outlined"
+                onChange={event => this.props.onChangeFlashcardType(event.target.value as FlashcardType)}>
+                <MenuItem value={FlashcardType.BASIC_FRONT_BACK}>Front and back</MenuItem>
+                <MenuItem value={FlashcardType.CLOZE}>Cloze</MenuItem>
+            </Select>
 
         );
 
