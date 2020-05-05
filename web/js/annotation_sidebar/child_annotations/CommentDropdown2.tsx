@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation} from '../DocAnnotation';
 import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
@@ -9,7 +9,7 @@ import isEqual from "react-fast-compare";
 
 interface IProps {
     readonly id: string;
-    readonly comment: DocAnnotation;
+    readonly comment: IDocAnnotation;
     readonly onDelete: () => void;
     readonly disabled?: boolean;
 }

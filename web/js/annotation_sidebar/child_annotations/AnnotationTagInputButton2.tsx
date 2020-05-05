@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {DocAnnotation} from "../DocAnnotation";
+import {IDocAnnotation} from "../DocAnnotation";
 
 interface IProps {
-    readonly annotation: DocAnnotation;
+    readonly annotation: IDocAnnotation;
 }
 
 export const AnnotationTagInputButton2 = (props: IProps) => {

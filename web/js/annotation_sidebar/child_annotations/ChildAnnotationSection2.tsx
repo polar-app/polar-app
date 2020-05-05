@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import isEqual from "react-fast-compare";
 import {ViewOrEditComment2} from "./comments/ViewOrEditComment2";
@@ -7,8 +7,8 @@ import {ViewOrEditFlashcard2} from "./flashcards/ViewOrEditFlashcard2";
 
 interface IProps {
 
-    readonly parent: DocAnnotation;
-    readonly docAnnotations: ReadonlyArray<DocAnnotation>;
+    readonly parent: IDocAnnotation;
+    readonly docAnnotations: ReadonlyArray<IDocAnnotation>;
 
 }
 

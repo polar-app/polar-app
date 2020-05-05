@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
+import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {FlashcardAnnotationView2} from './FlashcardAnnotationView2';
@@ -11,7 +11,7 @@ import {FlashcardInput2} from "./flashcard_input/FlashcardInput2";
 
 interface IProps {
     readonly id: string;
-    readonly flashcard: DocAnnotation;
+    readonly flashcard: IDocAnnotation;
 }
 
 type UsageMode = 'view' | 'edit';

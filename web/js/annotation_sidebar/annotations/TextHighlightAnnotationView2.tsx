@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {AnnotationTypes} from '../../metadata/AnnotationTypes';
-import {DocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation} from '../DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
@@ -9,7 +9,7 @@ import {AnnotationViewControlBar2} from "../AnnotationViewControlBar2";
 
 
 interface IProps {
-    readonly annotation: DocAnnotation;
+    readonly annotation: IDocAnnotation;
 }
 
 export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
@@ -71,7 +71,7 @@ export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
 
                         <div className="comments">
                             <ChildAnnotationSection2 parent={annotation}
-                                                     docAnnotations={annotation.getChildren()}/>
+                                                     docAnnotations={annotation.children()}/>
                         </div>
 
                     </div>

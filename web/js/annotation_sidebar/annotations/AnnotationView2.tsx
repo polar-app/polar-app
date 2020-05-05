@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation} from '../DocAnnotation';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
@@ -11,7 +11,7 @@ import {TextHighlightAnnotationView2} from './TextHighlightAnnotationView2';
 const log = Logger.create();
 
 interface IProps {
-    readonly annotation: DocAnnotation;
+    readonly annotation: IDocAnnotation;
 }
 
 /**

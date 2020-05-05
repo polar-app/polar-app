@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
+import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
 import isEqual from "react-fast-compare";
 import Card from "@material-ui/core/Card";
 import CardContent from '@material-ui/core/CardContent';
@@ -70,7 +70,7 @@ const RenderFields = (props: IProps) => {
 
 
 interface IProps {
-    readonly flashcard: DocAnnotation;
+    readonly flashcard: IDocAnnotation;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

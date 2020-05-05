@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation} from '../../DocAnnotation';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
@@ -10,7 +10,7 @@ import {CommentDropdown2} from "../CommentDropdown2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps {
-    readonly comment: DocAnnotation;
+    readonly comment: IDocAnnotation;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

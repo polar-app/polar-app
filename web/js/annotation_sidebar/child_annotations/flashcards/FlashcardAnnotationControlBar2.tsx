@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation} from '../../DocAnnotation';
 import {FlashcardViewDropdown} from './FlashcardViewDropdown';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 
 interface IProps {
-    readonly flashcard: DocAnnotation;
+    readonly flashcard: IDocAnnotation;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {DocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
@@ -12,7 +12,7 @@ import {EditComment2} from "./EditComment2";
 
 interface IProps {
     readonly id: string;
-    readonly comment: DocAnnotation;
+    readonly comment: IDocAnnotation;
     // readonly onComment: (html: string, existingComment: Comment) => void;
 }
 
