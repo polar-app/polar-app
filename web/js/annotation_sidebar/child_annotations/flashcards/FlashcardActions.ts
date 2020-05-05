@@ -13,16 +13,16 @@ const log = Logger.create();
 
 export class FlashcardActions {
 
-    public static create(annotation: IDocAnnotation,
+    public static create(parent: IDocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields) {
 
         Functions.withTimeout(() => {
 
-            const flashcard = this.newInstance(annotation, type, fields);
+            const flashcard = this.newInstance(parent, type, fields);
 
             if (flashcard) {
-                annotation.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
+                parent.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
             }
 
         });
@@ -30,22 +30,22 @@ export class FlashcardActions {
     }
 
     public static update(docMeta: IDocMeta,
-                         annotation: DocAnnotation,
+                         parent: IDocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
                          existingFlashcard?: Flashcard) {
 
-        const flashcard = this.newInstance(annotation, type, fields);
+        const flashcard = this.newInstance(parent, type, fields);
 
         if (flashcard) {
 
             DocMetas.withBatchedMutations(docMeta, () => {
 
                 if (existingFlashcard) {
-                    delete annotation.pageMeta.flashcards[existingFlashcard.id];
+                    delete parent.pageMeta.flashcards[existingFlashcard.id];
                 }
 
-                annotation.pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
+                parent.pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
 
             });
 
@@ -56,11 +56,11 @@ export class FlashcardActions {
     /**
      * Create a new instance from the given fields.
      */
-    private static newInstance(annotation: IDocAnnotation,
+    private static newInstance(parent: IDocAnnotation,
                                type: FlashcardType,
                                fields: FrontAndBackFields | ClozeFields): Flashcard | undefined {
 
-        const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
+        const ref = Refs.createFromAnnotationType(parent.id, parent.annotationType);
 
         if (type === FlashcardType.BASIC_FRONT_BACK) {
 

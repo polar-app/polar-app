@@ -79,7 +79,7 @@ interface IFolderSidebarCallbacks {
 
 }
 
-const folderStore: IFolderSidebarStore = {
+const initialStore: IFolderSidebarStore = {
     filter: "",
     tags: [],
     tagsView: [],
@@ -398,7 +398,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
 export function createFolderSidebarStore() {
     return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
-          initialValue: folderStore,
+          initialValue: initialStore,
           mutatorFactory,
           callbacksFactory
     });
