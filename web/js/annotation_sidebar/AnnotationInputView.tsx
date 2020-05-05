@@ -1,12 +1,10 @@
 import * as React from "react";
-import {Doc} from "../metadata/Doc";
-import {DocAnnotation} from "./DocAnnotation";
+import {IDocAnnotation} from "./DocAnnotation";
 import {CreateComment2} from "./child_annotations/comments/CreateComment2";
 import isEqual from "react-fast-compare";
 
 interface IProps {
-    readonly doc: Doc;
-    readonly annotation: DocAnnotation;
+    readonly annotation: IDocAnnotation;
 }
 
 export const AnnotationInputView = React.memo((props: IProps) => {

@@ -13,6 +13,7 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotation_sidebar/AnnotationActiveInputContext";
 import {AnnotationViewControlBar2} from "../../../../web/js/annotation_sidebar/AnnotationViewControlBar2";
 import {DocMetaContext} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import {AnnotationInputView} from "../../../../web/js/annotation_sidebar/AnnotationInputView";
 
 const Styles: IStyleMap = {
 
@@ -55,6 +56,8 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     const callbacks = useAnnotationRepoCallbacks();
 
+    console.log("FIXME: annotation: ", annotation);
+
     const docMetaContext = {
         docMeta: annotation.docMeta,
         mutable: true
@@ -76,6 +79,8 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                     <DocMetaContext.Provider value={docMetaContext}>
                         <AnnotationViewControlBar2 annotation={annotation}/>
                         <div>this is the new provider</div>
+
+                        <AnnotationInputView annotation={annotation}/>
                     </DocMetaContext.Provider>
                 </>
             </AnnotationActiveInputContextProvider>

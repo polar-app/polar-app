@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {LoadingMessages} from "./LoadingMessages";
 import {SplashBox} from "./SplashBox";
-import {LogMessagesDataLoader} from "./LogMessagesDataLoader";
 import {PolarSVGIcon} from "../svg_icons/PolarSVGIcon";
 
 export class LoadingSplash extends React.Component<IProps, IState> {
@@ -19,7 +17,7 @@ export class LoadingSplash extends React.Component<IProps, IState> {
                     <PolarSVGIcon/>
                 </div>
 
-                <LogMessagesDataLoader render={logData => <LoadingMessages logData={logData}/>}/>
+                {/*<LogMessagesDataLoader render={logData => <LoadingMessages logData={logData}/>}/>*/}
 
             </SplashBox>
         );

@@ -4,11 +4,7 @@ import {CancelButton} from "../CancelButton";
 import {useAnnotationMutationContext} from "../../AnnotationMutationContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 
-
-interface IProps {
-}
-
-export const CreateComment2  = (props: IProps) => {
+export const CreateComment2 = React.memo(() => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutationContext = useAnnotationMutationContext();
@@ -25,4 +21,4 @@ export const CreateComment2  = (props: IProps) => {
                      cancelButton={cancelButton}/>
     );
 
-}
+});
