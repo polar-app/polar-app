@@ -20,6 +20,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {TextHighlights} from "../metadata/TextHighlights";
 import {Tag} from "polar-shared/src/tags/Tags";
+import { useAnnotationRepoCallbacks } from "apps/repository/js/annotation_repo/AnnotationRepoStore";
 
 const log = Logger.create()
 
@@ -154,6 +155,19 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
     const dialogs = useDialogManager();
     const docMetaContext = useDocMetaContext();
 
+    // FIXME this won't work with the new sidebar as it doesn't use the
+    // annotation repository.  We will have to do our own writes there with our
+    // own context
+    const annotationRepoCallbacks = useAnnotationRepoCallbacks();
+
+    // FIXME: further, none of these mutate the store directly in the annotation
+    // sidebar which means we have to wait for datastore event updates which
+    // is not fun.
+
+    // FIXME: I can solve this by having a NEW store in the annotation sidebar
+    // which shares the same code between the repo and the viewer so that the
+    // context is updated.
+
     async function doWriteDocMeta(docMeta: IDocMeta) {
 
         // first, set the docMeta so that the UI updates
@@ -186,6 +200,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
             case "delete":
                 CommentActions.delete(mutation.existing);
+                break;
 
         }
 
