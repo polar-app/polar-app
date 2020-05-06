@@ -33,7 +33,7 @@ export class FlashcardActions {
                          parent: IDocAnnotation,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
-                         existingFlashcard?: Flashcard) {
+                         existingFlashcard?: Flashcard | IDocAnnotation) {
 
         const flashcard = this.newInstance(parent, type, fields);
 
@@ -50,6 +50,16 @@ export class FlashcardActions {
             });
 
         }
+
+    }
+
+    public static delete(docMeta: IDocMeta,
+                         parent: IDocAnnotation,
+                         existing: Flashcard | IDocAnnotation) {
+
+        DocMetas.withBatchedMutations(docMeta, () => {
+            delete parent.pageMeta.flashcards[existing.id];
+        });
 
     }
 

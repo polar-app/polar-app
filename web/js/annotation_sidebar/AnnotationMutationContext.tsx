@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Functions, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IDocAnnotation} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
@@ -18,6 +18,8 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
+import {HTMLStr} from "polar-shared/src/util/Strings";
+import {TextHighlights} from "../metadata/TextHighlights";
 
 const log = Logger.create()
 
@@ -56,24 +58,69 @@ export interface IAnnotationMutationStore {
 
 }
 
-export interface IAnnotationMutationCallbacks {
+export interface ICommentCreate {
+    readonly type: 'create';
+    readonly parent: IDocAnnotation;
+    readonly body: HTMLStr;
+}
 
-    readonly onTextHighlightReverted: () => void;
-    readonly onTextHighlightEdited: () => void;
+export interface ICommentUpdate {
+    readonly type: 'update';
+    readonly parent: IDocAnnotation;
+    readonly body: HTMLStr;
+    readonly existing: IDocAnnotation;
+}
+
+export interface ICommentDelete {
+    readonly type: 'delete';
+    readonly parent: IDocAnnotation;
+    readonly existing: IDocAnnotation;
+}
+
+export type ICommentMutation = ICommentCreate | ICommentUpdate | ICommentDelete;
+
+export interface IFlashcardCreate {
+    readonly type: 'create';
+    readonly parent: IDocAnnotation;
+    readonly flashcardType: FlashcardType,
+    readonly fields: Readonly<FlashcardInputFieldsType>
+}
+
+export interface IFlashcardUpdate {
+    readonly type: 'update';
+    readonly parent: IDocAnnotation;
+    readonly flashcardType: FlashcardType,
+    readonly fields: Readonly<FlashcardInputFieldsType>
+    readonly existing: IDocAnnotation;
+}
+export interface IFlashcardDelete {
+    readonly type: 'delete';
+    readonly parent: IDocAnnotation;
+    readonly existing: IDocAnnotation;
+}
+
+export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
+
+export interface ITextHighlightRevert {
+    readonly type: 'revert';
+    readonly textHighlight: IDocAnnotation;
+}
+
+export interface ITextHighlightUpdate {
+    readonly type: 'update';
+    readonly textHighlight: IDocAnnotation;
+    readonly body: string;
+}
+
+export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate;
+
+export interface IAnnotationMutationCallbacks {
 
     readonly onColor: (color: string) => void;
 
-    readonly onCommentCreated: (annotation: IDocAnnotation) => void
-    readonly onFlashcardCreated: (flashcardType: FlashcardType,
-                                  fields: Readonly<FlashcardInputFieldsType>,
-                                  existingFlashcard?: Flashcard) => void;
-
-    readonly onUpdate: (annotation: IDocAnnotation) => void;
-
-    readonly onDelete: (annotation: IDocAnnotation) => void;
-
-    readonly onTextHighlightContentRevert: (annotation: IDocAnnotation) => void;
-    readonly onTextHighlightContent: (annotation: IDocAnnotation, html: string) => void;
+    readonly onTextHighlight: (mutation: ITextHighlightMutation) => void
+    readonly onComment: (mutation: ICommentMutation) => void
+    readonly onFlashcard: (mutation: IFlashcardMutation) => void;
 
 }
 const initialStore: IAnnotationMutationStore = {
@@ -156,12 +203,67 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
     }
 
-    function onFlashcardCreated(parent: IDocAnnotation,
-                                flashcardType: FlashcardType,
-                                fields: Readonly<FlashcardInputFieldsType>) {
+    function onComment(mutation: ICommentMutation) {
 
         const docMeta = docMetaContext.docMeta;
-        FlashcardActions.create(parent, flashcardType, fields);
+
+        switch (mutation.type) {
+
+            case "create":
+                CommentActions.create(docMeta,
+                                      mutation.parent,
+                                      mutation.body);
+                break;
+
+            case "update":
+                CommentActions.update(docMeta,
+                                      mutation.parent,
+                                      mutation.body,
+                                      mutation.existing.original as IComment);
+                break;
+
+            case "delete":
+                CommentActions.delete(mutation.existing);
+
+        }
+
+        async function doAsync() {
+            await doWriteDocMeta(docMeta);
+            log.info("flashcard created");
+        }
+
+        doAsync()
+            .catch(err => log.error(err));
+
+
+    }
+
+    function onFlashcard(mutation: IFlashcardMutation) {
+
+        const docMeta = docMetaContext.docMeta;
+
+        switch (mutation.type) {
+
+            case "create":
+                FlashcardActions.create(mutation.parent,
+                                        mutation.flashcardType,
+                                        mutation.fields);
+                break;
+
+            case "update":
+                FlashcardActions.update(docMeta,
+                                        mutation.parent,
+                                        mutation.flashcardType,
+                                        mutation.fields,
+                                        mutation.existing);
+                break;
+
+                case "delete":
+                    FlashcardActions.delete(docMeta,
+                                            mutation.parent,
+                                            mutation.existing);
+
+        }
 
         async function doAsync() {
             await doWriteDocMeta(docMeta);
@@ -173,34 +275,46 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
     }
 
-    function onFlashcardUpdated(parent: IDocAnnotation,
-                                flashcardType: FlashcardType,
-                                fields: Readonly<FlashcardInputFieldsType>,
-                                existingFlashcard: Flashcard) {
+    function onTextHighlight(mutation: ITextHighlightMutation) {
 
         const docMeta = docMetaContext.docMeta;
-        FlashcardActions.update(docMeta, parent, flashcardType, fields, existingFlashcard);
 
-        async function doAsync() {
-            await doWriteDocMeta(docMeta);
-            log.info("flashcard updated");
+        switch (mutation.type) {
+            case "revert":
+
+                Functions.withTimeout(() => {
+
+                    TextHighlights.resetRevisedText(docMeta,
+                                                    mutation.textHighlight.pageMeta,
+                                                    mutation.textHighlight.id);
+
+                });
+
+                break;
+            case "update":
+
+                Functions.withTimeout(() => {
+
+                    TextHighlights.setRevisedText(docMeta,
+                                                  mutation.textHighlight.pageMeta,
+                                                  mutation.textHighlight.id,
+                                                  mutation.body);
+
+                });
+
+                break;
+
+
         }
-
-        doAsync()
-            .catch(err => log.error(err));
 
     }
 
     return {
-        onTextHighlightEdited: NULL_FUNCTION,
-        onTextHighlightReverted: NULL_FUNCTION,
         onColor: NULL_FUNCTION,
-        onCommentCreated: NULL_FUNCTION,
-        onFlashcardCreated: NULL_FUNCTION,
+        onTextHighlight,
+        onFlashcard,
         onUpdate,
         onDelete,
-        onTextHighlightContentRevert: NULL_FUNCTION,
-        onTextHighlightContent: NULL_FUNCTION,
     };
 
 }
@@ -221,20 +335,6 @@ createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCall
 
 
 
-// export const AnnotationMutationContextProvider = React.memo((props: IProps) => {
-//
-//     return (
-//         <AnnotationMutationContext.Provider value={{active, setActive}}>
-//             {props.children}
-//         </AnnotationMutationContext.Provider>
-//     );
-//
-// }, isEqual);
-//
-// private onComment(html: string, existingComment: Comment) {
-//     CommentActions.update(this.props.doc.docMeta, this.props.parent, html, existingComment);
-// }
-//
 
 
 // const onTagged = (tags: ReadonlyArray<Tag>) => {

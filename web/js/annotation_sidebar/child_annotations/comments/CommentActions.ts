@@ -20,28 +20,28 @@ export class CommentActions {
     }
 
     public static create(docMeta: IDocMeta,
-                         annotation: IDocAnnotation,
+                         parent: IDocAnnotation,
                          html: string) {
 
-        const ref = Refs.createFromAnnotationType(annotation.id,
-                                                  annotation.annotationType);
+        const ref = Refs.createFromAnnotationType(parent.id,
+                                                  parent.annotationType);
 
         const comment = Comments.createHTMLComment(html, ref);
 
         // make sure to update on the primary page meta
-        const pageMeta = DocMetas.getPageMeta(docMeta, annotation.pageMeta.pageInfo.num);
+        const pageMeta = DocMetas.getPageMeta(docMeta, parent.pageMeta.pageInfo.num);
 
         pageMeta.comments[comment.id] = comment;
 
     }
 
     public static update(docMeta: IDocMeta,
-                         annotation: IDocAnnotation,
+                         parent: IDocAnnotation,
                          html: string,
                          existingComment: IComment) {
 
-        const ref = Refs.createFromAnnotationType(annotation.id,
-                                                  annotation.annotationType);
+        const ref = Refs.createFromAnnotationType(parent.id,
+                                                  parent.annotationType);
 
         const comment = Comments.createHTMLComment(html,
                                                    ref,
@@ -50,8 +50,8 @@ export class CommentActions {
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
-            delete annotation.pageMeta.comments[existingComment.id];
-            annotation.pageMeta.comments[comment.id] = comment;
+            delete parent.pageMeta.comments[existingComment.id];
+            parent.pageMeta.comments[comment.id] = comment;
 
         });
 
