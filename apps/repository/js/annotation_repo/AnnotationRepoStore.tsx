@@ -46,6 +46,15 @@ import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import { SelectionEvents } from "../doc_repo/SelectionEvents";
+import {
+    IAnnotationMutations,
+    IAnnotationMutationSelected,
+    IColorMutation,
+    ICommentMutation,
+    IDeleteMutation,
+    IFlashcardMutation,
+    ITextHighlightMutation
+} from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 
 const log = Logger.create();
 
@@ -85,7 +94,7 @@ interface IAnnotationRepoStore {
 
 }
 
-interface IAnnotationRepoCallbacks {
+interface IAnnotationRepoCallbacks extends IAnnotationMutations {
 
     readonly selectRow: (selectedIdx: number,
                          event: React.MouseEvent,
@@ -523,7 +532,17 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotations(): ReadonlyArray<IDocAnnotation> {
+    function selectedAnnotations(opts: IAnnotationMutationSelected = {}): ReadonlyArray<IDocAnnotation> {
+
+        if (opts && opts.selected) {
+
+            if (Array.isArray(opts.selected)) {
+                return opts.selected;
+            }
+
+            return [opts.selected as IDocAnnotation];
+
+        }
 
         const store = storeProvider();
 
@@ -533,9 +552,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotation(): IDocAnnotation | undefined {
+    function selectedAnnotation(opts: IAnnotationMutationSelected = {}): IDocAnnotation | undefined {
 
-        const annotations = selectedAnnotations();
+        const annotations = selectedAnnotations(opts);
 
         if (annotations.length === 0) {
             return undefined;
@@ -549,9 +568,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function onDeleted() {
+    function onDeleted(mutation: IDeleteMutation = {}) {
 
-        const annotations = selectedAnnotations();
+        const annotations = selectedAnnotations(mutation);
 
         if (annotations.length === 0) {
             log.warn("no repoAnnotation");
@@ -583,6 +602,22 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         doDropped(selected, tag);
     }
 
+    function onTextHighlight(mutation: ITextHighlightMutation) {
+        // noop
+    }
+
+    function onComment(mutation: ICommentMutation) {
+        // noop
+    }
+
+    function onFlashcard(mutation: IFlashcardMutation) {
+        // noop
+    }
+
+    function onColor(mutation: IColorMutation) {
+
+    }
+
     return {
         doOpen,
         selectRow,
@@ -600,6 +635,10 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         onDragEnd,
         doDropped,
         onDropped,
+        onTextHighlight,
+        onComment,
+        onFlashcard,
+        onColor
     };
 
 }

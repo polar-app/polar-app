@@ -37,24 +37,24 @@ const log = Logger.create()
  * This allows us to specify what's is being mutated.  If selected is specified
  * we mutate just these objects. NOT that's selected in the UI tables.
  */
-export interface IAnnotationMutation {
+export interface IAnnotationMutationSelected {
     readonly selected?: ReadonlyArray<IDocAnnotation> | IDocAnnotation;
 }
 
-export interface ICommentCreate extends IAnnotationMutation {
+export interface ICommentCreate extends IAnnotationMutationSelected {
     readonly type: 'create';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
 }
 
-export interface ICommentUpdate extends IAnnotationMutation {
+export interface ICommentUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotation;
 }
 
-export interface ICommentDelete extends IAnnotationMutation  {
+export interface ICommentDelete extends IAnnotationMutationSelected  {
     readonly type: 'delete';
     readonly parent: IDocAnnotation;
     readonly existing: IDocAnnotation;
@@ -69,13 +69,13 @@ export interface IFlashcardCreate {
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
 
-export interface IFlashcardUpdate extends IAnnotationMutation {
+export interface IFlashcardUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
     readonly parent: IDocAnnotation;
     readonly flashcardType: FlashcardType,
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
-export interface IFlashcardDelete extends IAnnotationMutation {
+export interface IFlashcardDelete extends IAnnotationMutationSelected {
     readonly type: 'delete';
     readonly parent: IDocAnnotation;
     readonly existing: IDocAnnotation;
@@ -83,31 +83,36 @@ export interface IFlashcardDelete extends IAnnotationMutation {
 
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
 
-export interface ITextHighlightRevert extends IAnnotationMutation {
+export interface ITextHighlightRevert extends IAnnotationMutationSelected {
     readonly type: 'revert';
 }
 
-export interface ITextHighlightUpdate extends IAnnotationMutation {
+export interface ITextHighlightUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
     readonly body: string;
 }
 
 export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate;
 
-export interface IDeleteMutation extends IAnnotationMutation {
+export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 }
 
-export interface IColorMutation extends IAnnotationMutation {
+export interface IColorMutation extends IAnnotationMutationSelected {
     readonly color: string;
 }
 
-export interface ITaggedMutation extends IAnnotationMutation {
+export interface ITaggedMutation extends IAnnotationMutationSelected {
 }
 
 export interface IAnnotationMutations {
 
-    readonly onDelete: (mutation: IDeleteMutation) => void;
+
+    /**
+     * Delete the given items or whatever is selected.
+     */
+    readonly onDeleted: (mutation?: IDeleteMutation) => void;
+    readonly onTagged: (mutation?: ITaggedMutation) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
     readonly onComment: (mutation: ICommentMutation) => void;
@@ -117,12 +122,10 @@ export interface IAnnotationMutations {
     // but we can't right now.
     readonly onColor: (mutation: IColorMutation) => void;
 
-    readonly onTagged: (mutation: ITaggedMutation) => void;
-
 }
 
 export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
-    onDelete: NULL_FUNCTION,
+    onDeleted: NULL_FUNCTION,
     onTextHighlight: NULL_FUNCTION,
     onComment: NULL_FUNCTION,
     onFlashcard: NULL_FUNCTION,

@@ -34,7 +34,7 @@ export const AnnotationDropdown2 = (props: IProps) => {
             selected: [annotation],
         }
 
-        annotationsMutations.onDelete(mutation);
+        annotationsMutations.onDeleted(mutation);
 
     }, []);
 
