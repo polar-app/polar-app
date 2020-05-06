@@ -8,6 +8,10 @@ import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {
+    IDeleteMutation,
+    useAnnotationMutationsContext
+} from "../../AnnotationMutationsContext";
 
 interface IProps {
     readonly flashcard: IDocAnnotation;
@@ -23,10 +27,14 @@ export const FlashcardAnnotationControlBar2 = React.memo((props: IProps) => {
     const { flashcard } = props;
 
     const docMetaContext = useDocMetaContext();
+    const annotationMutations = useAnnotationMutationsContext();
 
     const handleDelete = () => {
-        // FIXME: also need to flush this...
-        delete flashcard.pageMeta.flashcards[flashcard.id];
+        const mutation: IDeleteMutation = {
+            selected: [props.flashcard]
+        };
+
+        annotationMutations.onDeleted(mutation);
     };
 
     return (

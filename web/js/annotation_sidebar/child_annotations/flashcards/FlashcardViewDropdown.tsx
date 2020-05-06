@@ -19,7 +19,7 @@ export const FlashcardViewDropdown  = (props: IProps) => {
                            disabled={props.disabled}
                            placement="bottom-end">
             <div>
-                <MUIDeleteMenuItem onAccept={() => props.onDelete(props.flashcard)}/>
+                <MUIDeleteMenuItem onClick={() => props.onDelete(props.flashcard)}/>
             </div>
         </MUIMenuIconButton>
 

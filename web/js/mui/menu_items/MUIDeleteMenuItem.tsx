@@ -7,27 +7,34 @@ import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
 import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
 
 interface IProps {
-    readonly onCancel?: Callback;
-    readonly onAccept: Callback;
+    readonly onClick: Callback;
 }
 
 export const MUIDeleteMenuItem = (props: IProps) => {
 
-    const confirmProps: ConfirmDialogProps = {
-        title: "Are you sure you want to delete this item?",
-        subtitle: "This is a permanent operation and can't be undone. ",
-        type: 'error',
-        ...props
-    };
-
-    const handleClick = MUIDeleteAction.create(confirmProps);
-
-    const dialogs = useDialogManager();
+    // const confirmProps: ConfirmDialogProps = {
+    //     title: "Are you sure you want to delete this item?",
+    //     subtitle: "This is a permanent operation and can't be undone. ",
+    //     type: 'error',
+    //     ...props
+    // };
+    //
+    // const handleClick = MUIDeleteAction.create(confirmProps);
+    //
+    // const dialogs = useDialogManager();
+    //
+    // return (
+    //     <MUIMenuItem text="Delete"
+    //                  icon={<DeleteIcon/>}
+    //                  onClick={() => handleClick(dialogs)}/>
+    //
+    // );
 
     return (
         <MUIMenuItem text="Delete"
                      icon={<DeleteIcon/>}
-                     onClick={() => handleClick(dialogs)}/>
+                     onClick={props.onClick}/>
 
     );
+
 };
