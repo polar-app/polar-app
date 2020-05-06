@@ -98,7 +98,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
     const handleColor = useCallback((color: string) => {
 
         const mutation: IColorMutation = {
-            selected: annotation,
+            selected: [annotation],
             color
         };
 

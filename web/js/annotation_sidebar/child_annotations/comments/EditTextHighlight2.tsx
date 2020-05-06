@@ -46,7 +46,7 @@ export const EditTextHighlight2 = (props: IProps) => {
         annotationInputContext.reset();
 
         const mutation: ITextHighlightRevert = {
-            selected: annotation,
+            selected: [annotation],
             type: 'revert',
         }
 
@@ -58,7 +58,7 @@ export const EditTextHighlight2 = (props: IProps) => {
         annotationInputContext.reset();
 
         const mutation: ITextHighlightUpdate = {
-            selected: annotation,
+            selected: [annotation],
             type: 'update',
             body
         }

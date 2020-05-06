@@ -535,13 +535,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     function selectedAnnotations(opts: IAnnotationMutationSelected = {}): ReadonlyArray<IDocAnnotation> {
 
         if (opts && opts.selected) {
-
-            if (Array.isArray(opts.selected)) {
-                return opts.selected;
-            }
-
-            return [opts.selected as IDocAnnotation];
-
+            return opts.selected;
         }
 
         const store = storeProvider();
