@@ -47,6 +47,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import { SelectionEvents } from "../doc_repo/SelectionEvents";
 import {
+    DocAnnotationsMutator,
     IAnnotationMutations,
     IAnnotationMutationSelected,
     IColorMutation,
@@ -55,6 +56,11 @@ import {
     IFlashcardMutation,
     ITextHighlightMutation
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {
+    IDocMetaContext,
+    useDocMetaContext
+} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 
 const log = Logger.create();
 
@@ -260,6 +266,55 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
+    async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
+                                                                       mutator: (docMeta: IDocMeta, mutation: T) => void) {
+
+        const selected = selectedAnnotations(mutation);
+
+        const partitions = arrayStream(selected)
+            .partition(annotation => [annotation.docMeta.docInfo.fingerprint, annotation.docMeta]);
+
+        // *** first we have to apply all the mutations to every annotation
+        for (const partition of Object.values(partitions)) {
+            const docMeta = partition.key;
+            mutator(docMeta, {...mutation, selected: partition.values});
+        }
+
+        // *** now we have to update the store
+
+        for (const partition of Object.values(partitions)) {
+            // FIXME: I don't think in 2.0 that we have to call this as I think
+            // it just pulls in the most recent data.
+
+            const docMeta = partition.key;
+            await repoDocMetaLoader.update(docMeta, 'updated');
+
+        }
+
+        for (const partition of Object.values(partitions)) {
+            // FIXME: apply these in batches... similar to what we're doing
+            // in DocRepoStore2 I think.
+
+            const docMeta = partition.key;
+
+            const doAsync = async () => {
+
+                // needed so that we update the in-memory representation
+
+                // now write it to the store.
+                const {persistenceLayerProvider} = persistence;
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            };
+
+            doAsync()
+                .catch(err => log.error(err));
+
+        }
+
+    }
+
     function doOpen(docInfo: IDocInfo): void {
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
@@ -385,6 +440,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             const updates = {
                 tags: Tags.toMap(tags)
             };
+
+            // FIXME: migrate this to handleUpdate
 
             AnnotationMutations.update(docMeta,
                                        annotation.annotationType,
@@ -532,7 +589,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotations(opts: IAnnotationMutationSelected = {}): ReadonlyArray<IDocAnnotation> {
+    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
 
         if (opts && opts.selected) {
             return opts.selected;
@@ -546,7 +603,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotation(opts: IAnnotationMutationSelected = {}): IDocAnnotation | undefined {
+    function selectedAnnotation<T extends IAnnotationMutationSelected>(opts?: T): IDocAnnotation | undefined {
 
         const annotations = selectedAnnotations(opts);
 
@@ -597,15 +654,18 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
-        // noop
+        handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
+            .catch(err => log.error(err));
     }
 
     function onComment(mutation: ICommentMutation) {
-        // noop
+        handleUpdate(mutation, DocAnnotationsMutator.onComment)
+            .catch(err => log.error(err));
     }
 
     function onFlashcard(mutation: IFlashcardMutation) {
-        // noop
+        handleUpdate(mutation, DocAnnotationsMutator.onFlashcard)
+            .catch(err => log.error(err));
     }
 
     function onColor(mutation: IColorMutation) {
@@ -645,6 +705,7 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const persistence = usePersistence();
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const tagsContext = useTagsContext();
+    const docMetaContext = useDocMetaContext();
 
     return createCallbacks(storeProvider,
                            setStore,

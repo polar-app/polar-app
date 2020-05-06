@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import isEqual from "react-fast-compare";
 
-interface IDocBase {
+export interface IDocMetaContextBase {
 
     readonly docMeta: IDocMeta;
 
@@ -13,11 +13,11 @@ interface IDocBase {
 
 }
 
-interface IDoc extends IDocBase {
-    readonly setDoc: (doc: IDocBase) => void;
+export interface IDocMetaContext extends IDocMetaContextBase {
+    readonly setDoc: (doc: IDocMetaContextBase) => void;
 }
 
-export const DocMetaContext = React.createContext<IDoc>(null!);
+export const DocMetaContext = React.createContext<IDocMetaContext>(null!);
 
 export function useDocMetaContext() {
     return useContext(DocMetaContext);
@@ -31,7 +31,7 @@ interface IProps {
 
 export const DocMetaContextProvider = React.memo((props: IProps) => {
 
-    const [doc, setDoc] = useState<IDocBase>({
+    const [doc, setDoc] = useState<IDocMetaContextBase>({
         docMeta: props.docMeta,
         mutable: props.mutable
     });

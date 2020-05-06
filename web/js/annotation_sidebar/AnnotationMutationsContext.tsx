@@ -62,7 +62,7 @@ export interface ICommentDelete extends IAnnotationMutationSelected  {
 
 export type ICommentMutation = ICommentCreate | ICommentUpdate | ICommentDelete;
 
-export interface IFlashcardCreate {
+export interface IFlashcardCreate extends IAnnotationMutationSelected {
     readonly type: 'create';
     readonly parent: IDocAnnotation;
     readonly flashcardType: FlashcardType,
@@ -173,7 +173,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
 }
 
-export namespace AnnotationsMutator {
+export namespace DocAnnotationsMutator {
 
     export function onComment(docMeta: IDocMeta, mutation: ICommentMutation) {
 
@@ -332,15 +332,15 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
     }
 
     function onComment(mutation: ICommentMutation) {
-        handleMutation((docMeta) => AnnotationsMutator.onComment(docMeta, mutation));
+        handleMutation((docMeta) => DocAnnotationsMutator.onComment(docMeta, mutation));
     }
 
     function onFlashcard(mutation: IFlashcardMutation) {
-        handleMutation((docMeta) => AnnotationsMutator.onFlashcard(docMeta, mutation));
+        handleMutation((docMeta) => DocAnnotationsMutator.onFlashcard(docMeta, mutation));
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
-        handleMutation((docMeta) => AnnotationsMutator.onTextHighlight(docMeta, mutation));
+        handleMutation((docMeta) => DocAnnotationsMutator.onTextHighlight(docMeta, mutation));
     }
 
     function onTagged(annotation: IDocAnnotation) {
