@@ -32,6 +32,8 @@ export const CreateComment2 = React.memo((props: IProps) => {
             parent: props.parent
         };
 
+        annotationInputContext.reset();
+
         annotationMutations.onComment(mutation);
 
     }, []);
