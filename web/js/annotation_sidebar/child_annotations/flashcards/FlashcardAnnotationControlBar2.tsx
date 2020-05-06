@@ -3,11 +3,11 @@ import {IDocAnnotation} from '../../DocAnnotation';
 import {FlashcardViewDropdown} from './FlashcardViewDropdown';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
-import {AnnotationTagInputButton2} from "../AnnotationTagInputButton2";
 import isEqual from "react-fast-compare";
 import {MUIGridLayout} from "../../../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
+import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 
 interface IProps {
     readonly flashcard: IDocAnnotation;
@@ -49,12 +49,14 @@ export const FlashcardAnnotationControlBar2 = React.memo((props: IProps) => {
                                items={[
 
                                    // FIXME need a new button that works on all components
-                                   <AnnotationTagInputButton2 key="tags"
-                                                              annotation={props.flashcard}/>,
 
                                    <React.Fragment key="edit-button">
                                        {props.editButton}
                                    </React.Fragment>,
+
+                                   <AnnotationTagButton2 key="tags"
+                                                         annotation={props.flashcard}/>,
+
 
                                    <FlashcardViewDropdown key="dropdown"
                                                           id={'flashcard-dropdown-' + flashcard.id}

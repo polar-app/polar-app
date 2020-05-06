@@ -3,11 +3,11 @@ import {IDocAnnotation} from '../../DocAnnotation';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
-import {AnnotationTagInputButton2} from '../AnnotationTagInputButton2';
 import Divider from '@material-ui/core/Divider';
 import isEqual from 'react-fast-compare';
 import {CommentDropdown2} from "../CommentDropdown2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 
 interface IProps {
     readonly comment: IDocAnnotation;
@@ -40,12 +40,11 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                          justifyContent: 'flex-end'
                      }}>
 
-                    {/*FIXME: connect this up*/}
-                    <AnnotationTagInputButton2 annotation={props.comment}/>
-
                     <NullCollapse open={! comment.immutable}>
                         {props.editButton}
                     </NullCollapse>
+
+                    <AnnotationTagButton2 annotation={props.comment}/>
 
                     {/*FIXME: connect this up*/}
                     <CommentDropdown2 id={'comment-dropdown-' + comment.id}
