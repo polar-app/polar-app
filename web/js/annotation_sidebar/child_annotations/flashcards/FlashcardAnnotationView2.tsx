@@ -46,7 +46,7 @@ const RenderClozeFields = (props: IProps) => {
     const { flashcard } = props;
 
     return (
-        <Card>
+        <Card variant="outlined">
             <CardContent>
                 <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
                 </span>

@@ -14,12 +14,12 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {usePersistence} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {TextHighlights} from "../metadata/TextHighlights";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 const log = Logger.create()
 
@@ -116,13 +116,20 @@ export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate
 
 export interface IAnnotationMutationCallbacks {
 
-    readonly onColor: (color: string) => void;
+    readonly doTagged: (annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) => void;
+    readonly onTagged: (annotation: IDocAnnotation) => void;
+
+    /**
+     * Change the color of an annotation.
+     */
+    readonly onColor: (annotation: IDocAnnotation, color: string) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void
     readonly onComment: (mutation: ICommentMutation) => void
     readonly onFlashcard: (mutation: IFlashcardMutation) => void;
 
 }
+
 const initialStore: IAnnotationMutationStore = {
 }
 
@@ -155,51 +162,6 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
         const persistenceLayer = persistence.persistenceLayerProvider();
         await persistenceLayer.writeDocMeta(docMeta);
-
-    }
-
-    function onDelete(annotation: IDocAnnotation, docMeta: IDocMeta = docMetaContext.docMeta) {
-
-        // TODO: should we copy/clone the DocMeta object first?
-        AnnotationMutations.delete(docMeta, annotation.annotationType, annotation.original);
-
-        async function doAsync() {
-            await doWriteDocMeta(docMeta);
-            log.info("Annotation deleted: ", annotation);
-        }
-
-        doAsync().catch(err => log.error(err));
-
-    }
-
-    function onUpdate(annotation: IDocAnnotation, docMeta: IDocMeta = docMetaContext.docMeta) {
-
-        // TODO: should we copy/clone the DocMeta object first?
-        AnnotationMutations.update(docMeta, annotation.annotationType, annotation.original);
-
-        async function doAsync() {
-            await doWriteDocMeta(docMeta);
-            log.info("Annotation deleted: ", annotation);
-        }
-
-        doAsync().catch(err => log.error(err));
-
-    }
-
-    function onCommentUpdated(html: string,
-                              parent: IDocAnnotation,
-                              existingComment: IComment) {
-
-        const docMeta = docMetaContext.docMeta;
-        CommentActions.update(docMeta, parent, html, existingComment);
-
-        async function doAsync() {
-            await doWriteDocMeta(docMeta);
-            log.info("comment updated");
-        }
-
-        doAsync()
-            .catch(err => log.error(err));
 
     }
 
@@ -313,8 +275,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
         onColor: NULL_FUNCTION,
         onTextHighlight,
         onFlashcard,
-        onUpdate,
-        onDelete,
+        onComment,
     };
 
 }

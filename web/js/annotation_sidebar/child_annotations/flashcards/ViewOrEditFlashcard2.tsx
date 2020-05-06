@@ -10,7 +10,6 @@ import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {FlashcardInput2} from "./flashcard_input/FlashcardInput2";
 
 interface IProps {
-    readonly id: string;
     readonly flashcard: IDocAnnotation;
 }
 
@@ -25,7 +24,7 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
     const onEdit = useCallback(() => setMode('edit'), []);
     const onCancel = useCallback(() => setMode('view'), []);
 
-    const editButton = <EditButton id={'edit-button-for-' + props.id}
+    const editButton = <EditButton id={'edit-button-for-' + props.flashcard.id}
                                    disabled={! docMetaContext.mutable}
                                    onClick={onEdit}
                                    type="flashcard"/>;

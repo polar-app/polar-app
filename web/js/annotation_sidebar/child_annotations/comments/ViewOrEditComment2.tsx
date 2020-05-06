@@ -11,7 +11,6 @@ import {EditComment2} from "./EditComment2";
 
 
 interface IProps {
-    readonly id: string;
     readonly comment: IDocAnnotation;
     // readonly onComment: (html: string, existingComment: Comment) => void;
 }
@@ -27,7 +26,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
     const onEdit = useCallback(() => setMode('edit'), []);
     const onCancel = useCallback(() => setMode('view'), []);
 
-    const editButton = <EditButton id={'edit-button-for-' + props.id}
+    const editButton = <EditButton id={'edit-button-for-' + props.comment.id}
                                    disabled={! docMetaContext.mutable}
                                    onClick={onEdit}
                                    type="comment"/>;

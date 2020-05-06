@@ -7,6 +7,8 @@ import isEqual from "react-fast-compare";
 import {MUIHoverController} from "../../mui/context/MUIHoverContext";
 import {AreaHighlightAnnotationView2} from "./AreaHighlightAnnotationView2";
 import {TextHighlightAnnotationView2} from './TextHighlightAnnotationView2';
+import {ViewOrEditFlashcard2} from "../child_annotations/flashcards/ViewOrEditFlashcard2";
+import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditComment2';
 
 const log = Logger.create();
 
@@ -32,19 +34,31 @@ export const AnnotationView2 = React.memo((props: IProps) => {
     }
 
     const AnnotationTypeComponent = () => {
-        if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
 
-            return (
-                <AreaHighlightAnnotationView2 annotation={annotation}/>
-            );
+        switch (annotation.annotationType) {
 
-        } else {
+            case AnnotationType.AREA_HIGHLIGHT:
+                return (
+                    <AreaHighlightAnnotationView2 annotation={annotation}/>
+                );
 
-            return (
-                <TextHighlightAnnotationView2 annotation={annotation}/>
-            );
+            case AnnotationType.TEXT_HIGHLIGHT:
+                return (
+                    <TextHighlightAnnotationView2 annotation={annotation}/>
+                );
+
+            case AnnotationType.FLASHCARD:
+                return (
+                    <ViewOrEditFlashcard2 flashcard={annotation}/>
+                );
+
+            case AnnotationType.COMMENT:
+                return (
+                    <ViewOrEditComment2 comment={annotation}/>
+                );
 
         }
+
     };
 
     const key = 'doc-annotation-' + annotation.id;
