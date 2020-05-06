@@ -107,7 +107,6 @@ export interface ITaggedMutation extends IAnnotationMutationSelected {
 
 export interface IAnnotationMutations {
 
-
     /**
      * Delete the given items or whatever is selected.
      */

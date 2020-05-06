@@ -5,6 +5,10 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 import isEqual from "react-fast-compare";
+import {
+    IDeleteMutation,
+    useAnnotationMutationsContext
+} from "../AnnotationMutationsContext";
 
 
 interface IProps {
@@ -15,6 +19,17 @@ interface IProps {
 }
 
 export const CommentDropdown2 = React.memo((props: IProps) => {
+
+    const annotationMutations = useAnnotationMutationsContext();
+
+    const handleDelete = () => {
+
+        const mutation: IDeleteMutation = {
+            selected: [props.comment]
+        };
+
+        annotationMutations.onDeleted(mutation);
+    }
 
     return (
 
@@ -31,7 +46,7 @@ export const CommentDropdown2 = React.memo((props: IProps) => {
                 <div>
                     <MUIMenuItem text="Delete"
                                  icon={<DeleteIcon/>}
-                                 onClick={props.onDelete}/>
+                                 onClick={handleDelete}/>
 
                 </div>
 
