@@ -6,11 +6,29 @@ import {ViewOrEditComment2} from "./comments/ViewOrEditComment2";
 import {ViewOrEditFlashcard2} from "./flashcards/ViewOrEditFlashcard2";
 
 interface IProps {
-
-    readonly parent: IDocAnnotation;
     readonly docAnnotations: ReadonlyArray<IDocAnnotation>;
-
 }
+
+interface IChildAnnotationProps {
+    readonly child: IDocAnnotation;
+}
+
+export const ChildAnnotation = React.memo((props: IChildAnnotationProps) => {
+
+    const {child} = props;
+
+    if (child.annotationType === AnnotationType.COMMENT) {
+
+        return (
+            <ViewOrEditComment2 comment={child}/>
+        );
+
+    } else {
+        return (
+            <ViewOrEditFlashcard2 flashcard={child}/>);
+    }
+
+}, isEqual);
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -21,23 +39,16 @@ export const ChildAnnotationSection2 = React.memo((props: IProps) => {
 
     docAnnotations.sort((a, b) => a.created.localeCompare(b.created));
 
-    const result: any = [];
+    const mapped = docAnnotations.map(child => (
+        <div key={child.id} className="ml-2">
+            <ChildAnnotation child={child}/>
+        </div>
+    ));
 
-    docAnnotations.map(child => {
-
-        if (child.annotationType === AnnotationType.COMMENT) {
-
-            result.push (<ViewOrEditComment2 key={child.id}
-                                             comment={child}/>);
-
-        } else {
-            result.push (<ViewOrEditFlashcard2 key={child.id}
-                                               flashcard={child}/>);
-        }
-
-
-    });
-
-    return result;
+    return (
+        <>
+            {mapped}
+        </>
+    );
 
 }, isEqual);

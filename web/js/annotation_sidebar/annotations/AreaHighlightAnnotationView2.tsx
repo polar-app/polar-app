@@ -59,8 +59,7 @@ export const AreaHighlightAnnotationView2 = React.memo((props: IProps) => {
             </div>
 
             <div className="comments">
-                <ChildAnnotationSection2 parent={annotation}
-                                         docAnnotations={annotation.children()}/>
+                <ChildAnnotationSection2 docAnnotations={annotation.children()}/>
             </div>
 
         </div>

@@ -19,8 +19,6 @@ import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {TextHighlights} from "../metadata/TextHighlights";
-import {Tag} from "polar-shared/src/tags/Tags";
-import { useAnnotationRepoCallbacks } from "apps/repository/js/annotation_repo/AnnotationRepoStore";
 
 const log = Logger.create()
 
@@ -158,7 +156,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
     // FIXME this won't work with the new sidebar as it doesn't use the
     // annotation repository.  We will have to do our own writes there with our
     // own context
-    const annotationRepoCallbacks = useAnnotationRepoCallbacks();
+    // const annotationRepoCallbacks = useAnnotationRepoCallbacks();
 
     // FIXME: further, none of these mutate the store directly in the annotation
     // sidebar which means we have to wait for datastore event updates which
