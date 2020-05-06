@@ -21,7 +21,7 @@ export const AnnotationInputView = React.memo((props: IProps) => {
                                 annotation={annotation}
                                 />
 
-            <CreateComment2/>
+            <CreateComment2 parent={annotation}/>
 
             <CreateFlashcard2 parent={annotation}/>
 

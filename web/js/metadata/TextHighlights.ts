@@ -77,6 +77,8 @@ export class TextHighlights {
                     revisedText
                 };
 
+                console.log("FIXME newTextHighlight: ", newTextHighlight);
+
                 pageMeta.textHighlights[id] = newTextHighlight;
 
             });

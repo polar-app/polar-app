@@ -6,6 +6,7 @@ import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
 import isEqual from "react-fast-compare";
 import {AnnotationViewControlBar2} from "../AnnotationViewControlBar2";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 
 interface IProps {
@@ -17,6 +18,8 @@ export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
     const { annotation } = props;
 
     const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
+
+    const original = annotation.original as ITextHighlight;
 
     const html = Optional.first(annotation.html).getOrElse('');
 

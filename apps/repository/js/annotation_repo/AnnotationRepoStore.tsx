@@ -47,6 +47,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import { SelectionEvents } from "../doc_repo/SelectionEvents";
 import {
+    AnnotationMutationsContext,
     DocAnnotationsMutator,
     IAnnotationMutations,
     IAnnotationMutationSelected,
@@ -296,6 +297,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             // in DocRepoStore2 I think.
 
             const docMeta = partition.key;
+
+            console.log("FIXME: 4 riting docMeta: ", docMeta);
 
             const doAsync = async () => {
 
@@ -654,6 +657,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
+
+        console.log("FIXME2 mutation: ", mutation);
+
         handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
             .catch(err => log.error(err));
     }
@@ -738,7 +744,7 @@ const AnnotationRepoStoreLoader = React.memo((props: IProps) => {
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
     const annotationRepoMutator = useAnnotationRepoMutator();
-    const callbacks = useAnnotationRepoCallbacks();
+    const annotationRepoCallbacks = useAnnotationRepoCallbacks();
 
     const doRefresh = React.useCallback(Debouncers.create(() => {
         annotationRepoMutator.refresh();
@@ -758,14 +764,16 @@ const AnnotationRepoStoreLoader = React.memo((props: IProps) => {
 
     const tagSidebarEventForwarder = React.useMemo<TagSidebarEventForwarder>(() => {
         return {
-            onTagSelected: callbacks.onTagSelected,
-            onDropped: callbacks.onDropped
+            onTagSelected: annotationRepoCallbacks.onTagSelected,
+            onDropped: annotationRepoCallbacks.onDropped
         }
-    }, [callbacks]);
+    }, [annotationRepoCallbacks]);
 
     return (
         <TagSidebarEventForwarderContext.Provider value={tagSidebarEventForwarder}>
-            {props.children}
+            <AnnotationMutationsContext.Provider value={annotationRepoCallbacks}>
+                {props.children}
+            </AnnotationMutationsContext.Provider>
         </TagSidebarEventForwarderContext.Provider>
     );
 

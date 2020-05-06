@@ -22,6 +22,8 @@ interface IProps {
      */
     readonly cancelButton: JSX.Element;
 
+    readonly onComment: (html: string) => void;
+
 }
 
 export const EditComment2 = React.memo((props: IProps) => {
@@ -68,7 +70,7 @@ export const EditComment2 = React.memo((props: IProps) => {
 
                         <Button color="primary"
                                 variant="contained"
-                                onClick={NULL_FUNCTION}>
+                                onClick={() => props.onComment(htmlRef.current)}>
 
                             {props.existingComment ? 'Update' : 'Comment'}
 

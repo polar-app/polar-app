@@ -8,6 +8,7 @@ import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {CommentAnnotationView2} from "./CommentAnnotationView2";
 import isEqual from "react-fast-compare";
 import {EditComment2} from "./EditComment2";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
 interface IProps {
@@ -46,7 +47,10 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
             // <Fade in={this.state.mode === 'edit'}>
                 <EditComment2 id={'edit-comment-for' + props.comment.id}
                               existingComment={existingComment}
-                              cancelButton={cancelButton}/>
+                              cancelButton={cancelButton}
+                              // FIXME:
+                              onComment={NULL_FUNCTION}
+                              />
             // </Fade>
         );
     }

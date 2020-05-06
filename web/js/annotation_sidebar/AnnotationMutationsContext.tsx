@@ -259,6 +259,8 @@ export namespace DocAnnotationsMutator {
 
                     const selected = mutation.selected || [];
 
+                    console.log("FIXME3: ", selected);
+
                     for (const textHighlight of selected) {
 
                         TextHighlights.setRevisedText(docMeta,
@@ -269,7 +271,6 @@ export namespace DocAnnotationsMutator {
 
                 });
                 break;
-
 
         }
 
