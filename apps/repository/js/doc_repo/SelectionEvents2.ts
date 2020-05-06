@@ -1,26 +1,36 @@
 import React from "react";
 import {SelectRowType} from "./DocRepoScreen";
 import {Numbers} from "polar-shared/src/util/Numbers";
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {IDStr} from "polar-shared/src/util/Strings";
+
+interface IDType {
+    readonly id: IDStr;
+}
+
+export type SelectedRows = ReadonlyArray<IDStr>;
+
+// FIXME: clean up this code...
+
+/*
+The way this works is that that we have to return an array of IDs for those
+items that are selected.
+
+The input we're given is a selectedID and selectedIDs
+ */
 
 /**
- * Code to allow the user to select multiple items.
- * @Deprecated MUI / FIXME
+ * Code to allow the user to select multiple items where with an array of items
+ * which have IDs and a viewPage of items that have IDs.
  */
-export namespace SelectionEvents {
+export namespace SelectionEvents2 {
 
-    export function selectRow(selectedIdx: number,
-                              event: React.MouseEvent,
-                              type: SelectRowType,
-                              selected: ReadonlyArray<number>) {
-
-        // FIXME the behavior here is basically teh same betweek click and
-        // checkbox except unmodified single clicks.  unmodified single clicks
-        // toggle the current item for checkbox and focus the selection for
-        // click
-
-        selectedIdx = Numbers.toNumber(selectedIdx);
+    export function selectRow<T extends IDType>(selectedID: IDStr,
+                                                selectedIDs: ReadonlyArray<IDStr>,
+                                                viewPage: ReadonlyArray<T>,
+                                                event: React.MouseEvent,
+                                                type: SelectRowType): SelectedRows {
 
         // there are really only three strategies
         //
@@ -54,8 +64,6 @@ export namespace SelectionEvents {
 
         type SelectionStrategy = 'one' | 'range' | 'toggle' | 'none';
 
-        type SelectedRows = ReadonlyArray<number>;
-
         const computeStrategy = (): SelectionStrategy => {
 
             if (type === 'checkbox') {
@@ -76,7 +84,7 @@ export namespace SelectionEvents {
 
             if (type === 'context') {
 
-                if (selected.includes(selectedIdx)) {
+                if (selectedIDs.includes(selectedID)) {
                     return 'none';
                 }
 
@@ -106,7 +114,7 @@ export namespace SelectionEvents {
 
             if (type === 'context') {
 
-                if (selected.includes(selectedIdx)) {
+                if (selectedIDs.includes(selectedID)) {
                     return 'none';
                 }
 
@@ -116,6 +124,11 @@ export namespace SelectionEvents {
 
         };
 
+        function computeSelectedIndexes(): ReadonlyArray<number> {
+            const viewPageIDs = viewPage.map(current => current.id);
+            return selectedIDs.map(current => viewPageIDs.indexOf(current));
+        }
+
         const doStrategyRange = (): SelectedRows => {
 
             // select a range
@@ -123,29 +136,50 @@ export namespace SelectionEvents {
             let min: number = 0;
             let max: number = 0;
 
+            const selected = computeSelectedIndexes();
+
+            const selectedIdx = viewPage.map(current => current.id)
+                                        .indexOf(selectedID);
+
             if (selected.length > 0) {
                 const sorted = [...selected].sort((a, b) => a - b);
                 min = Arrays.first(sorted)!;
                 max = Arrays.last(sorted)!;
             }
 
-            return [...Numbers.range(Math.min(min, selectedIdx),
-                Math.max(max, selectedIdx))];
+            const rangeMin = Math.min(min, selectedIdx);
+            const rangeMax = Math.max(max, selectedIdx);
+
+            const viewPagePointers = [...Numbers.range(rangeMin, rangeMax)];
+
+            // now convert these back to IDs
+            return viewPagePointers.map(ptr => viewPage[ptr].id);
 
         };
 
         const doStrategyToggle = (): SelectedRows => {
 
-            if (selected.includes(selectedIdx)) {
-                return SetArrays.difference(selected, [selectedIdx]);
-            } else {
-                return SetArrays.union(selected, [selectedIdx]);
+            const selected = computeSelectedIndexes();
+
+            const selectedIdx = viewPage.map(current => current.id)
+                                        .indexOf(selectedID);
+
+            function computeViewPagePointers() {
+                if (selected.includes(selectedIdx)) {
+                    return SetArrays.difference(selected, [selectedIdx]);
+                } else {
+                    return SetArrays.union(selected, [selectedIdx]);
+                }
             }
+
+            const viewPagePointers = computeViewPagePointers();
+            // now convert these back to IDs
+            return viewPagePointers.map(ptr => viewPage[ptr].id);
 
         };
 
         const doStrategyOne = (): SelectedRows => {
-            return [selectedIdx];
+            return [selectedID];
         };
 
         const doStrategy = (): SelectedRows => {
@@ -160,7 +194,7 @@ export namespace SelectionEvents {
                 case "toggle":
                     return doStrategyToggle();
                 case "none":
-                    return selected;
+                    return selectedIDs;
             }
 
         };

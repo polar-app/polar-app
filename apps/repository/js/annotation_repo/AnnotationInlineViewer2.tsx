@@ -89,9 +89,9 @@ export const AnnotationInlineViewer2 = React.memo(() => {
 
     const store = useAnnotationRepoStore();
 
-    const {selected, view} = store;
+    const {selected, viewPage} = store;
 
-    const annotation = selected.length > 0 ? view[selected[0]] : undefined;
+    const annotation = selected.length > 0 ? viewPage.filter(current => current.id === selected[0])[0] : undefined;
 
     if (annotation) {
 

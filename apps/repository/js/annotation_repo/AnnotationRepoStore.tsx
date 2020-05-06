@@ -62,6 +62,8 @@ import {
     IDocMetaContext,
     useDocMetaContext
 } from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import { IDStr } from "polar-shared/src/util/Strings";
+import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
 
 const log = Logger.create();
 
@@ -72,10 +74,12 @@ interface IAnnotationRepoStore {
     readonly view: ReadonlyArray<IDocAnnotation>;
 
     readonly viewPage: ReadonlyArray<IDocAnnotation>;
+
     /**
-     * The selected records as pointers in to viewPage
+     * The selected records as IDs to annotations.
      */
-    readonly selected: ReadonlyArray<number>;
+    readonly selected: ReadonlyArray<IDStr>;
+
     /**
      * The page number we're viewing
      */
@@ -103,7 +107,7 @@ interface IAnnotationRepoStore {
 
 interface IAnnotationRepoCallbacks extends IAnnotationMutations {
 
-    readonly selectRow: (selectedIdx: number,
+    readonly selectRow: (selectedID: IDStr,
                          event: React.MouseEvent,
                          type: SelectRowType) => void;
 
@@ -327,19 +331,18 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectRow(selectedIdx: number,
+    function selectRow(selectedID: IDStr,
                        event: React.MouseEvent,
                        type: SelectRowType) {
 
 
         const store = storeProvider();
 
-        const selected = SelectionEvents.selectRow(selectedIdx,
-                                                   event,
-                                                   type,
-                                                   store.selected);
-
-        console.log("FIXME: selectRow: ", selected);
+        const selected = SelectionEvents2.selectRow(selectedID,
+                                                    store.selected,
+                                                    store.viewPage,
+                                                    event,
+                                                    type);
 
         mutator.doReduceAndUpdateState({
             ...store,
@@ -602,7 +605,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         const {selected, viewPage} = store;
 
-        return selected.map(current => viewPage[current]);
+        return viewPage.filter(current => selected.includes(current.id));
 
     }
 
@@ -675,7 +678,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onColor(mutation: IColorMutation) {
-
+        // noop
     }
 
     return {

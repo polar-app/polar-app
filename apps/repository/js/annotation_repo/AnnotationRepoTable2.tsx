@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {AnnotationPreview} from './AnnotationPreview';
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,6 +14,7 @@ import {
     useAnnotationRepoCallbacks,
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
+import {IDStr} from "polar-shared/src/util/Strings";
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -72,8 +72,8 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const {page, rowsPerPage, view, viewPage, selected} = store;
     const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
 
-    const handleSelect = React.useCallback((viewIndex: number, event: React.MouseEvent) => {
-        callbacks.selectRow(viewIndex, event, 'click');
+    const handleSelect = React.useCallback((selectedID: IDStr, event: React.MouseEvent) => {
+        callbacks.selectRow(selectedID, event, 'click');
     }, [callbacks]);
 
     return (
@@ -126,7 +126,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
 
                                     const viewIndex = (page * rowsPerPage) + index;
                                     const id = 'annotation-title' + viewIndex;
-                                    const rowSelected = selected.includes(viewIndex);
+                                    const rowSelected = selected.includes(annotation.id);
 
                                     // FIXME: migrate this to a dedicated
                                     // component so it can be cached easier.
@@ -137,7 +137,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                                   role="checkbox"
                                                   // tabIndex={1}
                                                   // onFocus={() => handleSelect(viewIndex, annotation)}
-                                                  onClick={(event) => handleSelect(viewIndex, event)}
+                                                  onClick={(event) => handleSelect(annotation.id, event)}
                                                   // onDoubleClick={() => props.onOpen(row)}
                                                   draggable
                                                   onDragStart={onDragStart}
