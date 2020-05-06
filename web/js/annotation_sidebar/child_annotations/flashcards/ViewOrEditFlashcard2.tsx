@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {FlashcardAnnotationView2} from './FlashcardAnnotationView2';
@@ -8,7 +8,6 @@ import {Flashcard} from '../../../metadata/Flashcard';
 import isEqual from 'react-fast-compare';
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {FlashcardInput2} from "./flashcard_input/FlashcardInput2";
-import Slide from "@material-ui/core/Slide";
 
 interface IProps {
     readonly flashcard: IDocAnnotation;

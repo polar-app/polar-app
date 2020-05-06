@@ -22,36 +22,102 @@ import {TextHighlights} from "../metadata/TextHighlights";
 
 const log = Logger.create()
 
-export interface IAnnotationMutation {
+//
+// - FIXME what are the main mutations I need
+// - delete any annotation
+// - update the text to of text highlights
+// - change color of text/area highlights
+// - set/add tags to any annotaion type
+// - update/create comments
+// - update/create comments
+//
+// - build these mutations, then call the more raw callbacks.
 
-    readonly onTextHighlightReverted: () => void;
-    readonly onTextHighlightEdited: () => void;
+export namespace AnnotationMutationTypes {
 
-    readonly onColor: (color: string) => void;
+    export interface IAnnotationMutation {
+        readonly selected?: ReadonlyArray<IDocAnnotation> | IDocAnnotation;
+    }
 
-    readonly onCommentCreated: (annotation: IDocAnnotation) => void
-    readonly onFlashcardCreated: (flashcardType: FlashcardType,
-                                  fields: Readonly<FlashcardInputFieldsType>,
-                                  existingFlashcard?: Flashcard) => void;
+    export interface IDelete extends IAnnotationMutation {
 
-    readonly onDelete: (annotation: IDocAnnotation) => void;
+    }
+
+    export interface ITextHighlightReverted extends IAnnotationMutation {
+
+    }
+
+    export interface ITextHighlightEdited extends IAnnotationMutation {
+        readonly body: string;
+    }
+
+    export interface IColor extends IAnnotationMutation {
+        readonly color: string;
+    }
+
+    export interface ITagged extends IAnnotationMutation {
+    }
+
+}
+
+export interface IAnnotationMutations {
+
+    // FIXME: these methods MUST specify the annotations directly because if
+    // they don't then the annotation sidebar wont' work as the user can be
+    // working with any of the annotations there.  what other verbs could I use
+    // for the method prefixes since we can't use overloading... we could have
+    // a 'with' method that could bundle up the items to mutate...
+    // the problem is those can't be cached.... 'do' would work but that's better
+    // for actions.
+    //
+    // I could make all the methods take an object not params so I can
+    // use 'selected' with them directly.  That's probably how I
+    // should do it..  then for specific items I target them directly.
+
+    //  annotationMutations.target(myAnnotation)
+    //                     .onTaggd
+
+    readonly onDelete: (mutation: AnnotationMutationTypes.IDelete) => void;
+
+    readonly onTextHighlightReverted: (mutation: AnnotationMutationTypes.ITextHighlightReverted) => void;
+
+    readonly onTextHighlightEdited: (mutation: AnnotationMutationTypes.ITextHighlightEdited) => void;
+
+    // TODO: in the future it would be nice to pick the color for multiple items
+    // but we can't right now.
+    readonly onColor: (mutation: AnnotationMutationTypes.IColor) => void;
+
+    /**
+     * Tag annotations...
+     */
+    readonly onTagged: () => void;
+
+    // readonly onCommentCreated: (annotation: IDocAnnotation) => void
+    // readonly onFlashcardCreated: (flashcardType: FlashcardType,
+    //                               fields: Readonly<FlashcardInputFieldsType>,
+    //                               existingFlashcard?: Flashcard) => void;
+    //
 
     readonly onTextHighlightContentRevert: (annotation: IDocAnnotation) => void;
     readonly onTextHighlightContent: (annotation: IDocAnnotation, html: string) => void;
 
-
 }
 
-export const AnnotationMutationContext = React.createContext<IAnnotationMutation>({
-    onTextHighlightEdited: NULL_FUNCTION,
-    onTextHighlightReverted: NULL_FUNCTION,
-    onColor: NULL_FUNCTION,
-    onCommentCreated: NULL_FUNCTION,
-    onFlashcardCreated: NULL_FUNCTION,
-    onDelete: NULL_FUNCTION,
-    onTextHighlightContentRevert: NULL_FUNCTION,
-    onTextHighlightContent: NULL_FUNCTION,
+
+export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
+        onTextHighlightEdited: NULL_FUNCTION,
+        onTextHighlightReverted: NULL_FUNCTION,
+        onColor: NULL_FUNCTION,
+        onCommentCreated: NULL_FUNCTION,
+        onFlashcardCreated: NULL_FUNCTION,
+        onDelete: NULL_FUNCTION,
+        onTextHighlightContentRevert: NULL_FUNCTION,
+        onTextHighlightContent: NULL_FUNCTION,
 });
+
+export function useAnnotationMutationsContext() {
+    return useContext(AnnotationMutationsContext);
+}
 
 export interface IAnnotationMutationStore {
 
@@ -302,10 +368,6 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
         onComment,
     };
 
-}
-
-export function useAnnotationMutationContext() {
-    return useContext(AnnotationMutationContext);
 }
 
 interface IProps {

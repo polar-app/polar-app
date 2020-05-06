@@ -5,7 +5,7 @@ import {RichTextFeatureIntro} from "../../RichTextFeatureIntro";
 import {RichTextArea} from "../../RichTextArea";
 import Button from "@material-ui/core/Button";
 import {IDocAnnotation} from "../../DocAnnotation";
-import { useAnnotationMutationContext } from '../../AnnotationMutationContext';
+import { useAnnotationMutationContext } from '../../AnnotationMutationsContext';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 
 interface IProps {

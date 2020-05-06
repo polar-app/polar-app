@@ -451,7 +451,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         const autocompleteStrategy = computeAutocompleteStrategy();
 
         const autocompleteProps: AutocompleteDialogProps<Tag> = {
-            title: "Assign Tags to Annotation",
+            title: "Assign Tags",
             description: autocompleteStrategy.description,
             options: availableTags.map(toAutocompleteOption),
             defaultOptions: autocompleteStrategy.existingTags.map(toAutocompleteOption),

@@ -15,7 +15,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
-import {useAnnotationMutationContext} from "./AnnotationMutationContext";
+import {useAnnotationMutationContext} from "./AnnotationMutationsContext";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import { AnnotationTagButton2 } from './AnnotationTagButton2';

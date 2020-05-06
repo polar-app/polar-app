@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import isEqual from "react-fast-compare";
 import {IDocAnnotation} from "./DocAnnotation";
-import {useAnnotationMutationCallbacks} from "./AnnotationMutationContext";
+import {useAnnotationMutationCallbacks} from "./AnnotationMutationsContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 
 interface IProps {

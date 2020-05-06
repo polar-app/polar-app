@@ -8,7 +8,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
-import {useAnnotationMutationContext} from "./AnnotationMutationContext";
+import {useAnnotationMutationContext} from "./AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 
 interface IProps {

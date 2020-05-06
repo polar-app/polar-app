@@ -86,7 +86,7 @@ export const FlashcardAnnotationView2 = React.memo(React.forwardRef((props: IPro
 
     return (
 
-        <div key={key} className="mt-1">
+        <div key={key}>
 
             <div className="">
 

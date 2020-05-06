@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {CancelButton} from "../CancelButton";
-import {useAnnotationMutationContext} from "../../AnnotationMutationContext";
+import {useAnnotationMutationContext} from "../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {EditComment2} from './EditComment2';
 

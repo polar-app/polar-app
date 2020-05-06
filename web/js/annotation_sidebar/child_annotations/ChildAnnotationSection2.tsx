@@ -40,7 +40,7 @@ export const ChildAnnotationSection2 = React.memo((props: IProps) => {
     docAnnotations.sort((a, b) => a.created.localeCompare(b.created));
 
     const mapped = docAnnotations.map(child => (
-        <div key={child.id} className="ml-3">
+        <div key={child.id} className="ml-3 mt-1">
             <ChildAnnotation child={child}/>
         </div>
     ));
