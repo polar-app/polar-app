@@ -33,110 +33,28 @@ const log = Logger.create()
 //
 // - build these mutations, then call the more raw callbacks.
 
-export namespace AnnotationMutationTypes {
-
-    export interface IAnnotationMutation {
-        readonly selected?: ReadonlyArray<IDocAnnotation> | IDocAnnotation;
-    }
-
-    export interface IDelete extends IAnnotationMutation {
-
-    }
-
-    export interface ITextHighlightReverted extends IAnnotationMutation {
-
-    }
-
-    export interface ITextHighlightEdited extends IAnnotationMutation {
-        readonly body: string;
-    }
-
-    export interface IColor extends IAnnotationMutation {
-        readonly color: string;
-    }
-
-    export interface ITagged extends IAnnotationMutation {
-    }
-
+/**
+ * This allows us to specify what's is being mutated.  If selected is specified
+ * we mutate just these objects. NOT that's selected in the UI tables.
+ */
+export interface IAnnotationMutation {
+    readonly selected?: ReadonlyArray<IDocAnnotation> | IDocAnnotation;
 }
 
-export interface IAnnotationMutations {
-
-    // FIXME: these methods MUST specify the annotations directly because if
-    // they don't then the annotation sidebar wont' work as the user can be
-    // working with any of the annotations there.  what other verbs could I use
-    // for the method prefixes since we can't use overloading... we could have
-    // a 'with' method that could bundle up the items to mutate...
-    // the problem is those can't be cached.... 'do' would work but that's better
-    // for actions.
-    //
-    // I could make all the methods take an object not params so I can
-    // use 'selected' with them directly.  That's probably how I
-    // should do it..  then for specific items I target them directly.
-
-    //  annotationMutations.target(myAnnotation)
-    //                     .onTaggd
-
-    readonly onDelete: (mutation: AnnotationMutationTypes.IDelete) => void;
-
-    readonly onTextHighlightReverted: (mutation: AnnotationMutationTypes.ITextHighlightReverted) => void;
-
-    readonly onTextHighlightEdited: (mutation: AnnotationMutationTypes.ITextHighlightEdited) => void;
-
-    // TODO: in the future it would be nice to pick the color for multiple items
-    // but we can't right now.
-    readonly onColor: (mutation: AnnotationMutationTypes.IColor) => void;
-
-    /**
-     * Tag annotations...
-     */
-    readonly onTagged: () => void;
-
-    // readonly onCommentCreated: (annotation: IDocAnnotation) => void
-    // readonly onFlashcardCreated: (flashcardType: FlashcardType,
-    //                               fields: Readonly<FlashcardInputFieldsType>,
-    //                               existingFlashcard?: Flashcard) => void;
-    //
-
-    readonly onTextHighlightContentRevert: (annotation: IDocAnnotation) => void;
-    readonly onTextHighlightContent: (annotation: IDocAnnotation, html: string) => void;
-
-}
-
-
-export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
-        onTextHighlightEdited: NULL_FUNCTION,
-        onTextHighlightReverted: NULL_FUNCTION,
-        onColor: NULL_FUNCTION,
-        onCommentCreated: NULL_FUNCTION,
-        onFlashcardCreated: NULL_FUNCTION,
-        onDelete: NULL_FUNCTION,
-        onTextHighlightContentRevert: NULL_FUNCTION,
-        onTextHighlightContent: NULL_FUNCTION,
-});
-
-export function useAnnotationMutationsContext() {
-    return useContext(AnnotationMutationsContext);
-}
-
-export interface IAnnotationMutationStore {
-
-}
-
-export interface ICommentCreate {
+export interface ICommentCreate extends IAnnotationMutation {
     readonly type: 'create';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
 }
 
-export interface ICommentUpdate {
+export interface ICommentUpdate extends IAnnotationMutation {
     readonly type: 'update';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotation;
 }
 
-export interface ICommentDelete {
+export interface ICommentDelete extends IAnnotationMutation  {
     readonly type: 'delete';
     readonly parent: IDocAnnotation;
     readonly existing: IDocAnnotation;
@@ -151,14 +69,13 @@ export interface IFlashcardCreate {
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
 
-export interface IFlashcardUpdate {
+export interface IFlashcardUpdate extends IAnnotationMutation {
     readonly type: 'update';
     readonly parent: IDocAnnotation;
     readonly flashcardType: FlashcardType,
     readonly fields: Readonly<FlashcardInputFieldsType>
-    readonly existing: IDocAnnotation;
 }
-export interface IFlashcardDelete {
+export interface IFlashcardDelete extends IAnnotationMutation {
     readonly type: 'delete';
     readonly parent: IDocAnnotation;
     readonly existing: IDocAnnotation;
@@ -166,18 +83,60 @@ export interface IFlashcardDelete {
 
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
 
-export interface ITextHighlightRevert {
+export interface ITextHighlightRevert extends IAnnotationMutation {
     readonly type: 'revert';
-    readonly textHighlight: IDocAnnotation;
 }
 
-export interface ITextHighlightUpdate {
+export interface ITextHighlightUpdate extends IAnnotationMutation {
     readonly type: 'update';
-    readonly textHighlight: IDocAnnotation;
     readonly body: string;
 }
 
 export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate;
+
+export interface IDeleteMutation extends IAnnotationMutation {
+
+}
+
+export interface IColorMutation extends IAnnotationMutation {
+    readonly color: string;
+}
+
+export interface ITaggedMutation extends IAnnotationMutation {
+}
+
+export interface IAnnotationMutations {
+
+    readonly onDelete: (mutation: IDeleteMutation) => void;
+
+    readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
+    readonly onComment: (mutation: ICommentMutation) => void;
+    readonly onFlashcard: (mutation: IFlashcardMutation) => void;
+
+    // TODO: in the future it would be nice to pick the color for multiple items
+    // but we can't right now.
+    readonly onColor: (mutation: IColorMutation) => void;
+
+    readonly onTagged: (mutation: ITaggedMutation) => void;
+
+}
+
+export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
+    onDelete: NULL_FUNCTION,
+    onTextHighlight: NULL_FUNCTION,
+    onComment: NULL_FUNCTION,
+    onFlashcard: NULL_FUNCTION,
+    onColor: NULL_FUNCTION,
+    onTagged: NULL_FUNCTION,
+});
+
+export function useAnnotationMutationsContext() {
+    return useContext(AnnotationMutationsContext);
+}
+
+export interface IAnnotationMutationStore {
+
+}
 
 export interface IAnnotationMutationCallbacks {
 
@@ -296,19 +255,20 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
                                         mutation.flashcardType,
                                         mutation.fields);
                 break;
-
-            case "update":
-                FlashcardActions.update(docMeta,
-                                        mutation.parent,
-                                        mutation.flashcardType,
-                                        mutation.fields,
-                                        mutation.existing);
-                break;
+            //
+            // case "update":
+            //     FlashcardActions.update(docMeta,
+            //                             mutation.parent,
+            //                             mutation.flashcardType,
+            //                             mutation.fields,
+            //                             mutation.existing);
+            //     break;
 
                 case "delete":
                     FlashcardActions.delete(docMeta,
                                             mutation.parent,
                                             mutation.existing);
+                    break;
 
         }
 
@@ -329,26 +289,26 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
         switch (mutation.type) {
             case "revert":
 
-                Functions.withTimeout(() => {
-
-                    TextHighlights.resetRevisedText(docMeta,
-                                                    mutation.textHighlight.pageMeta,
-                                                    mutation.textHighlight.id);
-
-                });
+                // Functions.withTimeout(() => {
+                //
+                //     TextHighlights.resetRevisedText(docMeta,
+                //                                     mutation.textHighlight.pageMeta,
+                //                                     mutation.textHighlight.id);
+                //
+                // });
 
                 break;
             case "update":
 
-                Functions.withTimeout(() => {
-
-                    TextHighlights.setRevisedText(docMeta,
-                                                  mutation.textHighlight.pageMeta,
-                                                  mutation.textHighlight.id,
-                                                  mutation.body);
-
-                });
-
+                // Functions.withTimeout(() => {
+                //
+                //     TextHighlights.setRevisedText(docMeta,
+                //                                   mutation.textHighlight.pageMeta,
+                //                                   mutation.textHighlight.id,
+                //                                   mutation.body);
+                //
+                // });
+                //
                 break;
 
 

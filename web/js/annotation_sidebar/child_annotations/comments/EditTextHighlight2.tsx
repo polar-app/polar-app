@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {CancelButton} from "../CancelButton";
-import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import {RichTextFeatureIntro} from "../../RichTextFeatureIntro";
 import {RichTextArea} from "../../RichTextArea";
 import Button from "@material-ui/core/Button";
 import {IDocAnnotation} from "../../DocAnnotation";
-import { useAnnotationMutationContext } from '../../AnnotationMutationsContext';
+import {
+    ITextHighlightRevert, ITextHighlightUpdate,
+    useAnnotationMutationsContext
+} from '../../AnnotationMutationsContext';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 
 interface IProps {
@@ -22,7 +24,7 @@ export const EditTextHighlight2 = (props: IProps) => {
     const htmlRef = React.useRef<string>(props.html);
 
     const annotationInputContext = useAnnotationActiveInputContext();
-    const annotationMutation = useAnnotationMutationContext();
+    const annotationMutations = useAnnotationMutationsContext();
 
     if (annotationInputContext.active !== 'text-highlight') {
         return null;
@@ -42,8 +44,28 @@ export const EditTextHighlight2 = (props: IProps) => {
 
     function handleRevert() {
         annotationInputContext.reset();
-        annotationMutation.onTextHighlightContentRevert(annotation);
+
+        const mutation: ITextHighlightRevert = {
+            selected: annotation,
+            type: 'revert',
+        }
+
+        annotationMutations.onTextHighlight(mutation);
     }
+
+    function handleChange(body: string) {
+
+        annotationInputContext.reset();
+
+        const mutation: ITextHighlightUpdate = {
+            selected: annotation,
+            type: 'update',
+            body
+        }
+
+        annotationMutations.onTextHighlight(mutation);
+    }
+
 
     return (
         <div>
@@ -76,7 +98,7 @@ export const EditTextHighlight2 = (props: IProps) => {
 
                         <Button color="primary"
                                 variant="contained"
-                                onClick={() => annotationMutation.onTextHighlightContent(annotation, htmlRef.current)}>
+                                onClick={() => handleChange(htmlRef.current)}>
 
                             Change
 

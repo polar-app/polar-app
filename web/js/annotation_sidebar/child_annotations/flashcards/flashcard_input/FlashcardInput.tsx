@@ -1,12 +1,37 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
 import {FlashcardInputFieldsType} from './FlashcardInputs';
 import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 import {Flashcard} from '../../../../metadata/Flashcard';
 
-const log = Logger.create();
+export interface IProps {
+
+    readonly id: string;
+
+    /**
+     * The default value to show in the flashcard
+     */
+    readonly defaultValue?: string;
+
+    readonly flashcardType?: FlashcardType;
+
+    readonly onFlashcard: FlashcardCallback;
+
+    readonly cancelButton: JSX.Element;
+
+    readonly existingFlashcard?: Flashcard;
+
+}
+
+export interface IState {
+    readonly iter: number;
+    readonly flashcardType: FlashcardType;
+}
+
+export type FlashcardCallback = (flashcardType: FlashcardType,
+                                 fields: Readonly<FlashcardInputFieldsType>,
+                                 existingFlashcard?: Flashcard) => void;
 
 export class FlashcardInput extends React.Component<IProps, IState> {
 
@@ -89,30 +114,3 @@ export class FlashcardInput extends React.Component<IProps, IState> {
 
 }
 
-export interface IProps {
-
-    readonly id: string;
-
-    /**
-     * The default value to show in the flashcard
-     */
-    readonly defaultValue?: string;
-
-    readonly flashcardType?: FlashcardType;
-
-    readonly onFlashcard: FlashcardCallback;
-
-    readonly cancelButton: JSX.Element;
-
-    readonly existingFlashcard?: Flashcard;
-
-}
-
-export interface IState {
-    readonly iter: number;
-    readonly flashcardType: FlashcardType;
-}
-
-export type FlashcardCallback = (flashcardType: FlashcardType,
-                                 fields: Readonly<FlashcardInputFieldsType>,
-                                 existingFlashcard?: Flashcard) => void;

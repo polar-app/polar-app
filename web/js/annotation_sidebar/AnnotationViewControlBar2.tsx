@@ -8,18 +8,20 @@ import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
-import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
-import {useAnnotationMutationContext} from "./AnnotationMutationsContext";
+import {
+    IColorMutation,
+    useAnnotationMutationsContext
+} from "./AnnotationMutationsContext";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import { AnnotationTagButton2 } from './AnnotationTagButton2';
+import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
+import {useCallback} from "react";
 
 interface IMutableProps {
     readonly mutable: boolean;
@@ -91,7 +93,17 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
     const { annotation } = props;
 
     const docMetaContext = useDocMetaContext();
-    const annotationMutationContext = useAnnotationMutationContext()
+    const annotationMutationsContext = useAnnotationMutationsContext()
+
+    const handleColor = useCallback((color: string) => {
+
+        const mutation: IColorMutation = {
+            selected: annotation,
+            color
+        };
+
+        annotationMutationsContext.onColor(mutation);
+    }, []);
 
     return (
 
@@ -126,7 +138,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                             {! annotation.immutable &&
                                 <ColorSelector color={props.annotation.color || 'yellow'}
-                                               onSelected={color => annotationMutationContext.onColor(color)}/>}
+                                               onSelected={handleColor}/>}
 
                            <AnnotationTagButton2 annotation={annotation}/>
 

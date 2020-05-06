@@ -8,8 +8,12 @@ import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
-import {useAnnotationMutationContext} from "./AnnotationMutationsContext";
+import {
+    IDeleteMutation,
+    useAnnotationMutationsContext
+} from "./AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
+import {useCallback} from "react";
 
 interface IProps {
     readonly id: string;
@@ -21,10 +25,18 @@ export const AnnotationDropdown2 = (props: IProps) => {
 
     const {annotation} = props;
 
-    const dialogs = useDialogManager();
-
     const annotationActiveInput = useAnnotationActiveInputContext();
-    const annotationMutation = useAnnotationMutationContext();
+    const annotationsMutations = useAnnotationMutationsContext();
+
+    const handleDelete = useCallback(() => {
+
+        const mutation: IDeleteMutation = {
+            selected: [annotation],
+        }
+
+        annotationsMutations.onDelete(mutation);
+
+    }, []);
 
     return (
 
@@ -50,7 +62,7 @@ export const AnnotationDropdown2 = (props: IProps) => {
                     {/*FIXME: migrate to MIUMenuDeleteIteon*/}
                     <MUIMenuItem text="Delete"
                                  icon={<DeleteIcon/>}
-                                 onClick={() => annotationMutation.onDelete(annotation)}/>
+                                 onClick={handleDelete}/>
                 </div>
             </MUIMenu>
 

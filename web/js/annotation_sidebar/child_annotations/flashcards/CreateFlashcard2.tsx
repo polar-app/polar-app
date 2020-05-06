@@ -1,26 +1,29 @@
 import * as React from 'react';
 import {CancelButton} from "../CancelButton";
-import {
-    FlashcardCallback,
-    FlashcardInput
-} from './flashcard_input/FlashcardInput';
+import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
-import {useAnnotationMutationContext} from "../../AnnotationMutationsContext";
+import {
+    IFlashcardMutation,
+    useAnnotationMutationsContext
+} from "../../AnnotationMutationsContext";
+import {useCallback} from "react";
+import {FlashcardInputFieldsType} from "./flashcard_input/FlashcardInputs";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
+import {IDocAnnotation} from "../../DocAnnotation";
 
 interface IProps {
 
     readonly id?: string;
-
     readonly defaultValue?: string;
+    readonly parent: IDocAnnotation;
 
 }
 
 export const CreateFlashcard2 = (props: IProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
-    const annotationMutation = useAnnotationMutationContext();
+    const annotationMutations = useAnnotationMutationsContext();
 
     if (annotationInputContext.active !== 'flashcard') {
         return null;
@@ -28,11 +31,25 @@ export const CreateFlashcard2 = (props: IProps) => {
 
     const cancelButton = <CancelButton onClick={annotationInputContext.reset}/>;
 
+    const onFlashcard = useCallback((flashcardType: FlashcardType,
+                                     fields: Readonly<FlashcardInputFieldsType>) => {
+
+        const mutation: IFlashcardMutation = {
+            type: 'create',
+            flashcardType,
+            fields,
+            parent: props.parent
+        };
+
+        annotationMutations.onFlashcard(mutation);
+
+    }, []);
+
     return (
 
         <ScrollIntoView>
             <FlashcardInput id={'edit-flashcard-for' + props.id}
-                            onFlashcard={annotationMutation.onFlashcardCreated}
+                            onFlashcard={onFlashcard}
                             defaultValue={props.defaultValue}
                             cancelButton={cancelButton}/>
         </ScrollIntoView>

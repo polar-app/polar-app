@@ -7,6 +7,7 @@ import {CreateFlashcard2} from "./child_annotations/flashcards/CreateFlashcard2"
 
 interface IProps {
     readonly annotation: IDocAnnotation;
+
 }
 
 export const AnnotationInputView = React.memo((props: IProps) => {
@@ -22,7 +23,7 @@ export const AnnotationInputView = React.memo((props: IProps) => {
 
             <CreateComment2/>
 
-            <CreateFlashcard2/>
+            <CreateFlashcard2 parent={annotation}/>
 
         </>
     );
