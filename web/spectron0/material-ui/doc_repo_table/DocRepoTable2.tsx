@@ -65,7 +65,7 @@ export const DocRepoTable2 = React.memo(() => {
                                                             viewIndex={viewIndex}
                                                             key={viewIndex}
                                                             rawContextMenuHandler={rawContextMenuHandler}
-                                                            selected={selected.includes(viewIndex)}
+                                                            selected={selected.includes(row.id)}
                                                             row={row}
                                                         />
                                                     );

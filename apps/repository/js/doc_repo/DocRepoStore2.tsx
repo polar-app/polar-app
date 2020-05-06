@@ -12,7 +12,6 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
-import {SelectionEvents} from "./SelectionEvents";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -49,6 +48,8 @@ import {
     TagSidebarEventForwarder,
     TagSidebarEventForwarderContext
 } from "../store/TagSidebarEventForwarder";
+import {SelectionEvents2} from "./SelectionEvents2";
+import {IDStr} from "polar-shared/src/util/Strings";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
@@ -75,7 +76,7 @@ interface IDocRepoStore {
     /**
      * The selected records as pointers in to viewPage
      */
-    readonly selected: ReadonlyArray<number>;
+    readonly selected: ReadonlyArray<IDStr>;
 
     /**
      * The sorting order.
@@ -112,13 +113,13 @@ interface IDocRepoCallbacks {
     // *** UI operations that dont actually modify data
     readonly selectedProvider: Provider<ReadonlyArray<RepoDocInfo>>;
 
-    readonly selectRow: (selectedIdx: number,
+    readonly selectRow: (viewID: IDStr,
                          event: React.MouseEvent,
                          type: SelectRowType) => void;
 
     readonly setPage: (page: number) => void;
     readonly setRowsPerPage: (rowsPerPage: number) => void;
-    readonly setSelected: (selected: ReadonlyArray<number>) => void;
+    readonly setSelected: (selected: ReadonlyArray<IDStr> | 'all' | 'none') => void;
     readonly setFilters: (filters: DocRepoFilters2.Filter) => void;
     readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
 
@@ -369,16 +370,17 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    function selectRow(selectedIdx: number,
+    function selectRow(viewID: IDStr,
                        event: React.MouseEvent,
                        type: SelectRowType) {
 
         const store = storeProvider();
 
-        const selected = SelectionEvents.selectRow(selectedIdx,
-                                                   event,
-                                                   type,
-                                                   store.selected);
+        const selected = SelectionEvents2.selectRow(viewID,
+                                                    store.selected,
+                                                    store.viewPage,
+                                                    event,
+                                                    type);
 
         setStore({
             ...store,
@@ -391,9 +393,10 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const store = storeProvider();
 
-        return arrayStream(store.selected)
-            .map(current => store.view[current])
-            .collect();
+        const {viewPage, selected} = store;
+
+        return viewPage.filter(current => selected.includes(current.id));
+
     }
 
     function setPage(page: number) {
@@ -418,8 +421,27 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         });
     }
 
-    function setSelected(selected: ReadonlyArray<number>) {
+    function setSelected(newSelected: ReadonlyArray<IDStr> | 'all' | 'none') {
+
         const store = storeProvider();
+
+        const {viewPage} = store;
+
+        function computeSelected(): ReadonlyArray<IDStr> {
+
+            if (newSelected === 'all') {
+                return viewPage.map(current => current.id);
+            }
+
+            if (newSelected === 'none') {
+                return viewPage.map(current => current.id);
+            }
+
+            return newSelected;
+
+        }
+
+        const selected = computeSelected();
 
         setStore({
             ...store,

@@ -19,6 +19,7 @@ export class RepoDocInfos {
 
         return {
 
+            id: docInfo.fingerprint,
             fingerprint: docInfo.fingerprint,
 
             // TODO: we should map this to also filter out '' and ' '

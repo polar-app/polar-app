@@ -14,6 +14,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -82,8 +83,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface TableCellTagsProps {
     readonly contextMenuHandler: ContextMenuHandler;
-    readonly selectRow: (index: number, event: React.MouseEvent, type: SelectRowType) => void;
-    readonly viewIndex: number;
+    readonly selectRow: (viewID: IDStr, event: React.MouseEvent, type: SelectRowType) => void;
+    readonly viewID: IDStr;
     readonly tags?: Readonly<{[id: string]: Tag}>;
 }
 
@@ -94,7 +95,7 @@ export const TableCellTags = React.memo((props: TableCellTagsProps) => {
     return (
         <TableCell padding="none"
                    className={classes.colTags}
-                   onClick={event => props.selectRow(props.viewIndex, event, 'click')}
+                   onClick={event => props.selectRow(props.viewID, event, 'click')}
                    onContextMenu={props.contextMenuHandler}>
 
             {/*TODO: this sorting and mapping might be better done */}
@@ -131,12 +132,12 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
         const contextMenuHandler: ContextMenuHandler = (event) => {
-        selectRow(viewIndex, event, 'context');
+        selectRow(row.id, event, 'context');
         rawContextMenuHandler(event);
     };
 
     const selectRowClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-        selectRow(viewIndex, event, 'click');
+        selectRow(row.id, event, 'click');
     };
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
@@ -160,7 +161,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                     <Checkbox
                         checked={selected}
                         inputProps={{'aria-labelledby': labelId}}
-                        onClick={(event) => selectRow(viewIndex, event, 'checkbox')}
+                        onClick={(event) => selectRow(row.id, event, 'checkbox')}
 
                     />
                 </AutoBlur>
@@ -193,7 +194,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
             <TableCellTags contextMenuHandler={contextMenuHandler}
                            selectRow={selectRow}
-                           viewIndex={viewIndex}
+                           viewID={row.id}
                            tags={row.tags}/>
 
             <TableCell className={classes.colProgress}
@@ -216,7 +217,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                 <MUIDocButtonBar className={classes.docButtons}
                                  flagged={row.flagged}
                                  archived={row.archived}
-                                 viewIndex={viewIndex}
+                                 viewID={row.id}
                                  {...props}/>
 
             </TableCell>

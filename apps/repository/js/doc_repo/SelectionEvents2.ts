@@ -26,8 +26,8 @@ The input we're given is a selectedID and selectedIDs
  */
 export namespace SelectionEvents2 {
 
-    export function selectRow<T extends IDType>(selectedID: IDStr,
-                                                selectedIDs: ReadonlyArray<IDStr>,
+    export function selectRow<T extends IDType>(viewID: IDStr,
+                                                currentlySelected: ReadonlyArray<IDStr>,
                                                 viewPage: ReadonlyArray<T>,
                                                 event: React.MouseEvent,
                                                 type: SelectRowType): SelectedRows {
@@ -84,7 +84,7 @@ export namespace SelectionEvents2 {
 
             if (type === 'context') {
 
-                if (selectedIDs.includes(selectedID)) {
+                if (currentlySelected.includes(viewID)) {
                     return 'none';
                 }
 
@@ -114,7 +114,7 @@ export namespace SelectionEvents2 {
 
             if (type === 'context') {
 
-                if (selectedIDs.includes(selectedID)) {
+                if (currentlySelected.includes(viewID)) {
                     return 'none';
                 }
 
@@ -126,7 +126,7 @@ export namespace SelectionEvents2 {
 
         function computeSelectedIndexes(): ReadonlyArray<number> {
             const viewPageIDs = viewPage.map(current => current.id);
-            return selectedIDs.map(current => viewPageIDs.indexOf(current));
+            return currentlySelected.map(current => viewPageIDs.indexOf(current));
         }
 
         const doStrategyRange = (): SelectedRows => {
@@ -139,7 +139,7 @@ export namespace SelectionEvents2 {
             const selected = computeSelectedIndexes();
 
             const selectedIdx = viewPage.map(current => current.id)
-                                        .indexOf(selectedID);
+                                        .indexOf(viewID);
 
             if (selected.length > 0) {
                 const sorted = [...selected].sort((a, b) => a - b);
@@ -162,7 +162,7 @@ export namespace SelectionEvents2 {
             const selected = computeSelectedIndexes();
 
             const selectedIdx = viewPage.map(current => current.id)
-                                        .indexOf(selectedID);
+                                        .indexOf(viewID);
 
             function computeViewPagePointers() {
                 if (selected.includes(selectedIdx)) {
@@ -179,7 +179,7 @@ export namespace SelectionEvents2 {
         };
 
         const doStrategyOne = (): SelectedRows => {
-            return [selectedID];
+            return [viewID];
         };
 
         const doStrategy = (): SelectedRows => {
@@ -194,7 +194,7 @@ export namespace SelectionEvents2 {
                 case "toggle":
                     return doStrategyToggle();
                 case "none":
-                    return selectedIDs;
+                    return currentlySelected;
             }
 
         };

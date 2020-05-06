@@ -9,6 +9,11 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export interface RepoDocInfo {
 
+    /**
+     * The same as fingerprint but use so this is an IDType
+     */
+    readonly id: string;
+
     readonly fingerprint: string;
 
     readonly title: string;

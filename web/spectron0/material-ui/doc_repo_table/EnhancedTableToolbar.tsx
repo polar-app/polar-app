@@ -60,9 +60,9 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const handleCheckbox = (checked: boolean) => {
         if (checked) {
-            setSelected(Numbers.range(0, rowsPerPage - 1))
+            setSelected('all')
         } else {
-            setSelected([]);
+            setSelected('none');
         }
     }
 
