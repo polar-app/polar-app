@@ -1,6 +1,7 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {GlobalCssGapBox} from "./GlobalCSSGapBox";
 
 // export const GlobalCss = withStyles({
 //     // @global is handled by jss-plugin-global.
@@ -22,9 +23,10 @@ import useTheme from "@material-ui/core/styles/useTheme";
 //     },
 // })(() => null);
 
-export const GlobalCssStyles = withStyles({
+export const GlobalCssDarkStyles = withStyles({
     // @global is handled by jss-plugin-global.
     '@global': {
+
         // You should target [class*="MuiButton-root"] instead if you nest themes.
         '.MuiTooltip-root': {
             // fontSize: '1rem',
@@ -49,18 +51,21 @@ export const GlobalCssStyles = withStyles({
     },
 });
 
-export const GlobalCssDark = GlobalCssStyles(() => null);
-
+export const GlobalCssDark = GlobalCssDarkStyles(() => null);
 
 export const GlobalCss = () => {
 
     const theme = useTheme();
 
-    if (theme.palette.type === 'dark') {
-        return <GlobalCssDark/>;
-    }
+    return (
+        <>
+            {theme.palette.type === 'dark' &&
+                <GlobalCssDark/>}
 
-    return null;
+            <GlobalCssGapBox/>
+
+        </>
+    );
 
 };
 

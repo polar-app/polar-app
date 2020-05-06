@@ -4,10 +4,10 @@ import {FlashcardViewDropdown} from './FlashcardViewDropdown';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
 import isEqual from "react-fast-compare";
-import {MUIGridLayout} from "../../../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
+import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
 
 interface IProps {
     readonly flashcard: IDocAnnotation;
@@ -32,39 +32,33 @@ export const FlashcardAnnotationControlBar2 = React.memo((props: IProps) => {
     return (
         <>
 
-            <div style={{display: 'flex', flexGrow: 1}} className="pt-1 pb-1">
+            <div style={{
+                     display: 'flex',
+                     flexGrow: 1
+                 }}
+                 className="pt-1 pb-1">
 
-                <MUIGridLayout items={[
+                <MUIButtonBar>
+                    <DocAuthor author={flashcard.author}/>
+                    <DocAnnotationMoment created={flashcard.created}/>
+                </MUIButtonBar>
 
-                    <DocAuthor key="author" author={flashcard.author}/>,
-                    <DocAnnotationMoment key="moment" created={flashcard.created}/>,
-
-                ]}/>
-
-                <MUIGridLayout key="right-bar"
-                               style={{
+                <MUIButtonBar key="right-bar"
+                              style={{
                                    justifyContent: 'flex-end',
                                    flexGrow: 1
-                               }}
-                               items={[
+                               }}>
 
-                                   // FIXME need a new button that works on all components
+                       {props.editButton}
 
-                                   <React.Fragment key="edit-button">
-                                       {props.editButton}
-                                   </React.Fragment>,
+                       <AnnotationTagButton2 annotation={props.flashcard}/>
 
-                                   <AnnotationTagButton2 key="tags"
-                                                         annotation={props.flashcard}/>,
+                       <FlashcardViewDropdown id={'flashcard-dropdown-' + flashcard.id}
+                                              disabled={! docMetaContext.mutable}
+                                              flashcard={flashcard}
+                                              onDelete={() => handleDelete()}/>
 
-
-                                   <FlashcardViewDropdown key="dropdown"
-                                                          id={'flashcard-dropdown-' + flashcard.id}
-                                                          disabled={! docMetaContext.mutable}
-                                                          flashcard={flashcard}
-                                                          onDelete={() => handleDelete()}/>
-
-                               ]}/>
+                </MUIButtonBar>
 
 
             </div>

@@ -8,6 +8,7 @@ import isEqual from 'react-fast-compare';
 import {CommentDropdown2} from "../CommentDropdown2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
+import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
 
 interface IProps {
     readonly comment: IDocAnnotation;
@@ -33,12 +34,10 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                     <DocAnnotationMoment created={comment.created}/>
                 </div>
 
-                <div style={{
-                         flexGrow: 1,
-                         display: 'flex',
-                         alignItems: 'center',
-                         justifyContent: 'flex-end'
-                     }}>
+                <MUIButtonBar style={{
+                                 flexGrow: 1,
+                                 justifyContent: 'flex-end'
+                              }}>
 
                     <NullCollapse open={! comment.immutable}>
                         {props.editButton}
@@ -52,7 +51,7 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                                       comment={comment}
                                       onDelete={NULL_FUNCTION}/>
 
-                </div>
+                </MUIButtonBar>
 
             </div>
             <Divider/>

@@ -19,6 +19,7 @@ import {useAnnotationMutationContext} from "./AnnotationMutationContext";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import { AnnotationTagButton2 } from './AnnotationTagButton2';
+import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
 
 interface IMutableProps {
     readonly mutable: boolean;
@@ -100,47 +101,39 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                 <div style={{display: 'flex'}}>
 
-                    <MUIGridLayout items={[
-                        <DocAuthor key="author" author={annotation.author}/>,
+                    <MUIButtonBar>
+                        <DocAuthor author={annotation.author}/>
 
-                        <MUIAnchor key="moment"
-                                   href="#"
+                        <MUIAnchor href="#"
                                    onClick={NULL_FUNCTION}>
                             <DocAnnotationMoment created={annotation.created}/>
                         </MUIAnchor>
 
-                    ]}/>
+                    </MUIButtonBar>
 
                     {/*<MUIHoverListener style={{display: 'flex', flexGrow: 1}}>*/}
-                    <MUIGridLayout key="right-bar"
-                                   style={{
+                    <MUIButtonBar key="right-bar"
+                                  style={{
                                       justifyContent: 'flex-end',
                                       flexGrow: 1
-                                   }}
-                                   items={[
-                                       <ChangeTextHighlightButton key="highlight-button"
-                                                                  annotation={annotation}
-                                                                  mutable={docMetaContext.mutable}/>,
-                                       <CreateCommentButton key="comment-button"
-                                                            mutable={docMetaContext.mutable}/>,
+                                  }}>
+                           <ChangeTextHighlightButton annotation={annotation}
+                                                      mutable={docMetaContext.mutable}/>
 
-                                       <CreateFlashcardButton key="flashcard-button"
-                                                              mutable={docMetaContext.mutable}/>,
+                           <CreateCommentButton mutable={docMetaContext.mutable}/>
 
-                                       <React.Fragment key="color-selector">
-                                            {! annotation.immutable &&
-                                                <ColorSelector color={props.annotation.color || 'yellow'}
-                                                               onSelected={color => annotationMutationContext.onColor(color)}/>}
-                                       </React.Fragment>,
+                           <CreateFlashcardButton mutable={docMetaContext.mutable}/>
 
-                                       <AnnotationTagButton2 annotation={annotation}
-                                                             mutable={docMetaContext.mutable}/>,
+                            {! annotation.immutable &&
+                                <ColorSelector color={props.annotation.color || 'yellow'}
+                                               onSelected={color => annotationMutationContext.onColor(color)}/>}
 
-                                       <AnnotationDropdown2 key="annotation-dropdown"
-                                                            id={'annotation-dropdown-' + annotation.id}
-                                                            disabled={annotation.immutable}
-                                                            annotation={annotation}/>
-                                   ]}/>
+                           <AnnotationTagButton2 annotation={annotation}/>
+
+                           <AnnotationDropdown2 id={'annotation-dropdown-' + annotation.id}
+                                                disabled={annotation.immutable}
+                                                annotation={annotation}/>
+                    </MUIButtonBar>
 
                     {/*</MUIHoverListener>*/}
 
