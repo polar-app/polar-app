@@ -34,6 +34,8 @@ export const CreateFlashcard2 = (props: IProps) => {
     const onFlashcard = useCallback((flashcardType: FlashcardType,
                                      fields: Readonly<FlashcardInputFieldsType>) => {
 
+        annotationInputContext.reset();
+
         const mutation: IFlashcardMutation = {
             type: 'create',
             flashcardType,

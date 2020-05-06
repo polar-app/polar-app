@@ -80,8 +80,12 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div style={FlashcardStyles.BottomBarItemRight}
-                         className="text-right">
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             justifyContent: 'flex-end',
+                             alignItems: 'center'
+                         }}>
 
                         <FlashcardButtons cancelButton={this.props.cancelButton}
                                           existingFlashcard={this.props.existingFlashcard}

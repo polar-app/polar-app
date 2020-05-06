@@ -43,6 +43,7 @@ export const EditTextHighlight2 = (props: IProps) => {
     }
 
     function handleRevert() {
+
         annotationInputContext.reset();
 
         const mutation: ITextHighlightRevert = {

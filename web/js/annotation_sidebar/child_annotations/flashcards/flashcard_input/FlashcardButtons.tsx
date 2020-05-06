@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import Button from "@material-ui/core/Button";
+import {MUIButtonBar} from "../../../../../spectron0/material-ui/MUIButtonBar";
 
 export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
@@ -16,7 +17,7 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <div>
+            <MUIButtonBar>
 
                 {this.props.cancelButton}
 
@@ -28,7 +29,7 @@ export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 
                 </Button>
 
-            </div>
+            </MUIButtonBar>
 
         );
 

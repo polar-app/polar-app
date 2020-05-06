@@ -26,13 +26,13 @@ export const CreateComment2 = React.memo((props: IProps) => {
 
     const handleComment = React.useCallback((body: string) => {
 
+        annotationInputContext.reset();
+
         const mutation: ICommentCreate = {
             type: 'create',
             body,
             parent: props.parent
         };
-
-        annotationInputContext.reset();
 
         annotationMutations.onComment(mutation);
 
