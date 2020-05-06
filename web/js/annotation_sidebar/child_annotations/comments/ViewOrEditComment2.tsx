@@ -44,7 +44,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
     } else {
         return (
             // <Fade in={this.state.mode === 'edit'}>
-                <EditComment2 id={'edit-comment-for' + props.id}
+                <EditComment2 id={'edit-comment-for' + props.comment.id}
                               existingComment={existingComment}
                               cancelButton={cancelButton}/>
             // </Fade>

@@ -116,7 +116,7 @@ export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate
 
 export interface IAnnotationMutationCallbacks {
 
-    readonly doTagged: (annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) => void;
+    // readonly doTagged: (annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) => void;
     readonly onTagged: (annotation: IDocAnnotation) => void;
 
     /**
@@ -271,7 +271,12 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
     }
 
+    function onTagged(annotation: IDocAnnotation) {
+        // noop
+    }
+
     return {
+        onTagged,
         onColor: NULL_FUNCTION,
         onTextHighlight,
         onFlashcard,
@@ -288,11 +293,12 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCallbacks>({
-    initialValue: initialStore,
-    mutatorFactory,
-    callbacksFactory
-});
+export const [AnnotationMutationStoreProvider, useAnnotationMutationStore, useAnnotationMutationCallbacks, useAnnotationMutationMutator] =
+    createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCallbacks>({
+        initialValue: initialStore,
+        mutatorFactory,
+        callbacksFactory
+    });
 
 
 

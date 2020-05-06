@@ -40,7 +40,7 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
                                          editButton={editButton}/>;
 
     } else {
-        return <FlashcardInput2 id={'edit-flashcard-for' + props.id}
+        return <FlashcardInput2 id={'edit-flashcard-for' + props.flashcard.id}
                                 flashcardType={existingFlashcard.type}
                                 existingFlashcard={existingFlashcard}
                                 cancelButton={cancelButton}/>;

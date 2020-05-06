@@ -16,8 +16,9 @@ import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
 import {useAnnotationMutationContext} from "./AnnotationMutationContext";
-import {AnnotationDropdown} from "./AnnotationDropdown";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import { AnnotationTagButton2 } from './AnnotationTagButton2';
 
 interface IMutableProps {
     readonly mutable: boolean;
@@ -64,6 +65,7 @@ const CreateCommentButton = React.memo((props: IMutableProps) => {
     );
 }, isEqual);
 
+
 const CreateFlashcardButton = React.memo((props: IMutableProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
@@ -79,7 +81,6 @@ const CreateFlashcardButton = React.memo((props: IMutableProps) => {
     );
 }, isEqual);
 
-
 interface IProps {
     readonly annotation: IDocAnnotation;
 }
@@ -92,8 +93,6 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
     const annotationMutationContext = useAnnotationMutationContext()
 
     return (
-        //
-        // {/*// onClick={() => onJumpToContext(annotation)}>*/}
 
         <>
             <div style={{userSelect: 'none'}}
@@ -133,6 +132,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                                                 <ColorSelector color={props.annotation.color || 'yellow'}
                                                                onSelected={color => annotationMutationContext.onColor(color)}/>}
                                        </React.Fragment>,
+
+                                       <AnnotationTagButton2 annotation={annotation}
+                                                             mutable={docMetaContext.mutable}/>,
 
                                        <AnnotationDropdown2 key="annotation-dropdown"
                                                             id={'annotation-dropdown-' + annotation.id}

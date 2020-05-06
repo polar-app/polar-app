@@ -28,12 +28,10 @@ export const ChildAnnotationSection2 = React.memo((props: IProps) => {
         if (child.annotationType === AnnotationType.COMMENT) {
 
             result.push (<ViewOrEditComment2 key={child.id}
-                                             id={child.id}
                                              comment={child}/>);
 
         } else {
             result.push (<ViewOrEditFlashcard2 key={child.id}
-                                               id={child.id}
                                                flashcard={child}/>);
         }
 

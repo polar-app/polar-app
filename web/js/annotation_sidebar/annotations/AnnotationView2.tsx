@@ -57,6 +57,9 @@ export const AnnotationView2 = React.memo((props: IProps) => {
                     <ViewOrEditComment2 comment={annotation}/>
                 );
 
+            default:
+                return null;
+
         }
 
     };

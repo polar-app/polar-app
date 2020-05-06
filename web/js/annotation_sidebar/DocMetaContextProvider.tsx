@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import isEqual from "react-fast-compare";
 
 interface IDocBase {
 
@@ -41,4 +42,4 @@ export const DocMetaContextProvider = React.memo((props: IProps) => {
         </DocMetaContext.Provider>
     );
 
-});
+}, isEqual);

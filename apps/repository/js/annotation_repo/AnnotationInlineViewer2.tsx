@@ -11,7 +11,7 @@ import {
 } from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotation_sidebar/AnnotationActiveInputContext";
-import {DocMetaContext} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import {DocMetaContextProvider} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {AnnotationInputView} from "../../../../web/js/annotation_sidebar/AnnotationInputView";
 import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
 
@@ -56,13 +56,6 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     const callbacks = useAnnotationRepoCallbacks();
 
-    console.log("FIXME: annotation: ", annotation);
-
-    const docMetaContext = {
-        docMeta: annotation.docMeta,
-        mutable: true
-    };
-
     return (
 
         <Paper square
@@ -76,13 +69,15 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
             <AnnotationActiveInputContextProvider>
                 <>
-                    <DocMetaContext.Provider value={docMetaContext}>
-                        {/*<AnnotationViewControlBar2 annotation={annotation}/>*/}
+                    <DocMetaContextProvider docMeta={annotation.docMeta}
+                                            mutable={true}>
 
-                        <AnnotationView2 annotation={annotation}/>
+                        <>
+                            <AnnotationView2 annotation={annotation}/>
 
-                        <AnnotationInputView annotation={annotation}/>
-                    </DocMetaContext.Provider>
+                            <AnnotationInputView annotation={annotation}/>
+                        </>
+                    </DocMetaContextProvider>
                 </>
             </AnnotationActiveInputContextProvider>
 
