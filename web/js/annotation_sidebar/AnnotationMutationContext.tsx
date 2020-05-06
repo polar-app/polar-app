@@ -166,6 +166,12 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
     // which shares the same code between the repo and the viewer so that the
     // context is updated.
 
+    // use the context object to regenerate the annotations in the store by
+    // calling setDocMeta from here and having a custom handler in parent.
+
+    // in the annotation repo, we won't need one, OR we have to just push up
+    // the mutaiton type, and allow it to handle it custom for now.
+
     async function doWriteDocMeta(docMeta: IDocMeta) {
 
         // first, set the docMeta so that the UI updates
