@@ -5,15 +5,13 @@ import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from "@material-ui/core/Typography";
-import {
-    useAnnotationRepoCallbacks,
-    useAnnotationRepoStore
-} from './AnnotationRepoStore';
+import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotation_sidebar/AnnotationActiveInputContext";
 import {DocMetaContextProvider} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {AnnotationInputView} from "../../../../web/js/annotation_sidebar/AnnotationInputView";
 import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
+import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
 
 const Styles: IStyleMap = {
 
@@ -54,13 +52,10 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     const {annotation} = props;
 
-    const callbacks = useAnnotationRepoCallbacks();
-
     return (
 
         <Paper square
                elevation={0}
-               className="p-1"
                style={{
                    display: 'flex',
                    flexGrow: 1,
@@ -73,9 +68,13 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                                             mutable={true}>
 
                         <>
-                            <AnnotationView2 annotation={annotation}/>
+                            <AnnotationInlineControlBar annotation={annotation}/>
 
-                            <AnnotationInputView annotation={annotation}/>
+                            <div className="p-1">
+                                <AnnotationView2 annotation={annotation}/>
+
+                                <AnnotationInputView annotation={annotation}/>
+                            </div>
                         </>
                     </DocMetaContextProvider>
                 </>

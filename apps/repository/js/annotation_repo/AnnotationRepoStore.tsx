@@ -275,7 +275,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
     async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
-                                                                       mutator: (docMeta: IDocMeta, mutation: T) => void) {
+                                                                       annotationMutator: (docMeta: IDocMeta, mutation: T) => void) {
 
         const selected = selectedAnnotations(mutation);
 
@@ -285,7 +285,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         // *** first we have to apply all the mutations to every annotation
         for (const partition of Object.values(partitions)) {
             const docMeta = partition.key;
-            mutator(docMeta, {...mutation, selected: partition.values});
+            annotationMutator(docMeta, {...mutation, selected: partition.values});
         }
 
         // *** now we have to update the store
@@ -298,6 +298,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             await repoDocMetaLoader.update(docMeta, 'updated');
 
         }
+
+        mutator.refresh();
 
         for (const partition of Object.values(partitions)) {
             // FIXME: apply these in batches... similar to what we're doing
