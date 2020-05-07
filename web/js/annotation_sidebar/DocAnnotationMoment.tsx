@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) =>
             marginTop: 'auto',
             marginBottom: 'auto',
             color: theme.palette.text.secondary,
+            whiteSpace: 'nowrap'
         },
     }),
 );

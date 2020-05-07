@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import isEqual from "react-fast-compare";
 import {IDocAnnotation} from "./DocAnnotation";
-import {useAnnotationMutationCallbacks} from "./AnnotationMutationsContext";
+import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 
 interface IProps {
@@ -13,12 +13,14 @@ interface IProps {
 export const AnnotationTagButton2 = React.memo((props: IProps) => {
 
     const docMetaContext = useDocMetaContext();
-    const annotationMutationCallbacks = useAnnotationMutationCallbacks();
+    const annotationMutations = useAnnotationMutationsContext();
+
+    const taggedCallback = annotationMutations.createTaggedCallback({selected: [props.annotation]});
 
     return (
         <IconButton disabled={! docMetaContext.mutable}
                     size="small"
-                    onClick={() => annotationMutationCallbacks.onTagged(props.annotation)}>
+                    onClick={taggedCallback}>
 
             <LocalOfferIcon/>
 

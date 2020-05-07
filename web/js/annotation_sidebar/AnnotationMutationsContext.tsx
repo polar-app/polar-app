@@ -27,8 +27,6 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
-const log = Logger.create()
-
 /**
  * This allows us to specify what's is being mutated.  If selected is specified
  * we mutate just these objects. NOT that's selected in the UI tables.
@@ -379,15 +377,12 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const [AnnotationMutationStoreProvider, useAnnotationMutationStore, useAnnotationMutationCallbacks, useAnnotationMutationMutator] =
-    createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCallbacks>({
-        initialValue: initialStore,
-        mutatorFactory,
-        callbacksFactory
-    });
-
-
-
+// export const [AnnotationMutationStoreProvider, useAnnotationMutationStore, useAnnotationMutationCallbacks, useAnnotationMutationMutator] =
+//     createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCallbacks>({
+//         initialValue: initialStore,
+//         mutatorFactory,
+//         callbacksFactory
+//     });
 
 
 // const onTagged = (tags: ReadonlyArray<Tag>) => {
