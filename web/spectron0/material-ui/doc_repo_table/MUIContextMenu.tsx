@@ -11,15 +11,19 @@ interface IContextMenuContext {
 export const ContextMenuContext
     = React.createContext<IContextMenuContext>({onContextMenu: NULL_FUNCTION});
 
+// interface IMenuComponentProps {
+//
+//     readonly mouseX: number;
+//     readonly mouseY: number;
+//
+//     /**
+//      * Callback that should be called when we want to close the menu.
+//      */
+//     readonly handleClose: () => void;
+//
+// }
+
 interface IMenuComponentProps {
-
-    readonly mouseX: number;
-    readonly mouseY: number;
-
-    /**
-     * Callback that should be called when we want to close the menu.
-     */
-    readonly handleClose: () => void;
 
 }
 
@@ -57,7 +61,9 @@ export function createContextMenu(MenuComponent: (props: IMenuComponentProps) =>
         return (
             <ContextMenuContext.Provider value={{onContextMenu}}>
                 {mousePosition &&
-                    <MenuComponent {...mousePosition} handleClose={handleClose}/>}
+                    <MUIContextMenu {...mousePosition} handleClose={handleClose}>
+                        <MenuComponent/>
+                    </MUIContextMenu>}
 
                 {props.children}
 
@@ -72,7 +78,21 @@ export function useContextMenu(): OnContextMenuCallback {
     return contextMenuContext.onContextMenu;
 }
 
-export const MUIContextMenu = (props: IMenuComponentProps & IChildComponentProps) => (
+interface MUIContextMenuProps {
+
+    readonly mouseX: number;
+    readonly mouseY: number;
+
+    /**
+     * Callback that should be called when we want to close the menu.
+     */
+    readonly handleClose: () => void;
+
+    readonly children: React.ReactFragment | JSX.Element;
+
+}
+
+export const MUIContextMenu = (props: MUIContextMenuProps) => (
     <Menu
         keepMounted
         open={true}
