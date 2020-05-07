@@ -9,6 +9,7 @@ import isEqual from "react-fast-compare";
 import {MUIGridLayout} from "../../../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {AnnotationTagInputButton} from "../AnnotationTagInputButton";
+import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
 
 interface IProps {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
@@ -33,39 +34,34 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
     return (
         <>
 
-            <div style={{display: 'flex', flexGrow: 1}} className="pt-1 pb-1">
+            <div style={{
+                     display: 'flex',
+                     flexGrow: 1}}
+                 className="pt-1 pb-1">
 
-                <MUIGridLayout items={[
+                <MUIButtonBar>
 
-                    <DocAuthor key="author" author={flashcard.author}/>,
-                    <DocAnnotationMoment key="moment" created={flashcard.created}/>,
+                    <DocAuthor author={flashcard.author}/>
+                    <DocAnnotationMoment created={flashcard.created}/>
 
-                ]}/>
+                </MUIButtonBar>
 
-                <MUIGridLayout key="right-bar"
-                               style={{
-                                   justifyContent: 'flex-end',
-                                   flexGrow: 1
-                               }}
-                               items={[
+                <MUIButtonBar style={{
+                                  justifyContent: 'flex-end',
+                                  flexGrow: 1
+                              }}>
 
-                                   // FIXME need a new button that works on all components
-                                   <AnnotationTagInputButton key="tags"
-                                                             tagsProvider={props.tagsProvider}
-                                                             annotation={props.flashcard}/>,
+                    {/*// FIXME need a new button that works on all components*/}
+                    <AnnotationTagInputButton tagsProvider={props.tagsProvider}
+                                              annotation={props.flashcard}/>
 
-                                   <React.Fragment key="edit-button">
-                                       {props.editButton}
-                                   </React.Fragment>,
+                    {props.editButton}
 
-                                   <FlashcardViewDropdown key="dropdown"
-                                                          id={'flashcard-dropdown-' + flashcard.id}
-                                                          disabled={! props.doc.mutable}
-                                                          flashcard={flashcard}
-                                                          onDelete={() => handleDelete()}/>
-
-                               ]}/>
-
+                    <FlashcardViewDropdown id={'flashcard-dropdown-' + flashcard.id}
+                                           disabled={! props.doc.mutable}
+                                           flashcard={flashcard}
+                                           onDelete={() => handleDelete()}/>
+                </MUIButtonBar>
 
             </div>
 

@@ -64,6 +64,8 @@ import {
 } from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import { IDStr } from "polar-shared/src/util/Strings";
 import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
+import {RepoDocMetaManager} from "../RepoDocMetaManager";
+import {RepoDocMetas} from "../RepoDocMetas";
 
 const log = Logger.create();
 
@@ -266,6 +268,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          dialogs: DialogManager,
                          persistence: IPersistence,
                          repoDocMetaLoader: RepoDocMetaLoader,
+                         repoDocMetaManager: RepoDocMetaManager,
                          tagsContext: ITags): IAnnotationRepoCallbacks => {
 
     const synchronizingDocLoader
@@ -400,6 +403,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
 
+        // FIXME: we need to partition these to docMetas like handleUpdate
         for (const annotation of annotations) {
 
             // TODO: migrate this to something that can have a progress
@@ -411,18 +415,23 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
             async function doAsync() {
 
-                await repoDocMetaLoader.update(docMeta, 'deleted');
-
                 const {persistenceLayerProvider} = persistence;
+
+                const fingerprint = docMeta.docInfo.fingerprint;
+                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+                repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
+
                 const persistenceLayer = persistenceLayerProvider();
                 await persistenceLayer.writeDocMeta(docMeta);
 
             }
 
             doAsync()
-            .catch(err => log.error(err));
+                .catch(err => log.error(err));
 
         }
+
+        mutator.refresh();
 
     }
 
@@ -627,6 +636,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function onDeleted(mutation: IDeleteMutation = {}) {
 
+        // FIXME: do I need to unify this action with doc repo store?
+
         const annotations = selectedAnnotations(mutation);
 
         if (annotations.length === 0) {
@@ -660,8 +671,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
-
-        console.log("FIXME2 mutation: ", mutation);
 
         handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
             .catch(err => log.error(err));
@@ -713,8 +722,9 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const dialogs = useDialogManager();
     const persistence = usePersistence();
     const repoDocMetaLoader = useRepoDocMetaLoader();
+    const repoDocMetaManager = useRepoDocMetaManager();
+
     const tagsContext = useTagsContext();
-    const docMetaContext = useDocMetaContext();
 
     return createCallbacks(storeProvider,
                            setStore,
@@ -722,6 +732,7 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
                            dialogs,
                            persistence,
                            repoDocMetaLoader,
+                           repoDocMetaManager,
                            tagsContext);
 
 }
