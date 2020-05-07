@@ -8,10 +8,10 @@ export class Dicts {
      */
     static ownKeys<V>(dict: {[key: string]: V} , callback: OwnKeysCallback<V>) {
 
-        for(let key in dict) {
+        for(const key in dict) {
 
             if(dict.hasOwnProperty(key)) {
-                let value = dict[key];
+                const value = dict[key];
                 callback(key,value);
             }
 

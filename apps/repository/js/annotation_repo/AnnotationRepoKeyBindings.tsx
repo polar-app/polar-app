@@ -1,6 +1,7 @@
 import {GlobalHotKeys} from "react-hotkeys";
 import React from "react";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
+import {Callbacks} from "../Callbacks";
 
 const globalKeyMap = {
     TAG: 't',
@@ -13,22 +14,12 @@ export const AnnotationRepoKeyBindings = React.memo(() => {
 
     const callbacks = useAnnotationRepoCallbacks();
 
-    // FIXME: use this with all function hooks now...
-    function callbackExecutedWithTimeout(delegate: () => void): () => void {
-        // for some reason when I try to autotag the input is automatically
-        // filled with a 't'.  react-hotkeys isn supposed to stop propagation
-        // by default but that seems to not be functional.
-        return () => {
-            setTimeout(delegate, 1);
-        }
-    }
-
-    const globalKeyHandlers = {
-        TAG: callbackExecutedWithTimeout(callbacks.onTagged),
-        DELETE: callbackExecutedWithTimeout(callbacks.onDeleted),
+    const globalKeyHandlers = Callbacks.callbacksWithTimeout({
+        TAG: callbacks.onTagged,
+        DELETE: callbacks.onDeleted,
         // FLAG: callbacks.onFlagged,
         // ARCHIVE: callbacks.onArchived
-    };
+    });
 
     return (
 

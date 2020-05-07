@@ -1,6 +1,5 @@
 import React from 'react';
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {InheritedTag} from "polar-shared/src/tags/InheritedTags";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUITagInputControls} from "../MUITagInputControls";
@@ -9,12 +8,11 @@ import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDi
 export namespace TaggedCallbacks {
 
     import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-
-    interface IBase {
-        readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
-    }
-
     import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+
+    interface ITagsBase {
+        readonly tags?: Readonly<{[id: string]: Tag}> | undefined;
+    }
 
     export interface TaggedCallbacksOpts<T> {
 
@@ -34,7 +32,7 @@ export namespace TaggedCallbacks {
 
     }
 
-    export function create<T extends IBase>(opts: TaggedCallbacksOpts<T>): () => void {
+    export function create<T extends ITagsBase>(opts: TaggedCallbacksOpts<T>): () => void {
 
         return () => {
 

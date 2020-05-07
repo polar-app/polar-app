@@ -51,6 +51,9 @@ import {
 import {SelectionEvents2} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
+import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 
 const log = Logger.create();
 
@@ -771,50 +774,16 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
-        const repoDocInfos = selectedProvider();
-
-        if (repoDocInfos.length === 0) {
-            // no work to do
-            return;
+        const opts: TaggedCallbacksOpts<RepoDocInfo> = {
+            targets: selectedProvider,
+            tagsProvider,
+            dialogs,
+            doTagged
         }
 
-        const availableTags = tagsProvider();
-        const existingTags = repoDocInfos.length === 1 ? Object.values(repoDocInfos[0].tags || {}) : [];
+        const callback = TaggedCallbacks.create(opts);
 
-        const toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-
-        const {relatedTagsManager} = repoDocMetaManager;
-
-        const relatedOptionsCalculator = (tags: ReadonlyArray<Tag>) => {
-
-            // TODO convert this to NOT use tag strings but to use tag objects
-
-            const computed = relatedTagsManager.compute(tags.map(current => current.id))
-                .map(current => current.tag);
-
-            // now look this up directly.
-            const resolved = arrayStream(tagsProvider())
-                .filter(current => computed.includes(current.id))
-                .map(toAutocompleteOption)
-                .collect();
-
-            return resolved;
-
-        };
-
-        const autocompleteProps: AutocompleteDialogProps<Tag> = {
-            title: "Assign Tags to Document",
-            options: availableTags.map(toAutocompleteOption),
-            defaultOptions: existingTags.map(toAutocompleteOption),
-            createOption: MUITagInputControls.createOption,
-            // FIXME: add this back in...
-            // relatedOptionsCalculator: (tags) => relatedTagsManager.compute(tags.map(current => current.label)),
-            onCancel: NULL_FUNCTION,
-            onChange: NULL_FUNCTION,
-            onDone: tags => doTagged(repoDocInfos, tags)
-        };
-
-        dialogs.autocomplete(autocompleteProps);
+        callback();
 
     }
 
