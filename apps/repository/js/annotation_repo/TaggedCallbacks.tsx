@@ -36,63 +36,64 @@ export namespace TaggedCallbacks {
 
     export function create<T extends IBase>(opts: TaggedCallbacksOpts<T>): () => void {
 
-        const {doTagged, dialogs} = opts;
+        return () => {
 
-        const targets = opts.targets();
+            const {doTagged, dialogs} = opts;
 
-        if (targets.length === 0) {
-            // no work to do so just terminate.
-            return;
-        }
+            const targets = opts.targets();
 
-        const availableTags = opts.tagsProvider();
+            if (targets.length === 0) {
+                console.log("No targets");
+                return;
+            }
 
-        interface AutocompleteStrategy {
-            readonly strategy: ComputeNewTagsStrategy;
-            readonly existingTags: ReadonlyArray<Tag>;
-            readonly description?: string | JSX.Element;
-        }
+            const availableTags = opts.tagsProvider();
 
-        function computeAutocompleteStrategy(): AutocompleteStrategy {
+            interface AutocompleteStrategy {
+                readonly strategy: ComputeNewTagsStrategy;
+                readonly existingTags: ReadonlyArray<Tag>;
+                readonly description?: string | JSX.Element;
+            }
 
-            if (targets.length > 1) {
+            function computeAutocompleteStrategy(): AutocompleteStrategy {
+
+                if (targets.length > 1) {
+
+                    return {
+                        strategy: 'add',
+                        existingTags: [],
+                        description: (
+                            <>
+                                This will <b>ADD</b> the selected tags to <b>{targets.length}</b> items.
+                            </>
+                        )
+                    };
+
+
+                }
+
+                const annotation = targets[0];
 
                 return {
-                    strategy: 'add',
-                    existingTags: [],
-                    description: (
-                        <>
-                            This will <b>ADD</b> the selected tags to <b>{targets.length}</b> items.
-                        </>
-                    )
+                    strategy: 'set',
+                    existingTags: Object.values(annotation.tags || {}),
                 };
-
 
             }
 
-            const annotation = targets[0];
+            const autocompleteStrategy = computeAutocompleteStrategy();
 
-            return {
-                strategy: 'set',
-                existingTags: Object.values(annotation.tags || {}),
+            const autocompleteProps: AutocompleteDialogProps<Tag> = {
+                title: "Assign Tags",
+                description: autocompleteStrategy.description,
+                options: availableTags.map(toAutocompleteOption),
+                defaultOptions: autocompleteStrategy.existingTags.map(toAutocompleteOption),
+                createOption: MUITagInputControls.createOption,
+                onCancel: NULL_FUNCTION,
+                onChange: NULL_FUNCTION,
+                onDone: tags => doTagged(targets, tags, autocompleteStrategy.strategy)
             };
 
-        }
-
-        const autocompleteStrategy = computeAutocompleteStrategy();
-
-        const autocompleteProps: AutocompleteDialogProps<Tag> = {
-            title: "Assign Tags",
-            description: autocompleteStrategy.description,
-            options: availableTags.map(toAutocompleteOption),
-            defaultOptions: autocompleteStrategy.existingTags.map(toAutocompleteOption),
-            createOption: MUITagInputControls.createOption,
-            onCancel: NULL_FUNCTION,
-            onChange: NULL_FUNCTION,
-            onDone: tags => doTagged(targets, tags, autocompleteStrategy.strategy)
-        };
-
-        return () => {
             dialogs.autocomplete(autocompleteProps);
         }
 

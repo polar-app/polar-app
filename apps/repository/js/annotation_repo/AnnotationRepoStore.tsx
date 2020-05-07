@@ -40,18 +40,14 @@ import {
     ExportFormat
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
-import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
-import {
-    Callback,
-    Callback1,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
     AnnotationMutationsContext,
     DocAnnotationsMutator,
     IAnnotationMutations,
-    IAnnotationMutationSelected, IAnnotationMutationSelectedRequired,
+    IAnnotationMutationSelected,
+    IAnnotationMutationSelectedRequired,
     IColorMutation,
     ICommentMutation,
     IDeleteMutation,
@@ -64,10 +60,9 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
-import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {TaggedCallbacks} from "./TaggedCallbacks";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 
 const log = Logger.create();
@@ -411,45 +406,44 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                       tags: ReadonlyArray<Tag>,
                       strategy: ComputeNewTagsStrategy = 'set') {
 
-        if (annotations.length === 0) {
-            log.warn("No annotations");
-            return;
-        }
-
         if (tags.length === 0) {
             log.warn("No tags");
             return;
         }
 
-        for (const annotation of annotations) {
+        handleUpdate({selected: annotations}, (docMeta, pageMeta, mutation) => {
 
-            const docMeta = annotation.docMeta;
-            const updates = {
-                tags: Tags.toMap(tags)
-            };
+            for (const current of mutation.selected) {
 
-            // FIXME: migrate this to handleUpdate
+                const updates = {
+                    tags: Tags.toMap(tags)
+                };
 
-            AnnotationMutations.update(docMeta,
-                                       annotation.annotationType,
-                                       {...annotation.original, ...updates});
+                AnnotationMutations.update(docMeta,
+                                           current.annotationType,
+                                           {...current.original, ...updates});
 
-            const doAsync = async () => {
+            }
 
-                await repoDocMetaLoader.update(docMeta, 'updated');
-
-                const {persistenceLayerProvider} = persistence;
-                const persistenceLayer = persistenceLayerProvider();
-                await persistenceLayer.writeDocMeta(docMeta);
-
-            };
-
-            doAsync()
-                .catch(err => log.error(err));
-
-        }
+        })
 
     }
+
+    function createTagged(mutation: IDeleteMutationWithSelected) {
+
+        const opts: TaggedCallbacksOpts<IDocAnnotation> = {
+            targets: () => mutation.selected,
+            tagsProvider: tagsContext.tagsProvider,
+            dialogs,
+            doTagged
+        }
+
+        const callback = TaggedCallbacks.create(opts);
+
+        callback();
+
+    }
+
 
     function onTagged() {
 
