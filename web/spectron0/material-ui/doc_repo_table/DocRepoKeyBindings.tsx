@@ -9,9 +9,8 @@ const globalKeyMap = {
     FLAG: 'f',
     ARCHIVE: 'a',
     RENAME: 'r',
-    OPEN: ['control+enter', 'command+enter']
+    OPEN: ['command+return', 'control+return']
 };
-
 
 export const DocRepoKeyBindings = React.memo(() => {
 
@@ -23,6 +22,7 @@ export const DocRepoKeyBindings = React.memo(() => {
         FLAG: callbacks.onFlagged,
         ARCHIVE: callbacks.onArchived,
         RENAME: callbacks.onRename,
+        OPEN: callbacks.onOpen
     });
 
     return (
