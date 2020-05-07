@@ -42,20 +42,20 @@ export interface IAnnotationMutationSelectedRequired {
     readonly selected: ReadonlyArray<IDocAnnotation>;
 }
 
-export interface ICommentCreate extends IAnnotationMutationSelected {
+export interface ICommentCreate {
     readonly type: 'create';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
 }
 
-export interface ICommentUpdate extends IAnnotationMutationSelected {
+export interface ICommentUpdate {
     readonly type: 'update';
     readonly parent: IDocAnnotation;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotation;
 }
 
-export interface ICommentDelete extends IAnnotationMutationSelected  {
+export interface ICommentDelete {
     readonly type: 'delete';
     readonly parent: IDocAnnotation;
     readonly existing: IDocAnnotation;
@@ -110,13 +110,13 @@ export interface ITaggedMutation extends IAnnotationMutationSelected {
 
 export interface IAnnotationMutations {
 
+
+
     /**
      * Create a specific callback as a react callback that can be used with a
      * fixed set of selected items.
      */
     readonly createDeletedCallback: (mutation: IDeleteMutationWithSelected) => Callback;
-    readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
-
     /**
      * Delete the given items or whatever is selected.
      */
@@ -124,8 +124,13 @@ export interface IAnnotationMutations {
     readonly onTagged: (mutation?: ITaggedMutation) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
-    readonly onComment: (mutation: ICommentMutation) => void;
+
+    readonly createCommentCallback: (selected: IAnnotationMutationSelectedRequired) => (mutation: ICommentMutation) => void;
+
+    readonly onComment: (mutation: ICommentMutation & IAnnotationMutationSelectedRequired) => void;
     readonly onFlashcard: (mutation: IFlashcardMutation) => void;
+
+    readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
 
     // TODO: in the future it would be nice to pick the color for multiple items
     // but we can't right now.
@@ -138,6 +143,7 @@ export const AnnotationMutationsContext = React.createContext<IAnnotationMutatio
     createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
     onTextHighlight: NULL_FUNCTION,
+    createCommentCallback: () => NULL_FUNCTION,
     onComment: NULL_FUNCTION,
     onFlashcard: NULL_FUNCTION,
     createColorCallback: () => NULL_FUNCTION,

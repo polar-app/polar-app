@@ -51,7 +51,7 @@ import {
     AnnotationMutationsContext,
     DocAnnotationsMutator,
     IAnnotationMutations,
-    IAnnotationMutationSelected,
+    IAnnotationMutationSelected, IAnnotationMutationSelectedRequired,
     IColorMutation,
     ICommentMutation,
     IDeleteMutation,
@@ -647,7 +647,15 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             .catch(err => log.error(err));
     }
 
-    function onComment(mutation: ICommentMutation) {
+    function createCommentCallback(selected: IAnnotationMutationSelectedRequired): Callback1<ICommentMutation> {
+
+        return React.useCallback((mutation: ICommentMutation) => {
+            onComment({...selected, ...mutation});
+        }, []);
+
+    }
+
+    function onComment(mutation: ICommentMutation & IAnnotationMutationSelectedRequired) {
         handleUpdate(mutation, DocAnnotationsMutator.onComment)
             .catch(err => log.error(err));
     }
@@ -688,6 +696,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         doDropped,
         onDropped,
         onTextHighlight,
+        createCommentCallback,
         onComment,
         onFlashcard,
         createColorCallback,

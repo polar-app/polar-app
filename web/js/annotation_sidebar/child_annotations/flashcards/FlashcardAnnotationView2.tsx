@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation} from '../../DocAnnotation';
 import isEqual from "react-fast-compare";
 import Card from "@material-ui/core/Card";
 import CardContent from '@material-ui/core/CardContent';

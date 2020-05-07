@@ -14,6 +14,8 @@ interface IProps {
 
 export const CreateComment2 = React.memo((props: IProps) => {
 
+    const {parent} = props;
+
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
 
@@ -23,6 +25,8 @@ export const CreateComment2 = React.memo((props: IProps) => {
     if (annotationInputContext.active !== 'comment') {
         return null;
     }
+
+    const commentCallback = annotationMutations.createCommentCallback({selected: [parent]})
 
     const handleComment = React.useCallback((body: string) => {
 
@@ -34,7 +38,7 @@ export const CreateComment2 = React.memo((props: IProps) => {
             parent: props.parent
         };
 
-        annotationMutations.onComment(mutation);
+        commentCallback(mutation);
 
     }, []);
 

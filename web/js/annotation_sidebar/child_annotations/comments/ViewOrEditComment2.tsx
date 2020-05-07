@@ -48,7 +48,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
                 <EditComment2 id={'edit-comment-for' + props.comment.id}
                               existingComment={existingComment}
                               cancelButton={cancelButton}
-                              // FIXME:
+                              // FIXME:...
                               onComment={NULL_FUNCTION}
                               />
             // </Fade>
