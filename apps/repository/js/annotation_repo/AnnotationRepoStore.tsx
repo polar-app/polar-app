@@ -429,7 +429,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function createTagged(mutation: IDeleteMutationWithSelected) {
+    function createTaggedCallback(mutation: IDeleteMutationWithSelected) {
 
         const opts: TaggedCallbacksOpts<IDocAnnotation> = {
             targets: () => mutation.selected,
@@ -438,9 +438,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             doTagged
         }
 
-        const callback = TaggedCallbacks.create(opts);
-
-        callback();
+        return TaggedCallbacks.create(opts);
 
     }
 
@@ -637,6 +635,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         setPage,
         setRowsPerPage,
         doTagged,
+        createTaggedCallback,
         onTagged,
         onExport,
         setFilter,

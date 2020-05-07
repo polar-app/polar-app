@@ -123,6 +123,8 @@ export interface IAnnotationMutations {
      * Delete the given items or whatever is selected.
      */
     readonly onDeleted: (mutation?: IDeleteMutation) => void;
+
+    readonly createTaggedCallback: (mutation: IDeleteMutationWithSelected) => Callback;
     readonly onTagged: (mutation?: ITaggedMutation) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
@@ -150,6 +152,7 @@ export const AnnotationMutationsContext = React.createContext<IAnnotationMutatio
     onFlashcard: NULL_FUNCTION,
     createColorCallback: () => NULL_FUNCTION,
     onColor: NULL_FUNCTION,
+    createTaggedCallback: () => NULL_FUNCTION,
     onTagged: NULL_FUNCTION,
 });
 
