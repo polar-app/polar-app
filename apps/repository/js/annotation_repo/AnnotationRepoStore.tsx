@@ -41,11 +41,8 @@ import {
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
-import { SelectionEvents } from "../doc_repo/SelectionEvents";
 import {
     AnnotationMutationsContext,
     DocAnnotationsMutator,
@@ -53,19 +50,17 @@ import {
     IAnnotationMutationSelected,
     IColorMutation,
     ICommentMutation,
-    IDeleteMutation,
+    IDeleteMutation, IDeleteMutationWithSelected,
     IFlashcardMutation,
     ITextHighlightMutation
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {
-    IDocMetaContext,
-    useDocMetaContext
-} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
-import { IDStr } from "polar-shared/src/util/Strings";
+import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
+import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
 
@@ -544,7 +539,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         }
 
         doAsync()
-        .catch(err => log.error("Unable to download: ", err));
+            .catch(err => log.error("Unable to download: ", err));
 
     }
 
@@ -598,6 +593,14 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
+    function createDeletedCallback(mutation: IDeleteMutationWithSelected): Callback {
+
+        return React.useCallback(() => {
+            onDeleted(mutation);
+        }, []);
+
+    }
+
     function onDeleted(mutation: IDeleteMutation = {}) {
 
         // FIXME: do I need to unify this action with doc repo store?
@@ -635,7 +638,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
-
         handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
             .catch(err => log.error(err));
     }
@@ -666,6 +668,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         setFilter,
         doUpdated,
         doDeleted,
+        createDeletedCallback,
         onDeleted,
         onDragStart,
         onDragEnd,

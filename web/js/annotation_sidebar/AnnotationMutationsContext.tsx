@@ -1,5 +1,9 @@
 import React, {useContext} from "react";
-import {Functions, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {
+    Callback,
+    Functions,
+    NULL_FUNCTION
+} from "polar-shared/src/util/Functions";
 import {IDocAnnotation} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
@@ -23,23 +27,19 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 
 const log = Logger.create()
 
-//
-// - FIXME what are the main mutations I need
-// - delete any annotation
-// - update the text to of text highlights
-// - change color of text/area highlights
-// - set/add tags to any annotaion type
-// - update/create comments
-// - update/create comments
-//
-// - build these mutations, then call the more raw callbacks.
-
 /**
  * This allows us to specify what's is being mutated.  If selected is specified
  * we mutate just these objects. NOT that's selected in the UI tables.
  */
 export interface IAnnotationMutationSelected {
     readonly selected?: ReadonlyArray<IDocAnnotation>;
+}
+
+/**
+ * The selected annotations are required with this interface
+ */
+export interface IAnnotationMutationSelectedRequired {
+    readonly selected: ReadonlyArray<IDocAnnotation>;
 }
 
 export interface ICommentCreate extends IAnnotationMutationSelected {
@@ -99,6 +99,8 @@ export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 }
 
+export type IDeleteMutationWithSelected = IDeleteMutation & IAnnotationMutationSelectedRequired;
+
 export interface IColorMutation extends IAnnotationMutationSelected {
     readonly color: string;
 }
@@ -107,6 +109,12 @@ export interface ITaggedMutation extends IAnnotationMutationSelected {
 }
 
 export interface IAnnotationMutations {
+
+    /**
+     * Create a specific callback as a react callback that can be used with a
+     * fixed set of selected items.
+     */
+    readonly createDeletedCallback: (mutation: IDeleteMutationWithSelected) => Callback;
 
     /**
      * Delete the given items or whatever is selected.
@@ -125,6 +133,8 @@ export interface IAnnotationMutations {
 }
 
 export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
+
+    createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
     onTextHighlight: NULL_FUNCTION,
     onComment: NULL_FUNCTION,
@@ -291,25 +301,6 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
     const persistence = usePersistence();
     const dialogs = useDialogManager();
     const docMetaContext = useDocMetaContext();
-
-    // FIXME this won't work with the new sidebar as it doesn't use the
-    // annotation repository.  We will have to do our own writes there with our
-    // own context
-    // const annotationRepoCallbacks = useAnnotationRepoCallbacks();
-
-    // FIXME: further, none of these mutate the store directly in the annotation
-    // sidebar which means we have to wait for datastore event updates which
-    // is not fun.
-
-    // FIXME: I can solve this by having a NEW store in the annotation sidebar
-    // which shares the same code between the repo and the viewer so that the
-    // context is updated.
-
-    // use the context object to regenerate the annotations in the store by
-    // calling setDocMeta from here and having a custom handler in parent.
-
-    // in the annotation repo, we won't need one, OR we have to just push up
-    // the mutaiton type, and allow it to handle it custom for now.
 
     async function doWriteDocMeta(docMeta: IDocMeta) {
 

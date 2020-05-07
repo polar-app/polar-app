@@ -9,6 +9,7 @@ import {CommentDropdown2} from "../CommentDropdown2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 
 interface IProps {
     readonly comment: IDocAnnotation;
@@ -19,6 +20,10 @@ interface IProps {
 export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
 
     const { comment } = props;
+
+    const annotationMutations = useAnnotationMutationsContext();
+
+    const handleDelete = annotationMutations.createDeletedCallback({selected: [comment]});
 
     return (
         <>
@@ -45,11 +50,10 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
 
                     <AnnotationTagButton2 annotation={props.comment}/>
 
-                    {/*FIXME: connect this up*/}
                     <CommentDropdown2 id={'comment-dropdown-' + comment.id}
                                       disabled={comment.immutable}
                                       comment={comment}
-                                      onDelete={NULL_FUNCTION}/>
+                                      onDelete={handleDelete}/>
 
                 </MUIButtonBar>
 

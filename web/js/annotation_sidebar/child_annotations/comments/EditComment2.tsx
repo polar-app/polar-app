@@ -6,6 +6,7 @@ import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
 import Button from '@material-ui/core/Button';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
+import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
 
 
 interface IProps {
@@ -66,15 +67,19 @@ export const EditComment2 = React.memo((props: IProps) => {
 
                     <div className="text-right">
 
-                        {props.cancelButton}
+                        <MUIButtonBar>
 
-                        <Button color="primary"
-                                variant="contained"
-                                onClick={() => props.onComment(htmlRef.current)}>
+                            {props.cancelButton}
 
-                            {props.existingComment ? 'Update' : 'Comment'}
+                            <Button color="primary"
+                                    variant="contained"
+                                    onClick={() => props.onComment(htmlRef.current)}>
 
-                        </Button>
+                                {props.existingComment ? 'Update' : 'Comment'}
+
+                            </Button>
+
+                        </MUIButtonBar>
 
                     </div>
 

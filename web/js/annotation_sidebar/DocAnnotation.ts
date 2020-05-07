@@ -90,21 +90,6 @@ export function createChildren(original: IAreaHighlight | ITextHighlight,
                                docMeta: IDocMeta,
                                pageMeta: IPageMeta): () => ReadonlyArray<IDocAnnotation> {
 
-    // FIXME the react component cache will not work here I think as the
-    // children will change... It WILL work BUT we have to analyze the
-    // children as part of the isEqual method and we will probably need to
-    // make sure lastUpdated is always mutated on each subcomponent so that
-    // we can have efficient caching.
-    //
-    // FIXME lastUpdated isn't enough because that only has 1s resolution.
-    //
-    // We might need more resolution than that.
-
-    // normally this is used from react and the react com
-
-    // use the original annotation, and the pageMeta to find the
-    // children... should we cache these so that lookups are fast
-
     return () => {
 
         const flashcards = Object.values(pageMeta.flashcards || {});

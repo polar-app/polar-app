@@ -434,7 +434,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             }
 
             if (newSelected === 'none') {
-                return viewPage.map(current => current.id);
+                return [];
             }
 
             return newSelected;
