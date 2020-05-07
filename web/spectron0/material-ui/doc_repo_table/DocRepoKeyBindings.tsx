@@ -7,7 +7,9 @@ const globalKeyMap = {
     TAG: 't',
     DELETE: ['del', 'backspace'],
     FLAG: 'f',
-    ARCHIVE: 'a'
+    ARCHIVE: 'a',
+    RENAME: 'r',
+    OPEN: ['control+enter', 'command+enter']
 };
 
 
@@ -19,7 +21,8 @@ export const DocRepoKeyBindings = React.memo(() => {
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
         FLAG: callbacks.onFlagged,
-        ARCHIVE: callbacks.onArchived
+        ARCHIVE: callbacks.onArchived,
+        RENAME: callbacks.onRename,
     });
 
     return (
