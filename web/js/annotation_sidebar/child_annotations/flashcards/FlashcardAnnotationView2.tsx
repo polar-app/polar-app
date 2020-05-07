@@ -90,7 +90,7 @@ export const FlashcardAnnotationView2 = React.memo(React.forwardRef((props: IPro
 
             <div className="">
 
-                <div onDoubleClick={props.onEdit}>
+                <div>
 
                     <RenderFields {...props}/>
 

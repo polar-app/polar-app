@@ -94,7 +94,7 @@ export const FlashcardAnnotationView = React.memo((props: IProps) => {
 
             <div className="">
 
-                <div onDoubleClick={props.onEdit}>
+                <div>
 
                     <RenderFields {...props}/>
 

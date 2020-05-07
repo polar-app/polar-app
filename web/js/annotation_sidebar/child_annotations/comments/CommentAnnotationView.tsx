@@ -30,7 +30,7 @@ export const CommentAnnotationView = (props: IProps) => {
 
             <div className="comment muted-color-root">
 
-                <div className="p-1" onDoubleClick={() => props.onEdit()}>
+                <div className="p-1">
 
                     {/*TODO: based on the state determine if we should be*/}
                     {/*editing or just displaying the comment*/}
