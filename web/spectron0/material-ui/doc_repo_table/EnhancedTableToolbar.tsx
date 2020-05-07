@@ -17,14 +17,6 @@ import {
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
-import {Numbers} from "polar-shared/src/util/Numbers";
-
-const globalKeyMap = {
-    TAG: 't',
-    DELETE: ['del', 'backspace'],
-    FLAG: 'f',
-    ARCHIVE: 'a'
-};
 
 interface IProps {
 }
@@ -36,18 +28,6 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     const {rowsPerPage, view, selected, page} = store;
     const {setRowsPerPage, setSelected} = callbacks;
-
-    // FIXME: migrate the key bindings to their own component since they can
-    // just depend on the key bindings now.
-    //
-    // FIXME migrate to DocRepoKeyBindings
-
-    const globalKeyHandlers = {
-        TAG: callbacks.onTagged,
-        DELETE: callbacks.onDeleted,
-        FLAG: callbacks.onFlagged,
-        ARCHIVE: callbacks.onArchived
-    };
 
     const handleChangePage = (event: any, newPage: number) => {
         callbacks.setPage(newPage);
@@ -71,9 +51,6 @@ export const EnhancedTableToolbar = React.memo((props: IProps) => {
 
     return (
         <>
-            <GlobalHotKeys allowChanges={true}
-                           keyMap={globalKeyMap}
-                           handlers={globalKeyHandlers}/>
             <Grid container
                   direction="row"
                   justify="space-between"
