@@ -143,13 +143,13 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                     {/*</MUIHoverListener>*/}
 
-                        {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
+                    {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
-                        {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
-                        {/*                 container="body"*/}
-                        {/*                 availableTags={this.props.tagsProvider()}*/}
-                        {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
-                        {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
+                    {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
+                    {/*                 container="body"*/}
+                    {/*                 availableTags={this.props.tagsProvider()}*/}
+                    {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
+                    {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
 
                 </div>
 

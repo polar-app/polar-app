@@ -64,9 +64,8 @@ export const EditTextHighlight2 = (props: IProps) => {
             body
         }
 
-        console.log("FIXME1 mutation: ", mutation);
-
         annotationMutations.onTextHighlight(mutation);
+
     }
 
 

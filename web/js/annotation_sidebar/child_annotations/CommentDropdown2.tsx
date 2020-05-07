@@ -21,15 +21,9 @@ interface IProps {
 export const CommentDropdown2 = React.memo((props: IProps) => {
 
     const annotationMutations = useAnnotationMutationsContext();
+    const {comment} = props;
 
-    const handleDelete = () => {
-
-        const mutation: IDeleteMutation = {
-            selected: [props.comment]
-        };
-
-        annotationMutations.onDeleted(mutation);
-    }
+    const handleDelete = annotationMutations.createDeletedCallback({selected: [comment]});
 
     return (
 
