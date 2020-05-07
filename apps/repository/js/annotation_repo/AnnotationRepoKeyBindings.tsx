@@ -13,7 +13,7 @@ const globalKeyMap = {
 export const AnnotationRepoKeyBindings = React.memo(() => {
 
     const callbacks = useAnnotationRepoCallbacks();
-
+    
     const globalKeyHandlers = Callbacks.callbacksWithTimeout({
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
