@@ -11,6 +11,7 @@ import {useCallback} from "react";
 import {FlashcardInputFieldsType} from "./flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {IDocAnnotation} from "../../DocAnnotation";
+import {Refs} from "polar-shared/src/metadata/Refs";
 
 interface IProps {
 
@@ -40,7 +41,7 @@ export const CreateFlashcard2 = (props: IProps) => {
             type: 'create',
             flashcardType,
             fields,
-            parent: props.parent
+            parent: Refs.createRef(props.parent)
         };
 
         annotationMutations.onFlashcard(mutation);

@@ -33,11 +33,15 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                  }}
                  className="pt-1 pb-1">
 
-                <DocAuthor author={comment.author}/>
 
-                <div className="text-muted">
-                    <DocAnnotationMoment created={comment.created}/>
-                </div>
+                <MUIButtonBar>
+                    <DocAuthor author={comment.author}/>
+
+                    <div className="text-muted">
+                        <DocAnnotationMoment created={comment.created}/>
+                    </div>
+
+                </MUIButtonBar>
 
                 <MUIButtonBar style={{
                                  flexGrow: 1,

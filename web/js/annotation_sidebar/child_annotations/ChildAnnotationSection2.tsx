@@ -6,16 +6,18 @@ import {ViewOrEditComment2} from "./comments/ViewOrEditComment2";
 import {ViewOrEditFlashcard2} from "./flashcards/ViewOrEditFlashcard2";
 
 interface IProps {
+    readonly parent: IDocAnnotation;
     readonly docAnnotations: ReadonlyArray<IDocAnnotation>;
 }
 
 interface IChildAnnotationProps {
+    readonly parent: IDocAnnotation;
     readonly child: IDocAnnotation;
 }
 
 export const ChildAnnotation = React.memo((props: IChildAnnotationProps) => {
 
-    const {child} = props;
+    const {parent, child} = props;
 
     if (child.annotationType === AnnotationType.COMMENT) {
 
@@ -41,7 +43,7 @@ export const ChildAnnotationSection2 = React.memo((props: IProps) => {
 
     const mapped = docAnnotations.map(child => (
         <div key={child.id} className="ml-3 mt-1">
-            <ChildAnnotation child={child}/>
+            <ChildAnnotation parent={props.parent} child={child}/>
         </div>
     ));
 

@@ -66,6 +66,7 @@ import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 const log = Logger.create();
 
@@ -275,6 +276,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
     type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
+                                                                     pageMeta: IPageMeta,
                                                                      mutation: T) => void;
 
     async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
@@ -290,7 +292,11 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         // this doc...
         for (const partition of Object.values(partitions)) {
             const docMeta = partition.key;
-            annotationMutator(docMeta, {...mutation, selected: partition.values});
+
+            for (const annotation of selected) {
+                const pageMeta = annotation.pageMeta;
+                annotationMutator(docMeta, pageMeta, {...mutation, selected: [annotation]});
+            }
         }
 
         // *** now we have to update the store

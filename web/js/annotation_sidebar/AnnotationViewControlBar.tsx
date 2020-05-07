@@ -32,6 +32,7 @@ import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
 import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
+import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
 
 export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
@@ -105,16 +106,15 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
                     <div style={{display: 'flex'}}>
 
-                        <MUIGridLayout items={[
-                            <DocAuthor key="author" author={annotation.author}/>,
+                        <MUIButtonBar>
+                            <DocAuthor author={annotation.author}/>
 
-                            <MUIAnchor key="moment"
-                                       href="#"
+                            <MUIAnchor href="#"
                                        onClick={() => this.onJumpToContext(annotation)}>
                                 <DocAnnotationMoment created={annotation.created}/>
                             </MUIAnchor>
 
-                        ]}/>
+                        </MUIButtonBar>
 
                         {/*<MUIHoverListener style={{display: 'flex', flexGrow: 1}}>*/}
                             <MUIGridLayout key="right-bar"
@@ -260,26 +260,26 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
     }
 
     private onCommentCreated(html: string, existingComment?: Comment) {
-
-        Analytics.event({category: 'annotations', action: 'comment-created'});
-
-        // sanitize the HTML first to prevent breaking the DOM and other
-        // problematic issues with HTML.  Right now we don't handle any type of
-        // XSS though
-
-        // TODO: right now it seems to strip important CSS styles and data URLs
-        // which I need to fix in the HTML sanitizer.
-        // html = HTMLSanitizer.sanitize(html);
-
-        // FIXME: nothing is actually persisted here...
-
-        CommentActions.create(this.props.doc.docMeta, this.props.annotation, html);
-
-        // FIXME: nothing is actually persisted here...
-
-        this.setState({
-            activeInputComponent: 'none'
-        });
+        //
+        // Analytics.event({category: 'annotations', action: 'comment-created'});
+        //
+        // // sanitize the HTML first to prevent breaking the DOM and other
+        // // problematic issues with HTML.  Right now we don't handle any type of
+        // // XSS though
+        //
+        // // TODO: right now it seems to strip important CSS styles and data URLs
+        // // which I need to fix in the HTML sanitizer.
+        // // html = HTMLSanitizer.sanitize(html);
+        //
+        // // FIXME: nothing is actually persisted here...
+        //
+        // CommentActions.create(this.props.doc.docMeta, this.props.annotation, html);
+        //
+        // // FIXME: nothing is actually persisted here...
+        //
+        // this.setState({
+        //     activeInputComponent: 'none'
+        // });
 
     }
 
@@ -287,17 +287,17 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
         Analytics.event({category: 'annotations', action: 'flashcard-created'});
 
-        FlashcardActions.create(this.props.annotation, type, fields);
-
-        // FIXME: nothing is actually persisted here...
-
-        // FIXME: we're going to have to use a context method to handle this
-        // because we need to now break off the methods here so that we can
-        // place child components in different places.
-
-        this.setState({
-            activeInputComponent: 'none'
-        });
+        // FlashcardActions.create(this.props.annotation, type, fields);
+        //
+        // // FIXME: nothing is actually persisted here...
+        //
+        // // FIXME: we're going to have to use a context method to handle this
+        // // because we need to now break off the methods here so that we can
+        // // place child components in different places.
+        //
+        // this.setState({
+        //     activeInputComponent: 'none'
+        // });
 
     }
 

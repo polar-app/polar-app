@@ -63,11 +63,11 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
     }
 
     private onComment(html: string, existingComment: Comment) {
-        CommentActions.update(this.props.doc.docMeta, this.props.parent, html, existingComment);
+        // CommentActions.update(this.props.doc.docMeta, this.props.parent, html, existingComment);
     }
 
     private onFlashcard(flashcardType: FlashcardType, fields: Readonly<FlashcardInputFieldsType>, existingFlashcard?: Flashcard) {
-        FlashcardActions.update(this.props.doc.docMeta, this.props.parent, flashcardType, fields, existingFlashcard);
+        // FlashcardActions.update(this.props.doc.docMeta, this.props.parent, flashcardType, fields, existingFlashcard);
     }
 
 }

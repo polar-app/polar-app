@@ -48,7 +48,7 @@ export const EditComment2 = React.memo((props: IProps) => {
     return (
         <div>
 
-            <RichTextFeatureIntro/>
+            {/*<RichTextFeatureIntro/>*/}
 
             <div id="annotation-comment-box"
                  className="mt-1">
@@ -63,25 +63,24 @@ export const EditComment2 = React.memo((props: IProps) => {
 
                 </div>
 
-                <div className="p-1">
+                <div className="pt-1 pb-1">
 
-                    <div className="text-right">
+                    <MUIButtonBar style={{
+                                      flexGrow: 1,
+                                      justifyContent: "flex-end"
+                                   }}>
 
-                        <MUIButtonBar>
+                        {props.cancelButton}
 
-                            {props.cancelButton}
+                        <Button color="primary"
+                                variant="contained"
+                                onClick={() => props.onComment(htmlRef.current)}>
 
-                            <Button color="primary"
-                                    variant="contained"
-                                    onClick={() => props.onComment(htmlRef.current)}>
+                            {props.existingComment ? 'Update' : 'Comment'}
 
-                                {props.existingComment ? 'Update' : 'Comment'}
+                        </Button>
 
-                            </Button>
-
-                        </MUIButtonBar>
-
-                    </div>
+                    </MUIButtonBar>
 
                 </div>
 

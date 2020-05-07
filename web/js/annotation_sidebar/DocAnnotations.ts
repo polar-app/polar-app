@@ -26,6 +26,7 @@ import {
     InheritedTag,
     toSelfInheritedTags
 } from "polar-shared/src/tags/InheritedTags";
+import {Refs} from "polar-shared/src/metadata/Refs";
 
 export class DocAnnotations {
 
@@ -69,6 +70,8 @@ export class DocAnnotations {
 
         const init = this.createInit(docMeta);
 
+        const parent = annotation.ref ? Refs.parse(annotation.ref) : undefined;
+
         return {
             ...init,
             oid: ObjectIDs.create(),
@@ -89,6 +92,7 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             ref: annotation.ref,
+            parent,
             original: annotation,
             author: annotation.author,
             immutable: this.isImmutable(annotation.author),
@@ -107,6 +111,8 @@ export class DocAnnotations {
         const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, annotation);
 
         const init = this.createInit(docMeta);
+
+        const parent = annotation.ref ? Refs.parse(annotation.ref) : undefined;
 
         return {
             ...init,
@@ -127,6 +133,7 @@ export class DocAnnotations {
             docMeta,
             pageMeta,
             ref: annotation.ref,
+            parent,
             original: annotation,
             author: annotation.author,
             immutable: this.isImmutable(annotation.author),
@@ -184,6 +191,8 @@ export class DocAnnotations {
             lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
+            ref: undefined,
+            parent: undefined,
             original: annotation,
             author: annotation.author,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
@@ -221,6 +230,8 @@ export class DocAnnotations {
             lastUpdated: annotation.lastUpdated || annotation.created,
             docMeta,
             pageMeta,
+            ref: undefined,
+            parent: undefined,
             original: annotation,
             author: annotation.author,
             immutable: this.isImmutable(annotation.author),

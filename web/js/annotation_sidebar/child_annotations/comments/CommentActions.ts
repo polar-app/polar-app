@@ -1,11 +1,12 @@
 import {Logger} from "polar-shared/src/logger/Logger";
-import {DocAnnotation, IDocAnnotation} from "../../DocAnnotation";
-import {Refs} from "polar-shared/src/metadata/Refs";
+import {IDocAnnotation} from "../../DocAnnotation";
+import {IRef, Refs} from "polar-shared/src/metadata/Refs";
 import {Comments} from "../../../metadata/Comments";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IComment} from "polar-shared/src/metadata/IComment";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 const log = Logger.create();
 
@@ -20,28 +21,26 @@ export class CommentActions {
     }
 
     public static create(docMeta: IDocMeta,
-                         parent: IDocAnnotation,
+                         pageMeta: IPageMeta,
+                         parent: IRef,
                          html: string) {
 
-        const ref = Refs.createFromAnnotationType(parent.id,
-                                                  parent.annotationType);
-
-        const comment = Comments.createHTMLComment(html, ref);
+        const comment = Comments.createHTMLComment(html, Refs.format(parent));
 
         // make sure to update on the primary page meta
-        const pageMeta = DocMetas.getPageMeta(docMeta, parent.pageMeta.pageInfo.num);
+        pageMeta = DocMetas.getPageMeta(docMeta, pageMeta.pageInfo.num);
 
         pageMeta.comments[comment.id] = comment;
 
     }
 
     public static update(docMeta: IDocMeta,
-                         parent: IDocAnnotation,
+                         pageMeta: IPageMeta,
+                         parent: IRef,
                          html: string,
                          existingComment: IComment) {
 
-        const ref = Refs.createFromAnnotationType(parent.id,
-                                                  parent.annotationType);
+        const ref = Refs.format(parent);
 
         const comment = Comments.createHTMLComment(html,
                                                    ref,
@@ -50,8 +49,8 @@ export class CommentActions {
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
-            delete parent.pageMeta.comments[existingComment.id];
-            parent.pageMeta.comments[comment.id] = comment;
+            delete pageMeta.comments[existingComment.id];
+            pageMeta.comments[comment.id] = comment;
 
         });
 

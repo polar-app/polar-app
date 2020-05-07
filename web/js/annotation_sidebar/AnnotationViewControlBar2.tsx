@@ -108,6 +108,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                 <div style={{display: 'flex'}}>
 
                     <MUIButtonBar>
+
                         <DocAuthor author={annotation.author}/>
 
                         <MUIAnchor href="#"

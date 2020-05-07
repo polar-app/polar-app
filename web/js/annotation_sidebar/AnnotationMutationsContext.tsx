@@ -24,6 +24,8 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {TextHighlights} from "../metadata/TextHighlights";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
+import {IRef} from "polar-shared/src/metadata/Refs";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 const log = Logger.create()
 
@@ -44,20 +46,20 @@ export interface IAnnotationMutationSelectedRequired {
 
 export interface ICommentCreate {
     readonly type: 'create';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly body: HTMLStr;
 }
 
 export interface ICommentUpdate {
     readonly type: 'update';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotation;
 }
 
 export interface ICommentDelete {
     readonly type: 'delete';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly existing: IDocAnnotation;
 }
 
@@ -65,20 +67,20 @@ export type ICommentMutation = ICommentCreate | ICommentUpdate | ICommentDelete;
 
 export interface IFlashcardCreate extends IAnnotationMutationSelected {
     readonly type: 'create';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly flashcardType: FlashcardType,
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
 
 export interface IFlashcardUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly flashcardType: FlashcardType,
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
 export interface IFlashcardDelete extends IAnnotationMutationSelected {
     readonly type: 'delete';
-    readonly parent: IDocAnnotation;
+    readonly parent: IRef;
     readonly existing: IDocAnnotation;
 }
 
@@ -193,18 +195,22 @@ function mutatorFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
 export namespace DocAnnotationsMutator {
 
-    export function onComment(docMeta: IDocMeta, mutation: ICommentMutation) {
+    export function onComment(docMeta: IDocMeta,
+                              pageMeta: IPageMeta,
+                              mutation: ICommentMutation) {
 
         switch (mutation.type) {
 
             case "create":
                 CommentActions.create(docMeta,
+                                      pageMeta,
                                       mutation.parent,
                                       mutation.body);
                 break;
 
             case "update":
                 CommentActions.update(docMeta,
+                                      pageMeta,
                                       mutation.parent,
                                       mutation.body,
                                       mutation.existing.original as IComment);
@@ -218,12 +224,13 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onFlashcard(docMeta: IDocMeta, mutation: IFlashcardMutation) {
+    export function onFlashcard(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IFlashcardMutation) {
 
         switch (mutation.type) {
 
             case "create":
                 FlashcardActions.create(mutation.parent,
+                                        pageMeta,
                                         mutation.flashcardType,
                                         mutation.fields);
                 break;
@@ -234,6 +241,7 @@ export namespace DocAnnotationsMutator {
 
                 for (const flashcard of selected) {
                     FlashcardActions.update(docMeta,
+                                            pageMeta,
                                             mutation.parent,
                                             mutation.flashcardType,
                                             mutation.fields,
@@ -244,6 +252,7 @@ export namespace DocAnnotationsMutator {
 
             case "delete":
                 FlashcardActions.delete(docMeta,
+                                        pageMeta,
                                         mutation.parent,
                                         mutation.existing);
                 break;
@@ -252,7 +261,7 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onTextHighlight(docMeta: IDocMeta, mutation: ITextHighlightMutation) {
+    export function onTextHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: ITextHighlightMutation) {
 
         switch (mutation.type) {
             case "revert":
@@ -263,7 +272,7 @@ export namespace DocAnnotationsMutator {
 
                     for (const textHighlight of selected) {
                         TextHighlights.resetRevisedText(docMeta,
-                                                        textHighlight.pageMeta,
+                                                        pageMeta,
                                                         textHighlight.id);
                     }
 
@@ -280,7 +289,7 @@ export namespace DocAnnotationsMutator {
                     for (const textHighlight of selected) {
 
                         TextHighlights.setRevisedText(docMeta,
-                                                      textHighlight.pageMeta,
+                                                      pageMeta,
                                                       textHighlight.id,
                                                       mutation.body);
                     }
@@ -292,7 +301,7 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onDeleted(docMeta: IDocMeta, mutation: IDeleteMutation) {
+    export function onDeleted(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IDeleteMutation) {
 
         for (const current of mutation.selected || []) {
             AnnotationMutations.delete(docMeta, current.annotationType, current.original);
@@ -321,32 +330,32 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
     }
 
-    function handleMutation(mutator: (docMeta: IDocMeta) => void) {
-
-        const docMeta = docMetaContext.docMeta;
-
-        mutator(docMeta);
-
-        async function doAsync() {
-            await doWriteDocMeta(docMeta);
-            log.info("mutation applied");
-        }
-
-        doAsync()
-            .catch(err => log.error(err));
-
-    }
+    // function handleMutation(mutator: (docMeta: IDocMeta) => void) {
+    //
+    //     const docMeta = docMetaContext.docMeta;
+    //
+    //     mutator(docMeta);
+    //
+    //     async function doAsync() {
+    //         await doWriteDocMeta(docMeta);
+    //         log.info("mutation applied");
+    //     }
+    //
+    //     doAsync()
+    //         .catch(err => log.error(err));
+    //
+    // }
 
     function onComment(mutation: ICommentMutation) {
-        handleMutation((docMeta) => DocAnnotationsMutator.onComment(docMeta, mutation));
+        // handleMutation((docMeta, pageMeta) => DocAnnotationsMutator.onComment(docMeta, mutation));
     }
 
     function onFlashcard(mutation: IFlashcardMutation) {
-        handleMutation((docMeta) => DocAnnotationsMutator.onFlashcard(docMeta, mutation));
+        // handleMutation((docMeta) => DocAnnotationsMutator.onFlashcard(docMeta, mutation));
     }
 
     function onTextHighlight(mutation: ITextHighlightMutation) {
-        handleMutation((docMeta) => DocAnnotationsMutator.onTextHighlight(docMeta, mutation));
+        // handleMutation((docMeta) => DocAnnotationsMutator.onTextHighlight(docMeta, mutation));
     }
 
     function onTagged(annotation: IDocAnnotation) {

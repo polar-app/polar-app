@@ -1,28 +1,30 @@
 import {FlashcardType} from 'polar-shared/src/metadata/FlashcardType';
-import {ClozeFields, FrontAndBackFields} from './flashcard_input/FlashcardInputs';
-import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
+import {
+    ClozeFields,
+    FrontAndBackFields
+} from './flashcard_input/FlashcardInputs';
+import {IDocAnnotation} from '../../DocAnnotation';
 import {Functions} from 'polar-shared/src/util/Functions';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Flashcard} from '../../../metadata/Flashcard';
-import {Refs} from 'polar-shared/src/metadata/Refs';
+import {IRef, Refs} from 'polar-shared/src/metadata/Refs';
 import {Flashcards} from '../../../metadata/Flashcards';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-
-const log = Logger.create();
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 export class FlashcardActions {
 
-    public static create(parent: IDocAnnotation,
+    public static create(parent: IRef,
+                         pageMeta: IPageMeta,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields) {
 
         Functions.withTimeout(() => {
 
-            const flashcard = this.newInstance(parent, type, fields);
+            const flashcard = this.newInstanceFromParentRef(parent, type, fields);
 
             if (flashcard) {
-                parent.pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
+                pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
             }
 
         });
@@ -30,22 +32,23 @@ export class FlashcardActions {
     }
 
     public static update(docMeta: IDocMeta,
-                         parent: IDocAnnotation,
+                         pageMeta: IPageMeta,
+                         parent: IRef,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
                          existingFlashcard?: Flashcard | IDocAnnotation) {
 
-        const flashcard = this.newInstance(parent, type, fields);
+        const flashcard = this.newInstanceFromParentRef(parent, type, fields);
 
         if (flashcard) {
 
             DocMetas.withBatchedMutations(docMeta, () => {
 
                 if (existingFlashcard) {
-                    delete parent.pageMeta.flashcards[existingFlashcard.id];
+                    delete pageMeta.flashcards[existingFlashcard.id];
                 }
 
-                parent.pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
+                pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
 
             });
 
@@ -54,11 +57,12 @@ export class FlashcardActions {
     }
 
     public static delete(docMeta: IDocMeta,
-                         parent: IDocAnnotation,
+                         pageMeta: IPageMeta,
+                         parent: IRef,
                          existing: Flashcard | IDocAnnotation) {
 
         DocMetas.withBatchedMutations(docMeta, () => {
-            delete parent.pageMeta.flashcards[existing.id];
+            delete pageMeta.flashcards[existing.id];
         });
 
     }
@@ -70,7 +74,20 @@ export class FlashcardActions {
                                type: FlashcardType,
                                fields: FrontAndBackFields | ClozeFields): Flashcard | undefined {
 
-        const ref = Refs.createFromAnnotationType(parent.id, parent.annotationType);
+        const parentRef: IRef = {
+            value: parent.id,
+            type: Refs.toRefType(parent.annotationType)
+        };
+
+        return this.newInstanceFromParentRef(parentRef, type, fields)
+
+    }
+
+    private static newInstanceFromParentRef(parent: IRef,
+                                            type: FlashcardType,
+                                            fields: FrontAndBackFields | ClozeFields): Flashcard | undefined {
+
+        const ref = Refs.create(parent.value, parent.type);
 
         if (type === FlashcardType.BASIC_FRONT_BACK) {
 

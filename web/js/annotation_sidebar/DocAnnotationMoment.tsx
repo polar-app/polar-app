@@ -1,42 +1,41 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import {createStyles} from "@material-ui/core";
+import isEqual from "react-fast-compare";
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            marginTop: 'auto',
+            marginBottom: 'auto',
+            color: theme.palette.text.secondary,
+        },
+    }),
+);
 
-/**
- * A generic wrapper that determines which sub-component to render.
- */
-export class DocAnnotationMoment extends React.Component<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-    }
-
-    public render() {
-
-        return (
-            <div className="mt-auto mb-auto text-muted">
-                {/*TODO: make this into its own component... */}
-                <Moment style={{
-                            fontSize: '12px'
-                        }}
-                        withTitle={true}
-                        titleFormat="D MMM YYYY hh:MM A" fromNow>
-                    {this.props.created}
-                </Moment>
-            </div>
-        );
-
-    }
-
-}
 interface IProps {
     readonly created: ISODateTimeString;
 }
 
-interface IState {
+/**
+ * A generic wrapper that determines which sub-component to render.
+ */
+export const DocAnnotationMoment = React.memo((props: IProps) => {
 
-}
+    const classes = useStyles();
 
+    return (
+        <div className={classes.root}>
+            <Moment style={{
+                        fontSize: '12px'
+                    }}
+                    withTitle={true}
+                    titleFormat="D MMM YYYY hh:MM A" fromNow>
+                {props.created}
+            </Moment>
+        </div>
+    );
 
+}, isEqual);

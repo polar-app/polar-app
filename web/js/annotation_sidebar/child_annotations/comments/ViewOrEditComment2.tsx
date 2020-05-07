@@ -8,7 +8,11 @@ import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {CommentAnnotationView2} from "./CommentAnnotationView2";
 import isEqual from "react-fast-compare";
 import {EditComment2} from "./EditComment2";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {
+    ICommentUpdate,
+    useAnnotationMutationsContext
+} from "../../AnnotationMutationsContext";
+import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 
 
 interface IProps {
@@ -20,7 +24,11 @@ type UsageMode = 'view' | 'edit';
 
 export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
+    const {comment} = props;
+
     const docMetaContext = useDocMetaContext();
+    const annotationInputContext = useAnnotationActiveInputContext();
+    const annotationMutations = useAnnotationMutationsContext();
 
     const [mode, setMode] = useState<UsageMode>('view')
 
@@ -36,6 +44,23 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     const existingComment = props.comment.original as Comment;
 
+    const commentCallback = annotationMutations.createCommentCallback({selected: [comment]})
+
+    const handleComment = React.useCallback((body: string) => {
+
+        annotationInputContext.reset();
+
+        const mutation: ICommentUpdate = {
+            type: 'update',
+            parent: comment.parent!,
+            body,
+            existing: comment
+        };
+
+        commentCallback(mutation);
+
+    }, []);
+
     if (mode === 'view') {
 
         return <CommentAnnotationView2 comment={props.comment}
@@ -44,14 +69,11 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     } else {
         return (
-            // <Fade in={this.state.mode === 'edit'}>
-                <EditComment2 id={'edit-comment-for' + props.comment.id}
-                              existingComment={existingComment}
-                              cancelButton={cancelButton}
-                              // FIXME:...
-                              onComment={NULL_FUNCTION}
-                              />
-            // </Fade>
+            <EditComment2 id={'edit-comment-for' + props.comment.id}
+                          existingComment={existingComment}
+                          cancelButton={cancelButton}
+                          onComment={handleComment}
+                          />
         );
     }
 

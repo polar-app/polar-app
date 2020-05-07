@@ -2,7 +2,7 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Point} from '../Point';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
-import {Ref, Refs} from 'polar-shared/src/metadata/Refs';
+import {IRef, Ref, Refs} from 'polar-shared/src/metadata/Refs';
 import {ObjectID} from '../util/ObjectIDs';
 import {Img} from 'polar-shared/src/metadata/Img';
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
@@ -35,8 +35,12 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly created: ISODateTimeString;
     readonly lastUpdated: ISODateTimeString;
 
-    // the reference to a parent annotation if this is a child annotation.
-    readonly ref?: Ref;
+    /**
+     * the reference to a parent annotation if this is a child annotation.
+     */
+    readonly ref: Ref | undefined;
+
+    readonly parent: IRef | undefined;
 
     readonly img: Img | undefined;
 
@@ -147,7 +151,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
     public readonly lastUpdated: ISODateTimeString;
 
     // the reference to a parent annotation if this is a child annotation.
-    public readonly ref?: Ref;
+    public readonly ref: Ref | undefined;
 
     public readonly img: Img | undefined;
 
@@ -168,6 +172,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
     public readonly immutable: boolean;
 
     public readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
+
+    public readonly parent: IRef | undefined;
 
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
@@ -196,6 +202,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.author = obj.author;
         this.immutable = obj.immutable;
         this.tags = obj.tags;
+        this.parent = obj.parent;
 
     }
 
