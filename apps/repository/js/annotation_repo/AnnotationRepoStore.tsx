@@ -274,56 +274,51 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
 
+    type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
+                                                                     mutation: T) => void;
+
     async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
-                                                                       annotationMutator: (docMeta: IDocMeta, mutation: T) => void) {
+                                                                       annotationMutator: AnnotationMutator<T>) {
 
         const selected = selectedAnnotations(mutation);
+        const {persistenceLayerProvider} = persistence;
 
         const partitions = arrayStream(selected)
             .partition(annotation => [annotation.docMeta.docInfo.fingerprint, annotation.docMeta]);
 
-        // *** first we have to apply all the mutations to every annotation
+        // *** first we have to apply all the mutations to every annotation in
+        // this doc...
         for (const partition of Object.values(partitions)) {
             const docMeta = partition.key;
             annotationMutator(docMeta, {...mutation, selected: partition.values});
         }
 
         // *** now we have to update the store
-
         for (const partition of Object.values(partitions)) {
-            // FIXME: I don't think in 2.0 that we have to call this as I think
-            // it just pulls in the most recent data.
-
             const docMeta = partition.key;
-            await repoDocMetaLoader.update(docMeta, 'updated');
-
+            const fingerprint = docMeta.docInfo.fingerprint;
+            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+            repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
         }
 
         mutator.refresh();
 
         for (const partition of Object.values(partitions)) {
-            // FIXME: apply these in batches... similar to what we're doing
-            // in DocRepoStore2 I think.
-
             const docMeta = partition.key;
-
-            console.log("FIXME: 4 riting docMeta: ", docMeta);
-
-            const doAsync = async () => {
-
-                // needed so that we update the in-memory representation
-
-                // now write it to the store.
-                const {persistenceLayerProvider} = persistence;
-                const persistenceLayer = persistenceLayerProvider();
-                await persistenceLayer.writeDocMeta(docMeta);
-
-            };
-
-            doAsync()
-                .catch(err => log.error(err));
-
+            const persistenceLayer = persistenceLayerProvider();
+            await persistenceLayer.writeDocMeta(docMeta);
         }
+
+    }
+
+    function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
+
+        const mutation: IDeleteMutation = {
+            selected: annotations
+        }
+
+        handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
+            .catch(err => log.error(err));
 
     }
 
@@ -403,39 +398,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
-
-        // FIXME: we need to partition these to docMetas like handleUpdate
-        for (const annotation of annotations) {
-
-            // TODO: migrate this to something that can have a progress
-            // listener
-
-            const {docMeta, annotationType, original} = annotation;
-
-            AnnotationMutations.delete(docMeta, annotationType, original);
-
-            async function doAsync() {
-
-                const {persistenceLayerProvider} = persistence;
-
-                const fingerprint = docMeta.docInfo.fingerprint;
-                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
-                repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
-
-                const persistenceLayer = persistenceLayerProvider();
-                await persistenceLayer.writeDocMeta(docMeta);
-
-            }
-
-            doAsync()
-                .catch(err => log.error(err));
-
-        }
-
-        mutator.refresh();
-
-    }
 
     function doTagged(annotations: ReadonlyArray<IDocAnnotation>,
                       tags: ReadonlyArray<Tag>,

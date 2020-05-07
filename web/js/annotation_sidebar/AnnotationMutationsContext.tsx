@@ -19,6 +19,7 @@ import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {TextHighlights} from "../metadata/TextHighlights";
+import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 
 const log = Logger.create()
 
@@ -258,8 +259,6 @@ export namespace DocAnnotationsMutator {
 
                     const selected = mutation.selected || [];
 
-                    console.log("FIXME3: ", selected);
-
                     for (const textHighlight of selected) {
 
                         TextHighlights.setRevisedText(docMeta,
@@ -271,6 +270,14 @@ export namespace DocAnnotationsMutator {
                 });
                 break;
 
+        }
+
+    }
+
+    export function onDeleted(docMeta: IDocMeta, mutation: IDeleteMutation) {
+
+        for (const current of mutation.selected || []) {
+            AnnotationMutations.delete(docMeta, current.annotationType, current.original);
         }
 
     }

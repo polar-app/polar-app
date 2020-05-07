@@ -39,7 +39,6 @@ export const AnnotationInlineControlBar = React.memo((props : IProps) => {
                     </IconButton>
                 </MUIButtonBar>
 
-
             </div>
             <Divider/>
         </>
