@@ -93,17 +93,11 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
     const { annotation } = props;
 
     const docMetaContext = useDocMetaContext();
-    const annotationMutationsContext = useAnnotationMutationsContext()
+    const annotationMutations = useAnnotationMutationsContext()
 
-    const handleColor = useCallback((color: string) => {
-
-        const mutation: IColorMutation = {
-            selected: [annotation],
-            color
-        };
-
-        annotationMutationsContext.onColor(mutation);
-    }, []);
+    const handleColor = annotationMutations.createColorCallback({
+        selected: [annotation],
+    });
 
     return (
 
@@ -138,7 +132,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                             {! annotation.immutable &&
                                 <ColorSelector color={props.annotation.color || 'yellow'}
-                                               onSelected={handleColor}/>}
+                                               onSelected={(color) => handleColor({color})}/>}
 
                            <AnnotationTagButton2 annotation={annotation}/>
 

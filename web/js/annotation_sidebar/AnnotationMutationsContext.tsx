@@ -101,7 +101,7 @@ export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 export type IDeleteMutationWithSelected = IDeleteMutation & IAnnotationMutationSelectedRequired;
 
-export interface IColorMutation extends IAnnotationMutationSelected {
+export interface IColorMutation {
     readonly color: string;
 }
 
@@ -115,6 +115,7 @@ export interface IAnnotationMutations {
      * fixed set of selected items.
      */
     readonly createDeletedCallback: (mutation: IDeleteMutationWithSelected) => Callback;
+    readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
 
     /**
      * Delete the given items or whatever is selected.
@@ -139,6 +140,7 @@ export const AnnotationMutationsContext = React.createContext<IAnnotationMutatio
     onTextHighlight: NULL_FUNCTION,
     onComment: NULL_FUNCTION,
     onFlashcard: NULL_FUNCTION,
+    createColorCallback: () => NULL_FUNCTION,
     onColor: NULL_FUNCTION,
     onTagged: NULL_FUNCTION,
 });

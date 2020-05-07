@@ -41,7 +41,11 @@ import {
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
-import {NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
+import {
+    Callback,
+    Callback1,
+    NULL_FUNCTION
+} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
     AnnotationMutationsContext,
@@ -50,7 +54,8 @@ import {
     IAnnotationMutationSelected,
     IColorMutation,
     ICommentMutation,
-    IDeleteMutation, IDeleteMutationWithSelected,
+    IDeleteMutation,
+    IDeleteMutationWithSelected,
     IFlashcardMutation,
     ITextHighlightMutation
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
@@ -652,6 +657,14 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             .catch(err => log.error(err));
     }
 
+    function createColorCallback(selected: IAnnotationMutationSelected): Callback1<IColorMutation> {
+
+        return React.useCallback((mutation: IColorMutation) => {
+            onColor({...selected, ...mutation});
+        }, []);
+
+    }
+
     function onColor(mutation: IColorMutation) {
         // noop
     }
@@ -677,6 +690,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         onTextHighlight,
         onComment,
         onFlashcard,
+        createColorCallback,
         onColor
     };
 

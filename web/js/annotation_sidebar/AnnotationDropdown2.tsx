@@ -26,17 +26,9 @@ export const AnnotationDropdown2 = (props: IProps) => {
     const {annotation} = props;
 
     const annotationActiveInput = useAnnotationActiveInputContext();
-    const annotationsMutations = useAnnotationMutationsContext();
+    const annotationMutations = useAnnotationMutationsContext();
 
-    const handleDelete = useCallback(() => {
-
-        const mutation: IDeleteMutation = {
-            selected: [annotation],
-        }
-
-        annotationsMutations.onDeleted(mutation);
-
-    }, []);
+    const handleDelete = annotationMutations.createDeletedCallback({selected: [annotation]});
 
     return (
 
