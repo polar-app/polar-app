@@ -10,7 +10,6 @@ import {
     PDFScaleLevelTuples,
     PDFScales
 } from "./PDFScaleLevels";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -18,12 +17,12 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 
 // configure({logLevel: 'debug'});
@@ -145,7 +144,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
     return (
         <div style={{
-                 maxWidth: '3em'
+                 maxWidth: '5em'
              }}
              className="mt-auto mb-auto">
 
@@ -156,8 +155,13 @@ const PageNumberInput = (props: PageNumberInputProps) => {
                        type="text"
                        size="small"
                        variant="outlined"
+                       inputProps={{
+                           style: {
+                               textAlign: "right"
+                           }
+                       }}
                        style={{
-                           textAlign: 'right'
+                           width: '5em',
                        }}/>
         </div>
 
