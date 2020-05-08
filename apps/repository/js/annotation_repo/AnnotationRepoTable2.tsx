@@ -1,12 +1,8 @@
 import * as React from 'react';
-import {AnnotationPreview} from './AnnotationPreview';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 import TablePagination from "@material-ui/core/TablePagination";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
@@ -14,10 +10,12 @@ import {
     useAnnotationRepoCallbacks,
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
-import {IDStr} from "polar-shared/src/util/Strings";
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import MenuItem from "@material-ui/core/MenuItem";
 import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -67,12 +65,18 @@ const Toolbar = React.memo((props: ToolbarProps) => {
 
 }, isEqual);
 
-const MyMenu = () => (
-    <>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>home</MenuItem>
-    </>
-);
+const MyMenu = () => {
+
+    const callbacks = useAnnotationRepoCallbacks();
+
+    return (
+        <>
+            <MUIMenuItem text="Tag" icon={<LocalOfferIcon/>} onClick={callbacks.onTagged}/>
+            <Divider/>
+            <MUIMenuItem text="Delete" icon={<DeleteForeverIcon/>} onClick={callbacks.onDeleted}/>
+        </>
+    );
+}
 
 export const AnnotationRepoTable2 = React.memo(() => {
 

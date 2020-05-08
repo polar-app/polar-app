@@ -16,6 +16,7 @@ import {
     useDocRepoCallbacks,
     useDocRepoStore
 } from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
@@ -43,20 +44,27 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
     return (
         <>
             {isSingle &&
-            <MenuItem onClick={callbacks.onOpen}>
+                <MenuItem onClick={callbacks.onOpen}>
+                    <ListItemIcon>
+                        <SendIcon fontSize="small"/>
+                    </ListItemIcon>
+                    <ListItemText primary="Open Document"/>
+                </MenuItem>}
+
+            <MenuItem onClick={callbacks.onTagged}>
                 <ListItemIcon>
-                    <SendIcon fontSize="small"/>
+                    <LocalOfferIcon fontSize="small"/>
                 </ListItemIcon>
-                <ListItemText primary="Open Document"/>
-            </MenuItem>}
+                <ListItemText primary="Tag"/>
+            </MenuItem>
 
             {isSingle &&
-            <MenuItem onClick={callbacks.onRename}>
-                <ListItemIcon>
-                    <TitleIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Rename"/>
-            </MenuItem>}
+                <MenuItem onClick={callbacks.onRename}>
+                    <ListItemIcon>
+                        <TitleIcon fontSize="small"/>
+                    </ListItemIcon>
+                    <ListItemText primary="Rename"/>
+                </MenuItem>}
 
             <MenuItem onClick={callbacks.onFlagged}>
                 <ListItemIcon>
@@ -89,20 +97,20 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
                 </MenuItem>}
 
             {isSingle && !AppRuntime.isBrowser() &&
-            <MenuItem onClick={callbacks.onCopyFilePath}>
-                <ListItemIcon>
-                    <FileCopyIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Copy File Path"/>
-            </MenuItem>}
+                <MenuItem onClick={callbacks.onCopyFilePath}>
+                    <ListItemIcon>
+                        <FileCopyIcon fontSize="small"/>
+                    </ListItemIcon>
+                    <ListItemText primary="Copy File Path"/>
+                </MenuItem>}
 
             {isSingle && FeatureToggles.get('dev') &&
-            <MenuItem onClick={callbacks.onCopyDocumentID}>
-                <ListItemIcon>
-                    <FileCopyIcon fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText primary="Copy Document ID"/>
-            </MenuItem>}
+                <MenuItem onClick={callbacks.onCopyDocumentID}>
+                    <ListItemIcon>
+                        <FileCopyIcon fontSize="small"/>
+                    </ListItemIcon>
+                    <ListItemText primary="Copy Document ID"/>
+                </MenuItem>}
 
             <Divider/>
 
