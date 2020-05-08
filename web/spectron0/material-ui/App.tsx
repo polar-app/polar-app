@@ -73,6 +73,7 @@ import { ObservableStoreDemo2 } from './store/demo2/ObservableStoreDemo2';
 import {MUITreeViewDemo} from "./treeview2/MUITreeViewDemo";
 import {ComponentCacheDemo} from "./ComponentCacheDemo";
 import { MUIContextMenuDemo } from './doc_repo_table/MUIContextMenuDemo';
+import {ReviewerDemo} from "../ui-components/ReviewerDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -158,7 +159,9 @@ export const App = () => {
                 {/*<ComponentCacheDemo/>*/}
                 {/*<TagAutocompleteDemo/>*/}
 
-                <MUIContextMenuDemo/>
+                {/*<MUIContextMenuDemo/>*/}
+
+                <ReviewerDemo/>
 
                 {/*<ContextMemoTest/>*/}
                 {/*<SharedIntermediateContextTest/>*/}

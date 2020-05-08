@@ -4,11 +4,8 @@ import {
     TaskRep
 } from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FlashcardTaskAction} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskAction";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {Flashcards} from "../../js/metadata/Flashcards";
-import {DocInfos} from "../../js/metadata/DocInfos";
-import {ReviewerTasks} from "../../../apps/repository/js/reviewer/ReviewerTasks";
 import {DocAnnotations} from "../../js/annotation_sidebar/DocAnnotations";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
@@ -18,7 +15,8 @@ import {MockDocMetas} from "../../js/metadata/DocMetas";
 import {
     FinishedCallback,
     RatingCallback,
-    Reviewer, SuspendedCallback
+    Reviewer,
+    SuspendedCallback
 } from "../../../apps/repository/js/reviewer/Reviewer";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";

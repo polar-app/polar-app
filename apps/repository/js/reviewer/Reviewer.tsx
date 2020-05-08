@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button, Progress} from "reactstrap";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
@@ -11,6 +10,8 @@ import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Link} from "react-router-dom";
 import {ReviewFinished} from "./ReviewFinished";
 import {ReviewerModal} from "./ReviewerModal";
+import Button from "@material-ui/core/Button";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -103,18 +104,12 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                     <Row.Right>
 
-                        <Button size="md"
-                                color="clear"
-                                className="text-muted mr-1"
-                                onClick={() => this.onSuspended(taskRep)}>
+                        <Button onClick={() => this.onSuspended(taskRep)}>
                             <i className="fas fa-pause"/> suspend
                         </Button>
 
                         <Link to={{pathname: '/annotations'}}>
-                            <Button size="md"
-                                    color="clear"
-                                    className="text-muted"
-                                    onClick={() => this.props.onFinished(true)}>
+                            <Button onClick={() => this.props.onFinished(true)}>
 
                                 <i className="fas fa-times"/>
 
@@ -127,13 +122,8 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 <div className="pt-1 pb-1">
 
-                    <Progress value={perc}
-                              className=""
-                              style={{
-                                  height: '1.75em'
-                              }}>
-                        {/*{createProgressText()}*/}
-                    </Progress>
+                    <LinearProgress variant="determinate"
+                                    value={perc}/>
 
                 </div>
 
