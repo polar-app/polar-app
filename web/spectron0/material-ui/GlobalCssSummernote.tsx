@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 
-export const SummernoteGlobalCssStyles = withStyles(() => {
+export const GlobalCssSummernoteStyles = withStyles(() => {
     const theme = useTheme();
 
     return {
@@ -238,14 +238,14 @@ export const SummernoteGlobalCssStyles = withStyles(() => {
     };
 });
 
-export const SummernoteGlobalCssDark = SummernoteGlobalCssStyles(() => null);
+export const GlobalCssSummernoteDark = GlobalCssSummernoteStyles(() => null);
 
-export const SummernoteGlobalCss = () => {
+export const GlobalCssSummernote = () => {
 
     const theme = useTheme();
 
     if (theme.palette.type === 'dark') {
-        return <SummernoteGlobalCssDark/>;
+        return <GlobalCssSummernoteDark/>;
     }
 
     return null;

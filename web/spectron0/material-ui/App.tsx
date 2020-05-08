@@ -74,6 +74,7 @@ import {MUITreeViewDemo} from "./treeview2/MUITreeViewDemo";
 import {ComponentCacheDemo} from "./ComponentCacheDemo";
 import { MUIContextMenuDemo } from './doc_repo_table/MUIContextMenuDemo';
 import {ReviewerDemo} from "../ui-components/ReviewerDemo";
+import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -144,9 +145,7 @@ export const App = () => {
         //     allowChanges={true}
         //     keyMap={globalKeyMap}>
 
-            <MuiThemeProvider theme={muiTheme}>
-                <CssBaseline/>
-                <GlobalCss />
+            <MUIAppRoot>
 
                 {/*<MUITreeView root={root}/>*/}
 
@@ -440,7 +439,7 @@ export const App = () => {
                     {/*<DropdownMenuDemo/>*/}
 
                 {/*</Container>*/}
-            </MuiThemeProvider>
+            </MUIAppRoot>
         // </GlobalHotKeys>
     );
 }

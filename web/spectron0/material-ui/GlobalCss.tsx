@@ -3,26 +3,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {GlobalCssGapBox} from "./GlobalCSSGapBox";
 
-// export const GlobalCss = withStyles({
-//     // @global is handled by jss-plugin-global.
-//     '@global': {
-//         // You should target [class*="MuiButton-root"] instead if you nest themes.
-//         '.MuiTooltip-root': {
-//             // fontSize: '1rem',
-//         },
-//         '*::-webkit-scrollbar': {
-//             width: '1.0rem'
-//         },
-//         '*::-webkit-scrollbar-track': {
-//             '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
-//         },
-//         '*::-webkit-scrollbar-thumb': {
-//             backgroundColor: 'rgba(0,0,0,.1)',
-//             outline: '1px solid slategrey'
-//         }
-//     },
-// })(() => null);
-
 export const GlobalCssDarkStyles = withStyles({
     // @global is handled by jss-plugin-global.
     '@global': {
