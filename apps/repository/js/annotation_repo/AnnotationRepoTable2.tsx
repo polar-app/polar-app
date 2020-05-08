@@ -11,11 +11,8 @@ import {
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
-import MenuItem from "@material-ui/core/MenuItem";
 import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -65,19 +62,6 @@ const Toolbar = React.memo((props: ToolbarProps) => {
 
 }, isEqual);
 
-const MyMenu = () => {
-
-    const callbacks = useAnnotationRepoCallbacks();
-
-    return (
-        <>
-            <MUIMenuItem text="Tag" icon={<LocalOfferIcon/>} onClick={callbacks.onTagged}/>
-            <Divider/>
-            <MUIMenuItem text="Delete" icon={<DeleteForeverIcon/>} onClick={callbacks.onDeleted}/>
-        </>
-    );
-}
-
 export const AnnotationRepoTable2 = React.memo(() => {
 
     const store = useAnnotationRepoStore();
@@ -86,7 +70,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const {page, rowsPerPage, view, viewPage, selected} = store;
     const {setPage, setRowsPerPage} = callbacks;
 
-    const ContextMenu = React.useMemo(() => createContextMenu(MyMenu), []);
+    const ContextMenu = React.useMemo(() => createContextMenu(AnnotationRepoTableMenu), []);
 
     return (
 

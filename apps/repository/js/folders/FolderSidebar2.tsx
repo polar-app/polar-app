@@ -10,6 +10,13 @@ import {
     useFolderSidebarStore
 } from "../folder_sidebar/FolderSidebarStore";
 
+
+
+
+
+
+
+
 // FIXME this works BUT:
 //
 // - nested folders aren't being expanded by default on init.
