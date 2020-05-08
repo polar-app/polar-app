@@ -15,6 +15,7 @@ import {
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
 import {IDStr} from "polar-shared/src/util/Strings";
+import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -70,11 +71,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const callbacks = useAnnotationRepoCallbacks();
 
     const {page, rowsPerPage, view, viewPage, selected} = store;
-    const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
-
-    const handleSelect = React.useCallback((selectedID: IDStr, event: React.MouseEvent) => {
-        callbacks.selectRow(selectedID, event, 'click');
-    }, [callbacks]);
+    const {setPage, setRowsPerPage} = callbacks;
 
     return (
 
@@ -120,41 +117,15 @@ export const AnnotationRepoTable2 = React.memo(() => {
                            size={'medium'}
                            aria-label="enhanced table">
 
-                        {/*FIXME: migrate the TableRow to its own component that can be cached.*/}
                         <TableBody>
                             {viewPage.map((annotation, index) => {
 
                                     const viewIndex = (page * rowsPerPage) + index;
-                                    const id = 'annotation-title' + viewIndex;
                                     const rowSelected = selected.includes(annotation.id);
-
-                                    // FIXME: migrate this to a dedicated
-                                    // component so it can be cached easier.
                                     return (
-                                        <TableRow key={viewIndex}
-                                                  hover
-                                                  // className={classes.tr}
-                                                  role="checkbox"
-                                                  // tabIndex={1}
-                                                  // onFocus={() => handleSelect(viewIndex, annotation)}
-                                                  onClick={(event) => handleSelect(annotation.id, event)}
-                                                  // onDoubleClick={() => props.onOpen(row)}
-                                                  draggable
-                                                  onDragStart={onDragStart}
-                                                  onDragEnd={onDragEnd}
-                                                  selected={rowSelected}>
-
-                                            <TableCell padding="checkbox">
-                                                <Box p={1}>
-                                                    <AnnotationPreview id={id}
-                                                                       text={annotation.text}
-                                                                       img={annotation.img}
-                                                                       color={annotation.color}
-                                                                       lastUpdated={annotation.lastUpdated}
-                                                                       created={annotation.created}/>
-                                                </Box>
-                                            </TableCell>
-                                        </TableRow>
+                                        <AnnotationRepoTableRow viewIndex={viewIndex}
+                                                                rowSelected={rowSelected}
+                                                                annotation={annotation}/>
                                     );
 
                                 })}
