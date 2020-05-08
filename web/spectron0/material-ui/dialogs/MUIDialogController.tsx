@@ -24,7 +24,6 @@ export interface DialogManager {
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
     snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
     dialog: (dialogProps: IDialogProps) => void;
-
 }
 
 function nullDialog() {
