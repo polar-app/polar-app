@@ -1,5 +1,4 @@
 import * as React from "react";
-import {BlackoutCurtain} from "../../../../web/js/ui/BlackoutCurtain";
 import {Devices} from "polar-shared/src/util/Devices";
 import Dialog from "@material-ui/core/Dialog";
 

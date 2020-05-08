@@ -23,6 +23,8 @@ export interface DialogManager {
     prompt: (promptDialogProps: PromptDialogProps) => void;
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
     snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
+    dialog: (dialogProps: IDialogProps) => void;
+
 }
 
 function nullDialog() {
@@ -33,18 +35,26 @@ export const NullDialogManager: DialogManager = {
     confirm: nullDialog,
     prompt: nullDialog,
     autocomplete: nullDialog,
-    snackbar: nullDialog
+    snackbar: nullDialog,
+    dialog: nullDialog,
 }
 
 interface DialogHostProps {
     readonly onDialogManager: Callback1<DialogManager>;
 }
 
-type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar';
+/**
+ * Inject a raw dialog
+ */
+interface IDialogProps {
+    readonly dialog: JSX.Element;
+}
+
+type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog';
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps;
     readonly iter: number;
 }
 
@@ -89,15 +99,20 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             });
         };
 
-        // const snackbar = () => {
-        //
-        // };
+        const dialog = function(dialogProps: IDialogProps) {
+            setState({
+                type: 'dialog',
+                props: dialogProps,
+                iter: iter++
+            });
+        };
 
         const dialogManager: DialogManager = {
             confirm,
             prompt,
             autocomplete,
-            snackbar
+            snackbar,
+            dialog
         };
 
         // WARN: not sure if this is the appropriate way to do this but we need
@@ -134,9 +149,16 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             );
 
         case "snackbar":
-
             return (
                 <SnackbarDialog {...(state.props as SnackbarDialogProps)}/>
+            );
+
+        case "dialog":
+
+            const dialogProps = state.props as IDialogProps;
+
+            return (
+                dialogProps.dialog
             );
 
     }
