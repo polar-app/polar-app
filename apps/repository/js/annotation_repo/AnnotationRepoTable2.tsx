@@ -16,6 +16,8 @@ import {
 } from './AnnotationRepoStore';
 import {IDStr} from "polar-shared/src/util/Strings";
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
+import MenuItem from "@material-ui/core/MenuItem";
+import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -65,6 +67,13 @@ const Toolbar = React.memo((props: ToolbarProps) => {
 
 }, isEqual);
 
+const MyMenu = () => (
+    <>
+        <MenuItem>Profile</MenuItem>
+        <MenuItem>home</MenuItem>
+    </>
+);
+
 export const AnnotationRepoTable2 = React.memo(() => {
 
     const store = useAnnotationRepoStore();
@@ -73,70 +82,75 @@ export const AnnotationRepoTable2 = React.memo(() => {
     const {page, rowsPerPage, view, viewPage, selected} = store;
     const {setPage, setRowsPerPage} = callbacks;
 
+    const ContextMenu = React.useMemo(() => createContextMenu(MyMenu), []);
+
     return (
 
-        <Paper square id="doc-repo-table"
-               elevation={0}
-               style={{
-                   display: 'flex',
-                   flexDirection: 'column',
-                   minHeight: 0,
-                   flexGrow: 1
-               }}>
+        <ContextMenu>
+            <Paper square id="doc-repo-table"
+                   elevation={0}
+                   style={{
+                       display: 'flex',
+                       flexDirection: 'column',
+                       minHeight: 0,
+                       flexGrow: 1
+                   }}>
 
-            <Toolbar nrRows={view.length}
-                     rowsPerPage={rowsPerPage}
-                     page={page}
-                     onChangePage={setPage}
-                     onChangeRowsPerPage={setRowsPerPage}/>
+                <Toolbar nrRows={view.length}
+                         rowsPerPage={rowsPerPage}
+                         page={page}
+                         onChangePage={setPage}
+                         onChangeRowsPerPage={setRowsPerPage}/>
 
-            <Divider orientation="horizontal"/>
+                <Divider orientation="horizontal"/>
 
-            <div id="doc-table"
-                 style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     minHeight: 0,
-                     flexGrow: 1,
-                     overflow: 'auto'
-                 }}>
+                <div id="doc-table"
+                     style={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         minHeight: 0,
+                         flexGrow: 1,
+                         overflow: 'auto'
+                     }}>
 
 
-                <TableContainer style={{
-                                    flexGrow: 1,
-                                    overflow: 'auto'
-                                }}>
+                    <TableContainer style={{
+                                        flexGrow: 1,
+                                        overflow: 'auto'
+                                    }}>
 
-                    <Table stickyHeader
-                           style={{
-                               minWidth: 0,
-                               maxWidth: '100%',
-                               tableLayout: 'fixed'
-                           }}
-                           aria-labelledby="tableTitle"
-                           size={'medium'}
-                           aria-label="enhanced table">
+                        <Table stickyHeader
+                               style={{
+                                   minWidth: 0,
+                                   maxWidth: '100%',
+                                   tableLayout: 'fixed'
+                               }}
+                               aria-labelledby="tableTitle"
+                               size={'medium'}
+                               aria-label="enhanced table">
 
-                        <TableBody>
-                            {viewPage.map((annotation, index) => {
+                            <TableBody>
+                                {viewPage.map((annotation, index) => {
 
-                                    const viewIndex = (page * rowsPerPage) + index;
-                                    const rowSelected = selected.includes(annotation.id);
-                                    return (
-                                        <AnnotationRepoTableRow viewIndex={viewIndex}
-                                                                rowSelected={rowSelected}
-                                                                annotation={annotation}/>
-                                    );
+                                        const viewIndex = (page * rowsPerPage) + index;
+                                        const rowSelected = selected.includes(annotation.id);
+                                        return (
+                                            <AnnotationRepoTableRow key={annotation.id}
+                                                                    viewIndex={viewIndex}
+                                                                    rowSelected={rowSelected}
+                                                                    annotation={annotation}/>
+                                        );
 
-                                })}
+                                    })}
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
-            </div>
+                </div>
 
-        </Paper>
+            </Paper>
+        </ContextMenu>
 
     );
 });

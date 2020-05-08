@@ -5,7 +5,7 @@ import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {IDStr} from "polar-shared/src/util/Strings";
+import {useContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import isEqual from "react-fast-compare";
 
 interface IProps {
@@ -14,21 +14,28 @@ interface IProps {
     readonly annotation: IDocAnnotation;
 }
 
-export const AnnotationRepoTableRow = React.memo((props: IProps) => {
+export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps, ref) => {
     const {viewIndex, annotation, rowSelected} = props;
 
     const callbacks = useAnnotationRepoCallbacks();
     const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
 
-    const handleSelect = React.useCallback((selectedID: IDStr, event: React.MouseEvent) => {
-        callbacks.selectRow(selectedID, event, 'click');
+    const onClick = React.useCallback((event: React.MouseEvent) => {
+        callbacks.selectRow(annotation.id, event, 'click');
     }, [callbacks]);
 
+    const onContextMenu = React.useCallback((event: React.MouseEvent) => {
+        callbacks.selectRow(annotation.id, event, 'context');
+    }, [callbacks]);
+
+    const contextMenu = useContextMenu({onContextMenu});
+
     return (
-        <TableRow key={viewIndex}
+        <TableRow {...contextMenu}
+                  key={viewIndex}
                   hover
                   role="checkbox"
-                  onClick={(event) => handleSelect(annotation.id, event)}
+                  onClick={onClick}
                   draggable
                   onDragStart={onDragStart}
                   onDragEnd={onDragEnd}
@@ -46,4 +53,4 @@ export const AnnotationRepoTableRow = React.memo((props: IProps) => {
             </TableCell>
         </TableRow>
     );
-}, isEqual);
+}), isEqual);
