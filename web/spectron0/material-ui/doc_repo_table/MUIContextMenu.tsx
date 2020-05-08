@@ -69,10 +69,10 @@ export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): ICont
     const contextMenuCallbacks = React.useContext(ContextMenuContext);
 
     const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
-
-        contextMenuCallbacks.onContextMenu(event);
         const parent = opts.onContextMenu || NULL_FUNCTION;
         parent(event);
+
+        contextMenuCallbacks.onContextMenu(event);
 
     }, []);
 
