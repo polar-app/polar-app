@@ -5,7 +5,7 @@ import {DataLoader} from "../data_loader/DataLoader";
 import {PageTransition} from '../motion/PageTransition';
 import {Pulse} from '../motion/Pulse';
 import {PolarSVGIcon} from '../svg_icons/PolarSVGIcon';
-import {ReviewerModal} from "../../../../apps/repository/js/reviewer/ReviewerModal";
+import {ReviewerDialog} from "../../../../apps/repository/js/reviewer/ReviewerDialog";
 
 interface IProps {
 
@@ -23,7 +23,7 @@ interface IProps {
 
 const Loading = (props: IProps) => (
 
-    <ReviewerModal>
+    <ReviewerDialog>
         <PageTransition>
 
             <div style={{
@@ -53,7 +53,7 @@ const Loading = (props: IProps) => (
             </div>
 
         </PageTransition>
-    </ReviewerModal>
+    </ReviewerDialog>
 
 );
 

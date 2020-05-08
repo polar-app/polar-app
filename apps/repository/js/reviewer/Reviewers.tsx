@@ -33,7 +33,7 @@ import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {ReviewerModal} from "./ReviewerModal";
+import {ReviewerDialog} from "./ReviewerDialog";
 import {CloudSyncRequired, NoTasks} from "./ReviewFinished";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
@@ -112,9 +112,9 @@ export class Reviewers {
 
         if (! datastoreCapabilities.networkLayers.has('web')) {
             return (
-                <ReviewerModal>
+                <ReviewerDialog>
                     <CloudSyncRequired/>
-                </ReviewerModal>
+                </ReviewerDialog>
             );
 
         }
@@ -158,9 +158,9 @@ export class Reviewers {
 
         if (taskReps.length === 0) {
             return (
-                <ReviewerModal>
+                <ReviewerDialog>
                     <NoTasks/>
-                </ReviewerModal>
+                </ReviewerDialog>
             );
         }
 

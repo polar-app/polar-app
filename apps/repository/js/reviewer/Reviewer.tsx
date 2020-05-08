@@ -9,7 +9,7 @@ import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Link} from "react-router-dom";
 import {ReviewFinished} from "./ReviewFinished";
-import {ReviewerModal} from "./ReviewerModal";
+import {ReviewerDialog} from "./ReviewerDialog";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
@@ -39,9 +39,9 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
         if (! taskRep) {
 
             return (
-                <ReviewerModal>
+                <ReviewerDialog>
                     <ReviewFinished/>
-                </ReviewerModal>
+                </ReviewerDialog>
             );
 
         }
@@ -93,7 +93,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
         return (
 
-            <ReviewerModal className="reviewer">
+            <ReviewerDialog className="reviewer">
 
                 <Row>
                     <Row.Main>
@@ -129,7 +129,7 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
                 <Card/>
 
-            </ReviewerModal>
+            </ReviewerDialog>
 
         );
 

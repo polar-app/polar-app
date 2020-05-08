@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
@@ -7,6 +6,7 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {RatingCallback} from "../Reviewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
+import Button from "@material-ui/core/Button";
 
 namespace card {
 
@@ -116,11 +116,14 @@ export class FlashcardCard extends React.Component<IProps, IState> {
             switch (this.state.side) {
 
                 case 'front':
-                    return <Button color="primary"
-                                   size="lg"
-                                   onClick={() => this.onShowAnswer()}>
-                        Show Answer
-                    </Button>;
+                    return (
+                        <Button color="primary"
+                                variant="contained"
+                                size="large"
+                                onClick={() => this.onShowAnswer()}>
+                            Show Answer
+                        </Button>
+                    );
 
                 case 'back':
                     return <RatingButtons taskRep={taskRep}

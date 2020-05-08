@@ -26,8 +26,11 @@ export const ColorButton = React.memo((props: IProps) => {
     // Pass the props as the first argument of useStyles()
     const classes = useStyles(props);
 
+    const buttonProps: any = {...props};
+    delete buttonProps.color;
+
     return (
-        <Button className={`${classes.root}`}>
+        <Button className={`${classes.root}`} {...buttonProps}>
             {props.children}
         </Button>
     );
