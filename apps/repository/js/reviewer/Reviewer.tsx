@@ -2,15 +2,12 @@ import * as React from 'react';
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Row} from "../../../../web/js/ui/layout/Row";
 import {FlashcardCard} from "./cards/FlashcardCard";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
-import {Link} from "react-router-dom";
 import {ReviewFinished} from "./ReviewFinished";
 import {ReviewerDialog} from "./ReviewerDialog";
-import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {

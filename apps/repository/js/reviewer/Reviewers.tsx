@@ -133,7 +133,6 @@ export class Reviewers {
                     return await ReviewerTasks.createFlashcardTasks(repoDocAnnotations, limit);
                 case "reading":
                     return await ReviewerTasks.createReadingTasks(repoDocAnnotations, limit);
-
             }
         };
 

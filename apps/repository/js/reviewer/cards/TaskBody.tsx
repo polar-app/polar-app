@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
+import Divider from '@material-ui/core/Divider';
 
 export class TaskBody extends React.Component<IProps, IState> {
 
@@ -43,14 +44,15 @@ export class TaskBody extends React.Component<IProps, IState> {
 
         public render() {
 
-            return <div className="border-top">
+            return <div>
 
-                <div className="text-grey700 mb-1 ml-1 task-stage">
+                <Divider/>
+
+                <div className="text-grey700 mt-1 pl-1 pr-1 task-stage">
                     <b>stage: </b> {this.props.taskRep.stage}
                 </div>
 
-                <div style={{}}
-                     className="text-center mb-1 mt-1">
+                <div className="text-center p-1">
                     {this.props.children}
                 </div>
 
