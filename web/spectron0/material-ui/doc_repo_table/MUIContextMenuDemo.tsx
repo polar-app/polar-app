@@ -4,10 +4,11 @@ import {createContextMenu, useContextMenu} from "./MUIContextMenu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const ChildComponent = () => {
-    const onContextMenu = useContextMenu();
+
+    const contextMenu = useContextMenu();
 
     return (
-        <div onContextMenu={onContextMenu}>
+        <div {...contextMenu}>
             this is my child component
         </div>
     );

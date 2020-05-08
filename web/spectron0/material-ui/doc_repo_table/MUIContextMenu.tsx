@@ -73,9 +73,8 @@ export function createContextMenu(MenuComponent: (props: IMenuComponentProps) =>
 
 }
 
-export function useContextMenu(): OnContextMenuCallback {
-    const contextMenuContext = React.useContext(ContextMenuContext);
-    return contextMenuContext.onContextMenu;
+export function useContextMenu(): IContextMenuContext {
+    return React.useContext(ContextMenuContext);
 }
 
 interface MUIContextMenuProps {
