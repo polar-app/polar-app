@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 import {CheckedSVGIcon} from "../../../../web/js/ui/svg_icons/CheckedSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
 import {Link} from "react-router-dom";
+import Button from '@material-ui/core/Button';
 
 const ReviewLayout = (props: any) => (
 
@@ -22,7 +22,9 @@ const ReviewLayout = (props: any) => (
         <div className="text-center m-2">
 
             <Link to={{pathname: '/annotations'}}>
-                <Button color="primary" size="lg">
+                <Button variant="contained"
+                        color="primary"
+                        size="large">
                     CONTINUE
                 </Button>
             </Link>

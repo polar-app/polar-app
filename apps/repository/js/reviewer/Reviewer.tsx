@@ -93,36 +93,38 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
         return (
 
-            <ReviewerDialog className="reviewer">
+            <ReviewerDialog className="reviewer"
+                            onSuspended={() => this.onSuspended(taskRep)}>
 
-                <Row>
-                    <Row.Main>
+                {/*<Row>*/}
+                {/*    <Row.Main>*/}
 
-                        <b>Review</b>
+                {/*        <b>Review</b>*/}
 
-                    </Row.Main>
+                {/*    </Row.Main>*/}
 
-                    <Row.Right>
+                {/*    <Row.Right>*/}
 
-                        <Button onClick={() => this.onSuspended(taskRep)}>
-                            <i className="fas fa-pause"/> suspend
-                        </Button>
+                {/*        <Button onClick={() => this.onSuspended(taskRep)}>*/}
+                {/*            <i className="fas fa-pause"/> suspend*/}
+                {/*        </Button>*/}
 
-                        <Link to={{pathname: '/annotations'}}>
-                            <Button onClick={() => this.props.onFinished(true)}>
+                {/*        <Link to={{pathname: '/annotations'}}>*/}
+                {/*            <Button onClick={() => this.props.onFinished(true)}>*/}
 
-                                <i className="fas fa-times"/>
+                {/*                <i className="fas fa-times"/>*/}
 
-                            </Button>
-                        </Link>
+                {/*            </Button>*/}
+                {/*        </Link>*/}
 
-                    </Row.Right>
+                {/*    </Row.Right>*/}
 
-                </Row>
+                {/*</Row>*/}
 
-                <div className="pt-1 pb-1">
+                <div className="mb-1">
 
                     <LinearProgress variant="determinate"
+                                    color="primary"
                                     value={perc}/>
 
                 </div>
@@ -205,7 +207,7 @@ export interface IState<A> {
      */
     readonly taskRep?: TaskRep<A> | undefined;
 
-    readonly pending: Array<TaskRep<A>>;
+    readonly pending: TaskRep<A>[];
 
     readonly finished: number;
 

@@ -9,6 +9,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import PauseIcon from '@material-ui/icons/Pause';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -20,17 +22,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface IProps {
-    readonly className?: string;
-    readonly children: any;
-}
-
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
     ref: React.Ref<unknown>,
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+interface IProps {
+    readonly className?: string;
+    readonly onSuspended?: () => void;
+    readonly children: any;
+}
 
 export const ReviewerDialog = React.memo((props: IProps) => {
 
@@ -62,6 +65,8 @@ export const ReviewerDialog = React.memo((props: IProps) => {
     const classes = useStyles();
 
     const handleClose = () => {
+        const onSuspended = props.onSuspended || NULL_FUNCTION;
+        onSuspended();
         setOpen(false);
     };
 
@@ -77,9 +82,9 @@ export const ReviewerDialog = React.memo((props: IProps) => {
                         <Typography variant="h6" className={classes.title}>
                             Review
                         </Typography>
-                        {/*<Button autoFocus color="inherit" onClick={handleClose}>*/}
-                        {/*    save*/}
-                        {/*</Button>*/}
+                        <IconButton  onClick={handleClose}>
+                            <PauseIcon/>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 {props.children}

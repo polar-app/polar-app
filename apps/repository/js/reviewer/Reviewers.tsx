@@ -202,6 +202,19 @@ export class Reviewers {
 
         };
 
+        const doWriteSuspendedCounts = async (taskRep: TaskRep<ReadingTaskAction>) => {
+
+            const convertedSpacedRep = SpacedReps.convertFromTaskRep(uid, taskRep);
+            const spacedRep: SpacedRep = {
+                ...convertedSpacedRep,
+                suspended: true
+            };
+
+            SpacedReps.set(taskRep.id, spacedRep)
+                      .catch(err => log.error("Could not save state: ", err));
+
+        }
+
         // FIXME: when done, redirect to /annotations ... but I don't know how to do this without a <Link>
 
         const onFinished = () => {
@@ -216,16 +229,7 @@ export class Reviewers {
         };
 
         const onSuspended = (taskRep: TaskRep<ReadingTaskAction>) => {
-
-            const convertedSpacedRep = SpacedReps.convertFromTaskRep(uid, taskRep);
-            const spacedRep: SpacedRep = {
-                ...convertedSpacedRep,
-                suspended: true
-            };
-
-            SpacedReps.set(taskRep.id, spacedRep)
-                .catch(err => log.error("Could not save state: ", err));
-
+            doWriteSuspendedCounts(taskRep);
         };
 
         const onRating = (taskRep: TaskRep<any>, rating: Rating) => {
