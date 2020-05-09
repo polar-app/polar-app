@@ -4,6 +4,7 @@ import {ButtonProps, createStyles, darken} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import isEqual from "react-fast-compare";
 
+// FIXME: it doesn't seem that hover is working properly
 const useStyles = makeStyles((theme) => {
     return createStyles({
         // style rule
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => {
             color: theme.palette.getContrastText(props.color),
             backgroundColor: props.color,
             '&:hover': {
-                 backgroundColor: darken(props.color),
+                backgroundColor: darken(props.color, 0.3),
             },
         }),
     })

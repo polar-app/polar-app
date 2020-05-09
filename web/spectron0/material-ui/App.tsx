@@ -1,6 +1,11 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {
+    createMuiTheme,
+    MuiThemeProvider,
+    darken,
+    hexToRgb
+} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {MockRepoDocInfos} from "./MockRepoDocInfos";
@@ -80,6 +85,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {Loading, MUIAsyncLoader} from "./MUIAsyncLoader";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {CloudSyncConfiguredDialog} from "../../js/ui/cloud_auth/CloudSyncConfiguredDialog";
+import {ColorButton} from "../../../apps/repository/js/reviewer/ColorButton";
+import red from "@material-ui/core/colors/red";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -169,6 +176,15 @@ export const App = () => {
         <MUIAppRoot>
             {/*<CloudSyncConfiguredDialog/>*/}
 
+            {/*red500: {red[500]} <br/>*/}
+
+            {/*red500 darken: {darken(hexToRgb(red[500]), 0.2)} <br/>*/}
+
+            {/*test: {darken('rgb(250, 240, 230)')} <br/>*/}
+
+            {/*<ColorButton color={red[500]}>*/}
+            {/*    this is a button*/}
+            {/*</ColorButton>*/}
 
             <ReviewerDemo/>
 

@@ -26,17 +26,20 @@ export const ReviewRouter = () => {
                        </LeftSidebar>
                    )}/>
 
-            <Route path='#start-review'
-                   render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+            <Route path='#mobile-review'
+                   render={() => <StartReviewBottomSheet
+                                    onReading={NULL_FUNCTION}
+                                    onFlashcards={NULL_FUNCTION}/>}/>
 
             <Route path='#review-flashcards'>
                 <ReviewerScreen mode="flashcard"
                                 annotations={store.view}/>
             </Route>
 
-            {/*// <Route path='#review-reading'*/}
-            {/*//        component={() => <IndeterminateLoadingModal id="loading-review"*/}
-            {/*//                                                    provider={() => props.onCreateReviewer('reading')}/>}/>*/}
+            <Route path='#review-reading'>
+                <ReviewerScreen mode="reading"
+                                annotations={store.view}/>
+            </Route>
 
         </Switch>
 

@@ -7,6 +7,7 @@ import * as React from "react";
 import {GlobalCssSummernote} from "../../spectron0/material-ui/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "../../spectron0/material-ui/GlobalCSSBootstrap";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
+import {GlobalCssMobile} from "../../spectron0/material-ui/GlobalCssMobile";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -18,7 +19,6 @@ export const MUIAppRoot = (props: IProps) => {
     const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
 
     const muiTheme = createMuiTheme({
-        // FIXME on mobile we use 16px ...
         typography: {
             htmlFontSize: 12,
             fontSize: 12
@@ -37,6 +37,7 @@ export const MUIAppRoot = (props: IProps) => {
                 <GlobalCss/>
                 <GlobalCSSBootstrap/>
                 <GlobalCssSummernote/>
+                <GlobalCssMobile/>
 
                 <FirestoreProvider>
                     {props.children}
