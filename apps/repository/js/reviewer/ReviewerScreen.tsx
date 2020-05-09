@@ -54,10 +54,11 @@ const Loader = React.memo((props: IProps) => {
 
 export const ReviewerScreen = React.memo((props: IProps) => {
 
-    // FIXME: Notice is different from dialog as the button is NOT red...
-
     const [open, setOpen] = useState<boolean>(true);
     const handleClose = React.useCallback(() => setOpen(false), []);
+
+    // FIXME: suspend isn't being run here... we might need to migrate to a
+    // store rather than prop drilling which is a pain.
 
     return (
         <ReviewerDialog2 className="reviewer"

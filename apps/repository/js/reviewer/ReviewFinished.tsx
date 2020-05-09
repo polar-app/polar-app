@@ -103,7 +103,3 @@ export const ReviewFinished = () => (
 
     </ReviewLayout>
 );
-
-interface IProps {
-
-}

@@ -111,7 +111,6 @@ export const ReviewerDemo = () => {
 
     return (
 
-
         <BrowserRouter key="browser-router">
             <Switch location={ReactRouters.createLocationWithPathAndHash()}>
                 <ReviewerDialog2 open={open}
