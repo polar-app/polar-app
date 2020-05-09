@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
@@ -10,7 +11,8 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles, Theme} from "@material-ui/core";
+import {createStyles} from "@material-ui/core";
+import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -19,7 +21,6 @@ const useStyles = makeStyles(() =>
         },
     }),
 );
-
 
 namespace card {
 
@@ -87,101 +88,6 @@ const FrontAndBackCard = (props: FrontAndBackCardProps) => (
     </card.Parent>
 );
 
-/**
- * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
- */
-export class FlashcardCard extends React.Component<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.onShowAnswer = this.onShowAnswer.bind(this);
-
-        Preconditions.assertPresent(this.props.front, 'front');
-        Preconditions.assertPresent(this.props.back, 'back');
-
-        this.state = {
-            side: 'front'
-        };
-
-    }
-
-    public render() {
-
-        const {taskRep} = this.props;
-
-        const Main = () => {
-
-            switch (this.state.side) {
-
-                case 'front':
-                    return (
-                        <FrontCard>
-                            {this.props.front}
-                        </FrontCard>
-                    );
-
-                case 'back':
-                    return (
-                        <FrontAndBackCard front={this.props.front}
-                                          back={this.props.back}/>
-                    );
-
-                default:
-                    throw new Error("Invalid side: " + this.state.side);
-
-            }
-
-        };
-
-        const Buttons = () => {
-            switch (this.state.side) {
-
-                case 'front':
-                    return (
-                        <Button color="primary"
-                                variant="contained"
-                                size="large"
-                                onClick={() => this.onShowAnswer()}>
-                            Show Answer
-                        </Button>
-                    );
-
-                case 'back':
-                    return <RatingButtons taskRep={taskRep}
-                                          stage={taskRep.stage}
-                                          onRating={this.props.onRating}/>;
-                default:
-                    throw new Error("Invalid side: " + this.state.side);
-
-            }
-        };
-
-        return <TaskBody taskRep={taskRep}>
-
-            <TaskBody.Main taskRep={taskRep}>
-                <Main/>
-            </TaskBody.Main>
-
-            <TaskBody.Footer taskRep={taskRep}>
-
-                <div className="mt-2 mb-2">
-                    <Buttons/>
-                </div>
-
-            </TaskBody.Footer>
-
-        </TaskBody>;
-
-    }
-
-    private onShowAnswer() {
-        this.setState({side: 'back'});
-    }
-
-}
-
-
 export type FlashcardSide = 'front' | 'back';
 
 export interface IProps {
@@ -199,3 +105,90 @@ export interface IProps {
 export interface IState {
     readonly side: FlashcardSide;
 }
+
+/**
+ * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
+ */
+export const FlashcardCard = (props: IProps) => {
+
+    const [state, setState] = useState<IState>({side: 'front'});
+
+    function onShowAnswer() {
+        setState({side: 'back'});
+    }
+
+    function onRating(taskRep: TaskRep<any>, rating: Rating) {
+        props.onRating(taskRep, rating);
+        setState({side: 'front'});
+    }
+
+    Preconditions.assertPresent(props.front, 'front');
+    Preconditions.assertPresent(props.back, 'back');
+
+
+    const {taskRep} = props;
+
+    const Main = () => {
+
+        switch (state.side) {
+
+            case 'front':
+                return (
+                    <FrontCard>
+                        {props.front}
+                    </FrontCard>
+                );
+
+            case 'back':
+                return (
+                    <FrontAndBackCard front={props.front}
+                                      back={props.back}/>
+                );
+
+            default:
+                throw new Error("Invalid side: " + state.side);
+
+        }
+
+    };
+
+    const Buttons = () => {
+        switch (state.side) {
+
+            case 'front':
+                return (
+                    <Button color="primary"
+                            variant="contained"
+                            size="large"
+                            onClick={() => onShowAnswer()}>
+                        Show Answer
+                    </Button>
+                );
+
+            case 'back':
+                return <RatingButtons taskRep={taskRep}
+                                      stage={taskRep.stage}
+                                      onRating={onRating}/>;
+            default:
+                throw new Error("Invalid side: " + state.side);
+
+        }
+    };
+
+    return <TaskBody taskRep={taskRep}>
+
+        <TaskBody.Main taskRep={taskRep}>
+            <Main/>
+        </TaskBody.Main>
+
+        <TaskBody.Footer taskRep={taskRep}>
+
+            <div className="mt-2 mb-2">
+                <Buttons/>
+            </div>
+
+        </TaskBody.Footer>
+
+    </TaskBody>;
+
+};

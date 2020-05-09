@@ -152,7 +152,9 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
             </div>
 
-            <ReviewerCard taskRep={taskRep} onRating={onRating}/>
+            <ReviewerCard key={taskRep.id}
+                          taskRep={taskRep}
+                          onRating={onRating}/>
         </>
 
     );
