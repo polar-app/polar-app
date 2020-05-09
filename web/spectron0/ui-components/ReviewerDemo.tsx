@@ -77,7 +77,14 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> 
             created: ISODateTimeStrings.create(),
             color: 'red',
             mode: 'flashcard'
-        }
+        },
+        // {
+        //     id: "10103",
+        //     action: createFrontAndBackAction(),
+        //     created: ISODateTimeStrings.create(),
+        //     color: 'red',
+        //     mode: 'flashcard'
+        // }
     ];
 
     return tasks.map(task => TasksCalculator.createInitialLearningState(task));
@@ -98,22 +105,26 @@ const doFinished: FinishedCallback = async (cancelled) => {
     console.log("onFinished: ", {cancelled});
 };
 
-export const ReviewerDemo = () => (
+export const ReviewerDemo = () => {
+
+    const [open, setOpen] = React.useState(true);
+
+    return (
 
 
+        <BrowserRouter key="browser-router">
+            <Switch location={ReactRouters.createLocationWithPathAndHash()}>
+                <ReviewerDialog2 open={open}
+                                 onClose={() => setOpen(false)}>
 
-    <BrowserRouter key="browser-router">
-        <Switch location={ReactRouters.createLocationWithPathAndHash()} >
-            <ReviewerDialog2 open={true}
-                             onClose={NULL_FUNCTION}>
+                    <Reviewer2 taskReps={taskReps}
+                               doRating={doRating}
+                               doSuspended={doSuspended}
+                               doFinished={doFinished}/>
 
-                <Reviewer2 taskReps={taskReps}
-                           doRating={doRating}
-                           doSuspended={doSuspended}
-                           doFinished={doFinished}/>
+                </ReviewerDialog2>
+            </Switch>
+        </BrowserRouter>
 
-            </ReviewerDialog2>
-        </Switch>
-    </BrowserRouter>
-
-);
+    );
+};

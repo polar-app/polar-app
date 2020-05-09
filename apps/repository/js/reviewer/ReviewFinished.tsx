@@ -1,39 +1,47 @@
 import * as React from 'react';
 import {CheckedSVGIcon} from "../../../../web/js/ui/svg_icons/CheckedSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
-const ReviewLayout = (props: any) => (
+const ReviewLayout = (props: any) => {
 
-    <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-    }}>
+    const history = useHistory();
 
-        <div className="text-center m-2"
-             style={{flexGrow: 1}}>
+    const onContinue = () => {
+        history.push({pathname: '/annotations'});
+    }
 
-            {props.children}
+    return (
 
-        </div>
+        <div style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 flexGrow: 1,
+             }}>
 
-        <div className="text-center m-2">
+            <div className="text-center m-2"
+                 style={{flexGrow: 1}}>
 
-            <Link to={{pathname: '/annotations'}}>
+                {props.children}
+
+            </div>
+
+            <div className="text-center m-2">
+
                 <Button variant="contained"
                         color="primary"
-                        size="large">
+                        size="large"
+                        onClick={onContinue}>
                     CONTINUE
                 </Button>
-            </Link>
+
+            </div>
 
         </div>
 
-    </div>
-
-);
+    );
+};
 
 export const CloudSyncRequired = () => (
 
