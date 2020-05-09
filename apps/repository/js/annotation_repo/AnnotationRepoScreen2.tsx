@@ -6,7 +6,7 @@ import {FixedNav} from '../FixedNav';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {Link} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -20,6 +20,13 @@ import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
 import {AnnotationRepoKeyBindings} from './AnnotationRepoKeyBindings';
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
+import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
+import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
+import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useAnnotationRepoStore} from './AnnotationRepoStore';
+import {ReviewerScreen} from "../reviewer/ReviewerScreen";
+import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 
 interface AnnotationsPreviewProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
@@ -32,41 +39,44 @@ interface AnnotationsPreviewProps {
 const AnnotationPreview = (props: AnnotationsPreviewProps) => (
     <AnnotationInlineViewer />
 );
-//
-// interface RouterProps extends main.MainProps {
-//     readonly onCreateReviewer: (mode: RepetitionMode) => any;
-//     readonly persistenceLayerProvider: PersistenceLayerProvider;
-// }
 
 const onClose = () => window.history.back();
 
-// FIXME: add this back in...
-//
-// const Router = (props: RouterProps) => (
-//
-//     <Switch location={ReactRouters.createLocationWithHashOnly()}>
-//
-//         <Route path='#folders'
-//                render={() => (
-//                    <LeftSidebar onClose={onClose}>
-//                        <main.Folders {...props}/>
-//                    </LeftSidebar>
-//                )}/>
-//
-//         <Route path='#start-review'
-//                render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
-//
-//         <Route path='#review-flashcards'
-//                component={() => <IndeterminateLoadingModal id="loading-flashcards"
-//                                                            provider={() => props.onCreateReviewer('flashcard')}/>}/>
-//
-//         <Route path='#review-reading'
-//                component={() => <IndeterminateLoadingModal id="loading-review"
-//                                                            provider={() => props.onCreateReviewer('reading')}/>}/>
-//
-//     </Switch>
-//
-// );
+const ReviewRouter = () => {
+
+    // <MUIAsyncLoader provider={provider} render={Foo}/>
+
+    const store = useAnnotationRepoStore();
+
+    return (
+
+        <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+            {/*<main.Folders {...props}/>*/}
+
+            <Route path='#folders'
+                   render={() => (
+                       <LeftSidebar onClose={onClose}>
+                           <div>FIXME: folders will go here</div>
+                       </LeftSidebar>
+                   )}/>
+
+            <Route path='#start-review'
+                   render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
+
+            <Route path='#review-flashcards'>
+                <ReviewerScreen mode="flashcard"
+                                annotations={store.view}/>
+            </Route>
+
+            {/*// <Route path='#review-reading'*/}
+            {/*//        component={() => <IndeterminateLoadingModal id="loading-review"*/}
+            {/*//                                                    provider={() => props.onCreateReviewer('reading')}/>}/>*/}
+
+        </Switch>
+
+    );
+};
 
 namespace main {
 
@@ -199,9 +209,7 @@ namespace screen {
                     </Link>
 
                     <DeviceRouter phone={<main.Phone />}
-                                  tablet={<main.Tablet />}>
-
-                    </DeviceRouter>
+                                  tablet={<main.Tablet />}/>
 
                 </FixedNav.Body>
 
@@ -233,8 +241,7 @@ namespace screen {
                          }}>
 
                         {/*FIXME add this again*/}
-                        {/*<StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}*/}
-                        {/*                     onReading={() => props.onStartReview('reading')}/>*/}
+                        <StartReviewDropdown />
 
                         <div style={{
                                  flexGrow: 1,
@@ -253,10 +260,11 @@ namespace screen {
 
             {/*FIXME: add this again*/}
             {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
-            {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
             {/*        {...props}/>*/}
 
             <AnnotationRepoKeyBindings/>
+
+            <ReviewRouter/>
 
             <main.Desktop />
 

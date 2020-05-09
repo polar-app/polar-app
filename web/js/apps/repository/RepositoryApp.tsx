@@ -26,7 +26,7 @@ import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
-import {CloudSyncConfiguredModal} from "../../ui/cloud_auth/CloudSyncConfiguredModal";
+import {CloudSyncConfiguredDialog} from "../../ui/cloud_auth/CloudSyncConfiguredDialog";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
@@ -329,7 +329,7 @@ export const RepositoryApp = (props: IProps) => {
                         <Route path='#configured'
                                component={() =>
                                    <Cached>
-                                       <CloudSyncConfiguredModal/>
+                                       <CloudSyncConfiguredDialog/>
                                    </Cached>
                                }/>
 

@@ -58,7 +58,7 @@ export class IndeterminateLoadingTransition extends React.Component<IProps, ISta
                      zIndex: 1000000
                  }}>
 
-                <IndeterminateProgressBar style={{width: '100%'}}/>
+                <IndeterminateProgressBar/>
 
             </div>
 

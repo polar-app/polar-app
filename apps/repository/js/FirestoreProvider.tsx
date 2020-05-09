@@ -2,19 +2,15 @@ import React from 'react';
 import {Firestore} from "../../../web/js/firebase/Firestore";
 import {FirestoreCollections} from "./reviewer/FirestoreCollections";
 import {Firebase} from "../../../web/js/firebase/Firebase";
+import {useAsyncWithError} from "./reviewer/ReviewerScreen";
+import isEqual from "react-fast-compare";
 
-interface IFirestoreInitialized {
+export interface IFirestore {
     readonly uid: string | undefined;
     readonly firestore: firebase.firestore.Firestore;
 }
 
-interface IFirestoreError {
-    readonly err: Error;
-}
-
-export type IFirestore = IFirestoreError | IFirestoreInitialized | undefined;
-
-const FirestoreContext = React.createContext<IFirestore>(undefined);
+const FirestoreContext = React.createContext<IFirestore>(null!);
 
 export function useFirestore() {
     return React.useContext(FirestoreContext);
@@ -24,32 +20,30 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const FirestoreProvider = (props: IProps) => {
+async function doAsync(): Promise<IFirestore> {
 
-    const [context, setContext] = React.useState<IFirestore>(undefined);
+    const firestore = await Firestore.getInstance();
+    const uid = await Firebase.currentUserID();
 
-    async function doAsync() {
+    await FirestoreCollections.configure(firestore);
 
-        try {
-            const firestore = await Firestore.getInstance();
-            const uid = await Firebase.currentUserID();
+    return {
+        firestore, uid
+    };
+}
 
-            await FirestoreCollections.configure(firestore);
+export const FirestoreProvider = React.memo((props: IProps) => {
 
-            setContext({firestore, uid: uid!});
+    const data = useAsyncWithError({promiseFn: doAsync});
 
-        } catch (err) {
-            setContext({err})
-        }
+    if (data) {
+        return (
+            <FirestoreContext.Provider value={data}>
+                {props.children}
+            </FirestoreContext.Provider>
+        );
     }
 
-    doAsync()
-        .catch(err => console.error(err));
+    return null;
 
-    return (
-        <FirestoreContext.Provider value={context}>
-            {props.children}
-        </FirestoreContext.Provider>
-    );
-
-}
+}, isEqual);

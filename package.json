@@ -255,7 +255,8 @@
     "@fortawesome/free-regular-svg-icons": "=5.13.0",
     "@fortawesome/react-fontawesome": "=0.1.9",
     "rxjs": "=6.5.5",
-    "clsx": "=1.1.0"
+    "clsx": "=1.1.0",
+    "react-async": "=10.0.1"
   },
   "collective": {
     "type": "opencollective",

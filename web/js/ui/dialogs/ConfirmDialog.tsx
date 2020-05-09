@@ -53,6 +53,11 @@ export interface ConfirmDialogProps {
     readonly type?: AlertType;
     readonly autoFocus?: boolean;
 
+    /**
+     * When true, do not show the cancel button.
+     */
+    readonly noCancel?: boolean
+
     // TOD: we need noCancel
 
 }
@@ -114,11 +119,12 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
             </DialogContent>
             <DialogActions>
 
-                <Button className={classes.cancelButton}
-                        onClick={handleCancel}
-                        size="large">
-                    Cancel
-                </Button>
+                {props.noCancel &&
+                    <Button className={classes.cancelButton}
+                            onClick={handleCancel}
+                            size="large">
+                        Cancel
+                    </Button>}
 
                 <Button className={palette}
                         onClick={handleAccept}

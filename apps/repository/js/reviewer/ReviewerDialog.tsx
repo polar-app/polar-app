@@ -37,30 +37,6 @@ interface IProps {
 
 export const ReviewerDialog = React.memo((props: IProps) => {
 
-    // const createStyle = () => {
-    //
-    //     // again, hard, good, easy
-    //
-    //     const style: React.CSSProperties = {
-    //         display: 'flex',
-    //         flexDirection: 'column',
-    //     };
-    //
-    //     if (['phone', 'tablet'].includes(Devices.get())) {
-    //         style.width = '100%';
-    //         style.height = '100%';
-    //     } else {
-    //         style.maxHeight = '1000px';
-    //         style.width = '800px';
-    //         style.maxWidth = '800px';
-    //     }
-    //
-    //     return style;
-    //
-    // };
-
-    // const style = createStyle();
-
     const [open, setOpen] = React.useState(true);
     const classes = useStyles();
 

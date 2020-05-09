@@ -15,11 +15,11 @@ import {MockDocMetas} from "../../js/metadata/DocMetas";
 import {
     FinishedCallback,
     RatingCallback,
-    Reviewer,
     SuspendedCallback
-} from "../../../apps/repository/js/reviewer/Reviewer";
+} from "../../../apps/repository/js/reviewer/Reviewer2";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
+import {Reviewer2} from "../../../apps/repository/js/reviewer/Reviewer2";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -84,15 +84,15 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> 
 
 const taskReps = createFlashcardTaskReps();
 
-const onRating: RatingCallback<FlashcardTaskAction> = (taskRep, rating) => {
+const doRating: RatingCallback<FlashcardTaskAction> = async (taskRep, rating) => {
     console.log("onRating: ", {taskRep, rating});
 };
 
-const onSuspended: SuspendedCallback<FlashcardTaskAction> = (taskRep) => {
+const doSuspended: SuspendedCallback<FlashcardTaskAction> = async (taskRep) => {
     console.log("onSuspended: ", {taskRep});
 };
 
-const onFinished: FinishedCallback = (cancelled) => {
+const doFinished: FinishedCallback = async (cancelled) => {
     console.log("onFinished: ", {cancelled});
 };
 
@@ -100,10 +100,10 @@ export const ReviewerDemo = () => (
 
     <BrowserRouter key="browser-router">
         <Switch location={ReactRouters.createLocationWithPathAndHash()} >
-            <Reviewer taskReps={taskReps}
-                      onRating={onRating}
-                      onSuspended={onSuspended}
-                      onFinished={onFinished}/>
+            <Reviewer2 taskReps={taskReps}
+                       doRating={doRating}
+                       doSuspended={doSuspended}
+                       doFinished={doFinished}/>
         </Switch>
     </BrowserRouter>
 

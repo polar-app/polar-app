@@ -7,8 +7,6 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 
 export interface IProps {
-    readonly onReading: () => void;
-    readonly onFlashcards: () => void;
 }
 
 interface IState {
@@ -42,13 +40,12 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
                     </MUIRouterLink>
 
                     <MUIRouterLink to={{pathname: '/annotations', hash: '#review-flashcards'}}>
-                        <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>} onClick={this.props.onFlashcards}/>
+                        <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>} />
                     </MUIRouterLink>
 
                 </div>
 
             </MUIMenu>
-
 
         );
 

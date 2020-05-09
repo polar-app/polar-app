@@ -6,6 +6,7 @@ import {GlobalCss} from "../../spectron0/material-ui/GlobalCss";
 import * as React from "react";
 import {GlobalCssSummernote} from "../../spectron0/material-ui/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "../../spectron0/material-ui/GlobalCSSBootstrap";
+import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -37,7 +38,9 @@ export const MUIAppRoot = (props: IProps) => {
                 <GlobalCSSBootstrap/>
                 <GlobalCssSummernote/>
 
-                {props.children}
+                <FirestoreProvider>
+                    {props.children}
+                </FirestoreProvider>
 
             </MUIThemeTypeContext.Provider>
         </MuiThemeProvider>

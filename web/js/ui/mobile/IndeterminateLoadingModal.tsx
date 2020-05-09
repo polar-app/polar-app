@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {IndeterminateProgressBar} from "../progress_bar/IndeterminateProgressBar";
 import {SnapshotSubscribers} from "../../firebase/SnapshotSubscribers";
 import {DataLoader} from "../data_loader/DataLoader";
 import {PageTransition} from '../motion/PageTransition';
-import {Pulse} from '../motion/Pulse';
-import {PolarSVGIcon} from '../svg_icons/PolarSVGIcon';
 import {ReviewerDialog} from "../../../../apps/repository/js/reviewer/ReviewerDialog";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface IProps {
 
@@ -21,6 +19,10 @@ interface IProps {
     readonly provider: () => Promise<JSX.Element>;
 }
 
+// FIXME: write a new AsyncLoading component that takes function call,
+// which returns a promise... that will display a loading progress widget,
+// then it calls the component with the properties we have received.
+
 const Loading = (props: IProps) => (
 
     <ReviewerDialog>
@@ -35,11 +37,11 @@ const Loading = (props: IProps) => (
                          width: '350px'
                      }}>
 
-                    <Pulse>
-                        <PolarSVGIcon/>
-                    </Pulse>
-
-                    <IndeterminateProgressBar/>
+                    <CircularProgress style={{
+                                           margin: 'auto',
+                                           width: '75px',
+                                           height: '75px',
+                                      }}/>
 
                     <h2 className="text-muted mt-2">
                         LOADING

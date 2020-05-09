@@ -77,6 +77,10 @@ export class Reviewers {
         await latch.get();
     }
 
+    /**
+     *
+     * @Deprecated
+     */
     public static async createAndInject(datastoreCapabilities: DatastoreCapabilities,
                                         prefs: PersistentPrefs,
                                         repoDocAnnotations: ReadonlyArray<IDocAnnotation>,
@@ -227,8 +231,8 @@ export class Reviewers {
 
         };
 
-        const onSuspended = (taskRep: TaskRep<ReadingTaskAction>) => {
-            doWriteSuspendedCounts(taskRep);
+        const onSuspended = async (taskRep: TaskRep<ReadingTaskAction>) => {
+            await doWriteSuspendedCounts(taskRep);
         };
 
         const onRating = (taskRep: TaskRep<any>, rating: Rating) => {

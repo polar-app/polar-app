@@ -75,6 +75,11 @@ import {ComponentCacheDemo} from "./ComponentCacheDemo";
 import { MUIContextMenuDemo } from './doc_repo_table/MUIContextMenuDemo';
 import {ReviewerDemo} from "../ui-components/ReviewerDemo";
 import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
+import { UseAsyncWithCallbacksDemo } from './UseAsyncWithCallbacksDemo';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {Loading, MUIAsyncLoader} from "./MUIAsyncLoader";
+import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
+import {CloudSyncConfiguredDialog} from "../../js/ui/cloud_auth/CloudSyncConfiguredDialog";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -140,307 +145,343 @@ export const App = () => {
 
     const root = TagNodes.createTagsRoot(tagDescriptors);
 
+    interface IProps {
+        readonly value: string;
+    }
+
+    async function provider() {
+        return new Promise<IProps>(resolve => {
+            setTimeout(() => {
+                resolve({value: 'hello'});
+            }, 1000);
+        });
+    }
+
+    const Foo = (props: IProps) => {
+        return (
+            <div>
+                {props.value}
+            </div>
+        );
+    }
+
     return (
-        // <GlobalHotKeys
-        //     allowChanges={true}
-        //     keyMap={globalKeyMap}>
+        <div>
+            {/*<MUIAsyncLoader provider={provider} render={Foo}/>*/}
 
             <MUIAppRoot>
-
-                {/*<MUITreeView root={root}/>*/}
-
-                {/*<MyContextStoreComponent/>*/}
-
-                {/*<HookStateDemo/>*/}
-                {/*<ObservableStoreDemo/>*/}
-                {/*<ObservableStoreDemo2/>*/}
-                {/*<MUITreeViewDemo/>*/}
-                {/*<ComponentCacheDemo/>*/}
-                {/*<TagAutocompleteDemo/>*/}
-
-                {/*<MUIContextMenuDemo/>*/}
-
-                <ReviewerDemo/>
-
-                {/*<ContextMemoTest/>*/}
-                {/*<SharedIntermediateContextTest/>*/}
-                {/*<FadeDemo/>*/}
-
-                {/*<MUIHoverContextDemo/>*/}
-
-                {/*<MUIGridLayoutTest/>*/}
-
-                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
-                {/*            displayName="Kevin Burton"*/}
-                {/*            size="small"/>*/}
-
-                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
-                {/*            displayName="Kevin Burton"*/}
-                {/*            size="large"/>*/}
-
-                {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
-                {/*            displayName="Kevin Burton"*/}
-                {/*            style={{*/}
-                {/*                width: '150px',*/}
-                {/*                height: '150px'*/}
-                {/*            }}/>*/}
-
-                {/*<AccountControl userInfo={{*/}
-                {/*    photoURL: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",*/}
-                {/*    displayName: "Kevin Burton",*/}
-                {/*    email: 'foo@example.com',*/}
-                {/*    subscription: {*/}
-                {/*        plan: 'gold',*/}
-                {/*        interval: 'month'*/}
-                {/*    }*/}
-                {/*}} onLogout={NULL_FUNCTION}/>*/}
-
-                {/*<Button onClick={() => changeTheme()}>Go Light mode</Button>*/}
-
-                {/*<Container component="main" maxWidth={false} disableGutters>*/}
-                    {/*<ReactVirtualizedTable/>*/}
-
-                    {/*<Grid*/}
-                    {/*      container*/}
-                    {/*      spacing={1}*/}
-                    {/*      direction="row"*/}
-                    {/*      alignItems="center"*/}
-                    {/*>*/}
-                    {/*    <Grid item>*/}
-                    {/*        <Chip label="hello"/>*/}
-                    {/*    </Grid>*/}
-
-
-                    {/*    <Grid item>*/}
-                    {/*        <Chip label="world"/>*/}
-                    {/*    </Grid>*/}
-
-                    {/*</Grid>*/}
-
-                    {/*<MUITreeView/>*/}
-
-                    {/*<DialogDemo/>*/}
-
-                    {/*<Box m={1}>*/}
-                    {/*    <AutocompleteTags/>*/}
-                    {/*</Box>*/}
-
-                    {/*<MUICreatableAutocomplete label="tags bro"*/}
-                    {/*                          options={tagOptions}*/}
-                    {/*                          createOption={MUITagInputControls.createOption}*/}
-                    {/*                          relatedOptionsCalculator={relatedOptionsCalculator}*/}
-                    {/*                          onChange={NULL_FUNCTION}/>*/}
-
-                {/*<LinearProgress value={50} variant="determinate"/>*/}
-
-                {/*<Snackbar*/}
-                {/*        anchorOrigin={{*/}
-                {/*            vertical: 'bottom',*/}
-                {/*            horizontal: 'left',*/}
-                {/*        }}*/}
-                {/*        open={true}*/}
-                {/*        autoHideDuration={5000}*/}
-                {/*        // onClose={handleClose}*/}
-                {/*        // message="Note archived"*/}
-                {/*        // action={*/}
-                {/*        //     <React.Fragment>*/}
-                {/*        //         /!*<Button color="secondary" size="small" >*!/*/}
-                {/*        //         /!*    UNDO*!/*/}
-                {/*        //         /!*</Button>*!/*/}
-                {/*        //         /!*<IconButton size="small" aria-label="close" color="inherit" >*!/*/}
-                {/*        //         /!*    <CloseIcon fontSize="small" />*!/*/}
-                {/*        //         /!*</IconButton>*!/*/}
-                {/*        //*/}
-                {/*        //     </React.Fragment>*/}
-                {/*        // }*/}
-                {/*    >*/}
-                {/*        /!*<Alert onClose={NULL_FUNCTION} severity="success">*!/*/}
-                {/*        /!*    This is a success message!*!/*/}
-                {/*        /!*</Alert>*!/*/}
-
-                {/*        /!*<SnackbarContent message={<LinearProgress value={50} variant="determinate"/>}/>*!/*/}
-                {/*    <SnackbarContent message={<progress max={100} value={50}></progress>}/>*/}
-
-                {/*    </Snackbar>*/}
-
-                    {/*<AutocompleteDialog label="tags bro"*/}
-                    {/*                    options={tagOptions}*/}
-                    {/*                    createOption={MUITagInputControls.createOption}*/}
-                    {/*                    relatedOptionsCalculator={relatedOptionsCalculator}*/}
-                    {/*                    onChange={NULL_FUNCTION}*/}
-                    {/*                    onCancel={NULL_FUNCTION}*/}
-                    {/*                    onDone={NULL_FUNCTION}/>*/}
-
-                    {/*<MyResponsivePie/>*/}
-
-
-                    {/*<OutlinedInput startAdornment={*/}
-                    {/*    <InputAdornment position="start">*/}
-                    {/*        <SearchIcon />*/}
-                    {/*    </InputAdornment>*/}
-                    {/*}*/}
-                    {/*               type="search"/>*/}
-
-                    {/*<br/>*/}
-                    {/*<br/>                   <br/>*/}
-                    {/*<br/>*/}
-
-
-                    {/*<MUISearchBox2 placeholder="This is a placeholder"*/}
-                    {/*               onChange={NULL_FUNCTION}/>*/}
-
-                    {/*<MUIToggleButton label="test"*/}
-                    {/*                 size="small"*/}
-                    {/*                 onChange={NULL_FUNCTION}/>*/}
-
-                    {/*/!*<div style={{margin: '5px'}}>*!/*/}
-                    {/*<MUISearchBox onChange={NULL_FUNCTION}/>*/}
-
-                    {/*<br/>*/}
-                    {/*<br/>*/}
-
-                    {/*<IconButton size={'small'}>*/}
-                    {/*    <CloseIcon/>*/}
-                    {/*</IconButton>*/}
-
-                    {/*<br/>*/}
-                    {/*<br/>*/}
-
-                    {/*<IconButton size={'medium'}>*/}
-                    {/*    <CloseIcon/>*/}
-                    {/*</IconButton>*/}
-
-                {/*<Paper variant="outlined">*/}
-                {/*        hello world*/}
-                {/*    </Paper>*/}
-
-                {/*    /!*<MUIHelpMenu/>*!/*/}
-
-
-                {/*<MUIPaperToolbar borderTop*/}
-                {/*                 borderBottom>*/}
-                {/*    <ExampleDropdownMenu/>*/}
-                {/*</MUIPaperToolbar>*/}
-
-                {/*    asdf*/}
-
-                {/*asdfasfda*/}
-
-                {/*asdf*/}
-
-                {/*<Tooltip title="hello world this is a long tooltip">*/}
-                {/*    <Button>help</Button>*/}
-                {/*</Tooltip>*/}
-                {/*<br/>*/}
-
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-                {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
-
-                {/*<MUIDialogController render={dialogs => (*/}
-
-                {/*    <Button onClick={() => dialogs.confirm({*/}
-                {/*                         title: 'are you sure?',*/}
-                {/*                         subtitle: 'because you better be',*/}
-                {/*                         onAccept: NULL_FUNCTION,*/}
-                {/*                         onCancel: NULL_FUNCTION*/}
-                {/*                    })}>*/}
-                {/*        Click me*/}
-                {/*    </Button>*/}
-
-                {/*)}/>*/}
-
-                {/*<div style={{marginLeft: '250px'}}>*/}
-                {/*    <MUIDropdownMenu button={{*/}
-                {/*                        icon: <SettingsIcon/>*/}
-                {/*                     }}>*/}
-                {/*        <div>*/}
-                {/*            <MenuItem >Profile</MenuItem>*/}
-                {/*            <MenuItem >My account</MenuItem>*/}
-                {/*            <MenuItem >Logout</MenuItem>*/}
-                {/*        </div>*/}
-                {/*    </MUIDropdownMenu>*/}
-                {/*</div>*/}
-
-                    {/*</div>*/}
-
-
-                    {/*<TextField id="standard-search" type="search" InputProps={{*/}
-                    {/*    startAdornment: (*/}
-                    {/*        <FlagIcon/>*/}
-                    {/*    )*/}
-                    {/*}}/>*/}
-
-                    {/*<TagAutocompleteDemo/>*/}
-                    {/*<AlertDialogDemo/>*/}
-                    {/*<PromptDialogDemo/>*/}
-
-                    {/*<InputValidationErrorSnackbar message="This is a bad message bro"/>*/}
-
-                    {/*<MUITagInputControl availableTags={tags}/>*/}
-
-                    {/*<Snackbar open={true} autoHideDuration={1000} onClose={NULL_FUNCTION}>*/}
-                    {/*    <Alert severity="error" onClose={NULL_FUNCTION}>*/}
-                    {/*        This is a very very bad error message.*/}
-                    {/*    </Alert>*/}
-                    {/*</Snackbar>*/}
-
-                    {/*<DocumentRepositoryTable data={MockRepoDocInfos.create()}*/}
-                    {/*                         selected={[0, 1]}*/}
-                    {/*                         selectRow={NULL_FUNCTION}*/}
-                    {/*                         onOpen={() => console.log('onOpen')}*/}
-                    {/*                         onShowFile={() => console.log('onShowFile')}*/}
-                    {/*                         onRename={() => console.log('onRename')}*/}
-                    {/*                         onCopyOriginalURL={() => console.log('onCopyOriginalURL')}*/}
-                    {/*                         onCopyFilePath={() => console.log('onCopyFilePath')}*/}
-                    {/*                         onDelete={() => console.log('FIXME: onDelete ' + Date.now())}*/}
-                    {/*                         onCopyDocumentID={() => console.log('onCopyDocumentID')}*/}
-                    {/*                         onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}*/}
-                    {/*                         onFlagged={() => console.log('onFlagged')}*/}
-                    {/*                         onArchived={() => console.log('onArchived')}*/}
-                    {/*/>*/}
-
-                    {/*<Foo/>*/}
-                    {/*<Foo/>*/}
-                    {/*<Foo/>*/}
-
-                    {/*<div style={{display: 'flex'}}>*/}
-                    {/*    <div style={{flexGrow: 1}}>*/}
-
-                    {/*    </div>*/}
-                    {/*    <div>*/}
-                    {/*        <MUIDocDropdownButton/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                    {/*<DocButtonsDemo/>*/}
-
-                    {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
-                    {/*    Hello World*/}
-                    {/*</Button>*/}
-
-                    {/*<Tags/>*/}
-
-                    {/*<ReactVirtualizedTable/>*/}
-
-                    {/*<TreeControl/>*/}
-                    {/*<TabsDemo/>*/}
-                    {/*<IconsDemo/>*/}
-
-                    {/*<DropdownMenuDemo/>*/}
-
-                {/*</Container>*/}
+                <CloudSyncConfiguredDialog/>
             </MUIAppRoot>
-        // </GlobalHotKeys>
+
+            {/*<Loading/>*/}
+        </div>
     );
+
+    // return (
+    //     // <GlobalHotKeys
+    //     //     allowChanges={true}
+    //     //     keyMap={globalKeyMap}>
+    //
+    //         <MUIAppRoot>
+    //
+    //             {/*<MUITreeView root={root}/>*/}
+    //
+    //             {/*<MyContextStoreComponent/>*/}
+    //
+    //             {/*<HookStateDemo/>*/}
+    //             {/*<ObservableStoreDemo/>*/}
+    //             {/*<ObservableStoreDemo2/>*/}
+    //             {/*<MUITreeViewDemo/>*/}
+    //             {/*<ComponentCacheDemo/>*/}
+    //             {/*<TagAutocompleteDemo/>*/}
+    //
+    //             {/*<MUIContextMenuDemo/>*/}
+    //
+    //             {/*<ReviewerDemo/>*/}
+    //
+    //             {/*<UseAsyncWithCallbacksDemo/>*/}
+    //
+    //             <Loading/>
+    //
+    //             {/*<ContextMemoTest/>*/}
+    //             {/*<SharedIntermediateContextTest/>*/}
+    //             {/*<FadeDemo/>*/}
+    //
+    //             {/*<MUIHoverContextDemo/>*/}
+    //
+    //             {/*<MUIGridLayoutTest/>*/}
+    //
+    //             {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+    //             {/*            displayName="Kevin Burton"*/}
+    //             {/*            size="small"/>*/}
+    //
+    //             {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+    //             {/*            displayName="Kevin Burton"*/}
+    //             {/*            size="large"/>*/}
+    //
+    //             {/*<UserAvatar photoURL="https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg"*/}
+    //             {/*            displayName="Kevin Burton"*/}
+    //             {/*            style={{*/}
+    //             {/*                width: '150px',*/}
+    //             {/*                height: '150px'*/}
+    //             {/*            }}/>*/}
+    //
+    //             {/*<AccountControl userInfo={{*/}
+    //             {/*    photoURL: "https://lh5.googleusercontent.com/-BldJH1bae3o/AAAAAAAAAAI/AAAAAAAAADY/Di36-YNrKqk/photo.jpg",*/}
+    //             {/*    displayName: "Kevin Burton",*/}
+    //             {/*    email: 'foo@example.com',*/}
+    //             {/*    subscription: {*/}
+    //             {/*        plan: 'gold',*/}
+    //             {/*        interval: 'month'*/}
+    //             {/*    }*/}
+    //             {/*}} onLogout={NULL_FUNCTION}/>*/}
+    //
+    //             {/*<Button onClick={() => changeTheme()}>Go Light mode</Button>*/}
+    //
+    //             {/*<Container component="main" maxWidth={false} disableGutters>*/}
+    //                 {/*<ReactVirtualizedTable/>*/}
+    //
+    //                 {/*<Grid*/}
+    //                 {/*      container*/}
+    //                 {/*      spacing={1}*/}
+    //                 {/*      direction="row"*/}
+    //                 {/*      alignItems="center"*/}
+    //                 {/*>*/}
+    //                 {/*    <Grid item>*/}
+    //                 {/*        <Chip label="hello"/>*/}
+    //                 {/*    </Grid>*/}
+    //
+    //
+    //                 {/*    <Grid item>*/}
+    //                 {/*        <Chip label="world"/>*/}
+    //                 {/*    </Grid>*/}
+    //
+    //                 {/*</Grid>*/}
+    //
+    //                 {/*<MUITreeView/>*/}
+    //
+    //                 {/*<DialogDemo/>*/}
+    //
+    //                 {/*<Box m={1}>*/}
+    //                 {/*    <AutocompleteTags/>*/}
+    //                 {/*</Box>*/}
+    //
+    //                 {/*<MUICreatableAutocomplete label="tags bro"*/}
+    //                 {/*                          options={tagOptions}*/}
+    //                 {/*                          createOption={MUITagInputControls.createOption}*/}
+    //                 {/*                          relatedOptionsCalculator={relatedOptionsCalculator}*/}
+    //                 {/*                          onChange={NULL_FUNCTION}/>*/}
+    //
+    //             {/*<LinearProgress value={50} variant="determinate"/>*/}
+    //
+    //             {/*<Snackbar*/}
+    //             {/*        anchorOrigin={{*/}
+    //             {/*            vertical: 'bottom',*/}
+    //             {/*            horizontal: 'left',*/}
+    //             {/*        }}*/}
+    //             {/*        open={true}*/}
+    //             {/*        autoHideDuration={5000}*/}
+    //             {/*        // onClose={handleClose}*/}
+    //             {/*        // message="Note archived"*/}
+    //             {/*        // action={*/}
+    //             {/*        //     <React.Fragment>*/}
+    //             {/*        //         /!*<Button color="secondary" size="small" >*!/*/}
+    //             {/*        //         /!*    UNDO*!/*/}
+    //             {/*        //         /!*</Button>*!/*/}
+    //             {/*        //         /!*<IconButton size="small" aria-label="close" color="inherit" >*!/*/}
+    //             {/*        //         /!*    <CloseIcon fontSize="small" />*!/*/}
+    //             {/*        //         /!*</IconButton>*!/*/}
+    //             {/*        //*/}
+    //             {/*        //     </React.Fragment>*/}
+    //             {/*        // }*/}
+    //             {/*    >*/}
+    //             {/*        /!*<Alert onClose={NULL_FUNCTION} severity="success">*!/*/}
+    //             {/*        /!*    This is a success message!*!/*/}
+    //             {/*        /!*</Alert>*!/*/}
+    //
+    //             {/*        /!*<SnackbarContent message={<LinearProgress value={50} variant="determinate"/>}/>*!/*/}
+    //             {/*    <SnackbarContent message={<progress max={100} value={50}></progress>}/>*/}
+    //
+    //             {/*    </Snackbar>*/}
+    //
+    //                 {/*<AutocompleteDialog label="tags bro"*/}
+    //                 {/*                    options={tagOptions}*/}
+    //                 {/*                    createOption={MUITagInputControls.createOption}*/}
+    //                 {/*                    relatedOptionsCalculator={relatedOptionsCalculator}*/}
+    //                 {/*                    onChange={NULL_FUNCTION}*/}
+    //                 {/*                    onCancel={NULL_FUNCTION}*/}
+    //                 {/*                    onDone={NULL_FUNCTION}/>*/}
+    //
+    //                 {/*<MyResponsivePie/>*/}
+    //
+    //
+    //                 {/*<OutlinedInput startAdornment={*/}
+    //                 {/*    <InputAdornment position="start">*/}
+    //                 {/*        <SearchIcon />*/}
+    //                 {/*    </InputAdornment>*/}
+    //                 {/*}*/}
+    //                 {/*               type="search"/>*/}
+    //
+    //                 {/*<br/>*/}
+    //                 {/*<br/>                   <br/>*/}
+    //                 {/*<br/>*/}
+    //
+    //
+    //                 {/*<MUISearchBox2 placeholder="This is a placeholder"*/}
+    //                 {/*               onChange={NULL_FUNCTION}/>*/}
+    //
+    //                 {/*<MUIToggleButton label="test"*/}
+    //                 {/*                 size="small"*/}
+    //                 {/*                 onChange={NULL_FUNCTION}/>*/}
+    //
+    //                 {/*/!*<div style={{margin: '5px'}}>*!/*/}
+    //                 {/*<MUISearchBox onChange={NULL_FUNCTION}/>*/}
+    //
+    //                 {/*<br/>*/}
+    //                 {/*<br/>*/}
+    //
+    //                 {/*<IconButton size={'small'}>*/}
+    //                 {/*    <CloseIcon/>*/}
+    //                 {/*</IconButton>*/}
+    //
+    //                 {/*<br/>*/}
+    //                 {/*<br/>*/}
+    //
+    //                 {/*<IconButton size={'medium'}>*/}
+    //                 {/*    <CloseIcon/>*/}
+    //                 {/*</IconButton>*/}
+    //
+    //             {/*<Paper variant="outlined">*/}
+    //             {/*        hello world*/}
+    //             {/*    </Paper>*/}
+    //
+    //             {/*    /!*<MUIHelpMenu/>*!/*/}
+    //
+    //
+    //             {/*<MUIPaperToolbar borderTop*/}
+    //             {/*                 borderBottom>*/}
+    //             {/*    <ExampleDropdownMenu/>*/}
+    //             {/*</MUIPaperToolbar>*/}
+    //
+    //             {/*    asdf*/}
+    //
+    //             {/*asdfasfda*/}
+    //
+    //             {/*asdf*/}
+    //
+    //             {/*<Tooltip title="hello world this is a long tooltip">*/}
+    //             {/*    <Button>help</Button>*/}
+    //             {/*</Tooltip>*/}
+    //             {/*<br/>*/}
+    //
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //             {/*adsfadsfasdf asdfasdf asdfasdf asdfa sfasdf<br/>*/}
+    //
+    //             {/*<MUIDialogController render={dialogs => (*/}
+    //
+    //             {/*    <Button onClick={() => dialogs.confirm({*/}
+    //             {/*                         title: 'are you sure?',*/}
+    //             {/*                         subtitle: 'because you better be',*/}
+    //             {/*                         onAccept: NULL_FUNCTION,*/}
+    //             {/*                         onCancel: NULL_FUNCTION*/}
+    //             {/*                    })}>*/}
+    //             {/*        Click me*/}
+    //             {/*    </Button>*/}
+    //
+    //             {/*)}/>*/}
+    //
+    //             {/*<div style={{marginLeft: '250px'}}>*/}
+    //             {/*    <MUIDropdownMenu button={{*/}
+    //             {/*                        icon: <SettingsIcon/>*/}
+    //             {/*                     }}>*/}
+    //             {/*        <div>*/}
+    //             {/*            <MenuItem >Profile</MenuItem>*/}
+    //             {/*            <MenuItem >My account</MenuItem>*/}
+    //             {/*            <MenuItem >Logout</MenuItem>*/}
+    //             {/*        </div>*/}
+    //             {/*    </MUIDropdownMenu>*/}
+    //             {/*</div>*/}
+    //
+    //                 {/*</div>*/}
+    //
+    //
+    //                 {/*<TextField id="standard-search" type="search" InputProps={{*/}
+    //                 {/*    startAdornment: (*/}
+    //                 {/*        <FlagIcon/>*/}
+    //                 {/*    )*/}
+    //                 {/*}}/>*/}
+    //
+    //                 {/*<TagAutocompleteDemo/>*/}
+    //                 {/*<AlertDialogDemo/>*/}
+    //                 {/*<PromptDialogDemo/>*/}
+    //
+    //                 {/*<InputValidationErrorSnackbar message="This is a bad message bro"/>*/}
+    //
+    //                 {/*<MUITagInputControl availableTags={tags}/>*/}
+    //
+    //                 {/*<Snackbar open={true} autoHideDuration={1000} onClose={NULL_FUNCTION}>*/}
+    //                 {/*    <Alert severity="error" onClose={NULL_FUNCTION}>*/}
+    //                 {/*        This is a very very bad error message.*/}
+    //                 {/*    </Alert>*/}
+    //                 {/*</Snackbar>*/}
+    //
+    //                 {/*<DocumentRepositoryTable data={MockRepoDocInfos.create()}*/}
+    //                 {/*                         selected={[0, 1]}*/}
+    //                 {/*                         selectRow={NULL_FUNCTION}*/}
+    //                 {/*                         onOpen={() => console.log('onOpen')}*/}
+    //                 {/*                         onShowFile={() => console.log('onShowFile')}*/}
+    //                 {/*                         onRename={() => console.log('onRename')}*/}
+    //                 {/*                         onCopyOriginalURL={() => console.log('onCopyOriginalURL')}*/}
+    //                 {/*                         onCopyFilePath={() => console.log('onCopyFilePath')}*/}
+    //                 {/*                         onDelete={() => console.log('FIXME: onDelete ' + Date.now())}*/}
+    //                 {/*                         onCopyDocumentID={() => console.log('onCopyDocumentID')}*/}
+    //                 {/*                         onLoadDoc={(repoDocInfo) => console.log('onLoadDoc: ', repoDocInfo)}*/}
+    //                 {/*                         onFlagged={() => console.log('onFlagged')}*/}
+    //                 {/*                         onArchived={() => console.log('onArchived')}*/}
+    //                 {/*/>*/}
+    //
+    //                 {/*<Foo/>*/}
+    //                 {/*<Foo/>*/}
+    //                 {/*<Foo/>*/}
+    //
+    //                 {/*<div style={{display: 'flex'}}>*/}
+    //                 {/*    <div style={{flexGrow: 1}}>*/}
+    //
+    //                 {/*    </div>*/}
+    //                 {/*    <div>*/}
+    //                 {/*        <MUIDocDropdownButton/>*/}
+    //                 {/*    </div>*/}
+    //                 {/*</div>*/}
+    //
+    //                 {/*<DocButtonsDemo/>*/}
+    //
+    //                 {/*<Button variant="contained" color="primary" onClick={() => console.log('hello')}>*/}
+    //                 {/*    Hello World*/}
+    //                 {/*</Button>*/}
+    //
+    //                 {/*<Tags/>*/}
+    //
+    //                 {/*<ReactVirtualizedTable/>*/}
+    //
+    //                 {/*<TreeControl/>*/}
+    //                 {/*<TabsDemo/>*/}
+    //                 {/*<IconsDemo/>*/}
+    //
+    //                 {/*<DropdownMenuDemo/>*/}
+    //
+    //             {/*</Container>*/}
+    //         </MUIAppRoot>
+    //     // </GlobalHotKeys>
+    // );
 }
 

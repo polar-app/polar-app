@@ -316,8 +316,8 @@ namespace screen {
                             alignItems: 'center'
                          }}>
 
-                        <StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}
-                                             onReading={() => props.onStartReview('reading')}/>
+                        {/*<StartReviewDropdown onFlashcards={() => props.onStartReview('flashcard')}*/}
+                        {/*                     onReading={() => props.onStartReview('reading')}/>*/}
 
                         <div style={{
                                  flexGrow: 1,
@@ -506,11 +506,13 @@ export default class AnnotationRepoScreen extends ReleasingReactComponent<IProps
     }
 
     private startReview(mode: RepetitionMode = 'reading') {
+
         const persistenceLayer = this.props.persistenceLayerManager.get();
         const datastoreCapabilities = persistenceLayer.capabilities();
         const prefs = persistenceLayer.datastore.getPrefs();
 
         Reviewers.start(datastoreCapabilities, prefs.get(), this.state.data, mode, 10);
+
     }
 
     private async createReviewer(mode: RepetitionMode = 'reading') {
