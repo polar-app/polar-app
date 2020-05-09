@@ -9,22 +9,38 @@ import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import {createStyles, Theme} from "@material-ui/core";
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        card: {
+            fontSize: '2.0rem',
+        },
+    }),
+);
+
 
 namespace card {
 
-    export const Body = (props: any) => (
-        <FadeIn>
-            <Paper variant="outlined"
-                   className="mb-auto ml-auto mr-auto shadow-narrow p-3"
-                 style={{
-                     minWidth: '300px',
-                     maxWidth: '700px',
-                     width: '85%'
-                 }}>
-                {props.children}
-            </Paper>
-        </FadeIn>
-    );
+    export const Body = (props: any) => {
+
+        const classes = useStyles();
+
+        return (
+            <FadeIn>
+                <Paper variant="outlined"
+                       className={"mb-auto ml-auto mr-auto shadow-narrow p-3 " + classes.card}
+                       style={{
+                           minWidth: '300px',
+                           maxWidth: '700px',
+                           width: '85%'
+                       }}>
+                    {props.children}
+                </Paper>
+            </FadeIn>
+        );
+    };
 
     export const Parent = (props: any) => (
         <div className="mt-3 pl-3 pr-3 flashcard-parent"
