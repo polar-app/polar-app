@@ -3,53 +3,10 @@ import {useState} from 'react';
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {FlashcardCard} from "./cards/FlashcardCard";
-import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
-import {ReadingCard} from "./cards/ReadingCard";
-import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ReviewFinished} from "./ReviewFinished";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
-
-const DoReadingCard = (props: CardProps) => {
-    const {taskRep} = props;
-    const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
-
-    return <ReadingCard taskRep={readingTaskRep}
-                        onRating={props.onRating}/>;
-
-};
-
-const DoFlashcardCard = (props: CardProps) => {
-    const {taskRep} = props;
-
-    const flashcardTaskRep = taskRep as any as TaskRep<FlashcardTaskAction>;
-
-    const flashcardTaskAction = flashcardTaskRep.action;
-    const front = flashcardTaskAction.front;
-    const back = flashcardTaskAction.back;
-
-    return <FlashcardCard taskRep={flashcardTaskRep}
-                          front={front}
-                          back={back}
-                          onRating={props.onRating}/>;
-};
-
-interface CardProps {
-    readonly taskRep: TaskRep<any>;
-    readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
-}
-
-const Card = (props: CardProps) => {
-
-    if (props.taskRep!.mode === 'reading') {
-        return <DoReadingCard {...props}/>;
-    } else {
-        return <DoFlashcardCard {...props}/>;
-    }
-
-};
-
+import {ReviewerCard} from "./cards/ReviewerCard";
 
 /**
  * Called when we're finished all the tasks.
@@ -195,7 +152,7 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
             </div>
 
-            <Card taskRep={taskRep} onRating={onRating}/>
+            <ReviewerCard taskRep={taskRep} onRating={onRating}/>
         </>
 
     );

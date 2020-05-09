@@ -168,7 +168,14 @@ export const App = () => {
     return (
         <MUIAppRoot>
             {/*<CloudSyncConfiguredDialog/>*/}
+
+
             <ReviewerDemo/>
+
+            {/*<Paper>*/}
+
+            {/*    asdfasdf*/}
+            {/*</Paper>*/}
         </MUIAppRoot>
     );
 
