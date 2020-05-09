@@ -1,9 +1,5 @@
 import {BaseType} from "./BaseType";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Profile} from "../../../groups/db/Profiles";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {IImageObject, ImageObjects} from "./ImageObject";
-import {URLStr} from "polar-shared/src/util/Strings";
 
 export interface IListItemInit {
 
