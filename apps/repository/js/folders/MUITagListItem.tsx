@@ -9,6 +9,7 @@ import {
     DragTarget2,
     useDragContext
 } from "../../../../web/js/ui/tree/DragTarget2";
+import {useContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -86,9 +87,12 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
         },
     );
 
+    const contextMenu = useContextMenu();
+
     // FIXME: needs tabindex and focus...
     return (
         <div className={className}
+             {...contextMenu}
              onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
             <div onClick={onCheckbox}

@@ -12,15 +12,11 @@ interface IContextMenuCallbacks {
 export const ContextMenuContext
     = React.createContext<IContextMenuCallbacks>({onContextMenu: NULL_FUNCTION});
 
-interface IMenuComponentProps {
-
-}
-
 interface IChildComponentProps {
     readonly children: JSX.Element;
 }
 
-export function createContextMenu(MenuComponent: (props: IMenuComponentProps) => JSX.Element): (props: IChildComponentProps) => JSX.Element {
+export function createContextMenu(MenuComponent: () => JSX.Element): (props: IChildComponentProps) => JSX.Element {
 
     return (props: IChildComponentProps): JSX.Element => {
 

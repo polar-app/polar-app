@@ -45,6 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<string>;
+    // FIXME: needs 'context' because I need to be able to right click on the
+    // sidebar...
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
     readonly onDrop: (tagID: TagID) => void;
 }

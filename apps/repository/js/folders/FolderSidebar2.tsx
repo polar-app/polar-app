@@ -9,18 +9,20 @@ import {
     useFolderSidebarCallbacks,
     useFolderSidebarStore
 } from "../folder_sidebar/FolderSidebarStore";
-
-
-
-
-
-
+import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {FolderSidebarMenu} from "./FolderSidebarMenu";
 
 
 // FIXME this works BUT:
 //
 // - nested folders aren't being expanded by default on init.
 // - no context menu...
+
+const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
+const TagsMenu = () => <FolderSidebarMenu type="tag"/>
+
+const FoldersContextMenu = createContextMenu(FoldersMenu);
+const TagsContextMenu = createContextMenu(TagsMenu);
 
 export const FolderSidebar2 = () => {
 
@@ -43,15 +45,7 @@ export const FolderSidebar2 = () => {
                     display: 'flex'
                 }}>
 
-
-                    {/*<InputFilter placeholder="Filter by tag or folder"*/}
-                    {/*             style={{*/}
-                    {/*                 flexGrow: 1*/}
-                    {/*             }}*/}
-                    {/*             onChange={value => this.setFilter(value)}/>*/}
-
                     <MUISearchBox2
-                        // type="search"
                         initialValue={store.filter}
                         placeholder="Filter by tag or folder"
                         style={{
@@ -67,8 +61,6 @@ export const FolderSidebar2 = () => {
                 </div>
             </MUIPaperToolbar>
 
-            {/*FIXME: the root folder needs to have a special name of 'Folders'*/}
-
             <div style={{
                      display: 'flex',
                      flexDirection: 'column',
@@ -77,196 +69,28 @@ export const FolderSidebar2 = () => {
 
                 {store.foldersRoot &&
                     <div style={{marginLeft: '8px'}}>
-                        <MUITreeView root={store.foldersRoot}
-                                     toggleExpanded={callbacks.toggleExpanded}
-                                     selectRow={callbacks.selectRow}
-                                     collapseNode={callbacks.collapseNode}
-                                     expandNode={callbacks.expandNode}
-                                     selected={store.selected}
-                                     expanded={store.expanded}
-                                     onDrop={callbacks.onDrop}
-                                     />
+                        <FoldersContextMenu>
+                            <MUITreeView root={store.foldersRoot}
+                                         toggleExpanded={callbacks.toggleExpanded}
+                                         selectRow={callbacks.selectRow}
+                                         collapseNode={callbacks.collapseNode}
+                                         expandNode={callbacks.expandNode}
+                                         selected={store.selected}
+                                         expanded={store.expanded}
+                                         onDrop={callbacks.onDrop}
+                                         />
+                        </FoldersContextMenu>
                     </div>}
 
-                <MUITagList tags={store.tagsView}
-                            selected={store.selected}
-                            selectRow={callbacks.selectRow}
-                            onDrop={callbacks.onDrop}
-                            />
+                <TagsContextMenu>
+                    <MUITagList tags={store.tagsView}
+                                selected={store.selected}
+                                selectRow={callbacks.selectRow}
+                                onDrop={callbacks.onDrop}/>
+                </TagsContextMenu>
             </div>
 
         </Paper>
     )
 
 };
-
-export const FolderSidebar4 = () => (
-    <div>disabled folder sidebar</div>
-);
-
-export const FolderSidebar5 = () => {
-
-    const store = useFolderSidebarStore();
-    const callbacks = useFolderSidebarCallbacks();
-
-
-    return (
-        <Paper square
-               elevation={0}
-               style={{
-                   flexGrow: 1,
-                   padding: '5px'
-               }}>
-
-
-            {/*{store.foldersRoot &&*/}
-            {/*    <MUITreeView root={store.foldersRoot}*/}
-            {/*                 toggleExpanded={callbacks.toggleExpanded}*/}
-            {/*                 toggleSelected={NULL_FUNCTION}*/}
-            {/*                 collapseNode={callbacks.collapseNode}*/}
-            {/*                 expandNode={callbacks.expandNode}*/}
-            {/*                 selected={store.selected}*/}
-            {/*                 expanded={store.expanded}*/}
-            {/*                 />}*/}
-
-            {/*{store.tagsRoot &&*/}
-            {/*    <MUITreeView root={store.tagsRoot}*/}
-            {/*                 toggleExpanded={callbacks.toggleExpanded}*/}
-            {/*                 toggleSelected={callbacks.toggleSelected}*/}
-            {/*                 collapseNode={callbacks.collapseNode}*/}
-            {/*                 expandNode={callbacks.expandNode}*/}
-            {/*                 selected={store.selected}*/}
-            {/*                 expanded={store.expanded}*/}
-            {/*                 />}*/}
-
-        </Paper>
-    );
-};
-
-// export const FolderSidebar2 = React.memo(() => {
-//
-//     const folderStore = useDocRepoFolderStore();
-//
-//     const {treeState, sidebarFilter, setSidebarFilter} = folderStore;
-//
-//     const tagsContext = useTagsContext()
-//
-//     // private folderContextMenuComponents: ContextMenuComponents;
-//     //
-//     // private tagContextMenuComponents: ContextMenuComponents;
-//
-//
-//     // this.folderContextMenuComponents
-//     //     = FolderContextMenus.create({
-//     //         type: 'folder',
-//     //         treeState,
-//     //         persistenceLayerMutator,
-//     //     });
-//     //
-//     // this.tagContextMenuComponents
-//     //     = FolderContextMenus.create({
-//     //         type: 'tag',
-//     //         treeState,
-//     //         persistenceLayerMutator,
-//     //     });
-//
-//     const computeTags = () => {
-//
-//         const filter = sidebarFilter || "";
-//         const tags = tagsContext?.tagsProvider() || [];
-//
-//         if (filter && ! Strings.empty(filter)) {
-//
-//             const predicate = (tag: Tag) => {
-//                 return tag.label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-//             };
-//
-//             return tags.filter(predicate);
-//         } else {
-//             return tags;
-//         }
-//
-//     };
-//
-//     const tags = computeTags();
-//
-//     return (
-//
-//         <Paper square
-//                style={{
-//                    display: 'flex' ,
-//                    flexDirection: 'column',
-//                    height: '100%'
-//                 }}>
-//
-//             <Paper square
-//                    className=""
-//                    style={{
-//                        height: '100%',
-//                        display: 'flex' ,
-//                        flexDirection: 'column',
-//                    }}>
-//
-//                 {/*{this.folderContextMenuComponents.contextMenu()}*/}
-//
-//                 {/*{this.tagContextMenuComponents.contextMenu()}*/}
-//
-//                 <MUIPaperToolbar borderBottom
-//                                  padding={0.5}>
-//                     <div style={{
-//                              display: 'flex'
-//                          }}>
-//
-//
-//                         {/*<InputFilter placeholder="Filter by tag or folder"*/}
-//                         {/*             style={{*/}
-//                         {/*                 flexGrow: 1*/}
-//                         {/*             }}*/}
-//                         {/*             onChange={value => this.setFilter(value)}/>*/}
-//
-//                         <MUISearchBox2
-//                                // type="search"
-//                                placeholder="Filter by tag or folder"
-//                                style={{
-//                                    flexGrow: 1
-//                                }}
-//                                onChange={setSidebarFilter}/>
-//
-//                         <div className="ml-1">
-//                             {/*FIXME add this back in ...*/}
-//                             {/*<AddTagsDropdown createUserTagCallback={this.folderContextMenuComponents.createUserTag}/>*/}
-//                         </div>
-//
-//                     </div>
-//                 </MUIPaperToolbar>
-//
-//                 <div style={{
-//                         flexGrow: 1,
-//                         overflow: 'auto',
-//                     }}>
-//
-//                     <MUITreeView/>
-//
-//                     <TagTree tags={tags}
-//                              treeState={treeState}
-//                              rootTitle="Folders"
-//                              tagType='folder'
-//                              filterDisabled={true}
-//                              // nodeContextMenuRender={this.folderContextMenuComponents.render}
-//                              noCreate={true}/>
-//
-//                     <TagTree tags={tags}
-//                              treeState={treeState}
-//                              rootTitle="Tags"
-//                              tagType='regular'
-//                              filterDisabled={true}
-//                              // nodeContextMenuRender={this.tagContextMenuComponents.render}
-//                              noCreate={true}/>
-//                 </div>
-//
-//             </Paper>
-//
-//         </Paper>
-//     );
-//
-// }, isEqual);

@@ -9,7 +9,7 @@ const ReviewLayout = (props: any) => {
     const history = useHistory();
 
     const onContinue = () => {
-        history.push({pathname: '/annotations'});
+        history.replace({pathname: '/annotations', hash: ""});
     }
 
     return (

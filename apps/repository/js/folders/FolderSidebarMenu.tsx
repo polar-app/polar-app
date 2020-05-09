@@ -6,12 +6,13 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import * as React from "react";
 import {useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
 import {TagType} from "polar-shared/src/tags/Tags";
+import {Strings} from "polar-shared/src/util/Strings";
 
 interface IProps {
     readonly type: TagType;
 }
 
-export const FolderSidebarMenu = () => {
+export const FolderSidebarMenu = (props: IProps) => {
 
     const callbacks = useAnnotationRepoCallbacks();
 
@@ -19,7 +20,8 @@ export const FolderSidebarMenu = () => {
 
     return (
         <>
-            <MUIMenuItem text="Tag" icon={<LocalOfferIcon/>}
+            <MUIMenuItem text={"Create " + Strings.upperFirst(props.type)}
+                         icon={<LocalOfferIcon/>}
                          onClick={callbacks.onTagged}/>
             <Divider/>
             <MUIMenuItem text="Delete" icon={<DeleteForeverIcon/>}
