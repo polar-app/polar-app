@@ -42,6 +42,11 @@ const GlobalCSSBootstrapStyles = withStyles({
         ".mb-3": { marginBottom: "15px" },
         ".ml-3": { marginLeft: "15px" },
         ".mr-3": { marginRight: "15px" },
+        ".m-4": { margin: "20px" },
+        ".mt-4": { marginTop: "20px" },
+        ".mb-4": { marginBottom: "20px" },
+        ".ml-4": { marginLeft: "20px" },
+        ".mr-4": { marginRight: "20px" },
         ".p-1": { padding: "5px" },
         ".pt-1": { paddingTop: "5px" },
         ".pb-1": { paddingBottom: "5px" },
@@ -57,6 +62,11 @@ const GlobalCSSBootstrapStyles = withStyles({
         ".pb-3": { paddingBottom: "15px" },
         ".pl-3": { paddingLeft: "15px" },
         ".pr-3": { paddingRight: "15px" },
+        ".p-4": { padding: "20px" },
+        ".pt-4": { paddingTop: "20px" },
+        ".pb-4": { paddingBottom: "20px" },
+        ".pl-4": { paddingLeft: "20px" },
+        ".pr-4": { paddingRight: "20px" },
 
     },
 });

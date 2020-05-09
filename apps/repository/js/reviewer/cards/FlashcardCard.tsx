@@ -7,19 +7,22 @@ import {RatingCallback} from "../Reviewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 
 namespace card {
 
     export const Body = (props: any) => (
         <FadeIn>
-            <div className="mb-auto ml-auto mr-auto shadow-narrow p-3 border rounded flashcard"
+            <Paper variant="outlined"
+                   className="mb-auto ml-auto mr-auto shadow-narrow p-3"
                  style={{
                      minWidth: '300px',
                      maxWidth: '700px',
                      width: '85%'
                  }}>
                 {props.children}
-            </div>
+            </Paper>
         </FadeIn>
     );
 
@@ -52,16 +55,19 @@ interface FrontAndBackCardProps {
 }
 const FrontAndBackCard = (props: FrontAndBackCardProps) => (
     <card.Parent>
-        <div className="mb-4">
-            <card.Body>
+        <card.Body>
+
+            <div className="mb-4">
                 {props.front}
-            </card.Body>
-        </div>
-        <div className="mt-4">
-            <card.Body>
+            </div>
+
+            <Divider/>
+
+            <div className="mt-4">
                 {props.back}
-            </card.Body>
-        </div>
+            </div>
+
+        </card.Body>
     </card.Parent>
 );
 
