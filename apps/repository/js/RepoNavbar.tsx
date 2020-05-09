@@ -17,12 +17,12 @@ const TABS: ReadonlyArray<ITabProps> = [
         label: "Annotations",
         link: {pathname: "/annotations"},
     }
-    ,
-    {
-        id: "nav-tab-statistics",
-        label: "Statistics",
-        link: {pathname: "/stats"},
-    }
+    // ,
+    // {
+    //     id: "nav-tab-statistics",
+    //     label: "Statistics",
+    //     link: {pathname: "/stats"},
+    // }
 ].map((current, index) => ({...current, idx: index})) ;
 
 const Styles: IStyleMap = {

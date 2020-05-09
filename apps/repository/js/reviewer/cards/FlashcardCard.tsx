@@ -6,40 +6,19 @@ import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "../Reviewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles} from "@material-ui/core";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-
-const useStyles = makeStyles(() =>
-    createStyles({
-        card: {
-            fontSize: '2.0rem',
-        },
-    }),
-);
+import {CardPaper} from "./CardPaper";
 
 namespace card {
 
     export const Body = (props: any) => {
 
-        const classes = useStyles();
-
         return (
-            <FadeIn>
-                <Paper variant="outlined"
-                       className={"mb-auto ml-auto mr-auto shadow-narrow p-3 " + classes.card}
-                       style={{
-                           minWidth: '300px',
-                           maxWidth: '700px',
-                           width: '85%'
-                       }}>
-                    {props.children}
-                </Paper>
-            </FadeIn>
+            <CardPaper>
+                {props.children}
+            </CardPaper>
         );
     };
 
@@ -124,7 +103,6 @@ export const FlashcardCard = (props: IProps) => {
 
     Preconditions.assertPresent(props.front, 'front');
     Preconditions.assertPresent(props.back, 'back');
-
 
     const {taskRep} = props;
 

@@ -5,6 +5,7 @@ import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../RatingButtons";
 import {RatingCallback} from "../Reviewer";
 import {ReadingTaskAction} from "./ReadingTaskAction";
+import {CardPaper} from "./CardPaper";
 
 export class ReadingCard extends React.Component<IProps, IState> {
 
@@ -22,12 +23,14 @@ export class ReadingCard extends React.Component<IProps, IState> {
 
             <TaskBody.Main taskRep={taskRep}>
 
-                <AnnotationPreview id={id}
-                                   text={action.docAnnotation.text}
-                                   img={action.docAnnotation.img}
-                                   lastUpdated={action.docAnnotation.lastUpdated}
-                                   created={created}
-                                   color={color}/>
+                <CardPaper>
+                    <AnnotationPreview id={id}
+                                       text={action.docAnnotation.text}
+                                       img={action.docAnnotation.img}
+                                       lastUpdated={action.docAnnotation.lastUpdated}
+                                       created={created}
+                                       color={color}/>
+                </CardPaper>
 
             </TaskBody.Main>
 

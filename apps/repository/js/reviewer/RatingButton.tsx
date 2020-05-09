@@ -24,9 +24,9 @@ export class RatingButton<A> extends React.Component<IProps<A>, IState> {
                 case "again":
                     return red[500];
                 case "hard":
-                    return grey[500];
+                    return red[200];
                 case "good":
-                    return grey[500];
+                    return green[200];
                 case "easy":
                     return green[500];
                 default:
