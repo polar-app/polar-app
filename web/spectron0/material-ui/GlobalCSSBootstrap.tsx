@@ -10,7 +10,6 @@ const GlobalCSSBootstrapStyles = withStyles({
     // @global is handled by jss-plugin-global.
     '@global': {
 
-
         ".text-right": {
             textAlign: "right"
         },

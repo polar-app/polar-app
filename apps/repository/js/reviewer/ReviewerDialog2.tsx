@@ -11,6 +11,7 @@ import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import PauseIcon from '@material-ui/icons/Pause';
+import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -30,40 +31,37 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface IProps {
+    readonly open: boolean;
     readonly className?: string;
-    readonly onSuspended?: () => void;
     readonly children: any;
+    readonly onClose: () => void;
 }
 
-export const ReviewerDialog = React.memo((props: IProps) => {
+export const ReviewerDialog2 = React.memo((props: IProps) => {
 
-    const [open, setOpen] = React.useState(true);
     const classes = useStyles();
 
-    const handleClose = () => {
-        const onSuspended = props.onSuspended || NULL_FUNCTION;
-        onSuspended();
-        setOpen(false);
-    };
-
     return (
-        <Dialog fullScreen open={open} TransitionComponent={Transition}>
+        <Dialog fullScreen open={props.open} TransitionComponent={Transition}>
 
             <>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton edge="start"
-                                    color="inherit"
-                                    onClick={handleClose}
-                                    aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
+
+                        <PolarSVGIcon/>
+
                         <Typography variant="h6" className={classes.title}>
                             Review
                         </Typography>
-                        {/*<IconButton  onClick={handleClose}>*/}
+                        {/*<IconButton  onClick={props.onClose}>*/}
                         {/*    <PauseIcon/>*/}
                         {/*</IconButton>*/}
+                        <IconButton edge="start"
+                                    color="inherit"
+                                    onClick={props.onClose}
+                                    aria-label="close">
+                            <CloseIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 {props.children}

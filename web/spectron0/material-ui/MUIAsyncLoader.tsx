@@ -29,7 +29,7 @@ export const MUIAsyncLoader = function<T>(props: IProps<T>) {
     const data = useAsyncWithError({promiseFn: props.provider});
 
     if (data) {
-        return props.render(data);
+        return React.createElement(props.render, data);
     }
 
     return <Loading/>;

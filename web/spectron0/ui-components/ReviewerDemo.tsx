@@ -20,6 +20,8 @@ import {
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {Reviewer2} from "../../../apps/repository/js/reviewer/Reviewer2";
+import {ReviewerDialog2} from "../../../apps/repository/js/reviewer/ReviewerDialog2";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -98,12 +100,19 @@ const doFinished: FinishedCallback = async (cancelled) => {
 
 export const ReviewerDemo = () => (
 
+
+
     <BrowserRouter key="browser-router">
         <Switch location={ReactRouters.createLocationWithPathAndHash()} >
-            <Reviewer2 taskReps={taskReps}
-                       doRating={doRating}
-                       doSuspended={doSuspended}
-                       doFinished={doFinished}/>
+            <ReviewerDialog2 open={true}
+                             onClose={NULL_FUNCTION}>
+
+                <Reviewer2 taskReps={taskReps}
+                           doRating={doRating}
+                           doSuspended={doSuspended}
+                           doFinished={doFinished}/>
+
+            </ReviewerDialog2>
         </Switch>
     </BrowserRouter>
 

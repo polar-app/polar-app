@@ -93,31 +93,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
             <ReviewerDialog className="reviewer"
                             onSuspended={() => this.onSuspended(taskRep)}>
 
-                {/*<Row>*/}
-                {/*    <Row.Main>*/}
-
-                {/*        <b>Review</b>*/}
-
-                {/*    </Row.Main>*/}
-
-                {/*    <Row.Right>*/}
-
-                {/*        <Button onClick={() => this.onSuspended(taskRep)}>*/}
-                {/*            <i className="fas fa-pause"/> suspend*/}
-                {/*        </Button>*/}
-
-                {/*        <Link to={{pathname: '/annotations'}}>*/}
-                {/*            <Button onClick={() => this.props.onFinished(true)}>*/}
-
-                {/*                <i className="fas fa-times"/>*/}
-
-                {/*            </Button>*/}
-                {/*        </Link>*/}
-
-                {/*    </Row.Right>*/}
-
-                {/*</Row>*/}
-
                 <div className="mb-1">
 
                     <LinearProgress variant="determinate"

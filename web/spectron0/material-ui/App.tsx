@@ -166,15 +166,10 @@ export const App = () => {
     }
 
     return (
-        <div>
-            {/*<MUIAsyncLoader provider={provider} render={Foo}/>*/}
-
-            <MUIAppRoot>
-                <CloudSyncConfiguredDialog/>
-            </MUIAppRoot>
-
-            {/*<Loading/>*/}
-        </div>
+        <MUIAppRoot>
+            {/*<CloudSyncConfiguredDialog/>*/}
+            <ReviewerDemo/>
+        </MUIAppRoot>
     );
 
     // return (

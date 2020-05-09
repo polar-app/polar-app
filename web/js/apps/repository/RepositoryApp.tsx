@@ -40,6 +40,7 @@ import {DocRepoSidebarTagStore} from "../../../../apps/repository/js/doc_repo/Do
 import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
 import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
+import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 
 interface IProps {
     readonly app: App;
@@ -88,7 +89,10 @@ export const RepositoryApp = (props: IProps) => {
                                              <MUIDialogController>
                                                  <AnnotationRepoStore2>
                                                      <AnnotationRepoSidebarTagStore>
-                                                         <AnnotationRepoScreen2/>
+                                                         <>
+                                                             <ReviewRouter/>
+                                                             <AnnotationRepoScreen2/>
+                                                         </>
                                                      </AnnotationRepoSidebarTagStore>
                                                  </AnnotationRepoStore2>
                                              </MUIDialogController>

@@ -8,7 +8,6 @@ import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {ReadingCard} from "./cards/ReadingCard";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ReviewFinished} from "./ReviewFinished";
-import {ReviewerDialog} from "./ReviewerDialog";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 
@@ -103,14 +102,18 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
     const dialogs = useDialogManager();
 
-    const pending = [...props.taskReps];
-    const total = props.taskReps.length;
+    const [state, setState] = useState(() => {
 
-    const [state, setState] = useState({
-        taskRep: pending.shift(),
-        pending,
-        total,
-        finished: 0
+        const pending = [...props.taskReps];
+        const total = props.taskReps.length;
+
+        return {
+            taskRep: pending.shift(),
+            pending,
+            total,
+            finished: 0
+        }
+
     });
 
     const handleAsyncCallback = (delegate: () => Promise<void>) => {
@@ -119,7 +122,8 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
             dialogs.snackbar({type: 'error', message: err.message});
         }
 
-        delegate().catch(handleError)
+        delegate()
+            .catch(handleError)
 
     }
 
@@ -182,10 +186,7 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
     const perc = Math.floor(Percentages.calculate(state.finished, state.total));
 
     return (
-
-        <ReviewerDialog className="reviewer"
-                        onSuspended={() => onSuspended(taskRep)}>
-
+        <>
             <div className="mb-1">
 
                 <LinearProgress variant="determinate"
@@ -195,8 +196,7 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
             </div>
 
             <Card taskRep={taskRep} onRating={onRating}/>
-
-        </ReviewerDialog>
+        </>
 
     );
 

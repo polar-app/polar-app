@@ -42,41 +42,6 @@ const AnnotationPreview = (props: AnnotationsPreviewProps) => (
 
 const onClose = () => window.history.back();
 
-const ReviewRouter = () => {
-
-    // <MUIAsyncLoader provider={provider} render={Foo}/>
-
-    const store = useAnnotationRepoStore();
-
-    return (
-
-        <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-            {/*<main.Folders {...props}/>*/}
-
-            <Route path='#folders'
-                   render={() => (
-                       <LeftSidebar onClose={onClose}>
-                           <div>FIXME: folders will go here</div>
-                       </LeftSidebar>
-                   )}/>
-
-            <Route path='#start-review'
-                   render={() => <StartReviewBottomSheet onReading={NULL_FUNCTION} onFlashcards={NULL_FUNCTION}/>}/>
-
-            <Route path='#review-flashcards'>
-                <ReviewerScreen mode="flashcard"
-                                annotations={store.view}/>
-            </Route>
-
-            {/*// <Route path='#review-reading'*/}
-            {/*//        component={() => <IndeterminateLoadingModal id="loading-review"*/}
-            {/*//                                                    provider={() => props.onCreateReviewer('reading')}/>}/>*/}
-
-        </Switch>
-
-    );
-};
 
 namespace main {
 
@@ -263,9 +228,7 @@ namespace screen {
             {/*        {...props}/>*/}
 
             <AnnotationRepoKeyBindings/>
-
-            <ReviewRouter/>
-
+            
             <main.Desktop />
 
             <RepoFooter/>

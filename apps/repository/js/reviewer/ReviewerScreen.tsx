@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Reviewers2} from "./Reviewers2";
@@ -8,6 +8,8 @@ import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MU
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useFirestore} from "../FirestoreProvider";
 import {MUIAsyncLoader} from "../../../../web/spectron0/material-ui/MUIAsyncLoader";
+import {ReviewerDialog2} from "./ReviewerDialog2";
+import isEqual from "react-fast-compare";
 
 
 // FIXME needs to be a dedicated function.
@@ -24,8 +26,6 @@ export function useAsyncWithError<T>(opts: AsyncOptions<T>) {
         })
     }
 
-    console.log("FIXME2: ", data);
-
     return data;
 
 }
@@ -33,10 +33,12 @@ export function useAsyncWithError<T>(opts: AsyncOptions<T>) {
 export interface IProps {
     readonly annotations: ReadonlyArray<IDocAnnotation>;
     readonly mode: RepetitionMode;
+    readonly onClose?: () => void;
     readonly limit?: number;
 }
 
-export const ReviewerScreen = (props: IProps) => {
+
+const Loader = React.memo((props: IProps) => {
 
     const firestore = useFirestore();
 
@@ -44,13 +46,25 @@ export const ReviewerScreen = (props: IProps) => {
         return await Reviewers2.create({firestore, ...props});
     }
 
-    // FIXME: place the ReviewerDialog here, and pass onClose so that we can
-    // close the reviewer dialog.
-
-    // FIXME: Notice is different from dialog as the button is NOT red...
-
     return (
         <MUIAsyncLoader provider={provider} render={Reviewer2}/>
     );
 
-}
+}, isEqual);
+
+export const ReviewerScreen = React.memo((props: IProps) => {
+
+    // FIXME: Notice is different from dialog as the button is NOT red...
+
+    const [open, setOpen] = useState<boolean>(true);
+    const handleClose = React.useCallback(() => setOpen(false), []);
+
+    return (
+        <ReviewerDialog2 className="reviewer"
+                         open={open}
+                         onClose={handleClose}>
+            <Loader {...props}/>
+        </ReviewerDialog2>
+    );
+
+}, isEqual);
