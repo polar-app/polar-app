@@ -25,22 +25,22 @@ export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
         return (
             <MUIMenu id="start-review-dropdown"
                      button={{
-                                color: "primary",
-                                text: 'Start Review',
-                                size: 'large',
-                                disableRipple: true,
-                                disableFocusRipple: true,
-                                icon: <RateReviewIcon/>
-                             }}
+                         color: "primary",
+                         text: 'Start Review',
+                         size: 'large',
+                         disableRipple: true,
+                         disableFocusRipple: true,
+                         icon: <RateReviewIcon/>
+                     }}
                      caret>
                 <div>
 
-                    <MUIRouterLink to={{pathname: '/annotations', hash: '#review-reading'}}>
-                        <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
-                    </MUIRouterLink>
-
                     <MUIRouterLink to={{pathname: '/annotations', hash: '#review-flashcards'}}>
                         <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>} />
+                    </MUIRouterLink>
+
+                    <MUIRouterLink to={{pathname: '/annotations', hash: '#review-reading'}}>
+                        <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
                     </MUIRouterLink>
 
                 </div>
