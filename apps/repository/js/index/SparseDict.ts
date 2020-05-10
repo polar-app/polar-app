@@ -39,7 +39,6 @@ export class SparseDict<K, V> {
             const value = this.backing[key];
 
             if (value && predicate(value)) {
-                console.log("FIXME999: deleting: " + key);
                 delete this.backing[key];
             }
 
