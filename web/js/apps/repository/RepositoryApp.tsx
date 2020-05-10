@@ -41,6 +41,7 @@ import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/anno
 import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
+import {ComponentProgressLoader} from "../../../../apps/repository/js/ComponentProgressLoader";
 
 interface IProps {
     readonly app: App;
@@ -55,52 +56,48 @@ export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
-    const RenderDocRepoScreen = () => (
-            <Cached>
-                <AuthRequired authStatus={app.authStatus}>
-                    <PersistenceLayerApp tagsType="documents"
-                                         repoDocMetaManager={repoDocMetaManager}
-                                         repoDocMetaLoader={repoDocMetaLoader}
-                                         persistenceLayerManager={persistenceLayerManager}
-                                         render={(docRepo) =>
-                                             <MUIDialogController>
-                                                 <DocRepoStore2>
-                                                     <DocRepoSidebarTagStore>
-                                                         <DocRepoScreen2
-                                                             persistenceLayerProvider={app.persistenceLayerProvider}
-                                                             persistenceLayerController={app.persistenceLayerController}/>
-                                                     </DocRepoSidebarTagStore>
-                                                 </DocRepoStore2>
-                                             </MUIDialogController>
-                                         }/>
-                </AuthRequired>
-            </Cached>
-        );
+    const RenderDocRepoScreen = React.memo(() => (
+            <AuthRequired authStatus={app.authStatus}>
+                <PersistenceLayerApp tagsType="documents"
+                                     repoDocMetaManager={repoDocMetaManager}
+                                     repoDocMetaLoader={repoDocMetaLoader}
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(docRepo) =>
+                                         <MUIDialogController>
+                                             <DocRepoStore2>
+                                                 <DocRepoSidebarTagStore>
+                                                     <DocRepoScreen2
+                                                         persistenceLayerProvider={app.persistenceLayerProvider}
+                                                         persistenceLayerController={app.persistenceLayerController}/>
+                                                 </DocRepoSidebarTagStore>
+                                             </DocRepoStore2>
+                                         </MUIDialogController>
+                                     }/>
+            </AuthRequired>
+        ));
 
-    const renderAnnotationRepoScreen = () => {
+    const renderAnnotationRepoScreen = React.memo(() => {
         return (
-            <Cached>
-                <AuthRequired authStatus={app.authStatus}>
-                    <PersistenceLayerApp tagsType="annotations"
-                                         repoDocMetaManager={repoDocMetaManager}
-                                         repoDocMetaLoader={repoDocMetaLoader}
-                                         persistenceLayerManager={persistenceLayerManager}
-                                         render={(props) =>
-                                             <MUIDialogController>
-                                                 <AnnotationRepoStore2>
-                                                     <AnnotationRepoSidebarTagStore>
-                                                         <>
-                                                             <ReviewRouter/>
-                                                             <AnnotationRepoScreen2/>
-                                                         </>
-                                                     </AnnotationRepoSidebarTagStore>
-                                                 </AnnotationRepoStore2>
-                                             </MUIDialogController>
-                                         }/>
-                </AuthRequired>
-            </Cached>
+            <AuthRequired authStatus={app.authStatus}>
+                <PersistenceLayerApp tagsType="annotations"
+                                     repoDocMetaManager={repoDocMetaManager}
+                                     repoDocMetaLoader={repoDocMetaLoader}
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(props) =>
+                                         <MUIDialogController>
+                                             <AnnotationRepoStore2>
+                                                 <AnnotationRepoSidebarTagStore>
+                                                     <>
+                                                         <ReviewRouter/>
+                                                         <AnnotationRepoScreen2/>
+                                                     </>
+                                                 </AnnotationRepoSidebarTagStore>
+                                             </AnnotationRepoStore2>
+                                         </MUIDialogController>
+                                     }/>
+            </AuthRequired>
         );
-    };
+    });
 
 
     const RenderSettingsScreen = () => (

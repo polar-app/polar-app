@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
     createMuiTheme,
     MuiThemeProvider,
@@ -172,8 +172,42 @@ export const App = () => {
         );
     }
 
+    const CompA = () => {
+        useEffect(() => console.log("A"));
+
+        return (
+            <>
+                <LinearProgress style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 0,
+                                    height: 1,
+                                    width: '100%'
+                                }}/>
+                <div>A</div>
+            </>
+        );
+    }
+
+    const CompB = () => {
+        useEffect(() => console.log("B"));
+        return <div>B</div>;
+    }
+
+    const CompC = () => {
+        useEffect(() => console.log("C"));
+        return <div>C</div>;
+    }
+
+    // const ComponentProgressLoader =
+
     return (
         <MUIAppRoot>
+
+            <CompA/>
+            <CompB/>
+            <CompC/>
+
             {/*<CloudSyncConfiguredDialog/>*/}
 
             {/*red500: {red[500]} <br/>*/}
@@ -186,7 +220,7 @@ export const App = () => {
             {/*    this is a button*/}
             {/*</ColorButton>*/}
 
-            <ReviewerDemo/>
+            {/*<ReviewerDemo/>*/}
 
             {/*<Paper>*/}
 
