@@ -14,14 +14,24 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
-import {
-    IColorMutation,
-    useAnnotationMutationsContext
-} from "./AnnotationMutationsContext";
+import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
-import {useCallback} from "react";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import {createStyles, Theme} from "@material-ui/core";
+
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        // TODO: this isn't working as the buttons aren't taking the classname
+        // properly.
+        buttons: {
+            color: theme.palette.text.secondary,
+        },
+    }),
+);
+
 
 interface IMutableProps {
     readonly mutable: boolean;
@@ -95,6 +105,8 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
     const docMetaContext = useDocMetaContext();
     const annotationMutations = useAnnotationMutationsContext()
 
+    const classes = useStyles();
+
     const handleColor = annotationMutations.createColorCallback({
         selected: [annotation],
     });
@@ -118,8 +130,8 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                     </MUIButtonBar>
 
-                    {/*<MUIHoverListener style={{display: 'flex', flexGrow: 1}}>*/}
                     <MUIButtonBar key="right-bar"
+                                  className={classes.buttons}
                                   style={{
                                       justifyContent: 'flex-end',
                                       flexGrow: 1
@@ -141,16 +153,6 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                                                 disabled={annotation.immutable}
                                                 annotation={annotation}/>
                     </MUIButtonBar>
-
-                    {/*</MUIHoverListener>*/}
-
-                    {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
-
-                    {/*<TagInputControl className='ml-1 p-1 text-muted'*/}
-                    {/*                 container="body"*/}
-                    {/*                 availableTags={this.props.tagsProvider()}*/}
-                    {/*                 existingTags={() => annotation.tags ? Object.values(annotation.tags) : []}*/}
-                    {/*                 onChange={(tags) => this.onTagged(tags)}/>*/}
 
                 </div>
 
