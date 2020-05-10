@@ -95,7 +95,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             return {};
         }
 
-        log.notice("Initializing FirebaseDatastore.");
+        log.notice("Initializing FirebaseDatastore...");
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
@@ -121,6 +121,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         }
 
         this.initialized = true;
+
+        log.notice("Initializing FirebaseDatastore...done");
 
         return {};
 

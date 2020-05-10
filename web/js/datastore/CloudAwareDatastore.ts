@@ -456,8 +456,15 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const synchronizingListener = synchronizingEventDeduplicator.listener;
 
         log.info("Local snapshot...");
+
+        console.time("localSnapshot");
+
         const localSnapshotResultPromise = localInitialSnapshotLatch.createSnapshot(this.local);
         await localInitialSnapshotLatch.latch.get();
+
+        // FIXME this is taking 26 seconds.
+        console.timeEnd("localSnapshot");
+
         log.info("Local snapshot...done");
 
         log.info("Cloud snapshot...");

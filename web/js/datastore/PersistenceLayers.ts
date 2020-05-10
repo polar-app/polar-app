@@ -253,20 +253,16 @@ export class PersistenceLayers {
 
             ++result.docMeta.total;
 
-            for (const sourceSyncFile of sourceSyncDoc.files) {
+            /**
+             * Return true if we should write doc meta because it's stale.
+             */
+            function computeWriteDocMeta(): boolean {
 
-                if (sourceSyncFile.name) {
-                    // TODO: if we use the second queue it still locks up.
-                    // await docFileAsyncWorkQueue.enqueue(async () =>
-                    // handleStashFile(docFile));
-                    await handleSyncFile(sourceSyncDoc, sourceSyncFile);
+                if (! targetSyncDoc) {
+                    // the target doc is missing so we absolutely have to write
+                    // it
+                    return true;
                 }
-
-            }
-
-            let doWriteDocMeta: boolean = ! targetSyncDoc;
-
-            if (targetSyncDoc) {
 
                 const cmp = UUIDs.compare(targetSyncDoc.uuid, sourceSyncDoc.uuid);
 
@@ -274,11 +270,24 @@ export class PersistenceLayers {
                 // have a conflict which we need to surface to the user but this
                 // is insanely rare.
 
-                doWriteDocMeta = cmp < 0;
+                return cmp < 0;
 
             }
 
-            if (doWriteDocMeta) {
+            const targetStale = computeWriteDocMeta();
+
+            if (targetStale) {
+
+                for (const sourceSyncFile of sourceSyncDoc.files) {
+
+                    if (sourceSyncFile.name) {
+                        // TODO: if we use the second queue it still locks up.
+                        // await docFileAsyncWorkQueue.enqueue(async () =>
+                        // handleStashFile(docFile));
+                        await handleSyncFile(sourceSyncDoc, sourceSyncFile);
+                    }
+
+                }
 
                 const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
 
@@ -299,7 +308,7 @@ export class PersistenceLayers {
                 progress,
 
                 // this should be committed as we're starting with the source
-                // which we think should be at the commmitted level to start
+                // which we think should be at the committed level to start
                 // with
 
                 consistency: 'committed',

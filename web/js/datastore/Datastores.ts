@@ -67,6 +67,8 @@ export class Datastores {
                                                 listener: DocMetaSnapshotEventListener,
                                                 batch?: DocMetaSnapshotBatch): Promise<SnapshotResult> {
 
+        console.time("createCommittedSnapshot");
+
         if (! batch) {
 
             // for most of our usages we just receive the first batch and we're
@@ -79,7 +81,9 @@ export class Datastores {
 
         }
 
+        console.time("getDocMetaRefs");
         const docMetaFiles = await datastore.getDocMetaRefs();
+        console.timeEnd("getDocMetaRefs");
 
         const progressTracker = new ProgressTracker({total: docMetaFiles.length, id: `datastore:${datastore.id}#snapshot`});
 
@@ -96,14 +100,55 @@ export class Datastores {
         // percMax))   This will give us an ideal batch size so that we update
         // the UI every 1% OR the maxBatchSize...
 
+        const durations = {
+            data: 0,
+            docMeta: 0,
+            docInfo: 0,
+            docMetaFileRef: 0
+        }
+
         for (const docMetaFile of docMetaFiles) {
+
+            // console.time("docMetaFile:" + docMetaFile.fingerprint);
 
             // // TODO: in the cloud store implementation it will probably be much
             // // faster to use a file JUST for the DocInfo to speed up loading.
-            const dataProvider = AsyncProviders.memoize(async () => await datastore.getDocMeta(docMetaFile.fingerprint));
-            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!, docMetaFile.fingerprint));
-            const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
-            const docMetaFileRefProvider = AsyncProviders.memoize(async () => DocMetaFileRefs.createFromDocInfo(await docInfoProvider()));
+            const dataProvider = AsyncProviders.memoize(async () => {
+                const before = Date.now();
+                try {
+                    return await datastore.getDocMeta(docMetaFile.fingerprint);
+                } finally {
+                    durations.data += Date.now() - before;
+                }
+            });
+
+            const docMetaProvider = AsyncProviders.memoize(async () => {
+                const before = Date.now();
+                try {
+                    const data = await dataProvider();
+                    return DocMetas.deserialize(data!, docMetaFile.fingerprint);
+                } finally {
+                    durations.docMeta += Date.now() - before;
+                }
+            });
+
+            const docInfoProvider = AsyncProviders.memoize(async () => {
+                const before = Date.now();
+                try {
+                    return (await docMetaProvider()).docInfo;
+                } finally {
+                    durations.docInfo += Date.now() - before;
+                }
+            });
+
+            const docMetaFileRefProvider = AsyncProviders.memoize(async () => {
+                const before = Date.now();
+                try {
+                    return DocMetaFileRefs.createFromDocInfo(await docInfoProvider());
+                } finally {
+                    durations.docMetaFileRef += Date.now() - before;
+                }
+            });
 
             const docMetaMutation: DocMetaMutation = {
                 fingerprint: docMetaFile.fingerprint,
@@ -122,7 +167,11 @@ export class Datastores {
                 batch
             });
 
+            // console.timeEnd("docMetaFile:" + docMetaFile.fingerprint);
+
         }
+
+        console.log("Durations: ", durations);
 
         await listener({
             datastore: datastore.id,
@@ -134,6 +183,8 @@ export class Datastores {
                 terminated: true,
             }
         });
+
+        console.timeEnd("createCommittedSnapshot");
 
         return { };
 

@@ -19,6 +19,8 @@ export class RatingButton<A> extends React.Component<IProps<A>, IState> {
 
         const {rating, taskRep} = this.props;
 
+        // FIXME: this is a bug because if we only have three ratings the
+        // middle one needs to be grey[500]
         const createColor = (): string => {
             switch (rating) {
                 case "again":
