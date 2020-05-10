@@ -7,11 +7,11 @@ import {
     SetStore
 } from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 import {
-    usePersistence, useRepoDocMetaManager,
+    usePersistence,
+    useRepoDocMetaManager,
     useTagsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
@@ -19,13 +19,12 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
+import {Logger} from "polar-shared/src/logger/Logger";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {BatchMutators} from "../BatchMutators";
 import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
-import {Logger} from "polar-shared/src/logger/Logger";
-import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
-import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {BatchMutators} from "../BatchMutators";
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 
 const log = Logger.create();

@@ -14,9 +14,6 @@ import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {MUITagInputControls} from "../MUITagInputControls";
-import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {
@@ -41,20 +38,16 @@ import {Directories} from "../../../../web/js/datastore/Directories";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {shell} from "electron";
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {ProgressMessages} from "../../../../web/js/ui/progress_bar/ProgressMessages";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {
     TagSidebarEventForwarder,
     TagSidebarEventForwarderContext
 } from "../store/TagSidebarEventForwarder";
 import {SelectionEvents2} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import {BatchMutators} from "../BatchMutators";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 
 const log = Logger.create();

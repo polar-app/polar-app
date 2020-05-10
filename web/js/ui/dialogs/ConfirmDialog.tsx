@@ -119,7 +119,7 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
             </DialogContent>
             <DialogActions>
 
-                {props.noCancel &&
+                {! props.noCancel &&
                     <Button className={classes.cancelButton}
                             onClick={handleCancel}
                             size="large">

@@ -91,7 +91,7 @@ export class PDFApp {
         };
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
-          // noop
+            console.log("onHighlighted: ", highlightCreatedEvent);
         };
 
         const annotationBarCallbacks: AnnotationBarCallbacks = {
