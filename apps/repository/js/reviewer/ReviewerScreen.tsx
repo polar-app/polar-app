@@ -10,6 +10,7 @@ import {useFirestore} from "../FirestoreProvider";
 import {MUIAsyncLoader} from "../../../../web/spectron0/material-ui/MUIAsyncLoader";
 import {ReviewerDialog2} from "./ReviewerDialog2";
 import isEqual from "react-fast-compare";
+import { useHistory } from 'react-router-dom';
 
 
 // FIXME needs to be a dedicated function.
@@ -37,25 +38,20 @@ export interface IProps {
     readonly limit?: number;
 }
 
-
-const Loader = React.memo((props: IProps) => {
+export const ReviewerScreen = React.memo((props: IProps) => {
 
     const firestore = useFirestore();
+    const history = useHistory();
+
+    const [open, setOpen] = useState<boolean>(true);
+    const handleClose = React.useCallback(() => {
+        setOpen(false);
+        history.replace({pathname: "/annotations", hash: ""});
+    }, []);
 
     async function provider() {
         return await Reviewers2.create({firestore, ...props});
     }
-
-    return (
-        <MUIAsyncLoader provider={provider} render={Reviewer2}/>
-    );
-
-}, isEqual);
-
-export const ReviewerScreen = React.memo((props: IProps) => {
-
-    const [open, setOpen] = useState<boolean>(true);
-    const handleClose = React.useCallback(() => setOpen(false), []);
 
     // FIXME: suspend isn't being run here... we might need to migrate to a
     // store rather than prop drilling which is a pain.
@@ -64,7 +60,9 @@ export const ReviewerScreen = React.memo((props: IProps) => {
         <ReviewerDialog2 className="reviewer"
                          open={open}
                          onClose={handleClose}>
-            <Loader {...props}/>
+
+            <MUIAsyncLoader provider={provider} render={Reviewer2} onReject={handleClose}/>
+
         </ReviewerDialog2>
     );
 
