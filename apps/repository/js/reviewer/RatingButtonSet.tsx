@@ -7,11 +7,11 @@ import {RatingButton2} from './RatingButton2';
 
 export interface IProps<A> {
     readonly taskRep: TaskRep<A>;
-    readonly ratings: ReadonlyArray<IRatingButton>;
+    readonly options: ReadonlyArray<IRatingOption>;
     readonly onRating: RatingCallback<A>;
 }
 
-export interface IRatingButton {
+export interface IRatingOption {
     readonly rating: Rating;
     readonly color: string;
 }
@@ -24,17 +24,17 @@ export class RatingButtonSet<A> extends React.Component<IProps<A>> {
 
     public render() {
 
-        const {ratings, taskRep} = this.props;
+        const {options, taskRep} = this.props;
 
         return (
             <MUIButtonBar>
 
-                {ratings.map(rating => (
-                    <RatingButton2 key={rating.rating}
+                {options.map(option => (
+                    <RatingButton2 key={option.rating}
                                    taskRep={taskRep}
-                                   rating={rating.rating}
-                                   color={rating.color}
-                                   onRating={() => this.props.onRating(taskRep, rating.rating)}/>
+                                   rating={option.rating}
+                                   color={option.color}
+                                   onRating={() => this.props.onRating(taskRep, option.rating)}/>
                     ))}
 
             </MUIButtonBar>

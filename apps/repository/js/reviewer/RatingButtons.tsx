@@ -2,12 +2,12 @@ import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "./Reviewer";
 import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {IRatingButton, RatingButtonSet} from "./RatingButtonSet";
+import {IRatingOption, RatingButtonSet} from "./RatingButtonSet";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import grey from '@material-ui/core/colors/grey';
 
-const LEARNING_BUTTONS: ReadonlyArray<IRatingButton> = [
+const LEARNING_BUTTONS: ReadonlyArray<IRatingOption> = [
     {
         rating: 'again',
         color: red[500]
@@ -22,7 +22,7 @@ const LEARNING_BUTTONS: ReadonlyArray<IRatingButton> = [
     },
 ];
 
-const REVIEW_BUTTONS: ReadonlyArray<IRatingButton> = [
+const REVIEW_BUTTONS: ReadonlyArray<IRatingOption> = [
     {
         rating: 'again',
         color: red[500]
@@ -59,13 +59,13 @@ export class RatingButtons<A> extends React.Component<IProps<A>> {
 
         const Learning = () => {
             return <RatingButtonSet taskRep={this.props.taskRep}
-                                    ratings={LEARNING_BUTTONS}
+                                    options={LEARNING_BUTTONS}
                                     onRating={this.props.onRating}/>;
         };
 
         const Review = () => {
             return <RatingButtonSet taskRep={this.props.taskRep}
-                                    ratings={REVIEW_BUTTONS}
+                                    options={REVIEW_BUTTONS}
                                     onRating={this.props.onRating}/>;
         };
 
