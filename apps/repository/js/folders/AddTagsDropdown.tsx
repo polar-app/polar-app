@@ -3,9 +3,8 @@ import AddIcon from '@material-ui/icons/Add';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
-import {MUIPopper} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIPopper";
 import isEqual from "react-fast-compare";
-import Menu from '@material-ui/core/Menu';
+import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
 
 interface IProps {
     readonly onCreateFolder: () => void;
@@ -17,9 +16,10 @@ export const AddTagsDropdown = React.memo((props: IProps) => {
     return (
 
         <div>
-            <MUIPopper icon={<AddIcon/>}
-                       placement="bottom-end">
-
+            <MUIMenu button={{
+                        icon: <AddIcon/>
+                     }}
+                     placement="bottom-end">
                 <div>
 
                     <MUIMenuItem onClick={props.onCreateFolder}
@@ -32,7 +32,7 @@ export const AddTagsDropdown = React.memo((props: IProps) => {
 
                 </div>
 
-            </MUIPopper>
+            </MUIMenu>
         </div>
 
     );

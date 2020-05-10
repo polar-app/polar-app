@@ -151,7 +151,6 @@ export const MUIMenu = (props: IProps) => {
                                               onClick={handleClose}
                                               onKeyDown={handleListKeyDown}>
                                         {props.children}
-
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
