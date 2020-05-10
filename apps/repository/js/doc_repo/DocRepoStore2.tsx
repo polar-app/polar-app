@@ -54,6 +54,8 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
+import {BatchMutators} from "../BatchMutators";
+import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 
 const log = Logger.create();
 
@@ -296,80 +298,14 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    interface BatchMutatorOpts {
-        readonly success?: string;
-        readonly error?: string;
-        readonly id?: string;
-    }
+    async function withBatch<T>(promises: ReadonlyArray<Promise<T>>,
+                                opts: Partial<BatchMutatorOpts> = {}) {
 
-    async function batchMutator<T>(promises: ReadonlyArray<Promise<T>>,
-                                   opts: BatchMutatorOpts = {}) {
-
-        const id = opts.id || Hashcodes.createRandomID();
-
-        interface ProgressReporter {
-            readonly incr: () => void;
-            readonly terminate: () => void;
-        }
-
-        function createProgressReporter(): ProgressReporter {
-
-            if (promises.length <= 1) {
-                return {
-                    incr: NULL_FUNCTION,
-                    terminate: NULL_FUNCTION
-                };
-            }
-
-            const progressTracker = new ProgressTracker({
-                total: promises.length,
-                id
-            });
-
-            const incr = () => {
-                const progress = progressTracker.incr();
-                ProgressMessages.broadcast(progress);
-            }
-
-            const terminate = () => {
-                ProgressMessages.broadcast(progressTracker.terminate());
-            }
-
-            return {incr, terminate};
-
-        }
-
-        const progressReporter = createProgressReporter();
-
-        try {
-
-            for (const promise of promises) {
-                // TODO update progress of this operation using a snackbar
-                await promise;
-
-                // now refresh the UI
-                mutator.refresh();
-                progressReporter.incr();
-
-            }
-
-            if (opts.success) {
-                dialogs.snackbar({message: opts.success});
-            }
-
-        } catch (e) {
-
-            if (opts.error) {
-                dialogs.snackbar({
-                    message: opts.error + e.message,
-                    type: 'error'
-                });
-            }
-
-        }
-
-        // final must be sent...
-        progressReporter.terminate();
+        await BatchMutators.exec(promises, {
+            ...opts,
+            refresh: mutator.refresh,
+            dialogs
+        });
 
     }
 
@@ -494,7 +430,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
         }
 
-        batchMutator(repoDocInfos.map(toPromise))
+        withBatch(repoDocInfos.map(toPromise))
             .catch(err => log.error(err));
 
     }
@@ -511,7 +447,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const error = "Failed to some documents: ";
 
         async function doHandle() {
-            await batchMutator(repoDocInfos.map(toPromise), {success, error});
+            await withBatch(repoDocInfos.map(toPromise), {success, error});
         }
 
         doHandle()
@@ -531,7 +467,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const error = "Failed to flag some documents: ";
 
         async function doHandle() {
-            await batchMutator(repoDocInfos.map(toPromise), {success, error});
+            await withBatch(repoDocInfos.map(toPromise), {success, error});
         }
 
         doHandle()
@@ -581,7 +517,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             const error = `Failed to delete document: `;
 
             async function doHandle() {
-                await batchMutator(repoDocInfos.map(toPromise), {success, error});
+                await withBatch(repoDocInfos.map(toPromise), {success, error});
             }
 
             doHandle()

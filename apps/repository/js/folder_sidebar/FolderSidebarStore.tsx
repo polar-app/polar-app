@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
+import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
@@ -11,7 +11,7 @@ import {useRepoDocInfos} from "../doc_repo/DocRepoHooks";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 import {
-    usePersistence,
+    usePersistence, useRepoDocMetaManager,
     useTagsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
@@ -23,6 +23,8 @@ import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
 import {Logger} from "polar-shared/src/logger/Logger";
+import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
+import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 
 const log = Logger.create();
 
@@ -213,11 +215,16 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     //
     // TODO: This isn't an amazingly good way to listen for updates since we're
     // just trying to get the tagsContext working..
-    const repoDocInfos = useRepoDocInfos();
+
+    const repoDocMetaManager = useRepoDocMetaManager();
     const tagsContext = useTagsContext();
     const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
     const persistence = usePersistence();
+
+    const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
+                                                                persistence.persistenceLayerProvider,
+                                                                tagsContext.tagsProvider);
 
     function doHookUpdate() {
 
@@ -352,6 +359,9 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         }
 
+        // FIXME: I'm going to have to go through and inject my own log.error
+        // handling
+
         // FIXME: use dialogs.error here() if this fails
         doHandle()
             .catch(err => log.error("Unable to create tag: " + newTag, err));
@@ -386,8 +396,38 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function selectedTags(): ReadonlyArray<Tag> {
+        const store = storeProvider();
+        const tagsMap = Tags.toMap(store.tags);
+        return store.selected.map(current => tagsMap[current]);
+    }
+
+    function doDelete(selected: ReadonlyArray<Tag>) {
+
+        // FIXME use the batch mutations API for doing this in the UI including
+        // updating the progress when necessary.
+
+        persistenceLayerMutator.deleteTag(tag)
+                               .catch(err => log.error("Unable to delete tag: " + tag, err));
+
+    }
+
     function onDelete() {
-        // FIXME: noop
+
+        const selected = selectedTags();
+
+        dialogs.confirm({
+            title: `Are you sure you want to delete these tags/folders?`,
+            subtitle: <div>
+                <p>
+                    This is a permanent operation and can't be undone.
+                </p>
+                </div>,
+            onCancel: NULL_FUNCTION,
+            type: 'danger',
+            onAccept: () => doDelete(selected)
+        });
+
     }
 
     return {
