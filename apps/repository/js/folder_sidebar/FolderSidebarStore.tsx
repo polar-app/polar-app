@@ -77,6 +77,8 @@ interface IFolderSidebarCallbacks {
      */
     readonly onDrop: (tagID: TagID) => void;
 
+    readonly onDelete: () => void;
+
 }
 
 const initialStore: IFolderSidebarStore = {
@@ -384,6 +386,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function onDelete() {
+        // FIXME: noop
+    }
+
     return {
         toggleExpanded,
         collapseNode,
@@ -391,7 +397,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         setFilter,
         selectRow,
         onCreateUserTag,
-        onDrop
+        onDrop,
+        onDelete
     };
 
 }
@@ -414,20 +421,3 @@ export function useFolderSidebarStore() {
 export function useFolderSidebarCallbacks() {
     return useContext(FolderSidebarCallbacksContext);
 }
-
-// export const [FolderSidebarStoreProvider, useFolderSidebarStore, useFolderSidebarCallbacks]
-//     = createFolderSidebarStore();
-
-// interface IProps {
-//     readonly children: JSX.Element;
-// }
-//
-// export const FolderSidebarStore = (props: IProps) => {
-//
-//     return (
-//         <FolderSidebarStoreProvider>
-//             {props.children}
-//         </FolderSidebarStoreProvider>
-//     )
-//
-// }

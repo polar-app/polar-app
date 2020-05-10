@@ -10,14 +10,14 @@ const FirstPage = () => {
 
     return (
         <FadeIn>
-            this is the first page
+            <div>this is the first page</div>
         </FadeIn>
     );
 };
 
 const SecondPage = () => (
     <FadeIn>
-        this is the second page
+        <div>this is the second page</div>
     </FadeIn>
 );
 

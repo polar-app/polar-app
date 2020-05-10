@@ -35,22 +35,6 @@ const Main = () => {
     return <div style={{backgroundColor: 'blue'}}>this is the right</div>;
 };
 
-const FirstPage = () => {
-
-    console.log("FIXME: RENDER first");
-
-    return (
-        <FadeIn>
-            this is the first page
-        </FadeIn>
-    );
-};
-
-const SecondPage = () => (
-    <FadeIn>
-        this is the second page
-    </FadeIn>
-);
 
 const ThirdPage = () => (
     <div>
