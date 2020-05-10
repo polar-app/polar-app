@@ -25,6 +25,8 @@ import SelfSelected = FolderSelectionEvents.SelfSelected;
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
+import {BatchMutators} from "../BatchMutators";
+import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 
 const log = Logger.create();
 
@@ -402,13 +404,24 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         return store.selected.map(current => tagsMap[current]);
     }
 
+    async function withBatch<T>(promises: ReadonlyArray<Promise<T>>,
+                                opts: Partial<BatchMutatorOpts> = {}) {
+
+        await BatchMutators.exec(promises, {
+            ...opts,
+            refresh: NULL_FUNCTION,
+            dialogs
+        });
+
+    }
+
     function doDelete(selected: ReadonlyArray<Tag>) {
 
-        // FIXME use the batch mutations API for doing this in the UI including
-        // updating the progress when necessary.
+        const promises = selected.map(tag => tag.id)
+                                 .map(tag => persistenceLayerMutator.deleteTag(tag));
 
-        persistenceLayerMutator.deleteTag(tag)
-                               .catch(err => log.error("Unable to delete tag: " + tag, err));
+        withBatch(promises, {error: "Unable to delete tag: "})
+            .catch(err => log.error(err));
 
     }
 
