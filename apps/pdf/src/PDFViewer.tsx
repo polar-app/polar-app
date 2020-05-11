@@ -13,7 +13,6 @@ import {Finder, FindHandler} from "./Finders";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {FindToolbar} from "./FindToolbar";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {GlobalHotKeys} from "react-hotkeys";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {PDFAppURLs} from "./PDFAppURLs";
@@ -28,6 +27,10 @@ import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
 import {Tag} from "polar-shared/src/tags/Tags";
+import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
+import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import isEqual from "react-fast-compare";
+import { useAnnotationSidebarStore } from "./AnnotationSidebarStore";
 
 const log = Logger.create();
 
@@ -44,38 +47,26 @@ interface IState {
     readonly pdfDocMeta?: PDFDocMeta
     readonly pdfPageNavigator?: PDFPageNavigator;
     readonly scaleLeveler?: ScaleLeveler;
-    readonly docMeta?: IDocMeta;
-    readonly docURL?: URLStr;
 }
 
 const globalKeyMap = {
     FIND: 'command+f'
 };
 
-export class PDFViewer extends React.Component<IProps, IState> {
+export const PDFViewer = React.memo((props: IProps) => {
 
-    constructor(props: Readonly<IProps>) {
-        super(props);
+    const [state, setState] = React.useState<IState>({});
 
-        this.onFinder = this.onFinder.bind(this);
-        this.onFind = this.onFind.bind(this);
-        this.onFindExecute = this.onFindExecute.bind(this);
-        this.onDockLayoutResize = this.onDockLayoutResize.bind(this);
-        this.onResizer = this.onResizer.bind(this);
-        this.onPDFDocMeta = this.onPDFDocMeta.bind(this);
-        this.onPDFPageNavigator = this.onPDFPageNavigator.bind(this);
-        this.onPageNext = this.onPageNext.bind(this);
-        this.onPagePrev = this.onPagePrev.bind(this);
-        this.onPageJump = this.onPageJump.bind(this);
-        this.doPageNav = this.doPageNav.bind(this);
-        this.onScale = this.onScale.bind(this);
+    const callbacks = useDocViewerCallbacks();
+    const store = useDocViewerStore();
 
-        this.state = {
-        }
+    const annotationSidebarStore = useAnnotationSidebarStore();
 
-    }
+    // FIXME: I think I can have hard wired types for state transition functions
+    // like an uninitialized store, with missing values, then an initialized
+    // one with a different 'type' value.
 
-    public componentDidMount(): void {
+    useComponentDidMount(() => {
 
         const handleLoad = async () => {
 
@@ -89,7 +80,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
             // FIXME use DataLoader with this ...
             // FIXME use a Progress control so the page shows itself loading state
 
-            const persistenceLayer = this.props.persistenceLayerProvider();
+            const persistenceLayer = props.persistenceLayerProvider();
 
             // FIXME: load the file too
 
@@ -98,8 +89,9 @@ export class PDFViewer extends React.Component<IProps, IState> {
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {
-                    console.log("FIXME: got snapshot!");
-                    this.onDocMeta(snapshot.data);
+                    // TODO/FIXME: we need a better way to flag that the
+                    // document was deleted vs not initialized.
+                    callbacks.setDocMeta(snapshot.data!);
                 }),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);
@@ -109,159 +101,36 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
         };
 
-        handleLoad().catch(err => log.error(err));
+        handleLoad()
+            .catch(err => log.error(err));
+
+    });
+
+    function onFinder(finder: Finder) {
+
+        setState({
+                     ...state,
+                     finder
+                 })
 
     }
 
-    public render() {
+    function onFind() {
 
-        const globalKeyHandlers = {
-            FIND: () => this.onFind()
-        };
-
-        if (! this.state.docURL) {
-            return <LoadingProgress/>
-        }
-
-        return (
-
-            <GlobalHotKeys
-                keyMap={globalKeyMap}
-                handlers={globalKeyHandlers}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0
-                }}>
-
-                <PDFToolbar pdfDocMeta={this.state.pdfDocMeta}
-                            onScale={scale => this.onScale(scale)}
-                            onFullScreen={NULL_FUNCTION}
-                            onPageNext={() => this.onPageNext()}
-                            onPagePrev={() => this.onPagePrev()}
-                            onPageJump={page => this.onPageJump(page)}
-                            onFind={() => this.onFind()}/>
-
-                <FindToolbar active={this.state.findActive}
-                             onCancel={() => this.onFindCancel()}
-                             onExecute={query => this.onFindExecute(query)}/>
-
-                <div style={{
-                         display: 'flex',
-                         flexDirection: 'column',
-                         flexGrow: 1,
-                         minHeight: 0
-                     }}>
-
-                    <DockLayout
-                        onResize={() => this.onDockLayoutResize()}
-                        dockPanels={[
-                        {
-                            id: "dock-panel-viewer",
-                            type: 'grow',
-                            style: {
-                                display: 'flex'
-                            },
-                            component:
-                                <div style={{
-                                        flexGrow: 1,
-                                        minHeight: 0,
-                                        display: 'flex',
-                                        flexDirection: 'column'
-                                    }}>
-
-                                    <PagemarkProgressBar docMeta={this.state.docMeta!}/>
-
-                                    <div style={{
-                                            minHeight: 0,
-                                            overflow: 'auto',
-                                            flexGrow: 1,
-                                            position: 'relative'
-                                         }}>
-
-                                        <ViewerContainer/>
-
-                                        <PDFDocument
-                                            onFinder={finder => this.onFinder(finder)}
-                                            target="viewerContainer"
-                                            onResizer={resizer => this.onResizer(resizer)}
-                                            onPDFDocMeta={pdfDocMeta => this.onPDFDocMeta(pdfDocMeta)}
-                                            onPDFPageNavigator={pdfPageNavigator => this.onPDFPageNavigator(pdfPageNavigator)}
-                                            onScaleLeveler={scaleLeveler => this.onScaleLeveler(scaleLeveler)}
-                                            url={this.state.docURL}/>
-
-                                        <TextHighlightsView docMeta={this.state.docMeta}
-                                                            scaleValue={this.state.pdfDocMeta?.scaleValue}/>
-
-                                        <AreaHighlightsView docMeta={this.state.docMeta}
-                                                            scaleValue={this.state.pdfDocMeta?.scaleValue}/>
-
-                                        <PagemarksView docMeta={this.state.docMeta}
-                                                       scaleValue={this.state.pdfDocMeta?.scaleValue}/>
-
-                                    </div>
-
-                                </div>
-                        },
-                        {
-                            id: "doc-panel-sidebar",
-                            type: 'fixed',
-                            style: {
-                                display: 'flex',
-                                flexDirection: 'column',
-                                minHeight: 0,
-                                flexGrow: 1
-                            },
-                            component:
-                                <>
-                                {this.state.docMeta &&
-                                    <AnnotationSidebar2
-                                                       doc={{
-                                                           docInfo: this.state.docMeta.docInfo,
-                                                           docMeta: this.state.docMeta,
-                                                           permission: {mode: 'rw'},
-                                                           mutable: true,
-                                                           oid: 123,
-                                                       }}
-                                                       tagsProvider={this.props.tagsProvider}
-                                                       persistenceLayerProvider={this.props.persistenceLayerProvider}/>}
-                                </>,
-                            width: 300,
-                        }
-                    ]}/>
-                </div>
-
-            </GlobalHotKeys>
-
-        );
-    }
-
-    private onFinder(finder: Finder) {
-
-        this.setState({
-            ...this.state,
-            finder
-        })
+        setState({
+                          ...state,
+                          findActive: true
+                      })
 
     }
 
-    private onFind() {
+    function onFindExecute(query: string) {
 
-        this.setState({
-            ...this.state,
-            findActive: true
-        })
-
-    }
-
-    private onFindExecute(query: string) {
-
-        if (this.state.findHandler) {
+        if (state.findHandler) {
             // there's already a find handler so that means there's an active
             // search so we should run the search 'again' to find the next match
 
-            this.state.findHandler.again();
+            state.findHandler.again();
             return;
         }
 
@@ -275,9 +144,9 @@ export class PDFViewer extends React.Component<IProps, IState> {
                 findPrevious: false
             };
 
-            const findHandler = await this.state.finder!.exec(opts);
+            const findHandler = await state.finder!.exec(opts);
 
-            this.setState({...this.state, findHandler});
+            setState({...state, findHandler});
 
         };
 
@@ -285,59 +154,59 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     }
 
-    private onFindCancel() {
+    function onFindCancel() {
 
-        this.state.findHandler?.cancel();
+        state.findHandler?.cancel();
 
-        this.setState({
-            ...this.state,
-            findActive: false,
-            findHandler: undefined
-        });
+        setState({
+                          ...state,
+                          findActive: false,
+                          findHandler: undefined
+                      });
 
     }
 
-    private onDockLayoutResize() {
-        if (this.state.resizer) {
-            this.state.resizer();
+    function onDockLayoutResize() {
+        if (state.resizer) {
+            state.resizer();
         }
     }
 
-    private requestFullScreen() {
-        document.body.requestFullscreen()
-            .catch(err => log.error(err));
+    // function requestFullScreen() {
+    //     document.body.requestFullscreen()
+    //             .catch(err => log.error(err));
+    // }
+    //
+    //
+    // function exitFullScreen() {
+    //     document.exitFullscreen()
+    //             .catch(err => log.error(err));
+    // }
+
+    function onResizer(resizer: () => void) {
+        setState({
+                          ...state,
+                          resizer
+                      })
     }
 
-
-    private exitFullScreen() {
-        document.exitFullscreen()
-            .catch(err => log.error(err));
+    function onPDFDocMeta(pdfDocMeta: PDFDocMeta) {
+        setState({
+                          ...state,
+                          pdfDocMeta
+                      });
     }
 
-    private onResizer(resizer: () => void) {
-        this.setState({
-            ...this.state,
-            resizer
-        })
+    function onPDFPageNavigator(pdfPageNavigator: PDFPageNavigator) {
+        setState({
+                          ...state,
+                          pdfPageNavigator
+                      });
     }
 
-    private onPDFDocMeta(pdfDocMeta: PDFDocMeta) {
-        this.setState({
-            ...this.state,
-            pdfDocMeta
-        });
-    }
+    function doPageNav(delta: number) {
 
-    private onPDFPageNavigator(pdfPageNavigator: PDFPageNavigator) {
-        this.setState({
-            ...this.state,
-            pdfPageNavigator
-        });
-    }
-
-    private doPageNav(delta: number) {
-
-        const {pdfPageNavigator, pdfDocMeta} = this.state;
+        const {pdfPageNavigator, pdfDocMeta} = state;
 
         if (! pdfPageNavigator || ! pdfDocMeta) {
             return;
@@ -359,17 +228,17 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     }
 
-    private onPageNext() {
-        this.doPageNav(1);
+    function onPageNext() {
+        doPageNav(1);
     }
 
-    private onPagePrev() {
-        this.doPageNav(-1);
+    function onPagePrev() {
+        doPageNav(-1);
     }
 
-    private onPageJump(page: number) {
+    function onPageJump(page: number) {
 
-        const {pdfPageNavigator} = this.state;
+        const {pdfPageNavigator} = state;
 
         if (pdfPageNavigator) {
             pdfPageNavigator.set(page);
@@ -377,45 +246,135 @@ export class PDFViewer extends React.Component<IProps, IState> {
 
     }
 
-    private onScaleLeveler(scaleLeveler: ScaleLeveler) {
-        this.setState({
-            ...this.state,
-            scaleLeveler
-        })
+    function onScaleLeveler(scaleLeveler: ScaleLeveler) {
+        setState({
+                          ...state,
+                          scaleLeveler
+                      })
     }
 
-    private onScale(scale: PDFScaleLevelTuple) {
-        this.state.scaleLeveler!(scale);
+    function onScale(scale: PDFScaleLevelTuple) {
+        state.scaleLeveler!(scale);
     }
 
-    private onDocMeta(docMeta: IDocMeta | undefined) {
 
-        const computeDocURL = (): URLStr | undefined => {
+    // const globalKeyHandlers = {
+    //     FIND: () => onFind()
+    // };
 
-            if (docMeta) {
-
-                const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
-                const persistenceLayer = this.props.persistenceLayerProvider();
-
-                if (docMetaFileRef.docFile) {
-                    const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
-                    return file.url;
-                }
-
-            }
-
-            return undefined;
-
-        };
-
-        const docURL = computeDocURL();
-
-        this.setState({
-            ...this.state,
-            docURL,
-            docMeta
-        });
-
-
+    if (! store.docURL) {
+        return <LoadingProgress/>
     }
-}
+
+    return (
+
+        <div style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 flexGrow: 1,
+                 minHeight: 0
+             }}>
+
+            <PDFToolbar pdfDocMeta={state.pdfDocMeta}
+                        onScale={scale => onScale(scale)}
+                        onFullScreen={NULL_FUNCTION}
+                        onPageNext={() => onPageNext()}
+                        onPagePrev={() => onPagePrev()}
+                        onPageJump={page => onPageJump(page)}
+                        onFind={() => onFind()}/>
+
+            <FindToolbar active={state.findActive}
+                         onCancel={() => onFindCancel()}
+                         onExecute={query => onFindExecute(query)}/>
+
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     flexGrow: 1,
+                     minHeight: 0
+                 }}>
+
+                <DockLayout
+                    onResize={() => onDockLayoutResize()}
+                    dockPanels={[
+                    {
+                        id: "dock-panel-viewer",
+                        type: 'grow',
+                        style: {
+                            display: 'flex'
+                        },
+                        component:
+                            <div style={{
+                                    flexGrow: 1,
+                                    minHeight: 0,
+                                    display: 'flex',
+                                    flexDirection: 'column'
+                                }}>
+
+                                <PagemarkProgressBar docMeta={store.docMeta!}/>
+
+                                <div style={{
+                                        minHeight: 0,
+                                        overflow: 'auto',
+                                        flexGrow: 1,
+                                        position: 'relative'
+                                     }}>
+
+                                    <ViewerContainer/>
+
+                                    <PDFDocument
+                                        onFinder={finder => onFinder(finder)}
+                                        target="viewerContainer"
+                                        onResizer={resizer => onResizer(resizer)}
+                                        onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
+                                        onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
+                                        onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
+                                        url={store.docURL}/>
+
+                                    <TextHighlightsView docMeta={store.docMeta}
+                                                        scaleValue={state.pdfDocMeta?.scaleValue}/>
+
+                                    <AreaHighlightsView docMeta={store.docMeta}
+                                                        scaleValue={state.pdfDocMeta?.scaleValue}/>
+
+                                    <PagemarksView docMeta={store.docMeta}
+                                                   scaleValue={state.pdfDocMeta?.scaleValue}/>
+
+                                </div>
+
+                            </div>
+                    },
+                    {
+                        id: "doc-panel-sidebar",
+                        type: 'fixed',
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: 0,
+                            flexGrow: 1
+                        },
+                        component:
+                            <>
+                            {store.docMeta &&
+                                <AnnotationSidebar2
+                                                   doc={{
+                                                       docInfo: store.docMeta.docInfo,
+                                                       docMeta: store.docMeta,
+                                                       permission: {mode: 'rw'},
+                                                       mutable: true,
+                                                       oid: 123,
+                                                   }}
+                                                   data={annotationSidebarStore.data}
+                                                   view={annotationSidebarStore.view}
+                                                   tagsProvider={props.tagsProvider}
+                                                   persistenceLayerProvider={props.persistenceLayerProvider}/>}
+                            </>,
+                        width: 300,
+                    }
+                ]}/>
+            </div>
+
+        </div>
+
+    );
+}, isEqual);

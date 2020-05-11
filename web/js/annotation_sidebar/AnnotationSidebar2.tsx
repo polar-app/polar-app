@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {DocAnnotation} from './DocAnnotation';
-import {AnnotationView} from './annotations/AnnotationView';
+import {IDocAnnotation} from './DocAnnotation';
 import {ExportButton} from '../ui/export/ExportButton';
 import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
 import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
@@ -9,7 +8,6 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Doc} from '../metadata/Doc';
 import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
 import {DocFileResolvers} from "../datastore/DocFileResolvers";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FeatureToggle} from "../ui/FeatureToggle";
 import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
 import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
@@ -18,12 +16,12 @@ import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {DocAnnotationLoader} from "./DocAnnotationLoader";
-import {DocAnnotationSorter} from "./DocAnnotationSorter";
 import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
 import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
+import {AnnotationView2} from "./annotations/AnnotationView2";
 
 const log = Logger.create();
 
@@ -105,11 +103,8 @@ const AnnotationsBlock = (props: IRenderProps) => {
         return (
             <>
                 {props.view.map(annotation => (
-                    <AnnotationView key={annotation.id}
-                                    annotation={annotation}
-                                    tagsProvider={props.tagsProvider}
-                                    persistenceLayerProvider={props.persistenceLayerProvider}
-                                    doc={props.doc}/>))}
+                    <AnnotationView2 key={annotation.id}
+                                     annotation={annotation}/>))}
             </>
         );
 
@@ -219,54 +214,20 @@ export class AnnotationSidebar2 extends React.Component<IProps, IState> {
         this.docAnnotationLoader = new DocAnnotationLoader(docFileResolver);
 
         const filterEngine
-            = new AnnotationRepoFilterEngine<DocAnnotation>(() => this.state.data,
-                                                            (filters) => this.onFiltered(filters));
+            = new AnnotationRepoFilterEngine<IDocAnnotation>(() => this.props.data,
+                                                             (filters) => this.onFiltered(filters));
 
         this.filtersHandler = new AnnotationRepoFiltersHandler(filters => filterEngine.onFiltered(filters));
 
         this.onExport = this.onExport.bind(this);
 
         this.state = {
-            data: [],
-            view: []
         };
 
     }
 
-    private onFiltered(view: ReadonlyArray<DocAnnotation>) {
+    private onFiltered(view: ReadonlyArray<IDocAnnotation>) {
         this.setState({view});
-    }
-
-    public componentDidMount(): void {
-        this.init();
-    }
-
-    private init() {
-        this.buildDocAnnotations();
-    }
-
-    private buildDocAnnotations() {
-
-        // TODO: this could be faster by not building them if they're not updated
-        const handleDocMeta = (docMeta: IDocMeta) => {
-
-            console.time('buildDocAnnotations:handleDocMeta')
-
-            const data = this.docAnnotationLoader.load(docMeta);
-            const view = DocAnnotationSorter.sort(data);
-
-            console.timeEnd('buildDocAnnotations:handleDocMeta')
-
-            this.setState({
-                data,
-                view
-            });
-
-        };
-
-        const docMeta = this.props.doc.docMeta;
-        handleDocMeta(docMeta);
-
     }
 
     private onExport(format: ExportFormat) {
@@ -310,19 +271,20 @@ interface IProps {
     readonly doc: Doc;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly persistenceLayerProvider: PersistenceLayerProvider;
-}
-
-interface IState {
 
     /**
      * The raw annotations data which is unfiltered.
      */
-    readonly data: ReadonlyArray<DocAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotation>;
 
     /**
      * The annotations to display in the UI which is (optionally) filtered.
      */
-    readonly view: ReadonlyArray<DocAnnotation>;
+    readonly view: ReadonlyArray<IDocAnnotation>;
+
+}
+
+interface IState {
 
 }
 

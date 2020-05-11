@@ -5,7 +5,10 @@ import {
     createObservableStore,
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
-import {DocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {
+    DocAnnotation,
+    IDocAnnotation
+} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -27,12 +30,12 @@ interface IAnnotationSidebarStore {
      * The raw annotations data which is unfiltered, unsorted, and form which
      * the view is derived.
      */
-    readonly data: ReadonlyArray<DocAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotation>;
 
     /**
      * The annotations to display in the UI which is (optionally) filtered.
      */
-    readonly view: ReadonlyArray<DocAnnotation>;
+    readonly view: ReadonlyArray<IDocAnnotation>;
 
 }
 
@@ -59,8 +62,8 @@ namespace mutations {
     }
 
     export interface ISetData {
-        readonly mutation: 'set-doc-meta',
-        readonly docMeta: IDocMeta;
+        readonly mutation: 'set-data',
+        readonly data: ReadonlyArray<IDocAnnotation>;
     }
 
     export type IMutation = ISetFilter | ISetData;
@@ -75,8 +78,6 @@ interface Mutator {
 
 function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                         setStore: SetStore<IAnnotationSidebarStore>): Mutator {
-
-    const persistence = usePersistence();
 
     function reduce(store: IAnnotationSidebarStore,
                     mutation: IMutation): IAnnotationSidebarStore {
@@ -99,12 +100,9 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                     return store;
                 }
 
-            case "set-doc-meta":
+            case "set-data":
 
-                const {persistenceLayerProvider} = persistence;
-                const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-
-                const data = DocAnnotationLoader2.load(mutation.docMeta, docFileResolver);
+                const data = mutation.data;
                 const view = Mappers.create(data)
                                     // apply sort order
                                     .map(DocAnnotationSorter.sort)
@@ -136,12 +134,21 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                           setStore: (store: IAnnotationSidebarStore) => void,
                           mutator: Mutator): IAnnotationSidebarCallbacks {
 
+    const persistence = usePersistence();
+
     function setFilter(text: string) {
         mutator.doUpdate({mutation: 'set-filter', filter: text});
     }
 
+    function toAnnotations(docMeta: IDocMeta) {
+        const {persistenceLayerProvider} = persistence;
+        const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+        return DocAnnotationLoader2.load(docMeta, docFileResolver);
+    }
+
     function setDocMeta(docMeta: IDocMeta) {
-        mutator.doUpdate({mutation: 'set-doc-meta', docMeta});
+        const data = toAnnotations(docMeta);
+        mutator.doUpdate({mutation: 'set-data', data});
     }
 
     return {

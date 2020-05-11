@@ -146,7 +146,8 @@
             delegate();
 
           } catch (e) {
-            displayError(e.message);
+              console.error(e);
+              displayError(e.message);
           }
 
       }

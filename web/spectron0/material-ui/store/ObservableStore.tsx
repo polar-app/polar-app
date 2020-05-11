@@ -207,6 +207,8 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
+    // FIXME: the mutator can't use hooks here...
+
     const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
 
     const [storeContext,] = createObservableStoreContext<V>(store);
@@ -218,6 +220,8 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
 
     const useCallbacksHook: UseContextHook<C> = () => {
+        // TODO: this is efficient in that creating a callback is fast BUT
+        // is this created EVERY single time?  I think it is actually.
         const callbacksContextFactory = React.useContext(callbacksContext);
         const callbacks = callbacksContextFactory();
         Preconditions.assertPresent(callbacks, "callbacks");

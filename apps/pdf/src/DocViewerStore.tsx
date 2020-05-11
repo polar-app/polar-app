@@ -12,8 +12,6 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {usePersistence} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useAnnotationSidebarCallbacks} from './AnnotationSidebarStore';
 
-const log = Logger.create();
-
 interface IDocViewerStore {
 
     /**
@@ -69,7 +67,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 if (docMeta) {
 
                     const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
-                    const persistenceLayer = this.props.persistenceLayerProvider();
+                    const persistenceLayer = persistence.persistenceLayerProvider();
 
                     if (docMetaFileRef.docFile) {
                         const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
