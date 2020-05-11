@@ -98,6 +98,7 @@ export class PDFViewer extends React.Component<IProps, IState> {
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {
+                    console.log("FIXME: got snapshot!");
                     this.onDocMeta(snapshot.data);
                 }),
                 onError: (err) => {

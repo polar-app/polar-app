@@ -1,6 +1,10 @@
 import * as React from "react";
 import {useState} from "react";
-import {Callback, Callback1} from "polar-shared/src/util/Functions";
+import {
+    Callback,
+    Callback1,
+    NULL_FUNCTION
+} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {PDFDocMeta} from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -23,6 +27,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import {MUISearchBox2} from "../../../web/spectron0/material-ui/MUISearchBox2";
+import Box from "@material-ui/core/Box";
 
 
 // configure({logLevel: 'debug'});
@@ -288,9 +294,16 @@ export const PDFToolbar = (props: IProps) => {
                         <div style={{display: 'flex'}}
                              className="ml-auto vertical-aligned-children">
 
-                            <IconButton onClick={() => props.onFind()}>
-                                <SearchIcon/>
-                            </IconButton>
+
+                            {/*<MUISearchBox2 onChange={text => props.onFiltered(text)}*/}
+
+                            <MUISearchBox2 className="mt-1 mb-1"
+                                           onChange={NULL_FUNCTION}
+                                           placeholder="Search..."/>
+
+                            {/*<IconButton onClick={() => props.onFind()}>*/}
+                            {/*    <SearchIcon/>*/}
+                            {/*</IconButton>*/}
 
                             <IconButton>
                                 <FullscreenIcon/>

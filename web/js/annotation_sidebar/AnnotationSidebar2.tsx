@@ -162,6 +162,7 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
                  }}>
 
                 <MUISearchBox2 style={{flexGrow: 1}}
+                               className="mt-1 mb-1"
                                onChange={text => props.onFiltered(text)}
                                placeholder="Filter annotations by text"/>
 

@@ -204,9 +204,13 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            <CompA/>
-            <CompB/>
-            <CompC/>
+            {/*<CompA/>*/}
+            {/*<CompB/>*/}
+            {/*<CompC/>*/}
+
+            <MUISearchBox2 onChange={NULL_FUNCTION}
+                           placeholder="Search..."/>
+
 
             {/*<CloudSyncConfiguredDialog/>*/}
 
