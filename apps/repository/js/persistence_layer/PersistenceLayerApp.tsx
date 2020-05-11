@@ -26,18 +26,26 @@ export interface ITags {
     readonly tagsProvider: () => ReadonlyArray<TagDescriptor>;
 }
 
-export interface IPersistence extends ITags {
+export interface IPersistenceLayer {
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+}
+
+export interface IPersistence extends ITags, IPersistenceLayer {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly persistenceLayerMutator: PersistenceLayerMutator;
 }
 
+export const PersistenceLayerContext = createContextMemo<IPersistenceLayer>(null!);
 export const PersistenceContext = createContextMemo<IPersistence>(null!);
 export const TagsContext = createContextMemo<ITags>(null!);
 
 export function usePersistence() {
     return useContextMemo(PersistenceContext);
+}
+
+export function usePersistenceLayer() {
+    return useContextMemo(PersistenceLayerContext);
 }
 
 export function useTagsContext() {

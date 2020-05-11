@@ -16,7 +16,10 @@ import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PDFViewer} from './PDFViewer';
 import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
-import {PersistenceLayerApp} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    PersistenceLayerApp,
+    PersistenceLayerContext
+} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {AuthRequired} from "../../repository/js/AuthRequired";
 
 export class PDFApp {
@@ -57,6 +60,8 @@ export class PDFApp {
         // {/*                     persistenceLayerManager={persistenceLayerManager}*/}
         // {/*                     render={(docRepo) => (*/}
 
+        const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
         ReactDOM.render((
             <div style={{
                     display: 'flex',
@@ -67,8 +72,10 @@ export class PDFApp {
 
                 <MUIAppRoot>
 
-                     <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
-                                tagsProvider={() => []}/>
+                    <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
+                        <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
+                                   tagsProvider={() => []}/>
+                    </PersistenceLayerContext.Provider>
 
                 </MUIAppRoot>
 
