@@ -28,13 +28,13 @@ export namespace AnnotationRepoFilters2 {
          */
         readonly archived?: boolean;
 
-        readonly colors: ReadonlyArray<HighlightColor>;
+        readonly colors?: ReadonlyArray<HighlightColor>;
 
         readonly text: string;
 
-        readonly tags: ReadonlyArray<Tag>;
+        readonly tags?: ReadonlyArray<Tag>;
 
-        readonly annotationTypes: ReadonlyArray<AnnotationType>;
+        readonly annotationTypes?: ReadonlyArray<AnnotationType>;
 
     }
 
@@ -58,10 +58,12 @@ export namespace AnnotationRepoFilters2 {
     function doFilterByColor<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
                                                        filter: Filter): ReadonlyArray<D> {
 
-        if (filter.colors.length > 0) {
+        const {colors} = filter;
+
+        if (colors && colors.length > 0) {
             return docAnnotations.filter(current => {
                 const color = HighlightColors.withDefaultColor(current.color);
-                return filter.colors.includes(color);
+                return colors.includes(color);
             });
         }
 
@@ -72,8 +74,10 @@ export namespace AnnotationRepoFilters2 {
     function doFilterByAnnotationTypes<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
                                                                  filter: Filter): ReadonlyArray<D> {
 
-        if (filter.annotationTypes.length > 0) {
-            return docAnnotations.filter(current => filter.annotationTypes.includes(current.annotationType));
+        const {annotationTypes} = filter;
+
+        if (annotationTypes && annotationTypes.length > 0) {
+            return docAnnotations.filter(current => annotationTypes.includes(current.annotationType));
         }
 
         return docAnnotations;
@@ -124,6 +128,11 @@ export namespace AnnotationRepoFilters2 {
     }
 
     function doFilterByTags<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>, filter: Filter): ReadonlyArray<D> {
+
+        if (! filter.tags) {
+            return docAnnotations;
+        }
+
         const tags = filter.tags.filter(current => current.id !== '/');
 
         if (tags.length === 0) {
