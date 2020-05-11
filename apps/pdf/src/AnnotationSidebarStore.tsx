@@ -8,6 +8,11 @@ import {
 import {DocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoaders";
+import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
+import {usePersistence} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {Mappers} from "polar-shared/src/util/Mapper";
 
 const log = Logger.create();
 
@@ -36,7 +41,7 @@ interface IAnnotationSidebarCallbacks {
     readonly setFilter: (filter: string) => void;
 
     // setData must be here because the sidebar manages its own sorting.
-    readonly setData: (data: ReadonlyArray<DocAnnotation>) => void;
+    readonly setDocMeta: (docMeta: IDocMeta) => void;
 
 }
 
@@ -54,8 +59,8 @@ namespace mutations {
     }
 
     export interface ISetData {
-        readonly mutation: 'set-data',
-        readonly data: ReadonlyArray<DocAnnotation>;
+        readonly mutation: 'set-doc-meta',
+        readonly docMeta: IDocMeta;
     }
 
     export type IMutation = ISetFilter | ISetData;
@@ -70,6 +75,8 @@ interface Mutator {
 
 function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                         setStore: SetStore<IAnnotationSidebarStore>): Mutator {
+
+    const persistence = usePersistence();
 
     function reduce(store: IAnnotationSidebarStore,
                     mutation: IMutation): IAnnotationSidebarStore {
@@ -92,9 +99,20 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                     return store;
                 }
 
-            case "set-data":
-                const view = DocAnnotationSorter.sort(mutation.data);
-                return {...store, ...mutation, view};
+            case "set-doc-meta":
+
+                const {persistenceLayerProvider} = persistence;
+                const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+
+                const data = DocAnnotationLoader2.load(mutation.docMeta, docFileResolver);
+                const view = Mappers.create(data)
+                                    // apply sort order
+                                    .map(DocAnnotationSorter.sort)
+                                    // apply current filters
+                                    .map(data => AnnotationRepoFilters2.execute(data, {text: store.filter}))
+                                    .collect();
+
+                return {...store, data, view};
 
         }
 
@@ -122,13 +140,13 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
         mutator.doUpdate({mutation: 'set-filter', filter: text});
     }
 
-    function setData(data: ReadonlyArray<DocAnnotation>) {
-        mutator.doUpdate({mutation: 'set-data', data});
+    function setDocMeta(docMeta: IDocMeta) {
+        mutator.doUpdate({mutation: 'set-doc-meta', docMeta});
     }
 
     return {
         setFilter,
-        setData
+        setDocMeta
     };
 
 }

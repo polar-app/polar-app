@@ -6,21 +6,13 @@ import {
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import PDFJS from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Finder, FindHandler} from "./Finders";
-import {
-    PDFDocMeta,
-    PDFPageNavigator,
-    Resizer,
-    ScaleLeveler
-} from "./PDFDocument";
-import {DocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
+import {Backend} from 'polar-shared/src/datastore/Backend';
+import {usePersistence} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {useAnnotationSidebarCallbacks} from './AnnotationSidebarStore';
 
 const log = Logger.create();
-
-
-
 
 interface IDocViewerStore {
 
@@ -29,9 +21,16 @@ interface IDocViewerStore {
      */
     readonly docMeta?: IDocMeta;
 
+    /**
+     * The storage URL for the document this docMeta references.
+     */
+    readonly docURL?: URLStr;
+
 }
 
 interface IDocViewerCallbacks {
+
+    readonly setDocMeta: (docMeta: IDocMeta) => void;
 
 }
 
@@ -56,9 +55,50 @@ function mutatorFactory(storeProvider: Provider<IDocViewerStore>,
 function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           setStore: (store: IDocViewerStore) => void,
                           mutator: Mutator): IDocViewerCallbacks {
+    
+    const persistence = usePersistence();
+    const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
 
+    function setDocMeta(docMeta: IDocMeta) {
+
+        function doExec() {
+            const store = storeProvider();
+
+            const computeDocURL = (): URLStr | undefined => {
+
+                if (docMeta) {
+
+                    const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
+                    const persistenceLayer = this.props.persistenceLayerProvider();
+
+                    if (docMetaFileRef.docFile) {
+                        const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
+                        return file.url;
+                    }
+
+                }
+
+                return undefined;
+
+            };
+
+            const docURL = store.docURL || computeDocURL();
+
+            setStore({...store, docMeta, docURL});
+
+        }
+
+
+        // update the main store.
+        doExec();
+
+        // update the annotation sidebar
+        annotationSidebarCallbacks.setDocMeta(docMeta);
+
+    }
 
     return {
+        setDocMeta
     };
 
 }
