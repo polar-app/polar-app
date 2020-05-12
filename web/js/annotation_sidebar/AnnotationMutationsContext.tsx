@@ -94,7 +94,7 @@ export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 }
 
-export interface IColorMutation {
+export interface IColorMutation extends IAnnotationMutationSelected {
     readonly color: string;
 }
 
@@ -476,9 +476,23 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onColor(mutation: IColorMutation) {
+        function onColor(colorMutation: IColorMutation) {
 
-            // FIXME noop
+            handleUpdate({selected: colorMutation.selected}, (docMeta, pageMeta, mutation) => {
+
+                for (const current of mutation.selected) {
+
+                    const updates = {
+                        color: colorMutation.color
+                    };
+
+                    AnnotationMutations.update(docMeta,
+                                               current.annotationType,
+                                               {...current.original, ...updates});
+
+                }
+
+            }).catch(err => log.error(err));
 
         }
 
