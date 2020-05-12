@@ -39,19 +39,12 @@ import {
     ExportFormat
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
-import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
     AnnotationMutationCallbacks,
     AnnotationMutationsContextProvider,
-    DocAnnotationsMutator,
     IAnnotationMutationCallbacks,
-    IAnnotationMutationSelected,
-    IColorMutation,
-    ICommentMutation,
-    IDeleteMutation,
-    IFlashcardMutation,
-    ITextHighlightMutation
+    IAnnotationMutationSelected
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IDStr} from "polar-shared/src/util/Strings";
@@ -60,8 +53,6 @@ import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {TaggedCallbacks} from "./TaggedCallbacks";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 
 const log = Logger.create();
 
