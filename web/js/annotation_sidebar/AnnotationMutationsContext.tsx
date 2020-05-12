@@ -26,6 +26,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
 
@@ -113,6 +114,11 @@ export interface IAnnotationMutationCallbacks {
     readonly onDeleted: (mutation: IDeleteMutation) => void;
 
     readonly createTaggedCallback: (mutation: ITaggedMutation) => Callback;
+
+    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotation>,
+                        tags: ReadonlyArray<Tag>,
+                        strategy: ComputeNewTagsStrategy) => void;
+
     readonly onTagged: (mutation: ITaggedMutation) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
@@ -148,6 +154,7 @@ const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallba
     onColor: NULL_FUNCTION,
 
     createTaggedCallback: () => NULL_FUNCTION,
+    doTagged: NULL_FUNCTION,
     onTagged: NULL_FUNCTION,
 
 });
@@ -518,6 +525,7 @@ export namespace AnnotationMutationCallbacks {
             createColorCallback,
             onColor,
             createTaggedCallback,
+            doTagged,
             onTagged,
         };
 

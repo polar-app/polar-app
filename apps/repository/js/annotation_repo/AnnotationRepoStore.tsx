@@ -124,13 +124,7 @@ interface IAnnotationRepoCallbacks {
 
     readonly doUpdated: (annotation: IDocAnnotation) => void;
 
-    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotation>,
-                        tags: ReadonlyArray<Tag>,
-                        strategy: ComputeNewTagsStrategy) => void;
-
     readonly onTagged: () => void;
-
-    readonly doDeleted: (annotations: ReadonlyArray<IDocAnnotation>) => void;
 
     readonly onDeleted: () => void;
 
@@ -295,52 +289,17 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         mutator.refresh();
     }
 
-    async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
-                                                                       annotationMutator: AnnotationMutator<T>) {
+    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
 
-        const selected = selectedAnnotations(mutation);
-        const {persistenceLayerProvider} = persistence;
-
-        const partitions = arrayStream(selected)
-            .partition(annotation => [annotation.docMeta.docInfo.fingerprint, annotation.docMeta]);
-
-        // *** first we have to apply all the mutations to every annotation in
-        // this doc...
-        for (const partition of Object.values(partitions)) {
-            const docMeta = partition.key;
-
-            for (const annotation of selected) {
-                const pageMeta = annotation.pageMeta;
-                annotationMutator(docMeta, pageMeta, {...mutation, selected: [annotation]});
-            }
+        if (opts && opts.selected) {
+            return opts.selected;
         }
 
-        // *** now we have to update the store
-        for (const partition of Object.values(partitions)) {
-            const docMeta = partition.key;
-            const fingerprint = docMeta.docInfo.fingerprint;
-            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
-            repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
-        }
+        const store = storeProvider();
 
-        mutator.refresh();
+        const {selected, viewPage} = store;
 
-        for (const partition of Object.values(partitions)) {
-            const docMeta = partition.key;
-            const persistenceLayer = persistenceLayerProvider();
-            await persistenceLayer.writeDocMeta(docMeta);
-        }
-
-    }
-
-    function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
-
-        const mutation: IDeleteMutation = {
-            selected: annotations
-        }
-
-        handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
-            .catch(err => log.error(err));
+        return viewPage.filter(current => selected.includes(current.id));
 
     }
 
@@ -420,49 +379,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-
-    function doTagged(annotations: ReadonlyArray<IDocAnnotation>,
-                      tags: ReadonlyArray<Tag>,
-                      strategy: ComputeNewTagsStrategy = 'set') {
-
-        if (tags.length === 0) {
-            log.warn("No tags");
-            return;
-        }
-
-        handleUpdate({selected: annotations}, (docMeta, pageMeta, mutation) => {
-
-            for (const current of mutation.selected) {
-
-                const updates = {
-                    tags: Tags.toMap(tags)
-                };
-
-                AnnotationMutations.update(docMeta,
-                                           current.annotationType,
-                                           {...current.original, ...updates});
-
-            }
-
-        }).catch(err => log.error(err));
-
-
-    }
-
-
     function onTagged() {
-
-        const opts: TaggedCallbacksOpts<IDocAnnotation> = {
-            targets: selectedAnnotations,
-            tagsProvider: tagsContext.tagsProvider,
-            dialogs,
-            doTagged
-        }
-
-        const callback = TaggedCallbacks.create(opts);
-
-        callback();
-
+        const selected = selectedAnnotations();
+        annotationMutations.onTagged({selected});
     }
 
     function doUpdated(annotation: IDocAnnotation) {
@@ -523,20 +442,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
-
-        if (opts && opts.selected) {
-            return opts.selected;
-        }
-
-        const store = storeProvider();
-
-        const {selected, viewPage} = store;
-
-        return viewPage.filter(current => selected.includes(current.id));
-
-    }
-
     function onDeleted() {
         const selected = selectedAnnotations();
         annotationMutations.onDeleted({selected});
@@ -551,7 +456,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function doDropped(annotations: ReadonlyArray<IDocAnnotation>, tag: Tag) {
-        doTagged(annotations, [tag], 'add');
+        annotationMutations.doTagged(annotations, [tag], 'add');
     }
 
     function onDropped(tag: Tag) {
@@ -565,12 +470,10 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         onTagSelected,
         setPage,
         setRowsPerPage,
-        doTagged,
         onTagged,
         onExport,
         setFilter,
         doUpdated,
-        doDeleted,
         onDeleted,
         onDragStart,
         onDragEnd,
