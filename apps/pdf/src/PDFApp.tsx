@@ -73,6 +73,8 @@ export class PDFApp {
 
                 <MUIAppRoot>
 
+                    {/*FIXME we have to define usePersistence here too... */}
+
                     <MUIDialogController>
                         <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
                             <UserTagsProvider>
