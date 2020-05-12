@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 import {
     Callback,
+    Callback1,
     Functions,
-    NULL_FUNCTION,
-    Callback1
+    NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
 import {IDocAnnotation} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -17,51 +17,39 @@ import {TextHighlights} from "../metadata/TextHighlights";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {DialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogController";
 import {
-    IPersistence,
-    ITags
+    usePersistence,
+    useTagsContext
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {RepoDocMetaLoader} from "../../../apps/repository/js/RepoDocMetaLoader";
-import {RepoDocMetaManager} from "../../../apps/repository/js/RepoDocMetaManager";
-import {SynchronizingDocLoader} from "../../../apps/repository/js/util/SynchronizingDocLoader";
-import {RepoDocMetas} from "../../../apps/repository/js/RepoDocMetas";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
 
 const log = Logger.create();
 
 /**
- * This allows us to specify what's is being mutated.  If selected is specified
- * we mutate just these objects. NOT that's selected in the UI tables.
+ * This allows us to specify what's is being mutated.
  */
 export interface IAnnotationMutationSelected {
-    readonly selected?: ReadonlyArray<IDocAnnotation>;
-}
-
-/**
- * The selected annotations are required with this interface
- */
-export interface IAnnotationMutationSelectedRequired {
     readonly selected: ReadonlyArray<IDocAnnotation>;
 }
 
-export interface ICommentCreate {
+export interface ICommentCreate extends IAnnotationMutationSelected {
     readonly type: 'create';
     readonly parent: IRef;
     readonly body: HTMLStr;
 }
 
-export interface ICommentUpdate {
+export interface ICommentUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
     readonly parent: IRef;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotation;
 }
 
-export interface ICommentDelete {
+export interface ICommentDelete extends IAnnotationMutationSelected {
     readonly type: 'delete';
     readonly parent: IRef;
     readonly existing: IDocAnnotation;
@@ -105,8 +93,6 @@ export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 }
 
-export type IDeleteMutationWithSelectedRequired = IDeleteMutation & IAnnotationMutationSelectedRequired;
-
 export interface IColorMutation {
     readonly color: string;
 }
@@ -120,31 +106,31 @@ export interface IAnnotationMutationCallbacks {
      * Create a specific callback as a react callback that can be used with a
      * fixed set of selected items.
      */
-    readonly createDeletedCallback: (mutation: IDeleteMutationWithSelectedRequired) => Callback;
+    readonly createDeletedCallback: (mutation: IDeleteMutation) => Callback;
     /**
      * Delete the given items or whatever is selected.
      */
-    readonly onDeleted: (mutation?: IDeleteMutation) => void;
+    readonly onDeleted: (mutation: IDeleteMutation) => void;
 
-    readonly createTaggedCallback: (mutation: IDeleteMutationWithSelectedRequired) => Callback;
-    readonly onTagged: (mutation?: ITaggedMutation) => void;
+    readonly createTaggedCallback: (mutation: ITaggedMutation) => Callback;
+    readonly onTagged: (mutation: ITaggedMutation) => void;
 
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
 
-    readonly createCommentCallback: (selected: IAnnotationMutationSelectedRequired) => (mutation: ICommentMutation) => void;
+    readonly createCommentCallback: (selected: IAnnotationMutationSelected) => (mutation: ICommentMutation) => void;
 
-    readonly onComment: (mutation: ICommentMutation & IAnnotationMutationSelectedRequired) => void;
+    readonly onComment: (mutation: ICommentMutation & IAnnotationMutationSelected) => void;
     readonly onFlashcard: (mutation: IFlashcardMutation) => void;
 
     readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
 
     // TODO: in the future it would be nice to pick the color for multiple items
     // but we can't right now.
-    readonly onColor: (mutation: IColorMutation) => void;
+    readonly onColor: (mutation: IColorMutation & IAnnotationMutationSelected) => void;
 
 }
 
-export const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallbacks>({
+const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallbacks>({
 
     // FIXME I just need to inject this code into the doc viewer and we're done
     //
@@ -168,6 +154,21 @@ export const AnnotationMutationsContext = React.createContext<IAnnotationMutatio
 
 export function useAnnotationMutationsContext() {
     return useContext(AnnotationMutationsContext);
+}
+
+interface IProps {
+    readonly value: IAnnotationMutationCallbacks;
+    readonly children: React.ReactElement;
+}
+
+export const AnnotationMutationsContextProvider = (props: IProps) => {
+
+    return (
+        <AnnotationMutationsContext.Provider value={props.value}>
+            {props.children}
+        </AnnotationMutationsContext.Provider>
+    );
+
 }
 
 export namespace DocAnnotationsMutator {
@@ -292,17 +293,17 @@ export namespace AnnotationMutationCallbacks {
     import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
     import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 
-    // FIXME IAnnotationMutationCallbacks
+    /**
+     * @param updateStore: (docMetas: ReadonlyArra) => void;
+     * @param refresher called for each mutation to update the store.
+     */
+    export function create(updateStore: (docMetas: ReadonlyArray<IDocMeta>) => void,
+                           refresher: () => void): IAnnotationMutationCallbacks {
 
-    export function create(refresher: () => void,
-                           dialogs: DialogManager,
-                           persistence: IPersistence,
-                           repoDocMetaLoader: RepoDocMetaLoader,
-                           repoDocMetaManager: RepoDocMetaManager,
-                           tagsContext: ITags) {
+        const dialogs = useDialogManager();
+        const persistence = usePersistence();
 
-        const synchronizingDocLoader
-            = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
+        const tagsContext = useTagsContext();
 
         type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
                                                                          pageMeta: IPageMeta,
@@ -312,10 +313,9 @@ export namespace AnnotationMutationCallbacks {
          *
          * @param mutation The mutation to execute along with the annotations.
          * @param annotationMutator The mutator to mutate the annotations.
-         * @param refresher called for each mutation to update the store.
          */
-        async function handleUpdate<T extends IAnnotationMutationSelectedRequired>(mutation: T,
-                                                                                   annotationMutator: AnnotationMutator<T>) {
+        async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
+                                                                           annotationMutator: AnnotationMutator<T>) {
 
             const selected = mutation.selected;
             const {persistenceLayerProvider} = persistence;
@@ -335,15 +335,22 @@ export namespace AnnotationMutationCallbacks {
                         selected: [annotation]
                     });
                 }
+
             }
 
             // *** now we have to update the store
-            for (const partition of Object.values(partitions)) {
-                const docMeta = partition.key;
-                const fingerprint = docMeta.docInfo.fingerprint;
-                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
-                repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
-            }
+
+            const updatedDocMetas = Object.values(partitions)
+                                          .map(current => current.key);
+
+            updateStore(updatedDocMetas);
+
+            // for (const partition of Object.values(partitions)) {
+            //     const docMeta = partition.key;
+            //     const fingerprint = docMeta.docInfo.fingerprint;
+            //     const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+            //     repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
+            // }
 
             refresher();
 
@@ -354,8 +361,7 @@ export namespace AnnotationMutationCallbacks {
             }
 
         }
-//
-//
+
         function doTagged(annotations: ReadonlyArray<IDocAnnotation>,
                           tags: ReadonlyArray<Tag>,
                           strategy: ComputeNewTagsStrategy = 'set') {
@@ -384,7 +390,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function createTaggedCallback(mutation: IDeleteMutationWithSelectedRequired) {
+        function createTaggedCallback(mutation: ITaggedMutation) {
 
             const opts: TaggedCallbacksOpts<IDocAnnotation> = {
                 targets: () => mutation.selected,
@@ -398,20 +404,20 @@ export namespace AnnotationMutationCallbacks {
         }
 //
 //
-//         function onTagged() {
-//
-//             const opts: TaggedCallbacksOpts<IDocAnnotation> = {
-//                 targets: selectedAnnotations,
-//                 tagsProvider: tagsContext.tagsProvider,
-//                 dialogs,
-//                 doTagged
-//             }
-//
-//             const callback = TaggedCallbacks.create(opts);
-//
-//             callback();
-//
-//         }
+        function onTagged(annotations: ITaggedMutation) {
+
+            const opts: TaggedCallbacksOpts<IDocAnnotation> = {
+                targets: () => annotations.selected,
+                tagsProvider: tagsContext.tagsProvider,
+                dialogs,
+                doTagged
+            }
+
+            const callback = TaggedCallbacks.create(opts);
+
+            callback();
+
+        }
 //
 //         function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
 //
@@ -427,25 +433,15 @@ export namespace AnnotationMutationCallbacks {
 //
 //         }
 //
-        function createDeletedCallback(mutation: IDeleteMutationWithSelectedRequired): Callback {
+        function createDeletedCallback(mutation: IDeleteMutation): Callback {
 
             return React.useCallback(() => {
                 onDeleted(mutation);
             }, []);
 
         }
-        function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
 
-            const mutation: IDeleteMutationWithSelectedRequired = {
-                selected: annotations
-            }
-
-            handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
-                .catch(err => log.error(err));
-
-        }
-
-        function onDeleted(mutation: IDeleteMutationWithSelectedRequired) {
+        function onDeleted(mutation: IDeleteMutation) {
 
             // FIXME: do I need to unify this action with doc repo store?
 
@@ -464,12 +460,23 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onTextHighlight(mutation: ITextHighlightMutation & IAnnotationMutationSelectedRequired) {
-            handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
-            .catch(err => log.error(err));
+        function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
+
+            const mutation: IDeleteMutation = {
+                selected: annotations
+            }
+
+            handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
+                .catch(err => log.error(err));
+
         }
 
-        function createCommentCallback(selected: IAnnotationMutationSelectedRequired): Callback1<ICommentMutation> {
+        function onTextHighlight(mutation: ITextHighlightMutation) {
+            handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
+                .catch(err => log.error(err));
+        }
+
+        function createCommentCallback(selected: IAnnotationMutationSelected): Callback1<ICommentMutation> {
 
             return React.useCallback((mutation: ICommentMutation) => {
                 onComment({...selected, ...mutation});
@@ -477,26 +484,25 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onComment(mutation: ICommentMutation & IAnnotationMutationSelectedRequired) {
+        function onComment(mutation: ICommentMutation & IAnnotationMutationSelected) {
             handleUpdate(mutation, DocAnnotationsMutator.onComment)
-            .catch(err => log.error(err));
+                .catch(err => log.error(err));
         }
 
-        function onFlashcard(mutation: IFlashcardMutation & IAnnotationMutationSelectedRequired) {
+        function onFlashcard(mutation: IFlashcardMutation) {
             handleUpdate(mutation, DocAnnotationsMutator.onFlashcard)
-            .catch(err => log.error(err));
+                .catch(err => log.error(err));
         }
-//
-        function createColorCallback(selected: IAnnotationMutationSelectedRequired): Callback1<IColorMutation> {
+
+        function createColorCallback(selected: IAnnotationMutationSelected): Callback1<IColorMutation> {
 
             return React.useCallback((mutation: IColorMutation) => {
                 onColor({...selected, ...mutation});
             }, []);
 
         }
-//
-        function onColor(mutation: IColorMutation & IAnnotationMutationSelectedRequired) {
 
+        function onColor(mutation: IColorMutation & IAnnotationMutationSelected) {
 
             // FIXME noop
 
@@ -512,7 +518,7 @@ export namespace AnnotationMutationCallbacks {
             createColorCallback,
             onColor,
             createTaggedCallback,
-            // onTagged,
+            onTagged,
         };
 
     }

@@ -4,6 +4,7 @@ import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {
+    IFlashcardCreate,
     IFlashcardMutation,
     useAnnotationMutationsContext
 } from "../../AnnotationMutationsContext";
@@ -16,7 +17,10 @@ import {Refs} from "polar-shared/src/metadata/Refs";
 interface IProps {
 
     readonly id?: string;
+
     readonly defaultValue?: string;
+
+    // FIXME: I don't think this needs to be passed any more.
     readonly parent: IDocAnnotation;
 
 }
@@ -37,7 +41,8 @@ export const CreateFlashcard2 = (props: IProps) => {
 
         annotationInputContext.reset();
 
-        const mutation: IFlashcardMutation = {
+        const mutation: IFlashcardCreate = {
+            selected: [props.parent],
             type: 'create',
             flashcardType,
             fields,

@@ -51,6 +51,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
         annotationInputContext.reset();
 
         const mutation: ICommentUpdate = {
+            selected: [comment],
             type: 'update',
             parent: comment.parent!,
             body,

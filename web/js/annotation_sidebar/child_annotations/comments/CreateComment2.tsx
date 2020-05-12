@@ -34,6 +34,7 @@ export const CreateComment2 = React.memo((props: IProps) => {
         annotationInputContext.reset();
 
         const mutation: ICommentCreate = {
+            selected: [props.parent],
             type: 'create',
             body,
             parent: Refs.createRef(props.parent),

@@ -34,7 +34,6 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import {MUITagInputControls} from "../MUITagInputControls";
 import {
     Exporters,
     ExportFormat
@@ -43,15 +42,14 @@ import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
-    AnnotationMutationsContext,
+    AnnotationMutationCallbacks,
+    AnnotationMutationsContextProvider,
     DocAnnotationsMutator,
     IAnnotationMutationCallbacks,
     IAnnotationMutationSelected,
-    IAnnotationMutationSelectedRequired,
     IColorMutation,
     ICommentMutation,
     IDeleteMutation,
-    IDeleteMutationWithSelectedRequired,
     IFlashcardMutation,
     ITextHighlightMutation
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
@@ -105,7 +103,8 @@ interface IAnnotationRepoStore {
 
 }
 
-interface IAnnotationRepoCallbacks extends IAnnotationMutationCallbacks {
+// FIXME extends IAnnotationMutationCallbacks
+interface IAnnotationRepoCallbacks {
 
     readonly selectRow: (selectedID: IDStr,
                          event: React.MouseEvent,
@@ -145,6 +144,8 @@ interface IAnnotationRepoCallbacks extends IAnnotationMutationCallbacks {
     readonly doDropped: (annotations: ReadonlyArray<IDocAnnotation>, tag: Tag) => void;
 
     readonly onDropped: (tag: Tag) => void;
+
+    readonly annotationMutations: IAnnotationMutationCallbacks;
 
 }
 
@@ -275,6 +276,24 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
                                                                      pageMeta: IPageMeta,
                                                                      mutation: T) => void;
+
+    const annotationMutations = AnnotationMutationCallbacks.create(updateStore, refresher);
+
+    function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
+
+        const {persistenceLayerProvider} = persistence;
+
+        for (const docMeta of docMetas) {
+            const fingerprint = docMeta.docInfo.fingerprint;
+            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+            repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
+        }
+
+    }
+
+    function refresher() {
+        mutator.refresh();
+    }
 
     async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
                                                                        annotationMutator: AnnotationMutator<T>) {
@@ -430,19 +449,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function createTaggedCallback(mutation: IDeleteMutationWithSelectedRequired) {
-
-        const opts: TaggedCallbacksOpts<IDocAnnotation> = {
-            targets: () => mutation.selected,
-            tagsProvider: tagsContext.tagsProvider,
-            dialogs,
-            doTagged
-        }
-
-        return TaggedCallbacks.create(opts);
-
-    }
-
 
     function onTagged() {
 
@@ -531,47 +537,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function selectedAnnotation<T extends IAnnotationMutationSelected>(opts?: T): IDocAnnotation | undefined {
-
-        const annotations = selectedAnnotations(opts);
-
-        if (annotations.length === 0) {
-            return undefined;
-        }
-
-        if (annotations.length > 1) {
-            throw new Error("Too many selected");
-        }
-
-        return annotations[0];
-
-    }
-
-    function createDeletedCallback(mutation: IDeleteMutationWithSelectedRequired): Callback {
-
-        return React.useCallback(() => {
-            onDeleted(mutation);
-        }, []);
-
-    }
-
-    function onDeleted(mutation: IDeleteMutation = {}) {
-
-        // FIXME: do I need to unify this action with doc repo store?
-
-        const annotations = selectedAnnotations(mutation);
-
-        if (annotations.length === 0) {
-            log.warn("no repoAnnotation");
-            return;
-        }
-
-        dialogs.confirm({
-            title: "Are you sure you want to delete this item?",
-            subtitle: "This is a permanent operation and can't be undone.",
-            onAccept: () => doDeleted(annotations)
-        })
-
+    function onDeleted() {
+        const selected = selectedAnnotations();
+        annotationMutations.onDeleted({selected});
     }
 
     function onDragStart(event: React.DragEvent) {
@@ -591,44 +559,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         doDropped(selected, tag);
     }
 
-    function onTextHighlight(mutation: ITextHighlightMutation) {
-        handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
-            .catch(err => log.error(err));
-    }
-
-    function createCommentCallback(selected: IAnnotationMutationSelectedRequired): Callback1<ICommentMutation> {
-
-        return React.useCallback((mutation: ICommentMutation) => {
-            onComment({...selected, ...mutation});
-        }, []);
-
-    }
-
-    function onComment(mutation: ICommentMutation & IAnnotationMutationSelectedRequired) {
-        handleUpdate(mutation, DocAnnotationsMutator.onComment)
-            .catch(err => log.error(err));
-    }
-
-    function onFlashcard(mutation: IFlashcardMutation) {
-        handleUpdate(mutation, DocAnnotationsMutator.onFlashcard)
-            .catch(err => log.error(err));
-    }
-
-    function createColorCallback(selected: IAnnotationMutationSelected): Callback1<IColorMutation> {
-
-        return React.useCallback((mutation: IColorMutation) => {
-            onColor({...selected, ...mutation});
-        }, []);
-
-    }
-
-    function onColor(mutation: IColorMutation) {
-
-
-        // FIXME noop
-
-    }
-
     return {
         doOpen,
         selectRow,
@@ -636,24 +566,17 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         setPage,
         setRowsPerPage,
         doTagged,
-        createTaggedCallback,
         onTagged,
         onExport,
         setFilter,
         doUpdated,
         doDeleted,
-        createDeletedCallback,
         onDeleted,
         onDragStart,
         onDragEnd,
         doDropped,
         onDropped,
-        onTextHighlight,
-        createCommentCallback,
-        onComment,
-        onFlashcard,
-        createColorCallback,
-        onColor
+        annotationMutations
     };
 
 }
@@ -728,9 +651,9 @@ const AnnotationRepoStoreLoader = React.memo((props: IProps) => {
 
     return (
         <TagSidebarEventForwarderContext.Provider value={tagSidebarEventForwarder}>
-            <AnnotationMutationsContext.Provider value={annotationRepoCallbacks}>
+            <AnnotationMutationsContextProvider value={annotationRepoCallbacks.annotationMutations}>
                 {props.children}
-            </AnnotationMutationsContext.Provider>
+            </AnnotationMutationsContextProvider>
         </TagSidebarEventForwarderContext.Provider>
     );
 
