@@ -24,7 +24,11 @@ export const MUIAppRoot = (props: IProps) => {
             fontSize: 12
         },
         palette: {
-            type: theme
+            type: theme,
+            primary: {
+                // main: 'rgb(135, 141, 246)'
+                main: 'rgb(103, 84, 214)'
+            }
         }
     });
 

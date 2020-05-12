@@ -23,7 +23,15 @@ export interface ITags {
     // readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
     // readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
     // readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
-    readonly tagsProvider: () => ReadonlyArray<TagDescriptor>;
+    readonly tagsProvider: () => ReadonlyArray<Tag>;
+}
+
+export interface ITagDescriptors {
+
+    // readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
+    // readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    // readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    readonly tagDescriptorsProvider: () => ReadonlyArray<TagDescriptor>;
 }
 
 export interface IPersistenceLayer {
@@ -39,6 +47,7 @@ export interface IPersistence extends ITags, IPersistenceLayer {
 export const PersistenceLayerContext = createContextMemo<IPersistenceLayer>(null!);
 export const PersistenceContext = createContextMemo<IPersistence>(null!);
 export const TagsContext = createContextMemo<ITags>(null!);
+export const TagDescriptorsContext = createContextMemo<ITagDescriptors>(null!);
 
 export function usePersistence() {
     return useContextMemo(PersistenceContext);
@@ -50,6 +59,10 @@ export function usePersistenceLayer() {
 
 export function useTagsContext() {
     return useContextMemo(TagsContext);
+}
+
+export function useTagDescriptorsContext() {
+    return useContextMemo(TagDescriptorsContext);
 }
 
 export type TagsType = 'documents' | 'annotations';
@@ -108,6 +121,7 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                     const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
                                                     const tagsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
+                                                    const tagDescriptorsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
 
                                                     const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
                                                         persistenceLayerProvider,
@@ -128,6 +142,13 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         // docTagsProvider: docTags,
                                                         // annotationTagsProvider: annotationTags,
                                                         tagsProvider
+                                                    }
+
+                                                    const tagDescriptorsContext: ITagDescriptors = {
+                                                        // userTagsProvider: () => userTags,
+                                                        // docTagsProvider: docTags,
+                                                        // annotationTagsProvider: annotationTags,
+                                                        tagDescriptorsProvider
                                                     }
 
                                                     const docRepoRenderProps: DocRepoRenderProps = {

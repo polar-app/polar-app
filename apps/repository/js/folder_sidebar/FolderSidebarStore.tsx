@@ -12,7 +12,7 @@ import isEqual from "react-fast-compare";
 import {
     usePersistence,
     useRepoDocMetaManager,
-    useTagsContext
+    useTagDescriptorsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
 import {FolderSelectionEvents} from "./FolderSelectionEvents";
@@ -218,20 +218,20 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     // just trying to get the tagsContext working..
 
     const repoDocMetaManager = useRepoDocMetaManager();
-    const tagsContext = useTagsContext();
+    const tagDescriptorsContext = useTagDescriptorsContext();
     const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
     const persistence = usePersistence();
 
     const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
                                                                 persistence.persistenceLayerProvider,
-                                                                tagsContext.tagsProvider);
+                                                                tagDescriptorsContext.tagDescriptorsProvider);
 
     function doHookUpdate() {
 
         const store = storeProvider();
 
-        const tags = tagsContext?.tagsProvider() || [];
+        const tags = tagDescriptorsContext?.tagDescriptorsProvider() || [];
 
         mutator.doUpdate({...store, tags});
 

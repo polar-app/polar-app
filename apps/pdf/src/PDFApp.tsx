@@ -20,6 +20,8 @@ import {PersistenceLayerContext} from "../../repository/js/persistence_layer/Per
 import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {DocViewerStore} from "./DocViewerStore";
+import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
+import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 
 export class PDFApp {
 
@@ -71,23 +73,20 @@ export class PDFApp {
 
                 <MUIAppRoot>
 
-                    {/*FIXME: need dialogs here*/}
-
-                    {/*FIXME: the current issue now is that we don't have user tags */}
-                    {/*and we don't have a tagsProvider */}
-
-                    {/*FIXME: we just need a basic tagsProvider() here which is just the set*/}
-                    {/*of tags the user is currently using.*/}
-                    <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
-                        <DocMetaContextProvider>
-                            <DocViewerStore>
-                                <AnnotationSidebarStoreProvider>
-                                    <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
-                                               tagsProvider={() => []}/>
-                                </AnnotationSidebarStoreProvider>
-                            </DocViewerStore>
-                        </DocMetaContextProvider>
-                    </PersistenceLayerContext.Provider>
+                    <MUIDialogController>
+                        <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
+                            <UserTagsProvider>
+                                <DocMetaContextProvider>
+                                    <DocViewerStore>
+                                        <AnnotationSidebarStoreProvider>
+                                            <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
+                                                       tagsProvider={() => []}/>
+                                        </AnnotationSidebarStoreProvider>
+                                    </DocViewerStore>
+                                </DocMetaContextProvider>
+                            </UserTagsProvider>
+                        </PersistenceLayerContext.Provider>
+                    </MUIDialogController>
 
                 </MUIAppRoot>
 
