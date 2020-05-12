@@ -301,7 +301,7 @@ export namespace AnnotationMutationCallbacks {
     import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 
     /**
-     * @param updateStore: (docMetas: ReadonlyArra) => void;
+     * @param updateStore: Update the store directly.
      * @param refresher called for each mutation to update the store.
      */
     export function create(updateStore: (docMetas: ReadonlyArray<IDocMeta>) => void,
@@ -351,13 +351,6 @@ export namespace AnnotationMutationCallbacks {
                                           .map(current => current.key);
 
             updateStore(updatedDocMetas);
-
-            // for (const partition of Object.values(partitions)) {
-            //     const docMeta = partition.key;
-            //     const fingerprint = docMeta.docInfo.fingerprint;
-            //     const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
-            //     repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
-            // }
 
             refresher();
 
@@ -425,21 +418,7 @@ export namespace AnnotationMutationCallbacks {
             callback();
 
         }
-//
-//         function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
-//
-//             if (opts && opts.selected) {
-//                 return opts.selected;
-//             }
-//
-//             const store = storeProvider();
-//
-//             const {selected, viewPage} = store;
-//
-//             return viewPage.filter(current => selected.includes(current.id));
-//
-//         }
-//
+
         function createDeletedCallback(mutation: IDeleteMutation): Callback {
 
             return React.useCallback(() => {
@@ -491,7 +470,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onComment(mutation: ICommentMutation & IAnnotationMutationSelected) {
+        function onComment(mutation: ICommentMutation) {
             handleUpdate(mutation, DocAnnotationsMutator.onComment)
                 .catch(err => log.error(err));
         }
@@ -509,7 +488,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onColor(mutation: IColorMutation & IAnnotationMutationSelected) {
+        function onColor(mutation: IColorMutation) {
 
             // FIXME noop
 
