@@ -45,13 +45,13 @@ import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
     AnnotationMutationsContext,
     DocAnnotationsMutator,
-    IAnnotationMutations,
+    IAnnotationMutationCallbacks,
     IAnnotationMutationSelected,
     IAnnotationMutationSelectedRequired,
     IColorMutation,
     ICommentMutation,
     IDeleteMutation,
-    IDeleteMutationWithSelected,
+    IDeleteMutationWithSelectedRequired,
     IFlashcardMutation,
     ITextHighlightMutation
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
@@ -105,7 +105,7 @@ interface IAnnotationRepoStore {
 
 }
 
-interface IAnnotationRepoCallbacks extends IAnnotationMutations {
+interface IAnnotationRepoCallbacks extends IAnnotationMutationCallbacks {
 
     readonly selectRow: (selectedID: IDStr,
                          event: React.MouseEvent,
@@ -430,7 +430,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function createTaggedCallback(mutation: IDeleteMutationWithSelected) {
+    function createTaggedCallback(mutation: IDeleteMutationWithSelectedRequired) {
 
         const opts: TaggedCallbacksOpts<IDocAnnotation> = {
             targets: () => mutation.selected,
@@ -547,7 +547,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     }
 
-    function createDeletedCallback(mutation: IDeleteMutationWithSelected): Callback {
+    function createDeletedCallback(mutation: IDeleteMutationWithSelectedRequired): Callback {
 
         return React.useCallback(() => {
             onDeleted(mutation);
