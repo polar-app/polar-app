@@ -94,7 +94,7 @@ export interface IDeleteMutation extends IAnnotationMutationSelected {
 
 }
 
-export interface IColorMutation extends IAnnotationMutationSelected {
+export interface IColorMutation {
     readonly color: string;
 }
 
@@ -476,7 +476,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onColor(colorMutation: IColorMutation) {
+        function onColor(colorMutation: IColorMutation & IAnnotationMutationSelected) {
 
             handleUpdate({selected: colorMutation.selected}, (docMeta, pageMeta, mutation) => {
 
