@@ -425,7 +425,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
             }
 
-        })
+        }).catch(err => log.error(err));
+
 
     }
 

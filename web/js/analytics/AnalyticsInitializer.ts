@@ -26,9 +26,10 @@ export class AnalyticsInitializer {
         await FirestoreCollections.configure();
 
         this.initVersion();
-        this.initAccount();
-        this.initNavigation();
+        await this.initAccount();
+        await this.initNavigation();
         this.initHeartbeat();
+
     }
 
     private static initVersion() {

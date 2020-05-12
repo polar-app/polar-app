@@ -22,6 +22,7 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
+import { useAnnotationSidebarCallbacks } from '../../../apps/pdf/src/AnnotationSidebarStore';
 
 const log = Logger.create();
 
@@ -143,6 +144,8 @@ interface AnnotationHeaderProps extends IRenderProps {
 
 const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
+    const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
+
     const onTagged = (tags: ReadonlyArray<Tag>) => {
         props.doc.docInfo.tags = Tags.toMap(tags);
     };
@@ -158,7 +161,7 @@ const AnnotationHeader = (props: AnnotationHeaderProps) => {
 
                 <MUISearchBox2 style={{flexGrow: 1}}
                                className="mt-1 mb-1"
-                               onChange={text => props.onFiltered(text)}
+                               onChange={text => annotationSidebarCallbacks.setFilter(text)}
                                placeholder="Filter annotations by text"/>
 
                 <div style={{display: 'flex'}}>

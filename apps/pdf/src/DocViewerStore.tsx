@@ -92,8 +92,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         docMetaContext.setDoc({docMeta, mutable: true});
 
-        console.log("FIXME: Sending doc meta to:  annotationSidebarCallbacks");
-
         // update the annotation sidebar
         annotationSidebarCallbacks.setDocMeta(docMeta);
 

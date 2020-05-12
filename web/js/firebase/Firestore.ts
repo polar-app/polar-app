@@ -38,7 +38,7 @@ export class Firestore {
                 firestore.settings(settings);
 
                 if (opts.enablePersistence) {
-                    this.enablePersistence(firestore);
+                    await this.enablePersistence(firestore);
                 }
 
                 return firestore;

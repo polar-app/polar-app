@@ -110,8 +110,6 @@ export interface ITaggedMutation extends IAnnotationMutationSelected {
 
 export interface IAnnotationMutations {
 
-
-
     /**
      * Create a specific callback as a react callback that can be used with a
      * fixed set of selected items.
