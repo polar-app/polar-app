@@ -10,6 +10,8 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 /**
  * Mutation of annotations directly without having the underlying document loaded.
+ *
+ * @Deprecated
  */
 export class AnnotationMutations  {
 

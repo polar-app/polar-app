@@ -7,18 +7,8 @@ import {
 import {IDocAnnotation} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
-import {Flashcard} from "../metadata/Flashcard";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardActions} from "./child_annotations/flashcards/FlashcardActions";
-import {
-    createObservableStore,
-    SetStore
-} from "../../spectron0/material-ui/store/ObservableStore";
-import {Provider} from "polar-shared/src/util/Providers";
-import {usePersistence} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
-import {Logger} from "polar-shared/src/logger/Logger";
-import {useDocMetaContext} from "./DocMetaContextProvider";
 import {CommentActions} from "./child_annotations/comments/CommentActions";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {HTMLStr} from "polar-shared/src/util/Strings";
@@ -140,6 +130,9 @@ export interface IAnnotationMutations {
 
 export const AnnotationMutationsContext = React.createContext<IAnnotationMutations>({
 
+    // FIXME I just need to inject this code into the doc viewer and we're done
+    //
+
     createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
     onTextHighlight: NULL_FUNCTION,
@@ -154,42 +147,6 @@ export const AnnotationMutationsContext = React.createContext<IAnnotationMutatio
 
 export function useAnnotationMutationsContext() {
     return useContext(AnnotationMutationsContext);
-}
-
-export interface IAnnotationMutationStore {
-
-}
-
-export interface IAnnotationMutationCallbacks {
-
-    // readonly doTagged: (annotation: IDocAnnotation, tags: ReadonlyArray<Tag>) => void;
-    readonly onTagged: (annotation: IDocAnnotation) => void;
-
-    /**
-     * Change the color of an annotation.
-     */
-    readonly onColor: (annotation: IDocAnnotation, color: string) => void;
-
-    readonly onTextHighlight: (mutation: ITextHighlightMutation) => void
-    readonly onComment: (mutation: ICommentMutation) => void
-    readonly onFlashcard: (mutation: IFlashcardMutation) => void;
-
-}
-
-const initialStore: IAnnotationMutationStore = {
-}
-
-interface Mutator {
-
-}
-
-function mutatorFactory(storeProvider: Provider<IAnnotationMutationStore>,
-                        setStore: SetStore<IAnnotationMutationStore>): Mutator {
-
-    return {
-
-    };
-
 }
 
 export namespace DocAnnotationsMutator {
@@ -309,111 +266,3 @@ export namespace DocAnnotationsMutator {
     }
 
 }
-
-function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
-                          setStore: (store: IAnnotationMutationStore) => void,
-                          mutator: Mutator): IAnnotationMutationCallbacks {
-
-    const persistence = usePersistence();
-    const dialogs = useDialogManager();
-    const docMetaContext = useDocMetaContext();
-
-    async function doWriteDocMeta(docMeta: IDocMeta) {
-
-        // first, set the docMeta so that the UI updates
-
-        docMetaContext.setDoc({docMeta, mutable: true});
-
-        const persistenceLayer = persistence.persistenceLayerProvider();
-        await persistenceLayer.writeDocMeta(docMeta);
-
-    }
-
-    // function handleMutation(mutator: (docMeta: IDocMeta) => void) {
-    //
-    //     const docMeta = docMetaContext.docMeta;
-    //
-    //     mutator(docMeta);
-    //
-    //     async function doAsync() {
-    //         await doWriteDocMeta(docMeta);
-    //         log.info("mutation applied");
-    //     }
-    //
-    //     doAsync()
-    //         .catch(err => log.error(err));
-    //
-    // }
-
-    function onComment(mutation: ICommentMutation) {
-        // handleMutation((docMeta, pageMeta) => DocAnnotationsMutator.onComment(docMeta, mutation));
-    }
-
-    function onFlashcard(mutation: IFlashcardMutation) {
-        // handleMutation((docMeta) => DocAnnotationsMutator.onFlashcard(docMeta, mutation));
-    }
-
-    function onTextHighlight(mutation: ITextHighlightMutation) {
-        // handleMutation((docMeta) => DocAnnotationsMutator.onTextHighlight(docMeta, mutation));
-    }
-
-    function onTagged(annotation: IDocAnnotation) {
-        // noop
-    }
-
-    return {
-        onTagged,
-        onColor: NULL_FUNCTION,
-        onTextHighlight,
-        onFlashcard,
-        onComment,
-    };
-
-}
-
-interface IProps {
-    readonly children: JSX.Element;
-}
-
-// export const [AnnotationMutationStoreProvider, useAnnotationMutationStore, useAnnotationMutationCallbacks, useAnnotationMutationMutator] =
-//     createObservableStore<IAnnotationMutationStore, Mutator, IAnnotationMutationCallbacks>({
-//         initialValue: initialStore,
-//         mutatorFactory,
-//         callbacksFactory
-//     });
-
-
-// const onTagged = (tags: ReadonlyArray<Tag>) => {
-//
-//     setTimeout(() => {
-//
-//         const updates = {tags: Tags.toMap(tags)};
-//
-//         DocMetas.withBatchedMutations(docMeta, () => {
-//
-//             AnnotationMutations.update(docMeta,
-//                                        annotation.annotationType,
-//                                        {...annotation.original, ...updates});
-//
-//         });
-//
-//
-//     }, 1);
-//
-// };
-
-
-// const handleDelete = () => {
-//     log.info("Comment deleted: ", comment);
-//     delete comment.pageMeta.comments[comment.id];
-// }
-
-// private onComment(): void {
-//
-//     this.props.onComment(this.html, this.props.existingComment);
-//
-//     this.setState({
-//                       iter: this.state.iter + 1
-//                   });
-//
-// }
