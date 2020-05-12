@@ -11,6 +11,12 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useAnnotationSidebarCallbacks} from './AnnotationSidebarStore';
 import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import {
+    AnnotationMutationCallbacks,
+    AnnotationMutationsContextProvider,
+    IAnnotationMutationCallbacks
+} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IDocViewerStore {
 
@@ -29,6 +35,8 @@ interface IDocViewerStore {
 interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
+    readonly annotationMutations: IAnnotationMutationCallbacks;
+
 
 }
 
@@ -97,16 +105,53 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
+    const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
+
+    function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
+        // this is almost always just ONE item at a time so any type of
+        // bulk performance updates are pointless
+        docMetas.map(setDocMeta);
+    }
+
     return {
-        setDocMeta
+        setDocMeta,
+        annotationMutations
     };
 
 }
 
-export const [DocViewerStoreProvider, useDocViewerStore, useDocViewerCallbacks, useDocViewerMutator]
+export const [DocViewerStoreProviderDelegate, useDocViewerStore, useDocViewerCallbacks, useDocViewerMutator]
     = createObservableStore<IDocViewerStore, Mutator, IDocViewerCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
         callbacksFactory
     });
+
+interface IProps {
+    readonly children: React.ReactElement;
+}
+
+const DocViewerStoreInner = React.memo((props: IProps) => {
+
+    const docViewerCallbacks = useDocViewerCallbacks();
+
+    return (
+        <AnnotationMutationsContextProvider value={docViewerCallbacks.annotationMutations}>
+            {props.children}
+        </AnnotationMutationsContextProvider>
+    );
+});
+
+
+export const DocViewerStore = React.memo((props: IProps) => {
+    return (
+        <DocViewerStoreProviderDelegate>
+            <DocViewerStoreInner>
+                {props.children}
+            </DocViewerStoreInner>
+        </DocViewerStoreProviderDelegate>
+    );
+});
+
+
 

@@ -16,14 +16,10 @@ import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PDFViewer} from './PDFViewer';
 import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
-import {
-    PersistenceLayerApp,
-    PersistenceLayerContext
-} from "../../repository/js/persistence_layer/PersistenceLayerApp";
-import {AuthRequired} from "../../repository/js/AuthRequired";
-import { DocViewerStoreProvider } from './DocViewerStore';
-import { AnnotationSidebarStoreProvider } from './AnnotationSidebarStore';
+import {PersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import {DocViewerStore} from "./DocViewerStore";
 
 export class PDFApp {
 
@@ -75,14 +71,21 @@ export class PDFApp {
 
                 <MUIAppRoot>
 
+                    {/*FIXME: need dialogs here*/}
+
+                    {/*FIXME: the current issue now is that we don't have user tags */}
+                    {/*and we don't have a tagsProvider */}
+
+                    {/*FIXME: we just need a basic tagsProvider() here which is just the set*/}
+                    {/*of tags the user is currently using.*/}
                     <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
                         <DocMetaContextProvider>
-                            <DocViewerStoreProvider>
+                            <DocViewerStore>
                                 <AnnotationSidebarStoreProvider>
                                     <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
                                                tagsProvider={() => []}/>
                                 </AnnotationSidebarStoreProvider>
-                            </DocViewerStoreProvider>
+                            </DocViewerStore>
                         </DocMetaContextProvider>
                     </PersistenceLayerContext.Provider>
 

@@ -32,9 +32,9 @@ const FolderSidebarDemo = () => {
 }
 
 const tagsContext: ITags = {
-    userTagsProvider: () => tagDescriptors,
-    docTagsProvider: () => tagDescriptors,
-    annotationTagsProvider: () => tagDescriptors,
+    // userTagsProvider: () => tagDescriptors,
+    // docTagsProvider: () => tagDescriptors,
+    // annotationTagsProvider: () => tagDescriptors,
     tagsProvider: () => tagDescriptors
 }
 

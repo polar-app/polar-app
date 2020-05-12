@@ -20,9 +20,9 @@ import {Provider} from "polar-shared/src/util/Providers";
 
 export interface ITags {
 
-    readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
-    readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
-    readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    // readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
+    // readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
+    // readonly annotationTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
     readonly tagsProvider: () => ReadonlyArray<TagDescriptor>;
 }
 
@@ -117,16 +117,16 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         repoDocMetaLoader: props.repoDocMetaLoader,
                                                         repoDocMetaManager: props.repoDocMetaManager,
                                                         persistenceLayerProvider,
-                                                        userTagsProvider: () => userTags,
-                                                        docTagsProvider: docTags,
-                                                        annotationTagsProvider: annotationTags,
+                                                        // userTagsProvider: () => userTags,
+                                                        // docTagsProvider: docTags,
+                                                        // annotationTagsProvider: annotationTags,
                                                         tagsProvider,
                                                         persistenceLayerMutator
                                                     }
                                                     const tagsContext: ITags = {
-                                                        userTagsProvider: () => userTags,
-                                                        docTagsProvider: docTags,
-                                                        annotationTagsProvider: annotationTags,
+                                                        // userTagsProvider: () => userTags,
+                                                        // docTagsProvider: docTags,
+                                                        // annotationTagsProvider: annotationTags,
                                                         tagsProvider
                                                     }
 

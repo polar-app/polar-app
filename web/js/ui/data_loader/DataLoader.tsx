@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Alert} from "reactstrap";
 import {SnapshotSubscriber} from "../../firebase/SnapshotSubscribers";
+import Alert from "@material-ui/lab/Alert";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 
@@ -81,9 +81,11 @@ export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
             if (this.props.error) {
                 return this.props.error(this.state.data.err);
             } else {
-                return <Alert color="danger">
-                    Error: {this.state.data.err.message}
-                </Alert>;
+                return (
+                    <Alert severity="error">
+                        Error: {this.state.data.err.message}
+                    </Alert>
+                );
             }
 
         } else {

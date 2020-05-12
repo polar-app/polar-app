@@ -35,8 +35,6 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
                 userTagsDB.init();
                 const userTags = userTagsDB.tags();
 
-                // console.log("UserTags: ", userTags.sort((a, b) => a.id.localeCompare(b.id)));
-
                 return this.props.render(userTags);
 
             } else {

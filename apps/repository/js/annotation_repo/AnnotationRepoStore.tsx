@@ -252,8 +252,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          dialogs: DialogManager,
                          persistence: IPersistence,
                          repoDocMetaLoader: RepoDocMetaLoader,
-                         repoDocMetaManager: RepoDocMetaManager,
-                         tagsContext: ITags): IAnnotationRepoCallbacks => {
+                         repoDocMetaManager: RepoDocMetaManager): IAnnotationRepoCallbacks => {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -484,16 +483,13 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
 
-    const tagsContext = useTagsContext();
-
     return createCallbacks(storeProvider,
                            setStore,
                            mutator,
                            dialogs,
                            persistence,
                            repoDocMetaLoader,
-                           repoDocMetaManager,
-                           tagsContext);
+                           repoDocMetaManager);
 
 }
 
@@ -511,7 +507,7 @@ interface IProps {
 /**
  * Once the provider is in place, we load the repo which uses the observer store.
  */
-const AnnotationRepoStoreLoader = React.memo((props: IProps) => {
+const AnnotationRepoStoreInner = React.memo((props: IProps) => {
 
     // TODO: migrate to useRepoDocInfos
 
@@ -557,9 +553,9 @@ export const AnnotationRepoStore2 = React.memo((props: IProps) => {
 
     return (
         <AnnotationRepoStoreProvider>
-            <AnnotationRepoStoreLoader>
+            <AnnotationRepoStoreInner>
                 {props.children}
-            </AnnotationRepoStoreLoader>
+            </AnnotationRepoStoreInner>
         </AnnotationRepoStoreProvider>
     )
 
