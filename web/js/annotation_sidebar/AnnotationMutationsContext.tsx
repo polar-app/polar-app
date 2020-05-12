@@ -402,21 +402,9 @@ export namespace AnnotationMutationCallbacks {
             return TaggedCallbacks.create(opts);
 
         }
-//
-//
-        function onTagged(annotations: ITaggedMutation) {
 
-            const opts: TaggedCallbacksOpts<IDocAnnotation> = {
-                targets: () => annotations.selected,
-                tagsProvider: tagsContext.tagsProvider,
-                dialogs,
-                doTagged
-            }
-
-            const callback = TaggedCallbacks.create(opts);
-
-            callback();
-
+        function onTagged(mutation: ITaggedMutation) {
+            createTaggedCallback(mutation)();
         }
 
         function createDeletedCallback(mutation: IDeleteMutation): Callback {

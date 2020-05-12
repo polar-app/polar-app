@@ -81,6 +81,12 @@ export namespace TaggedCallbacks {
 
             const autocompleteStrategy = computeAutocompleteStrategy();
 
+            const doTaggedWithTimeout = (tags: ReadonlyArray<Tag>) => {
+                setTimeout(() => {
+                    doTagged(targets, tags, autocompleteStrategy.strategy);
+                }, 1);
+            }
+
             const autocompleteProps: AutocompleteDialogProps<Tag> = {
                 title: "Assign Tags",
                 description: autocompleteStrategy.description,
@@ -89,7 +95,7 @@ export namespace TaggedCallbacks {
                 createOption: MUITagInputControls.createOption,
                 onCancel: NULL_FUNCTION,
                 onChange: NULL_FUNCTION,
-                onDone: tags => doTagged(targets, tags, autocompleteStrategy.strategy)
+                onDone: tags => doTaggedWithTimeout(tags)
             };
 
             dialogs.autocomplete(autocompleteProps);
