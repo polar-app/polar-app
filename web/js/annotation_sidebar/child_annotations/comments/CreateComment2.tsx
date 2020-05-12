@@ -20,13 +20,6 @@ export const CreateComment2 = React.memo((props: IProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
 
-    const cancelButton = <CancelButton onClick={() => annotationInputContext.setActive('none')}/>;
-    // FIXME try to use MUI Fade here I think.
-
-    if (annotationInputContext.active !== 'comment') {
-        return null;
-    }
-
     const commentCallback = annotationMutations.createCommentCallback({selected: [parent]})
 
     const handleComment = React.useCallback((body: string) => {
@@ -43,6 +36,14 @@ export const CreateComment2 = React.memo((props: IProps) => {
         commentCallback(mutation);
 
     }, []);
+
+
+    const cancelButton = <CancelButton onClick={() => annotationInputContext.setActive('none')}/>;
+    // FIXME try to use MUI Fade here I think.
+
+    if (annotationInputContext.active !== 'comment') {
+        return null;
+    }
 
     return (
         <EditComment2 cancelButton={cancelButton} onComment={handleComment}/>

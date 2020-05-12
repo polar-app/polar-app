@@ -1,14 +1,13 @@
 import * as React from 'react';
+import {useCallback} from 'react';
 import {CancelButton} from "../CancelButton";
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {
     IFlashcardCreate,
-    IFlashcardMutation,
     useAnnotationMutationsContext
 } from "../../AnnotationMutationsContext";
-import {useCallback} from "react";
 import {FlashcardInputFieldsType} from "./flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {IDocAnnotation} from "../../DocAnnotation";
@@ -30,12 +29,6 @@ export const CreateFlashcard2 = (props: IProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
 
-    if (annotationInputContext.active !== 'flashcard') {
-        return null;
-    }
-
-    const cancelButton = <CancelButton onClick={annotationInputContext.reset}/>;
-
     const onFlashcard = useCallback((flashcardType: FlashcardType,
                                      fields: Readonly<FlashcardInputFieldsType>) => {
 
@@ -52,6 +45,12 @@ export const CreateFlashcard2 = (props: IProps) => {
         annotationMutations.onFlashcard(mutation);
 
     }, []);
+
+    if (annotationInputContext.active !== 'flashcard') {
+        return null;
+    }
+
+    const cancelButton = <CancelButton onClick={annotationInputContext.reset}/>;
 
     return (
 

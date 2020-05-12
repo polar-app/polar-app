@@ -22,7 +22,9 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
-import { useAnnotationSidebarCallbacks } from '../../../apps/pdf/src/AnnotationSidebarStore';
+import {useAnnotationSidebarCallbacks} from '../../../apps/pdf/src/AnnotationSidebarStore';
+import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
+import {AnnotationInputView} from "./AnnotationInputView";
 
 const log = Logger.create();
 
@@ -98,14 +100,38 @@ const NoAnnotations = () => {
     );
 };
 
+interface AnnotationSidebarItemProps {
+    readonly annotation: IDocAnnotation;
+}
+
+const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {
+
+    const {annotation} = props;
+
+    return (
+
+        <AnnotationActiveInputContextProvider>
+            <>
+                <>
+                    <AnnotationView2 annotation={annotation}/>
+
+                    <AnnotationInputView annotation={annotation}/>
+                </>
+            </>
+        </AnnotationActiveInputContextProvider>
+
+    );
+
+}
+
 const AnnotationsBlock = (props: IRenderProps) => {
 
     if (props.view.length > 0) {
         return (
             <>
                 {props.view.map(annotation => (
-                    <AnnotationView2 key={annotation.id}
-                                     annotation={annotation}/>))}
+                    <AnnotationSidebarItem key={annotation.id}
+                                           annotation={annotation}/>))}
             </>
         );
 
@@ -256,12 +282,12 @@ export class AnnotationSidebar2 extends React.Component<IProps, IState> {
                      flexGrow: 1
                  }}>
 
-                <AnnotationHeader {...this.state} {...this.props}
+                <AnnotationHeader {...this.props}
                                   onExport={format => this.onExport(format)}
                                   onFiltered={text => this.filtersHandler.update({text})}
                                   datastoreCapabilities={capabilities}/>
 
-                <Annotations {...this.state} {...this.props}/>
+                <Annotations {...this.props}/>
 
             </div>
 
@@ -291,6 +317,6 @@ interface IState {
 
 }
 
-interface IRenderProps extends IProps, IState {
+interface IRenderProps extends IProps {
 
 }

@@ -30,7 +30,6 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly annotationType: AnnotationType;
     readonly html: HTMLString | undefined;
 
-    // TODO: REACT POINTER ISSUE
     readonly fields?: {[name: string]: HTMLString};
     readonly pageNum: number;
     readonly position: Point;
@@ -44,7 +43,6 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     readonly parent: IRef | undefined;
 
-    // TODO: REACT POINTER ISSUE
     readonly img: Img | undefined;
 
     /**
@@ -56,13 +54,13 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     // TODO: REACT POINTER ISSUE
     readonly docMeta: IDocMeta;
 
-    // TODO: REACT POINTER ISSUE
+    // TODO: REACT POINTER ISSUE.  This one is REALLY bad as it will yield
+    // a deep comparison
     readonly pageMeta: IPageMeta;
 
     // TODO: REACT POINTER ISSUE
     readonly original: IComment | IFlashcard | IAreaHighlight | ITextHighlight;
 
-    // TODO: REACT POINTER ISSUE
     readonly author?: IAuthor;
 
     readonly immutable: boolean;
@@ -71,10 +69,9 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      * The effective tags for this item including any inherited tags from parent
      * objects like flashcards, comments, etc.
      */
-    // TODO: REACT POINTER ISSUE
     readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
-    // TODO: REACT POINTER ISSUE
+    // TODO: REACT POINTER ISSUE.  FIXME: not sure if this one will be an issue.
     readonly children: () => ReadonlyArray<IDocAnnotation>;
 
 }

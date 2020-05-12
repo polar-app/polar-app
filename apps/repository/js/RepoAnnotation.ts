@@ -53,7 +53,7 @@ export interface RepoAnnotation {
 
     readonly docMeta: IDocMeta;
 
-    readonly pageMeta: IPageMeta;
+    // readonly pageMeta: IPageMeta;
 
     readonly original: IFlashcard | IAreaHighlight | ITextHighlight | IComment;
 
