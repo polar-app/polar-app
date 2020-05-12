@@ -78,7 +78,7 @@ interface IProps {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export const FlashcardAnnotationView2 = React.memo(React.forwardRef((props: IProps) => {
+export const FlashcardAnnotationView2 = React.memo(React.forwardRef((props: IProps, ref) => {
 
     const { flashcard } = props;
 

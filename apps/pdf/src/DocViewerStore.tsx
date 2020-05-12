@@ -8,11 +8,9 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {
-    usePersistence,
-    usePersistenceLayer
-} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useAnnotationSidebarCallbacks} from './AnnotationSidebarStore';
+import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 
 interface IDocViewerStore {
 
@@ -55,7 +53,8 @@ function mutatorFactory(storeProvider: Provider<IDocViewerStore>,
 function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           setStore: (store: IDocViewerStore) => void,
                           mutator: Mutator): IDocViewerCallbacks {
-    
+
+    const docMetaContext = useDocMetaContext();
     const persistenceLayerContext = usePersistenceLayer();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
 
@@ -90,6 +89,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         // update the main store.
         doExec();
+
+        docMetaContext.setDoc({docMeta, mutable: true});
+
+        console.log("FIXME: Sending doc meta to:  annotationSidebarCallbacks");
 
         // update the annotation sidebar
         annotationSidebarCallbacks.setDocMeta(docMeta);

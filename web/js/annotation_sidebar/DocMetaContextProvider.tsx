@@ -1,8 +1,13 @@
 import React, {useContext, useState} from 'react';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import isEqual from "react-fast-compare";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-export interface IDocMetaContextBase {
+/**
+ * Holds the DocMeta and metadata about it including whether it's mutable or
+ * not.
+ */
+export interface IDocMetaHolder {
 
     readonly docMeta: IDocMeta;
 
@@ -13,31 +18,33 @@ export interface IDocMetaContextBase {
 
 }
 
-export interface IDocMetaContext extends IDocMetaContextBase {
-    readonly setDoc: (doc: IDocMetaContextBase) => void;
+export interface IDocMetaContext {
+    readonly doc: IDocMetaHolder | undefined;
+    readonly setDoc: (doc: IDocMetaHolder) => void;
 }
 
-export const DocMetaContext = React.createContext<IDocMetaContext>(null!);
+const defaultValue: IDocMetaContext = {
+    doc: undefined,
+    setDoc: NULL_FUNCTION
+}
+
+export const DocMetaContext = React.createContext<IDocMetaContext>(defaultValue);
 
 export function useDocMetaContext() {
     return useContext(DocMetaContext);
 }
 
 interface IProps {
-    readonly docMeta: IDocMeta;
-    readonly mutable: boolean
+    readonly doc?: IDocMetaHolder;
     readonly children: JSX.Element;
 }
 
 export const DocMetaContextProvider = React.memo((props: IProps) => {
 
-    const [doc, setDoc] = useState<IDocMetaContextBase>({
-        docMeta: props.docMeta,
-        mutable: props.mutable
-    });
+    const [doc, setDoc] = useState<IDocMetaHolder | undefined>(props.doc);
 
     return (
-        <DocMetaContext.Provider value={{...doc, setDoc}}>
+        <DocMetaContext.Provider value={{doc, setDoc}}>
             {props.children}
         </DocMetaContext.Provider>
     );

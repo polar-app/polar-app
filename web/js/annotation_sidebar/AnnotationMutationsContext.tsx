@@ -324,7 +324,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationMutationStore>,
 
         // first, set the docMeta so that the UI updates
 
-        docMetaContext.setDoc({...docMetaContext, docMeta});
+        docMetaContext.setDoc({docMeta, mutable: true});
 
         const persistenceLayer = persistence.persistenceLayerProvider();
         await persistenceLayer.writeDocMeta(docMeta);

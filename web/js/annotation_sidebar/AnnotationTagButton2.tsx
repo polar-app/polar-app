@@ -12,13 +12,13 @@ interface IProps {
 
 export const AnnotationTagButton2 = React.memo((props: IProps) => {
 
-    const docMetaContext = useDocMetaContext();
+    const {doc} = useDocMetaContext();
     const annotationMutations = useAnnotationMutationsContext();
 
     const taggedCallback = annotationMutations.createTaggedCallback({selected: [props.annotation]});
 
     return (
-        <IconButton disabled={! docMetaContext.mutable}
+        <IconButton disabled={! doc?.mutable}
                     size="small"
                     onClick={taggedCallback}>
 

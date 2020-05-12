@@ -16,10 +16,6 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {PDFAppURLs} from "./PDFAppURLs";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
-import {Backend} from "polar-shared/src/datastore/Backend";
-import {URLStr} from "polar-shared/src/util/Strings";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {TextHighlightsView} from "./annotations/TextHighlightsView";
 import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
@@ -30,7 +26,7 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
-import { useAnnotationSidebarStore } from "./AnnotationSidebarStore";
+import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
 
 const log = Logger.create();
 

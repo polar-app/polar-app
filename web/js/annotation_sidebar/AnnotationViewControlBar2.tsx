@@ -34,12 +34,12 @@ const useStyles = makeStyles((theme) =>
 
 
 interface IMutableProps {
-    readonly mutable: boolean;
+    readonly mutable: boolean | undefined;
 }
 
 interface IAnnotationProps {
     readonly annotation: IDocAnnotation;
-    readonly mutable: boolean;
+    readonly mutable: boolean | undefined;
 }
 
 const ChangeTextHighlightButton = React.memo((props: IAnnotationProps) => {
@@ -102,7 +102,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
     const { annotation } = props;
 
-    const docMetaContext = useDocMetaContext();
+    const {doc} = useDocMetaContext();
     const annotationMutations = useAnnotationMutationsContext()
 
     const classes = useStyles();
@@ -137,11 +137,11 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                                       flexGrow: 1
                                   }}>
                            <ChangeTextHighlightButton annotation={annotation}
-                                                      mutable={docMetaContext.mutable}/>
+                                                      mutable={doc?.mutable}/>
 
-                           <CreateCommentButton mutable={docMetaContext.mutable}/>
+                           <CreateCommentButton mutable={doc?.mutable}/>
 
-                           <CreateFlashcardButton mutable={docMetaContext.mutable}/>
+                           <CreateFlashcardButton mutable={doc?.mutable}/>
 
                             {! annotation.immutable &&
                                 <ColorSelector color={props.annotation.color || 'yellow'}

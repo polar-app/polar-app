@@ -26,7 +26,7 @@ export const FlashcardAnnotationControlBar2 = React.memo((props: IProps) => {
 
     const { flashcard } = props;
 
-    const docMetaContext = useDocMetaContext();
+    const {doc} = useDocMetaContext();
     const annotationMutations = useAnnotationMutationsContext();
 
     const handleDelete = () => {
@@ -62,7 +62,7 @@ export const FlashcardAnnotationControlBar2 = React.memo((props: IProps) => {
                        <AnnotationTagButton2 annotation={props.flashcard}/>
 
                        <FlashcardViewDropdown id={'flashcard-dropdown-' + flashcard.id}
-                                              disabled={! docMetaContext.mutable}
+                                              disabled={! doc?.mutable}
                                               flashcard={flashcard}
                                               onDelete={() => handleDelete()}/>
 

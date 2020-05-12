@@ -14,7 +14,10 @@ import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotat
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoaders";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
-import {usePersistence} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    usePersistence,
+    usePersistenceLayer
+} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
 const log = Logger.create();
@@ -110,6 +113,8 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                                     .map(data => AnnotationRepoFilters2.execute(data, {text: store.filter}))
                                     .collect();
 
+                console.log("FIXME3: set-data");
+
                 return {...store, data, view};
 
         }
@@ -134,19 +139,20 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                           setStore: (store: IAnnotationSidebarStore) => void,
                           mutator: Mutator): IAnnotationSidebarCallbacks {
 
-    const persistence = usePersistence();
+    const persistenceLayerContext = usePersistenceLayer();
 
     function setFilter(text: string) {
         mutator.doUpdate({mutation: 'set-filter', filter: text});
     }
 
     function toAnnotations(docMeta: IDocMeta) {
-        const {persistenceLayerProvider} = persistence;
+        const {persistenceLayerProvider} = persistenceLayerContext;
         const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
         return DocAnnotationLoader2.load(docMeta, docFileResolver);
     }
 
     function setDocMeta(docMeta: IDocMeta) {
+        console.log("FIXME: got docMeta and changing annotations.");
         const data = toAnnotations(docMeta);
         mutator.doUpdate({mutation: 'set-data', data});
     }

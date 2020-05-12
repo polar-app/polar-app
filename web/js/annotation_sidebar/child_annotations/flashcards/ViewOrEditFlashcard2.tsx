@@ -17,7 +17,7 @@ type UsageMode = 'view' | 'edit';
 
 export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
 
-    const docMetaContext = useDocMetaContext();
+    const {doc} = useDocMetaContext();
 
     const [mode, setMode] = useState<UsageMode>('view')
 
@@ -25,7 +25,7 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
     const onCancel = useCallback(() => setMode('view'), []);
 
     const editButton = <EditButton id={'edit-button-for-' + props.flashcard.id}
-                                   disabled={! docMetaContext.mutable}
+                                   disabled={! doc?.mutable}
                                    onClick={onEdit}
                                    type="flashcard"/>;
 

@@ -26,7 +26,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     const {comment} = props;
 
-    const docMetaContext = useDocMetaContext();
+    const {doc} = useDocMetaContext();
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
 
@@ -36,7 +36,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
     const onCancel = useCallback(() => setMode('view'), []);
 
     const editButton = <EditButton id={'edit-button-for-' + props.comment.id}
-                                   disabled={! docMetaContext.mutable}
+                                   disabled={! doc?.mutable}
                                    onClick={onEdit}
                                    type="comment"/>;
 

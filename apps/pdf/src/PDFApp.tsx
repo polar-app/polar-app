@@ -21,6 +21,9 @@ import {
     PersistenceLayerContext
 } from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {AuthRequired} from "../../repository/js/AuthRequired";
+import { DocViewerStoreProvider } from './DocViewerStore';
+import { AnnotationSidebarStoreProvider } from './AnnotationSidebarStore';
+import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 
 export class PDFApp {
 
@@ -73,8 +76,14 @@ export class PDFApp {
                 <MUIAppRoot>
 
                     <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
-                        <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
-                                   tagsProvider={() => []}/>
+                        <DocMetaContextProvider>
+                            <DocViewerStoreProvider>
+                                <AnnotationSidebarStoreProvider>
+                                    <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
+                                               tagsProvider={() => []}/>
+                                </AnnotationSidebarStoreProvider>
+                            </DocViewerStoreProvider>
+                        </DocMetaContextProvider>
                     </PersistenceLayerContext.Provider>
 
                 </MUIAppRoot>

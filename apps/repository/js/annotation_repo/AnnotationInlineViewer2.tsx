@@ -52,6 +52,11 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     const {annotation} = props;
 
+    const doc = {
+        docMeta: annotation.docMeta,
+        mutable: true
+    };
+
     return (
 
         <Paper square
@@ -64,8 +69,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
             <AnnotationActiveInputContextProvider>
                 <>
-                    <DocMetaContextProvider docMeta={annotation.docMeta}
-                                            mutable={true}>
+                    <DocMetaContextProvider doc={doc}>
 
                         <>
                             <AnnotationInlineControlBar annotation={annotation}/>
