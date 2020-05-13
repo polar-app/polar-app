@@ -7,6 +7,7 @@ import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSecti
 import isEqual from "react-fast-compare";
 import {AnnotationViewControlBar2} from "../AnnotationViewControlBar2";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {AnnotationInputView} from "../AnnotationInputView";
 
 
 interface IProps {
@@ -71,6 +72,8 @@ export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
                     </div>
 
                     <div>
+
+                        <AnnotationInputView annotation={annotation}/>
 
                         <div className="comments">
                             <ChildAnnotationSection2 parent={annotation}

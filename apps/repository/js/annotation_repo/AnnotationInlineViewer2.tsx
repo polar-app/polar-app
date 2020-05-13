@@ -76,8 +76,6 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
                             <div className="p-1">
                                 <AnnotationView2 annotation={annotation}/>
-
-                                <AnnotationInputView annotation={annotation}/>
                             </div>
                         </>
                     </DocMetaContextProvider>

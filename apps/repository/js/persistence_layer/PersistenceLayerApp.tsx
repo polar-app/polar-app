@@ -161,9 +161,11 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                     return (
                                                         <PersistenceContext.Provider value={persistenceContext}>
                                                             <TagsContext.Provider value={tagsContext}>
-                                                                <TagsProviderContext.Provider value={tagsProvider}>
-                                                                    {props.render(docRepoRenderProps)}
-                                                                </TagsProviderContext.Provider>
+                                                                <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
+                                                                    <TagsProviderContext.Provider value={tagsProvider}>
+                                                                        {props.render(docRepoRenderProps)}
+                                                                    </TagsProviderContext.Provider>
+                                                                </TagDescriptorsContext.Provider>
                                                             </TagsContext.Provider>
                                                         </PersistenceContext.Provider>
                                                     );
