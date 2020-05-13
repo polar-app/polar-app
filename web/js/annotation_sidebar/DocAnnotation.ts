@@ -29,7 +29,6 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
     readonly guid: IDStr;
     readonly annotationType: AnnotationType;
     readonly html: HTMLString | undefined;
-
     readonly fields?: {[name: string]: HTMLString};
     readonly pageNum: number;
     readonly position: Point;
@@ -53,9 +52,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
     // TODO: REACT POINTER ISSUE
     readonly docMeta: IDocMeta;
-
-    // TODO: REACT POINTER ISSUE.  This one is REALLY bad as it will yield
-    // a deep comparison
+    readonly docInfo: IDocInfo;
     readonly pageMeta: IPageMeta;
 
     // TODO: REACT POINTER ISSUE

@@ -241,10 +241,10 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
                                             this.docAnnotationIndex,
                                             annotations => {
 
-                this.setState({
-                    data: annotations,
-                    annotations
-                });
+                // this.setState({
+                //     data: annotations,
+                //     annotations
+                // });
 
             });
 
@@ -376,9 +376,9 @@ export class AnnotationSidebar extends React.Component<IProps, IState> {
 
         const annotations = this.docAnnotationIndex.getDocAnnotationsSorted();
 
-        this.setState({
-            annotations
-        });
+        // this.setState({
+        //     annotations
+        // });
 
     }
 

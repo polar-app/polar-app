@@ -199,53 +199,53 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
     private onTextHighlightReset() {
         const {annotation, doc} = this.props;
 
-        setTimeout(() => {
-            TextHighlights.resetRevisedText(doc.docMeta, annotation.pageMeta, annotation.id);
-            this.toggleActiveInputComponent('none');
-        }, 1);
+        // setTimeout(() => {
+        //     TextHighlights.resetRevisedText(doc.docMeta, annotation.pageMeta, annotation.id);
+        //     this.toggleActiveInputComponent('none');
+        // }, 1);
     }
 
     private onTextHighlightEdited(text: string) {
         const {annotation, doc} = this.props;
 
-        setTimeout(() => {
-            TextHighlights.setRevisedText(doc.docMeta, annotation.pageMeta, annotation.id, text);
-            this.toggleActiveInputComponent('none');
-        }, 1);
+        // setTimeout(() => {
+        //     TextHighlights.setRevisedText(doc.docMeta, annotation.pageMeta, annotation.id, text);
+        //     this.toggleActiveInputComponent('none');
+        // }, 1);
 
     }
 
     private onColor(color: HighlightColor) {
 
-        setTimeout(() => {
-
-            const {annotation} = this.props;
-
-            if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
-                TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
-            }
-
-            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-                AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
-            }
-
-        }, 1);
+        // setTimeout(() => {
+        //
+        //     const {annotation} = this.props;
+        //
+        //     if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+        //         TextHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+        //     }
+        //
+        //     if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+        //         AreaHighlights.update(annotation.id, annotation.docMeta, annotation.pageMeta, {color});
+        //     }
+        //
+        // }, 1);
     }
 
     private onDelete(annotation: DocAnnotation) {
 
         Preconditions.assertPresent(annotation);
 
-        switch (annotation.annotationType) {
-            case AnnotationType.TEXT_HIGHLIGHT:
-                delete annotation.pageMeta.textHighlights[annotation.id];
-                break;
-            case AnnotationType.AREA_HIGHLIGHT:
-                delete annotation.pageMeta.areaHighlights[annotation.id];
-                break;
-            default:
-                break;
-        }
+        // switch (annotation.annotationType) {
+        //     case AnnotationType.TEXT_HIGHLIGHT:
+        //         delete annotation.pageMeta.textHighlights[annotation.id];
+        //         break;
+        //     case AnnotationType.AREA_HIGHLIGHT:
+        //         delete annotation.pageMeta.areaHighlights[annotation.id];
+        //         break;
+        //     default:
+        //         break;
+        // }
 
     }
 

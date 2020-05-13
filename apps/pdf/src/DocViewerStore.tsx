@@ -23,7 +23,7 @@ interface IDocViewerStore {
     /**
      * The DocMeta currently being managed.
      */
-    readonly docMeta?: IDocMeta;
+    readonly docMeta: IDocMeta | undefined;
 
     /**
      * The storage URL for the document this docMeta references.
@@ -58,6 +58,8 @@ function mutatorFactory(storeProvider: Provider<IDocViewerStore>,
 
 }
 
+type IDocMetaProvider = () => IDocMeta | undefined;
+
 function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           setStore: (store: IDocViewerStore) => void,
                           mutator: Mutator): IDocViewerCallbacks {
@@ -65,6 +67,15 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const docMetaContext = useDocMetaContext();
     const persistenceLayerContext = usePersistenceLayer();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
+
+    const docMetaProvider = React.useMemo<IDocMetaProvider>(() => {
+
+        return () => {
+            const store = storeProvider();
+            return store.docMeta;
+        }
+
+    }, []);
 
     function setDocMeta(docMeta: IDocMeta) {
 

@@ -1,4 +1,4 @@
-import {DocAnnotation} from "./DocAnnotation";
+import {IDocAnnotation} from "./DocAnnotation";
 import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotations} from "./DocAnnotations";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
@@ -15,7 +15,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
  */
 export namespace DocAnnotationLoader2 {
 
-    export function load(docMeta: IDocMeta, docFileResolver: DocFileResolver): ReadonlyArray<DocAnnotation> {
+    export function load(docMeta: IDocMeta, docFileResolver: DocFileResolver): ReadonlyArray<IDocAnnotation> {
 
         const docAnnotationIndex = new DocAnnotationIndex();
 

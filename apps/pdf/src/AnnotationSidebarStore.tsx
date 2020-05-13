@@ -5,19 +5,13 @@ import {
     createObservableStore,
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
-import {
-    DocAnnotation,
-    IDocAnnotation
-} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoaders";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
-import {
-    usePersistence,
-    usePersistenceLayer
-} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
 const log = Logger.create();
@@ -152,7 +146,6 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
     }
 
     function setDocMeta(docMeta: IDocMeta) {
-        console.log("FIXME: got docMeta and changing annotations.");
         const data = toAnnotations(docMeta);
         mutator.doUpdate({mutation: 'set-data', data});
     }

@@ -41,14 +41,6 @@ export interface RepoAnnotation {
 
     readonly color: HighlightColor | undefined;
 
-    /**
-     * The original DocInfo used to construct this RepoDocInfo.
-     */
-    // TODO this is a bug I think because the DocInfo is never updated so we
-    // are going to have stale metadata.  It would be better to just have
-    // a pointer to this directly.
-    readonly docInfo: IDocInfo;
-
     readonly img: Img | undefined;
 
     readonly docMeta: IDocMeta;

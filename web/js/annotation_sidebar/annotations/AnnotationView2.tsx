@@ -3,12 +3,14 @@ import {IDocAnnotation} from '../DocAnnotation';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import isEqual from "react-fast-compare";
 import {MUIHoverController} from "../../mui/context/MUIHoverContext";
 import {AreaHighlightAnnotationView2} from "./AreaHighlightAnnotationView2";
 import {TextHighlightAnnotationView2} from './TextHighlightAnnotationView2';
 import {ViewOrEditFlashcard2} from "../child_annotations/flashcards/ViewOrEditFlashcard2";
 import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditComment2';
+import {DeepEquals} from "../../../spectron0/material-ui/doc_repo_table/DeepEquals";
+import debugIsEqual = DeepEquals.debugIsEqual;
+import isEqual from "react-fast-compare";
 
 const log = Logger.create();
 
@@ -78,3 +80,6 @@ export const AnnotationView2 = React.memo((props: IProps) => {
 
 }, isEqual);
 
+function cmp(a: any, b: any) {
+    return debugIsEqual(a.annotation, b.annotation);
+}
