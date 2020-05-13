@@ -1,66 +1,58 @@
-import {notNull} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {SelectedContents} from "../../../web/js/highlights/text/selection/SelectedContents";
 import {TextSelections} from "../../../web/js/highlights/text/controller/TextSelections";
+import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {TextHighlightRecords} from "../../../web/js/metadata/TextHighlightRecords";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 const log = Logger.create()
 
 export namespace TextHighlighter {
 
-    export function computeTextSelections() {
 
-        // TODO: we have to inject a special document helper to help identify
-        // the text view root.
-        const win = document.defaultView!;
+    interface ICreatedTextHighlight {
+        readonly docMeta: IDocMeta;
+        readonly pageMeta: IPageMeta;
+        readonly textHighlight: ITextHighlight;
+    }
+
+    export function createTextHighlight(docMeta: IDocMeta,
+                                        pageNum: number,
+                                        highlightColor: HighlightColor,
+                                        selection: Selection): ICreatedTextHighlight {
+
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
-        // right now we're not implementing rows...
-        // let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+        const selectedContent = SelectedContents.computeFromSelection(selection);
 
-        const selectedContent = SelectedContents.compute(win);
-
-        const rectTexts: any[] = selectedContent.rectTexts;
+        const rectTexts = selectedContent.rectTexts;
         const rects = rectTexts.map(current => current.boundingPageRect);
 
         const text = selectedContent.text;
 
         const textSelections = TextSelections.compute(selectedContent);
 
-        console.log("FIXME textSelections: ", textSelections)
+        const textHighlightRecord = TextHighlightRecords.create(rects,
+                                                                textSelections,
+                                                                {TEXT: text},
+                                                                highlightColor);
 
-        // return TextHighlightRecords.create(rects, textSelections, {TEXT: text}, highlightColor);
+        // TODO: there are no screenshots here but we should keep them.
 
+        log.info("Added text highlight to model");
+
+        // now clear the selection since we just highlighted it.
+        selection.empty();
+
+        const textHighlight = textHighlightRecord.value;
+        const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+        return {docMeta, pageMeta, textHighlight};
 
     }
 
-    // export function createTextHighlight(pageNum: number,
-    //                                     factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
-    //
-    //     // TODO: this really needs to be reworked so I can test it properly with
-    //     // some sort of screenshot provider
-    //
-    //     const doc = notNull(this.docFormat.targetDocument());
-    //     const win = doc.defaultView!;
-    //
-    //     const screenshotID = Hashcodes.createRandomID();
-    //
-    //     // start the screenshot now but don't await it yet.  this way we're not
-    //     // blocking the creation of the screenshot in the UI.
-    //     // const selectionScreenshot = SelectionScreenshots.capture(doc, win);
-    //
-    //     const textHighlightRecord = await factory();
-    //
-    //     const pageMeta = DocMetas.getPageMeta(this.model.docMeta, pageNum);
-    //
-    //     log.info("Added text highlight to model");
-    //
-    //     // now clear the selection since we just highlighted it.
-    //     win.getSelection()!.empty();
-    //
-    //     pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-    //
-    //     return textHighlightRecord;
-    //
-    // }
 }

@@ -14,15 +14,8 @@ import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
-import {PDFViewer} from './PDFViewer';
-import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
 import {PersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
-import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
-import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
-import {DocViewerStore} from "./DocViewerStore";
-import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
-import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
-import {TextHighlighter} from "./TextHighlighter";
+import {DocViewerScreen} from "./DocViewerScreen";
 
 export class PDFApp {
 
@@ -55,45 +48,12 @@ export class PDFApp {
 
         this.startAnnotationBar();
 
-        // FIXME: I need docTag and userTags here to pass them up ...
-
-        // {/*<PersistenceLayerApp repoDocMetaManager={app.repoDocMetaManager}*/}
-        // {/*                     repoDocMetaLoader={repoDocMetaLoader}*/}
-        // {/*                     persistenceLayerManager={persistenceLayerManager}*/}
-        // {/*                     render={(docRepo) => (*/}
-
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
 
         ReactDOM.render((
-            <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0,
-                 }}>
-
-                <MUIAppRoot>
-
-                    {/*FIXME we have to define usePersistence here too... */}
-
-                    <MUIDialogController>
-                        <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
-                            <UserTagsProvider>
-                                <DocMetaContextProvider>
-                                    <DocViewerStore>
-                                        <AnnotationSidebarStoreProvider>
-                                            <PDFViewer persistenceLayerProvider={() => this.persistenceLayerManager.get()}
-                                                       tagsProvider={() => []}/>
-                                        </AnnotationSidebarStoreProvider>
-                                    </DocViewerStore>
-                                </DocMetaContextProvider>
-                            </UserTagsProvider>
-                        </PersistenceLayerContext.Provider>
-                    </MUIDialogController>
-
-                </MUIAppRoot>
-
-            </div>
+            <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
+                <DocViewerScreen/>
+            </PersistenceLayerContext.Provider>
             ), rootElement);
 
     }
@@ -113,7 +73,7 @@ export class PDFApp {
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             console.log("onHighlighted: ", highlightCreatedEvent);
-            TextHighlighter.computeTextSelections();
+            // TextHighlighter.computeTextSelections();
         };
 
         const annotationBarCallbacks: AnnotationBarCallbacks = {

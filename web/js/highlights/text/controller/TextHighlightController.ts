@@ -299,7 +299,7 @@ export class TextHighlightController {
             // right now we're not implementing rows...
             // let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-            const selectedContent = SelectedContents.compute(win);
+            const selectedContent = SelectedContents.computeFromWindow(win);
 
             const rectTexts: any[] = selectedContent.rectTexts;
             const rects = rectTexts.map(current => current.boundingPageRect);

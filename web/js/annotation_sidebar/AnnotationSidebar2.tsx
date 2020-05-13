@@ -1,32 +1,15 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocAnnotation} from './DocAnnotation';
-import {ExportButton} from '../ui/export/ExportButton';
-import {Exporters, ExportFormat} from '../metadata/exporter/Exporters';
-import {PersistenceLayerProvider} from '../datastore/PersistenceLayer';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Doc} from '../metadata/Doc';
-import {GroupSharingButton} from '../ui/group_sharing/GroupSharingButton';
-import {DocFileResolvers} from "../datastore/DocFileResolvers";
-import {FeatureToggle} from "../ui/FeatureToggle";
-import {AnnotationRepoFiltersHandler} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFiltersHandler";
-import {AnnotationRepoFilterEngine} from "../../../apps/repository/js/annotation_repo/AnnotationRepoFilterEngine";
-import {DatastoreCapabilities} from "../datastore/Datastore";
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
-import {Tag, Tags} from 'polar-shared/src/tags/Tags';
-import {DocAnnotationLoader} from "./DocAnnotationLoader";
-import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
-import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
-import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
-import {useAnnotationSidebarCallbacks} from '../../../apps/pdf/src/AnnotationSidebarStore';
+import {useAnnotationSidebarStore} from '../../../apps/pdf/src/AnnotationSidebarStore';
 import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
 import {AnnotationInputView} from "./AnnotationInputView";
-
-const log = Logger.create();
+import {AnnotationHeader} from './AnnotationSidebarHeader';
+import isEqual from "react-fast-compare";
 
 const LoadRepositoryExplainer = () => (
     <div className="p-2 text-center">
@@ -124,12 +107,16 @@ const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {
 
 }
 
-const AnnotationsBlock = (props: IRenderProps) => {
+const AnnotationsBlock = React.memo(() => {
 
-    if (props.view.length > 0) {
+    const store = useAnnotationSidebarStore();
+
+    const {view} = store;
+
+    if (view.length > 0) {
         return (
             <>
-                {props.view.map(annotation => (
+                {view.map(annotation => (
                     <AnnotationSidebarItem key={annotation.id}
                                            annotation={annotation}/>))}
             </>
@@ -139,9 +126,9 @@ const AnnotationsBlock = (props: IRenderProps) => {
         return <NoAnnotations/>;
     }
 
-};
+});
 
-const Annotations = (props: IRenderProps) => {
+const Annotations = React.memo(() => {
 
     return (
         <Paper square
@@ -153,170 +140,33 @@ const Annotations = (props: IRenderProps) => {
                    flexDirection: 'column',
                    overflow: 'auto'
                }}>
-            <AnnotationsBlock {...props}/>
+            <AnnotationsBlock/>
         </Paper>
     );
 
-};
-
-interface AnnotationHeaderProps extends IRenderProps {
-    readonly datastoreCapabilities: DatastoreCapabilities;
-    readonly onExport: (format: ExportFormat) => void;
-    readonly onFiltered: (text: string) => void;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
-    readonly doc: Doc;
-
-}
-
-const AnnotationHeader = (props: AnnotationHeaderProps) => {
-
-    const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
-
-    const onTagged = (tags: ReadonlyArray<Tag>) => {
-        props.doc.docInfo.tags = Tags.toMap(tags);
-    };
-
-    return (
-
-        <MUIPaperToolbar borderBottom>
-
-            <Box p={1}
-                 style={{
-                     display: 'flex'
-                 }}>
-
-                <MUISearchBox2 style={{flexGrow: 1}}
-                               className="mt-1 mb-1"
-                               onChange={text => annotationSidebarCallbacks.setFilter(text)}
-                               placeholder="Filter annotations by text"/>
-
-                <div style={{display: 'flex'}}>
-
-                    {/*<div className="mt-auto mb-auto mr-1">*/}
-                    {/*    <TagInput placement="bottom"*/}
-                    {/*              container="#annotation-manager"*/}
-                    {/*              size="md"*/}
-                    {/*              className='text-muted border'*/}
-                    {/*              availableTags={props.tagsProvider()}*/}
-                    {/*              existingTags={() => props.doc.docInfo.tags ? Object.values(props.doc.docInfo.tags) : []}*/}
-                    {/*              onChange={(tags) => onTagged(tags)}/>*/}
-                    {/*</div>*/}
-
-                    <div className="mt-auto mb-auto">
-                        <ExportButton onExport={(format) => props.onExport(format)}/>
-                    </div>
-
-                    <FeatureToggle name='groups'>
-                        <GroupSharingButton doc={props.doc}
-                                            datastoreCapabilities={props.datastoreCapabilities}
-                                            onDone={NULL_FUNCTION}/>
-                    </FeatureToggle>
-
-                </div>
-
-            </Box>
-
-        </MUIPaperToolbar>
-
-    );
-
-};
+});
 
 /**
  * Second version of the sidebar that is more react-ish...
  */
-export class AnnotationSidebar2 extends React.Component<IProps, IState> {
+export const AnnotationSidebar2 = React.memo(() => {
 
-    private readonly docAnnotationLoader: DocAnnotationLoader;
+    return (
 
-    private readonly filtersHandler: AnnotationRepoFiltersHandler;
+        <div id="annotation-manager"
+             className="annotation-sidebar"
+             style={{
+                 display: "flex",
+                 flexDirection: "column",
+                 minHeight: 0,
+                 flexGrow: 1
+             }}>
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+            <AnnotationHeader />
 
-        const {persistenceLayerProvider} = this.props;
+            <Annotations />
 
-        this.onFiltered = this.onFiltered.bind(this);
+        </div>
 
-        const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-
-        this.docAnnotationLoader = new DocAnnotationLoader(docFileResolver);
-
-        const filterEngine
-            = new AnnotationRepoFilterEngine<IDocAnnotation>(() => this.props.data,
-                                                             (filters) => this.onFiltered(filters));
-
-        this.filtersHandler = new AnnotationRepoFiltersHandler(filters => filterEngine.onFiltered(filters));
-
-        this.onExport = this.onExport.bind(this);
-
-        this.state = {
-        };
-
-    }
-
-    private onFiltered(view: ReadonlyArray<IDocAnnotation>) {
-        this.setState({view});
-    }
-
-    private onExport(format: ExportFormat) {
-
-        Exporters.doExportFromDocMeta(this.props.persistenceLayerProvider, format, this.props.doc.docMeta)
-            .catch(err => log.error(err));
-
-    }
-
-    public render() {
-
-        const persistenceLayer = this.props.persistenceLayerProvider();
-        const capabilities = persistenceLayer.capabilities();
-
-        return (
-
-            <div id="annotation-manager"
-                 className="annotation-sidebar"
-                 style={{
-                     display: "flex",
-                     flexDirection: "column",
-                     minHeight: 0,
-                     flexGrow: 1
-                 }}>
-
-                <AnnotationHeader {...this.props}
-                                  onExport={format => this.onExport(format)}
-                                  onFiltered={text => this.filtersHandler.update({text})}
-                                  datastoreCapabilities={capabilities}/>
-
-                <Annotations {...this.props}/>
-
-            </div>
-
-        );
-    }
-
-}
-
-interface IProps {
-    readonly doc: Doc;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-
-    /**
-     * The raw annotations data which is unfiltered.
-     */
-    readonly data: ReadonlyArray<IDocAnnotation>;
-
-    /**
-     * The annotations to display in the UI which is (optionally) filtered.
-     */
-    readonly view: ReadonlyArray<IDocAnnotation>;
-
-}
-
-interface IState {
-
-}
-
-interface IRenderProps extends IProps {
-
-}
+    );
+}, isEqual);

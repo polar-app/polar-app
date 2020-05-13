@@ -18,9 +18,13 @@ export class SelectedContents {
      * @param win {Window}
      * @return {SelectedContent}
      */
-    public static compute(win: Window) {
+    public static computeFromWindow(win: Window) {
 
         const selection = win.getSelection()!;
+        return this.computeFromSelection(selection);
+    }
+
+    public static computeFromSelection(selection: Selection) {
 
         // get all the ranges and clone them so they can't vanish.
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));

@@ -27,12 +27,11 @@ import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
+import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 
 const log = Logger.create();
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
 interface IState {
@@ -55,6 +54,7 @@ export const PDFViewer = React.memo((props: IProps) => {
 
     const callbacks = useDocViewerCallbacks();
     const store = useDocViewerStore();
+    const persistenceLayerContext = usePersistenceLayer()
 
     const annotationSidebarStore = useAnnotationSidebarStore();
 
@@ -73,10 +73,12 @@ export const PDFViewer = React.memo((props: IProps) => {
                 return;
             }
 
-            // FIXME use DataLoader with this ...
+            // FIXME useSnapshotSubscriber for this so that we don't have to worry
+            // about component unmount.
             // FIXME use a Progress control so the page shows itself loading state
 
-            const persistenceLayer = props.persistenceLayerProvider();
+            const persistenceLayer
+                = persistenceLayerContext.persistenceLayerProvider();
 
             // FIXME: load the file too
 
@@ -352,18 +354,7 @@ export const PDFViewer = React.memo((props: IProps) => {
                         component:
                             <>
                             {store.docMeta &&
-                                <AnnotationSidebar2
-                                                   doc={{
-                                                       docInfo: store.docMeta.docInfo,
-                                                       docMeta: store.docMeta,
-                                                       permission: {mode: 'rw'},
-                                                       mutable: true,
-                                                       oid: 123,
-                                                   }}
-                                                   data={annotationSidebarStore.data}
-                                                   view={annotationSidebarStore.view}
-                                                   tagsProvider={props.tagsProvider}
-                                                   persistenceLayerProvider={props.persistenceLayerProvider}/>}
+                                <AnnotationSidebar2 />}
                             </>,
                         width: 300,
                     }

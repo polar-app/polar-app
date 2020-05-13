@@ -27,6 +27,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 const log = Logger.create();
 
@@ -79,6 +80,16 @@ export interface IFlashcardDelete extends IAnnotationMutationSelected {
 
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
 
+export interface ITextHighlightCreate {
+    readonly type: 'create';
+
+    // we have to specify the textHighlight, the docMeta, and the PageMeta as
+    // nothing has been created just yet.
+    readonly textHighlight: ITextHighlight;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
+}
+
 export interface ITextHighlightRevert extends IAnnotationMutationSelected {
     readonly type: 'revert';
 }
@@ -88,7 +99,7 @@ export interface ITextHighlightUpdate extends IAnnotationMutationSelected {
     readonly body: string;
 }
 
-export type ITextHighlightMutation = ITextHighlightRevert | ITextHighlightUpdate;
+export type ITextHighlightMutation = ITextHighlightCreate | ITextHighlightUpdate | ITextHighlightRevert;
 
 export interface IDeleteMutation extends IAnnotationMutationSelected {
 
@@ -282,6 +293,9 @@ export namespace DocAnnotationsMutator {
                 });
                 break;
 
+            case "create":
+                break;
+
         }
 
     }
@@ -315,6 +329,21 @@ export namespace AnnotationMutationCallbacks {
         type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
                                                                          pageMeta: IPageMeta,
                                                                          mutation: T) => void;
+
+        async function handleUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
+
+            updateStore(updatedDocMetas);
+
+            refresher();
+
+            const {persistenceLayerProvider} = persistenceLayerContext;
+
+            for (const docMeta of updatedDocMetas) {
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+            }
+
+        }
 
         /**
          *
@@ -350,15 +379,7 @@ export namespace AnnotationMutationCallbacks {
             const updatedDocMetas = Object.values(partitions)
                                           .map(current => current.key);
 
-            updateStore(updatedDocMetas);
-
-            refresher();
-
-            for (const partition of Object.values(partitions)) {
-                const docMeta = partition.key;
-                const persistenceLayer = persistenceLayerProvider();
-                await persistenceLayer.writeDocMeta(docMeta);
-            }
+            await handleUpdatedDocMetas(updatedDocMetas);
 
         }
 
@@ -446,8 +467,35 @@ export namespace AnnotationMutationCallbacks {
         }
 
         function onTextHighlight(mutation: ITextHighlightMutation) {
-            handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
-                .catch(err => log.error(err));
+
+
+            switch (mutation.type) {
+
+                case "revert":
+                case "update":
+                    handleUpdate(mutation, DocAnnotationsMutator.onTextHighlight)
+                        .catch(err => log.error(err));
+                    break;
+
+                case "create":
+
+                    const {docMeta, pageMeta, textHighlight} = mutation;
+                    pageMeta.textHighlights[textHighlight.id] = textHighlight;
+
+                    // FIXME: we now have to write out the docMeta since it's
+                    // been mutated
+
+                    // FIXME: all these catch() functions need to be handled
+                    // with a dialog error.
+
+                    handleUpdatedDocMetas([docMeta])
+                        .catch(err => log.error(err));
+
+                    break;
+
+
+            }
+
         }
 
         function createCommentCallback(selected: IAnnotationMutationSelected): Callback1<ICommentMutation> {
