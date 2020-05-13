@@ -46,8 +46,6 @@ export class PDFApp {
         // TODO: pass the appURL up so I can use the persistenceLayer to add
         // a snapshot listener for the doc then load it...
 
-        this.startAnnotationBar();
-
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
 
         ReactDOM.render((
@@ -55,33 +53,6 @@ export class PDFApp {
                 <DocViewerScreen/>
             </PersistenceLayerContext.Provider>
             ), rootElement);
-
-    }
-
-
-    private startAnnotationBar() {
-
-        const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
-        const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
-
-        const annotationBarControlledPopupProps: ControlledPopupProps = {
-            id: 'annotationbar',
-            placement: 'top',
-            popupStateEventDispatcher,
-            triggerPopupEventDispatcher
-        };
-
-        const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
-            console.log("onHighlighted: ", highlightCreatedEvent);
-            // TextHighlighter.computeTextSelections();
-        };
-
-        const annotationBarCallbacks: AnnotationBarCallbacks = {
-            onHighlighted,
-            // onComment
-        };
-
-        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
 
     }
 

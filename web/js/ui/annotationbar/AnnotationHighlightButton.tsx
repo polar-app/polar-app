@@ -19,12 +19,12 @@ export const AnnotationHighlightButton = (props: IProps) =>
                 backgroundColor: 'transparent',
                 border: 'none',
                 margin: '0',
-                padding: '5px'
+                padding: '5px',
             }}>
 
         <span aria-hidden="true"
-              style={{ color: props.styleColor, fontSize: '14px' }}>
-            <HighlighterSVGIcon style={{width: '15px', height: '15px'}}/>
+              style={{ color: props.styleColor }}>
+            <HighlighterSVGIcon style={{width: '20px', height: '20px'}}/>
         </span>
 
     </button>;

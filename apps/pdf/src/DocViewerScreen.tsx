@@ -2,7 +2,7 @@ import React from 'react';
 import isEqual from "react-fast-compare";
 import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
 import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
-import {PDFViewer} from "./PDFViewer";
+import {DocViewer} from "./DocViewer";
 import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
 import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
@@ -28,7 +28,7 @@ export const DocViewerScreen = React.memo(() => {
                                 <DocMetaContextProvider>
                                     <DocViewerStore>
                                         <AnnotationSidebarStoreProvider>
-                                            <PDFViewer/>
+                                            <DocViewer/>
                                         </AnnotationSidebarStoreProvider>
                                     </DocViewerStore>
                                 </DocMetaContextProvider>

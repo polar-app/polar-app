@@ -28,6 +28,23 @@ import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
 import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
+import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
+import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
+import {ControlledPopupProps} from "../../../web/js/ui/popup/ControlledPopup";
+import {
+    AnnotationBarCallbacks,
+    OnHighlightedCallback
+} from "../../../web/js/ui/annotationbar/ControlledAnnotationBar";
+import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCreatedEvent";
+import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
+import {TextHighlighter} from "./TextHighlighter";
+import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
+import {
+    ITextHighlightCreate,
+    useAnnotationMutationsContext
+} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 
 const log = Logger.create();
 
@@ -48,7 +65,7 @@ const globalKeyMap = {
     FIND: 'command+f'
 };
 
-export const PDFViewer = React.memo((props: IProps) => {
+export const DocViewer = React.memo((props: IProps) => {
 
     const [state, setState] = React.useState<IState>({});
 
@@ -57,6 +74,7 @@ export const PDFViewer = React.memo((props: IProps) => {
     const persistenceLayerContext = usePersistenceLayer()
 
     const annotationSidebarStore = useAnnotationSidebarStore();
+    useAnnotationBar();
 
     // FIXME: I think I can have hard wired types for state transition functions
     // like an uninitialized store, with missing values, then an initialized
@@ -365,3 +383,66 @@ export const PDFViewer = React.memo((props: IProps) => {
 
     );
 }, isEqual);
+
+
+type CreateTextHighlightCallback = (opts: ICreateTextHighlightOpts) => void;
+
+function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
+
+    const annotationMutations = useAnnotationMutationsContext();
+
+    return (opts: ICreateTextHighlightOpts) => {
+        const {docMeta, pageMeta, textHighlight}
+            = TextHighlighter.createTextHighlight(opts);
+
+        const mutation: ITextHighlightCreate = {
+            type: 'create',
+            docMeta, pageMeta, textHighlight
+        }
+
+        annotationMutations.onTextHighlight(mutation);
+
+    };
+
+}
+
+function useAnnotationBar() {
+
+    const docMetaContext = useDocMetaContext();
+    const createTextHighlightCallback = useCreateTextHighlightCallback();
+
+    React.useEffect(() => {
+
+        const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
+        const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
+
+        const annotationBarControlledPopupProps: ControlledPopupProps = {
+            id: 'annotationbar',
+            placement: 'top',
+            popupStateEventDispatcher,
+            triggerPopupEventDispatcher
+        };
+
+        const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
+            console.log("onHighlighted: ", highlightCreatedEvent);
+
+            createTextHighlightCallback({
+                docMeta: docMetaContext.doc?.docMeta!,
+                pageNum: highlightCreatedEvent.pageNum,
+                highlightColor: highlightCreatedEvent.highlightColor,
+                selection: highlightCreatedEvent.activeSelection.selection
+            })
+
+            // TextHighlighter.computeTextSelections();
+        };
+
+        const annotationBarCallbacks: AnnotationBarCallbacks = {
+            onHighlighted,
+            // onComment
+        };
+
+        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+    });
+
+}
+

@@ -100,7 +100,8 @@ export class DocMetas {
 
     public static getPageMeta(docMeta: IDocMeta, num: number) {
 
-        num = Preconditions.assertPresent(num, "num");
+        Preconditions.assertPresent(docMeta, "docMeta");
+        Preconditions.assertPresent(num, "num");
 
         const pageMeta = docMeta.pageMetas[num];
 

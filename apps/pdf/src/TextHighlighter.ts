@@ -12,18 +12,22 @@ const log = Logger.create()
 
 export namespace TextHighlighter {
 
-
     interface ICreatedTextHighlight {
         readonly docMeta: IDocMeta;
         readonly pageMeta: IPageMeta;
         readonly textHighlight: ITextHighlight;
     }
 
-    export function createTextHighlight(docMeta: IDocMeta,
-                                        pageNum: number,
-                                        highlightColor: HighlightColor,
-                                        selection: Selection): ICreatedTextHighlight {
+    export interface ICreateTextHighlightOpts {
+        readonly docMeta: IDocMeta;
+        readonly pageNum: number;
+        readonly highlightColor: HighlightColor;
+        readonly selection: Selection;
+    }
 
+    export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
+
+        const {selection, highlightColor, docMeta, pageNum} = opts;
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
@@ -50,7 +54,6 @@ export namespace TextHighlighter {
 
         const textHighlight = textHighlightRecord.value;
         const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
-
         return {docMeta, pageMeta, textHighlight};
 
     }
