@@ -37,6 +37,8 @@ interface IDocViewerCallbacks {
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
 
+    // FIXME: where do we put the callback for injecting content from the
+    // annotation control into the main doc.
 
 }
 

@@ -25,7 +25,10 @@ export const AnnotationInlineControlBar = React.memo((props : IProps) => {
                  }}
                  className="p-1">
 
-                <div>
+                {/*FIXME: I think this should be bold, 14px and text-secondary*/}
+                <div style={{
+                         // fontWeight: 'bold'
+                     }}>
                     {annotation.docInfo.title || 'Untitled'}
                 </div>
 

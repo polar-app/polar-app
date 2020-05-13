@@ -22,6 +22,7 @@ import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMeta
 import {DocViewerStore} from "./DocViewerStore";
 import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
 import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {TextHighlighter} from "./TextHighlighter";
 
 export class PDFApp {
 
@@ -112,6 +113,7 @@ export class PDFApp {
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             console.log("onHighlighted: ", highlightCreatedEvent);
+            TextHighlighter.computeTextSelections();
         };
 
         const annotationBarCallbacks: AnnotationBarCallbacks = {

@@ -8,7 +8,6 @@ import {
     ActiveSelections
 } from '../popup/ActiveSelections';
 import {ControlledPopupProps} from '../popup/ControlledPopup';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import * as ReactDOM from 'react-dom';
 import {Point} from '../../Point';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
@@ -17,8 +16,6 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {Elements} from "../../util/Elements";
-
-const log = Logger.create();
 
 export interface RegisterOpts {
     readonly mode: 'viewer' | 'web';
