@@ -23,7 +23,7 @@ interface IDocViewerStore {
     /**
      * The DocMeta currently being managed.
      */
-    readonly docMeta: IDocMeta | undefined;
+    readonly docMeta?: IDocMeta;
 
     /**
      * The storage URL for the document this docMeta references.
