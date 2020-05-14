@@ -18,7 +18,7 @@ import {
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-interface IDocViewerStore {
+export interface IDocViewerStore {
 
     /**
      * The DocMeta currently being managed.
@@ -32,7 +32,7 @@ interface IDocViewerStore {
 
 }
 
-interface IDocViewerCallbacks {
+export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;

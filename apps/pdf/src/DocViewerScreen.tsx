@@ -6,7 +6,6 @@ import {DocViewer} from "./DocViewer";
 import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
 import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
-import {PersistenceLayerContext} from '../../repository/js/persistence_layer/PersistenceLayerApp';
 import {DocViewerStore} from "./DocViewerStore";
 
 export const DocViewerScreen = React.memo(() => {

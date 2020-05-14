@@ -14,7 +14,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {FindToolbar} from "./FindToolbar";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
-import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {PDFAppURLs} from "./PDFAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {TextHighlightsView} from "./annotations/TextHighlightsView";
@@ -22,9 +21,12 @@ import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationS
 import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
-import {Tag} from "polar-shared/src/tags/Tags";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
-import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {
+    IDocViewerStore,
+    useDocViewerCallbacks,
+    useDocViewerStore
+} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
 import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
@@ -39,12 +41,12 @@ import {
 import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCreatedEvent";
 import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
 import {TextHighlighter} from "./TextHighlighter";
-import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 import {
     ITextHighlightCreate,
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 
 const log = Logger.create();
 
@@ -73,7 +75,6 @@ export const DocViewer = React.memo((props: IProps) => {
     const store = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayer()
 
-    const annotationSidebarStore = useAnnotationSidebarStore();
     useAnnotationBar();
 
     // FIXME: I think I can have hard wired types for state transition functions
@@ -408,8 +409,11 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
 function useAnnotationBar() {
 
-    const docMetaContext = useDocMetaContext();
-    const createTextHighlightCallback = useCreateTextHighlightCallback();
+    const store = React.useRef<IDocViewerStore | undefined>(undefined)
+    const textHighlightCallback = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
+
+    store.current = useDocViewerStore();
+    textHighlightCallback.current = useCreateTextHighlightCallback();
 
     React.useEffect(() => {
 
@@ -426,8 +430,11 @@ function useAnnotationBar() {
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             console.log("onHighlighted: ", highlightCreatedEvent);
 
-            createTextHighlightCallback({
-                docMeta: docMetaContext.doc?.docMeta!,
+            const callback = textHighlightCallback.current!;
+            const docMeta = store.current!.docMeta!;
+
+            callback({
+                docMeta,
                 pageNum: highlightCreatedEvent.pageNum,
                 highlightColor: highlightCreatedEvent.highlightColor,
                 selection: highlightCreatedEvent.activeSelection.selection
@@ -442,6 +449,7 @@ function useAnnotationBar() {
         };
 
         ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+
     });
 
 }
