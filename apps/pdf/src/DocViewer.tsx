@@ -28,7 +28,6 @@ import {
     useDocViewerStore
 } from "./DocViewerStore";
 import isEqual from "react-fast-compare";
-import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
@@ -45,7 +44,6 @@ import {
     ITextHighlightCreate,
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 
 const log = Logger.create();
@@ -328,7 +326,7 @@ export const DocViewer = React.memo((props: IProps) => {
                                     flexDirection: 'column'
                                 }}>
 
-                                <PagemarkProgressBar docMeta={store.docMeta!}/>
+                                <PagemarkProgressBar/>
 
                                 <div style={{
                                         minHeight: 0,

@@ -1,31 +1,58 @@
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import * as React from "react";
 import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
+import isEqual from "react-fast-compare";
+import {useDocViewerStore} from "./DocViewerStore";
+import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume";
+import {
+    createContextMenu,
+    useContextMenu
+} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
 
-interface IProps {
-    readonly docMeta: IDocMeta;
-}
+export const ProgressBar = React.memo(() => {
 
-export const PagemarkProgressBar = (props: IProps) => {
+    const store = useDocViewerStore();
+    const docMeta = store.docMeta!;
 
-    const perc = DocMetas.computeProgress(props.docMeta);
+    const perc = DocMetas.computeProgress(docMeta);
+
+    const handleDoubleClick = () => {
+        ReadingProgressResume.resume(docMeta);
+    }
+
+    const contextMenuHandlers = useContextMenu();
 
     return (
-        <MUIPaperToolbar borderBottom>
-
-            <div style={{
-                     display: 'flex',
-                     alignItems: "center"
-                 }}
-                 className="p-1">
-
-                <progress value={perc}
-                          className="mt-auto mb-auto"
-                          style={{flexGrow: 1}}/>
-            </div>
-
-        </MUIPaperToolbar>
+        <progress {...contextMenuHandlers}
+                  value={perc}
+                  onDoubleClick={handleDoubleClick}
+                  className="mt-auto mb-auto"
+                  style={{flexGrow: 1}}/>
     );
 
-};
+}, isEqual);
+
+export const PagemarkProgressBar = React.memo(() => {
+
+    const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
+
+    return (
+        <ContextMenu>
+            <MUIPaperToolbar borderBottom>
+
+                <div style={{
+                         display: 'flex',
+                         alignItems: "center"
+                     }}
+                     className="p-1">
+
+                    <ProgressBar/>
+
+                </div>
+
+            </MUIPaperToolbar>
+        </ContextMenu>
+    );
+
+}, isEqual);

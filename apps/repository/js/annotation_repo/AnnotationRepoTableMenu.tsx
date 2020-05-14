@@ -11,11 +11,19 @@ export const AnnotationRepoTableMenu = () => {
 
     return (
         <>
-            <MUIMenuItem text="Tag" icon={<LocalOfferIcon/>}
+            <MUIMenuItem text="Tag"
+                         icon={<LocalOfferIcon/>}
                          onClick={callbacks.onTagged}/>
+
+            <MUIMenuItem text="Archive"
+                         icon={<LocalOfferIcon/>}
+                         onClick={callbacks.onTagged}/>
+
             <Divider/>
-            <MUIMenuItem text="Delete" icon={<DeleteForeverIcon/>}
+            <MUIMenuItem text="Delete"
+                         icon={<DeleteForeverIcon/>}
                          onClick={callbacks.onDeleted}/>
         </>
     );
+
 }
