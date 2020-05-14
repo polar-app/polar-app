@@ -137,6 +137,11 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         tagsProvider,
                                                         persistenceLayerMutator
                                                     }
+
+                                                    const persistenceLayerContext: IPersistenceLayer = {
+                                                        persistenceLayerProvider
+                                                    }
+
                                                     const tagsContext: ITags = {
                                                         // userTagsProvider: () => userTags,
                                                         // docTagsProvider: docTags,
@@ -160,13 +165,15 @@ export const PersistenceLayerApp = (props: IProps) => {
 
                                                     return (
                                                         <PersistenceContext.Provider value={persistenceContext}>
-                                                            <TagsContext.Provider value={tagsContext}>
-                                                                <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
-                                                                    <TagsProviderContext.Provider value={tagsProvider}>
-                                                                        {props.render(docRepoRenderProps)}
-                                                                    </TagsProviderContext.Provider>
-                                                                </TagDescriptorsContext.Provider>
-                                                            </TagsContext.Provider>
+                                                            <PersistenceLayerContext.Provider value={persistenceLayerContext}>
+                                                                <TagsContext.Provider value={tagsContext}>
+                                                                    <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
+                                                                        <TagsProviderContext.Provider value={tagsProvider}>
+                                                                            {props.render(docRepoRenderProps)}
+                                                                        </TagsProviderContext.Provider>
+                                                                    </TagDescriptorsContext.Provider>
+                                                                </TagsContext.Provider>
+                                                            </PersistenceLayerContext.Provider>
                                                         </PersistenceContext.Provider>
                                                     );
 
