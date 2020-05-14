@@ -8,7 +8,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useAnnotationSidebarCallbacks} from './AnnotationSidebarStore';
 import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {
@@ -67,7 +67,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           mutator: Mutator): IDocViewerCallbacks {
 
     const docMetaContext = useDocMetaContext();
-    const persistenceLayerContext = usePersistenceLayer();
+    const persistenceLayerContext = usePersistenceLayerContext();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
 
     const docMetaProvider = React.useMemo<IDocMetaProvider>(() => {

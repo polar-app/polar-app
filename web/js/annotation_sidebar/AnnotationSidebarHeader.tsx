@@ -7,7 +7,7 @@ import {FeatureToggle} from "../ui/FeatureToggle";
 import * as React from "react";
 import {Exporters, ExportFormat} from "../metadata/exporter/Exporters";
 import {useDocMetaContext} from "./DocMetaContextProvider";
-import {usePersistenceLayer} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import { Logger } from "polar-shared/src/logger/Logger";
 
 const log = Logger.create();
@@ -65,7 +65,7 @@ export const AnnotationHeader = (props: IProps) => {
 function useExportCallback(): (format: ExportFormat) => void {
 
     const docMetaContext = useDocMetaContext();
-    const persistenceLayer = usePersistenceLayer();
+    const persistenceLayer = usePersistenceLayerContext();
 
     const docMeta = docMetaContext.doc?.docMeta!;
 

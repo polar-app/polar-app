@@ -6,9 +6,9 @@ import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
 import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
 import React from "react";
 import {
-    IPersistence,
-    ITags,
-    usePersistence,
+    IPersistenceContext,
+    ITagsContext,
+    usePersistenceContext,
     useRepoDocMetaLoader,
     useRepoDocMetaManager,
     useTagsContext
@@ -250,7 +250,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          setStore: (store: IAnnotationRepoStore) => void,
                          mutator: Mutator,
                          dialogs: DialogManager,
-                         persistence: IPersistence,
+                         persistence: IPersistenceContext,
                          repoDocMetaLoader: RepoDocMetaLoader,
                          repoDocMetaManager: RepoDocMetaManager): IAnnotationRepoCallbacks => {
 
@@ -479,7 +479,7 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
                           mutator: Mutator): IAnnotationRepoCallbacks {
 
     const dialogs = useDialogManager();
-    const persistence = usePersistence();
+    const persistence = usePersistenceContext();
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
 

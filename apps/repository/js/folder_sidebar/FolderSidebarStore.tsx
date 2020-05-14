@@ -10,7 +10,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 import {
-    usePersistence,
+    usePersistenceContext,
     useRepoDocMetaManager,
     useTagDescriptorsContext
 } from "../persistence_layer/PersistenceLayerApp";
@@ -221,7 +221,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const tagDescriptorsContext = useTagDescriptorsContext();
     const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
-    const persistence = usePersistence();
+    const persistence = usePersistenceContext();
 
     const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
                                                                 persistence.persistenceLayerProvider,

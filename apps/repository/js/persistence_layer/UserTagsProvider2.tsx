@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {UserTag, UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
-import {ITags, TagsContext, usePersistenceLayer} from "./PersistenceLayerApp";
+import {ITagsContext, TagsContext, usePersistenceLayerContext} from "./PersistenceLayerApp";
 import {
     SubscriptionValue,
     useSubscription
@@ -10,7 +10,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
-    const persistenceLayerContext = usePersistenceLayer();
+    const persistenceLayerContext = usePersistenceLayerContext();
 
     const createSubscription = () => {
         const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
@@ -69,7 +69,7 @@ export const UserTagsProvider = React.memo((props: IProps) => {
     const userTagsRef = React.useRef<SubscriptionValue<ReadonlyArray<UserTag>>>({value: [], error: undefined});
     userTagsRef.current = useUserTags();
     const tagsProvider = React.useMemo(() => () => userTagsRef.current.value || [], []);
-    const context: ITags = React.useMemo(() => {
+    const context: ITagsContext = React.useMemo(() => {
         return {tagsProvider}
     }, []);
 

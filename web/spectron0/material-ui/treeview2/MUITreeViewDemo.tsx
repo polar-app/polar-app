@@ -2,7 +2,7 @@ import React from "react";
 import {FolderSidebar2} from "../../../../apps/repository/js/folders/FolderSidebar2";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
-    ITags, PersistenceContext,
+    ITagsContext, PersistenceContext,
     TagsContext
 } from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
@@ -31,7 +31,7 @@ const FolderSidebarDemo = () => {
     );
 }
 
-const tagsContext: ITags = {
+const tagsContext: ITagsContext = {
     // userTagsProvider: () => tagDescriptors,
     // docTagsProvider: () => tagDescriptors,
     // annotationTagsProvider: () => tagDescriptors,

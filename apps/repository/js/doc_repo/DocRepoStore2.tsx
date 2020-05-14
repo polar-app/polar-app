@@ -17,8 +17,8 @@ import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {
-    IPersistence,
-    usePersistence,
+    IPersistenceContext,
+    usePersistenceContext,
     useRepoDocMetaLoader,
     useRepoDocMetaManager,
     useTagsProvider
@@ -272,7 +272,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                          repoDocMetaManager: RepoDocMetaManager,
                          tagsProvider: () => ReadonlyArray<Tag>,
                          dialogs: DialogManager,
-                         persistence: IPersistence): IDocRepoCallbacks {
+                         persistence: IPersistenceContext): IDocRepoCallbacks {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -772,7 +772,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     const dialogs = useDialogManager();
     const repoDocMetaManager = useRepoDocMetaManager();
     const tagsProvider = useTagsProvider();
-    const persistence = usePersistence();
+    const persistence = usePersistenceContext();
 
     return createCallbacks(storeProvider,
                            setStore,

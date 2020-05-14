@@ -29,7 +29,7 @@ import {
 } from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useAnnotationSidebarStore} from "./AnnotationSidebarStore";
-import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
 import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
 import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
@@ -73,7 +73,7 @@ export const DocViewer = React.memo((props: IProps) => {
 
     const callbacks = useDocViewerCallbacks();
     const store = useDocViewerStore();
-    const persistenceLayerContext = usePersistenceLayer()
+    const persistenceLayerContext = usePersistenceLayerContext()
 
     useAnnotationBar();
 

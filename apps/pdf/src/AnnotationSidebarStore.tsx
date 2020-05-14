@@ -11,7 +11,7 @@ import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotat
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoaders";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
-import {usePersistenceLayer} from "../../repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
 const log = Logger.create();
@@ -133,7 +133,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                           setStore: (store: IAnnotationSidebarStore) => void,
                           mutator: Mutator): IAnnotationSidebarCallbacks {
 
-    const persistenceLayerContext = usePersistenceLayer();
+    const persistenceLayerContext = usePersistenceLayerContext();
 
     function setFilter(text: string) {
         mutator.doUpdate({mutation: 'set-filter', filter: text});

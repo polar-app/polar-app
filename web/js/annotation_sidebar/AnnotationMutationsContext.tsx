@@ -18,7 +18,7 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {
-    usePersistence, usePersistenceLayer,
+    usePersistenceContext, usePersistenceLayerContext,
     useTagsContext
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
@@ -322,7 +322,7 @@ export namespace AnnotationMutationCallbacks {
                            refresher: () => void): IAnnotationMutationCallbacks {
 
         const dialogs = useDialogManager();
-        const persistenceLayerContext = usePersistenceLayer();
+        const persistenceLayerContext = usePersistenceLayerContext();
 
         const tagsContext = useTagsContext();
 

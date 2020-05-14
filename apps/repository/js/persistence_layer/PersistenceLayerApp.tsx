@@ -18,7 +18,7 @@ import {
 import { PersistenceLayerMutator } from './PersistenceLayerMutator';
 import {Provider} from "polar-shared/src/util/Providers";
 
-export interface ITags {
+export interface ITagsContext {
 
     // readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
     // readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
@@ -26,7 +26,7 @@ export interface ITags {
     readonly tagsProvider: () => ReadonlyArray<Tag>;
 }
 
-export interface ITagDescriptors {
+export interface ITagDescriptorsContext {
 
     // readonly userTagsProvider: () => ReadonlyArray<Tag> | undefined;
     // readonly docTagsProvider: () => ReadonlyArray<TagDescriptor> | undefined;
@@ -34,26 +34,26 @@ export interface ITagDescriptors {
     readonly tagDescriptorsProvider: () => ReadonlyArray<TagDescriptor>;
 }
 
-export interface IPersistenceLayer {
+export interface IPersistenceLayerContext {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
 }
 
-export interface IPersistence extends ITags, IPersistenceLayer {
+export interface IPersistenceContext extends ITagsContext, IPersistenceLayerContext {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerMutator: PersistenceLayerMutator;
 }
 
-export const PersistenceLayerContext = createContextMemo<IPersistenceLayer>(null!);
-export const PersistenceContext = createContextMemo<IPersistence>(null!);
-export const TagsContext = createContextMemo<ITags>(null!);
-export const TagDescriptorsContext = createContextMemo<ITagDescriptors>(null!);
+export const PersistenceLayerContext = createContextMemo<IPersistenceLayerContext>(null!);
+export const PersistenceContext = createContextMemo<IPersistenceContext>(null!);
+export const TagsContext = createContextMemo<ITagsContext>(null!);
+export const TagDescriptorsContext = createContextMemo<ITagDescriptorsContext>(null!);
 
-export function usePersistence() {
+export function usePersistenceContext() {
     return useContextMemo(PersistenceContext);
 }
 
-export function usePersistenceLayer() {
+export function usePersistenceLayerContext() {
     return useContextMemo(PersistenceLayerContext);
 }
 
@@ -127,7 +127,7 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         persistenceLayerProvider,
                                                         tagsProvider);
 
-                                                    const persistenceContext: IPersistence = {
+                                                    const persistenceContext: IPersistenceContext = {
                                                         repoDocMetaLoader: props.repoDocMetaLoader,
                                                         repoDocMetaManager: props.repoDocMetaManager,
                                                         persistenceLayerProvider,
@@ -138,18 +138,18 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         persistenceLayerMutator
                                                     }
 
-                                                    const persistenceLayerContext: IPersistenceLayer = {
+                                                    const persistenceLayerContext: IPersistenceLayerContext = {
                                                         persistenceLayerProvider
                                                     }
 
-                                                    const tagsContext: ITags = {
+                                                    const tagsContext: ITagsContext = {
                                                         // userTagsProvider: () => userTags,
                                                         // docTagsProvider: docTags,
                                                         // annotationTagsProvider: annotationTags,
                                                         tagsProvider
                                                     }
 
-                                                    const tagDescriptorsContext: ITagDescriptors = {
+                                                    const tagDescriptorsContext: ITagDescriptorsContext = {
                                                         // userTagsProvider: () => userTags,
                                                         // docTagsProvider: docTags,
                                                         // annotationTagsProvider: annotationTags,
