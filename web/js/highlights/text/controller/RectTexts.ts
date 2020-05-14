@@ -27,8 +27,6 @@ export class RectTexts {
 
         const range = TextNodes.getRange(textNode);
 
-        // FIXME: this is wrong and we are using teh wrong scroll position.
-
         const win = textNode.ownerDocument!.defaultView!;
 
         const scrollPoint = new Point({
@@ -38,7 +36,6 @@ export class RectTexts {
 
         const boundingClientRect = range.getBoundingClientRect();
 
-        // FIXMEL this is the bug because it copies toJSON
         let boundingPageRect = Rects.validate(boundingClientRect);
 
         boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);

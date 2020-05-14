@@ -39,8 +39,6 @@ export class SelectedContents {
             textNodes.push(...Ranges.getTextNodes(range));
         });
 
-        // FIXME: we're getting FEWER results.. not mroe.. that's a bug..
-
         // convert textNodes to visual blocks that don't overlap ...
         // FIXME: this is the problem.. we're splitting the first node and then it's
         // only a partial node at that point.. we have to keep the children too

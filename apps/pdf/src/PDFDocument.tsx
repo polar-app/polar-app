@@ -309,17 +309,3 @@ export interface PDFDocMeta {
     readonly nrPages: number;
     readonly fingerprint: IDStr;
 }
-
-//
-// export const PDFDocument = () => {
-//
-//     const [state, setState] = useState<IState>(createState());
-//
-//     return (
-//         <div>
-//             state.active: {state.active}
-//             <button onClick={() => setState({...state, active: ! state.active})}>toggle</button>
-//         </div>
-//     );
-//
-// };
