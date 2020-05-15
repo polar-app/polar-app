@@ -48,7 +48,7 @@ function useFindCallback(): FindCallback {
 
 }
 
-export const DocFindBar = React.memo(() => {
+export const DocFindBar = () => {
 
     const {findHandler, findActive} = useDocViewerStore();
     const {setFindActive} = useDocViewerCallbacks();
@@ -66,13 +66,14 @@ export const DocFindBar = React.memo(() => {
     });
 
     const cancelFind = React.useCallback(() => {
+        setMatches(undefined);
         setOpts({...opts, query: ""})
         setFindActive(false);
-        setMatches(undefined);
     }, []);
 
     const handleFind = React.useCallback((query: string) => {
         const newOpts = {...opts, query};
+        setMatches(undefined);
         setOpts(newOpts);
         doFind(newOpts);
     }, []);
@@ -138,4 +139,4 @@ export const DocFindBar = React.memo(() => {
 
     )
 
-});
+};
