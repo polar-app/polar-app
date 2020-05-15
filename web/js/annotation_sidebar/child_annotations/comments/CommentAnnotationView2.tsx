@@ -26,8 +26,6 @@ export const CommentAnnotationView2 = (props: IProps) => {
 
             </div>
 
-            <CommentAnnotationControlBar2 {...props}/>
-
         </div>
     );
 

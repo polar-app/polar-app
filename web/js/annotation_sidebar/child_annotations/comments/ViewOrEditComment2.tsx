@@ -13,11 +13,11 @@ import {
     useAnnotationMutationsContext
 } from "../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
+import {CommentAnnotationControlBar2} from "./CommentAnnotationControlBar2";
 
 
 interface IProps {
     readonly comment: IDocAnnotation;
-    // readonly onComment: (html: string, existingComment: Comment) => void;
 }
 
 type UsageMode = 'view' | 'edit';
@@ -62,20 +62,28 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     }, []);
 
-    if (mode === 'view') {
+    return (
+        <>
 
-        return <CommentAnnotationView2 comment={props.comment}
-                                       onEdit={onEdit}
-                                       editButton={editButton}/>;
+            {mode === 'view' &&
+                <CommentAnnotationView2 comment={props.comment}
+                                        onEdit={onEdit}
+                                        editButton={editButton}/>}
 
-    } else {
-        return (
-            <EditComment2 id={'edit-comment-for' + props.comment.id}
-                          existingComment={existingComment}
-                          cancelButton={cancelButton}
-                          onComment={handleComment}
-                          />
-        );
-    }
+            {mode === 'edit' &&
+                <EditComment2 id={'edit-comment-for' + props.comment.id}
+                              existingComment={existingComment}
+                              cancelButton={cancelButton}
+                              onComment={handleComment}
+                />}
+
+            <CommentAnnotationControlBar2 comment={props.comment}
+                                          onEdit={onEdit}
+                                          editButton={editButton}/>
+
+        </>
+    );
+
+
 
 }, isEqual);
