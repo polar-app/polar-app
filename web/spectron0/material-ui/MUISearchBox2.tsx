@@ -14,6 +14,7 @@ interface IProps {
     readonly autoFocus?: boolean;
     readonly style?: React.CSSProperties;
     readonly onChange: (text: string) => void;
+    readonly ref?: React.Ref<unknown>;
 }
 
 export const MUISearchBox2 = React.memo((props: IProps) => {
@@ -40,6 +41,9 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
                        defaultValue={props.initialValue}
                        placeholder={props.placeholder}
                        className={props.className}
+                       ref={props.ref}
+                       // ref={ref => console.log("FIXME0: " , ref)}
+                       // inputRef={ref => console.log("FIXME1: " , ref)}
                        onChange={event => handleChange(event.currentTarget.value)}/>
     );
 }, isEqual);

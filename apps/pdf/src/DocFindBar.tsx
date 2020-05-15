@@ -84,11 +84,11 @@ const MatchNav = React.memo(() => {
 
 }, isEqual);
 
-
 export const DocFindBar = React.memo(() => {
 
     const {active, opts} = useDocFindStore();
     const {reset, setMatches} = useDocFindCallbacks();
+
     const doFind = useFindCallback();
 
     const cancelFind = React.useCallback(() => {
@@ -99,9 +99,6 @@ export const DocFindBar = React.memo(() => {
         const newOpts = {...opts, query, onMatches: setMatches};
         doFind(newOpts);
     }, []);
-
-    // FIXME: needs a debouncer
-    // FIXME: only execute the query when the user hits enter!!
 
     return (
         <Collapse in={active} timeout={50}>
