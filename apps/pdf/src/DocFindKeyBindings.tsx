@@ -4,7 +4,7 @@ import {GlobalHotKeys} from "react-hotkeys";
 import {useDocViewerCallbacks} from './DocViewerStore';
 
 const globalKeyMap = {
-    FIND: 'command+f'
+    FIND: ['command+f', 'control+f']
 };
 
 export const DocRepoKeyBindings = React.memo(() => {

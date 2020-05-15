@@ -12,6 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Collapse from "@material-ui/core/Collapse";
 import {FindOpts} from "./Finders";
+import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
 
 const log = Logger.create();
 
@@ -86,49 +87,55 @@ export const DocFindBar = React.memo(() => {
 
     return (
         <Collapse in={findActive} timeout={50}>
-        <MUIPaperToolbar borderBottom>
+            <InputEscapeListener onEscape={cancelFind}>
+                <MUIPaperToolbar borderBottom>
 
-            <div style={{
-                     display: 'flex',
-                     alignItems: "center",
-                 }}
-                 className="pl-1 pr-1">
+                    <div style={{
+                             display: 'flex',
+                             alignItems: "center",
+                         }}
+                         className="pl-1 pr-1">
 
-                <MUIButtonBar>
-                    <MUISearchBox2 className="mt-1 mb-1"
-                                   onChange={handleFind}
-                                   autoFocus={true}
-                                   value={opts.query}
-                                   placeholder="Search..."/>
+                        <MUIButtonBar>
 
-                    <IconButton disabled={! findHandler}
-                                onClick={() => findHandler!.prev()}>
-                        <ArrowUpwardIcon/>
-                    </IconButton>
+                            <MUISearchBox2 className="mt-1 mb-1"
+                                           onChange={handleFind}
+                                           autoFocus={true}
+                                           value={opts.query}
+                                           style={{
+                                               width: '20em'
+                                           }}
+                                           placeholder="Search..."/>
 
-                    <IconButton disabled={! findHandler}
-                                onClick={() => findHandler!.next()}>
-                        <ArrowDownwardIcon/>
-                    </IconButton>
+                            <IconButton disabled={! findHandler}
+                                        onClick={() => findHandler!.prev()}>
+                                <ArrowUpwardIcon/>
+                            </IconButton>
 
-                </MUIButtonBar>
+                            <IconButton disabled={! findHandler}
+                                        onClick={() => findHandler!.next()}>
+                                <ArrowDownwardIcon/>
+                            </IconButton>
 
-                <div style={{
-                         display: 'flex',
-                         alignItems: "center",
-                         justifyContent: 'flex-end',
-                         flexGrow: 1
-                     }}>
+                        </MUIButtonBar>
 
-                    <IconButton onClick={cancelFind}>
-                        <CloseIcon/>
-                    </IconButton>
+                        <div style={{
+                                 display: 'flex',
+                                 alignItems: "center",
+                                 justifyContent: 'flex-end',
+                                 flexGrow: 1
+                             }}>
 
-                </div>
+                            <IconButton onClick={cancelFind}>
+                                <CloseIcon/>
+                            </IconButton>
 
-            </div>
+                        </div>
 
-        </MUIPaperToolbar>
+                    </div>
+
+                </MUIPaperToolbar>
+            </InputEscapeListener>
         </Collapse>
 
     )
