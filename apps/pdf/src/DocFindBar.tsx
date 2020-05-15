@@ -11,19 +11,20 @@ import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Collapse from "@material-ui/core/Collapse";
-import {FindHandler, FindOpts, IMatches} from "./Finders";
+import {FindHandler, IFindOpts, IMatches} from "./Finders";
 import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
+import { useDocFindCallbacks, useDocFindStore } from "./DocFindStore";
 
 const log = Logger.create();
 
-type FindCallback = (opts: FindOpts) => void;
+type FindCallback = (opts: IFindOpts) => void;
 
 function useFindCallback(): FindCallback {
 
-    const {finder, findHandler} = useDocViewerStore();
-    const {setFindHandler, doFind} = useDocViewerCallbacks();
+    const {finder, findHandler} = useDocFindStore();
+    const {setFindHandler, doFind} = useDocFindCallbacks();
 
-    return (opts: FindOpts) => {
+    return (opts: IFindOpts) => {
 
         const {query} = opts;
 
@@ -50,36 +51,25 @@ function useFindCallback(): FindCallback {
 
 export const DocFindBar = () => {
 
-    const {findHandler, findActive} = useDocViewerStore();
-    const {setFindActive} = useDocViewerCallbacks();
+    const {findHandler, active, opts, matches} = useDocFindStore();
+    const {setActive, setMatches, setOpts} = useDocFindCallbacks();
     const doFind = useFindCallback();
-
-    const [matches, setMatches] = React.useState<IMatches | undefined>(undefined);
-
-    const [opts, setOpts] = React.useState<FindOpts>({
-        query: "",
-        phraseSearch: false,
-        caseSensitive: false,
-        highlightAll: true,
-        findPrevious: false,
-        onMatches: (matches) => setMatches(matches)
-    });
 
     const cancelFind = React.useCallback(() => {
         setMatches(undefined);
         setOpts({...opts, query: ""})
-        setFindActive(false);
+        setActive(false);
     }, []);
 
     const handleFind = React.useCallback((query: string) => {
-        const newOpts = {...opts, query};
+        const newOpts = {...opts, query, onMatches: setMatches};
         setMatches(undefined);
         setOpts(newOpts);
         doFind(newOpts);
     }, []);
 
     return (
-        <Collapse in={findActive} timeout={50}>
+        <Collapse in={active} timeout={50}>
             <InputEscapeListener onEscape={cancelFind}>
                 <MUIPaperToolbar borderBottom>
 

@@ -3,6 +3,32 @@ import React, {useContext, useEffect, useMemo, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
+function pick<T, K extends keyof T>(value: T, keys: K[]): Pick<T, K> {
+
+    const result: any = {};
+
+    for (const key of keys) {
+        result[key] = value[key];
+    }
+
+    return result;
+
+}
+
+/**
+ * Hook that allows us to just pick specific keys from the store.
+ */
+function usePick<T, K extends keyof T>(useStoreHook: () => T,
+                                       keys: K[]): Pick<T, K> {
+
+    const store = useStoreHook();
+
+    const [value, setValue] = React.useState<Pick<T, K>>(pick(store, keys));
+
+    return value;
+
+}
+
 interface InternalObservableStore<V> {
 
     /**

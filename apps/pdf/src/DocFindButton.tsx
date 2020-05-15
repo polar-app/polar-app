@@ -1,14 +1,14 @@
 import * as React from "react";
-import {useDocViewerCallbacks} from "./DocViewerStore";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
+import {useDocFindCallbacks} from "./DocFindStore";
 
 export const DocFindButton = React.memo(() => {
 
-    const {setFindActive} = useDocViewerCallbacks();
+    const {setActive} = useDocFindCallbacks();
 
     return (
-        <IconButton onClick={() => setFindActive(true)}>
+        <IconButton onClick={() => setActive(true)}>
             <SearchIcon/>
         </IconButton>
     )

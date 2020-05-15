@@ -7,6 +7,7 @@ import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
 import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {DocViewerStore} from "./DocViewerStore";
+import { DocFindStore } from './DocFindStore';
 
 export const DocViewerScreen = React.memo(() => {
 
@@ -19,16 +20,16 @@ export const DocViewerScreen = React.memo(() => {
                  }}>
 
                 <MUIAppRoot>
-
-                    {/*FIXME we have to define usePersistence here too... */}
-
+                    
                     <MUIDialogController>
                             <UserTagsProvider>
                                 <DocMetaContextProvider>
                                     <DocViewerStore>
-                                        <AnnotationSidebarStoreProvider>
-                                            <DocViewer/>
-                                        </AnnotationSidebarStoreProvider>
+                                        <DocFindStore>
+                                            <AnnotationSidebarStoreProvider>
+                                                <DocViewer/>
+                                            </AnnotationSidebarStoreProvider>
+                                        </DocFindStore>
                                     </DocViewerStore>
                                 </DocMetaContextProvider>
                             </UserTagsProvider>

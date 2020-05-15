@@ -2,6 +2,7 @@ import React from 'react';
 import {Callbacks} from "../../repository/js/Callbacks";
 import {GlobalHotKeys} from "react-hotkeys";
 import {useDocViewerCallbacks} from './DocViewerStore';
+import { useDocFindCallbacks } from './DocFindStore';
 
 const globalKeyMap = {
     FIND: ['command+f', 'control+f']
@@ -9,10 +10,10 @@ const globalKeyMap = {
 
 export const DocRepoKeyBindings = React.memo(() => {
 
-    const callbacks = useDocViewerCallbacks();
+    const callbacks = useDocFindCallbacks();
 
     const globalKeyHandlers = Callbacks.callbacksWithTimeout({
-        FIND: () => callbacks.setFindActive(true),
+        FIND: () => callbacks.setActive(true),
     });
 
     return (

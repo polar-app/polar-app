@@ -47,6 +47,7 @@ import {
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 import { DocFindBar } from "./DocFindBar";
 import {DocRepoKeyBindings} from "./DocFindKeyBindings";
+import { useDocFindCallbacks } from "./DocFindStore";
 
 const log = Logger.create();
 
@@ -71,7 +72,7 @@ export const DocViewer = React.memo((props: IProps) => {
     const store = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
 
-    const {setFinder} = callbacks;
+    const {setFinder} = useDocFindCallbacks();
 
     useAnnotationBar();
 

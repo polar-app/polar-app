@@ -3,18 +3,22 @@ export interface IMatches {
     readonly total: number;
 }
 
-export interface FindOpts {
+
+export interface IFindOptsBase {
     query: string;
     phraseSearch: boolean;
     caseSensitive: boolean;
     highlightAll: boolean;
     findPrevious: boolean;
+}
+
+export interface IFindOpts extends IFindOptsBase {
     onMatches: (match: IMatches) => void;
 }
 
 export interface Finder {
 
-    exec(opts: FindOpts): Promise<FindHandler>;
+    exec(opts: IFindOpts): Promise<FindHandler>;
 
 }
 
@@ -27,7 +31,7 @@ export interface FindHandler {
     /**
      * The query used to build this handler.
      */
-    readonly opts: FindOpts;
+    readonly opts: IFindOpts;
 
     /**
      * Cancel the find

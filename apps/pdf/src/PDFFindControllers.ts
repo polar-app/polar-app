@@ -1,5 +1,5 @@
 import {EventBus, PDFFindController} from 'pdfjs-dist/web/pdf_viewer';
-import {Finder, FindHandler, FindOpts, IMatches} from "./Finders";
+import {Finder, FindHandler, IFindOpts, IMatches} from "./Finders";
 
 export namespace PDFFindControllers {
 
@@ -9,7 +9,7 @@ export namespace PDFFindControllers {
 
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
-        const exec = async (opts: FindOpts): Promise<FindHandler> => {
+        const exec = async (opts: IFindOpts): Promise<FindHandler> => {
 
             function updatefindmatchescount(evt: UpdateFindMatchesCount) {
                 // console.log("TODO: updatefindmatchescount", evt);
