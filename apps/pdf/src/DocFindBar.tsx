@@ -1,6 +1,5 @@
 import {MUISearchBox2} from "../../../web/spectron0/material-ui/MUISearchBox2";
 import * as React from "react";
-import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {Logger} from "polar-shared/src/logger/Logger";
 import isEqual from "react-fast-compare";
 import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
@@ -9,11 +8,10 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Collapse from "@material-ui/core/Collapse";
-import {FindHandler, IFindOpts, IMatches} from "./Finders";
+import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
-import { useDocFindCallbacks, useDocFindStore } from "./DocFindStore";
+import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 
 const log = Logger.create();
 
@@ -52,7 +50,7 @@ function useFindCallback(): FindCallback {
 export const DocFindBar = () => {
 
     const {findHandler, active, opts, matches} = useDocFindStore();
-    const {reset, setMatches, setOpts} = useDocFindCallbacks();
+    const {reset, setMatches} = useDocFindCallbacks();
     const doFind = useFindCallback();
 
     const cancelFind = React.useCallback(() => {
@@ -61,8 +59,6 @@ export const DocFindBar = () => {
 
     const handleFind = React.useCallback((query: string) => {
         const newOpts = {...opts, query, onMatches: setMatches};
-        setMatches(undefined);
-        setOpts(newOpts);
         doFind(newOpts);
     }, []);
 

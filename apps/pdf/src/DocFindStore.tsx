@@ -112,6 +112,7 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
             if (finder) {
 
+                setStore({...store, matches: undefined, opts})
                 const findHandler = await finder!.exec(opts);
 
                 setFindHandler(findHandler);
@@ -140,12 +141,20 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
     function reset() {
         const store = storeProvider();
+
+        const findHandler = store.findHandler;
+
         setStore({
             ...store,
             matches: undefined,
             opts: {...store.opts, query: ""},
-            active: false
+            active: false,
+            findHandler: undefined
         });
+
+        if (findHandler) {
+            findHandler.cancel();
+        }
 
     }
 
