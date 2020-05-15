@@ -109,9 +109,7 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
         const store = storeProvider();
         const {finder} = store;
 
-        // FIXME because this is async we can overlap search requests and
-        // I think that's our issue.
-        const doHandle = async (opts: IFindOpts) => {
+        const doHandle = (opts: IFindOpts) => {
 
             if (store.findHandler) {
                 store.findHandler.cancel();
@@ -120,7 +118,7 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
             if (finder) {
 
                 setStore({...store, matches: undefined, opts})
-                const findHandler = await finder!.exec(opts);
+                const findHandler = finder!.exec(opts);
 
                 setFindHandler(findHandler);
             } else {
@@ -129,10 +127,7 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
         };
 
-        Functions.withTimeout(() => {
-            doHandle(opts)
-                .catch(err => console.error(err));
-        })
+        doHandle(opts);
 
     }
 

@@ -9,7 +9,7 @@ export namespace PDFFindControllers {
 
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
-        const exec = async (opts: IFindOpts): Promise<FindHandler> => {
+        const exec = (opts: IFindOpts): FindHandler => {
 
             function updatefindmatchescount(evt: UpdateFindMatchesCount) {
                 // console.log("TODO: updatefindmatchescount", evt);
@@ -30,6 +30,7 @@ export namespace PDFFindControllers {
                 eventBus.off('updatefindcontrolstate', updatefindcontrolstate);
 
                 eventBus.dispatch('findbarclose');
+                // findController.reset();
 
             };
 
@@ -42,11 +43,6 @@ export namespace PDFFindControllers {
             }
 
             findController.executeCommand('find', opts);
-
-            // FIXME: this needs to be remove AFTER or it stays in the buss!!!
-
-            // FIXME: when cancel is done the event handlers need
-            //  to be removed...
 
             return {opts, cancel, next, prev};
 

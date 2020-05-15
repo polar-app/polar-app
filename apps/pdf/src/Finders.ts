@@ -18,7 +18,7 @@ export interface IFindOpts extends IFindOptsBase {
 
 export interface Finder {
 
-    exec(opts: IFindOpts): Promise<FindHandler>;
+    exec(opts: IFindOpts): FindHandler;
 
 }
 
