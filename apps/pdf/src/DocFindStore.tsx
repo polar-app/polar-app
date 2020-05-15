@@ -42,6 +42,7 @@ export interface IDocFindCallbacks {
     doFind(opts: IFindOpts): void;
     setMatches(matches: IMatches | undefined): void;
     setOpts(opts: IFindOptsBase | undefined): void;
+    reset(): void;
 
 }
 
@@ -137,13 +138,25 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
         setStore({...store, opts});
     }
 
+    function reset() {
+        const store = storeProvider();
+        setStore({
+            ...store,
+            matches: undefined,
+            opts: {...store.opts, query: ""},
+            active: false
+        });
+
+    }
+
     return {
         setActive,
         setFinder,
         setFindHandler,
         doFind,
         setMatches,
-        setOpts
+        setOpts,
+        reset
     };
 
 }

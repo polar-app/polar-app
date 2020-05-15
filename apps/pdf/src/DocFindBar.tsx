@@ -52,13 +52,11 @@ function useFindCallback(): FindCallback {
 export const DocFindBar = () => {
 
     const {findHandler, active, opts, matches} = useDocFindStore();
-    const {setActive, setMatches, setOpts} = useDocFindCallbacks();
+    const {reset, setMatches, setOpts} = useDocFindCallbacks();
     const doFind = useFindCallback();
 
     const cancelFind = React.useCallback(() => {
-        setMatches(undefined);
-        setOpts({...opts, query: ""})
-        setActive(false);
+        reset();
     }, []);
 
     const handleFind = React.useCallback((query: string) => {
