@@ -17,7 +17,7 @@ import {
     IAnnotationMutationCallbacks
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Finder, FindHandler} from "./Finders";
+import {Finder, FindHandler, FindOpts} from "./Finders";
 
 export interface IDocViewerStore {
 
@@ -55,6 +55,7 @@ export interface IDocViewerCallbacks {
 
     readonly setFindHandler: (findHandler: FindHandler | undefined) => void;
 
+    readonly doFind: (opts: FindOpts) => void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -171,12 +172,36 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
+    function doFind(opts: FindOpts) {
+
+        const store = storeProvider();
+        const {finder} = store;
+
+        const doHandle = async (opts: FindOpts) => {
+
+            if (finder) {
+
+                const findHandler = await finder!.exec(opts);
+
+                setFindHandler(findHandler);
+            } else {
+                console.warn("No finder: ", finder);
+            }
+
+        };
+
+        doHandle(opts)
+            .catch(err => console.error(err));
+
+    }
+
     return {
         setDocMeta,
         setFinder,
         setFindHandler,
         annotationMutations,
-        setFindActive
+        setFindActive,
+        doFind
     };
 
 }

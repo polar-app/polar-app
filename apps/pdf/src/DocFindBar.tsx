@@ -11,7 +11,7 @@ import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Collapse from "@material-ui/core/Collapse";
-import {FindOpts} from "./Finders";
+import {FindHandler, FindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
 
 const log = Logger.create();
@@ -21,7 +21,7 @@ type FindCallback = (opts: FindOpts) => void;
 function useFindCallback(): FindCallback {
 
     const {finder, findHandler} = useDocViewerStore();
-    const {setFindHandler} = useDocViewerCallbacks();
+    const {setFindHandler, doFind} = useDocViewerCallbacks();
 
     return (opts: FindOpts) => {
 
@@ -42,18 +42,7 @@ function useFindCallback(): FindCallback {
             return;
         }
 
-        const doHandle = async () => {
-
-            if (finder) {
-
-                const findHandler = await finder!.exec(opts);
-
-                setFindHandler(findHandler);
-            }
-
-        };
-
-        doHandle().catch(err => log.error(err));
+        doFind(opts);
 
     }
 
