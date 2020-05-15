@@ -1,4 +1,4 @@
-interface Match {
+export interface IMatches {
     readonly current: number;
     readonly total: number;
 }
@@ -9,7 +9,7 @@ export interface FindOpts {
     caseSensitive: boolean;
     highlightAll: boolean;
     findPrevious: boolean;
-    onMatch: (match: Match) => void;
+    onMatches: (match: IMatches) => void;
 }
 
 export interface Finder {

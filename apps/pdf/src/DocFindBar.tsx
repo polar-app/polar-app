@@ -11,7 +11,7 @@ import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Collapse from "@material-ui/core/Collapse";
-import {FindHandler, FindOpts} from "./Finders";
+import {FindHandler, FindOpts, IMatches} from "./Finders";
 import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
 
 const log = Logger.create();
@@ -54,18 +54,21 @@ export const DocFindBar = React.memo(() => {
     const {setFindActive} = useDocViewerCallbacks();
     const doFind = useFindCallback();
 
+    const [matches, setMatches] = React.useState<IMatches | undefined>(undefined);
+
     const [opts, setOpts] = React.useState<FindOpts>({
         query: "",
         phraseSearch: false,
         caseSensitive: false,
         highlightAll: true,
         findPrevious: false,
-        onMatch: NULL_FUNCTION
+        onMatches: (matches) => setMatches(matches)
     });
 
     const cancelFind = React.useCallback(() => {
         setOpts({...opts, query: ""})
-        setFindActive(false)
+        setFindActive(false);
+        setMatches(undefined);
     }, []);
 
     const handleFind = React.useCallback((query: string) => {
@@ -105,6 +108,12 @@ export const DocFindBar = React.memo(() => {
                                         onClick={() => findHandler!.next()}>
                                 <ArrowDownwardIcon/>
                             </IconButton>
+
+                            {matches && (
+                                <div>
+                                    {matches.current} of {matches.total}
+                                </div>
+                                )}
 
                         </MUIButtonBar>
 
