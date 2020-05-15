@@ -2,6 +2,7 @@ import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import isEqual from "react-fast-compare";
 
 interface IProps {
     readonly id?: string;
@@ -15,7 +16,7 @@ interface IProps {
     readonly onChange: (text: string) => void;
 }
 
-export const MUISearchBox2 = (props: IProps) => {
+export const MUISearchBox2 = React.memo((props: IProps) => {
 
     // FIXME: need a debouncer here...
     const handleChange = (text: string) => {
@@ -41,4 +42,4 @@ export const MUISearchBox2 = (props: IProps) => {
                        className={props.className}
                        onChange={event => handleChange(event.currentTarget.value)}/>
     );
-};
+}, isEqual);
