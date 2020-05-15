@@ -47,9 +47,47 @@ function useFindCallback(): FindCallback {
 
 }
 
-export const DocFindBar = () => {
+const Matches = React.memo(() => {
 
-    const {findHandler, active, opts, matches} = useDocFindStore();
+    const {matches} = useDocFindStore();
+
+    if (! matches) {
+        return null;
+    }
+
+    return (
+        <div>
+            {matches.current} of {matches.total}
+        </div>
+    );
+
+}, isEqual);
+
+const MatchNav = React.memo(() => {
+
+    const {matches} = useDocFindStore();
+    const {findHandler} = useDocFindStore();
+
+    return (
+        <>
+            <IconButton disabled={! matches || matches.current === 1}
+                        onClick={() => findHandler!.prev()}>
+                <ArrowUpwardIcon/>
+            </IconButton>
+
+            <IconButton disabled={! matches || matches.current === matches.total}
+                        onClick={() => findHandler!.next()}>
+                <ArrowDownwardIcon/>
+            </IconButton>
+        </>
+    );
+
+}, isEqual);
+
+
+export const DocFindBar = React.memo(() => {
+
+    const {active, opts} = useDocFindStore();
     const {reset, setMatches} = useDocFindCallbacks();
     const doFind = useFindCallback();
 
@@ -61,6 +99,9 @@ export const DocFindBar = () => {
         const newOpts = {...opts, query, onMatches: setMatches};
         doFind(newOpts);
     }, []);
+
+    // FIXME: needs a debouncer
+    // FIXME: only execute the query when the user hits enter!!
 
     return (
         <Collapse in={active} timeout={50}>
@@ -84,21 +125,9 @@ export const DocFindBar = () => {
                                            }}
                                            placeholder="Search..."/>
 
-                            <IconButton disabled={! findHandler}
-                                        onClick={() => findHandler!.prev()}>
-                                <ArrowUpwardIcon/>
-                            </IconButton>
+                            <MatchNav/>
 
-                            <IconButton disabled={! findHandler}
-                                        onClick={() => findHandler!.next()}>
-                                <ArrowDownwardIcon/>
-                            </IconButton>
-
-                            {matches && (
-                                <div>
-                                    {matches.current} of {matches.total}
-                                </div>
-                                )}
+                            <Matches/>
 
                         </MUIButtonBar>
 
@@ -123,4 +152,4 @@ export const DocFindBar = () => {
 
     )
 
-};
+});

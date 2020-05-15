@@ -6,6 +6,7 @@ import {
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Finder, FindHandler, IFindOpts, IMatches, IFindOptsBase} from "./Finders";
+import {Functions} from "polar-shared/src/util/Functions";
 
 export interface IDocFindStore {
 
@@ -108,7 +109,13 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
         const store = storeProvider();
         const {finder} = store;
 
+        // FIXME because this is async we can overlap search requests and
+        // I think that's our issue.
         const doHandle = async (opts: IFindOpts) => {
+
+            if (store.findHandler) {
+                store.findHandler.cancel();
+            }
 
             if (finder) {
 
@@ -122,14 +129,21 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
         };
 
-        doHandle(opts)
-            .catch(err => console.error(err));
+        Functions.withTimeout(() => {
+            doHandle(opts)
+                .catch(err => console.error(err));
+        })
 
     }
 
     function setMatches(matches: IMatches | undefined) {
 
         const store = storeProvider();
+
+        if ( !store.active) {
+            return;
+        }
+
         setStore({...store, matches});
 
     }
