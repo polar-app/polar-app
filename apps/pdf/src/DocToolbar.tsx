@@ -1,10 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {
-    Callback,
-    Callback1,
-    NULL_FUNCTION
-} from "polar-shared/src/util/Functions";
+import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
 import {PDFDocMeta} from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -25,7 +21,7 @@ import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolba
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import {MUISearchBox2} from "../../../web/spectron0/material-ui/MUISearchBox2";
+import {DocFindButton} from "./DocFindButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 
@@ -178,12 +174,12 @@ interface NumPagesProps {
 }
 
 const NumPages = (props: NumPagesProps) => (
-    <div className="ml-1 mt-auto mb-auto">
+    <div className="ml-1 mt-auto mb-auto" style={{fontSize: "1.3rem"}}>
         of {props.pdfDocMeta.nrPages}
     </div>
 );
 
-export const PDFToolbar = (props: IProps) => {
+export const DocToolbar = (props: IProps) => {
 
     const globalKeyHandlers = {
         PAGE_NEXT: () => props.onPageNext(),
@@ -295,9 +291,7 @@ export const PDFToolbar = (props: IProps) => {
 
                             {/*<MUISearchBox2 onChange={text => props.onFiltered(text)}*/}
 
-                            <MUISearchBox2 className="mt-1 mb-1"
-                                           onChange={NULL_FUNCTION}
-                                           placeholder="Search..."/>
+                            <DocFindButton/>
 
                             {/*<IconButton onClick={() => props.onFind()}>*/}
                             {/*    <SearchIcon/>*/}

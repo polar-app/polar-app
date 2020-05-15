@@ -11,7 +11,9 @@ export class TextNodes {
      * @param length
      * @return {Range}
      */
-    public static getRange(textNode: Node, offset: number = 0, length?: number) {
+    public static getRange(textNode: Node,
+                           offset: number = 0,
+                           length?: number) {
 
         Preconditions.assertPresent(textNode, "textNode");
 
@@ -19,6 +21,7 @@ export class TextNodes {
             length = textNode.textContent!.length;
         }
 
+        // FIXME: we have to make this iframe aware.
         const range = document.createRange();
 
         range.setStart(textNode, offset);
@@ -27,15 +30,5 @@ export class TextNodes {
         return range;
 
     }
-
-    // /**
-    //  *
-    //  * @param textNode {Node}
-    //  * @param offset {number}
-    //  * @param length {number}
-    //  */
-    // static getClientRects(textNode, offset, length) {
-    //     return range.getClientRects();
-    // }
 
 }

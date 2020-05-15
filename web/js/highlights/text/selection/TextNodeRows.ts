@@ -31,9 +31,6 @@ export class TextRegion {
 
     private textNodes: any[] = [];
 
-    constructor() {
-    }
-
     push(textNode: any) {
 
         if(textNode.textContent.length > 1) {
@@ -93,7 +90,7 @@ class MergedTextBlock {
     /**
      * The merged Node of type TEXT_NODE
      */
-    public textNode: any;
+    public textNode: Node;
 
     /**
      * The rect of this node.
@@ -131,13 +128,13 @@ class MergedTextBlock {
  */
 export class NodeArray {
 
-    private nodes: any;
+    private nodes: ReadonlyArray<Node>;
 
     /**
      *
      * @param nodes {Array<Node>}
      */
-    constructor(nodes: any) {
+    constructor(nodes: ReadonlyArray<Node>) {
         Preconditions.assertNotNull(nodes, "nodes");
         this.nodes = nodes;
     }
@@ -185,43 +182,31 @@ export class TextNodeRows {
      * @param textNode {Node}
      * @return {Array<Node>}
      */
-    static fromTextNode(textNode: any) {
+    public static fromTextNode(textNode: Node) {
 
         if(textNode.nodeType !== Node.TEXT_NODE) {
             throw new Error("Not a text node");
         }
 
-        let nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
+        const nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
 
-        let textRegions = TextNodeRows.computeTextRegions(nodeArray, null);
+        const textRegions = TextNodeRows.computeTextRegions(nodeArray, null);
 
-        let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+        const textBlocks = TextNodeRows.computeTextBlocks(textRegions);
 
-        let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
+        const mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
 
-        let result = mergedTextBlocks.map(current => current.textNode);
-
-        return result;
+        return mergedTextBlocks.map(current => current.textNode);
 
     }
 
-    /**
-     *
-     * @param textNodes {Array<Node>}
-     * @return {Array<Node>}
-     */
-    static fromTextNodes(textNodes: any[]) {
+    public static fromTextNodes(textNodes: ReadonlyArray<Node>): ReadonlyArray<Node> {
 
-        /**
-         * @type {Array<Node>}
-         */
-        const result: any = [];
+        const result: Node[] = [];
 
         textNodes.forEach(textNode => {
             result.push(...TextNodeRows.fromTextNode(textNode));
         });
-
-        //console.log("FIXME: 123: going to return N: " + result.length)
 
         return result;
 
@@ -239,7 +224,7 @@ export class TextNodeRows {
         Array.from(element.childNodes).forEach(current => {
 
             if(current.nodeType === Node.TEXT_NODE) {
-                let nodeArray = TextNodeRows.splitTextNodePerCharacter(current);
+                const nodeArray = TextNodeRows.splitTextNodePerCharacter(current);
                 result += nodeArray.length;
             }
 
@@ -277,7 +262,6 @@ export class TextNodeRows {
             textRegions = [];
         }
 
-        // the current region
         /**
          * @type {TextRegion}
          */
@@ -285,9 +269,9 @@ export class TextNodeRows {
 
         createSiblings(nodeArray.nodes).forEach(position => {
 
-            let currentNode = position.curr;
+            const currentNode = position.curr;
 
-            if(currentNode.nodeType === Node.TEXT_NODE) {
+            if (currentNode.nodeType === Node.TEXT_NODE) {
                 textRegion.push(currentNode);
             }
 
@@ -349,9 +333,9 @@ export class TextNodeRows {
 
                 // *** handle middle nodes
 
-                let currRect = TextNodes.getRange(position.curr).getBoundingClientRect();
+                const currRect = TextNodes.getRange(position.curr).getBoundingClientRect();
 
-                if(Rects.isVisible(currRect)) {
+                if (Rects.isVisible(currRect)) {
 
                     if(prevRect != null) {
 
@@ -405,13 +389,13 @@ export class TextNodeRows {
 
         textBlocks.forEach(textBlock => {
 
-            let textNodes = textBlock.getTextNodes().slice();
+            const textNodes = textBlock.getTextNodes().slice();
 
-            let text = textBlock.toString();
+            const text = textBlock.toString();
 
             // the first node should get the text value.
 
-            let textNode = textNodes.pop();
+            const textNode = textNodes.pop();
             textNode.textContent = text;
 
             // now remove the remaining nodes from the DOM.
@@ -446,15 +430,17 @@ export class TextNodeRows {
      *
      * @return {NodeArray} The number of splits we performed.
      */
-    static splitTextNodePerCharacter(textNode: any) {
+    static splitTextNodePerCharacter(textNode: Node) {
 
         let result = [
 
         ];
 
-        while(textNode.textContent.length > 1) {
+        // TODO: migrate to map.
+        while (textNode.textContent && textNode.textContent.length > 1) {
             result.push(textNode);
-            textNode = textNode.splitText(1);
+            // TODO: migrate this to use Text
+            textNode = (<any> textNode).splitText(1);
         }
 
         result.push(textNode);

@@ -17,6 +17,7 @@ import {
     IAnnotationMutationCallbacks
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Finder, FindHandler} from "./Finders";
 
 export interface IDocViewerStore {
 
@@ -30,6 +31,17 @@ export interface IDocViewerStore {
      */
     readonly docURL?: URLStr;
 
+
+    readonly findActive: boolean;
+
+    /**
+     * The finder used when searching documents.  This is set once the document
+     * is loaded.
+     */
+    readonly finder?: Finder;
+
+    readonly findHandler?: FindHandler;
+
 }
 
 export interface IDocViewerCallbacks {
@@ -37,12 +49,20 @@ export interface IDocViewerCallbacks {
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
 
+    readonly setFinder: (finder: Finder) => void;
+
+    readonly setFindActive: (findActive: boolean) => void;
+
+    readonly setFindHandler: (findHandler: FindHandler | undefined) => void;
+
+
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
 
 }
 
 const initialStore: IDocViewerStore = {
+    findActive: false
 }
 
 interface Mutator {
@@ -126,9 +146,37 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         docMetas.map(setDocMeta);
     }
 
+    function setFinder(finder: Finder) {
+        const store = storeProvider();
+        setStore({...store, finder});
+    }
+
+    function setFindHandler(findHandler: FindHandler | undefined) {
+        const store = storeProvider();
+        setStore({...store, findHandler});
+    }
+
+    function setFindActive(findActive: boolean) {
+
+        const store = storeProvider();
+
+        if (findActive) {
+            setStore({...store, findActive})
+        } else {
+            if (store.findHandler) {
+                store.findHandler!.cancel();
+            }
+            setStore({...store, findActive, findHandler: undefined})
+        }
+
+    }
+
     return {
         setDocMeta,
-        annotationMutations
+        setFinder,
+        setFindHandler,
+        annotationMutations,
+        setFindActive
     };
 
 }

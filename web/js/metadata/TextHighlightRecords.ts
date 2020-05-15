@@ -19,8 +19,8 @@ export class TextHighlightRecords {
      * @return an object with an "id" for a unique hash and a "value" of the
      * TextHighlight to use.
      */
-    public static create(rects: IRect[],
-                         textSelections: ITextRect[],
+    public static create(rects: ReadonlyArray<IRect>,
+                         textSelections: ReadonlyArray<ITextRect>,
                          text: Text,
                          color: HighlightColor = 'yellow'): TextHighlightRecord {
 

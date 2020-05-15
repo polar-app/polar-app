@@ -225,6 +225,7 @@ export class ControlledAnnotationBars {
             // bar until it completes.
             annotationBarCallbacks.onHighlighted(highlightCreatedEvent);
             this.destroyAnnotationBar(annotationBar);
+
         };
 
         ReactDOM.render(

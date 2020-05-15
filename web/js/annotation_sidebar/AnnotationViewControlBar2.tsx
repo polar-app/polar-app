@@ -19,7 +19,7 @@ import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles, Theme} from "@material-ui/core";
+import {createStyles} from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) =>

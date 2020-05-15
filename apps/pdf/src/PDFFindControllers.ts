@@ -3,32 +3,50 @@ import {Finder, FindHandler, FindOpts} from "./Finders";
 
 export namespace PDFFindControllers {
 
+    interface UpdateFindMatchesCount {
+
+    }
+
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
         const exec = async (opts: FindOpts): Promise<FindHandler> => {
 
+            function updatefindmatchescount(evt: any) {
+                console.log("TODO: updatefindmatchescount", evt);
+            }
+
+            function updatefindcontrolstate(evt: any) {
+                console.log("TODO: updatefindcontrolstate", evt);
+            }
+
+            // {current: 3, total: 177}
+            eventBus.on("updatefindmatchescount", updatefindmatchescount);
+            eventBus.on('updatefindcontrolstate', updatefindcontrolstate);
+
             const cancel = () => {
+                eventBus.off("updatefindmatchescount", updatefindmatchescount);
+                eventBus.off('updatefindcontrolstate', updatefindcontrolstate);
+
                 eventBus.dispatch('findbarclose');
+
             };
 
-            const again = () => {
-                findController.executeCommand('findagain', opts);
-            };
+            function next() {
+                findController.executeCommand('findagain', {...opts, findPrevious: false});
+            }
+
+            function prev() {
+                findController.executeCommand('findagain', {...opts, findPrevious: true});
+            }
 
             findController.executeCommand('find', opts);
 
-            eventBus.on("updatefindmatchescount", (evt: any) => {
-                console.log("TODO: updatefindmatchescount", evt);
-            });
-
-            eventBus.on('updatefindcontrolstate', (event: any) => {
-                console.log("TODO: updatefindcontrolstate: ", event);
-            });
+            // FIXME: this needs to be remove AFTER or it stays in the buss!!!
 
             // FIXME: when cancel is done the event handlers need
             //  to be removed...
 
-            return {cancel, again};
+            return {opts, cancel, next, prev};
 
         };
 

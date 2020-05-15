@@ -7,8 +7,10 @@ interface IProps {
     readonly id?: string;
     readonly label?: string;
     readonly placeholder?: string;
+    readonly value?: string;
     readonly initialValue?: string;
     readonly className?: string;
+    readonly autoFocus?: boolean;
     readonly style?: React.CSSProperties;
     readonly onChange: (text: string) => void;
 }
@@ -22,15 +24,18 @@ export const MUISearchBox2 = (props: IProps) => {
 
     return (
         <OutlinedInput startAdornment={(
+
                            <InputAdornment position="start">
                                <SearchIcon />
                            </InputAdornment>
                        )}
                        margin="dense"
                        type="search"
+                       autoFocus={props.autoFocus}
                        id={props.id}
                        style={props.style}
                        label={props.label}
+                       value={props.value}
                        defaultValue={props.initialValue}
                        placeholder={props.placeholder}
                        className={props.className}

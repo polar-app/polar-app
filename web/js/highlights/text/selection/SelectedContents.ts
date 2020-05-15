@@ -33,7 +33,7 @@ export class SelectedContents {
         const text = selection.toString();
         const html =  HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
 
-        let textNodes: Node[] = [];
+        const textNodes: Node[] = [];
 
         ranges.forEach(range => {
             textNodes.push(...Ranges.getTextNodes(range));
@@ -44,9 +44,10 @@ export class SelectedContents {
         // only a partial node at that point.. we have to keep the children too
         // and return it as some sort of container.
 
-        textNodes = TextNodeRows.fromTextNodes(textNodes);
+        const textNodesRows = TextNodeRows.fromTextNodes(textNodes);
 
-        const rectTexts = RectTexts.toRectTexts(textNodes);
+        // FIXME: we have ALL the text nodes now but some of them are wrong/broken...
+        const rectTexts = RectTexts.toRectTexts(textNodesRows);
 
         return new SelectedContent({
             text,

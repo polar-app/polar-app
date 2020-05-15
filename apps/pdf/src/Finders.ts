@@ -1,3 +1,7 @@
+interface Match {
+    readonly current: number;
+    readonly total: number;
+}
 
 export interface FindOpts {
     query: string;
@@ -5,6 +9,7 @@ export interface FindOpts {
     caseSensitive: boolean;
     highlightAll: boolean;
     findPrevious: boolean;
+    onMatch: (match: Match) => void;
 }
 
 export interface Finder {
@@ -20,13 +25,16 @@ export interface Finder {
 export interface FindHandler {
 
     /**
-     * Cancel the find
+     * The query used to build this handler.
      */
-    cancel(): void;
+    readonly opts: FindOpts;
 
     /**
-     * Repeat the find.
+     * Cancel the find
      */
-    again(): void;
+    readonly cancel: () => void;
+
+    readonly next: () => void;
+    readonly prev: () => void;
 
 }

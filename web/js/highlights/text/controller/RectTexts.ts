@@ -11,9 +11,14 @@ export class RectTexts {
      *
      * @param textNodes
      */
-    public static toRectTexts(textNodes: Node[]) {
+    public static toRectTexts(textNodes: ReadonlyArray<Node>) {
+
+        function predicate(current: RectText) {
+            return current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0;
+        }
+
         return textNodes.map(RectTexts.toRectText)
-                        .filter(current => current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0);
+                        .filter(predicate);
     }
 
     /**
@@ -23,29 +28,45 @@ export class RectTexts {
      * @param textNode {Node}
      * @return {RectText}
      */
-    public static toRectText(textNode: Node) {
+    public static toRectText(textNode: Node): RectText {
 
+        // FIXME: the issue is that this range is completely wrong for some
+        // fucking reason.
+
+        // FIXME the issue here is that there are a LOT of text nodes here... not
+        // just one.
+
+        // FIXME: log.warn this if the result comes back wrong.
         const range = TextNodes.getRange(textNode);
 
         const win = textNode.ownerDocument!.defaultView!;
+        const doc = win.document;
 
         const scrollPoint = new Point({
             x: win.scrollX,
             y: win.scrollY
         });
 
-        const boundingClientRect = range.getBoundingClientRect();
+        // const scrollPoint = new Point({
+        //     x: -21,
+        //     y: -98
+        // });
+
+        const selectionRange = win.getSelection()!.getRangeAt(0).getBoundingClientRect();
+
+        const boundingClientRect = new Rect(range.getBoundingClientRect());
 
         let boundingPageRect = Rects.validate(boundingClientRect);
 
         boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
 
-        return new RectText({
-            clientRects: range.getClientRects(),
+        return {
+            // clientRects: range.getClientRects(),
+            selectionRange,
             boundingClientRect,
             boundingPageRect,
-            text: textNode.textContent
-        });
+            text: textNode.textContent || undefined
+        };
 
     }
 

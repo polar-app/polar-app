@@ -1,4 +1,4 @@
-import {PDFToolbar} from "./PDFToolbar";
+import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {
     PDFDocMeta,
@@ -45,6 +45,7 @@ import {
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
+import { DocFindBar } from "./DocFindBar";
 
 const log = Logger.create();
 
@@ -72,6 +73,8 @@ export const DocViewer = React.memo((props: IProps) => {
     const callbacks = useDocViewerCallbacks();
     const store = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
+
+    const {setFinder} = callbacks;
 
     useAnnotationBar();
 
@@ -121,51 +124,12 @@ export const DocViewer = React.memo((props: IProps) => {
 
     });
 
-    function onFinder(finder: Finder) {
-
-        setState({
-                     ...state,
-                     finder
-                 })
-
-    }
-
     function onFind() {
 
         setState({
                           ...state,
                           findActive: true
                       })
-
-    }
-
-    function onFindExecute(query: string) {
-
-        if (state.findHandler) {
-            // there's already a find handler so that means there's an active
-            // search so we should run the search 'again' to find the next match
-
-            state.findHandler.again();
-            return;
-        }
-
-        const doHandle = async () => {
-
-            const opts = {
-                query,
-                phraseSearch: false,
-                caseSensitive: false,
-                highlightAll: true,
-                findPrevious: false
-            };
-
-            const findHandler = await state.finder!.exec(opts);
-
-            setState({...state, findHandler});
-
-        };
-
-        doHandle().catch(err => log.error(err));
 
     }
 
@@ -290,17 +254,13 @@ export const DocViewer = React.memo((props: IProps) => {
                  minHeight: 0
              }}>
 
-            <PDFToolbar pdfDocMeta={state.pdfDocMeta}
+            <DocToolbar pdfDocMeta={state.pdfDocMeta}
                         onScale={scale => onScale(scale)}
                         onFullScreen={NULL_FUNCTION}
                         onPageNext={() => onPageNext()}
                         onPagePrev={() => onPagePrev()}
                         onPageJump={page => onPageJump(page)}
                         onFind={() => onFind()}/>
-
-            <FindToolbar active={state.findActive}
-                         onCancel={() => onFindCancel()}
-                         onExecute={query => onFindExecute(query)}/>
 
             <div style={{
                      display: 'flex',
@@ -327,6 +287,7 @@ export const DocViewer = React.memo((props: IProps) => {
                                 }}>
 
                                 <PagemarkProgressBar/>
+                                <DocFindBar/>
 
                                 <div style={{
                                         minHeight: 0,
@@ -338,7 +299,7 @@ export const DocViewer = React.memo((props: IProps) => {
                                     <ViewerContainer/>
 
                                     <PDFDocument
-                                        onFinder={finder => onFinder(finder)}
+                                        onFinder={setFinder}
                                         target="viewerContainer"
                                         onResizer={resizer => onResizer(resizer)}
                                         onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}

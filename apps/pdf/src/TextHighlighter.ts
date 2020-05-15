@@ -27,18 +27,25 @@ export namespace TextHighlighter {
 
     export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
 
-        const {selection, highlightColor, docMeta, pageNum} = opts;
+        const {highlightColor, docMeta, pageNum} = opts;
+
+        const selection = window.getSelection()!;
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
+        // FIXME this is what's broken because we're not computing relative
+        // to the page element
         const selectedContent = SelectedContents.computeFromSelection(selection);
 
         const rectTexts = selectedContent.rectTexts;
+
+        // FIXME boundingPageRect is NOT relative to the PAGE but the viewport
+
         const rects = rectTexts.map(current => current.boundingPageRect);
 
-        const text = selectedContent.text;
-
         const textSelections = TextSelections.compute(selectedContent);
+
+        const text = selectedContent.text;
 
         const textHighlightRecord = TextHighlightRecords.create(rects,
                                                                 textSelections,
