@@ -25,8 +25,8 @@ import {DocFindButton} from "./DocFindButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 
-// configure({logLevel: 'debug'});
 
+// FIXME: move this its own component
 const globalKeyMap = {
     PAGE_NEXT: ['n', 'j'],
     PAGE_PREV: ['p', 'k']

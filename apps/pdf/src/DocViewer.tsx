@@ -46,6 +46,7 @@ import {
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 import { DocFindBar } from "./DocFindBar";
+import {DocRepoKeyBindings} from "./DocFindKeyBindings";
 
 const log = Logger.create();
 
@@ -61,10 +62,6 @@ interface IState {
     readonly pdfPageNavigator?: PDFPageNavigator;
     readonly scaleLeveler?: ScaleLeveler;
 }
-
-const globalKeyMap = {
-    FIND: 'command+f'
-};
 
 export const DocViewer = React.memo((props: IProps) => {
 
@@ -287,6 +284,7 @@ export const DocViewer = React.memo((props: IProps) => {
                                 }}>
 
                                 <PagemarkProgressBar/>
+                                <DocRepoKeyBindings/>
                                 <DocFindBar/>
 
                                 <div style={{
