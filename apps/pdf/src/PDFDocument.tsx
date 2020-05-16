@@ -20,7 +20,6 @@ import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {PDFScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
-import {PageContextMenus} from "./context_menus/PageContextMenus";
 
 const log = Logger.create();
 

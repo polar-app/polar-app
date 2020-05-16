@@ -1,6 +1,7 @@
 import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {
+    OnFinderCallback,
     PDFDocMeta,
     PDFDocument,
     PDFPageNavigator,
@@ -10,8 +11,7 @@ import {
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Finder, FindHandler} from "./Finders";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {FindToolbar} from "./FindToolbar";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PDFAppURLs} from "./PDFAppURLs";
@@ -44,15 +44,55 @@ import {
     ITextHighlightCreate,
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
-import { DocFindBar } from "./DocFindBar";
+import {DocFindBar} from "./DocFindBar";
 import {DocRepoKeyBindings} from "./DocFindKeyBindings";
-import { useDocFindCallbacks } from "./DocFindStore";
+import {useDocFindCallbacks} from "./DocFindStore";
+import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 
 const log = Logger.create();
 
-interface IProps {
+interface MainProps {
+    readonly onFinder: OnFinderCallback;
+    readonly onResizer: Callback1<Resizer>;
+    readonly onPDFDocMeta: (pdfDocMeta: PDFDocMeta) => void;
+    readonly onPDFPageNavigator: (pdfPageNavigator: PDFPageNavigator) => void;
+    readonly onScaleLeveler: Callback1<ScaleLeveler>;
+    readonly scaleValue: number;
 }
+
+const Main = React.memo((props: MainProps) => {
+
+    const store = useDocViewerStore();
+
+    if (! store.docURL) {
+        return null;
+    }
+
+    return (
+        <>
+            <ViewerContainer/>
+
+            <PDFDocument
+                onFinder={props.onFinder}
+                target="viewerContainer"
+                onResizer={props.onResizer}
+                onPDFDocMeta={props.onPDFDocMeta}
+                onPDFPageNavigator={props.onPDFPageNavigator}
+                onScaleLeveler={props.onScaleLeveler}
+                url={store.docURL}/>
+
+            <TextHighlightsView docMeta={store.docMeta}
+                                scaleValue={props.scaleValue}/>
+
+            <AreaHighlightsView docMeta={store.docMeta}
+                                scaleValue={props.scaleValue}/>
+
+            <PagemarksView docMeta={store.docMeta}
+                           scaleValue={props.scaleValue}/>
+
+        </>
+    )
+}, isEqual);
 
 interface IState {
     readonly finder?: Finder;
@@ -64,7 +104,10 @@ interface IState {
     readonly scaleLeveler?: ScaleLeveler;
 }
 
-export const DocViewer = React.memo((props: IProps) => {
+// const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
+
+
+export const DocViewer = React.memo(() => {
 
     const [state, setState] = React.useState<IState>({});
 
@@ -283,25 +326,13 @@ export const DocViewer = React.memo((props: IProps) => {
                                         position: 'relative'
                                      }}>
 
-                                    <ViewerContainer/>
-
-                                    <PDFDocument
-                                        onFinder={setFinder}
-                                        target="viewerContainer"
-                                        onResizer={resizer => onResizer(resizer)}
-                                        onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
-                                        onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
-                                        onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
-                                        url={store.docURL}/>
-
-                                    <TextHighlightsView docMeta={store.docMeta}
-                                                        scaleValue={state.pdfDocMeta?.scaleValue}/>
-
-                                    <AreaHighlightsView docMeta={store.docMeta}
-                                                        scaleValue={state.pdfDocMeta?.scaleValue}/>
-
-                                    <PagemarksView docMeta={store.docMeta}
-                                                   scaleValue={state.pdfDocMeta?.scaleValue}/>
+                                    <Main onFinder={setFinder}
+                                          onResizer={resizer => onResizer(resizer)}
+                                          onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
+                                          onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
+                                          onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
+                                          scaleValue={state.pdfDocMeta?.scaleValue!}
+                                          />
 
                                 </div>
 

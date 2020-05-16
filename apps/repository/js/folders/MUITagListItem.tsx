@@ -71,9 +71,6 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
 
     const drag = useDragContext();
 
-    // FIXME: the checkbox is painfully slow... a basic <input type=checkbox is
-    // way faster... maybe try a fontawesome icon
-
     const onCheckbox = useCallback((event: React.MouseEvent) => {
         props.selectRow(props.nodeId, event, 'checkbox');
         event.stopPropagation();
