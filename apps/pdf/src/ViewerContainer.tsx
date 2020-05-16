@@ -1,5 +1,6 @@
 import * as React from "react";
 import {useContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {Elements} from "../../../web/js/util/Elements";
 
 let iter: number = 0;
 
@@ -9,9 +10,22 @@ export const ViewerContainer = () => {
 
     const contextMenu = useContextMenu();
 
+    const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+
+        const pageElement = Elements.untilRoot(event.target as HTMLElement, ".page");
+
+        if (! pageElement) {
+            console.warn("Not found within .page element");
+            return;
+        }
+
+        contextMenu.onContextMenu(event);
+
+    }, []);
+
     return (
 
-        <main {...contextMenu}
+        <main onContextMenu={onContextMenu}
               id="viewerContainer"
               style={{
                   position: 'absolute',
