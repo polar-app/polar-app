@@ -131,18 +131,6 @@ export const DocViewer = React.memo((props: IProps) => {
 
     }
 
-    function onFindCancel() {
-
-        state.findHandler?.cancel();
-
-        setState({
-                          ...state,
-                          findActive: false,
-                          findHandler: undefined
-                      });
-
-    }
-
     function onDockLayoutResize() {
         if (state.resizer) {
             state.resizer();

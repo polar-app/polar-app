@@ -6,7 +6,11 @@ import {
     PDFRenderingQueue,
     PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
-import PDFJS, {DocumentInitParameters, PDFViewerOptions, PDFDocumentProxy} from "pdfjs-dist";
+import PDFJS, {
+    DocumentInitParameters,
+    PDFDocumentProxy,
+    PDFViewerOptions
+} from "pdfjs-dist";
 import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
@@ -204,7 +208,7 @@ export class PDFDocument extends React.Component<IProps, IState> {
         this.props.onFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
-            PageContextMenus.start();
+            // PageContextMenus.start();
         });
 
         const resizeDebouncer = Debouncers.create(() => this.resize());
