@@ -16,7 +16,7 @@ interface IProps {
     readonly icon?: JSX.Element;
     readonly text: string;
 
-    readonly onClick?: () => void;
+    readonly onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
     /**
      * Load the given URL rather than handling the click handler
@@ -30,36 +30,39 @@ interface IProps {
 
 }
 
-const onClick = (props: IProps) => {
 
-    if (props.onClick) {
-        props.onClick();
-    } else if (props.link) {
-        Nav.openLinkWithNewTab(props.link)
-    }
+export const MUIMenuItem = React.forwardRef((props: IProps, ref) => {
 
-    if (props.event) {
-        if (typeof props.event === 'string') {
-            Analytics.event2(props.event);
-        } else {
-            Analytics.event2(props.event.name, props.event.data);
+    const onClick = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+
+        if (props.onClick) {
+            props.onClick(event);
+        } else if (props.link) {
+            Nav.openLinkWithNewTab(props.link)
         }
-    }
 
-};
+        if (props.event) {
+            if (typeof props.event === 'string') {
+                Analytics.event2(props.event);
+            } else {
+                Analytics.event2(props.event.name, props.event.data);
+            }
+        }
 
-export const MUIMenuItem = React.forwardRef((props: IProps, ref) => (
+    }, []);
 
-    <MenuItem id={props.id}
-              onClick={() => onClick(props)}>
+    return (
+        <MenuItem id={props.id}
+                  onClick={onClick}>
 
-        {props.icon &&
-            <ListItemIcon>
-                {props.icon}
-            </ListItemIcon>}
+            {props.icon &&
+                <ListItemIcon>
+                    {props.icon}
+                </ListItemIcon>}
 
-        <ListItemText primary={props.text} />
+            <ListItemText primary={props.text} />
 
-    </MenuItem>
+        </MenuItem>
+    );
 
-));
+});

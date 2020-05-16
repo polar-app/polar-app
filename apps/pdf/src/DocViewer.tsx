@@ -48,7 +48,11 @@ import {DocFindBar} from "./DocFindBar";
 import {DocRepoKeyBindings} from "./DocFindKeyBindings";
 import {useDocFindCallbacks} from "./DocFindStore";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
-import {DocViewerMenu} from "./DocViewerMenu";
+import {
+    computeDocViewerContextMenuOrigin,
+    DocViewerMenu,
+    IDocViewerContextMenuOrigin
+} from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 const log = Logger.create();
@@ -106,7 +110,7 @@ interface IState {
     readonly scaleLeveler?: ScaleLeveler;
 }
 
-const DocViewerContextMenu = createContextMenu(DocViewerMenu);
+const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
 export const DocViewer = React.memo(() => {
 

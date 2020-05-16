@@ -17,6 +17,9 @@ import {
     IAnnotationMutationCallbacks
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Percentages} from "polar-shared/src/util/Percentages";
+import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export interface IDocViewerStore {
 
@@ -32,10 +35,26 @@ export interface IDocViewerStore {
 
 }
 
+export interface CreatePagemarkToPointOpts {
+
+
+    // where to create the pagemark
+    readonly x: number;
+    readonly y: number;
+
+    // the width and height of the current page.
+    readonly width: number;
+    readonly height: number;
+
+    // the page number of the current page.
+    readonly pageNum: number;
+}
+
 export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
+    createPagemarkToPoint(opts: CreatePagemarkToPointOpts): void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -120,16 +139,73 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
 
+
     function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
         // this is almost always just ONE item at a time so any type of
         // bulk performance updates are pointless
         docMetas.map(setDocMeta);
     }
 
+    interface CreatePagemarkToPointOpts {
+
+
+        // where to create the pagemark
+        readonly x: number;
+        readonly y: number;
+
+        // the width and height of the current page.
+        readonly width: number;
+        readonly height: number;
+
+        // the page number of the current page.
+        readonly pageNum: number;
+    }
+
+    function createPagemarkToPoint(opts: CreatePagemarkToPointOpts) {
+
+        const store = storeProvider();
+        const {docMeta} = store;
+
+        if (! docMeta) {
+            return;
+        }
+
+        const {pageNum} = opts;
+
+        const verticalOffsetWithinPageElement = opts.y;
+
+        const pageHeight = opts.height;
+
+        const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
+                                                 pageHeight,
+                                                 {noRound: true});
+
+        console.log("percentage for pagemark: ", percentage);
+
+        function erasePagemark(pageNum: number) {
+
+            Preconditions.assertNumber(pageNum, "pageNum");
+
+            Pagemarks.deletePagemark(docMeta!, pageNum);
+
+        }
+
+        function createPagemarksForRange(endPageNum: number, percentage: number) {
+            Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage);
+        }
+
+        erasePagemark(pageNum);
+        createPagemarksForRange(pageNum, percentage);
+
+        // FIXME: this isn't writing it to storage
+        updateStore([docMeta]);
+
+    }
 
     return {
         setDocMeta,
         annotationMutations,
+        createPagemarkToPoint
     };
 
 }

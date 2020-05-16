@@ -16,40 +16,95 @@ interface IChildComponentProps {
     readonly children: JSX.Element;
 }
 
-export function createContextMenu(MenuComponent: () => JSX.Element): (props: IChildComponentProps) => JSX.Element {
+/**
+ * Interface describing where the original context menu was created.
+ */
+export interface IEventOrigin {
+
+    readonly pageX: number;
+    readonly pageY: number;
+
+    readonly clientX: number;
+    readonly clientY: number;
+
+    readonly offsetX: number;
+    readonly offsetY: number;
+
+}
+
+export interface MenuComponentProps<O> {
+    readonly origin: O | undefined;
+}
+
+
+
+export function computeEventOrigin(event: React.MouseEvent<HTMLElement>): IEventOrigin {
+
+    const origin: IEventOrigin = {
+        pageX: event.pageX,
+        pageY: event.pageY,
+
+        clientX: event.clientX,
+        clientY: event.clientY,
+
+        offsetX: (event as any).offsetX,
+        offsetY: (event as any).offsetY,
+    }
+
+    return origin;
+
+}
+
+interface CreateContextMenuOpts<O> {
+
+    /**
+     * Create a new origin object that's custom that we can use
+     */
+    readonly computeOrigin?: (event: React.MouseEvent<HTMLElement>) => O | undefined;
+
+}
+
+
+export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element,
+                                     opts: CreateContextMenuOpts<O> = {}): (props: IChildComponentProps) => JSX.Element {
 
     return (props: IChildComponentProps): JSX.Element => {
 
-        interface IMousePosition {
+        interface IContextMenuActive {
             readonly mouseX: number;
             readonly mouseY: number;
+
+            readonly origin: O | undefined;
         }
 
-        const [mousePosition, setMousePosition] = useState<IMousePosition | undefined>(undefined);
+        const [active, setActive] = useState<IContextMenuActive | undefined>(undefined);
 
-        const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>): void => {
+        const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
             event.stopPropagation();
             event.preventDefault();
 
-            const newMousePosition = {
+            const origin = opts.computeOrigin ?  opts.computeOrigin(event) : undefined;
+
+            const newActive = {
                 mouseX: event.clientX - 2,
                 mouseY: event.clientY - 4,
+                origin
             };
 
-            setMousePosition(newMousePosition);
+            setActive(newActive);
 
         }, []);
 
         const handleClose = React.useCallback(() => {
-            setMousePosition(undefined);
+            setActive(undefined);
         }, [])
 
         return (
             <ContextMenuContext.Provider value={{onContextMenu}}>
-                {mousePosition &&
-                    <MUIContextMenu {...mousePosition}
+                {active &&
+                    <MUIContextMenu {...active}
                                     handleClose={handleClose}>
-                        <MenuComponent/>
+                        <MenuComponent origin={active.origin}/>
                     </MUIContextMenu>}
 
                 {props.children}
