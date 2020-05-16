@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import {
+    ASYNC_NULL_FUNCTION,
     Callback,
     Callback1,
     Functions,
@@ -114,6 +115,8 @@ export interface ITaggedMutation extends IAnnotationMutationSelected {
 
 export interface IAnnotationMutationCallbacks {
 
+    writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>): Promise<void>;
+
     /**
      * Create a specific callback as a react callback that can be used with a
      * fixed set of selected items.
@@ -149,8 +152,7 @@ export interface IAnnotationMutationCallbacks {
 
 const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallbacks>({
 
-    // FIXME I just need to inject this code into the doc viewer and we're done
-    //
+    writeUpdatedDocMetas: ASYNC_NULL_FUNCTION,
 
     createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
@@ -330,7 +332,7 @@ export namespace AnnotationMutationCallbacks {
                                                                          pageMeta: IPageMeta,
                                                                          mutation: T) => void;
 
-        async function handleUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
+        async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
 
             updateStore(updatedDocMetas);
 
@@ -379,7 +381,7 @@ export namespace AnnotationMutationCallbacks {
             const updatedDocMetas = Object.values(partitions)
                                           .map(current => current.key);
 
-            await handleUpdatedDocMetas(updatedDocMetas);
+            await writeUpdatedDocMetas(updatedDocMetas);
 
         }
 
@@ -488,7 +490,7 @@ export namespace AnnotationMutationCallbacks {
                     // FIXME: all these catch() functions need to be handled
                     // with a dialog error.
 
-                    handleUpdatedDocMetas([docMeta])
+                    writeUpdatedDocMetas([docMeta])
                         .catch(err => log.error(err));
 
                     break;
@@ -545,6 +547,7 @@ export namespace AnnotationMutationCallbacks {
         }
 
         return {
+            writeUpdatedDocMetas,
             createDeletedCallback,
             onDeleted,
             onTextHighlight,

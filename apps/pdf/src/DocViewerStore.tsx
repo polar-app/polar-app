@@ -20,6 +20,9 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Logger} from "polar-shared/src/logger/Logger";
+
+const log = Logger.create();
 
 export interface IDocViewerStore {
 
@@ -98,6 +101,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }, []);
 
+    async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
+        return annotationMutations.writeUpdatedDocMetas(updatedDocMetas);
+    }
+
     function setDocMeta(docMeta: IDocMeta) {
 
         function doExec() {
@@ -138,7 +145,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
-
 
     function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
         // this is almost always just ONE item at a time so any type of
@@ -198,7 +204,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         createPagemarksForRange(pageNum, percentage);
 
         // FIXME: this isn't writing it to storage
-        updateStore([docMeta]);
+        writeUpdatedDocMetas([docMeta])
+            .catch(err => log.error(err));
 
     }
 
