@@ -373,7 +373,7 @@ function useAnnotationBar() {
     store.current = useDocViewerStore();
     textHighlightCallback.current = useCreateTextHighlightCallback();
 
-    React.useEffect(() => {
+    React.useMemo(() => {
 
         const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
         const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
@@ -408,7 +408,7 @@ function useAnnotationBar() {
 
         ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
 
-    });
+    }, []);
 
 }
 

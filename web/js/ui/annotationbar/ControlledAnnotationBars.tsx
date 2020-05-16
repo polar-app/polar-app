@@ -141,8 +141,10 @@ export class ControlledAnnotationBars {
 
         };
 
-        // now handle all our targets (including iframes if necessary)
-        computeTargets().forEach(target => handleTarget(target));
+        const targets = computeTargets();
+        for (const target of targets) {
+            handleTarget(target);
+        }
 
     }
 
@@ -211,6 +213,7 @@ export class ControlledAnnotationBars {
         const position = this.computePosition(pageElement, point, offset);
 
         const annotationBar = document.createElement('div');
+        annotationBar.setAttribute("class", 'polar-annotation-bar');
 
         annotationBar.addEventListener('mouseup', (event) => event.stopPropagation());
         annotationBar.addEventListener('mousedown', (event) => event.stopPropagation());
