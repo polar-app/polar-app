@@ -38,8 +38,9 @@ export interface IDocViewerStore {
 
 }
 
-export interface CreatePagemarkToPointOpts {
+interface IPagemarkCreate {
 
+    readonly type: 'create';
 
     // where to create the pagemark
     readonly x: number;
@@ -53,11 +54,14 @@ export interface CreatePagemarkToPointOpts {
     readonly pageNum: number;
 }
 
+type IPagemarkMutation = IPagemarkCreate;
+
 export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
-    createPagemarkToPoint(opts: CreatePagemarkToPointOpts): void;
+
+    onPagemark(opts: IPagemarkCreate): void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -152,22 +156,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         docMetas.map(setDocMeta);
     }
 
-    interface CreatePagemarkToPointOpts {
-
-
-        // where to create the pagemark
-        readonly x: number;
-        readonly y: number;
-
-        // the width and height of the current page.
-        readonly width: number;
-        readonly height: number;
-
-        // the page number of the current page.
-        readonly pageNum: number;
-    }
-
-    function createPagemarkToPoint(opts: CreatePagemarkToPointOpts) {
+    function createPagemarkToPoint(opts: IPagemarkCreate) {
 
         const store = storeProvider();
         const {docMeta} = store;
@@ -212,7 +201,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     return {
         setDocMeta,
         annotationMutations,
-        createPagemarkToPoint
+        onPagemark: createPagemarkToPoint
     };
 
 }

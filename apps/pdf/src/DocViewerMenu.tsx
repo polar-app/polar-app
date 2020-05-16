@@ -44,7 +44,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const onCreatePagemarkToPoint = React.useCallback(() => {
 
         if (props.origin) {
-            callbacks.createPagemarkToPoint(props.origin);
+
+            callbacks.onPagemark({
+                type: 'create',
+                ...props.origin,
+            });
+
         }
 
     }, []);
