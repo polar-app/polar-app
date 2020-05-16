@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 let iter: number = 0;
 
@@ -6,9 +7,12 @@ export const ViewerContainer = () => {
 
     ++iter;
 
+    const contextMenu = useContextMenu();
+
     return (
 
-        <main id="viewerContainer"
+        <main {...contextMenu}
+              id="viewerContainer"
               style={{
                   position: 'absolute',
                   overflow: 'auto',

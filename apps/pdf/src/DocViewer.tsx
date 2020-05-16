@@ -48,6 +48,8 @@ import {DocFindBar} from "./DocFindBar";
 import {DocRepoKeyBindings} from "./DocFindKeyBindings";
 import {useDocFindCallbacks} from "./DocFindStore";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
+import {DocViewerMenu} from "./DocViewerMenu";
+import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 const log = Logger.create();
 
@@ -104,8 +106,7 @@ interface IState {
     readonly scaleLeveler?: ScaleLeveler;
 }
 
-// const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
-
+const DocViewerContextMenu = createContextMenu(DocViewerMenu);
 
 export const DocViewer = React.memo(() => {
 
@@ -326,14 +327,15 @@ export const DocViewer = React.memo(() => {
                                         position: 'relative'
                                      }}>
 
-                                    <Main onFinder={setFinder}
-                                          onResizer={resizer => onResizer(resizer)}
-                                          onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
-                                          onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
-                                          onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
-                                          scaleValue={state.pdfDocMeta?.scaleValue!}
-                                          />
-
+                                    <DocViewerContextMenu>
+                                        <Main onFinder={setFinder}
+                                              onResizer={resizer => onResizer(resizer)}
+                                              onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
+                                              onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
+                                              onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
+                                              scaleValue={state.pdfDocMeta?.scaleValue!}
+                                              />
+                                    </DocViewerContextMenu>
                                 </div>
 
                             </div>
