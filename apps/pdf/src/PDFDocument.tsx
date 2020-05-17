@@ -108,15 +108,12 @@ interface LoadedDoc {
 
 export type OnFinderCallback = Callback1<Finder>;
 
-export type Resizer = () => void;
-
 export type ScaleLeveler = Callback1<PDFScaleLevelTuple>;
 
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
-    readonly onResizer: Callback1<Resizer>;
     readonly onScaleLeveler: Callback1<ScaleLeveler>;
 }
 
@@ -133,7 +130,7 @@ export const PDFDocument = (props: IProps) => {
 
     const [state, setState] = React.useState<IState>({});
 
-    const {setDocDescriptor, setPageNavigator} = useDocViewerCallbacks();
+    const {setDocDescriptor, setPageNavigator, setResizer} = useDocViewerCallbacks();
 
     useComponentDidMount(() => {
 
@@ -206,7 +203,7 @@ export const PDFDocument = (props: IProps) => {
         document.getElementById("viewerContainer")!
             .addEventListener("resize", resizeDebouncer);
 
-        (props.onResizer || NULL_FUNCTION)(resizeDebouncer);
+        setResizer(resizeDebouncer);
 
         // do first resize async
         setTimeout(() => resize(), 1 );

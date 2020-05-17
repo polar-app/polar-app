@@ -1,15 +1,9 @@
 import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {
-    OnFinderCallback,
-    PDFDocument,
-    PDFPageNavigator,
-    Resizer,
-    ScaleLeveler
-} from "./PDFDocument";
+import {OnFinderCallback, PDFDocument, ScaleLeveler} from "./PDFDocument";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
-import {Finder, FindHandler} from "./Finders";
+import {Finder} from "./Finders";
 import {Callback1} from "polar-shared/src/util/Functions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
@@ -58,7 +52,6 @@ const log = Logger.create();
 
 interface MainProps {
     readonly onFinder: OnFinderCallback;
-    readonly onResizer: Callback1<Resizer>;
     readonly onScaleLeveler: Callback1<ScaleLeveler>;
 }
 
@@ -77,7 +70,6 @@ const Main = React.memo((props: MainProps) => {
             <PDFDocument
                 onFinder={props.onFinder}
                 target="viewerContainer"
-                onResizer={props.onResizer}
                 onScaleLeveler={props.onScaleLeveler}
                 url={docURL}/>
 
@@ -96,7 +88,6 @@ const Main = React.memo((props: MainProps) => {
 
 interface IState {
     readonly finder?: Finder;
-    readonly resizer?: Resizer;
     readonly scaleLeveler?: ScaleLeveler;
 }
 
@@ -107,7 +98,7 @@ export const DocViewer = React.memo(() => {
     const [state, setState] = React.useState<IState>({});
 
     const {setPageNavigator, setDocMeta} = useDocViewerCallbacks();
-    const store = useDocViewerStore();
+    const {resizer, docURL, docMeta} = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
 
     const {setFinder} = useDocFindCallbacks();
@@ -161,16 +152,11 @@ export const DocViewer = React.memo(() => {
     });
 
     function onDockLayoutResize() {
-        if (state.resizer) {
-            state.resizer();
-        }
-    }
+        console.log("FIXME: dock resized");
 
-    function onResizer(resizer: () => void) {
-        setState({
-                          ...state,
-                          resizer
-                      })
+        if (resizer) {
+            resizer();
+        }
     }
 
     function onScaleLeveler(scaleLeveler: ScaleLeveler) {
@@ -189,7 +175,7 @@ export const DocViewer = React.memo(() => {
     //     FIND: () => onFind()
     // };
 
-    if (! store.docURL) {
+    if (! docURL) {
         return <LoadingProgress/>
     }
 
@@ -241,7 +227,6 @@ export const DocViewer = React.memo(() => {
 
                                     <DocViewerContextMenu>
                                         <Main onFinder={setFinder}
-                                              onResizer={resizer => onResizer(resizer)}
                                               onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
                                               />
                                     </DocViewerContextMenu>
@@ -260,7 +245,7 @@ export const DocViewer = React.memo(() => {
                         },
                         component:
                             <>
-                            {store.docMeta &&
+                            {docMeta &&
                                 <AnnotationSidebar2 />}
                             </>,
                         width: 300,

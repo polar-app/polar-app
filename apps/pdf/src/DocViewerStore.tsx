@@ -41,6 +41,8 @@ export interface IDocDescriptor {
     readonly fingerprint: IDStr;
 }
 
+export type Resizer = () => void;
+
 export interface IDocViewerStore {
 
     /**
@@ -61,6 +63,11 @@ export interface IDocViewerStore {
     readonly docURL?: URLStr;
 
     readonly pageNavigator?: PDFPageNavigator;
+
+    /**
+     * Resizer that forces the current doc to fit inside its container properly
+     */
+    readonly resizer?: Resizer;
 
 }
 
@@ -93,6 +100,7 @@ export interface IDocViewerCallbacks {
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly setDocDescriptor: (docDescriptor: IDocDescriptor) => void;
     readonly setDocLoaded: (docLoaded: false) => void;
+    readonly setResizer: (resizer: Resizer) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
 
@@ -197,6 +205,12 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         const store = storeProvider();
         setStore({...store, docLoaded});
     }
+
+    function setResizer(resizer: Resizer) {
+        const store = storeProvider();
+        setStore({...store, resizer});
+    }
+
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
 
@@ -331,6 +345,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         onPageJump,
         onPagePrev,
         onPageNext,
+        setResizer,
     };
 
 }
