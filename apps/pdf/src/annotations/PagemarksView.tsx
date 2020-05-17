@@ -2,6 +2,7 @@ import * as React from "react";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
 import {PagemarkRenderer} from "./PagemarkRenderer";
+import {PagemarkRenderer2} from "./PagemarkRenderer2";
 
 interface IProps {
     readonly docMeta: IDocMeta | undefined;
@@ -23,7 +24,7 @@ export class PagemarksView extends React.Component<IProps> {
                                                         pageMeta => Object.values(pageMeta.pagemarks || {}));
 
         return pageAnnotations.map(current =>
-            <PagemarkRenderer
+            <PagemarkRenderer2
                 key={current.annotation.id}
                 page={current.page}
                 scaleValue={scaleValue}
