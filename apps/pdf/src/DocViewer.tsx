@@ -96,8 +96,6 @@ const Main = React.memo((props: MainProps) => {
 
 interface IState {
     readonly finder?: Finder;
-    readonly findActive?: boolean;
-    readonly findHandler?: FindHandler;
     readonly resizer?: Resizer;
     readonly scaleLeveler?: ScaleLeveler;
 }
@@ -162,15 +160,6 @@ export const DocViewer = React.memo(() => {
 
     });
 
-    function onFind() {
-
-        setState({
-                          ...state,
-                          findActive: true
-                      })
-
-    }
-
     function onDockLayoutResize() {
         if (state.resizer) {
             state.resizer();
@@ -213,8 +202,7 @@ export const DocViewer = React.memo(() => {
                  minHeight: 0
              }}>
 
-            <DocToolbar onScale={scale => onScale(scale)}
-                        onFind={() => onFind()}/>
+            <DocToolbar onScale={scale => onScale(scale)}/>
 
             <div style={{
                      display: 'flex',

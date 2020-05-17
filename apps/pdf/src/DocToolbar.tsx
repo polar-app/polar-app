@@ -37,7 +37,6 @@ const globalKeyMap = {
 };
 
 interface IProps {
-    readonly onFind: Callback;
     readonly onScale: Callback1<PDFScaleLevelTuple>;
 
 }
@@ -343,15 +342,7 @@ export const DocToolbar = (props: IProps) => {
                         <div style={{display: 'flex'}}
                              className="ml-auto vertical-aligned-children">
 
-
-                            {/*<MUISearchBox2 onChange={text => props.onFiltered(text)}*/}
-
                             <DocFindButton/>
-
-                            {/*<IconButton onClick={() => props.onFind()}>*/}
-                            {/*    <SearchIcon/>*/}
-                            {/*</IconButton>*/}
-
                             <FullScreenButton/>
 
                         </div>
