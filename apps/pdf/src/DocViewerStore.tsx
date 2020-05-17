@@ -33,6 +33,11 @@ export interface IDocViewerStore {
     readonly docMeta?: IDocMeta;
 
     /**
+     * True when the document we're viewing assert that it has loaded.
+     */
+    readonly docLoaded: boolean;
+
+    /**
      * The storage URL for the document this docMeta references.
      */
     readonly docURL?: URLStr;
@@ -66,6 +71,7 @@ export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate;
 export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
+    readonly setDocLoaded: (docLoaded: false) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
 
     onPagemark(opts: IPagemarkMutation): void;
@@ -76,6 +82,7 @@ export interface IDocViewerCallbacks {
 }
 
 const initialStore: IDocViewerStore = {
+    docLoaded: false
 }
 
 interface Mutator {
@@ -153,6 +160,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         // update the annotation sidebar
         annotationSidebarCallbacks.setDocMeta(docMeta);
 
+    }
+
+    function setDocLoaded(docLoaded: boolean) {
+        const store = storeProvider();
+        setStore({...store, docLoaded});
     }
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
@@ -233,6 +245,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     return {
         setDocMeta,
+        setDocLoaded,
         annotationMutations,
         onPagemark
     };
