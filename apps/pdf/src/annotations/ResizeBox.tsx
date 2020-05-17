@@ -1,6 +1,8 @@
 import {Rnd} from "react-rnd";
 import * as React from "react";
 import {useState} from "react";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps {
     readonly id?: string;
@@ -11,6 +13,8 @@ interface IProps {
     readonly top: number;
     readonly width: number;
     readonly height: number;
+
+    readonly onResized?: (resizeRect: ILTRect) => void;
 
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
@@ -39,19 +43,34 @@ export function ResizeBox(props: IProps) {
         pointerEvents: 'auto'
     };
 
-    const handleOnMouseOver = () => {
+    const handleOnMouseOver = React.useCallback(() => {
         setState({
             ...state,
             active: true
         });
-    };
+    }, []);
 
-    const handleOnMouseOut = () => {
+    const handleOnMouseOut = React.useCallback(() => {
         setState({
             ...state,
             active: false
         });
-    };
+    }, []);
+
+    const handleResize = React.useCallback((state: IState) => {
+
+        const onResized = props.onResized || NULL_FUNCTION
+
+        onResized({
+            left: state.x,
+            top: state.y,
+            width: state.width,
+            height: state.height
+        });
+
+        setState(state);
+
+    }, [])
 
     // FIXME: we need to know the position of the box and we need to have
     // comment , delete , etc buttons, including the ability to change color
@@ -72,7 +91,7 @@ export function ResizeBox(props: IProps) {
                 onMouseOver={() => handleOnMouseOver()}
                 onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
-                    setState({
+                    handleResize({
                         ...state,
                         x: d.x,
                         y: d.y
@@ -87,7 +106,7 @@ export function ResizeBox(props: IProps) {
                     const width = parseInt(ref.style.width);
                     const height = parseInt(ref.style.height);
 
-                    setState({
+                    handleResize({
                         ...state,
                         width,
                         height,

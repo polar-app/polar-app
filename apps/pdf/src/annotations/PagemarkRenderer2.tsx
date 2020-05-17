@@ -23,6 +23,8 @@ import {
     createContextMenu,
     useContextMenu
 } from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
+import {IDimensions} from "polar-shared/src/util/IDimensions";
 
 interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
@@ -52,7 +54,7 @@ const createPlacementRect = (placementElement: HTMLElement) => {
 
 };
 
-const toOverlayRect = (placementRect: Rect, pagemark: Pagemark | IPagemark) => {
+function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 
     const pagemarkRect = new PagemarkRect(pagemark.rect);
 
@@ -67,7 +69,32 @@ const toOverlayRect = (placementRect: Rect, pagemark: Pagemark | IPagemark) => {
         height: overlayRect.height,
     });
 
-};
+}
+
+function computePagemarkFromResize(rect: ILTRect,
+                                   page: number,
+                                   pagemark: IPagemark) {
+
+    function computePageDimensions(page: number): IDimensions {
+        // TODO this is a bit of a hack.
+        const pageElement = document.querySelectorAll(".page")[page - 1];
+        return {
+            width: pageElement.clientWidth,
+            height: pageElement.clientHeight
+        }
+    }
+
+    const pageDimensions = computePageDimensions(page)
+
+    const annotationRect = AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(rect),
+                                                                    pageDimensions);
+
+    const pagemarkRect = new PagemarkRect(annotationRect);
+
+    const newPagemark = Object.assign({}, pagemark);
+    return newPagemark;
+
+}
 
 interface PagemarkInnerProps {
     readonly id: string;
@@ -86,9 +113,15 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
     const contextMenu = useContextMenu();
 
+    const handleResized = React.useCallback((rect: ILTRect) => {
+        const newPagemark = computePagemarkFromResize(rect, page, pagemark);
+        // console.log("FIXME: resized: ", rect, newPagemark);
+    }, []);
+
     return (
         <ResizeBox
                 {...contextMenu}
+                onResized={handleResized}
                 id={id}
                 data-type="pagemark"
                 data-doc-fingerprint={fingerprint}

@@ -5,6 +5,7 @@ import {Rect} from '../Rect';
 import {AnnotationRect} from './AnnotationRect';
 import {Line} from '../util/Line';
 import {Rects} from '../Rects';
+import {IDimensions} from "../util/IDimensions";
 const log = Logger.create();
 
 export class AnnotationRects {
@@ -65,7 +66,7 @@ export class AnnotationRects {
      * @param containerRect {Rect}
      * @return {AnnotationRect}
      */
-    static createFromPositionedRect(boxRect: Rect, containerRect: Rect): AnnotationRect {
+    static createFromPositionedRect(boxRect: Rect, containerRect: IDimensions): AnnotationRect {
 
         Preconditions.assertCondition(boxRect.width > 0, 'boxRect width');
         Preconditions.assertCondition(boxRect.height > 0, 'boxRect height');
@@ -75,8 +76,8 @@ export class AnnotationRects {
 
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
-        let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
-        let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
+        const xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
+        const yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
 
         return AnnotationRects.createFromLines(xAxis, yAxis);
 
