@@ -17,6 +17,12 @@ import {Styles} from "../../../../web/js/util/Styles";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
 import isEqual from "react-fast-compare";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
+import {
+    createContextMenu,
+    useContextMenu
+} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 
 interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
@@ -63,6 +69,53 @@ const toOverlayRect = (placementRect: Rect, pagemark: Pagemark | IPagemark) => {
 
 };
 
+interface PagemarkInnerProps {
+    readonly id: string;
+    readonly className: string;
+    readonly fingerprint: string;
+    readonly page: number;
+    readonly pagemark: IPagemark;
+    readonly overlayRect: ILTRect;
+    readonly pagemarkColor: PagemarkColors.PagemarkColor;
+
+}
+
+const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
+
+    const {id, fingerprint, pagemark, page, className, overlayRect, pagemarkColor} = props;
+
+    const contextMenu = useContextMenu();
+
+    return (
+        <ResizeBox
+                {...contextMenu}
+                id={id}
+                data-type="pagemark"
+                data-doc-fingerprint={fingerprint}
+                data-pagemark-id={pagemark.id}
+                data-annotation-id={pagemark.id}
+                data-page-num={page}
+                // annotation descriptor metadata - might not be needed
+                // anymore
+                data-annotation-type="pagemark"
+                data-annotation-page-num={page}
+                data-annotation-doc-fingerprint={fingerprint}
+                className={className}
+                left={overlayRect.left}
+                top={overlayRect.top}
+                width={overlayRect.width}
+                height={overlayRect.height}
+                style={{
+                    position: 'absolute',
+                    ...pagemarkColor,
+                    mixBlendMode: 'multiply',
+                    zIndex: 9
+                }}/>
+    );
+}, isEqual);
+
+export const ContextMenu = createContextMenu(PagemarkMenu);
+
 export const PagemarkRenderer2 = React.memo((props: IProps) => {
 
     const {pagemark, scaleValue, fingerprint, page} = props;
@@ -97,29 +150,17 @@ export const PagemarkRenderer2 = React.memo((props: IProps) => {
         const pagemarkColor = PagemarkColors.toPagemarkColor(pagemark);
 
         return ReactDOM.createPortal(
-            <ResizeBox
-                id={id}
-                data-type="pagemark"
-                data-doc-fingerprint={fingerprint}
-                data-pagemark-id={pagemark.id}
-                data-annotation-id={pagemark.id}
-                data-page-num={page}
-                // annotation descriptor metadata - might not be needed
-                // anymore
-                data-annotation-type="pagemark"
-                data-annotation-page-num={page}
-                data-annotation-doc-fingerprint={fingerprint}
-                className={className}
-                left={overlayRect.left}
-                top={overlayRect.top}
-                width={overlayRect.width}
-                height={overlayRect.height}
-                style={{
-                    position: 'absolute',
-                    ...pagemarkColor,
-                    mixBlendMode: 'multiply',
-                    zIndex: 9
-                }}/>,
+            <PagemarkValueContext.Provider value={pagemark}>
+                <ContextMenu>
+                    <PagemarkInner id={id}
+                                   className={className}
+                                   fingerprint={fingerprint}
+                                   page={page}
+                                   pagemark={pagemark}
+                                   overlayRect={overlayRect}
+                                   pagemarkColor={pagemarkColor}/>
+                </ContextMenu>
+            </PagemarkValueContext.Provider>,
             container);
     };
 

@@ -64,7 +64,6 @@ interface CreateContextMenuOpts<O> {
 
 }
 
-
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element,
                                      opts: CreateContextMenuOpts<O> = {}): (props: IChildComponentProps) => JSX.Element {
 

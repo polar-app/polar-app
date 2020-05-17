@@ -11,6 +11,9 @@ interface IProps {
     readonly top: number;
     readonly width: number;
     readonly height: number;
+
+    readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+
 }
 
 interface IState {
@@ -106,7 +109,13 @@ export function ResizeBox(props: IProps) {
                     ...props.style,
                     pointerEvents: 'none',
                 }}>
+                {/*<div onContextMenu={props.onContextMenu}*/}
+                {/*     style={{*/}
+                {/*         width: state.width,*/}
+                {/*         height: state.height*/}
+                {/*     }}>*/}
 
+                {/*</div>*/}
             </Rnd>
         </>
     );
