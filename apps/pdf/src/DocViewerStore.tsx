@@ -5,7 +5,7 @@ import {
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {DocMetaFileRefs} from "../../../web/js/datastore/DocMetaRef";
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
@@ -23,8 +23,23 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {PDFPageNavigator} from "./PDFDocument";
+import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 
 const log = Logger.create();
+/**
+ * Lightweight metadata describing the currently loaded document.
+ */
+export interface IDocDescriptor {
+    readonly scale: PDFScaleLevelTuple;
+
+    /**
+     * The applied scale value derived from a string like 'page-width' but
+     * actually computed as something like 1.2
+     */
+    readonly scaleValue: number;
+    readonly nrPages: number;
+    readonly fingerprint: IDStr;
+}
 
 export interface IDocViewerStore {
 
@@ -37,6 +52,8 @@ export interface IDocViewerStore {
      * True when the document we're viewing assert that it has loaded.
      */
     readonly docLoaded: boolean;
+
+    readonly docDescriptor?: IDocDescriptor;
 
     /**
      * The storage URL for the document this docMeta references.
@@ -74,12 +91,16 @@ export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate;
 export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
+    readonly setDocDescriptor: (docDescriptor: IDocDescriptor) => void;
     readonly setDocLoaded: (docLoaded: false) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
     setPageNavigator(pageNavigator: PDFPageNavigator): void;
+
+    onPagePrev(): void;
+    onPageNext(): void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -165,6 +186,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         // update the annotation sidebar
         annotationSidebarCallbacks.setDocMeta(docMeta);
 
+    }
+
+    function setDocDescriptor(docDescriptor: IDocDescriptor) {
+        const store = storeProvider();
+        setStore({...store, docDescriptor});
     }
 
     function setDocLoaded(docLoaded: boolean) {
@@ -263,13 +289,48 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
+    function doPageNav(delta: number) {
+
+        const {pageNavigator, docDescriptor} = storeProvider();
+
+        if (! pageNavigator|| ! docDescriptor) {
+            return;
+        }
+
+        const page = pageNavigator.get() + delta;
+
+        if (page <= 0) {
+            // invalid page as we requested to jump too low
+            return;
+        }
+
+        if (page > docDescriptor.nrPages) {
+            // went past the end.
+            return;
+        }
+
+        pageNavigator.set(page);
+
+    }
+
+    function onPageNext() {
+        doPageNav(1);
+    }
+
+    function onPagePrev() {
+        doPageNav(-1);
+    }
+
     return {
         setDocMeta,
+        setDocDescriptor,
         setDocLoaded,
         setPageNavigator,
         annotationMutations,
         onPagemark,
         onPageJump,
+        onPagePrev,
+        onPageNext,
     };
 
 }

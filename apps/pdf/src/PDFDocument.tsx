@@ -21,6 +21,7 @@ import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {PDFScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
+import {IDocDescriptor, useDocViewerCallbacks} from "./DocViewerStore";
 
 const log = Logger.create();
 
@@ -117,8 +118,6 @@ interface IProps {
     readonly onFinder: OnFinderCallback;
     readonly onResizer: Callback1<Resizer>;
     readonly onScaleLeveler: Callback1<ScaleLeveler>;
-    readonly onPDFDocMeta: (pdfDocMeta: PDFDocMeta) => void;
-    readonly onPDFPageNavigator: (pdfPageNavigator: PDFPageNavigator) => void;
 }
 
 interface IState {
@@ -133,6 +132,8 @@ export const PDFDocument = (props: IProps) => {
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
     const [state, setState] = React.useState<IState>({});
+
+    const {setDocDescriptor, setPageNavigator} = useDocViewerCallbacks();
 
     useComponentDidMount(() => {
 
@@ -217,7 +218,7 @@ export const PDFDocument = (props: IProps) => {
 
         dispatchPDFDocMeta();
 
-        props.onPDFPageNavigator(pdfPageNavigator);
+        setPageNavigator(pdfPageNavigator);
 
         const scrollDebouncer = Debouncers.create(() => {
             dispatchPDFDocMeta();
@@ -265,15 +266,14 @@ export const PDFDocument = (props: IProps) => {
 
         if (docRef.current && docViewerRef.current) {
 
-            const pdfDocMeta: PDFDocMeta = {
+            const docDescriptor: IDocDescriptor = {
                 scale: scaleRef.current,
                 scaleValue: docViewerRef.current.viewer.currentScale,
-                currentPage: docViewerRef.current.viewer.currentPageNumber,
                 nrPages: docRef.current.numPages,
                 fingerprint: docRef.current.fingerprint
             };
 
-            props.onPDFDocMeta(pdfDocMeta);
+            setDocDescriptor(docDescriptor);
 
         }
 
@@ -288,15 +288,3 @@ export interface PDFPageNavigator {
     readonly set: (page: number) => void;
 }
 
-export interface PDFDocMeta {
-    readonly currentPage: number;
-    readonly scale: PDFScaleLevelTuple;
-
-    /**
-     * The applied scale value derived from a string like 'page-width' but
-     * actually computed as something like 1.2
-     */
-    readonly scaleValue: number;
-    readonly nrPages: number;
-    readonly fingerprint: IDStr;
-}

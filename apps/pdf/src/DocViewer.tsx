@@ -2,7 +2,6 @@ import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {
     OnFinderCallback,
-    PDFDocMeta,
     PDFDocument,
     PDFPageNavigator,
     Resizer,
@@ -11,7 +10,7 @@ import {
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Finder, FindHandler} from "./Finders";
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PDFAppURLs} from "./PDFAppURLs";
@@ -47,30 +46,27 @@ import {
 import {DocFindBar} from "./DocFindBar";
 import {DocRepoKeyBindings} from "./DocFindKeyBindings";
 import {useDocFindCallbacks} from "./DocFindStore";
-import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 import {
     computeDocViewerContextMenuOrigin,
     DocViewerMenu,
     IDocViewerContextMenuOrigin
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 
 const log = Logger.create();
 
 interface MainProps {
     readonly onFinder: OnFinderCallback;
     readonly onResizer: Callback1<Resizer>;
-    readonly onPDFDocMeta: (pdfDocMeta: PDFDocMeta) => void;
-    readonly onPDFPageNavigator: (pdfPageNavigator: PDFPageNavigator) => void;
     readonly onScaleLeveler: Callback1<ScaleLeveler>;
-    readonly scaleValue: number;
 }
 
 const Main = React.memo((props: MainProps) => {
 
-    const store = useDocViewerStore();
+    const {docURL, docMeta, docDescriptor} = useDocViewerStore();
 
-    if (! store.docURL) {
+    if (! docURL) {
         return null;
     }
 
@@ -82,19 +78,17 @@ const Main = React.memo((props: MainProps) => {
                 onFinder={props.onFinder}
                 target="viewerContainer"
                 onResizer={props.onResizer}
-                onPDFDocMeta={props.onPDFDocMeta}
-                onPDFPageNavigator={props.onPDFPageNavigator}
                 onScaleLeveler={props.onScaleLeveler}
-                url={store.docURL}/>
+                url={docURL}/>
 
-            <TextHighlightsView docMeta={store.docMeta}
-                                scaleValue={props.scaleValue}/>
+            <TextHighlightsView docMeta={docMeta}
+                                scaleValue={docDescriptor?.scaleValue}/>
 
-            <AreaHighlightsView docMeta={store.docMeta}
-                                scaleValue={props.scaleValue}/>
+            <AreaHighlightsView docMeta={docMeta}
+                                scaleValue={docDescriptor?.scaleValue}/>
 
-            <PagemarksView docMeta={store.docMeta}
-                           scaleValue={props.scaleValue}/>
+            <PagemarksView docMeta={docMeta}
+                           scaleValue={docDescriptor?.scaleValue}/>
 
         </>
     )
@@ -105,8 +99,6 @@ interface IState {
     readonly findActive?: boolean;
     readonly findHandler?: FindHandler;
     readonly resizer?: Resizer;
-    readonly pdfDocMeta?: PDFDocMeta
-    readonly pdfPageNavigator?: PDFPageNavigator;
     readonly scaleLeveler?: ScaleLeveler;
 }
 
@@ -192,45 +184,6 @@ export const DocViewer = React.memo(() => {
                       })
     }
 
-    function onPDFDocMeta(pdfDocMeta: PDFDocMeta) {
-        setState({
-                          ...state,
-                          pdfDocMeta
-                      });
-    }
-
-    function doPageNav(delta: number) {
-
-        const {pdfPageNavigator, pdfDocMeta} = state;
-
-        if (! pdfPageNavigator || ! pdfDocMeta) {
-            return;
-        }
-
-        const page = pdfPageNavigator.get() + delta;
-
-        if (page <= 0) {
-            // invalid page as we requested to jump too low
-            return;
-        }
-
-        if (page > pdfDocMeta.nrPages) {
-            // went past the end.
-            return;
-        }
-
-        pdfPageNavigator.set(page);
-
-    }
-
-    function onPageNext() {
-        doPageNav(1);
-    }
-
-    function onPagePrev() {
-        doPageNav(-1);
-    }
-
     function onScaleLeveler(scaleLeveler: ScaleLeveler) {
         setState({
                           ...state,
@@ -260,11 +213,7 @@ export const DocViewer = React.memo(() => {
                  minHeight: 0
              }}>
 
-            <DocToolbar pdfDocMeta={state.pdfDocMeta}
-                        onScale={scale => onScale(scale)}
-                        onFullScreen={NULL_FUNCTION}
-                        onPageNext={() => onPageNext()}
-                        onPagePrev={() => onPagePrev()}
+            <DocToolbar onScale={scale => onScale(scale)}
                         onFind={() => onFind()}/>
 
             <div style={{
@@ -305,10 +254,7 @@ export const DocViewer = React.memo(() => {
                                     <DocViewerContextMenu>
                                         <Main onFinder={setFinder}
                                               onResizer={resizer => onResizer(resizer)}
-                                              onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
-                                              onPDFPageNavigator={setPageNavigator}
                                               onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
-                                              scaleValue={state.pdfDocMeta?.scaleValue!}
                                               />
                                     </DocViewerContextMenu>
                                 </div>

@@ -2,7 +2,6 @@ import * as React from "react";
 import {useState} from "react";
 import {Callback, Callback1} from "polar-shared/src/util/Functions";
 import {GlobalHotKeys} from "react-hotkeys";
-import {PDFDocMeta} from "./PDFDocument";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {
     PDFScaleLevel,
@@ -23,7 +22,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {DocFindButton} from "./DocFindButton";
 import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
-import {useDocViewerCallbacks} from "./DocViewerStore";
+import {
+    IDocDescriptor,
+    useDocViewerCallbacks,
+    useDocViewerStore
+} from "./DocViewerStore";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 
@@ -35,16 +38,12 @@ const globalKeyMap = {
 
 interface IProps {
     readonly onFind: Callback;
-    readonly onFullScreen: Callback;
-    readonly onPagePrev: () => void;
-    readonly onPageNext: () => void;
-    readonly pdfDocMeta: PDFDocMeta | undefined;
     readonly onScale: Callback1<PDFScaleLevelTuple>;
 
 }
 
 interface PageNumberInputProps {
-    readonly pdfDocMeta: PDFDocMeta | undefined;
+    readonly docDescriptor: IDocDescriptor | undefined;
 }
 
 interface PageNumberInputState {
@@ -101,6 +100,7 @@ const FullScreenButton = React.memo(() => {
 
 const PageNumberInput = (props: PageNumberInputProps) => {
 
+    const {pageNavigator} = useDocViewerStore();
     const {onPageJump} = useDocViewerCallbacks();
 
     // yield to the property, except if we're changing the value, then jump
@@ -123,7 +123,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
     const value = state.changing ?
         state.value :
-        numberToString(props.pdfDocMeta?.currentPage || 1);
+        numberToString(pageNavigator?.get() || 1);
 
     const resetState = () => {
         setState({
@@ -138,7 +138,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
             const page = parseInt(value);
 
-            if (page <= 0 || page > (props.pdfDocMeta?.nrPages || 0)) {
+            if (page <= 0 || page > (props.docDescriptor?.nrPages || 0)) {
                 return undefined;
             }
 
@@ -217,7 +217,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 };
 
 interface NumPagesProps {
-    readonly pdfDocMeta: PDFDocMeta;
+    readonly pdfDocMeta: IDocDescriptor;
 }
 
 const NumPages = (props: NumPagesProps) => (
@@ -228,9 +228,13 @@ const NumPages = (props: NumPagesProps) => (
 
 export const DocToolbar = (props: IProps) => {
 
+    const {docDescriptor} = useDocViewerStore();
+    const {onPagePrev, onPageNext} = useDocViewerCallbacks();
+
+    // FIXME: move to a dedicated component
     const globalKeyHandlers = {
-        PAGE_NEXT: () => props.onPageNext(),
-        PAGE_PREV: () => props.onPagePrev()
+        PAGE_NEXT: onPageNext,
+        PAGE_PREV: onPagePrev
     };
 
     const handleScaleChange = (scale: PDFScaleLevel) => {
@@ -246,7 +250,7 @@ export const DocToolbar = (props: IProps) => {
 
     const handleNextZoomLevel = (delta: number) => {
 
-        const nextScale = computeNextZoomLevel(delta, props.pdfDocMeta?.scale);
+        const nextScale = computeNextZoomLevel(delta, docDescriptor?.scale);
 
         if (nextScale) {
             props.onScale(nextScale);
@@ -275,17 +279,17 @@ export const DocToolbar = (props: IProps) => {
 
                         <MUIButtonBar>
 
-                            <IconButton onClick={() => props.onPagePrev()}>
+                            <IconButton onClick={onPagePrev}>
                                 <ArrowUpwardIcon/>
                             </IconButton>
 
-                            <IconButton onClick={() => props.onPageNext()}>
+                            <IconButton onClick={onPageNext}>
                                 <ArrowDownwardIcon/>
                             </IconButton>
 
-                            <PageNumberInput pdfDocMeta={props.pdfDocMeta}/>
+                            <PageNumberInput docDescriptor={docDescriptor}/>
 
-                            {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
+                            {docDescriptor && <NumPages pdfDocMeta={docDescriptor}/>}
 
                         </MUIButtonBar>
                     </div>
@@ -313,7 +317,7 @@ export const DocToolbar = (props: IProps) => {
                                 </IconButton>
 
                                 <FormControl variant="outlined" size="small">
-                                    <Select value={props.pdfDocMeta?.scale.value || 'page-width'}
+                                    <Select value={docDescriptor?.scale.value || 'page-width'}
                                             onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
                                         {PDFScaleLevelTuples.map(current => (
                                             <MenuItem key={current.value}
