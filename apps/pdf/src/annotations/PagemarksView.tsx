@@ -1,7 +1,6 @@
 import * as React from "react";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
-import {PagemarkRenderer} from "./PagemarkRenderer";
 import {PagemarkRenderer2} from "./PagemarkRenderer2";
 
 interface IProps {
