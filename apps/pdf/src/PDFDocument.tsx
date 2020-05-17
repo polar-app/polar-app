@@ -20,6 +20,7 @@ import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {PDFScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
+import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 
 const log = Logger.create();
 
@@ -124,39 +125,27 @@ interface IState {
     readonly loadedDoc?: LoadedDoc;
 }
 
-export class PDFDocument extends React.Component<IProps, IState> {
+// FIXME: react.memo
+export const PDFDocument = (props: IProps) => {
 
-    private docViewer: DocViewer | undefined;
+    const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
+    const scaleRef = React.useRef<PDFScaleLevelTuple>(PDFScaleLevelTuples[0]);
+    const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
-    private scale: PDFScaleLevelTuple = PDFScaleLevelTuples[0];
+    const [state, setState] = React.useState<IState>({});
 
-    private doc: PDFDocumentProxy | undefined;
+    useComponentDidMount(() => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+        docViewerRef.current = createDocViewer();
 
-        this.doLoad = this.doLoad.bind(this);
-        this.resize = this.resize.bind(this);
-        this.setScale = this.setScale.bind(this);
-        this.dispatchPDFDocMeta = this.dispatchPDFDocMeta.bind(this);
-
-        this.state = {};
-
-    }
-
-    public componentDidMount(): void {
-        this.docViewer = createDocViewer();
-
-        this.doLoad(this.docViewer)
+        doLoad(docViewerRef.current)
             .catch(err => log.error("Could not load PDF: ", err));
 
-        // FIXME: remove listeners...
+    })
 
-    }
+    const doLoad = async (docViewer: DocViewer) => {
 
-    private async doLoad(docViewer: DocViewer) {
-
-        const {url} = this.props;
+        const {url} = props;
 
         const init: DocumentInitParameters = {
             url,
@@ -185,10 +174,9 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
         };
 
-        const doc = await loadingTask.promise;
-        this.doc = doc;
+        docRef.current = await loadingTask.promise;
 
-        const page = await doc.getPage(1);
+        const page = await docRef.current.getPage(1);
         const viewport = page.getViewport({scale: 1.0});
 
         const calculateScale = (to: number, from: number) => {
@@ -198,40 +186,40 @@ export class PDFDocument extends React.Component<IProps, IState> {
 
         const scale = calculateScale(window.innerWidth, viewport.width);
 
-        docViewer.viewer.setDocument(doc);
-        docViewer.linkService.setDocument(doc, null);
+        docViewer.viewer.setDocument(docRef.current);
+        docViewer.linkService.setDocument(docRef.current, null);
 
         const finder = PDFFindControllers.createFinder(docViewer.eventBus,
                                                        docViewer.findController);
 
-        this.props.onFinder(finder);
+        props.onFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
             // PageContextMenus.start();
         });
 
-        const resizeDebouncer = Debouncers.create(() => this.resize());
+        const resizeDebouncer = Debouncers.create(() => resize());
 
         window.addEventListener('resize', () => {
             resizeDebouncer();
         });
 
-        (this.props.onResizer || NULL_FUNCTION)(resizeDebouncer);
+        (props.onResizer || NULL_FUNCTION)(resizeDebouncer);
 
         // do first resize async
-        setTimeout(() => this.resize(), 1 );
+        setTimeout(() => resize(), 1 );
 
         const pdfPageNavigator: PDFPageNavigator = {
             get: () => docViewer.viewer.currentPageNumber,
             set: (page: number) => docViewer.viewer.currentPageNumber = page
         };
 
-        this.dispatchPDFDocMeta();
+        dispatchPDFDocMeta();
 
-        this.props.onPDFPageNavigator(pdfPageNavigator);
+        props.onPDFPageNavigator(pdfPageNavigator);
 
         const scrollDebouncer = Debouncers.create(() => {
-            this.dispatchPDFDocMeta();
+            dispatchPDFDocMeta();
         });
 
         docViewer.containerElement.addEventListener('scroll', () => {
@@ -239,59 +227,58 @@ export class PDFDocument extends React.Component<IProps, IState> {
         });
 
         const scaleLeveler = (scale: PDFScaleLevelTuple) => {
-            this.setScale(scale);
+            setScale(scale);
         };
 
-        this.props.onScaleLeveler(scaleLeveler);
+        props.onScaleLeveler(scaleLeveler);
 
-        this.setState({
+        setState({
             loadedDoc: {
-                scale, doc
+                scale,
+                doc: docRef.current
             }
         });
 
     }
 
-    public resize() {
+    function resize() {
 
-        if (['page-width', 'page-fit'].includes(this.scale.value)) {
-            this.setScale(this.scale);
+        if (['page-width', 'page-fit'].includes(scaleRef.current.value)) {
+            setScale(scaleRef.current);
         }
 
     }
 
-    private setScale(scale: PDFScaleLevelTuple) {
+    function setScale(scale: PDFScaleLevelTuple) {
 
-        if (this.docViewer) {
-            this.scale = scale;
-            this.docViewer.viewer.currentScaleValue = scale.value;
+        if (docViewerRef.current) {
+            scaleRef.current = scale;
+            docViewerRef.current.viewer.currentScaleValue = scale.value;
 
-            this.dispatchPDFDocMeta();
+            dispatchPDFDocMeta();
 
         }
     }
 
-    private dispatchPDFDocMeta() {
+    function dispatchPDFDocMeta() {
 
-        if (this.doc && this.docViewer) {
+        if (docRef.current && docViewerRef.current) {
 
             const pdfDocMeta: PDFDocMeta = {
-                scale: this.scale,
-                scaleValue: this.docViewer.viewer.currentScale,
-                currentPage: this.docViewer.viewer.currentPageNumber,
-                nrPages: this.doc.numPages,
-                fingerprint: this.doc.fingerprint
+                scale: scaleRef.current,
+                scaleValue: docViewerRef.current.viewer.currentScale,
+                currentPage: docViewerRef.current.viewer.currentPageNumber,
+                nrPages: docRef.current.numPages,
+                fingerprint: docRef.current.fingerprint
             };
 
-            this.props.onPDFDocMeta(pdfDocMeta);
+            props.onPDFDocMeta(pdfDocMeta);
 
         }
 
     }
 
-    public render() {
-        return null;
-    }
+    return null;
 
 }
 
