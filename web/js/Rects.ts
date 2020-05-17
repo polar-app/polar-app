@@ -377,14 +377,11 @@ export class Rects {
 
     /**
      * Create a new rect from the given lines
-     * @param xAxis {Line}
-     * @param yAxis {Line}
-     * @return {Rect}
      */
     static createFromLines(xAxis: Line, yAxis: Line) {
 
-        Preconditions.assertNotNull(xAxis, "xAxis");
-        Preconditions.assertNotNull(yAxis, "yAxis");
+        Preconditions.assertPresent(xAxis, "xAxis");
+        Preconditions.assertPresent(yAxis, "yAxis");
         Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
         Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
 

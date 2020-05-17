@@ -48,18 +48,14 @@ export class Rect implements IRect {
 
     }
 
-    /**
-     *
-     * @return {Dimensions}
-     */
-    get dimensions(): Dimensions {
+    public get dimensions(): Dimensions {
         return new Dimensions({
             width: this.width,
             height: this.height
         });
     }
 
-    get area(): number {
+    public get area(): number {
         return this.width * this.height;
     }
 

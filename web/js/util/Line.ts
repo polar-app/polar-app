@@ -23,17 +23,6 @@ export class Line {
         // this.length = length;
     }
 
-    /**
-     * The width of the line. Not to be confused with the width of a rect.
-     *
-     * @Deprecated The dimension of a line is length. Not width. Use length()
-     * instead.
-     * @return {number}
-     */
-    get width() {
-        return this.end - this.start;
-    }
-
     get length() {
         return this.end - this.start;
     }
@@ -67,8 +56,6 @@ export class Line {
     overlaps(line: Line): boolean {
         Preconditions.assertNotNull(line, "line");
 
-        //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
-
         return this.containsPoint(line.start) || this.containsPoint(line.end);
     }
 
@@ -94,18 +81,18 @@ export class Line {
      * start origin.
      *
      */
-    multiply(scalar: number): Line {
+    public multiply(scalar: number): Line {
         return new Line(this.start * scalar, this.end * scalar, this.axis);
     }
 
     /**
      * Call Math.floor on the points in this line.
      */
-    floor(): Line {
+    public floor(): Line {
         return new Line(Math.floor(this.start), Math.floor(this.end), this.axis);
     }
 
-    toJSON() {
+    public toJSON() {
 
         return {
             axis: this.axis,
@@ -158,13 +145,13 @@ class LineBuilder {
 
     build() {
 
-        let start = notNull(this.start);
+        const start = notNull(this.start);
 
         if(! isPresent(this.end) && isPresent(this.length)) {
             this.end = start + this.length!;
         }
 
-        let end = notNull(this.end);
+        const end = notNull(this.end);
 
         return new Line(start, end);
 

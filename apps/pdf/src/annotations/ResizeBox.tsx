@@ -31,7 +31,7 @@ interface IState {
 export function ResizeBox(props: IProps) {
 
     const [state, setState] = useState<IState>({
-        active: false,
+        active: true,
         x: props.left,
         y: props.top,
         width: props.width,
@@ -43,32 +43,42 @@ export function ResizeBox(props: IProps) {
         pointerEvents: 'auto'
     };
 
-    const handleOnMouseOver = React.useCallback(() => {
+    const handleOnMouseOver = () => {
         setState({
             ...state,
             active: true
         });
-    }, []);
+    }
 
-    const handleOnMouseOut = React.useCallback(() => {
+    const handleOnMouseOut = () => {
         setState({
             ...state,
             active: false
         });
-    }, []);
+    }
 
     const handleResize = React.useCallback((state: IState) => {
 
-        const onResized = props.onResized || NULL_FUNCTION
-
-        onResized({
-            left: state.x,
-            top: state.y,
-            width: state.width,
-            height: state.height
-        });
-
+        console.log("FIXME: state: ", state);
         setState(state);
+
+        try {
+
+            // It's important to always catch exceptions here as if we don't
+            // then react-rnd breaks.
+
+            const onResized = props.onResized || NULL_FUNCTION
+
+            onResized({
+                left: state.x,
+                top: state.y,
+                width: state.width,
+                height: state.height
+            });
+
+        } catch (e) {
+            console.error(e);
+        }
 
     }, [])
 
@@ -83,13 +93,14 @@ export function ResizeBox(props: IProps) {
             {/*    <ControlBar bottom={state.y} left={state.x} width={state.width}/>}*/}
 
             <Rnd
+                bounds="parent"
                 size={{
                     width: state.width,
                     height: state.height
                 }}
                 position={{ x: state.x, y: state.y }}
-                onMouseOver={() => handleOnMouseOver()}
-                onMouseOut={() => handleOnMouseOut()}
+                // onMouseOver={() => handleOnMouseOver()}
+                // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
                     handleResize({
                         ...state,
@@ -112,6 +123,7 @@ export function ResizeBox(props: IProps) {
                         height,
                         ...position,
                     });
+
                 }}
                 disableDragging={true}
                 resizeHandleStyles={{

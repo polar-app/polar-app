@@ -16,7 +16,7 @@ export class AnnotationRects {
      */
     static createFromEvent(contextMenuLocation: ContextMenuLocation) {
 
-        let points = contextMenuLocation.points;
+        const points = contextMenuLocation.points;
 
         let elements = document.elementsFromPoint(points.client.x, points.client.y);
 
@@ -24,14 +24,14 @@ export class AnnotationRects {
 
         if (elements.length === 1) {
 
-            let pageElement = <HTMLElement>elements[0];
+            const pageElement = <HTMLElement>elements[0];
 
             log.info("Creating box on pageElement: ", pageElement);
 
             // get the point within the element itself..
-            let pageElementPoint = points.pageOffset;
+            const pageElementPoint = points.pageOffset;
 
-            let boxRect = Rects.createFromBasicRect({
+            const boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
                 top: pageElementPoint.y,
                 width: 150,
@@ -42,7 +42,7 @@ export class AnnotationRects {
 
             // get a rect for the element... we really only need the dimensions
             // though.. not the width and height.
-            let containerRect = Rects.createFromBasicRect({
+            const containerRect = Rects.createFromBasicRect({
                 left: 0,
                 top: 0,
                 width: pageElement.offsetWidth,

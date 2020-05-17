@@ -124,7 +124,7 @@ export class DragRectAdjacencyCalculator {
 
             results.push(LineAdjustment.create({
                 axis,
-                start: secondaryLine.start - primaryLine.width,
+                start: secondaryLine.start - primaryLine.length,
                 previous: primaryLine.start,
                 snapped: "BEFORE"
             }));
@@ -137,7 +137,7 @@ export class DragRectAdjacencyCalculator {
                     return false;
                 }
 
-                if ((result.start + primaryLine.width) > restrictionLine.end) {
+                if ((result.start + primaryLine.length) > restrictionLine.end) {
                     return false;
                 }
 

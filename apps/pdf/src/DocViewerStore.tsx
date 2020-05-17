@@ -21,6 +21,7 @@ import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 const log = Logger.create();
 
@@ -38,7 +39,7 @@ export interface IDocViewerStore {
 
 }
 
-interface IPagemarkCreate {
+export interface IPagemarkCreate {
 
     readonly type: 'create';
 
@@ -54,14 +55,20 @@ interface IPagemarkCreate {
     readonly pageNum: number;
 }
 
-type IPagemarkMutation = IPagemarkCreate;
+export interface IPagemarkUpdate {
+    readonly type: 'update',
+    readonly page: number;
+    readonly pagemark: IPagemark;
+}
+
+export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate;
 
 export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
 
-    onPagemark(opts: IPagemarkCreate): void;
+    onPagemark(opts: IPagemarkMutation): void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -156,52 +163,78 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         docMetas.map(setDocMeta);
     }
 
-    function createPagemarkToPoint(opts: IPagemarkCreate) {
+    function onPagemark(mutation: IPagemarkMutation) {
 
-        const store = storeProvider();
-        const {docMeta} = store;
+        function createPagemarkToPoint(opts: IPagemarkCreate) {
 
-        if (! docMeta) {
-            return;
+            const store = storeProvider();
+            const {docMeta} = store;
+
+            if (!docMeta) {
+                return;
+            }
+
+            const {pageNum} = opts;
+
+            const verticalOffsetWithinPageElement = opts.y;
+
+            const pageHeight = opts.height;
+
+            const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
+                                                     pageHeight,
+                                                     {noRound: true});
+
+            console.log("percentage for pagemark: ", percentage);
+
+            function erasePagemark(pageNum: number) {
+
+                Preconditions.assertNumber(pageNum, "pageNum");
+
+                Pagemarks.deletePagemark(docMeta!, pageNum);
+
+            }
+
+            function createPagemarksForRange(endPageNum: number, percentage: number) {
+                Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage);
+            }
+
+            erasePagemark(pageNum);
+            createPagemarksForRange(pageNum, percentage);
+
+            // FIXME: this isn't writing it to storage
+            writeUpdatedDocMetas([docMeta])
+               .catch(err => log.error(err));
         }
 
-        const {pageNum} = opts;
+        function updatePagemark(mutation: IPagemarkUpdate) {
+            const store = storeProvider();
+            const docMeta = store.docMeta!;
+            console.log("FIXME: newPagemark: ", mutation.pagemark)
+            Pagemarks.updatePagemark(docMeta, mutation.page, mutation.pagemark);
+            console.log("FIXME: docmeta after: ", docMeta);
 
-        const verticalOffsetWithinPageElement = opts.y;
-
-        const pageHeight = opts.height;
-
-        const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
-                                                 pageHeight,
-                                                 {noRound: true});
-
-        console.log("percentage for pagemark: ", percentage);
-
-        function erasePagemark(pageNum: number) {
-
-            Preconditions.assertNumber(pageNum, "pageNum");
-
-            Pagemarks.deletePagemark(docMeta!, pageNum);
-
+            setDocMeta(docMeta);
+            writeUpdatedDocMetas([docMeta])
+                .catch(err => log.error(err));
         }
 
-        function createPagemarksForRange(endPageNum: number, percentage: number) {
-            Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage);
+        switch (mutation.type) {
+
+            case "create":
+                createPagemarkToPoint(mutation);
+                break;
+            case "update":
+                updatePagemark(mutation);
+                break;
+
         }
-
-        erasePagemark(pageNum);
-        createPagemarksForRange(pageNum, percentage);
-
-        // FIXME: this isn't writing it to storage
-        writeUpdatedDocMetas([docMeta])
-            .catch(err => log.error(err));
 
     }
 
     return {
         setDocMeta,
         annotationMutations,
-        onPagemark: createPagemarkToPoint
+        onPagemark
     };
 
 }

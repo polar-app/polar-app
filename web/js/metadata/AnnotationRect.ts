@@ -3,6 +3,7 @@ import {Dimensions} from '../util/Dimensions';
 import {Interval} from '../math/Interval';
 import {Rects} from '../Rects';
 import {IAnnotationRect} from "polar-shared/src/metadata/IAnnotationRect";
+import {Percentages} from "polar-shared/src/util/Percentages";
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 
@@ -63,14 +64,24 @@ export class AnnotationRect implements IAnnotationRect {
      */
     public height: number;
 
-    constructor(obj: any) {
+    constructor(obj: IAnnotationRect) {
+
+        function round(value: number) {
+
+            // Fix rounding issues where we are > 100
+
+            if (value > 100 && value < 100.1) {
+                return 100;
+            }
+
+            return value;
+
+        }
 
         this.left = obj.left;
         this.top = obj.top;
-        this.width = obj.width;
-        this.height = obj.height;
-
-        Object.assign(this, obj);
+        this.width = round(obj.width);
+        this.height = round(obj.height);
 
         this._validate();
 
@@ -98,7 +109,8 @@ export class AnnotationRect implements IAnnotationRect {
      * Compute a percentage of the page that this rect holds.
      */
     public toPercentage(): number {
-        return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
+
+        return Percentages.calculate(Rects.createFromBasicRect(this).area, ENTIRE_PAGE.area);
     }
 
     /**

@@ -25,6 +25,7 @@ import {
 } from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {IDimensions} from "polar-shared/src/util/IDimensions";
+import { IPagemarkUpdate, useDocViewerCallbacks } from "../DocViewerStore";
 
 interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
@@ -57,7 +58,6 @@ const createPlacementRect = (placementElement: HTMLElement) => {
 function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 
     const pagemarkRect = new PagemarkRect(pagemark.rect);
-
     const overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
 
     // we have to apply the original placementRect top and left so it's
@@ -86,12 +86,20 @@ function computePagemarkFromResize(rect: ILTRect,
 
     const pageDimensions = computePageDimensions(page)
 
+    console.log("FIXME: rect: ", rect);
+    console.log("FIXME: pageDimensions: ", pageDimensions);
+
     const annotationRect = AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(rect),
                                                                     pageDimensions);
 
     const pagemarkRect = new PagemarkRect(annotationRect);
 
     const newPagemark = Object.assign({}, pagemark);
+    newPagemark.percentage = pagemarkRect.toPercentage();
+    newPagemark.rect = pagemarkRect;
+
+    console.log("FIXME: newPagemark: ", newPagemark);
+
     return newPagemark;
 
 }
@@ -113,9 +121,19 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
     const contextMenu = useContextMenu();
 
+    const callbacks = useDocViewerCallbacks();
+
     const handleResized = React.useCallback((rect: ILTRect) => {
         const newPagemark = computePagemarkFromResize(rect, page, pagemark);
-        // console.log("FIXME: resized: ", rect, newPagemark);
+
+        const mutation: IPagemarkUpdate = {
+            type: 'update',
+            page,
+            pagemark: newPagemark
+        }
+
+        callbacks.onPagemark(mutation);
+
     }, []);
 
     return (
@@ -128,12 +146,11 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                 data-pagemark-id={pagemark.id}
                 data-annotation-id={pagemark.id}
                 data-page-num={page}
-                // annotation descriptor metadata - might not be needed
-                // anymore
+                // annotation descriptor metadata - might not be needed anymore
                 data-annotation-type="pagemark"
                 data-annotation-page-num={page}
                 data-annotation-doc-fingerprint={fingerprint}
-                className={className}
+                    className={className}
                 left={overlayRect.left}
                 top={overlayRect.top}
                 width={overlayRect.width}
@@ -181,6 +198,7 @@ export const PagemarkRenderer2 = React.memo((props: IProps) => {
         const className = `pagemark annotation`;
 
         const pagemarkColor = PagemarkColors.toPagemarkColor(pagemark);
+        console.log("FIXME: pagemarkColor: ", pagemarkColor);
 
         return ReactDOM.createPortal(
             <PagemarkValueContext.Provider value={pagemark}>

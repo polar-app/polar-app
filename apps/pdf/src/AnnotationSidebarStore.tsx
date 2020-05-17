@@ -107,8 +107,6 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
                                     .map(data => AnnotationRepoFilters2.execute(data, {text: store.filter}))
                                     .collect();
 
-                console.log("FIXME3: set-data");
-
                 return {...store, data, view};
 
         }
