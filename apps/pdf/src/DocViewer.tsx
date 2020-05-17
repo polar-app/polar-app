@@ -116,7 +116,7 @@ export const DocViewer = React.memo(() => {
 
     const [state, setState] = React.useState<IState>({});
 
-    const callbacks = useDocViewerCallbacks();
+    const {setPageNavigator, setDocMeta} = useDocViewerCallbacks();
     const store = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
 
@@ -155,7 +155,7 @@ export const DocViewer = React.memo(() => {
                 onSnapshot: (snapshot => {
                     // TODO/FIXME: we need a better way to flag that the
                     // document was deleted vs not initialized.
-                    callbacks.setDocMeta(snapshot.data!);
+                    setDocMeta(snapshot.data!);
                 }),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);
@@ -199,13 +199,6 @@ export const DocViewer = React.memo(() => {
                       });
     }
 
-    function onPDFPageNavigator(pdfPageNavigator: PDFPageNavigator) {
-        setState({
-                          ...state,
-                          pdfPageNavigator
-                      });
-    }
-
     function doPageNav(delta: number) {
 
         const {pdfPageNavigator, pdfDocMeta} = state;
@@ -236,16 +229,6 @@ export const DocViewer = React.memo(() => {
 
     function onPagePrev() {
         doPageNav(-1);
-    }
-
-    function onPageJump(page: number) {
-
-        const {pdfPageNavigator} = state;
-
-        if (pdfPageNavigator) {
-            pdfPageNavigator.set(page);
-        }
-
     }
 
     function onScaleLeveler(scaleLeveler: ScaleLeveler) {
@@ -282,7 +265,6 @@ export const DocViewer = React.memo(() => {
                         onFullScreen={NULL_FUNCTION}
                         onPageNext={() => onPageNext()}
                         onPagePrev={() => onPagePrev()}
-                        onPageJump={page => onPageJump(page)}
                         onFind={() => onFind()}/>
 
             <div style={{
@@ -324,7 +306,7 @@ export const DocViewer = React.memo(() => {
                                         <Main onFinder={setFinder}
                                               onResizer={resizer => onResizer(resizer)}
                                               onPDFDocMeta={pdfDocMeta => onPDFDocMeta(pdfDocMeta)}
-                                              onPDFPageNavigator={pdfPageNavigator => onPDFPageNavigator(pdfPageNavigator)}
+                                              onPDFPageNavigator={setPageNavigator}
                                               onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
                                               scaleValue={state.pdfDocMeta?.scaleValue!}
                                               />

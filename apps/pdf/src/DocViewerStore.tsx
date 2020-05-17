@@ -22,6 +22,7 @@ import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {PDFPageNavigator} from "./PDFDocument";
 
 const log = Logger.create();
 
@@ -41,6 +42,8 @@ export interface IDocViewerStore {
      * The storage URL for the document this docMeta references.
      */
     readonly docURL?: URLStr;
+
+    readonly pageNavigator?: PDFPageNavigator;
 
 }
 
@@ -73,8 +76,10 @@ export interface IDocViewerCallbacks {
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly setDocLoaded: (docLoaded: false) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
+    readonly onPageJump: (page: number) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
+    setPageNavigator(pageNavigator: PDFPageNavigator): void;
 
     // FIXME: where do we put the callback for injecting content from the
     // annotation control into the main doc.
@@ -221,9 +226,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         function updatePagemark(mutation: IPagemarkUpdate) {
             const store = storeProvider();
             const docMeta = store.docMeta!;
-            console.log("FIXME: newPagemark: ", mutation.pagemark)
             Pagemarks.updatePagemark(docMeta, mutation.page, mutation.pagemark);
-            console.log("FIXME: docmeta after: ", docMeta);
 
             setDocMeta(docMeta);
             writeUpdatedDocMetas([docMeta])
@@ -243,11 +246,30 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
+    function setPageNavigator(pageNavigator: PDFPageNavigator) {
+        const store = storeProvider();
+        setStore({...store, pageNavigator})
+    }
+
+    function onPageJump(page: number) {
+
+        const {pageNavigator} = storeProvider();
+
+        if (pageNavigator) {
+            pageNavigator.set(page);
+        } else {
+            log.warn("No page navigator");
+        }
+
+    }
+
     return {
         setDocMeta,
         setDocLoaded,
+        setPageNavigator,
         annotationMutations,
-        onPagemark
+        onPagemark,
+        onPageJump,
     };
 
 }

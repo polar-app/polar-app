@@ -22,9 +22,9 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {DocFindButton} from "./DocFindButton";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
-
+import {useDocViewerCallbacks} from "./DocViewerStore";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 
 // FIXME: move this its own component
@@ -38,7 +38,6 @@ interface IProps {
     readonly onFullScreen: Callback;
     readonly onPagePrev: () => void;
     readonly onPageNext: () => void;
-    readonly onPageJump: (page: number) => void;
     readonly pdfDocMeta: PDFDocMeta | undefined;
     readonly onScale: Callback1<PDFScaleLevelTuple>;
 
@@ -46,7 +45,6 @@ interface IProps {
 
 interface PageNumberInputProps {
     readonly pdfDocMeta: PDFDocMeta | undefined;
-    readonly onPageJump: (page: number) => void;
 }
 
 interface PageNumberInputState {
@@ -103,6 +101,8 @@ const FullScreenButton = React.memo(() => {
 
 const PageNumberInput = (props: PageNumberInputProps) => {
 
+    const {onPageJump} = useDocViewerCallbacks();
+
     // yield to the property, except if we're changing the value, then jump
     // to the right value, and then blur the element...
 
@@ -155,8 +155,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
         const newPage = parsePage();
 
         if (newPage) {
-            // resetState();
-            props.onPageJump(newPage);
+            onPageJump(newPage);
         }
 
     };
@@ -284,8 +283,7 @@ export const DocToolbar = (props: IProps) => {
                                 <ArrowDownwardIcon/>
                             </IconButton>
 
-                            <PageNumberInput pdfDocMeta={props.pdfDocMeta}
-                                             onPageJump={page => props.onPageJump(page)}/>
+                            <PageNumberInput pdfDocMeta={props.pdfDocMeta}/>
 
                             {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
 

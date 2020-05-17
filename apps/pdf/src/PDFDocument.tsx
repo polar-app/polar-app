@@ -200,9 +200,10 @@ export const PDFDocument = (props: IProps) => {
 
         const resizeDebouncer = Debouncers.create(() => resize());
 
-        window.addEventListener('resize', () => {
-            resizeDebouncer();
-        });
+        window.addEventListener('resize', resizeDebouncer);
+
+        document.getElementById("viewerContainer")!
+            .addEventListener("resize", resizeDebouncer);
 
         (props.onResizer || NULL_FUNCTION)(resizeDebouncer);
 
