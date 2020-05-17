@@ -23,6 +23,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {DocFindButton} from "./DocFindButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 
 
 
@@ -52,6 +53,53 @@ interface PageNumberInputState {
     readonly changing: boolean;
     readonly value: string;
 }
+
+const FullScreenButton = React.memo(() => {
+
+    const [fullScreen, setFullScreen] = useState(false);
+
+    // FIXME: shift+command+f for macos full-screen
+
+    function requestFullScreen() {
+
+        async function doAsync() {
+            await document.documentElement.requestFullscreen();
+            setFullScreen(true);
+        }
+
+        doAsync()
+            .catch(err => console.error(err));
+
+    }
+
+
+    function exitFullScreen() {
+
+        async function doAsync() {
+            await document.exitFullscreen();
+            setFullScreen(false);
+        }
+
+        doAsync()
+            .catch(err => console.error(err));
+
+    }
+
+    function toggleFullScreen() {
+        if (fullScreen) {
+            exitFullScreen();
+        } else {
+            requestFullScreen();
+        }
+    }
+
+    return (
+        <IconButton onClick={toggleFullScreen}>
+            <FullscreenIcon/>
+        </IconButton>
+    )
+
+});
 
 const PageNumberInput = (props: PageNumberInputProps) => {
 
@@ -226,19 +274,22 @@ export const DocToolbar = (props: IProps) => {
                          }}
                          className="vertical-aligned-children">
 
-                        <IconButton onClick={() => props.onPagePrev()}>
-                            <ArrowUpwardIcon/>
-                        </IconButton>
+                        <MUIButtonBar>
 
-                        <IconButton onClick={() => props.onPageNext()}>
-                            <ArrowDownwardIcon/>
-                        </IconButton>
+                            <IconButton onClick={() => props.onPagePrev()}>
+                                <ArrowUpwardIcon/>
+                            </IconButton>
 
-                        <PageNumberInput pdfDocMeta={props.pdfDocMeta}
-                                         onPageJump={page => props.onPageJump(page)}/>
+                            <IconButton onClick={() => props.onPageNext()}>
+                                <ArrowDownwardIcon/>
+                            </IconButton>
 
-                        {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
+                            <PageNumberInput pdfDocMeta={props.pdfDocMeta}
+                                             onPageJump={page => props.onPageJump(page)}/>
 
+                            {props.pdfDocMeta && <NumPages pdfDocMeta={props.pdfDocMeta}/>}
+
+                        </MUIButtonBar>
                     </div>
 
                     <div style={{
@@ -254,25 +305,27 @@ export const DocToolbar = (props: IProps) => {
                              }}
                              className="ml-auto mr-auto vertical-align-children">
 
-                            <IconButton onClick={() => handleNextZoomLevel(-1)}>
-                                <RemoveIcon/>
-                            </IconButton>
+                            <MUIButtonBar>
+                                <IconButton onClick={() => handleNextZoomLevel(-1)}>
+                                    <RemoveIcon/>
+                                </IconButton>
 
-                            <IconButton onClick={() => handleNextZoomLevel(1)}>
-                                <AddIcon/>
-                            </IconButton>
+                                <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                    <AddIcon/>
+                                </IconButton>
 
-                            <FormControl variant="outlined" size="small">
-                                <Select value={props.pdfDocMeta?.scale.value || 'page-width'}
-                                        onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                                    {PDFScaleLevelTuples.map(current => (
-                                        <MenuItem key={current.value}
-                                                  value={current.value}>
-                                            {current.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                                <FormControl variant="outlined" size="small">
+                                    <Select value={props.pdfDocMeta?.scale.value || 'page-width'}
+                                            onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                                        {PDFScaleLevelTuples.map(current => (
+                                            <MenuItem key={current.value}
+                                                      value={current.value}>
+                                                {current.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </MUIButtonBar>
 
                         </div>
 
@@ -297,9 +350,7 @@ export const DocToolbar = (props: IProps) => {
                             {/*    <SearchIcon/>*/}
                             {/*</IconButton>*/}
 
-                            <IconButton>
-                                <FullscreenIcon/>
-                            </IconButton>
+                            <FullScreenButton/>
 
                         </div>
 

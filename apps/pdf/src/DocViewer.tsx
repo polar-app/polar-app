@@ -185,17 +185,6 @@ export const DocViewer = React.memo(() => {
         }
     }
 
-    // function requestFullScreen() {
-    //     document.body.requestFullscreen()
-    //             .catch(err => log.error(err));
-    // }
-    //
-    //
-    // function exitFullScreen() {
-    //     document.exitFullscreen()
-    //             .catch(err => log.error(err));
-    // }
-
     function onResizer(resizer: () => void) {
         setState({
                           ...state,
