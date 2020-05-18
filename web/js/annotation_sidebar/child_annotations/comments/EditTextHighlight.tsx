@@ -31,7 +31,7 @@ export class EditTextHighlight extends React.PureComponent<IProps, IState> {
 
             return (
                 <div>
-                    <RichTextFeatureIntro/>
+                    {/*<RichTextFeatureIntro/>*/}
 
                     <div className="mt-1">
 

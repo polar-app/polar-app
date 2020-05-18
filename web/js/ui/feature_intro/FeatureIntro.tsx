@@ -20,7 +20,7 @@ export class FeatureIntro extends React.Component<IProps, IState> {
         return <NullCollapse open={this.state.active}>
 
             <div className="border rounded text-muted mt-1 mb-1"
-                 style={{backgroundColor: 'lightyellow', fontSize: 'smaller'}}>
+                 style={{fontSize: 'smaller'}}>
 
                 <SplitLayout>
 

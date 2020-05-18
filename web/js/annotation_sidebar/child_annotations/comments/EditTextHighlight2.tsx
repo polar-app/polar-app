@@ -71,7 +71,7 @@ export const EditTextHighlight2 = (props: IProps) => {
 
     return (
         <div>
-            <RichTextFeatureIntro/>
+            {/*<RichTextFeatureIntro/>*/}
 
             <div className="mt-1">
 

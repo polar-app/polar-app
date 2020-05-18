@@ -30,7 +30,7 @@ export class EditComment extends React.Component<IProps, IState> {
         return (
             <div>
 
-                <RichTextFeatureIntro/>
+                {/*<RichTextFeatureIntro/>*/}
 
                 <div id="annotation-comment-box"
                      className="mt-1">
