@@ -41,8 +41,8 @@ import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/anno
 import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoStore";
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
-import {ComponentProgressLoader} from "../../../../apps/repository/js/ComponentProgressLoader";
 import {PersistentRoute} from "./PersistentRoute";
+import {RepoHeader} from "../../../../apps/repository/js/repo_header/RepoHeader";
 
 interface IProps {
     readonly app: App;
@@ -240,13 +240,18 @@ export const RepositoryApp = (props: IProps) => {
 
     return (
         <MUIAppRoot>
-            <>
+            <div style={{
+                     display: 'flex',
+                     minHeight: 0,
+                     flexDirection: 'column',
+                     flexGrow: 1
+                 }}>
             <Splashes key="splashes"
                       persistenceLayerManager={persistenceLayerManager}/>
 
             <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
-            <>
+                <>
 
                 <BrowserRouter key="browser-router">
 
@@ -258,6 +263,9 @@ export const RepositoryApp = (props: IProps) => {
                 </BrowserRouter>
 
                 <BrowserRouter key="path-router">
+
+                    <RepoHeader persistenceLayerProvider={app.persistenceLayerProvider}
+                                persistenceLayerController={app.persistenceLayerController}/>
 
                     <Switch
                         location={ReactRouters.createLocationWithPathOnly()}>
@@ -377,7 +385,7 @@ export const RepositoryApp = (props: IProps) => {
                        opacity: 0
                    }}/>
 
-            </>
+            </div>
         </MUIAppRoot>
     );
 

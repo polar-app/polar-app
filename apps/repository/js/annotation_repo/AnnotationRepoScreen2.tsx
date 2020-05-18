@@ -6,7 +6,7 @@ import {FixedNav} from '../FixedNav';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
-import {Link, Route, Switch} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -15,17 +15,10 @@ import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToo
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
-import {RepoHeader2} from "../repo_header/RepoHeader2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import {AnnotationRepoKeyBindings} from './AnnotationRepoKeyBindings';
+import {AnnotationRepoGlobalHotKeys} from './AnnotationRepoGlobalHotKeys';
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
-import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
-import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useAnnotationRepoStore} from './AnnotationRepoStore';
-import {ReviewerScreen} from "../reviewer/ReviewerScreen";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 
 interface AnnotationsPreviewProps {
@@ -138,24 +131,6 @@ namespace screen {
             <FixedNav id="doc-repository"
                       className="annotations-view">
 
-                <FixedNav.Header>
-
-                    {/*FIXME: this needs right and toggle I think... this is a mobile thing?*/}
-                    {/*<RepoHeader right={<FilterBar {...props}/>}*/}
-                    {/*            toggle={(*/}
-                    {/*                <Link to="#folders">*/}
-                    {/*                    <Button color="clear">*/}
-                    {/*                        <i className="fas fa-bars"/>*/}
-                    {/*                    </Button>*/}
-                    {/*                </Link>*/}
-                    {/*            )}*/}
-                    {/*            persistenceLayerProvider={props.persistenceLayerProvider}*/}
-                    {/*            persistenceLayerController={props.persistenceLayerManager}/>*/}
-
-                    <RepoHeader2/>
-
-                </FixedNav.Header>
-
                 <FixedNav.Body>
 
                     {/*FIXME: add this back in*/}
@@ -194,8 +169,6 @@ namespace screen {
 
             <header>
 
-                <RepoHeader2/>
-
                 <MUIPaperToolbar id="header-filter"
                                  padding={1}
                                  borderBottom>
@@ -227,7 +200,7 @@ namespace screen {
             {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
             {/*        {...props}/>*/}
 
-            <AnnotationRepoKeyBindings/>
+            <AnnotationRepoGlobalHotKeys/>
             
             <main.Desktop />
 

@@ -2,6 +2,9 @@ import React from "react";
 import {Callbacks} from "../../../../apps/repository/js/Callbacks";
 import {GlobalHotKeys} from "react-hotkeys";
 import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {ReactRouters} from "../../../js/react/router/ReactRouters";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
 const globalKeyMap = {
     TAG: 't',
@@ -12,7 +15,7 @@ const globalKeyMap = {
     OPEN: ['command+return', 'control+return']
 };
 
-export const DocRepoKeyBindings = React.memo(() => {
+export const DocRepoGlobalHotKeys = React.memo(() => {
 
     const callbacks = useDocRepoCallbacks();
 
@@ -25,11 +28,21 @@ export const DocRepoKeyBindings = React.memo(() => {
         OPEN: callbacks.onOpen
     });
 
+    const location = useLocationWithPathOnly();
+
     return (
 
-        <GlobalHotKeys allowChanges={true}
-                       keyMap={globalKeyMap}
-                       handlers={globalKeyHandlers}/>
+        <BrowserRouter>
+            <Switch location={location}>
+
+                <Route exact path='/'>
+                    <GlobalHotKeys allowChanges={true}
+                                   keyMap={globalKeyMap}
+                                   handlers={globalKeyHandlers}/>
+                </Route>
+
+            </Switch>
+        </BrowserRouter>
 
     );
 

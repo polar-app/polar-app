@@ -1,8 +1,10 @@
-export class ReactRouters {
+import { useLocation } from "react-router-dom";
+
+export namespace ReactRouters {
     /**
      * This is a big of a hack to support routes with hashes in them with react router.
      */
-    public static createLocationWithPathAndHash(): IRouteLocation {
+    export function createLocationWithPathAndHash(): IRouteLocation {
 
         const computePathname = () => {
             return document.location.hash ?
@@ -28,7 +30,7 @@ export class ReactRouters {
     /**
      * Only return on the path.
      */
-    public static createLocationWithPathOnly(): IRouteLocation {
+    export function createLocationWithPathOnly(): IRouteLocation {
 
         return {
             get pathname() {
@@ -45,10 +47,30 @@ export class ReactRouters {
 
     }
 
+    export function useLocationWithPathOnly(): IRouteLocation {
+
+        const location = useLocation();
+
+        return {
+            get pathname() {
+                return location.pathname;
+            },
+            get search() {
+                return "";
+            },
+            get hash() {
+                return "";
+            },
+            state: null,
+        };
+
+    }
+
+
     /**
      * Only match with the hash.
      */
-    public static createLocationWithHashOnly(location: ILocation = document.location): IRouteLocation {
+    export function createLocationWithHashOnly(location: ILocation = document.location): IRouteLocation {
 
         return {
             get pathname() {

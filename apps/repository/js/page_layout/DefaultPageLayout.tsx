@@ -19,13 +19,6 @@ export const DefaultPageLayout = (props: IProps) => (
     <FixedNav id="doc-repository"
               className="default-page-layout">
 
-        <FixedNav.Header>
-            <header>
-                <RepoHeader persistenceLayerProvider={props.persistenceLayerProvider}
-                            persistenceLayerController={props.persistenceLayerController}/>
-            </header>
-        </FixedNav.Header>
-
         <FixedNav.Body className="p-1"
                        style={{
                            overflow: 'auto'

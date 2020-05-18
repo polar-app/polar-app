@@ -51,7 +51,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     tabs: {
         textTransform: 'none',
-        minHeight: '1.2em'
+        minHeight: '1.2em',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        flexGrow: 1
     }
 }));
 
@@ -79,9 +83,9 @@ export const TabbedBrowserDemo = () => {
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example">
-                    <Tab className={classes.tabs} label="Item One" {...a11yProps(0)} ></Tab>
+                    <Tab className={classes.tabs} label="Disney" {...a11yProps(0)} ></Tab>
                     <Divider/>
-                    <Tab className={classes.tabs} label="Item Two" {...a11yProps(1)} />
+                    <Tab className={classes.tabs} label="Centers for Disease Control and Prevention" {...a11yProps(1)} />
                     <Divider/>
                     <Tab className={classes.tabs} label="Item Three" {...a11yProps(2)} />
                     <Divider/>
@@ -98,7 +102,7 @@ export const TabbedBrowserDemo = () => {
             <Divider/>
 
             <TabPanel value={value} index={0}>
-                <iframe src="http://localhost:8500/" frameBorder="0" style={{flexGrow: 1}}/>
+                <iframe src="https://www.disney.com" frameBorder="0" style={{flexGrow: 1}}/>
             </TabPanel>
 
             <TabPanel value={value} index={1}>

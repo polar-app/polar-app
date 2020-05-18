@@ -10,7 +10,6 @@ import {
     MUIDocFlagButton,
     MUIDocTagButton
 } from "./MUIDocButtons";
-import {GlobalHotKeys} from "react-hotkeys";
 import {AutoBlur} from "./AutoBlur";
 import {
     useDocRepoCallbacks,

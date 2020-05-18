@@ -1,94 +1,17 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {
-    createMuiTheme,
-    MuiThemeProvider,
-    darken,
-    hexToRgb
-} from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {MockRepoDocInfos} from "./MockRepoDocInfos";
-import {ContextMenus} from "./ContextMenus";
-import {configure, GlobalHotKeys} from "react-hotkeys";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import TextField from "@material-ui/core/TextField";
-import MUISearchBox from "./MUISearchBox";
+import {createMuiTheme} from "@material-ui/core/styles";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
-import FlagIcon from "@material-ui/icons/Flag";
-import { TagAutocompleteDemo } from './TagAutocompleteDemo';
-import {AlertDialogDemo} from "./dialogs/AlertDialogDemo";
-import {PromptDialogDemo} from "./dialogs/PromptDialogDemo";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
-import {InputValidationErrorSnackbar} from "./dialogs/InputValidationErrorSnackbar";
-import {MUITagInputControl} from "../../../apps/repository/js/MUITagInputControl";
 import {MockTags} from "./MockTags";
-import MUICreatableAutocomplete, {
-    RelatedOptionsCalculator,
-    ValueAutocompleteOption
-} from "./autocomplete/MUICreatableAutocomplete";
+import {RelatedOptionsCalculator} from "./autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
-import {MUITreeView} from './treeview2/MUITreeView';
-import {MUIHelpMenu} from "./MUIHelpMenu";
-import {MUIMenu} from "./dropdown_menu/MUIMenu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import SettingsIcon from '@material-ui/icons/Settings';
-import {ExampleDropdownMenu} from "./dropdown_menu/ExampleDropdownMenu";
-import {MUIDialogController} from "./dialogs/MUIDialogController";
-import dialog = Electron.dialog;
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import { GlobalCss } from './GlobalCss';
-import {MUIPaperToolbar} from "./MUIPaperToolbar";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import {MUIToggleButton} from "../../js/ui/MUIToggleButton";
-import {MUISearchBox2} from "./MUISearchBox2";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Input from "@material-ui/core/Input";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import SearchIcon from "@material-ui/icons/Search";
-import {AutocompleteDialog} from "../../js/ui/dialogs/AutocompleteDialog";
-import {MyResponsivePie} from "./PieDemo";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import {UserAvatar} from "../../js/ui/cloud_auth/UserAvatar";
-import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
-import {MUIGridLayoutTest} from "./dropdown_menu/MUIGridLayoutTest";
-import {FadeDemo} from "./FadeDemo";
-import {MUIHoverContextDemo} from "../../js/mui/context/MUIHoverContextDemo";
-import {AppBarDemo} from "./AppBarDemo";
-import { SharedStateTest } from './SharedStateTest';
-import {SharedIntermediateContextTest} from "./SharedIntermediateContextTest";
-import {DeleteConfirmationDemo} from "./DeleteConfirmationDemo";
-import {ContextMemoTest} from "./ContextTest";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TagNodes} from "../../js/tags/TagNodes";
-import {MyContextStoreComponent} from "./store2/ContextStore";
-import {HookStateDemo} from "./store2/HookState";
-import {ObservableStoreDemo} from "./store/demo/ObservableStoreDemo";
-import { ObservableStoreDemo2 } from './store/demo2/ObservableStoreDemo2';
-import {MUITreeViewDemo} from "./treeview2/MUITreeViewDemo";
-import {ComponentCacheDemo} from "./ComponentCacheDemo";
-import { MUIContextMenuDemo } from './doc_repo_table/MUIContextMenuDemo';
-import {ReviewerDemo} from "../ui-components/ReviewerDemo";
 import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
-import { UseAsyncWithCallbacksDemo } from './UseAsyncWithCallbacksDemo';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {Loading, MUIAsyncLoader} from "./MUIAsyncLoader";
-import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
-import {CloudSyncConfiguredDialog} from "../../js/ui/cloud_auth/CloudSyncConfiguredDialog";
-import {ColorButton} from "../../../apps/repository/js/reviewer/ColorButton";
-import red from "@material-ui/core/colors/red";
 import {TabbedBrowserDemo} from "./TabbedBrowserDemo";
-import {PersistentRouteDemo} from "../../js/apps/repository/PersistentRouteDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -214,9 +137,9 @@ export const App = () => {
             {/*               placeholder="Search..."/>*/}
 
 
-            {/*<TabbedBrowserDemo/>*/}
+            <TabbedBrowserDemo/>
 
-            <PersistentRouteDemo/>
+            {/*<PersistentRouteDemo/>*/}
 
             {/*<CloudSyncConfiguredDialog/>*/}
 

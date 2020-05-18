@@ -38,7 +38,7 @@ import {
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {DocFindBar} from "./DocFindBar";
-import {DocRepoKeyBindings} from "./DocFindKeyBindings";
+import {DocViewerGlobalHotKeys} from "./DocViewerGlobalHotKeys";
 import {useDocFindCallbacks} from "./DocFindStore";
 import {
     computeDocViewerContextMenuOrigin,
@@ -97,7 +97,7 @@ export const DocViewer = React.memo(() => {
 
     const [state, setState] = React.useState<IState>({});
 
-    const {setPageNavigator, setDocMeta} = useDocViewerCallbacks();
+    const {setDocMeta} = useDocViewerCallbacks();
     const {resizer, docURL, docMeta} = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
 
@@ -113,6 +113,8 @@ export const DocViewer = React.memo(() => {
 
         const handleLoad = async () => {
 
+            // TODO: do this in a root context component so we could make
+            // this into a component that takes props, not just a URL.
             const parsedURL = PDFAppURLs.parse(document.location.href);
 
             if (! parsedURL) {
@@ -215,7 +217,7 @@ export const DocViewer = React.memo(() => {
                                 }}>
 
                                 <PagemarkProgressBar/>
-                                <DocRepoKeyBindings/>
+                                <DocViewerGlobalHotKeys/>
                                 <DocFindBar/>
 
                                 <div style={{

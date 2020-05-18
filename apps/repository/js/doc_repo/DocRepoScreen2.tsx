@@ -3,9 +3,6 @@ import {PersistenceLayerController} from "../../../../web/js/datastore/Persisten
 import React from "react";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
-import {RepoHeader} from "../repo_header/RepoHeader";
-import {Link} from "react-router-dom";
-import {Button} from "reactstrap";
 import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
@@ -23,7 +20,6 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import isEqual from "react-fast-compare";
-import {DocRepoKeyBindings} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoKeyBindings";
 
 namespace main {
 
@@ -111,17 +107,6 @@ export const DocRepoScreen2 = React.memo((props: IProps) => {
 
             <RepositoryTour/>
             <header>
-
-                {/*FIXME: RepoHeader2*/}
-                <RepoHeader toggle={(
-                                <Link to="#folders">
-                                    <Button color="clear">
-                                        <i className="fas fa-bars"/>
-                                    </Button>
-                                </Link>
-                            )}
-                            persistenceLayerProvider={props.persistenceLayerProvider}
-                            persistenceLayerController={props.persistenceLayerController}/>
 
                 <MUIPaperToolbar id="header-filter"
                                  borderBottom
