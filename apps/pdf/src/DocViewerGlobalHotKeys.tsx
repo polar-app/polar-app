@@ -30,7 +30,7 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
         <BrowserRouter>
             <Switch location={location}>
 
-                <Route exact path={['/pdf', '/doc']}>
+                <Route path={['/pdf', '/doc']}>
                     <GlobalHotKeys allowChanges={true}
                                    keyMap={globalKeyMap}
                                    handlers={globalKeyHandlers}/>

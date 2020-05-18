@@ -16,6 +16,7 @@ import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocViewerScreen} from "./DocViewerScreen";
+import { BrowserRouter } from 'react-router-dom';
 
 export class PDFApp {
 
@@ -49,7 +50,9 @@ export class PDFApp {
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
         ReactDOM.render((
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
-                <DocViewerScreen/>
+                <BrowserRouter>
+                    <DocViewerScreen/>
+                </BrowserRouter>
             </PersistenceLayerContext.Provider>
             ), rootElement);
 

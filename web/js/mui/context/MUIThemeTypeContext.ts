@@ -1,6 +1,7 @@
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
+// TODO: add a true dark and sepia themes...
 export type ThemeType = 'light' | 'dark';
 
 export interface MUIThemeType {
