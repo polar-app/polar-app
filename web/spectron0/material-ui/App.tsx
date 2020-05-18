@@ -88,6 +88,7 @@ import {CloudSyncConfiguredDialog} from "../../js/ui/cloud_auth/CloudSyncConfigu
 import {ColorButton} from "../../../apps/repository/js/reviewer/ColorButton";
 import red from "@material-ui/core/colors/red";
 import {TabbedBrowserDemo} from "./TabbedBrowserDemo";
+import {PersistentRouteDemo} from "../../js/apps/repository/PersistentRouteDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -213,7 +214,9 @@ export const App = () => {
             {/*               placeholder="Search..."/>*/}
 
 
-            <TabbedBrowserDemo/>
+            {/*<TabbedBrowserDemo/>*/}
+
+            <PersistentRouteDemo/>
 
             {/*<CloudSyncConfiguredDialog/>*/}
 

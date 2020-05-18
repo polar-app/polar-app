@@ -76,7 +76,7 @@ export const RepositoryApp = (props: IProps) => {
             </AuthRequired>
         ));
 
-    const renderAnnotationRepoScreen = React.memo(() => {
+    const RenderAnnotationRepoScreen = React.memo(() => {
         return (
             <AuthRequired authStatus={app.authStatus}>
                 <PersistenceLayerApp tagsType="annotations"
@@ -304,7 +304,7 @@ export const RepositoryApp = (props: IProps) => {
                                component={renderStatsScreen}/>
 
                         <Route exact path="/annotations"
-                               component={renderAnnotationRepoScreen}/>
+                               component={RenderAnnotationRepoScreen}/>
 
                         <Route exact path="/settings"
                                component={RenderSettingsScreen}/>
