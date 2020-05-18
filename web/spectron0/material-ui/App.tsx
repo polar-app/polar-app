@@ -87,6 +87,7 @@ import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {CloudSyncConfiguredDialog} from "../../js/ui/cloud_auth/CloudSyncConfiguredDialog";
 import {ColorButton} from "../../../apps/repository/js/reviewer/ColorButton";
 import red from "@material-ui/core/colors/red";
+import {TabbedBrowserDemo} from "./TabbedBrowserDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -208,9 +209,11 @@ export const App = () => {
             {/*<CompB/>*/}
             {/*<CompC/>*/}
 
-            <MUISearchBox2 onChange={NULL_FUNCTION}
-                           placeholder="Search..."/>
+            {/*<MUISearchBox2 onChange={NULL_FUNCTION}*/}
+            {/*               placeholder="Search..."/>*/}
 
+
+            <TabbedBrowserDemo/>
 
             {/*<CloudSyncConfiguredDialog/>*/}
 

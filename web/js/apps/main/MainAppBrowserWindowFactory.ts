@@ -56,7 +56,11 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * that we keep user cookies including Google Analytics cookies.
          */
         //
-        partition: MAIN_SESSION_PARTITION_NAME
+        partition: MAIN_SESSION_PARTITION_NAME,
+
+        // enable/disable webview/iframe support.
+        // webviewTag: true,
+        // nodeIntegrationInSubFrames: true
 
     }
 
