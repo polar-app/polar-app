@@ -55,18 +55,19 @@ export class Screenshots {
 
     // TODO: Computing the bounding rect directly would be a better option here.
 
-    private static async captureViaElectron(rect: ILTRect, element: HTMLElement): Promise<ExtractedImage>  {
+    private static async captureViaElectron(rect: ILTRect, element?: HTMLElement): Promise<ExtractedImage>  {
 
         log.debug("Capturing via electron");
 
+        rect = Screenshots.computeCaptureRect(rect, element);
+
         const {width, height} = rect;
 
-        const boundingClientRect = element.getBoundingClientRect();
-
         const target: CaptureTarget = {
-            x: boundingClientRect.left,
-            y: boundingClientRect.top,
-            width, height
+            x: rect.left,
+            y: rect.top,
+            width,
+            height
         };
 
         const capturedScreenshot = await ElectronScreenshots.capture(target, {type: 'png'});
@@ -78,7 +79,8 @@ export class Screenshots {
 
     }
 
-    private static async captureViaCanvas(pageNum: number, rect: ILTRect): Promise<ExtractedImage> {
+    private static async captureViaCanvas(pageNum: number,
+                                          rect: ILTRect): Promise<ExtractedImage> {
 
         const docFormat = DocFormatFactory.getInstance();
 
@@ -91,7 +93,7 @@ export class Screenshots {
     }
 
     private static async captureViaBrowser(boxRect: ILTRect,
-                                           element: HTMLElement) {
+                                           element?: HTMLElement) {
 
         // we have to capture via our extension
         const browserScreenshot = await BrowserScreenshots.capture(boxRect, element);
@@ -108,6 +110,26 @@ export class Screenshots {
         } else {
             throw new Error("Unable to take screenshot via browser");
         }
+
+    }
+
+    public static computeCaptureRect(rect: ILTRect, element?: HTMLElement) {
+
+        if (element) {
+            const {width, height} = rect;
+
+            const boundingClientRect = element.getBoundingClientRect();
+
+            // update the rect to reflect the element not the iframe position.
+            return {
+                left: boundingClientRect.left,
+                top: boundingClientRect.top,
+                width, height
+            };
+
+        }
+
+        return rect;
 
     }
 

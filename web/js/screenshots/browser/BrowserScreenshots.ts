@@ -5,21 +5,14 @@ import {Results} from 'polar-shared/src/util/Results';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
 import {Toaster} from '../../ui/toaster/Toaster';
+import {Screenshots} from "../Screenshots";
 
 export class BrowserScreenshots {
 
-    public static async capture(rect: ILTRect, element: HTMLElement): Promise<BrowserScreenshot | undefined> {
+    public static async capture(rect: ILTRect,
+                                element?: HTMLElement): Promise<BrowserScreenshot | undefined> {
 
-        const {width, height} = rect;
-
-        const boundingClientRect = element.getBoundingClientRect();
-
-        // update the rect to reflect the element not the iframe position.
-        rect = {
-            left: boundingClientRect.left,
-            top: boundingClientRect.top,
-            width, height
-        };
+        rect = Screenshots.computeCaptureRect(rect, element);
 
         if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
 

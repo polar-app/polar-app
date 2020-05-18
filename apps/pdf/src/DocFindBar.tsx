@@ -19,15 +19,17 @@ type FindCallback = (opts: IFindOpts) => void;
 
 function useFindCallback(): FindCallback {
 
-    const {finder, findHandler} = useDocFindStore();
-    const {setFindHandler, doFind} = useDocFindCallbacks();
+    const {findHandler} = useDocFindStore();
+    const {doFind, setOpts, reset} = useDocFindCallbacks();
 
     return (opts: IFindOpts) => {
 
         const {query} = opts;
 
+        setOpts(opts);
+
         if (query.trim() === '') {
-            setFindHandler(undefined);
+            reset(true);
             return;
         }
 

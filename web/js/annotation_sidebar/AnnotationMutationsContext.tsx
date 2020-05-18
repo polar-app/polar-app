@@ -29,6 +29,8 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {AreaHighlights} from "../metadata/AreaHighlights";
 
 const log = Logger.create();
 
@@ -80,6 +82,22 @@ export interface IFlashcardDelete extends IAnnotationMutationSelected {
 }
 
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
+
+interface IAreaHighlightBaseMutation {
+    readonly textHighlight: IAreaHighlight;
+    readonly docMeta: IDocMeta;
+    readonly pageMeta: IPageMeta;
+}
+
+export interface IAreaHighlightCreate extends IAreaHighlightBaseMutation {
+    readonly type: 'create';
+}
+
+export interface IAreaHighlightUpdate extends IAreaHighlightBaseMutation {
+    readonly type: 'update';
+}
+
+export type IAreaHighlightMutation = IAreaHighlightCreate | IAreaHighlightUpdate;
 
 export interface ITextHighlightCreate {
     readonly type: 'create';
@@ -135,6 +153,7 @@ export interface IAnnotationMutationCallbacks {
 
     readonly onTagged: (mutation: ITaggedMutation) => void;
 
+    // readonly onAreaHighlight: (mutation: IAreaHighlightMutation) => void;
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
 
     readonly createCommentCallback: (selected: IAnnotationMutationSelected) => (mutation: ICommentMutation) => void;
@@ -258,6 +277,36 @@ export namespace DocAnnotationsMutator {
         }
 
     }
+
+    // export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
+    //
+    //     switch (mutation.type) {
+    //
+    //         case "update":
+    //
+    //             Functions.withTimeout(() => {
+    //
+    //                 const selected = mutation.selected || [];
+    //
+    //                 for (const areaHighlight of selected) {
+    //
+    //                     AreaHighlights.update(areaHighlight.id, )
+    //
+    //                     TextHighlights.setRevisedText(docMeta,
+    //                                                   pageMeta,
+    //                                                   textHighlight.id,
+    //                                                   mutation.body);
+    //                 }
+    //
+    //             });
+    //             break;
+    //
+    //         case "create":
+    //             break;
+    //
+    //     }
+    //
+    // }
 
     export function onTextHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: ITextHighlightMutation) {
 

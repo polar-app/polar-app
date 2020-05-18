@@ -71,23 +71,24 @@ function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 
 }
 
+export function getPageElement(page: number) {
+    return document.querySelectorAll(".page")[page - 1];
+}
+
+export function computePageDimensions(page: number): IDimensions {
+    // TODO this is a bit of a hack.
+    const pageElement = getPageElement(page);
+    return {
+        width: pageElement.clientWidth,
+        height: pageElement.clientHeight
+    }
+}
+
 function computePagemarkFromResize(rect: ILTRect,
                                    page: number,
                                    pagemark: IPagemark) {
 
-    function computePageDimensions(page: number): IDimensions {
-        // TODO this is a bit of a hack.
-        const pageElement = document.querySelectorAll(".page")[page - 1];
-        return {
-            width: pageElement.clientWidth,
-            height: pageElement.clientHeight
-        }
-    }
-
     const pageDimensions = computePageDimensions(page)
-
-    console.log("FIXME: rect: ", rect);
-    console.log("FIXME: pageDimensions: ", pageDimensions);
 
     const annotationRect = AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(rect),
                                                                     pageDimensions);
@@ -97,8 +98,6 @@ function computePagemarkFromResize(rect: ILTRect,
     const newPagemark = Object.assign({}, pagemark);
     newPagemark.percentage = pagemarkRect.toPercentage();
     newPagemark.rect = pagemarkRect;
-
-    console.log("FIXME: newPagemark: ", newPagemark);
 
     return newPagemark;
 

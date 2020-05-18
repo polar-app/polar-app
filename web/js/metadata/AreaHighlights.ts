@@ -1,8 +1,10 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AreaHighlight} from './AreaHighlight';
-import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {DocMeta} from './DocMeta';
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Image} from './Image';
 import {Datastore} from '../datastore/Datastore';
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
@@ -12,9 +14,11 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from './Attachment';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PageMeta} from './PageMeta';
 import {AreaHighlightRect} from './AreaHighlightRect';
-import {HighlightRects, Position} from "polar-shared/src/metadata/IBaseHighlight";
+import {
+    HighlightRects,
+    Position
+} from "polar-shared/src/metadata/IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ExtractedImage} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';

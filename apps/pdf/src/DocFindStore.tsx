@@ -5,8 +5,13 @@ import {
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {Finder, FindHandler, IFindOpts, IMatches, IFindOptsBase} from "./Finders";
-import {Functions} from "polar-shared/src/util/Functions";
+import {
+    Finder,
+    FindHandler,
+    IFindOpts,
+    IFindOptsBase,
+    IMatches
+} from "./Finders";
 
 export interface IDocFindStore {
 
@@ -43,7 +48,11 @@ export interface IDocFindCallbacks {
     doFind(opts: IFindOpts): void;
     setMatches(matches: IMatches | undefined): void;
     setOpts(opts: IFindOptsBase | undefined): void;
-    reset(): void;
+
+    /**
+     * Whether to keep the bar active or not
+     */
+    reset(active?: boolean): void;
 
 }
 
@@ -119,8 +128,8 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
                 setStore({...store, matches: undefined, opts})
                 const findHandler = finder!.exec(opts);
-
                 setFindHandler(findHandler);
+
             } else {
                 console.warn("No finder: ", finder);
             }
@@ -148,7 +157,8 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
         setStore({...store, opts});
     }
 
-    function reset() {
+    function reset(active: boolean = false) {
+
         const store = storeProvider();
 
         const findHandler = store.findHandler;
@@ -157,7 +167,7 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
             ...store,
             matches: undefined,
             opts: {...store.opts, query: ""},
-            active: false,
+            active,
             findHandler: undefined
         });
 
