@@ -32,14 +32,19 @@ export const PersistentRoute = React.memo((props: IProps) => {
 
     const [mounted, setMounted] = React.useState(false);
 
-    const display = mounted ? undefined : 'none';
+    const display = mounted ? 'flex' : 'none';
 
     return (
 
         <>
             <Switch>
                 <Route path="/">
-                    <div style={{display}}>
+                    <div style={{
+                             display,
+                             minHeight: 0,
+                             flexDirection: 'column',
+                             flexGrow: 1
+                         }}>
                         {props.children}
                     </div>
                 </Route>

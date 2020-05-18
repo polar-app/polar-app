@@ -16,7 +16,8 @@ export class FixedNav extends React.Component<IProps, any> {
                      display: 'flex',
                      flexDirection: 'column',
                      flexGrow: 1,
-                     minWidth: 0
+                     minWidth: 0,
+                     minHeight: 0,
                  }}>
 
                 {this.props.children}

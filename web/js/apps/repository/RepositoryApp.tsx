@@ -42,6 +42,7 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {ComponentProgressLoader} from "../../../../apps/repository/js/ComponentProgressLoader";
+import {PersistentRoute} from "./PersistentRoute";
 
 interface IProps {
     readonly app: App;
@@ -303,8 +304,8 @@ export const RepositoryApp = (props: IProps) => {
                         <Route exact path='/stats'
                                component={renderStatsScreen}/>
 
-                        <Route exact path="/annotations"
-                               component={RenderAnnotationRepoScreen}/>
+                        {/*<Route exact path="/annotations"*/}
+                        {/*       component={RenderAnnotationRepoScreen}/>*/}
 
                         <Route exact path="/settings"
                                component={RenderSettingsScreen}/>
@@ -318,11 +319,19 @@ export const RepositoryApp = (props: IProps) => {
                         {/*<Route exact path='/'*/}
                         {/*       component={RenderDefaultScreen}/>*/}
 
-                        <Route exact path='/'>
-                            <RenderDefaultScreen/>
-                        </Route>
+                        {/*<Route exact path='/'>*/}
+                        {/*    <RenderDefaultScreen/>*/}
+                        {/*</Route>*/}
 
                     </Switch>
+
+                    <PersistentRoute exact path="/">
+                        <RenderDefaultScreen/>
+                    </PersistentRoute>
+
+                    <PersistentRoute exact path="/annotations">
+                        <RenderAnnotationRepoScreen/>
+                    </PersistentRoute>
 
                     <Switch
                         location={ReactRouters.createLocationWithHashOnly()}>
