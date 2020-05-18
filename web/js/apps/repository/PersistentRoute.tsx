@@ -1,6 +1,6 @@
 // FIXME refactor as this is basically the wrong place for this
 
-import {Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import * as React from "react";
 import isEqual from "react-fast-compare";
 import {
@@ -9,9 +9,9 @@ import {
 } from "../../hooks/lifecycle";
 
 interface IProps {
-    children: React.ReactElement;
-    path: string;
-    exact?: boolean;
+    readonly children: React.ReactElement;
+    readonly path: string;
+    readonly exact?: boolean;
 
 }
 
@@ -37,14 +37,20 @@ export const PersistentRoute = React.memo((props: IProps) => {
     return (
 
         <>
+            <Switch>
+                <Route path="/">
+                    <div style={{display}}>
+                        {props.children}
+                    </div>
+                </Route>
 
-            <div style={{display}}>
-                {props.children}
-            </div>
+            </Switch>
 
-            <Route exact path={props.path}>
-                <MountListener onMounted={setMounted}/>
-            </Route>
+            <Switch>
+                <Route exact path={props.path}>
+                    <MountListener onMounted={setMounted}/>
+                </Route>
+            </Switch>
 
        </>
 

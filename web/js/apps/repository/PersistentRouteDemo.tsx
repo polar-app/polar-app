@@ -13,7 +13,7 @@ export const PersistentRouteDemo = React.memo(() => {
             these are the persistent routes
 
 
-            <HashRouter key="browser-router">
+            <HashRouter>
 
                 <Link to="/hello">
                     hello
@@ -23,10 +23,12 @@ export const PersistentRouteDemo = React.memo(() => {
                     world
                 </Link>
 
+                <PersistentRoute exact path='/hello'>
+                    <div>this is the hello page</div>
+                </PersistentRoute>
+
                 <Switch>
-                    <PersistentRoute exact path='/hello'>
-                        <div>this is the hello page</div>
-                    </PersistentRoute>
+
 
                     <Route exact path='/world'>
                         <div>this is the world page</div>
