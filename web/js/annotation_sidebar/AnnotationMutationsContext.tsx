@@ -31,6 +31,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlights} from "../metadata/AreaHighlights";
+import {DocMetas} from "../metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -84,7 +85,7 @@ export interface IFlashcardDelete extends IAnnotationMutationSelected {
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
 
 interface IAreaHighlightBaseMutation {
-    readonly textHighlight: IAreaHighlight;
+    readonly areaHighlight: IAreaHighlight;
     readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
 }
@@ -153,7 +154,7 @@ export interface IAnnotationMutationCallbacks {
 
     readonly onTagged: (mutation: ITaggedMutation) => void;
 
-    // readonly onAreaHighlight: (mutation: IAreaHighlightMutation) => void;
+    readonly onAreaHighlight: (mutation: IAreaHighlightMutation) => void;
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
 
     readonly createCommentCallback: (selected: IAnnotationMutationSelected) => (mutation: ICommentMutation) => void;
@@ -175,6 +176,7 @@ const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallba
 
     createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
+    onAreaHighlight: NULL_FUNCTION,
     onTextHighlight: NULL_FUNCTION,
 
     createCommentCallback: () => NULL_FUNCTION,
@@ -278,35 +280,31 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    // export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
-    //
-    //     switch (mutation.type) {
-    //
-    //         case "update":
-    //
-    //             Functions.withTimeout(() => {
-    //
-    //                 const selected = mutation.selected || [];
-    //
-    //                 for (const areaHighlight of selected) {
-    //
-    //                     AreaHighlights.update(areaHighlight.id, )
-    //
-    //                     TextHighlights.setRevisedText(docMeta,
-    //                                                   pageMeta,
-    //                                                   textHighlight.id,
-    //                                                   mutation.body);
-    //                 }
-    //
-    //             });
-    //             break;
-    //
-    //         case "create":
-    //             break;
-    //
-    //     }
-    //
-    // }
+    export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
+
+        switch (mutation.type) {
+
+            case "update":
+
+                Functions.withTimeout(() => {
+                    const {areaHighlight} = mutation;
+                    AreaHighlights.update(areaHighlight.id,docMeta, pageMeta, areaHighlight);
+                });
+
+                break;
+
+            case "create":
+
+                Functions.withTimeout(() => {
+                    const {areaHighlight} = mutation;
+                    pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
+                });
+
+                break;
+
+        }
+
+    }
 
     export function onTextHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: ITextHighlightMutation) {
 
@@ -517,8 +515,15 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onTextHighlight(mutation: ITextHighlightMutation) {
+        function onAreaHighlight(mutation: IAreaHighlightMutation) {
 
+            DocAnnotationsMutator.onAreaHighlight(mutation.docMeta, mutation.pageMeta, mutation);
+            writeUpdatedDocMetas([mutation.docMeta])
+                .catch(err => log.error(err));
+
+        }
+
+        function onTextHighlight(mutation: ITextHighlightMutation) {
 
             switch (mutation.type) {
 
@@ -532,9 +537,6 @@ export namespace AnnotationMutationCallbacks {
 
                     const {docMeta, pageMeta, textHighlight} = mutation;
                     pageMeta.textHighlights[textHighlight.id] = textHighlight;
-
-                    // FIXME: we now have to write out the docMeta since it's
-                    // been mutated
 
                     // FIXME: all these catch() functions need to be handled
                     // with a dialog error.
@@ -599,6 +601,7 @@ export namespace AnnotationMutationCallbacks {
             writeUpdatedDocMetas,
             createDeletedCallback,
             onDeleted,
+            onAreaHighlight,
             onTextHighlight,
             createCommentCallback,
             onComment,
