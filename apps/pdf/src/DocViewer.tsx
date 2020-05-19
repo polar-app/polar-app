@@ -79,15 +79,9 @@ const Main = React.memo((props: MainProps) => {
     )
 }, isEqual);
 
-interface IState {
-    readonly finder?: Finder;
-}
-
 const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
 export const DocViewer = React.memo(() => {
-
-    const [state, setState] = React.useState<IState>({});
 
     const {setDocMeta} = useDocViewerCallbacks();
     const {resizer, docURL, docMeta} = useDocViewerStore();
@@ -146,7 +140,6 @@ export const DocViewer = React.memo(() => {
     });
 
     function onDockLayoutResize() {
-        console.log("FIXME: dock resized");
 
         if (resizer) {
             resizer();
