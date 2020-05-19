@@ -17,6 +17,7 @@ import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
 import isEqual from "react-fast-compare";
+import {useDocViewerStore} from "../DocViewerStore";
 
 const log = Logger.create();
 
@@ -24,17 +25,19 @@ interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
     readonly page: number;
     readonly areaHighlight: IAreaHighlight;
-    readonly scaleValue: number | undefined;
 }
 
 export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
-    const {scaleValue, areaHighlight, fingerprint, page} = props;
+    const {areaHighlight, fingerprint, page} = props;
     const container = useAnnotationContainer(page);
+    const {docScale} = useDocViewerStore();
 
-    if (! container || ! scaleValue) {
+    if (! container || ! docScale) {
         return null;
     }
+
+    const {scaleValue} = docScale;
 
     const {pageDimensions} = AreaHighlights.computePageDimensions(page);
 

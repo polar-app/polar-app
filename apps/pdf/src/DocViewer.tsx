@@ -1,12 +1,10 @@
 import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {OnFinderCallback, PDFDocument, ScaleLeveler} from "./PDFDocument";
+import {OnFinderCallback, PDFDocument} from "./PDFDocument";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Finder} from "./Finders";
-import {Callback1} from "polar-shared/src/util/Functions";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {PDFScaleLevelTuple} from "./PDFScaleLevels";
 import {PDFAppURLs} from "./PDFAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {TextHighlightsView} from "./annotations/TextHighlightsView";
@@ -52,12 +50,11 @@ const log = Logger.create();
 
 interface MainProps {
     readonly onFinder: OnFinderCallback;
-    readonly onScaleLeveler: Callback1<ScaleLeveler>;
 }
 
 const Main = React.memo((props: MainProps) => {
 
-    const {docURL, docMeta, docDescriptor} = useDocViewerStore();
+    const {docURL} = useDocViewerStore();
 
     if (! docURL) {
         return null;
@@ -70,17 +67,13 @@ const Main = React.memo((props: MainProps) => {
             <PDFDocument
                 onFinder={props.onFinder}
                 target="viewerContainer"
-                onScaleLeveler={props.onScaleLeveler}
                 url={docURL}/>
 
-            <TextHighlightsView docMeta={docMeta}
-                                scaleValue={docDescriptor?.scaleValue}/>
+            <TextHighlightsView />
 
-            <AreaHighlightsView docMeta={docMeta}
-                                scaleValue={docDescriptor?.scaleValue}/>
+            <AreaHighlightsView/>
 
-            <PagemarksView docMeta={docMeta}
-                           scaleValue={docDescriptor?.scaleValue}/>
+            <PagemarksView/>
 
         </>
     )
@@ -88,7 +81,6 @@ const Main = React.memo((props: MainProps) => {
 
 interface IState {
     readonly finder?: Finder;
-    readonly scaleLeveler?: ScaleLeveler;
 }
 
 const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
@@ -160,23 +152,6 @@ export const DocViewer = React.memo(() => {
             resizer();
         }
     }
-
-    function onScaleLeveler(scaleLeveler: ScaleLeveler) {
-        setState({
-                          ...state,
-                          scaleLeveler
-                      })
-    }
-
-    function onScale(scale: PDFScaleLevelTuple) {
-        state.scaleLeveler!(scale);
-    }
-
-
-    // const globalKeyHandlers = {
-    //     FIND: () => onFind()
-    // };
-
     if (! docURL) {
         return <LoadingProgress/>
     }
@@ -190,7 +165,7 @@ export const DocViewer = React.memo(() => {
                  minHeight: 0
              }}>
 
-            <DocToolbar onScale={scale => onScale(scale)}/>
+            <DocToolbar/>
 
             <div style={{
                      display: 'flex',
@@ -228,9 +203,7 @@ export const DocViewer = React.memo(() => {
                                      }}>
 
                                     <DocViewerContextMenu>
-                                        <Main onFinder={setFinder}
-                                              onScaleLeveler={scaleLeveler => onScaleLeveler(scaleLeveler)}
-                                              />
+                                        <Main onFinder={setFinder}/>
                                     </DocViewerContextMenu>
                                 </div>
 

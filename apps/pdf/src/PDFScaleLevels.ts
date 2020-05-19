@@ -4,7 +4,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 export namespace PDFScales {
 
     export function computeNextZoomLevel(delta: number,
-                                         currentScale: PDFScaleLevelTuple | undefined): PDFScaleLevelTuple | undefined {
+                                         currentScale: ScaleLevelTuple | undefined): ScaleLevelTuple | undefined {
 
         if (! currentScale) {
             return undefined;
@@ -38,9 +38,9 @@ export type PDFScaleLevel =
     | '2'
     | '3'
     | '4';
-export type PDFScaleLevelTuple = LabelValueTuple<PDFScaleLevel>;
+export type ScaleLevelTuple = LabelValueTuple<PDFScaleLevel>;
 
-export const PDFScaleLevelTuples: ReadonlyArray<PDFScaleLevelTuple> = [
+export const PDFScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     {
         label: 'page width',
         value: 'page-width'

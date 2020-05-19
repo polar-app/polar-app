@@ -25,13 +25,7 @@ import {
 } from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {IDimensions} from "polar-shared/src/util/IDimensions";
-import { IPagemarkUpdate, useDocViewerCallbacks } from "../DocViewerStore";
-
-interface IProps extends AbstractAnnotationRendererProps {
-    readonly fingerprint: IDStr;
-    readonly pagemark: IPagemark;
-    readonly scaleValue: number | undefined;
-}
+import { IPagemarkUpdate, useDocViewerCallbacks, useDocViewerStore } from "../DocViewerStore";
 
 const createPlacementRect = (placementElement: HTMLElement) => {
 
@@ -114,6 +108,11 @@ interface PagemarkInnerProps {
 
 }
 
+interface IProps extends AbstractAnnotationRendererProps {
+    readonly fingerprint: IDStr;
+    readonly pagemark: IPagemark;
+}
+
 const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
     const {id, fingerprint, pagemark, page, className, overlayRect, pagemarkColor} = props;
@@ -167,15 +166,11 @@ export const ContextMenu = createContextMenu(PagemarkMenu);
 
 export const PagemarkRenderer2 = React.memo((props: IProps) => {
 
-    const {pagemark, scaleValue, fingerprint, page} = props;
+    const {pagemark, fingerprint, page} = props;
 
     const container = useAnnotationContainer(page);
 
     if (! container) {
-        return null;
-    }
-
-    if (! scaleValue) {
         return null;
     }
 
@@ -197,7 +192,6 @@ export const PagemarkRenderer2 = React.memo((props: IProps) => {
         const className = `pagemark annotation`;
 
         const pagemarkColor = PagemarkColors.toPagemarkColor(pagemark);
-        console.log("FIXME: pagemarkColor: ", pagemarkColor);
 
         return ReactDOM.createPortal(
             <PagemarkValueContext.Provider value={pagemark}>

@@ -11,15 +11,15 @@ import PDFJS, {
     PDFDocumentProxy,
     PDFViewerOptions
 } from "pdfjs-dist";
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import {Finder} from "./Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {PDFScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
+import {ScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 import {IDocDescriptor, useDocViewerCallbacks} from "./DocViewerStore";
 
@@ -108,13 +108,10 @@ interface LoadedDoc {
 
 export type OnFinderCallback = Callback1<Finder>;
 
-export type ScaleLeveler = Callback1<PDFScaleLevelTuple>;
-
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
-    readonly onScaleLeveler: Callback1<ScaleLeveler>;
 }
 
 interface IState {
@@ -125,12 +122,12 @@ interface IState {
 export const PDFDocument = (props: IProps) => {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
-    const scaleRef = React.useRef<PDFScaleLevelTuple>(PDFScaleLevelTuples[0]);
+    const scaleRef = React.useRef<ScaleLevelTuple>(PDFScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
     const [state, setState] = React.useState<IState>({});
 
-    const {setDocDescriptor, setPageNavigator, setResizer} = useDocViewerCallbacks();
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler} = useDocViewerCallbacks();
 
     useComponentDidMount(() => {
 
@@ -225,11 +222,11 @@ export const PDFDocument = (props: IProps) => {
             scrollDebouncer();
         });
 
-        const scaleLeveler = (scale: PDFScaleLevelTuple) => {
+        const scaleLeveler = (scale: ScaleLevelTuple) => {
             setScale(scale);
         };
 
-        props.onScaleLeveler(scaleLeveler);
+        setScaleLeveler(scaleLeveler);
 
         setState({
             loadedDoc: {
@@ -248,7 +245,7 @@ export const PDFDocument = (props: IProps) => {
 
     }
 
-    function setScale(scale: PDFScaleLevelTuple) {
+    function setScale(scale: ScaleLevelTuple) {
 
         if (docViewerRef.current) {
             scaleRef.current = scale;
@@ -264,8 +261,9 @@ export const PDFDocument = (props: IProps) => {
         if (docRef.current && docViewerRef.current) {
 
             const docDescriptor: IDocDescriptor = {
-                scale: scaleRef.current,
-                scaleValue: docViewerRef.current.viewer.currentScale,
+                // title: docRef.current.title,
+                // scale: scaleRef.current,
+                // scaleValue: docViewerRef.current.viewer.currentScale,
                 nrPages: docRef.current.numPages,
                 fingerprint: docRef.current.fingerprint
             };

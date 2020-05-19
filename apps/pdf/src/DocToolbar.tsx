@@ -5,7 +5,7 @@ import {GlobalHotKeys} from "react-hotkeys";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {
     PDFScaleLevel,
-    PDFScaleLevelTuple,
+    ScaleLevelTuple,
     PDFScaleLevelTuples,
     PDFScales
 } from "./PDFScaleLevels";
@@ -37,7 +37,6 @@ const globalKeyMap = {
 };
 
 interface IProps {
-    readonly onScale: Callback1<PDFScaleLevelTuple>;
 
 }
 
@@ -227,8 +226,8 @@ const NumPages = (props: NumPagesProps) => (
 
 export const DocToolbar = (props: IProps) => {
 
-    const {docDescriptor} = useDocViewerStore();
-    const {onPagePrev, onPageNext} = useDocViewerCallbacks();
+    const {docDescriptor, docScale} = useDocViewerStore();
+    const {onPagePrev, onPageNext, setScale} = useDocViewerCallbacks();
 
     // FIXME: move to a dedicated component
     const globalKeyHandlers = {
@@ -243,16 +242,16 @@ export const DocToolbar = (props: IProps) => {
                 .filter(current => current.value === scale)
                 .first();
 
-        props.onScale(value!);
+        setScale(value!);
 
     };
 
     const handleNextZoomLevel = (delta: number) => {
 
-        const nextScale = computeNextZoomLevel(delta, docDescriptor?.scale);
+        const nextScale = computeNextZoomLevel(delta, docScale?.scale);
 
         if (nextScale) {
-            props.onScale(nextScale);
+            setScale(nextScale);
         }
 
     };
@@ -316,7 +315,7 @@ export const DocToolbar = (props: IProps) => {
                                 </IconButton>
 
                                 <FormControl variant="outlined" size="small">
-                                    <Select value={docDescriptor?.scale.value || 'page-width'}
+                                    <Select value={docScale?.scale.value || 'page-width'}
                                             onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
                                         {PDFScaleLevelTuples.map(current => (
                                             <MenuItem key={current.value}

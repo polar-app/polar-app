@@ -1,36 +1,31 @@
 import * as React from "react";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
 import {AreaHighlightRenderer2} from "./AreaHighlightRenderer2";
+import {useDocViewerStore} from "../DocViewerStore";
 
-interface IProps {
-    readonly docMeta: IDocMeta | undefined;
-    readonly scaleValue: number | undefined;
-}
+export const AreaHighlightsView = React.memo(() => {
 
-export class AreaHighlightsView extends React.Component<IProps> {
+    const {docMeta} = useDocViewerStore();
 
-    // typescript fails to compile this when it's a functional component.
-    public render() {
-
-        const {docMeta, scaleValue} = this.props;
-
-        if (!docMeta || ! scaleValue) {
-            return null;
-        }
-
-        const pageAnnotations = PageAnnotations.compute(docMeta,
-                                                        pageMeta => Object.values(pageMeta.areaHighlights || {}));
-
-        return pageAnnotations.map(current =>
-            <AreaHighlightRenderer2
-                key={current.annotation.id}
-                page={current.page}
-                scaleValue={scaleValue}
-                fingerprint={docMeta?.docInfo.fingerprint}
-                areaHighlight={current.annotation}/>
-        );
-
+    if (!docMeta) {
+        return null;
     }
-}
+
+    const pageAnnotations = PageAnnotations.compute(docMeta,
+                                                    pageMeta => Object.values(pageMeta.areaHighlights || {}));
+
+    const rendered = pageAnnotations.map(current =>
+                                             <AreaHighlightRenderer2
+                                                 key={current.annotation.id}
+                                                 page={current.page}
+                                                 fingerprint={docMeta?.docInfo.fingerprint}
+                                                 areaHighlight={current.annotation}/>);
+
+    return (
+        <>
+            {rendered}
+        </>
+    );
+
+});
 

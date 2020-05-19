@@ -1,36 +1,32 @@
 import * as React from "react";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {TextHighlightRenderer} from "./TextHighlightRenderer";
 import {PageAnnotations} from "./PageAnnotations";
+import {TextHighlightRenderer2} from "./TextHighlightRenderer2";
+import isEqual from "react-fast-compare";
+import {useDocViewerStore} from "../DocViewerStore";
 
-interface IProps {
-    readonly docMeta: IDocMeta | undefined;
-    readonly scaleValue: number | undefined;
-}
+export const TextHighlightsView = React.memo(() => {
 
-export class TextHighlightsView extends React.Component<IProps> {
+    const {docMeta} = useDocViewerStore();
 
-    // typescript fails to compile this when it's a functional component.
-    public render() {
-
-        const {docMeta, scaleValue} = this.props;
-
-        if (!docMeta || ! scaleValue) {
-            return null;
-        }
-
-        const pageAnnotations = PageAnnotations.compute(docMeta,
-                                                        pageMeta => Object.values(pageMeta.textHighlights || {}));
-
-        return pageAnnotations.map(current =>
-            <TextHighlightRenderer
-                key={current.annotation.id}
-                page={current.page}
-                scaleValue={scaleValue}
-                fingerprint={docMeta?.docInfo.fingerprint}
-                textHighlight={current.annotation}/>
-        );
-
+    if (!docMeta) {
+        return null;
     }
-}
+
+    const pageAnnotations = PageAnnotations.compute(docMeta,
+                                                    pageMeta => Object.values(pageMeta.textHighlights || {}));
+
+    const rendered = pageAnnotations.map(current =>
+                                             <TextHighlightRenderer2
+                                                 key={current.annotation.id}
+                                                 page={current.page}
+                                                 fingerprint={docMeta?.docInfo.fingerprint}
+                                                 textHighlight={current.annotation}/>);
+
+    return (
+        <>
+            {rendered}
+        </>
+    );
+
+}, isEqual);
 

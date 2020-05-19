@@ -16,32 +16,45 @@ import {
     AnnotationMutationsContextProvider,
     IAnnotationMutationCallbacks
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {PDFPageNavigator} from "./PDFDocument";
-import {PDFScaleLevelTuple} from "./PDFScaleLevels";
+import {ScaleLevelTuple} from "./PDFScaleLevels";
 
 const log = Logger.create();
 /**
  * Lightweight metadata describing the currently loaded document.
  */
 export interface IDocDescriptor {
-    readonly scale: PDFScaleLevelTuple;
+
+    // readonly title: string;
+
+    readonly nrPages: number;
+
+    readonly fingerprint: IDStr;
+
+}
+
+export interface IDocScale {
+
+    // FIXME: move scale out of here...
+    readonly scale: ScaleLevelTuple;
 
     /**
      * The applied scale value derived from a string like 'page-width' but
      * actually computed as something like 1.2
      */
     readonly scaleValue: number;
-    readonly nrPages: number;
-    readonly fingerprint: IDStr;
+
 }
 
 export type Resizer = () => void;
+
+export type ScaleLeveler = Callback1<ScaleLevelTuple>;
 
 export interface IDocViewerStore {
 
@@ -68,6 +81,10 @@ export interface IDocViewerStore {
      * Resizer that forces the current doc to fit inside its container properly
      */
     readonly resizer?: Resizer;
+
+    readonly docScale?: IDocScale;
+
+    readonly scaleLeveler?: ScaleLeveler;
 
 }
 
@@ -99,10 +116,13 @@ export interface IDocViewerCallbacks {
 
     readonly setDocMeta: (docMeta: IDocMeta) => void;
     readonly setDocDescriptor: (docDescriptor: IDocDescriptor) => void;
+    readonly setDocScale: (docScale: IDocScale) => void;
     readonly setDocLoaded: (docLoaded: false) => void;
     readonly setResizer: (resizer: Resizer) => void;
+    readonly setScaleLeveler: (scaleLeveler: ScaleLeveler) => void;
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
+    readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
     setPageNavigator(pageNavigator: PDFPageNavigator): void;
@@ -201,6 +221,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         setStore({...store, docDescriptor});
     }
 
+    function setDocScale(docScale: IDocScale) {
+        const store = storeProvider();
+        setStore({...store, docScale});
+    }
+
     function setDocLoaded(docLoaded: boolean) {
         const store = storeProvider();
         setStore({...store, docLoaded});
@@ -211,6 +236,21 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         setStore({...store, resizer});
     }
 
+    function setScaleLeveler(scaleLeveler: ScaleLeveler) {
+        const store = storeProvider();
+        setStore({...store, scaleLeveler});
+    }
+
+    function setScale(scaleLevel: ScaleLevelTuple) {
+        const store = storeProvider();
+
+        const {scaleLeveler} = store;
+
+        if (scaleLeveler) {
+            scaleLeveler(scaleLevel);
+        }
+
+    }
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
 
@@ -338,6 +378,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     return {
         setDocMeta,
         setDocDescriptor,
+        setDocScale,
         setDocLoaded,
         setPageNavigator,
         annotationMutations,
@@ -346,6 +387,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         onPagePrev,
         onPageNext,
         setResizer,
+        setScaleLeveler,
+        setScale
     };
 
 }

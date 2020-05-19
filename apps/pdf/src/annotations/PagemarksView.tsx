@@ -2,17 +2,13 @@ import * as React from "react";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
 import {PagemarkRenderer2} from "./PagemarkRenderer2";
+import { useDocViewerStore } from "../DocViewerStore";
 
-interface IProps {
-    readonly docMeta: IDocMeta | undefined;
-    readonly scaleValue: number | undefined;
-}
+export const PagemarksView = React.memo(() => {
 
-export const PagemarksView = React.memo((props: IProps) => {
+    const {docMeta} = useDocViewerStore();
 
-    const {docMeta, scaleValue} = props;
-
-    if (!docMeta || !scaleValue) {
+    if (!docMeta) {
         return null;
     }
 
@@ -23,7 +19,6 @@ export const PagemarksView = React.memo((props: IProps) => {
                                               <PagemarkRenderer2
                                                   key={current.annotation.id}
                                                   page={current.page}
-                                                  scaleValue={scaleValue}
                                                   fingerprint={docMeta?.docInfo.fingerprint}
                                                   pagemark={current.annotation}/>);
 
