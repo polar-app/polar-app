@@ -125,8 +125,6 @@ export const PDFDocument = (props: IProps) => {
     const scaleRef = React.useRef<ScaleLevelTuple>(PDFScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
-    const [state, setState] = React.useState<IState>({});
-
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler} = useDocViewerCallbacks();
 
     useComponentDidMount(() => {
@@ -227,13 +225,6 @@ export const PDFDocument = (props: IProps) => {
         };
 
         setScaleLeveler(scaleLeveler);
-
-        setState({
-            loadedDoc: {
-                scale,
-                doc: docRef.current
-            }
-        });
 
     }
 

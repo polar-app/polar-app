@@ -31,8 +31,6 @@ const log = Logger.create();
  */
 export interface IDocDescriptor {
 
-    // readonly title: string;
-
     readonly nrPages: number;
 
     readonly fingerprint: IDStr;
@@ -89,6 +87,12 @@ export interface IDocViewerStore {
 
     readonly scaleLeveler?: ScaleLeveler;
 
+    /**
+     * The total number of resizes we've done.  Used so components can see that
+     * the UI is updated. I don't like doing this by side effect.
+     */
+    readonly resizes: number;
+
 }
 
 export interface IPagemarkCreate {
@@ -139,7 +143,8 @@ export interface IDocViewerCallbacks {
 }
 
 const initialStore: IDocViewerStore = {
-    docLoaded: false
+    docLoaded: false,
+    resizes: 0
 }
 
 interface Mutator {
@@ -235,8 +240,21 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     function setResizer(resizer: Resizer) {
+
+        const delegate = resizer;
+
+        function newResizer() {
+
+            const store = storeProvider();
+            const {resizes} = store;
+            setStore({...store, resizes: resizes + 1});
+
+            // FIXME: this won't work I think...
+            setTimeout(delegate, 1);
+        }
+
         const store = storeProvider();
-        setStore({...store, resizer});
+        setStore({...store, resizer: newResizer});
     }
 
     function setScaleLeveler(scaleLeveler: ScaleLeveler) {

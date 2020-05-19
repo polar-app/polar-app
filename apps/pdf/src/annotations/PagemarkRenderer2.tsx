@@ -163,11 +163,16 @@ export const ContextMenu = createContextMenu(PagemarkMenu);
 
 export const PagemarkRenderer2 = React.memo((props: IProps) => {
 
+    // FIXME: the issue, I think, is that the page is being torn down out from
+    // under us and the annotation is being removed.  I need to have an event
+    // for when the page is resized and redraw the pagemarks.
+
     const {pagemark, fingerprint, page} = props;
 
     const container = useAnnotationContainer(page);
 
     if (! container) {
+        console.log("FIXME: no container");
         return null;
     }
 

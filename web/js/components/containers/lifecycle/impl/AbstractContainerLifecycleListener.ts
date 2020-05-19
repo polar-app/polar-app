@@ -27,7 +27,7 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
         this.observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (mutation.type == "attributes") {
+                if (mutation.type === "attributes") {
                     const visible = this.isVisible();
                     this.state = new ContainerLifecycleState({container, visible});
                     callback(this.state);
