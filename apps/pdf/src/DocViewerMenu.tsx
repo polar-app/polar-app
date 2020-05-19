@@ -5,9 +5,13 @@ import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
-import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {
+    IAreaHighlightCreate,
+    useAnnotationMutationsContext
+} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {AreaHighlightRenderers} from "./annotations/AreaHighlightRenderers";
 import {IPoint} from "../../../web/js/Point";
+import {DocMetas} from "../../../web/js/metadata/DocMetas";
 
 export interface IDocViewerContextMenuOrigin {
     readonly x: number;
@@ -46,7 +50,7 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
-    const {docScale} = useDocViewerStore();
+    const {docScale, docMeta} = useDocViewerStore();
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlight} = useAnnotationMutationsContext();
 
@@ -69,7 +73,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         console.log("FIXME: props.origin: ", props.origin);
         console.log("FIXME: docScale: ", docScale);
 
-        if (props.origin && docScale) {
+        if (props.origin && docScale && docMeta) {
 
             const clientPoint: IPoint = {
                 x: props.origin.clientX,
@@ -78,10 +82,16 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
             const areaHighlight = AreaHighlightRenderers.createAreaHighlightFromEvent(clientPoint, docScale);
 
-            // onAreaHighlight({
-            //     type: 'create',
-            //     ...props.origin,
-            // });
+            const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
+
+            const mutation: IAreaHighlightCreate = {
+                type: 'create',
+                areaHighlight,
+                docMeta,
+                pageMeta
+            };
+
+            onAreaHighlight(mutation);
 
         }
 
