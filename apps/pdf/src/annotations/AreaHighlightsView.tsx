@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
-import {AreaHighlightRenderer} from "./AreaHighlightRenderer";
+import {AreaHighlightRenderer2} from "./AreaHighlightRenderer2";
 
 interface IProps {
     readonly docMeta: IDocMeta | undefined;
@@ -23,7 +23,7 @@ export class AreaHighlightsView extends React.Component<IProps> {
                                                         pageMeta => Object.values(pageMeta.areaHighlights || {}));
 
         return pageAnnotations.map(current =>
-            <AreaHighlightRenderer
+            <AreaHighlightRenderer2
                 key={current.annotation.id}
                 page={current.page}
                 scaleValue={scaleValue}

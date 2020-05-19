@@ -8,29 +8,30 @@ interface IProps {
     readonly scaleValue: number | undefined;
 }
 
-export class PagemarksView extends React.Component<IProps> {
+export const PagemarksView = React.memo((props: IProps) => {
 
-    // typescript fails to compile this when it's a functional component.
-    public render() {
+    const {docMeta, scaleValue} = props;
 
-        const {docMeta, scaleValue} = this.props;
-
-        if (!docMeta || ! scaleValue) {
-            return null;
-        }
-
-        const pageAnnotations = PageAnnotations.compute(docMeta,
-                                                        pageMeta => Object.values(pageMeta.pagemarks || {}));
-
-        return pageAnnotations.map(current =>
-            <PagemarkRenderer2
-                key={current.annotation.id}
-                page={current.page}
-                scaleValue={scaleValue}
-                fingerprint={docMeta?.docInfo.fingerprint}
-                pagemark={current.annotation}/>
-        );
-
+    if (!docMeta || !scaleValue) {
+        return null;
     }
-}
+
+    const pageAnnotations = PageAnnotations.compute(docMeta,
+                                                    pageMeta => Object.values(pageMeta.pagemarks || {}));
+
+    const renderers = pageAnnotations.map(current =>
+                                              <PagemarkRenderer2
+                                                  key={current.annotation.id}
+                                                  page={current.page}
+                                                  scaleValue={scaleValue}
+                                                  fingerprint={docMeta?.docInfo.fingerprint}
+                                                  pagemark={current.annotation}/>);
+
+    return (
+        <>
+            {renderers}
+        </>
+    )
+
+});
 
