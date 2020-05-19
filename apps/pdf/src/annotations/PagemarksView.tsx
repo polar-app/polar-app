@@ -1,8 +1,7 @@
 import * as React from "react";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {PageAnnotations} from "./PageAnnotations";
 import {PagemarkRenderer2} from "./PagemarkRenderer2";
-import { useDocViewerStore } from "../DocViewerStore";
+import {useDocViewerStore} from "../DocViewerStore";
 
 export const PagemarksView = React.memo(() => {
 

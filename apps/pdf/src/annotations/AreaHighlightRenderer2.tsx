@@ -10,7 +10,6 @@ import {
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
@@ -18,8 +17,6 @@ import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
-
-const log = Logger.create();
 
 interface IProps extends AbstractAnnotationRendererProps {
     readonly fingerprint: IDStr;
