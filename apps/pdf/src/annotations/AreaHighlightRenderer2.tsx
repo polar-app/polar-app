@@ -3,7 +3,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AbstractAnnotationRenderer";
+import {useAnnotationContainer} from "./AnnotationHooks";
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";

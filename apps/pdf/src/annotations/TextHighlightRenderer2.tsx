@@ -6,7 +6,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AbstractAnnotationRenderer";
+import {useAnnotationContainer} from "./AnnotationHooks";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AbstractAnnotationRenderer";
+import {useAnnotationContainer} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
