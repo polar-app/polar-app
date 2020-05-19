@@ -1,11 +1,48 @@
 import * as React from "react";
+import {
+    useComponentDidMount,
+    useComponentWillUnmount
+} from "../../../../web/js/hooks/lifecycle";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
-import {ContainerLifecycleState} from "../../../../web/js/components/containers/lifecycle/ContainerLifecycleState";
+import {SnapshotUnsubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
+
+
+/**
+ * Unsubscribes to the action created by the subscriber.
+ */
+export type Unsubscriber = () => void;
+
+/**
+ * Subscribe to some type of activity/event listener.
+ */
+export type Subscriber = () => Unsubscriber
+
+function useSubscription(subscriber: Subscriber) {
+    
+    const unsubscriberRef = React.useRef<Unsubscriber | undefined>(undefined);
+
+    useComponentDidMount(() => {
+        unsubscriberRef.current = subscriber();
+    })
+
+    useComponentWillUnmount(() => {
+
+        const unsubscriber = unsubscriberRef.current;
+
+        if (unsubscriber) {
+            unsubscriber();
+        }
+
+    })
+
+}
+
 
 export function useAnnotationContainer(page: number) {
 
     const [container, setContainer] = React.useState<HTMLElement | undefined>();
+
+
 
     useComponentDidMount(() => {
 
@@ -40,19 +77,39 @@ export function useAnnotationContainer(page: number) {
 
         doUpdate();
 
-        // const doUpdateDebouncer = Debouncers.create(() => doUpdate());
-        const doUpdateDebouncer = doUpdate;
+        const doUpdateDebouncer = Debouncers.create(() => doUpdate());
 
-        function registerScrollListener() {
+        function registerScrollListener(): Unsubscriber {
+
             const viewerContainer = document.getElementById('viewerContainer');
-            viewerContainer!.addEventListener('scroll', () => doUpdateDebouncer());
+
+            function handleScroll() {
+                doUpdateDebouncer()
+            }
+
+            viewerContainer!.addEventListener('scroll', handleScroll);
+
+            return () => {
+                viewerContainer!.removeEventListener('scroll', handleScroll);
+            }
+
         }
 
-        function registerResizeListener() {
-            window.addEventListener('resize', () => doUpdateDebouncer());
+        function registerResizeListener(): Unsubscriber {
+
+            function handleResize() {
+                doUpdateDebouncer();
+            }
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            }
+
         }
 
-        function registerMutationObserver() {
+        function registerMutationObserver(): SnapshotUnsubscriber {
 
             // FIXME: how do we unregister these listeners? if an annotaiton
             // vanishes these aren't going to be cleaned up I think...
@@ -76,6 +133,10 @@ export function useAnnotationContainer(page: number) {
                 // only monitor attributes.
                 attributes: true
             });
+
+            return () => {
+                observer.disconnect();
+            }
 
         }
 

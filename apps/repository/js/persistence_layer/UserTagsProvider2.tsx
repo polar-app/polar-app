@@ -4,8 +4,8 @@ import {UserTag, UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
 import {ITagsContext, TagsContext, usePersistenceLayerContext} from "./PersistenceLayerApp";
 import {
     SubscriptionValue,
-    useSubscription
-} from "../../../../web/js/ui/data_loader/UseSubscription";
+    useSnapshotSubscriber
+} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
@@ -38,7 +38,7 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
     }
 
-    return useSubscription(createSubscription());
+    return useSnapshotSubscriber(createSubscription());
 
 }
 

@@ -16,7 +16,7 @@ export interface SubscriptionValue<T> {
 // TODO: I don't know if I like this because the subcription returns undefined
 // if the remote value is removed but we don't have a dedicated type so we're
 // unable to determine if the value was DELETED or just pending a read.
-export function useSubscription<T>(subscriber: SnapshotSubscriber<T>): SubscriptionValue<T> {
+export function useSnapshotSubscriber<T>(subscriber: SnapshotSubscriber<T>): SubscriptionValue<T> {
 
     const [state, setState] = React.useState<SubscriptionValue<T>>({
         value: undefined,
