@@ -54,7 +54,10 @@ export interface IDocScale {
 
 export type Resizer = () => void;
 
-export type ScaleLeveler = Callback1<ScaleLevelTuple>;
+/**
+ * Scale us and then return the new scale as a numbers
+ */
+export type ScaleLeveler = (scale: ScaleLevelTuple) => number;
 
 export interface IDocViewerStore {
 
@@ -247,7 +250,16 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         const {scaleLeveler} = store;
 
         if (scaleLeveler) {
-            scaleLeveler(scaleLevel);
+
+            const scaleValue = scaleLeveler(scaleLevel);
+
+            const newDocScale: IDocScale = {
+                scale: scaleLevel,
+                scaleValue
+            }
+
+            setDocScale(newDocScale);
+
         }
 
     }

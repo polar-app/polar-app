@@ -223,7 +223,7 @@ export const PDFDocument = (props: IProps) => {
         });
 
         const scaleLeveler = (scale: ScaleLevelTuple) => {
-            setScale(scale);
+            return setScale(scale);
         };
 
         setScaleLeveler(scaleLeveler);
@@ -253,7 +253,12 @@ export const PDFDocument = (props: IProps) => {
 
             dispatchPDFDocMeta();
 
+            return docViewerRef.current.viewer.currentScale;
+
         }
+
+        return -1;
+
     }
 
     function dispatchPDFDocMeta() {
