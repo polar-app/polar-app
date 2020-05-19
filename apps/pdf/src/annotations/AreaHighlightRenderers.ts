@@ -6,6 +6,33 @@ import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {DocMetas} from "../../../../web/js/metadata/DocMetas";
+import {IPoint} from "../../../../web/js/Point";
+import { IDocScale } from "../DocViewerStore";
+
+export namespace AreaHighlightRenderers {
+
+    export function createAreaHighlightFromEvent(clientPoint: IPoint, docScale: IDocScale) {
+
+        const rectFromEvent = AnnotationRects.createFromClientPoint(clientPoint);
+        const annotationRect = AreaHighlights.toCorrectScale2(Rects.createFromBasicRect(rectFromEvent),
+                                                              docScale.scaleValue);
+
+        const areaHighlight = AreaHighlights.create({rect: annotationRect});
+
+        console.log("FIXME: areaHighlight: ", areaHighlight);
+
+        //
+        // const docMeta = this.model.docMeta;
+        // const pageMeta =  DocMetas.getPageMeta(docMeta, contextMenuLocation.pageNum);
+        //
+        // pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
+
+
+    }
+
+}
+
 
 function createAreaHighlight(rect: ILTRect,
                              pageNum: number) {

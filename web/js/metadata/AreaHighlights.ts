@@ -76,8 +76,19 @@ export class AreaHighlights {
 
         return overlayRect;
 
+    }
+
+    public static toCorrectScale2(overlayRect: Rect, currentScale: number) {
+
+        // we have to scale these number BACK to their original
+        // positions at 100%
+
+        const rescaleFactor = 1 / currentScale;
+
+        return overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
 
     }
+
 
     public static createID(created: ISODateTimeString) {
         // TODO: this needs some unique data and random is probably find.

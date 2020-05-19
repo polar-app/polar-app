@@ -6,9 +6,53 @@ import {AnnotationRect} from './AnnotationRect';
 import {Line} from '../util/Line';
 import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
+import {IPoint} from "../Point";
 const log = Logger.create();
 
 export class AnnotationRects {
+
+
+    /**
+     * Create from clientX and clientY point
+     */
+    static createFromClientPoint(point: IPoint) {
+
+        let elements = document.elementsFromPoint(point.x, point.y);
+
+        elements = elements.filter(element => element.matches(".page"));
+
+        if (elements.length === 1) {
+
+            const pageElement = <HTMLElement>elements[0];
+
+            log.info("Creating box on pageElement: ", pageElement);
+
+            const boxRect = Rects.createFromBasicRect({
+                left: point.x,
+                top: point.y,
+                width: 150,
+                height: 150
+            });
+
+            log.info("Placing box at: ", boxRect);
+
+            // get a rect for the element... we really only need the dimensions
+            // though.. not the width and height.
+            const containerRect = Rects.createFromBasicRect({
+                left: 0,
+                top: 0,
+                width: pageElement.offsetWidth,
+                height: pageElement.offsetHeight
+            });
+
+            return AnnotationRects.createFromPositionedRect(boxRect, containerRect);
+
+        }
+
+        throw new Error("Wrong number of .page elements: " + elements.length);
+
+    }
+
 
     /**
      *

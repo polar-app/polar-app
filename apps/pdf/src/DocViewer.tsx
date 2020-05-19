@@ -39,8 +39,8 @@ import {DocViewerGlobalHotKeys} from "./DocViewerGlobalHotKeys";
 import {useDocFindCallbacks} from "./DocFindStore";
 import {
     computeDocViewerContextMenuOrigin,
-    DocViewerMenu,
-    IDocViewerContextMenuOrigin
+    IDocViewerContextMenuOrigin,
+    DocViewerMenu
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
