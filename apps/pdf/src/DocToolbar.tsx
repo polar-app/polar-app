@@ -29,7 +29,6 @@ import {
 } from "./DocViewerStore";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
-
 // FIXME: move this its own component
 const globalKeyMap = {
     PAGE_NEXT: ['n', 'j'],
@@ -314,17 +313,18 @@ export const DocToolbar = (props: IProps) => {
                                     <AddIcon/>
                                 </IconButton>
 
-                                <FormControl variant="outlined" size="small">
-                                    <Select value={docScale?.scale.value || 'page-width'}
-                                            onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                                        {PDFScaleLevelTuples.map(current => (
-                                            <MenuItem key={current.value}
-                                                      value={current.value}>
-                                                {current.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+                                {docScale &&
+                                    <FormControl variant="outlined" size="small">
+                                        <Select value={docScale.scale.value || 'page-width'}
+                                                onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                                            {PDFScaleLevelTuples.map(current => (
+                                                <MenuItem key={current.value}
+                                                          value={current.value}>
+                                                    {current.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>}
                             </MUIButtonBar>
 
                         </div>

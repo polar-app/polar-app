@@ -143,7 +143,9 @@ export const DocViewer = React.memo(() => {
         if (resizer) {
             resizer();
         }
+
     }
+
     if (! docURL) {
         return <LoadingProgress/>
     }

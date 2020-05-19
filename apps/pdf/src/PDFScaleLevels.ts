@@ -76,3 +76,6 @@ export const PDFScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     }
 
 ];
+
+export const PDFScaleLevelTuplesMap = arrayStream(PDFScaleLevelTuples)
+                                          .toMap(current => current.label);

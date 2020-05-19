@@ -19,9 +19,17 @@ import {Finder} from "./Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
 import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {ScaleLevelTuple, PDFScaleLevelTuples} from "./PDFScaleLevels";
+import {
+    ScaleLevelTuple,
+    PDFScaleLevelTuples,
+    PDFScaleLevelTuplesMap
+} from "./PDFScaleLevels";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
-import {IDocDescriptor, useDocViewerCallbacks} from "./DocViewerStore";
+import {
+    IDocDescriptor,
+    IDocScale,
+    useDocViewerCallbacks
+} from "./DocViewerStore";
 
 const log = Logger.create();
 
@@ -125,7 +133,7 @@ export const PDFDocument = (props: IProps) => {
     const scaleRef = React.useRef<ScaleLevelTuple>(PDFScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler} = useDocViewerCallbacks();
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
 
     useComponentDidMount(() => {
 
@@ -226,13 +234,42 @@ export const PDFDocument = (props: IProps) => {
 
         setScaleLeveler(scaleLeveler);
 
+        class PDFDocScale implements IDocScale {
+
+            get scale(): ScaleLevelTuple {
+                const currentScaleValue = docViewerRef.current!.viewer.currentScaleValue;
+                const result = PDFScaleLevelTuplesMap[currentScaleValue];
+
+                if (! result) {
+                    return PDFScaleLevelTuplesMap["page width"];
+                }
+
+                return result;
+
+            }
+
+            get scaleValue(): number {
+                return docViewerRef.current!.viewer.currentScale;
+            }
+
+        }
+
+        setDocScale(new PDFDocScale());
+
     }
 
-    function resize() {
+    function resize(): number {
 
         if (['page-width', 'page-fit'].includes(scaleRef.current.value)) {
             setScale(scaleRef.current);
         }
+
+        if (docViewerRef.current) {
+            return docViewerRef.current.viewer.currentScale;
+        } else {
+            throw new Error("No viewer");
+        }
+
 
     }
 
@@ -248,7 +285,7 @@ export const PDFDocument = (props: IProps) => {
 
         }
 
-        return -1;
+        throw new Error("No viewer");
 
     }
 

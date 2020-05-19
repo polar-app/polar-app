@@ -16,7 +16,7 @@ import {
     AnnotationMutationsContextProvider,
     IAnnotationMutationCallbacks
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -39,7 +39,6 @@ export interface IDocDescriptor {
 
 export interface IDocScale {
 
-    // FIXME: move scale out of here...
     readonly scale: ScaleLevelTuple;
 
     /**
@@ -50,12 +49,14 @@ export interface IDocScale {
 
 }
 
+export type ScaleValue = number;
+
 export type Resizer = () => void;
 
 /**
  * Scale us and then return the new scale as a numbers
  */
-export type ScaleLeveler = (scale: ScaleLevelTuple) => number;
+export type ScaleLeveler = (scale: ScaleLevelTuple) => ScaleValue;
 
 export interface IDocViewerStore {
 
@@ -86,12 +87,6 @@ export interface IDocViewerStore {
     readonly docScale?: IDocScale;
 
     readonly scaleLeveler?: ScaleLeveler;
-
-    /**
-     * The total number of resizes we've done.  Used so components can see that
-     * the UI is updated. I don't like doing this by side effect.
-     */
-    readonly resizes: number;
 
 }
 
@@ -144,7 +139,6 @@ export interface IDocViewerCallbacks {
 
 const initialStore: IDocViewerStore = {
     docLoaded: false,
-    resizes: 0
 }
 
 interface Mutator {
@@ -240,21 +234,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     function setResizer(resizer: Resizer) {
-
-        const delegate = resizer;
-
-        function newResizer() {
-
-            const store = storeProvider();
-            const {resizes} = store;
-            setStore({...store, resizes: resizes + 1});
-
-            // FIXME: this won't work I think...
-            setTimeout(delegate, 1);
-        }
-
         const store = storeProvider();
-        setStore({...store, resizer: newResizer});
+        setStore({...store, resizer});
     }
 
     function setScaleLeveler(scaleLeveler: ScaleLeveler) {
@@ -270,13 +251,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         if (scaleLeveler) {
 
             const scaleValue = scaleLeveler(scaleLevel);
-
-            const newDocScale: IDocScale = {
-                scale: scaleLevel,
-                scaleValue
-            }
-
-            setDocScale(newDocScale);
 
         }
 
