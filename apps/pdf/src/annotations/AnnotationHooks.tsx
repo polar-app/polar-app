@@ -42,49 +42,46 @@ export function useAnnotationContainer(page: number) {
 
     const [container, setContainer] = React.useState<HTMLElement | undefined>();
 
+    const doUpdateDelegate = React.useCallback(() => {
 
+        const getContainer = (): HTMLElement | undefined => {
 
-    useComponentDidMount(() => {
+            const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
 
-        // update and get the container...
-        const doUpdate = () => {
-
-            const getContainer = (): HTMLElement | undefined => {
-
-                const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
-
-                if (! pageElement) {
-                    return undefined;
-                }
-
-                const textLayerElement = pageElement.querySelector(".textLayer");
-
-                if (! textLayerElement) {
-                    return undefined;
-                }
-
-                return textLayerElement as HTMLElement;
-
-            };
-
-            const newContainer = getContainer();
-
-            if (container !== newContainer) {
-                setContainer(newContainer);
+            if (! pageElement) {
+                return undefined;
             }
+
+            const textLayerElement = pageElement.querySelector(".textLayer");
+
+            if (! textLayerElement) {
+                return undefined;
+            }
+
+            return textLayerElement as HTMLElement;
 
         };
 
-        doUpdate();
+        const newContainer = getContainer();
 
-        const doUpdateDebouncer = Debouncers.create(() => doUpdate());
+        if (container !== newContainer) {
+            setContainer(newContainer);
+        }
+
+    }, []);
+
+    const doUpdate = React.useMemo(() => Debouncers.create(() => doUpdateDelegate()), []);
+
+    useComponentDidMount(() => {
+
+        doUpdateDelegate();
 
         function registerScrollListener(): Unsubscriber {
 
             const viewerContainer = document.getElementById('viewerContainer');
 
             function handleScroll() {
-                doUpdateDebouncer()
+                doUpdate()
             }
 
             viewerContainer!.addEventListener('scroll', handleScroll);
@@ -98,7 +95,7 @@ export function useAnnotationContainer(page: number) {
         function registerResizeListener(): Unsubscriber {
 
             function handleResize() {
-                doUpdateDebouncer();
+                doUpdate();
             }
 
             window.addEventListener('resize', handleResize);
@@ -123,7 +120,7 @@ export function useAnnotationContainer(page: number) {
             const observer = new MutationObserver((mutations) => {
                 for (const mutation of mutations) {
                     if (mutation.type === "attributes") {
-                        doUpdateDebouncer();
+                        doUpdate();
                     }
                 }
 
