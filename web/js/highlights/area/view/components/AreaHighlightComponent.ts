@@ -147,7 +147,7 @@ export class AreaHighlightComponent extends Component {
                     capturedScreenshot: extractedImage
                 };
 
-                const writer = AreaHighlights.write(writeOpts);
+                const writer = AreaHighlights.createWriter(writeOpts);
 
                 const [writtenAreaHighlight, committer] = writer.prepare();
 

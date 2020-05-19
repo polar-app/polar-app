@@ -156,7 +156,7 @@ export class AreaHighlights {
             capturedScreenshot: extractedImage
         };
 
-        const writer = AreaHighlights.write(writeOpts);
+        const writer = AreaHighlights.createWriter(writeOpts);
 
         const [writtenAreaHighlight, committer] = writer.prepare();
 
@@ -183,7 +183,7 @@ export class AreaHighlights {
 
     }
 
-    public static write(opts: AreaHighlightWriteOpts): AreaHighlightWriter {
+    public static createWriter(opts: AreaHighlightWriteOpts): AreaHighlightWriter {
         return new DefaultAreaHighlightWriter(opts);
     }
 
@@ -216,7 +216,7 @@ interface PageDimensions {
 }
 
 export interface DoWriteOpts {
-    readonly datastore: Datastore | PersistenceLayer;
+    readonly datastore: PersistenceLayer;
     readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
     readonly pageNum: number;
@@ -235,7 +235,7 @@ export interface AreaHighlightDeleteOpts {
 }
 
 export interface AreaHighlightWriteOpts {
-    readonly datastore: Datastore | PersistenceLayer;
+    readonly datastore: PersistenceLayer;
     readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
     readonly areaHighlight: IAreaHighlight;
@@ -377,16 +377,17 @@ class DefaultAreaHighlightCommitter implements AreaHighlightCommitter {
         const {datastore, docMeta} = this.opts;
         const {image, oldImage, blob} = this;
 
-        await datastore.writeFile(image.src.backend, image.src, blob);
+        const writeFilePromise = datastore.writeFile(image.src.backend, image.src, blob);
 
-        // now force a write of all the data and the current in memory version
-        // will be written including the above skipped mutation.
-        DocMetas.forceWrite(docMeta);
+        const deleteFilePromise = oldImage ? datastore.deleteFile(oldImage.src.backend, oldImage.src) : Promise.resolve()
 
-        if (oldImage) {
-            datastore.deleteFile(oldImage.src.backend, oldImage.src)
-                .catch(err => log.error("Unable to delete old image: ", err, oldImage));
-        }
+        const writeDocMetaPromise = datastore.writeDocMeta(docMeta);
+
+        await Promise.all([
+            writeFilePromise,
+            deleteFilePromise,
+            writeDocMetaPromise
+        ]);
 
     }
 

@@ -552,7 +552,7 @@ export namespace AnnotationMutationCallbacks {
                     capturedScreenshot
                 };
 
-                const writer = AreaHighlights.write(writeOpts);
+                const writer = AreaHighlights.createWriter(writeOpts);
 
                 const [writtenAreaHighlight, committer] = writer.prepare();
 
