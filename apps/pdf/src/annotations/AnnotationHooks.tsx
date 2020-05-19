@@ -106,39 +106,42 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
 
 
+function getContainer(page: number): HTMLElement | undefined {
+
+    const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
+
+    if (! pageElement) {
+        return undefined;
+    }
+
+    const textLayerElement = pageElement.querySelector(".textLayer");
+
+    if (! textLayerElement) {
+        return undefined;
+    }
+
+    return textLayerElement as HTMLElement;
+
+}
+
 export function useAnnotationContainer(page: number) {
 
-    const [container, setContainer] = React.useState<HTMLElement | undefined>();
+    const containerRef = React.useRef<HTMLElement | undefined>(undefined);
+    const [, setContainer] = React.useState<HTMLElement | undefined>(undefined);
 
-    const doUpdateDelegate = React.useCallback(() => {
+    function doUpdateDelegate() {
 
-        const getContainer = (): HTMLElement | undefined => {
-
-            const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
-
-            if (! pageElement) {
-                return undefined;
-            }
-
-            const textLayerElement = pageElement.querySelector(".textLayer");
-
-            if (! textLayerElement) {
-                return undefined;
-            }
-
-            return textLayerElement as HTMLElement;
-
-        };
-
-        const newContainer = getContainer();
+        const newContainer = getContainer(page);
+        const container = containerRef.current;
 
         if (container !== newContainer) {
+            containerRef.current = newContainer;
             setContainer(newContainer);
         }
 
-    }, []);
+    }
 
-    const doUpdate = React.useMemo(() => Debouncers.create(() => doUpdateDelegate()), []);
+    const doUpdate = React.useMemo(() => Debouncers.create(doUpdateDelegate), []);
 
     useComponentDidMount(() => {
 
@@ -151,7 +154,7 @@ export function useAnnotationContainer(page: number) {
     useSubscriber(createResizeSubscriber(doUpdate));
     useSubscriber(createMutationObserverSubscriber(doUpdate));
 
-    return container;
+    return containerRef.current;
 
 }
 

@@ -26,7 +26,11 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     const container = useAnnotationContainer(page);
     const {docScale} = useDocViewerStore();
 
-    if (! container || ! docScale) {
+    if (! container) {
+        return null;
+    }
+
+    if (! docScale) {
         return null;
     }
 

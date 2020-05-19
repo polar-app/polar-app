@@ -109,21 +109,12 @@ function createDocViewer(): DocViewer {
 
 }
 
-interface LoadedDoc {
-    readonly doc: PDFJS.PDFDocumentProxy;
-    readonly scale: number | string;
-}
-
 export type OnFinderCallback = Callback1<Finder>;
 
 interface IProps {
     readonly target: string;
     readonly url: URLStr;
     readonly onFinder: OnFinderCallback;
-}
-
-interface IState {
-    readonly loadedDoc?: LoadedDoc;
 }
 
 // FIXME: react.memo

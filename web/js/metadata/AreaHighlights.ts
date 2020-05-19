@@ -320,38 +320,29 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
         // update the DocMeta but don't write yet.  We have to make sure the
         // write of the image made to the datastore first.
 
-        const result = DocMetas.withSkippedMutations(docMeta, () => {
+        if (areaHighlight.image) {
+            delete docMeta.docInfo.attachments[areaHighlight.image.id];
+        }
 
-            if (areaHighlight.image) {
-                delete docMeta.docInfo.attachments[areaHighlight.image.id];
-            }
+        docMeta.docInfo.attachments[image.id] = new Attachment({fileRef});
 
-            docMeta.docInfo.attachments[image.id] = new Attachment({fileRef});
+        const rects: HighlightRects = {};
+        rects["0"] = <any> areaHighlightRect;
 
-            const rects: HighlightRects = {};
-            rects["0"] = <any> areaHighlightRect;
-
-            const newAreaHighlight =  new AreaHighlight({
-                ...areaHighlight,
-                image,
-                rects,
-                position,
-                lastUpdated: ISODateTimeStrings.create()
-            });
-
-            // it's important that we delete first so that the ABSENT event is
-            // fired
-            delete pageMeta.areaHighlights[areaHighlight.id];
-
-            pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight!;
-
-            return newAreaHighlight;
-
+        const newAreaHighlight = new AreaHighlight({
+            ...areaHighlight,
+            image,
+            rects,
+            position,
+            lastUpdated: ISODateTimeStrings.create()
         });
+
+        delete pageMeta.areaHighlights[areaHighlight.id];
+        pageMeta.areaHighlights[newAreaHighlight.id] = newAreaHighlight;
 
         const committer = new DefaultAreaHighlightCommitter(this.opts, image, blob, oldImage);
 
-        return [result, committer];
+        return [newAreaHighlight, committer];
 
     }
 

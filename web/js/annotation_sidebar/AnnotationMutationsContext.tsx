@@ -496,6 +496,8 @@ export namespace AnnotationMutationCallbacks {
 
         function onDeleted(mutation: IDeleteMutation) {
 
+            // FIXME area highlight delete does NOT remove attachment references...
+
             // FIXME: do I need to unify this action with doc repo store?
 
             const annotations = mutation.selected;
@@ -538,7 +540,7 @@ export namespace AnnotationMutationCallbacks {
                 const areaHighlightRect = toAreaHighlightRect();
 
                 // this will do the actual mutation of the docMeta
-                DocAnnotationsMutator.onAreaHighlight(mutation.docMeta, mutation.pageMeta, mutation);
+                // DocAnnotationsMutator.onAreaHighlight(mutation.docMeta, mutation.pageMeta, mutation);
 
                 const {persistenceLayerProvider} = persistenceLayerContext;
 
