@@ -3,13 +3,12 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AnnotationHooks";
+import {computePageDimensions, useAnnotationContainer} from "./AnnotationHooks";
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
-import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
 import isEqual from "react-fast-compare";
@@ -33,7 +32,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     const {scaleValue} = docScale;
 
-    const {pageDimensions} = AreaHighlights.computePageDimensions(page);
+    const pageDimensions = computePageDimensions(page);
 
     const toOverlayRect = (areaHighlightRect: AreaHighlightRect): ILTRect => {
 

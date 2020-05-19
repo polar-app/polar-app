@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AnnotationHooks";
+import {computePageDimensions, useAnnotationContainer} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -20,7 +20,6 @@ import {
     useContextMenu
 } from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import {IDimensions} from "polar-shared/src/util/IDimensions";
 import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 
 const createPlacementRect = (placementElement: HTMLElement) => {
@@ -59,19 +58,6 @@ function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
         height: overlayRect.height,
     });
 
-}
-
-export function getPageElement(page: number) {
-    return document.querySelectorAll(".page")[page - 1];
-}
-
-export function computePageDimensions(page: number): IDimensions {
-    // TODO this is a bit of a hack.
-    const pageElement = getPageElement(page);
-    return {
-        width: pageElement.clientWidth,
-        height: pageElement.clientHeight
-    }
 }
 
 function computePagemarkFromResize(rect: ILTRect,

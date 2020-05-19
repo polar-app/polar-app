@@ -4,6 +4,7 @@ import {
     useComponentWillUnmount
 } from "../../../../web/js/hooks/lifecycle";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
+import { IDimensions } from "polar-shared/src/util/IDimensions";
 
 /**
  * Unsubscribes to the action created by the subscriber.
@@ -152,4 +153,18 @@ export function useAnnotationContainer(page: number) {
 
     return container;
 
+}
+
+
+export function getPageElement(page: number) {
+    return document.querySelectorAll(".page")[page - 1];
+}
+
+export function computePageDimensions(page: number): IDimensions {
+    // TODO this is a bit of a hack.
+    const pageElement = getPageElement(page);
+    return {
+        width: pageElement.clientWidth,
+        height: pageElement.clientHeight
+    }
 }

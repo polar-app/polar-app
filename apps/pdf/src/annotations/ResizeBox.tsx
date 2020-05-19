@@ -59,7 +59,6 @@ export function ResizeBox(props: IProps) {
 
     const handleResize = React.useCallback((state: IState) => {
 
-        console.log("FIXME: state: ", state);
         setState(state);
 
         try {
