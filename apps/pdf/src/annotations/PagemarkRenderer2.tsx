@@ -1,11 +1,7 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {
-    AbstractAnnotationRenderer,
-    AbstractAnnotationRendererProps,
-    AbstractAnnotationRendererState, useAnnotationContainer
-} from "./AbstractAnnotationRenderer";
+import {useAnnotationContainer} from "./AbstractAnnotationRenderer";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -25,7 +21,7 @@ import {
 } from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {IDimensions} from "polar-shared/src/util/IDimensions";
-import { IPagemarkUpdate, useDocViewerCallbacks, useDocViewerStore } from "../DocViewerStore";
+import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 
 const createPlacementRect = (placementElement: HTMLElement) => {
 
@@ -108,8 +104,9 @@ interface PagemarkInnerProps {
 
 }
 
-interface IProps extends AbstractAnnotationRendererProps {
+interface IProps {
     readonly fingerprint: IDStr;
+    readonly page: number;
     readonly pagemark: IPagemark;
 }
 

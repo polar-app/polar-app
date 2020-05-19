@@ -528,10 +528,7 @@ export namespace AnnotationMutationCallbacks {
 
             async function doAsync() {
 
-                const {
-                    docMeta, pageMeta, areaHighlight,
-                    capturedScreenshot, position
-                } = mutation;
+                const {docMeta, pageMeta, areaHighlight, capturedScreenshot, position} = mutation;
 
                 function toAreaHighlightRect() {
                     const rect = Arrays.first(Object.values(areaHighlight.rects));

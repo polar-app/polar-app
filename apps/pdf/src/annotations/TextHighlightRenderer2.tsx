@@ -6,15 +6,13 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {
-    AbstractAnnotationRendererProps,
-    useAnnotationContainer
-} from "./AbstractAnnotationRenderer";
+import {useAnnotationContainer} from "./AbstractAnnotationRenderer";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 
-interface IProps extends AbstractAnnotationRendererProps {
+interface IProps {
     readonly fingerprint: IDStr;
+    readonly page: number;
     readonly textHighlight: ITextHighlight;
 }
 

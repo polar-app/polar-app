@@ -91,12 +91,15 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
                 const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
 
+
                 const mutation: IAreaHighlightCreate = {
                     type: 'create',
                     docMeta,
                     pageMeta,
                     ...capturedAreaHighlight
                 };
+
+                console.log("FIXME2, ", mutation);
 
                 onAreaHighlight(mutation);
 
