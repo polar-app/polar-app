@@ -12,6 +12,10 @@ import {
 import {AreaHighlightRenderers} from "./annotations/AreaHighlightRenderers";
 import {IPoint} from "../../../web/js/Point";
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {Logger} from "polar-shared/src/logger/Logger";
+import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
+
+const log = Logger.create();
 
 export interface IDocViewerContextMenuOrigin {
     readonly x: number;
@@ -70,30 +74,39 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const onCreateAreaHighlight = React.useCallback(() => {
 
         // FIXME: docScale is only being set on resize.. there isn't an initial value.
-        console.log("FIXME: props.origin: ", props.origin);
-        console.log("FIXME: docScale: ", docScale);
 
-        if (props.origin && docScale && docMeta) {
+        async function doAsync() {
 
-            const clientPoint: IPoint = {
-                x: props.origin.clientX,
-                y: props.origin.clientY
-            };
+            if (props.origin && docScale && docMeta) {
 
-            const areaHighlight = AreaHighlightRenderers.createAreaHighlightFromEvent(clientPoint, docScale);
+                const clientPoint: IPoint = {
+                    x: props.origin.clientX,
+                    y: props.origin.clientY
+                };
 
-            const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
+                const capturedAreaHighlight =
+                    await createAreaHighlightFromEvent(props.origin.pageNum,
+                                                       clientPoint,
+                                                       docScale);
 
-            const mutation: IAreaHighlightCreate = {
-                type: 'create',
-                areaHighlight,
-                docMeta,
-                pageMeta
-            };
+                const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
 
-            onAreaHighlight(mutation);
+                const mutation: IAreaHighlightCreate = {
+                    type: 'create',
+                    docMeta,
+                    pageMeta,
+                    ...capturedAreaHighlight
+                };
+
+                onAreaHighlight(mutation);
+
+            }
 
         }
+
+        // FIXME: better error handling
+        doAsync()
+            .catch(err => log.error(err));
 
     }, []);
 

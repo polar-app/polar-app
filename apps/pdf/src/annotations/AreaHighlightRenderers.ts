@@ -8,22 +8,38 @@ import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPoint} from "../../../../web/js/Point";
 import {IDocScale} from "../DocViewerStore";
+import {Screenshots} from "../../../../web/js/screenshots/Screenshots";
+import {ICapturedScreenshot} from "../../../../web/js/screenshots/Screenshot";
+import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 
 export namespace AreaHighlightRenderers {
 
-    export function createAreaHighlightFromEvent(clientPoint: IPoint, docScale: IDocScale) {
+    export interface ICapturedAreaHighlight {
+        readonly capturedScreenshot: ICapturedScreenshot;
+        readonly areaHighlight: IAreaHighlight;
+        readonly position: Position;
+    }
 
-        const rectFromEvent = AnnotationRects.createFromClientPoint(clientPoint);
-        const annotationRect = AreaHighlights.toCorrectScale2(Rects.createFromBasicRect(rectFromEvent),
+    export async function createAreaHighlightFromEvent(pageNum: number,
+                                                       clientPoint: IPoint,
+                                                       docScale: IDocScale): Promise<ICapturedAreaHighlight> {
+
+        const rect = AnnotationRects.createFromClientPoint(clientPoint);
+        const annotationRect = AreaHighlights.toCorrectScale2(Rects.createFromBasicRect(rect),
                                                               docScale.scaleValue);
 
-        return AreaHighlights.create({rect: annotationRect});
+        const position: Position = {
+            x: annotationRect.left,
+            y: annotationRect.top,
+            width: annotationRect.width,
+            height: annotationRect.height,
+        };
 
-        //
-        // const docMeta = this.model.docMeta;
-        // const pageMeta =  DocMetas.getPageMeta(docMeta, contextMenuLocation.pageNum);
-        //
-        // pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
+        const capturedScreenshot = await Screenshots.capture(pageNum, rect);
+
+        const areaHighlight = AreaHighlights.create({rect: annotationRect});
+
+        return {capturedScreenshot, areaHighlight, position};
 
     }
 
@@ -48,30 +64,4 @@ export interface IWriteAreaHighlightOpts {
     readonly pageMeta: IPageMeta;
     readonly rect: ILTRect;
     readonly areaHighlight: IAreaHighlight;
-}
-
-export async function writeAreaHighlight(opts: IWriteAreaHighlightOpts) {
-    //
-    // const {docMeta, pageMeta, areaHighlight, rect} = opts;
-    //
-    // const extractedImage = await Screenshots.capture(pageMeta.pageInfo.num, rect);
-    //
-    // const writeOpts: AreaHighlightWriteOpts = {
-    //     datastore: this.persistenceLayerProvider(),
-    //     docMeta,
-    //     pageMeta,
-    //     areaHighlight,
-    //     rect,
-    //     position,
-    //     extractedImage
-    // };
-    //
-    // const writer = AreaHighlights.write(writeOpts);
-    //
-    // const [writtenAreaHighlight, committer] = writer.prepare();
-    //
-    // this.areaHighlight = writtenAreaHighlight;
-    //
-    // await committer.commit();
-
 }

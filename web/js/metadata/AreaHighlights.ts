@@ -20,7 +20,7 @@ import {
     Position
 } from "polar-shared/src/metadata/IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
-import {ExtractedImage} from '../screenshots/Screenshot';
+import {ICapturedScreenshot} from '../screenshots/Screenshot';
 import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
@@ -85,7 +85,7 @@ export class AreaHighlights {
 
         const rescaleFactor = 1 / currentScale;
 
-        return overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
+        return Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
 
     }
 
@@ -151,9 +151,9 @@ export class AreaHighlights {
             docMeta,
             pageMeta,
             areaHighlight,
-            rect: areaHighlightRect,
+            areaHighlightRect,
             position,
-            extractedImage
+            capturedScreenshot: extractedImage
         };
 
         const writer = AreaHighlights.write(writeOpts);
@@ -239,9 +239,9 @@ export interface AreaHighlightWriteOpts {
     readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
     readonly areaHighlight: IAreaHighlight;
-    readonly rect: AreaHighlightRect;
+    readonly areaHighlightRect: AreaHighlightRect;
     readonly position: Position;
-    readonly extractedImage: ExtractedImage;
+    readonly capturedScreenshot: ICapturedScreenshot;
 }
 
 export interface AreaHighlightWriter {
@@ -257,9 +257,9 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
 
     public prepare(): [AreaHighlight, AreaHighlightCommitter] {
 
-        const {docMeta, extractedImage, pageMeta, areaHighlight, rect, position} = this.opts;
+        const {docMeta, capturedScreenshot, pageMeta, areaHighlight, areaHighlightRect, position} = this.opts;
 
-        const {type, width, height} = extractedImage;
+        const {type, width, height} = capturedScreenshot;
 
         const id = Images.createID();
         const ext = Images.toExt(type);
@@ -301,10 +301,10 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
 
         const toBlob = () => {
 
-            if (typeof extractedImage.data === 'string') {
-                return DataURLs.toBlob(extractedImage.data);
+            if (typeof capturedScreenshot.data === 'string') {
+                return DataURLs.toBlob(capturedScreenshot.data);
             } else {
-                return ArrayBuffers.toBlob(extractedImage.data);
+                return ArrayBuffers.toBlob(capturedScreenshot.data);
             }
 
         };
@@ -329,7 +329,7 @@ class DefaultAreaHighlightWriter implements AreaHighlightWriter {
             docMeta.docInfo.attachments[image.id] = new Attachment({fileRef});
 
             const rects: HighlightRects = {};
-            rects["0"] = <any> rect;
+            rects["0"] = <any> areaHighlightRect;
 
             const newAreaHighlight =  new AreaHighlight({
                 ...areaHighlight,

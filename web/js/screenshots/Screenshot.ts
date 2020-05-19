@@ -42,7 +42,7 @@ export interface ScreenshotRequest {
 /**
  * Keeps the binary data but also metadata for the extract.
  */
-export interface ExtractedImage {
+export interface ICapturedScreenshot {
     readonly data: ArrayBuffer | DataURL;
     readonly type: ImageType;
     readonly width: number;

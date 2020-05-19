@@ -142,9 +142,9 @@ export class AreaHighlightComponent extends Component {
                     docMeta,
                     pageMeta,
                     areaHighlight,
-                    rect,
+                    areaHighlightRect: rect,
                     position,
-                    extractedImage
+                    capturedScreenshot: extractedImage
                 };
 
                 const writer = AreaHighlights.write(writeOpts);

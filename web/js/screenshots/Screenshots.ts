@@ -4,7 +4,7 @@ import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Buffers} from 'polar-shared/src/util/Buffers';
 import {Canvases} from 'polar-shared/src/util/Canvases';
-import {ExtractedImage} from './Screenshot';
+import {ICapturedScreenshot} from './Screenshot';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AppRuntime} from '../AppRuntime';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
@@ -26,7 +26,7 @@ export class Screenshots {
      */
     public static async capture(pageNum: number,
                                 boxRect: ILTRect,
-                                element: HTMLElement): Promise<ExtractedImage> {
+                                element?: HTMLElement): Promise<ICapturedScreenshot> {
 
         const docFormat = DocFormatFactory.getInstance();
 
@@ -55,7 +55,7 @@ export class Screenshots {
 
     // TODO: Computing the bounding rect directly would be a better option here.
 
-    private static async captureViaElectron(rect: ILTRect, element?: HTMLElement): Promise<ExtractedImage>  {
+    private static async captureViaElectron(rect: ILTRect, element?: HTMLElement): Promise<ICapturedScreenshot>  {
 
         log.debug("Capturing via electron");
 
@@ -80,7 +80,7 @@ export class Screenshots {
     }
 
     private static async captureViaCanvas(pageNum: number,
-                                          rect: ILTRect): Promise<ExtractedImage> {
+                                          rect: ILTRect): Promise<ICapturedScreenshot> {
 
         const docFormat = DocFormatFactory.getInstance();
 

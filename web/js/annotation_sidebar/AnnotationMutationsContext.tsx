@@ -19,7 +19,7 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {
-    usePersistenceContext, usePersistenceLayerContext,
+    usePersistenceLayerContext,
     useTagsContext
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
@@ -27,11 +27,18 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {AreaHighlights} from "../metadata/AreaHighlights";
-import {DocMetas} from "../metadata/DocMetas";
+import {
+    AreaHighlights,
+    AreaHighlightWriteOpts
+} from "../metadata/AreaHighlights";
+import {ICapturedScreenshot} from "../screenshots/Screenshot";
+import {AreaHighlightRect} from "../metadata/AreaHighlightRect";
+import {Position} from "polar-shared/src/metadata/IBaseHighlight";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 const log = Logger.create();
 
@@ -86,6 +93,8 @@ export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcar
 
 interface IAreaHighlightBaseMutation {
     readonly areaHighlight: IAreaHighlight;
+    readonly capturedScreenshot: ICapturedScreenshot;
+    readonly position: Position;
     readonly docMeta: IDocMeta;
     readonly pageMeta: IPageMeta;
 }
@@ -517,9 +526,48 @@ export namespace AnnotationMutationCallbacks {
 
         function onAreaHighlight(mutation: IAreaHighlightMutation) {
 
-            DocAnnotationsMutator.onAreaHighlight(mutation.docMeta, mutation.pageMeta, mutation);
-            writeUpdatedDocMetas([mutation.docMeta])
-                .catch(err => log.error(err));
+            async function doAsync() {
+
+                const {
+                    docMeta, pageMeta, areaHighlight,
+                    capturedScreenshot, position
+                } = mutation;
+
+                function toAreaHighlightRect() {
+                    const rect = Arrays.first(Object.values(areaHighlight.rects));
+                    return AreaHighlightRects.createFromRect(rect!);
+                }
+
+                const areaHighlightRect = toAreaHighlightRect();
+
+                // this will do the actual mutation of the docMeta
+                DocAnnotationsMutator.onAreaHighlight(mutation.docMeta, mutation.pageMeta, mutation);
+
+                const {persistenceLayerProvider} = persistenceLayerContext;
+
+                const writeOpts: AreaHighlightWriteOpts = {
+                    datastore: persistenceLayerProvider(),
+                    docMeta,
+                    pageMeta,
+                    areaHighlight,
+                    areaHighlightRect,
+                    position,
+                    capturedScreenshot
+                };
+
+                const writer = AreaHighlights.write(writeOpts);
+
+                const [writtenAreaHighlight, committer] = writer.prepare();
+
+                await committer.commit();
+
+                updateStore([docMeta]);
+
+                refresher();
+
+            }
+
+            doAsync().catch(err => log.error(err));
 
         }
 
