@@ -28,6 +28,7 @@ import {
     useDocViewerStore
 } from "./DocViewerStore";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import Divider from "@material-ui/core/Divider";
 
 // FIXME: move this its own component
 const globalKeyMap = {
@@ -276,6 +277,10 @@ export const DocToolbar = (props: IProps) => {
 
                         <MUIButtonBar>
 
+                            <DocFindButton/>
+
+                            <Divider orientation="vertical"/>
+
                             <IconButton onClick={onPagePrev}>
                                 <ArrowUpwardIcon/>
                             </IconButton>
@@ -309,10 +314,6 @@ export const DocToolbar = (props: IProps) => {
                                     <RemoveIcon/>
                                 </IconButton>
 
-                                <IconButton onClick={() => handleNextZoomLevel(1)}>
-                                    <AddIcon/>
-                                </IconButton>
-
                                 {docScale &&
                                     <FormControl variant="outlined" size="small">
                                         <Select value={docScale.scale.value || 'page-width'}
@@ -325,6 +326,11 @@ export const DocToolbar = (props: IProps) => {
                                             ))}
                                         </Select>
                                     </FormControl>}
+
+                                <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                    <AddIcon/>
+                                </IconButton>
+
                             </MUIButtonBar>
 
                         </div>
@@ -341,7 +347,6 @@ export const DocToolbar = (props: IProps) => {
                         <div style={{display: 'flex'}}
                              className="ml-auto vertical-aligned-children">
 
-                            <DocFindButton/>
                             <FullScreenButton/>
 
                         </div>
