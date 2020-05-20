@@ -23,10 +23,10 @@ export namespace AreaHighlightRenderers {
     }
 
     export async function createAreaHighlightFromEvent(pageNum: number,
-                                                       point: IPoint,
+                                                       pointWithinPageElement: IPoint,
                                                        docScale: IDocScale): Promise<ICapturedAreaHighlight> {
 
-        const rect = AnnotationRects.createFromClientPoint(pageNum, point);
+        const rect = AnnotationRects.createFromPointWithinPageElement(pageNum, pointWithinPageElement);
 
         const pageDimensions = getPageElementDimensions(pageNum);
 

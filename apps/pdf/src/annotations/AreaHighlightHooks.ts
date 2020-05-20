@@ -8,6 +8,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
 import {Logger} from "polar-shared/src/logger/Logger";
 import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 
 const log = Logger.create();
 
@@ -16,8 +17,16 @@ export interface AreaHighlightCreatedOpts {
     readonly pageNum: number;
 }
 
+export interface AreaHighlightUpdatedOpts {
+    readonly overlayRect: ILTRect;
+    readonly pageNum: number;
+}
+
 interface IAreaHighlightHooks {
     readonly onAreaHighlightCreated: (opts: AreaHighlightCreatedOpts) => void;
+
+    readonly onAreaHighlightUpdate: (opts: AreaHighlightUpdatedOpts) => void;
+
 }
 
 export function useAreaHighlightHooks(): IAreaHighlightHooks {
@@ -33,11 +42,9 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
             if (docScale && docMeta) {
 
-                const point: IPoint = pointWithinPageElement;
-
                 const capturedAreaHighlight =
                     await createAreaHighlightFromEvent(pageNum,
-                                                       point,
+                                                       pointWithinPageElement,
                                                        docScale);
 
                 const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
@@ -61,7 +68,44 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }
 
-    return {onAreaHighlightCreated};
+
+    function onAreaHighlightUpdate(opts: AreaHighlightUpdatedOpts) {
+        //
+        // const {pageNum, overlayRect} = opts;
+        //
+        // async function doAsync() {
+        //
+        //     if (docScale && docMeta) {
+        //
+        //         const point: IPoint = pointWithinPageElement;
+        //
+        //         const capturedAreaHighlight =
+        //             await createAreaHighlightFromEvent(pageNum,
+        //                                                point,
+        //                                                docScale);
+        //
+        //         const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+        //
+        //         const mutation: IAreaHighlightCreate = {
+        //             type: 'create',
+        //             docMeta,
+        //             pageMeta,
+        //             ...capturedAreaHighlight
+        //         };
+        //
+        //         onAreaHighlight(mutation);
+        //
+        //     }
+        //
+        // }
+        //
+        // // FIXME: better error handling
+        // doAsync()
+        //     .catch(err => log.error(err));
+
+    }
+
+    return {onAreaHighlightCreated, onAreaHighlightUpdate};
 
 }
 

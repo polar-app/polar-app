@@ -50,13 +50,13 @@ export namespace AnnotationRects {
 
     }
 
-    export function createFromClientPoint(pageNum: number, point: IPoint) {
+    export function createFromPointWithinPageElement(pageNum: number, pointWithinPageElement: IPoint) {
 
         const pageElement = getPageElement(pageNum);
 
         if (pageElement) {
             const containerDimensions = computeContainerDimensions(pageElement);
-            return createFromClientPointAndContainer(point, containerDimensions)
+            return createFromPointWithinPageAndContainer(pointWithinPageElement, containerDimensions)
         }
 
         throw new Error("No page found at point");
@@ -65,11 +65,11 @@ export namespace AnnotationRects {
     /**
      * Create from clientX and clientY point
      */
-    export function createFromClientPointAndContainer(point: IPoint, containerDimensions: IDimensions) {
+    export function createFromPointWithinPageAndContainer(pointWithinPageElement: IPoint, containerDimensions: IDimensions) {
 
         const boxRect = Rects.createFromBasicRect({
-            left: point.x,
-            top: point.y,
+            left: pointWithinPageElement.x,
+            top: pointWithinPageElement.y,
             width: 150,
             height: 150
         });
