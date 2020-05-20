@@ -78,7 +78,7 @@ export class AreaHighlights {
 
     }
 
-    public static toCorrectScale2(overlayRect: Rect, currentScale: number) {
+    public static toCorrectScale2(overlayRect: ILTRect, currentScale: number) {
 
         // we have to scale these number BACK to their original
         // positions at 100%

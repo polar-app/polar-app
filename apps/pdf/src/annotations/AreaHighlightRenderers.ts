@@ -54,6 +54,37 @@ export namespace AreaHighlightRenderers {
 
     }
 
+    export async function createAreaHighlightFromOverlayRect(pageNum: number,
+                                                             overlayRect: ILTRect,
+                                                             docScale: IDocScale): Promise<ICapturedAreaHighlight> {
+
+        const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect);
+
+        const pageDimensions = getPageElementDimensions(pageNum);
+
+        if (! pageDimensions) {
+            throw new Error("No page dimensions");
+        }
+
+        const positionRect = AreaHighlights.toCorrectScale2(overlayRect,
+                                                            docScale.scaleValue);
+
+        const position: Position = {
+            x: positionRect.left,
+            y: positionRect.top,
+            width: positionRect.width,
+            height: positionRect.height,
+        };
+
+        const capturedScreenshot = await Screenshots.capture(pageNum, overlayRect);
+
+        const areaHighlight = AreaHighlights.create({rect});
+
+        return {capturedScreenshot, areaHighlight, position};
+
+    }
+
+
 }
 
 

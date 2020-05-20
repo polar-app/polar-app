@@ -8,6 +8,7 @@ import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
 import {IPoint} from "../Point";
 import {getPageElement} from "../../../apps/pdf/src/annotations/AnnotationHooks";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 const log = Logger.create();
 
 export namespace AnnotationRects {
@@ -62,6 +63,20 @@ export namespace AnnotationRects {
         throw new Error("No page found at point");
 
     }
+
+    export function createFromOverlayRect(pageNum: number, overlayRect: ILTRect) {
+
+        const pageElement = getPageElement(pageNum);
+
+        if (pageElement) {
+            const containerDimensions = computeContainerDimensions(pageElement);
+            return createFromOverlayRectWithinPageAndContainer(overlayRect, containerDimensions)
+        }
+
+        throw new Error("No page found at point");
+
+    }
+
     /**
      * Create from clientX and clientY point
      */
@@ -74,8 +89,16 @@ export namespace AnnotationRects {
             height: 150
         });
 
-        return AnnotationRects.createFromPositionedRect(boxRect, containerDimensions);
+        return createFromOverlayRectWithinPageAndContainer(boxRect, containerDimensions);
 
+    }
+
+    /**
+     * Create from clientX and clientY point
+     */
+    export function createFromOverlayRectWithinPageAndContainer(overlayRect: ILTRect,
+                                                                containerDimensions: IDimensions) {
+        return AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(overlayRect), containerDimensions);
     }
 
     /**

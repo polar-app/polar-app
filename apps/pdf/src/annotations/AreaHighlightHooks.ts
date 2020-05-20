@@ -1,5 +1,5 @@
 import {
-    IAreaHighlightCreate,
+    IAreaHighlightCreate, IAreaHighlightUpdate,
     useAnnotationMutationsContext
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IPoint} from "../../../../web/js/Point";
@@ -9,6 +9,9 @@ import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
 import {Logger} from "polar-shared/src/logger/Logger";
 import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
+import createFromOverlayRect = AnnotationRects.createFromOverlayRect;
+import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 
 const log = Logger.create();
 
@@ -68,40 +71,37 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }
 
-
     function onAreaHighlightUpdate(opts: AreaHighlightUpdatedOpts) {
-        //
-        // const {pageNum, overlayRect} = opts;
-        //
-        // async function doAsync() {
-        //
-        //     if (docScale && docMeta) {
-        //
-        //         const point: IPoint = pointWithinPageElement;
-        //
-        //         const capturedAreaHighlight =
-        //             await createAreaHighlightFromEvent(pageNum,
-        //                                                point,
-        //                                                docScale);
-        //
-        //         const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
-        //
-        //         const mutation: IAreaHighlightCreate = {
-        //             type: 'create',
-        //             docMeta,
-        //             pageMeta,
-        //             ...capturedAreaHighlight
-        //         };
-        //
-        //         onAreaHighlight(mutation);
-        //
-        //     }
-        //
-        // }
-        //
-        // // FIXME: better error handling
-        // doAsync()
-        //     .catch(err => log.error(err));
+
+        const {pageNum, overlayRect} = opts;
+
+        async function doAsync() {
+
+            if (docScale && docMeta) {
+
+                const capturedAreaHighlight =
+                    await createAreaHighlightFromOverlayRect(pageNum,
+                                                             overlayRect,
+                                                             docScale);
+
+                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+                const mutation: IAreaHighlightUpdate = {
+                    type: 'update',
+                    docMeta,
+                    pageMeta,
+                    ...capturedAreaHighlight
+                };
+
+                onAreaHighlight(mutation);
+
+            }
+
+        }
+
+        // FIXME: better error handling
+        doAsync()
+            .catch(err => log.error(err));
 
     }
 
