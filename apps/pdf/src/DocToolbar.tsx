@@ -44,7 +44,7 @@ const FullScreenButton = React.memo(() => {
     const [fullScreen, setFullScreen] = useState(false);
 
     // FIXME: shift+command+f for macos full-screen
-    // make this a hook that we can reuse... 
+    // make this a hook that we can reuse...
 
     function requestFullScreen() {
 
@@ -210,15 +210,45 @@ interface NumPagesProps {
 }
 
 const NumPages = (props: NumPagesProps) => (
-    <div className="ml-1 mt-auto mb-auto" style={{fontSize: "1.3rem"}}>
+    <div className="ml-1 mt-auto mb-auto"
+         style={{fontSize: "1.3rem", userSelect: 'none'}}>
         of {props.pdfDocMeta.nrPages}
     </div>
 );
 
+const PagePrevButton = React.memo(() => {
+
+    const {onPagePrev} = useDocViewerCallbacks();
+    const {pageNavigator} = useDocViewerStore();
+
+    return (
+        <IconButton disabled={! pageNavigator || pageNavigator.get() <= 1}
+                    onClick={onPagePrev}>
+            <ArrowUpwardIcon/>
+        </IconButton>
+    );
+
+});
+
+const PageNextButton = () => {
+
+    const {onPageNext} = useDocViewerCallbacks();
+    const {pageNavigator, docDescriptor} = useDocViewerStore();
+
+    return (
+        <IconButton disabled={! pageNavigator || ! docDescriptor || pageNavigator.get() >= docDescriptor.nrPages}
+                    onClick={onPageNext}>
+            <ArrowDownwardIcon/>
+        </IconButton>
+    );
+
+}
+
+
 export const DocToolbar = React.memo(() => {
 
     const {docDescriptor, docScale} = useDocViewerStore();
-    const {onPagePrev, onPageNext, setScale} = useDocViewerCallbacks();
+    const {setScale} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: PDFScaleLevel) => {
 
@@ -262,13 +292,9 @@ export const DocToolbar = React.memo(() => {
 
                         <Divider orientation="vertical"/>
 
-                        <IconButton onClick={onPagePrev}>
-                            <ArrowUpwardIcon/>
-                        </IconButton>
+                        <PagePrevButton/>
 
-                        <IconButton onClick={onPageNext}>
-                            <ArrowDownwardIcon/>
-                        </IconButton>
+                        <PageNextButton/>
 
                         <PageNumberInput docDescriptor={docDescriptor}/>
 
