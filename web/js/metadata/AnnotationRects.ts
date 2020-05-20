@@ -7,58 +7,82 @@ import {Line} from '../util/Line';
 import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
 import {IPoint} from "../Point";
+import {getPageElement} from "../../../apps/pdf/src/annotations/AnnotationHooks";
 const log = Logger.create();
 
-export class AnnotationRects {
+export namespace AnnotationRects {
 
+    export function computeContainerDimensions(element: HTMLElement): IDimensions {
 
-    /**
-     * Create from clientX and clientY point
-     */
-    static createFromClientPoint(point: IPoint) {
-
-        let elements = document.elementsFromPoint(point.x, point.y);
-
-        elements = elements.filter(element => element.matches(".page"));
-
-        if (elements.length === 1) {
-
-            const pageElement = <HTMLElement>elements[0];
-
-            log.info("Creating box on pageElement: ", pageElement);
-
-            const boxRect = Rects.createFromBasicRect({
-                left: point.x,
-                top: point.y,
-                width: 150,
-                height: 150
-            });
-
-            log.info("Placing box at: ", boxRect);
-
-            // get a rect for the element... we really only need the dimensions
-            // though.. not the width and height.
-            const containerRect = Rects.createFromBasicRect({
-                left: 0,
-                top: 0,
-                width: pageElement.offsetWidth,
-                height: pageElement.offsetHeight
-            });
-
-            return AnnotationRects.createFromPositionedRect(boxRect, containerRect);
-
+        return {
+            width: element.clientWidth,
+            height: element.clientHeight
         }
-
-        throw new Error("Wrong number of .page elements: " + elements.length);
 
     }
 
+    export function getPageElementAtPoint(point: IPoint): HTMLElement | undefined {
+
+        const elements = document.elementsFromPoint(point.x, point.y)
+                                 .filter(element => element.matches(".page"));
+
+        if (elements.length === 1) {
+            return elements[0] as HTMLElement;
+        }
+
+        return undefined;
+
+    }
+
+    export function getPageElement(page: number): HTMLElement | undefined {
+        return document.querySelectorAll(".page")[page - 1] as HTMLElement || undefined;
+    }
+
+    export function getPageElementDimensions(page: number): IDimensions | undefined {
+
+        const pageElement = getPageElement(page);
+
+        if (! pageElement) {
+            return undefined;
+        }
+
+        return computeContainerDimensions(pageElement);
+
+    }
+
+    export function createFromClientPoint(pageNum: number, point: IPoint) {
+
+        const pageElement = getPageElement(pageNum);
+
+        if (pageElement) {
+            const containerDimensions = computeContainerDimensions(pageElement);
+            return createFromClientPointAndContainer(point, containerDimensions)
+        }
+
+        throw new Error("No page found at point");
+
+    }
+    /**
+     * Create from clientX and clientY point
+     */
+    export function createFromClientPointAndContainer(point: IPoint, containerDimensions: IDimensions) {
+
+        const boxRect = Rects.createFromBasicRect({
+            left: point.x,
+            top: point.y,
+            width: 150,
+            height: 150
+        });
+
+        return AnnotationRects.createFromPositionedRect(boxRect, containerDimensions);
+
+    }
 
     /**
      *
      * @param contextMenuLocation {ContextMenuLocation}
      */
-    static createFromEvent(contextMenuLocation: ContextMenuLocation) {
+    export function createFromEvent(contextMenuLocation: ContextMenuLocation) {
 
         const points = contextMenuLocation.points;
 
@@ -107,21 +131,21 @@ export class AnnotationRects {
      * PagemarkRect with the correct coordinates.
      *
      * @param boxRect {Rect}
-     * @param containerRect {Rect}
+     * @param containerDimensions {Rect}
      * @return {AnnotationRect}
      */
-    static createFromPositionedRect(boxRect: Rect, containerRect: IDimensions): AnnotationRect {
+    export function createFromPositionedRect(boxRect: Rect, containerDimensions: IDimensions): AnnotationRect {
 
         Preconditions.assertCondition(boxRect.width > 0, 'boxRect width');
         Preconditions.assertCondition(boxRect.height > 0, 'boxRect height');
 
-        Preconditions.assertCondition(containerRect.width > 0, 'containerRect width');
-        Preconditions.assertCondition(containerRect.height > 0, 'containerRect height');
+        Preconditions.assertCondition(containerDimensions.width > 0, 'containerRect width');
+        Preconditions.assertCondition(containerDimensions.height > 0, 'containerRect height');
 
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
-        const xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
-        const yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
+        const xAxis = boxRect.toLine("x").multiply(100 / containerDimensions.width);
+        const yAxis = boxRect.toLine("y").multiply(100 / containerDimensions.height);
 
         return AnnotationRects.createFromLines(xAxis, yAxis);
 
@@ -133,7 +157,7 @@ export class AnnotationRects {
      * @param yAxis {Line}
      * @return {AnnotationRect}
      */
-    static createFromLines(xAxis: Line, yAxis: Line) {
+    export function createFromLines(xAxis: Line, yAxis: Line) {
         return AnnotationRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
     }
 
@@ -143,7 +167,7 @@ export class AnnotationRects {
      * @param rect {Rect}
      * @return {AnnotationRect}
      */
-    static createFromRect(rect: Rect) {
+    export function createFromRect(rect: Rect) {
 
         return new AnnotationRect({
             left: rect.left,

@@ -97,7 +97,7 @@ export class AreaHighlightComponent extends Component {
         if (boxMoveEvent.state === "completed") {
 
             const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                boxMoveEvent.restrictionRect);
+                                                                            boxMoveEvent.restrictionRect);
 
             const areaHighlightRect = new AreaHighlightRect(annotationRect);
 

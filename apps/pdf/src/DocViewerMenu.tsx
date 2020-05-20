@@ -25,9 +25,10 @@ export interface IDocViewerContextMenuOrigin {
     readonly pageNum: number;
     readonly clientX: number;
     readonly clientY: number;
+    readonly pointWithinPageElement: IPoint;
 }
 
-export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLElement, MouseEvent>) {
+export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLElement, MouseEvent>): IDocViewerContextMenuOrigin | undefined {
 
     const target = event.target as HTMLElement;
 
@@ -40,6 +41,19 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
     const eventTargetOffset = Elements.getRelativeOffsetRect(target, pageElement);
 
+    function computePointWithinPageElement(): IPoint {
+
+        const bcr = pageElement.getBoundingClientRect();
+
+        return {
+            x: event.clientX - bcr.x,
+            y: event.clientY - bcr.y
+        };
+
+    }
+
+    const pointWithinPageElement = computePointWithinPageElement();
+
     return {
         clientX: event.clientX,
         clientY: event.clientY,
@@ -47,6 +61,7 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
         y: eventTargetOffset.top + (event.nativeEvent as any).offsetY,
         width: pageElement.clientWidth,
         height: pageElement.clientHeight,
+        pointWithinPageElement,
         pageNum
     };
 
@@ -73,24 +88,18 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const onCreateAreaHighlight = React.useCallback(() => {
 
-        // FIXME: docScale is only being set on resize.. there isn't an initial value.
-
         async function doAsync() {
 
             if (props.origin && docScale && docMeta) {
 
-                const clientPoint: IPoint = {
-                    x: props.origin.clientX,
-                    y: props.origin.clientY
-                };
+                const point: IPoint = props.origin.pointWithinPageElement;
 
                 const capturedAreaHighlight =
                     await createAreaHighlightFromEvent(props.origin.pageNum,
-                                                       clientPoint,
+                                                       point,
                                                        docScale);
 
                 const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
-
 
                 const mutation: IAreaHighlightCreate = {
                     type: 'create',
@@ -98,8 +107,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                     pageMeta,
                     ...capturedAreaHighlight
                 };
-
-                console.log("FIXME2, ", mutation);
 
                 onAreaHighlight(mutation);
 

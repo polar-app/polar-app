@@ -14,6 +14,8 @@ import {computePageDimensions} from "./AnnotationHooks";
 
 export namespace AreaHighlightRenderers {
 
+    import getPageElementDimensions = AnnotationRects.getPageElementDimensions;
+
     export interface ICapturedAreaHighlight {
         readonly capturedScreenshot: ICapturedScreenshot;
         readonly areaHighlight: IAreaHighlight;
@@ -21,23 +23,32 @@ export namespace AreaHighlightRenderers {
     }
 
     export async function createAreaHighlightFromEvent(pageNum: number,
-                                                       clientPoint: IPoint,
+                                                       point: IPoint,
                                                        docScale: IDocScale): Promise<ICapturedAreaHighlight> {
 
-        const rect = AnnotationRects.createFromClientPoint(clientPoint);
-        const annotationRect = AreaHighlights.toCorrectScale2(Rects.createFromBasicRect(rect),
-                                                              docScale.scaleValue);
+        const rect = AnnotationRects.createFromClientPoint(pageNum, point);
+
+        const pageDimensions = getPageElementDimensions(pageNum);
+
+        if (! pageDimensions) {
+            throw new Error("No page dimensions");
+        }
+
+        const overlayRect = rect.toDimensions(pageDimensions);
+
+        const positionRect = AreaHighlights.toCorrectScale2(overlayRect,
+                                                            docScale.scaleValue);
 
         const position: Position = {
-            x: annotationRect.left,
-            y: annotationRect.top,
-            width: annotationRect.width,
-            height: annotationRect.height,
+            x: positionRect.left,
+            y: positionRect.top,
+            width: positionRect.width,
+            height: positionRect.height,
         };
 
         const capturedScreenshot = await Screenshots.capture(pageNum, rect);
 
-        const areaHighlight = AreaHighlights.create({rect: annotationRect});
+        const areaHighlight = AreaHighlights.create({rect});
 
         return {capturedScreenshot, areaHighlight, position};
 

@@ -12,8 +12,8 @@ const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, hei
  * A AnnotationRect is a basic Rect for representing an annotation on a page.
  *
  * This is a box layout for an annotation.  We use the typical DOM positioning
- * style of top, left, width and height only instead of percentages we represent
- * this as percentage of the entire 'page'.
+ * style of top, left, width and height only instead of offset we represent this
+ * as percentage of the entire 'page'.
  *
  * This would represent the range within a page that a box covers.  This is
  * essentially a range has a start and end which are percentages of the page that
