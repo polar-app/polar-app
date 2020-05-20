@@ -83,7 +83,7 @@ interface PagemarkInnerProps {
     readonly id: string;
     readonly className: string;
     readonly fingerprint: string;
-    readonly page: number;
+    readonly pageNum: number;
     readonly pagemark: IPagemark;
     readonly overlayRect: ILTRect;
     readonly pagemarkColor: PagemarkColors.PagemarkColor;
@@ -92,24 +92,24 @@ interface PagemarkInnerProps {
 
 interface IProps {
     readonly fingerprint: IDStr;
-    readonly page: number;
+    readonly pageNum: number;
     readonly pagemark: IPagemark;
 }
 
 const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
-    const {id, fingerprint, pagemark, page, className, overlayRect, pagemarkColor} = props;
+    const {id, fingerprint, pagemark, pageNum, className, overlayRect, pagemarkColor} = props;
 
     const contextMenu = useContextMenu();
 
     const callbacks = useDocViewerCallbacks();
 
     const handleResized = React.useCallback((rect: ILTRect) => {
-        const newPagemark = computePagemarkFromResize(rect, page, pagemark);
+        const newPagemark = computePagemarkFromResize(rect, pageNum, pagemark);
 
         const mutation: IPagemarkUpdate = {
             type: 'update',
-            page,
+            pageNum,
             pagemark: newPagemark
         }
 
@@ -126,10 +126,10 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                 data-doc-fingerprint={fingerprint}
                 data-pagemark-id={pagemark.id}
                 data-annotation-id={pagemark.id}
-                data-page-num={page}
+                data-page-num={pageNum}
                 // annotation descriptor metadata - might not be needed anymore
                 data-annotation-type="pagemark"
-                data-annotation-page-num={page}
+                data-annotation-page-num={pageNum}
                 data-annotation-doc-fingerprint={fingerprint}
                     className={className}
                 left={overlayRect.left}
@@ -149,9 +149,9 @@ export const ContextMenu = createContextMenu(PagemarkMenu);
 
 export const PagemarkRenderer2 = React.memo((props: IProps) => {
 
-    const {pagemark, fingerprint, page} = props;
+    const {pagemark, fingerprint, pageNum} = props;
 
-    const container = useAnnotationContainer(page);
+    const container = useAnnotationContainer(pageNum);
 
     if (! container) {
         return null;
@@ -182,7 +182,7 @@ export const PagemarkRenderer2 = React.memo((props: IProps) => {
                     <PagemarkInner id={id}
                                    className={className}
                                    fingerprint={fingerprint}
-                                   page={page}
+                                   pageNum={pageNum}
                                    pagemark={pagemark}
                                    overlayRect={overlayRect}
                                    pagemarkColor={pagemarkColor}/>

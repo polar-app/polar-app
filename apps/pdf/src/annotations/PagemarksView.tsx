@@ -17,7 +17,7 @@ export const PagemarksView = React.memo(() => {
     const renderers = pageAnnotations.map(current =>
                                               <PagemarkRenderer2
                                                   key={current.annotation.id}
-                                                  page={current.page}
+                                                  pageNum={current.pageNum}
                                                   fingerprint={docMeta?.docInfo.fingerprint}
                                                   pagemark={current.annotation}/>);
 

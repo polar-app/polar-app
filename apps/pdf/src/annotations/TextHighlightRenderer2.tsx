@@ -12,15 +12,15 @@ import {useDocViewerStore} from "../DocViewerStore";
 
 interface IProps {
     readonly fingerprint: IDStr;
-    readonly page: number;
+    readonly pageNum: number;
     readonly textHighlight: ITextHighlight;
 }
 
 export const TextHighlightRenderer2 = React.memo((props: IProps) => {
 
-    const {textHighlight, fingerprint, page} = props;
+    const {textHighlight, fingerprint, pageNum} = props;
 
-    const container = useAnnotationContainer(page);
+    const container = useAnnotationContainer(pageNum);
     const {docScale} = useDocViewerStore();
 
     if (! container || ! docScale) {
@@ -51,12 +51,12 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
             <div data-type="text-highlight"
                  data-doc-fingerprint={fingerprint}
                  data-text-highlight-id={textHighlight.id}
-                 data-page-num={page}
+                 data-page-num={pageNum}
                 // annotation descriptor metadata - might not be needed
                 // anymore
                  data-annotation-type="text-highlight"
                  data-annotation-id={textHighlight.id}
-                 data-annotation-page-num={page}
+                 data-annotation-page-num={pageNum}
                  data-annotation-doc-fingerprint={fingerprint}
                  data-annotation-color={color}
                  className={className}

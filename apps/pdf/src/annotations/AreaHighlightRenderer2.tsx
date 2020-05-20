@@ -13,18 +13,21 @@ import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
+import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 
 interface IProps {
     readonly fingerprint: IDStr;
-    readonly page: number;
+    readonly pageNum: number;
     readonly areaHighlight: IAreaHighlight;
 }
 
 export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
-    const {areaHighlight, fingerprint, page} = props;
-    const container = useAnnotationContainer(page);
+    const {areaHighlight, fingerprint, pageNum} = props;
+    const container = useAnnotationContainer(pageNum);
     const {docScale} = useDocViewerStore();
+
+    const {onAreaHighlightUpdated} = useAreaHighlightHooks();
 
     if (! container) {
         return null;
@@ -36,7 +39,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     const {scaleValue} = docScale;
 
-    const pageDimensions = computePageDimensions(page);
+    const pageDimensions = computePageDimensions(pageNum);
 
     const toOverlayRect = (areaHighlightRect: AreaHighlightRect): ILTRect => {
 
@@ -61,7 +64,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     };
 
     const handleResize = (overlayRect: ILTRect) => {
-
+        onAreaHighlightUpdated({pageNum, overlayRect});
     }
 
     const createID = () => {
@@ -87,11 +90,11 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
                  data-doc-fingerprint={fingerprint}
                  data-area-highlight-id={areaHighlight.id}
                  data-annotation-id={areaHighlight.id}
-                 data-page-num={page}
+                 data-page-num={pageNum}
                 // annotation descriptor metadata - might not be needed
                 // anymore
                  data-annotation-type="area-highlight"
-                 data-annotation-page-num={page}
+                 data-annotation-page-num={pageNum}
                  data-annotation-doc-fingerprint={fingerprint}
                  data-annotation-color={color}
                  className={className}

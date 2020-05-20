@@ -18,7 +18,7 @@ export const TextHighlightsView = React.memo(() => {
     const rendered = pageAnnotations.map(current =>
                                              <TextHighlightRenderer2
                                                  key={current.annotation.id}
-                                                 page={current.page}
+                                                 pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
                                                  textHighlight={current.annotation}/>);
 

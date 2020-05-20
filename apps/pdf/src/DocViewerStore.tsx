@@ -108,7 +108,7 @@ export interface IPagemarkCreate {
 
 export interface IPagemarkUpdate {
     readonly type: 'update',
-    readonly page: number;
+    readonly pageNum: number;
     readonly pagemark: IPagemark;
 }
 
@@ -310,7 +310,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         function updatePagemark(mutation: IPagemarkUpdate) {
             const store = storeProvider();
             const docMeta = store.docMeta!;
-            Pagemarks.updatePagemark(docMeta, mutation.page, mutation.pagemark);
+            Pagemarks.updatePagemark(docMeta, mutation.pageNum, mutation.pagemark);
 
             setDocMeta(docMeta);
             writeUpdatedDocMetas([docMeta])

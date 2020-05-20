@@ -124,14 +124,14 @@ function getContainer(page: number): HTMLElement | undefined {
 
 }
 
-export function useAnnotationContainer(page: number) {
+export function useAnnotationContainer(pageNum: number) {
 
     const containerRef = React.useRef<HTMLElement | undefined>(undefined);
     const [, setContainer] = React.useState<HTMLElement | undefined>(undefined);
 
     function doUpdateDelegate() {
 
-        const newContainer = getContainer(page);
+        const newContainer = getContainer(pageNum);
         const container = containerRef.current;
 
         if (container !== newContainer) {
@@ -163,9 +163,9 @@ export function getPageElement(page: number) {
     return document.querySelectorAll(".page")[page - 1];
 }
 
-export function computePageDimensions(page: number): IDimensions {
+export function computePageDimensions(pageNum: number): IDimensions {
     // TODO this is a bit of a hack.
-    const pageElement = getPageElement(page);
+    const pageElement = getPageElement(pageNum);
     return {
         width: pageElement.clientWidth,
         height: pageElement.clientHeight

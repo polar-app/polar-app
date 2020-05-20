@@ -5,7 +5,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 
 export interface PageAnnotation<A> {
-    readonly page: number;
+    readonly pageNum: number;
     readonly annotation: A;
 }
 
@@ -19,15 +19,15 @@ export namespace PageAnnotations {
         const pages = Numbers.range(1, docMeta.docInfo.nrPages);
 
         return arrayStream(pages)
-                .map((page): ReadonlyArray<PageAnnotation<A>> => {
+                .map((pageNum): ReadonlyArray<PageAnnotation<A>> => {
 
-                    const pageMeta = DocMetas.getPageMeta(docMeta, page);
+                    const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
                     const annotations = annotationProvider(pageMeta);
 
                     return annotations.map(annotation => {
                         return {
-                            page, annotation
+                            pageNum, annotation
                         }
                     });
 

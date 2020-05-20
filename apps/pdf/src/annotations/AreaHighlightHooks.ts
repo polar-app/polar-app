@@ -28,7 +28,7 @@ export interface AreaHighlightUpdatedOpts {
 interface IAreaHighlightHooks {
     readonly onAreaHighlightCreated: (opts: AreaHighlightCreatedOpts) => void;
 
-    readonly onAreaHighlightUpdate: (opts: AreaHighlightUpdatedOpts) => void;
+    readonly onAreaHighlightUpdated: (opts: AreaHighlightUpdatedOpts) => void;
 
 }
 
@@ -71,7 +71,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }
 
-    function onAreaHighlightUpdate(opts: AreaHighlightUpdatedOpts) {
+    function onAreaHighlightUpdated(opts: AreaHighlightUpdatedOpts) {
 
         const {pageNum, overlayRect} = opts;
 
@@ -105,7 +105,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }
 
-    return {onAreaHighlightCreated, onAreaHighlightUpdate};
+    return {onAreaHighlightCreated, onAreaHighlightUpdated};
 
 }
 

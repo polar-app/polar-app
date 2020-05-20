@@ -17,7 +17,7 @@ export const AreaHighlightsView = React.memo(() => {
     const rendered = pageAnnotations.map(current =>
                                              <AreaHighlightRenderer2
                                                  key={current.annotation.id}
-                                                 page={current.page}
+                                                 pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
                                                  areaHighlight={current.annotation}/>);
 
