@@ -5,15 +5,11 @@ import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
-import {
-    IAreaHighlightCreate,
-    useAnnotationMutationsContext
-} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {AreaHighlightRenderers} from "./annotations/AreaHighlightRenderers";
 import {IPoint} from "../../../web/js/Point";
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import {Logger} from "polar-shared/src/logger/Logger";
-import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
+import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
 
 const log = Logger.create();
 
@@ -69,9 +65,8 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
-    const {docScale, docMeta} = useDocViewerStore();
     const {onPagemark} = useDocViewerCallbacks();
-    const {onAreaHighlight} = useAnnotationMutationsContext();
+    const {onAreaHighlightCreated} = useAreaHighlightHooks()
 
     const onCreatePagemarkToPoint = React.useCallback(() => {
 
@@ -86,39 +81,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     }, []);
 
-    const onCreateAreaHighlight = React.useCallback(() => {
-
-        async function doAsync() {
-
-            if (props.origin && docScale && docMeta) {
-
-                const point: IPoint = props.origin.pointWithinPageElement;
-
-                const capturedAreaHighlight =
-                    await createAreaHighlightFromEvent(props.origin.pageNum,
-                                                       point,
-                                                       docScale);
-
-                const pageMeta = DocMetas.getPageMeta(docMeta, props.origin.pageNum);
-
-                const mutation: IAreaHighlightCreate = {
-                    type: 'create',
-                    docMeta,
-                    pageMeta,
-                    ...capturedAreaHighlight
-                };
-
-                onAreaHighlight(mutation);
-
-            }
-
+    const onCreateAreaHighlight = () => {
+        if (props.origin) {
+            const {pageNum, pointWithinPageElement} = props.origin;
+            onAreaHighlightCreated({pageNum, pointWithinPageElement});
         }
-
-        // FIXME: better error handling
-        doAsync()
-            .catch(err => log.error(err));
-
-    }, []);
+    }
 
     return (
         <>

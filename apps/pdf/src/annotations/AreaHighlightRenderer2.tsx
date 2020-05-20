@@ -60,6 +60,9 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     };
 
+    const handleResize = (overlayRect: ILTRect) => {
+
+    }
 
     const createID = () => {
         return `area-highlight-${areaHighlight.id}`;
@@ -102,7 +105,9 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
                      mixBlendMode: 'multiply',
                      border: `1px solid #c6c6c6`,
                      zIndex: 1
-                 }}/>,
+                 }}
+                 onResized={handleResize}
+                 />,
             container);
     };
     const portals = Object.values(areaHighlight.rects)
