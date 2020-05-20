@@ -44,6 +44,7 @@ import {
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
+import {useAnnotationBar} from "./AnnotationBarHooks";
 
 const log = Logger.create();
 
@@ -228,71 +229,4 @@ export const DocViewer = React.memo(() => {
 }, isEqual);
 
 
-type CreateTextHighlightCallback = (opts: ICreateTextHighlightOpts) => void;
-
-function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
-
-    const annotationMutations = useAnnotationMutationsContext();
-
-    return (opts: ICreateTextHighlightOpts) => {
-        const {docMeta, pageMeta, textHighlight}
-            = TextHighlighter.createTextHighlight(opts);
-
-        const mutation: ITextHighlightCreate = {
-            type: 'create',
-            docMeta, pageMeta, textHighlight
-        }
-
-        annotationMutations.onTextHighlight(mutation);
-
-    };
-
-}
-
-function useAnnotationBar() {
-
-    const store = React.useRef<IDocViewerStore | undefined>(undefined)
-    const textHighlightCallback = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
-
-    store.current = useDocViewerStore();
-    textHighlightCallback.current = useCreateTextHighlightCallback();
-
-    React.useMemo(() => {
-
-        const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
-        const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
-
-        const annotationBarControlledPopupProps: ControlledPopupProps = {
-            id: 'annotationbar',
-            placement: 'top',
-            popupStateEventDispatcher,
-            triggerPopupEventDispatcher
-        };
-
-        const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
-            console.log("onHighlighted: ", highlightCreatedEvent);
-
-            const callback = textHighlightCallback.current!;
-            const docMeta = store.current!.docMeta!;
-
-            callback({
-                docMeta,
-                pageNum: highlightCreatedEvent.pageNum,
-                highlightColor: highlightCreatedEvent.highlightColor,
-                selection: highlightCreatedEvent.activeSelection.selection
-            })
-
-            // TextHighlighter.computeTextSelections();
-        };
-
-        const annotationBarCallbacks: AnnotationBarCallbacks = {
-            onHighlighted,
-            // onComment
-        };
-
-        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
-
-    }, []);
-
-}
 
