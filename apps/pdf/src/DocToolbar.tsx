@@ -30,16 +30,6 @@ import {
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import Divider from "@material-ui/core/Divider";
 
-// FIXME: move this its own component
-const globalKeyMap = {
-    PAGE_NEXT: ['n', 'j'],
-    PAGE_PREV: ['p', 'k']
-};
-
-interface IProps {
-
-}
-
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
 }
@@ -54,6 +44,7 @@ const FullScreenButton = React.memo(() => {
     const [fullScreen, setFullScreen] = useState(false);
 
     // FIXME: shift+command+f for macos full-screen
+    // make this a hook that we can reuse... 
 
     function requestFullScreen() {
 
@@ -224,16 +215,10 @@ const NumPages = (props: NumPagesProps) => (
     </div>
 );
 
-export const DocToolbar = (props: IProps) => {
+export const DocToolbar = React.memo(() => {
 
     const {docDescriptor, docScale} = useDocViewerStore();
     const {onPagePrev, onPageNext, setScale} = useDocViewerCallbacks();
-
-    // FIXME: move to a dedicated component
-    const globalKeyHandlers = {
-        PAGE_NEXT: onPageNext,
-        PAGE_PREV: onPagePrev
-    };
 
     const handleScaleChange = (scale: PDFScaleLevel) => {
 
@@ -257,105 +242,100 @@ export const DocToolbar = (props: IProps) => {
     };
 
     return (
-        <GlobalHotKeys
-            keyMap={globalKeyMap}
-            handlers={globalKeyHandlers}>
+        <MUIPaperToolbar borderBottom>
 
-            <MUIPaperToolbar borderBottom>
+            <div style={{
+                     display: 'flex',
+                 }}
+                 className="p-1 vertical-aligned-children">
+
+                <div style={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        flexBasis: 0
+                     }}
+                     className="vertical-aligned-children">
+
+                    <MUIButtonBar>
+
+                        <DocFindButton/>
+
+                        <Divider orientation="vertical"/>
+
+                        <IconButton onClick={onPagePrev}>
+                            <ArrowUpwardIcon/>
+                        </IconButton>
+
+                        <IconButton onClick={onPageNext}>
+                            <ArrowDownwardIcon/>
+                        </IconButton>
+
+                        <PageNumberInput docDescriptor={docDescriptor}/>
+
+                        {docDescriptor && <NumPages pdfDocMeta={docDescriptor}/>}
+
+                    </MUIButtonBar>
+                </div>
 
                 <div style={{
                          display: 'flex',
+                         flexGrow: 1,
+                         flexBasis: 0
                      }}
-                     className="p-1 vertical-aligned-children">
+                     className="vertical-align-children">
 
                     <div style={{
-                            display: 'flex',
-                            flexGrow: 1,
-                            flexBasis: 0
+                             display: 'flex',
+                             alignItems: 'center'
                          }}
-                         className="vertical-aligned-children">
+                         className="ml-auto mr-auto vertical-align-children">
 
                         <MUIButtonBar>
-
-                            <DocFindButton/>
-
-                            <Divider orientation="vertical"/>
-
-                            <IconButton onClick={onPagePrev}>
-                                <ArrowUpwardIcon/>
+                            <IconButton onClick={() => handleNextZoomLevel(-1)}>
+                                <RemoveIcon/>
                             </IconButton>
 
-                            <IconButton onClick={onPageNext}>
-                                <ArrowDownwardIcon/>
+                            {docScale &&
+                                <FormControl variant="outlined" size="small">
+                                    <Select value={docScale.scale.value || 'page-width'}
+                                            onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
+                                        {PDFScaleLevelTuples.map(current => (
+                                            <MenuItem key={current.value}
+                                                      value={current.value}>
+                                                {current.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>}
+
+                            <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                <AddIcon/>
                             </IconButton>
-
-                            <PageNumberInput docDescriptor={docDescriptor}/>
-
-                            {docDescriptor && <NumPages pdfDocMeta={docDescriptor}/>}
 
                         </MUIButtonBar>
-                    </div>
-
-                    <div style={{
-                             display: 'flex',
-                             flexGrow: 1,
-                             flexBasis: 0
-                         }}
-                         className="vertical-align-children">
-
-                        <div style={{
-                                 display: 'flex',
-                                 alignItems: 'center'
-                             }}
-                             className="ml-auto mr-auto vertical-align-children">
-
-                            <MUIButtonBar>
-                                <IconButton onClick={() => handleNextZoomLevel(-1)}>
-                                    <RemoveIcon/>
-                                </IconButton>
-
-                                {docScale &&
-                                    <FormControl variant="outlined" size="small">
-                                        <Select value={docScale.scale.value || 'page-width'}
-                                                onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                                            {PDFScaleLevelTuples.map(current => (
-                                                <MenuItem key={current.value}
-                                                          value={current.value}>
-                                                    {current.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>}
-
-                                <IconButton onClick={() => handleNextZoomLevel(1)}>
-                                    <AddIcon/>
-                                </IconButton>
-
-                            </MUIButtonBar>
-
-                        </div>
-
-                    </div>
-
-                    <div style={{
-                             display: 'flex',
-                             flexGrow: 1,
-                             flexBasis: 0
-                         }}
-                         className="vertical-aligned-children">
-
-                        <div style={{display: 'flex'}}
-                             className="ml-auto vertical-aligned-children">
-
-                            <FullScreenButton/>
-
-                        </div>
 
                     </div>
 
                 </div>
-            </MUIPaperToolbar>
-        </GlobalHotKeys>
+
+                <div style={{
+                         display: 'flex',
+                         flexGrow: 1,
+                         flexBasis: 0
+                     }}
+                     className="vertical-aligned-children">
+
+                    <div style={{display: 'flex'}}
+                         className="ml-auto vertical-aligned-children">
+
+                        <FullScreenButton/>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </MUIPaperToolbar>
     );
-};
+});
 
