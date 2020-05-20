@@ -46,7 +46,7 @@ export namespace AreaHighlightRenderers {
             height: positionRect.height,
         };
 
-        const capturedScreenshot = await Screenshots.capture(pageNum, rect);
+        const capturedScreenshot = await Screenshots.capture(pageNum, overlayRect);
 
         const areaHighlight = AreaHighlights.create({rect});
 
