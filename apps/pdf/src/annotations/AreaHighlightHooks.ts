@@ -1,5 +1,6 @@
 import {
-    IAreaHighlightCreate, IAreaHighlightUpdate,
+    IAreaHighlightCreate,
+    IAreaHighlightUpdate,
     useAnnotationMutationsContext
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IPoint} from "../../../../web/js/Point";
@@ -7,10 +8,9 @@ import {DocMetas} from "../../../../web/js/metadata/DocMetas";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
 import {Logger} from "polar-shared/src/logger/Logger";
-import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import createFromOverlayRect = AnnotationRects.createFromOverlayRect;
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 
 const log = Logger.create();
@@ -21,6 +21,7 @@ export interface AreaHighlightCreatedOpts {
 }
 
 export interface AreaHighlightUpdatedOpts {
+    readonly areaHighlight: IAreaHighlight;
     readonly overlayRect: ILTRect;
     readonly pageNum: number;
 }
@@ -73,7 +74,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     function onAreaHighlightUpdated(opts: AreaHighlightUpdatedOpts) {
 
-        const {pageNum, overlayRect} = opts;
+        const {areaHighlight, pageNum, overlayRect} = opts;
 
         async function doAsync() {
 
@@ -90,7 +91,8 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
                     type: 'update',
                     docMeta,
                     pageMeta,
-                    ...capturedAreaHighlight
+                    ...capturedAreaHighlight,
+                    areaHighlight,
                 };
 
                 onAreaHighlight(mutation);

@@ -64,7 +64,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     };
 
     const handleResize = (overlayRect: ILTRect) => {
-        onAreaHighlightUpdated({pageNum, overlayRect});
+        onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
     }
 
     const createID = () => {
