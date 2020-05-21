@@ -52,10 +52,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         minHeight: '1.2em',
         flexShrink: 1,
         flexGrow: 1,
-        "& button + button::before": {
+        "& button + button": {
             borderLeft: '1px solid #bbb',
-            content: "''"
-        }
+        },
     },
     tab: {
 
@@ -73,13 +72,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflowY: 'auto',
         '&$selected, &$selected:hover': {
             backgroundColor: 'red',
+            borderLeft: '1px solid transparent',
+        },
+        "&$selected + button": {
+            // disable the left border of the next item.
+            borderLeft: '1px solid transparent',
         },
 
-    },
-
-    tabSelected: {
-        color: 'red',
-        backgroundColor: 'red',
     },
     wrapper: {
 
@@ -88,14 +87,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexDirection: 'row',
         textAlign: 'left',
 
-        margin: '5px',
-        padding: '5px',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         // textOverflow: 'ellipsis',
 
     },
-    /* Pseudo-class applied to the root element if `selected={true}`. */
     selected: {},
 
 }));
