@@ -23,7 +23,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {PDFPageNavigator} from "./PDFDocument";
-import {ScaleLevelTuple} from "./PDFScaleLevels";
+import {ScaleLevelTuple, PDFScaleLevelTuplesMap} from "./PDFScaleLevels";
 
 const log = Logger.create();
 /**
@@ -251,6 +251,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         if (scaleLeveler) {
 
             const scaleValue = scaleLeveler(scaleLevel);
+
+            const docScale: IDocScale = {
+                scale: scaleLevel,
+                scaleValue,
+            }
+
+            setDocScale(docScale);
 
         }
 

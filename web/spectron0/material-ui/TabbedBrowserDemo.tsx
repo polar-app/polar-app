@@ -6,6 +6,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import {darken, lighten, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
+import {NavIcon} from "../../../apps/repository/js/nav/NavIcon";
+import {PolarSVGIcon} from "../../js/ui/svg_icons/PolarSVGIcon";
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -142,6 +147,17 @@ const BrowserTab = React.memo((props: BrowserTabProps) => {
     // it when teh active items is bein gselected.  this way the borders
     // look right.
 
+    // FIXME: this is how it should all work:
+    //
+    // - each tab should have a 'to' and should be a "RouterTab"
+    //   The 'onClick' should then take the 'to' and useNavigation to change
+    //   the route.  The route/tab would then become 'active' when the user
+    //   clicks on it.
+
+    // FIXME: the 'main' two tabs will only 'load' the first time when the route
+    // changes, they would not be automatically loaded.  This way the navigation
+    // works properly with 'to' and history.
+
     // we can ALSO use a border-radio at the top and right ... and change
     // the background color of the 'selected' item.
 
@@ -172,27 +188,45 @@ export const TabbedBrowserDemo = () => {
     };
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-            <AppBar position="static" color="default">
+        <div style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 flexGrow: 1
+             }}>
+            <AppBar position="static" color="default" style={{flexDirection: 'row'}}>
+                {/*<Toolbar variant="dense">*/}
+
+                    {/*<IconButton size="small"*/}
+                    {/*            color="inherit"*/}
+                    {/*            style={{marginLeft: '5px', marginRight: '5px'}}*/}
+                    {/*            aria-label="menu">*/}
+                        <div style={{width: '32px', height: '32px'}}>
+                            <PolarSVGIcon/>
+                        </div>
+
+                    {/*</IconButton>*/}
+
+
                 <Tabs
-                    className={classes.tabs}
-                    value={value}
-                    onChange={handleChange}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    aria-label="scrollable auto tabs example">
+                        className={classes.tabs}
+                        value={value}
+                        onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        aria-label="scrollable auto tabs example">
 
-                    <BrowserTab label="Disney" value={0} selected={value === 0}/>
-                    <BrowserTab label="Hello world" value={1} selected={value === 1}/>
-                    <BrowserTab label="Centers for Disease Control and Prevention" value={2} selected={value === 2} />
-                    <BrowserTab label="Tab 4" value={3} selected={value === 3}/>
-                    <BrowserTab label="Tab 5" value={4} selected={value === 4}/>
-                    <BrowserTab label="Tab 6" value={5} selected={value === 5}/>
-                    <BrowserTab label="Tab 7" value={6} selected={value === 6}/>
-                    <BrowserTab label="Tab 8" value={7} selected={value === 7}/>
-                    <BrowserTab label="Tab 9" value={8} selected={value === 8}/>
+                        <BrowserTab label="Disney" value={0} selected={value === 0}/>
+                        <BrowserTab label="Hello world" value={1} selected={value === 1}/>
+                        <BrowserTab label="Centers for Disease Control and Prevention" value={2} selected={value === 2} />
+                        <BrowserTab label="Tab 4" value={3} selected={value === 3}/>
+                        <BrowserTab label="Tab 5" value={4} selected={value === 4}/>
+                        <BrowserTab label="Tab 6" value={5} selected={value === 5}/>
+                        <BrowserTab label="Tab 7" value={6} selected={value === 6}/>
+                        <BrowserTab label="Tab 8" value={7} selected={value === 7}/>
+                        <BrowserTab label="Tab 9" value={8} selected={value === 8}/>
 
-                </Tabs>
+                    </Tabs>
+                {/*</Toolbar>*/}
             </AppBar>
 
             <Divider/>
