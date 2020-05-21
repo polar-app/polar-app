@@ -53,10 +53,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexShrink: 1,
         flexGrow: 1,
         "& button + button span:first-child": {
-            borderLeft: '1px solid #bbb',
+            borderLeft: '1px solid ' + theme.palette.divider,
         },
     },
     tab: {
+
+        color: theme.palette.text.hint,
 
         // padding: '5px 0 5px 5px',
         padding: 0,
@@ -73,6 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflowY: 'auto',
         '&$selected, &$selected:hover': {
             backgroundColor: 'red',
+            color: theme.palette.text.primary,
             // borderLeft: '1px solid transparent',
         },
         "&$selected span:first-child": {
