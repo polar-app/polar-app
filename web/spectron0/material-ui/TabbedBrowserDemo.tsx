@@ -52,13 +52,14 @@ const useStyles = makeStyles((theme: Theme) => ({
         minHeight: '1.2em',
         flexShrink: 1,
         flexGrow: 1,
-        "& button + button": {
+        "& button + button span:first-child": {
             borderLeft: '1px solid #bbb',
         },
     },
     tab: {
 
-        padding: '5px 0 5px 5px',
+        // padding: '5px 0 5px 5px',
+        padding: 0,
         textTransform: 'none',
         minHeight: '1.2em',
         flex: '1 1 0',
@@ -72,15 +73,23 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflowY: 'auto',
         '&$selected, &$selected:hover': {
             backgroundColor: 'red',
+            // borderLeft: '1px solid transparent',
+        },
+        "&$selected span:first-child": {
+            // disable the left border of the next item.
             borderLeft: '1px solid transparent',
         },
-        "&$selected + button": {
+        "&$selected + button span:first-child": {
             // disable the left border of the next item.
             borderLeft: '1px solid transparent',
         },
 
     },
     wrapper: {
+
+        marginTop: '5px',
+        marginBottom: '5px',
+        paddingLeft: '5px',
 
         justifyContent: 'flex-start',
         alignItems: 'center',
