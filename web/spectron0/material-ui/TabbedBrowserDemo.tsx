@@ -84,8 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
 
         '&$selected, &:hover': {
-            borderRadiusTop: '8px',
-            borderRadiusBottom: '0px',
+            borderRadius: '8px 8px 0px 0px',
         },
 
         "&$selected span:first-child, &:hover span:first-child": {
