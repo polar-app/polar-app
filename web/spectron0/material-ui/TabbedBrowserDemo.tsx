@@ -3,7 +3,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {Theme} from "@material-ui/core";
+import {darken, lighten, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
 
@@ -73,18 +73,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'auto',
         overflowX: 'auto',
         overflowY: 'auto',
+
+        '&:hover': {
+            backgroundColor: theme.palette.background.default,
+        },
+
         '&$selected, &$selected:hover': {
-            borderRadiusTop: '8px',
-            borderRadiusBottom: '0px',
             backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
-            // borderLeft: '1px solid transparent',
         },
-        "&$selected span:first-child": {
+
+        '&$selected, &:hover': {
+            borderRadiusTop: '8px',
+            borderRadiusBottom: '0px',
+        },
+
+        "&$selected span:first-child, &:hover span:first-child": {
             // disable the left border of the next item.
             borderLeft: '1px solid transparent',
         },
-        "&$selected + button span:first-child": {
+        "&$selected + button span:first-child, &:hover + button span:first-child": {
             // disable the left border of the next item.
             borderLeft: '1px solid transparent',
         },
@@ -104,6 +112,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         // textOverflow: 'ellipsis',
+        "webkit-mask-image": "linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent)",
+        maskImage: "linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent)",
 
     },
     selected: {},
