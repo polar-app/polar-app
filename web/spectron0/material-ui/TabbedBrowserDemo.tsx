@@ -2,12 +2,10 @@ import React from 'react';
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-
+import isEqual from "react-fast-compare";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -52,16 +50,96 @@ const useStyles = makeStyles((theme: Theme) => ({
     tabs: {
         textTransform: 'none',
         minHeight: '1.2em',
+        flexShrink: 1,
+        flexGrow: 1,
+        "& button + button::before": {
+            borderLeft: '1px solid #bbb',
+            content: "''"
+        }
+    },
+    tab: {
+
+        padding: '5px 0 5px 5px',
+        textTransform: 'none',
+        minHeight: '1.2em',
+        flex: '1 1 0',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        minWidth: 0,
+        // we must overflow to allow the wrapper to have overflow hidden
+        // so we get text elipsis
+        overflow: 'auto',
+        overflowX: 'auto',
+        overflowY: 'auto',
+        '&$selected, &$selected:hover': {
+            backgroundColor: 'red',
+        },
+
+    },
+
+    tabSelected: {
+        color: 'red',
+        backgroundColor: 'red',
+    },
+    wrapper: {
+
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row',
+        textAlign: 'left',
+
+        margin: '5px',
+        padding: '5px',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        flexGrow: 1
-    }
+        // textOverflow: 'ellipsis',
+
+    },
+    /* Pseudo-class applied to the root element if `selected={true}`. */
+    selected: {},
+
 }));
 
-interface IState {
-
+interface BrowserTabProps {
+    readonly label: React.ReactNode;
+    readonly value: number;
+    readonly selected?: boolean;
+    readonly onChange?: (event: React.ChangeEvent<{}>, newValue: number) => void;
 }
+
+const BrowserTab = React.memo((props: BrowserTabProps) => {
+
+    const classes = useStyles();
+
+    // FIXME: minWidth here will allow them to collaps but the UI looks like crap
+    // when we do this.
+
+    // FIXME: selected is totally broken/ weird here... it seems I have to pass in 'selected'
+     // prop but then it actually doesn't matter which one is selected as it
+    // picks its own value...
+    //
+    // FIXME: the idea around fixing the bug in is to use a border but disable
+    // it when teh active items is bein gselected.  this way the borders
+    // look right.
+
+    // we can ALSO use a border-radio at the top and right ... and change
+    // the background color of the 'selected' item.
+
+    return (
+        <Tab className={classes.tab}
+             classes={{
+                 wrapper: classes.wrapper,
+                 selected: props.selected ? classes.selected : undefined
+             }}
+             // label={<TabbedBrowserLabel label={props.label}/>}
+             label={props.label}
+             selected
+             {...a11yProps(props.value)}
+             value={props.value}
+             onChange={props.onChange}/>
+    );
+
+}, isEqual);
 
 export const TabbedBrowserDemo = () => {
 
@@ -83,19 +161,17 @@ export const TabbedBrowserDemo = () => {
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example">
-                    <Tab className={classes.tabs} label="Disney" {...a11yProps(0)} ></Tab>
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Centers for Disease Control and Prevention" {...a11yProps(1)} />
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Item Three" {...a11yProps(2)} />
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Item Four" {...a11yProps(3)} />
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Item Five" {...a11yProps(4)} />
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Item Six" {...a11yProps(5)} />
-                    <Divider/>
-                    <Tab className={classes.tabs} label="Item Seven" {...a11yProps(6)} />
+
+                    <BrowserTab label="Disney" value={0} selected={value === 0}/>
+                    <BrowserTab label="Hello world" value={1} selected={value === 1}/>
+                    <BrowserTab label="Centers for Disease Control and Prevention" value={2} selected={value === 2} />
+                    <BrowserTab label="Tab 4" value={3} selected={value === 3}/>
+                    <BrowserTab label="Tab 5" value={4} selected={value === 4}/>
+                    <BrowserTab label="Tab 6" value={5} selected={value === 5}/>
+                    <BrowserTab label="Tab 7" value={6} selected={value === 6}/>
+                    <BrowserTab label="Tab 8" value={7} selected={value === 7}/>
+                    <BrowserTab label="Tab 9" value={8} selected={value === 8}/>
+
                 </Tabs>
             </AppBar>
 

@@ -24,6 +24,7 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
     const annotationMutations = useAnnotationMutationsContext();
 
     return (opts: ICreateTextHighlightOpts) => {
+
         const {docMeta, pageMeta, textHighlight}
             = TextHighlighter.createTextHighlight(opts);
 
