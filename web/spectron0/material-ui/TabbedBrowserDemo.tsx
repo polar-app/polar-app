@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     tabs: {
+        paddingTop: '2px',
         textTransform: 'none',
         minHeight: '1.2em',
         flexShrink: 1,
@@ -84,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
 
         '&$selected, &:hover': {
-            borderRadius: '8px 8px 0px 0px',
+            // borderRadius: '8px 8px 0px 0px',
         },
 
         "&$selected span:first-child, &:hover span:first-child": {
@@ -101,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
         marginTop: '5px',
         marginBottom: '5px',
-        paddingLeft: '5px',
+        paddingLeft: '10px',
 
         justifyContent: 'flex-start',
         alignItems: 'center',
