@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     tab: {
 
-        color: theme.palette.text.hint,
+        color: theme.palette.text.secondary,
 
         // padding: '5px 0 5px 5px',
         padding: 0,
@@ -74,7 +74,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflowX: 'auto',
         overflowY: 'auto',
         '&$selected, &$selected:hover': {
-            backgroundColor: 'red',
+            borderRadiusTop: '8px',
+            borderRadiusBottom: '0px',
+            backgroundColor: theme.palette.background.paper,
             color: theme.palette.text.primary,
             // borderLeft: '1px solid transparent',
         },
