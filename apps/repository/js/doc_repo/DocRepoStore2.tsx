@@ -14,8 +14,8 @@ import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
-import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
-import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
 import {
     IPersistenceContext,
     usePersistenceContext,

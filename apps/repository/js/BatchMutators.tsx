@@ -2,7 +2,7 @@ import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
-import {DialogManager} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {DialogManager} from "../../../web/js/mui/dialogs/MUIDialogController";
 
 export namespace BatchMutators {
 

@@ -34,7 +34,7 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
-import {MUIDialogController} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
+import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {DocRepoSidebarTagStore} from "../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore";
 import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";

@@ -3,7 +3,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/AutocompleteDialog";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUITagInputControls} from "../MUITagInputControls";
-import {DialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
 
 export namespace TaggedCallbacks {
 

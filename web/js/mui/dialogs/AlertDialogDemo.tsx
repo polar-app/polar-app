@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback} from "polar-shared/src/util/Functions";
-import {GlobalCompleteListener} from '../../../js/mui/complete_listeners/GlobalCompleteListener';
+import {GlobalCompleteListener} from '../complete_listeners/GlobalCompleteListener';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

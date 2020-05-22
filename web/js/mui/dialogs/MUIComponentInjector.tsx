@@ -1,18 +1,6 @@
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
 import isEqual from "react-fast-compare";
-import {
-    ConfirmDialog,
-    ConfirmDialogProps
-} from "../../../js/ui/dialogs/ConfirmDialog";
-import {
-    PromptDialog,
-    PromptDialogProps
-} from "../../../js/ui/dialogs/PromptDialog";
-import {
-    AutocompleteDialog,
-    AutocompleteDialogProps
-} from "../../../js/ui/dialogs/AutocompleteDialog";
 
 type InjectedComponent = JSX.Element;
 

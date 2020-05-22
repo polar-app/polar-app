@@ -2,7 +2,7 @@ import * as React from 'react';
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {MUIDeleteAction} from "../actions/MUIDeleteAction";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../dialogs/MUIDialogControllers";
 
 export const MUIDeleteIconButton = (props: MUIDeleteAction.IProps) => {
 

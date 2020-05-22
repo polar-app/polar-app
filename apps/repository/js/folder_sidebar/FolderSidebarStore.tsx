@@ -16,7 +16,7 @@ import {
 } from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
 import {FolderSelectionEvents} from "./FolderSelectionEvents";
-import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
 import {Logger} from "polar-shared/src/logger/Logger";

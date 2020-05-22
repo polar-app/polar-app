@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {Provider} from "polar-shared/src/util/Providers";
 import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
-import {useDialogManager} from "../../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
 
 interface IProps {
     readonly existingTags: ReadonlyArray<Tag>;

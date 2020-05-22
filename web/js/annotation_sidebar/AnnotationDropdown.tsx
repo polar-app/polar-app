@@ -9,7 +9,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {ConfirmDialogProps} from '../ui/dialogs/ConfirmDialog';
-import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 
 interface IProps {
     readonly id: string;

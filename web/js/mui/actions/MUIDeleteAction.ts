@@ -1,5 +1,5 @@
 import {AlertType, ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
-import {DialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogController";
+import {DialogManager} from "../dialogs/MUIDialogController";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export namespace MUIDeleteAction {

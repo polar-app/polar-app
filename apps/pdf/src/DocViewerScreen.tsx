@@ -4,7 +4,7 @@ import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
 import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
 import {DocViewer} from "./DocViewer";
 import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
-import {MUIDialogController} from "../../../web/spectron0/material-ui/dialogs/MUIDialogController";
+import {MUIDialogController} from "../../../web/js/mui/dialogs/MUIDialogController";
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {DocViewerStore} from "./DocViewerStore";
 import { DocFindStore } from './DocFindStore';

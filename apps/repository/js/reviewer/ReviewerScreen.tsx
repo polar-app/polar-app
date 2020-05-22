@@ -4,7 +4,7 @@ import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S
 import {Reviewers2} from "./Reviewers2";
 import {AsyncOptions, useAsync} from 'react-async';
 import {Reviewer2} from "./Reviewer2";
-import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useFirestore} from "../FirestoreProvider";
 import {MUIAsyncLoader} from "../../../../web/spectron0/material-ui/MUIAsyncLoader";

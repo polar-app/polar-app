@@ -5,7 +5,7 @@ import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {ReviewFinished} from "./ReviewFinished";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {useDialogManager} from "../../../../web/spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {ReviewerCard} from "./cards/ReviewerCard";
 
 /**

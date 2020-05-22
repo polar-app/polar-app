@@ -26,7 +26,7 @@ import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/Tagge
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {useDialogManager} from "../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {

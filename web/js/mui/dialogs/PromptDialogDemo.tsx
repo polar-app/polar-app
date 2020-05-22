@@ -6,10 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {InputValidator} from "../../../js/ui/dialogs/InputValidators";
+import {InputValidator} from "../../ui/dialogs/InputValidators";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputValidationErrorSnackbar} from "./InputValidationErrorSnackbar";
-import {InputCompleteListener} from "../../../js/mui/complete_listeners/InputCompleteListener";
+import {InputCompleteListener} from "../complete_listeners/InputCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

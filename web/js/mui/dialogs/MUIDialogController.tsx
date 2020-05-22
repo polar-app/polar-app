@@ -4,19 +4,19 @@ import isEqual from "react-fast-compare";
 import {
     ConfirmDialog,
     ConfirmDialogProps
-} from "../../../js/ui/dialogs/ConfirmDialog";
+} from "../../ui/dialogs/ConfirmDialog";
 import {
     PromptDialog,
     PromptDialogProps
-} from "../../../js/ui/dialogs/PromptDialog";
+} from "../../ui/dialogs/PromptDialog";
 import {
     AutocompleteDialog,
     AutocompleteDialogProps
-} from "../../../js/ui/dialogs/AutocompleteDialog";
+} from "../../ui/dialogs/AutocompleteDialog";
 import {
     SnackbarDialog,
     SnackbarDialogProps
-} from "../../../js/ui/dialogs/SnackbarDialog";
+} from "../../ui/dialogs/SnackbarDialog";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;

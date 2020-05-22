@@ -6,7 +6,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
 import {MUIMenuItem} from "../../mui/menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 
 
 interface IProps {

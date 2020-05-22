@@ -4,7 +4,7 @@ import React from "react";
 import {MUIDeleteAction} from "../actions/MUIDeleteAction";
 import {Callback} from "polar-shared/src/util/Functions";
 import {ConfirmDialogProps} from "../../ui/dialogs/ConfirmDialog";
-import {useDialogManager} from "../../../spectron0/material-ui/dialogs/MUIDialogControllers";
+import {useDialogManager} from "../dialogs/MUIDialogControllers";
 
 interface IProps {
     readonly onClick: Callback;
