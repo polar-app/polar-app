@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUISearchBox2} from "../../../../../web/spectron0/material-ui/MUISearchBox2";
+import {MUISearchBox2} from "../../../../../web/js/mui/MUISearchBox2";
 
 interface IProps {
     readonly onChange: (text: string) => void;

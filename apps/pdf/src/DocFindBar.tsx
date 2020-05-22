@@ -1,4 +1,4 @@
-import {MUISearchBox2} from "../../../web/spectron0/material-ui/MUISearchBox2";
+import {MUISearchBox2} from "../../../web/js/mui/MUISearchBox2";
 import * as React from "react";
 import {Logger} from "polar-shared/src/logger/Logger";
 import isEqual from "react-fast-compare";

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
 import FlagIcon from '@material-ui/icons/Flag';
 import Grid from "@material-ui/core/Grid";
-import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
+import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 
 export interface IProps {

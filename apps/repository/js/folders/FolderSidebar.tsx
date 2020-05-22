@@ -6,7 +6,7 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {Strings} from 'polar-shared/src/util/Strings';
 import Paper from '@material-ui/core/Paper';
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
-import {MUISearchBox2} from '../../../../web/spectron0/material-ui/MUISearchBox2';
+import {MUISearchBox2} from '../../../../web/js/mui/MUISearchBox2';
 import {useState} from "react";
 import {useTagsContext} from "../persistence_layer/PersistenceLayerApp";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
