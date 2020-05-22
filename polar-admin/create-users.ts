@@ -1,4 +1,4 @@
-import {CONFIG_MAIN, CONFIG_TEST, Firebase} from "./Firebase";
+import {CONFIG_TEST, Firebase} from "./Firebase";
 
 async function createUserWhenAbsent(email: string, pass: string) {
 
