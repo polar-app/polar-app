@@ -7,7 +7,7 @@ import {DocAuthor} from "./DocAuthor";
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
-import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
+import {MUIAnchor} from "../mui/MUIAnchor";
 import Divider from "@material-ui/core/Divider";
 import isEqual from "react-fast-compare";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

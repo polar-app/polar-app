@@ -29,7 +29,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
-import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
+import {MUIAnchor} from "../mui/MUIAnchor";
 import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
