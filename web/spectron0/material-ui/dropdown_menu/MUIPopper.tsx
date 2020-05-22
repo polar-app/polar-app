@@ -7,7 +7,7 @@ import Popper, {PopperPlacementType} from '@material-ui/core/Popper';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
-import {MUIDropdownCaret} from "../MUIDropdownCaret";
+import {MUIDropdownCaret} from "../../../js/mui/MUIDropdownCaret";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

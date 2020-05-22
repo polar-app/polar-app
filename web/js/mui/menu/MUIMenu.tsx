@@ -8,7 +8,7 @@ import MenuList from '@material-ui/core/MenuList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
-import {MUIDropdownCaret} from "../../../spectron0/material-ui/MUIDropdownCaret";
+import {MUIDropdownCaret} from "../MUIDropdownCaret";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
