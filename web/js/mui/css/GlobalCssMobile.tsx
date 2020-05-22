@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
-import {DeviceRouter} from "../../js/ui/DeviceRouter";
+import {DeviceRouter} from "../../ui/DeviceRouter";
 
 export const GlobalCssMobileRootStyles = withStyles({
     // @global is handled by jss-plugin-global.

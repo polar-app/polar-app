@@ -2,12 +2,12 @@ import createPersistedState from "use-persisted-state";
 import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {GlobalCss} from "../../spectron0/material-ui/GlobalCss";
+import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
-import {GlobalCssSummernote} from "../../spectron0/material-ui/GlobalCssSummernote";
-import {GlobalCSSBootstrap} from "../../spectron0/material-ui/GlobalCSSBootstrap";
+import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
+import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
-import {GlobalCssMobile} from "../../spectron0/material-ui/GlobalCssMobile";
+import {GlobalCssMobile} from "./css/GlobalCssMobile";
 
 interface IProps {
     readonly children: React.ReactNode;
