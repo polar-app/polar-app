@@ -7,7 +7,7 @@ import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
 import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 
 namespace runtime {

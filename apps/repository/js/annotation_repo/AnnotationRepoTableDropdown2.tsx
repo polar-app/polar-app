@@ -2,9 +2,9 @@ import * as React from 'react';
 import {ExportFormat} from "../../../../web/js/metadata/exporter/Exporters";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Devices} from "polar-shared/src/util/Devices";
-import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 
 const log = Logger.create();
 

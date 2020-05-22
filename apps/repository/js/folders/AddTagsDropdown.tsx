@@ -2,9 +2,9 @@ import * as React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import isEqual from "react-fast-compare";
-import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 
 interface IProps {
     readonly onCreateFolder: () => void;

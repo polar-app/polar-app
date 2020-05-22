@@ -7,9 +7,9 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {Devices} from "polar-shared/src/util/Devices";
-import {MUIMenu} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 
 const log = Logger.create();
 

@@ -1,5 +1,5 @@
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import Divider from "@material-ui/core/Divider";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";

@@ -1,8 +1,8 @@
 import React from 'react';
 import {ExportFormat} from '../../metadata/exporter/Exporters';
-import {MUIMenu} from "../../../spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../mui/menu/MUIMenu";
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../mui/menu/MUIMenuItem";
 
 interface IProps {
     readonly onExport: (format: ExportFormat) => void;

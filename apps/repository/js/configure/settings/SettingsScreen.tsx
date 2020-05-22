@@ -126,8 +126,11 @@ export const SettingsScreen = (props: IProps) => {
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
 
     const handleDarkModeToggle = (enabled: boolean) => {
+
         const theme = enabled ? 'dark' : 'light';
-        setTheme(theme);
+
+        setTimeout(() => setTheme(theme), 1);
+
     };
 
     const prefs = getPrefs();

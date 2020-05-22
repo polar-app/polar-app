@@ -3,8 +3,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import * as React from "react";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Nav} from "../../../js/ui/util/Nav";
-import {Analytics} from "../../../js/analytics/Analytics";
+import {Nav} from "../../ui/util/Nav";
+import {Analytics} from "../../analytics/Analytics";
 
 interface IEvent {
     readonly name: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import NoteIcon from '@material-ui/icons/Note';
-import {MUIMenu} from "../../../../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../../../../web/js/mui/menu/MUIMenu";
 import {AnnotationTypeMenuItem} from "./AnnotationTypeMenuItem";
 
 export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> {

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {MUIMenu} from "../../../../../web/spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../../../../../web/js/mui/menu/MUIMenu";
 import RateReviewIcon from '@material-ui/icons/RateReview';
 import {MUIRouterLink} from "../../../../../web/spectron0/material-ui/MUIRouterLink";
-import {MUIMenuItem} from "../../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../../web/js/mui/menu/MUIMenuItem";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 

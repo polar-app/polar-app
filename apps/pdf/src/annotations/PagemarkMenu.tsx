@@ -1,7 +1,7 @@
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import {MUIMenuItem} from "../../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 export const PagemarkValueContext = React.createContext<IPagemark>(null!);

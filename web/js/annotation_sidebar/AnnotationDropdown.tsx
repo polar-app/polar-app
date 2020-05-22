@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {DocAnnotation} from './DocAnnotation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {MUIMenu} from "../../spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "../mui/menu/MUIMenu";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {MUIMenuItem} from "../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../mui/menu/MUIMenuItem";
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';

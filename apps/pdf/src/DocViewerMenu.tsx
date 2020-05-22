@@ -1,4 +1,4 @@
-import {MUIMenuItem} from "../../../web/spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";

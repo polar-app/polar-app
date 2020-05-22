@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUIMenu} from "../../spectron0/material-ui/dropdown_menu/MUIMenu";
+import {MUIMenu} from "./menu/MUIMenu";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {PopperPlacementType} from "@material-ui/core/Popper";

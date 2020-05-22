@@ -1,4 +1,4 @@
-import {MUIMenuItem} from "../../../spectron0/material-ui/dropdown_menu/MUIMenuItem";
+import {MUIMenuItem} from "../menu/MUIMenuItem";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from "react";
 import {MUIDeleteAction} from "../actions/MUIDeleteAction";
