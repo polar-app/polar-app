@@ -4,7 +4,7 @@ import {createMuiTheme} from "@material-ui/core/styles";
 // import {DocDropdownMenu} from "./MUIDocDropdownMenu";
 // import { MUIDocDropdownButton } from './MUIDocDropdownButton';
 import {MockTags} from "./MockTags";
-import {RelatedOptionsCalculator} from "./autocomplete/MUICreatableAutocomplete";
+import {RelatedOptionsCalculator} from "../../js/mui/autocomplete/MUICreatableAutocomplete";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputControls";
 import LinearProgress from '@material-ui/core/LinearProgress';

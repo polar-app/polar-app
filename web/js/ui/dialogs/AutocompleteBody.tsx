@@ -10,7 +10,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../mui/autocomplete/MUICreatableAutocomplete";
 import {RelatedTagsManager} from "../../tags/related/RelatedTagsManager";
 import {TagOption} from "../../../../apps/repository/js/TagOption";
 import {IDs} from "../../util/IDs";

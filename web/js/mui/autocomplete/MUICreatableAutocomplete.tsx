@@ -7,7 +7,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {arrayStream} from 'polar-shared/src/util/ArrayStreams';
 import Chip from '@material-ui/core/Chip';
 import {MUIRelatedOptions} from "./MUIRelatedOptions";
-import {PremiumFeature} from "../../../js/ui/premium_feature/PremiumFeature";
+import {PremiumFeature} from "../../ui/premium_feature/PremiumFeature";
 import isEqual from "react-fast-compare";
 import {AutocompleteProps} from "@material-ui/lab/Autocomplete/Autocomplete";
 import {UseAutocompleteProps} from "@material-ui/lab/useAutocomplete";

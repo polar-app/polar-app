@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
-import MUICreatableAutocomplete, {MUICreatableAutocompleteProps} from "../../../spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
+import MUICreatableAutocomplete, {MUICreatableAutocompleteProps} from "../../mui/autocomplete/MUICreatableAutocomplete";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Box from "@material-ui/core/Box";
 import DialogContentText from "@material-ui/core/DialogContentText";

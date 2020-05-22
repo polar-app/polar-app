@@ -5,7 +5,7 @@ import {
     ReactInjector
 } from "../../../web/js/ui/util/ReactInjector";
 import * as React from "react";
-import {ValueAutocompleteOption} from "../../../web/spectron0/material-ui/autocomplete/MUICreatableAutocomplete";
+import {ValueAutocompleteOption} from "../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 
 /**
  * @Deprecated MUI
