@@ -10,7 +10,7 @@ import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
 import Collapse from "@material-ui/core/Collapse";
 import {IFindOpts} from "./Finders";
-import {InputEscapeListener} from "../../../web/spectron0/material-ui/complete_listeners/InputEscapeListener";
+import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 
 const log = Logger.create();

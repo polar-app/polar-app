@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {InputValidator} from "../../../js/ui/dialogs/InputValidators";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputValidationErrorSnackbar} from "./InputValidationErrorSnackbar";
-import {InputCompleteListener} from "../complete_listeners/InputCompleteListener";
+import {InputCompleteListener} from "../../../js/mui/complete_listeners/InputCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

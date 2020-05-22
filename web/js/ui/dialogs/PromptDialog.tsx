@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputValidator} from "./InputValidators";
-import {InputCompleteListener} from "../../../spectron0/material-ui/complete_listeners/InputCompleteListener";
+import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {InputValidationErrorSnackbar} from "../../../spectron0/material-ui/dialogs/InputValidationErrorSnackbar";
 
 const useStyles = makeStyles((theme: Theme) =>
