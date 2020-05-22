@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import Button from "@material-ui/core/Button";
-import {MUIButtonBar} from "../../../../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../../mui/MUIButtonBar";
 
 export class FlashcardButtons extends React.PureComponent<IProps, IState> {
 

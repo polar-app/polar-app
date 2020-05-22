@@ -32,7 +32,7 @@ import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../../spectron0/material-ui/MUIAnchor";
 import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
-import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../mui/MUIButtonBar";
 
 export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 

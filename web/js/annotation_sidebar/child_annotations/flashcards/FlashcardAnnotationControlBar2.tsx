@@ -7,7 +7,7 @@ import isEqual from "react-fast-compare";
 import Divider from "@material-ui/core/Divider";
 import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
-import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {
     IDeleteMutation,
     useAnnotationMutationsContext

@@ -9,7 +9,7 @@ import isEqual from "react-fast-compare";
 import {MUIGridLayout} from "../../../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {AnnotationTagInputButton} from "../AnnotationTagInputButton";
-import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 
 interface IProps {
     readonly tagsProvider: () => ReadonlyArray<Tag>;

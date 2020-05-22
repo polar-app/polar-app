@@ -4,7 +4,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import {useAnnotationRepoCallbacks} from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import Divider from "@material-ui/core/Divider";
-import {MUIButtonBar} from "../../../../web/spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 
 interface IProps {
     readonly annotation: IDocAnnotation;

@@ -17,7 +17,7 @@ import {ColorSelector} from "../ui/colors/ColorSelector";
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
-import {MUIButtonBar} from "../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles} from "@material-ui/core";
 

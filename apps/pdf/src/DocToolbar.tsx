@@ -21,7 +21,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {DocFindButton} from "./DocFindButton";
-import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../web/js/mui/MUIButtonBar";
 import {
     IDocDescriptor,
     useDocViewerCallbacks,

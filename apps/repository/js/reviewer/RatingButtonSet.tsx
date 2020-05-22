@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {RatingCallback} from "./Reviewer";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {MUIButtonBar} from "../../../../web/spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {RatingButton2} from './RatingButton2';
 
 export interface IProps<A> {

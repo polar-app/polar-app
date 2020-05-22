@@ -8,7 +8,7 @@ import isEqual from 'react-fast-compare';
 import {CommentDropdown2} from "../CommentDropdown2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
-import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 
 interface IProps {

@@ -6,7 +6,7 @@ import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
 import Button from '@material-ui/core/Button';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
-import {MUIButtonBar} from "../../../../spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 
 
 interface IProps {

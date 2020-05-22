@@ -6,7 +6,7 @@ import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolba
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import {MUIButtonBar} from "../../../web/spectron0/material-ui/MUIButtonBar";
+import {MUIButtonBar} from "../../../web/js/mui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
 import Collapse from "@material-ui/core/Collapse";
 import {IFindOpts} from "./Finders";
