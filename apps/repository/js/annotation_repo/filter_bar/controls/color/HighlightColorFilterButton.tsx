@@ -6,7 +6,7 @@ import {
 } from "../../../../../../../web/js/ui/colors/ColorSelectorBox";
 import {Buttons} from "../Buttons";
 import PaletteIcon from '@material-ui/icons/Palette';
-import {MUIPopper} from "../../../../../../../web/spectron0/material-ui/dropdown_menu/MUIPopper";
+import {MUIPopper} from "../../../../../../../web/js/mui/menu/MUIPopper";
 
 interface IProps {
 

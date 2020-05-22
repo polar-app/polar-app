@@ -2,7 +2,7 @@
 import React from 'react';
 import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControl} from './AccountControl';
-import {MUIPopper} from "../../../spectron0/material-ui/dropdown_menu/MUIPopper";
+import {MUIPopper} from "../../mui/menu/MUIPopper";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 

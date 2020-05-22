@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {RGBColor} from './ColorButton';
 import {ColorSelectorBox} from './ColorSelectorBox';
-import {MUIPopper} from "../../../spectron0/material-ui/dropdown_menu/MUIPopper";
+import {MUIPopper} from "../../mui/menu/MUIPopper";
 import PaletteIcon from "@material-ui/icons/Palette";
 
 
