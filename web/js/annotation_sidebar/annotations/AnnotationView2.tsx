@@ -8,7 +8,7 @@ import {AreaHighlightAnnotationView2} from "./AreaHighlightAnnotationView2";
 import {TextHighlightAnnotationView2} from './TextHighlightAnnotationView2';
 import {ViewOrEditFlashcard2} from "../child_annotations/flashcards/ViewOrEditFlashcard2";
 import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditComment2';
-import {DeepEquals} from "../../../spectron0/material-ui/doc_repo_table/DeepEquals";
+import {DeepEquals} from "../../mui/DeepEquals";
 import debugIsEqual = DeepEquals.debugIsEqual;
 import isEqual from "react-fast-compare";
 

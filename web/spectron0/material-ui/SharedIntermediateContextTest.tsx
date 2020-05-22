@@ -1,8 +1,7 @@
-import React, {useCallback, useState, useRef} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import Button from "@material-ui/core/Button";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useSharedState} from "../../js/hooks/use-shared-state";
-import {DeepEquals} from "./doc_repo_table/DeepEquals";
+import {DeepEquals} from "../../js/mui/DeepEquals";
 import debugIsEqual = DeepEquals.debugIsEqual;
 
 interface IContext {

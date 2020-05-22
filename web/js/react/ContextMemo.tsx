@@ -1,5 +1,4 @@
 import React, {Context, useContext} from 'react';
-import {DeepEquals} from "../../spectron0/material-ui/doc_repo_table/DeepEquals";
 import isEqual from 'react-fast-compare';
 
 const MAX_INTEGER = 1073741823;

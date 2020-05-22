@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import Button from "@material-ui/core/Button";
-import {DeepEquals} from "./doc_repo_table/DeepEquals";
+import {DeepEquals} from "../../js/mui/DeepEquals";
 import debugIsEqual = DeepEquals.debugIsEqual;
 
 interface IProps {
