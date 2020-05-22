@@ -6,7 +6,7 @@ import {UserAvatar} from "./UserAvatar";
 import Button from "@material-ui/core/Button";
 import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
 import {accounts} from "polar-accounts/src/accounts";
-import {MUIRouterLink} from "../../../spectron0/material-ui/MUIRouterLink";
+import {MUIRouterLink} from "../../mui/MUIRouterLink";
 import Subscription = accounts.Subscription;
 
 const LogoutButton = (props: IProps) => {

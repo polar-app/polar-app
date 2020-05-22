@@ -15,7 +15,7 @@ import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import InfoIcon from '@material-ui/icons/Info';
 import {Link} from "react-router-dom";
-import {MUIRouterLink} from "../../../../web/spectron0/material-ui/MUIRouterLink";
+import {MUIRouterLink} from "../../../../web/js/mui/MUIRouterLink";
 
 export class HelpDropdown extends React.PureComponent<IProps, IState> {
 

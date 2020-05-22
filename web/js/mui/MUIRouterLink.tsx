@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RouterLink} from "../../js/ui/ReactRouterLinks";
+import {RouterLink} from "../ui/ReactRouterLinks";
 import {Link} from 'react-router-dom';
 import isEqual from 'react-fast-compare';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
