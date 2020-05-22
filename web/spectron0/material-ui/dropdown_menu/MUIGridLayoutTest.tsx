@@ -1,5 +1,5 @@
 import React from 'react';
-import {MUIGridLayout} from "./MUIGridLayout";
+import {MUIGridLayout} from "../../../js/mui/MUIGridLayout";
 
 
 const items = [

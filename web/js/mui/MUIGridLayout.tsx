@@ -1,7 +1,6 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
 
-
 interface IProps {
 
     readonly id?: string;
@@ -31,6 +30,8 @@ interface IProps {
 
 /**
  * A layout component better for working with rows or columns.
+ *
+ *
  */
 export const MUIGridLayout = (props: IProps) => {
 

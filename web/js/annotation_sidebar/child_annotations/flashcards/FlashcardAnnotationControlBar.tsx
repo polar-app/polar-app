@@ -6,7 +6,6 @@ import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
 import {Tag} from 'polar-shared/src/tags/Tags';
 import isEqual from "react-fast-compare";
-import {MUIGridLayout} from "../../../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {AnnotationTagInputButton} from "../AnnotationTagInputButton";
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";

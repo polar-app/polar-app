@@ -30,7 +30,7 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import IconButton from '@material-ui/core/IconButton';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {MUIAnchor} from "../mui/MUIAnchor";
-import {MUIGridLayout} from "../../spectron0/material-ui/dropdown_menu/MUIGridLayout";
+import {MUIGridLayout} from "../mui/MUIGridLayout";
 import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 
@@ -116,32 +116,31 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
 
                         </MUIButtonBar>
 
-                        {/*<MUIHoverListener style={{display: 'flex', flexGrow: 1}}>*/}
-                            <MUIGridLayout key="right-bar"
-                                           style={{
-                                              justifyContent: 'flex-end',
-                                              flexGrow: 1
-                                           }}
-                                           items={[
-                                               <ChangeTextHighlightButton key="highlight-button"/>,
-                                               <CreateCommentButton key="comment-button"/>,
-                                               <CreateFlashcardButton key="flashcard-button"/>,
-                                               <React.Fragment key="color-selector">
-                                                    {! annotation.immutable &&
-                                                        <ColorSelector color={this.props.annotation.color || 'yellow'}
-                                                                       onSelected={color => this.onColor(color)}/>}
-                                               </React.Fragment>,
-                                               <AnnotationDropdown key="annotation-dropdown"
-                                                                   id={'annotation-dropdown-' + annotation.id}
-                                                                   disabled={this.props.annotation.immutable}
-                                                                   annotation={annotation}
-                                                                   onDelete={() => this.onDelete(annotation)}
-                                                                   onCreateComment={() => this.toggleActiveInputComponent('comment')}
-                                                                   onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
-                                                                   onJumpToContext={() => this.onJumpToContext(annotation)}/>
-                                           ]}/>
+                        {/*FIXME: migrate this to MUIButtonBar*/}
+                        <MUIGridLayout key="right-bar"
+                                       style={{
+                                          justifyContent: 'flex-end',
+                                          flexGrow: 1
+                                       }}
+                                       items={[
+                                           <ChangeTextHighlightButton key="highlight-button"/>,
+                                           <CreateCommentButton key="comment-button"/>,
+                                           <CreateFlashcardButton key="flashcard-button"/>,
+                                           <React.Fragment key="color-selector">
+                                                {! annotation.immutable &&
+                                                    <ColorSelector color={this.props.annotation.color || 'yellow'}
+                                                                   onSelected={color => this.onColor(color)}/>}
+                                           </React.Fragment>,
+                                           <AnnotationDropdown key="annotation-dropdown"
+                                                               id={'annotation-dropdown-' + annotation.id}
+                                                               disabled={this.props.annotation.immutable}
+                                                               annotation={annotation}
+                                                               onDelete={() => this.onDelete(annotation)}
+                                                               onCreateComment={() => this.toggleActiveInputComponent('comment')}
+                                                               onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                                               onJumpToContext={() => this.onJumpToContext(annotation)}/>
+                                       ]}/>
 
-                        {/*</MUIHoverListener>*/}
 
                             {/*TODO: make these a button with a 'light' color and size of 'sm'*/}
 
