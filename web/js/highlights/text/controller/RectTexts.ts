@@ -40,7 +40,6 @@ export class RectTexts {
         const range = TextNodes.getRange(textNode);
 
         const win = textNode.ownerDocument!.defaultView!;
-        const doc = win.document;
 
         const scrollPoint = new Point({
             x: win.scrollX,
@@ -54,11 +53,12 @@ export class RectTexts {
 
         const selectionRange = win.getSelection()!.getRangeAt(0).getBoundingClientRect();
 
+        // FIXME: we need the pageNum
+
         const boundingClientRect = new Rect(range.getBoundingClientRect());
 
-        let boundingPageRect = Rects.validate(boundingClientRect);
-
-        boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
+        // FIXME: this isn't correct and it's relative to the SCROLL point not the page...
+        const boundingPageRect = Rects.relativeTo(scrollPoint, boundingClientRect);
 
         return {
             // clientRects: range.getClientRects(),

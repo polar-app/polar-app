@@ -7,10 +7,16 @@ import {TextHighlightRecords} from "../../../web/js/metadata/TextHighlightRecord
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {AnnotationRects} from "../../../web/js/metadata/AnnotationRects";
+import {Rects} from "../../../web/js/Rects";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {getPageElement} from "./annotations/AnnotationHooks";
 
 const log = Logger.create()
 
 export namespace TextHighlighter {
+
+    import computeContainerDimensions = AnnotationRects.computeContainerDimensions;
 
     interface ICreatedTextHighlight {
         readonly docMeta: IDocMeta;
@@ -25,11 +31,23 @@ export namespace TextHighlighter {
         readonly selection: Selection;
     }
 
+    function computeRectWithinPageElement(pageElement: HTMLElement,
+                                          clientRect: ILTRect): ILTRect {
+
+        const pageElementBCR = pageElement.getBoundingClientRect();
+
+        return {
+            left: clientRect.left - pageElementBCR.left,
+            top: clientRect.top - pageElementBCR.top,
+            width: clientRect.width,
+            height: clientRect.height
+        };
+
+    }
+
     export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
 
-        const {highlightColor, docMeta, pageNum} = opts;
-
-        const selection = window.getSelection()!;
+        const {highlightColor, docMeta, pageNum, selection} = opts;
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
@@ -37,11 +55,15 @@ export namespace TextHighlighter {
         // to the page element
         const selectedContent = SelectedContents.computeFromSelection(selection);
 
-        const rectTexts = selectedContent.rectTexts;
+        const {rectTexts} = selectedContent;
 
-        // FIXME boundingPageRect is NOT relative to the PAGE but the viewport
+        const pageElement = getPageElement(pageNum);
+        const containerDimensions = computeContainerDimensions(pageElement)
 
-        const rects = rectTexts.map(current => current.boundingPageRect);
+        const rects = rectTexts.map(current => computeRectWithinPageElement(pageElement, current.boundingClientRect))
+                               .map(Rects.createFromBasicRect)
+                               // .map(current => AnnotationRects.createFromPositionedRect(current, containerDimensions))
+                               // .map(Rects.createFromBasicRect)
 
         const textSelections = TextSelections.compute(selectedContent);
 

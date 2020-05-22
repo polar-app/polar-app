@@ -39,11 +39,11 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
     function computePointWithinPageElement(): IPoint {
 
-        const bcr = pageElement.getBoundingClientRect();
+        const pageElementBCR = pageElement.getBoundingClientRect();
 
         return {
-            x: event.clientX - bcr.x,
-            y: event.clientY - bcr.y
+            x: event.clientX - pageElementBCR.x,
+            y: event.clientY - pageElementBCR.y
         };
 
     }

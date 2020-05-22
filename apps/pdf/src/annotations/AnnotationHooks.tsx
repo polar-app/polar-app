@@ -159,8 +159,8 @@ export function useAnnotationContainer(pageNum: number) {
 }
 
 
-export function getPageElement(page: number) {
-    return document.querySelectorAll(".page")[page - 1];
+export function getPageElement(page: number): HTMLElement{
+    return document.querySelectorAll(".page")[page - 1] as HTMLElement;
 }
 
 export function computePageDimensions(pageNum: number): IDimensions {
