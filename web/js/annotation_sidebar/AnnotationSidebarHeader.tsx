@@ -1,5 +1,5 @@
 import {useAnnotationSidebarCallbacks} from "../../../apps/pdf/src/AnnotationSidebarStore";
-import {MUIPaperToolbar} from "../../spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../mui/MUIPaperToolbar";
 import Box from "@material-ui/core/Box";
 import {MUISearchBox2} from "../../spectron0/material-ui/MUISearchBox2";
 import {ExportButton} from "../ui/export/ExportButton";

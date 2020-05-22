@@ -1,6 +1,6 @@
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import * as React from "react";
-import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "./DocViewerStore";
 import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume";

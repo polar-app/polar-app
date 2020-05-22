@@ -11,7 +11,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import Paper from "@material-ui/core/Paper";
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationInlineViewer} from "./AnnotationInlineViewer";

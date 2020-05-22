@@ -12,7 +12,7 @@ import {Devices} from "polar-shared/src/util/Devices";
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 
 /**
  * Simple header for the repository which supports arbitrary children.

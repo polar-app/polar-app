@@ -55,7 +55,7 @@ import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {DocumentRepositoryTableActions} from "../../../../web/spectron0/material-ui/doc_repo_table/DocumentRepositoryTableActions";
 
 const log = Logger.create();

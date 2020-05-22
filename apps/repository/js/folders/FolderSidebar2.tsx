@@ -2,7 +2,7 @@ import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
 import {MUITreeView} from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
 import {MUITagList} from "./MUITagList";
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {MUISearchBox2} from "../../../../web/spectron0/material-ui/MUISearchBox2";
 import {AddTagsDropdown} from "./AddTagsDropdown";
 import {

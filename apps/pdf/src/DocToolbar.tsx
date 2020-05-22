@@ -16,7 +16,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import TextField from "@material-ui/core/TextField";
-import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";

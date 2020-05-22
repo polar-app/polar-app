@@ -3,7 +3,7 @@ import {PersistenceLayerController} from "../../../../web/js/datastore/Persisten
 import React from "react";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
-import {MUIPaperToolbar} from "../../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MessageBanner} from "../MessageBanner";

@@ -2,7 +2,7 @@ import {MUISearchBox2} from "../../../web/spectron0/material-ui/MUISearchBox2";
 import * as React from "react";
 import {Logger} from "polar-shared/src/logger/Logger";
 import isEqual from "react-fast-compare";
-import {MUIPaperToolbar} from "../../../web/spectron0/material-ui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
