@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {URLStr} from "../../../polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
-import { Callback } from '../../../polar-shared/src/util/Functions';
+import { Callback } from 'polar-shared/src/util/Functions';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
