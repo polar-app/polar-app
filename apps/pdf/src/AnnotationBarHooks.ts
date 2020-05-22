@@ -63,14 +63,15 @@ export function useAnnotationBar() {
             console.log("onHighlighted: ", highlightCreatedEvent);
 
             const callback = textHighlightCallback.current!;
-            const docMeta = store.current!.docMeta!;
+            const {docMeta, docScale} = store.current!;
 
             callback({
-                docMeta,
+                docMeta: docMeta!,
+                docScale: docScale!,
                 pageNum: highlightCreatedEvent.pageNum,
                 highlightColor: highlightCreatedEvent.highlightColor,
                 selection: highlightCreatedEvent.activeSelection.selection
-            })
+            });
 
             // TextHighlighter.computeTextSelections();
         };

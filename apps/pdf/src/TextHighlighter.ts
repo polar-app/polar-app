@@ -11,6 +11,8 @@ import {AnnotationRects} from "../../../web/js/metadata/AnnotationRects";
 import {Rects} from "../../../web/js/Rects";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {getPageElement} from "./annotations/AnnotationHooks";
+import {AreaHighlights} from "../../../web/js/metadata/AreaHighlights";
+import {IDocScale} from "./DocViewerStore";
 
 const log = Logger.create()
 
@@ -29,12 +31,33 @@ export namespace TextHighlighter {
         readonly pageNum: number;
         readonly highlightColor: HighlightColor;
         readonly selection: Selection;
+        readonly docScale: IDocScale;
+    }
+
+    function getInnerClientRect(element: HTMLElement): ILTRect {
+
+        const boundingClientRect = element.getBoundingClientRect();
+
+        const styling = getComputedStyle(element, null);
+
+        const topBorder = parseInt(styling.getPropertyValue('border-top-width'));
+        const rightBorder = parseInt(styling.getPropertyValue('border-right-width'));
+        const bottomBorder = parseInt(styling.getPropertyValue('border-bottom-width'));
+        const leftBorder = parseInt(styling.getPropertyValue('border-left-width'));
+
+        return {
+            left: boundingClientRect.left + leftBorder,
+            top: boundingClientRect.top + topBorder,
+            width: boundingClientRect.width - leftBorder - rightBorder,
+            height: boundingClientRect.height - topBorder - bottomBorder,
+        };
+
     }
 
     function computeRectWithinPageElement(pageElement: HTMLElement,
                                           clientRect: ILTRect): ILTRect {
 
-        const pageElementBCR = pageElement.getBoundingClientRect();
+        const pageElementBCR = getInnerClientRect(pageElement);
 
         return {
             left: clientRect.left - pageElementBCR.left,
@@ -47,23 +70,20 @@ export namespace TextHighlighter {
 
     export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
 
-        const {highlightColor, docMeta, pageNum, selection} = opts;
+        const {highlightColor, docMeta, pageNum, selection, docScale} = opts;
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
-        // FIXME this is what's broken because we're not computing relative
-        // to the page element
         const selectedContent = SelectedContents.computeFromSelection(selection);
 
         const {rectTexts} = selectedContent;
 
         const pageElement = getPageElement(pageNum);
-        const containerDimensions = computeContainerDimensions(pageElement)
 
         const rects = rectTexts.map(current => computeRectWithinPageElement(pageElement, current.boundingClientRect))
                                .map(Rects.createFromBasicRect)
-                               // .map(current => AnnotationRects.createFromPositionedRect(current, containerDimensions))
-                               // .map(Rects.createFromBasicRect)
+                               .map(current => AreaHighlights.toCorrectScale2(current, docScale.scaleValue))
+                               .map(Rects.createFromBasicRect);
 
         const textSelections = TextSelections.compute(selectedContent);
 
