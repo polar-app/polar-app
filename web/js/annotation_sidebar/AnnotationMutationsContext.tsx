@@ -34,14 +34,12 @@ import {
     AreaHighlightWriteOpts
 } from "../metadata/AreaHighlights";
 import {ICapturedScreenshot} from "../screenshots/Screenshot";
-import {AreaHighlightRect} from "../metadata/AreaHighlightRect";
 import {Position} from "polar-shared/src/metadata/IBaseHighlight";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {useDocMetaContext} from "./DocMetaContextProvider";
 import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
 

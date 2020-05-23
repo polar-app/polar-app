@@ -80,8 +80,8 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
  * Ref object that excludes important that are bloated and we don't need in
  * the react components.
  */
-export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' | 'pageMeta'> {
-
+export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' | 'pageMeta' | 'children'> {
+    readonly children: () => ReadonlyArray<IDocAnnotationRef>;
 }
 
 // TODO we need a full doc annotation including children and a way to manage

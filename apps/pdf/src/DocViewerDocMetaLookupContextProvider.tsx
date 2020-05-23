@@ -18,6 +18,7 @@ export const DocViewerDocMetaLookupContextProvider = React.memo((props: IProps) 
     function lookup(id: IDStr): IDocMeta | undefined {
 
         if (! docMeta) {
+            console.warn("No docMeta currently defined");
             return undefined;
         }
 
@@ -25,6 +26,7 @@ export const DocViewerDocMetaLookupContextProvider = React.memo((props: IProps) 
             return docMeta;
         }
 
+        console.warn(`DocMeta loaded ${docMeta.docInfo.fingerprint} not ${id}`);
         return undefined;
 
     }

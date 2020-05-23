@@ -40,12 +40,18 @@ export namespace DocAnnotations {
      */
     export function toRef(docAnnotation: IDocAnnotation): IDocAnnotationRef {
 
+        const children = docAnnotation.children().map(toRef);
+
         const tmp: any = {...docAnnotation};
 
         delete tmp.docMeta;
         delete tmp.pageMeta;
 
-        const result: IDocAnnotationRef = tmp;
+        const result: IDocAnnotationRef = {
+            ...tmp,
+            children: () => children
+        }
+
         return result;
 
     }

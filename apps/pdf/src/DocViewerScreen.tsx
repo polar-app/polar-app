@@ -25,15 +25,15 @@ export const DocViewerScreen = React.memo(() => {
                     <MUIDialogController>
                             <UserTagsProvider>
                                 <DocMetaContextProvider>
-                                    <DocViewerStore>
-                                        <DocViewerDocMetaLookupContextProvider>
+                                    <DocViewerDocMetaLookupContextProvider>
+                                        <DocViewerStore>
                                             <DocFindStore>
                                                 <AnnotationSidebarStoreProvider>
                                                     <DocViewer/>
                                                 </AnnotationSidebarStoreProvider>
                                             </DocFindStore>
-                                        </DocViewerDocMetaLookupContextProvider>
-                                    </DocViewerStore>
+                                        </DocViewerStore>
+                                    </DocViewerDocMetaLookupContextProvider>
                                 </DocMetaContextProvider>
                             </UserTagsProvider>
                     </MUIDialogController>

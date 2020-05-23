@@ -20,8 +20,6 @@ export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
 
     const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 
-    const original = annotation.original as ITextHighlight;
-
     const html = Optional.first(annotation.html).getOrElse('');
 
     const key = 'text-highlight-' + annotation.id;

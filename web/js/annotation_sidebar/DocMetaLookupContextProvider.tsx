@@ -5,14 +5,17 @@ import React, {useContext} from "react";
 export interface IDocMetaLookupContext {
 
     /**
-     * Lookup the DocMeta by id/fingeprint
+     * Lookup the DocMeta by id/fingerprint
      */
     readonly lookup: (id: IDStr) => IDocMeta | undefined;
 
 }
 
 const defaultValue: IDocMetaLookupContext = {
-    lookup: () => undefined
+    lookup: () => {
+        console.warn("Using default lookup which always returns undefined");
+        return undefined;
+    }
 };
 
 export const DocMetaLookupContext = React.createContext<IDocMetaLookupContext>(defaultValue);

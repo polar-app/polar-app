@@ -12,38 +12,18 @@ import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
-import {
-    IDocViewerStore,
-    useDocViewerCallbacks,
-    useDocViewerStore
-} from "./DocViewerStore";
+import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
-import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
-import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
-import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
-import {ControlledPopupProps} from "../../../web/js/ui/popup/ControlledPopup";
-import {
-    AnnotationBarCallbacks,
-    OnHighlightedCallback
-} from "../../../web/js/ui/annotationbar/ControlledAnnotationBar";
-import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCreatedEvent";
-import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
-import {TextHighlighter} from "./TextHighlighter";
-import {
-    ITextHighlightCreate,
-    useAnnotationMutationsContext
-} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {DocFindBar} from "./DocFindBar";
 import {DocViewerGlobalHotKeys} from "./DocViewerGlobalHotKeys";
 import {useDocFindCallbacks} from "./DocFindStore";
 import {
     computeDocViewerContextMenuOrigin,
-    IDocViewerContextMenuOrigin,
-    DocViewerMenu
+    DocViewerMenu,
+    IDocViewerContextMenuOrigin
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
-import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
 import {useAnnotationBar} from "./AnnotationBarHooks";
 
 const log = Logger.create();
