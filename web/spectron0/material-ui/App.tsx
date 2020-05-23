@@ -138,27 +138,37 @@ export const App = () => {
             {/*<MUISearchBox2 onChange={NULL_FUNCTION}*/}
             {/*               placeholder="Search..."/>*/}
 
-            <MenuList>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>My account</MenuItem>
-                <MenuItem>Logout</MenuItem>
 
-                {/*<MUISubMenu text="hello"></MUISubMenu>*/}
+            <div onClick={(event) => console.log("FIXME: onClick")}
+                 onContextMenu={event => console.log("FIXME: onContextMenu")}>
 
-                {/*<MenuItem>*/}
-                {/*    <>*/}
-                {/*        Test Submenu*/}
-                {/*        <Menu open={true}>*/}
-                {/*            <MenuList>*/}
-                {/*                <MenuItem>Profile</MenuItem>*/}
-                {/*                <MenuItem>My account</MenuItem>*/}
-                {/*                <MenuItem>Logout</MenuItem>*/}
-                {/*            </MenuList>*/}
-                {/*        </Menu>*/}
-                {/*    </>*/}
-                {/*</MenuItem>*/}
+                this is the tex tthat shold have a context menu
 
-            </MenuList>
+            </div>
+
+            {/*<MenuList>*/}
+            {/*    */}
+            {/*    */}
+            {/*    <MenuItem>Profile</MenuItem>*/}
+            {/*    <MenuItem>My account</MenuItem>*/}
+            {/*    <MenuItem>Logout</MenuItem>*/}
+
+            {/*    /!*<MUISubMenu text="hello"></MUISubMenu>*!/*/}
+
+            {/*    /!*<MenuItem>*!/*/}
+            {/*    /!*    <>*!/*/}
+            {/*    /!*        Test Submenu*!/*/}
+            {/*    /!*        <Menu open={true}>*!/*/}
+            {/*    /!*            <MenuList>*!/*/}
+            {/*    /!*                <MenuItem>Profile</MenuItem>*!/*/}
+            {/*    /!*                <MenuItem>My account</MenuItem>*!/*/}
+            {/*    /!*                <MenuItem>Logout</MenuItem>*!/*/}
+            {/*    /!*            </MenuList>*!/*/}
+            {/*    /!*        </Menu>*!/*/}
+            {/*    /!*    </>*!/*/}
+            {/*    /!*</MenuItem>*!/*/}
+
+            {/*</MenuList>*/}
 
             {/*<TabbedBrowserDemo/>*/}
 

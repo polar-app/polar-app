@@ -103,6 +103,12 @@ export class ActiveSelections {
 
         const onMouseDown = (event: MouseEvent | TouchEvent, type: EventType) => {
 
+            if (event.ctrlKey || event.metaKey) {
+                // only work with default / basic mouse selection because otherwise
+                // we could trigger on context menu
+                return;
+            }
+
             if (!activeSelection) {
                 originPoint = this.eventToPoint(event);
             }
