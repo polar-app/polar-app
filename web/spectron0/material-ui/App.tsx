@@ -11,7 +11,9 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TagNodes} from "../../js/tags/TagNodes";
 import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
-import {TabbedBrowserDemo} from "./TabbedBrowserDemo";
+import {MenuItem} from "@material-ui/core";
+import MenuList from "@material-ui/core/MenuList";
+import {MUISubMenu} from '../../js/mui/menu/MUISubMenu';
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -136,8 +138,29 @@ export const App = () => {
             {/*<MUISearchBox2 onChange={NULL_FUNCTION}*/}
             {/*               placeholder="Search..."/>*/}
 
+            <MenuList>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
 
-            <TabbedBrowserDemo/>
+                {/*<MUISubMenu text="hello"></MUISubMenu>*/}
+
+                {/*<MenuItem>*/}
+                {/*    <>*/}
+                {/*        Test Submenu*/}
+                {/*        <Menu open={true}>*/}
+                {/*            <MenuList>*/}
+                {/*                <MenuItem>Profile</MenuItem>*/}
+                {/*                <MenuItem>My account</MenuItem>*/}
+                {/*                <MenuItem>Logout</MenuItem>*/}
+                {/*            </MenuList>*/}
+                {/*        </Menu>*/}
+                {/*    </>*/}
+                {/*</MenuItem>*/}
+
+            </MenuList>
+
+            {/*<TabbedBrowserDemo/>*/}
 
             {/*<PersistentRouteDemo/>*/}
 

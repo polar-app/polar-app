@@ -2,7 +2,6 @@ import React, {useCallback} from "react";
 import {MUIEfficientCheckbox} from "./MUIEfficientCheckbox";
 import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles";
 import {Tags} from "polar-shared/src/tags/Tags";
-import TagID = Tags.TagID;
 import isEqual from "react-fast-compare";
 import clsx from "clsx";
 import {
@@ -10,6 +9,7 @@ import {
     useDragContext
 } from "../../../../web/js/ui/tree/DragTarget2";
 import {useContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

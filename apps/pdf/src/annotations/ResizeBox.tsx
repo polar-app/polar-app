@@ -93,6 +93,7 @@ export function ResizeBox(props: IProps) {
 
             <Rnd
                 bounds="parent"
+                className={props.className}
                 size={{
                     width: state.width,
                     height: state.height

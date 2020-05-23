@@ -131,7 +131,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                 data-annotation-type="pagemark"
                 data-annotation-page-num={pageNum}
                 data-annotation-doc-fingerprint={fingerprint}
-                    className={className}
+                className={className}
                 left={overlayRect.left}
                 top={overlayRect.top}
                 width={overlayRect.width}
