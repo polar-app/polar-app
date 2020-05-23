@@ -73,6 +73,14 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
 }
 
+/**
+ * Ref object that excludes important that are bloated and we don't need in
+ * the react components.
+ */
+export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' & 'pageMeta'> {
+
+}
+
 // TODO we need a full doc annotation including children and a way to manage
 // them over time for the annotation repository. Create a NEW interface that
 // just has a children getter prop so that we can keep a graph props including
