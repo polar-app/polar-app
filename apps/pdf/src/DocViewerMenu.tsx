@@ -1,26 +1,21 @@
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
-import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {useDocViewerCallbacks} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
 import {IPoint} from "../../../web/js/Point";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
-import {IDStr} from "polar-shared/src/util/Strings";
 import {MUISubMenu} from "../../../web/js/mui/menu/MUISubMenu";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
+import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 const log = Logger.create();
-
-/**
- * A reference to an annotation which we might want to work with.
- */
-export interface IAnnotationRef {
-    readonly id: IDStr;
-}
 
 export interface IDocViewerContextMenuOrigin {
     readonly x: number;
@@ -94,12 +89,14 @@ function selectedElements(pageElement: HTMLElement,
 }
 
 function selectedAnnotationRefs(pageElement: HTMLElement,
+                                pageNum: PageNumber,
+                                annotationType: AnnotationType,
                                 point: IPoint,
                                 className: string): ReadonlyArray<IAnnotationRef> {
 
     function toAnnotationRef(element: HTMLElement): IAnnotationRef {
         const id = element.getAttribute("data-annotation-id")!;
-        return {id}
+        return {id, pageNum, annotationType};
     }
 
     return selectedElements(pageElement, point, className).map(toAnnotationRef);
@@ -134,9 +131,10 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
     const pointWithinPageElement = computePointWithinPageElement();
 
     const point = {x: event.clientX, y: event.clientY};
-    const pagemarks = selectedAnnotationRefs(pageElement, point, 'pagemark');
-    const areaHighlights = selectedAnnotationRefs(pageElement, point, 'area-highlight');
-    const textHighlights = selectedAnnotationRefs(pageElement, point, 'text-highlight');
+
+    const pagemarks = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.PAGEMARK, point, 'pagemark');
+    const areaHighlights = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.AREA_HIGHLIGHT, point, 'area-highlight');
+    const textHighlights = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.TEXT_HIGHLIGHT, point, 'text-highlight');
 
     return {
         clientX: event.clientX,

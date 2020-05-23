@@ -23,7 +23,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {PDFPageNavigator} from "./PDFDocument";
-import {ScaleLevelTuple, PDFScaleLevelTuplesMap} from "./PDFScaleLevels";
+import {ScaleLevelTuple} from "./PDFScaleLevels";
 
 const log = Logger.create();
 /**
@@ -125,6 +125,7 @@ export interface IDocViewerCallbacks {
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
+    // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
     setPageNavigator(pageNavigator: PDFPageNavigator): void;
