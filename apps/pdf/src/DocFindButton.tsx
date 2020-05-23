@@ -3,12 +3,17 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import {useDocFindCallbacks} from "./DocFindStore";
 
-export const DocFindButton = React.memo(() => {
+interface IProps {
+    readonly className?: string;
+}
+
+export const DocFindButton = React.memo((props: IProps) => {
 
     const {setActive} = useDocFindCallbacks();
 
     return (
-        <IconButton onClick={() => setActive(true)}>
+        <IconButton className={props.className}
+                    onClick={() => setActive(true)}>
             <SearchIcon/>
         </IconButton>
     )

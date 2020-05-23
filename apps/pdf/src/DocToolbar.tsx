@@ -1,14 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
-import {Callback, Callback1} from "polar-shared/src/util/Functions";
-import {GlobalHotKeys} from "react-hotkeys";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {
-    PDFScaleLevel,
-    ScaleLevelTuple,
-    PDFScaleLevelTuples,
-    PDFScales
-} from "./PDFScaleLevels";
+import {PDFScaleLevel, PDFScaleLevelTuples, PDFScales} from "./PDFScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -27,8 +20,8 @@ import {
     useDocViewerCallbacks,
     useDocViewerStore
 } from "./DocViewerStore";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import Divider from "@material-ui/core/Divider";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -288,7 +281,7 @@ export const DocToolbar = React.memo(() => {
 
                     <MUIButtonBar>
 
-                        <DocFindButton/>
+                        <DocFindButton className="mr-1"/>
 
                         <Divider orientation="vertical"/>
 
