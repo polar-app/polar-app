@@ -217,9 +217,9 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
             return;
         }
 
-        const {docMeta, annotationType, original} = this.props.repoAnnotation;
+        const {docMeta, annotationType, pageNum, original} = this.props.repoAnnotation;
 
-        AnnotationMutations.delete(docMeta, annotationType, original);
+        AnnotationMutations.delete({docMeta, annotationType, pageNum}, original);
 
         const doPersist = async () => {
 
@@ -241,9 +241,9 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
             return;
         }
 
-        const {docMeta, annotationType, original} = this.props.repoAnnotation;
+        const {docMeta, annotationType, pageNum, original} = this.props.repoAnnotation;
 
-        AnnotationMutations.update(docMeta, annotationType, original);
+        AnnotationMutations.update({docMeta, annotationType, pageNum}, {...original});
 
     }
 
@@ -259,13 +259,12 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
     private onTagged(tags: ReadonlyArray<Tag>) {
 
         const annotation = this.props.repoAnnotation!;
-        const docMeta = annotation.docMeta;
+        const {docMeta, pageNum, annotationType} = annotation;
         const updates = {tags: Tags.toMap(tags)};
 
         setTimeout(() => {
 
-            AnnotationMutations.update(docMeta,
-                                       annotation.annotationType,
+            AnnotationMutations.update({docMeta, pageNum, annotationType},
                                        {...annotation.original, ...updates});
 
             const doPersist = async () => {

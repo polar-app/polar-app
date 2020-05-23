@@ -186,10 +186,10 @@ export class AnnotationViewControlBar extends React.Component<IProps, IState> {
             const {docMeta} = annotation;
 
             const updates = {tags: Tags.toMap(tags)};
-
-            AnnotationMutations.update(docMeta,
-                                       annotation.annotationType,
-                                       {...annotation.original, ...updates});
+            //
+            // AnnotationMutations.update(docMeta,
+            //                            annotation.annotationType,
+            //                            {...annotation.original, ...updates});
 
         }, 1);
 

@@ -361,7 +361,8 @@ export namespace DocAnnotationsMutator {
     export function onDeleted(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IDeleteMutation) {
 
         for (const current of mutation.selected || []) {
-            AnnotationMutations.delete(docMeta, current.annotationType, current.original);
+            const {pageNum, annotationType} = current;
+            AnnotationMutations.delete({docMeta, annotationType, pageNum}, current.original);
         }
 
     }
@@ -458,8 +459,8 @@ export namespace AnnotationMutationCallbacks {
                         tags: Tags.toMap(tags)
                     };
 
-                    AnnotationMutations.update(docMeta,
-                                               current.annotationType,
+                    const {annotationType, pageNum} = current;
+                    AnnotationMutations.update({docMeta, annotationType, pageNum},
                                                {...current.original, ...updates});
 
                 }
@@ -634,8 +635,8 @@ export namespace AnnotationMutationCallbacks {
                         color: colorMutation.color
                     };
 
-                    AnnotationMutations.update(docMeta,
-                                               current.annotationType,
+                    const {annotationType, pageNum} = current;
+                    AnnotationMutations.update({docMeta, annotationType, pageNum},
                                                {...current.original, ...updates});
 
                 }

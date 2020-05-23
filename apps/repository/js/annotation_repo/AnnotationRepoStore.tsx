@@ -7,11 +7,9 @@ import {createObservableStore} from "../../../../web/spectron0/material-ui/store
 import React from "react";
 import {
     IPersistenceContext,
-    ITagsContext,
     usePersistenceContext,
     useRepoDocMetaLoader,
-    useRepoDocMetaManager,
-    useTagsContext
+    useRepoDocMetaManager
 } from "../persistence_layer/PersistenceLayerApp";
 import {
     useComponentDidMount,
@@ -32,7 +30,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {Tag} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
 import {
     Exporters,
@@ -52,7 +50,6 @@ import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {TaggedCallbacks} from "./TaggedCallbacks";
 
 const log = Logger.create();
 
@@ -376,9 +373,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doUpdated(annotation: IDocAnnotation) {
 
-        const {docMeta, annotationType, original} = annotation;
+        const {docMeta, annotationType, pageNum, original} = annotation;
 
-        AnnotationMutations.update(docMeta, annotationType, original);
+        AnnotationMutations.update({docMeta, annotationType, pageNum}, original);
 
         async function doAsync() {
 

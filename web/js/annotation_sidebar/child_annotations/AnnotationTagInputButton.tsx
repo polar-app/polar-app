@@ -12,7 +12,7 @@ interface IProps {
 export const AnnotationTagInputButton = (props: IProps) => {
 
     const {annotation} = props;
-    const {docMeta} = annotation;
+    const {docMeta, annotationType, pageNum} = annotation;
 
     const onTagged = (tags: ReadonlyArray<Tag>) => {
 
@@ -22,8 +22,7 @@ export const AnnotationTagInputButton = (props: IProps) => {
 
             DocMetas.withBatchedMutations(docMeta, () => {
 
-                AnnotationMutations.update(docMeta,
-                                           annotation.annotationType,
+                AnnotationMutations.update({docMeta, annotationType, pageNum},
                                            {...annotation.original, ...updates});
 
             });
