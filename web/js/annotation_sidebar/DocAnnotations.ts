@@ -45,6 +45,7 @@ export namespace DocAnnotations {
         const tmp: any = {...docAnnotation};
 
         delete tmp.docMeta;
+        delete tmp.docInfo;
         delete tmp.pageMeta;
 
         const result: IDocAnnotationRef = {
