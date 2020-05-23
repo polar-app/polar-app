@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {Comment} from '../../../metadata/Comment';
@@ -17,7 +17,7 @@ import {CommentAnnotationControlBar2} from "./CommentAnnotationControlBar2";
 
 
 interface IProps {
-    readonly comment: IDocAnnotation;
+    readonly comment: IDocAnnotationRef;
 }
 
 type UsageMode = 'view' | 'edit';

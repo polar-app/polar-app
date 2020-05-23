@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation, IDocAnnotationRef} from '../DocAnnotation';
 import {ResponsiveImg} from '../ResponsiveImg';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import isEqual from "react-fast-compare";
@@ -27,7 +27,7 @@ const Image = (props: IProps) => {
 
 
 interface IProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 export const AreaHighlightAnnotationView2 = React.memo((props: IProps) => {
 

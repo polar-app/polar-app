@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DocAnnotation, IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 import {MUIDeleteMenuItem} from "../../../mui/menu_items/MUIDeleteMenuItem";
 import {MUIMenuIconButton} from "../../../mui/MUIMenuIconButton";
 
@@ -7,8 +7,8 @@ import {MUIMenuIconButton} from "../../../mui/MUIMenuIconButton";
 interface IProps {
     readonly id?: string;
     readonly disabled?: boolean;
-    readonly flashcard: IDocAnnotation;
-    readonly onDelete: (flashcard: IDocAnnotation) => void;
+    readonly flashcard: IDocAnnotationRef;
+    readonly onDelete: (flashcard: IDocAnnotationRef) => void;
 }
 
 export const FlashcardViewDropdown  = (props: IProps) => {

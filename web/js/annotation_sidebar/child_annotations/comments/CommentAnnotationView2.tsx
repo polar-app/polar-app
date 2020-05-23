@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../../DocAnnotation';
-import {CommentAnnotationControlBar2} from './CommentAnnotationControlBar2';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 
 interface IProps {
-    readonly comment: IDocAnnotation;
+    readonly comment: IDocAnnotationRef;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

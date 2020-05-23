@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {CancelButton} from "../CancelButton";
-import {RichTextFeatureIntro} from "../../RichTextFeatureIntro";
 import {RichTextArea} from "../../RichTextArea";
 import Button from "@material-ui/core/Button";
-import {IDocAnnotation} from "../../DocAnnotation";
+import {IDocAnnotationRef} from "../../DocAnnotation";
 import {
-    ITextHighlightRevert, ITextHighlightUpdate,
+    ITextHighlightRevert,
+    ITextHighlightUpdate,
     useAnnotationMutationsContext
 } from '../../AnnotationMutationsContext';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
@@ -13,7 +13,7 @@ import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContex
 interface IProps {
     readonly id: string;
     readonly html: string;
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 
 }
 

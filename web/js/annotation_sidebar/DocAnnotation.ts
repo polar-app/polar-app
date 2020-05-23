@@ -23,7 +23,10 @@ import {DocAnnotations} from "./DocAnnotations";
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
-    // fingerprint, guid, type, docInfo...
+    /**
+     * The document fingerprint this annotation belongs to.
+     */
+    readonly fingerprint: string;
 
     readonly id: IDStr;
     readonly guid: IDStr;
@@ -77,7 +80,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
  * Ref object that excludes important that are bloated and we don't need in
  * the react components.
  */
-export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' & 'pageMeta'> {
+export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' | 'pageMeta'> {
 
 }
 

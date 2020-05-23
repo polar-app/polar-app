@@ -5,7 +5,7 @@ import {
     createObservableStore,
     SetStore
 } from "../../../web/spectron0/material-ui/store/ObservableStore";
-import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
+import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -13,6 +13,7 @@ import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnota
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {Mappers} from "polar-shared/src/util/Mapper";
+import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 
 const log = Logger.create();
 
@@ -27,12 +28,12 @@ interface IAnnotationSidebarStore {
      * The raw annotations data which is unfiltered, unsorted, and form which
      * the view is derived.
      */
-    readonly data: ReadonlyArray<IDocAnnotation>;
+    readonly data: ReadonlyArray<IDocAnnotationRef>;
 
     /**
      * The annotations to display in the UI which is (optionally) filtered.
      */
-    readonly view: ReadonlyArray<IDocAnnotation>;
+    readonly view: ReadonlyArray<IDocAnnotationRef>;
 
 }
 
@@ -60,7 +61,7 @@ namespace mutations {
 
     export interface ISetData {
         readonly mutation: 'set-data',
-        readonly data: ReadonlyArray<IDocAnnotation>;
+        readonly data: ReadonlyArray<IDocAnnotationRef>;
     }
 
     export type IMutation = ISetFilter | ISetData;
@@ -137,10 +138,10 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
         mutator.doUpdate({mutation: 'set-filter', filter: text});
     }
 
-    function toAnnotations(docMeta: IDocMeta) {
+    function toAnnotations(docMeta: IDocMeta): ReadonlyArray<IDocAnnotationRef> {
         const {persistenceLayerProvider} = persistenceLayerContext;
         const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-        return DocAnnotationLoader2.load(docMeta, docFileResolver);
+        return DocAnnotationLoader2.load(docMeta, docFileResolver).map(DocAnnotations.toRef);
     }
 
     function setDocMeta(docMeta: IDocMeta) {

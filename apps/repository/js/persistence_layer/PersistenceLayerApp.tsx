@@ -15,8 +15,12 @@ import {
     createContextMemo,
     useContextMemo
 } from "../../../../web/js/react/ContextMemo";
-import { PersistenceLayerMutator } from './PersistenceLayerMutator';
+import {PersistenceLayerMutator} from './PersistenceLayerMutator';
 import {Provider} from "polar-shared/src/util/Providers";
+import {
+    DocMetaLookupContext,
+    IDocMetaLookupContext
+} from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 
 export interface ITagsContext {
 
@@ -68,8 +72,11 @@ export function useTagDescriptorsContext() {
 export type TagsType = 'documents' | 'annotations';
 
 export interface IProps {
+
     readonly repoDocMetaLoader: RepoDocMetaLoader;
+
     readonly repoDocMetaManager: RepoDocMetaManager;
+
     readonly persistenceLayerManager: PersistenceLayerManager;
 
     /**
@@ -163,13 +170,19 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         userTags: () => userTags || []
                                                     }
 
+                                                    const docMetaLookupContext: IDocMetaLookupContext = {
+                                                        lookup: (id => repoDocMetaManager.repoDocInfoIndex.get(id)?.docMeta)
+                                                    }
+
                                                     return (
                                                         <PersistenceContext.Provider value={persistenceContext}>
                                                             <PersistenceLayerContext.Provider value={persistenceLayerContext}>
                                                                 <TagsContext.Provider value={tagsContext}>
                                                                     <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
                                                                         <TagsProviderContext.Provider value={tagsProvider}>
-                                                                            {props.render(docRepoRenderProps)}
+                                                                            <DocMetaLookupContext.Provider value={docMetaLookupContext}>
+                                                                                {props.render(docRepoRenderProps)}
+                                                                            </DocMetaLookupContext.Provider>
                                                                         </TagsProviderContext.Provider>
                                                                     </TagDescriptorsContext.Provider>
                                                                 </TagsContext.Provider>

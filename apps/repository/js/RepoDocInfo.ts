@@ -6,6 +6,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcode} from 'polar-shared/src/metadata/Hashcode';
 import {Tag} from 'polar-shared/src/tags/Tags';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export interface RepoDocInfo {
 
@@ -47,6 +48,13 @@ export interface RepoDocInfo {
      * The original DocInfo used to construct this RepoDocInfo.
      */
     readonly docInfo: IDocInfo;
+
+    /**
+     * The original DocMeta.  We should migrate to a system where we don't need
+     * to keep this in memory but the annotation viewer needs it and it should
+     * not be too hard.
+     */
+    readonly docMeta: IDocMeta;
 
 }
 

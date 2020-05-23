@@ -6,9 +6,9 @@ import {
 } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
 import {RepoDocInfos} from "../../../apps/repository/js/RepoDocInfos";
+import {DocMetas} from "../../js/metadata/DocMetas";
 
 const now = new Date();
 const today = ISODateTimeStrings.create();
@@ -41,7 +41,9 @@ export namespace MockRepoDocInfos {
 
         const fingerprint = Hashcodes.createRandomID();
 
-        const docInfo: IDocInfo = {
+        const docMeta = DocMetas.create(fingerprint, nrPages);
+
+        docMeta.docInfo = {
             fingerprint,
             title: title + ": " + Math.random(),
             added,
@@ -57,7 +59,7 @@ export namespace MockRepoDocInfos {
             pagemarkType: PagemarkType.SINGLE_COLUMN
         };
 
-        return RepoDocInfos.convert(docInfo);
+        return RepoDocInfos.convert(docMeta);
 
     }
 

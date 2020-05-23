@@ -10,7 +10,7 @@ import {
 } from "../../AnnotationMutationsContext";
 import {FlashcardInputFieldsType} from "./flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
-import {IDocAnnotation} from "../../DocAnnotation";
+import {IDocAnnotationRef} from "../../DocAnnotation";
 import {Refs} from "polar-shared/src/metadata/Refs";
 
 interface IProps {
@@ -20,7 +20,7 @@ interface IProps {
     readonly defaultValue?: string;
 
     // FIXME: I don't think this needs to be passed any more.
-    readonly parent: IDocAnnotation;
+    readonly parent: IDocAnnotationRef;
 
 }
 

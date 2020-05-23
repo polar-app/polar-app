@@ -3,7 +3,10 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {
+    IDocAnnotation,
+    IDocAnnotationRef
+} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {RepoDocAnnotations} from "../RepoDocAnnotations";
 import {TagMatcher2} from "../../../../web/js/tags/TagMatcher2";
@@ -38,8 +41,8 @@ export namespace AnnotationRepoFilters2 {
 
     }
 
-    export function execute<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
-                                                      filter: Filter): ReadonlyArray<D> {
+    export function execute<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>,
+                                                         filter: Filter): ReadonlyArray<D> {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
@@ -55,8 +58,8 @@ export namespace AnnotationRepoFilters2 {
 
     }
 
-    function doFilterByColor<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
-                                                       filter: Filter): ReadonlyArray<D> {
+    function doFilterByColor<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>,
+                                                          filter: Filter): ReadonlyArray<D> {
 
         const {colors} = filter;
 
@@ -71,8 +74,8 @@ export namespace AnnotationRepoFilters2 {
 
     }
 
-    function doFilterByAnnotationTypes<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
-                                                                 filter: Filter): ReadonlyArray<D> {
+    function doFilterByAnnotationTypes<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>,
+                                                                    filter: Filter): ReadonlyArray<D> {
 
         const {annotationTypes} = filter;
 
@@ -84,13 +87,13 @@ export namespace AnnotationRepoFilters2 {
 
     }
 
-    function doFilterValid<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
-                                                     filter: Filter): ReadonlyArray<D> {
+    function doFilterValid<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>,
+                                                        filter: Filter): ReadonlyArray<D> {
         return docAnnotations.filter(current => RepoDocAnnotations.isValid(current));
     }
 
-    function doFilterByText<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>,
-                                                      filter: Filter): ReadonlyArray<D> {
+    function doFilterByText<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>,
+                                                         filter: Filter): ReadonlyArray<D> {
 
         if (! Strings.empty(filter.text)) {
 
@@ -127,7 +130,7 @@ export namespace AnnotationRepoFilters2 {
 
     }
 
-    function doFilterByTags<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<D>, filter: Filter): ReadonlyArray<D> {
+    function doFilterByTags<D extends IDocAnnotationRef>(docAnnotations: ReadonlyArray<D>, filter: Filter): ReadonlyArray<D> {
 
         if (! filter.tags) {
             return docAnnotations;

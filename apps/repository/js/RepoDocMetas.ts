@@ -38,7 +38,7 @@ export class RepoDocMetas {
             return undefined;
         }
 
-        const repoDocInfo = RepoDocInfos.convert(docMeta.docInfo);
+        const repoDocInfo = RepoDocInfos.convert(docMeta);
         const repoAnnotations = RepoDocAnnotations.convert(persistenceLayerProvider, docMeta);
 
         return {repoDocInfo, repoDocAnnotations: repoAnnotations};

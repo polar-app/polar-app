@@ -6,7 +6,7 @@ import {
     Functions,
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
-import {IDocAnnotation} from "./DocAnnotation";
+import {IDocAnnotation, IDocAnnotationRef} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
@@ -39,6 +39,9 @@ import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {useDocMetaContext} from "./DocMetaContextProvider";
+import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -46,7 +49,7 @@ const log = Logger.create();
  * This allows us to specify what's is being mutated.
  */
 export interface IAnnotationMutationSelected {
-    readonly selected: ReadonlyArray<IDocAnnotation>;
+    readonly selected: ReadonlyArray<IDocAnnotationRef>;
 }
 
 export interface ICommentCreate extends IAnnotationMutationSelected {
@@ -59,13 +62,13 @@ export interface ICommentUpdate extends IAnnotationMutationSelected {
     readonly type: 'update';
     readonly parent: IRef;
     readonly body: HTMLStr;
-    readonly existing: IDocAnnotation;
+    readonly existing: IDocAnnotationRef;
 }
 
 export interface ICommentDelete extends IAnnotationMutationSelected {
     readonly type: 'delete';
     readonly parent: IRef;
-    readonly existing: IDocAnnotation;
+    readonly existing: IDocAnnotationRef;
 }
 
 export type ICommentMutation = ICommentCreate | ICommentUpdate | ICommentDelete;
@@ -157,7 +160,7 @@ export interface IAnnotationMutationCallbacks {
 
     readonly createTaggedCallback: (mutation: ITaggedMutation) => Callback;
 
-    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotation>,
+    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotationRef>,
                         tags: ReadonlyArray<Tag>,
                         strategy: ComputeNewTagsStrategy) => void;
 
@@ -245,7 +248,8 @@ export namespace DocAnnotationsMutator {
                 break;
 
             case "delete":
-                CommentActions.delete(mutation.existing);
+                CommentActions.delete(pageMeta,
+                                      mutation.existing);
                 break;
 
         }
@@ -382,6 +386,7 @@ export namespace AnnotationMutationCallbacks {
 
         const dialogs = useDialogManager();
         const persistenceLayerContext = usePersistenceLayerContext();
+        const docMetaLookupContext = useDocMetaLookupContext();
 
         const tagsContext = useTagsContext();
 
@@ -413,10 +418,18 @@ export namespace AnnotationMutationCallbacks {
                                                                            annotationMutator: AnnotationMutator<T>) {
 
             const selected = mutation.selected;
-            const {persistenceLayerProvider} = persistenceLayerContext;
+
+            // FIXME: now the major issue is that for the annotation repository
+            // view there might be multiple docMetas but for the viewer there's
+            // really only one.  We could have a LoadedDocMetaContext in this
+            // situation so that we can use the version that's loaded into memory
+            // and get it by id OR revert to reading it from the store if
+            // necessary but in ALL our current situations we're loading it from
+            // memory.  In the main store RepoDocMetaManager will give it to us
+            //
 
             const partitions = arrayStream(selected)
-                .partition(annotation => [annotation.docMeta.docInfo.fingerprint, annotation.docMeta]);
+                .partition(annotation => [annotation.fingerprint, docMetaLookupContext.lookup(annotation.fingerprint)!]);
 
             // *** first we have to apply all the mutations to every annotation in
             // this doc...
@@ -424,7 +437,7 @@ export namespace AnnotationMutationCallbacks {
                 const docMeta = partition.key;
 
                 for (const annotation of selected) {
-                    const pageMeta = annotation.pageMeta;
+                    const pageMeta = DocMetas.getPageMeta(docMeta, annotation.pageNum);
                     annotationMutator(docMeta, pageMeta, {
                         ...mutation,
                         selected: [annotation]
@@ -442,7 +455,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function doTagged(annotations: ReadonlyArray<IDocAnnotation>,
+        function doTagged(annotations: ReadonlyArray<IDocAnnotationRef>,
                           tags: ReadonlyArray<Tag>,
                           strategy: ComputeNewTagsStrategy = 'set') {
 
@@ -472,7 +485,7 @@ export namespace AnnotationMutationCallbacks {
 
         function createTaggedCallback(mutation: ITaggedMutation) {
 
-            const opts: TaggedCallbacksOpts<IDocAnnotation> = {
+            const opts: TaggedCallbacksOpts<IDocAnnotationRef> = {
                 targets: () => mutation.selected,
                 tagsProvider: tagsContext.tagsProvider,
                 dialogs,
@@ -516,7 +529,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function doDeleted(annotations: ReadonlyArray<IDocAnnotation>) {
+        function doDeleted(annotations: ReadonlyArray<IDocAnnotationRef>) {
 
             const mutation: IDeleteMutation = {
                 selected: annotations

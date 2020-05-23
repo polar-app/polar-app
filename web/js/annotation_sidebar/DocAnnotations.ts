@@ -1,5 +1,9 @@
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {createChildren, IDocAnnotation} from './DocAnnotation';
+import {
+    createChildren,
+    IDocAnnotation,
+    IDocAnnotationRef
+} from './DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Flashcards} from '../metadata/Flashcards';
 import {Point} from '../Point';
@@ -28,9 +32,25 @@ import {
 } from "polar-shared/src/tags/InheritedTags";
 import {Refs} from "polar-shared/src/metadata/Refs";
 
-export class DocAnnotations {
+export namespace DocAnnotations {
 
-    private static isImmutable(author?: IAuthor) {
+    /**
+     * Convert this to a lightweight ref that can be used without triggering
+     * component re-render in React.
+     */
+    export function toRef(docAnnotation: IDocAnnotation): IDocAnnotationRef {
+
+        const tmp: any = {...docAnnotation};
+
+        delete tmp.docMeta;
+        delete tmp.pageMeta;
+
+        const result: IDocAnnotationRef = tmp;
+        return result;
+
+    }
+
+    function isImmutable(author?: IAuthor) {
 
         if (author && author.guest) {
             return true;
@@ -40,9 +60,9 @@ export class DocAnnotations {
 
     }
 
-    public static async getAnnotationsForPage(docFileResolver: DocFileResolver,
-                                              docAnnotationIndex: DocAnnotationIndex,
-                                              docMeta: IDocMeta): Promise<IDocAnnotation[]> {
+    export async function getAnnotationsForPage(docFileResolver: DocFileResolver,
+                                                docAnnotationIndex: DocAnnotationIndex,
+                                                docMeta: IDocMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];
 
@@ -50,8 +70,8 @@ export class DocAnnotations {
 
         for (const pageMeta of pageMetas) {
 
-            const areaHighlights = await this.getAreaHighlights(docFileResolver, docMeta, pageMeta);
-            const textHighlights = this.getTextHighlights(docMeta, pageMeta);
+            const areaHighlights = await getAreaHighlights(docFileResolver, docMeta, pageMeta);
+            const textHighlights = getTextHighlights(docMeta, pageMeta);
 
             result.push(...textHighlights);
             result.push(...areaHighlights);
@@ -62,13 +82,13 @@ export class DocAnnotations {
 
     }
 
-    public static createFromFlashcard(docMeta: IDocMeta,
+    export function createFromFlashcard(docMeta: IDocMeta,
                                       annotation: IFlashcard,
                                       pageMeta: IPageMeta): IDocAnnotation {
 
         const textConverter = ITextConverters.create(AnnotationType.FLASHCARD, annotation);
 
-        const init = this.createInit(docMeta);
+        const init = createInit(docMeta);
 
         const parent = annotation.ref ? Refs.parse(annotation.ref) : undefined;
 
@@ -95,7 +115,7 @@ export class DocAnnotations {
             parent,
             original: annotation,
             author: annotation.author,
-            immutable: this.isImmutable(annotation.author),
+            immutable: isImmutable(annotation.author),
             color: undefined,
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
@@ -104,13 +124,13 @@ export class DocAnnotations {
 
     }
 
-    public static createFromComment(docMeta: IDocMeta,
+    export function createFromComment(docMeta: IDocMeta,
                                     annotation: IComment,
                                     pageMeta: IPageMeta): IDocAnnotation {
 
         const iTextConverter = ITextConverters.create(AnnotationType.COMMENT, annotation);
 
-        const init = this.createInit(docMeta);
+        const init = createInit(docMeta);
 
         const parent = annotation.ref ? Refs.parse(annotation.ref) : undefined;
 
@@ -136,7 +156,7 @@ export class DocAnnotations {
             parent,
             original: annotation,
             author: annotation.author,
-            immutable: this.isImmutable(annotation.author),
+            immutable: isImmutable(annotation.author),
             color: undefined,
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
@@ -145,7 +165,7 @@ export class DocAnnotations {
 
     }
 
-    public static createFromAreaHighlight(docFileResolver: DocFileResolver,
+    export function createFromAreaHighlight(docFileResolver: DocFileResolver,
                                           docMeta: IDocMeta,
                                           annotation: IAreaHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
@@ -157,8 +177,8 @@ export class DocAnnotations {
             }
 
             return {
-                x: this.firstRect(annotation).map(current => current.left).getOrElse(0),
-                y: this.firstRect(annotation).map(current => current.top).getOrElse(0),
+                x: firstRect(annotation).map(current => current.left).getOrElse(0),
+                y: firstRect(annotation).map(current => current.top).getOrElse(0),
             };
 
         };
@@ -167,7 +187,7 @@ export class DocAnnotations {
 
         const position = createPosition();
 
-        const init = this.createInit(docMeta);
+        const init = createInit(docMeta);
 
         const children = createChildren(annotation, docMeta, pageMeta);
 
@@ -196,19 +216,19 @@ export class DocAnnotations {
             original: annotation,
             author: annotation.author,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
-            immutable: this.isImmutable(annotation.author),
+            immutable: isImmutable(annotation.author),
             children
         };
 
     }
 
-    public static createFromTextHighlight(docMeta: IDocMeta,
+    export function createFromTextHighlight(docMeta: IDocMeta,
                                           annotation: ITextHighlight,
                                           pageMeta: IPageMeta): IDocAnnotation {
 
         const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation);
 
-        const init = this.createInit(docMeta);
+        const init = createInit(docMeta);
 
         const children = createChildren(annotation, docMeta, pageMeta);
 
@@ -222,8 +242,8 @@ export class DocAnnotations {
             ...iTextConverter,
             pageNum: pageMeta.pageInfo.num,
             position: {
-                x: this.firstRect(annotation).map(current => current.left).getOrElse(0),
-                y: this.firstRect(annotation).map(current => current.top).getOrElse(0),
+                x: firstRect(annotation).map(current => current.left).getOrElse(0),
+                y: firstRect(annotation).map(current => current.top).getOrElse(0),
             },
             color: HighlightColors.withDefaultColor(annotation.color),
             created: annotation.created,
@@ -234,7 +254,7 @@ export class DocAnnotations {
             parent: undefined,
             original: annotation,
             author: annotation.author,
-            immutable: this.isImmutable(annotation.author),
+            immutable: isImmutable(annotation.author),
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             img: undefined,
             children
@@ -242,19 +262,19 @@ export class DocAnnotations {
 
     }
 
-    private static getTextHighlights(docMeta: IDocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
+    function getTextHighlights(docMeta: IDocMeta, pageMeta: IPageMeta): ReadonlyArray<IDocAnnotation> {
 
         const textHighlights = Object.values(pageMeta.textHighlights);
 
         return textHighlights.map(textHighlight => {
-            return this.createFromTextHighlight(docMeta, textHighlight, pageMeta);
+            return createFromTextHighlight(docMeta, textHighlight, pageMeta);
         });
 
     }
 
-    private static async getAreaHighlights(docFileResolver: DocFileResolver,
-                                           docMeta: IDocMeta,
-                                           pageMeta: IPageMeta): Promise<IDocAnnotation[]> {
+    async function getAreaHighlights(docFileResolver: DocFileResolver,
+                                     docMeta: IDocMeta,
+                                     pageMeta: IPageMeta): Promise<IDocAnnotation[]> {
 
         const result: IDocAnnotation[] = [];
 
@@ -263,7 +283,7 @@ export class DocAnnotations {
         for (const areaHighlight of areaHighlights) {
 
             const docAnnotation =
-                await this.createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta);
+                await createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta);
 
             result.push(docAnnotation);
 
@@ -273,7 +293,7 @@ export class DocAnnotations {
 
     }
 
-    private static createInit(docMeta: IDocMeta): DocAnnotationInit {
+    function createInit(docMeta: IDocMeta): DocAnnotationInit {
 
         const toInheritedTag = (tag: Tag): InheritedTag => {
             return {
@@ -293,7 +313,7 @@ export class DocAnnotations {
 
     }
 
-    private static firstRect(highlight: IBaseHighlight): Optional<IRect> {
+    function firstRect(highlight: IBaseHighlight): Optional<IRect> {
         return Optional.of(highlight)
             .map(current => current.rects)
             .map(current => current[0]);

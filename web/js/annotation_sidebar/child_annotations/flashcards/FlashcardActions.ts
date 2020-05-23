@@ -3,7 +3,7 @@ import {
     ClozeFields,
     FrontAndBackFields
 } from './flashcard_input/FlashcardInputs';
-import {IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation, IDocAnnotationRef} from '../../DocAnnotation';
 import {Functions} from 'polar-shared/src/util/Functions';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {IRef, Refs} from 'polar-shared/src/metadata/Refs';
@@ -36,7 +36,7 @@ export class FlashcardActions {
                          parent: IRef,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
-                         existingFlashcard?: Flashcard | IDocAnnotation) {
+                         existingFlashcard?: Flashcard | IDocAnnotationRef) {
 
         const flashcard = this.newInstanceFromParentRef(parent, type, fields);
 

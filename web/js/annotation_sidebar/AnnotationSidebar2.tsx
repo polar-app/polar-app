@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from './DocAnnotation';
+import {IDocAnnotationRef} from './DocAnnotation';
 import {DeviceRouter} from "../ui/DeviceRouter";
 import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import Paper from "@material-ui/core/Paper";
@@ -84,7 +84,7 @@ const NoAnnotations = () => {
 };
 
 interface AnnotationSidebarItemProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 
 const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {

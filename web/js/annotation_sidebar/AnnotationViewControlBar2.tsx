@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from './DocAnnotation';
+import {IDocAnnotationRef} from './DocAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import CommentIcon from '@material-ui/icons/Comment';
 import {DocAnnotationMoment} from "./DocAnnotationMoment";
@@ -38,7 +38,7 @@ interface IMutableProps {
 }
 
 interface IAnnotationProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
     readonly mutable: boolean | undefined;
 }
 
@@ -95,7 +95,7 @@ const CreateFlashcardButton = React.memo((props: IMutableProps) => {
 }, isEqual);
 
 interface IProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 
 export const AnnotationViewControlBar2 = React.memo((props: IProps) => {

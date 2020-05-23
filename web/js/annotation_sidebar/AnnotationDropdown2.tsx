@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from './DocAnnotation';
+import {IDocAnnotationRef} from './DocAnnotation';
 import {MUIMenu} from "../mui/menu/MUIMenu";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -7,17 +7,12 @@ import {MUIMenuItem} from "../mui/menu/MUIMenuItem";
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
-import {
-    IDeleteMutation,
-    useAnnotationMutationsContext
-} from "./AnnotationMutationsContext";
+import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
-import {useCallback} from "react";
 
 interface IProps {
     readonly id: string;
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
     readonly disabled?: boolean;
 }
 

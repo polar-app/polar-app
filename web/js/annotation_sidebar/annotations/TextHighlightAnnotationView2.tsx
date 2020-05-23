@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {AnnotationTypes} from '../../metadata/AnnotationTypes';
-import {IDocAnnotation} from '../DocAnnotation';
+import {IDocAnnotationRef} from '../DocAnnotation';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
@@ -11,7 +11,7 @@ import {AnnotationInputView} from "../AnnotationInputView";
 
 
 interface IProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 
 export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {

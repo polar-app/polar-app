@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 import {FlashcardViewDropdown} from './FlashcardViewDropdown';
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {DocAuthor} from "../../DocAuthor";
@@ -14,7 +14,7 @@ import {
 } from "../../AnnotationMutationsContext";
 
 interface IProps {
-    readonly flashcard: IDocAnnotation;
+    readonly flashcard: IDocAnnotationRef;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

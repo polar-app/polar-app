@@ -1,19 +1,16 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../DocAnnotation';
+import {IDocAnnotationRef} from '../DocAnnotation';
 import {MUIMenu} from "../../mui/menu/MUIMenu";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {MUIMenuItem} from "../../mui/menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 import isEqual from "react-fast-compare";
-import {
-    IDeleteMutation,
-    useAnnotationMutationsContext
-} from "../AnnotationMutationsContext";
+import {useAnnotationMutationsContext} from "../AnnotationMutationsContext";
 
 
 interface IProps {
     readonly id: string;
-    readonly comment: IDocAnnotation;
+    readonly comment: IDocAnnotationRef;
     readonly onDelete: () => void;
     readonly disabled?: boolean;
 }

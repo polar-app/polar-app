@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotation, IDocAnnotationRef} from '../../DocAnnotation';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
@@ -12,7 +12,7 @@ import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
 
 interface IProps {
-    readonly comment: IDocAnnotation;
+    readonly comment: IDocAnnotationRef;
     readonly editButton: JSX.Element;
     readonly onEdit: () => void;
 }

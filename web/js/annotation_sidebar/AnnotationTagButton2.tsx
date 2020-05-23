@@ -2,12 +2,12 @@ import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import isEqual from "react-fast-compare";
-import {IDocAnnotation} from "./DocAnnotation";
+import {IDocAnnotationRef} from "./DocAnnotation";
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 
 interface IProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 
 export const AnnotationTagButton2 = React.memo((props: IProps) => {

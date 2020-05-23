@@ -1,4 +1,7 @@
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {
+    IDocAnnotation,
+    IDocAnnotationRef
+} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
@@ -276,7 +279,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         mutator.refresh();
     }
 
-    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotation> {
+    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotationRef> {
 
         if (opts && opts.selected) {
             return opts.selected;
@@ -442,7 +445,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         // noop
     }
 
-    function doDropped(annotations: ReadonlyArray<IDocAnnotation>, tag: Tag) {
+    function doDropped(annotations: ReadonlyArray<IDocAnnotationRef>, tag: Tag) {
         annotationMutations.doTagged(annotations, [tag], 'add');
     }
 

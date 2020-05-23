@@ -1,18 +1,18 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../DocAnnotation';
+import {IDocAnnotationRef} from '../DocAnnotation';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import isEqual from "react-fast-compare";
 import {ViewOrEditComment2} from "./comments/ViewOrEditComment2";
 import {ViewOrEditFlashcard2} from "./flashcards/ViewOrEditFlashcard2";
 
 interface IProps {
-    readonly parent: IDocAnnotation;
-    readonly docAnnotations: ReadonlyArray<IDocAnnotation>;
+    readonly parent: IDocAnnotationRef;
+    readonly docAnnotations: ReadonlyArray<IDocAnnotationRef>;
 }
 
 interface IChildAnnotationProps {
-    readonly parent: IDocAnnotation;
-    readonly child: IDocAnnotation;
+    readonly parent: IDocAnnotationRef;
+    readonly child: IDocAnnotationRef;
 }
 
 export const ChildAnnotation = React.memo((props: IChildAnnotationProps) => {

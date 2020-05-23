@@ -6,11 +6,11 @@ import {
 } from "../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {EditComment2} from './EditComment2';
-import {IDocAnnotation} from "../../DocAnnotation";
-import { Refs } from 'polar-shared/src/metadata/Refs';
+import {IDocAnnotationRef} from "../../DocAnnotation";
+import {Refs} from 'polar-shared/src/metadata/Refs';
 
 interface IProps {
-    readonly parent: IDocAnnotation;
+    readonly parent: IDocAnnotationRef;
 }
 
 export const CreateComment2 = React.memo((props: IProps) => {

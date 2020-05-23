@@ -3,9 +3,9 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {DocInfos} from '../../../web/js/metadata/DocInfos';
 import {Tag} from "polar-shared/src/tags/Tags";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {SortFunctions} from "./doc_repo/util/SortFunctions";
 import {Objects} from "polar-shared/src/util/Objects";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 export class RepoDocInfos {
 
@@ -13,9 +13,11 @@ export class RepoDocInfos {
         return isPresent(repoDocInfo.filename);
     }
 
-    public static convert(docInfo: IDocInfo): RepoDocInfo {
+    public static convert(docMeta: IDocMeta): RepoDocInfo {
 
-        Preconditions.assertPresent(docInfo, "docInfo");
+        Preconditions.assertPresent(docMeta, "docMeta");
+
+        const docInfo = docMeta.docInfo;
 
         return {
 
@@ -65,7 +67,8 @@ export class RepoDocInfos {
 
             hashcode: docInfo.hashcode,
 
-            docInfo
+            docInfo,
+            docMeta
 
         };
 

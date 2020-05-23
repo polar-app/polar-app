@@ -8,6 +8,7 @@ import {MUIDialogController} from "../../../web/js/mui/dialogs/MUIDialogControll
 import {DocMetaContextProvider} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {DocViewerStore} from "./DocViewerStore";
 import { DocFindStore } from './DocFindStore';
+import {DocViewerDocMetaLookupContextProvider} from "./DocViewerDocMetaLookupContextProvider";
 
 export const DocViewerScreen = React.memo(() => {
 
@@ -25,11 +26,13 @@ export const DocViewerScreen = React.memo(() => {
                             <UserTagsProvider>
                                 <DocMetaContextProvider>
                                     <DocViewerStore>
-                                        <DocFindStore>
-                                            <AnnotationSidebarStoreProvider>
-                                                <DocViewer/>
-                                            </AnnotationSidebarStoreProvider>
-                                        </DocFindStore>
+                                        <DocViewerDocMetaLookupContextProvider>
+                                            <DocFindStore>
+                                                <AnnotationSidebarStoreProvider>
+                                                    <DocViewer/>
+                                                </AnnotationSidebarStoreProvider>
+                                            </DocFindStore>
+                                        </DocViewerDocMetaLookupContextProvider>
                                     </DocViewerStore>
                                 </DocMetaContextProvider>
                             </UserTagsProvider>

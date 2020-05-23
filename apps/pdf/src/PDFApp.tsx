@@ -3,20 +3,10 @@ import * as React from 'react';
 import {PersistenceLayerManager} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AppInitializer} from "../../../web/js/apps/repository/AppInitializer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {ControlledAnnotationBars} from "../../../web/js/ui/annotationbar/ControlledAnnotationBars";
-import {ControlledPopupProps} from "../../../web/js/ui/popup/ControlledPopup";
-import {
-    AnnotationBarCallbacks,
-    OnHighlightedCallback
-} from "../../../web/js/ui/annotationbar/ControlledAnnotationBar";
-import {HighlightCreatedEvent} from "../../../web/js/comments/react/HighlightCreatedEvent";
-import {SimpleReactor} from "../../../web/js/reactor/SimpleReactor";
-import {PopupStateEvent} from "../../../web/js/ui/popup/PopupStateEvent";
-import {TriggerPopupEvent} from "../../../web/js/ui/popup/TriggerPopupEvent";
 import {ProgressService} from "../../../web/js/ui/progress_bar/ProgressService";
 import {PersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocViewerScreen} from "./DocViewerScreen";
-import { BrowserRouter } from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 
 export class PDFApp {
 

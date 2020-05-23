@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useCallback, useState} from 'react';
-import {IDocAnnotation} from '../../DocAnnotation';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 import {EditButton} from "../EditButton";
 import {CancelButton} from "../CancelButton";
 import {FlashcardAnnotationView2} from './FlashcardAnnotationView2';
@@ -10,7 +10,7 @@ import {useDocMetaContext} from "../../DocMetaContextProvider";
 import {FlashcardInput2} from "./flashcard_input/FlashcardInput2";
 
 interface IProps {
-    readonly flashcard: IDocAnnotation;
+    readonly flashcard: IDocAnnotationRef;
 }
 
 type UsageMode = 'view' | 'edit';

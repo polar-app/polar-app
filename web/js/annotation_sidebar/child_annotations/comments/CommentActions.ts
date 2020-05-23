@@ -1,5 +1,5 @@
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDocAnnotation} from "../../DocAnnotation";
+import {IDocAnnotation, IDocAnnotationRef} from "../../DocAnnotation";
 import {IRef, Refs} from "polar-shared/src/metadata/Refs";
 import {Comments} from "../../../metadata/Comments";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -15,9 +15,9 @@ const log = Logger.create();
  */
 export class CommentActions {
 
-    public static delete(comment: IDocAnnotation) {
+    public static delete(pageMeta: IPageMeta, comment: IDocAnnotationRef) {
         log.info("Comment deleted: ", comment);
-        delete comment.pageMeta.comments[comment.id];
+        delete pageMeta.comments[comment.id];
     }
 
     public static create(docMeta: IDocMeta,

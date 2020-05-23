@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDocAnnotation} from '../DocAnnotation';
+import {IDocAnnotation, IDocAnnotationRef} from '../DocAnnotation';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
@@ -15,7 +15,7 @@ import isEqual from "react-fast-compare";
 const log = Logger.create();
 
 interface IProps {
-    readonly annotation: IDocAnnotation;
+    readonly annotation: IDocAnnotationRef;
 }
 
 /**

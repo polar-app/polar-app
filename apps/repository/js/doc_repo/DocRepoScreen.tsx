@@ -487,35 +487,37 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
     }
 
     private createDeviceProps(): devices.DeviceProps {
+        //
+        // return {
+        //     ...this.state,
+        //     relatedTagsManager: this.props.repoDocMetaManager!.relatedTagsManager,
+        //     synchronizingDocLoader: this.synchronizingDocLoader,
+        //     tagsProvider: this.props.tags,
+        //     writeDocInfoTags: (repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags),
+        //     deleteDocInfo: repoDocInfo => this.props.repoDocMetaManager.deleteDocMeta(repoDocInfo),
+        //     writeDocInfoTitle: (repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title),
+        //     writeDocInfo: docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo),
+        //     refresh: () => this.refresh(),
+        //     onDocDeleteRequested: repoDocInfos => this.onDocDeleteRequested(repoDocInfos),
+        //     onDocDeleted: repoDocInfos => this.onDocDeleted(repoDocInfos),
+        //     onDocSetTitle: (repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title),
+        //     onDocTagged: this.onDocTagged,
+        //     onMultiDeleted: () => this.onMultiDeleted(),
+        //     selectRow: this.selectRow,
+        //     onSelected: selected => this.onSelected(selected),
+        //     onReactTable: reactTable => this.reactTable = reactTable,
+        //     onDragStart: event => this.onDragStart(event),
+        //     onDragEnd: () => this.onDragEnd(),
+        //     filters: this.docRepoFilters.filters,
+        //     getSelected: () => this.getSelected(),
+        //     getRow: (viewIndex) => this.getRow(viewIndex),
+        //     onRemoveFromFolder: (folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos),
+        //     // persistenceLayerMutator: null!,
+        //     treeState: this.treeState,
+        //     // tags: this.props.tags()
+        // };
 
-        return {
-            ...this.state,
-            relatedTagsManager: this.props.repoDocMetaManager!.relatedTagsManager,
-            synchronizingDocLoader: this.synchronizingDocLoader,
-            tagsProvider: this.props.tags,
-            writeDocInfoTags: (repoDocInfo, tags) => this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags),
-            deleteDocInfo: repoDocInfo => this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo),
-            writeDocInfoTitle: (repoDocInfo, title) => this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title),
-            writeDocInfo: docInfo => this.props.repoDocMetaManager.writeDocInfo(docInfo),
-            refresh: () => this.refresh(),
-            onDocDeleteRequested: repoDocInfos => this.onDocDeleteRequested(repoDocInfos),
-            onDocDeleted: repoDocInfos => this.onDocDeleted(repoDocInfos),
-            onDocSetTitle: (repoDocInfo, title) => this.onDocSetTitle(repoDocInfo, title),
-            onDocTagged: this.onDocTagged,
-            onMultiDeleted: () => this.onMultiDeleted(),
-            selectRow: this.selectRow,
-            onSelected: selected => this.onSelected(selected),
-            onReactTable: reactTable => this.reactTable = reactTable,
-            onDragStart: event => this.onDragStart(event),
-            onDragEnd: () => this.onDragEnd(),
-            filters: this.docRepoFilters.filters,
-            getSelected: () => this.getSelected(),
-            getRow: (viewIndex) => this.getRow(viewIndex),
-            onRemoveFromFolder: (folder, repoDocInfos) => this.onRemoveFromTag(folder, repoDocInfos),
-            // persistenceLayerMutator: null!,
-            treeState: this.treeState,
-            // tags: this.props.tags()
-        };
+        return null!;
 
     }
 
