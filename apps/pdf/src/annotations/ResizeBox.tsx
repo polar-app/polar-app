@@ -3,6 +3,9 @@ import * as React from "react";
 import {useState} from "react";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Simulate} from "react-dom/test-utils";
+import keyDown = Simulate.keyDown;
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 interface IProps {
     readonly id?: string;
@@ -81,9 +84,7 @@ export function ResizeBox(props: IProps) {
 
     }, [])
 
-    // FIXME: we need to know the position of the box and we need to have
-    // comment , delete , etc buttons, including the ability to change color
-    // of the item.
+    const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
     return (
         <>
@@ -139,7 +140,8 @@ export function ResizeBox(props: IProps) {
                 style={{
                     ...props.style,
                     pointerEvents: 'none',
-                }}>
+                }}
+                {...dataProps}>
                 {/*<div onContextMenu={props.onContextMenu}*/}
                 {/*     style={{*/}
                 {/*         width: state.width,*/}

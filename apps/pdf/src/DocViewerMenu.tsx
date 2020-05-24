@@ -1,11 +1,7 @@
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
-import {
-    IPagemarkUpdate,
-    useDocViewerCallbacks,
-    useDocViewerStore
-} from "./DocViewerStore";
+import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
@@ -22,7 +18,7 @@ import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
-import { DocMetas } from "polar-shared/src/metadata/DocMetas";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -61,6 +57,8 @@ function useAnnotationMetaResolver(): AnnotationMetaResolver {
         }
 
         const original = getOriginal();
+
+        console.log("FIXME1: id", id);
 
         return {
             id, annotationType, pageNum,
@@ -153,7 +151,10 @@ function selectedAnnotationMetas(pageElement: HTMLElement,
                                  className: string): ReadonlyArray<IAnnotationMeta> {
 
     function toAnnotationMeta(element: HTMLElement): IAnnotationMeta {
-        const id = element.getAttribute("data-annotation-id")!;
+        const id = element.getAttribute("data-annotation-id");
+        if (! id) {
+            throw new Error("No id for annotation type: " + annotationType);
+        }
         return {id, pageNum, annotationType};
     }
 
