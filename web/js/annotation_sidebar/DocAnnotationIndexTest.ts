@@ -503,7 +503,9 @@ function createAnnotation(id: string,
         tags: {},
         children: () => [],
         parent,
-
+        docMetaRef: {
+            id: '1234'
+        }
     };
 
 }

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {IDocAnnotation, IDocAnnotationRef} from '../../DocAnnotation';
+import {IDocAnnotationRef} from '../../DocAnnotation';
 import {DocAuthor} from "../../DocAuthor";
 import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import Divider from '@material-ui/core/Divider';
 import isEqual from 'react-fast-compare';
 import {CommentDropdown2} from "../CommentDropdown2";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {useAnnotationMutationsContext} from "../../AnnotationMutationsContext";

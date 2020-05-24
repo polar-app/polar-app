@@ -20,6 +20,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {InheritedTag} from 'polar-shared/src/tags/InheritedTags';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {DocAnnotations} from "./DocAnnotations";
+import {IDocMetaRef} from "polar-shared/src/metadata/AnnotationRefs";
 
 export interface IDocAnnotation extends ObjectID, RepoAnnotation {
 
@@ -71,6 +72,11 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      */
     readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
+    /**
+     * A reference to the IDocMeta so we can lookup by ID.
+     */
+    readonly docMetaRef: IDocMetaRef;
+
     // TODO: REACT POINTER ISSUE.  FIXME: not sure if this one will be an issue.
     readonly children: () => ReadonlyArray<IDocAnnotation>;
 
@@ -82,6 +88,12 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
  */
 export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' | 'docInfo' | 'pageMeta' | 'children'> {
     readonly children: () => ReadonlyArray<IDocAnnotationRef>;
+
+    /**
+     * A reference to the IDocMeta so we can lookup by ID.
+     */
+    readonly docMetaRef: IDocMetaRef;
+
 }
 
 // TODO we need a full doc annotation including children and a way to manage
@@ -189,6 +201,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly parent: IRef | undefined;
 
+    public readonly docMetaRef: IDocMetaRef;
+
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
 
@@ -217,6 +231,9 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.immutable = obj.immutable;
         this.tags = obj.tags;
         this.parent = obj.parent;
+        this.docMetaRef = {
+            id: this.docMeta.docInfo.fingerprint
+        }
 
     }
 

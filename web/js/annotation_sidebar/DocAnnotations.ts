@@ -31,6 +31,7 @@ import {
     toSelfInheritedTags
 } from "polar-shared/src/tags/InheritedTags";
 import {Refs} from "polar-shared/src/metadata/Refs";
+import {IDocMetaRef} from "polar-shared/src/metadata/AnnotationRefs";
 
 export namespace DocAnnotations {
 
@@ -42,6 +43,10 @@ export namespace DocAnnotations {
 
         const children = docAnnotation.children().map(toRef);
 
+        const docMetaRef: IDocMetaRef = {
+            id: docAnnotation.docMeta.docInfo.fingerprint
+        };
+
         const tmp: any = {...docAnnotation};
 
         delete tmp.docMeta;
@@ -50,6 +55,7 @@ export namespace DocAnnotations {
 
         const result: IDocAnnotationRef = {
             ...tmp,
+            docMetaRef,
             children: () => children
         }
 
@@ -127,6 +133,9 @@ export namespace DocAnnotations {
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             children: () => [],
+            docMetaRef: {
+                id: docMeta.docInfo.fingerprint
+            }
         };
 
     }
@@ -168,6 +177,9 @@ export namespace DocAnnotations {
             img: undefined,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             children: () => [],
+            docMetaRef: {
+                id: docMeta.docInfo.fingerprint
+            }
         };
 
     }
@@ -224,7 +236,10 @@ export namespace DocAnnotations {
             author: annotation.author,
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             immutable: isImmutable(annotation.author),
-            children
+            children,
+            docMetaRef: {
+                id: docMeta.docInfo.fingerprint
+            }
         };
 
     }
@@ -264,7 +279,10 @@ export namespace DocAnnotations {
             immutable: isImmutable(annotation.author),
             tags: {...toSelfInheritedTags(annotation.tags), ...init.tags},
             img: undefined,
-            children
+            children,
+            docMetaRef: {
+                id: docMeta.docInfo.fingerprint
+            }
         };
 
     }

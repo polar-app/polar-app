@@ -14,10 +14,13 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 
 const log = Logger.create();
 
 export interface IDocViewerContextMenuOrigin {
+
     readonly x: number;
     readonly y: number;
     readonly width: number;
@@ -94,13 +97,14 @@ function selectedAnnotationRefs(pageElement: HTMLElement,
                                 point: IPoint,
                                 className: string): ReadonlyArray<IAnnotationRef> {
 
-    function toAnnotationRef(element: HTMLElement): IAnnotationRef {
-        const id = element.getAttribute("data-annotation-id")!;
-        return {id, pageNum, annotationType};
-    }
+    // function toAnnotationRef(element: HTMLElement): IAnnotationRef {
+    //     const id = element.getAttribute("data-annotation-id")!;
+    //     return {id, pageNum, annotationType};
+    // }
+    //
+    // return selectedElements(pageElement, point, className).map(toAnnotationRef);
 
-    return selectedElements(pageElement, point, className).map(toAnnotationRef);
-
+    return [];
 
 }
 
@@ -156,25 +160,37 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
+    const annotationMutationsContext = useAnnotationMutationsContext();
+    const docMetaContext = useDocMetaContext();
+
+    const origin = props.origin!;
 
     const onCreatePagemarkToPoint = React.useCallback(() => {
 
-        if (props.origin) {
-
-            onPagemark({
-                type: 'create',
-                ...props.origin,
-            });
-
-        }
+        onPagemark({
+            type: 'create',
+            ...origin,
+        });
 
     }, []);
 
     const onCreateAreaHighlight = () => {
-        if (props.origin) {
-            const {pageNum, pointWithinPageElement} = props.origin;
-            onAreaHighlightCreated({pageNum, pointWithinPageElement});
-        }
+        const {pageNum, pointWithinPageElement} = origin;
+        onAreaHighlightCreated({pageNum, pointWithinPageElement});
+    }
+
+    const onDelete = (annotations: ReadonlyArray<IAnnotationRef>) => {
+
+        const docMeta = docMetaContext.doc?.docMeta!;
+
+        const selected = annotations.map(current => {
+            return {
+                docMeta, ...current
+            };
+        });
+
+        annotationMutationsContext.onDeleted({selected});
+
     }
 
     return (
@@ -193,7 +209,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
                     <MUIMenuItem text="Delete"
                                  icon={<DeleteForeverIcon/>}
-                                 onClick={NULL_FUNCTION}/>
+                                 onClick={() => onDelete(origin.pagemarks)}/>
 
                 </MUISubMenu>}
 

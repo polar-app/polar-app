@@ -56,10 +56,10 @@ export const FlashcardAnnotationControlBar = React.memo((props: IProps) => {
 
                     {props.editButton}
 
-                    <FlashcardViewDropdown id={'flashcard-dropdown-' + flashcard.id}
-                                           disabled={! props.doc.mutable}
-                                           flashcard={flashcard}
-                                           onDelete={() => handleDelete()}/>
+                    {/*<FlashcardViewDropdown id={'flashcard-dropdown-' + flashcard.id}*/}
+                    {/*                       disabled={! props.doc.mutable}*/}
+                    {/*                       flashcard={flashcard}*/}
+                    {/*                       onDelete={() => handleDelete()}/>*/}
                 </MUIButtonBar>
 
             </div>

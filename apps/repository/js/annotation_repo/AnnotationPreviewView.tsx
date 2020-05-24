@@ -12,9 +12,7 @@ import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg
 import {DocPropTable} from "./meta_view/DocPropTable";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
-import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from "react-moment";
-import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {RepoDocMetaUpdater} from "../RepoDocMetaLoader";
 import Paper from '@material-ui/core/Paper';
@@ -24,7 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Divider from "@material-ui/core/Divider";
 import {AnnotationTagsButton} from "./buttons/AnnotationTagsButton";
-import { AnnotationDeleteButton } from './buttons/AnnotationDeleteButton';
+import {AnnotationDeleteButton} from './buttons/AnnotationDeleteButton';
 
 const log = Logger.create();
 
@@ -50,7 +48,7 @@ export interface IProps {
     readonly repoDocMetaUpdater: RepoDocMetaUpdater;
     readonly tagsProvider: () => ReadonlyArray<Tag>;
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly repoAnnotation?: IDocAnnotation;
+    readonly docAnnotation?: IDocAnnotation;
 
 }
 
@@ -80,9 +78,9 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (this.props.repoAnnotation) {
+        if (this.props.docAnnotation) {
 
-            const repoAnnotation = this.props.repoAnnotation;
+            const repoAnnotation = this.props.docAnnotation;
 
             return (
 
@@ -130,7 +128,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
                         <div className="ml-auto mt-auto mb-auto">
                             <AnnotationTagsButton tagProvider={this.props.tagsProvider}
-                                                  existingTags={this.props.repoAnnotation?.tags ? Object.values(this.props.repoAnnotation?.tags) : []}
+                                                  existingTags={this.props.docAnnotation?.tags ? Object.values(this.props.docAnnotation?.tags) : []}
                                                   onTagged={this.onTagged}/>
                         </div>
 
@@ -141,7 +139,7 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
                         <Divider orientation="vertical"/>
 
                         <div className="mt-auto mb-auto">
-                            <IconButton onClick={() => this.onDocumentLoadRequested(this.props.repoAnnotation?.docInfo!)}>
+                            <IconButton onClick={() => this.onDocumentLoadRequested(this.props.docAnnotation?.docInfo!)}>
                                 <OpenInNewIcon/>
                             </IconButton>
                         </div>
@@ -212,14 +210,14 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     private onDelete() {
 
-        if (! this.props.repoAnnotation) {
+        if (! this.props.docAnnotation) {
             log.warn("no repoAnnotation");
             return;
         }
 
-        const {docMeta, annotationType, pageNum, original} = this.props.repoAnnotation;
+        const {docMeta} = this.props.docAnnotation;
 
-        AnnotationMutations.delete({docMeta, annotationType, pageNum}, original);
+        AnnotationMutations.delete(this.props.docAnnotation);
 
         const doPersist = async () => {
 
@@ -237,13 +235,13 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     private onUpdate() {
 
-        if (! this.props.repoAnnotation) {
+        if (! this.props.docAnnotation) {
             return;
         }
 
-        const {docMeta, annotationType, pageNum, original} = this.props.repoAnnotation;
+        const {original} = this.props.docAnnotation;
 
-        AnnotationMutations.update({docMeta, annotationType, pageNum}, {...original});
+        AnnotationMutations.update(this.props.docAnnotation, {...original});
 
     }
 
@@ -258,13 +256,13 @@ export class AnnotationPreviewView extends React.Component<IProps, IState> {
 
     private onTagged(tags: ReadonlyArray<Tag>) {
 
-        const annotation = this.props.repoAnnotation!;
-        const {docMeta, pageNum, annotationType} = annotation;
+        const annotation = this.props.docAnnotation!;
+        const {id, docMeta, pageNum, annotationType} = annotation;
         const updates = {tags: Tags.toMap(tags)};
 
         setTimeout(() => {
 
-            AnnotationMutations.update({docMeta, pageNum, annotationType},
+            AnnotationMutations.update(annotation,
                                        {...annotation.original, ...updates});
 
             const doPersist = async () => {

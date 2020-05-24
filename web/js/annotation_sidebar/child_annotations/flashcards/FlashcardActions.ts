@@ -11,6 +11,7 @@ import {Flashcards} from '../../../metadata/Flashcards';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 export class FlashcardActions {
 
@@ -36,7 +37,7 @@ export class FlashcardActions {
                          parent: IRef,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
-                         existingFlashcard?: Flashcard | IDocAnnotationRef) {
+                         existingFlashcard?: IFlashcard | IDocAnnotationRef) {
 
         const flashcard = this.newInstanceFromParentRef(parent, type, fields);
 

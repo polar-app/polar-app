@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDocViewerStore} from "./DocViewerStore";
 import {
-    DocMetaLookupContext,
-    IDocMetaLookupContext
+    BaseDocMetaLookupContext,
+    DocMetaLookupContext
 } from "../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -15,25 +15,27 @@ export const DocViewerDocMetaLookupContextProvider = React.memo((props: IProps) 
 
     const {docMeta} = useDocViewerStore();
 
-    function lookup(id: IDStr): IDocMeta | undefined {
+    class DefaultDocMetaLookupContext extends BaseDocMetaLookupContext {
 
-        if (! docMeta) {
-            console.warn("No docMeta currently defined");
+        public lookup(id: IDStr): IDocMeta | undefined {
+
+            if (! docMeta) {
+                console.warn("No docMeta currently defined");
+                return undefined;
+            }
+
+            if (id === docMeta.docInfo.fingerprint) {
+                return docMeta;
+            }
+
+            console.warn(`DocMeta loaded ${docMeta.docInfo.fingerprint} not ${id}`);
             return undefined;
-        }
 
-        if (id === docMeta.docInfo.fingerprint) {
-            return docMeta;
         }
-
-        console.warn(`DocMeta loaded ${docMeta.docInfo.fingerprint} not ${id}`);
-        return undefined;
 
     }
 
-    const docMetaLookupContext: IDocMetaLookupContext = {
-        lookup
-    };
+    const docMetaLookupContext = new DefaultDocMetaLookupContext();
 
     return (
         <DocMetaLookupContext.Provider value={docMetaLookupContext}>

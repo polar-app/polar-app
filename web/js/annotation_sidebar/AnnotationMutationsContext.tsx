@@ -39,7 +39,12 @@ import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {
+    IAnnotationRef, IAnnotationRefWithDocMeta,
+    IDocMetaHolder
+} from "polar-shared/src/metadata/AnnotationRefs";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 
 const log = Logger.create();
 
@@ -47,8 +52,14 @@ const log = Logger.create();
  * This allows us to specify what's is being mutated.
  */
 export interface IAnnotationMutationSelected {
-    readonly selected: ReadonlyArray<IDocAnnotationRef>;
+    readonly selected: ReadonlyArray<IAnnotationRef>;
 }
+
+export interface IAnnotationMutationSelectedWithDocMeta {
+    readonly selected: ReadonlyArray<IAnnotationRefWithDocMeta>;
+}
+
+// FIXME: none of these should use IDocAnnotation
 
 export interface ICommentCreate extends IAnnotationMutationSelected {
     readonly type: 'create';
@@ -132,6 +143,9 @@ export interface ITextHighlightUpdate extends IAnnotationMutationSelected {
 export type ITextHighlightMutation = ITextHighlightCreate | ITextHighlightUpdate | ITextHighlightRevert;
 
 export interface IDeleteMutation extends IAnnotationMutationSelected {
+}
+
+export interface IDeleteMutationWithDocMeta extends IAnnotationMutationSelectedWithDocMeta {
 
 }
 
@@ -158,7 +172,7 @@ export interface IAnnotationMutationCallbacks {
 
     readonly createTaggedCallback: (mutation: ITaggedMutation) => Callback;
 
-    readonly doTagged: (annotations: ReadonlyArray<IDocAnnotationRef>,
+    readonly doTagged: (annotations: ReadonlyArray<IAnnotationRef>,
                         tags: ReadonlyArray<Tag>,
                         strategy: ComputeNewTagsStrategy) => void;
 
@@ -254,7 +268,9 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onFlashcard(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IFlashcardMutation) {
+    export function onFlashcard(docMeta: IDocMeta,
+                                pageMeta: IPageMeta,
+                                mutation: IFlashcardMutation) {
 
         switch (mutation.type) {
 
@@ -269,13 +285,17 @@ export namespace DocAnnotationsMutator {
 
                 const selected = mutation.selected || [];
 
-                for (const flashcard of selected) {
+                for (const current of selected) {
+
+                    const flashcard = current.original as IFlashcard;
+
                     FlashcardActions.update(docMeta,
                                             pageMeta,
                                             mutation.parent,
                                             mutation.flashcardType,
                                             mutation.fields,
                                             flashcard);
+
                 }
 
                 break;
@@ -360,11 +380,10 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onDeleted(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IDeleteMutation) {
+    export function onDeleted(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IDeleteMutationWithDocMeta) {
 
         for (const current of mutation.selected || []) {
-            const {pageNum, annotationType} = current;
-            AnnotationMutations.delete({docMeta, annotationType, pageNum}, current.original);
+            AnnotationMutations.delete(current);
         }
 
     }
@@ -374,6 +393,7 @@ export namespace AnnotationMutationCallbacks {
 
     import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
     import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
+    import ITagsHolder = TaggedCallbacks.ITagsHolder;
 
     /**
      * @param updateStore: Update the store directly.
@@ -427,7 +447,7 @@ export namespace AnnotationMutationCallbacks {
             //
 
             const partitions = arrayStream(selected)
-                .partition(annotation => [annotation.fingerprint, docMetaLookupContext.lookup(annotation.fingerprint)!]);
+                .partition(annotation => [annotation.docMetaRef.id, docMetaLookupContext.lookup(annotation.docMetaRef.id)!]);
 
             // *** first we have to apply all the mutations to every annotation in
             // this doc...
@@ -453,7 +473,7 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function doTagged(annotations: ReadonlyArray<IDocAnnotationRef>,
+        function doTagged(annotations: ReadonlyArray<IAnnotationRef>,
                           tags: ReadonlyArray<Tag>,
                           strategy: ComputeNewTagsStrategy = 'set') {
 
@@ -470,8 +490,7 @@ export namespace AnnotationMutationCallbacks {
                         tags: Tags.toMap(tags)
                     };
 
-                    const {annotationType, pageNum} = current;
-                    AnnotationMutations.update({docMeta, annotationType, pageNum},
+                    AnnotationMutations.update({...current, docMeta},
                                                {...current.original, ...updates});
 
                 }
@@ -483,8 +502,17 @@ export namespace AnnotationMutationCallbacks {
 
         function createTaggedCallback(mutation: ITaggedMutation) {
 
-            const opts: TaggedCallbacksOpts<IDocAnnotationRef> = {
-                targets: () => mutation.selected,
+            function toTarget(annotation: IAnnotationRef): IAnnotationRef & ITagsHolder {
+
+                return {
+                    ...annotation,
+                    tags: annotation.original.tags
+                }
+
+            }
+
+            const opts: TaggedCallbacksOpts<IAnnotationRef & ITagsHolder> = {
+                targets: () => mutation.selected.map(toTarget),
                 tagsProvider: tagsContext.tagsProvider,
                 dialogs,
                 doTagged
@@ -512,7 +540,7 @@ export namespace AnnotationMutationCallbacks {
 
             // FIXME: do I need to unify this action with doc repo store?
 
-            const annotations = mutation.selected;
+            const annotations = docMetaLookupContext.lookupAnnotations(mutation.selected);
 
             if (annotations.length === 0) {
                 log.warn("no repoAnnotation");
@@ -527,10 +555,10 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function doDeleted(annotations: ReadonlyArray<IDocAnnotationRef>) {
+        function doDeleted(annotations: ReadonlyArray<IAnnotationRefWithDocMeta>) {
 
-            const mutation: IDeleteMutation = {
-                selected: annotations
+            const mutation: IDeleteMutationWithDocMeta = {
+                selected: docMetaLookupContext.lookupAnnotations(annotations)
             }
 
             handleUpdate(mutation, DocAnnotationsMutator.onDeleted)
@@ -646,8 +674,7 @@ export namespace AnnotationMutationCallbacks {
                         color: colorMutation.color
                     };
 
-                    const {annotationType, pageNum} = current;
-                    AnnotationMutations.update({docMeta, annotationType, pageNum},
+                    AnnotationMutations.update({...current, docMeta},
                                                {...current.original, ...updates});
 
                 }

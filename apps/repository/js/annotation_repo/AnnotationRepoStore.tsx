@@ -53,6 +53,7 @@ import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 
 const log = Logger.create();
 
@@ -279,7 +280,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         mutator.refresh();
     }
 
-    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IDocAnnotationRef> {
+    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IAnnotationRef> {
 
         if (opts && opts.selected) {
             return opts.selected;
@@ -376,9 +377,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doUpdated(annotation: IDocAnnotation) {
 
-        const {docMeta, annotationType, pageNum, original} = annotation;
+        const {docMeta, original} = annotation;
 
-        AnnotationMutations.update({docMeta, annotationType, pageNum}, original);
+        AnnotationMutations.update(annotation, original);
 
         async function doAsync() {
 
@@ -445,7 +446,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
         // noop
     }
 
-    function doDropped(annotations: ReadonlyArray<IDocAnnotationRef>, tag: Tag) {
+    function doDropped(annotations: ReadonlyArray<IAnnotationRef>, tag: Tag) {
         annotationMutations.doTagged(annotations, [tag], 'add');
     }
 

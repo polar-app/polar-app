@@ -69,7 +69,7 @@ const AnnotationPreview = (props: AnnotationsPreviewProps) => (
     <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
                            repoDocMetaUpdater={props.repoDocMetaUpdater}
                            tagsProvider={props.tagsProvider}
-                           repoAnnotation={props.repoAnnotation}/>
+                           docAnnotation={props.repoAnnotation}/>
 );
 
 interface RouterProps extends main.MainProps {
@@ -194,7 +194,7 @@ namespace main {
                         <AnnotationPreviewView persistenceLayerManager={props.persistenceLayerManager}
                                                repoDocMetaUpdater={props.repoDocMetaLoader}
                                                tagsProvider={props.tagsProvider}
-                                               repoAnnotation={props.repoAnnotation}/>
+                                               docAnnotation={props.repoAnnotation}/>
                     </Paper>
 
             }

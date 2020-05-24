@@ -10,7 +10,7 @@ export namespace TaggedCallbacks {
     import toAutocompleteOption = MUITagInputControls.toAutocompleteOption;
     import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
-    interface ITagsBase {
+    export interface ITagsHolder {
         readonly tags?: Readonly<{[id: string]: Tag}> | undefined;
     }
 
@@ -32,7 +32,7 @@ export namespace TaggedCallbacks {
 
     }
 
-    export function create<T extends ITagsBase>(opts: TaggedCallbacksOpts<T>): () => void {
+    export function create<T extends ITagsHolder>(opts: TaggedCallbacksOpts<T>): () => void {
 
         return () => {
 

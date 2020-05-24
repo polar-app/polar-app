@@ -18,9 +18,11 @@ import {
 import {PersistenceLayerMutator} from './PersistenceLayerMutator';
 import {Provider} from "polar-shared/src/util/Providers";
 import {
+    BaseDocMetaLookupContext,
     DocMetaLookupContext,
     IDocMetaLookupContext
 } from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export interface ITagsContext {
 
@@ -170,9 +172,15 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         userTags: () => userTags || []
                                                     }
 
-                                                    const docMetaLookupContext: IDocMetaLookupContext = {
-                                                        lookup: (id => repoDocMetaManager.repoDocInfoIndex.get(id)?.docMeta)
+                                                    class DefaultDocMetaLookupContext extends BaseDocMetaLookupContext {
+
+                                                        public lookup(id: IDStr) {
+                                                            return repoDocMetaManager.repoDocInfoIndex.get(id)?.docMeta;
+                                                        }
+
                                                     }
+
+                                                    const docMetaLookupContext = new DefaultDocMetaLookupContext();
 
                                                     return (
                                                         <PersistenceContext.Provider value={persistenceContext}>
