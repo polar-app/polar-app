@@ -9,6 +9,7 @@ import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 /**
  * Handles converting everything to DocAnnotations from DocMeta.
@@ -16,6 +17,8 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 export namespace DocAnnotationLoader2 {
 
     export function load(docMeta: IDocMeta, docFileResolver: DocFileResolver): ReadonlyArray<IDocAnnotation> {
+
+        Preconditions.assertPresent(docMeta, 'docMeta');
 
         const docAnnotationIndex = new DocAnnotationIndex();
 

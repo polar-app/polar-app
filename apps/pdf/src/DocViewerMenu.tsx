@@ -1,7 +1,11 @@
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
-import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {
+    IPagemarkDelete,
+    useDocViewerCallbacks,
+    useDocViewerStore
+} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
@@ -58,8 +62,6 @@ function useAnnotationMetaResolver(): AnnotationMetaResolver {
         }
 
         const original = getOriginal();
-
-        console.log("FIXME1: id", id);
 
         return {
             id, annotationType, pageNum,
@@ -235,6 +237,22 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         onAreaHighlightCreated({pageNum, pointWithinPageElement});
     }
 
+    const onDeletePagemark = (annotations: ReadonlyArray<IAnnotationMeta>) => {
+
+        function toMutation(mutation: IAnnotationRef): IPagemarkDelete {
+            return {
+                type: 'delete',
+                pageNum: mutation.pageNum,
+                pagemark: mutation.original as IPagemark
+            }
+        }
+
+        annotations.map(annotationMetaResolver)
+                   .map(toMutation)
+                   .forEach(onPagemark);
+
+    }
+
     const onDelete = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 
         const selected = annotations.map(annotationMetaResolver);
@@ -260,7 +278,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
                     <MUIMenuItem text="Delete"
                                  icon={<DeleteForeverIcon/>}
-                                 onClick={() => onDelete(origin.pagemarks)}/>
+                                 onClick={() => onDeletePagemark(origin.pagemarks)}/>
 
                 </MUISubMenu>}
 

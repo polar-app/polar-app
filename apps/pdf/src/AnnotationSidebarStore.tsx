@@ -14,6 +14,7 @@ import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -145,6 +146,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
     }
 
     function setDocMeta(docMeta: IDocMeta) {
+        Preconditions.assertPresent(docMeta, 'docMeta');
         const data = toAnnotations(docMeta);
         mutator.doUpdate({mutation: 'set-data', data});
     }

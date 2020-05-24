@@ -112,7 +112,13 @@ export interface IPagemarkUpdate {
     readonly pagemark: IPagemark;
 }
 
-export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate;
+export interface IPagemarkDelete {
+    readonly type: 'delete',
+    readonly pageNum: number;
+    readonly pagemark: IPagemark;
+}
+
+export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate | IPagemarkDelete;
 
 export interface IDocViewerCallbacks {
 
@@ -295,7 +301,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             console.log("percentage for pagemark: ", percentage);
 
-            function erasePagemark(pageNum: number) {
+            function deletePagemark(pageNum: number) {
 
                 Preconditions.assertNumber(pageNum, "pageNum");
 
@@ -307,7 +313,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage);
             }
 
-            erasePagemark(pageNum);
+            deletePagemark(pageNum);
             createPagemarksForRange(pageNum, percentage);
 
             // FIXME: this isn't writing it to storage
@@ -325,6 +331,18 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 .catch(err => log.error(err));
         }
 
+        function deletePagemark(mutation: IPagemarkDelete) {
+
+            const store = storeProvider();
+            const docMeta = store.docMeta!;
+            const {pageNum, pagemark} = mutation;
+
+            Pagemarks.deletePagemark(docMeta, pageNum, pagemark.id);
+            setDocMeta(docMeta);
+            writeUpdatedDocMetas([docMeta])
+                .catch(err => log.error(err));
+        }
+
         switch (mutation.type) {
 
             case "create":
@@ -332,6 +350,9 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 break;
             case "update":
                 updatePagemark(mutation);
+                break;
+            case "delete":
+                deletePagemark(mutation);
                 break;
 
         }
