@@ -1,7 +1,11 @@
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
-import {useDocViewerCallbacks} from "./DocViewerStore";
+import {
+    IPagemarkUpdate,
+    useDocViewerCallbacks,
+    useDocViewerStore
+} from "./DocViewerStore";
 import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
@@ -9,15 +13,66 @@ import {IPoint} from "../../../web/js/Point";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
 import {MUISubMenu} from "../../../web/js/mui/menu/MUISubMenu";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
+import {
+    IAnnotationMeta,
+    IAnnotationRef
+} from "polar-shared/src/metadata/AnnotationRefs";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
+import { DocMetas } from "polar-shared/src/metadata/DocMetas";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 
 const log = Logger.create();
+
+type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
+
+function useAnnotationMetaResolver(): AnnotationMetaResolver {
+
+    const {docMeta} = useDocViewerStore();
+
+    return (annotationMeta: IAnnotationMeta): IAnnotationRef => {
+
+        const {id, annotationType, pageNum} = annotationMeta;
+
+        if (! docMeta) {
+            throw new Error("No docMeta");
+        }
+
+        const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+        function getOriginal(): IPagemark | ITextHighlight | IAreaHighlight {
+
+            switch (annotationType) {
+                case AnnotationType.PAGEMARK:
+                    return (pageMeta.pagemarks || {})[id];
+                case AnnotationType.TEXT_HIGHLIGHT:
+                    return (pageMeta.textHighlights || {})[id];
+                case AnnotationType.AREA_HIGHLIGHT:
+                    return (pageMeta.areaHighlights || {})[id];
+                default:
+                    throw new Error("Unsupported annotationType: " + annotationMeta.annotationType);
+            }
+
+        }
+
+        const original = getOriginal();
+
+        return {
+            id, annotationType, pageNum,
+            docMetaRef: {
+                id: docMeta.docInfo.fingerprint
+            },
+            original
+        }
+
+    }
+
+}
 
 export interface IDocViewerContextMenuOrigin {
 
@@ -30,9 +85,9 @@ export interface IDocViewerContextMenuOrigin {
     readonly clientY: number;
     readonly pointWithinPageElement: IPoint;
 
-    readonly pagemarks: ReadonlyArray<IAnnotationRef>;
-    readonly areaHighlights: ReadonlyArray<IAnnotationRef>;
-    readonly textHighlights: ReadonlyArray<IAnnotationRef>;
+    readonly pagemarks: ReadonlyArray<IAnnotationMeta>;
+    readonly areaHighlights: ReadonlyArray<IAnnotationMeta>;
+    readonly textHighlights: ReadonlyArray<IAnnotationMeta>;
 
 }
 
@@ -91,20 +146,18 @@ function selectedElements(pageElement: HTMLElement,
 
 }
 
-function selectedAnnotationRefs(pageElement: HTMLElement,
-                                pageNum: PageNumber,
-                                annotationType: AnnotationType,
-                                point: IPoint,
-                                className: string): ReadonlyArray<IAnnotationRef> {
+function selectedAnnotationMetas(pageElement: HTMLElement,
+                                 pageNum: PageNumber,
+                                 annotationType: AnnotationType,
+                                 point: IPoint,
+                                 className: string): ReadonlyArray<IAnnotationMeta> {
 
-    // function toAnnotationRef(element: HTMLElement): IAnnotationRef {
-    //     const id = element.getAttribute("data-annotation-id")!;
-    //     return {id, pageNum, annotationType};
-    // }
-    //
-    // return selectedElements(pageElement, point, className).map(toAnnotationRef);
+    function toAnnotationMeta(element: HTMLElement): IAnnotationMeta {
+        const id = element.getAttribute("data-annotation-id")!;
+        return {id, pageNum, annotationType};
+    }
 
-    return [];
+    return selectedElements(pageElement, point, className).map(toAnnotationMeta);
 
 }
 
@@ -136,9 +189,9 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
     const point = {x: event.clientX, y: event.clientY};
 
-    const pagemarks = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.PAGEMARK, point, 'pagemark');
-    const areaHighlights = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.AREA_HIGHLIGHT, point, 'area-highlight');
-    const textHighlights = selectedAnnotationRefs(pageElement, pageNum, AnnotationType.TEXT_HIGHLIGHT, point, 'text-highlight');
+    const pagemarks = selectedAnnotationMetas(pageElement, pageNum, AnnotationType.PAGEMARK, point, 'pagemark');
+    const areaHighlights = selectedAnnotationMetas(pageElement, pageNum, AnnotationType.AREA_HIGHLIGHT, point, 'area-highlight');
+    const textHighlights = selectedAnnotationMetas(pageElement, pageNum, AnnotationType.TEXT_HIGHLIGHT, point, 'text-highlight');
 
     return {
         clientX: event.clientX,
@@ -162,6 +215,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
     const docMetaContext = useDocMetaContext();
+    const annotationMetaResolver = useAnnotationMetaResolver();
 
     const origin = props.origin!;
 
@@ -179,15 +233,9 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         onAreaHighlightCreated({pageNum, pointWithinPageElement});
     }
 
-    const onDelete = (annotations: ReadonlyArray<IAnnotationRef>) => {
+    const onDelete = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 
-        const docMeta = docMetaContext.doc?.docMeta!;
-
-        const selected = annotations.map(current => {
-            return {
-                docMeta, ...current
-            };
-        });
+        const selected = annotations.map(annotationMetaResolver);
 
         annotationMutationsContext.onDeleted({selected});
 
