@@ -22,6 +22,7 @@ import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import ShortTextIcon from '@material-ui/icons/ShortText';
 
 const log = Logger.create();
 
@@ -252,6 +253,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                          icon={<PhotoSizeSelectLargeIcon/>}
                          onClick={onCreateAreaHighlight}/>
 
+            {/*FIXME: pagemarks aren't being deleted properly as they're not doing batches             */}
             {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUISubMenu text="Pagemark"
                             icon={<BookmarkIcon/>}>
@@ -261,6 +263,27 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                                  onClick={() => onDelete(origin.pagemarks)}/>
 
                 </MUISubMenu>}
+
+            {(props.origin?.areaHighlights?.length || 0) > 0 &&
+                <MUISubMenu text="Area Highlight"
+                            icon={<PhotoSizeSelectLargeIcon/>}>
+
+                    <MUIMenuItem text="Delete"
+                                 icon={<DeleteForeverIcon/>}
+                                 onClick={() => onDelete(origin.areaHighlights)}/>
+
+                </MUISubMenu>}
+
+            {(props.origin?.textHighlights?.length || 0) > 0 &&
+                <MUISubMenu text="Text Highlight"
+                            icon={<ShortTextIcon/>}>
+
+                    <MUIMenuItem text="Delete"
+                                 icon={<DeleteForeverIcon/>}
+                                 onClick={() => onDelete(origin.textHighlights)}/>
+
+                </MUISubMenu>}
+
 
 
         </>
