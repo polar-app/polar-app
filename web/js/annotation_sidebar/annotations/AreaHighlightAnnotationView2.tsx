@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {IDocAnnotation, IDocAnnotationRef} from '../DocAnnotation';
+import {IDocAnnotationRef} from '../DocAnnotation';
 import {ResponsiveImg} from '../ResponsiveImg';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import isEqual from "react-fast-compare";
 import {AnnotationViewControlBar2} from "../AnnotationViewControlBar2";
-import {ChildAnnotationSection2} from '../child_annotations/ChildAnnotationSection2';
-import {AnnotationInputView} from "../AnnotationInputView";
 
 const Image = (props: IProps) => {
 
@@ -57,13 +55,6 @@ export const AreaHighlightAnnotationView2 = React.memo((props: IProps) => {
 
                 <AnnotationViewControlBar2 annotation={annotation}/>
 
-            </div>
-
-            <AnnotationInputView annotation={annotation}/>
-
-            <div className="comments">
-                <ChildAnnotationSection2 parent={annotation}
-                                         docAnnotations={annotation.children()}/>
             </div>
 
         </div>

@@ -97,8 +97,6 @@ const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {
             <>
                 <>
                     <AnnotationView2 annotation={annotation}/>
-
-                    <AnnotationInputView annotation={annotation}/>
                 </>
             </>
         </AnnotationActiveInputContextProvider>

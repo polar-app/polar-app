@@ -1,7 +1,4 @@
 import * as React from 'react';
-import {IStyleMap} from '../../../../web/js/react/IStyleMap';
-import {Img} from 'polar-shared/src/metadata/Img';
-import {ResponsiveImg} from '../../../../web/js/annotation_sidebar/ResponsiveImg';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from "@material-ui/core/Typography";
@@ -9,26 +6,8 @@ import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotation_sidebar/AnnotationActiveInputContext";
 import {DocMetaContextProvider} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
-import {AnnotationInputView} from "../../../../web/js/annotation_sidebar/AnnotationInputView";
 import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
 import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
-
-const Styles: IStyleMap = {
-
-    annotationText: {
-        paddingTop: '5px',
-    },
-
-};
-
-interface AnnotationImageProps {
-    readonly id: string;
-    readonly img?: Img;
-}
-
-const AnnotationImage = (props: AnnotationImageProps) => {
-    return <ResponsiveImg id={props.id} img={props.img} defaultText=" "/>;
-};
 
 const NoAnnotationSelected = () => (
     <Box p={1}>

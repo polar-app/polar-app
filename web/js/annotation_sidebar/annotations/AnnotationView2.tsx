@@ -11,6 +11,8 @@ import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditCommen
 import {DeepEquals} from "../../mui/DeepEquals";
 import debugIsEqual = DeepEquals.debugIsEqual;
 import isEqual from "react-fast-compare";
+import {AnnotationInputView} from "../AnnotationInputView";
+import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
 
 const log = Logger.create();
 
@@ -73,6 +75,14 @@ export const AnnotationView2 = React.memo((props: IProps) => {
             <MUIHoverController>
                 <>
                     <AnnotationTypeComponent/>
+
+                    <AnnotationInputView annotation={annotation}/>
+
+                    <div className="comments">
+                        <ChildAnnotationSection2 parent={annotation}
+                                                 docAnnotations={annotation.children()}/>
+                    </div>
+
                 </>
             </MUIHoverController>
         </div>
