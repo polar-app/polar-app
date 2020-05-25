@@ -8,6 +8,7 @@ import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
+import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -42,6 +43,8 @@ export const MUIAppRoot = (props: IProps) => {
                 <GlobalCSSBootstrap/>
                 <GlobalCssSummernote/>
                 <GlobalCssMobile/>
+
+                <ActiveHotKeyBindings/>
 
                 <FirestoreProvider>
                     {props.children}
