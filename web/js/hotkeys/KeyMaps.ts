@@ -24,7 +24,12 @@ export namespace KeyMaps {
 
     export type SparseKeyMap = { [key in ActionName]: SparseKeyMapOption };
 
-    export function keyMap(map: SparseKeyMap, group?: string): KeyMap {
+    export interface IKeyMapOpts {
+        readonly keyMap: SparseKeyMap;
+        readonly group?: string;
+    }
+
+    export function keyMap(opts: IKeyMapOpts): KeyMap {
 
         function toKeySequence(option: SparseKeyMapOption): KeySequence {
 
@@ -43,8 +48,10 @@ export namespace KeyMaps {
 
         const result: KeyMap = {};
 
-        for (const key of Object.keys(map)) {
-            result[key] = toKeySequence(map[key]);
+        const {group, keyMap} = opts;
+
+        for (const key of Object.keys(keyMap)) {
+            result[key] = toKeySequence(keyMap[key]);
         }
 
         return result;

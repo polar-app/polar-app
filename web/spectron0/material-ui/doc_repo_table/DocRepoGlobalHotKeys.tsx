@@ -8,38 +8,42 @@ import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {KeyMaps} from "../../../js/hotkeys/KeyMaps";
 import keyMap = KeyMaps.keyMap;
 
-const globalKeyMap = keyMap({
-    TAG: {
-        name: "Tag",
-        description: "Tag the currently selected document.",
-        sequences: ['t'],
-    },
-    DELETE: {
-        name: "Delete",
-        description: "Delete the currently selected item.",
-        sequences: ['del', 'backspace'],
-    },
-    FLAG: {
-        name: "Flag",
-        description: "Flag the currently selected document",
-        sequences: ['f']
-    },
-    ARCHIVE: {
-        name: "Archive",
-        description: "Archive the currently selected document.  Once archived the item is not visible by default.",
-        sequences: ['a']
-    },
-    RENAME: {
-        name: "Rename",
-        description: "Rename the current document and assign it a new title.",
-        sequences: ['r']
-    },
-    OPEN: {
-        name: "Open",
-        description: "Open the current document in the document viewer",
-        sequences: ['command+return', 'control+return']
-    }
-});
+const globalKeyMap = keyMap(
+    {
+        group: "Documents",
+        keyMap: {
+            TAG: {
+                name: "Tag",
+                description: "Tag the currently selected document.",
+                sequences: ['t'],
+            },
+            DELETE: {
+                name: "Delete",
+                description: "Delete the currently selected item.",
+                sequences: ['del', 'backspace'],
+            },
+            FLAG: {
+                name: "Flag",
+                description: "Flag the currently selected document",
+                sequences: ['f']
+            },
+            ARCHIVE: {
+                name: "Archive",
+                description: "Archive the currently selected document.  Once archived the item is not visible by default.",
+                sequences: ['a']
+            },
+            RENAME: {
+                name: "Rename",
+                description: "Rename the current document and assign it a new title.",
+                sequences: ['r']
+            },
+            OPEN: {
+                name: "Open",
+                description: "Open the current document in the document viewer",
+                sequences: ['command+return', 'control+return']
+            }
+        }
+    });
 
 export const DocRepoGlobalHotKeys = React.memo(() => {
 
