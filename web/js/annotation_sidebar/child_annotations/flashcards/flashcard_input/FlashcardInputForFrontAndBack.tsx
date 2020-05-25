@@ -57,9 +57,12 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                 {/*- quote annotation ... to copy the annotation text.*/}
 
-                <div style={FlashcardStyles.BottomBar}>
+                <div style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                     }}>
 
-                    <div style={FlashcardStyles.BottomBarItem}>
+                    <div style={{flexGrow: 1}}>
 
                         <FlashcardTypeSelector
                             flashcardType={this.flashcardType}
@@ -67,8 +70,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                     </div>
 
-                    <div style={FlashcardStyles.BottomBarItemRight}
-                         className="text-right">
+                    <div>
 
                         <FlashcardButtons cancelButton={this.props.cancelButton}
                                           existingFlashcard={this.props.existingFlashcard}
