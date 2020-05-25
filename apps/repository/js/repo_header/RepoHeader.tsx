@@ -139,9 +139,9 @@ export class RepoHeader extends React.Component<IProps, IState> {
                                     <CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />
                                 </Grid>
 
-                                <Grid item>
-                                    <HelpDropdown/>
-                                </Grid>
+                                {/*<Grid item>*/}
+                                {/*    <HelpDropdown/>*/}
+                                {/*</Grid>*/}
 
                                 <Grid item>
                                     <Settings/>

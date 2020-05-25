@@ -246,8 +246,8 @@ export const RepositoryApp = (props: IProps) => {
                      flexDirection: 'column',
                      flexGrow: 1
                  }}>
-            <Splashes key="splashes"
-                      persistenceLayerManager={persistenceLayerManager}/>
+            {/*<Splashes key="splashes"*/}
+            {/*          persistenceLayerManager={persistenceLayerManager}/>*/}
 
             <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 

@@ -67,7 +67,8 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
                      top: `${textHighlightRect.top}px`,
                      width: `${textHighlightRect.width}px`,
                      height: `${textHighlightRect.height}px`,
-                     mixBlendMode: 'multiply'
+                     mixBlendMode: 'multiply',
+                     pointerEvents: 'none',
                  }}/>,
             container);
     };

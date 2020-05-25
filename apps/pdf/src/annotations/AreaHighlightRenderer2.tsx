@@ -14,6 +14,7 @@ import {ResizeBox} from "./ResizeBox";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAreaHighlightHooks} from "./AreaHighlightHooks";
+import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -24,8 +25,9 @@ interface IProps {
 export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     const {areaHighlight, fingerprint, pageNum} = props;
+    const {id} = areaHighlight;
     const container = useAnnotationContainer(pageNum);
-    const {docScale} = useDocViewerStore();
+    const {docMeta, docScale} = useDocViewerStore();
 
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
 
@@ -64,6 +66,13 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     };
 
     const handleResize = (overlayRect: ILTRect) => {
+
+        // get the most recent area highlight as since this is using state
+        // we have can have a stale highlight.
+
+        const pageMeta = DocMetas.getPageMeta(docMeta!, pageNum);
+        const areaHighlight = (pageMeta.areaHighlights || {})[id];
+
         onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
     }
 

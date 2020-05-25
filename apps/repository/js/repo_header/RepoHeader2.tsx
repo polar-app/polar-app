@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {HelpDropdown} from './HelpDropdown';
 import {RepoNavbar} from "../RepoNavbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
@@ -99,9 +98,9 @@ const Desktop = () => {
                             <CloudAuthButton2/>
                         </Grid>
 
-                        <Grid item>
-                            <HelpDropdown/>
-                        </Grid>
+                        {/*<Grid item>*/}
+                        {/*    <HelpDropdown/>*/}
+                        {/*</Grid>*/}
 
                         <Grid item>
                             <Settings/>
