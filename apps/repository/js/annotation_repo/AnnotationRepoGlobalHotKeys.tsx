@@ -5,13 +5,25 @@ import {Callbacks} from "../Callbacks";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";
+import keyMap = KeyMaps.keyMap;
 
-const globalKeyMap = {
-    TAG: 't',
-    DELETE: ['del', 'backspace'],
-    // FLAG: 'f',
-    // ARCHIVE: 'a'
-};
+const globalKeyMap = keyMap(
+    {
+        group: "Annotations",
+        keyMap: {
+            TAG: {
+                name: "Tag",
+                description: "Tag the current annotation.",
+                sequences: ['t'],
+            },
+            DELETE: {
+                name: "Delete",
+                description: "Delete the current annotation.",
+                sequences: ['del', 'backspace'],
+            }
+        }
+    });
 
 export const AnnotationRepoGlobalHotKeys = React.memo(() => {
 
