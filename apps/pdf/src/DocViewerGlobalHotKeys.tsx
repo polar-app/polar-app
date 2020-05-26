@@ -6,12 +6,29 @@ import {useDocViewerCallbacks} from "./DocViewerStore";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {KeyMaps} from "../../../web/js/hotkeys/KeyMaps";
+import keyMap = KeyMaps.keyMap;
 
-const globalKeyMap = {
-    FIND: ['command+f', 'control+f'],
-    PAGE_NEXT: ['n', 'j'],
-    PAGE_PREV: ['p', 'k']
-};
+const globalKeyMap = keyMap({
+    group: "Document Viewer",
+    keyMap: {
+        FIND: {
+            name: "Find",
+            description: "Search within the document for the given text.",
+            sequences: ['command+f', 'control+f']
+        },
+        PAGE_NEXT: {
+            name: "Next Page",
+            description: "Jump to the next page",
+            sequences: ['n', 'j']
+        },
+        PAGE_PREV: {
+            name: "Previous Page",
+            description: "Jump to the previous page",
+            sequences: ['p', 'k']
+        }
+    }
+});
 
 export const DocViewerGlobalHotKeys = React.memo(() => {
 
