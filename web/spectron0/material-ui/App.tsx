@@ -17,6 +17,8 @@ import {MUISubMenu} from '../../js/mui/menu/MUISubMenu';
 import ReactDOM from 'react-dom';
 import {act} from "react-dom/test-utils";
 import Button from "@material-ui/core/Button";
+import {createPortalProvider} from "../../js/react/portals/provider/PortalProvider";
+import {createTeleporter} from "react-teleporter";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -195,42 +197,23 @@ export const App = () => {
 
     }
 
-    const FakeChild = () => {
-        return (
-            <HeaderChild/>
-        )
-    }
 
-    const PortalTest = () => {
 
-        const portalElement = document.getElementById('portal')!;
 
-        return (
-            ReactDOM.createPortal((
-                    <div>the portal is mounted</div>
-                ),
-                portalElement)
-        );
+    const teleporter = createTeleporter();
 
-    }
-
-    const PortalParent = () => {
-
-        const [active, setActive] = React.useState(true);
-
-        return (
-            <>
-                <Button onClick={() => setActive(! active)}>toggle</Button>
-                {active && <PortalTest/>}
-            </>
-        )
-
-    }
 
     return (
         <MUIAppRoot>
 
-            <PortalParent/>
+            this is the teleporter:
+            <teleporter.Target/>
+
+            this is where we are teleporting from:
+            <teleporter.Source>
+                <div>this is the teleported content</div>
+            </teleporter.Source>
+
 
             {/*<CompA/>*/}
             {/*<CompB/>*/}
