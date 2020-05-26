@@ -2,7 +2,6 @@ import * as React from 'react';
 import {RepoNavbar} from "../RepoNavbar";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
-import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
@@ -38,9 +37,9 @@ const PhoneAndTablet = () => {
                      }}>
 
                     <Link to={{hash: 'account'}}>
-                        <Button size="md" color="clear" className="btn-no-outline">
-                            <i className="fas fa-user"/>
-                        </Button>
+                        {/*<Button size="md" color="clear" className="btn-no-outline">*/}
+                        {/*    <i className="fas fa-user"/>*/}
+                        {/*</Button>*/}
                     </Link>
 
                     {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}

@@ -128,6 +128,40 @@ export const App = () => {
 
     // const ComponentProgressLoader =
 
+    const HeaderContext = React.createContext<React.ReactElement | undefined>(undefined);
+
+    function useHeaderContext() {
+        return React.useContext(HeaderContext);
+    }
+
+    const Header = () => {
+
+        const headerContext = useHeaderContext();
+
+        return (
+            <div>
+                <div id="header-right">
+                    {headerContext && headerContext}
+
+                    {! headerContext && <div>nothing</div>}
+                </div>
+            </div>
+        );
+    }
+
+    interface HeaderRightProps {
+        readonly children: React.ReactElement;
+    }
+    const HeaderRight = (props: HeaderRightProps) => {
+
+        return (
+            <HeaderContext.Provider value={props.children}>
+
+            </HeaderContext.Provider>
+        )
+
+    }
+
     return (
         <MUIAppRoot>
 
@@ -138,13 +172,21 @@ export const App = () => {
             {/*<MUISearchBox2 onChange={NULL_FUNCTION}*/}
             {/*               placeholder="Search..."/>*/}
 
+            <Header/>
 
-            <div onClick={(event) => console.log("FIXME: onClick")}
-                 onContextMenu={event => console.log("FIXME: onContextMenu")}>
+            <HeaderRight>
+                <div>
+                    this is some stuff on the right.
+                </div>
+            </HeaderRight>
 
-                this is the tex tthat shold have a context menu
 
-            </div>
+            {/*<div onClick={(event) => console.log("FIXME: onClick")}*/}
+            {/*     onContextMenu={event => console.log("FIXME: onContextMenu")}>*/}
+
+            {/*    this is the tex tthat shold have a context menu*/}
+
+            {/*</div>*/}
 
             {/*<MenuList>*/}
             {/*    */}

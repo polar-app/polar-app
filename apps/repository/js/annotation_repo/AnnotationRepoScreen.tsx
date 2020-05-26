@@ -45,6 +45,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
+import { RepoHeader2 } from '../repo_header/RepoHeader2';
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -242,16 +243,18 @@ namespace screen {
 
                 <FixedNav.Header>
 
-                    <RepoHeader right={<FilterBar {...props}/>}
-                                toggle={(
-                                    <Link to="#folders">
-                                        <Button color="clear">
-                                            <i className="fas fa-bars"/>
-                                        </Button>
-                                    </Link>
-                                )}
-                                persistenceLayerProvider={props.persistenceLayerProvider}
-                                persistenceLayerController={props.persistenceLayerManager}/>
+                    {/*<RepoHeader2 right={<FilterBar {...props}/>}*/}
+                    {/*             toggle={(*/}
+                    {/*                 <Link to="#folders">*/}
+                    {/*                     <Button color="clear">*/}
+                    {/*                         <i className="fas fa-bars"/>*/}
+                    {/*                     </Button>*/}
+                    {/*                 </Link>*/}
+                    {/*             )}*/}
+                    {/*             persistenceLayerProvider={props.persistenceLayerProvider}*/}
+                    {/*             persistenceLayerController={props.persistenceLayerManager}/>*/}
+
+                    <RepoHeader2/>
 
                 </FixedNav.Header>
 

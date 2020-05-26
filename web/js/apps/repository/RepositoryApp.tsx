@@ -43,6 +43,7 @@ import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_r
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
 import {RepoHeader} from "../../../../apps/repository/js/repo_header/RepoHeader";
+import {RepoHeader2} from "../../../../apps/repository/js/repo_header/RepoHeader2";
 
 interface IProps {
     readonly app: App;
@@ -264,8 +265,7 @@ export const RepositoryApp = (props: IProps) => {
 
                 <BrowserRouter key="path-router">
 
-                    <RepoHeader persistenceLayerProvider={app.persistenceLayerProvider}
-                                persistenceLayerController={app.persistenceLayerController}/>
+                    <RepoHeader2 />
 
                     <Switch
                         location={ReactRouters.createLocationWithPathOnly()}>
