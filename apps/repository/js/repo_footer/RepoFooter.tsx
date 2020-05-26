@@ -5,55 +5,112 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import HomeIcon from '@material-ui/icons/Home';
 import NoteIcon from '@material-ui/icons/Note';
 import SettingsIcon from '@material-ui/icons/Settings';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-export const RepoFooter = () => {
+interface ILink {
+    readonly pathname: string;
+}
 
-    const [value, setValue] = React.useState(0);
+interface IBottomNavLink {
+    readonly label: string,
+    readonly icon: React.ReactElement,
+    readonly link: ILink;
+}
 
-    const style: React.CSSProperties = {
-        width: '100%',
-    };
+const navLinks: ReadonlyArray<IBottomNavLink> = [
+    {
+        label: "Home",
+        icon: <HomeIcon />,
+        link: {
+            pathname: "/"
+        }
+    },
+    {
+        label: "Annotations",
+        icon: <NoteIcon />,
+        link: {
+            pathname: "/annotations"
+        }
+    },
+    {
+        label: "Stats",
+        icon: <ShowChartIcon />,
+        link: {
+            pathname: "/stats"
+        }
+    },
+    {
+        label: "Settings",
+        icon: <SettingsIcon />,
+        link: {
+            pathname: "/settings"
+        }
+    },
+];
+
+
+const BottomNav = () => {
 
     const history = useHistory();
+    const location = useLocation();
 
     function pushHistory(pathname: string) {
         history.push({pathname});
     }
 
+    /**
+     * Look at the location and see which of the nav buttons is active.
+     */
+    function computeValue(): number | undefined {
+
+        const activeNavLink =
+            arrayStream(navLinks)
+                .withIndex()
+                .filter((current, idx) => current.value.link.pathname === location.pathname)
+                .first();
+
+        return activeNavLink?.index;
+
+    }
+
+    const value = computeValue();
+
+    return (
+
+        <BottomNavigation
+            color="secondary"
+            value={value}
+            showLabels
+            style={{
+                display: 'flex'
+            }}>
+
+            {navLinks.map((current, idx) =>
+                <BottomNavigationAction key={idx}
+                                        label={current.label}
+                                        onClick={() => pushHistory(current.link.pathname)}
+                                        icon={current.icon}/>)}
+
+        </BottomNavigation>
+
+    );
+
+};
+
+
+export const RepoFooter = () => {
+
+    const style: React.CSSProperties = {
+        width: '100%',
+    };
+
     const BottomSheet =
         <footer className="border-top text-lg"
                 style={style}>
 
-            <BottomNavigation
-                 color="secondary"
-                 value={value}
-                 onChange={(event, newValue) => {
-                     setValue(newValue);
-                 }}
-                 showLabels
-                 style={{
-                     display: 'flex'
-                 }}>
-
-                <BottomNavigationAction label="Home"
-                                        onClick={() => pushHistory('/')}
-                                        icon={<HomeIcon />} />
-
-                <BottomNavigationAction label="Annotations"
-                                        onClick={() => pushHistory('/annotations')}
-                                        icon={<NoteIcon />} />
-
-                <BottomNavigationAction label="Stats"
-                                        onClick={() => pushHistory('/stats')}
-                                        icon={<ShowChartIcon />} />
-
-                <BottomNavigationAction label="Settings"
-                                        onClick={() => pushHistory('/settings')}
-                                        icon={<SettingsIcon />} />
-
-            </BottomNavigation>
+            <BottomNav/>
 
         </footer>;
 
