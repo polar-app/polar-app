@@ -25,6 +25,7 @@ import {
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {useAnnotationBar} from "./AnnotationBarHooks";
+import {Helmet} from "react-helmet";
 
 const log = Logger.create();
 
@@ -34,7 +35,7 @@ interface MainProps {
 
 const Main = React.memo((props: MainProps) => {
 
-    const {docURL} = useDocViewerStore();
+    const {docURL, docMeta} = useDocViewerStore();
 
     if (! docURL) {
         return null;
@@ -42,6 +43,10 @@ const Main = React.memo((props: MainProps) => {
 
     return (
         <>
+            <Helmet>
+                <title>{docMeta?.docInfo.title || ''}</title>
+            </Helmet>
+
             <ViewerContainer/>
 
             <PDFDocument
