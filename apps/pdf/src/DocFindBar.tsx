@@ -13,8 +13,6 @@ import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 
-const log = Logger.create();
-
 type FindCallback = (opts: IFindOpts) => void;
 
 function useFindCallback(): FindCallback {
@@ -104,49 +102,50 @@ export const DocFindBar = React.memo(() => {
 
     return (
         <Collapse in={active} timeout={50}>
-            <InputEscapeListener onEscape={cancelFind}>
-                <MUIPaperToolbar borderBottom>
-
-                    <div style={{
-                             display: 'flex',
-                             alignItems: "center",
-                         }}
-                         className="pl-1 pr-1">
-
-                        <MUIButtonBar>
-
-                            <MUISearchBox2 className="mt-1 mb-1"
-                                           onChange={handleFind}
-                                           autoFocus={true}
-                                           value={opts.query}
-                                           style={{
-                                               width: '20em'
-                                           }}
-                                           placeholder="Search..."/>
-
-                            <MatchNav/>
-
-                            <Matches/>
-
-                        </MUIButtonBar>
+            {active &&
+                <InputEscapeListener onEscape={cancelFind}>
+                    <MUIPaperToolbar borderBottom>
 
                         <div style={{
                                  display: 'flex',
                                  alignItems: "center",
-                                 justifyContent: 'flex-end',
-                                 flexGrow: 1
-                             }}>
+                             }}
+                             className="pl-1 pr-1">
 
-                            <IconButton onClick={cancelFind}>
-                                <CloseIcon/>
-                            </IconButton>
+                            <MUIButtonBar>
+
+                                <MUISearchBox2 className="mt-1 mb-1"
+                                               onChange={handleFind}
+                                               autoFocus={true}
+                                               value={opts.query}
+                                               style={{
+                                                   width: '20em'
+                                               }}
+                                               placeholder="Search..."/>
+
+                                <MatchNav/>
+
+                                <Matches/>
+
+                            </MUIButtonBar>
+
+                            <div style={{
+                                     display: 'flex',
+                                     alignItems: "center",
+                                     justifyContent: 'flex-end',
+                                     flexGrow: 1
+                                 }}>
+
+                                <IconButton onClick={cancelFind}>
+                                    <CloseIcon/>
+                                </IconButton>
+
+                            </div>
 
                         </div>
 
-                    </div>
-
-                </MUIPaperToolbar>
-            </InputEscapeListener>
+                    </MUIPaperToolbar>
+                </InputEscapeListener>}
         </Collapse>
 
     )

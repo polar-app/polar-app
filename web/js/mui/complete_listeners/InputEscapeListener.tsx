@@ -29,7 +29,6 @@ export const InputEscapeListener = (props: IProps) => {
 
     };
 
-
     const handlers = {
         ESCAPE: () => props.onEscape()
     };
