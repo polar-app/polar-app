@@ -26,6 +26,7 @@ import {
 import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
 import {useAnnotationBar} from "./AnnotationBarHooks";
 import {Helmet} from "react-helmet";
+import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 
 const log = Logger.create();
 
@@ -33,7 +34,40 @@ interface MainProps {
     readonly onFinder: OnFinderCallback;
 }
 
-const Main = React.memo((props: MainProps) => {
+const Main = React.memo(() => {
+
+    const {setFinder} = useDocFindCallbacks();
+
+    return (
+
+        <div style={{
+            flexGrow: 1,
+            minHeight: 0,
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+
+            <PagemarkProgressBar/>
+            <DocViewerGlobalHotKeys/>
+            <DocFindBar/>
+
+            <div style={{
+                minHeight: 0,
+                overflow: 'auto',
+                flexGrow: 1,
+                position: 'relative'
+            }}>
+
+                <DocViewerContextMenu>
+                    <DocMain onFinder={setFinder}/>
+                </DocViewerContextMenu>
+            </div>
+
+        </div>
+    )
+})
+
+const DocMain = React.memo((props: MainProps) => {
 
     const {docURL, docMeta} = useDocViewerStore();
 
@@ -66,13 +100,88 @@ const Main = React.memo((props: MainProps) => {
 
 const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
+
+namespace Device {
+
+    export const Handheld = React.memo(() => {
+        return (
+            <Main/>
+        );
+    }, isEqual);
+
+    export const Desktop = React.memo(() => {
+
+        const {resizer, docMeta} = useDocViewerStore();
+
+        function onDockLayoutResize() {
+
+            if (resizer) {
+                resizer();
+            }
+
+        }
+
+        return (
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                minHeight: 0
+            }}>
+
+                <DocToolbar/>
+
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    minHeight: 0
+                }}>
+
+                    <DockLayout
+                        onResize={() => onDockLayoutResize()}
+                        dockPanels={[
+                            {
+                                id: "dock-panel-viewer",
+                                type: 'grow',
+                                style: {
+                                    display: 'flex'
+                                },
+                                component: <Main/>
+                            },
+                            {
+                                id: "doc-panel-sidebar",
+                                type: 'fixed',
+                                style: {
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    minHeight: 0,
+                                    flexGrow: 1
+                                },
+                                component:
+                                    <>
+                                        {docMeta &&
+                                        <AnnotationSidebar2 />}
+                                    </>,
+                                width: 300,
+                            }
+                        ]}/>
+                </div>
+
+            </div>
+
+        );
+    });
+
+}
+
+
 export const DocViewer = React.memo(() => {
 
     const {setDocMeta} = useDocViewerCallbacks();
-    const {resizer, docURL, docMeta} = useDocViewerStore();
+    const {docURL} = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()
-
-    const {setFinder} = useDocFindCallbacks();
 
     useAnnotationBar();
 
@@ -124,93 +233,15 @@ export const DocViewer = React.memo(() => {
 
     });
 
-    function onDockLayoutResize() {
-
-        if (resizer) {
-            resizer();
-        }
-
-    }
-
     if (! docURL) {
         return <LoadingProgress/>
     }
 
     return (
+        <DeviceRouter handheld={<Device.Handheld/>}
+                      desktop={<Device.Desktop/>}/>
+    )
 
-        <div style={{
-                 display: 'flex',
-                 flexDirection: 'column',
-                 flexGrow: 1,
-                 minHeight: 0
-             }}>
-
-            <DocToolbar/>
-
-            <div style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     flexGrow: 1,
-                     minHeight: 0
-                 }}>
-
-                <DockLayout
-                    onResize={() => onDockLayoutResize()}
-                    dockPanels={[
-                    {
-                        id: "dock-panel-viewer",
-                        type: 'grow',
-                        style: {
-                            display: 'flex'
-                        },
-                        component:
-                            <div style={{
-                                    flexGrow: 1,
-                                    minHeight: 0,
-                                    display: 'flex',
-                                    flexDirection: 'column'
-                                }}>
-
-                                <PagemarkProgressBar/>
-                                <DocViewerGlobalHotKeys/>
-                                <DocFindBar/>
-
-                                <div style={{
-                                        minHeight: 0,
-                                        overflow: 'auto',
-                                        flexGrow: 1,
-                                        position: 'relative'
-                                     }}>
-
-                                    <DocViewerContextMenu>
-                                        <Main onFinder={setFinder}/>
-                                    </DocViewerContextMenu>
-                                </div>
-
-                            </div>
-                    },
-                    {
-                        id: "doc-panel-sidebar",
-                        type: 'fixed',
-                        style: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: 0,
-                            flexGrow: 1
-                        },
-                        component:
-                            <>
-                            {docMeta &&
-                                <AnnotationSidebar2 />}
-                            </>,
-                        width: 300,
-                    }
-                ]}/>
-            </div>
-
-        </div>
-
-    );
 }, isEqual);
 
 
