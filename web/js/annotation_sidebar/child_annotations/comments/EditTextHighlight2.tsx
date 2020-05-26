@@ -85,28 +85,26 @@ export const EditTextHighlight2 = (props: IProps) => {
 
                 </div>
 
-                <div className="flexbar w-100">
+                <div style={{
+                         display: 'flex',
+                         justifyContent: 'flex-end'
+                     }}>
 
+                    <CancelButton onClick={annotationInputContext.reset}/>
 
-                    <div className="flexbar-right mt-1 mb-1">
+                    <Button onClick={handleRevert}>
 
-                        <CancelButton onClick={annotationInputContext.reset}/>
+                        Revert
 
-                        <Button onClick={handleRevert}>
+                    </Button>
 
-                            Revert
+                    <Button color="primary"
+                            variant="contained"
+                            onClick={() => handleChange(htmlRef.current)}>
 
-                        </Button>
+                        Change
 
-                        <Button color="primary"
-                                variant="contained"
-                                onClick={() => handleChange(htmlRef.current)}>
-
-                            Change
-
-                        </Button>
-
-                    </div>
+                    </Button>
 
                 </div>
 

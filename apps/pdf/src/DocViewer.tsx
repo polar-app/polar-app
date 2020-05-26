@@ -27,6 +27,10 @@ import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_tab
 import {useAnnotationBar} from "./AnnotationBarHooks";
 import {Helmet} from "react-helmet";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import {DocFindButton} from "./DocFindButton";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import IconButton from "@material-ui/core/IconButton";
 
 const log = Logger.create();
 
@@ -100,12 +104,74 @@ const DocMain = React.memo((props: MainProps) => {
 
 const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
-
 namespace Device {
 
-    export const Handheld = React.memo(() => {
+    interface HandheldToolbarProps {
+        readonly toggleRightDrawer: () => void;
+    }
+
+    const HandheldToolbar = React.memo((props: HandheldToolbarProps) => {
+
         return (
-            <Main/>
+            <div style={{
+                     display: 'flex',
+                     alignItems: 'center'
+                 }}
+                 className="p-1">
+
+                <div style={{
+                         display: 'flex',
+                         flexGrow: 1,
+                         flexBasis: 0,
+                         alignItems: 'center'
+                     }}
+                     className="">
+
+                    <DocFindButton className="mr-1"/>
+                </div>
+
+                <div style={{alignItems: 'center'}}>
+                    <IconButton onClick={props.toggleRightDrawer}>
+                        <ChevronLeftIcon/>
+                    </IconButton>
+                </div>
+
+            </div>
+        )
+    });
+
+    export const Handheld = React.memo(() => {
+
+        const [open, setOpen] = React.useState(false);
+
+        return (
+            <>
+
+                <SwipeableDrawer
+                    anchor='right'
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    onOpen={() => setOpen(true)}>
+
+                    <AnnotationSidebar2 />
+
+                </SwipeableDrawer>
+
+                <div style={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         flexGrow: 1,
+                         minHeight: 0
+                     }}>
+
+                    <HandheldToolbar toggleRightDrawer={() => setOpen(!open)}/>
+
+                    {/*<DocToolbar/>*/}
+
+                    <Main/>
+
+                </div>
+            </>
         );
     }, isEqual);
 
@@ -162,7 +228,7 @@ namespace Device {
                                 component:
                                     <>
                                         {docMeta &&
-                                        <AnnotationSidebar2 />}
+                                            <AnnotationSidebar2 />}
                                     </>,
                                 width: 300,
                             }
