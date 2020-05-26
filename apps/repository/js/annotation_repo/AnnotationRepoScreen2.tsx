@@ -32,8 +32,15 @@ namespace main {
             {
                 id: 'dock-panel-center',
                 type: 'fixed',
+                style: {
+                    overflow: 'visible',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    minHeight: 0,
+                },
                 component: <AnnotationRepoTable2 />,
-                width: 400
+                width: 450
             },
             {
                 id: 'dock-panel-right',
