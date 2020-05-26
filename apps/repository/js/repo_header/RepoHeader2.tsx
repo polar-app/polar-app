@@ -13,37 +13,42 @@ import {CloudAuthButton2} from "../../../../web/js/ui/cloud_auth/CloudAuthButton
 const PhoneAndTablet = () => {
 
     return (
-        <div style={{display: 'flex'}}
-             className="border-bottom p-1 mt-1">
 
-            <div className="mr-1"
-                 style={{
-                     flexGrow: 1,
-                     display: 'flex'
-                 }}>
+        <MUIPaperToolbar borderBottom
+                         padding={1}>
 
-                <div className="mr-1">
-                    <NavIcon/>
+            <div style={{display: 'flex'}}
+                 className="border-bottom p-1 mt-1">
+
+                <div className="mr-1"
+                     style={{
+                         flexGrow: 1,
+                         display: 'flex'
+                     }}>
+
+                    <div className="mr-1">
+                        <NavIcon/>
+                    </div>
+
+                </div>
+
+                <div className="mt-auto mb-auto"
+                     style={{
+                         display: 'flex'
+                     }}>
+
+                    <Link to={{hash: 'account'}}>
+                        <Button size="md" color="clear" className="btn-no-outline">
+                            <i className="fas fa-user"/>
+                        </Button>
+                    </Link>
+
+                    {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
+
                 </div>
 
             </div>
-
-            <div className="mt-auto mb-auto"
-                 style={{
-                     display: 'flex'
-                 }}>
-
-                <Link to={{hash: 'account'}}>
-                    <Button size="md" color="clear" className="btn-no-outline">
-                        <i className="fas fa-user"/>
-                    </Button>
-                </Link>
-
-                {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
-
-            </div>
-
-        </div>
+        </MUIPaperToolbar>
     );
 
 }
