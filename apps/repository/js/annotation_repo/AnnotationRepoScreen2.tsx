@@ -1,11 +1,6 @@
 import * as React from 'react';
-import {RepoDocMetaUpdater} from '../RepoDocMetaLoader';
-import {RepoDocMetaManager} from '../RepoDocMetaManager';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {FixedNav} from '../FixedNav';
-import {Tag} from 'polar-shared/src/tags/Tags';
 import {RepoFooter} from "../repo_footer/RepoFooter";
-import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {Link} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
@@ -14,27 +9,11 @@ import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
-import {AnnotationInlineViewer} from "./AnnotationInlineViewer";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
 import {AnnotationRepoGlobalHotKeys} from './AnnotationRepoGlobalHotKeys';
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
-
-interface AnnotationsPreviewProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly repoDocMetaManager: RepoDocMetaManager;
-    readonly repoDocMetaUpdater: RepoDocMetaUpdater;
-    readonly repoAnnotation: IDocAnnotation | undefined;
-    readonly tagsProvider: () => ReadonlyArray<Tag>;
-}
-
-const AnnotationPreview = (props: AnnotationsPreviewProps) => (
-    <AnnotationInlineViewer />
-);
-
-const onClose = () => window.history.back();
-
 
 namespace main {
 
@@ -53,14 +32,13 @@ namespace main {
             {
                 id: 'dock-panel-center',
                 type: 'fixed',
-                component: <AnnotationListView2 />,
+                component: <AnnotationRepoTable2 />,
                 width: 350
             },
             {
                 id: 'dock-panel-right',
                 type: 'grow',
-                // component: <AnnotationPreview2 />
-                component: <div>FIXME: disabled for now</div>
+                component: <AnnotationInlineViewer2 />
             }
         ]}/>
     );
@@ -124,7 +102,7 @@ namespace main {
 
 namespace screen {
 
-    export const PhoneAndTablet = () => {
+    export const Handheld = () => {
 
         return (
 
@@ -132,25 +110,33 @@ namespace screen {
                       className="annotations-view">
 
                 <FixedNav.Body>
+                    <Paper square
+                           elevation={0}
+                           style={{
+                               flexGrow: 1,
+                               display: 'flex',
+                               flexDirection: 'column',
+                               minHeight: 0
+                           }}>
 
-                    {/*FIXME: add this back in*/}
-                    {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
-                    {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
-                    {/*        {...props}/>*/}
+                        {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
+                        {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
+                        {/*        {...props}/>*/}
 
-                    <Link to={{pathname: '/annotations', hash: '#start-review'}}>
+                        <Link to={{pathname: '/annotations', hash: '#start-review'}}>
 
-                        <FloatingActionButton style={{
-                                                  marginBottom: '60px',
-                                                  marginRight: '20px'
-                                              }}
-                                              icon="fas fa-graduation-cap"/>
+                            <FloatingActionButton style={{
+                                marginBottom: '60px',
+                                marginRight: '20px'
+                            }}
+                                                  icon="fas fa-graduation-cap"/>
 
-                    </Link>
+                        </Link>
 
-                    <DeviceRouter phone={<main.Phone />}
-                                  tablet={<main.Tablet />}/>
+                        <DeviceRouter phone={<main.Phone />}
+                                      tablet={<main.Tablet />}/>
 
+                    </Paper>
                 </FixedNav.Body>
 
                 <FixedNav.Footer>
@@ -214,5 +200,5 @@ namespace screen {
 
 export const AnnotationRepoScreen2 = React.memo(() => (
     <DeviceRouter desktop={<screen.Desktop/>}
-                  phone={<screen.PhoneAndTablet/>}/>
+                  handheld={<screen.Handheld/>}/>
 ));

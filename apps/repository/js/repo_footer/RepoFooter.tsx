@@ -10,6 +10,8 @@ import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 export const RepoFooter = () => {
 
+    const [value, setValue] = React.useState(0);
+
     const style: React.CSSProperties = {
         width: '100%',
     };
@@ -25,6 +27,11 @@ export const RepoFooter = () => {
                 style={style}>
 
             <BottomNavigation
+                 color="secondary"
+                 value={value}
+                 onChange={(event, newValue) => {
+                     setValue(newValue);
+                 }}
                  showLabels
                  style={{
                      display: 'flex'
