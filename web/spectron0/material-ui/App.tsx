@@ -14,6 +14,9 @@ import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
 import {MenuItem} from "@material-ui/core";
 import MenuList from "@material-ui/core/MenuList";
 import {MUISubMenu} from '../../js/mui/menu/MUISubMenu';
+import ReactDOM from 'react-dom';
+import {act} from "react-dom/test-utils";
+import Button from "@material-ui/core/Button";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -126,24 +129,40 @@ export const App = () => {
         return <div>C</div>;
     }
 
-    // const ComponentProgressLoader =
-
     const HeaderContext = React.createContext<React.ReactElement | undefined>(undefined);
 
     function useHeaderContext() {
         return React.useContext(HeaderContext);
     }
 
+    // FIXME: this COULD work but:
+    //
+    // - we would have to use our ObserverStore for this
+    //
+    // - we have to use a 'ref' to get the HTMLElement that is being used for the
+    //   right.
+    //
+    // - we have to use a context to push out the right and we have to make sure
+    //   it would unmount... I'm not sure what the portal does on unmount...
+
+
+    // interface IHeaderContext {
+    //     readonly
+    // }
+
+    const HeaderProvider = () => {
+
+    }
+
     const Header = () => {
 
-        const headerContext = useHeaderContext();
+        function onRef(ref: HTMLElement | null) {
+
+        }
 
         return (
             <div>
-                <div id="header-right">
-                    {headerContext && headerContext}
-
-                    {! headerContext && <div>nothing</div>}
+                <div ref={ref => onRef(ref)} id="header-right">
                 </div>
             </div>
         );
@@ -154,16 +173,64 @@ export const App = () => {
     }
     const HeaderRight = (props: HeaderRightProps) => {
 
-        return (
-            <HeaderContext.Provider value={props.children}>
+        const right = document.getElementById('header-right');
 
-            </HeaderContext.Provider>
+        if (! right) {
+            throw new Error("No right header bar");
+        }
+
+        return ReactDOM.createPortal(props.children, right);
+
+    }
+
+    const HeaderChild = () => {
+
+        return (
+            <HeaderRight>
+                <div>
+                    this is some stuff on the right.
+                </div>
+            </HeaderRight>
+        );
+
+    }
+
+    const FakeChild = () => {
+        return (
+            <HeaderChild/>
+        )
+    }
+
+    const PortalTest = () => {
+
+        const portalElement = document.getElementById('portal')!;
+
+        return (
+            ReactDOM.createPortal((
+                    <div>the portal is mounted</div>
+                ),
+                portalElement)
+        );
+
+    }
+
+    const PortalParent = () => {
+
+        const [active, setActive] = React.useState(true);
+
+        return (
+            <>
+                <Button onClick={() => setActive(! active)}>toggle</Button>
+                {active && <PortalTest/>}
+            </>
         )
 
     }
 
     return (
         <MUIAppRoot>
+
+            <PortalParent/>
 
             {/*<CompA/>*/}
             {/*<CompB/>*/}
@@ -172,14 +239,9 @@ export const App = () => {
             {/*<MUISearchBox2 onChange={NULL_FUNCTION}*/}
             {/*               placeholder="Search..."/>*/}
 
-            <Header/>
+            {/*<Header/>*/}
 
-            <HeaderRight>
-                <div>
-                    this is some stuff on the right.
-                </div>
-            </HeaderRight>
-
+            {/*<FakeChild/>*/}
 
             {/*<div onClick={(event) => console.log("FIXME: onClick")}*/}
             {/*     onContextMenu={event => console.log("FIXME: onContextMenu")}>*/}
