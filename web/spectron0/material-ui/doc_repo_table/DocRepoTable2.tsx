@@ -17,10 +17,6 @@ export const DocRepoTable2 = React.memo(() => {
     const store = useDocRepoStore();
     const {page, rowsPerPage, viewPage, selected} = store;
 
-    const dense = true;
-
-    const emptyRows = rowsPerPage - viewPage.length;
-
     return (
         <div style={{
                 width: '100%',
