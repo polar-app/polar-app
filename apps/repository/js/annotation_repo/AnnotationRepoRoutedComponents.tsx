@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {AnnotationRepoGlobalHotKeys} from "./AnnotationRepoGlobalHotKeys";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
@@ -11,6 +11,7 @@ import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 export const AnnotationRepoRoutedComponents = React.memo(() => {
 
     const location = useLocationWithPathOnly();
+    const history = useHistory();
 
     return (
 
@@ -18,14 +19,20 @@ export const AnnotationRepoRoutedComponents = React.memo(() => {
             <Switch location={location}>
 
                 <Route exact path='/annotations'>
+
                     <DeviceRouter.Desktop>
                         <AnnotationRepoGlobalHotKeys/>
                     </DeviceRouter.Desktop>
 
                     <DeviceRouter.Handheld>
-                        <RepoHeader.Right>
-                            <AnnotationRepoFilterBar2/>
-                        </RepoHeader.Right>
+
+                        <>
+
+                            <RepoHeader.Right>
+                                <AnnotationRepoFilterBar2/>
+                            </RepoHeader.Right>
+
+                        </>
                     </DeviceRouter.Handheld>
 
                 </Route>

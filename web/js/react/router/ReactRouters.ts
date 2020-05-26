@@ -86,7 +86,24 @@ export namespace ReactRouters {
         };
 
     }
+    export function useLocationWithHashOnly(): IRouteLocation {
 
+        const location = useLocation();
+
+        return {
+            get pathname() {
+                return location.hash;
+            },
+            get search() {
+                return location.hash;
+            },
+            get hash() {
+                return location.hash;
+            },
+            state: null,
+        };
+
+    }
 }
 
 export interface ILocation {

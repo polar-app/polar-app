@@ -67,9 +67,7 @@ export const RepositoryApp = (props: IProps) => {
                                          <MUIDialogController>
                                              <DocRepoStore2>
                                                  <DocRepoSidebarTagStore>
-                                                     <DocRepoScreen2
-                                                         persistenceLayerProvider={app.persistenceLayerProvider}
-                                                         persistenceLayerController={app.persistenceLayerController}/>
+                                                     <DocRepoScreen2/>
                                                  </DocRepoSidebarTagStore>
                                              </DocRepoStore2>
                                          </MUIDialogController>

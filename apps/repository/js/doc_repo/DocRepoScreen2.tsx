@@ -1,5 +1,3 @@
-import {ListenablePersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 import React from "react";
 import {FixedNav} from "../FixedNav";
 import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
@@ -17,13 +15,14 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import {useHistory} from "react-router-dom";
+import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 
 namespace main {
 
     export const Documents = React.memo(() => (
-        <>
-            <DocRepoTable2 />
-        </>
+        <DocRepoTable2 />
     ));
 
     export const Folders = React.memo(() => (
@@ -49,10 +48,38 @@ const Router = () => (
 
 );
 
+const FolderDrawer = React.memo(() => {
+
+    const location = useLocationWithHashOnly();
+    const history = useHistory()
+
+    const open = location.hash === '#folders';
+
+    function handleClose() {
+        history.replace({hash: ''});
+    }
+
+    function handleOpen() {
+        history.push({hash: '#folders'});
+    }
+
+    return (
+        <SwipeableDrawer
+            anchor='left'
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}>
+            <main.Folders/>
+        </SwipeableDrawer>
+    );
+
+});
+
 namespace devices {
 
     export const PhoneAndTablet = React.memo(() => (
         <>
+            <FolderDrawer/>
             <main.Documents/>
         </>
     ));
@@ -80,15 +107,6 @@ namespace devices {
         ]}/>
 
     ));
-
-}
-
-
-interface IProps {
-
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
-
-    readonly persistenceLayerController: PersistenceLayerController;
 
 }
 
@@ -125,7 +143,7 @@ const DesktopToolbar = () => {
     )
 }
 
-export const DocRepoScreen2 = React.memo((props: IProps) => {
+export const DocRepoScreen2 = React.memo(() => {
 
     return (
 

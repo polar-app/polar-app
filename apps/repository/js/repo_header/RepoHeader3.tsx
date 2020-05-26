@@ -12,6 +12,10 @@ import {CloudAuthButton2} from "../../../../web/js/ui/cloud_auth/CloudAuthButton
 
 export namespace RepoHeader {
 
+    export const leftMenuTeleporter = createTeleporter();
+    export const LeftMenuTarget = leftMenuTeleporter.Target;
+    export const LeftMenu = leftMenuTeleporter.Source;
+
     export const rightTeleporter = createTeleporter();
     export const RightTarget = rightTeleporter.Target;
     export const Right = rightTeleporter.Source;
@@ -29,14 +33,16 @@ const Handheld = () => {
         <MUIPaperToolbar borderBottom
                          padding={1}>
 
-            <div style={{display: 'flex'}}
-                 className="border-bottom p-1 mt-1">
+            <div style={{display: 'flex'}}>
 
                 <div className="mr-1"
                      style={{
                          flexGrow: 1,
-                         display: 'flex'
+                         display: 'flex',
+                         alignItems: 'center'
                      }}>
+
+                    <RepoHeader.LeftMenuTarget/>
 
                     <div className="mr-1">
                         <NavIcon/>
