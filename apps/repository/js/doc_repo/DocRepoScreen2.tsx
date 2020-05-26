@@ -23,12 +23,6 @@ import isEqual from "react-fast-compare";
 
 namespace main {
 
-    export interface DocumentsProps extends DocRepoTableProps {
-        readonly data: ReadonlyArray<RepoDocInfo>;
-        readonly columns: DocRepoTableColumnsMap;
-        readonly selected: ReadonlyArray<number>;
-    }
-
     export const Documents = React.memo(() => (
         <>
             <DocRepoTable2 />
@@ -151,8 +145,7 @@ export const DocRepoScreen2 = React.memo((props: IProps) => {
 
             <Router/>
 
-            <DeviceRouter phone={<devices.PhoneAndTablet/>}
-                          tablet={<devices.PhoneAndTablet/>}
+            <DeviceRouter handheld={<devices.PhoneAndTablet/>}
                           desktop={<devices.Desktop/>}/>
 
             <FixedNav.Footer>

@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+/**
+ * @Deprecated
+ */
 export const FloatingAction = (props: IProps) => {
 
     const style = {

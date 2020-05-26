@@ -29,8 +29,9 @@ import {Helmet} from "react-helmet";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {DocFindButton} from "./DocFindButton";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from '@material-ui/icons/Menu';
+import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 
 const log = Logger.create();
 
@@ -113,6 +114,7 @@ namespace Device {
     const HandheldToolbar = React.memo((props: HandheldToolbarProps) => {
 
         return (
+            <MUIPaperToolbar borderBottom>
             <div style={{
                      display: 'flex',
                      alignItems: 'center'
@@ -132,11 +134,12 @@ namespace Device {
 
                 <div style={{alignItems: 'center'}}>
                     <IconButton onClick={props.toggleRightDrawer}>
-                        <ChevronLeftIcon/>
+                        <MenuIcon/>
                     </IconButton>
                 </div>
 
             </div>
+            </MUIPaperToolbar>
         )
     });
 

@@ -2,13 +2,12 @@ import * as React from 'react';
 import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {AddContentMenuItem} from './AddContentMenuItem';
 import {AddContentButtons} from "./AddContentButtons";
-import {FloatingAction} from "../../../../web/js/ui/mobile/FloatingAction";
-import {ActionButton} from "../../../../web/js/ui/mobile/ActionButton";
 import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import {AddContentFab} from "./AddContentFab";
 
 namespace runtime {
 
@@ -82,21 +81,7 @@ export namespace AddContent {
     // TODO: this still won't work on desktop safari...
 
     export const Handheld = () => (
-
-        <FloatingAction style={{
-                            marginBottom: '60px',
-                            marginRight: '20px'
-                        }}>
-            <label htmlFor="file-upload">
-
-                <ActionButton icon="fas fa-plus"
-                              onClick={() => doFileUpload()}
-                              color="success"/>
-
-            </label>
-
-        </FloatingAction>
-
+        <AddContentFab onClick={() => doFileUpload()}/>
     );
 
     export const Desktop = (props: IProps) => (
