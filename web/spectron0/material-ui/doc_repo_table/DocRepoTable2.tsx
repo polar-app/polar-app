@@ -10,7 +10,6 @@ import {DocRepoTableRow} from "./DocRepoTableRow";
 import {MUIDialogController} from "../../../js/mui/dialogs/MUIDialogController";
 import {useDocRepoStore} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
-import {DocRepoGlobalHotKeys} from "./DocRepoGlobalHotKeys";
 
 export const DocRepoTable2 = React.memo(() => {
 
@@ -22,8 +21,6 @@ export const DocRepoTable2 = React.memo(() => {
                 width: '100%',
                 height: '100%'
              }}>
-
-            <DocRepoGlobalHotKeys/>
 
             <Paper square
                    elevation={0}

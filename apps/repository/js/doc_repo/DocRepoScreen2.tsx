@@ -7,9 +7,6 @@ import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MessageBanner} from "../MessageBanner";
-import {DocRepoTableProps} from "./DocRepoTable";
-import {RepoDocInfo} from "../RepoDocInfo";
-import {DocRepoTableColumnsMap} from "./DocRepoTableColumns";
 import {DocRepoTable2} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
@@ -20,6 +17,8 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import isEqual from "react-fast-compare";
+import {RepoHeader} from "../repo_header/RepoHeader3";
+import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 
 namespace main {
 
@@ -55,7 +54,9 @@ const Router = () => (
 namespace devices {
 
     export const PhoneAndTablet = React.memo(() => (
-        <main.Documents/>
+        <>
+            <main.Documents/>
+        </>
     ));
 
     export const Desktop = React.memo(() => (
@@ -93,51 +94,53 @@ interface IProps {
 
 }
 
+const DesktopToolbar = () => {
+    return (
+        <MUIPaperToolbar id="header-filter"
+                         borderBottom
+                         padding={1}>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
+
+                <div className=""
+                     style={{
+                         whiteSpace: 'nowrap',
+                         display: 'flex'
+                     }}>
+
+                    <DocRepoButtonBar />
+
+                </div>
+
+                <div style={{marginLeft: 'auto'}}>
+
+                    <DocRepoFilterBar />
+
+                </div>
+
+            </div>
+        </MUIPaperToolbar>
+
+    )
+}
+
 export const DocRepoScreen2 = React.memo((props: IProps) => {
 
     return (
 
         <FixedNav id="doc-repository">
 
+            <DocRepoScreenRoutedComponents/>
+
             <RepositoryTour/>
             <header>
 
-                <MUIPaperToolbar id="header-filter"
-                                 borderBottom
-                                 padding={1}>
-
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}>
-
-                        <div className=""
-                             style={{
-                                 whiteSpace: 'nowrap',
-                                 display: 'flex'
-                             }}>
-
-                            <DocRepoButtonBar />
-
-                        </div>
-
-                        <div style={{marginLeft: 'auto'}}>
-
-                            <DocRepoFilterBar right={
-                                                  <div className="d-none-phone d-none-tablet"
-                                                       style={{whiteSpace: 'nowrap', marginTop: 'auto', marginBottom: 'auto'}}>
-
-                                                      {/*<DocRepoTableDropdown id="table-dropdown"*/}
-                                                      {/*                      options={Object.values(this.state.columns)}*/}
-                                                      {/*                      onSelectedColumns={(selectedColumns) => this.onSelectedColumns(selectedColumns)}/>*/}
-                                                  </div>
-                                              }
-                            />
-
-                        </div>
-
-                    </div>
-                </MUIPaperToolbar>
+                <DeviceRouter.Desktop>
+                    <DesktopToolbar/>
+                </DeviceRouter.Desktop>
 
                 <MessageBanner/>
 
