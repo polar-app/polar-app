@@ -14,6 +14,8 @@ import {AnnotationRepoGlobalHotKeys} from './AnnotationRepoGlobalHotKeys';
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
+import { RepoHeader } from '../repo_header/RepoHeader3';
+import { AnnotationRepoRoutedComponents } from './AnnotationRepoRoutedComponents';
 
 namespace main {
 
@@ -109,6 +111,8 @@ namespace screen {
             <FixedNav id="doc-repository"
                       className="annotations-view">
 
+                <AnnotationRepoRoutedComponents/>
+
                 <FixedNav.Body>
                     <Paper square
                            elevation={0}
@@ -186,8 +190,7 @@ namespace screen {
             {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
             {/*        {...props}/>*/}
 
-            <AnnotationRepoGlobalHotKeys/>
-            
+            <AnnotationRepoRoutedComponents/>
             <main.Desktop />
 
             <RepoFooter/>

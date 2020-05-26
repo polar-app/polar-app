@@ -25,6 +25,8 @@ interface ToolbarProps {
 // FIXME: move to a dedicated component
 const Toolbar = React.memo((props: ToolbarProps) => {
 
+    // TODO: don't use props for callbacks...
+
     const handleChangePage = (event: unknown, newPage: number) => {
         props.onChangePage(newPage);
     };

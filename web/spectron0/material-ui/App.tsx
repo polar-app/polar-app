@@ -17,7 +17,6 @@ import {MUISubMenu} from '../../js/mui/menu/MUISubMenu';
 import ReactDOM from 'react-dom';
 import {act} from "react-dom/test-utils";
 import Button from "@material-ui/core/Button";
-import {createPortalProvider} from "../../js/react/portals/provider/PortalProvider";
 import {createTeleporter} from "react-teleporter";
 // configure({logLevel: "debug"});
 

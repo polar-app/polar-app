@@ -44,6 +44,7 @@ import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRout
 import {PersistentRoute} from "./PersistentRoute";
 import {RepoHeader} from "../../../../apps/repository/js/repo_header/RepoHeader";
 import {RepoHeader2} from "../../../../apps/repository/js/repo_header/RepoHeader2";
+import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
 
 interface IProps {
     readonly app: App;
@@ -265,7 +266,7 @@ export const RepositoryApp = (props: IProps) => {
 
                 <BrowserRouter key="path-router">
 
-                    <RepoHeader2 />
+                    <RepoHeader3 />
 
                     <Switch
                         location={ReactRouters.createLocationWithPathOnly()}>
