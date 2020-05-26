@@ -33,7 +33,7 @@ namespace main {
                 id: 'dock-panel-center',
                 type: 'fixed',
                 component: <AnnotationRepoTable2 />,
-                width: 350
+                width: 400
             },
             {
                 id: 'dock-panel-right',

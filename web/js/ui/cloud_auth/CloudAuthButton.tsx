@@ -28,6 +28,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         Firebase.init();
 
+        // FIXME: migrate this to using context ...
         // FIXME: migrate this to a hook?
         firebase.auth()
             .onAuthStateChanged((user) => this.onAuth(user),

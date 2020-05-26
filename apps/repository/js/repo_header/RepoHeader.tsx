@@ -37,43 +37,45 @@ export class RepoHeader extends React.Component<IProps, IState> {
         public render() {
 
             return (
-                <div style={{display: 'flex'}}
-                     className="border-bottom p-1 mt-1">
+                <MUIPaperToolbar borderBottom
+                                 padding={1}>
 
-                    <div className="mr-1"
-                         style={{
-                             flexGrow: 1,
-                             display: 'flex'
-                         }}>
+                    <div style={{display: 'flex'}}
+                         className="border-bottom p-1 mt-1">
 
-                        {this.props.toggle || null}
+                        <div className="mr-1"
+                             style={{
+                                 flexGrow: 1,
+                                 display: 'flex'
+                             }}>
 
-                        <div className="mr-1">
-                            <NavIcon/>
+                            {this.props.toggle || null}
+
+                            <div className="mr-1">
+                                <NavIcon/>
+                            </div>
+
+                            {this.props.left}
+
                         </div>
 
-                        {this.props.left}
+                        <div className="mt-auto mb-auto"
+                             style={{
+                                 display: 'flex'
+                             }}>
+
+                            {this.props.right}
+
+                            <Link to={{hash: 'account'}}>
+                                {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
+                            </Link>
+
+                            {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
+
+                        </div>
 
                     </div>
-
-                    <div className="mt-auto mb-auto"
-                         style={{
-                             display: 'flex'
-                         }}>
-
-                        {this.props.right}
-
-                        <Link to={{hash: 'account'}}>
-                            <Button size="md" color="clear" className="btn-no-outline">
-                                <i className="fas fa-user"/>
-                            </Button>
-                        </Link>
-
-                        {/*<CloudAuthButton persistenceLayerController={this.props.persistenceLayerController} />*/}
-
-                    </div>
-
-                </div>
+                </MUIPaperToolbar>
             );
 
         }
@@ -100,8 +102,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
                 );
 
             };
-
-            const isDesktop = Devices.isDesktop();
 
             return (
 

@@ -8,6 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import {useHistory, useLocation} from 'react-router-dom';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 
 interface ILink {
     readonly pathname: string;
@@ -110,7 +111,9 @@ export const RepoFooter = () => {
         <footer className="border-top text-lg"
                 style={style}>
 
-            <BottomNav/>
+            <MUIPaperToolbar borderTop>
+                <BottomNav/>
+            </MUIPaperToolbar>
 
         </footer>;
 
