@@ -46,11 +46,11 @@ const Main = React.memo(() => {
     return (
 
         <div style={{
-            flexGrow: 1,
-            minHeight: 0,
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
+                 flexGrow: 1,
+                 minHeight: 0,
+                 display: 'flex',
+                 flexDirection: 'column'
+             }}>
 
             <PagemarkProgressBar/>
             <DocViewerGlobalHotKeys/>

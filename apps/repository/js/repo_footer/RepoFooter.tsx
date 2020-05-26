@@ -34,13 +34,13 @@ const navLinks: ReadonlyArray<IBottomNavLink> = [
             pathname: "/annotations"
         }
     },
-    {
-        label: "Stats",
-        icon: <ShowChartIcon />,
-        link: {
-            pathname: "/stats"
-        }
-    },
+    // {
+    //     label: "Stats",
+    //     icon: <ShowChartIcon />,
+    //     link: {
+    //         pathname: "/stats"
+    //     }
+    // },
     {
         label: "Settings",
         icon: <SettingsIcon />,
