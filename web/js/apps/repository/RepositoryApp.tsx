@@ -11,7 +11,6 @@ import WhatsNewScreen
 import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import Input from 'reactstrap/lib/Input';
-import {Splashes} from '../../../../apps/repository/js/splash2/Splashes';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
@@ -42,9 +41,8 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
-import {RepoHeader} from "../../../../apps/repository/js/repo_header/RepoHeader";
-import {RepoHeader2} from "../../../../apps/repository/js/repo_header/RepoHeader2";
 import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
+import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 
 interface IProps {
     readonly app: App;
@@ -368,6 +366,8 @@ export const RepositoryApp = (props: IProps) => {
                                )}/>
 
                     </Switch>
+
+                    <RepoFooter/>
 
                 </BrowserRouter>
 

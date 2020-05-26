@@ -7,7 +7,10 @@ import {IEventDispatcher} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {FixedNav} from '../FixedNav';
-import {AnnotationRepoFilterEngine, UpdatedCallback} from './AnnotationRepoFilterEngine';
+import {
+    AnnotationRepoFilterEngine,
+    UpdatedCallback
+} from './AnnotationRepoFilterEngine';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {AnnotationRepoFiltersHandler} from './AnnotationRepoFiltersHandler';
@@ -15,17 +18,15 @@ import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {Tag, Tags, TagStr} from 'polar-shared/src/tags/Tags';
 import {FilteredTags} from '../FilteredTags';
 import {TreeState} from "../../../../web/js/ui/tree/TreeState";
-import {Row} from "../../../../web/js/ui/layout/Row";
 import {DEFAULT_LIMIT, Reviewers} from "../reviewer/Reviewers";
 import {TextFilter} from "./filter_bar/TextFilter";
 import {HighlightColorFilterButton} from "./filter_bar/controls/color/HighlightColorFilterButton";
 import {AnnotationTypeSelector} from "./filter_bar/controls/annotation_type/AnnotationTypeSelector";
-import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoTableDropdown} from "./AnnotationRepoTableDropdown";
-import {FolderSidebar, FoldersSidebarProps} from "../folders/FolderSidebar";
+import {FoldersSidebarProps} from "../folders/FolderSidebar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
@@ -40,12 +41,11 @@ import {AnnotationPreviewView} from "./AnnotationPreviewView";
 import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/IndeterminateLoadingModal";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {Button} from "reactstrap";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
-import { RepoHeader2 } from '../repo_header/RepoHeader2';
+import {RepoHeader2} from '../repo_header/RepoHeader2';
 
 interface AnnotationsListProps extends IProps, IState {
     readonly filtersHandler: AnnotationRepoFiltersHandler;
@@ -280,10 +280,6 @@ namespace screen {
                     </DeviceRouter>
 
                 </FixedNav.Body>
-
-                <FixedNav.Footer>
-                    <RepoFooter/>
-                </FixedNav.Footer>
 
             </FixedNav>
 

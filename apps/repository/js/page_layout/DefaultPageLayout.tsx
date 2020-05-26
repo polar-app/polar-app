@@ -1,8 +1,6 @@
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {FixedNav} from "../FixedNav";
-import {RepoHeader} from "../repo_header/RepoHeader";
-import {RepoFooter} from "../repo_footer/RepoFooter";
 import * as React from "react";
 
 interface IProps {
@@ -33,10 +31,6 @@ export const DefaultPageLayout = (props: IProps) => (
 
 
         </FixedNav.Body>
-
-        <FixedNav.Footer>
-            <RepoFooter/>
-        </FixedNav.Footer>
 
     </FixedNav>
 

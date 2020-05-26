@@ -10,12 +10,10 @@ import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import {AnnotationRepoGlobalHotKeys} from './AnnotationRepoGlobalHotKeys';
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
-import { RepoHeader } from '../repo_header/RepoHeader3';
-import { AnnotationRepoRoutedComponents } from './AnnotationRepoRoutedComponents';
+import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 
 namespace main {
 
@@ -142,10 +140,6 @@ namespace screen {
 
                     </Paper>
                 </FixedNav.Body>
-
-                <FixedNav.Footer>
-                    <RepoFooter/>
-                </FixedNav.Footer>
 
             </FixedNav>
 

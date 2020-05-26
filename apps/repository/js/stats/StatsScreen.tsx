@@ -10,7 +10,6 @@ import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -151,10 +150,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
                     ]}/>
 
                 </FixedNav.Body>
-
-                <FixedNav.Footer>
-                    <RepoFooter/>
-                </FixedNav.Footer>
 
             </FixedNav>;
         }

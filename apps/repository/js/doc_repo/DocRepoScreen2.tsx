@@ -15,9 +15,7 @@ import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
-import {RepoFooter} from "../repo_footer/RepoFooter";
 import isEqual from "react-fast-compare";
-import {RepoHeader} from "../repo_header/RepoHeader3";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 
 namespace main {
@@ -157,7 +155,6 @@ export const DocRepoScreen2 = React.memo((props: IProps) => {
                     <AddContent.Handheld/>
                 </DeviceRouter.Handheld>
 
-                <RepoFooter/>
             </FixedNav.Footer>
 
         </FixedNav>
