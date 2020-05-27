@@ -187,10 +187,6 @@ namespace screen {
 
             </header>
 
-            {/*FIXME: add this again*/}
-            {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
-            {/*        {...props}/>*/}
-
             <AnnotationRepoRoutedComponents/>
             <main.Desktop />
 
