@@ -1,4 +1,4 @@
-import {MockRepoDocInfos} from "../../../../web/spectron0/material-ui/MockRepoDocInfos";
+import {MockRepoDocInfos} from "../MockRepoDocInfos";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import { Sorting } from "./Sorting";

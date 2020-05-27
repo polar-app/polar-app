@@ -1,4 +1,4 @@
-import {RepoDocInfo} from "../../../apps/repository/js/RepoDocInfo";
+import {RepoDocInfo} from "./RepoDocInfo";
 import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 import {
     ISODateTimeString,
@@ -7,8 +7,8 @@ import {
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
-import {RepoDocInfos} from "../../../apps/repository/js/RepoDocInfos";
-import {DocMetas} from "../../js/metadata/DocMetas";
+import {RepoDocInfos} from "./RepoDocInfos";
+import {DocMetas} from "../../../web/js/metadata/DocMetas";
 
 const now = new Date();
 const today = ISODateTimeStrings.create();
