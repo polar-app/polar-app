@@ -6,7 +6,7 @@ import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
-import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import React from "react";
 import {
     IPersistenceContext,

@@ -5,7 +5,7 @@ import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
     createObservableStore,
     SetStore
-} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";

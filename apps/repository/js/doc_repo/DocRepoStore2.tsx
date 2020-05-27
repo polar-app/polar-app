@@ -1,4 +1,4 @@
-import {createObservableStore} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {
     DocRepoTableColumns,

@@ -4,7 +4,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {
     createObservableStore,
     SetStore
-} from "../../../web/spectron0/material-ui/store/ObservableStore";
+} from "../../../web/js/react/store/ObservableStore";
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationRepoFilters2} from "../../repository/js/annotation_repo/AnnotationRepoFilters2";
 import {DocAnnotationSorter} from "../../../web/js/annotation_sidebar/DocAnnotationSorter";

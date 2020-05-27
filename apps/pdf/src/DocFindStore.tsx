@@ -3,7 +3,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {
     createObservableStore,
     SetStore
-} from "../../../web/spectron0/material-ui/store/ObservableStore";
+} from "../../../web/js/react/store/ObservableStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {
     Finder,

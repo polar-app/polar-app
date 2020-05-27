@@ -2,7 +2,7 @@ import React from 'react';
 import {
     createObservableStore,
     SetStore
-} from "../../../../web/spectron0/material-ui/store/ObservableStore";
+} from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
