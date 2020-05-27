@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import {MUITreeView} from "../../../../web/spectron0/material-ui/treeview2/MUITreeView";
+import {MUITreeView} from "../../../../web/js/mui/treeview/MUITreeView";
 import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";

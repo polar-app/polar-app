@@ -7,7 +7,7 @@ import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
 import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
-import {useDragContext} from "../../../js/ui/tree/DragTarget2";
+import {useDragContext} from "../../ui/tree/DragTarget2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

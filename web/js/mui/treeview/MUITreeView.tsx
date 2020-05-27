@@ -1,6 +1,6 @@
 import React from 'react';
 import TreeView from '@material-ui/lab/TreeView';
-import {TagNode} from "../../../js/tags/TagNode";
+import {TagNode} from "../../tags/TagNode";
 import {MUITreeItem} from "./MUITreeItem";
 import isEqual from "react-fast-compare";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";

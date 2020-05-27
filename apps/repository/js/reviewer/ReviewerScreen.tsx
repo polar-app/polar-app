@@ -7,7 +7,7 @@ import {Reviewer2} from "./Reviewer2";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useFirestore} from "../FirestoreProvider";
-import {MUIAsyncLoader} from "../../../../web/spectron0/material-ui/MUIAsyncLoader";
+import {MUIAsyncLoader} from "../../../../web/js/mui/MUIAsyncLoader";
 import {ReviewerDialog2} from "./ReviewerDialog2";
 import isEqual from "react-fast-compare";
 import { useHistory } from 'react-router-dom';
