@@ -4,9 +4,8 @@ import {faCheckSquare, faCoffee, faTag} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import DeleteIcon from "@material-ui/icons/Delete";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import {SvgIcon, SvgIconProps} from "@material-ui/core";
+import {SvgIcon} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
-import isEqual from "react-fast-compare";
 import {faSquare} from "@fortawesome/free-regular-svg-icons";
 
 library.add(faCheckSquare, faCoffee, faTag, faCheckSquare, faSquare);
@@ -32,19 +31,3 @@ export const IconsDemo = () => (
         </IconButton>
     </div>
 );
-
-// FIXME: move this out of demo as it's being actually used now..
-// MUIFontAwesomeIcons
-export const FACheckSquare = React.memo((props: SvgIconProps) => (
-    <SvgIcon {...props}>
-        <FontAwesomeIcon icon={faCheckSquare} />
-    </SvgIcon>
-
-), isEqual);
-
-export const FASquare = React.memo((props: SvgIconProps) => (
-    <SvgIcon {...props}>
-        <FontAwesomeIcon icon={faSquare} />
-    </SvgIcon>
-
-), isEqual);

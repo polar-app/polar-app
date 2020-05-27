@@ -1,8 +1,7 @@
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {FACheckSquare} from "../../../../web/spectron0/material-ui/IconsDemo";
-import {FASquare} from "../../../../web/spectron0/material-ui/IconsDemo";
 import React from "react";
 import isEqual from "react-fast-compare";
+import {FACheckSquare, FASquare} from "../../../../web/js/mui/MUIFontAwesome";
 
 
 const useStyles = makeStyles((theme: Theme) =>
