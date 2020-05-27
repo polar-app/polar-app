@@ -1,4 +1,4 @@
-productName: Polar Bookshelf
+productName: Polar
 # TODO: unfortunately this needs to be set.  Not sure why but it reverted to
 # using nightly versions when not set.  It should use package.json
 electronVersion: 7.1.2
@@ -39,8 +39,8 @@ linux:
   # TODO: consider using a custom productName here of polar-bookshelf to fix
   # a bug on Linux with the application windows.
   artifactName: ${name}-${version}-${arch}.${ext}
-  synopsis: Polar Bookshelf
-  description: Polar Bookshelf
+  synopsis: Polar
+  description: Polar
   category: Office
   target:
     - target: deb
