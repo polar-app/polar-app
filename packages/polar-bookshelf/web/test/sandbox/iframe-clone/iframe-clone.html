@@ -1,0 +1,20 @@
+<html>
+<body>
+<iframe src="https://www.example.com"></iframe>
+
+<script>
+
+    function test() {
+
+        let cloneDoc = document.cloneNode(true);
+
+        let iframe = cloneDoc.querySelector("iframe");
+
+        console.log(iframe);
+
+    }
+
+</script>
+
+</body>
+</html>
