@@ -44,14 +44,13 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     const existingComment = props.comment.original as Comment;
 
-    const commentCallback = annotationMutations.createCommentCallback({selected: [comment]})
+    const commentCallback = annotationMutations.createCommentCallback(comment);
 
     const handleComment = React.useCallback((body: string) => {
 
         annotationInputContext.reset();
 
         const mutation: ICommentUpdate = {
-            selected: [comment],
             type: 'update',
             parent: comment.parent!,
             body,

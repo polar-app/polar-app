@@ -40,13 +40,25 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {
-    IAnnotationRef, IAnnotationRefWithDocMeta,
-    IDocMetaHolder
+    IAnnotationRef,
+    IAnnotationRefWithDocMeta
 } from "polar-shared/src/metadata/AnnotationRefs";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {TextType} from "polar-shared/src/metadata/TextType";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 const log = Logger.create();
+
+export interface IAnnotationMutationHolder<M> {
+    readonly annotation: IAnnotationRef;
+    readonly mutation: M;
+}
+
+export interface IAnnotationMutationHolderWithDocMeta<M> {
+    readonly annotation: IAnnotationRefWithDocMeta;
+    readonly mutation: M;
+}
 
 /**
  * This allows us to specify what's is being mutated.
@@ -61,20 +73,20 @@ export interface IAnnotationMutationSelectedWithDocMeta {
 
 // FIXME: none of these should use IDocAnnotation
 
-export interface ICommentCreate extends IAnnotationMutationSelected {
+export interface ICommentCreate {
     readonly type: 'create';
     readonly parent: IRef;
     readonly body: HTMLStr;
 }
 
-export interface ICommentUpdate extends IAnnotationMutationSelected {
+export interface ICommentUpdate {
     readonly type: 'update';
     readonly parent: IRef;
     readonly body: HTMLStr;
     readonly existing: IDocAnnotationRef;
 }
 
-export interface ICommentDelete extends IAnnotationMutationSelected {
+export interface ICommentDelete {
     readonly type: 'delete';
     readonly parent: IRef;
     readonly existing: IDocAnnotationRef;
@@ -181,9 +193,9 @@ export interface IAnnotationMutationCallbacks {
     readonly onAreaHighlight: (mutation: IAreaHighlightMutation) => void;
     readonly onTextHighlight: (mutation: ITextHighlightMutation) => void;
 
-    readonly createCommentCallback: (selected: IAnnotationMutationSelected) => (mutation: ICommentMutation) => void;
+    readonly createCommentCallback: (annotation: IAnnotationRef) => (mutation: ICommentMutation) => void;
 
-    readonly onComment: (mutation: ICommentMutation & IAnnotationMutationSelected) => void;
+    readonly onComment: (holders: ReadonlyArray<IAnnotationMutationHolder<ICommentMutation>>) => void;
     readonly onFlashcard: (mutation: IFlashcardMutation) => void;
 
     readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
@@ -238,9 +250,11 @@ export const AnnotationMutationsContextProvider = (props: IProps) => {
 
 export namespace DocAnnotationsMutator {
 
-    export function onComment(docMeta: IDocMeta,
-                              pageMeta: IPageMeta,
-                              mutation: ICommentMutation) {
+    export function onComment(holder: IAnnotationMutationHolderWithDocMeta<ICommentMutation>) {
+
+        const {mutation, annotation} = holder;
+        const {docMeta, pageNum} = annotation;
+        const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
         switch (mutation.type) {
 
@@ -252,11 +266,17 @@ export namespace DocAnnotationsMutator {
                 break;
 
             case "update":
-                CommentActions.update(docMeta,
-                                      pageMeta,
-                                      mutation.parent,
-                                      mutation.body,
-                                      mutation.existing.original as IComment);
+
+                const existing = mutation.existing.original as IComment;
+                const content = Texts.create(mutation.body, TextType.HTML);
+
+                const updatedComment: IComment = {
+                    ...existing,
+                    content
+                };
+
+                AnnotationMutations.update(annotation, updatedComment);
+
                 break;
 
             case "delete":
@@ -408,10 +428,6 @@ export namespace AnnotationMutationCallbacks {
 
         const tagsContext = useTagsContext();
 
-        type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
-                                                                         pageMeta: IPageMeta,
-                                                                         mutation: T) => void;
-
         async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
 
             updateStore(updatedDocMetas);
@@ -427,24 +443,20 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
+        type AnnotationMutator<T extends IAnnotationMutationSelectedWithDocMeta> = (docMeta: IDocMeta,
+                                                                                    pageMeta: IPageMeta,
+                                                                                    mutation: T) => void;
+
         /**
          *
+         * @Deprecated migrate to handleUpdate2 and using IAnnotationMutationHolder
          * @param mutation The mutation to execute along with the annotations.
          * @param annotationMutator The mutator to mutate the annotations.
          */
         async function handleUpdate<T extends IAnnotationMutationSelected>(mutation: T,
-                                                                           annotationMutator: AnnotationMutator<T>) {
+                                                                           annotationMutator: AnnotationMutator<T & IAnnotationMutationSelectedWithDocMeta>) {
 
-            const selected = mutation.selected;
-
-            // FIXME: now the major issue is that for the annotation repository
-            // view there might be multiple docMetas but for the viewer there's
-            // really only one.  We could have a LoadedDocMetaContext in this
-            // situation so that we can use the version that's loaded into memory
-            // and get it by id OR revert to reading it from the store if
-            // necessary but in ALL our current situations we're loading it from
-            // memory.  In the main store RepoDocMetaManager will give it to us
-            //
+            const selected = docMetaLookupContext.lookupAnnotations(mutation.selected);
 
             const partitions = arrayStream(selected)
                 .partition(annotation => [annotation.docMetaRef.id, docMetaLookupContext.lookup(annotation.docMetaRef.id)!]);
@@ -472,6 +484,31 @@ export namespace AnnotationMutationCallbacks {
             await writeUpdatedDocMetas(updatedDocMetas);
 
         }
+
+        type AnnotationMutator2<M> = (mutation: IAnnotationMutationHolderWithDocMeta<M>) => void;
+
+        /**
+         *
+         */
+        async function handleUpdate2<M>(holders: ReadonlyArray<IAnnotationMutationHolder<M>>,
+                                        annotationMutator: AnnotationMutator2<M>) {
+
+            const resolvedHolders = docMetaLookupContext.lookupAnnotationHolders(holders);
+
+            for (const resolvedHolder of resolvedHolders) {
+                annotationMutator(resolvedHolder);
+            }
+
+            // *** now we have to update the store
+
+            const updatedDocMetas = Object.values(resolvedHolders)
+                                          .map(current => current.annotation.docMeta);
+
+            await writeUpdatedDocMetas(updatedDocMetas);
+
+        }
+
+
 
         function doTagged(annotations: ReadonlyArray<IAnnotationRef>,
                           tags: ReadonlyArray<Tag>,
@@ -638,17 +675,26 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function createCommentCallback(selected: IAnnotationMutationSelected): Callback1<ICommentMutation> {
+        function createCommentCallback(annotation: IAnnotationRef): Callback1<ICommentMutation> {
 
             return React.useCallback((mutation: ICommentMutation) => {
-                onComment({...selected, ...mutation});
+
+                const holder: IAnnotationMutationHolder<ICommentMutation> = {
+                    annotation,
+                    mutation
+                }
+
+                onComment([holder]);
+
             }, []);
 
         }
 
-        function onComment(mutation: ICommentMutation) {
-            handleUpdate(mutation, DocAnnotationsMutator.onComment)
+        function onComment(holders: ReadonlyArray<IAnnotationMutationHolder<ICommentMutation>>) {
+
+            handleUpdate2(holders, DocAnnotationsMutator.onComment)
                 .catch(err => log.error(err));
+
         }
 
         function onFlashcard(mutation: IFlashcardMutation) {

@@ -34,6 +34,9 @@ export class CommentActions {
 
     }
 
+    /**
+     * @Deprecated This shouldn't be used.  We're migrating to AnnotationMutationsContext
+     */
     public static update(docMeta: IDocMeta,
                          pageMeta: IPageMeta,
                          parent: IRef,

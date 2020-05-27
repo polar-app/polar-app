@@ -20,14 +20,13 @@ export const CreateComment2 = React.memo((props: IProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
 
-    const commentCallback = annotationMutations.createCommentCallback({selected: [parent]})
+    const commentCallback = annotationMutations.createCommentCallback(parent);
 
     const handleComment = React.useCallback((body: string) => {
 
         annotationInputContext.reset();
 
         const mutation: ICommentCreate = {
-            selected: [props.parent],
             type: 'create',
             body,
             parent: Refs.createRef(props.parent),
