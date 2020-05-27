@@ -4,7 +4,7 @@ import {
     DocRepoTableColumns,
     DocRepoTableColumnsMap
 } from "./DocRepoTableColumns";
-import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
+import {Sorting} from "./Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

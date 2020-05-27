@@ -11,7 +11,7 @@ import {
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
-import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
 
 interface ToolbarProps {

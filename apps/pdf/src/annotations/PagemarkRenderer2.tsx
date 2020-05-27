@@ -18,7 +18,7 @@ import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
 import {
     createContextMenu,
     useContextMenu
-} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+} from "../../../repository/js/doc_repo/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
 

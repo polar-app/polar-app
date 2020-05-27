@@ -1,4 +1,4 @@
-import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
+import {RepoDocInfo} from "../RepoDocInfo";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Sorting} from "./Sorting";
 

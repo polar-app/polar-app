@@ -14,7 +14,7 @@ import {AutoBlur} from "./AutoBlur";
 import {
     useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 
 interface IProps {

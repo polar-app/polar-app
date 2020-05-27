@@ -23,7 +23,7 @@ import {
     DocViewerMenu,
     IDocViewerContextMenuOrigin
 } from "./DocViewerMenu";
-import {createContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {createContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
 import {useAnnotationBar} from "./AnnotationBarHooks";
 import {Helmet} from "react-helmet";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";

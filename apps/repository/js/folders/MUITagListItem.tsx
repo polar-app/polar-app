@@ -8,7 +8,7 @@ import {
     DragTarget2,
     useDragContext
 } from "../../../../web/js/ui/tree/DragTarget2";
-import {useContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {useContextMenu} from "../doc_repo/MUIContextMenu";
 import TagID = Tags.TagID;
 
 const useStyles = makeStyles((theme: Theme) =>

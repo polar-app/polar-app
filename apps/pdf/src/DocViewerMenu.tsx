@@ -6,7 +6,7 @@ import {
     useDocViewerCallbacks,
     useDocViewerStore
 } from "./DocViewerStore";
-import {MenuComponentProps} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {MenuComponentProps} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
 import {IPoint} from "../../../web/js/Point";

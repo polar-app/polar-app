@@ -5,7 +5,7 @@ import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {useContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {useContextMenu} from "../doc_repo/MUIContextMenu";
 import isEqual from "react-fast-compare";
 
 interface IProps {

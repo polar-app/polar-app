@@ -8,7 +8,7 @@ import {COLUMNS, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
 import {
     useDocRepoStore, useDocRepoCallbacks
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+} from "./DocRepoStore2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

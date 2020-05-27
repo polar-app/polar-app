@@ -1,11 +1,11 @@
 import React from "react";
-import {Callbacks} from "../../../../apps/repository/js/Callbacks";
+import {Callbacks} from "../Callbacks";
 import {GlobalHotKeys, KeyMap} from "react-hotkeys";
-import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {ReactRouters} from "../../../js/react/router/ReactRouters";
+import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
-import {KeyMaps} from "../../../js/hotkeys/KeyMaps";
+import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";
 import keyMap = KeyMaps.keyMap;
 
 const globalKeyMap = keyMap(

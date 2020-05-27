@@ -3,7 +3,7 @@ import {
     IDocAnnotationRef
 } from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {RepoDocInfo} from "../RepoDocInfo";
-import {Sorting} from "../../../../web/spectron0/material-ui/doc_repo_table/Sorting";
+import {Sorting} from "../doc_repo/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
 import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";

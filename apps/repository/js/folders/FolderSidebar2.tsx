@@ -9,7 +9,7 @@ import {
     useFolderSidebarCallbacks,
     useFolderSidebarStore
 } from "../folder_sidebar/FolderSidebarStore";
-import {createContextMenu} from "../../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 
 

@@ -10,12 +10,12 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Divider from "@material-ui/core/Divider";
 import FlagIcon from "@material-ui/icons/Flag";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import {AppRuntime} from "../../../js/AppRuntime";
+import {AppRuntime} from "../../../../web/js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {
     useDocRepoCallbacks,
     useDocRepoStore
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+} from "./DocRepoStore2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 

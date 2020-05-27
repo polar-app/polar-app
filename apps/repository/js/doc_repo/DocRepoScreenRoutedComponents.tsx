@@ -4,7 +4,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {RepoHeader} from "../repo_header/RepoHeader3";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
-import {DocRepoGlobalHotKeys} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoGlobalHotKeys";
+import {DocRepoGlobalHotKeys} from "./DocRepoGlobalHotKeys";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";

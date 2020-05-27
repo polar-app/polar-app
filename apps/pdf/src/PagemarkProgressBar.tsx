@@ -7,7 +7,7 @@ import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume"
 import {
     createContextMenu,
     useContextMenu
-} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+} from "../../repository/js/doc_repo/MUIContextMenu";
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
 
 export const ProgressBar = React.memo(() => {

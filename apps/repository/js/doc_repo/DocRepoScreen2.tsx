@@ -5,7 +5,7 @@ import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {MessageBanner} from "../MessageBanner";
-import {DocRepoTable2} from "../../../../web/spectron0/material-ui/doc_repo_table/DocRepoTable2";
+import {DocRepoTable2} from "./DocRepoTable2";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";

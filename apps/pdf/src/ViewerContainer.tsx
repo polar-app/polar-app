@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useContextMenu} from "../../../web/spectron0/material-ui/doc_repo_table/MUIContextMenu";
+import {useContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 
 let iter: number = 0;

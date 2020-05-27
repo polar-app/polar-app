@@ -1,7 +1,7 @@
-import {Clipboards} from "../../../js/util/system/clipboard/Clipboards";
+import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {RepoDocInfo} from "../../../../apps/repository/js/RepoDocInfo";
 import {Callback1} from "polar-shared/src/util/Functions";
-import {Directories} from "../../../js/datastore/Directories";
+import {Directories} from "../../../../web/js/datastore/Directories";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
 export namespace DocumentRepositoryTableActions {
