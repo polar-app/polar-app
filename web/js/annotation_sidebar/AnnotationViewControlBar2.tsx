@@ -20,6 +20,7 @@ import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles} from "@material-ui/core";
+import {AnnotationTagsBar} from "./AnnotationTagsBar";
 
 
 const useStyles = makeStyles((theme) =>
@@ -116,6 +117,8 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
         <>
             <div style={{userSelect: 'none'}}
                  className="pt-1 pb-1">
+
+                {/*<AnnotationTagsBar tags={annotation.tags}/>*/}
 
                 <div style={{display: 'flex'}}>
 

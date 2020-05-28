@@ -13,6 +13,10 @@ import {
 import {AccountControlDropdown} from './AccountControlDropdown';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AccountActions} from "../../accounts/AccountActions";
+import {
+    usePersistenceContext,
+    usePersistenceLayerContext
+} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 const log = Logger.create();
 
@@ -23,9 +27,6 @@ interface IState {
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';
 
-function logout() {
-    AccountActions.logout(this.props.persistenceLayerController);
-}
 
 function enableCloudSync() {
     AccountActions.login();
@@ -34,6 +35,12 @@ function enableCloudSync() {
 // TODO: perhaps we should use a dialog for this?
 function onAuthError(err: firebase.auth.Error) {
     log.error("Authentication error: ", err);
+}
+
+function useLogoutCallback() {
+    const persistenceContext = usePersistenceContext();
+    AccountActions.logout(persistenceContext.persistenceLayerMutator);
+
 }
 
 export const CloudAuthButton2 = React.memo(() => {
@@ -73,6 +80,11 @@ export const CloudAuthButton2 = React.memo(() => {
         .onAuthStateChanged((user) => doAuth(user),
                             (err) => onAuthError(err));
     }, []);
+
+    function logout() {
+        // FIXME:
+        // AccountActions.logout(props.persistenceLayerController);
+    }
 
     const AccountButton = () => {
 

@@ -13,6 +13,7 @@ import debugIsEqual = DeepEquals.debugIsEqual;
 import isEqual from "react-fast-compare";
 import {AnnotationInputView} from "../AnnotationInputView";
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
+import {AnnotationTagsBar} from "../AnnotationTagsBar";
 
 const log = Logger.create();
 
@@ -71,9 +72,10 @@ export const AnnotationView2 = React.memo((props: IProps) => {
     const key = 'doc-annotation-' + annotation.id;
 
     return (
-        <div key={key} className="mt-1">
+        <div key={key} className="">
             <MUIHoverController>
                 <>
+
                     <AnnotationTypeComponent/>
 
                     <AnnotationInputView annotation={annotation}/>
