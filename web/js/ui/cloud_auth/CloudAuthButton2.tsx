@@ -39,7 +39,7 @@ function onAuthError(err: firebase.auth.Error) {
 
 function useLogoutCallback() {
     const persistenceContext = usePersistenceContext();
-    AccountActions.logout(persistenceContext.persistenceLayerMutator);
+    // AccountActions.logout(persistenceContext.persistenceLayerMutator);
 
 }
 
