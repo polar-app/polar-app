@@ -530,7 +530,7 @@ export default class DocRepoScreen extends ReleasingReactComponent<IProps, IStat
         return (
             <FixedNav id="doc-repository">
 
-                <RepositoryTour/>
+                {/*<RepositoryTour/>*/}
                 <header>
 
                     <RepoHeader toggle={(

@@ -151,7 +151,7 @@ export const DocRepoScreen2 = React.memo(() => {
 
             <DocRepoScreenRoutedComponents/>
 
-            <RepositoryTour/>
+            {/*<RepositoryTour/>*/}
             <header>
 
                 <DeviceRouter.Desktop>
