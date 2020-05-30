@@ -43,7 +43,7 @@
         "test/sandbox/**/*",
         "scripts/**/*",
         "web/**/*",
-        "apps/**/*",
+        "apps/**/*"
     ],
     "exclude": [
         "web/spectron.disabled/*"
