@@ -43,6 +43,7 @@ import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRout
 import {PersistentRoute} from "./PersistentRoute";
 import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
 import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
+import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 
 interface IProps {
     readonly app: App;
@@ -98,6 +99,21 @@ export const RepositoryApp = (props: IProps) => {
         );
     });
 
+    const LogoutScreen = React.memo(() => {
+        return (
+            <AuthRequired authStatus={app.authStatus}>
+                <PersistenceLayerApp tagsType="annotations"
+                                     repoDocMetaManager={repoDocMetaManager}
+                                     repoDocMetaLoader={repoDocMetaLoader}
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(props) =>
+                                         <MUIDialogController>
+                                             <LogoutDialog/>
+                                         </MUIDialogController>
+                                     }/>
+            </AuthRequired>
+        );
+    });
 
     const RenderSettingsScreen = () => (
         <Cached>
@@ -320,6 +336,10 @@ export const RepositoryApp = (props: IProps) => {
 
                         <Route exact path="/device"
                                component={renderDeviceScreen}/>
+
+                        <Route exact path="/logout"
+                               component={LogoutScreen}/>
+
 
                         {/*<Route exact path='/'*/}
                         {/*       component={RenderDefaultScreen}/>*/}

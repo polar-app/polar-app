@@ -48,6 +48,7 @@ export interface IPersistenceContext extends ITagsContext, IPersistenceLayerCont
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly persistenceLayerMutator: PersistenceLayerMutator;
+    readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
 export const PersistenceLayerContext = createContextMemo<IPersistenceLayerContext>(null!);
@@ -144,7 +145,8 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         // docTagsProvider: docTags,
                                                         // annotationTagsProvider: annotationTags,
                                                         tagsProvider,
-                                                        persistenceLayerMutator
+                                                        persistenceLayerMutator,
+                                                        persistenceLayerManager: props.persistenceLayerManager
                                                     }
 
                                                     const persistenceLayerContext: IPersistenceLayerContext = {

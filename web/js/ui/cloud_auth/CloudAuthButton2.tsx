@@ -13,10 +13,7 @@ import {
 import {AccountControlDropdown} from './AccountControlDropdown';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AccountActions} from "../../accounts/AccountActions";
-import {
-    usePersistenceContext,
-    usePersistenceLayerContext
-} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {useHistory} from 'react-router-dom';
 
 const log = Logger.create();
 
@@ -38,8 +35,12 @@ function onAuthError(err: firebase.auth.Error) {
 }
 
 function useLogoutCallback() {
-    const persistenceContext = usePersistenceContext();
-    // AccountActions.logout(persistenceContext.persistenceLayerMutator);
+
+    const history = useHistory();
+
+    return () => {
+        history.push({pathname: '/logout'})
+    };
 
 }
 
@@ -50,6 +51,8 @@ export const CloudAuthButton2 = React.memo(() => {
     });
 
     Firebase.init();
+
+    const doLogout = useLogoutCallback();
 
     const doAuth = useCallback((user: User | null) => {
 
@@ -82,8 +85,7 @@ export const CloudAuthButton2 = React.memo(() => {
     }, []);
 
     function logout() {
-        // FIXME:
-        // AccountActions.logout(props.persistenceLayerController);
+        doLogout();
     }
 
     const AccountButton = () => {
