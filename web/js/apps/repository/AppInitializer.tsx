@@ -116,15 +116,23 @@ export class AppInitializer {
 
             new ProgressService().start();
 
-            await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
+            console.log("FIXME6");
+
+            // TODO: removed for group refactor.
+            // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
+
+            console.log("FIXME7");
 
             MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
 
             UniqueMachines.trigger();
+            console.log("FIXME8");
 
             await opts.onNeedsAuthentication(app);
 
         }
+
+        console.log("FIXME9");
 
         console.timeEnd("AppInitializer.init");
 

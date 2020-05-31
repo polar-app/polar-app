@@ -20,7 +20,6 @@ export class AccountActions {
         firebase.auth().signOut()
             .then(() => {
 
-                window.location.href = '/#logout';
                 window.location.reload();
 
             })

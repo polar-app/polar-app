@@ -337,10 +337,6 @@ export const RepositoryApp = (props: IProps) => {
                         <Route exact path="/device"
                                component={renderDeviceScreen}/>
 
-                        <Route exact path="/logout"
-                               component={LogoutScreen}/>
-
-
                         {/*<Route exact path='/'*/}
                         {/*       component={RenderDefaultScreen}/>*/}
 
@@ -378,10 +374,9 @@ export const RepositoryApp = (props: IProps) => {
                                }/>
 
                         {/*TODO: add a logout splash so that the user knows that they are unauthenticated.*/}
-                        <Route path='#logout'
-                               render={() => (
-                                   <div></div>
-                               )}/>
+                        <Route path='#logout'>
+                            <LogoutScreen/>
+                        </Route>
 
                     </Switch>
 

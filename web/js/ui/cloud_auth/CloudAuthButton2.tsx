@@ -39,7 +39,7 @@ function useLogoutCallback() {
     const history = useHistory();
 
     return () => {
-        history.push({pathname: '/logout'})
+        history.push({hash: '#logout'})
     };
 
 }

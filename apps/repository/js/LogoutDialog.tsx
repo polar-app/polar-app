@@ -20,12 +20,16 @@ export const LogoutDialog = () => {
     const history = useHistory();
     const doLogout = useLogoutCallback();
 
+    function goBack() {
+        history.replace({hash: ""});
+    }
+
     function handleClose() {
-        history.goBack();
+        goBack();
     }
 
     function handleLogout() {
-        history.replace("/");
+        goBack();
         doLogout();
     }
 
@@ -34,7 +38,7 @@ export const LogoutDialog = () => {
                        title="Are you sure you want to logout?"
                        subtitle="Just wanted to double check. Are you sure you want to logout?"
                        onCancel={handleClose}
-                       onAccept={handleLogout   }/>
+                       onAccept={handleLogout}/>
     )
 
 }

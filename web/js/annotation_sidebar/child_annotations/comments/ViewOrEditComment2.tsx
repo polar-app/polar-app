@@ -48,6 +48,8 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
     const handleComment = React.useCallback((body: string) => {
 
+        setMode('view');
+
         annotationInputContext.reset();
 
         const mutation: ICommentUpdate = {

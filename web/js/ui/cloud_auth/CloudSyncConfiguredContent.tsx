@@ -17,17 +17,13 @@ class Styles {
         margin: '25px'
     };
 
-    public static content: React.CSSProperties = {
-        maxWidth: '800px'
-    };
-
 }
 
 export function CloudSyncConfiguredContent() {
 
     return (
 
-        <div style={Styles.content}>
+        <div>
 
             <div className="text-center">
 
