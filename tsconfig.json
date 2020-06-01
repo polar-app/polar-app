@@ -35,7 +35,11 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2019", "dom"]
+        "lib": ["es2019", "dom"],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./node_modules/@polarapp-types"
+        ]
 
     },
     "include": [
@@ -52,8 +56,5 @@
         "mocha",
         "electron",
         "reflect-metadata"
-    ],
-    "typeRoots": [
-        "./node_modules/@types"
     ]
 }
