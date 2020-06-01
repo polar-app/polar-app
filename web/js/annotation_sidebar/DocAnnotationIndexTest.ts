@@ -7,6 +7,8 @@ import {TextHighlights} from '../metadata/TextHighlights';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {ObjectIDs} from '../util/ObjectIDs';
 import {Ref, Refs} from "polar-shared/src/metadata/Refs";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {MockDocMetas} from "../metadata/DocMetas";
 
 function toDocAnnotations(docAnnotationIndex: DocAnnotationIndex) {
     return docAnnotationIndex.getDocAnnotationsSorted().map(current => current.obj);
@@ -87,7 +89,22 @@ describe('DocAnnotationIndex', function() {
                 "id": "0001",
                 "guid": "0001",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -129,14 +146,32 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             },
             {
                 "oid": 1,
                 "id": "0002",
                 "guid": "0002",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -178,14 +213,32 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             },
             {
                 "oid": 2,
                 "id": "0003",
                 "guid": "0003",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -227,7 +280,10 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             }
         ]);
 
@@ -248,7 +304,22 @@ describe('DocAnnotationIndex', function() {
                 "id": "0003",
                 "guid": "0003",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 1,
                 "position": {
@@ -290,14 +361,32 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             },
             {
                 "oid": 4,
                 "id": "0002",
                 "guid": "0002",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 2,
                 "position": {
@@ -339,14 +428,32 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             },
             {
                 "oid": 3,
                 "id": "0001",
                 "guid": "0001",
                 "fingerprint": "1234",
-                "docInfo": null,
+                "docInfo": {
+                    "progress": 75,
+                    "pagemarkType": "SINGLE_COLUMN",
+                    "properties": {},
+                    "archived": false,
+                    "flagged": false,
+                    "tags": {},
+                    "attachments": {},
+                    "nrPages": 4,
+                    "fingerprint": "1234",
+                    "added": "2012-03-02T11:38:49.321Z",
+                    "uuid": "xxxx",
+                    "readingPerDay": {
+                        "2012-03-02": 3
+                    }
+                },
                 "annotationType": "TEXT_HIGHLIGHT",
                 "pageNum": 3,
                 "position": {
@@ -388,7 +495,10 @@ describe('DocAnnotationIndex', function() {
                     "color": "yellow"
                 },
                 "immutable": false,
-                "tags": {}
+                "tags": {},
+                "docMetaRef": {
+                    "id": "1234"
+                }
             }
         ];
 
@@ -477,12 +587,17 @@ function createAnnotation(id: string,
 
     const parent = ref ? Refs.parse(ref) : undefined;
 
+    const fingerprint = '1234';
+    const mockDocMeta = MockDocMetas.createMockDocMeta(fingerprint);
+    const docInfo = mockDocMeta.docInfo;
+    docInfo.uuid = 'xxxx';
+
     return {
         oid: ObjectIDs.create(),
         id,
         guid: id,
-        fingerprint: '1234',
-        docInfo: null!,
+        fingerprint,
+        docInfo,
         text: undefined,
         html: undefined,
         annotationType: AnnotationType.TEXT_HIGHLIGHT,

@@ -3,7 +3,6 @@ import {Pagemarks} from "./Pagemarks";
 import {DocMetas} from "./DocMetas";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
-import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ReadingProgresses} from './ReadingProgresses';
 import {PagemarkMode} from 'polar-shared/src/metadata/PagemarkMode';
@@ -45,7 +44,7 @@ describe('Pagemarks', function() {
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "type": "SINGLE_COLUMN",
-                    "percentage": 0.999,
+                    "percentage": 1,
                     "column": 0,
                     "rect": {
                         "left": 0,
@@ -65,9 +64,9 @@ describe('Pagemarks', function() {
                 "1AS9DE87jw": {
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "1AS9DE87jw",
-                    "progress": 0.999,
+                    "progress": 1,
                     "progressByMode": {
-                        "READ": 0.999
+                        "READ": 1
                     }
                 }
             });

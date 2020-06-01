@@ -232,7 +232,7 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.tags = obj.tags;
         this.parent = obj.parent;
         this.docMetaRef = {
-            id: this.docMeta.docInfo.fingerprint
+            id: obj.docInfo.fingerprint
         }
 
     }
