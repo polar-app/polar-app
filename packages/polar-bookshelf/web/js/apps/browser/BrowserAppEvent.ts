@@ -1,0 +1,11 @@
+export enum BrowserAppEvent {
+
+    PROVIDE_URL = 'PROVIDE_URL',
+
+    TRIGGER_CAPTURE = 'TRIGGER_CAPTURE',
+
+    // TODO: should be CONFIGURE_BROWSER
+    CONFIGURE_WINDOW = 'CONFIGURE_WINDOW'
+
+}
+
