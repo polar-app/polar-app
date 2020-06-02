@@ -32,6 +32,7 @@ import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
+import {DocRenderer} from "./renderers/DocRenderer";
 
 const log = Logger.create();
 
@@ -80,9 +81,7 @@ const DocMain = React.memo(() => {
                 <title>{docMeta?.docInfo.title || ''}</title>
             </Helmet>
 
-            <PDFViewerContainer/>
-
-            <PDFDocument/>
+            <DocRenderer type='pdf'/>
 
             <TextHighlightsView />
 

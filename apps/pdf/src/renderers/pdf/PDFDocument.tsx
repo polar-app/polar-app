@@ -114,6 +114,7 @@ function createDocViewer(): DocViewer {
 export type OnFinderCallback = Callback1<Finder>;
 
 interface IProps {
+    readonly docURL: URLStr;
 }
 
 export const PDFDocument = React.memo((props: IProps) => {
@@ -123,12 +124,8 @@ export const PDFDocument = React.memo((props: IProps) => {
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
-    const {docURL} = useDocViewerStore();
+    const {docURL} = props;
     const {setFinder} = useDocFindCallbacks();
-
-    if (! docURL) {
-        return null;
-    }
 
     useComponentDidMount(() => {
 
