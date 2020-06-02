@@ -209,15 +209,6 @@ export class MainAppMenu {
                     }
 
                 },
-                {
-                    label: 'Capture Web Page',
-                    accelerator: 'CommandOrControl+N',
-                    click: () => {
-                        this.mainAppController.cmdCaptureWebPageWithBrowser()
-                            .catch((err: Error) => log.error("Could not capture page: ", err));
-                    }
-
-                },
 
                 {
                     type: 'separator'
