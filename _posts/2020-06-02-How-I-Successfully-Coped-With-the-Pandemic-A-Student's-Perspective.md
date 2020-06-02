@@ -26,7 +26,9 @@ If I wanted to excel in my courses, I needed to limit my distractions and implem
 
 Switch your phone to **Do Not Disturb** (feature on the iPhone). Instead of having the temptation to check my phone every single time it rings, I only check it when I need to. 
 
-Do you spend way too much time on some apps like Instagram or TikTok? The **Screen Time** feature on your iPhone may help you solve this time-consuming problem. You can set a time limit for any app on your phone with this cool feature. Apps like **<ahref="https://freedom.to/" target="_blank">Freddom</a>** or **<ahref="https://www.forestapp.cc/" target="_blank">Forest</a>** can also help you cut the time you spend on your phone. 
+Do you spend way too much time on some apps like Instagram or TikTok? The **Screen Time** feature on your iPhone may help you solve this time-consuming problem. You can set a time limit for any app on your phone with this cool feature. Apps like **<a href="https://freedom.to/" target="_blank">Freedom</a>** or **<a href="https://www.forestapp.cc/" target="_blank">Forest</a>** can also help you cut the time you spend on your phone. 
+
+**<a href="https://www.theskimm.com/" target="_blank">theSkimm</a>**
 
 If you’re a little too obsessed with your email like I am, limit your email checking to only **3 times a day**. Once in the morning, during lunchtime, and before you go to sleep.
 
