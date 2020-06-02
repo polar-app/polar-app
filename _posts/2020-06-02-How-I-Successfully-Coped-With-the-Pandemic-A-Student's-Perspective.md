@@ -94,9 +94,12 @@ It’s time to ditch cramming and embrace the technique of spaced repetition. Sp
  
 With **<a href="https://apps.ankiweb.net/" target="_blank">Anki</a>
 **, your digital flashcards are personally tracked and analyzed for long-term retention as you study the flashcards. 
+
 With **<a href="https://getpolarized.io/" target="_blank">Polar</a>**, you can auto-convert your text into digital flashcards and learn using spaced repetition. Polar will also manage all your documents (web pages, textbooks, and PDFs) in one place. 
 If you want to gain a deeper understanding of the material you are being taught and retain the information, **handwritten notes** are the way to go! You always have the option of transferring your handwritten notes to digital text with **<ahref="https://www.pen-to-print.com/" target="_blank">Pen to Print</a>**. 
+
 Albert Einstein once said, “If you can't explain it to a six-year-old, you don't understand it yourself.” No wonder he’s brilliant! To make sure you have a clear understanding of the material, assume the role of a teacher. Explain the material to someone who is new to the subject, and see how well you communicate it. 
+
 If you’re feeling bored during this quarantine or have run out of shows to watch, I recommend enrolling in free courses from top universities through **<ahref="https://www.coursera.org/" target="_blank">Coursera</a>**. 
 We all know that finding the motivation to study in the midst of a global pandemic is a real struggle. That’s why I curated these tips and tools to help you navigate this new reality and excel in your courses. I’ll leave you with the words of Bob Marley, **"Don't worry 'bout a thing, cause every little thing's gonna be alright."** 
 
