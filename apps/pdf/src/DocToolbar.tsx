@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {PDFScaleLevel, PDFScaleLevelTuples, PDFScales} from "./PDFScaleLevels";
+import {ScaleLevel, ScaleLevelTuples, PDFScales} from "./PDFScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -243,10 +243,10 @@ export const DocToolbar = React.memo(() => {
     const {docDescriptor, docScale} = useDocViewerStore();
     const {setScale} = useDocViewerCallbacks();
 
-    const handleScaleChange = (scale: PDFScaleLevel) => {
+    const handleScaleChange = (scale: ScaleLevel) => {
 
         const value =
-            arrayStream(PDFScaleLevelTuples)
+            arrayStream(ScaleLevelTuples)
                 .filter(current => current.value === scale)
                 .first();
 
@@ -317,8 +317,8 @@ export const DocToolbar = React.memo(() => {
                             {docScale &&
                                 <FormControl variant="outlined" size="small">
                                     <Select value={docScale.scale.value || 'page-width'}
-                                            onChange={event => handleScaleChange(event.target.value as PDFScaleLevel)}>
-                                        {PDFScaleLevelTuples.map(current => (
+                                            onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
+                                        {ScaleLevelTuples.map(current => (
                                             <MenuItem key={current.value}
                                                       value={current.value}>
                                                 {current.label}

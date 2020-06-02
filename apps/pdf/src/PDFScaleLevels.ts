@@ -1,6 +1,5 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-
 export namespace PDFScales {
 
     export function computeNextZoomLevel(delta: number,
@@ -11,7 +10,7 @@ export namespace PDFScales {
         }
 
         const pdfScaleLevels =
-            arrayStream(PDFScaleLevelTuples)
+            arrayStream(ScaleLevelTuples)
                 .map(current => current.value)
                 .collect();
 
@@ -19,7 +18,7 @@ export namespace PDFScales {
 
         const nextIdx = currentScaleLevelIdx + delta;
 
-        return PDFScaleLevelTuples[nextIdx] || undefined;
+        return ScaleLevelTuples[nextIdx] || undefined;
 
     }
 }
@@ -29,7 +28,7 @@ export interface LabelValueTuple<V> {
     readonly value: V;
 }
 
-export type PDFScaleLevel =
+export type ScaleLevel =
     'page-width'
     | 'page-fit'
     | '0.5'
@@ -38,9 +37,9 @@ export type PDFScaleLevel =
     | '2'
     | '3'
     | '4';
-export type ScaleLevelTuple = LabelValueTuple<PDFScaleLevel>;
+export type ScaleLevelTuple = LabelValueTuple<ScaleLevel>;
 
-export const PDFScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
+export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     {
         label: 'page width',
         value: 'page-width'
@@ -77,5 +76,5 @@ export const PDFScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
 
 ];
 
-export const PDFScaleLevelTuplesMap = arrayStream(PDFScaleLevelTuples)
-                                          .toMap(current => current.label);
+export const ScaleLevelTuplesMap = arrayStream(ScaleLevelTuples)
+                                       .toMap(current => current.label);

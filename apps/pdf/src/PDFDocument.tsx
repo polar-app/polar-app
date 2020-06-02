@@ -21,8 +21,8 @@ import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {
     ScaleLevelTuple,
-    PDFScaleLevelTuples,
-    PDFScaleLevelTuplesMap
+    ScaleLevelTuples,
+    ScaleLevelTuplesMap
 } from "./PDFScaleLevels";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 import {
@@ -121,7 +121,7 @@ interface IProps {
 export const PDFDocument = (props: IProps) => {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
-    const scaleRef = React.useRef<ScaleLevelTuple>(PDFScaleLevelTuples[0]);
+    const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
@@ -229,10 +229,10 @@ export const PDFDocument = (props: IProps) => {
 
             get scale(): ScaleLevelTuple {
                 const currentScaleValue = docViewerRef.current!.viewer.currentScaleValue;
-                const result = PDFScaleLevelTuplesMap[currentScaleValue];
+                const result = ScaleLevelTuplesMap[currentScaleValue];
 
                 if (! result) {
-                    return PDFScaleLevelTuplesMap["page width"];
+                    return ScaleLevelTuplesMap["page width"];
                 }
 
                 return result;
