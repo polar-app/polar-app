@@ -7,8 +7,7 @@ import {Directories} from '../datastore/Directories';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 
 /**
- * A logger which writes to disk but ONLY if they are errors.  This is needed
- * for performance reasons as electron-log isn't amazingly fast.
+ * A logger which writes to disk but ONLY if they are errors.
  */
 export class PersistentErrorLogger implements ILogger {
 
