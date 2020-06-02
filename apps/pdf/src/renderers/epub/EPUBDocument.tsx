@@ -17,10 +17,6 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
         const pageElement = document.querySelector(".page")!;
 
-        // console.log("FIXME: InlineView: ", InlineView);
-
-        // const rendition = book.renderTo(pageElement, { flow: "scrolled-doc"});
-        // const rendition = book.renderTo(pageElement, { flow: "continuous", width: '100%', height: '100%'});
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',

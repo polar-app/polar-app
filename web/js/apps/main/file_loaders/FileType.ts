@@ -1,4 +1,1 @@
-export enum FileType {
-    PDF = 'pdf',
-    PHZ = 'phz'
-}
+export type FileType = 'pdf' | 'epub';

@@ -81,7 +81,7 @@ const DocMain = React.memo(() => {
                 <title>{docMeta?.docInfo.title || ''}</title>
             </Helmet>
 
-            <DocRenderer type='pdf'/>
+            <DocRenderer/>
 
             <TextHighlightsView />
 

@@ -6,6 +6,7 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import isEqual from "react-fast-compare";
 import {EPUBDocument} from "./epub/EPUBDocument";
 import {EPUBViewerContainer} from "./epub/EPUBViewerContainer";
+import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -33,21 +34,18 @@ const EPUBDocumentRenderer = (props: ILoadedProps) => {
     );
 }
 
-
-export type DocFormatType = 'pdf' | 'epub';
-
 interface IProps {
-    readonly type: DocFormatType;
 }
 
 export const DocRenderer = React.memo((props: IProps) => {
 
     const {docURL} = useDocViewerStore();
-    const {type} = props;
 
     if (! docURL) {
         return null;
     }
+
+    const type = FileTypes.create(docURL);
 
     switch (type) {
 

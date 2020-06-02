@@ -6,9 +6,9 @@ export class FileTypes {
     public static create(path: string): FileType {
 
         if (FilePaths.hasExtension(path, "pdf")) {
-            return FileType.PDF;
-        } else if (FilePaths.hasExtension(path, "phz")) {
-            return FileType.PHZ;
+            return 'pdf';
+        } else if (FilePaths.hasExtension(path, "epub")) {
+            return 'epub';
         } else {
             throw new Error("Unable to handle file: " + path);
         }
