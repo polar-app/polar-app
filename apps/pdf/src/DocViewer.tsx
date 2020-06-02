@@ -4,7 +4,7 @@ import {OnFinderCallback, PDFDocument} from "./PDFDocument";
 import * as React from "react";
 import {ViewerContainer} from "./ViewerContainer";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {PDFAppURLs} from "./PDFAppURLs";
+import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {TextHighlightsView} from "./annotations/TextHighlightsView";
 import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationSidebar2";
@@ -264,7 +264,7 @@ export const DocViewer = React.memo(() => {
 
             // TODO: do this in a root context component so we could make
             // this into a component that takes props, not just a URL.
-            const parsedURL = PDFAppURLs.parse(document.location.href);
+            const parsedURL = DocViewerAppURLs.parse(document.location.href);
 
             if (! parsedURL) {
                 console.log("No parsed URL")

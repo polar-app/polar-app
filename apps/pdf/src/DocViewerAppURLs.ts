@@ -4,7 +4,7 @@ export interface PDFAppURL {
     readonly id: IDStr;
 }
 
-export class PDFAppURLs {
+export class DocViewerAppURLs {
 
     public static parse(url: URLStr) {
 

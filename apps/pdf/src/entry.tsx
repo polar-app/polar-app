@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logging} from '../../../web/js/logger/Logging';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PDFApp} from "./PDFApp";
+import {DocViewerApp} from "./DocViewerApp";
 
 const log = Logger.create();
 
@@ -15,7 +15,7 @@ async function start() {
     //     throw new Error("No app URL");
     // }
 
-    const pdfApp = new PDFApp();
+    const pdfApp = new DocViewerApp();
 
     pdfApp.start()
         .catch(err => log.error(err));

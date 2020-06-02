@@ -8,7 +8,7 @@ import {PersistenceLayerContext} from "../../repository/js/persistence_layer/Per
 import {DocViewerScreen} from "./DocViewerScreen";
 import {BrowserRouter} from 'react-router-dom';
 
-export class PDFApp {
+export class DocViewerApp {
 
     constructor(private readonly persistenceLayerManager = new PersistenceLayerManager({noSync: true, noInitialSnapshot: true})) {
     }
