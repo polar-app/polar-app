@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ScaleLevel, ScaleLevelTuples, PDFScales} from "./PDFScaleLevels";
+import {ScaleLevel, ScaleLevelTuples, PDFScales} from "./ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';

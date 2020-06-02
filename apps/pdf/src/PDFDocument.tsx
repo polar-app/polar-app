@@ -23,7 +23,7 @@ import {
     ScaleLevelTuple,
     ScaleLevelTuples,
     ScaleLevelTuplesMap
-} from "./PDFScaleLevels";
+} from "./ScaleLevels";
 import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
 import {
     IDocDescriptor,
