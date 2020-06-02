@@ -18,8 +18,6 @@ With the abrupt ending of my freshman year, I was anxious about the prospect of 
 
 ## Save Your Sanity by Effectively Silencing Your Phone
 
-<img class="img-fluid" src="https://i.imgur.com/LbLeBE7.gif">
-
 During the first few weeks of quarantine, I was glued to my phone. I looked to the news app for any kind of solace that the pandemic (and toilet paper shortage) was ending. Unfortunately, I was bombarded with depressing reports and heart-wrenching stories about overcrowded hospitals. This wrecked my emotional wellbeing and also put a damper on my productivity. 
 
 <img class="img-fluid" src="https://i.imgur.com/1itYyg2.jpg">
