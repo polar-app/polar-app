@@ -6,14 +6,14 @@ large_image: https://i.imgur.com/Exc48ep.jpg
 description: we students were required to study remotely since the COVID pandemic started. This requires a new approach to remote tools, especially remote studying     
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/Exc48ep.jpg">
+<img class="img-fluid" src="https://imgur.com/Ai8DjO1">
 
 # How I Successfully Coped With the Pandemic: A Student’s Perspective
 
 Hi! My name is Sweta and I’m a sophomore at Indiana University’s Kelley School of Business (aka Zoom University) studying Economic Consulting, Public Policy Analysis, and Sustainable Business. Isn’t that a mouthful?
 With the abrupt ending of my freshman year, I was anxious about the prospect of online learning. The transition to studying at home while still fulfilling my responsibilities as a college student scared me even more.  After a relatively tough adjustment period (and a few meltdowns), I was able to maintain a steady rhythm and adjust my daily habits to the new reality. Here are 5 tips I used to end my semester strong academically and keep my emotional and physical health intact: 
 
-<img class="img-fluid" src="https://i.imgur.com/eVZdJcC.jpg">
+<img class="img-fluid" src="https://i.imgur.com/D43zeEK.gifv">
 
 ## Save Your Sanity by Effectively Silencing Your Phone
 
