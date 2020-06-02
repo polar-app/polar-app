@@ -2,7 +2,7 @@ import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {OnFinderCallback, PDFDocument} from "./PDFDocument";
 import * as React from "react";
-import {ViewerContainer} from "./ViewerContainer";
+import {PDFViewerContainer} from "./PDFViewerContainer";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
@@ -86,7 +86,7 @@ const DocMain = React.memo((props: MainProps) => {
                 <title>{docMeta?.docInfo.title || ''}</title>
             </Helmet>
 
-            <ViewerContainer/>
+            <PDFViewerContainer/>
 
             <PDFDocument
                 onFinder={props.onFinder}

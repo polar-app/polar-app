@@ -4,7 +4,7 @@ import {Elements} from "../../../web/js/util/Elements";
 
 let iter: number = 0;
 
-export const ViewerContainer = () => {
+export const PDFViewerContainer = () => {
 
     ++iter;
 
