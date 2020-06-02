@@ -2,7 +2,7 @@ import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-describe('main-app', function() {
+xdescribe('main-app', function() {
 
     Spectron.setup(__dirname);
     this.timeout(20000);

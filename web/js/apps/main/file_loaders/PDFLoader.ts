@@ -41,7 +41,7 @@ export class PDFLoader extends FileLoader {
         const filenameParam = encodeURIComponent(filename);
 
         if (NEW_VIEWER_ENABLED) {
-            return ResourcePaths.resourceURLFromRelativeURL(`/pdf/${fingerprint}`, false);
+            return ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
         } else {
             return ResourcePaths.resourceURLFromRelativeURL(`/pdfviewer/web/index.html?file=${fileParam}&filename=${filenameParam}&zoom=page-width`, false);
         }

@@ -134,11 +134,11 @@ export class CaptureController {
      */
     private async loadPHZ(webContents: Electron.WebContents, path: string) {
 
-        const loadedFile = await this.phzLoader.registerForLoad(path);
-
-        log.debug(`Loading PHZ URL via: `, loadedFile.webResource);
-
-        loadedFile.webResource.loadWebContents(webContents);
+        // const loadedFile = await this.phzLoader.registerForLoad(path);
+        //
+        // log.debug(`Loading PHZ URL via: `, loadedFile.webResource);
+        //
+        // loadedFile.webResource.loadWebContents(webContents);
 
     }
 

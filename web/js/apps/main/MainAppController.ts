@@ -52,8 +52,8 @@ export class MainAppController {
 
     public async cmdCaptureWebPageWithBrowser(captureOpts: Partial<CaptureOpts> = {}) {
 
-        const captureResult = await Capture.trigger(captureOpts);
-        await this.handleLoadDoc(captureResult.path);
+        // const captureResult = await Capture.trigger(captureOpts);
+        // await this.handleLoadDoc(captureResult.path);
 
     }
 
@@ -169,6 +169,7 @@ export class MainAppController {
      * The user asked to open a file from the command line or via OS event.
      */
     public async handleLoadDoc(path: string,
+                               fingerprint: string,
                                newWindow: boolean = true): Promise<BrowserWindow> {
 
         const extraTags = {'type': 'viewer'};
@@ -199,7 +200,7 @@ export class MainAppController {
 
             const window = await computeWindow();
 
-            return await this.loadDoc(path, window);
+            return await this.loadDoc(path, fingerprint, window);
 
         }, extraTags);
 
@@ -208,13 +209,15 @@ export class MainAppController {
     /**
      * Load the given PDF file in the given target window.
      */
-    public async loadDoc(path: string, targetWindow: BrowserWindow): Promise<BrowserWindow> {
+    private async loadDoc(path: string,
+                          fingerprint: string,
+                          targetWindow: BrowserWindow): Promise<BrowserWindow> {
 
         if (!targetWindow) {
             throw new Error("No target window given");
         }
 
-        const loadedFile = await this.fileLoader.registerForLoad(path);
+        const loadedFile = await this.fileLoader.registerForLoad(path, fingerprint);
 
         log.info("Loading webapp at: " + loadedFile.webResource);
 

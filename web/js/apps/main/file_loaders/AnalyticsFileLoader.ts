@@ -10,12 +10,12 @@ export class AnalyticsFileLoader extends FileLoader {
         this.delegate = delegate;
     }
 
-    public registerForLoad(path: string): Promise<LoadedFile> {
+    public registerForLoad(path: string, fingerprint: string): Promise<LoadedFile> {
 
         // TODO: remove this in the future as we're not longer using the
-        // main proce analytics.
+        // main proc analytics system.
 
-        return this.delegate.registerForLoad(path);
+        return this.delegate.registerForLoad(path, fingerprint);
 
     }
 

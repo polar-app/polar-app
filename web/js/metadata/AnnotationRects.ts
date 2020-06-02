@@ -7,7 +7,7 @@ import {Line} from '../util/Line';
 import {Rects} from '../Rects';
 import {IDimensions} from "../util/IDimensions";
 import {IPoint} from "../Point";
-import {getPageElement} from "../../../apps/pdf/src/annotations/AnnotationHooks";
+import {getPageElement} from "../../../apps/doc/src/annotations/AnnotationHooks";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 const log = Logger.create();
 

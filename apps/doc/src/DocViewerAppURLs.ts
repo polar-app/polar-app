@@ -8,7 +8,7 @@ export class DocViewerAppURLs {
 
     public static parse(url: URLStr) {
 
-        const regexp = ".*/pdf/([^/?]+)$";
+        const regexp = ".*/doc/([^/?]+)$";
 
         const matches = url.match(regexp);
 

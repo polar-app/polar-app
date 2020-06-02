@@ -30,7 +30,7 @@ module.exports = {
         //   1.6MB compressed.
 
         "chrome": [ "./web/js/apps/chrome.ts"],
-        "pdf": [ "./apps/pdf/src/entry.tsx"],
+        "doc": [ "./apps/doc/src/entry.tsx"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "preview": [ "./apps/preview/index.ts"],
         "login": [ "./apps/repository/js/login.ts"],

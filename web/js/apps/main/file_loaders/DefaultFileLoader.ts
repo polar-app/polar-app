@@ -28,14 +28,14 @@ export class DefaultFileLoader extends FileLoader {
         this.epubLoader = new EPUBLoader(fileRegistry);
     }
 
-    public async registerForLoad(path: string): Promise<LoadedFile> {
+    public async registerForLoad(path: string, fingerprint: string): Promise<LoadedFile> {
 
         if (FilePaths.hasExtension(path, "pdf")) {
             return this.pdfLoader.registerForLoad(path);
         } else if (FilePaths.hasExtension(path, "phz")) {
             return this.phzLoader.registerForLoad(path);
         } else if (FilePaths.hasExtension(path, "epub")) {
-            return this.epubLoader.registerForLoad(path);
+            return this.epubLoader.registerForLoad(path, fingerprint);
         } else {
             throw new Error("Unable to handle file: " + path);
         }

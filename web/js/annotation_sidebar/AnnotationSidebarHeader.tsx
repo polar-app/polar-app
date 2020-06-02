@@ -1,4 +1,4 @@
-import {useAnnotationSidebarCallbacks} from "../../../apps/pdf/src/AnnotationSidebarStore";
+import {useAnnotationSidebarCallbacks} from "../../../apps/doc/src/AnnotationSidebarStore";
 import {MUIPaperToolbar} from "../mui/MUIPaperToolbar";
 import Box from "@material-ui/core/Box";
 import {MUISearchBox2} from "../mui/MUISearchBox2";

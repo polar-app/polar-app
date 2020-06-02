@@ -16,11 +16,11 @@ export class EPUBLoader extends FileLoader {
         this.fileRegistry = fileRegistry;
     }
 
-    public async registerForLoad(path: string): Promise<LoadedFile> {
+    public async registerForLoad(path: string, fingerprint: string): Promise<LoadedFile> {
 
         const fileMeta = this.fileRegistry.registerFile(path);
 
-        const appURL = EPUBLoader.createViewerURL(fileMeta.url);
+        const appURL = EPUBLoader.createViewerURL(fingerprint);
 
         return {
             webResource: WebResource.createURL(appURL)
@@ -28,10 +28,8 @@ export class EPUBLoader extends FileLoader {
 
     }
 
-    public static createViewerURL(fileURL: string) {
-        const fileParam = encodeURIComponent(fileURL);
-
-        return ResourcePaths.resourceURLFromRelativeURL(`/epubviewer?file=${fileParam}`, false);
+    public static createViewerURL(fingerprint: string) {
+        return ResourcePaths.resourceURLFromRelativeURL(`/doc/${fingerprint}`, false);
     }
 
 }

@@ -165,13 +165,13 @@
             const {remote} = require('electron');
             const path = require('path');
             const appPath = remote.getGlobal("appPath");
-            require(path.join(appPath, "apps", "pdf", "src", "entry.js"));
+            require(path.join(appPath, "apps", "doc", "src", "entry.js"));
 
           });
 
       };
 
-      injectApp('/web/dist/pdf-bundle.js', fallbackLoader);
+      injectApp('/web/dist/doc-bundle.js', fallbackLoader);
 
   </script>
 

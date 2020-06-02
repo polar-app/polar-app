@@ -21,8 +21,9 @@ export class DocLoaderService {
         ipcMain.on('load-doc-request', (event: Electron.Event, loadDocRequest: LoadDocRequest) => {
 
             const path = FilePaths.join(this.directories.stashDir, loadDocRequest.backendFileRef.name);
+            const {fingerprint} = loadDocRequest;
 
-            this.mainAppController.handleLoadDoc(path, loadDocRequest.newWindow)
+            this.mainAppController.handleLoadDoc(path, fingerprint, loadDocRequest.newWindow)
                 .catch(err => log.error("Unable to load doc: ", err));
 
         });
