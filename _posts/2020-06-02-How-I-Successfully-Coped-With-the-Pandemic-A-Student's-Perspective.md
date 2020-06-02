@@ -18,11 +18,11 @@ With the abrupt ending of my freshman year, I was anxious about the prospect of 
 
 ## Save Your Sanity by Effectively Silencing Your Phone
 
-<a href="https://imgur.com/UtUm8EP" target="_blank">Silencing your phone</a>
+<img class="img-fluid" src="https://i.imgur.com/LbLeBE7.gif">
 
 During the first few weeks of quarantine, I was glued to my phone. I looked to the news app for any kind of solace that the pandemic (and toilet paper shortage) was ending. Unfortunately, I was bombarded with depressing reports and heart-wrenching stories about overcrowded hospitals. This wrecked my emotional wellbeing and also put a damper on my productivity. 
 
-<a href="https://imgur.com/r787Yqi" target="_blank">Toilet Paper</a>
+<img class="img-fluid" src="https://i.imgur.com/1itYyg2.jpg">
 
 If I wanted to excel in my courses, I needed to limit my distractions and implement these following tools into my life:
 
@@ -42,7 +42,7 @@ For good news and inspiring stories follow Good Good Good (**@goodgoodgoodco**) 
 
 Parks and Recreation’s Tom Haverford once wisely said, “Treat yo’ self!” We should all follow Tom’s advice and treat ourselves with lots of self-care.
 
-<a href="https://imgur.com/9tNrQeC" target="_blank">Treat yo self</a>
+<img class="img-fluid" src="https://i.imgur.com/dwFDQjE.gif">
  
 Chocolate is a must for me, especially during this global pandemic. I treat myself to a delicious dark chocolate truffle twice a day. No matter what your form of self-care is, it’s important to take time out of your day to focus on your own well being. If you’re feeling anxious or overwhelmed during this difficult time, focus on the things you can control. 
 
@@ -65,11 +65,11 @@ An app that helped me get more work done and relax my anxiety around the coronav
 
 To improve your focus, I recommend listening to music without speech or lyrics. Additionally, listening to songs with sounds of nature is scientifically proven by researchers at Rensselaer Polytechnic Institute to boost your mood and focus.
 
-<a href="https://imgur.com/THF7cXi" target="_blank">Baby got bach</a>
+<img class="img-fluid" src="https://i.imgur.com/3B3XWoo.jpg">
 
 ## Stay Motivated With the Pomodoro Technique
 
-<a href="https://imgur.com/qJ82JDO" target="_blank">Lazy sloth</a>
+<img class="img-fluid" src="https://i.imgur.com/8uQZiCQ.gif">
 
 My motivation to study or get out of bed was at an all-time low in the first few weeks of quarantine. I found that being a college student at home wasn’t conducive to a strong motivation or longing to learn. I found most of my motivation from my peers on campus, so I needed to figure out a way to fuel my motivation remotely. Here’s a virtual technique I used with my study buddies to keep me motivated:
 
@@ -85,7 +85,7 @@ Most importantly, remind yourself of your long term goals. Keep the big picture 
 
 ## Study Smarter! Not Harder!
 
-<a href="https://imgur.com/f7VTZnN" target="_blank">Zoom puppies</a>
+<img class="img-fluid" src="https://i.imgur.com/SnBt1J4.jpg">
 
 With the challenges of online learning and awkward zoom classes, it’s important to have every tool in your arsenal to ace your classes. Let’s be real—when you’re balancing 17 credit hours, family arguments, and anxiety over the world ending—studying your entire accounting textbook is like climbing Mount Everest. Here’s how I made my climb a little more bearable while enjoying the view (even if my view was watching the Amazon delivery man drop off the million packages I ordered): 
 <a href="https://imgur.com/FKYTrDd" target="_blank">Puppy looking out the window</a>
@@ -100,5 +100,5 @@ Albert Einstein once said, “If you can't explain it to a six-year-old, you don
 If you’re feeling bored during this quarantine or have run out of shows to watch, I recommend enrolling in free courses from top universities through **<ahref="https://www.coursera.org/" target="_blank">Coursera</a>**. 
 We all know that finding the motivation to study in the midst of a global pandemic is a real struggle. That’s why I curated these tips and tools to help you navigate this new reality and excel in your courses. I’ll leave you with the words of Bob Marley, **"Don't worry 'bout a thing, cause every little thing's gonna be alright."** 
 
-<a href="https://imgur.com/AMvOliD" target="_blank">Leslie Knope</a>
+<img class="img-fluid" src="https://i.imgur.com/L2IBBZy.gif">
 
