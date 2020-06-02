@@ -14,7 +14,7 @@ Hi! My name is Sweta and I’m a sophomore at Indiana University’s Kelley Scho
 
 With the abrupt ending of my freshman year, I was anxious about the prospect of online learning. The transition to studying at home while still fulfilling my responsibilities as a college student scared me even more.  After a relatively tough adjustment period (and a few meltdowns), I was able to maintain a steady rhythm and adjust my daily habits to the new reality. Here are 5 tips I used to end my semester strong academically and keep my emotional and physical health intact: 
 
-<img class="img-fluid" src="https://i.imgur.com/D43zeEK.gifv">
+<img class="img-fluid" src="https://i.imgur.com/D43zeEK.gif">
 
 ## Save Your Sanity by Effectively Silencing Your Phone
 
