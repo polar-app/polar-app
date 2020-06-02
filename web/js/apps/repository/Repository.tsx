@@ -143,20 +143,20 @@ export class Repository {
 
             // TODO: also use system prefs for this too.
 
-            await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
-
-                // load the example docs in the store.. on the first load we
-                // should probably make sure this doesn't happen more than once
-                // as the user could just delete all the files in their repo.
-                // await new
-                const loadExampleDocs = new LoadExampleDocs(app.persistenceLayerManager.get());
-                await loadExampleDocs.load(docInfo => {
-                    this.onUpdatedDocInfo(app, docInfo);
-                });
-
-            }, async () => {
-                log.debug("Docs already exist in repo");
-            });
+            // await LocalPrefs.markOnceExecuted(LifecycleEvents.HAS_EXAMPLE_DOCS, async () => {
+            //
+            //     // load the example docs in the store.. on the first load we
+            //     // should probably make sure this doesn't happen more than once
+            //     // as the user could just delete all the files in their repo.
+            //     // await new
+            //     const loadExampleDocs = new LoadExampleDocs(app.persistenceLayerManager.get());
+            //     await loadExampleDocs.load(docInfo => {
+            //         this.onUpdatedDocInfo(app, docInfo);
+            //     });
+            //
+            // }, async () => {
+            //     log.debug("Docs already exist in repo");
+            // });
 
         };
 
