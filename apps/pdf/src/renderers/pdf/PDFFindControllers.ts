@@ -1,5 +1,5 @@
 import {EventBus, PDFFindController} from 'pdfjs-dist/web/pdf_viewer';
-import {Finder, FindHandler, IFindOpts, IMatches} from "./Finders";
+import {Finder, FindHandler, IFindOpts, IMatches} from "../../Finders";
 
 export namespace PDFFindControllers {
 

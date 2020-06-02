@@ -1,8 +1,8 @@
 import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {OnFinderCallback, PDFDocument} from "./PDFDocument";
+import {OnFinderCallback, PDFDocument} from "./renderers/pdf/PDFDocument";
 import * as React from "react";
-import {PDFViewerContainer} from "./PDFViewerContainer";
+import {PDFViewerContainer} from "./renderers/pdf/PDFViewerContainer";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
@@ -35,13 +35,7 @@ import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 
 const log = Logger.create();
 
-interface MainProps {
-    readonly onFinder: OnFinderCallback;
-}
-
 const Main = React.memo(() => {
-
-    const {setFinder} = useDocFindCallbacks();
 
     return (
 
@@ -64,7 +58,7 @@ const Main = React.memo(() => {
             }}>
 
                 <DocViewerContextMenu>
-                    <DocMain onFinder={setFinder}/>
+                    <DocMain/>
                 </DocViewerContextMenu>
             </div>
 
@@ -72,7 +66,7 @@ const Main = React.memo(() => {
     )
 })
 
-const DocMain = React.memo((props: MainProps) => {
+const DocMain = React.memo(() => {
 
     const {docURL, docMeta} = useDocViewerStore();
 
@@ -88,10 +82,7 @@ const DocMain = React.memo((props: MainProps) => {
 
             <PDFViewerContainer/>
 
-            <PDFDocument
-                onFinder={props.onFinder}
-                target="viewerContainer"
-                url={docURL}/>
+            <PDFDocument/>
 
             <TextHighlightsView />
 

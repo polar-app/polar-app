@@ -15,21 +15,23 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
-import {Finder} from "./Finders";
+import {Finder} from "../../Finders";
 import {PDFFindControllers} from "./PDFFindControllers";
-import {ProgressMessages} from "../../../web/js/ui/progress_bar/ProgressMessages";
+import {ProgressMessages} from "../../../../../web/js/ui/progress_bar/ProgressMessages";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {
     ScaleLevelTuple,
     ScaleLevelTuples,
     ScaleLevelTuplesMap
-} from "./ScaleLevels";
-import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
+} from "../../ScaleLevels";
+import {useComponentDidMount} from "../../../../../web/js/hooks/lifecycle";
 import {
     IDocDescriptor,
     IDocScale,
-    useDocViewerCallbacks
-} from "./DocViewerStore";
+    useDocViewerCallbacks, useDocViewerStore
+} from "../../DocViewerStore";
+import isEqual from 'react-fast-compare';
+import {useDocFindCallbacks} from "../../DocFindStore";
 
 const log = Logger.create();
 
@@ -112,19 +114,21 @@ function createDocViewer(): DocViewer {
 export type OnFinderCallback = Callback1<Finder>;
 
 interface IProps {
-    readonly target: string;
-    readonly url: URLStr;
-    readonly onFinder: OnFinderCallback;
 }
 
-// FIXME: react.memo
-export const PDFDocument = (props: IProps) => {
+export const PDFDocument = React.memo((props: IProps) => {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
+    const {docURL} = useDocViewerStore();
+    const {setFinder} = useDocFindCallbacks();
+
+    if (! docURL) {
+        return null;
+    }
 
     useComponentDidMount(() => {
 
@@ -137,10 +141,8 @@ export const PDFDocument = (props: IProps) => {
 
     const doLoad = async (docViewer: DocViewer) => {
 
-        const {url} = props;
-
         const init: DocumentInitParameters = {
-            url,
+            url: docURL,
             cMapPacked: true,
             cMapUrl: '../../node_modules/pdfjs-dist/cmaps/',
             disableAutoFetch: true,
@@ -183,8 +185,7 @@ export const PDFDocument = (props: IProps) => {
 
         const finder = PDFFindControllers.createFinder(docViewer.eventBus,
                                                        docViewer.findController);
-
-        props.onFinder(finder);
+        setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
             // PageContextMenus.start();
@@ -300,7 +301,7 @@ export const PDFDocument = (props: IProps) => {
 
     return null;
 
-}
+}, isEqual);
 
 export interface PDFPageNavigator {
     readonly get: () => number;

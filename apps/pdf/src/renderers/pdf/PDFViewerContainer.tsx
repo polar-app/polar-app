@@ -1,6 +1,6 @@
 import * as React from "react";
-import {useContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
-import {Elements} from "../../../web/js/util/Elements";
+import {useContextMenu} from "../../../../repository/js/doc_repo/MUIContextMenu";
+import {Elements} from "../../../../../web/js/util/Elements";
 
 let iter: number = 0;
 

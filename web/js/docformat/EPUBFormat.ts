@@ -1,7 +1,6 @@
-import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
+import {DocFormat, PageDetail} from './DocFormat';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {URLs} from 'polar-shared/src/util/URLs';
 
 export class EPUBFormat extends DocFormat {
 
