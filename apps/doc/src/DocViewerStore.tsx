@@ -22,8 +22,8 @@ import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
-import {PDFPageNavigator} from "./renderers/pdf/PDFDocument";
 import {ScaleLevelTuple} from "./ScaleLevels";
+import {PageNavigator} from "./PageNavigator";
 
 const log = Logger.create();
 /**
@@ -77,7 +77,7 @@ export interface IDocViewerStore {
      */
     readonly docURL?: URLStr;
 
-    readonly pageNavigator?: PDFPageNavigator;
+    readonly pageNavigator?: PageNavigator;
 
     /**
      * Resizer that forces the current doc to fit inside its container properly
@@ -134,7 +134,7 @@ export interface IDocViewerCallbacks {
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
-    setPageNavigator(pageNavigator: PDFPageNavigator): void;
+    setPageNavigator(pageNavigator: PageNavigator): void;
 
     onPagePrev(): void;
     onPageNext(): void;
@@ -359,7 +359,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
-    function setPageNavigator(pageNavigator: PDFPageNavigator) {
+    function setPageNavigator(pageNavigator: PageNavigator) {
         const store = storeProvider();
         setStore({...store, pageNavigator})
     }

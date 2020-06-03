@@ -28,10 +28,11 @@ import {useComponentDidMount} from "../../../../../web/js/hooks/lifecycle";
 import {
     IDocDescriptor,
     IDocScale,
-    useDocViewerCallbacks, useDocViewerStore
+    useDocViewerCallbacks
 } from "../../DocViewerStore";
 import isEqual from 'react-fast-compare';
 import {useDocFindCallbacks} from "../../DocFindStore";
+import {PageNavigator} from "../../PageNavigator";
 
 const log = Logger.create();
 
@@ -200,7 +201,7 @@ export const PDFDocument = React.memo((props: IProps) => {
         // do first resize async
         setTimeout(() => resize(), 1 );
 
-        const pdfPageNavigator: PDFPageNavigator = {
+        const pdfPageNavigator: PageNavigator = {
             get: () => docViewer.viewer.currentPageNumber,
             set: (page: number) => docViewer.viewer.currentPageNumber = page
         };
@@ -299,9 +300,4 @@ export const PDFDocument = React.memo((props: IProps) => {
     return null;
 
 }, isEqual);
-
-export interface PDFPageNavigator {
-    readonly get: () => number;
-    readonly set: (page: number) => void;
-}
 
