@@ -201,14 +201,15 @@ export const PDFDocument = React.memo((props: IProps) => {
         // do first resize async
         setTimeout(() => resize(), 1 );
 
-        const pdfPageNavigator: PageNavigator = {
+        const pageNavigator: PageNavigator = {
             get: () => docViewer.viewer.currentPageNumber,
-            set: (page: number) => docViewer.viewer.currentPageNumber = page
+            set: (page: number) => docViewer.viewer.currentPageNumber = page,
+            count: docRef.current.numPages
         };
 
         dispatchPDFDocMeta();
 
-        setPageNavigator(pdfPageNavigator);
+        setPageNavigator(pageNavigator);
 
         const scrollDebouncer = Debouncers.create(() => {
             dispatchPDFDocMeta();
