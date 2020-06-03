@@ -31,6 +31,22 @@ export const EPUBDocument = React.memo((props: IProps) => {
         await rendition.display();
         await rendition.next();
 
+        const metadata = await book.loaded.metadata;
+
+        console.log({metadata});
+
+        const navigation = await book.loaded.navigation;
+
+        console.log("toc: ", navigation.toc);
+
+        const pageList = await book.loaded.pageList;
+
+        console.log("pageList: ", pageList);
+
+        const manifest = await book.loaded.manifest;
+
+        console.log("manifest: ", manifest);
+
         console.log("Loaded epub");
 
     }
