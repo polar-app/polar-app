@@ -202,7 +202,6 @@ export const PDFDocument = React.memo((props: IProps) => {
         setTimeout(() => resize(), 1 );
 
         const pageNavigator: PageNavigator = {
-            get: () => docViewer.viewer.currentPageNumber,
             set: (page: number) => docViewer.viewer.currentPageNumber = page,
             count: docRef.current.numPages
         };

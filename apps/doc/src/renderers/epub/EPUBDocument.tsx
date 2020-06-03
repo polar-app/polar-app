@@ -4,6 +4,8 @@ import ePub from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import useTheme from "@material-ui/core/styles/useTheme";
 import Section from "epubjs/types/section";
+import {PageNavigator} from "../../PageNavigator";
+import {useDocViewerCallbacks} from "../../DocViewerStore";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -18,6 +20,7 @@ export const EPUBDocument = React.memo((props: IProps) => {
     const {docURL} = props;
 
     const theme = useTheme();
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
 
     async function doLoad() {
 
@@ -39,16 +42,46 @@ export const EPUBDocument = React.memo((props: IProps) => {
         await rendition.display();
         await rendition.next();
 
-        console.log("FIXME: currentLocation: ", rendition.currentLocation())
-
         const metadata = await book.loaded.metadata;
-
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
 
-        for (const spineItem of spine.items) {
-            console.log("FIXME: spineItem: ", spineItem);
+        function createPageNavigator(): PageNavigator {
+
+            const pages = spine.items.filter(current => current.linear);
+
+            // function get(): number {
+            //
+            //     const section = arrayStream(pages)
+            //         .withIndex()
+            //         .filter(current => current.value.index === rendition.location.start.index)
+            //         .first();
+            //
+            //     if (! section) {
+            //         throw new Error("No section found for index: " + rendition.location.start.index);
+            //     }
+            //
+            //     return section.index + 1;
+            //
+            // }
+
+            function set(page: number) {
+
+                const newPage = pages[page - 1];
+
+                rendition.display(newPage.index)
+                    .catch(err => console.error("Could not set page: ", err));
+
+            }
+
+            return {
+                set,
+                count: spine.items.length
+            };
+
         }
+
+        setPageNavigator(createPageNavigator());
 
         // FIXME: build a navigator object from the spine now...
 

@@ -80,9 +80,9 @@ const FullScreenButton = React.memo(() => {
 
 });
 
-const PageNumberInput = (props: PageNumberInputProps) => {
+const PageNumberInput = (props: NumPagesProps) => {
 
-    const {pageNavigator} = useDocViewerStore();
+    const {pageNavigator, page} = useDocViewerStore();
     const {onPageJump} = useDocViewerCallbacks();
 
     // yield to the property, except if we're changing the value, then jump
@@ -105,7 +105,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
     const value = state.changing ?
         state.value :
-        numberToString(pageNavigator?.get() || 1);
+        numberToString(page);
 
     const resetState = () => {
         setState({
@@ -120,7 +120,7 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 
             const page = parseInt(value);
 
-            if (page <= 0 || page > (props.docDescriptor?.nrPages || 0)) {
+            if (page <= 0 || page > (props.nrPages || 0)) {
                 return undefined;
             }
 
@@ -199,23 +199,23 @@ const PageNumberInput = (props: PageNumberInputProps) => {
 };
 
 interface NumPagesProps {
-    readonly pdfDocMeta: IDocDescriptor;
+    readonly nrPages: number;
 }
 
 const NumPages = (props: NumPagesProps) => (
     <div className="ml-1 mt-auto mb-auto"
          style={{fontSize: "1.3rem", userSelect: 'none'}}>
-        of {props.pdfDocMeta.nrPages}
+        of {props.nrPages}
     </div>
 );
 
 const PagePrevButton = React.memo(() => {
 
     const {onPagePrev} = useDocViewerCallbacks();
-    const {pageNavigator} = useDocViewerStore();
+    const {pageNavigator, page} = useDocViewerStore();
 
     return (
-        <IconButton disabled={! pageNavigator || pageNavigator.get() <= 1}
+        <IconButton disabled={! pageNavigator || page <= 1}
                     onClick={onPagePrev}>
             <ArrowUpwardIcon/>
         </IconButton>
@@ -226,10 +226,10 @@ const PagePrevButton = React.memo(() => {
 const PageNextButton = () => {
 
     const {onPageNext} = useDocViewerCallbacks();
-    const {pageNavigator, docDescriptor} = useDocViewerStore();
+    const {pageNavigator, page} = useDocViewerStore();
 
     return (
-        <IconButton disabled={! pageNavigator || ! docDescriptor || pageNavigator.get() >= docDescriptor.nrPages}
+        <IconButton disabled={! pageNavigator || page >= pageNavigator.count}
                     onClick={onPageNext}>
             <ArrowDownwardIcon/>
         </IconButton>
@@ -240,7 +240,7 @@ const PageNextButton = () => {
 
 export const DocToolbar = React.memo(() => {
 
-    const {docDescriptor, docScale} = useDocViewerStore();
+    const {docScale, pageNavigator} = useDocViewerStore();
     const {setScale} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
@@ -289,9 +289,9 @@ export const DocToolbar = React.memo(() => {
 
                         <PageNextButton/>
 
-                        <PageNumberInput docDescriptor={docDescriptor}/>
+                        {pageNavigator && <PageNumberInput nrPages={pageNavigator.count}/>}
 
-                        {docDescriptor && <NumPages pdfDocMeta={docDescriptor}/>}
+                        {pageNavigator && <NumPages nrPages={pageNavigator.count}/>}
 
                     </MUIButtonBar>
                 </div>

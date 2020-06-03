@@ -66,6 +66,11 @@ export interface IDocViewerStore {
     readonly docMeta?: IDocMeta;
 
     /**
+     * The current page number we're on.
+     */
+    readonly page: number;
+
+    /**
      * True when the document we're viewing assert that it has loaded.
      */
     readonly docLoaded: boolean;
@@ -145,6 +150,7 @@ export interface IDocViewerCallbacks {
 }
 
 const initialStore: IDocViewerStore = {
+    page: 1,
     docLoaded: false,
 }
 
@@ -378,25 +384,30 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function doPageNav(delta: number) {
 
-        const {pageNavigator, docDescriptor} = storeProvider();
+        const store = storeProvider();
+        const {pageNavigator, page} = store;
 
-        if (! pageNavigator|| ! docDescriptor) {
+        if (! pageNavigator) {
             return;
         }
 
-        const page = pageNavigator.get() + delta;
+        const newPage = page + delta;
 
-        if (page <= 0) {
+        if (newPage <= 0) {
             // invalid page as we requested to jump too low
             return;
         }
 
-        if (page > docDescriptor.nrPages) {
+        if (newPage > pageNavigator.count) {
             // went past the end.
             return;
         }
 
-        pageNavigator.set(page);
+        pageNavigator.set(newPage);
+        setStore({
+            ...store,
+            page: newPage
+        });
 
     }
 
