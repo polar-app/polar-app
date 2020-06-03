@@ -2,6 +2,7 @@ import React from 'react';
 import {useComponentDidMount} from "../../../../../web/js/hooks/lifecycle";
 import ePub from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -10,6 +11,8 @@ interface IProps {
 export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL} = props;
+
+    const theme = useTheme();
 
     async function doLoad() {
 
@@ -20,9 +23,10 @@ export const EPUBDocument = React.memo((props: IProps) => {
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
-            height: '100%',
-            // view: InlineView
         });
+
+        rendition.themes.override('background-color', theme.palette.background.default);
+        rendition.themes.override('color', theme.palette.text.primary);
 
         await rendition.display();
         await rendition.next();
