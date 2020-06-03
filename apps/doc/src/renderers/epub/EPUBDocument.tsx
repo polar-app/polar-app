@@ -11,7 +11,7 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL} = props;
 
-    function doLoad() {
+    async function doLoad() {
 
         const book = ePub(docURL);
 
@@ -24,10 +24,16 @@ export const EPUBDocument = React.memo((props: IProps) => {
             // view: InlineView
         });
 
+        await rendition.display();
+        await rendition.next();
+
+        console.log("Loaded epub");
+
     }
 
     useComponentDidMount(() => {
         doLoad()
+            .catch(err => console.error("Could not load EPUB: ", err));
     })
 
     return null;
