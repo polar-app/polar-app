@@ -6,9 +6,11 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import Section from "epubjs/types/section";
 import {PageNavigator} from "../../PageNavigator";
 import {useDocViewerCallbacks} from "../../DocViewerStore";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 interface IProps {
     readonly docURL: URLStr;
+    readonly docMeta: IDocMeta;
 }
 
 interface ExtendedSpine {
@@ -17,7 +19,7 @@ interface ExtendedSpine {
 
 export const EPUBDocument = React.memo((props: IProps) => {
 
-    const {docURL} = props;
+    const {docURL, docMeta} = props;
 
     const theme = useTheme();
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
@@ -36,15 +38,18 @@ export const EPUBDocument = React.memo((props: IProps) => {
         rendition.themes.override('background-color', theme.palette.background.default);
         rendition.themes.override('color', theme.palette.text.primary);
 
-        console.log("FIXME: contents, ", rendition.getContents())
-        console.log("FIXME: views, ", rendition.views())
-
         await rendition.display();
-        await rendition.next();
+
+        console.log("FIXME: rendition: ", rendition);
 
         const metadata = await book.loaded.metadata;
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
+
+        console.log("FIXME: first section: ", spine.items[1]);
+        //
+        // const foundItems = spine.items[1].find('alice');
+        // console.log("FIXME: foundItems: ", foundItems);
 
         function createPageNavigator(): PageNavigator {
 
@@ -81,9 +86,13 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
         }
 
-        setPageNavigator(createPageNavigator());
+        const pageNavigator = createPageNavigator();
+        setPageNavigator(pageNavigator);
 
-        // FIXME: build a navigator object from the spine now...
+        setDocDescriptor({
+            fingerprint: docMeta.docInfo.fingerprint,
+            nrPages: pageNavigator.count
+        });
 
         console.log({metadata});
 

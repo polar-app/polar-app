@@ -7,9 +7,11 @@ import isEqual from "react-fast-compare";
 import {EPUBDocument} from "./epub/EPUBDocument";
 import {EPUBViewerContainer} from "./epub/EPUBViewerContainer";
 import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
+    readonly docMeta: IDocMeta;
 }
 
 const PDFDocumentRenderer = (props: ILoadedProps) => {
@@ -39,9 +41,9 @@ interface IProps {
 
 export const DocRenderer = React.memo((props: IProps) => {
 
-    const {docURL} = useDocViewerStore();
+    const {docURL, docMeta} = useDocViewerStore();
 
-    if (! docURL) {
+    if (! docURL || ! docMeta) {
         return null;
     }
 
@@ -50,9 +52,9 @@ export const DocRenderer = React.memo((props: IProps) => {
     switch (type) {
 
         case "pdf":
-            return <PDFDocumentRenderer docURL={docURL}/>;
+            return <PDFDocumentRenderer docURL={docURL} docMeta={docMeta}/>;
         case "epub":
-            return <EPUBDocumentRenderer docURL={docURL}/>;
+            return <EPUBDocumentRenderer docURL={docURL} docMeta={docMeta}/>;
 
     }
 

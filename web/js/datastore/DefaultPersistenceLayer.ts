@@ -287,9 +287,11 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
         Preconditions.assertPresent(docMeta, "docMeta");
 
         if (! (docMeta instanceof DocMeta)) {
+            const msg = "Can not sync anything other than DocMeta";
+            log.warn(msg + ': ', docMeta);
             // check to make sure nothing from JS-land can call this
             // incorrectly.
-            throw new Error("Can not sync anything other than DocMeta.");
+            throw new Error(msg);
         }
 
         // create a copy of docMeta so we can mutate it without the risk of
