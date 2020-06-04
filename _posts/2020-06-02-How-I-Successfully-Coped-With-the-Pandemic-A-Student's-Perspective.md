@@ -1,5 +1,5 @@
 ---
-title: How I Successfully Coped With the Pandemic: A Student's Perspective
+title: "How I Successfully Coped With the Pandemic: A Student's Perspective"
 date: 2020-06-02T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/Exc48ep.jpg
