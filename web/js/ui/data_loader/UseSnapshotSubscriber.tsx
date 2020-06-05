@@ -13,9 +13,13 @@ export interface SubscriptionValue<T> {
     readonly error: Error | undefined;
 }
 
+
 // TODO: I don't know if I like this because the subcription returns undefined
 // if the remote value is removed but we don't have a dedicated type so we're
 // unable to determine if the value was DELETED or just pending a read.
+/**
+ * @NotStale I might end up using this in the future.
+ */
 export function useSnapshotSubscriber<T>(subscriber: SnapshotSubscriber<T>): SubscriptionValue<T> {
 
     const [state, setState] = React.useState<SubscriptionValue<T>>({
