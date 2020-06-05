@@ -14,7 +14,6 @@ import {MailingList} from "./auth_handler/MailingList";
 import {UpdatesController} from "../../auto_updates/UpdatesController";
 import {ToasterService} from "../../ui/toaster/ToasterService";
 import {ProgressService} from "../../ui/progress_bar/ProgressService";
-import {PrefetchedUserGroupsBackgroundListener} from "../../datastore/sharing/db/PrefetchedUserGroupsBackgroundListener";
 import {MachineDatastores} from "../../telemetry/MachineDatastores";
 import {UniqueMachines} from "../../telemetry/UniqueMachines";
 import {Logger} from "polar-shared/src/logger/Logger";

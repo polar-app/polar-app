@@ -132,9 +132,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
         public render() {
             return <FixedNav id="doc-repository" className="statistics-view">
 
-                <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                            persistenceLayerController={this.props.persistenceLayerController}/>
-
                 <FixedNav.Body className="p-1">
 
                     <DockLayout dockPanels={[

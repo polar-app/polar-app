@@ -22,13 +22,6 @@ export class SupportScreen extends React.Component<IProps, IState> {
 
             <FixedNav id="doc-repository">
 
-                <header>
-
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
-
-                </header>
-
                 <FixedNavBody className="container-fluid">
 
                     <div className="row">

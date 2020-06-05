@@ -1,7 +1,6 @@
 import {BrowserWindow, screen, shell} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
-import {AuthHosts} from "./AuthHosts";
 import {ElectronUserAgents} from "../electron_browser/ElectronUserAgents";
 import {ExternalNavigationBlock} from "../../electron/navigation/ExternalNavigationBlock";
 
@@ -11,7 +10,7 @@ const WIDTH = 900 * 1.2; // 1300 is like 80% of users
 const HEIGHT = 1100 * 1.2;
 const SIDEBAR_BUFFER = 100;
 
-const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/default.html');
+const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/repository/index.html');
 
 export const MAIN_SESSION_PARTITION_NAME = 'persist:polar-app';
 
@@ -125,25 +124,6 @@ export class MainAppBrowserWindowFactory {
 
         // Create the browser window.
         const browserWindow = new BrowserWindow(browserWindowOptions);
-
-        browserWindow.on('close', function(e) {
-            e.preventDefault();
-
-            if (browserWindow.webContents) {
-
-                browserWindow.webContents.clearHistory();
-
-                const clearCache = async () => {
-                    await browserWindow.webContents.session.clearCache();
-                    browserWindow.destroy();
-                };
-
-                clearCache()
-                    .catch(err => log.error("Unable to close window: ", err));
-
-            }
-
-        });
 
         browserWindow.webContents.on('new-window', (e, newURL) => {
 
