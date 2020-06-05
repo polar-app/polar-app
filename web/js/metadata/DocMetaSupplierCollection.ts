@@ -1,4 +1,3 @@
-import {DocMeta} from './DocMeta';
 import {DocMetaSupplier} from './DocMetaSupplier';
 
 /**

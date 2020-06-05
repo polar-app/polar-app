@@ -1,3 +1,7 @@
+/**
+ * @NotStale planning on using this when we make summernote handle screenshots
+ * better.
+ */
 export class ImagePasteHandler {
 
     private element: any;
@@ -28,7 +32,7 @@ export class ImagePasteHandler {
                 event.preventDefault();
 
                 // get text representation of clipboard
-                //let text = e.clipboardData.getData("text/plain");
+                // let text = e.clipboardData.getData("text/plain");
 
                 let text = imagePasted.image;
                 text = this.mutator(text);
