@@ -30,6 +30,7 @@ const tracer = RendererAnalytics.createTracer('persistence-layer');
  * A PersistenceLayer that traces potentially slow operations so we can
  * analyze performance at runtime and try to keep optimizing the high level
  * operations.
+ * @NotStale
  */
 export class TracedPersistenceLayer implements ListenablePersistenceLayer {
 

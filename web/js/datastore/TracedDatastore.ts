@@ -27,6 +27,8 @@ const tracer = RendererAnalytics.createTracer('datastore');
  * A PersistenceLayer that traces potentially slow operations so we can
  * analyze performance at runtime and try to keep optimizing the high level
  * operations.
+ *
+ * @NotStale
  */
 export class TracedDatastore extends DelegatedDatastore {
 
