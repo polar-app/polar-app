@@ -12,7 +12,7 @@ export const EPUBViewerContainer = React.memo(() => {
                       overflow: 'auto',
                       top: '0',
                       width: '100%',
-                      height: '100%'
+                      height: '100%',
                   }}
                   itemProp="mainContentOfPage">
 

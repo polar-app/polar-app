@@ -5,7 +5,6 @@ import {AreaHighlight} from '../AreaHighlight';
 import {AbstractExporter} from './AbstractExporter';
 import {Flashcard} from '../Flashcard';
 import {Comment} from '../Comment';
-import {Texts} from "polar-shared/src/metadata/Texts";
 import {Strings} from "polar-shared/src/util/Strings";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 
