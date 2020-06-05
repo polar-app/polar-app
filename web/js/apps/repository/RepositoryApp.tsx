@@ -198,16 +198,12 @@ export const RepositoryApp = (props: IProps) => {
 
     const premiumScreen = () => {
         return (<PremiumScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}
                     plan={plan}
                     userInfo={app.userInfo}/>);
     };
 
     const premiumScreenYear = () => {
         return (<PremiumScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}
                     plan={plan}
                     interval='year'
                     userInfo={app.userInfo}/>);
