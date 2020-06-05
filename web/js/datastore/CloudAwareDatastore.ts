@@ -543,9 +543,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 const cloudSyncOrigin = await toCloudSyncOrigin();
                 const localSyncOrigin = await toLocalSyncOrigin();
 
-                log.info("Transferring from cloud -> local...");
+                log.info("FIXME: Transferring from cloud -> local...");
                 await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, listener, 'cloud-to-local');
-                log.info("Transferring from cloud -> local...done");
+                log.info("FIXME: Transferring from cloud -> local...done");
 
             }
 

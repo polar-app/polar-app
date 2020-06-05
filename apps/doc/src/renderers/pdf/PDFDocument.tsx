@@ -133,7 +133,7 @@ export const PDFDocument = React.memo((props: IProps) => {
         docViewerRef.current = createDocViewer();
 
         doLoad(docViewerRef.current)
-            .catch(err => log.error("Could not load PDF: ", err));
+            .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
 
     })
 

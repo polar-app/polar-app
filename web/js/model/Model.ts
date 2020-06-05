@@ -80,7 +80,7 @@ export class Model {
         }
 
         if (docMeta === undefined) {
-            throw new Error("Unable to load DocMeta: " + fingerprint);
+            throw new Error("Model: Unable to load DocMeta: " + fingerprint);
         }
 
         this.docMeta = docMeta;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {
     AuthHandlers,
     AuthStatus
@@ -17,7 +16,7 @@ export class AuthRequired extends React.Component<IProps, IState> {
         if (this.props.authStatus === 'needs-authentication') {
             const authHandler = AuthHandlers.get();
             authHandler.authenticate();
-            return <div/>;
+            return null;
         }
 
         return this.props.children;

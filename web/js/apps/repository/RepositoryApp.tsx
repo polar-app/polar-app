@@ -357,13 +357,6 @@ export const RepositoryApp = (props: IProps) => {
                     <Switch
                         location={ReactRouters.createLocationWithHashOnly()}>
 
-                        <Route path='#configured'
-                               component={() =>
-                                   <Cached>
-                                       <CloudSyncConfiguredDialog/>
-                                   </Cached>
-                               }/>
-
                         <Route path='#account'
                                component={() =>
                                    <Cached>

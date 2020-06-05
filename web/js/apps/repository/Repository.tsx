@@ -101,8 +101,8 @@ export class Repository {
 
             await this.repoDocMetaLoader.start();
 
-            new CloudService(persistenceLayerManager)
-                .start();
+            // new CloudService(persistenceLayerManager)
+            //     .start();
 
             await persistenceLayerManager.start();
 

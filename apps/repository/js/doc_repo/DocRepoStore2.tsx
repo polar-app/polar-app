@@ -539,7 +539,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
 
         synchronizingDocLoader.load(fingerprint, backendFileRef!)
-            .catch(err => log.error("Unable to load doc: ", err));
+            .catch(err => log.error("DocRepoStore2: Unable to load doc: ", err));
 
     }
 

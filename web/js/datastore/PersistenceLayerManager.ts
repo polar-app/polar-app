@@ -8,7 +8,6 @@ import {WebPersistenceLayerFactory} from './factories/WebPersistenceLayerFactory
 import {AppRuntime} from '../AppRuntime';
 import {DatastoreInitOpts} from './Datastore';
 import {Latch} from "polar-shared/src/util/Latch";
-import {Analytics} from "../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -35,6 +34,8 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
     public async start(): Promise<void> {
 
         let type = PersistenceLayerTypes.get();
+
+        console.log("Using persistence layer type: " + type);
 
         if (this.requiresReset()) {
 
@@ -270,24 +271,27 @@ export class PersistenceLayerTypes {
 
     public static get(): PersistenceLayerType {
 
-        if (AppRuntime.isBrowser()) {
+        return 'web';
 
-            // we are ALWAYS using firebase when in the browser and there is no
-            // other option.
-            return 'web';
-        }
-
-        const currentType = window.localStorage.getItem(this.KEY);
-
-        if (! currentType) {
-            return 'local';
-        }
-
-        if (currentType === 'local' || currentType === 'cloud') {
-            return currentType;
-        }
-
-        throw new Error("Unknown type: " + currentType);
+        //
+        // if (AppRuntime.isBrowser()) {
+        //
+        //     // we are ALWAYS using firebase when in the browser and there is no
+        //     // other option.
+        //     return 'web';
+        // }
+        //
+        // const currentType = window.localStorage.getItem(this.KEY);
+        //
+        // if (! currentType) {
+        //     return 'local';
+        // }
+        //
+        // if (currentType === 'local' || currentType === 'cloud') {
+        //     return currentType;
+        // }
+        //
+        // throw new Error("Unknown type: " + currentType);
 
     }
 

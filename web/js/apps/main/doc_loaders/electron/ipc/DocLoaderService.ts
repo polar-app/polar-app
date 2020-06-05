@@ -24,7 +24,7 @@ export class DocLoaderService {
             const {fingerprint} = loadDocRequest;
 
             this.mainAppController.handleLoadDoc(path, fingerprint, loadDocRequest.newWindow)
-                .catch(err => log.error("Unable to load doc: ", err));
+                .catch(err => log.error("DocLoaderService: Unable to load doc: ", err));
 
         });
 

@@ -278,7 +278,7 @@ export class FileImportController {
                         backendFileRef: file.backendFileRef,
                         newWindow: true
                     }).load()
-                      .catch(err => log.error("Unable to load doc: ", err));
+                      .catch(err => log.error("FileImportController: Unable to load doc: ", err));
 
                 }
 
