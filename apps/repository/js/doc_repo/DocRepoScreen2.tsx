@@ -1,10 +1,8 @@
 import React from "react";
 import {FixedNav} from "../FixedNav";
-import {RepositoryTour} from "../../../../web/js/apps/repository/RepositoryTour";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {DocRepoButtonBar} from "./DocRepoButtonBar";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
-import {MessageBanner} from "../MessageBanner";
 import {DocRepoTable2} from "./DocRepoTable2";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
@@ -157,8 +155,6 @@ export const DocRepoScreen2 = React.memo(() => {
                 <DeviceRouter.Desktop>
                     <DesktopToolbar/>
                 </DeviceRouter.Desktop>
-
-                <MessageBanner/>
 
             </header>
 

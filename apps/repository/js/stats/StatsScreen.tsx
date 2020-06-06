@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import TopTagsChart from './TopTagsChart';
-import {MessageBanner} from '../MessageBanner';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
@@ -166,8 +165,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                         <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
                                     persistenceLayerController={this.props.persistenceLayerController}/>
-
-                        <MessageBanner/>
 
                     </header>
 
