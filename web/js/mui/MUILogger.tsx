@@ -5,6 +5,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
+ * @NotStale
  */
 export function useLogger() {
     const dialogManager = useDialogManager();
