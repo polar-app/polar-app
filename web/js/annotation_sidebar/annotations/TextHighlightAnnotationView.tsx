@@ -5,7 +5,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AnnotationViewControlBar} from '../AnnotationViewControlBar';
 import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 import {Doc} from '../../metadata/Doc';
-import {LazyProps, LazyState} from '../../react/LazyComponents';
+import {LazyState} from '../../react/LazyComponents';
 import {HighlightColors} from 'polar-shared/src/metadata/HighlightColor';
 import {Tag} from "polar-shared/src/tags/Tags";
 
