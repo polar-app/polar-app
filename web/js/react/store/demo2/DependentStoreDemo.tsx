@@ -84,7 +84,7 @@ const IntermediateComponent = () => {
     )
 }
 
-export const ObservableStoreDemo2 = () => {
+export const DependentStoreDemo = () => {
 
     return (
         <AlphaStoreProvider>
