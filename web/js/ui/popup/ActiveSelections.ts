@@ -1,8 +1,8 @@
 import {Point} from '../../Point';
-import {MouseDirection} from './Popup';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
+import {MouseDirection} from "./MouseDirection";
 
 const log = Logger.create();
 

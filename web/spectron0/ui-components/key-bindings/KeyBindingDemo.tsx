@@ -1,6 +1,6 @@
-import {GlobalHotKeys, HotKeys, ObserveKeys, IgnoreKeys} from "react-hotkeys";
+import {GlobalHotKeys, HotKeys} from "react-hotkeys";
 import * as React from 'react';
-import {Input, InputGroup, Form} from "reactstrap";
+import Input from "@material-ui/core/Input";
 
 // FIXME: add supprt for getting all the active key bindings and showing them
 // via control+?
@@ -118,15 +118,12 @@ const FindToolbar = () => {
 
     return (
 
-        <InputGroup size="sm" style={{flexGrow: 1}}>
-
-            <Input placeholder="Enter search terms"
-                   autoFocus={true}
-                   onKeyDown={event => handleKeyDown(event)}
-                   className="p-0 pl-1 pr-1"/>
-
-        </InputGroup>
-
+        //
+        // <Input placeholder="Enter search terms"
+        //        autoFocus={true}
+        //        onKeyDown={event => handleKeyDown(event)}
+        //        className="p-0 pl-1 pr-1"/>
+        <div></div>
     );
 
 };

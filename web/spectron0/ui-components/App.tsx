@@ -1,12 +1,8 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {FadeIn} from "../../js/ui/motion/FadeIn";
 import {RightSidebar} from "../../js/ui/motion/RightSidebar";
 import {SchoolSelectDemo} from "./SchoolSelectDemo";
-import {KeyBindingDemo} from "./key-bindings/KeyBindingDemo";
-import {DragAndResizeDemo} from "./DragAndResizeDemo";
-import { ReactWindowDemo } from './ReactWindowDemo';
-import { ScrollAutoLoaderDemo } from './ScrollAutoLoaderDemo';
+import {ScrollAutoLoaderDemo} from './ScrollAutoLoaderDemo';
 
 const styles = {
     swatch: {

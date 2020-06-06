@@ -1,7 +1,7 @@
 import Popper from 'popper.js';
-import {MouseDirection} from './Popup';
+import {MouseDirection} from "./MouseDirection";
 
-export class MouseEventReferenceObject  implements Popper.ReferenceObject {
+export class MouseEventReferenceObject implements Popper.ReferenceObject {
 
     public readonly clientHeight: number;
     public readonly clientWidth: number;
