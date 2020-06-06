@@ -9,23 +9,16 @@ import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoade
 import WhatsNewScreen
     from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
 import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
-import LogsScreen from '../../../../apps/repository/js/logs/LogsScreen';
 import Input from 'reactstrap/lib/Input';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
-import {CreateGroupScreen} from "../../../../apps/repository/js/groups/create/CreateGroupScreen";
-import {GroupsScreen} from "../../../../apps/repository/js/groups/GroupsScreen";
-import {GroupScreen} from "../../../../apps/repository/js/group/GroupScreen";
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
-import {HighlightsScreen} from "../../../../apps/repository/js/group/highlights/HighlightsScreen";
-import {GroupHighlightScreen} from "../../../../apps/repository/js/group/highlight/GroupHighlightScreen";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
-import {CloudSyncConfiguredDialog} from "../../ui/cloud_auth/CloudSyncConfiguredDialog";
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
@@ -163,15 +156,15 @@ export const RepositoryApp = (props: IProps) => {
         </AuthRequired>
     );
 
-    const renderLogsScreen = () => {
-        return (
-            <AuthRequired authStatus={app.authStatus}>
-                <LogsScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>
-            </AuthRequired>
-        );
-    };
+    // const renderLogsScreen = () => {
+    //     return (
+    //         <AuthRequired authStatus={app.authStatus}>
+    //             <LogsScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}/>
+    //         </AuthRequired>
+    //     );
+    // };
 
     // const editorsPicksScreen = () => {
     //     return (
@@ -181,18 +174,18 @@ export const RepositoryApp = (props: IProps) => {
     //         </AuthRequired>
     //         );
     // };
-
-    const renderCreateGroupScreen = () => {
-
-        return (
-            <AuthRequired authStatus={app.authStatus}>
-                <CreateGroupScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}
-                    repoDocMetaManager={repoDocMetaManager}/>
-            </AuthRequired>
-        );
-    };
+    //
+    // const renderCreateGroupScreen = () => {
+    //
+    //     return (
+    //         <AuthRequired authStatus={app.authStatus}>
+    //             <CreateGroupScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}
+    //                 repoDocMetaManager={repoDocMetaManager}/>
+    //         </AuthRequired>
+    //     );
+    // };
 
     const plan = app.account ? app.account.plan : 'free';
 
@@ -216,29 +209,29 @@ export const RepositoryApp = (props: IProps) => {
                     plan={plan}/>);
     };
 
-    const renderGroupScreen = () => {
-        return (
-            <GroupScreen persistenceLayerProvider={app.persistenceLayerProvider}
-                         persistenceLayerController={app.persistenceLayerController}/>);
-    };
+    // const renderGroupScreen = () => {
+    //     return (
+    //         <GroupScreen persistenceLayerProvider={app.persistenceLayerProvider}
+    //                      persistenceLayerController={app.persistenceLayerController}/>);
+    // };
 
-    const renderGroupsScreen = () => {
-        return (<GroupsScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>);
-    };
+    // const renderGroupsScreen = () => {
+    //     return (<GroupsScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}/>);
+    // };
+    //
+    // const renderGroupHighlightsScreen = () => {
+    //     return (<HighlightsScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}/>);
+    // };
 
-    const renderGroupHighlightsScreen = () => {
-        return (<HighlightsScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>);
-    };
-
-    const renderGroupHighlightScreen = () => {
-        return (<GroupHighlightScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>);
-    };
+    // const renderGroupHighlightScreen = () => {
+    //     return (<GroupHighlightScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}/>);
+    // };
 
     const renderInvite = () => {
         return <InviteScreen
@@ -279,28 +272,28 @@ export const RepositoryApp = (props: IProps) => {
                     <Switch
                         location={ReactRouters.createLocationWithPathOnly()}>
 
-                        <Route exact path='/logs' render={renderLogsScreen}/>
+                        {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
 
                         <Route exact path='/whats-new'
                                render={renderWhatsNewScreen}/>
 
-                        <Route path='/group/:group/highlights'
-                               render={renderGroupHighlightsScreen}/>
+                        {/*<Route path='/group/:group/highlights'*/}
+                        {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                        <Route path='/group/:group/docs'
-                               render={renderGroupScreen}/>
+                        {/*<Route path='/group/:group/docs'*/}
+                        {/*       render={renderGroupScreen}/>*/}
 
-                        <Route path='/group/:group/highlight/:id'
-                               render={renderGroupHighlightScreen}/>
+                        {/*<Route path='/group/:group/highlight/:id'*/}
+                        {/*       render={renderGroupHighlightScreen}/>*/}
 
-                        <Route path='/group/:group'
-                               render={renderGroupHighlightsScreen}/>
+                        {/*<Route path='/group/:group'*/}
+                        {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                        <Route exact path='/groups'
-                               render={renderGroupsScreen}/>
+                        {/*<Route exact path='/groups'*/}
+                        {/*       render={renderGroupsScreen}/>*/}
 
-                        <Route exact path='/groups/create'
-                               render={renderCreateGroupScreen}/>
+                        {/*<Route exact path='/groups/create'*/}
+                        {/*       render={renderCreateGroupScreen}/>*/}
 
                         <Route exact path='/invite' render={renderInvite}/>
 
