@@ -11,6 +11,9 @@ import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
 
+/**
+ * @NotStale needs porting to Polar 2.0
+ */
 export class Notifications extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
