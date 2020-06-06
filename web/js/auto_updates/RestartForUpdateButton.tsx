@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Popover, PopoverBody} from 'reactstrap';
-import Popper from 'popper.js';
 import {ipcRenderer} from "electron";
+import Button from '@material-ui/core/Button';
 
+// FIXME: FIXME: this won't look right in MUI
 export class RestartForUpdateButton extends React.Component<any, any> {
 
     constructor(props: any) {
@@ -55,11 +55,9 @@ export class RestartForUpdateButton extends React.Component<any, any> {
 
                     <div className="text-center text-white">
                         <Button onClick={() => ipcRenderer.send('app-update:quit-and-install')}
-                                style={{
-                                    fontWeight: 'bold'
-                                }}
-                                size="lg"
-                                color="success">
+                                size="large"
+                                variant="contained"
+                                color="primary">
                             Restart
                         </Button>
                     </div>
