@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export function EnhancedTableHead() {
+export function DocRepoTableHead() {
 
     const classes = useStyles();
 

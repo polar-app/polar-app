@@ -11,16 +11,13 @@ import {
     MUIDocTagButton
 } from "./MUIDocButtons";
 import {AutoBlur} from "./AutoBlur";
-import {
-    useDocRepoCallbacks,
-    useDocRepoStore
-} from "./DocRepoStore2";
+import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 
 interface IProps {
 }
 
-export const EnhancedTableToolbar = React.memo((props: IProps) => {
+export const DocRepoTableToolbar = React.memo((props: IProps) => {
 
     const store = useDocRepoStore();
     const callbacks = useDocRepoCallbacks();

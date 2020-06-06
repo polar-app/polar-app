@@ -3,8 +3,8 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import {EnhancedTableToolbar} from './EnhancedTableToolbar';
-import {EnhancedTableHead} from "./EnhancedTableHead";
+import {DocRepoTableToolbar} from './DocRepoTableToolbar';
+import {DocRepoTableHead} from "./DocRepoTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {MUIDialogController} from "../../../../web/js/mui/dialogs/MUIDialogController";
@@ -35,7 +35,7 @@ export const DocRepoTable2 = React.memo(() => {
 
                         return (
                             <>
-                                <EnhancedTableToolbar />
+                                <DocRepoTableToolbar />
 
                                 <TableContainer style={{flexGrow: 1}}>
                                     <Table
@@ -49,7 +49,7 @@ export const DocRepoTable2 = React.memo(() => {
                                         size={'medium'}
                                         aria-label="enhanced table">
 
-                                        <EnhancedTableHead/>
+                                        <DocRepoTableHead/>
 
                                         <TableBody>
                                             {viewPage
