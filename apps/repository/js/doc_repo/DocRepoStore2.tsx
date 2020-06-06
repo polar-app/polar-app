@@ -10,7 +10,6 @@ import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
-import {SelectRowType} from "./DocRepoScreen";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
@@ -42,7 +41,7 @@ import {
     TagSidebarEventForwarder,
     TagSidebarEventForwarderContext
 } from "../store/TagSidebarEventForwarder";
-import {SelectionEvents2} from "./SelectionEvents2";
+import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
 import {BatchMutators} from "../BatchMutators";

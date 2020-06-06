@@ -14,7 +14,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {SelectRowType} from "./DocRepoScreen";
+import {SelectRowType} from "./SelectionEvents2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

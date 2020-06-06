@@ -1,9 +1,14 @@
 import React from "react";
-import {SelectRowType} from "./DocRepoScreen";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {IDStr} from "polar-shared/src/util/Strings";
+
+/**
+ * The type of event that triggered the row selection.  Either a normal click, a context menu click (right click) or
+ * a checkbox for selecting multiple.
+ */
+export type SelectRowType = 'click' | 'context' | 'checkbox';
 
 interface IDType {
     readonly id: IDStr;

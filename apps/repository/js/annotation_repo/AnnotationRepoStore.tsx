@@ -40,7 +40,6 @@ import {
     ExportFormat
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
-import {SelectRowType} from "../doc_repo/DocRepoScreen";
 import {
     AnnotationMutationCallbacks,
     AnnotationMutationsContextProvider,
@@ -49,7 +48,7 @@ import {
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {SelectionEvents2} from "../doc_repo/SelectionEvents2";
+import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
