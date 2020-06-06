@@ -1,18 +1,17 @@
 import * as React from 'react';
+import {useContext} from 'react';
 import {PersistenceLayerController} from '../../../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {PersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
-import {NullCollapse} from "../../../../../web/js/ui/null_collapse/NullCollapse";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
-import {Devices} from "polar-shared/src/util/Devices";
 import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {useContext} from "react";
+import {DeviceRouter} from '../../../../../web/js/ui/DeviceRouter';
 
 const log = Logger.create();
 
@@ -164,11 +163,11 @@ export const SettingsScreen = (props: IProps) => {
                         defaultValue={true}
                         prefs={prefs}/>
 
-                    <SettingEntry title="Enable groups"
-                                  description="Enables the new groups functionality for sharing documents with other users."
-                                  name="groups"
-                                  prefs={prefs}
-                                  preview={true}/>
+                    {/*<SettingEntry title="Enable groups"*/}
+                    {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
+                    {/*              name="groups"*/}
+                    {/*              prefs={prefs}*/}
+                    {/*              preview={true}/>*/}
 
                     <SettingEntry title="Automatic pagemarks"
                                   description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
@@ -176,14 +175,14 @@ export const SettingsScreen = (props: IProps) => {
                                   prefs={prefs}
                                   preview={true}/>
 
-                    <NullCollapse open={!Devices.isDesktop()}>
+                    <DeviceRouter.Desktop>
                         <SettingEntry
                             title="Table and phone reading"
                             description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
                             name="mobile-reading"
                             prefs={prefs}
                             preview={true}/>
-                    </NullCollapse>
+                    </DeviceRouter.Desktop>
 
                     <SettingEntry title="Development"
                                   description="Enables general development features for software engineers working on Polar."
