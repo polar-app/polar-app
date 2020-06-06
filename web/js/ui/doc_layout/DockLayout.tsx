@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MousePositions} from '../dock/MousePositions';
+import {MousePositions} from './MousePositions';
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
