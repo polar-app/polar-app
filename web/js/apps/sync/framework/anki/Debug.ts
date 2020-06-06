@@ -7,6 +7,9 @@ import {SyncProgressListener} from '../SyncProgressListener';
 
 const log = Logger.create();
 
+/**
+ * @NotStale
+ */
 async function exec() {
 
     // create a fake DocMeta with flashcards and sync it to Anki and see if it

@@ -1,6 +1,5 @@
 import {MainAppController} from './MainAppController';
 import {app, BrowserWindow, dialog, Menu, shell} from "electron";
-import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
 import {Version} from 'polar-shared/src/util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -37,9 +36,6 @@ export class MainAppMenu {
         const menu = Menu.buildFromTemplate(this.createMenuTemplate());
 
         Menu.setApplicationMenu(menu);
-
-        // noinspection TsLint
-        new ElectronContextMenu();
 
         this.registerEventListeners();
 

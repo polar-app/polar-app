@@ -1,10 +1,9 @@
-import Joyride, {CallBackProps, Step, STATUS} from 'react-joyride';
+import Joyride, {CallBackProps, STATUS, Step} from 'react-joyride';
 import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {JoyrideTours} from '../../ui/tours/JoyrideTours';
 import {AppRuntime} from '../../AppRuntime';
-import {Analytics} from "../../analytics/Analytics";
 
 export class Styles {
 
@@ -21,6 +20,7 @@ export class Styles {
 
 /**
  * Tour of the preview viewer to tell them what to do about the add-content button
+ * @NotStale
  */
 export class PreviewTour extends React.Component<IProps, IState> {
 
