@@ -1,7 +1,6 @@
 /* global $ */
 
 import $ from '../../../../ui/JQuery';
-import 'bootstrap';
 import 'summernote/dist/summernote-lite';
 
 import React, {Component} from 'react';
