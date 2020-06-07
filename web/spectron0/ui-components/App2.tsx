@@ -5,7 +5,6 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import {FontAwesomeIcon} from "../../js/ui/fontawesome/FontAwesomeIcon";
 import {Link} from "react-router-dom";
 import {Lightbox} from "../../js/ui/util/Lightbox";
 import {Dialogs} from "../../js/ui/dialogs/Dialogs";
@@ -257,7 +256,7 @@ export class App<P> extends React.Component<{}, IAppState> {
                 {props.children}
 
                 <span className="text-sm">
-                    <FontAwesomeIcon name="fas fa-close"/>
+                    {/*<FontAwesomeIcon name="fas fa-close"/>*/}
                 </span>
 
             </div>;

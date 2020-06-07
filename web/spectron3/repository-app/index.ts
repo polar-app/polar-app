@@ -1,4 +1,4 @@
-import {MainDatastore} from '../../js/datastore/MainDatastore';
+import {ElectronGlobalDatastore} from '../../js/datastore/ElectronGlobalDatastore';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {SpectronWebappMain} from "../../js/test/SpectronWebappMain";
 import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
@@ -13,7 +13,7 @@ const rewrites: ReadonlyArray<Rewrite> = [
     },
 ];
 
-const datastore = MainDatastore.create();
+const datastore = ElectronGlobalDatastore.create();
 
 const path = "/web/spectron0/repository-app/content.html";
 

@@ -119,9 +119,9 @@ export const MobileContent = (props: IProps) => {
 
 export const DesktopContent =  (props: IProps) => {
     return (
-        <div className={"plan-" + props.plan}>
+        <Paper className={"plan-" + props.plan}>
 
-            <div id="pricing" className="hidden-xs">
+            <Paper id="pricing" className="hidden-xs">
 
                 <PricingOverview/>
 
@@ -357,7 +357,7 @@ export const DesktopContent =  (props: IProps) => {
                         </tbody>
                     </table>
 
-                </div>
+                </Paper>
 
                 <div className="mt-2"
                      style={{display: 'flex'}}>
@@ -368,9 +368,9 @@ export const DesktopContent =  (props: IProps) => {
 
                 </div>
 
-            </div>
+            </Paper>
 
-        </div>
+        </Paper>
     );
 
 };

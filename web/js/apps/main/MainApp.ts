@@ -32,10 +32,6 @@ const log = Logger.create();
 
 const WEBSERVER_PORT = 8500;
 
-// TODO: refactor the proxy server isn't used any longer but it is referenced
-// in a number of places including the cache config and registry.
-const PROXYSERVER_PORT = 8600;
-
 export class MainApp {
 
     private readonly datastore: Datastore;

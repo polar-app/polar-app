@@ -3,7 +3,7 @@ import {Datastore} from './Datastore';
 
 declare var global: any;
 
-export class MainDatastore {
+export class ElectronGlobalDatastore {
 
     public static create(): Datastore {
         const datastore = Datastores.create();
