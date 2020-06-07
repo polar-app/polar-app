@@ -1,7 +1,6 @@
 import * as React from 'react';
-import FormGroup from "reactstrap/lib/FormGroup";
-import Input from "reactstrap/lib/Input";
-import Label from "reactstrap/lib/Label";
+import Input from '@material-ui/core/Input';
+import InputLabel from "@material-ui/core/InputLabel";
 
 export class GroupSearch extends React.PureComponent<IProps, IState> {
 
@@ -15,15 +14,11 @@ export class GroupSearch extends React.PureComponent<IProps, IState> {
 
             <div>
 
-                <FormGroup>
-
-                    <Label for="searchByTagOrName">Find groups:</Label>
-                    <Input type="text"
-                           name="searchByTagOrName"
-                           id="searchByTagOrName"
-                           placeholder="Search by tag or name" />
-
-                </FormGroup>
+                <InputLabel htmlFor="searchByTagOrName">Find groups:</InputLabel>
+                <Input type="text"
+                       name="searchByTagOrName"
+                       id="searchByTagOrName"
+                       placeholder="Search by tag or name" />
 
             </div>
 

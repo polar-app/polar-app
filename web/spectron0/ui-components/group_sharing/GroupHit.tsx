@@ -1,46 +1,38 @@
 import * as React from 'react';
-import Button from "reactstrap/lib/Button";
+import Button from '@material-ui/core/Button';
 
-export class GroupHit extends React.PureComponent<IProps, IState> {
+export function GroupHit(props: IProps) {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
+    return (
 
-    public render() {
+        <tr className="" style={{display: 'table-row'}}>
 
-        return (
+            <td>
+                {props.name}
+            </td>
 
-            <tr className="" style={{display: 'table-row'}}>
+            <td>
+                {props.description}
+            </td>
 
-                <td>
-                    {this.props.name}
-                </td>
+            <td className="text-right">
+                {props.nrMembers}
+            </td>
 
-                <td>
-                    {this.props.description}
-                </td>
+            <td>
 
-                <td className="text-right">
-                    {this.props.nrMembers}
-                </td>
+                <Button color="primary"
+                        variant="contained"
+                        className="ml-1"
+                        onClick={() => props.onAdd()}>
+                    Add
+                </Button>
 
-                <td>
+            </td>
 
-                    <Button color="primary"
-                            size="sm"
-                            className="ml-1"
-                            onClick={() => this.props.onAdd()}>
-                        Add
-                    </Button>
+        </tr>
 
-                </td>
-
-            </tr>
-
-        );
-    }
-
+    );
 }
 
 

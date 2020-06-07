@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
-import Input from 'reactstrap/lib/Input';
 import {TakeExtendedSurveyButton} from './TakeExtendedSurveyButton';
 import {Analytics} from "../../analytics/Analytics";
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
 
 export class Suggestions extends React.Component<IProps, IState> {
 
@@ -64,12 +64,11 @@ export class Suggestions extends React.Component<IProps, IState> {
 
                             <TakeExtendedSurveyButton/>
 
-                            <Button size="md"
-                                    color="secondary"
+                            <Button variant="contained"
                                     onClick={() => this.onCancel()}>Cancel</Button>
 
-                            <Button size="md"
-                                    color="primary"
+                            <Button color="primary"
+                                    variant="contained"
                                     className="ml-1"
                                     onClick={() => this.onDone()}>Send Feedback</Button>
 
