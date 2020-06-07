@@ -2,7 +2,6 @@
 import React from 'react';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
-import Button from 'reactstrap/lib/Button';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -12,6 +11,7 @@ import {DesktopContent, MobileContent} from "./PremiumCopy";
 import {Discount, Discounts} from "./Discounts";
 import {DeviceRouter} from "../../../../../../web/js/ui/DeviceRouter";
 import {accounts} from "polar-accounts/src/accounts";
+import Button from '@material-ui/core/Button';
 
 const discounts = Discounts.create();
 
@@ -36,17 +36,21 @@ function cancelSubscription() {
 
 export const CancelSubscriptionButton = (props: IProps) => {
 
-    return <NullCollapse open={props.plan !== 'free'}>
+    if (props.plan === 'free') {
+        return null;
+    }
 
-        <Button color="secondary"
-                size="sm"
+    return (
+        <Button color="primary"
+                size="large"
+                variant="contained"
                 onClick={() => cancelSubscription()}>
 
             Cancel Subscription
 
         </Button>
+    );
 
-    </NullCollapse>;
 };
 
 interface PlanIntervalProps {
@@ -57,7 +61,7 @@ interface PlanIntervalProps {
 export const PlanIntervalButton = (props: PlanIntervalProps) => {
 
     return <Button color="secondary"
-                   size="md"
+                   variant="contained"
                    onClick={() => props.togglePlanInterval()}>
 
             Show {props.interval === 'month' ? 'Yearly' : 'Monthly'} Plans

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {MessageBox} from "../util/MessageBox";
 import Button from "reactstrap/lib/Button";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {BlackoutBox} from "../util/BlackoutBox";
 
 /**
