@@ -198,7 +198,6 @@
     "polar-web-extension-api": "^2.0.0-beta.5",
     "polar-webapp-links": "^2.0.0-beta.5",
     "prop-types": "~15.7.2",
-    "raphael": "~2.2.7",
     "react": "~16.13.1",
     "react-async": "=10.0.1",
     "react-cookie-banner": "~4.0.0",
