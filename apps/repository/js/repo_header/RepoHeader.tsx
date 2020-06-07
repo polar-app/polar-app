@@ -1,14 +1,11 @@
 import * as React from 'react';
 import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {HelpDropdown} from './HelpDropdown';
 import {RepoNavbar} from "../RepoNavbar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
-import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
-import {Devices} from "polar-shared/src/util/Devices";
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";

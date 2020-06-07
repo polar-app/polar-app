@@ -5,7 +5,6 @@ import FormGroup from "reactstrap/lib/FormGroup";
 import Label from "reactstrap/lib/Label";
 import Button from "reactstrap/lib/Button";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {TagInputWidget} from "../../TagInputWidget";
 import {Tag, TagStr} from "polar-shared/src/tags/Tags";
 import {
     GroupProvisionRequest,
@@ -81,10 +80,10 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
 
                                 <Label>Tags</Label>
 
-                                <TagInputWidget availableTags={this.props.tagsProvider()}
-                                                existingTags={[]}
-                                                relatedTags={this.props.relatedTags}
-                                                onChange={(tags) => this.onTags(tags)}/>
+                                {/*<TagInputWidget availableTags={this.props.tagsProvider()}*/}
+                                {/*                existingTags={[]}*/}
+                                {/*                relatedTags={this.props.relatedTags}*/}
+                                {/*                onChange={(tags) => this.onTags(tags)}/>*/}
 
                                 <p className="text-secondary text-sm mt-1">
                                     Select up to 5 tags for this group.  Tags will be
