@@ -98,6 +98,7 @@ cp manifest.json dist/public
 
 cp apps/repository/index.html dist/public
 
+echo "Building workbox now... "
 npx workbox generateSW workbox-config.js
 
 echo "build-webapp: SUCCESS"
