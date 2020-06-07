@@ -3,6 +3,7 @@ import {TreeNode} from './TreeNode';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {TreeState} from "./TreeState";
+import {TNode} from "./TNode";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -79,28 +80,6 @@ export class MarkSet {
     public reset() {
         Dictionaries.empty(this.data);
     }
-
-}
-
-export interface TNode<V> {
-
-    readonly name: string;
-
-    readonly path: string;
-
-    readonly children: ReadonlyArray<TNode<V>>;
-
-    /**
-     * The number of items under this node and all children.
-     */
-    readonly count: number;
-
-    /**
-     * The UNIQUE id for this node.
-     */
-    readonly id: string;
-
-    readonly value: V;
 
 }
 

@@ -1,6 +1,5 @@
 import TreeItem from "@material-ui/lab/TreeItem";
 import React, {useCallback} from "react";
-import {TNode} from "../../ui/tree/TreeView";
 import {CollapseIcon, ExpandIcon} from "./MUITreeIcons";
 import isEqual from "react-fast-compare";
 import {MUITreeItemLabel} from "./MUITreeItemLabel";
@@ -8,6 +7,7 @@ import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sideb
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DragTarget2} from "../../ui/tree/DragTarget2";
 import TagID = Tags.TagID;
+import {TNode} from "../../ui/tree/TNode";
 
 interface IProps {
 

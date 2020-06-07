@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {TreeNodeChildren} from './TreeNodeChildren';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {TNode} from './TreeView';
 import {DragTarget} from "./DragTarget";
 import {TreeState} from "./TreeState";
 import {Checkbox} from "../Checkbox";
+import {TNode} from "./TNode";
 
 const DEFAULT_NODE_CONTEXT_MENU_RENDER = (child: React.ReactElement) => {
     return <div>{child}</div>;
