@@ -6,7 +6,7 @@ import {
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Toaster} from '../toaster/Toaster';
-import {NotificationButton} from './NotificationButton';
+// import {NotificationButton} from './NotificationButton.tsx.disabled';
 import {Devices} from "polar-shared/src/util/Devices";
 
 const log = Logger.create();
@@ -43,12 +43,14 @@ export class Notifications extends React.PureComponent<IProps, IState> {
             return null;
         }
 
-        return (
+        // return (
+        //
+        //     <NotificationButton persistenceLayerProvider={this.props.persistenceLayerProvider}
+        //                         invitations={this.state.invitations}/>
+        //
+        // );
 
-            <NotificationButton persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                invitations={this.state.invitations}/>
-
-        );
+        return null;
 
     }
 

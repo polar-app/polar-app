@@ -6,20 +6,10 @@ import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/sch
 import {Lorems} from "polar-shared/src/util/Lorems";
 import {Task} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Link} from "react-router-dom";
-import {Lightbox} from "../../js/ui/util/Lightbox";
-import {Dialogs} from "../../js/ui/dialogs/Dialogs";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {ActionButton} from "../../js/ui/mobile/ActionButton";
-import {
-    HolidayPromotionButton,
-    HolidayPromotionCopy
-} from "../../../apps/repository/js/repo_header/HolidayPromotionButton";
 import {AccountControl} from "../../js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../js/apps/repository/auth_handler/AuthHandler";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {AccountOverview} from "../../../apps/repository/js/account_overview/AccountOverview";
-import milliseconds from "mocha/lib/ms";
-import {DockLayout, DockPanel} from "../../js/ui/doc_layout/DockLayout";
+import {DockPanel} from "../../js/ui/doc_layout/DockLayout";
 
 const styles = {
     swatch: {

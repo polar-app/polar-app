@@ -2,11 +2,8 @@ import * as React from 'react';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {GiftSVGIcon} from "../../../../web/js/ui/svg_icons/GiftSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
-import InputGroup from "reactstrap/lib/InputGroup";
-import Button from "reactstrap/lib/Button";
-import InputGroupAddon from "reactstrap/lib/InputGroupAddon";
-import Input from "reactstrap/lib/Input";
 import {EnvelopeIcon} from "../../../../web/js/ui/icons/FixedWidthIcons";
+import Button from '@material-ui/core/Button';
 
 class Styles {
 
@@ -44,7 +41,8 @@ const DesktopMailBody = (props: IProps) => (
         <div className="text-center">
 
             <Button color="primary"
-                    size="lg"
+                    size="large"
+                    variant="contained"
                     style={{
                         width: '200px'
                     }}
@@ -67,12 +65,13 @@ const MailBody = (props: IProps) =>  (
 );
 
 const CopyReferralCodeButton = () => (
-    <InputGroup size="lg">
-        <Input value="https://app.getpolarized.io/ref?id=1234" disabled/>
-        <InputGroupAddon addonType="append">
-            <Button color="secondary">Copy</Button>
-        </InputGroupAddon>
-    </InputGroup>
+    // <InputGroup size="lg">
+    //     <Input value="https://app.getpolarized.io/ref?id=1234" disabled/>
+    //     <InputGroupAddon addonType="append">
+    //         <Button color="secondary">Copy</Button>
+    //     </InputGroupAddon>
+    // </InputGroup>
+    <div></div>
 );
 
 export const InviteUsersContent = (props: IProps) => (
