@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
-import {TRoot} from "../../../../web/js/ui/tree/TreeView";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
     createObservableStore,
@@ -26,6 +25,7 @@ import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
+import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 
 const log = Logger.create();
 

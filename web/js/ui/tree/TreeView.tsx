@@ -3,7 +3,7 @@ import {TreeNode} from './TreeNode';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {TreeState} from "./TreeState";
-import {TNode} from "./TNode";
+import {TRoot} from "./TRoot";
 
 export class TreeView<V> extends React.Component<IProps<V>, IState> {
 
@@ -83,9 +83,3 @@ export class MarkSet {
 
 }
 
-/**
- * Like a node but specifically for the root
- */
-export interface TRoot<V> extends TNode<V> {
-    readonly title?: string;
-}
