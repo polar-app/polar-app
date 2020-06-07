@@ -1,7 +1,4 @@
 import React from 'react';
-import {Button, Popover, PopoverBody} from 'reactstrap';
-import Popper from 'popper.js';
-import {ipcRenderer} from "electron";
 import {Progress} from 'polar-shared/src/util/ProgressTracker';
 import {Latch} from "polar-shared/src/util/Latch";
 

@@ -5,6 +5,8 @@ import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 /**
  * Modal that is large and fits nearly the full screen. Must use this with a
  * LargeModalBody.
+ *
+ * @Deprecated MUI
  */
 export class LargeModal extends React.Component<IProps, IState> {
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlighterSVGIcon} from "../svg_icons/HighlighterSVGIcon";
 
