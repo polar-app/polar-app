@@ -229,7 +229,6 @@
     "string-to-stream": "~1.1.1",
     "summernote": "^0.8.10",
     "text-encoding": "~0.7.0",
-    "texthighlighter": "~1.2.4",
     "throttle-debounce": "=2.1.0",
     "toastr": "~2.1.4",
     "typed-web-workers": "~2.1.1",
