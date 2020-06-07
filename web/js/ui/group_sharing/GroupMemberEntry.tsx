@@ -74,8 +74,9 @@ export class GroupMemberEntry extends React.Component<IProps, IState> {
             onConfirm: () => this.props.onDelete(member),
             onCancel: NULL_FUNCTION
         };
-
-        Dialogs.confirm(opts);
+        // FIXME: mui/groups migration / legacy
+        //
+        // Dialogs.confirm(opts);
 
     }
 
