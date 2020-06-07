@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 
 export class FakeComponent1 extends React.PureComponent<IProps, IState> {
 
@@ -21,9 +20,9 @@ export class FakeComponent1 extends React.PureComponent<IProps, IState> {
 
             {this.state.title}:
 
-            <Button onClick={() => this.updateTitle()}>
-                Click Me
-            </Button>
+            {/*<Button onClick={() => this.updateTitle()}>*/}
+            {/*    Click Me*/}
+            {/*</Button>*/}
 
         </div>;
     }

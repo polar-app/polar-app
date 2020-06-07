@@ -1,9 +1,8 @@
 import React from 'react';
 import {MemberRecord} from './GroupSharingRecords';
-import Button from 'reactstrap/lib/Button';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Dialogs} from '../dialogs/Dialogs';
 import {ConfirmProps} from "../dialogs/ConfirmProps";
+import Button from "@material-ui/core/Button";
 
 /**
  * Allow the user to select from one or more of their contacts.
@@ -47,8 +46,7 @@ export class GroupMemberEntry extends React.Component<IProps, IState> {
 
                     <div className="mt-auto mb-auto ml-1">
 
-                        <Button color="light"
-                                size="sm"
+                        <Button variant="contained"
                                 onClick={() => this.onDelete(member)}
                                 className="pl-2 pr-2">
 

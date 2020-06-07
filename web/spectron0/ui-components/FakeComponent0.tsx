@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
 import {FakeComponent1} from './FakeComponent1';
 
 export class FakeComponent0 extends React.Component<IProps, IState> {
@@ -23,9 +22,9 @@ export class FakeComponent0 extends React.Component<IProps, IState> {
 
             {this.state.title}:
 
-            <Button onClick={() => this.updateTitle()}>
-                Click Me
-            </Button>
+            {/*<Button onClick={() => this.updateTitle()}>*/}
+            {/*    Click Me*/}
+            {/*</Button>*/}
 
             <FakeComponent1/>
 

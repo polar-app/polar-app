@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 import {CircularIcon} from "./CircularIcon";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
@@ -9,17 +8,18 @@ export class ActionButtonWithText extends React.Component<IProps> {
         const onClick = this.props.onClick || NULL_FUNCTION;
 
         const Btn = (props: any) => {
-            return <Button color="clear"
-                           onClick={onClick}
-                           style={{
-                               alignItems: 'center'
-                           }}
-                           className="btn-no-outline p-0 pl-1 pr-1">
+            // return <Button color="clear"
+            //                onClick={onClick}
+            //                style={{
+            //                    alignItems: 'center'
+            //                }}
+            //                className="btn-no-outline p-0 pl-1 pr-1">
+            //
+            //     {props.children}
+            //
+            // </Button>;
 
-                {props.children}
-
-            </Button>;
-
+            return null;
         };
 
         return (

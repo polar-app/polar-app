@@ -1,6 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {InvitationRequest} from './GroupSharingControl';
@@ -9,7 +8,6 @@ import {FirebaseDatastores} from '../../datastore/FirebaseDatastores';
 import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
 import {Toaster} from '../toaster/Toaster';
 import {DropdownChevron} from '../util/DropdownChevron';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupSharing} from './GroupSharing';
 import {MemberRecord} from './GroupSharingRecords';
 import {Doc} from '../../metadata/Doc';
@@ -21,7 +19,7 @@ import {GroupMemberDeletes} from '../../datastore/sharing/rpc/GroupMemberDeletes
 import {Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {ContactOptions} from './ContactOptions';
+import Button from "@material-ui/core/Button";
 
 export class GroupSharingModal extends React.Component<IProps, IState> {
 
@@ -43,7 +41,7 @@ export class GroupSharingModal extends React.Component<IProps, IState> {
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="md"
+                        variant="contained"
                         disabled={this.props.disabled}
                         hidden={this.props.hidden}
                         onClick={() => this.toggle(true)}

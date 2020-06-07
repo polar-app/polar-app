@@ -1,10 +1,12 @@
 import * as React from "react";
 import {motion} from "framer-motion";
-import {Button} from "reactstrap";
 import {FadeBlackout} from "./FadeBlackout";
 
 const zIndex = 3000000;
 
+/**
+ * @Deprecated use Drawer in MUI
+ */
 export const RightSidebar = (props: IProps) => {
 
     const computeWidth = () => {
@@ -49,14 +51,14 @@ export const RightSidebar = (props: IProps) => {
 
                 <div className="text-right pr-1">
 
-                    <Button size="lg"
-                            color="clear"
-                            className="btn-no-outline text-xl text-muted"
-                            onClick={() => props.onClose()}>
+                    {/*<Button size="lg"*/}
+                    {/*        color="clear"*/}
+                    {/*        className="btn-no-outline text-xl text-muted"*/}
+                    {/*        onClick={() => props.onClose()}>*/}
 
-                        <i className="fas fa-times"/>
+                    {/*    <i className="fas fa-times"/>*/}
 
-                    </Button>
+                    {/*</Button>*/}
 
                 </div>
 

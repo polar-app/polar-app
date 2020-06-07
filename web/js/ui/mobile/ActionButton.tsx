@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
+import Button from '@material-ui/core/Button';
 
 export class ActionButton extends React.Component<IProps> {
     public render() {
@@ -13,7 +13,7 @@ export class ActionButton extends React.Component<IProps> {
                     flexDirection: 'column'
                  }}>
 
-                <Button color={color}
+                <Button variant="contained"
                         style={{outline: 'none', boxShadow: 'none'}}
                         onClick={() => this.props.onClick()}
                         className="btn-circle btn-lg shadow">
@@ -37,7 +37,7 @@ export class ActionButton extends React.Component<IProps> {
 export interface IProps {
     readonly icon: string;
     readonly text?: string;
-    readonly color?: 'success' | 'primary';
+    readonly color?: string;
     readonly onClick: () => void;
 }
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
 import {accounts} from 'polar-accounts/src/accounts';
 import {Analytics} from "../../analytics/Analytics";
+import Button from "@material-ui/core/Button";
 
 /**
  * Listen to the machine datastore for this user and if their account isn't in
@@ -29,8 +29,8 @@ export class UpgradeRequired extends React.Component<IProps, IState> {
                         display: 'flex'
                     }}>
             <Link to={{pathname: '/plans'}}>
-                <Button color="success"
-                        size="sm"
+                <Button color="primary"
+                        variant="contained"
                         style={{fontWeight: 'bold'}}
                         onClick={() => onClick()}>
 

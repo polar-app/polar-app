@@ -1,11 +1,11 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {AccountProvider} from "../../accounts/AccountProvider";
-import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
 import {AccountPlans} from "../../accounts/Account";
 import {accounts} from 'polar-accounts/src/accounts';
 import {Analytics} from "../../analytics/Analytics";
+import Button from "@material-ui/core/Button";
 
 export class PremiumFeature extends React.Component<IProps, IState> {
 
@@ -78,8 +78,7 @@ export class PremiumFeature extends React.Component<IProps, IState> {
 
             return (
                 <Link to={{pathname: '/plans'}}>
-                    <Button size={this.props.size}
-                            color="light"
+                    <Button variant="contained"
                             className="border"
                             onClick={() => this.onUpgrade()}>
 

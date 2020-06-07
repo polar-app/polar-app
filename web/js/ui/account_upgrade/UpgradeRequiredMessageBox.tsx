@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {MessageBox} from "../util/MessageBox";
-import Button from "reactstrap/lib/Button";
 import {BlackoutBox} from "../util/BlackoutBox";
+import Button from "@material-ui/core/Button";
 
 /**
  * Listen to the machine datastore for this user and if their account isn't in
@@ -70,8 +70,7 @@ export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
                 <div className="text-center mt-4">
 
                     <Button color="secondary"
-                            outline
-                            size="md"
+                            variant="contained"
                             onClick={() => this.onCancel()}
                             className="">
 
@@ -79,8 +78,8 @@ export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
 
                     </Button>
 
-                    <Button color="success"
-                            size="md"
+                    <Button color="primary"
+                            variant="contained"
                             onClick={() => this.onUpgrade()}
                             className="ml-1">
 

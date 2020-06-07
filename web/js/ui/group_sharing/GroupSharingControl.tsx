@@ -1,17 +1,15 @@
 import React from 'react';
 import {ContactsSelector} from './ContactsSelector';
-import Button from 'reactstrap/lib/Button';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupMembersList} from './GroupMembersList';
-import {MemberRecord} from './GroupSharingRecords';
-import {ContactProfile} from './GroupSharingRecords';
-import Input from 'reactstrap/lib/Input';
+import {ContactProfile, MemberRecord} from './GroupSharingRecords';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
 import {ContactOptions} from './ContactOptions';
 import {GroupsSelector} from "./GroupsSelector";
 import {Group, GroupNameStr} from "../../datastore/sharing/db/Groups";
-import {GroupNames} from "../../datastore/sharing/db/GroupNames";
 import {GroupOptions} from "./GroupOptions";
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
 
@@ -90,7 +88,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
             <div className="mt-2 text-right">
 
                 <Button color="secondary"
-                        size="sm"
+                        variant="contained"
                         onClick={() => this.props.onCancel()}
                         className="ml-1">
 
@@ -100,7 +98,7 @@ export class GroupSharingControl extends React.Component<IProps, IState> {
 
 
                 <Button color="primary"
-                        size="sm"
+                        variant="contained"
                         onClick={() => this.props.onDone({
                             contactSelections: this.contactSelections,
                             message: this.message

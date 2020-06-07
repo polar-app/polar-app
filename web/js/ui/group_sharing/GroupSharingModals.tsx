@@ -1,6 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import Button from 'reactstrap/lib/Button';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import {Popover} from 'reactstrap';
 import {InvitationRequest} from './GroupSharingControl';
@@ -22,6 +21,7 @@ import {Groups} from '../../datastore/sharing/db/Groups';
 import {Firebase} from '../../firebase/Firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {ContactOptions} from './ContactOptions';
+import Button from "@material-ui/core/Button";
 
 export class GroupSharingButton extends React.Component<IProps, IState> {
 
@@ -48,7 +48,7 @@ export class GroupSharingButton extends React.Component<IProps, IState> {
 
                 <Button color="primary"
                         id="share-control-button"
-                        size="md"
+                        variant="contained"
                         disabled={this.props.disabled}
                         hidden={this.props.hidden}
                         onClick={() => this.toggle(true)}

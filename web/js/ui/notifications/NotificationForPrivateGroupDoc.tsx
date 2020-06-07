@@ -1,13 +1,11 @@
 import React from 'react';
-import Button from 'reactstrap/lib/Button';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
-import {GroupDatastores} from '../../datastore/sharing/GroupDatastores';
-import {GroupDocRef} from '../../datastore/sharing/GroupDatastores';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Toaster} from '../toaster/Toaster';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
 import {UserImage} from './UserImage';
+import Button from "@material-ui/core/Button";
 
 const log = Logger.create();
 
@@ -59,8 +57,8 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
                     </div>
 
                     <div className="mt-auto mb-auto">
-                        <Button color="success"
-                                size="sm"
+                        <Button color="primary"
+                                variant="contained"
                                 onClick={() => this.onAdd()}
                                 style={{
                                     fontSize: '15px',

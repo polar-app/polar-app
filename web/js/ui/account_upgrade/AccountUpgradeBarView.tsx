@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Button} from "reactstrap";
 import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
 import {UpgradeRequired} from "./UpgradeRequired";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Link} from "react-router-dom";
 import {accounts} from "polar-accounts/src/accounts";
 import {Analytics} from "../../analytics/Analytics";
+import Button from "@material-ui/core/Button";
 
 const MESSAGE = createRandomizedUpgradeMessage();
 
@@ -29,7 +29,7 @@ const GoPremium = (props: UpgradeRequiredProps) => {
 
         <Link to={{pathname: '/plans'}}>
             <Button color="primary"
-                    size="sm"
+                    variant="contained"
                     style={{fontWeight: 'bold'}}
                     onClick={() => onClick()}>
 

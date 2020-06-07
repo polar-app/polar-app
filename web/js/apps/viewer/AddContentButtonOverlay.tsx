@@ -1,9 +1,8 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
+import {useState} from 'react';
 import {Callback} from "polar-shared/src/util/Functions";
-import {useState} from "react";
 import {DeviceRouter} from "../../ui/DeviceRouter";
-import doc = Mocha.reporters.doc;
+import Button from '@material-ui/core/Button';
 
 const DesktopTopRight = (props: any) => (
 
@@ -60,16 +59,14 @@ interface AboutButtonProps {
 
 const AddButton = (props: AboutButtonProps) => (
     <Button id="add-content-overlay"
-            direction="down"
             style={{
                 fontWeight: 'bold',
                 fontSize: '16px',
                 fontFamily: 'sans-serif'
             }}
-            color="success"
-            className="btn-lg shadow ml-auto mr-auto"
+            color="primary"
             onClick={() => props.onAdd()}
-            size="lg">
+            size="large">
 
         <i className="fas fa-plus mr-1"/>
         Add to Polar
@@ -83,7 +80,7 @@ interface DownloadButtonProps {
 
 const DownloadButton = (props: DownloadButtonProps) => (
     <Button id="download-content-overlay"
-            direction="down"
+            variant="contained"
             style={{
                 fontWeight: 'bold',
                 fontFamily: 'sans-serif'
@@ -91,7 +88,7 @@ const DownloadButton = (props: DownloadButtonProps) => (
             color="primary"
             className="shadow ml-auto mr-auto"
             onClick={() => props.onDownload()}
-            size="lg">
+            size="large">
 
         <i className="fas fa-file-download mr-1" />
         Download
@@ -153,15 +150,17 @@ const AboutSplash = () => (
 
             <div className="mt-3 text-center">
 
-                <Button size="lg"
-                        color="clear"
+                <Button size="large"
+                        variant="contained"
                         className="text-muted"
                         onClick={() => dismiss()}>
                     No Thanks
                 </Button>
 
                 <a href="https://getpolarized.io/">
-                    <Button size="lg" color="primary">
+                    <Button size="large"
+                            variant="contained"
+                            color="primary">
                         Learn Smarter
                     </Button>
                 </a>

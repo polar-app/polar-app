@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
 import {Nav} from '../util/Nav';
 import {SURVEY_LINK} from '../../../../apps/repository/js/splash/splashes/survey/Survey';
+import Button from '@material-ui/core/Button/Button';
 
 export class TakeExtendedSurveyButton extends React.Component<IProps, IState> {
 
@@ -18,7 +18,10 @@ export class TakeExtendedSurveyButton extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <Button color="link" size="sm" onClick={() => this.onDone()}>Take Extended Survey</Button>
+            <Button variant="contained"
+                    onClick={() => this.onDone()}>
+                Take Extended Survey
+            </Button>
         );
 
     }
