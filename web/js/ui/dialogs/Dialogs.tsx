@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {InjectedComponent, ReactInjector} from '../util/ReactInjector';
-import {PromptProps} from './Prompt';
 import {Alert} from "./Alert";
 import {ConfirmDialog} from './ConfirmDialog';
 import {PromptDialog} from "./PromptDialog";
@@ -54,31 +53,6 @@ export class Dialogs {
         };
 
         injected = ReactInjector.inject(<Alert {...opts} onConfirm={onConfirm}/>);
-
-    }
-
-    /**
-     * @Deprecated MUI
-     */
-    public static prompt(opts: PromptProps) {
-
-        let injected: InjectedComponent | undefined;
-
-        const cleanup = () => {
-            injected!.destroy();
-        };
-
-        const onCancel = () => {
-            cleanup();
-            opts.onCancel();
-        };
-
-        const onDone = (value: string) => {
-            cleanup();
-            opts.onDone(value);
-        };
-
-        injected = ReactInjector.inject(<PromptDialog {...opts} onCancel={onCancel} onDone={onDone}/>);
 
     }
 

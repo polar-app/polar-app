@@ -1,6 +1,5 @@
-import {DocRepoTableColumns} from "../../../apps/repository/js/doc_repo/DocRepoTableColumns";
 import {DeckNameStrategy} from "../apps/sync/framework/anki/AnkiSyncEngine";
-import {ListOptionTypeMap} from "../ui/list_selector/ListSelector";
+import { IDMap } from "polar-shared/src/util/IDMaps";
 
 /**
  * User settings for the UI.
@@ -15,6 +14,29 @@ export interface Settings {
     readonly documentRepository: DocumentRepositorySettings;
 
     [key: string]: any;
+
+}
+
+export type ListOptionTypeMap = IDMap<ListOptionType>;
+
+export interface ListOptionType {
+
+    /**
+     * The ID of the option.
+     */
+    id: string;
+
+    /**
+     * The label to show in the UI.
+     */
+    label: string;
+
+    /**
+     * True when the option is selected by the user.
+     */
+    selected: boolean;
+
+    title?: string;
 
 }
 

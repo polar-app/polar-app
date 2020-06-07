@@ -1,4 +1,7 @@
-import {ListOptionType, ListOptionTypeMap} from '../../../../web/js/ui/list_selector/ListSelector';
+import {
+    ListOptionType,
+    ListOptionTypeMap
+} from '../../../../web/js/ui/list_selector/ListSelector';
 import {KeyValueMapping} from '../../../../web/js/util/KeyValueMapping';
 
 export type DocRepoTableColumnsMap = ListOptionTypeMap;
