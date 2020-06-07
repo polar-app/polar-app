@@ -10,7 +10,6 @@ import 'summernote/dist/summernote-lite';
 //
 // // require('bootstrap/js/dist/modal.js');
 // // require('bootstrap/js/dist/dropdown.js');
-// // require('bootstrap/js/dist/tooltip.js');
 // // require('bootstrap/dist/css/bootstrap.css');
 // // require('font-awesome/css/font-awesome.css');
 // // require('summernote/dist/summernote.css');
