@@ -1,0 +1,432 @@
+
+/** disable conflicting twitter bootstrap styles */
+.polar-viewer *,
+.polar-viewer *::before,
+.polar-viewer *::after {
+    box-sizing: unset;
+}
+
+/* enable bootstrap within .twitter-bootstrap-enabled */
+
+.twitter-bootstrap-enabled *,
+.twitter-bootstrap-enabled *::before,
+.twitter-bootstrap-enabled *::after {
+    box-sizing: border-box;
+}
+
+button.dropdown-item:hover {
+    background-color: var(--grey100);
+    background-image: none;
+}
+
+.confirm-prompt {
+    min-width: 550px;
+    width: 550px;
+}
+
+.popover {
+    /* the default max width is too small */
+    max-width: 500px !important;
+}
+
+/* custom CSS for mobile devices */
+@media only screen and (max-device-width: 450px) {
+
+    .d-none-mobile {
+        display: none;
+    }
+
+    .d-none-phone {
+        display: none;
+    }
+
+}
+
+@media only screen and (max-device-width: 1024px) {
+
+    .d-none-tablet {
+        display: none;
+    }
+
+}
+
+@media only screen and (min-device-width: 1024px) {
+
+    .d-none-desktop {
+        display: none;
+    }
+
+}
+
+
+.twitter-bootstrap-content *,
+.twitter-bootstrap-content {
+    font-size: 16px;
+    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";;*/
+}
+
+.text-xs *,
+.text-xs {
+    font-size: 12px;
+}
+
+.text-sm input,
+.text-sm textarea,
+.text-sm button,
+.text-sm p,
+.text-sm {
+    font-size: 14px;
+}
+
+.text-md input,
+.text-md textarea,
+.text-md button,
+.text-md p,
+.text-md {
+    font-size: 16px;
+}
+
+.text-lg input,
+.text-lg textarea,
+.text-lg button,
+.text-lg p,
+.text-lg {
+    font-size: 18px;
+}
+
+.text-xl input,
+.text-xl textarea,
+.text-xl button,
+.text-xl p,
+.text-xl {
+    font-size: 20px;
+}
+
+.text-xxl {
+    font-size: 22px;
+}
+
+.text-xxxl {
+    font-size: 26px;
+}
+
+/*
+ https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+ https://css-tricks.com/forums/topic/scaling-down-images-with-css-makes-them-blurry/
+
+ this works well for Firefox just not for Chrome right now. Hopefully in the
+ future.
+*/
+.img-crisp {
+
+    image-rendering: -moz-crisp-edges;          /* Firefox */
+    image-rendering: -o-crisp-edges;          /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+}
+
+.hover-highlight:hover *,
+.hover-highlight:hover {
+    /*TODO: this is still too dark I think*/
+    background-color: var(--grey100);
+}
+
+.hover-highlight:hover *,
+.hover-highlight:hover {
+    /*TODO: this is still too dark I think*/
+    background-color: var(--grey100);
+}
+
+
+/* text-grey */
+.text-grey900 {
+    color: var(--grey900);
+}
+
+.text-grey800 {
+    color: var(--grey800);
+}
+
+.text-grey700 {
+    color: var(--grey700);
+}
+
+.text-grey600 {
+    color: var(--grey600);
+}
+
+.text-grey500 {
+    color: var(--grey500);
+}
+
+.text-grey400 {
+    color: var(--grey400);
+}
+
+.text-grey300 {
+    color: var(--grey300);
+}
+
+.text-grey200 {
+    color: var(--grey200);
+}
+
+.text-grey100 {
+    color: var(--grey100);
+}
+
+.text-grey000 {
+    color: var(--grey000);
+}
+
+/* text-danger */
+
+.text-danger900 {
+    color: var(--danger900);
+}
+
+.text-danger800 {
+    color: var(--danger800);
+}
+
+.text-danger700 {
+    color: var(--danger700);
+}
+
+.text-danger600 {
+    color: var(--danger600);
+}
+
+.text-danger500 {
+    color: var(--danger500);
+}
+
+.text-danger400 {
+    color: var(--danger400);
+}
+
+.text-danger300 {
+    color: var(--danger300);
+}
+
+.text-danger200 {
+    color: var(--danger200);
+}
+
+.text-danger100 {
+    color: var(--danger100);
+}
+
+.text-danger000 {
+    color: var(--danger000);
+}
+
+/* bg-grey */
+
+.bg-grey900 {
+    background-color: var(--grey900);
+}
+
+.bg-grey800 {
+    background-color: var(--grey800);
+}
+
+.bg-grey700 {
+    background-color: var(--grey700);
+}
+
+.bg-grey600 {
+    background-color: var(--grey600);
+}
+
+.bg-grey500 {
+    background-color: var(--grey500);
+}
+
+.bg-grey400 {
+    background-color: var(--grey400);
+}
+
+.bg-grey300 {
+    background-color: var(--grey300);
+}
+
+.bg-grey200 {
+    background-color: var(--grey200);
+}
+
+.bg-grey100 {
+    background-color: var(--grey100);
+}
+
+.bg-grey000 {
+    background-color: var(--grey000);
+}
+
+
+:root {
+
+    --grey950: rgb(13, 13, 13);
+    --grey900: rgb(26, 26, 26);
+    --grey850: rgb(38, 38, 38);
+    --grey800: rgb(51, 51, 51);
+    --grey750: rgb(64, 64, 64);
+    --grey700: rgb(77, 77, 77);
+    --grey650: rgb(90, 90, 90);
+    --grey600: rgb(102, 102, 102);
+    --grey550: rgb(115, 115, 115);
+    --grey500: rgb(128, 128, 128);
+    --grey450: rgb(141, 141, 141);
+    --grey400: rgb(154, 154, 154);
+    --grey350: rgb(166, 166, 166);
+    --grey300: rgb(179, 179, 179);
+    --grey250: rgb(192, 192, 192);
+    --grey200: rgb(205, 205, 205);
+    --grey150: rgb(218, 218, 218);
+    --grey100: rgb(230, 230, 230);
+    --grey050: rgb(243, 243, 243);
+
+    --primary900: #002159;
+    --primary800: #01337D;
+    --primary700: #03449E;
+    --primary600: #0552B5;
+    --primary500: #0967D2;
+    --primary400: #2186EB;
+    --primary300: #47A3F3;
+    --primary200: #7CC4FA;
+    --primary100: #BAE3FF;
+    --primary000: #E6F6FF;
+
+    --danger900: #610316;
+    --danger800: #8A041A;
+    --danger700: #AB091E;
+    --danger600: #CF1124;
+    --danger500: #E12D39;
+    --danger400: #EF4E4E;
+    --danger300: #F86A6A;
+    --danger200: #FF9B9B;
+    --danger100: #FFBDBD;
+    --danger000: #FFE3E3;
+
+    /* https://material-ui.com/customization/color/ */
+    --attention900: #e65100;
+    --attention800: #ef6c00;
+    --attention700: #f57c00;
+    --attention600: #fb8c00;
+    --attention500: #ff9800;
+    --attention400: #ffa726;
+    --attention300: #ffb74d;
+    --attention200: #ffcc80;
+    --attention100: #ffe0b2;
+    --attention000: #fff3e0;
+
+    --primary-background-color: #FFFFFF;
+    --primary-text-color: #000000;
+
+    --selected-background-color: #00afec;
+    --selected-text-color: #FFFFFF;
+
+}
+
+/* TODO: auto generate these */
+
+.bg-attention900 {
+    background-color: var(--attention900);
+}
+
+.bg-attention800 {
+    background-color: var(--attention800);
+}
+
+.bg-attention700 {
+    background-color: var(--attention700);
+}
+
+.bg-attention600 {
+    background-color: var(--attention600);
+}
+
+.bg-attention500 {
+    background-color: var(--attention500);
+}
+
+
+.muted-color * {
+    transition-property: none;
+}
+
+.muted-color-root:not(:hover) .muted-color * {
+    color: var(--grey100) !important;
+}
+
+.muted-color-root:not(:hover) .muted-color .muted-color-target-bg *,
+.muted-color-root:not(:hover) .muted-color * .muted-color-target-bg * {
+    color: var(--grey100) !important;
+    background-color: var(--grey100) !important;
+}
+
+.btn,
+.btn-no-outline {
+    outline: none !important;
+    box-shadow: none !important;;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle.btn-lg {
+    width: 50px;
+    height: 50px;
+    padding: 7px 11px;
+    border-radius: 35px;
+    font-size: 15px;
+    line-height: 1.379285;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+/* apply margins to child elements to apply space between them. Works well with flexbox items and we don't have to
+   remember to keep applying the spacing. */
+.children-margin > * {
+    margin-left: 5px;
+}
+
+.children-margin > *:first-child {
+    margin-left: 0;
+}
+
+/*.btn:focus {*/
+/*    outline: none;*/
+/*}*/
+
+
+.no-underline {
+    text-decoration: none !important
+}
+
+.shadow-narrow {
+    box-shadow: 0 0 0.25rem 0 rgba(0,0,0,.24);
+}
+
+.vertical-align-children {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+
