@@ -7,7 +7,6 @@ import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManage
 import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {PremiumFeature} from "../../../web/js/ui/premium_feature/PremiumFeature";
 import {
     InheritedTag,
     isInheritedTag

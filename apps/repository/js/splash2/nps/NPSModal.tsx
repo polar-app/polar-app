@@ -1,8 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Feedback} from '../../../../../web/js/ui/feedback/Feedback';
-import {Rating} from '../../../../../web/js/ui/feedback/Feedback';
-import {Toaster} from '../../../../../web/js/ui/toaster/Toaster';
+import {Feedback, Rating} from '../../../../../web/js/ui/feedback/Feedback';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {UserFeedbacks} from '../../../../../web/js/telemetry/UserFeedback';
 import {SplashKeys} from '../SplashKeys';
@@ -34,7 +32,7 @@ export class NPSModal extends React.Component<IProps, IState> {
 
         LocalPrefs.set(SplashKeys.NET_PROMOTER_SCORE, rating);
 
-        Toaster.success("Thanks for your feedback!");
+        // Toaster.success("Thanks for your feedback!");
 
         const version = Version.get();
 

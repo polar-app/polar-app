@@ -4,7 +4,6 @@ import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Results} from 'polar-shared/src/util/Results';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
-import {Toaster} from '../../ui/toaster/Toaster';
 import {Screenshots} from "../Screenshots";
 
 export class BrowserScreenshots {
@@ -51,9 +50,7 @@ export class BrowserScreenshots {
                     const response: BrowserScreenshot
                         = await webextensions.Messaging.sendMessage(request);
 
-                    if (!response) {
-                        Toaster.error("Area highlights not yet supported in the Polar webapp. ");
-                        // Toaster.error("Unable to capture screenshot. Make sure the latest version of the Polar web extension is installed.");
+                    if (! response) {
                         throw new Error("No response from web extension");
                     }
 

@@ -1,15 +1,7 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
-import {Toaster} from '../../../../web/js/ui/toaster/Toaster';
-import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
 import Button from 'reactstrap/lib/Button';
-
-const log = Logger.create();
-
-class Styles {
-
-}
+import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
 
 export default class CopyLogsToClipboardButton extends React.Component<IProps, IState> {
 
@@ -46,7 +38,7 @@ export default class CopyLogsToClipboardButton extends React.Component<IProps, I
 
         Clipboards.getInstance().writeText(text);
 
-        Toaster.success("Wrote log output to clipboard.");
+        // Toaster.success("Wrote log output to clipboard.");
 
     }
 
