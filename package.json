@@ -198,7 +198,6 @@
     "polar-spaced-repetition-api": "^2.0.0-beta.5",
     "polar-web-extension-api": "^2.0.0-beta.5",
     "polar-webapp-links": "^2.0.0-beta.5",
-    "popper.js": "~1.16.0",
     "prop-types": "~15.7.2",
     "raphael": "~2.2.7",
     "react": "~16.13.1",
