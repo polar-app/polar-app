@@ -13,7 +13,6 @@ import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/prem
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import {UIComponentsScreen} from "../../../../apps/repository/js/ui-components/UIComponentsScreen";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
@@ -300,11 +299,6 @@ export const RepositoryApp = (props: IProps) => {
 
                         <Route exact path='/plans-year'
                                render={premiumScreenYear}/>
-
-                        <Route exact path='/ui-components'
-                               render={() => <UIComponentsScreen
-                                   persistenceLayerManager={persistenceLayerManager}
-                                   persistenceLayerProvider={app.persistenceLayerProvider}/>}/>
 
                         <Route exact path='/premium' render={premiumScreen}/>
 
