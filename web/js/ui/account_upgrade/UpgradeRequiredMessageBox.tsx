@@ -6,6 +6,8 @@ import {BlackoutBox} from "../util/BlackoutBox";
 /**
  * Listen to the machine datastore for this user and if their account isn't in
  * line with the machine data store then we have to force them to upgrade.
+ *
+ * FIXME MUI this needs to be in a dialog
  */
 export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
 
@@ -73,7 +75,7 @@ export class UpgradeRequiredMessageBox extends React.Component<IProps, IState> {
                             onClick={() => this.onCancel()}
                             className="">
 
-                        No Thanks
+                        Maybe Later
 
                     </Button>
 

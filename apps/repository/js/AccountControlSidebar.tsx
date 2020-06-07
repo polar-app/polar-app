@@ -5,7 +5,6 @@ import {UserInfo} from "../../../web/js/apps/repository/auth_handler/AuthHandler
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {UserInfoDataLoader} from "./persistence_layer/UserInfoDataLoader";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AccountActions} from "../../../web/js/accounts/AccountActions";
 
@@ -61,6 +60,7 @@ namespace devices {
 
 }
 
+// FIXME: mui this needs to be a swipable drawer...
 export const AccountControlSidebar = (props: AccountControlSidebarProps) => (
 
     <DeviceRouter phone={<devices.Phone {...props}/>}

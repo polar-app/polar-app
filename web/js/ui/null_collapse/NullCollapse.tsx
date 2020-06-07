@@ -1,12 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {IStyleMap} from '../../react/IStyleMap';
-import {Progress} from 'reactstrap';
-import {Reactor} from '../../reactor/Reactor';
-import Collapse from 'reactstrap/lib/Collapse';
-import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {EventListener} from '../../reactor/EventListener';
-import {Logger} from 'polar-shared/src/logger/Logger';
 
 
 /**
