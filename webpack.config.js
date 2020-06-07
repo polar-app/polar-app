@@ -29,16 +29,11 @@ module.exports = {
         //   5.1MB raw and about
         //   1.6MB compressed.
 
-        "chrome": [ "./web/js/apps/chrome.ts"],
         "doc": [ "./apps/doc/src/entry.tsx"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "preview": [ "./apps/preview/index.ts"],
         "login": [ "./apps/repository/js/login.ts"],
         "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
-
-        // "all": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx", "./apps/repository/js/login.ts"],
-
-        // "both": [ "./web/js/apps/chrome.ts", "./apps/repository/js/entry.tsx"],
 
     },
     module: {
@@ -102,7 +97,6 @@ module.exports = {
         // publicPath: '/web/js/apps'
     },
     node: {
-        //needed to make webpack work on chrome
         fs: 'empty',
         net: 'empty',
         tls: 'empty',

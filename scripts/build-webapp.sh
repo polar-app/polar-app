@@ -73,7 +73,6 @@ copy apps "service-worker-registration.js"
 copy htmlviewer "*.html"
 copy htmlviewer "*.css"
 
-copy pdfviewer "*"
 copy pdfviewer-custom "*.css"
 
 showEnv
@@ -81,16 +80,12 @@ showEnv
 copy web/dist "*.js"
 copy web "*.svg"
 
-copy node_modules/font-awesome "*"
 copy node_modules/@fortawesome "*"
 
 copy node_modules/toastr "*"
-copy node_modules/bootstrap "*"
-copy node_modules/react-table "*"
 copy node_modules/firebaseui "*"
 copy node_modules/firebase "*"
 copy node_modules/summernote "*"
-copy node_modules/@burtonator "*"
 copy node_modules/pdfjs-dist "*"
 
 cp *.ico dist/public
