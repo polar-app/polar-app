@@ -2,7 +2,8 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {DialogContainer} from './DialogContainer';
 import {NullCollapse} from '../null_collapse/NullCollapse';
-import {AlertProps, ConfirmProps} from "./Dialogs";
+import {AlertProps} from "./AlertProps";
+import {ConfirmProps} from "./ConfirmProps";
 
 class Styles {
 

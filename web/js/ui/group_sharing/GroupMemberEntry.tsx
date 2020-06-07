@@ -2,7 +2,8 @@ import React from 'react';
 import {MemberRecord} from './GroupSharingRecords';
 import Button from 'reactstrap/lib/Button';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Dialogs, ConfirmProps} from '../dialogs/Dialogs';
+import {Dialogs} from '../dialogs/Dialogs';
+import {ConfirmProps} from "../dialogs/ConfirmProps";
 
 /**
  * Allow the user to select from one or more of their contacts.
