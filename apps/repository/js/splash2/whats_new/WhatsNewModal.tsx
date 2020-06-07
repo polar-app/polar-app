@@ -1,71 +1,46 @@
 import * as React from 'react';
 import {WhatsNewContent} from './WhatsNewContent';
-import Button from 'reactstrap/lib/Button';
-import ModalFooter from 'reactstrap/lib/ModalFooter';
-import {LargeModal} from '../../../../../web/js/ui/large_modal/LargeModal';
-import {LargeModalBody} from '../../../../../web/js/ui/large_modal/LargeModalBody';
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
-export class WhatsNewModal extends React.Component<IProps, IState> {
+export const WhatsNewModal = React.memo(() => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const [open, setOpen] = React.useState(true);
 
-        this.onDone = this.onDone.bind(this);
-
-        this.state = {
-            open: true
-        };
-
+    function handleClose() {
+        setOpen(false)
     }
 
-    public render() {
+    return (
 
-        return (
+        <div>
 
-            <div>
+            <Dialog
+                fullWidth={true}
+                maxWidth='lg'
+                open={open}
+                onClose={handleClose}>
 
-                <LargeModal isOpen={this.state.open}
-                            minWidth="350px"
-                            maxWidth="900px">
+                <DialogContent>
+                    <WhatsNewContent/>
+                </DialogContent>
 
-                    <LargeModalBody>
+                <DialogActions>
 
-                        <WhatsNewContent/>
+                    <Button color="primary"
+                            variant="contained"
+                            onClick={handleClose}>
+                        Close
+                    </Button>
 
-                    </LargeModalBody>
+                </DialogActions>
 
-                    <ModalFooter>
-                        <Button color="primary" onClick={() => this.onDone()}>Close</Button>
-                    </ModalFooter>
+            </Dialog>
 
-                </LargeModal>
+        </div>
 
-            </div>
+    );
 
-        );
-    }
-
-    private onDone() {
-
-        this.setState({open: false});
-
-        if (this.props.onDone) {
-            this.props.onDone();
-        }
-
-    }
-
-}
-
-interface IProps {
-
-    /**
-     * Called when we click the ok button.
-     */
-    onDone?: () => void;
-
-}
-
-interface IState {
-    open: boolean;
-}
+});

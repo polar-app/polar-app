@@ -18,6 +18,7 @@ import ReactDOM from 'react-dom';
 import {act} from "react-dom/test-utils";
 import Button from "@material-ui/core/Button";
 import {createTeleporter} from "react-teleporter";
+import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -205,13 +206,15 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            this is the teleporter:
-            <teleporter.Target/>
+            <WhatsNewModal/>
 
-            this is where we are teleporting from:
-            <teleporter.Source>
-                <div>this is the teleported content</div>
-            </teleporter.Source>
+            {/*this is the teleporter:*/}
+            {/*<teleporter.Target/>*/}
+
+            {/*this is where we are teleporting from:*/}
+            {/*<teleporter.Source>*/}
+            {/*    <div>this is the teleported content</div>*/}
+            {/*</teleporter.Source>*/}
 
 
             {/*<CompA/>*/}
