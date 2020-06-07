@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
-import {GroupDocInfoCard} from "./GroupDocInfoCard";
-import {GroupDocInfo} from "../../../../web/js/datastore/sharing/GroupDocInfos";
 import {GroupData} from "./GroupData";
-import Button from "reactstrap/lib/Button";
-import {Dialogs} from "../../../../web/js/ui/dialogs/Dialogs";
 import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
 import {GroupDeletes} from "../../../../web/js/datastore/sharing/rpc/GroupDeletes";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
+import Button from '@material-ui/core/Button';
 
 export class GroupDeleteButton extends React.Component<IProps, IState> {
 
@@ -36,8 +32,7 @@ export class GroupDeleteButton extends React.Component<IProps, IState> {
 
             <div className="mr-1 ml-1">
 
-                <Button color="danger"
-                        size="md"
+                <Button variant="contained"
                         hidden={! isAdmin}
                         onClick={() => this.onDelete(group)}
                         className="pl-2 pr-2">

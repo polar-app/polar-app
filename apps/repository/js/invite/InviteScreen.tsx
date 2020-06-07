@@ -8,7 +8,6 @@ import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHand
 import {accounts} from "polar-accounts/src/accounts";
 import {EmailAddressParser} from "../../../../web/js/util/EmailAddressParser";
 import {InviteUsersContent} from "./InviteUsersContent";
-import {Button} from "reactstrap";
 import {Invitations} from "../../../../web/js/datastore/Invitations";
 import {Logger} from "polar-shared/src/logger/Logger";
 

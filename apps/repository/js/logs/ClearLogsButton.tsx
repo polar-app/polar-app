@@ -1,13 +1,7 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
-import Button from 'reactstrap/lib/Button';
+import Button from '@material-ui/core/Button';
 
-const log = Logger.create();
-
-class Styles {
-
-}
 
 export default class ClearLogsButton extends React.Component<IProps, IState> {
 
@@ -18,7 +12,8 @@ export default class ClearLogsButton extends React.Component<IProps, IState> {
     public render() {
 
         return (
-            <Button size="sm" onClick={() => this.onClick()}>
+            <Button variant="contained"
+                    onClick={() => this.onClick()}>
                 Clear
             </Button>
         );

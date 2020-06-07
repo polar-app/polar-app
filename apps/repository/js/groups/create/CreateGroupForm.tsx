@@ -1,9 +1,4 @@
 import * as React from 'react';
-import Input from "reactstrap/lib/Input";
-import {Form} from "reactstrap";
-import FormGroup from "reactstrap/lib/FormGroup";
-import Label from "reactstrap/lib/Label";
-import Button from "reactstrap/lib/Button";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, TagStr} from "polar-shared/src/tags/Tags";
 import {
@@ -12,6 +7,9 @@ import {
 } from "../../../../../web/js/datastore/sharing/rpc/GroupProvisions";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {RelatedTagsManager} from "../../../../../web/js/tags/related/RelatedTagsManager";
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
 
@@ -50,59 +48,47 @@ export class CreateGroupForm extends React.Component<IProps, IState> {
                             with others.
                         </p>
 
-                        <Form>
-                            <FormGroup>
+                        <InputLabel htmlFor="create-group-name">Name</InputLabel>
 
-                                <Label for="create-group-name">Name</Label>
+                        <Input type="text"
+                               name="name"
+                               id="create-group-name"
+                               placeholder="Name of group"
+                               required
+                               onChange={event => this.formData.name = event.currentTarget.value}
+                               />
 
-                                <Input type="text"
-                                       name="name"
-                                       id="create-group-name"
-                                       placeholder="Name of group"
-                                       required
-                                       onChange={event => this.formData.name = event.currentTarget.value}
-                                       />
+                        <InputLabel htmlFor="create-group-description">Description</InputLabel>
 
-                            </FormGroup>
+                        <Input type="textarea"
+                               name="description"
+                               id="create-group-description"
+                               placeholder="A description for the group"
+                               onChange={event => this.formData.description = event.currentTarget.value}
+                               />
 
-                            <FormGroup>
-                                <Label for="create-group-description">Description</Label>
+                        <InputLabel>Tags</InputLabel>
 
-                                <Input type="textarea"
-                                       name="description"
-                                       id="create-group-description"
-                                       placeholder="A description for the group"
-                                       onChange={event => this.formData.description = event.currentTarget.value}
-                                       />
-                            </FormGroup>
+                        {/*<TagInputWidget availableTags={this.props.tagsProvider()}*/}
+                        {/*                existingTags={[]}*/}
+                        {/*                relatedTags={this.props.relatedTags}*/}
+                        {/*                onChange={(tags) => this.onTags(tags)}/>*/}
 
-                            <FormGroup>
+                        <p className="text-secondary text-sm mt-1">
+                            Select up to 5 tags for this group.  Tags will be
+                            used by others to find your group.
+                        </p>
 
-                                <Label>Tags</Label>
+                        <div className="text-right">
 
-                                {/*<TagInputWidget availableTags={this.props.tagsProvider()}*/}
-                                {/*                existingTags={[]}*/}
-                                {/*                relatedTags={this.props.relatedTags}*/}
-                                {/*                onChange={(tags) => this.onTags(tags)}/>*/}
+                            <Button color="primary"
+                                    variant="contained"
+                                    onClick={() => this.onDone()}>
+                                Create Group
+                            </Button>
 
-                                <p className="text-secondary text-sm mt-1">
-                                    Select up to 5 tags for this group.  Tags will be
-                                    used by others to find your group.
-                                </p>
+                        </div>
 
-                            </FormGroup>
-
-                            <div className="text-right">
-
-                                <Button color="primary"
-                                        size="md"
-                                        onClick={() => this.onDone()}>
-                                    Create Group
-                                </Button>
-
-                            </div>
-
-                        </Form>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,9 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {ConditionalSetting} from '../../../../web/js/ui/util/ConditionalSetting';
-import Button from 'reactstrap/lib/Button';
-import Label from 'reactstrap/lib/Label';
-import FormGroup from 'reactstrap/lib/FormGroup';
-import Input from 'reactstrap/lib/Input';
-
-const log = Logger.create();
+import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const Styles: IStyleMap = {
     label: {
@@ -41,7 +37,7 @@ export class Splash extends React.Component<IProps, IState> {
                 return (<div/>);
             } else {
                 return (<Button color="primary"
-                                size="sm"
+                                variant="contained"
                                 onClick={() => this.onClose()}>Close</Button>);
             }
 
@@ -52,16 +48,18 @@ export class Splash extends React.Component<IProps, IState> {
             if (this.props.disableDontShowAgain) {
                 return (<div/>);
             } else {
-                return (<FormGroup check>
-                    <Label check style={Styles.label}>
+                return (
+                    <>
+                        <InputLabel style={Styles.label}>
 
-                        <Input type="checkbox"
-                               onChange={(event) => this.onDoNotShowAgain(!this.doNotShowAgain)}/>
+                            <Input type="checkbox"
+                                   onChange={(event) => this.onDoNotShowAgain(!this.doNotShowAgain)}/>
 
-                        Don't show again
+                            Don't show again
 
-                    </Label>
-                </FormGroup>);
+                        </InputLabel>
+                    </>
+                );
             }
 
         };

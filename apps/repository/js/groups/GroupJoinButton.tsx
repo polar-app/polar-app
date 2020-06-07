@@ -1,8 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import Button from 'reactstrap/lib/Button';
-import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     GroupJoinRequest,
     GroupJoins
@@ -14,6 +11,7 @@ import {
     Groups
 } from "../../../../web/js/datastore/sharing/db/Groups";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
+import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
 
@@ -37,7 +35,7 @@ export class GroupJoinButton extends React.PureComponent<IProps, IState> {
             <div className="mr-1 ml-1">
 
                 <Button color="primary"
-                        size="md"
+                        variant="contained"
                         onClick={() => this.onJoin()}
                         className="pl-2 pr-2">
 

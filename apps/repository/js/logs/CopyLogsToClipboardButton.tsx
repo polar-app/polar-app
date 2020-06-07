@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
-import Button from 'reactstrap/lib/Button';
 import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
+import Button from "@material-ui/core/Button";
 
 export default class CopyLogsToClipboardButton extends React.Component<IProps, IState> {
 
@@ -14,7 +14,8 @@ export default class CopyLogsToClipboardButton extends React.Component<IProps, I
     public render() {
 
         return (
-            <Button size="sm" onClick={() => this.onClick()}>
+            <Button variant="contained"
+                    onClick={() => this.onClick()}>
                 Copy to Clipboard
             </Button>
         );

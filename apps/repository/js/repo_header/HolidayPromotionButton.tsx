@@ -8,7 +8,6 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {Link} from 'react-router-dom';
 import {GiftSVGIcon} from "../../../../web/js/ui/svg_icons/GiftSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
-import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 interface ButtonProps {
     readonly onClick: Callback;

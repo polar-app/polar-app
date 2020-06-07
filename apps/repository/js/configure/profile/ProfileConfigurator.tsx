@@ -3,7 +3,6 @@ import {
 } from "./selectors/OccupationSelect";
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
-import {Progress} from "reactstrap";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
@@ -15,6 +14,7 @@ import {
 } from "polar-shared/src/util/Occupations";
 import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
 import {EducationLevel} from "polar-shared/src/util/EducationLevels";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
@@ -143,7 +143,8 @@ export const ProfileConfigurator = (props: IProps) => {
             <div style={{flexGrow: 1}}>
 
                 <div className="mb-1">
-                    <Progress value={state.form.progress}/>
+                    <LinearProgress variant="determinate"
+                                    value={state.form.progress}/>
                 </div>
 
                 <div className="font-weight-bold text-xl">Tell us about yourself! </div>

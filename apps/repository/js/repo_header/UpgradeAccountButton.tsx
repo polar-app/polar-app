@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Button} from 'reactstrap';
 import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
 import {Link} from "react-router-dom";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import Button from "@material-ui/core/Button";
 
 export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
 
@@ -23,8 +23,7 @@ export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
 
         return (
             <Link to={{pathname: '/plans'}}>
-                <Button color="light"
-                        size="md"
+                <Button variant="contained"
                         onClick={() => this.onUpgrade()}
                         className="border border-success">
 

@@ -1,23 +1,16 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import Button from 'reactstrap/lib/Button';
 import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {
-    GroupJoinRequest,
-    GroupJoins
-} from "../../../../web/js/datastore/sharing/rpc/GroupJoins";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {
     GroupDatastores,
     GroupDocRef
 } from "../../../../web/js/datastore/sharing/GroupDatastores";
-import { DocRef } from 'polar-shared/src/groups/DocRef';
-import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {GroupDocs} from "../../../../web/js/datastore/sharing/db/GroupDocs";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
+import Button from "@material-ui/core/Button";
 
 const log = Logger.create();
 
@@ -40,8 +33,8 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
 
             <div className="mr-1 ml-1">
 
-                <Button color="success"
-                        size="md"
+                <Button color="primary"
+                        variant="contained"
                         onClick={() => this.onJoin()}
                         className="pl-2 pr-2">
 

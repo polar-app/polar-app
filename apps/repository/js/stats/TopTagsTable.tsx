@@ -1,12 +1,7 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocInfoStatistics} from '../../../../web/js/metadata/DocInfoStatistics';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
-import Table from 'reactstrap/lib/Table';
-
-const log = Logger.create();
 
 export default class TopTagsTable extends React.Component<IProps, IState> {
 
@@ -24,7 +19,7 @@ export default class TopTagsTable extends React.Component<IProps, IState> {
 
         return <div id="top-tags-table">
             <StatTitle>Top Tags</StatTitle>
-            <Table>
+            <table>
                 <tbody>
                     {topTags.map(topTag =>
                          <tr key={topTag.key}>
@@ -33,7 +28,7 @@ export default class TopTagsTable extends React.Component<IProps, IState> {
                          </tr>)}
 
                 </tbody>
-            </Table>
+            </table>
         </div>;
     }
 
