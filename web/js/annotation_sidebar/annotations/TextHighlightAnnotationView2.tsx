@@ -41,7 +41,7 @@ export const TextHighlightAnnotationView2 = React.memo((props: IProps) => {
 
                 <div style={{display: 'flex', flexDirection: 'column'}}>
 
-                    <div className="muted-color-root">
+                    <div className="mt-1">
                         <div style={{display: 'flex'}}>
 
                             <div className="p-1"

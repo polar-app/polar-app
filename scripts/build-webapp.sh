@@ -86,7 +86,10 @@ copy node_modules/toastr "*"
 copy node_modules/firebaseui "*"
 copy node_modules/firebase "*"
 copy node_modules/summernote "*"
-copy node_modules/pdfjs-dist "*"
+
+# TODO this should no longer be required ... I THINK but we might need the
+# worker...
+# copy node_modules/pdfjs-dist "*"
 
 cp *.ico dist/public
 cp *.png dist/public
