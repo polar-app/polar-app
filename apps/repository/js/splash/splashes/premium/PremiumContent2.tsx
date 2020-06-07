@@ -1,17 +1,15 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
-import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
-import {Dialogs} from '../../../../../../web/js/ui/dialogs/Dialogs';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {Toaster} from '../../../../../../web/js/ui/toaster/Toaster';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DesktopContent, MobileContent} from "./PremiumCopy";
 import {Discount, Discounts} from "./Discounts";
 import {DeviceRouter} from "../../../../../../web/js/ui/DeviceRouter";
 import {accounts} from "polar-accounts/src/accounts";
 import Button from '@material-ui/core/Button';
+import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 
 const discounts = Discounts.create();
 
@@ -19,17 +17,21 @@ const log = Logger.create();
 
 function cancelSubscription() {
 
-    const onConfirm = () => {
-        Toaster.info("Canceling plan.  One moment...");
+    const dialogManager = useDialogManager();
+
+    const onAccept = () => {
+
+        dialogManager.snackbar({message: "Canceling plan.  One moment..."});
 
         AccountActions.cancelSubscription()
             .catch(err => log.error("Unable to cancel plan: ", err));
+
     };
 
-    Dialogs.confirm({
+    dialogManager.confirm({
         title: `Are you sure you want to cancel your plan and revert to the free tier?`,
         subtitle: 'Your billing will automatically be updated and account pro-rated.',
-        onConfirm
+        onAccept
     });
 
 }
@@ -182,8 +184,6 @@ export const FindPlan = () => {
             We have both yearly and monthly plans.  Get a free
             month of service if you buy for a whole year!
         </p>
-
-
     </div>;
 
 };

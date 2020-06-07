@@ -13,6 +13,7 @@ import {PremiumButton} from "./PremiumButton";
 import React from "react";
 import {NullCollapse} from "../../../../../../web/js/ui/null_collapse/NullCollapse";
 import {accounts} from "polar-accounts/src/accounts";
+import Paper from "@material-ui/core/Paper";
 
 export const MobileContent = (props: IProps) => {
     return <div id="pricing" className="mt-1 mb-1">
@@ -124,7 +125,7 @@ export const DesktopContent =  (props: IProps) => {
 
                 <PricingOverview/>
 
-                <div className="white-box high-shadow table-box">
+                <Paper>
                     <table className="table">
                         <thead>
                         <tr>
