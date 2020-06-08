@@ -1,7 +1,6 @@
 import {app, BrowserWindow} from 'electron';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
-import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
 import process from 'process';

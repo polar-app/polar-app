@@ -6,6 +6,13 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {accounts} from 'polar-accounts/src/accounts';
 import {AccountProvider} from "../../../accounts/AccountProvider";
 
+const POLAR_APP_SITES = [
+    'http://localhost:8500',
+    'http://127.0.0.1:8500',
+    'https://app.getpolarized.io',
+    'https://beta.getpolarized.io'
+];
+
 export interface AuthHandler {
 
     /**
@@ -28,6 +35,18 @@ export interface AuthHandler {
 
 }
 
+
+function computeBaseURL() {
+
+    const base = URLs.toBase(document.location!.href);
+
+    if (! POLAR_APP_SITES.includes(base)) {
+        return 'https://app.getpolarized.io';
+    } else {
+        return base;
+    }
+
+}
 
 export class AuthHandlers {
 
@@ -52,12 +71,16 @@ abstract class DefaultAuthHandler implements AuthHandler {
                 return signInSuccessUrl;
             }
 
-            const base = URLs.toBase(document.location!.href);
+            const base = computeBaseURL();
+
             return new URL('/apps/repository/login.html', base).toString();
 
         };
 
-        window.location.href = createNewLocation();
+        const newLocation = createNewLocation();
+
+        console.log("Redirecting to authenticate: " + newLocation);
+        window.location.href = newLocation;
 
     }
 
@@ -137,8 +160,9 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
         Firebase.init();
 
-        const base = URLs.toBase(document.location!.href);
+        const base = computeBaseURL();
         const newLocation = new URL('/login.html', base).toString();
+        console.log("Redirecting to authenticate: " + newLocation);
 
         window.location.href = newLocation;
 

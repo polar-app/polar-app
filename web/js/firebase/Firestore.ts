@@ -1,12 +1,10 @@
 import * as firebase from './lib/firebase';
-import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
+import {Tracer} from 'polar-shared/src/util/Tracer';
 
 const log = Logger.create();
-
-const tracer = RendererAnalytics.createTracer('firestore');
 
 const opts: FirestoreOptions = {enablePersistence: true};
 
@@ -22,7 +20,7 @@ export class Firestore {
 
     private static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
 
-        return await tracer.traceAsync('createInstance', async () => {
+        return await Tracer.execAsync('createInstance', async () => {
 
             try {
 
@@ -55,7 +53,7 @@ export class Firestore {
 
         // TODO: this seems super slow and not sure why.  The tab sync
         // seems to not impact performance at all.
-        await tracer.traceAsync('enablePersistence', async () => {
+        await Tracer.execAsync('enablePersistence', async () => {
 
             try {
 

@@ -1,6 +1,5 @@
 import {Firebase} from '../firebase/Firebase';
 import {Firestore} from '../firebase/Firestore';
-import {Dialogs} from '../ui/dialogs/Dialogs';
 import {Account} from './Account';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
@@ -126,13 +125,13 @@ export class Accounts {
                 if (account && account.plan !== newAccount.plan) {
 
                     // FIXME: this needs to be made into a better component..
-                    Dialogs.confirm({
-                        title: "Your plan has changed and we need to reload.",
-                        subtitle: "This will just take a moment we promise.",
-                        type: 'warning',
-                        onConfirm,
-                        noCancel: true
-                    });
+                    // Dialogs.confirm({
+                    //     title: "Your plan has changed and we need to reload.",
+                    //     subtitle: "This will just take a moment we promise.",
+                    //     type: 'warning',
+                    //     onConfirm,
+                    //     noCancel: true
+                    // });
 
                 }
 
