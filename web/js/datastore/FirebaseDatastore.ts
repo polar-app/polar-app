@@ -1,17 +1,19 @@
 import {
-    AbstractDatastore, AbstractPrefsProvider,
+    AbstractDatastore,
+    AbstractPrefsProvider,
     BinaryFileData,
     Datastore,
     DatastoreCapabilities,
     DatastoreConsistency,
     DatastoreInitOpts,
     DatastoreOverview,
-    DatastorePrefs,
     DefaultWriteFileOpts,
     DeleteResult,
     DocMetaMutation,
     DocMetaSnapshotEvent,
     DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
     FileMeta,
     GetFileOpts,
@@ -19,11 +21,12 @@ import {
     InitResult,
     MutationType,
     NetworkLayers,
-    PrefsProvider, PersistentPrefsUpdatedCallback,
+    PersistentPrefsUpdatedCallback,
+    PrefsProvider,
     SnapshotResult,
     WritableBinaryMetaDatastore,
     WriteFileOpts,
-    WriteOpts, DocMetaSnapshotOpts, DocMetaSnapshotResult
+    WriteOpts
 } from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -39,7 +42,10 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from 'polar-shared/src/util/Percentages';
-import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
+import {
+    Percentage,
+    ProgressTracker
+} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';

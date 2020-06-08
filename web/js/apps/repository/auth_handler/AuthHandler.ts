@@ -33,21 +33,6 @@ export class AuthHandlers {
 
     public static get(): AuthHandler {
         return new BrowserAuthHandler();
-        //
-        // if (AppRuntime.isElectron()) {
-        //
-        //     // TODO: Electron can acutally use the BrowserAuthHandler
-        //     // just fine...
-        //     return new ElectronAuthHandler();
-        //
-        // } else if (AppRuntime.isBrowser()) {
-        //
-        //     return new BrowserAuthHandler();
-        //
-        // } else {
-        //     throw new Error("No auth handler.");
-        // }
-        //
     }
 
     public static async requireAuthentication(signInSuccessUrl?: string) {
