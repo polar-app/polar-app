@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 // const workers = require('os').cpus().length - 1;
 
@@ -87,7 +87,14 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
+        extensions: [ '.tsx', '.ts', '.js' ],
+        alias: {
+            // TODO: this is used temporarily during our migration to using
+            // webpack everywhere.  We should eventually change our import to
+            // just 'firebase' but FB think's it's running in node and executes
+            // with the wrong strategy.
+            './lib/firebase': path.resolve(__dirname, 'node_modules/firebase')
+        }
     },
     // only inline-source-map works.
     // devtool: "inline-source-map",
@@ -117,7 +124,9 @@ module.exports = {
         usedExports: true,
         removeAvailableModules: false,
         removeEmptyChunks: false,
-        splitChunks: false,
+        splitChunks: {
+            chunks: 'all'
+        },
     },
     devServer: {
         publicPath: 'web/dist',

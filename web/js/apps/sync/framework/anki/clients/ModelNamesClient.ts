@@ -1,5 +1,4 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
-import * as TypeMoq from "typemoq";
 
 /*
   modelNames
@@ -37,11 +36,11 @@ export class ModelNamesClient implements IModelNamesClient {
     /**
      * Create a mock that returns the given result.
      */
-    public static createMock(result: string[]) {
-        const client = TypeMoq.Mock.ofType<IModelNamesClient>();
-        client.setup(x => x.execute()).returns(() => Promise.resolve(result));
-        return client.object;
-    }
+    // public static createMock(result: string[]) {
+    //     const client = TypeMoq.Mock.ofType<IModelNamesClient>();
+    //     client.setup(x => x.execute()).returns(() => Promise.resolve(result));
+    //     return client.object;
+    // }
 
 }
 

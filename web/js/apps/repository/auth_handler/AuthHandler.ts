@@ -1,7 +1,6 @@
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Firebase} from '../../../firebase/Firebase';
 import * as firebase from '../../../firebase/lib/firebase';
-import {AppRuntime} from '../../../AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {accounts} from 'polar-accounts/src/accounts';
@@ -28,6 +27,7 @@ export interface AuthHandler {
     requireAuthentication(signInSuccessUrl?: string): Promise<void>;
 
 }
+
 
 export class AuthHandlers {
 
