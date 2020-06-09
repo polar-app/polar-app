@@ -149,7 +149,6 @@
     "@nivo/line": "=0.61.1",
     "@nivo/pie": "=0.61.1",
     "@sentry/electron": "~1.2.0",
-    "adm-zip": "~0.4.13",
     "amplitude-js": "^5.8.0",
     "babel-preset-es2017": "~6.24.1",
     "base58check": "~2.0.0",
