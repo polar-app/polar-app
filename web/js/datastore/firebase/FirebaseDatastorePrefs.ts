@@ -24,7 +24,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
         // FIXME: This is slow and forces a server read first... we should make
         // this use snapshots so that after the FIRST snapshot we're just
         // updating internally
-        const userPref = await Tracer.async('user-prefs', UserPrefs.get());
+        const userPref = await Tracer.async(UserPrefs.get(), 'user-prefs');
         this.update(userPref.toPrefDict());
 
         this.firestore = await Firestore.getInstance();

@@ -20,7 +20,7 @@ export class Firestore {
 
     private static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
 
-        return await Tracer.execAsync('createInstance', async () => {
+        const doExecAsync = async (): Promise<firebase.firestore.Firestore> => {
 
             try {
 
@@ -45,15 +45,15 @@ export class Firestore {
                 log.notice("Initializing firestore...done");
             }
 
-        });
+        }
+
+        return await Tracer.async(doExecAsync, 'createInstance');
 
     }
 
     private static async enablePersistence(firestore: firebase.firestore.Firestore) {
 
-        // TODO: this seems super slow and not sure why.  The tab sync
-        // seems to not impact performance at all.
-        await Tracer.execAsync('enablePersistence', async () => {
+        const doExecAsync = async () => {
 
             try {
 
@@ -71,7 +71,10 @@ export class Firestore {
                 console.warn("Unable to use persistence. Data will not be cached locally: ", e);
             }
 
-        });
+        }
+            // TODO: this seems super slow and not sure why.  The tab sync
+        // seems to not impact performance at all.
+        await Tracer.async(doExecAsync, 'enablePersistence');
 
     }
 

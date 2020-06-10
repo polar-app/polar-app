@@ -87,11 +87,11 @@ export class AppInitializer {
 
         const authHandler = AuthHandlers.get();
 
-        const authStatus = await Tracer.async('auth-handler', authHandler.status());
+        const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
 
-        const account = await Tracer.async('accounts', Accounts.get());
+        const account = await Tracer.async(Accounts.get(), 'accounts.get');
         await AccountProvider.init(account);
-        const userInfo = await Tracer.async('user-info', authHandler.userInfo());
+        const userInfo = await Tracer.async(authHandler.userInfo(), 'user-info');
 
         const platform = Platforms.get();
 

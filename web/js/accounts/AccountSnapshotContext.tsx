@@ -32,7 +32,7 @@ export const AccountContextSubscriber = (props: IProps) => {
         const authHandler = AuthHandlers.get();
 
         const handleStatus = async () => {
-            const authStatus = await Tracer.async('auth-handler-context', authHandler.status());
+            const authStatus = await Tracer.async(authHandler.status(), 'auth-handler-context');
             setAuthStatus(authStatus);
         };
 
