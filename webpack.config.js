@@ -61,7 +61,8 @@ function createRules() {
 
     ];
 
-    if (target === 'electron-renderer') {
+    if (target !== 'electron-renderer') {
+        console.log("Adding null-loader for electron libraries");
         rules.push({
             test: path.resolve(__dirname, 'node_modules/electron/index.js'),
             use: 'null-loader'

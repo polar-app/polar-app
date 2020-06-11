@@ -3,7 +3,6 @@ import {CIDProvider} from './CIDProvider';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Providers} from 'polar-shared/src/util/Providers';
 
 const log = Logger.create();
 

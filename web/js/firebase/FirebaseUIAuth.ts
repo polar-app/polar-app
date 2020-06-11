@@ -1,12 +1,10 @@
-// import firebase from 'firebase';
-// import firebaseui from 'firebaseui';
-// import AuthUI = firebaseui.auth.AuthUI;
+// noinspection TsLint: max-line-length
 
 import * as firebase from 'firebase/app';
-import firebaseui from 'firebaseui';
-import {Objects} from "polar-shared/src/util/Objects";
+import 'firebase/auth';
 
-// noinspection TsLint: max-line-length
+import firebaseui from 'firebaseui';
+
 const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/privacy-policy.html';
