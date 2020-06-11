@@ -108,7 +108,7 @@ module.exports = {
         }
     },
     // only inline-source-map works.
-    devtool: isDev ? "inline-source-map" : null,
+    devtool: isDev ? "inline-source-map" : false,
     output: {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
