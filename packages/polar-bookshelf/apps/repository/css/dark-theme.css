@@ -1,0 +1,34 @@
+
+/*212529*/
+
+:root {
+    --dark: #ffffff;
+    --white: #2B2B2B;
+    --light: #2B2B2B;
+}
+
+body {
+    background-color: var(--white);
+    color: var(--dark);
+}
+
+.btn-light {
+    background-color: var(--white);
+    color: var(--dark);
+}
+
+/* changes needed for react-table */
+
+.ReactTable .rt-tbody .rt-tr-group {
+    /*border-bottom-color: rgba(0, 0, 0, 0.05);*/
+    border-bottom-color: var(--grey800);
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc, .ReactTable .rt-thead .rt-td.-sort-desc {
+    box-shadow: inset 0 -3px 0 0 var(--primary);
+}
+
+.ReactTable .rt-thead.-header {
+    box-shadow: 0 2px 15px 0 var(--grey600);
+}
+
