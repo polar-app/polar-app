@@ -1,0 +1,32 @@
+{
+  "name": "polar-doc-preview-loader",
+  "version": "2.0.0-beta.5",
+  "description": "Loads up doc preview URLs into be queued for processing",
+  "main": "index.js",
+  "scripts": {
+    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "echo noop",
+    "compile": "tsc",
+    "dist": "echo noop"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "=12.12.32",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "polar-test": "^2.0.0-beta.5",
+    "tslint": "=6.1.1",
+    "typescript": "3.9.5"
+  },
+  "dependencies": {
+    "@google-cloud/tasks": "=1.9.0",
+    "firebase-admin": "=8.10.0",
+    "polar-firebase": "^2.0.0-beta.5",
+    "polar-firebase-admin": "^2.0.0-beta.5",
+    "polar-shared": "^2.0.0-beta.5"
+  }
+}
