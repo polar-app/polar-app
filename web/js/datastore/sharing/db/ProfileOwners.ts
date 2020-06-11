@@ -1,6 +1,6 @@
 
 import {Firestore} from '../../../firebase/Firestore';
-import * as firebase from '../../../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import DocumentReference = firebase.firestore.DocumentReference;
 import {Firebase} from "../../../firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";

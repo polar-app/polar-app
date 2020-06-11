@@ -2,8 +2,8 @@
 // import firebaseui from 'firebaseui';
 // import AuthUI = firebaseui.auth.AuthUI;
 
-import * as firebase from './lib/firebase';
-import firebaseui from './lib/firebaseui';
+import * as firebase from 'firebase/app';
+import firebaseui from 'firebaseui';
 import {Objects} from "polar-shared/src/util/Objects";
 
 // noinspection TsLint: max-line-length

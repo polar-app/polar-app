@@ -1,24 +1,15 @@
-import {SpectronRenderer, SpectronRendererState} from '../../js/test/SpectronRenderer';
-import {Firebase} from '../../js/firebase/Firebase';
-import {FirebaseUIAuth} from '../../js/firebase/FirebaseUIAuth';
-import * as firebase from '../../js/firebase/lib/firebase';
-import {Elements} from '../../js/util/Elements';
-import {DiskDatastore} from '../../js/datastore/DiskDatastore';
-import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
-import {MockDocMetas} from '../../js/metadata/DocMetas';
-import {assert} from "chai";
-import {DatastoreTester} from '../../js/datastore/DatastoreTester';
+import {SpectronRenderer} from '../../js/test/SpectronRenderer';
+import * as firebase from 'firebase/app';
 import {Firestore} from '../../js/firebase/Firestore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Promises} from '../../js/util/Promises';
-import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
-import {Datastores} from '../../js/datastore/Datastores';
-import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
-import {AsyncFunction, AsyncWorkQueue} from 'polar-shared/src/util/AsyncWorkQueue';
+import {
+    AsyncFunction,
+    AsyncWorkQueue
+} from 'polar-shared/src/util/AsyncWorkQueue';
 import {FirestoreQueryCursor} from '../../js/firebase/FirestoreQueryCursor';
-import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Strings} from "polar-shared/src/util/Strings";
 
 mocha.setup('bdd');

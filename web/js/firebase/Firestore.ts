@@ -1,8 +1,10 @@
-import * as firebase from './lib/firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -13,6 +15,7 @@ export class Firestore {
     private static firestoreProvider = AsyncProviders.memoize(async () => await Firestore.createInstance(opts));
 
     public static async getInstance(): Promise<firebase.firestore.Firestore> {
+        Preconditions.assertPresent(firebase, 'firebase');
         Firebase.init();
 
         return await this.firestoreProvider();
@@ -83,4 +86,9 @@ export class Firestore {
 export interface FirestoreOptions {
     readonly enablePersistence?: boolean;
 }
+
+
+
+
+
 

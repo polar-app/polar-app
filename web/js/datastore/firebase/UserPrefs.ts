@@ -2,7 +2,7 @@ import {DictionaryPrefs, PersistentPrefs, Prefs, StringToPrefDict} from "../../u
 import {Collections, UserIDStr} from "../sharing/db/Collections";
 import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import firebase from "../../firebase/lib/firebase";
+import * as firebase from 'firebase/app';
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
 

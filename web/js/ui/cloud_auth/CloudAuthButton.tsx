@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Firebase} from '../../firebase/Firebase';
-import * as firebase from '../../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerController} from '../../datastore/PersistenceLayerManager';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';

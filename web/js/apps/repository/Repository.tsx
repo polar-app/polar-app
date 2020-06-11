@@ -19,6 +19,7 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
 import {RepositoryApp} from './RepositoryApp';
+import {AppRuntime} from "../../AppRuntime";
 
 const log = Logger.create();
 
@@ -31,7 +32,7 @@ export class Repository {
 
     public async start() {
 
-        console.log("Starting repository");
+        console.log("Starting repository with app runtime: " + AppRuntime.get());
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 

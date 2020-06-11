@@ -7,7 +7,7 @@ import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {Firebase, UserID} from '../firebase/Firebase';
-import * as firebase from '../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Logger} from "polar-shared/src/logger/Logger";

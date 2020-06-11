@@ -2,10 +2,13 @@ const path = require('path');
 const webpack = require('webpack');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const os = require('os');
 
-// const workers = require('os').cpus().length - 1;
+const isDev = process.env.NODE_ENV === 'development';
+const target = process.env.WEBPACK_TARGET || 'web';
 
-const workers = 1;
+const workers = os.cpus().length - 1;
 
 const OUTPUT_PATH = path.resolve(__dirname, 'web/dist');
 
@@ -13,21 +16,81 @@ console.log("Using N workers: " + workers);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
+function createRules() {
+
+    const rules = [
+
+        // https://github.com/webpack-contrib/cache-loader
+        //
+        // looks like with the cache loader the initial compile is about 10%
+        // longer but 2x faster once the cache is running.
+        { loader: 'cache-loader' },
+        {
+            test: /\.tsx?$/,
+            // exclude: /node_modules/,
+
+            use: [
+                {
+                    loader: 'thread-loader',
+                    options: {
+                        // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                        workers,
+                        // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+                        workerParallelJobs: 100,
+                        poolTimeout: 2000,
+                    }
+                },
+                {
+                    loader: 'ts-loader',
+                    options: {
+                        // performance: this improved performance by about 2x.
+                        // from 20s to about 10s
+                        transpileOnly: true,
+                        experimentalWatchApi: true,
+
+                        // IMPORTANT! use happyPackMode mode to speed-up
+                        // compilation and reduce errors reported to webpack
+                        happyPackMode: true
+
+                    }
+                }
+
+            ]
+
+        }
+
+    ];
+
+    if (target === 'electron-renderer') {
+        rules.push({
+            test: path.resolve(__dirname, 'node_modules/electron/index.js'),
+            use: 'null-loader'
+        })
+    }
+
+    return rules;
+
+}
+
+function createNode() {
+
+    if (target === 'electron-renderer') {
+        return {};
+    } else {
+        return {
+            fs: 'empty',
+            net: 'empty',
+            tls: 'empty',
+        }
+    }
+
+}
+
 module.exports = {
     // mode: 'development',
     // stats: 'verbose',
+    target,
     entry: {
-
-        // chrome + repository (individually) is about:
-        //
-        //   10.2MB raw
-        //   3.1MB compressed
-        //   (2.4MB with brotli / 22% smaller)
-        //
-        // chrome + repository (both) is about
-
-        //   5.1MB raw and about
-        //   1.6MB compressed.
 
         "doc": [ "./apps/doc/src/entry.tsx"],
         "repository": [ "./apps/repository/js/entry.tsx"],
@@ -37,77 +100,21 @@ module.exports = {
 
     },
     module: {
-
-        rules: [
-
-            // https://github.com/webpack-contrib/cache-loader
-            //
-            // looks like with the cache loader the initial compile is about 10%
-            // longer but 2x faster once the cache is running.
-            { loader: 'cache-loader' },
-            {
-                test: path.resolve(__dirname, 'node_modules/electron/index.js'),
-                use: 'null-loader'
-            },
-            {
-                test: /\.tsx?$/,
-                // exclude: /node_modules/,
-
-                use: [
-                    {
-                        loader: 'thread-loader',
-                        options: {
-                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                            workers: 15,
-                            // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-                            poolTimeout: Infinity,
-                            workerParallelJobs: 100,
-                            poolTimeout: 2000,
-                        }
-                    },
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            // performance: this improved performance by about 2x.
-                            // from 20s to about 10s
-                            transpileOnly: true,
-                            experimentalWatchApi: true,
-
-                            // IMPORTANT! use happyPackMode mode to speed-up
-                            // compilation and reduce errors reported to webpack
-                            happyPackMode: true
-
-                        }
-                    }
-
-                ]
-
-            }
-
-        ]
+        rules: createRules()
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ],
         alias: {
-            // TODO: this is used temporarily during our migration to using
-            // webpack everywhere.  We should eventually change our import to
-            // just 'firebase' but FB think's it's running in node and executes
-            // with the wrong strategy.
-            './lib/firebase': path.resolve(__dirname, 'node_modules/firebase')
         }
     },
     // only inline-source-map works.
-    // devtool: "inline-source-map",
+    devtool: isDev ? "inline-source-map" : null,
     output: {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
         // publicPath: '/web/js/apps'
     },
-    node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty',
-    },
+    node: createNode(),
     plugins: [
         // new BundleAnalyzerPlugin(),
         new webpack.ProvidePlugin({
@@ -120,13 +127,18 @@ module.exports = {
 
     ],
     optimization: {
-        minimize: true,
-        usedExports: true,
-        removeAvailableModules: false,
-        removeEmptyChunks: false,
-        splitChunks: {
-            chunks: 'all'
-        },
+        minimize: ! isDev,
+        minimizer: [new TerserPlugin({
+            terserOptions: {
+                output: { ascii_only: true },
+            }})
+        ],
+        // usedExports: true,
+        // removeAvailableModules: true,
+        // removeEmptyChunks: true,
+        // splitChunks: {
+        //     chunks: 'all'
+        // },
     },
     devServer: {
         publicPath: 'web/dist',

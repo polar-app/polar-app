@@ -1,6 +1,5 @@
 import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from "../../util/prefs/Prefs";
 import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
-import firebase from "../../firebase/lib/firebase";
 import {Firestore} from "../../firebase/Firestore";
 import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";

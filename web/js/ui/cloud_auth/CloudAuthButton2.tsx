@@ -1,8 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React, {useCallback, useEffect, useState} from 'react';
 import {Firebase} from '../../firebase/Firebase';
-import * as firebase from '../../firebase/lib/firebase';
-import {User} from '../../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
@@ -14,6 +13,7 @@ import {AccountControlDropdown} from './AccountControlDropdown';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AccountActions} from "../../accounts/AccountActions";
 import {useHistory} from 'react-router-dom';
+import { User } from 'firebase/app';
 
 const log = Logger.create();
 

@@ -1,6 +1,6 @@
 import {Firebase} from '../../../web/js/firebase/Firebase';
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
-import * as firebase from '../../../web/js/firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
 import {Optional} from 'polar-shared/src/util/ts/Optional';

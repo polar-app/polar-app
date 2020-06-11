@@ -2,7 +2,8 @@ import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {accounts} from 'polar-accounts/src/accounts';
 import {PersistenceLayerController} from "../datastore/PersistenceLayerManager";
-import * as firebase from "../firebase/lib/firebase";
+import * as firebase from "firebase/app";
+import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
 import {Logger} from "polar-shared/src/logger/Logger";
 

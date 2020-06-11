@@ -4,13 +4,13 @@
  * @param scriptSrc function to call if we are in Electron.
  * @param fallbackLoader
  */
-function injectApp(scriptSrc, fallbackLoader) {
+function injectApp(scriptSrc, fallbackLoader, forceScript) {
 
-    if (typeof require === 'function') {
+    if (typeof require === 'function' && ! forceScript) {
         console.log("Loading via fallbackLoader");
         fallbackLoader();
     } else {
-        console.log("Loading via script");
+        console.log("Loading via script: " + scriptSrc);
         injectScript(scriptSrc);
     }
 

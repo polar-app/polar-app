@@ -1,4 +1,5 @@
-import * as firebase from './lib/firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 
@@ -43,7 +44,6 @@ export class Firebase {
         try {
 
             this.app = this.initApp();
-            this.initConnectionStateListener();
 
             return this.app;
 
@@ -69,22 +69,6 @@ export class Firebase {
 
         return firebase.initializeApp(config);
 
-    }
-
-    private static initConnectionStateListener() {
-
-        const connectedRef = firebase.database().ref(".info/connected");
-        connectedRef.on("value", function(snap) {
-
-            const msg = 'Firebase state: ';
-
-            if (snap.val() === true) {
-                console.log(msg, "connected");
-            } else {
-                console.log(msg, "disconnected");
-            }
-
-        });
     }
 
     public static async currentUser(): Promise<firebase.User | null> {

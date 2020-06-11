@@ -1,4 +1,4 @@
-import * as firebase from './lib/firebase';
+import * as firebase from 'firebase/app';
 import { Firebase } from './Firebase';
 
 export namespace FirebaseAuth {

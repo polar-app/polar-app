@@ -1,5 +1,5 @@
 import {SpectronRendererState} from '../test/SpectronRenderer';
-import * as firebase from './lib/firebase';
+import * as firebase from 'firebase/app';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Firebase} from './Firebase';
 import {ASYNC_NULL_FUNCTION} from 'polar-shared/src/util/Functions';

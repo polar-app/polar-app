@@ -3,7 +3,7 @@ import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import * as firebase from '../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {Analytics} from "../analytics/Analytics";

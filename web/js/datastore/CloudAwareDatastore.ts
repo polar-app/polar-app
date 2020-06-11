@@ -38,7 +38,7 @@ import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapsho
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {AsyncFunction} from 'polar-shared/src/util/AsyncWorkQueue';
-import * as firebase from '../firebase/lib/firebase';
+import * as firebase from 'firebase/app';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
