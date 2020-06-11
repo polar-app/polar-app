@@ -4,6 +4,9 @@
       "hosting": {
         "app.getpolarized.io": [
           "polar-webapp"
+        ],
+        "beta.getpolarized.io": [
+          "polar-beta"
         ]
       }
     }
