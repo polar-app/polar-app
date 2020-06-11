@@ -5,7 +5,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const os = require('os');
 
-const isDev = process.env.NODE_ENV === 'development';
+const mode = process.env.NODE_ENV || 'production';
+const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 
 const workers = os.cpus().length - 1;
@@ -13,6 +14,9 @@ const workers = os.cpus().length - 1;
 const OUTPUT_PATH = path.resolve(__dirname, 'web/dist');
 
 console.log("Using N workers: " + workers);
+console.log("mode: " + mode);
+console.log("isDev: " + isDev);
+console.log("target: " + target);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
@@ -88,7 +92,7 @@ function createNode() {
 }
 
 module.exports = {
-    // mode: 'development',
+    mode,
     // stats: 'verbose',
     target,
     entry: {
@@ -96,7 +100,7 @@ module.exports = {
         "doc": [ "./apps/doc/src/entry.tsx"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "preview": [ "./apps/preview/index.ts"],
-        "login": [ "./apps/repository/js/login.ts"],
+        // "login": [ "./apps/repository/js/login.ts"],
         "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
 
     },

@@ -79,7 +79,7 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         const doHandle = async () => {
 
-            const user = await Firebase.currentUser();
+            const user = await Firebase.currentUserAsync();
 
             if (! user) {
                 this.onConnectivity('unauthenticated');

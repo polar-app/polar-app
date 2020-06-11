@@ -74,7 +74,7 @@ export class AccountActions {
 
     private static async createAccountData(): Promise<AccountData> {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
             throw new Error("No account");

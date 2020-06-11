@@ -13,7 +13,7 @@ export class UserPrefs {
     private static COLLECTION = 'user_pref';
 
     private static async getUserID(): Promise<UserIDStr> {
-        const user = Preconditions.assertPresent(await Firebase.currentUser());
+        const user = Preconditions.assertPresent(await Firebase.currentUserAsync());
         return user.uid;
     }
 

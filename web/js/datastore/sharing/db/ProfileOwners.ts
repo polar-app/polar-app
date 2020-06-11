@@ -23,7 +23,7 @@ export class ProfileOwners {
     public static async get(id?: UserIDStr, opts: GetOptions = {}): Promise<ProfileOwner | undefined> {
 
         if (! id) {
-            const user = await Firebase.currentUser();
+            const user = await Firebase.currentUserAsync();
 
             if (! user) {
                 return undefined;

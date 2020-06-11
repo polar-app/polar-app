@@ -10,7 +10,7 @@ export class GroupMembers {
     public static readonly COLLECTION = 'group_member';
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMember>> {
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
         Preconditions.assertPresent(user, 'user');
         return await Collections.list(this.COLLECTION, [['groupID' , '==', groupID]]);
     }

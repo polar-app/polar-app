@@ -1,50 +1,11 @@
 import {Firebase} from '../../../web/js/firebase/Firebase';
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import * as firebase from 'firebase/app';
-import {URLs} from 'polar-shared/src/util/URLs';
 import {AppRuntime} from '../../../web/js/AppRuntime';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
 import {Analytics} from "../../../web/js/analytics/Analytics";
-
-// TODO: unify all SignInSuccessURLs / LoginURLs and any use of signInSuccessUrl
-class SignInSuccessURLs {
-
-    /**
-     * Get the right sign in URL either the default or a custom if specified
-     * by a URL param.
-     */
-    public static get() {
-
-        return Optional.first(this.getCustom(), this.getDefault()).get();
-
-    }
-
-    /**
-     * Allow the user to set a custom signInSuccessUrl as a param.
-     */
-    private static getCustom(): string | undefined {
-
-        const url = new URL(document.location!.href);
-
-        return Optional.of(url.searchParams.get('signInSuccessUrl'))
-            .getOrUndefined();
-
-    }
-
-    private static getDefault(): string {
-
-        const base = URLs.toBase(document.location!.href);
-
-        const signInPath
-            = AppRuntime.isBrowser() ? "/" : '/#configured';
-
-        return new URL(signInPath, base).toString();
-
-    }
-
-}
+import {SignInSuccessURLs} from "./login/SignInSuccessURLs";
 
 class InitialLogin {
 
@@ -80,7 +41,6 @@ window.addEventListener('load', async () => {
     if (firebase.auth().currentUser === null) {
 
         const signInSuccessUrl = SignInSuccessURLs.get();
-
         FirebaseUIAuth.login({signInSuccessUrl});
 
     }

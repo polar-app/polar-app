@@ -71,7 +71,12 @@ export class Firebase {
 
     }
 
-    public static async currentUser(): Promise<firebase.User | null> {
+    public static currentUser(): firebase.User | null {
+        Firebase.init();
+        return firebase.auth().currentUser;
+    }
+
+    public static async currentUserAsync(): Promise<firebase.User | null> {
 
         Firebase.init();
 
@@ -93,7 +98,7 @@ export class Firebase {
 
     public static async currentUserID(): Promise<UserIDStr | undefined> {
 
-        const user = await this.currentUser();
+        const user = await this.currentUserAsync();
 
         if  (user) {
             return user.uid;

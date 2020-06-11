@@ -14,7 +14,7 @@ export class UserGroups {
 
         if (! uid) {
 
-            const user = await Firebase.currentUser();
+            const user = await Firebase.currentUserAsync();
 
             if (! user) {
                 return undefined;
@@ -34,7 +34,7 @@ export class UserGroups {
 
     public static async onSnapshot(handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if  (! user) {
             return NULL_FUNCTION;

@@ -35,6 +35,7 @@ import {PersistentRoute} from "./PersistentRoute";
 import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
 import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
+import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
 
 interface IProps {
     readonly app: App;
@@ -247,115 +248,116 @@ export const RepositoryApp = (props: IProps) => {
                      flexDirection: 'column',
                      flexGrow: 1
                  }}>
-            {/*<Splashes key="splashes"*/}
-            {/*          persistenceLayerManager={persistenceLayerManager}/>*/}
-
-            <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
                 <>
 
-                <BrowserRouter key="browser-router">
+                <BrowserRouter>
 
-                    <Switch
-                        location={ReactRouters.createLocationWithPathAndHash()}>
+                    <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                    </Switch>
+                        <Route exact path={["/login", "/login.html"]}>
+                            <LoginScreen/>
+                        </Route>
 
-                </BrowserRouter>
+                        <Route>
+                            <BrowserRouter>
 
-                <BrowserRouter key="path-router">
+                                <RepoHeader3 />
 
-                    <RepoHeader3 />
+                                <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
-                    <Switch
-                        location={ReactRouters.createLocationWithPathOnly()}>
+                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                        {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
+                                    {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
 
-                        <Route exact path='/whats-new'
-                               render={renderWhatsNewScreen}/>
+                                    <Route exact path='/whats-new'
+                                           render={renderWhatsNewScreen}/>
 
-                        {/*<Route path='/group/:group/highlights'*/}
-                        {/*       render={renderGroupHighlightsScreen}/>*/}
+                                    {/*<Route path='/group/:group/highlights'*/}
+                                    {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                        {/*<Route path='/group/:group/docs'*/}
-                        {/*       render={renderGroupScreen}/>*/}
+                                    {/*<Route path='/group/:group/docs'*/}
+                                    {/*       render={renderGroupScreen}/>*/}
 
-                        {/*<Route path='/group/:group/highlight/:id'*/}
-                        {/*       render={renderGroupHighlightScreen}/>*/}
+                                    {/*<Route path='/group/:group/highlight/:id'*/}
+                                    {/*       render={renderGroupHighlightScreen}/>*/}
 
-                        {/*<Route path='/group/:group'*/}
-                        {/*       render={renderGroupHighlightsScreen}/>*/}
+                                    {/*<Route path='/group/:group'*/}
+                                    {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                        {/*<Route exact path='/groups'*/}
-                        {/*       render={renderGroupsScreen}/>*/}
+                                    {/*<Route exact path='/groups'*/}
+                                    {/*       render={renderGroupsScreen}/>*/}
 
-                        {/*<Route exact path='/groups/create'*/}
-                        {/*       render={renderCreateGroupScreen}/>*/}
+                                    {/*<Route exact path='/groups/create'*/}
+                                    {/*       render={renderCreateGroupScreen}/>*/}
 
-                        <Route exact path='/invite' render={renderInvite}/>
+                                    <Route exact path='/invite' render={renderInvite}/>
 
-                        <Route exact path='/plans' render={premiumScreen}/>
+                                    <Route exact path='/plans' render={premiumScreen}/>
 
-                        <Route exact path='/plans-year'
-                               render={premiumScreenYear}/>
+                                    <Route exact path='/plans-year'
+                                           render={premiumScreenYear}/>
 
-                        <Route exact path='/premium' render={premiumScreen}/>
+                                    <Route exact path='/premium' render={premiumScreen}/>
 
-                        <Route exact path='/support' render={supportScreen}/>
+                                    <Route exact path='/support' render={supportScreen}/>
 
-                        <Route exact path='/stats'
-                               component={renderStatsScreen}/>
+                                    <Route exact path='/stats'
+                                           component={renderStatsScreen}/>
 
-                        {/*<Route exact path="/annotations"*/}
-                        {/*       component={RenderAnnotationRepoScreen}/>*/}
+                                    {/*/!*<Route exact path="/annotations"*!/*/}
+                                    {/*/!*       component={RenderAnnotationRepoScreen}/>*!/*/}
 
-                        <Route exact path="/settings"
-                               component={RenderSettingsScreen}/>
+                                    <Route exact path="/settings"
+                                           component={RenderSettingsScreen}/>
 
-                        <Route exact path="/profile"
-                               component={renderProfileScreen}/>
+                                    <Route exact path="/profile"
+                                           component={renderProfileScreen}/>
 
-                        <Route exact path="/device"
-                               component={renderDeviceScreen}/>
+                                    <Route exact path="/device"
+                                           component={renderDeviceScreen}/>
 
-                        {/*<Route exact path='/'*/}
-                        {/*       component={RenderDefaultScreen}/>*/}
+                                    {/*<Route exact path='/'*/}
+                                    {/*       component={RenderDefaultScreen}/>*/}
 
-                        {/*<Route exact path='/'>*/}
-                        {/*    <RenderDefaultScreen/>*/}
-                        {/*</Route>*/}
+                                    {/*<Route exact path='/'>*/}
+                                    {/*    <RenderDefaultScreen/>*/}
+                                    {/*</Route>*/}
 
-                    </Switch>
+                                </Switch>
 
-                    <PersistentRoute exact path="/">
-                        <RenderDefaultScreen/>
-                    </PersistentRoute>
+                                <PersistentRoute exact path="/">
+                                    <RenderDefaultScreen/>
+                                </PersistentRoute>
 
-                    <PersistentRoute exact path="/annotations">
-                        <RenderAnnotationRepoScreen/>
-                    </PersistentRoute>
+                                <PersistentRoute exact path="/annotations">
+                                    <RenderAnnotationRepoScreen/>
+                                </PersistentRoute>
 
-                    <Switch
-                        location={ReactRouters.createLocationWithHashOnly()}>
+                                <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                        <Route path='#account'
-                               component={() =>
-                                   <Cached>
-                                       <AccountControlSidebar
-                                           persistenceLayerProvider={app.persistenceLayerProvider}
-                                           persistenceLayerController={app.persistenceLayerController}/>
-                                   </Cached>
-                               }/>
+                                    <Route path='#account'
+                                           component={() =>
+                                               <Cached>
+                                                   <AccountControlSidebar
+                                                       persistenceLayerProvider={app.persistenceLayerProvider}
+                                                       persistenceLayerController={app.persistenceLayerController}/>
+                                               </Cached>
+                                           }/>
 
-                        {/*TODO: add a logout splash so that the user knows that they are unauthenticated.*/}
-                        <Route path='#logout'>
-                            <LogoutScreen/>
+                                    {/*TODO: add a logout splash so that the user knows that they are unauthenticated.*/}
+                                    <Route path='#logout'>
+                                        <LogoutScreen/>
+                                    </Route>
+
+                                </Switch>
+
+                                <RepoFooter/>
+
+                            </BrowserRouter>
                         </Route>
 
                     </Switch>
-
-                    <RepoFooter/>
 
                 </BrowserRouter>
 
@@ -379,16 +381,4 @@ export const RepositoryApp = (props: IProps) => {
     );
 
 };
-
-function getRootElement() {
-
-    const rootElement = document.getElementById('root') as HTMLElement;
-
-    if (! rootElement) {
-        throw new Error("No root element to which to render");
-    }
-
-    return rootElement;
-
-}
 

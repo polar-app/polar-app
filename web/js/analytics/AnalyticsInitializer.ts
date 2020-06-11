@@ -93,7 +93,7 @@ export class AnalyticsInitializer {
 
         };
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (user) {
 

@@ -10,7 +10,7 @@ export class Contacts {
 
     public static async list(): Promise<ReadonlyArray<Contact>> {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
 
         return await Collections.list(this.COLLECTION, [['uid' , '==', uid]]);
@@ -19,7 +19,7 @@ export class Contacts {
 
     public static async onSnapshot(delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
 
         return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['uid' , '==', uid]], delegate);

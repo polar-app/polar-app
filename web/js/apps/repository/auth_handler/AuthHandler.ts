@@ -148,7 +148,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | null> {
-        return Firebase.currentUser();
+        return Firebase.currentUserAsync();
     }
 
 }
@@ -156,6 +156,8 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async authenticate(): Promise<void> {
+
+        console.error(new Error("FIXME: "));
 
         Firebase.init();
 

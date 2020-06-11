@@ -27,7 +27,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
         this.update(userPref.toPrefDict());
 
         this.firestore = await Firestore.getInstance();
-        this.user = (await Firebase.currentUser())!;
+        this.user = (await Firebase.currentUserAsync())!;
 
         this.initLatch.resolve(true);
 

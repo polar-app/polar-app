@@ -184,8 +184,8 @@
           require(path.join(appPath, "apps", "repository", "js", "login.js"));
 
       }
-
-      injectApp('/web/dist/login-bundle.js', fallbackLoader);
+      const forceScript = true;
+      injectApp('/web/dist/login-bundle.js', fallbackLoader, forceScript);
 
   </script>
 

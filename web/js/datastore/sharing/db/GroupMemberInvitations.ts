@@ -17,7 +17,7 @@ export class GroupMemberInvitations {
 
     public static async list(): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
         Preconditions.assertPresent(user, 'user');
         return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
 
@@ -47,7 +47,7 @@ export class GroupMemberInvitations {
 
     public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
-        const user = await Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
             // no current user so there's nothing we can do yet.

@@ -3,7 +3,8 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-import firebaseui from 'firebaseui';
+import * as firebaseui from 'firebaseui'
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
@@ -17,6 +18,11 @@ export class FirebaseUIAuth {
      * @param partialOpts The opts to use when authenticating.
      */
     public static login(partialOpts: Partial<FirebaseUIAuthOptions> = {}): firebaseui.auth.AuthUI {
+
+        console.log("Triggering Firebase UI auth");
+
+        Preconditions.assertPresent(firebaseui, 'firebaseui');
+        Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
 
         const opts = {
             containerSelector: '#firebaseui-auth-container',
