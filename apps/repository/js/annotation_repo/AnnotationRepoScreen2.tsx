@@ -129,10 +129,6 @@ namespace screen {
                                minHeight: 0
                            }}>
 
-                        {/*<Router onCreateReviewer={mode => props.onCreateReviewer(mode)}*/}
-                        {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
-                        {/*        {...props}/>*/}
-
                         <StartReviewSpeedDial/>
 
                         <DeviceRouter phone={<main.Phone />}
