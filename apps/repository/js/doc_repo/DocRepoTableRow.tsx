@@ -15,6 +15,7 @@ import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -166,6 +167,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                     />
                 </AutoBlur>
             </TableCell>
+
             <TableCell component="th"
                        id={labelId}
                        scope="row"
@@ -175,53 +177,59 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                        onContextMenu={contextMenuHandler}>
                 {row.title}
             </TableCell>
-            <TableCell className={classes.colAdded}
-                       padding="none"
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
 
-                <DateTimeTableCell datetime={row.added}/>
+            <DeviceRouters.NotPhone>
+                <>
+                    <TableCell className={classes.colAdded}
+                               padding="none"
+                               onClick={selectRowClickHandler}
+                               onContextMenu={contextMenuHandler}>
 
-            </TableCell>
-            <TableCell className={classes.colLastUpdated}
-                       padding="none"
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
+                        <DateTimeTableCell datetime={row.added}/>
 
-                <DateTimeTableCell datetime={row.lastUpdated}/>
+                    </TableCell>
 
-            </TableCell>
+                    <TableCell className={classes.colLastUpdated}
+                               padding="none"
+                               onClick={selectRowClickHandler}
+                               onContextMenu={contextMenuHandler}>
 
-            <TableCellTags contextMenuHandler={contextMenuHandler}
-                           selectRow={selectRow}
-                           viewID={row.id}
-                           tags={row.tags}/>
+                        <DateTimeTableCell datetime={row.lastUpdated}/>
 
-            <TableCell className={classes.colProgress}
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}
-                       padding="none">
+                    </TableCell>
 
-                <progress className={classes.progress}
-                          value={row.progress}
-                          max={100}/>
+                    <TableCellTags contextMenuHandler={contextMenuHandler}
+                                   selectRow={selectRow}
+                                   viewID={row.id}
+                                   tags={row.tags}/>
 
-            </TableCell>
+                    <TableCell className={classes.colProgress}
+                               onClick={selectRowClickHandler}
+                               onContextMenu={contextMenuHandler}
+                               padding="none">
 
-            <TableCell align="right"
-                       padding="none"
-                       className={classes.colDocButtons}
-                       onClick={event => event.stopPropagation()}
-                       onDoubleClick={event => event.stopPropagation()}>
+                        <progress className={classes.progress}
+                                  value={row.progress}
+                                  max={100}/>
 
-                <MUIDocButtonBar className={classes.docButtons}
-                                 flagged={row.flagged}
-                                 archived={row.archived}
-                                 viewID={row.id}
-                                 {...props}/>
+                    </TableCell>
 
-            </TableCell>
+                    <TableCell align="right"
+                               padding="none"
+                               className={classes.colDocButtons}
+                               onClick={event => event.stopPropagation()}
+                               onDoubleClick={event => event.stopPropagation()}>
 
+                        <MUIDocButtonBar className={classes.docButtons}
+                                         flagged={row.flagged}
+                                         archived={row.archived}
+                                         viewID={row.id}
+                                         {...props}/>
+
+                    </TableCell>
+
+                </>
+            </DeviceRouters.NotPhone>
         </TableRow>
     );
 

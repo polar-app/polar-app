@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {AddContentActions} from '../ui/AddContentActions';
-import {Tag} from 'polar-shared/src/tags/Tags';
-import {DeviceRouter} from '../../../../web/js/ui/DeviceRouter';
 import {AddContent} from '../ui/AddContentButton';
+import { DeviceRouters } from '../../../../web/js/ui/DeviceRouter';
 
 export interface IProps {
 }
@@ -13,7 +12,7 @@ export function DocRepoButtonBar(props: IProps) {
 
         <div style={{display: 'flex'}}>
 
-            <DeviceRouter.Desktop>
+            <DeviceRouters.Desktop>
 
                 <div className="mr-1"
                      style={{
@@ -28,7 +27,7 @@ export function DocRepoButtonBar(props: IProps) {
 
                 </div>
 
-            </DeviceRouter.Desktop>
+            </DeviceRouters.Desktop>
 
         </div>
 

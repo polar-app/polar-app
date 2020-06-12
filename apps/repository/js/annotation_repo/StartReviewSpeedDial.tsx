@@ -31,7 +31,6 @@ export function StartReviewSpeedDial() {
 
     function handleReading() {
         handleClose();
-        console.log("FIXME: going to #review-reading");
         history.push({pathname: '/annotations', hash: '#review-reading'});
     }
 
@@ -68,6 +67,7 @@ export function StartReviewSpeedDial() {
                 title="Reading"
                 tooltipTitle="Reading"
                 tooltipOpen
+                color="secondary"
                 onClick={handleReading}/>
 
             <SpeedDialAction
@@ -75,6 +75,7 @@ export function StartReviewSpeedDial() {
                 title="Flashcards"
                 tooltipTitle="Flashcards"
                 tooltipOpen
+                color="secondary"
                 onClick={handleFlashcards}/>
 
         </SpeedDial>

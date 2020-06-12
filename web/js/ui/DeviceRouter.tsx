@@ -49,6 +49,9 @@ export class DeviceRouter extends React.Component<IProps> {
 
     }
 
+    /**
+     * @Deprecated use DeviceRouters.Desktop
+     */
     public static Desktop = React.memo((props: IChildrenProps) => {
 
         if (Devices.isDesktop()) {
@@ -59,6 +62,9 @@ export class DeviceRouter extends React.Component<IProps> {
 
     }, isEqual);
 
+    /**
+     * @Deprecated use DeviceRouters.Handheld
+     */
     public static Handheld = React.memo((props: IChildrenProps) => {
 
         if (Devices.isPhone() || Devices.isTablet()) {
@@ -68,5 +74,53 @@ export class DeviceRouter extends React.Component<IProps> {
         }
 
     }, isEqual);
+
+}
+
+export namespace DeviceRouters {
+
+    export function createAccepts(acceptedDevices: ReadonlyArray<Device>) {
+
+        return React.memo((props: IChildrenProps) => {
+            const device = Devices.get();
+
+            if (acceptedDevices.includes(device)) {
+                return props.children;
+            }
+
+            return null;
+
+        });
+
+
+    }
+
+    /**
+     * HOC that creates a component that accepts the given list of devices.
+     */
+    function createRejects(rejectedDevices: ReadonlyArray<Device>) {
+
+        return React.memo((props: IChildrenProps) => {
+            const device = Devices.get();
+
+            if (! rejectedDevices.includes(device)) {
+                return props.children;
+            }
+
+            return null;
+
+        });
+
+    }
+
+    export const Handheld = createAccepts(['phone', 'tablet']);
+    export const Phone = createAccepts(['phone']);
+    export const Tablet = createAccepts(['tablet']);
+    export const Desktop = createAccepts(['desktop']);
+
+    export const NotHandheld = createRejects(['phone', 'tablet']);
+    export const NotPhone = createRejects(['phone']);
+    export const NotTablet = createRejects(['tablet']);
+    export const NotDesktop = createRejects(['desktop']);
 
 }

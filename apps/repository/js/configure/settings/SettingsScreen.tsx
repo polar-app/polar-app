@@ -11,7 +11,7 @@ import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {DeviceRouter} from '../../../../../web/js/ui/DeviceRouter';
+import {DeviceRouter, DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 
 const log = Logger.create();
 
@@ -175,14 +175,14 @@ export const SettingsScreen = (props: IProps) => {
                                   prefs={prefs}
                                   preview={true}/>
 
-                    <DeviceRouter.Desktop>
+                    <DeviceRouters.Desktop>
                         <SettingEntry
                             title="Table and phone reading"
                             description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
                             name="mobile-reading"
                             prefs={prefs}
                             preview={true}/>
-                    </DeviceRouter.Desktop>
+                    </DeviceRouters.Desktop>
 
                     <SettingEntry title="Development"
                                   description="Enables general development features for software engineers working on Polar."

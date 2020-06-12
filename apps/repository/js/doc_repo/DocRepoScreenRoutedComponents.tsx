@@ -1,13 +1,13 @@
 import React from "react";
 import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {RepoHeader} from "../repo_header/RepoHeader3";
 import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {DocRepoGlobalHotKeys} from "./DocRepoGlobalHotKeys";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
 
 export const DocRepoScreenRoutedComponents = React.memo(() => {
@@ -22,9 +22,9 @@ export const DocRepoScreenRoutedComponents = React.memo(() => {
 
                 <Route exact path='/'>
 
-                    <DeviceRouter.Desktop>
+                    <DeviceRouters.Desktop>
                         <DocRepoGlobalHotKeys/>
-                    </DeviceRouter.Desktop>
+                    </DeviceRouters.Desktop>
 
                     <DeviceRouter.Handheld>
 

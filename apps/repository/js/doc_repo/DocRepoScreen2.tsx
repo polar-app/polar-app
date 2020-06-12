@@ -9,7 +9,7 @@ import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
-import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
+import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
@@ -152,9 +152,9 @@ export const DocRepoScreen2 = React.memo(() => {
             {/*<RepositoryTour/>*/}
             <header>
 
-                <DeviceRouter.Desktop>
+                <DeviceRouters.Desktop>
                     <DesktopToolbar/>
-                </DeviceRouter.Desktop>
+                </DeviceRouters.Desktop>
 
             </header>
 
