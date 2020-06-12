@@ -50,7 +50,7 @@ export const HighlightColorFilterButton = (props: IProps) => {
         <div className={props.className || ''}
              style={props.style}>
 
-            <MUIPopper variant="contained"
+            <MUIPopper variant="outlined"
                        style={{
                             whiteSpace: 'nowrap'
                        }}

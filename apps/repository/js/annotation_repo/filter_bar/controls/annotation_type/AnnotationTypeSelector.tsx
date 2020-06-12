@@ -45,6 +45,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
             <MUIMenu caret
                      button={{
                          text: "Annotation Types",
+                         variant: 'outlined',
                          icon: <NoteIcon/>,
                          size: 'small'
                      }}>

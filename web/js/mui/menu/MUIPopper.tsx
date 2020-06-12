@@ -31,7 +31,7 @@ interface IProps {
     readonly id?: string;
 
     readonly onClick?: (event: React.MouseEvent<EventTarget>) => void;
-    readonly variant?: "contained";
+    readonly variant?: "contained" | "outlined";
     readonly icon?: JSX.Element;
     readonly text?: string;
     readonly color?: 'primary' | 'secondary' | 'default'
@@ -78,12 +78,11 @@ export const MUIPopper = (props: IProps) => {
         onClick: handleToggle || NULL_FUNCTION,
         color: props.color,
         size: props.size,
+        variant: props.variant || 'contained',
         ref: anchorRef,
     };
 
     const placement = props.placement || 'bottom';
-
-    const id = props.id || 'dropdown';
 
     return (
         <div className={classes.root}>
@@ -92,8 +91,7 @@ export const MUIPopper = (props: IProps) => {
                 {props.text && props.icon &&
                     <Button {...buttonProps}
                             startIcon={props.icon}
-                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}
-                            variant="contained">
+                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}>
                         {props.text}
                     </Button>}
 
@@ -104,7 +102,7 @@ export const MUIPopper = (props: IProps) => {
                     </IconButton>}
 
                 {! props.icon && props.text &&
-                    <Button {...buttonProps} size="large" variant="contained">
+                    <Button {...buttonProps} size="large">
                         {props.text}
                     </Button>}
 

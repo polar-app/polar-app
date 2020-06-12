@@ -34,6 +34,7 @@ export interface IButtonProps {
     readonly text?: string;
     readonly color?: 'primary' | 'secondary' | 'default'
     readonly size?: 'small' | 'medium' | 'large';
+    readonly variant?: 'outlined' | 'contained';
     readonly ref?: React.RefObject<HTMLButtonElement>;
     readonly disableRipple?: boolean;
     readonly disableFocusRipple?: boolean;
@@ -91,6 +92,7 @@ export const MUIMenu = (props: IProps) => {
         color: props.button.color,
         size: props.button.size,
         ref: anchorRef,
+        variant: props.button.variant || 'contained',
         disabled: props.button.disabled,
         disableRipple: props.button.disableRipple,
         disableFocusRipple: props.button.disableFocusRipple,
@@ -109,8 +111,7 @@ export const MUIMenu = (props: IProps) => {
                 {props.button.text && props.button.icon &&
                     <Button {...buttonProps}
                             startIcon={props.button.icon}
-                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}
-                            variant="contained">
+                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}>
                         {props.button.text}
                     </Button>}
 
