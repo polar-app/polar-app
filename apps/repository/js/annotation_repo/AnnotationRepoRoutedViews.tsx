@@ -1,8 +1,5 @@
-import {Route, Switch} from "react-router-dom";
+import {Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
-import {IndeterminateLoadingModal} from "../../../../web/js/ui/mobile/IndeterminateLoadingModal";
 import * as React from "react";
 
 const AnnotationRepoRoutedViews = () => (

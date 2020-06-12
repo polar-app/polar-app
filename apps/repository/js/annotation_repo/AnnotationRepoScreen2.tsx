@@ -135,9 +135,9 @@ namespace screen {
                         <Link to={{pathname: '/annotations', hash: '#start-review'}}>
 
                             <FloatingActionButton style={{
-                                marginBottom: '60px',
-                                marginRight: '20px'
-                            }}
+                                                      marginBottom: '60px',
+                                                      marginRight: '20px'
+                                                  }}
                                                   icon="fas fa-graduation-cap"/>
 
                         </Link>
