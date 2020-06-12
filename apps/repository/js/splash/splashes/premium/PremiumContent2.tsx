@@ -1,6 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -291,7 +290,6 @@ export class PremiumContent2 extends React.Component<IProps, IState> {
 
 interface IProps {
     readonly plan: accounts.Plan;
-    readonly userInfo?: UserInfo;
     readonly interval?: accounts.Interval;
 
 }

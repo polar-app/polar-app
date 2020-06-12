@@ -20,8 +20,7 @@ export class DocViewerApp {
         console.time('AppInitializer.init');
 
         const app = await AppInitializer.init({
-            persistenceLayerManager,
-            onNeedsAuthentication: ASYNC_NULL_FUNCTION
+            persistenceLayerManager
         });
 
         console.timeEnd('AppInitializer.init');

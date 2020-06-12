@@ -4,6 +4,7 @@ import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {accounts} from 'polar-accounts/src/accounts';
 import {AccountProvider} from "../../../accounts/AccountProvider";
+import {Account} from "../../../accounts/Account";
 
 const POLAR_APP_SITES = [
     'http://localhost:8500',
@@ -103,6 +104,40 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 }
 
+export function toUserInfo(user: firebase.User, account: Account | undefined): UserInfo {
+
+    const createSubscription = (): accounts.Subscription => {
+
+        const account = AccountProvider.get();
+
+        if (account) {
+            return {
+                plan: account.plan,
+                interval: account.interval || 'month'
+            };
+        } else {
+            return {
+                plan: 'free',
+                interval: 'month'
+            };
+        }
+
+    };
+
+    const subscription = createSubscription();
+
+    return {
+        displayName: Optional.of(user.displayName).getOrUndefined(),
+        email: Optional.of(user.email).get(),
+        emailVerified: user.emailVerified,
+        photoURL: Optional.of(user.photoURL).getOrUndefined(),
+        uid: user.uid,
+        creationTime: user.metadata.creationTime!,
+        subscription
+    };
+
+}
+
 export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
     public async userInfo(): Promise<Optional<UserInfo>> {
@@ -115,35 +150,9 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
             return Optional.empty();
         }
 
-        const createSubscription = (): accounts.Subscription => {
+        const account = AccountProvider.get();
 
-            const account = AccountProvider.get();
-
-            if (account) {
-                return {
-                    plan: account.plan,
-                    interval: account.interval || 'month'
-                };
-            } else {
-                return {
-                    plan: 'free',
-                    interval: 'month'
-                };
-            }
-
-        };
-
-        const subscription = createSubscription();
-
-        return Optional.of({
-            displayName: Optional.of(user.displayName).getOrUndefined(),
-            email: Optional.of(user.email).get(),
-            emailVerified: user.emailVerified,
-            photoURL: Optional.of(user.photoURL).getOrUndefined(),
-            uid: user.uid,
-            creationTime: user.metadata.creationTime!,
-            subscription
-        });
+        return Optional.of(toUserInfo(user, account));
 
     }
 
@@ -156,8 +165,6 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async authenticate(): Promise<void> {
-
-        console.error(new Error("FIXME: "));
 
         Firebase.init();
 

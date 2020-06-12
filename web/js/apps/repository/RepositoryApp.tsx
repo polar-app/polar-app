@@ -36,6 +36,7 @@ import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader
 import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
+import {UserInfoProvider} from "./auth_handler/UserInfoProvider";
 
 interface IProps {
     readonly app: App;
@@ -189,16 +190,21 @@ export const RepositoryApp = (props: IProps) => {
     const plan = app.account ? app.account.plan : 'free';
 
     const premiumScreen = () => {
-        return (<PremiumScreen
-                    plan={plan}
-                    userInfo={app.userInfo}/>);
+        return (
+            <UserInfoProvider>
+                <PremiumScreen plan={plan}/>
+            </UserInfoProvider>
+        );
     };
 
     const premiumScreenYear = () => {
-        return (<PremiumScreen
-                    plan={plan}
-                    interval='year'
-                    userInfo={app.userInfo}/>);
+        return (
+            <UserInfoProvider>
+                <PremiumScreen
+                        plan={plan}
+                        interval='year'/>
+            </UserInfoProvider>
+        );
     };
 
     const supportScreen = () => {

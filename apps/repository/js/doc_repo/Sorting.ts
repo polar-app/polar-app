@@ -12,7 +12,7 @@ export namespace Sorting {
 
         const toVal = (value: number | string | any): number | string => {
 
-            if (! value) {
+            if (value === undefined || value === null) {
                 return ""
             }
 

@@ -29,6 +29,7 @@ import {LoadingSplash} from "../../ui/loading_splash/LoadingSplash";
 import * as React from "react";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {Tracer} from "polar-shared/src/util/Tracer";
+import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const log = Logger.create();
 
@@ -37,7 +38,7 @@ interface IAppInitializerOpts {
     readonly persistenceLayerManager: PersistenceLayerManager;
 
     // called after authentication is needed
-    readonly onNeedsAuthentication: (app: App) => Promise<void>;
+    readonly onNeedsAuthentication?: (app: App) => Promise<void>;
 
 }
 
@@ -49,7 +50,6 @@ export interface App {
     readonly persistenceLayerController: PersistenceLayerController;
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
     readonly account: Account | undefined;
-    readonly userInfo: UserInfo | undefined;
 
 }
 
@@ -91,7 +91,6 @@ export class AppInitializer {
 
         const account = await Tracer.async(Accounts.get(), 'accounts.get');
         await AccountProvider.init(account);
-        const userInfo = await Tracer.async(authHandler.userInfo(), 'user-info');
 
         const platform = Platforms.get();
 
@@ -100,29 +99,34 @@ export class AppInitializer {
         const app: App = {
             authStatus, persistenceLayerManager, persistenceLayerProvider,
             persistenceLayerController, syncBarProgress, account,
-            userInfo: userInfo.getOrUndefined()
+            // userInfo: userInfo.getOrUndefined()
         };
 
+        new UpdatesController().start();
+
+        new ToasterService().start();
+
+        new ProgressService().start();
+
+        // FIXME: check if we need authentication but do so in the background.
+
         if (authStatus !== 'needs-authentication') {
-
-            // subscribe but do it in the background as this isn't a high priority UI task.
-            MailingList.subscribeWhenNecessary()
-                .catch(err => log.error(err));
-
-            new UpdatesController().start();
-
-            new ToasterService().start();
-
-            new ProgressService().start();
 
             // TODO: removed for group refactor.
             // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
 
-            MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
+            // FIXME: do we want to put these back in for 2.0?
+            // subscribe but do it in the background as this isn't a high priority UI task.
+            // MailingList.subscribeWhenNecessary()
+            //            .catch(err => log.error(err));
 
-            UniqueMachines.trigger();
+            // MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
+            //
+            // UniqueMachines.trigger();
 
-            await opts.onNeedsAuthentication(app);
+            const onNeedsAuthentication = opts.onNeedsAuthentication || ASYNC_NULL_FUNCTION;
+
+            await onNeedsAuthentication(app);
 
         }
 

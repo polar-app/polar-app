@@ -7,6 +7,7 @@ import isEqual from "react-fast-compare";
 
 export interface IFirestore {
     readonly uid: string | undefined;
+    readonly user: firebase.User | undefined;
     readonly firestore: firebase.firestore.Firestore;
 }
 
@@ -23,12 +24,14 @@ interface IProps {
 async function doAsync(): Promise<IFirestore> {
 
     const firestore = await Firestore.getInstance();
-    const uid = await Firebase.currentUserID();
+    const user = await Firebase.currentUserAsync();
+    const uid = user?.uid;
 
     await FirestoreCollections.configure(firestore);
 
     return {
-        firestore, uid
+        firestore, uid,
+        user: user || undefined
     };
 }
 

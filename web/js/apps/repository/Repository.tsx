@@ -43,13 +43,16 @@ export class Repository {
 
             onNeedsAuthentication: async (app: App) => {
 
+                // FIXME: refactor this so that the rest of the app continues to load and
+                // this would allow us to run from cache.
+
                 new FileImportController(() => app.persistenceLayerManager.get(), updatedDocInfoEventDispatcher)
                     .start();
 
                 new DocRepoAnkiSyncController(app.persistenceLayerManager, app.syncBarProgress)
                     .start();
 
-                await this.doLoadExampleDocs(app);
+                // await this.doLoadExampleDocs(app);
 
                 updatedDocInfoEventDispatcher.addEventListener(docInfo => {
                     this.onUpdatedDocInfo(app, docInfo);
