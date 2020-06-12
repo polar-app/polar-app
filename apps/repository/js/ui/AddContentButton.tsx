@@ -15,10 +15,6 @@ namespace runtime {
         AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
     }
 
-    function doCaptureWebPage(props: IProps) {
-        AddContentButtons.doAccountVerifiedAction(() => props.captureWebPage());
-    }
-
     function doFileUpload() {
         AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
     }
@@ -30,10 +26,12 @@ namespace runtime {
 
     const Browser = () => (
             <Button id="add-content-dropdown"
+                    variant="contained"
                     color="primary"
+                    startIcon={<AddIcon/>}
                     size="medium">
                 <label htmlFor="file-upload" className="m-0">
-                    <AddIcon/> Add &nbsp;
+                    Add
                 </label>
             </Button>
     );
@@ -68,10 +66,6 @@ export namespace AddContent {
 
     function doAddFilesFromDisk(props: IProps) {
         AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
-    }
-
-    function doCaptureWebPage(props: IProps) {
-        AddContentButtons.doAccountVerifiedAction(() => props.captureWebPage());
     }
 
     function doFileUpload() {

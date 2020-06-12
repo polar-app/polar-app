@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {NavLogo} from './nav/NavLogo';
-import {GDPRNotice} from '../../../web/js/ui/gdpr/GDPRNotice';
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {ITabProps, NavTabs} from "./NavTabs";
 import Grid from '@material-ui/core/Grid';
@@ -107,8 +106,6 @@ export class RepoNavbar extends React.Component<IProps, IState> {
         return (
 
             <div className="repo-sidebar">
-
-                <GDPRNotice/>
 
                 <NavFirstRow/>
 
