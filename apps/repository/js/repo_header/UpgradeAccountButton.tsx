@@ -12,7 +12,7 @@ export const UpgradeAccountButton = () => {
         Analytics.event({category: 'premium', action: 'upgrade-account-button'});
     }
 
-    if (userInfoContext?.subscription.plan === 'gold') {
+    if (userInfoContext?.userInfo?.subscription.plan === 'gold') {
         // already at max account level
         return null;
     }

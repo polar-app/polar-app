@@ -65,17 +65,21 @@ export const PremiumFeature = (props: IProps) => {
 
     const hasRequiredPlan = () => {
 
-        if (! userInfoContext?.subscription) {
+        if (! userInfoContext) {
             return false;
         }
 
-        return AccountPlans.hasLevel(required, userInfoContext.subscription.plan);
+        if (! userInfoContext.userInfo) {
+            return false;
+        }
+
+        return AccountPlans.hasLevel(required, userInfoContext?.userInfo?.subscription.plan);
 
     };
 
     const UpgradeButton = () => {
 
-        const color = AccountPlans.toColor(userInfoContext?.subscription?.plan || 'free');
+        const color = AccountPlans.toColor(userInfoContext?.userInfo?.subscription?.plan || 'free');
 
         return (
             <Link to={{pathname: '/plans'}}>

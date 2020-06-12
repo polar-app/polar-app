@@ -14,6 +14,7 @@ import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
+import { StartReviewSpeedDial } from './StartReviewSpeedDial';
 
 namespace main {
 
@@ -132,15 +133,7 @@ namespace screen {
                         {/*        persistenceLayerProvider={props.persistenceLayerProvider}*/}
                         {/*        {...props}/>*/}
 
-                        <Link to={{pathname: '/annotations', hash: '#start-review'}}>
-
-                            <FloatingActionButton style={{
-                                                      marginBottom: '60px',
-                                                      marginRight: '20px'
-                                                  }}
-                                                  icon="fas fa-graduation-cap"/>
-
-                        </Link>
+                        <StartReviewSpeedDial/>
 
                         <DeviceRouter phone={<main.Phone />}
                                       tablet={<main.Tablet />}/>
