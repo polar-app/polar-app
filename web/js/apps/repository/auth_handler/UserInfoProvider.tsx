@@ -3,20 +3,30 @@ import {toUserInfo, UserInfo} from "./AuthHandler"
 import {useFirestore} from "../../../../../apps/repository/js/FirestoreProvider";
 import {AccountSnapshots} from "../../../accounts/AccountSnapshots";
 
-const UserInfoContext = React.createContext<UserInfo | undefined>(undefined);
+interface IUserInfoContext {
+    /**
+     * The UserInfo or undefined if the user is not logged in.
+     */
+    readonly userInfo: UserInfo | undefined;
+}
+
+/**
+ * The IUserInfoContext or undefined if it has not yet been set.
+ */
+const UserInfoContext = React.createContext<IUserInfoContext | undefined>(undefined);
 
 export function useUserInfoContext() {
     return React.useContext(UserInfoContext);
 }
 
 interface IProps {
-    readonly children: React.ReactElement;
+    readonly children: React.ReactNode;
 }
 
 export const UserInfoProvider = React.memo((props: IProps) => {
 
-    const [userInfo, setUserInfo] = React.useState<UserInfo | undefined>(undefined);
-    const {uid, user, firestore} = useFirestore();
+    const [userInfoContext, setUserInfoContext] = React.useState<IUserInfoContext | undefined>(undefined);
+    const {user, firestore} = useFirestore();
 
     if (user) {
 
@@ -24,13 +34,13 @@ export const UserInfoProvider = React.memo((props: IProps) => {
 
         accountSnapshots.onSnapshot(user.uid, account => {
             const newUserInfo = toUserInfo(user, account);
-            setUserInfo(newUserInfo);
+            setUserInfoContext({userInfo: newUserInfo});
         });
 
     }
 
     return (
-        <UserInfoContext.Provider value={userInfo}>
+        <UserInfoContext.Provider value={userInfoContext}>
             {props.children}
         </UserInfoContext.Provider>
     )

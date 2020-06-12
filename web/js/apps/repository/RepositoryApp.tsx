@@ -36,7 +36,6 @@ import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader
 import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
-import {UserInfoProvider} from "./auth_handler/UserInfoProvider";
 
 interface IProps {
     readonly app: App;
@@ -52,7 +51,7 @@ export const RepositoryApp = (props: IProps) => {
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
     const RenderDocRepoScreen = React.memo(() => (
-            <AuthRequired authStatus={app.authStatus}>
+            <AuthRequired>
                 <PersistenceLayerApp tagsType="documents"
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
@@ -71,7 +70,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const RenderAnnotationRepoScreen = React.memo(() => {
         return (
-            <AuthRequired authStatus={app.authStatus}>
+            <AuthRequired>
                 <PersistenceLayerApp tagsType="annotations"
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
@@ -94,7 +93,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const LogoutScreen = React.memo(() => {
         return (
-            <AuthRequired authStatus={app.authStatus}>
+            <AuthRequired>
                 <PersistenceLayerApp tagsType="annotations"
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
@@ -149,7 +148,7 @@ export const RepositoryApp = (props: IProps) => {
     // );
 
     const renderStatsScreen = () => (
-        <AuthRequired authStatus={app.authStatus}>
+        <AuthRequired>
             <StatsScreen persistenceLayerProvider={app.persistenceLayerProvider}
                          persistenceLayerController={app.persistenceLayerController}
                          repoDocMetaManager={repoDocMetaManager}/>
@@ -191,19 +190,15 @@ export const RepositoryApp = (props: IProps) => {
 
     const premiumScreen = () => {
         return (
-            <UserInfoProvider>
-                <PremiumScreen plan={plan}/>
-            </UserInfoProvider>
+            <PremiumScreen plan={plan}/>
         );
     };
 
     const premiumScreenYear = () => {
         return (
-            <UserInfoProvider>
-                <PremiumScreen
-                        plan={plan}
-                        interval='year'/>
-            </UserInfoProvider>
+            <PremiumScreen
+                    plan={plan}
+                    interval='year'/>
         );
     };
 

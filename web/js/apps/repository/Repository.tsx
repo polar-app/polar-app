@@ -20,6 +20,8 @@ import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
 import {RepositoryApp} from './RepositoryApp';
 import {AppRuntime} from "../../AppRuntime";
+import { Tracer } from 'polar-shared/src/util/Tracer';
+import {AuthHandlers} from "./auth_handler/AuthHandler";
 
 const log = Logger.create();
 
@@ -93,22 +95,32 @@ export class Repository {
             rootElement
         );
 
-        // TODO: return authStatus as an object and then do authState.authenticated
-        // and unauthenticated so that if statements are cleaner
-        if (app.authStatus !== 'needs-authentication') {
+        const handleAuth = async () => {
 
-            this.handleRepoDocInfoEvents();
+            const authHandler = AuthHandlers.get();
+            const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
 
-            await this.repoDocMetaLoader.start();
+            // TODO: return authStatus as an object and then do authState.authenticated
+            // and unauthenticated so that if statements are cleaner
+            if (authStatus !== 'needs-authentication') {
 
-            // new CloudService(persistenceLayerManager)
-            //     .start();
+                this.handleRepoDocInfoEvents();
 
-            await persistenceLayerManager.start();
+                await this.repoDocMetaLoader.start();
 
-            log.info("Started repo doc loader.");
+                // new CloudService(persistenceLayerManager)
+                //     .start();
+
+                await persistenceLayerManager.start();
+
+                log.info("Started repo doc loader.");
+
+            }
 
         }
+
+        handleAuth()
+            .catch(err => log.error("Could not handle auth: ", err));
 
         AppInstance.notifyStarted('RepositoryApp');
 

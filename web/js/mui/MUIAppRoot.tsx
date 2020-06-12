@@ -9,6 +9,7 @@ import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
+import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -47,7 +48,9 @@ export const MUIAppRoot = (props: IProps) => {
                 <ActiveHotKeyBindings/>
 
                 <FirestoreProvider>
-                    {props.children}
+                    <UserInfoProvider>
+                        {props.children}
+                    </UserInfoProvider>
                 </FirestoreProvider>
 
             </MUIThemeTypeContext.Provider>

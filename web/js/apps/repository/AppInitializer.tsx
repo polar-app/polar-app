@@ -44,7 +44,7 @@ interface IAppInitializerOpts {
 
 export interface App {
 
-    readonly authStatus: AuthStatus;
+    // readonly authStatus: AuthStatus;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
@@ -87,8 +87,6 @@ export class AppInitializer {
 
         const authHandler = AuthHandlers.get();
 
-        const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
-
         // FIXME: this also needs to be removed and can be if we refactor more
         // code
         const account = await Tracer.async(Accounts.get(), 'accounts.get');
@@ -99,7 +97,7 @@ export class AppInitializer {
         log.notice("Running on platform: " + Platforms.toSymbol(platform));
 
         const app: App = {
-            authStatus, persistenceLayerManager, persistenceLayerProvider,
+            persistenceLayerManager, persistenceLayerProvider,
             persistenceLayerController, syncBarProgress, account,
             // userInfo: userInfo.getOrUndefined()
         };
@@ -112,25 +110,36 @@ export class AppInitializer {
 
         // FIXME: check if we need authentication but do so in the background.
 
-        if (authStatus !== 'needs-authentication') {
+        async function handleAuth() {
 
-            // TODO: removed for group refactor.
-            // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
+            // TODO: I think this could/should be a react component?
 
-            // FIXME: do we want to put these back in for 2.0?
-            // subscribe but do it in the background as this isn't a high priority UI task.
-            // MailingList.subscribeWhenNecessary()
-            //            .catch(err => log.error(err));
+            const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
 
-            // MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
-            //
-            // UniqueMachines.trigger();
+            if (authStatus !== 'needs-authentication') {
 
-            const onNeedsAuthentication = opts.onNeedsAuthentication || ASYNC_NULL_FUNCTION;
+                // TODO: removed for group refactor.
+                // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
 
-            await onNeedsAuthentication(app);
+                // FIXME: do we want to put these back in for 2.0?
+                // subscribe but do it in the background as this isn't a high priority UI task.
+                // MailingList.subscribeWhenNecessary()
+                //            .catch(err => log.error(err));
+
+                // MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
+                //
+                // UniqueMachines.trigger();
+
+                const onNeedsAuthentication = opts.onNeedsAuthentication || ASYNC_NULL_FUNCTION;
+
+                await onNeedsAuthentication(app);
+
+            }
 
         }
+
+        handleAuth()
+            .catch(err => log.error("Could not handle auth: ", err));
 
         console.timeEnd("AppInitializer.init");
 
