@@ -108,8 +108,6 @@ export function toUserInfo(user: firebase.User, account: Account | undefined): U
 
     const createSubscription = (): accounts.Subscription => {
 
-        const account = AccountProvider.get();
-
         if (account) {
             return {
                 plan: account.plan,

@@ -1,49 +1,32 @@
 import * as React from 'react';
-import {AccountProvider} from "../../../../web/js/accounts/AccountProvider";
 import {Link} from "react-router-dom";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import Button from "@material-ui/core/Button";
+import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 
-export class UpgradeAccountButton extends React.PureComponent<IProps, IState> {
+export const UpgradeAccountButton = () => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const userInfoContext = useUserInfoContext()
 
-        this.onUpgrade = this.onUpgrade.bind(this);
-    }
-
-    public render() {
-
-        const account = AccountProvider.get()
-
-        if (account && account.plan === 'gold') {
-            // already at max account level
-            return null;
-        }
-
-        return (
-            <Link to={{pathname: '/plans'}}>
-                <Button variant="contained"
-                        onClick={() => this.onUpgrade()}
-                        className="border border-success">
-
-                    Upgrade Account
-
-                </Button>
-            </Link>
-        );
-
-    }
-
-    private onUpgrade() {
+    function onUpgrade() {
         Analytics.event({category: 'premium', action: 'upgrade-account-button'});
     }
 
-}
+    if (userInfoContext?.subscription.plan === 'gold') {
+        // already at max account level
+        return null;
+    }
 
-interface IProps {
-}
+    return (
+        <Link to={{pathname: '/plans'}}>
+            <Button variant="contained"
+                    onClick={() => onUpgrade()}
+                    className="border border-success">
 
-interface IState {
+                Upgrade Account
+
+            </Button>
+        </Link>
+    );
 
 }

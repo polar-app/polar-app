@@ -89,6 +89,8 @@ export class AppInitializer {
 
         const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
 
+        // FIXME: this also needs to be removed and can be if we refactor more
+        // code
         const account = await Tracer.async(Accounts.get(), 'accounts.get');
         await AccountProvider.init(account);
 
