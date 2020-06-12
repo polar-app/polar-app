@@ -50,7 +50,20 @@
       {
         "source": "/pdfjsWorker-bundle.js",
         "destination": "/web/dist/pdfjsWorker-bundle.js"
+      },
+      {
+        "source": "/doc",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/doc/:id",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/apps/doc/:id",
+        "destination": "/apps/doc/index.html"
       }
+
     ]
   }
 }

@@ -12,6 +12,10 @@ export namespace Sorting {
 
         const toVal = (value: number | string | any): number | string => {
 
+            if (! value) {
+                return ""
+            }
+
             if (typeof value === 'number' || typeof value === 'string') {
                 return value;
             }

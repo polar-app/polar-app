@@ -259,6 +259,10 @@ export const RepositoryApp = (props: IProps) => {
                             <LoginScreen/>
                         </Route>
 
+                        <Route path='/logout'>
+                            <LogoutScreen/>
+                        </Route>
+
                         <Route>
                             <BrowserRouter>
 
@@ -344,11 +348,6 @@ export const RepositoryApp = (props: IProps) => {
                                                        persistenceLayerController={app.persistenceLayerController}/>
                                                </Cached>
                                            }/>
-
-                                    {/*TODO: add a logout splash so that the user knows that they are unauthenticated.*/}
-                                    <Route path='#logout'>
-                                        <LogoutScreen/>
-                                    </Route>
 
                                 </Switch>
 
