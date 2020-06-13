@@ -16,8 +16,6 @@ import {Mappers} from "polar-shared/src/util/Mapper";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
-const log = Logger.create();
-
 interface IAnnotationSidebarStore {
 
     /**

@@ -7,8 +7,7 @@ import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollap
 import {accounts} from "polar-accounts/src/accounts";
 import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
-
-const log = Logger.create();
+import {useLogger} from "../../../../../../web/js/mui/MUILogger";
 
 export interface IProps {
     readonly from: accounts.Plan;
@@ -18,6 +17,8 @@ export interface IProps {
 }
 
 export function PremiumButton(props: IProps) {
+
+    const log = useLogger();
 
     const {to, from, userInfo, interval} = props;
 

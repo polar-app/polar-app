@@ -3,18 +3,18 @@ import {PersistenceLayer} from '../PersistenceLayer';
 import {GroupIDStr} from '../Datastore';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
-import {DocIDStr} from './rpc/GroupProvisions';
+import {
+    DocIDStr,
+    GroupProvisionRequest,
+    GroupProvisions
+} from './rpc/GroupProvisions';
 import {Firestore} from '../../firebase/Firestore';
-import {RecordHolder} from '../FirebaseDatastore';
-import {DatastoreCollection} from '../FirebaseDatastore';
+import {DatastoreCollection, RecordHolder} from '../FirebaseDatastore';
 import {BackendFileRefs} from '../BackendFileRefs';
-import {DocInfo} from '../../metadata/DocInfo';
 import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
 import {FirebaseDatastores} from '../FirebaseDatastores';
 import {GroupDocsAdd} from './rpc/GroupDocsAdd';
-import {GroupProvisions} from './rpc/GroupProvisions';
-import {GroupProvisionRequest} from './rpc/GroupProvisions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";

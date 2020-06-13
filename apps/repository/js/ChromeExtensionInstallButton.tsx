@@ -1,10 +1,6 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {Nav} from "../../../web/js/ui/util/Nav";
-
-const log = Logger.create();
 
 export class ChromeExtensionInstallButton extends React.Component<any, any> {
 

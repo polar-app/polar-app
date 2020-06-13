@@ -5,15 +5,13 @@ import {PersistenceLayerProvider} from "../../../../../web/js/datastore/Persiste
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import {PersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {DeviceRouter, DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
-
-const log = Logger.create();
+import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
 
 interface SettingEntryProps {
     readonly title: string;
@@ -47,6 +45,8 @@ const PreviewWarning = (props: SettingEntryProps) => {
 };
 
 const SettingEntry = (props: SettingEntryProps) => {
+
+    const log = useLogger();
 
     const {prefs, name, defaultValue} = props;
 

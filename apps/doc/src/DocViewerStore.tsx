@@ -20,12 +20,11 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {ScaleLevelTuple} from "./ScaleLevels";
 import {PageNavigator} from "./PageNavigator";
+import {useLogger} from "../../../web/js/mui/MUILogger";
 
-const log = Logger.create();
 /**
  * Lightweight metadata describing the currently loaded document.
  */
@@ -175,6 +174,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           setStore: (store: IDocViewerStore) => void,
                           mutator: Mutator): IDocViewerCallbacks {
 
+    const log = useLogger();
     const docMetaContext = useDocMetaContext();
     const persistenceLayerContext = usePersistenceLayerContext();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();

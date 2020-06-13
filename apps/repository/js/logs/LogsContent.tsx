@@ -1,11 +1,8 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {LogMessage} from '../../../../web/js/logger/Logging';
-import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import ReactJson from 'react-json-view';
-
-const log = Logger.create();
+import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
 
 class Styles {
 
@@ -34,100 +31,81 @@ class Styles {
 
 }
 
-export default class LogsContent extends ReleasingReactComponent<IProps, IState> {
+export const LogsContent = () => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const messages = MemoryLogger.toView()
 
-        this.state = {
-            messages: MemoryLogger.toView()
-        };
+    useComponentDidMount(() => {
+        // noop
+    })
 
-    }
+    // public componentWillMount(): void {
+    //
+    //     this.releaser.register(
+    //         MemoryLogger.addEventListener(() => {
+    //             this.setState({messages: MemoryLogger.toView()});
+    //         })
+    //     );
+    //
+    // }
 
+    const argsRenderable = (args: any): boolean => {
 
-    public componentWillMount(): void {
+        if (args) {
 
-        this.releaser.register(
-            MemoryLogger.addEventListener(() => {
-                this.setState({messages: MemoryLogger.toView()});
-            })
-        );
+            if (Array.isArray(args)) {
 
-    }
-
-    public render() {
-
-        const messages = [...this.state.messages];
-
-        const argsRenderable = (args: any): boolean => {
-
-            if (args) {
-
-                if (Array.isArray(args)) {
-
-                    if (args.length > 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-
+                if (args.length > 0) {
+                    return true;
+                } else {
+                    return false;
                 }
 
-                return true;
+            }
+
+            return true;
+
+        }
+
+        return false;
+
+    };
+
+    return [...messages].reverse()
+                   .map(current => {
+
+        let className = "";
+
+        if (current.level === 'warn') {
+            className = 'alert-warning';
+        }
+
+        if (current.level === 'error') {
+            className = 'alert-danger';
+        }
+
+        const RenderJSON = () => {
+
+            if (argsRenderable(current.args)) {
+
+                return (<div style={Styles.LogFieldArgs}>
+                    <ReactJson src={current.args} name={'args'} shouldCollapse={() => true}/>
+                </div>);
 
             }
 
-            return false;
+            return (<div></div>);
 
         };
 
-        return messages.reverse()
-                       .map(current => {
+        return <div style={Styles.LogMessage} className={className} key={current.idx}>
 
-            let className = "";
+            <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
+            <div style={Styles.LogFieldMsg}>{current.msg}</div>
 
-            if (current.level === 'warn') {
-                className = 'alert-warning';
-            }
+            <RenderJSON/>
 
-            if (current.level === 'error') {
-                className = 'alert-danger';
-            }
+        </div>;
+   });
 
-            const RenderJSON = () => {
-
-                if (argsRenderable(current.args)) {
-
-                    return (<div style={Styles.LogFieldArgs}>
-                        <ReactJson src={current.args} name={'args'} shouldCollapse={() => true}/>
-                    </div>);
-
-                }
-
-                return (<div></div>);
-
-            };
-
-            return <div style={Styles.LogMessage} className={className} key={current.idx}>
-
-                <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
-                <div style={Styles.LogFieldMsg}>{current.msg}</div>
-
-                <RenderJSON/>
-
-            </div>;
-
-        });
-
-    }
-
-}
-
-export interface IProps {
-
-}
-
-export interface IState {
-    messages: ReadonlyArray<LogMessage>;
 }

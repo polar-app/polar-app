@@ -1,9 +1,6 @@
 import {DocToolbar} from "./DocToolbar";
 import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
-import {OnFinderCallback, PDFDocument} from "./renderers/pdf/PDFDocument";
 import * as React from "react";
-import {PDFViewerContainer} from "./renderers/pdf/PDFViewerContainer";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";
 import {TextHighlightsView} from "./annotations/TextHighlightsView";
@@ -17,7 +14,6 @@ import isEqual from "react-fast-compare";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFindBar} from "./DocFindBar";
 import {DocViewerGlobalHotKeys} from "./DocViewerGlobalHotKeys";
-import {useDocFindCallbacks} from "./DocFindStore";
 import {
     computeDocViewerContextMenuOrigin,
     DocViewerMenu,
@@ -33,8 +29,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {DocRenderer} from "./renderers/DocRenderer";
-
-const log = Logger.create();
+import {useLogger} from "../../../web/js/mui/MUILogger";
 
 const Main = React.memo(() => {
 
@@ -238,6 +233,7 @@ namespace Device {
 
 export const DocViewer = React.memo(() => {
 
+    const log = useLogger();
     const {setDocMeta} = useDocViewerCallbacks();
     const {docURL} = useDocViewerStore();
     const persistenceLayerContext = usePersistenceLayerContext()

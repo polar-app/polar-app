@@ -53,8 +53,8 @@ import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
-
-const log = Logger.create();
+import {useLogger} from "../../../../web/js/mui/MUILogger";
+import { ILogger } from "polar-shared/src/logger/ILogger";
 
 interface IAnnotationRepoStore {
 
@@ -252,7 +252,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          dialogs: DialogManager,
                          persistence: IPersistenceContext,
                          repoDocMetaLoader: RepoDocMetaLoader,
-                         repoDocMetaManager: RepoDocMetaManager): IAnnotationRepoCallbacks => {
+                         repoDocMetaManager: RepoDocMetaManager,
+                         log: ILogger): IAnnotationRepoCallbacks => {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -482,6 +483,7 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const persistence = usePersistenceContext();
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
+    const log = useLogger();
 
     return createCallbacks(storeProvider,
                            setStore,
@@ -489,7 +491,8 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
                            dialogs,
                            persistence,
                            repoDocMetaLoader,
-                           repoDocMetaManager);
+                           repoDocMetaManager,
+                           log);
 
 }
 

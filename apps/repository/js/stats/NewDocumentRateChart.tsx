@@ -7,8 +7,6 @@ import {ResponsiveBar} from '@nivo/bar';
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {StatBox} from "./StatBox";
 
-const log = Logger.create();
-
 export default class NewDocumentRateChart extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {

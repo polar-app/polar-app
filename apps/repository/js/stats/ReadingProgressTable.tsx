@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';
 import {ResponsiveCalendar} from '@nivo/calendar';
@@ -9,8 +8,6 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {StatBox} from "./StatBox";
-
-const log = Logger.create();
 
 export default class ReadingProgressTable extends React.Component<IProps, IState> {
 

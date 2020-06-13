@@ -1,7 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {DesktopContent, MobileContent} from "./PremiumCopy";
 import {Discount, Discounts} from "./Discounts";
@@ -9,33 +8,39 @@ import {DeviceRouter} from "../../../../../../web/js/ui/DeviceRouter";
 import {accounts} from "polar-accounts/src/accounts";
 import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {useLogger} from "../../../../../../web/js/mui/MUILogger";
 
 const discounts = Discounts.create();
 
-const log = Logger.create();
+function useCancelSubscription() {
 
-function cancelSubscription() {
-
+    const log = useLogger();
     const dialogManager = useDialogManager();
 
-    const onAccept = () => {
+    return () => {
 
-        dialogManager.snackbar({message: "Canceling plan.  One moment..."});
+        const onAccept = () => {
 
-        AccountActions.cancelSubscription()
-            .catch(err => log.error("Unable to cancel plan: ", err));
+            dialogManager.snackbar({message: "Canceling plan.  One moment..."});
 
-    };
+            AccountActions.cancelSubscription()
+                .catch(err => log.error("Unable to cancel plan: ", err));
 
-    dialogManager.confirm({
-        title: `Are you sure you want to cancel your plan and revert to the free tier?`,
-        subtitle: 'Your billing will automatically be updated and account pro-rated.',
-        onAccept
-    });
+        };
+
+        dialogManager.confirm({
+            title: `Are you sure you want to cancel your plan and revert to the free tier?`,
+            subtitle: 'Your billing will automatically be updated and account pro-rated.',
+            onAccept
+        });
+
+    }
 
 }
 
 export const CancelSubscriptionButton = (props: IProps) => {
+
+    const handleCancelSubscription = useCancelSubscription();
 
     if (props.plan === 'free') {
         return null;
@@ -45,7 +50,7 @@ export const CancelSubscriptionButton = (props: IProps) => {
         <Button color="primary"
                 size="large"
                 variant="contained"
-                onClick={() => cancelSubscription()}>
+                onClick={handleCancelSubscription}>
 
             Cancel Subscription
 

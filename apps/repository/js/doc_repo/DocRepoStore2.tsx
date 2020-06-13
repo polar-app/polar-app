@@ -48,8 +48,8 @@ import {BatchMutators} from "../BatchMutators";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
-
-const log = Logger.create();
+import {ILogger} from "polar-shared/src/logger/ILogger";
+import {useLogger} from "../../../../web/js/mui/MUILogger";
 
 interface IDocRepoStore {
 
@@ -271,7 +271,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                          repoDocMetaManager: RepoDocMetaManager,
                          tagsProvider: () => ReadonlyArray<Tag>,
                          dialogs: DialogManager,
-                         persistence: IPersistenceContext): IDocRepoCallbacks {
+                         persistence: IPersistenceContext,
+                         log: ILogger): IDocRepoCallbacks {
 
     const synchronizingDocLoader
         = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
@@ -772,6 +773,7 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     const repoDocMetaManager = useRepoDocMetaManager();
     const tagsProvider = useTagsProvider();
     const persistence = usePersistenceContext();
+    const log = useLogger();
 
     return createCallbacks(storeProvider,
                            setStore,
@@ -779,7 +781,8 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
                            repoDocMetaManager,
                            tagsProvider,
                            dialogs,
-                           persistence);
+                           persistence,
+                           log);
 
 }
 

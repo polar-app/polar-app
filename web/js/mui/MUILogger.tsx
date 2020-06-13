@@ -2,12 +2,13 @@ import {ConsoleLogger} from "polar-shared/src/logger/ConsoleLogger";
 import {useDialogManager} from "./dialogs/MUIDialogControllers";
 import {DialogManager} from "./dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {ILogger} from "polar-shared/src/logger/ILogger";
 
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
  * @NotStale
  */
-export function useLogger() {
+export function useLogger(): ILogger {
     const dialogManager = useDialogManager();
     return new MUILogger(dialogManager);
 }

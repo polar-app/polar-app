@@ -28,8 +28,6 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import ShortTextIcon from '@material-ui/icons/ShortText';
 
-const log = Logger.create();
-
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
 function useAnnotationMetaResolver(): AnnotationMetaResolver {

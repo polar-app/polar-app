@@ -26,8 +26,7 @@ import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {TRoot} from "../../../../web/js/ui/tree/TRoot";
-
-const log = Logger.create();
+import {useLogger} from "../../../../web/js/mui/MUILogger";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -222,6 +221,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
     const persistence = usePersistenceContext();
+    const log = useLogger();
 
     const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
                                                                 persistence.persistenceLayerProvider,
