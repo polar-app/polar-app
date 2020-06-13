@@ -68,7 +68,7 @@ export class BackendFileRefs {
             const backend = docInfo.backend || Backend.STASH;
 
             // this is the main FileRef of the file (PHZ or PDF)
-            result.push({backend, ...fileRef});
+            result.push({...fileRef, backend});
 
         }
 
