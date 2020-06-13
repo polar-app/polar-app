@@ -12,10 +12,10 @@ import {DocLoader} from "../main/doc_loaders/DocLoader";
 import {Blackout} from "../../ui/blackout/Blackout";
 import {FileImportRequest} from "./FileImportRequest";
 import {AddFileRequest} from "./AddFileRequest";
-import {AppRuntime} from "../../AppRuntime";
 import {AddFileRequests} from "./AddFileRequests";
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AccountUpgrader} from "../../ui/account_upgrade/AccountUpgrader";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

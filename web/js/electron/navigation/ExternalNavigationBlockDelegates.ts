@@ -1,7 +1,7 @@
-import {AppRuntime} from "../../AppRuntime";
 import {remote} from "electron";
 import {NullExternalNavigationBlock} from "./ExternalNavigationBlock";
 import {ExternalNavigationBlockDelegate} from "./ExternalNavigationBlockDelegate";
+import {AppRuntime} from "../../AppRuntime";
 
 declare var global: any;
 

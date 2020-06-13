@@ -1,6 +1,6 @@
-import {AppRuntime} from '../../../web/js/AppRuntime';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Analytics} from "../../../web/js/analytics/Analytics";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const EXTENSION_URL = "https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd";
 

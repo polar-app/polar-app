@@ -11,7 +11,6 @@ import {
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {AppRuntime} from '../../../AppRuntime';
 import {LoadExampleDocsMeta} from './LoadExampleDocsMeta';
 import {
     HashAlgorithm,
@@ -25,6 +24,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

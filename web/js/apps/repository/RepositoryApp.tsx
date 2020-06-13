@@ -24,7 +24,6 @@ import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
-import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {DocRepoSidebarTagStore} from "../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore";
 import {AnnotationRepoSidebarTagStore} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoSidebarTagStore";
@@ -57,13 +56,11 @@ export const RepositoryApp = (props: IProps) => {
                                      repoDocMetaLoader={repoDocMetaLoader}
                                      persistenceLayerManager={persistenceLayerManager}
                                      render={(docRepo) =>
-                                         <MUIDialogController>
-                                             <DocRepoStore2>
-                                                 <DocRepoSidebarTagStore>
-                                                     <DocRepoScreen2/>
-                                                 </DocRepoSidebarTagStore>
-                                             </DocRepoStore2>
-                                         </MUIDialogController>
+                                         <DocRepoStore2>
+                                             <DocRepoSidebarTagStore>
+                                                 <DocRepoScreen2/>
+                                             </DocRepoSidebarTagStore>
+                                         </DocRepoStore2>
                                      }/>
             </AuthRequired>
         ));
@@ -76,16 +73,14 @@ export const RepositoryApp = (props: IProps) => {
                                      repoDocMetaLoader={repoDocMetaLoader}
                                      persistenceLayerManager={persistenceLayerManager}
                                      render={(props) =>
-                                         <MUIDialogController>
-                                             <AnnotationRepoStore2>
-                                                 <AnnotationRepoSidebarTagStore>
-                                                     <>
-                                                         <ReviewRouter/>
-                                                         <AnnotationRepoScreen2/>
-                                                     </>
-                                                 </AnnotationRepoSidebarTagStore>
-                                             </AnnotationRepoStore2>
-                                         </MUIDialogController>
+                                         <AnnotationRepoStore2>
+                                             <AnnotationRepoSidebarTagStore>
+                                                 <>
+                                                     <ReviewRouter/>
+                                                     <AnnotationRepoScreen2/>
+                                                 </>
+                                             </AnnotationRepoSidebarTagStore>
+                                         </AnnotationRepoStore2>
                                      }/>
             </AuthRequired>
         );
@@ -99,9 +94,7 @@ export const RepositoryApp = (props: IProps) => {
                                      repoDocMetaLoader={repoDocMetaLoader}
                                      persistenceLayerManager={persistenceLayerManager}
                                      render={(props) =>
-                                         <MUIDialogController>
-                                             <LogoutDialog/>
-                                         </MUIDialogController>
+                                         <LogoutDialog/>
                                      }/>
             </AuthRequired>
         );
@@ -260,10 +253,6 @@ export const RepositoryApp = (props: IProps) => {
                             <LoginScreen/>
                         </Route>
 
-                        <Route path='/logout'>
-                            <LogoutScreen/>
-                        </Route>
-
                         <Route>
                             <BrowserRouter>
 
@@ -272,6 +261,10 @@ export const RepositoryApp = (props: IProps) => {
                                 <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
+
+                                    <Route path='/logout'>
+                                        <LogoutScreen/>
+                                    </Route>
 
                                     {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
 

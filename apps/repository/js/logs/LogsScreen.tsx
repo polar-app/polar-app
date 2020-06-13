@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import LogsContent from './LogsContent';
+import {LogsContent} from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';

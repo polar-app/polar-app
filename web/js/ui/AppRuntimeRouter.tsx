@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {AppRuntime, AppRuntimeName} from "../AppRuntime";
+import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 
 export class AppRuntimeRouter extends React.Component<IProps> {
 
-    private readonly runtime: AppRuntimeName;
+    private readonly runtime: AppRuntimeID;
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -13,9 +13,7 @@ export class AppRuntimeRouter extends React.Component<IProps> {
     public render() {
 
         switch (this.runtime) {
-            case "electron-renderer":
-                return this.props.electron || null;
-            case "electron-main":
+            case "electron":
                 return this.props.electron || null;
             case "browser":
                 return this.props.browser || null;

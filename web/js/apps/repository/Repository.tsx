@@ -19,9 +19,9 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
 import {RepositoryApp} from './RepositoryApp';
-import {AppRuntime} from "../../AppRuntime";
 import { Tracer } from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

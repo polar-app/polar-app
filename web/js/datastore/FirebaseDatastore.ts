@@ -55,7 +55,6 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {AppRuntime} from '../AppRuntime';
 import {Promises} from '../util/Promises';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
@@ -68,6 +67,7 @@ import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
 import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

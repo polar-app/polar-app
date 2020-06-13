@@ -167,7 +167,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 }, isEqual);
 
 interface IProps {
-    readonly children: JSX.Element;
+    readonly children: React.ReactNode;
 }
 
 export const MUIDialogControllerContext = React.createContext<DialogManager>(NullDialogManager);

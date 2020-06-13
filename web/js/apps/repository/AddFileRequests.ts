@@ -1,12 +1,12 @@
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {AddFileRequest} from './AddFileRequest';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {AppRuntime} from '../../AppRuntime';
 import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
 import {Aborters, Files} from 'polar-shared/src/util/Files';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {PathStr} from "polar-shared/src/util/Strings";
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 const TOASTER_DESTROY_DELAY = 500;
 const MAX_RECURSIVE_DIRECTORY_SCAN_DURATION = "30s";

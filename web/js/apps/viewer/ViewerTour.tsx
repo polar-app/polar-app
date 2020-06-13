@@ -3,8 +3,7 @@ import * as React from 'react';
 import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {JoyrideTours} from '../../ui/tours/JoyrideTours';
-import {AppRuntime} from '../../AppRuntime';
-import {Analytics} from "../../analytics/Analytics";
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 export class Styles {
 

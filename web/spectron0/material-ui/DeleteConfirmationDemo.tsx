@@ -1,6 +1,5 @@
 import React from 'react';
 import {useDeleteConfirmation} from '../../js/mui/dialogs/MUIDialogControllers';
-import {MUIDialogController} from "../../js/mui/dialogs/MUIDialogController";
 
 const ChildComponent = () => {
     const onClick = useDeleteConfirmation(() => console.log("Deleted"));
@@ -16,9 +15,7 @@ const ChildComponent = () => {
 
 export const DeleteConfirmationDemo = () => {
     return (
-        <MUIDialogController>
-            <ChildComponent/>
-        </MUIDialogController>
+        <ChildComponent/>
     );
 }
 

@@ -17,7 +17,6 @@ import {
 import {BackendFileRefData, BinaryFileData} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
-import {AppRuntime} from '../../../AppRuntime';
 
 import fs from 'fs';
 import {Toaster} from '../../../ui/toaster/Toaster';
@@ -27,6 +26,7 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {DocFormatName} from "../../../docformat/DocFormat";
 import {EPUBMetadata} from "polar-epub/src/EPUBMetadata";
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 const log = Logger.create();
 

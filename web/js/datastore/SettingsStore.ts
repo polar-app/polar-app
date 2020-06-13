@@ -1,11 +1,10 @@
 import {Directories} from './Directories';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Files} from 'polar-shared/src/util/Files';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Settings, DefaultSettings} from './Settings';
+import {DefaultSettings, Settings} from './Settings';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {AppRuntime} from '../AppRuntime';
 import {Provider, Providers} from 'polar-shared/src/util/Providers';
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 const log = Logger.create();
 

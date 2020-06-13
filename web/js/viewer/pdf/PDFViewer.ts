@@ -4,13 +4,13 @@ import {DocDetail} from '../../metadata/DocDetail';
 import {ViewerTours} from '../../apps/viewer/ViewerTours';
 import {Model} from '../../model/Model';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
-import {AppRuntime} from '../../AppRuntime';
 import {WindowEvents} from '../../util/dom/WindowEvents';
 import {PinchToZoom} from "../../ui/Gestures";
 import {AnalyticsInitializer} from "../../analytics/AnalyticsInitializer";
 import {KnownPrefs} from "../../util/prefs/KnownPrefs";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
 import {Pagemarks} from "../../metadata/Pagemarks";
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 declare var window: any;
 

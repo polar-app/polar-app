@@ -1,11 +1,11 @@
-
 import {Firestore} from '../firebase/Firestore';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {AppRuntime} from '../AppRuntime';
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Version} from 'polar-shared/src/util/Version';
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 /**
  * Does one thing.. records the machine ID to the table and the time it was
@@ -26,7 +26,7 @@ export class UniqueMachines {
 
             const doc = await ref.get();
 
-            const runtime = AppRuntime.type();
+            const runtime = <'browser' | 'electron'> AppRuntime.get();
             const version = Version.get();
 
             if (doc.exists) {

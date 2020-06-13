@@ -6,8 +6,8 @@ import {Buffers} from 'polar-shared/src/util/Buffers';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ICapturedScreenshot} from './Screenshot';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {AppRuntime} from '../AppRuntime';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 const log = Logger.create();
 

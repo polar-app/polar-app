@@ -33,6 +33,8 @@ export const LogoutDialog = () => {
         doLogout();
     }
 
+    console.log("Asking user if they want to logout");
+
     return (
         <ConfirmDialog type='danger'
                        title="Are you sure you want to logout?"

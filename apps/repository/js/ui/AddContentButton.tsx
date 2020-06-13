@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {AppRuntime} from '../../../../web/js/AppRuntime';
 import {AddContentMenuItem} from './AddContentMenuItem';
 import {AddContentButtons} from "./AddContentButtons";
 import {AppRuntimeRouter} from "../../../../web/js/ui/AppRuntimeRouter";
@@ -8,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import {AddContentFab} from "./AddContentFab";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 namespace runtime {
 

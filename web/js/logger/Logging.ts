@@ -20,8 +20,8 @@ import {PersistentErrorLogger} from './PersistentErrorLogger';
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {AppRuntime} from '../AppRuntime';
 import {GALogger} from './GALogger';
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger

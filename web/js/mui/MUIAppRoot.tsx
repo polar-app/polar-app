@@ -10,6 +10,7 @@ import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
 import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
+import {MUIDialogController} from "./dialogs/MUIDialogController";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -49,7 +50,9 @@ export const MUIAppRoot = (props: IProps) => {
 
                 <FirestoreProvider>
                     <UserInfoProvider>
-                        {props.children}
+                        <MUIDialogController>
+                            {props.children}
+                        </MUIDialogController>
                     </UserInfoProvider>
                 </FirestoreProvider>
 

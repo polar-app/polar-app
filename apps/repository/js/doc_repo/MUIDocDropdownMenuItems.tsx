@@ -10,13 +10,10 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Divider from "@material-ui/core/Divider";
 import FlagIcon from "@material-ui/icons/Flag";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import {AppRuntime} from "../../../../web/js/AppRuntime";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
-import {
-    useDocRepoCallbacks,
-    useDocRepoStore
-} from "./DocRepoStore2";
+import {useDocRepoCallbacks} from "./DocRepoStore2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
@@ -80,7 +77,7 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
                 <ListItemText primary="Archive"/>
             </MenuItem>
 
-            {isSingle && !AppRuntime.isBrowser() &&
+            {isSingle && ! AppRuntime.isBrowser() &&
                 <MenuItem onClick={callbacks.onShowFile}>
                     <ListItemIcon>
                         <InsertDriveFileIcon fontSize="small"/>

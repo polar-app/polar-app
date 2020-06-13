@@ -7,7 +7,6 @@ import {DocRepoTableToolbar} from './DocRepoTableToolbar';
 import {DocRepoTableHead} from "./DocRepoTableHead";
 import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
-import {MUIDialogController} from "../../../../web/js/mui/dialogs/MUIDialogController";
 import {useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 
@@ -30,7 +29,6 @@ export const DocRepoTable2 = React.memo(() => {
                        display: 'flex',
                        flexDirection: 'column'
                    }}>
-                <MUIDialogController>
                         <MUIDocContextMenu render={rawContextMenuHandler => {
 
                         return (
@@ -72,7 +70,6 @@ export const DocRepoTable2 = React.memo(() => {
                                 </TableContainer>
                             </>);
                         }}/>
-                </MUIDialogController>
 
             </Paper>
         </div>

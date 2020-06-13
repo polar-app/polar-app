@@ -1,7 +1,6 @@
 
 import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
 import {PersistenceLayerType} from '../datastore/PersistenceLayerManager';
-import {AppRuntime} from '../AppRuntime';
 import {Directories} from '../datastore/Directories';
 import {Files} from 'polar-shared/src/util/Files';
 import {Firestore} from '../firebase/Firestore';
@@ -12,6 +11,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import * as firebase from 'firebase/app';
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

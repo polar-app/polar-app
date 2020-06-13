@@ -71,7 +71,7 @@ export const LogsContent = () => {
 
     };
 
-    return [...messages].reverse()
+    const siblings = [...messages].reverse()
                    .map(current => {
 
         let className = "";
@@ -107,5 +107,9 @@ export const LogsContent = () => {
 
         </div>;
    });
+
+   return (
+       <>{siblings}</>
+   )
 
 }

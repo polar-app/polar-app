@@ -13,12 +13,14 @@ export const AuthRequired = React.memo((props: IProps) => {
     if (! userInfoContext) {
         // we do not yet have userInfo so we can't do anything including
         // returning children.
+        console.warn("No userInfoContext");
         return null;
     }
 
     if (! userInfoContext.userInfo) {
 
         // we have user info but the user isn't logged in.
+        console.warn("No userInfo: forcing authentication");
 
         const authHandler = AuthHandlers.get();
         authHandler.authenticate();

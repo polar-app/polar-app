@@ -4,9 +4,8 @@ import {LifecycleToggle} from '../../ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../ui/util/LifecycleEvents';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {EnhancedStep, JoyrideTours} from '../../ui/tours/JoyrideTours';
-import {AppRuntime} from '../../AppRuntime';
-import {Analytics} from "../../analytics/Analytics";
 import {Devices} from "polar-shared/src/util/Devices";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const log = Logger.create();
 

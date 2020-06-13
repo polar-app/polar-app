@@ -1,11 +1,11 @@
 import {Firebase} from '../../../web/js/firebase/Firebase';
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import * as firebase from 'firebase/app';
-import {AppRuntime} from '../../../web/js/AppRuntime';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./login/SignInSuccessURLs";
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 class InitialLogin {
 
@@ -24,7 +24,7 @@ class InitialLogin {
     public static sentAnalytics() {
 
         if (this.get()) {
-            const runtime = AppRuntime.type();
+            const runtime = AppRuntime.get();
             const category = runtime + '-login';
             Analytics.event({category, action: 'initial'});
         }

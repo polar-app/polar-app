@@ -1,6 +1,6 @@
 import {Platforms} from 'polar-shared/src/util/Platforms';
-import {AppRuntime} from '../../AppRuntime';
 import {shell} from 'electron';
+import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 export class Nav {
 
