@@ -51,10 +51,5 @@
     ],
     "exclude": [
         "web/spectron.disabled/*"
-    ],
-    "types": [
-        "mocha",
-        "electron",
-        "reflect-metadata"
     ]
 }
