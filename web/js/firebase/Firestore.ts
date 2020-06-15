@@ -22,7 +22,7 @@ export class Firestore {
         }
 
         console.log("Initializing Firestore with options: ", opts);
-
+        Firebase.init();
         this.instance = await Firestore.createInstance(opts);
 
     }
