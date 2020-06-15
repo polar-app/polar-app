@@ -4,39 +4,39 @@ import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
-import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
-export class Firestore {
+export namespace Firestore {
 
-    private static instance: firebase.firestore.Firestore | undefined = undefined;
+    let instance: firebase.firestore.Firestore | undefined;
+
+    async function initDelegate(opts: FirestoreOptions) {
+        Firebase.init();
+        return await createInstance(opts)
+    }
+
+    const firestoreProvider = AsyncProviders.memoize1<FirestoreOptions, firebase.firestore.Firestore>(initDelegate);
 
     /**
      * Allows us to init with custom options.
      */
-    public static async init(opts: FirestoreOptions = {enablePersistence: true}) {
+    export async function init(opts: FirestoreOptions = {enablePersistence: true}) {
 
-        if (this.instance) {
+        if (instance) {
             return;
         }
 
-        console.log("Initializing Firestore with options: ", opts);
-        Firebase.init();
-        this.instance = await Firestore.createInstance(opts);
-
+        instance = await firestoreProvider(opts);
+        return instance;
     }
 
-    public static async getInstance(): Promise<firebase.firestore.Firestore> {
-
-        Preconditions.assertPresent(firebase, 'firebase');
-        Firebase.init();
-        await this.init();
-        return this.instance!;
-
+    export async function getInstance(): Promise<firebase.firestore.Firestore> {
+        await init();
+        return instance!;
     }
 
-    private static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
+    async function createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
 
         const doExecAsync = async (): Promise<firebase.firestore.Firestore> => {
 
@@ -54,7 +54,7 @@ export class Firestore {
                 firestore.settings(settings);
 
                 if (opts.enablePersistence) {
-                    await this.enablePersistence(firestore);
+                    await enablePersistence(firestore);
                 }
 
                 return firestore;
@@ -69,7 +69,7 @@ export class Firestore {
 
     }
 
-    private static async enablePersistence(firestore: firebase.firestore.Firestore) {
+    async function enablePersistence(firestore: firebase.firestore.Firestore) {
 
         const doExecAsync = async () => {
 

@@ -5,7 +5,6 @@ import {Repository} from "../../../web/js/apps/repository/Repository";
 
 // TODO: import these WHERE they are used... NOT here.
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'summernote/dist/summernote-lite.css';
 
 const log = Logger.create();
 
