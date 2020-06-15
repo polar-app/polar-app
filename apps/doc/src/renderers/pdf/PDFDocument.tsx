@@ -12,7 +12,6 @@ import PDFJS, {
     PDFViewerOptions
 } from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
 import {Finder} from "../../Finders";
@@ -33,6 +32,8 @@ import {
 import isEqual from 'react-fast-compare';
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
+
+import 'pdfjs-dist/web/pdf_viewer.css';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
