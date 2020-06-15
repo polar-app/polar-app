@@ -3,7 +3,6 @@ import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {AddContentButtonOverlays} from './AddContentButtonOverlays';
 import {InjectedComponent} from '../../ui/util/ReactInjector';
-import {Toaster} from '../../ui/toaster/Toaster';
 import {AuthHandlers} from '../repository/auth_handler/AuthHandler';
 import {LoginURLs} from './LoginURLs';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -127,9 +126,9 @@ export class DefaultAddContentImporter  implements AddContentImporter {
                         if (message.success !== undefined) {
 
                             if (message.success) {
-                                Toaster.success("Successfully imported into Polar Desktop");
+                                // Toaster.success("Successfully imported into Polar Desktop");
                             } else {
-                                Toaster.error("Failed to import into Polar Desktop: " + message.message);
+                                // Toaster.error("Failed to import into Polar Desktop: " + message.message);
                             }
 
                         }
@@ -161,7 +160,7 @@ export class DefaultAddContentImporter  implements AddContentImporter {
                 return Optional.empty();
             }
 
-            Toaster.info("Importing file into Polar document repository...");
+            // Toaster.info("Importing file into Polar document repository...");
 
             await this.latch.get();
 
@@ -190,12 +189,12 @@ export class DefaultAddContentImporter  implements AddContentImporter {
 
             importedFile.map(this.updateURL);
 
-            Toaster.success('File successfully added to document repository');
+            // Toaster.success('File successfully added to document repository');
 
             return importedFile;
 
         } catch (e) {
-            Toaster.error('Unable to add to document repository: ' + e.message);
+            // Toaster.error('Unable to add to document repository: ' + e.message);
             throw e;
         }
 

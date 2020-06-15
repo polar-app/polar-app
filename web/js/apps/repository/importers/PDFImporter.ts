@@ -19,14 +19,13 @@ import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
 
 import fs from 'fs';
-import {Toaster} from '../../../ui/toaster/Toaster';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {DocFormatName} from "../../../docformat/DocFormat";
 import {EPUBMetadata} from "polar-epub/src/EPUBMetadata";
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
 const log = Logger.create();
 
@@ -45,8 +44,6 @@ export class PDFImporter {
 
             const url = docPath;
             const downloadPath = FilePaths.join(FilePaths.tmpdir(), basename);
-
-            Toaster.info(`Downloading ${basename} ...`);
 
             log.info(`Prefetching URL ${url} to: ${downloadPath}`);
 

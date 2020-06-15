@@ -1,7 +1,6 @@
 import React from 'react';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
-import {Toaster} from '../toaster/Toaster';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {GroupJoins} from '../../datastore/sharing/rpc/GroupJoins';
 import {UserImage} from './UserImage';
@@ -84,17 +83,18 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
 
         const persistenceLayer = this.props.persistenceLayerProvider();
 
-        Toaster.info("Adding documents to document repository");
+        // Toaster.info("Adding documents to document repository");
 
         const {invitation} = this.props;
 
-        GroupJoins.execAndAdd(persistenceLayer, invitation)
-            .then(() => Toaster.success("Added documents successfully to document repository."))
-            .catch(err => {
-                const msg = "Failed to add document to repository: ";
-                log.error(msg, err);
-                Toaster.error(msg + err.message);
-            });
+        // FIXME: removed because of toasters...
+        // GroupJoins.execAndAdd(persistenceLayer, invitation)
+        //     .then(() => Toaster.success("Added documents successfully to document repository."))
+        //     .catch(err => {
+        //         const msg = "Failed to add document to repository: ";
+        //         log.error(msg, err);
+        //         Toaster.error(msg + err.message);
+        //     });
 
     }
 

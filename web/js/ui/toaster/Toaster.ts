@@ -1,5 +1,4 @@
 import Toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
 import $ from '../JQuery';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 

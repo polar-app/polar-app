@@ -4,7 +4,6 @@ import {TagOptions} from './TagOptions';
 import {Tag, Tags} from 'polar-shared/src/tags/Tags';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {RelatedTagsManager} from '../../../web/js/tags/related/RelatedTagsManager';
-import {Toaster} from '../../../web/js/ui/toaster/Toaster';
 import {IDs} from '../../../web/js/util/IDs';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {
@@ -351,8 +350,9 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
                 invalidTags.map(current => current.label)
                     .join(", ");
 
-            Toaster.warning("Some tags were excluded - spaces and other control characters not supported: " + invalidTagsStr,
-                            "Invalid tags");
+            // FIXME: add this back in with useDialogManager
+            // Toaster.warning("Some tags were excluded - spaces and other control characters not supported: " + invalidTagsStr,
+            //                 "Invalid tags");
 
             log.warn("Some tags were invalid", invalidTags);
 

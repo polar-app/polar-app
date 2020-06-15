@@ -14,14 +14,13 @@ import {MultiLogger} from './MultiLogger';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
-import {ToasterLogger} from './ToasterLogger';
 import {PersistentErrorLogger} from './PersistentErrorLogger';
 
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GALogger} from './GALogger';
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -92,11 +91,11 @@ export class Logging {
 
         // *** next up is the Toaster Logger to visually show errors.
 
-        if (['electron-renderer'].includes(AppRuntime.get())) {
-            // use a ToasterLogger when running in the renderer context so that
-            // we can bring up error messages for the user.
-            loggers.push(new ToasterLogger());
-        }
+        // if (['electron-renderer'].includes(AppRuntime.get())) {
+        //     // use a ToasterLogger when running in the renderer context so that
+        //     // we can bring up error messages for the user.
+        //     loggers.push(new ToasterLogger());
+        // }
 
         if (['electron-renderer', 'browser'].includes(AppRuntime.get())) {
             // use a ToasterLogger when running in the renderer context so that

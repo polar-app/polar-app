@@ -5,7 +5,6 @@ import {
 } from '../../datastore/sharing/db/GroupMemberInvitations';
 import {PersistenceLayerProvider} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {Toaster} from '../toaster/Toaster';
 // import {NotificationButton} from './NotificationButton.tsx.disabled';
 import {Devices} from "polar-shared/src/util/Devices";
 
@@ -32,7 +31,7 @@ export class Notifications extends React.PureComponent<IProps, IState> {
         }).catch(err => {
             const msg = "Unable to get group notifications: ";
             log.error(msg, err);
-            Toaster.error(msg, err.message);
+            // Toaster.error(msg, err.message);
         });
 
     }

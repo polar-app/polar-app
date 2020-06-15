@@ -6,7 +6,6 @@ import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Toaster} from "../../ui/toaster/Toaster";
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 import {DocLoader} from "../main/doc_loaders/DocLoader";
 import {Blackout} from "../../ui/blackout/Blackout";
@@ -223,7 +222,7 @@ export class FileImportController {
             }
 
         } else {
-            Toaster.error("Unable to upload files.  Only PDF uploads are supported.");
+            throw new Error("Unable to upload files.  Only PDF uploads are supported.");
         }
 
     }
@@ -286,10 +285,9 @@ export class FileImportController {
 
         }
 
-
-        if (importedFiles.length !== 1) {
-            Toaster.success(`Imported ${files.length} file(s) successfully.`);
-        }
+        // if (importedFiles.length !== 1) {
+        //     Toaster.success(`Imported ${files.length} file(s) successfully.`);
+        // }
 
     }
 
@@ -301,11 +299,11 @@ export class FileImportController {
 
     }
 
-    private async doImportFiles(files: AddFileRequest[]): Promise<Array<Optional<ImportedFile>>> {
+    private async doImportFiles(files: AddFileRequest[]): Promise<ReadonlyArray<Optional<ImportedFile>>> {
 
         const progressTracker = new ProgressTracker({total: files.length, id: 'import-files'});
 
-        const result: Array<Optional<ImportedFile>> = [];
+        const result: Optional<ImportedFile>[] = [];
 
         try {
 
