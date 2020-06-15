@@ -7,6 +7,7 @@ import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {Nav} from '../../../../ui/util/Nav';
 import {PHZLoader} from '../../file_loaders/PHZLoader';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
+import {EPUBLoader} from "../../file_loaders/EPUBLoader";
 
 const log = Logger.create();
 
@@ -42,6 +43,8 @@ export class BrowserDocLoader implements IDocLoader {
                         return PDFLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
                     } else if (FilePaths.hasExtension(fileName, "phz")) {
                         return PHZLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
+                    } else if (FilePaths.hasExtension(fileName, "epub")) {
+                        return EPUBLoader.createViewerURL(fingerprint);
                     } else {
                         throw new Error("Unable to handle file: " + fileName);
                     }

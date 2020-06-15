@@ -158,7 +158,7 @@ export const DocRepoScreen2 = React.memo(() => {
 
             </header>
 
-            <Router/>
+            {/*<Router/>*/}
 
             <DeviceRouter handheld={<devices.PhoneAndTablet/>}
                           desktop={<devices.Desktop/>}/>

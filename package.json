@@ -58,7 +58,7 @@
     "@types/toastr": "~2.1.35",
     "@types/universal-analytics": "~0.4.2",
     "@types/use-persisted-state": "=0.3.0",
-    "@types/uuid": "8.0.0",
+    "@types/uuid": "3.4.5",
     "cache-loader": "4.1.0",
     "chai": "4.2.0",
     "dotenv": "^8.2.0",
@@ -171,7 +171,7 @@
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.20",
     "use-persisted-state": "=0.3.0",
-    "uuid": "8.1.0"
+    "uuid": "3.3.3"
   },
   "collective": {
     "type": "opencollective",
