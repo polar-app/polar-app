@@ -5,6 +5,7 @@ import 'firebase/auth';
 
 import * as firebaseui from 'firebaseui'
 import {Preconditions} from "polar-shared/src/Preconditions";
+import './FirebaseUIAuth.scss';
 import 'firebaseui/dist/firebaseui.css';
 
 const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
