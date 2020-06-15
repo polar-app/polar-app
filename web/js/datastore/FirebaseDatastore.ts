@@ -1008,6 +1008,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 log.warn("No entry for fingerprint (fetching directly from server): " + fingerprint);
 
+                // FIXME: this is wrong... we're going to block on the server to much...
                 return await datastore.getDocMeta(fingerprint, {preferredSource: 'server'});
 
             }
