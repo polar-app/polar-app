@@ -43,6 +43,8 @@ export class Firebase {
 
         try {
 
+            log.notice("Initializing firebase...");
+
             this.app = this.initApp();
 
             return this.app;
