@@ -8,17 +8,32 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
-const opts: FirestoreOptions = {enablePersistence: true};
-
 export class Firestore {
 
-    private static firestoreProvider = AsyncProviders.memoize(async () => await Firestore.createInstance(opts));
+    private static instance: firebase.firestore.Firestore | undefined = undefined;
+
+    /**
+     * Allows us to init with custom options.
+     */
+    public static async init(opts: FirestoreOptions = {enablePersistence: true}) {
+
+        if (this.instance) {
+            return;
+        }
+
+        console.log("Initializing Firestore with options: ", opts);
+
+        this.instance = await Firestore.createInstance(opts);
+
+    }
 
     public static async getInstance(): Promise<firebase.firestore.Firestore> {
+
         Preconditions.assertPresent(firebase, 'firebase');
         Firebase.init();
+        await this.init();
+        return this.instance!;
 
-        return await this.firestoreProvider();
     }
 
     private static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {

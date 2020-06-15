@@ -15,6 +15,8 @@ const POLAR_APP_SITES = [
 
 export interface AuthHandler {
 
+    readonly id: string;
+
     /**
      *
      * @param signInSuccessUrl The URL to redirect to if we're logging in to a
@@ -62,6 +64,8 @@ export class AuthHandlers {
 }
 
 abstract class DefaultAuthHandler implements AuthHandler {
+
+    readonly id: string = 'defaultd';
 
     public authenticate(signInSuccessUrl?: string): void {
 
@@ -145,6 +149,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
         const user = await this.currentUser();
 
         if (user === null) {
+            console.log("FIXME: no current user");
             return Optional.empty();
         }
 
@@ -155,12 +160,14 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | null> {
-        return Firebase.currentUserAsync();
+        return await Firebase.currentUserAsync();
     }
 
 }
 
 export class BrowserAuthHandler extends FirebaseAuthHandler {
+
+    readonly id: string = 'browser';
 
     public async authenticate(): Promise<void> {
 

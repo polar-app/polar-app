@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button/Button';
-import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import {ExternalNavigationBlock} from "../../../../web/js/electron/navigation/ExternalNavigationBlock";
@@ -9,8 +8,6 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 
 export const LoginScreen = React.memo(() => {
-
-    const appRuntime = AppRuntime.get();
 
     function doCancel() {
 
@@ -32,13 +29,15 @@ export const LoginScreen = React.memo(() => {
 
         Firebase.init();
 
-        if (! Firebase.currentUser()) {
+        const user = Firebase.currentUser();
+
+        if (! user) {
 
             const signInSuccessUrl = SignInSuccessURLs.get();
             FirebaseUIAuth.login({signInSuccessUrl});
 
         } else {
-            console.log("Already authenticated");
+            console.log("Already authenticated as " + user.email);
         }
 
     }
