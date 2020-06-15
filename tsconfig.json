@@ -35,11 +35,7 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2019", "dom"],
-        "typeRoots": [
-            "./node_modules/@types",
-            "./node_modules/@polar-app-types"
-        ]
+        "lib": ["es2019", "dom"]
 
     },
     "include": [

@@ -128,11 +128,10 @@ class MergedTextBlock {
  */
 export class NodeArray {
 
-    private nodes: ReadonlyArray<Node>;
+    public nodes: ReadonlyArray<Node>;
 
     /**
      *
-     * @param nodes {Array<Node>}
      */
     constructor(nodes: ReadonlyArray<Node>) {
         Preconditions.assertNotNull(nodes, "nodes");
@@ -146,7 +145,6 @@ export class NodeArray {
     /**
      * Get the input as a list of nodes to process.  If the node we give it is
      * ALREADY a single text node just return that wrapped in an array.
-     * @param element
      */
     static createFromElement(element: any) {
 
@@ -179,8 +177,6 @@ export class TextNodeRows {
 
     /**
      *
-     * @param textNode {Node}
-     * @return {Array<Node>}
      */
     public static fromTextNode(textNode: Node) {
 
@@ -214,8 +210,6 @@ export class TextNodeRows {
 
     /**
      *
-     * @param element {Element} The root node to split.
-     * @return {number} The number of nodes split.
      */
     static splitElement(element: HTMLElement) {
 
@@ -243,9 +237,6 @@ export class TextNodeRows {
      * Text regions are groups of contiguous text nodes that are back to back
      * without an element in between.
      *
-     * @param nodeArray {NodeArray}
-     * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
-     * @return {Array<TextRegion>} The computed text regions
      */
     static computeTextRegions(nodeArray: any, textRegions: any) {
 
@@ -255,16 +246,13 @@ export class TextNodeRows {
             throw new Error("Not a node array: " + nodeArray.constructor);
         }
 
-        Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
+        // Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
 
         // all text regions that we're working on
         if(!textRegions) {
             textRegions = [];
         }
 
-        /**
-         * @type {TextRegion}
-         */
         let textRegion = new TextRegion();
 
         createSiblings(nodeArray.nodes).forEach(position => {
@@ -304,29 +292,18 @@ export class TextNodeRows {
      * The rect rows are computed by looking at the top and bottom of the row
      * to see if they are different.
      *
-     * @param textRegions {Array<TextRegion>}
-     * @return {Array<TextBlock>}
      */
     static computeTextBlocks(textRegions: ReadonlyArray<TextRegion>) {
 
-        /**
-         * @type {Array<TextBlock>}
-         */
         const textBlocks: any[] = [];
 
         textRegions.forEach(textRegion => {
 
-            /**
-             * @type {TextBlock}
-             */
             let textBlock = new TextBlock();
 
             // keep track of the previous (visible) rect that we've seen so that
             // we can compare our position.
 
-            /**
-             * @type {DOMRect}
-             */
             let prevRect: any = null;
 
             createSiblings(textRegion.getTextNodes()).forEach(position => {
@@ -373,18 +350,8 @@ export class TextNodeRows {
 
     }
 
-    /**
-     *
-     *
-     * @param textBlocks {Array<TextBlock>}
-     * @return {Array<MergedTextBlock>}
-     */
     static mergeTextBlocks(textBlocks: ReadonlyArray<TextBlock>): ReadonlyArray<MergedTextBlock> {
 
-        /**
-         *
-         * @type {Array<MergedTextBlock>}
-         */
         const result: MergedTextBlock[] = [];
 
         textBlocks.forEach(textBlock => {
@@ -417,8 +384,6 @@ export class TextNodeRows {
 
     /**
      *
-     * @param rect {DOMRect}
-     * @return {string}
      */
     static computeRowKey(rect: DOMRect | ClientRect) {
         return `${rect.top}:${rect.bottom}`;
@@ -428,7 +393,6 @@ export class TextNodeRows {
      * Split the given text node so that every character has its own text
      * node so that we can see the actual position on the screen.
      *
-     * @return {NodeArray} The number of splits we performed.
      */
     static splitTextNodePerCharacter(textNode: Node) {
 

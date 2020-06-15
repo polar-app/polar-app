@@ -1,4 +1,4 @@
-import {placement, Step} from 'react-joyride';
+import {Placement, Step} from 'react-joyride';
 import * as React from 'react';
 import {SplitLayout, SplitLayoutLeft} from '../split_layout/SplitLayout';
 import {Styles} from '../../apps/repository/RepositoryTour';
@@ -80,7 +80,7 @@ export interface ImageStep {
     readonly content: React.ReactNode;
     readonly image: string | React.ReactNode;
     readonly target: string | HTMLElement;
-    readonly placement?: placement;
+    readonly placement?: Placement;
     readonly autoNext?: boolean;
     readonly hideBackButton?: boolean;
     readonly spotlightClicks?: boolean;

@@ -125,7 +125,7 @@ function withPointerEvents<T>(element: HTMLElement,
     } finally {
 
         for (const restore of elementStyleRestores) {
-            restore.element.style.pointerEvents = restore.pointerEvents;
+            restore.element.style.pointerEvents = restore.pointerEvents!;
         }
 
     }
