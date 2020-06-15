@@ -1,6 +1,5 @@
 import Toastr from 'toastr';
-
-// needed to enforce that jquery is working.
+import 'toastr/build/toastr.min.css';
 import $ from '../JQuery';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
