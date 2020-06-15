@@ -13,18 +13,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/chai": "^4.2.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "=12.12.32",
-    "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "@types/chai": "4.2.11",
+    "@types/mocha": "7.0.2",
+    "@types/node": "12.12.32",
+    "chai": "4.2.0",
+    "mocha": "8.0.1",
     "polar-test": "^2.0.0-beta.5",
-    "tslint": "=6.1.1",
+    "tslint": "6.1.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
     "@google-cloud/tasks": "=1.9.0",
-    "firebase-admin": "=8.10.0",
+    "firebase-admin": "8.12.1",
     "polar-firebase": "^2.0.0-beta.5",
     "polar-firebase-admin": "^2.0.0-beta.5",
     "polar-shared": "^2.0.0-beta.5"

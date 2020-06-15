@@ -4,13 +4,13 @@ import {accounts} from "polar-accounts/src/accounts";
 import {StripePlanIDs} from "./StripePlanIDs";
 
 export interface StripeCustomerSubscription {
-    readonly customer: Stripe.customers.ICustomer;
-    readonly subscription?: Stripe.subscriptions.ISubscription;
+    readonly customer: Stripe.Customer;
+    readonly subscription?: Stripe.Subscription;
 }
 
 export class StripeCustomers {
 
-    public static async getCustomerByEmail(email: string): Promise<Stripe.customers.ICustomer | undefined> {
+    public static async getCustomerByEmail(email: string): Promise<Stripe.Customer | undefined> {
 
         const stripe = StripeUtils.getStripe();
 
@@ -34,11 +34,11 @@ export class StripeCustomers {
 
         const customer = await this.getCustomerByEmail(email);
 
-        if (!customer) {
+        if (! customer) {
             throw new Error("No customer for email: " + email);
         }
 
-        if (customer.subscriptions.data.length === 0) {
+        if (! customer.subscriptions || customer.subscriptions.data.length === 0) {
             // we have a customer just no subscription yet
             return {customer};
         }
@@ -90,7 +90,9 @@ export class StripeCustomers {
 
             await stripe.subscriptions.create({
                 customer: customer.id,
-                plan: planID
+                items: [{
+                    plan: planID
+                }]
             });
         }
 

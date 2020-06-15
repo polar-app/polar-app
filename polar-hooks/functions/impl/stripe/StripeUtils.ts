@@ -29,7 +29,12 @@ export class StripeUtils {
             return stripe;
         }
 
-        stripe = new Stripe(getStripeKey());
+        const config: Stripe.StripeConfig = {
+            apiVersion: '2020-03-02',
+            typescript: true
+        }
+
+        stripe = new Stripe(getStripeKey(), config);
         return stripe;
 
     }

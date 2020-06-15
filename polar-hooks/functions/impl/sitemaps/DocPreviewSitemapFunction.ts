@@ -1,7 +1,8 @@
 import * as functions from "firebase-functions";
 import {
     DocPreviews,
-    ListOpts
+    ListOpts,
+    Range
 } from "polar-firebase/src/firebase/om/DocPreviews";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
@@ -14,12 +15,32 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
      */
     const parseListOpts = (): ListOpts => {
 
-        const parseRange = () => {
+        function toParam(key: string): string | undefined {
+
+            const param = req.query[key];
+
+            if (! param) {
+                return undefined;
+            }
+
+            if (typeof param === 'string') {
+                return param;
+            }
+
+            if (Array.isArray(param)) {
+                return (<string> param[0]) || undefined;
+            }
+
+            throw new Error("Invalid param: " + param);
+
+        }
+
+        const parseRange = (): Range | undefined => {
 
             if (req.query.start && req.query.end) {
                 return {
-                    start: req.query.start,
-                    end: req.query.end
+                    start: toParam('start')!,
+                    end: toParam('end')!
                 };
             }
 
@@ -28,7 +49,15 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         };
 
         const parseSize = (): number => {
-            return parseInt(req.query.size ?? '50000');
+
+            const sizeParam = toParam('size');
+
+            if (! sizeParam) {
+                return 50000;
+            }
+
+            return parseInt(sizeParam);
+
         };
 
         const size = parseSize();

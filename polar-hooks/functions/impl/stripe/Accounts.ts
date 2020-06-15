@@ -50,6 +50,10 @@ export class Accounts {
 
         const customer = await stripe.customers.retrieve(customerID);
 
+        if (customer.deleted) {
+            throw new Error("Can not change plan on deleted customer");
+        }
+
         const {email} = customer;
 
         if (!email) {

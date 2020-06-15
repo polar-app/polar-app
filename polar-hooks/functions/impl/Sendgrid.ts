@@ -1,6 +1,5 @@
-import MailService from '@sendgrid/mail';
+import MailService, {MailDataRequired} from '@sendgrid/mail';
 import {ClientResponse} from "@sendgrid/client/src/response";
-import {MailData} from "@sendgrid/helpers/classes/mail";
 
 const SENDGRID_API_KEY='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';
 
@@ -19,7 +18,7 @@ export class Sendgrid {
      * };
      *
      */
-    public static async send(msg: MailData): Promise<[ClientResponse, {}]> {
+    public static async send(msg: MailDataRequired): Promise<[ClientResponse, {}]> {
         return MailService.send(msg);
     }
 
