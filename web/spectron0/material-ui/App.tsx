@@ -20,6 +20,7 @@ import Button from "@material-ui/core/Button";
 import {createTeleporter} from "react-teleporter";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import { SpeedDialDemo } from './SpeedDialDemo';
+import {SaveToPolarDemo} from "./SaveToPolarDemo";
 // configure({logLevel: "debug"});
 
 export const App = () => {
@@ -207,7 +208,7 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            <SpeedDialDemo/>
+            <SaveToPolarDemo/>
 
             {/*this is the teleporter:*/}
             {/*<teleporter.Target/>*/}
