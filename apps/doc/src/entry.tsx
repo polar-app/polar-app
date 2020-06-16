@@ -3,6 +3,8 @@ import {Logging} from '../../../web/js/logger/Logging';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocViewerApp} from "./DocViewerApp";
 
+// import 'pdfjs-dist/web/pdf_viewer.css';
+
 const log = Logger.create();
 
 async function start() {

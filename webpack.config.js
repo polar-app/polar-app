@@ -4,6 +4,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const os = require('os');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
@@ -64,6 +65,7 @@ function createRules() {
         },
         {
             test: /\.css$/i,
+            include: /node_modules/,
             use: ['style-loader', 'css-loader'],
         },
         {
@@ -156,7 +158,14 @@ module.exports = {
             "window.$": "jquery",
             "window.jQuery": "jquery"
         }),
-        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
+        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+        new CopyPlugin({
+            patterns: [
+                // this is a bit of a hack and it would be better if we supported
+                // this better and managed as part of the build system
+                { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' },
+            ],
+        }),
 
     ],
     optimization: {

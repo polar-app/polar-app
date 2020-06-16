@@ -94,7 +94,9 @@
     "css-loader": "=3.6.0",
     "file-loader": "=6.0.0",
     "sass-loader": "=8.0.2",
-    "node-sass": "=4.14.1"
+    "node-sass": "=4.14.1",
+    "worker-loader": "=2.0.0",
+    "copy-webpack-plugin": "=6.0.2"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.13.0",
