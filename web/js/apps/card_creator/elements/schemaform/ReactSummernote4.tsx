@@ -2,7 +2,6 @@
 
 import $ from '../../../../ui/JQuery';
 import 'summernote/dist/summernote-lite';
-// import 'summernote/dist/summernote-lite.css';
 
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';

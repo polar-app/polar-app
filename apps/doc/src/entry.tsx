@@ -3,19 +3,13 @@ import {Logging} from '../../../web/js/logger/Logging';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocViewerApp} from "./DocViewerApp";
 
-// import 'pdfjs-dist/web/pdf_viewer.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const log = Logger.create();
 
 async function start() {
 
     await Logging.init();
-
-    // const appURL = PDFAppURLs.parse(document.location.href);
-    //
-    // if (! appURL) {
-    //     throw new Error("No app URL");
-    // }
 
     const pdfApp = new DocViewerApp();
 
