@@ -17,7 +17,7 @@ export class LoadingProgress extends React.Component<IProps, IState> {
                      opacity: 0.8
                  }}>
 
-                <div className="ml-auto mr-auto">
+                <div className="m-auto">
                     <CircularProgress style={{width: '125px', height: '125px'}}/>
                 </div>
 

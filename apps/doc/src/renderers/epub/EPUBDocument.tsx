@@ -38,18 +38,13 @@ export const EPUBDocument = React.memo((props: IProps) => {
         rendition.themes.override('background-color', theme.palette.background.default);
         rendition.themes.override('color', theme.palette.text.primary);
 
-        await rendition.display();
+        rendition.themes.override('fontFamily', theme.typography.fontFamily!);
 
-        console.log("FIXME: rendition: ", rendition);
+        await rendition.display();
 
         const metadata = await book.loaded.metadata;
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
-
-        console.log("FIXME: first section: ", spine.items[1]);
-        //
-        // const foundItems = spine.items[1].find('alice');
-        // console.log("FIXME: foundItems: ", foundItems);
 
         function createPageNavigator(): PageNavigator {
 

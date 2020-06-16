@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {accounts} from 'polar-accounts/src/accounts';
 import {RGBs} from "polar-shared/src/util/Colors";
+import CheckIcon from '@material-ui/icons/Check';
 
 export class PlanIcon extends React.Component<IProps> {
 
@@ -25,8 +26,7 @@ export class PlanIcon extends React.Component<IProps> {
 
         const CheckWhenActive = () => {
             if (this.props.active) {
-                return <i className="fas fa-check"
-                          style={{fontSize: '25px'}}/>;
+                return <CheckIcon/>;
             } else {
                 return null;
             }
