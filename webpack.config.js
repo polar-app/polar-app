@@ -32,8 +32,6 @@ function createRules() {
         { loader: 'cache-loader' },
         {
             test: /\.tsx?$/,
-            // exclude: /node_modules/,
-
             use: [
                 {
                     loader: 'thread-loader',
@@ -65,7 +63,6 @@ function createRules() {
         },
         {
             test: /\.css$/i,
-            include: /node_modules/,
             use: ['style-loader', 'css-loader'],
         },
         {
@@ -138,7 +135,7 @@ module.exports = {
         rules: createRules()
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ],
+        extensions: [ '.tsx', '.ts', '.js'],
         alias: {
         }
     },
@@ -164,6 +161,7 @@ module.exports = {
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
                 { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' },
+                { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'}
             ],
         }),
 

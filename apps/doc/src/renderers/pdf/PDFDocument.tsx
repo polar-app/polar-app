@@ -33,8 +33,6 @@ import isEqual from 'react-fast-compare';
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 
-// import 'pdfjs-dist/web/pdf_viewer.css';
-
 PDFJS.GlobalWorkerOptions.workerSrc = '/web/dist/pdf.worker.js';
 
 interface DocViewer {
