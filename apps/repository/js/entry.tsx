@@ -5,6 +5,8 @@ import {Repository} from "../../../web/js/apps/repository/Repository";
 
 const log = Logger.create();
 
+import "../css/fontawesome.scss"
+
 async function start() {
 
     console.log("Starting logging init");

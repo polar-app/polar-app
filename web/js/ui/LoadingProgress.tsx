@@ -1,4 +1,5 @@
 import * as React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 
 export class LoadingProgress extends React.Component<IProps, IState> {
 
@@ -16,8 +17,8 @@ export class LoadingProgress extends React.Component<IProps, IState> {
                      opacity: 0.8
                  }}>
 
-                <div className="fa-6x ml-auto mr-auto">
-                    <i className="fas fa-circle-notch fa-spin"/>
+                <div className="ml-auto mr-auto">
+                    <CircularProgress style={{width: '125px', height: '125px'}}/>
                 </div>
 
             </div>
