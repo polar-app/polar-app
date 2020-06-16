@@ -123,13 +123,9 @@ module.exports = {
     // stats: 'verbose',
     target,
     entry: {
-
-        "doc": [ "./apps/doc/src/entry.tsx"],
         "repository": [ "./apps/repository/js/entry.tsx"],
         "preview": [ "./apps/preview/index.ts"],
-        // "login": [ "./apps/repository/js/login.ts"],
         "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
-
     },
     module: {
         rules: createRules()
@@ -162,8 +158,8 @@ module.exports = {
                 // this better and managed as part of the build system
                 { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' },
                 { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
-                { from: '../../node_modules/summernote/dist/summernote-lite.css', to: '.'}
-
+                { from: '../../node_modules/summernote/dist/summernote-lite.css', to: '.'},
+                { from: '../../node_modules/@fortawesome/fontawesome-free/css/all.min.css', to: './fontawesome.css'}
             ],
         }),
 

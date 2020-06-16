@@ -3,9 +3,6 @@ import {Logging} from '../../../web/js/logger/Logging';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Repository} from "../../../web/js/apps/repository/Repository";
 
-// TODO: import these WHERE they are used... NOT here.
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
 const log = Logger.create();
 
 async function start() {

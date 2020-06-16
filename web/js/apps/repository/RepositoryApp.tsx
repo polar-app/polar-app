@@ -35,6 +35,13 @@ import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader
 import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
+import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
+import {DocMetaContextProvider} from "../../annotation_sidebar/DocMetaContextProvider";
+import {DocViewerDocMetaLookupContextProvider} from "../../../../apps/doc/src/DocViewerDocMetaLookupContextProvider";
+import {DocViewerStore} from "../../../../apps/doc/src/DocViewerStore";
+import {DocFindStore} from "../../../../apps/doc/src/DocFindStore";
+import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/AnnotationSidebarStore";
+import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 
 interface IProps {
     readonly app: App;
@@ -48,6 +55,24 @@ interface IProps {
 export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
+
+    const RenderDocViewerScreen = React.memo(() => (
+        <AuthRequired>
+            <UserTagsProvider>
+                <DocMetaContextProvider>
+                    <DocViewerDocMetaLookupContextProvider>
+                        <DocViewerStore>
+                            <DocFindStore>
+                                <AnnotationSidebarStoreProvider>
+                                    <DocViewer/>
+                                </AnnotationSidebarStoreProvider>
+                            </DocFindStore>
+                        </DocViewerStore>
+                    </DocViewerDocMetaLookupContextProvider>
+                </DocMetaContextProvider>
+            </UserTagsProvider>
+        </AuthRequired>
+    ));
 
     const RenderDocRepoScreen = React.memo(() => (
             <AuthRequired>
@@ -251,6 +276,10 @@ export const RepositoryApp = (props: IProps) => {
 
                         <Route exact path={["/login", "/login.html"]}>
                             <LoginScreen/>
+                        </Route>
+
+                        <Route exact path={["/doc", "/doc/:id"]}>
+                            <RenderDocViewerScreen/>
                         </Route>
 
                         <Route>
