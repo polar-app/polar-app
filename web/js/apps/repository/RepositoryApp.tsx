@@ -19,7 +19,6 @@ import {ReactRouters} from "../../react/router/ReactRouters";
 import {Cached} from '../../react/Cached';
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
-import {ProfileScreen} from "../../../../apps/repository/js/configure/profile/ProfileScreen";
 import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
 import {MUIAppRoot} from "../../mui/MUIAppRoot";
@@ -133,13 +132,13 @@ export const RepositoryApp = (props: IProps) => {
         </Cached>
     );
 
-    const renderProfileScreen = () => (
-        <Cached>
-            <ProfileScreen
-                persistenceLayerProvider={app.persistenceLayerProvider}
-                persistenceLayerController={app.persistenceLayerController}/>
-        </Cached>
-    );
+    // const renderProfileScreen = () => (
+    //     <Cached>
+    //         <ProfileScreen
+    //             persistenceLayerProvider={app.persistenceLayerProvider}
+    //             persistenceLayerController={app.persistenceLayerController}/>
+    //     </Cached>
+    // );
 
     const renderDeviceScreen = () => (
         <Cached>
@@ -338,8 +337,8 @@ export const RepositoryApp = (props: IProps) => {
                                     <Route exact path="/settings"
                                            component={RenderSettingsScreen}/>
 
-                                    <Route exact path="/profile"
-                                           component={renderProfileScreen}/>
+                                    {/*<Route exact path="/profile"*/}
+                                    {/*       component={renderProfileScreen}/>*/}
 
                                     <Route exact path="/device"
                                            component={renderDeviceScreen}/>

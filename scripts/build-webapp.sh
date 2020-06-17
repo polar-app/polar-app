@@ -80,13 +80,6 @@ showEnv
 copy web/dist "*.js"
 copy web "*.svg"
 
-copy node_modules/@fortawesome "*"
-
-copy node_modules/toastr "*"
-copy node_modules/firebaseui "*"
-copy node_modules/firebase "*"
-copy node_modules/summernote "*"
-
 # TODO this should no longer be required ... I THINK but we might need the
 # worker...
 # copy node_modules/pdfjs-dist "*"
