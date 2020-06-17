@@ -3,8 +3,8 @@ import {Firebase} from '../../../firebase/Firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {accounts} from 'polar-accounts/src/accounts';
-import {AccountProvider} from "../../../accounts/AccountProvider";
 import {Account} from "../../../accounts/Account";
+import {Accounts} from "../../../accounts/Accounts";
 
 const POLAR_APP_SITES = [
     'http://localhost:8500',
@@ -131,7 +131,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
             return Optional.empty();
         }
 
-        const account = AccountProvider.get();
+        const account = await Accounts.get();
 
         return Optional.of(toUserInfo(user, account));
 

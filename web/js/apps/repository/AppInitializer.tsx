@@ -7,9 +7,6 @@ import {AppOrigin} from "../AppOrigin";
 import {IEventDispatcher, SimpleReactor} from "../../reactor/SimpleReactor";
 import {SyncBarProgress} from "../../ui/sync_bar/SyncBar";
 import {AuthHandlers} from "./auth_handler/AuthHandler";
-import {Accounts} from "../../accounts/Accounts";
-import {Account} from "../../accounts/Account";
-import {AccountProvider} from "../../accounts/AccountProvider";
 import {UpdatesController} from "../../auto_updates/UpdatesController";
 import {ProgressService} from "../../ui/progress_bar/ProgressService";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -82,11 +79,6 @@ export class AppInitializer {
 
         const authHandler = AuthHandlers.get();
 
-        // FIXME: this also needs to be removed and can be if we refactor more
-        // code
-        const account = await Tracer.async(Accounts.get(), 'accounts.get');
-        await AccountProvider.init(account);
-
         const platform = Platforms.get();
 
         log.notice("Running on platform: " + Platforms.toSymbol(platform));
@@ -94,7 +86,6 @@ export class AppInitializer {
         const app: App = {
             persistenceLayerManager, persistenceLayerProvider,
             persistenceLayerController, syncBarProgress,
-            // userInfo: userInfo.getOrUndefined()
         };
 
         new UpdatesController().start();
