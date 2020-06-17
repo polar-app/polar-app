@@ -115,7 +115,7 @@ module.exports = {
     globIgnores: [],
     globStrict: false,
     // stripPrefix: 'dist/public',
-    maximumFileSizeToCacheInBytes: 15000000,
+    maximumFileSizeToCacheInBytes: 150000000,
     // runtimeCaching: [{
     //     urlPattern: /this\\.is\\.a\\.regex/,
     //     handler: 'networkFirst'

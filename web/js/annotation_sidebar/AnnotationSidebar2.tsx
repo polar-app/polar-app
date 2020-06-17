@@ -71,13 +71,13 @@ const NoAnnotations = () => {
 
             </div>
 
-            <div>
-                <AppRuntimeRouter browser={(
-                    <DeviceRouter desktop={(
-                        <LoadRepositoryExplainer/>
-                    )}/>
-                )}/>
-            </div>
+            {/*<div>*/}
+            {/*    <AppRuntimeRouter browser={(*/}
+            {/*        <DeviceRouter desktop={(*/}
+            {/*            <LoadRepositoryExplainer/>*/}
+            {/*        )}/>*/}
+            {/*    )}/>*/}
+            {/*</div>*/}
 
         </div>
     );

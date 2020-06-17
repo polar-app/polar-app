@@ -1,4 +1,4 @@
-import {Callback1} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
 import isEqual from "react-fast-compare";
 import {
@@ -17,12 +17,19 @@ import {
     SnackbarDialog,
     SnackbarDialogProps
 } from "../../ui/dialogs/SnackbarDialog";
+import {
+    TaskbarDialog,
+    TaskbarDialogProps, TaskbarDialogPropsWithCallback,
+    TaskbarProgressCallback
+} from "../../ui/dialogs/TaskbarDialog";
+import {Latch} from "polar-shared/src/util/Latch";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
     prompt: (promptDialogProps: PromptDialogProps) => void;
     autocomplete: (autocompleteProps: AutocompleteDialogProps<any>) => void;
     snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
+    taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
     dialog: (dialogProps: IDialogProps) => void;
 }
 
@@ -35,6 +42,7 @@ export const NullDialogManager: DialogManager = {
     prompt: nullDialog,
     autocomplete: nullDialog,
     snackbar: nullDialog,
+    taskbar: async () => NULL_FUNCTION,
     dialog: nullDialog,
 }
 
@@ -49,7 +57,7 @@ interface IDialogProps {
     readonly dialog: JSX.Element;
 }
 
-type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog';
+type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar';
 
 interface DialogState {
     readonly type: DialogType;
@@ -106,12 +114,36 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             });
         };
 
+        const taskbar = async function(taskbarProps: TaskbarDialogProps): Promise<TaskbarProgressCallback> {
+
+            const latch = new Latch<TaskbarProgressCallback>();
+
+            function onProgressCallback(callback: TaskbarProgressCallback) {
+                latch.resolve(callback);
+            }
+
+            const props: TaskbarDialogPropsWithCallback = {
+                ...taskbarProps,
+                onProgressCallback,
+            };
+
+            setState({
+                 type: 'taskbar',
+                 props,
+                 iter: iter++
+            });
+
+            return latch.get();
+
+        };
+
         const dialogManager: DialogManager = {
             confirm,
             prompt,
             autocomplete,
             snackbar,
-            dialog
+            dialog,
+            taskbar
         };
 
         // WARN: not sure if this is the appropriate way to do this but we need
@@ -160,6 +192,11 @@ const DialogHost = React.memo((props: DialogHostProps) => {
                 dialogProps.dialog
             );
 
+        case "taskbar":
+            return (
+                <TaskbarDialog {...(state.props as TaskbarDialogPropsWithCallback)}/>
+            );
+
     }
 
     return null;
@@ -178,8 +215,6 @@ export const MUIDialogControllerContext = React.createContext<DialogManager>(Nul
  */
 export const MUIDialogController = React.memo((props: IProps) => {
 
-    // FIXME this should be the ROOT of the app so that we replace it with a
-    // REAL dialog manager before anything else starts.
     const [dialogManager, setDialogManager] = useState<DialogManager>(NullDialogManager);
 
     return (

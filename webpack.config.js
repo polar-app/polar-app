@@ -10,6 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
+const devtool = isDev ? process.env.WEBPACK_DEVTOOL || "inline-source-map" : false;
 
 const workers = os.cpus().length - 1;
 
@@ -19,6 +20,7 @@ console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
 console.log("isDev: " + isDev);
 console.log("target: " + target);
+console.log("devtool: " + devtool);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
@@ -144,7 +146,7 @@ module.exports = {
         }
     },
     // only inline-source-map works.
-    devtool: isDev ? "inline-source-map" : false,
+    devtool,
     output: {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
