@@ -152,7 +152,7 @@ module.exports = {
     },
     node: createNode(),
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

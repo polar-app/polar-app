@@ -12,7 +12,10 @@ import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
-import {PersistenceLayerApp} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    PersistenceLayerApp,
+    PersistenceLayerContext
+} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
 import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
@@ -41,6 +44,7 @@ import {DocViewerStore} from "../../../../apps/doc/src/DocViewerStore";
 import {DocFindStore} from "../../../../apps/doc/src/DocFindStore";
 import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/AnnotationSidebarStore";
 import {DocViewer} from "../../../../apps/doc/src/DocViewer";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface IProps {
     readonly app: App;
@@ -55,21 +59,25 @@ export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
+    Preconditions.assertPresent(app, 'app');
+
     const RenderDocViewerScreen = React.memo(() => (
         <AuthRequired>
-            <UserTagsProvider>
-                <DocMetaContextProvider>
-                    <DocViewerDocMetaLookupContextProvider>
-                        <DocViewerStore>
-                            <DocFindStore>
-                                <AnnotationSidebarStoreProvider>
-                                    <DocViewer/>
-                                </AnnotationSidebarStoreProvider>
-                            </DocFindStore>
-                        </DocViewerStore>
-                    </DocViewerDocMetaLookupContextProvider>
-                </DocMetaContextProvider>
-            </UserTagsProvider>
+            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                <UserTagsProvider>
+                    <DocMetaContextProvider>
+                        <DocViewerDocMetaLookupContextProvider>
+                            <DocViewerStore>
+                                <DocFindStore>
+                                    <AnnotationSidebarStoreProvider>
+                                        <DocViewer/>
+                                    </AnnotationSidebarStoreProvider>
+                                </DocFindStore>
+                            </DocViewerStore>
+                        </DocViewerDocMetaLookupContextProvider>
+                    </DocMetaContextProvider>
+                </UserTagsProvider>
+            </PersistenceLayerContext.Provider>
         </AuthRequired>
     ));
 

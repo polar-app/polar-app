@@ -134,8 +134,8 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                     const tagDescriptorsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
 
                                                     const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
-                                                        persistenceLayerProvider,
-                                                        tagsProvider);
+                                                                                                                persistenceLayerProvider,
+                                                                                                                tagsProvider);
 
                                                     const persistenceContext: IPersistenceContext = {
                                                         repoDocMetaLoader: props.repoDocMetaLoader,

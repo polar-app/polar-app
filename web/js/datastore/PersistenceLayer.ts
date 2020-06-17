@@ -6,8 +6,11 @@ import {
     DatastoreCapabilities,
     DatastoreInitOpts,
     DatastoreOverview,
-    DeleteResult, DocMetaSnapshot,
-    DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
+    DeleteResult,
+    DocMetaSnapshot,
+    DocMetaSnapshotEventListener,
+    DocMetaSnapshotOpts,
+    DocMetaSnapshotResult,
     ErrorListener,
     GetFileOpts,
     GroupIDStr,
@@ -23,7 +26,6 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {UserTagsDB} from "./UserTagsDB";
-import { NULL_FUNCTION } from 'polar-shared/src/util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 
 export interface PersistenceLayer {

@@ -37,6 +37,7 @@ export class DocViewerApp {
         // a snapshot listener for the doc then load it...
 
         const persistenceLayerProvider = () => this.persistenceLayerManager.get();
+
         ReactDOM.render((
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider}}>
                 <BrowserRouter>
