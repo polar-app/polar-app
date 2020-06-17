@@ -45,7 +45,6 @@ export interface App {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
-    readonly account: Account | undefined;
 
 }
 
@@ -94,7 +93,7 @@ export class AppInitializer {
 
         const app: App = {
             persistenceLayerManager, persistenceLayerProvider,
-            persistenceLayerController, syncBarProgress, account,
+            persistenceLayerController, syncBarProgress,
             // userInfo: userInfo.getOrUndefined()
         };
 

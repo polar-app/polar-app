@@ -211,19 +211,15 @@ export const RepositoryApp = (props: IProps) => {
     //     );
     // };
 
-    const plan = app.account ? app.account.plan : 'free';
-
     const premiumScreen = () => {
         return (
-            <PremiumScreen plan={plan}/>
+            <PremiumScreen/>
         );
     };
 
     const premiumScreenYear = () => {
         return (
-            <PremiumScreen
-                    plan={plan}
-                    interval='year'/>
+            <PremiumScreen interval='year'/>
         );
     };
 
@@ -231,7 +227,7 @@ export const RepositoryApp = (props: IProps) => {
         return (<SupportScreen
                     persistenceLayerProvider={app.persistenceLayerProvider}
                     persistenceLayerController={app.persistenceLayerController}
-                    plan={plan}/>);
+                    />);
     };
 
     // const renderGroupScreen = () => {
@@ -261,8 +257,7 @@ export const RepositoryApp = (props: IProps) => {
     const renderInvite = () => {
         return <InviteScreen
                     persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}
-                    plan={app.account?.plan}/>;
+                    persistenceLayerController={app.persistenceLayerController}/>;
     };
 
 
