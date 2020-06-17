@@ -208,7 +208,10 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            <SaveToPolarDemo/>
+            {/*<SaveToPolarDemo/>*/}
+
+            <a href="http://asdfasdf.com">not visited</a>
+            <a href="http://getpolarized.io">visited</a>
 
             {/*this is the teleporter:*/}
             {/*<teleporter.Target/>*/}

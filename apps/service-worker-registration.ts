@@ -11,6 +11,7 @@ function isBrowser() {
 if ('serviceWorker' in navigator && isBrowser()) {
 
     window.addEventListener('beforeinstallprompt', (e) => {
+
         // Used to trace PWA install so that we know we can install directly.
         // Note that this will NOT fire if the app is already installed.
         console.log("SUCCESS: received beforeinstallprompt and PWA is installable!");
@@ -25,13 +26,12 @@ if ('serviceWorker' in navigator && isBrowser()) {
     // precaching requests don't degrade the first visit experience.
     // See https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration
     window.addEventListener('load', function() {
-        // Your service-worker.js *must* be located at the top-level directory relative to your site.
-        // It won't be able to control pages unless it's located at the same level or higher than them.
-        // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
-        // See https://github.com/slightlyoff/ServiceWorker/issues/468
-        navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
-            // updatefound is fired if service-worker.js changes.
-            reg.onupdatefound = function() {
+
+        async function doAsync() {
+
+            const reg = await navigator.serviceWorker.register('/service-worker.js');
+
+            reg.onupdatefound = () => {
 
                 console.log("Service worker update found");
 
@@ -42,6 +42,7 @@ if ('serviceWorker' in navigator && isBrowser()) {
                 if (installingWorker) {
 
                     installingWorker.onstatechange = function() {
+
                         switch (installingWorker.state) {
                             case 'installed':
                                 if (navigator.serviceWorker.controller) {
@@ -66,9 +67,16 @@ if ('serviceWorker' in navigator && isBrowser()) {
                 }
 
             };
-        }).catch(function(e) {
-            console.error('Error during service worker registration:', e);
-        });
+
+        }
+
+        // Your service-worker.js *must* be located at the top-level directory relative to your site.
+        // It won't be able to control pages unless it's located at the same level or higher than them.
+        // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
+        // See https://github.com/slightlyoff/ServiceWorker/issues/468
+        doAsync()
+            .catch(e => console.error('Error during service worker registration:', e));
+
     });
 
 }

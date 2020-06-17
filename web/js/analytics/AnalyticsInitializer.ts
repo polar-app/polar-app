@@ -1,7 +1,6 @@
 import {Analytics} from "./Analytics";
 import {Version} from "polar-shared/src/util/Version";
 import {Firebase} from "../firebase/Firebase";
-import {Accounts} from "../accounts/Accounts";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -26,7 +25,7 @@ export class AnalyticsInitializer {
         await FirestoreCollections.configure();
 
         this.initVersion();
-        await this.initAccount();
+        // await this.initAccount();
         await this.initNavigation();
         this.initHeartbeat();
 
@@ -83,15 +82,16 @@ export class AnalyticsInitializer {
 
         };
 
-        const doPlan = async () => {
-
-            const account = await Accounts.get();
-
-            const plan = account?.plan || 'free';
-
-            Analytics.traits({plan});
-
-        };
+        // FIXME: add this back in...
+        // const doPlan = async () => {
+        //
+        //     const account = await Accounts.get();
+        //
+        //     const plan = account?.plan || 'free';
+        //
+        //     Analytics.traits({plan});
+        //
+        // };
 
         const user = await Firebase.currentUserAsync();
 
@@ -100,7 +100,8 @@ export class AnalyticsInitializer {
             Analytics.identify(user.uid);
 
             doUserCreated(user);
-            await doPlan();
+            // FIXME: add this back in.
+            // await doPlan();
 
         }
 

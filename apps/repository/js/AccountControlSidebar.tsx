@@ -4,22 +4,23 @@ import {AccountControl} from "../../../web/js/ui/cloud_auth/AccountControl";
 import {UserInfo} from "../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
-import {UserInfoDataLoader} from "./persistence_layer/UserInfoDataLoader";
 import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AccountActions} from "../../../web/js/accounts/AccountActions";
+import {useUserInfoContext} from "../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 
 interface AccountInfoProps extends AccountControlSidebarProps {
-    readonly userInfo: UserInfo | undefined;
     readonly persistenceLayerController: PersistenceLayerController;
 }
 
 const AccountInfo = (props: AccountInfoProps) => {
 
+    const userInfoContext = useUserInfoContext();
+
     const onLogout = () => AccountActions.logout(props.persistenceLayerController);
 
-    if (props.userInfo) {
+    if (userInfoContext?.userInfo) {
         return <AccountControl {...props}
-                               userInfo={props.userInfo}
+                               userInfo={userInfoContext?.userInfo}
                                onLogout={() => onLogout()}/>;
     } else {
         return <h2>Please Login</h2>;
@@ -33,13 +34,9 @@ interface AccountControlSidebarProps {
 }
 
 const AccountDataLoader = (props: AccountControlSidebarProps) => (
-
-    <UserInfoDataLoader persistenceLayerProvider={props.persistenceLayerProvider}
-                        render={userInfo => (
-                            <div className="p-2">
-                                <AccountInfo {...props} userInfo={userInfo}/>
-                            </div>
-                        )}/>
+    <div className="p-2">
+        <AccountInfo {...props}/>
+    </div>
 );
 
 namespace devices {

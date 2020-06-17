@@ -7,7 +7,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
-import {CloudAuthButton2} from "../../../../web/js/ui/cloud_auth/CloudAuthButton2";
+import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
 
 const PhoneAndTablet = () => {
 
@@ -99,7 +99,7 @@ const Desktop = () => {
                         alignItems="center">
 
                         <Grid item>
-                            <CloudAuthButton2/>
+                            <CloudAuthButton/>
                         </Grid>
 
                         {/*<Grid item>*/}

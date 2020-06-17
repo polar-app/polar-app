@@ -1,127 +1,96 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Firebase} from '../../firebase/Firebase';
-import * as firebase from 'firebase/app';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerController} from '../../datastore/PersistenceLayerManager';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
-import {AuthHandlers, UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControlDropdown} from './AccountControlDropdown';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {AccountActions} from "../../accounts/AccountActions";
+import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
+import {useHistory} from "react-router-dom";
 
 const log = Logger.create();
 
-export class CloudAuthButton extends React.Component<IProps, IState> {
+type AuthMode = 'none' | 'needs-auth' | 'authenticated';
 
-    constructor(props: IProps) {
-        super(props);
+export function useLogoutCallback() {
 
-        this.enableCloudSync = this.enableCloudSync.bind(this);
+    const history = useHistory();
 
-        this.state = {
-            mode: 'none',
-        };
+    return () => {
+        history.push("/logout")
+    };
 
-        log.info("auth state: ", this.state);
+}
 
-        Firebase.init();
+export const CloudAuthButton = React.memo(() => {
 
-        // FIXME: migrate this to using context ...
-        // FIXME: migrate this to a hook?
-        firebase.auth()
-            .onAuthStateChanged((user) => this.onAuth(user),
-                                (err) => this.onAuthError(err));
+    const userInfoContext = useUserInfoContext();
+    const doLogout = useLogoutCallback();
 
-    }
+    function computeMode(): AuthMode {
 
-    public render() {
-
-        const AccountButton = () => {
-
-            if (this.state.userInfo) {
-
-                return <AccountControlDropdown userInfo={this.state.userInfo}
-                                               onLogout={() => this.logout()}/>;
-
-            } else {
-
-                return <AccountDropdown onInvite={NULL_FUNCTION}
-                                        onLogout={() => this.logout()}/>;
-
-            }
-
-        };
-
-        if (this.state.mode === 'needs-auth') {
-            return (
-                <div>
-
-                    <EnableCloudSyncButton onClick={() => this.enableCloudSync()}/>
-
-                </div>
-
-            );
-
-        } else if (this.state.mode === 'authenticated') {
-
-            return (
-                <div>
-                    <AccountButton/>
-                </div>
-
-            );
-
-        } else {
-            return null;
+        if (! userInfoContext) {
+            return 'none'
         }
 
+        if (! userInfoContext.userInfo) {
+            return 'needs-auth';
+        }
+
+        return 'authenticated';
+
     }
 
-    private logout() {
-        AccountActions.logout(this.props.persistenceLayerController);
-    }
+    const mode = computeMode();
 
-    private enableCloudSync() {
+    log.info("auth state: ", mode);
+
+    Firebase.init();
+
+    function enableCloudSync() {
         AccountActions.login();
     }
 
-    private onAuth(user: firebase.User | null) {
+    const AccountButton = () => {
 
-        AuthHandlers.get().userInfo()
-            .then((userInfo) => {
+        if (userInfoContext?.userInfo) {
 
-                let mode: AuthMode = 'needs-auth';
+            return <AccountControlDropdown userInfo={userInfoContext?.userInfo}
+                                           onLogout={doLogout}/>;
 
-                if (user) {
-                    mode = 'authenticated';
-                }
+        } else {
 
-                this.setState({
-                    mode,
-                    userInfo: userInfo.getOrUndefined()
-                });
+            return <AccountDropdown onInvite={NULL_FUNCTION}
+                                    onLogout={doLogout}/>;
 
+        }
 
-            })
-            .catch(err => log.error("Unable to get user info: ", err));
+    };
 
+    if (mode === 'needs-auth') {
+        return (
+            <div>
+
+                <EnableCloudSyncButton onClick={() => enableCloudSync()}/>
+
+            </div>
+
+        );
+
+    } else if (mode === 'authenticated') {
+
+        return (
+            <div>
+                <AccountButton/>
+            </div>
+
+        );
+
+    } else {
+        return null;
     }
 
-    private onAuthError(err: firebase.auth.Error) {
-        log.error("Authentication error: ", err);
-    }
-
-}
-
-interface IProps {
-    readonly persistenceLayerController: PersistenceLayerController;
-}
-
-interface IState {
-    readonly mode: AuthMode;
-    readonly userInfo?: UserInfo;
-}
-
-type AuthMode = 'none' | 'needs-auth' | 'authenticated';
+});

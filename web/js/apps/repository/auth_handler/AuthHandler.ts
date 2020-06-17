@@ -142,6 +142,9 @@ export function toUserInfo(user: firebase.User, account: Account | undefined): U
 
 export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
+    /**
+     * @Deprecated useUserInfoContext
+     */
     public async userInfo(): Promise<Optional<UserInfo>> {
 
         Firebase.init();
@@ -149,7 +152,6 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
         const user = await this.currentUser();
 
         if (user === null) {
-            console.log("FIXME: no current user");
             return Optional.empty();
         }
 
