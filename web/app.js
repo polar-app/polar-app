@@ -371,6 +371,7 @@ const PDFViewerApplication = {
 
     const container = appConfig.mainContainer;
     const viewer = appConfig.viewerContainer;
+
     this.pdfViewer = new PDFViewer({
       container,
       viewer,
@@ -756,6 +757,8 @@ const PDFViewerApplication = {
         parameters[key] = value;
       }
     }
+
+    console.log("FIXME: getDocument parameters: ", parameters);
 
     const loadingTask = getDocument(parameters);
     this.pdfLoadingTask = loadingTask;

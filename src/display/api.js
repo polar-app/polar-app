@@ -1007,6 +1007,7 @@ class PDFPageProxy {
     transform = null,
     imageLayer = null,
     canvasFactory = null,
+    // FIXME: this needs to be changed for darkmode
     background = null,
   }) {
     if (this._stats) {

@@ -14,6 +14,20 @@
  */
 /* globals process */
 
+function computeElectronProcessType() {
+  if ((typeof process) !== 'undefined' && process.versions && process.versions["electron"]) {
+    if (typeof window !== "undefined") {
+      return "renderer";
+    }
+
+    return "main";
+  }
+
+  return "none";
+}
+
+const electronProcessType = computeElectronProcessType();
+
 // NW.js / Electron is a browser context, but copies some Node.js objects; see
 // http://docs.nwjs.io/en/latest/For%20Users/Advanced/JavaScript%20Contexts%20in%20NW.js/#access-nodejs-and-nwjs-api-in-browser-context
 // https://electronjs.org/docs/api/process#processversionselectron
@@ -21,6 +35,6 @@ const isNodeJS =
   typeof process === "object" &&
   process + "" === "[object process]" &&
   !process.versions["nw"] &&
-  !process.versions["electron"];
+  electronProcessType !== "renderer";
 
 export { isNodeJS };

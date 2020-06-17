@@ -636,6 +636,7 @@ class PDFPageView {
       viewport: this.viewport,
       enableWebGL: this.enableWebGL,
       renderInteractiveForms: this.renderInteractiveForms,
+      // backgroundColor: 'rgb(0,0,0)'
     };
     const renderTask = this.pdfPage.render(renderContext);
     renderTask.onContinue = function(cont) {

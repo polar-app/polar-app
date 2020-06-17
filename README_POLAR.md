@@ -1,0 +1,1 @@
+- Use the es5 version for modern browsers

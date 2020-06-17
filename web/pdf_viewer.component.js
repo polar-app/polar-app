@@ -28,6 +28,7 @@ import { GenericL10n } from "./genericl10n.js";
 import { PDFFindController } from "./pdf_find_controller.js";
 import { PDFHistory } from "./pdf_history.js";
 import { PDFPageView } from "./pdf_page_view.js";
+import { PDFRenderingQueue } from "./pdf_rendering_queue.js";
 import { PDFSinglePageViewer } from "./pdf_single_page_viewer.js";
 import { PDFViewer } from "./pdf_viewer.js";
 
@@ -39,6 +40,7 @@ const pdfjsBuild = PDFJSDev.eval("BUNDLE_BUILD");
 export {
   PDFViewer,
   PDFSinglePageViewer,
+  PDFRenderingQueue,
   PDFPageView,
   PDFLinkService,
   SimpleLinkService,
