@@ -2,7 +2,6 @@
 import React from 'react';
 import {Firebase} from '../../firebase/Firebase';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PersistenceLayerController} from '../../datastore/PersistenceLayerManager';
 import {EnableCloudSyncButton} from './EnableCloudSyncButton';
 import {AccountDropdown} from './AccountDropdown';
 import {AccountControlDropdown} from './AccountControlDropdown';

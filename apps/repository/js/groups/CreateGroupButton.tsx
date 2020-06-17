@@ -37,7 +37,8 @@ export class CreateGroupButton extends React.PureComponent<IProps, IState> {
 
         const handler = async () => {
 
-            await AuthHandlers.requireAuthentication();
+            // FIXME: needed for 2.0 when we turn on groups again
+            // await AuthHandlers.requireAuthentication();
 
         };
 
