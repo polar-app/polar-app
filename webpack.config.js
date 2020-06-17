@@ -10,7 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
-const devtool = isDev ? process.env.WEBPACK_DEVTOOL || "inline-source-map" : false;
+const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : false;
 
 const workers = os.cpus().length - 1;
 
