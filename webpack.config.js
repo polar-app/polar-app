@@ -65,32 +65,38 @@ function createRules() {
 
         },
         {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-        },
-        {
-            test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+            test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
             use: [
                 {
                     loader: 'file-loader',
                     options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
+                        name: '[name]-[contenthash].[ext]',
+                        outputPath: 'fonts',
+                        publicPath: '/web/dist/fonts'
                     }
                 }
             ]
         },
         {
-            test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
-        },
-        {
-            test: /\.(png|jpe?g|gif)$/i,
+            test: /\.(png|jpe?g|gif|bmp|svg|ico|webp)$/i,
             use: [
                 {
                     loader: 'file-loader',
+                    options: {
+                        name: '[name]-[contenthash].[ext]',
+                        outputPath: 'images',
+                        publicPath: '/web/dist/images'
+                    }
                 },
             ],
+        },
+        {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+        },
+        {
+            test: /\.scss$/,
+            use: ['style-loader', 'css-loader', 'sass-loader'],
         },
 
     ];
@@ -168,7 +174,6 @@ module.exports = {
                 // this better and managed as part of the build system
                 { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' },
                 { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
-                { from: '../../node_modules/summernote/dist/summernote-lite.css', to: '.'},
                 { from: '../../node_modules/@fortawesome/fontawesome-free/css/all.min.css', to: './fontawesome.css'}
             ],
         }),
