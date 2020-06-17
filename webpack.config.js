@@ -4,6 +4,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const os = require('os');
+const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'production';
@@ -93,9 +94,16 @@ function createRules() {
     ];
 
     if (target !== 'electron-renderer') {
-        console.log("Adding null-loader for electron libraries");
+
+        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js')
+
+        if (! fs.existsSync(electronPath)) {
+            throw new Error("Electron dir doesn't exist: " + electronPath)
+        }
+
+        console.log("Adding null-loader for electron libraries: " + electronPath);
         rules.push({
-            test: path.resolve(__dirname, 'node_modules/electron/index.js'),
+            test: electronPath,
             use: 'null-loader'
         })
     }

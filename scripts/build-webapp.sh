@@ -77,6 +77,7 @@ copy pdfviewer-custom "*.css"
 
 showEnv
 
+copy web/dist "*.css"
 copy web/dist "*.js"
 copy web "*.svg"
 
