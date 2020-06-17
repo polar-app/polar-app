@@ -92,7 +92,6 @@ function createGlobsRecursively(path, exts) {
 const globPatterns = [
 
     ...createGlobsRecursively('apps', STATIC_FILE_EXTENSIONS),
-    ...createGlobsRecursively('htmlviewer', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
 
     ...createGlobsRecursively('pdfviewer-custom', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
     ...createGlobsRecursively('web/dist', JAVASCRIPT_AND_STATIC_FILE_EXTENSIONS),
@@ -104,14 +103,6 @@ const globPatterns = [
     'manifest.json',
     'apps/init.js',
     'apps/service-worker-registration.js',
-    // now the custom specified resources that we need for the webapp to
-    // function (scripts and CSS)
-    'node_modules/firebase/firebase.js',
-    'node_modules/firebaseui/dist/firebaseui.js',
-    'node_modules/firebaseui/dist/firebaseui.css',
-    'node_modules/toastr/build/toastr.min.css',
-    'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
-    'node_modules/summernote/dist/summernote-bs4.css',
 
 ];
 
