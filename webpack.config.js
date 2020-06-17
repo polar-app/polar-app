@@ -173,7 +173,6 @@ module.exports = {
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
                 { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' },
-                { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
                 { from: '../../node_modules/@fortawesome/fontawesome-free/css/all.min.css', to: './fontawesome.css'}
             ],
         }),
