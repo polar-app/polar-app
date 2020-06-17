@@ -116,10 +116,19 @@ module.exports = {
     globStrict: false,
     // stripPrefix: 'dist/public',
     maximumFileSizeToCacheInBytes: 150000000,
-    // runtimeCaching: [{
-    //     urlPattern: /this\\.is\\.a\\.regex/,
-    //     handler: 'networkFirst'
-    // }]
+    runtimeCaching: [
+        {
+            urlPattern: /.*/,
+            handler: 'staleWhileRevalidate'
+        },
+        {
+            // these URLs are immutable based on content hash as computed by
+            // webpack so just use cacheFirst which only fetches them the
+            // first time
+            urlPattern: /web\/dist\/images\/.*/,
+            handler: 'cacheFirst'
+        }
+    ],
     swDest: 'dist/public/service-worker.js',
     modifyURLPrefix: {
         // Remove a '/dist' prefix from the URLs:
