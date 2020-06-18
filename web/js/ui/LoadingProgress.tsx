@@ -13,7 +13,7 @@ export class LoadingProgress extends React.Component<IProps, IState> {
             <div className="mt-2 mb-2"
                  style={{
                      display: 'flex',
-                     color: 'var(--primary)',
+                     flexGrow: 1,
                      opacity: 0.8
                  }}>
 

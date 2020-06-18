@@ -882,10 +882,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const fingerprint = recordHolder.value.docInfo.fingerprint;
 
-            result.push({
-                fingerprint,
-                docMetaProvider: () => Promise.resolve(DocMetas.deserialize(recordHolder.value.value, fingerprint))
-            });
+            if (recordHolder.value.value) {
+                result.push({
+                    fingerprint,
+                    docMetaProvider: () => Promise.resolve(DocMetas.deserialize(recordHolder.value.value, fingerprint))
+                });
+            }
 
         }
 

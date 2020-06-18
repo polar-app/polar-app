@@ -10,7 +10,7 @@ function isBrowser() {
 
 if ('serviceWorker' in navigator && isBrowser()) {
 
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', () => {
 
         // Used to trace PWA install so that we know we can install directly.
         // Note that this will NOT fire if the app is already installed.
@@ -19,8 +19,6 @@ if ('serviceWorker' in navigator && isBrowser()) {
         // TODO: keep a copy of the event so that we can reuse it in the future.
 
     });
-
-    console.log("Trying to detect PWA beforeinstallprompt");
 
     // Delay registration until after the page has loaded, to ensure that our
     // precaching requests don't degrade the first visit experience.
@@ -39,11 +37,13 @@ if ('serviceWorker' in navigator && isBrowser()) {
                 // https://w3c.github.io/ServiceWorker/#service-worker-registration-updatefound-event
                 const installingWorker = reg.installing;
 
+
                 if (installingWorker) {
 
                     installingWorker.onstatechange = function() {
 
                         switch (installingWorker.state) {
+
                             case 'installed':
                                 if (navigator.serviceWorker.controller) {
                                     // At this point, the old content will have been purged and the fresh content will
@@ -51,6 +51,7 @@ if ('serviceWorker' in navigator && isBrowser()) {
                                     // It's the perfect time to display a "New content is available; please refresh."
                                     // message in the page's interface.
                                     console.log('New or updated content is available.');
+
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a "Content is cached for offline use." message.

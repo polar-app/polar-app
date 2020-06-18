@@ -39,18 +39,18 @@ export const GlobalCssDarkStyles = withStyles(() => {
             // **** CSS link colors
 
             // oddly, CSS link colors in MUI were not highlighted ...
-            "a:link": {
-                color: blue[300],
-            },
-            "a:visited": {
-                color: blue[600],
-            },
-            "a:hover": {
-                color: blue[400],
-            },
-            "a:active": {
-                color: blue[500],
-            },
+            // "a:link": {
+            //     color: blue[300],
+            // },
+            // "a:visited": {
+            //     color: blue[600],
+            // },
+            // "a:hover": {
+            //     color: blue[400],
+            // },
+            // "a:active": {
+            //     color: blue[500],
+            // },
 
         },
     }

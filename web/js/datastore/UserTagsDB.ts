@@ -60,7 +60,7 @@ export class UserTagsDB {
     public registerWhenAbsent(tag: TagStr) {
 
         if (this.backing[tag]) {
-            console.log("Tag already present: " , tag);
+            // console.log("Tag already present: " , tag);
             // already present
             return;
         }

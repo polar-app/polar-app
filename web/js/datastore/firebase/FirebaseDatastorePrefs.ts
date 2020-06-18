@@ -1,11 +1,14 @@
-import {DictionaryPrefs, PersistentPrefs, StringToPrefDict} from "../../util/prefs/Prefs";
+import {
+    DictionaryPrefs,
+    PersistentPrefs,
+    StringToPrefDict
+} from "../../util/prefs/Prefs";
 import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import {Firestore} from "../../firebase/Firestore";
 import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
-import { Tracer } from "polar-shared/src/util/Tracer";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
@@ -20,14 +23,29 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
 
     public async init() {
 
-        // FIXME: This is slow and forces a server read first... we should make
-        // this use snapshots so that after the FIRST snapshot we're just
-        // updating internally
-        const userPref = await Tracer.async(UserPrefs.get(), 'user-prefs');
-        this.update(userPref.toPrefDict());
-
         this.firestore = await Firestore.getInstance();
         this.user = (await Firebase.currentUserAsync())!;
+
+        function onError(err: Error) {
+            console.error("Unable to read user prefs:", err);
+        }
+
+        function toDictionaryPrefs(userPref: UserPref | undefined) {
+
+            if (userPref) {
+                return new DictionaryPrefs(userPref.value);
+            }
+
+            return new DictionaryPrefs();
+
+        }
+
+        this.onSnapshot(userPref => {
+
+            const prefDict = toDictionaryPrefs(userPref);
+            this.update(prefDict.toPrefDict());
+
+        }, onError);
 
         this.initLatch.resolve(true);
 
@@ -73,3 +91,6 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
     }
 
 }
+
+
+
