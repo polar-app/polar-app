@@ -12,7 +12,6 @@ import * as ReactDOM from 'react-dom';
 import {Point} from '../../Point';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Points} from '../../Points';
-import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {Elements} from "../../util/Elements";
@@ -160,9 +159,9 @@ export class ControlledAnnotationBars {
                                    point: Point,
                                    offset: Point | undefined): Point {
 
-        const docFormat = DocFormatFactory.getInstance();
+        // const docFormat = DocFormatFactory.getInstance();
 
-        let origin: Point =
+        const origin: Point =
             Optional.of(pageElement.getBoundingClientRect())
                 .map(rect => {
                     return {'x': rect.left, 'y': rect.top};
@@ -170,9 +169,9 @@ export class ControlledAnnotationBars {
                 .get();
 
         // one off for the html viewer... I hope we can unify these one day.
-        if (docFormat.name === 'html') {
-            origin = {x: 0, y: 0};
-        }
+        // if (docFormat.name === 'html') {
+        //     origin = {x: 0, y: 0};
+        // }
 
         const relativePoint: Point =
             Points.relativeTo(origin, point);
