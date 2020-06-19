@@ -109,14 +109,39 @@ const globPatterns = [
 console.log("Using static file globs: \n ", globPatterns.join("\n  "));
 console.log("====");
 
+// https://stackoverflow.com/questions/49482680/workbox-the-danger-of-self-skipwaiting
+// https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.generateSW
 module.exports = {
     globDirectory: 'dist/public',
+    skipWaiting: true,
     globPatterns,
     globIgnores: [],
     globStrict: false,
     // stripPrefix: 'dist/public',
     maximumFileSizeToCacheInBytes: 150000000,
     swDest: 'dist/public/service-worker.js',
+    // runtimeCaching: [
+    //     {
+    //         urlPattern: /.*/,
+    //         handler: 'staleWhileRevalidate'
+    //     },
+    //     {
+    //         // these URLs are immutable based on content hash as computed by
+    //         // webpack so just use cacheFirst which only fetches them the
+    //         // first time
+    //         urlPattern: /https:\/\/storage.google.com\/stash/,
+    //         handler: 'CacheFirst'
+    //     }
+    // ],
+    // runtimeCaching: [
+    //     {
+    //         // these URLs are immutable based on content hash as computed by
+    //         // webpack so just use cacheFirst which only fetches them the
+    //         // first time
+    //         urlPattern: /web\/dist\/images\/.*/,
+    //         handler: 'CacheFirst'
+    //     }
+    // ],
     modifyURLPrefix: {
         // Remove a '/dist' prefix from the URLs:
         '/dist/public': ''

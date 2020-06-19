@@ -64,6 +64,7 @@ function createRules() {
             ]
 
         },
+
         {
             test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
             use: [
@@ -90,9 +91,21 @@ function createRules() {
                 },
             ],
         },
+        // {
+        //     test: /fonts\.googleapis\.com\/css/,
+        //     use: [
+        //         {
+        //             loader: 'style-loader',
+        //             options: {
+        //                 // injectType: 'linkTag'
+        //             }
+        //         },
+        //         {loader: 'css-loader'}
+        //     ],
+        // },
         {
             test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
+            use: ['style-loader', 'css-loader']
         },
         {
             test: /\.scss$/,
@@ -160,7 +173,6 @@ module.exports = {
     },
     node: createNode(),
     plugins: [
-        // new BundleAnalyzerPlugin(),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -172,6 +184,7 @@ module.exports = {
             patterns: [
                 // this is a bit of a hack and it would be better if we supported
                 // this better and managed as part of the build system
+                { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
                 { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: '.' }
             ],
         }),
