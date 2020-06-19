@@ -1,5 +1,5 @@
 {
-  "name": "epubjs",
+  "name": "@polar-app/epubjs",
   "version": "0.3.87",
   "description": "Parse and Render Epubs",
   "main": "lib/index.js",
