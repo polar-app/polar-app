@@ -96,21 +96,34 @@ function createRules() {
                 },
             ],
         },
-        // {
-        //     test: /fonts\.googleapis\.com\/css/,
-        //     use: [
-        //         {
-        //             loader: 'style-loader',
-        //             options: {
-        //                 // injectType: 'linkTag'
-        //             }
-        //         },
-        //         {loader: 'css-loader'}
-        //     ],
-        // },
+        {
+            test: /fonts\.googleapis\.com\/css/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name]-[contenthash].[ext]',
+                        outputPath: 'images',
+                        publicPath: '/web/dist/images'
+                    }
+                },
+            ],
+        },
         {
             test: /\.css$/i,
-            use: ['style-loader', 'css-loader']
+            use: [
+                {
+                    loader: 'style-loader',
+                    options: {
+                        attributes: {
+                            // 'data-src': '[path][name].[ext]'
+                        }
+                    },
+                },
+                {
+                    loader: 'css-loader'
+                }
+            ]
         },
         {
             test: /\.scss$/,

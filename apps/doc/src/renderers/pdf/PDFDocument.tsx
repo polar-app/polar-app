@@ -34,6 +34,7 @@ import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 
 import 'pdfjs-dist/web/pdf_viewer.css';
+import './PDFDocument.css';
 
 PDFJS.GlobalWorkerOptions.workerSrc = '/web/dist/pdf.worker.js';
 
