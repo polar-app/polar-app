@@ -6,3 +6,5 @@ web/dist/
 dist/
 bower_components/
 *.DS_Store
+.webpack-cache-loader
+*.js.map

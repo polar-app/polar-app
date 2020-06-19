@@ -32,7 +32,12 @@ function createRules() {
         //
         // looks like with the cache loader the initial compile is about 10%
         // longer but 2x faster once the cache is running.
-        { loader: 'cache-loader' },
+        {
+            loader: 'cache-loader',
+            options: {
+                cacheDirectory: '.webpack-cache-loader'
+            }
+        },
         {
             test: /\.tsx?$/,
             use: [
