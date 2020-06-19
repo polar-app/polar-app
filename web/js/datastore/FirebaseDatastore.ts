@@ -1077,9 +1077,16 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 }
 
                 const data = await dataProvider();
+
+                if (! data) {
+                    console.warn("No data for fingerprint: " + docInfo.fingerprint);
+                    return undefined;
+                }
+
                 const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!, docInfo.fingerprint);
+
             });
 
             const docMetaMutation: FirebaseDocMetaMutation = {

@@ -752,7 +752,7 @@ export interface MinimalDocMetaMutation {
 
     readonly mutationType: MutationType;
 
-    readonly docMetaProvider: AsyncProvider<IDocMeta>;
+    readonly docMetaProvider: AsyncProvider<IDocMeta | undefined>;
 
     readonly docInfoProvider: AsyncProvider<IDocInfo>;
 

@@ -202,6 +202,11 @@ class ObjectConverter {
             case "created":
             case "updated":
                 const docMeta = await docMetaMutation.docMetaProvider();
+
+                if (! docMeta) {
+                    return undefined;
+                }
+
                 const docInfo = docMeta.docInfo;
 
                 const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint, docMeta);
