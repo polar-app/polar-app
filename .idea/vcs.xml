@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/epub.js" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private/polar-mobile-app" vcs="Git" />
