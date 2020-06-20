@@ -45,7 +45,6 @@ export const EPUBDocument = React.memo((props: IProps) => {
         };
     }
 
-
     async function doLoad() {
 
         const book = ePub(docURL);
