@@ -9,9 +9,9 @@ async function start() {
 
     await Logging.init();
 
-    const pdfApp = new DocViewerApp();
+    const docViewerApp = new DocViewerApp();
 
-    pdfApp.start()
+    docViewerApp.start()
         .catch(err => log.error(err));
 
 }

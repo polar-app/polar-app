@@ -24,6 +24,28 @@ export const EPUBDocument = React.memo((props: IProps) => {
     const theme = useTheme();
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
 
+    interface EPUBTheme {
+        readonly backgroundColor: string;
+        readonly color: string;
+        readonly fontFamily: string;
+        readonly padding: string;
+    }
+
+    function createEPUBTheme(): EPUBTheme {
+
+        // rendition.themes.override('background-color', theme.palette.background.paper);
+        // rendition.themes.override('color', theme.palette.text.primary);
+        // rendition.themes.override('font-family', theme.typography.fontFamily!);
+
+        return {
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            fontFamily: theme.typography.fontFamily!,
+            padding: '10px'
+        };
+    }
+
+
     async function doLoad() {
 
         const book = ePub(docURL);
@@ -35,10 +57,15 @@ export const EPUBDocument = React.memo((props: IProps) => {
             width: '100%',
         });
 
-        rendition.themes.override('background-color', theme.palette.background.default);
-        rendition.themes.override('color', theme.palette.text.primary);
+        const epubTheme = createEPUBTheme();
+        console.log("Using epub theme: ", epubTheme);
 
-        rendition.themes.override('fontFamily', theme.typography.fontFamily!);
+        // rendition.themes.override('background-color', epubTheme.backgroundColor);
+        rendition.themes.override('color', epubTheme.color);
+        rendition.themes.override('font-family', epubTheme.fontFamily);
+        rendition.themes.override('padding', epubTheme.padding);
+
+        rendition.themes.registerCss('default', `h1, h2, h3 {color: ${theme.palette.text.primary};}`)
 
         await rendition.display();
 

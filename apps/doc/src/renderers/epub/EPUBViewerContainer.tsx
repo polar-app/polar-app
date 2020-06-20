@@ -1,18 +1,13 @@
 import React from 'react';
-import Divider from "@material-ui/core/Divider";
+import Paper from '@material-ui/core/Paper';
 
 export const EPUBViewerContainer = React.memo(() => {
 
     return (
-        <>
+        <Paper className="m-2">
             {/*<Divider/>*/}
             <main id="viewerContainer"
                   style={{
-                      position: 'absolute',
-                      overflow: 'auto',
-                      top: '0',
-                      width: '100%',
-                      height: '100%',
                   }}
                   itemProp="mainContentOfPage">
 
@@ -23,6 +18,6 @@ export const EPUBViewerContainer = React.memo(() => {
                 </div>
 
             </main>
-        </>
+        </Paper>
     );
 })

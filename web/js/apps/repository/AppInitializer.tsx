@@ -98,7 +98,7 @@ export class AppInitializer {
 
             // TODO: I think this could/should be a react component?
 
-            const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
+            const authStatus = await Tracer.async(authHandler.status(), 'AppInitializer.authHandler.status');
 
             if (authStatus !== 'needs-authentication') {
 

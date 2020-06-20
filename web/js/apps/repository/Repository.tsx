@@ -97,6 +97,14 @@ export class Repository {
 
         const handleAuth = async () => {
 
+            // FIXME: first , we're reading authHandler here twice... once in
+            // AppInitializer and then again here.  Also, it doesn't make sense
+            // to start this code UNTIL we're actually using a client that
+            // needs to read this data so in a new tab this just slows us down.
+            //
+            // it would be better to use some type of latch to trigger this but
+            // only when the repository needs it...
+
             const authHandler = AuthHandlers.get();
             const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
 
@@ -108,12 +116,9 @@ export class Repository {
 
                 await this.repoDocMetaLoader.start();
 
-                // new CloudService(persistenceLayerManager)
-                //     .start();
-
                 await persistenceLayerManager.start();
 
-                log.info("Started repo doc loader.");
+                console.log("Started repo doc loader.");
 
             }
 
