@@ -1,6 +1,6 @@
 {
   "name": "@polar-app/epubjs",
-  "version": "0.3.87",
+  "version": "0.3.88",
   "description": "Parse and Render Epubs",
   "main": "lib/index.js",
   "module": "src/index.js",
