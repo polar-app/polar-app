@@ -6,7 +6,10 @@ import {BlobWriter} from "./writers/BlobWriter";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
-import {ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
+import {
+    ReadableBinaryDatastore,
+    ReadableBinaryDatastoreProvider
+} from "polar-shared/src/datastore/IDatastore";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -18,17 +21,17 @@ import {ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
  */
 export class Exporters {
 
-    public static async doExportFromDocMeta(persistenceLayerProvider: PersistenceLayerProvider,
+    public static async doExportFromDocMeta(datastoreProvider: ReadableBinaryDatastoreProvider,
                                             format: ExportFormat,
                                             docMeta: IDocMeta): Promise<void> {
 
         const annotations = AnnotationHolders.fromDocMeta(docMeta);
 
-        await this.doExportForAnnotations(persistenceLayerProvider, annotations, format);
+        await this.doExportForAnnotations(datastoreProvider, annotations, format);
 
     }
 
-    public static async doExportForAnnotations(persistenceLayerProvider: PersistenceLayerProvider,
+    public static async doExportForAnnotations(datastoreProvider: ReadableBinaryDatastoreProvider,
                                                annotations: ReadonlyArray<AnnotationHolder>,
                                                format: ExportFormat) {
 
@@ -62,7 +65,7 @@ export class Exporters {
 
         const writer = new BlobWriter();
 
-        const datastore = persistenceLayerProvider().datastore;
+        const datastore = datastoreProvider();
 
         await this.doExport(writer, datastore, format, annotations);
 
