@@ -6,7 +6,7 @@ import {DocMetaRef} from './DocMetaRef';
 import {DiskDatastore} from './DiskDatastore';
 import {RemoteDatastore} from './RemoteDatastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Blobs} from 'polar-shared/src/util/Blobs';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 

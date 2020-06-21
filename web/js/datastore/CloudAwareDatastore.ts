@@ -12,9 +12,7 @@ import {
     ErrorListener,
     FileSynchronizationEvent,
     FileSynchronizationEventListener,
-    GetFileOpts,
     InitResult,
-    NetworkLayer,
     PrefsProvider,
     SnapshotResult,
     SyncDocMap,
@@ -27,7 +25,7 @@ import {
 } from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {UUID} from 'polar-shared/src/metadata/UUID';
@@ -47,6 +45,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
+import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

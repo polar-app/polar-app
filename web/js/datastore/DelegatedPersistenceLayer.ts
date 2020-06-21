@@ -9,13 +9,12 @@ import {
     DocMetaSnapshotOpts,
     DocMetaSnapshotResult,
     ErrorListener,
-    GetFileOpts,
     SnapshotResult,
     WriteFileOpts
 } from './Datastore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {DatastoreMutation} from './DatastoreMutation';
 import {
     PersistenceLayer,
@@ -26,6 +25,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {UserTagsDB} from "./UserTagsDB";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 /**
  * A PersistenceLayer that just forwards events to the given delegate.

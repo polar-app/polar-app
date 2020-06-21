@@ -2,7 +2,6 @@ import {AbstractDatastore, Datastore, DatastoreID} from './Datastore';
 import {WritableBinaryMetaDatastore} from './Datastore';
 import {DocMetaSnapshotEventListener} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayers} from './Datastore';
 import {PrefsProvider} from './Datastore';
 import {ErrorListener} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
@@ -10,7 +9,6 @@ import {DatastoreOverview} from './Datastore';
 import {SnapshotResult} from './Datastore';
 import {InitResult} from './Datastore';
 import {DeleteResult} from './Datastore';
-import {GetFileOpts} from './Datastore';
 import {BinaryFileData} from './Datastore';
 import {WriteFileOpts} from './Datastore';
 import {WriteOpts} from './Datastore';
@@ -20,7 +18,7 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
@@ -29,6 +27,10 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {
+    GetFileOpts,
+    NetworkLayers
+} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

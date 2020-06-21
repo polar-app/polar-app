@@ -1,17 +1,24 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
-import {Progress, ProgressListener} from 'polar-shared/src/util/ProgressTracker';
+import {
+    Progress,
+    ProgressListener
+} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
 import {AsyncWorkQueues} from 'polar-shared/src/util/AsyncWorkQueues';
 import {DocMetas} from '../metadata/DocMetas';
 import {DatastoreMutations} from './DatastoreMutations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {InterceptedPersistentPrefs, PersistentPrefs, InterceptedPersistentPrefsFactory, Prefs} from '../util/prefs/Prefs';
+import {
+    InterceptedPersistentPrefs,
+    InterceptedPersistentPrefsFactory,
+    PersistentPrefs
+} from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
 import {BackendFileRefs} from './BackendFileRefs';
@@ -25,6 +32,10 @@ import {ErrorHandlerCallback} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SimpleReactor} from "../reactor/SimpleReactor";
 import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
+import {
+    NetworkLayer,
+    ReadableBinaryDatastore
+} from "polar-shared/src/datastore/IDatastore";
 
 export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
@@ -365,27 +376,6 @@ interface WritableDatastore {
  * A datastore that support storage of binary data (images, videos, PDFs, etc).
  */
 export interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatastore {
-
-}
-
-export interface ReadableBinaryDatastore {
-
-    containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
-
-    getFile(backend: Backend, ref: FileRef, opts?: GetFileOpts): DocFileMeta;
-
-}
-
-/**
- * Options for getFile
- */
-export interface GetFileOpts {
-
-    /**
-     * Allows the caller to specify a more specific network layer for the
-     * file operation and returning a more specific URL.
-     */
-    readonly networkLayer?: NetworkLayer;
 
 }
 
@@ -1038,40 +1028,4 @@ export interface DatastorePrefs {
 }
 
 export type GroupIDStr = string;
-
-/**
- *
- *
- * The network layer specifies the access to a resource based on the network
- * type.  By default each datastore figures out the ideal network layer to
- * return file references from but based on the capabilities the caller
- * can specify a specific layer.
- *
- * The following types are supported:
- *
- * local: Access via the local disk.
- *    - pros:
- *      - VERY fast
- *    - cons:
- *      - Not sharable with others
- *
- * web: Access is available via the public web.
- *    - pros:
- *       - sharing works
- *       - access across multiple devices
- *    - cons:
- *       - may not be usable for certain people (classified information, etC).
- *
- */
-export type NetworkLayer = 'local' | 'web';
-
-export class NetworkLayers {
-
-    public static LOCAL = new Set<NetworkLayer>(['local']);
-
-    public static LOCAL_AND_WEB = new Set<NetworkLayer>(['local', 'web']);
-
-    public static WEB = new Set<NetworkLayer>(['web']);
-
-}
 

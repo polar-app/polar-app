@@ -7,7 +7,6 @@ import {
     DeleteResult,
     DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
-    GetFileOpts,
     SnapshotResult,
     WriteFileOpts
 } from './Datastore';
@@ -24,7 +23,7 @@ import {
 } from './PersistenceLayer';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Reducers} from 'polar-shared/src/util/Reducers';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
@@ -37,6 +36,7 @@ import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
 import {Analytics} from "../analytics/Analytics";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

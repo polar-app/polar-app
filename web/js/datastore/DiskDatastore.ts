@@ -10,9 +10,7 @@ import {
     DeleteResult,
     DocMetaSnapshotEventListener,
     ErrorListener,
-    GetFileOpts,
     InitResult,
-    NetworkLayer,
     PrefsProvider,
     SnapshotResult,
     WriteFileOpts,
@@ -29,7 +27,7 @@ import fs from 'fs';
 import os from 'os';
 
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
@@ -50,6 +48,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Strings} from "polar-shared/src/util/Strings";
 import {Mutexes} from "polar-shared/src/util/Mutexes";
 import {DocMetas} from "../metadata/DocMetas";
+import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

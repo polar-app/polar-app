@@ -16,11 +16,9 @@ import {
     DocMetaSnapshotResult,
     ErrorListener,
     FileMeta,
-    GetFileOpts,
     GroupIDStr,
     InitResult,
     MutationType,
-    NetworkLayers,
     PersistentPrefsUpdatedCallback,
     PrefsProvider,
     SnapshotResult,
@@ -31,7 +29,7 @@ import {
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
@@ -68,6 +66,10 @@ import {UserPrefCallback} from "./firebase/UserPrefs";
 import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
 import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {
+    GetFileOpts,
+    NetworkLayers
+} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

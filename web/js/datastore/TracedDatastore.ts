@@ -6,7 +6,6 @@ import {
     DatastoreOverview,
     DeleteResult, DocMetaSnapshotOpts, DocMetaSnapshotResult,
     ErrorListener,
-    GetFileOpts,
     InitResult,
     WriteFileOpts,
     WriteOpts
@@ -14,12 +13,13 @@ import {
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DatastoreMutation} from './DatastoreMutation';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {RendererAnalytics} from '../ga/RendererAnalytics';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 const tracer = RendererAnalytics.createTracer('datastore');
 

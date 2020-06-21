@@ -1,11 +1,11 @@
 import {Exporter, Writable} from "./Exporters";
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
+import {ReadableBinaryDatastore} from "polar-shared/src/datastore/IDatastore";
 
 export abstract class AbstractExporter implements Exporter {
 

@@ -1,10 +1,10 @@
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileURLMeta} from './DocFileMeta';
-import {GetFileOpts} from './Datastore';
+import {DocFileURLMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

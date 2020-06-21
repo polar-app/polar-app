@@ -18,7 +18,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {FileHandle, Files} from 'polar-shared/src/util/Files';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
@@ -31,11 +31,11 @@ import {Providers} from 'polar-shared/src/util/Providers';
 import {WriteFileOpts} from './Datastore';
 import {DefaultWriteFileOpts} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
-import {NetworkLayer} from './Datastore';
 import {WriteOpts} from './Datastore';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ErrorHandlerCallback} from "../firebase/Firebase";
+import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
 

@@ -12,13 +12,12 @@ import {
     DocMetaSnapshotOpts,
     DocMetaSnapshotResult,
     ErrorListener,
-    GetFileOpts,
     GroupIDStr,
     SnapshotResult,
     WriteFileOpts
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from './DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {DatastoreMutation} from './DatastoreMutation';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -27,6 +26,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {ListenablePersistenceLayer} from "./ListenablePersistenceLayer";
 import {UserTagsDB} from "./UserTagsDB";
 import {DocMetas} from "../metadata/DocMetas";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export interface PersistenceLayer {
 

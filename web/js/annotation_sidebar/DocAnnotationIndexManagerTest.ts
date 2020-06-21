@@ -3,8 +3,7 @@ import {DocAnnotationIndex} from "./DocAnnotationIndex";
 import {DocAnnotationIndexManager} from "./DocAnnotationIndexManager";
 import {DocFileResolver} from "../datastore/DocFileResolvers";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {GetFileOpts} from "../datastore/Datastore";
-import {DocFileMeta} from "../datastore/DocFileMeta";
+import {DocFileMeta} from "polar-shared/src/datastore/DocFileMeta";
 import {DocMetaListener, DocMetaRecord, DocMetaRecords} from "../datastore/sharing/db/DocMetaListeners";
 import {DocMetas} from "../metadata/DocMetas";
 import {UserProfile} from "../datastore/sharing/db/UserProfiles";
@@ -16,6 +15,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 describe('DocAnnotationIndexManager', function() {
 

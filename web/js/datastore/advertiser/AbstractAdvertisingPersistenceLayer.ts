@@ -19,13 +19,12 @@ import {
     SnapshotResult
 } from '../Datastore';
 import {WriteFileOpts} from '../Datastore';
-import {GetFileOpts} from '../Datastore';
 import {DatastoreOverview} from '../Datastore';
 import {DatastoreCapabilities} from '../Datastore';
 import {DatastoreInitOpts} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {DocFileMeta} from '../DocFileMeta';
+import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation} from '../DatastoreMutation';
@@ -36,6 +35,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {UserTagsDB} from "../UserTagsDB";
+import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersistenceLayer implements ListenablePersistenceLayer {
 
