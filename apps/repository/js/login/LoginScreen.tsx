@@ -1,13 +1,20 @@
 import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button/Button';
 import {Firebase} from "../../../../web/js/firebase/Firebase";
-import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
+import {
+    FirebaseUIAuth,
+    FirebaseUIAuthOptions
+} from "../../../../web/js/firebase/FirebaseUIAuth";
 import {ExternalNavigationBlock} from "../../../../web/js/electron/navigation/ExternalNavigationBlock";
 import Paper from '@material-ui/core/Paper';
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 
-export const LoginScreen = React.memo(() => {
+interface IProps extends FirebaseUIAuthOptions {
+
+}
+
+export const LoginScreen = React.memo((props: IProps) => {
 
     function doCancel() {
 
@@ -34,7 +41,13 @@ export const LoginScreen = React.memo(() => {
         if (! user) {
 
             const signInSuccessUrl = SignInSuccessURLs.get();
-            FirebaseUIAuth.login({signInSuccessUrl});
+
+            const authOptions: FirebaseUIAuthOptions = {
+                ...props,
+                signInSuccessUrl
+            }
+
+            FirebaseUIAuth.login(authOptions);
 
         } else {
             console.log("Already authenticated as " + user.email);

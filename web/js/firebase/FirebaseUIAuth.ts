@@ -17,27 +17,21 @@ export class FirebaseUIAuth {
     /**
      * Start the login and render the login box to the given selector.
      *
-     * @param partialOpts The opts to use when authenticating.
+     * @param opts The opts to use when authenticating.
      */
-    public static login(partialOpts: Partial<FirebaseUIAuthOptions> = {}): firebaseui.auth.AuthUI {
+    public static login(opts: FirebaseUIAuthOptions = {}): firebaseui.auth.AuthUI {
 
         console.log("Triggering Firebase UI auth");
 
         Preconditions.assertPresent(firebaseui, 'firebaseui');
         Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
 
-        const opts = {
-            containerSelector: '#firebaseui-auth-container',
-            signInSuccessUrl: SIGN_IN_SUCCESS_URL,
-            ...partialOpts,
-        };
+        const containerSelector = opts.containerSelector || '#firebaseui-auth-container';
 
         // FirebaseUI config.
         const uiConfig: firebaseui.auth.Config = {
 
-            // popupMode: true,
-            // signInFlow: 'popup',
-
+            signInFlow: opts.signInFlow || 'redirect',
             callbacks: {
 
                 signInSuccessWithAuthResult: (authResult: any,
@@ -50,7 +44,7 @@ export class FirebaseUIAuth {
             },
             queryParameterForWidgetMode: 'mode',
 
-            signInSuccessUrl: opts.signInSuccessUrl,
+            signInSuccessUrl: opts.signInSuccessUrl || SIGN_IN_SUCCESS_URL,
             signInOptions: [
                 {
                     provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -87,7 +81,7 @@ export class FirebaseUIAuth {
         // Initialize the FirebaseUI Widget using Firebase.
         const ui = new firebaseui.auth.AuthUI(firebase.auth());
         // The start method will wait until the DOM is loaded.
-        ui.start(opts.containerSelector, uiConfig);
+        ui.start(containerSelector, uiConfig);
 
         return ui;
 
@@ -96,6 +90,12 @@ export class FirebaseUIAuth {
 }
 
 export interface FirebaseUIAuthOptions {
-    readonly containerSelector: string;
-    readonly signInSuccessUrl: string;
+    readonly containerSelector?: string;
+    readonly signInSuccessUrl?: string;
+
+    /**
+     * The sign in flow type.  Either popup or redirect. Default is redirect.
+     */
+    readonly signInFlow?: 'popup' | 'redirect';
+
 }

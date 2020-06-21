@@ -2,22 +2,24 @@ import {Optional} from "polar-shared/src/util/ts/Optional";
 import {URLs} from "polar-shared/src/util/URLs";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
-export class SignInSuccessURLs {
+export namespace SignInSuccessURLs {
 
     /**
      * Get the right sign in URL either the default or a custom if specified
      * by a URL param.
      */
-    public static get() {
+    export function get() {
+        return Optional.first(getCustom(), getDefault()).get();
+    }
 
-        return Optional.first(this.getCustom(), this.getDefault()).get();
-
+    export function createSignInURL(signInSuccessUrl: string, base: string = document.location?.href) {
+        return base + "?signInSuccessUrl=" + encodeURIComponent(signInSuccessUrl);
     }
 
     /**
      * Allow the user to set a custom signInSuccessUrl as a param.
      */
-    private static getCustom(): string | undefined {
+    function getCustom(): string | undefined {
 
         const url = new URL(document.location!.href);
 
@@ -26,7 +28,7 @@ export class SignInSuccessURLs {
 
     }
 
-    private static getDefault(): string {
+    function getDefault(): string {
 
         const base = URLs.toBase(document.location!.href);
 
