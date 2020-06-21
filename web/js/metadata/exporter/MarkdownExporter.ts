@@ -1,4 +1,3 @@
-import {AnnotationHolder} from "../AnnotationHolder";
 import {AbstractExporter} from './AbstractExporter';
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
@@ -7,6 +6,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
 
 export class MarkdownExporter extends AbstractExporter {
 

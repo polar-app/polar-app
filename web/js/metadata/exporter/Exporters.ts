@@ -1,4 +1,3 @@
-import {AnnotationHolder} from '../AnnotationHolder';
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
 import {AnnotationHolders} from '../AnnotationHolders';
@@ -7,6 +6,7 @@ import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 import {BlobWriter} from "./writers/BlobWriter";
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
+import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON

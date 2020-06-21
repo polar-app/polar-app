@@ -1,5 +1,4 @@
 import {Writable} from "./Exporters";
-import {AnnotationHolder} from "../AnnotationHolder";
 import {AbstractExporter} from './AbstractExporter';
 import {Strings} from "polar-shared/src/util/Strings";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
@@ -7,6 +6,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
 
 export class JSONExporter extends AbstractExporter {
 

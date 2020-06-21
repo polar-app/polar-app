@@ -1,4 +1,3 @@
-import {AnnotationHolder} from "./AnnotationHolder";
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
@@ -7,6 +6,7 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
 
 export class AnnotationHolders {
 
