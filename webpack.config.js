@@ -114,11 +114,6 @@ function createRules() {
             use: [
                 {
                     loader: 'style-loader',
-                    options: {
-                        attributes: {
-                            // 'data-src': '[path][name].[ext]'
-                        }
-                    },
                 },
                 {
                     loader: 'css-loader'

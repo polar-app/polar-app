@@ -7,6 +7,7 @@ import {PageNavigator} from "../../PageNavigator";
 import {useDocViewerCallbacks} from "../../DocViewerStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import Section from '@polar-app/epubjs/types/section';
+import blue from '@material-ui/core/colors/blue';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -31,18 +32,51 @@ export const EPUBDocument = React.memo((props: IProps) => {
         readonly padding: string;
     }
 
-    function createEPUBTheme(): EPUBTheme {
-
-        // rendition.themes.override('background-color', theme.palette.background.paper);
-        // rendition.themes.override('color', theme.palette.text.primary);
-        // rendition.themes.override('font-family', theme.typography.fontFamily!);
+    function createCSS(): object {
 
         return {
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-            fontFamily: theme.typography.fontFamily!,
-            padding: '10px'
-        };
+            'body, html': {
+                color: theme.palette.text.primary,
+                'font-family': theme.typography.fontFamily,
+                padding: '10px',
+                paddingBottom: '10px !important'
+            },
+
+            'h1, h2, h3': {
+                color: theme.palette.text.primary
+            },
+
+            'header h2': {
+
+            },
+
+            'header > figure': {
+                margin: '0px'
+            },
+
+            'header > figure > img': {
+                // height: '100%',
+                // width: '100%',
+                // 'object-fit': 'contain'
+                'max-height': '100% !important',
+                'max-width': '100% !important',
+            },
+
+            "a:link": {
+                color: blue[300],
+            },
+            "a:visited": {
+                color: blue[600],
+            },
+            "a:hover": {
+                color: blue[400],
+            },
+            "a:active": {
+                color: blue[500],
+            },
+
+        }
+
     }
 
     async function doLoad() {
@@ -51,20 +85,22 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
         const pageElement = document.querySelector(".page")!;
 
+        // TODO:
+        //
+        // test no width but set the iframe CSS style to width
+
+
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
+            // height: '100%',
+            // layout: 'pre-paginated'
         });
+        const css = createCSS();
 
-        const epubTheme = createEPUBTheme();
-        console.log("Using epub theme: ", epubTheme);
+        console.log("Using epub css: ", css);
 
-        // rendition.themes.override('background-color', epubTheme.backgroundColor);
-        rendition.themes.override('color', epubTheme.color);
-        rendition.themes.override('font-family', epubTheme.fontFamily);
-        rendition.themes.override('padding', epubTheme.padding);
-
-        rendition.themes.registerCss('default', `h1, h2, h3 {color: ${theme.palette.text.primary};}`)
+        rendition.themes.default(css);
 
         await rendition.display();
 
