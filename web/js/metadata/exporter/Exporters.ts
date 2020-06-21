@@ -1,6 +1,6 @@
 import {MarkdownExporter} from './MarkdownExporter';
 import {JSONExporter} from './JSONExporter';
-import {AnnotationHolders} from '../AnnotationHolders';
+import {AnnotationHolders} from 'polar-shared/src/metadata/AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
 import {BlobWriter} from "./writers/BlobWriter";
