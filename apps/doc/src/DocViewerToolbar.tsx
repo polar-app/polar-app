@@ -22,6 +22,7 @@ import {
 } from "./DocViewerStore";
 import Divider from "@material-ui/core/Divider";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import { DeviceRouters } from "../../../web/js/ui/DeviceRouter";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -238,7 +239,7 @@ const PageNextButton = () => {
 }
 
 
-export const DocToolbar = React.memo(() => {
+export const DocViewerToolbar = React.memo(() => {
 
     const {docScale, pageNavigator} = useDocViewerStore();
     const {setScale} = useDocViewerCallbacks();
@@ -309,29 +310,32 @@ export const DocToolbar = React.memo(() => {
                          }}
                          className="ml-auto mr-auto vertical-align-children">
 
-                        <MUIButtonBar>
-                            <IconButton onClick={() => handleNextZoomLevel(-1)}>
-                                <RemoveIcon/>
-                            </IconButton>
+                        {docScale && (
+                            <DeviceRouters.Desktop>
+                                <MUIButtonBar>
+                                    <IconButton onClick={() => handleNextZoomLevel(-1)}>
+                                        <RemoveIcon/>
+                                    </IconButton>
 
-                            {docScale &&
-                                <FormControl variant="outlined" size="small">
-                                    <Select value={docScale.scale.value || 'page-width'}
-                                            onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
-                                        {ScaleLevelTuples.map(current => (
-                                            <MenuItem key={current.value}
-                                                      value={current.value}>
-                                                {current.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>}
+                                        <FormControl variant="outlined" size="small">
+                                            <Select value={docScale.scale.value || 'page-width'}
+                                                    onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
+                                                {ScaleLevelTuples.map(current => (
+                                                    <MenuItem key={current.value}
+                                                              value={current.value}>
+                                                        {current.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
 
-                            <IconButton onClick={() => handleNextZoomLevel(1)}>
-                                <AddIcon/>
-                            </IconButton>
+                                    <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                        <AddIcon/>
+                                    </IconButton>
 
-                        </MUIButtonBar>
+                                </MUIButtonBar>
+                            </DeviceRouters.Desktop>
+                        )}
 
                     </div>
 
