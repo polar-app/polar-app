@@ -23,6 +23,7 @@ import {
 import Divider from "@material-ui/core/Divider";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import { DeviceRouters } from "../../../web/js/ui/DeviceRouter";
+import { useDocFindStore } from "./DocFindStore";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -83,7 +84,7 @@ const FullScreenButton = React.memo(() => {
 
 const PageNumberInput = (props: NumPagesProps) => {
 
-    const {pageNavigator, page} = useDocViewerStore();
+    const {page, pageNavigator} = useDocViewerStore();
     const {onPageJump} = useDocViewerCallbacks();
 
     // yield to the property, except if we're changing the value, then jump
@@ -180,6 +181,7 @@ const PageNumberInput = (props: NumPagesProps) => {
 
             <TextField value={value}
                        onChange={event => handleChange(event.currentTarget.value)}
+                       disabled={! pageNavigator || pageNavigator.count <= 1}
                        onBlur={() => handleBlur()}
                        onKeyDown={event => handleKeyDown(event)}
                        type="text"
@@ -242,6 +244,8 @@ const PageNextButton = () => {
 export const DocViewerToolbar = React.memo(() => {
 
     const {docScale, pageNavigator} = useDocViewerStore();
+    const {finder} = useDocFindStore();
+
     const {setScale} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
@@ -282,17 +286,23 @@ export const DocViewerToolbar = React.memo(() => {
 
                     <MUIButtonBar>
 
-                        <DocFindButton className="mr-1"/>
-
-                        <Divider orientation="vertical"/>
+                        {finder && (
+                            <>
+                                <DocFindButton className="mr-1"/>
+                                <Divider orientation="vertical"/>
+                            </>
+                        )}
 
                         <PagePrevButton/>
 
                         <PageNextButton/>
 
-                        {pageNavigator && <PageNumberInput nrPages={pageNavigator.count}/>}
-
-                        {pageNavigator && <NumPages nrPages={pageNavigator.count}/>}
+                        {pageNavigator && (
+                            <>
+                                <PageNumberInput nrPages={pageNavigator.count}/>
+                                <NumPages nrPages={pageNavigator.count}/>
+                            </>
+                        )}
 
                     </MUIButtonBar>
                 </div>

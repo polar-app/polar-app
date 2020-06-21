@@ -1,12 +1,12 @@
 import {Writable} from "./Exporters";
 import {AnnotationHolder} from "../AnnotationHolder";
-import {TextHighlight} from "../TextHighlight";
-import {AreaHighlight} from '../AreaHighlight';
 import {AbstractExporter} from './AbstractExporter';
-import {Flashcard} from '../Flashcard';
-import {Comment} from '../Comment';
 import {Strings} from "polar-shared/src/util/Strings";
 import {ReadableBinaryDatastore} from "../../datastore/Datastore";
+import {IComment} from "polar-shared/src/metadata/IComment";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 
 export class JSONExporter extends AbstractExporter {
 
@@ -33,24 +33,24 @@ export class JSONExporter extends AbstractExporter {
 
     }
 
-    protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeAreaHighlight(areaHighlight: IAreaHighlight, exportable: AnnotationHolder): Promise<void> {
         await this.onItem();
         await this.writer!.write(this.toRecord(areaHighlight));
     }
 
-    protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeTextHighlight(textHighlight: ITextHighlight, exportable: AnnotationHolder): Promise<void> {
         await this.onItem();
         await this.writer!.write(this.toRecord(textHighlight));
     }
 
-    protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
+    protected async writeComment(comment: IComment, exportable: AnnotationHolder): Promise<void> {
         await this.onItem();
         await this.writer!.write(this.toRecord(comment));
     }
 
-    protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+    protected async writeFlashcard(flashcard: IFlashcard, exportable: AnnotationHolder): Promise<void> {
         await this.onItem();
-        await this.writer!.write(this.toRecord(Flashcard));
+        await this.writer!.write(this.toRecord(flashcard));
     }
 
     public async close(err?: Error): Promise<void> {

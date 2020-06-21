@@ -1,11 +1,11 @@
 import {Exporter, Writable} from "./Exporters";
 import {AnnotationHolder} from "../AnnotationHolder";
-import {TextHighlight} from "../TextHighlight";
-import {AreaHighlight} from '../AreaHighlight';
-import {Comment} from '../Comment';
-import {Flashcard} from '../Flashcard';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import { ReadableBinaryDatastore } from "../../datastore/Datastore";
+import {ReadableBinaryDatastore} from "../../datastore/Datastore";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IComment} from "polar-shared/src/metadata/IComment";
 
 export abstract class AbstractExporter implements Exporter {
 
@@ -24,35 +24,35 @@ export abstract class AbstractExporter implements Exporter {
         switch (exportable.annotationType) {
 
             case AnnotationType.TEXT_HIGHLIGHT:
-                await this.writeTextHighlight(<TextHighlight> exportable.original, exportable);
+                await this.writeTextHighlight(<ITextHighlight> exportable.original, exportable);
                 break;
 
             case AnnotationType.AREA_HIGHLIGHT:
-                await this.writeAreaHighlight(<AreaHighlight> exportable.original, exportable);
+                await this.writeAreaHighlight(<IAreaHighlight> exportable.original, exportable);
                 break;
 
             case AnnotationType.COMMENT:
-                await this.writeComment(<Comment> exportable.original, exportable);
+                await this.writeComment(<IComment> exportable.original, exportable);
                 break;
 
             case AnnotationType.FLASHCARD:
-                await this.writeFlashcard(<Flashcard> exportable.original, exportable);
+                await this.writeFlashcard(<IFlashcard> exportable.original, exportable);
                 break;
 
         }
 
     }
 
-    protected abstract writeTextHighlight(textHighlight: TextHighlight,
+    protected abstract writeTextHighlight(textHighlight: ITextHighlight,
                                           exportable: AnnotationHolder): Promise<void>;
 
-    protected abstract writeAreaHighlight(areaHighlight: AreaHighlight,
+    protected abstract writeAreaHighlight(areaHighlight: IAreaHighlight,
                                           exportable: AnnotationHolder): Promise<void>;
 
-    protected abstract writeComment(comment: Comment,
+    protected abstract writeComment(comment: IComment,
                                     exportable: AnnotationHolder): Promise<void>;
 
-    protected abstract writeFlashcard(flashcard: Flashcard,
+    protected abstract writeFlashcard(flashcard: IFlashcard,
                                       exportable: AnnotationHolder): Promise<void>;
 
     public async close(err?: Error): Promise<void> {

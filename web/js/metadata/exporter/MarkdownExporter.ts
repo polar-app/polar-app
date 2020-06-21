@@ -1,12 +1,12 @@
 import {AnnotationHolder} from "../AnnotationHolder";
-import {TextHighlight} from "../TextHighlight";
-import {AreaHighlight} from '../AreaHighlight';
 import {AbstractExporter} from './AbstractExporter';
-import {Flashcard} from '../Flashcard';
-import {Comment} from '../Comment';
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
+import {IComment} from "polar-shared/src/metadata/IComment";
+import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 export class MarkdownExporter extends AbstractExporter {
 
@@ -21,7 +21,7 @@ export class MarkdownExporter extends AbstractExporter {
         return `page: ${pageInfo.num}\n`;
     }
 
-    protected async writeImage(highlight: AreaHighlight | TextHighlight) {
+    protected async writeImage(highlight: IAreaHighlight | ITextHighlight) {
 
         if (highlight.image) {
 
@@ -42,7 +42,7 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
-    protected async writeAreaHighlight(areaHighlight: AreaHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeAreaHighlight(areaHighlight: IAreaHighlight, exportable: AnnotationHolder): Promise<void> {
         await this.writer!.write("---\n");
 
         const output =
@@ -56,7 +56,7 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
-    protected async writeTextHighlight(textHighlight: TextHighlight, exportable: AnnotationHolder): Promise<void> {
+    protected async writeTextHighlight(textHighlight: ITextHighlight, exportable: AnnotationHolder): Promise<void> {
 
         await this.writer!.write("---\n");
 
@@ -81,7 +81,7 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
-    protected async writeComment(comment: Comment, exportable: AnnotationHolder): Promise<void> {
+    protected async writeComment(comment: IComment, exportable: AnnotationHolder): Promise<void> {
 
         await this.writer!.write("---\n");
 
@@ -103,7 +103,7 @@ export class MarkdownExporter extends AbstractExporter {
 
     }
 
-    protected async writeFlashcard(flashcard: Flashcard, exportable: AnnotationHolder): Promise<void> {
+    protected async writeFlashcard(flashcard: IFlashcard, exportable: AnnotationHolder): Promise<void> {
 
         await this.writer!.write(this.pageInfoToText(exportable.pageInfo));
 
