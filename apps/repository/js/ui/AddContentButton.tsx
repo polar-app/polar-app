@@ -29,7 +29,7 @@ namespace runtime {
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon/>}
-                    size="medium">
+                    size="large">
                 <label htmlFor="file-upload" className="m-0">
                     Add
                 </label>
