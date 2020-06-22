@@ -15,24 +15,16 @@ interface IProps {
 
 }
 
-export function AccountControlDropdown(props: IProps) {
+export const AccountControlDropdown = React.memo((props: IProps) => (
 
-    return (
+    <MUIPopper id="account-control-button"
+               icon={<AccountAvatar size="small"/>}
+               placement="bottom-end"
+               caret>
 
-        <div>
+        <AccountControl userInfo={props.userInfo}
+                        onLogout={props.onLogout}/>
 
-            <MUIPopper id="account-control-button"
-                       icon={<AccountAvatar size="small"/>}
-                       placement="bottom-end"
-                       caret>
+    </MUIPopper>
 
-                <AccountControl userInfo={props.userInfo}
-                                onLogout={props.onLogout}/>
-
-            </MUIPopper>
-
-        </div>
-
-    );
-
-}
+));

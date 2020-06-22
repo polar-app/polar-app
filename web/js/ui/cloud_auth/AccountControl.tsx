@@ -9,6 +9,7 @@ import {accounts} from "polar-accounts/src/accounts";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
 import Subscription = accounts.Subscription;
 import {AccountAvatar} from "./AccountAvatar";
+import isEqual from 'react-fast-compare';
 
 const LogoutButton = (props: IProps) => {
 
@@ -77,7 +78,7 @@ interface IProps {
 
 }
 
-export function AccountControl(props: IProps) {
+export const AccountControl = React.memo(React.forwardRef((props: IProps, ref) => {
 
     return (
 
@@ -130,7 +131,6 @@ export function AccountControl(props: IProps) {
                     <div style={{display: 'flex', whiteSpace: 'nowrap'}}
                          className="mt-2">
 
-
                         <div className="ml-auto mr-1">
                             {/*<InviteUsersButton/>*/}
                         </div>
@@ -149,4 +149,4 @@ export function AccountControl(props: IProps) {
 
     );
 
-}
+}), isEqual);

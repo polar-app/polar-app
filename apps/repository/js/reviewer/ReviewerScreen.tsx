@@ -40,17 +40,21 @@ export interface IProps {
 
 export const ReviewerScreen = React.memo((props: IProps) => {
 
-    const firestore = useFirestore();
+    const firestoreContext = useFirestore();
     const history = useHistory();
-
     const [open, setOpen] = useState<boolean>(true);
+    //
+    // if (! firestoreContext) {
+    //     return;
+    // }
+
     const handleClose = React.useCallback(() => {
         setOpen(false);
         history.replace({pathname: "/annotations", hash: ""});
     }, []);
 
     async function provider() {
-        return await Reviewers2.create({firestore, ...props});
+        return await Reviewers2.create({firestore: firestoreContext!, ...props});
     }
 
     // FIXME: suspend isn't being run here... we might need to migrate to a

@@ -20,7 +20,7 @@ interface IProps {
 
 }
 
-export const ColorSelector  = (props: IProps) => {
+export const ColorSelector = (props: IProps) => {
 
     const onSelected = props.onSelected || NULL_FUNCTION;
 

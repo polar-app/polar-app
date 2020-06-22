@@ -71,6 +71,8 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
         const newLocation = createNewLocation();
 
+        // TODO/FIXME useHistory here to push so that the app doesn't have to
+        // reload
         console.log("Redirecting to authenticate: " + newLocation);
         window.location.href = newLocation;
 

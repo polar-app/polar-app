@@ -11,8 +11,11 @@ export interface IFirestore {
     readonly firestore: firebase.firestore.Firestore;
 }
 
-const FirestoreContext = React.createContext<IFirestore>(null!);
+const FirestoreContext = React.createContext<IFirestore | undefined>(undefined);
 
+/**
+ * Get the firestore context, or undefined if one is not defined yet.
+ */
 export function useFirestore() {
     return React.useContext(FirestoreContext);
 }

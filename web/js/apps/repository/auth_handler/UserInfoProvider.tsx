@@ -25,8 +25,15 @@ interface IProps {
 
 export const UserInfoProvider = React.memo((props: IProps) => {
 
+    const firestoreContext = useFirestore();
     const [userInfoContext, setUserInfoContext] = React.useState<IUserInfoContext | undefined>(undefined);
-    const {user, firestore} = useFirestore();
+
+    if (! firestoreContext) {
+        // we need firestore before we can continue
+        return null;
+    }
+
+    const {user, firestore} = firestoreContext;
 
     if (user) {
 
@@ -36,6 +43,13 @@ export const UserInfoProvider = React.memo((props: IProps) => {
             const newUserInfo = toUserInfo(user, account);
             setUserInfoContext({userInfo: newUserInfo});
         });
+
+    } else {
+
+        if (! userInfoContext) {
+            // we have firestore but there is no user so they're not authenticated
+            setUserInfoContext({userInfo: undefined});
+        }
 
     }
 

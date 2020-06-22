@@ -1,19 +1,26 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {
+    Datastore,
+    DocMetaMutation,
+    DocMetaSnapshotBatch,
+    DocMetaSnapshotEventListener,
+    SnapshotResult
+} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
-import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {AsyncFunction, AsyncWorkQueue} from 'polar-shared/src/util/AsyncWorkQueue';
+import {
+    AsyncFunction,
+    AsyncWorkQueue
+} from 'polar-shared/src/util/AsyncWorkQueue';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
