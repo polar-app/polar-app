@@ -51,13 +51,16 @@ export const EPUBDocument = React.memo((props: IProps) => {
             },
 
             'header > figure': {
-                margin: '0px'
+                margin: '0px',
+                display: 'flex'
             },
 
             'header > figure > img': {
                 // height: '100%',
                 // width: '100%',
                 // 'object-fit': 'contain'
+                'margin-left': 'auto',
+                'margin-right': 'auto',
                 'max-height': '100% !important',
                 'max-width': '100% !important',
             },

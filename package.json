@@ -184,6 +184,7 @@
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "https://github.com/burtonator/package-polar-pdfjs-dist.git",
     "polar-accounts": "^2.0.0-beta.5",
+    "polar-assets": "^2.0.0-beta.5",
     "polar-exporters": "^2.0.0-beta.5",
     "polar-backend-shared": "^2.0.0-beta.5",
     "polar-browsers": "^2.0.0-beta.5",

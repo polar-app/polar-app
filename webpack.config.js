@@ -69,29 +69,17 @@ function createRules() {
             ]
 
         },
-
         {
-            test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
+            // all image and font assets including SVG, TTFs and an optional
+            // v=xxx identifier at the end if we want to use one.
+            test: /\.(png|jpe?g|gif|bmp|svg|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
             use: [
                 {
                     loader: 'file-loader',
                     options: {
                         name: '[name]-[contenthash].[ext]',
-                        outputPath: 'fonts',
-                        publicPath: '/web/dist/fonts'
-                    }
-                }
-            ]
-        },
-        {
-            test: /\.(png|jpe?g|gif|bmp|svg|ico|webp)$/i,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name]-[contenthash].[ext]',
-                        outputPath: 'images',
-                        publicPath: '/web/dist/images'
+                        outputPath: 'assets',
+                        publicPath: '/web/dist/assets'
                     }
                 },
             ],
