@@ -45,7 +45,7 @@ export class Firebase {
 
             log.notice("Initializing firebase...");
 
-            this.app = this.initApp();
+            this.app = this.doInit();
 
             return this.app;
 
@@ -55,9 +55,7 @@ export class Firebase {
 
     }
 
-    private static initApp() {
-
-        log.notice("Initializing firebase...");
+    private static doInit() {
 
         const project = process.env.POLAR_TEST_PROJECT || 'prod';
 

@@ -125,7 +125,6 @@ export class Logging {
 
     }
 
-
     public static async createPrimaryTarget(): Promise<ILogger> {
 
         const loggingConfig = await this.loggingConfig();
