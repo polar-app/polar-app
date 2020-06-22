@@ -8,7 +8,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
-import {CloudAuthButton} from "../../../../web/js/ui/cloud_auth/CloudAuthButton";
+import {AccountAuthButton} from "../../../../web/js/ui/cloud_auth/AccountAuthButton";
 
 export namespace RepoHeader {
 
@@ -121,7 +121,7 @@ const Desktop = () => {
                         alignItems="center">
 
                         <Grid item>
-                            <CloudAuthButton/>
+                            <AccountAuthButton/>
                         </Grid>
 
                         {/*<Grid item>*/}

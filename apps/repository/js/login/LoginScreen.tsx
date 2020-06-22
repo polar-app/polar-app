@@ -9,6 +9,7 @@ import {ExternalNavigationBlock} from "../../../../web/js/electron/navigation/Ex
 import Paper from '@material-ui/core/Paper';
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
+import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 
 interface IProps extends FirebaseUIAuthOptions {
 
@@ -79,10 +80,7 @@ export const LoginScreen = React.memo((props: IProps) => {
 
                     <div className="text-center">
 
-                        <img className="logo"
-                             src="/icon.svg"
-                             width="175"
-                             height="175"/>
+                        <PolarSVGIcon width="175" height="175"/>
 
                         <h1>
                             Login to Polar

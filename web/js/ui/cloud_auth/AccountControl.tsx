@@ -8,6 +8,7 @@ import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
 import {accounts} from "polar-accounts/src/accounts";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
 import Subscription = accounts.Subscription;
+import {AccountAvatar} from "./AccountAvatar";
 
 const LogoutButton = (props: IProps) => {
 
@@ -90,10 +91,7 @@ export function AccountControl(props: IProps) {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <UserAvatar size="large"
-                                    displayName={props.userInfo.displayName}
-                                    style={{width: '100px', height: '100px'}}
-                                    photoURL={props.userInfo.photoURL}/>
+                        <AccountAvatar size="large" style={{width: '100px', height: '100px'}}/>
                     </div>
 
                     <div className="p-1">

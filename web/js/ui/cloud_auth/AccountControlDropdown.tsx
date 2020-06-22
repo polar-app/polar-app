@@ -4,6 +4,7 @@ import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControl} from './AccountControl';
 import {MUIPopper} from "../../mui/menu/MUIPopper";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { AccountAvatar } from './AccountAvatar';
 
 
 interface IProps {
@@ -21,7 +22,7 @@ export function AccountControlDropdown(props: IProps) {
         <div>
 
             <MUIPopper id="account-control-button"
-                       icon={<AccountCircleIcon/>}
+                       icon={<AccountAvatar size="small"/>}
                        placement="bottom-end"
                        caret>
 

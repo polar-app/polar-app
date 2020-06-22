@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {AccountAuthButton} from '../../../../web/js/ui/cloud_auth/AccountAuthButton';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoNavbar} from "../RepoNavbar";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
@@ -133,7 +133,7 @@ export class RepoHeader extends React.Component<IProps, IState> {
                                 </Grid>
 
                                 <Grid item>
-                                    <CloudAuthButton/>
+                                    <AccountAuthButton/>
                                 </Grid>
 
                                 <Grid item>
