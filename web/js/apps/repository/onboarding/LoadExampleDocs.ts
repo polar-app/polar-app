@@ -1,6 +1,6 @@
 import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {ImportedFile, PDFImporter} from '../importers/PDFImporter';
+import {ImportedFile, DocImporter} from '../importers/DocImporter';
 import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {Pagemarks} from '../../../metadata/Pagemarks';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -34,13 +34,13 @@ export class LoadExampleDocs {
 
     private readonly persistenceLayer: PersistenceLayer;
 
-    private readonly pdfImporter: PDFImporter;
+    private readonly pdfImporter: DocImporter;
 
     constructor(persistenceLayer: PersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
 
         this.pdfImporter
-            = new PDFImporter(() => this.persistenceLayer);
+            = new DocImporter(() => this.persistenceLayer);
 
     }
 

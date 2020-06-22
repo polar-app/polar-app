@@ -1,7 +1,7 @@
 import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {ipcRenderer, remote} from "electron";
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {ImportedFile, PDFImporter} from './importers/PDFImporter';
+import {ImportedFile, DocImporter} from './importers/DocImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {Optional} from "polar-shared/src/util/ts/Optional";
@@ -30,7 +30,7 @@ export class FileImportController {
 
     private readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
-    private readonly pdfImporter: PDFImporter;
+    private readonly pdfImporter: DocImporter;
 
     private readonly docLoader: DocLoader;
 
@@ -38,7 +38,7 @@ export class FileImportController {
                 updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
 
         this.updatedDocInfoEventDispatcher = updatedDocInfoEventDispatcher;
-        this.pdfImporter = new PDFImporter(persistenceLayerProvider);
+        this.pdfImporter = new DocImporter(persistenceLayerProvider);
         this.docLoader = new DocLoader(persistenceLayerProvider);
 
     }

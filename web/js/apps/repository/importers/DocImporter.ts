@@ -2,12 +2,10 @@ import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PDFMetadata} from 'polar-pdf/src/pdf/PDFMetadata';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {FileHandle, Files} from 'polar-shared/src/util/Files';
+import {FileHandle} from 'polar-shared/src/util/Files';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Backend} from 'polar-shared/src/datastore/Backend';
-import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {
     HashAlgorithm,
@@ -17,15 +15,11 @@ import {
 import {BackendFileRefData, BinaryFileData} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
-
-import fs from 'fs';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
-import {DocFormatName} from "../../../docformat/DocFormat";
-import {EPUBMetadata} from "polar-epub/src/EPUBMetadata";
-import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
+import {DocMetadata} from "./DocMetadata";
 
 const log = Logger.create();
 
@@ -33,59 +27,9 @@ const log = Logger.create();
  * Handles taking a given file, parsing the metadata, and then writing a new
  * DocMeta file and importing the PDF file to the stash.
  */
-export class PDFImporter {
+export class DocImporter {
 
     constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
-    }
-
-    private async prefetch(docPath: string, basename: string): Promise<string> {
-
-        if (AppRuntime.isElectron() && URLs.isURL(docPath) && URLs.isWebScheme(docPath)) {
-
-            const url = docPath;
-            const downloadPath = FilePaths.join(FilePaths.tmpdir(), basename);
-
-            log.info(`Prefetching URL ${url} to: ${downloadPath}`);
-
-            const response = await fetch(url);
-
-            if (response.body) {
-
-                const reader = response.body.getReader();
-
-                let writeStream: fs.WriteStream | undefined;
-
-                try {
-
-                    writeStream = Files.createWriteStream(downloadPath);
-
-                    while (true) {
-
-                        const { done, value } = await reader.read();
-
-                        if (done) {
-                            break;
-                        }
-
-                        writeStream.write(value);
-
-                    }
-
-                } finally {
-
-                    if (writeStream) {
-                        writeStream.close();
-                    }
-
-                }
-
-                return downloadPath;
-            }
-
-        }
-
-        return docPath;
-
     }
 
     /**
@@ -117,28 +61,11 @@ export class PDFImporter {
 
         const docType = toDocType();
 
-        docPath = await this.prefetch(docPath, basename);
-
         const isPath = ! URLs.isURL(docPath);
 
         log.info(`Working with document: ${docPath}: ${isPath}`);
 
-        if (isPath) {
-
-            const directories = new Directories();
-
-            if (await PDFImporter.isWithinStashdir(directories.stashDir, docPath)) {
-
-                // prevent the user from re-importing/opening a file that is
-                // ALREADY in the stash dir.
-
-                log.warn("Skipping import of file that's already in the stashdir.");
-                return Optional.empty();
-            }
-
-        }
-
-        const rawMeta = opts.parsedDocMeta || await ParsedDocMetas.getMetadata(docPath, docType);
+        const rawMeta = opts.parsedDocMeta || await DocMetadata.getMetadata(docPath, docType);
 
         const persistenceLayer = this.persistenceLayerProvider();
 
@@ -168,6 +95,7 @@ export class PDFImporter {
             }
 
             return Optional.empty();
+
         }
 
         // create a default title from the path which is used as sometimes the
@@ -189,7 +117,7 @@ export class PDFImporter {
         // TODO(webapp): this doesn't work either becasue it assumes that we can
         // easily and cheaply read from the URL / blob URL but I guess that's
         // true in this situation though it's assuming a FILE and not a blob URL
-        const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
+        const fileHashMeta = await DocImporter.computeHashPrefix(docPath);
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
@@ -254,7 +182,7 @@ export class PDFImporter {
 
     public static async computeHashcode(docPath: string): Promise<Hashcode> {
 
-        const fileHashMeta = await PDFImporter.computeHashPrefix(docPath);
+        const fileHashMeta = await DocImporter.computeHashPrefix(docPath);
 
         const hashcode: Hashcode = {
             enc: HashEncoding.BASE58CHECK,
@@ -274,32 +202,6 @@ export class PDFImporter {
         const hashPrefix = hashcode.substring(0, 10);
 
         return { hashcode, hashPrefix };
-
-    }
-
-    private static async isWithinStashdir(stashDir: string, path: string): Promise<boolean> {
-
-        const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
-
-        stashDir = await Files.realpathAsync(stashDir);
-
-        return currentDirname === stashDir;
-
-    }
-
-}
-
-class ParsedDocMetas {
-
-    public static async getMetadata(docPath: string, type: DocFormatName) {
-
-        if (type === 'pdf') {
-            return await PDFMetadata.getMetadata(docPath);
-        } else if (type === 'epub') {
-            return await EPUBMetadata.getMetadata(docPath);
-        }
-
-        throw new Error("Invalid type: " + type);
 
     }
 
