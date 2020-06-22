@@ -7,7 +7,8 @@
       "https://app.getpolarized.io",
       "http://localhost:8050",
       "http://127.0.0.1:8050",
-      "chrome-extension://jkfdkjomocoaljglgddnmhcbolldcafd"
+      "chrome-extension://jkfdkjomocoaljglgddnmhcbolldcafd",
+      "chrome-extension://mklidoahhflhlpcpigokeckcipaibopd"
     ],
     "requestHeader": [
       "Content-Type",
