@@ -8,6 +8,8 @@ import {useHistory} from "react-router-dom";
 
 export function useLogoutCallback() {
 
+    // FIXME: should this use AccountHooks?
+
     const history = useHistory();
 
     return () => {
@@ -36,59 +38,5 @@ export const AccountAuthButton = React.memo(() => {
 
     return <AccountControlDropdown userInfo={userInfoContext?.userInfo}
                                    onLogout={doLogout}/>;
-
-
-    //
-    // const userInfoContext = useUserInfoContext();
-    // const doLogout = useLogoutCallback();
-    //
-    // function computeMode(): AuthMode {
-    //
-    //     if (! userInfoContext) {
-    //         return 'none'
-    //     }
-    //
-    //     if (! userInfoContext.userInfo) {
-    //         return 'needs-auth';
-    //     }
-    //
-    //     return 'authenticated';
-    //
-    // }
-    //
-    // const mode = computeMode();
-    //
-    // log.info("auth state: ", mode);
-    //
-    // Firebase.init();
-    //
-    // function enableCloudSync() {
-    //     AccountActions.login();
-    // }
-    //
-    // const AccountButton = () => {
-    //
-    //     if (userInfoContext?.userInfo) {
-    //
-    //         return <AccountControlDropdown userInfo={userInfoContext?.userInfo}
-    //                                        onLogout={doLogout}/>;
-    //
-    //     } else {
-    //         return null;
-    //     }
-    //
-    // };
-    //
-    // if (mode === 'needs-auth') {
-    //
-    //     return <LoginButton onClick={() => enableCloudSync()}/>;
-    //
-    // } else if (mode === 'authenticated') {
-    //
-    //     return <AccountButton/>;
-    //
-    // } else {
-    //     return null;
-    // }
 
 });

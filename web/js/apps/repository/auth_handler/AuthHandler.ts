@@ -71,8 +71,6 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
         const newLocation = createNewLocation();
 
-        // TODO/FIXME useHistory here to push so that the app doesn't have to
-        // reload
         console.log("Redirecting to authenticate: " + newLocation);
         window.location.href = newLocation;
 
@@ -154,8 +152,11 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         Firebase.init();
 
         const base = computeBaseURL();
-        const newLocation = new URL('/login.html', base).toString();
+        const newLocation = new URL('/login', base).toString();
         console.log("Redirecting to authenticate: " + newLocation);
+
+        // TODO/FIXME useHistory here to push so that the app doesn't have to
+        // reload but the problem is that we need to use hooks for this...
 
         window.location.href = newLocation;
 

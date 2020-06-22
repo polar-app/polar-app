@@ -29,8 +29,7 @@ export class AccountActions {
     }
 
     public static login() {
-        const newLocation = LoginURLs.create();
-        window.location.href = newLocation;
+        window.location.href = LoginURLs.create();
     }
 
 
