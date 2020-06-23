@@ -115,21 +115,6 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
             const pages = spine.items.filter(current => current.linear);
 
-            // function get(): number {
-            //
-            //     const section = arrayStream(pages)
-            //         .withIndex()
-            //         .filter(current => current.value.index === rendition.location.start.index)
-            //         .first();
-            //
-            //     if (! section) {
-            //         throw new Error("No section found for index: " + rendition.location.start.index);
-            //     }
-            //
-            //     return section.index + 1;
-            //
-            // }
-
             function set(page: number) {
 
                 const newPage = pages[page - 1];

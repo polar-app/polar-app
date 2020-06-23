@@ -22,20 +22,59 @@ import {DocMetadata} from "./DocMetadata";
 
 const log = Logger.create();
 
+export interface ImportedFile {
+
+    /**
+     * The action taken on this file:
+     *
+     * imported: it was imported and written to the store
+     * skipped: the doc is already in the store.
+     */
+    readonly action: 'imported' | 'skipped';
+
+    /**
+     * The DocInfo for the file we just imported.
+     */
+    readonly docInfo: IDocInfo;
+
+    /**
+     * The basename of the file imported.
+     */
+    readonly basename: string;
+
+    readonly backendFileRef: BackendFileRef;
+
+}
+
 /**
  * Handles taking a given file, parsing the metadata, and then writing a new
  * DocMeta file and importing the PDF file to the stash.
  */
 export namespace DocImporter {
 
+    /**
+     * Minimal metadata for the doc we want to import so that, in theory, we
+     * don't have to read the DocMetadata if we already know it.
+     */
+    export interface IDocImport {
+        readonly fingerprint: string;
+        readonly title: string;
+        readonly description: string;
+        readonly doi?: string;
+        readonly nrPages: number;
+    }
+
     export interface DocImporterOpts {
         readonly docInfo?: Partial<IDocInfo>;
+        readonly docImport?: IDocImport;
     }
 
     export async function importFile(persistenceLayerProvider: PersistenceLayerProvider,
                                      docPathOrURL: string,
                                      basename: string,
                                      opts: DocImporterOpts = {}): Promise<ImportedFile> {
+
+        console.log(`Importing doc docPathOrURL: ${docPathOrURL}, basename: ${basename}, opts: `, opts);
 
         const toDocType = () => {
 
@@ -55,9 +94,9 @@ export namespace DocImporter {
 
         const isPath = ! URLs.isURL(docPathOrURL);
 
-        log.info(`Working with document: ${docPathOrURL}: ${isPath}`);
+        log.info(`Working with document: ${docPathOrURL}: isPath: ${isPath}`);
 
-        const docMetadata = await DocMetadata.getMetadata(docPathOrURL, docType);
+        const docMetadata = opts.docImport || await DocMetadata.getMetadata(docPathOrURL, docType);
 
         const persistenceLayer = persistenceLayerProvider();
 
@@ -198,30 +237,6 @@ export namespace DocImporter {
         return { hashcode, hashPrefix };
 
     }
-
-}
-
-export interface ImportedFile {
-
-    /**
-     * The action taken on this file:
-     *
-     * imported: it was imported and written to the store
-     * skipped: the doc is already in the store.
-     */
-    readonly action: 'imported' | 'skipped';
-
-    /**
-     * The DocInfo for the file we just imported.
-     */
-    readonly docInfo: IDocInfo;
-
-    /**
-     * The basename of the file imported.
-     */
-    readonly basename: string;
-
-    readonly backendFileRef: BackendFileRef;
 
 }
 
