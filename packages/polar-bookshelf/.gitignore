@@ -1,0 +1,10 @@
+.idea
+node_modules/
+web/dist/
+*-bundle.js
+*-bundle.js.map
+dist/
+bower_components/
+*.DS_Store
+.webpack-cache-loader
+*.js.map
