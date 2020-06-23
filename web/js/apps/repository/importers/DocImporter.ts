@@ -18,7 +18,6 @@ import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {IParsedDocMeta} from "polar-shared/src/util/IParsedDocMeta";
 import {DocMetadata} from "./DocMetadata";
 
 const log = Logger.create();
@@ -27,23 +26,16 @@ const log = Logger.create();
  * Handles taking a given file, parsing the metadata, and then writing a new
  * DocMeta file and importing the PDF file to the stash.
  */
-export class DocImporter {
+export namespace DocImporter {
 
-    constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {
+    export interface DocImporterOpts {
+        readonly docInfo?: Partial<IDocInfo>;
     }
 
-    /**
-     *
-     * @param docPath
-     * @param basename The basename of the file - 'mydoc.pdf' without the full
-     *                 path information.  This is needed because blob URLs might
-     *                 not actually have the full metadata we need that the
-     *                 original input URL has given us.
-     * @param opts The PDF importer options.
-     */
-    public async importFile(docPath: string,
-                            basename: string,
-                            opts: PDFImportOpts = {}): Promise<Optional<ImportedFile>> {
+    export async function importFile(persistenceLayerProvider: PersistenceLayerProvider,
+                                     docPathOrURL: string,
+                                     basename: string,
+                                     opts: DocImporterOpts = {}): Promise<ImportedFile> {
 
         const toDocType = () => {
 
@@ -61,19 +53,19 @@ export class DocImporter {
 
         const docType = toDocType();
 
-        const isPath = ! URLs.isURL(docPath);
+        const isPath = ! URLs.isURL(docPathOrURL);
 
-        log.info(`Working with document: ${docPath}: ${isPath}`);
+        log.info(`Working with document: ${docPathOrURL}: ${isPath}`);
 
-        const rawMeta = opts.parsedDocMeta || await DocMetadata.getMetadata(docPath, docType);
+        const docMetadata = await DocMetadata.getMetadata(docPathOrURL, docType);
 
-        const persistenceLayer = this.persistenceLayerProvider();
+        const persistenceLayer = persistenceLayerProvider();
 
-        if (await persistenceLayer.contains(rawMeta.fingerprint)) {
+        if (await persistenceLayer.contains(docMetadata.fingerprint)) {
 
-            log.warn(`File already present in datastore: fingerprint=${rawMeta.fingerprint}: ${docPath}`);
+            log.warn(`File already present in datastore: fingerprint=${docMetadata.fingerprint}: ${docPathOrURL}`);
 
-            const docMeta = await persistenceLayer.getDocMeta(rawMeta.fingerprint);
+            const docMeta = await persistenceLayer.getDocMeta(docMetadata.fingerprint);
 
             if (docMeta) {
 
@@ -84,25 +76,24 @@ export class DocImporter {
                     const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
                     const basename = FilePaths.basename(docMeta.docInfo.filename);
-                    return Optional.of({
+                    return {
+                        action: 'skipped',
                         basename,
                         docInfo: docMeta.docInfo,
                         backendFileRef: backendFileRef!
-                    });
+                    };
 
                 }
 
             }
-
-            return Optional.empty();
 
         }
 
         // create a default title from the path which is used as sometimes the
         // filename is actually a decent first attempt at a document title.
 
-        if (!basename && ! docPath.startsWith("blob:")) {
-            basename = FilePaths.basename(docPath);
+        if (!basename && ! docPathOrURL.startsWith("blob:")) {
+            basename = FilePaths.basename(docPathOrURL);
         }
 
         const defaultTitle = opts?.docInfo?.title || basename || "";
@@ -117,7 +108,7 @@ export class DocImporter {
         // TODO(webapp): this doesn't work either becasue it assumes that we can
         // easily and cheaply read from the URL / blob URL but I guess that's
         // true in this situation though it's assuming a FILE and not a blob URL
-        const fileHashMeta = await DocImporter.computeHashPrefix(docPath);
+        const fileHashMeta = await computeHashPrefix(docPathOrURL);
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
 
@@ -130,32 +121,34 @@ export class DocImporter {
         const toBinaryFileData = async (): Promise<BinaryFileData> => {
 
             // TODO(webapp): make this into a toBlob function call
-            if (URLs.isURL(docPath)) {
-                log.info("Reading data from URL: ", docPath);
-                const response = await fetch(docPath);
-                const blob = await response.blob();
-                return blob;
+            if (URLs.isURL(docPathOrURL)) {
+                log.info("Reading data from URL: ", docPathOrURL);
+                const response = await fetch(docPathOrURL);
+                return await response.blob();
             }
 
-            return <FileHandle> {path: docPath};
+            return <FileHandle> {path: docPathOrURL};
 
         };
 
         const binaryFileData: BinaryFileData = await toBinaryFileData();
 
-        const docMeta = DocMetas.create(rawMeta.fingerprint, rawMeta.nrPages, filename);
+        const docMeta = DocMetas.create(docMetadata.fingerprint, docMetadata.nrPages, filename);
 
-        docMeta.docInfo.title = Optional.of(rawMeta.title)
-                                        .getOrElse(defaultTitle);
+        const docInfo: IDocInfo = {
+            ...docMeta.docInfo,
+            title: Optional.of(docMetadata.title).getOrElse(defaultTitle),
+            description: docMetadata.description,
+            doi: docMetadata.doi,
+            hashcode: {
+                enc: HashEncoding.BASE58CHECK,
+                alg: HashAlgorithm.KECCAK256,
+                data: fileHashMeta.hashcode
+            },
+            ...(opts.docInfo || {})
+        }
 
-        docMeta.docInfo.description = rawMeta.description;
-        docMeta.docInfo.doi = rawMeta.doi;
-
-        docMeta.docInfo.hashcode = {
-            enc: HashEncoding.BASE58CHECK,
-            alg: HashAlgorithm.KECCAK256,
-            data: fileHashMeta.hashcode
-        };
+        docMeta.docInfo = docInfo;
 
         const fileRef = {
             name: filename,
@@ -168,21 +161,22 @@ export class DocImporter {
             ...fileRef
         };
 
-        await persistenceLayer.write(rawMeta.fingerprint, docMeta, {writeFile});
+        await persistenceLayer.write(docMetadata.fingerprint, docMeta, {writeFile});
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
-        return Optional.of({
+        return {
+            action: 'imported',
             basename,
             docInfo: docMeta.docInfo,
             backendFileRef: backendFileRef!
-        });
+        };
 
     }
 
-    public static async computeHashcode(docPath: string): Promise<Hashcode> {
+    export async function computeHashcode(docPath: string): Promise<Hashcode> {
 
-        const fileHashMeta = await DocImporter.computeHashPrefix(docPath);
+        const fileHashMeta = await computeHashPrefix(docPath);
 
         const hashcode: Hashcode = {
             enc: HashEncoding.BASE58CHECK,
@@ -194,7 +188,7 @@ export class DocImporter {
 
     }
 
-    private static async computeHashPrefix(docPath: string): Promise<FileHashMeta> {
+    async function computeHashPrefix(docPath: string): Promise<FileHashMeta> {
 
         const inputSource = await InputSources.ofValue(docPath);
 
@@ -208,6 +202,14 @@ export class DocImporter {
 }
 
 export interface ImportedFile {
+
+    /**
+     * The action taken on this file:
+     *
+     * imported: it was imported and written to the store
+     * skipped: the doc is already in the store.
+     */
+    readonly action: 'imported' | 'skipped';
 
     /**
      * The DocInfo for the file we just imported.
@@ -227,9 +229,4 @@ interface FileHashMeta {
     readonly hashPrefix: string;
 
     readonly hashcode: string;
-}
-
-interface PDFImportOpts {
-    readonly parsedDocMeta?: IParsedDocMeta;
-    readonly docInfo?: Partial<IDocInfo>;
 }

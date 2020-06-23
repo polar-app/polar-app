@@ -30,15 +30,12 @@ export class FileImportController {
 
     private readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
-    private readonly pdfImporter: DocImporter;
-
     private readonly docLoader: DocLoader;
 
     constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider,
                 updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
 
         this.updatedDocInfoEventDispatcher = updatedDocInfoEventDispatcher;
-        this.pdfImporter = new DocImporter(persistenceLayerProvider);
         this.docLoader = new DocLoader(persistenceLayerProvider);
 
     }
@@ -260,9 +257,9 @@ export class FileImportController {
 
             const importedFile = importedFiles[0];
 
-            if (importedFile.isPresent()) {
+            if (importedFile) {
 
-                const file = importedFile.get();
+                const file = importedFile;
                 const fingerprint = file.docInfo.fingerprint;
 
                 if (AppRuntime.isElectron()) {
@@ -299,11 +296,11 @@ export class FileImportController {
 
     }
 
-    private async doImportFiles(files: AddFileRequest[]): Promise<ReadonlyArray<Optional<ImportedFile>>> {
+    private async doImportFiles(files: AddFileRequest[]): Promise<ReadonlyArray<ImportedFile>> {
 
         const progressTracker = new ProgressTracker({total: files.length, id: 'import-files'});
 
-        const result: Optional<ImportedFile>[] = [];
+        const result: ImportedFile[] = [];
 
         try {
 
@@ -329,16 +326,14 @@ export class FileImportController {
 
     }
 
-    private async doImportFile(file: AddFileRequest): Promise<Optional<ImportedFile>> {
+    private async doImportFile(file: AddFileRequest): Promise<ImportedFile> {
 
         log.info("Importing file: ", file);
 
         const importedFileResult =
-            await this.pdfImporter.importFile(file.docPath, file.basename);
+            await DocImporter.importFile(this.persistenceLayerProvider, file.docPath, file.basename);
 
-        importedFileResult.map(importedFile => {
-            this.updatedDocInfoEventDispatcher.dispatchEvent(importedFile.docInfo);
-        });
+        this.updatedDocInfoEventDispatcher.dispatchEvent(importedFileResult.docInfo);
 
         return importedFileResult;
 

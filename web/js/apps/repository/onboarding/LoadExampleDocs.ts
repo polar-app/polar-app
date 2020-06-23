@@ -34,14 +34,8 @@ export class LoadExampleDocs {
 
     private readonly persistenceLayer: PersistenceLayer;
 
-    private readonly pdfImporter: DocImporter;
-
     constructor(persistenceLayer: PersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
-
-        this.pdfImporter
-            = new DocImporter(() => this.persistenceLayer);
-
     }
 
     public async load(onLoaded: (docInfo: IDocInfo) => void) {
@@ -296,11 +290,11 @@ export class LoadExampleDocs {
                 const importedFile =
                     await this.doImport(relativePath, pdfMeta);
 
-                if (importedFile.isPresent()) {
+                if (importedFile) {
 
-                    const docInfo = importedFile.get().docInfo;
+                    const docInfo = importedFile.docInfo;
                     const docMeta = await this.persistenceLayer.getDocMeta(docInfo.fingerprint);
-                    const backendFileRef = importedFile.get().backendFileRef;
+                    const backendFileRef = importedFile.backendFileRef;
 
                     return {
                         docMeta: docMeta!,
@@ -382,19 +376,20 @@ export class LoadExampleDocs {
 
     }
 
-    private async doImport(relativePath: string, parsedDocMeta: IParsedDocMeta): Promise<Optional<ImportedFile>> {
+    private async doImport(relativePath: string, parsedDocMeta: IParsedDocMeta): Promise<ImportedFile> {
 
         const appPath = AppPath.get();
 
         if (! appPath) {
-            log.warn("No appPath");
-            return Optional.empty();
+            throw new Error("No appPath");
         }
 
         const path = FilePaths.join(appPath, relativePath);
         const basename = FilePaths.basename(relativePath);
 
-        return await this.pdfImporter.importFile(path, basename, {parsedDocMeta});
+        const persistenceLayerProvider = () => this.persistenceLayer;
+        // return await DocImporter.importFile(persistenceLayerProvider, path, basename, {parsedDocMeta});
+        return await DocImporter.importFile(persistenceLayerProvider, path, basename);
 
     }
 

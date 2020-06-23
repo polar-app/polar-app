@@ -6,8 +6,7 @@ import {
     PDFRenderingQueue,
     PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
-import PDFJS, {
-    DocumentInitParameters,
+import {
     PDFDocumentProxy,
     PDFViewerOptions
 } from "pdfjs-dist";
@@ -32,11 +31,10 @@ import {
 import isEqual from 'react-fast-compare';
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
+import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
 
 import 'pdfjs-dist/web/pdf_viewer.css';
 import './PDFDocument.css';
-
-PDFJS.GlobalWorkerOptions.workerSrc = '/web/dist/pdf.worker.js';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -139,14 +137,7 @@ export const PDFDocument = React.memo((props: IProps) => {
 
     const doLoad = async (docViewer: DocViewer) => {
 
-        const init: DocumentInitParameters = {
-            url: docURL,
-            cMapPacked: true,
-            cMapUrl: '../../node_modules/pdfjs-dist/cmaps/',
-            disableAutoFetch: true,
-        };
-
-        const loadingTask = PDFJS.getDocument(init);
+        const loadingTask = PDFDocs.getDocument({url: docURL});
 
         let progressTracker: ProgressTracker | undefined;
         loadingTask.onProgress = (progress) => {
