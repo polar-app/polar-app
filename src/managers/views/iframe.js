@@ -81,7 +81,7 @@ class IframeView {
 		}
 
 		this.iframe = document.createElement("iframe");
-		this.iframe.setAttribute('sandbox', 'allow-scripts');
+		this.iframe.setAttribute('sandbox', 'allow-same-origin');
 		this.iframe.id = this.id;
 		this.iframe.scrolling = "no"; // Might need to be removed: breaks ios width calculations
 		this.iframe.style.overflow = "hidden";
