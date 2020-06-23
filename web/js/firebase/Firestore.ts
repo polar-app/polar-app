@@ -65,7 +65,7 @@ export namespace Firestore {
 
         }
 
-        return await Tracer.async(doExecAsync, 'createInstance');
+        return await Tracer.async(doExecAsync, 'Firestore.createInstance');
 
     }
 
@@ -80,9 +80,7 @@ export namespace Firestore {
                 // work with the disk persistence.
 
 
-                console.time('enable-firestore-persistence');
                 await firestore.enablePersistence({synchronizeTabs: true});
-                console.timeEnd('enable-firestore-persistence');
 
             } catch (e) {
                 // we've probably exceeded the local quota so we can't run with caching for now.
@@ -92,7 +90,7 @@ export namespace Firestore {
         }
             // TODO: this seems super slow and not sure why.  The tab sync
         // seems to not impact performance at all.
-        await Tracer.async(doExecAsync, 'enablePersistence');
+        await Tracer.async(doExecAsync, 'Firestore.enablePersistence');
 
     }
 
