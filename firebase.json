@@ -72,6 +72,10 @@
         "destination": "/apps/doc/index.html"
       },
       {
+        "source": "/doc/:id/:title",
+        "destination": "/apps/doc/index.html"
+      },
+      {
         "source": "/apps/doc/:id",
         "destination": "/apps/doc/index.html"
       }
