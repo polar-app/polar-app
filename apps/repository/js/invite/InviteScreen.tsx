@@ -32,8 +32,7 @@ export class InviteScreen extends React.Component<IProps> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
+                    <RepoHeader/>
 
                 </header>
 

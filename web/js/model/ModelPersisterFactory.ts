@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {ModelPersister} from './ModelPersister';
 import {PersistenceLayerHandler} from '../datastore/PersistenceLayerHandler';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";

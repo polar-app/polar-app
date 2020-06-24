@@ -10,6 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
+import {CloudConnectivityButton} from "../../../../web/js/apps/repository/CloudConnectivityButton";
 
 /**
  * Simple header for the repository which supports arbitrary children.
@@ -133,6 +134,10 @@ export class RepoHeader extends React.Component<IProps, IState> {
                                 </Grid>
 
                                 <Grid item>
+                                    <CloudConnectivityButton/>
+                                </Grid>
+
+                                <Grid item>
                                     <AccountAuthButton/>
                                 </Grid>
 
@@ -164,8 +169,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
     readonly toggle?: React.ReactElement;
     readonly left?: React.ReactElement;
     readonly right?: React.ReactElement;

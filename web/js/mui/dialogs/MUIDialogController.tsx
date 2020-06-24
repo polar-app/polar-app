@@ -181,7 +181,8 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 
         case "snackbar":
             return (
-                <SnackbarDialog {...(state.props as SnackbarDialogProps)}/>
+                <SnackbarDialog key={state.iter}
+                                {...(state.props as SnackbarDialogProps)}/>
             );
 
         case "dialog":
@@ -194,7 +195,8 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 
         case "taskbar":
             return (
-                <TaskbarDialog {...(state.props as TaskbarDialogPropsWithCallback)}/>
+                <TaskbarDialog key={state.iter}
+                               {...(state.props as TaskbarDialogPropsWithCallback)}/>
             );
 
     }

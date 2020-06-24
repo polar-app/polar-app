@@ -28,7 +28,6 @@ import {
 } from "../../../../web/js/hooks/lifecycle";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
 import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
@@ -50,6 +49,8 @@ import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
+import { AddFileDropzoneProvider } from "../../../../web/js/apps/repository/upload/AddFileDropzoneStore";
+import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 
 interface IDocRepoStore {
 
@@ -672,7 +673,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onRename() {
 
-        const repoDocInfo = firstSelected()!;
+        const repoDocInfo = firstSelected();
+
+        if (! repoDocInfo) {
+            console.log("No docs selected");
+            return;
+        }
 
         dialogs.prompt({
             title: "Enter a new title for the document:",
@@ -846,11 +852,16 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
 export const DocRepoStore2 = React.memo((props: IProps) => {
 
     return (
-        <DocRepoStoreProvider>
-            <DocRepoStoreLoader>
-                {props.children}
-            </DocRepoStoreLoader>
-        </DocRepoStoreProvider>
+        <AddFileDropzoneProvider>
+            <>
+                <DocRepoStoreProvider>
+                    <DocRepoStoreLoader>
+                        {props.children}
+                    </DocRepoStoreLoader>
+                </DocRepoStoreProvider>
+                <AddFileDropzone/>
+            </>
+        </AddFileDropzoneProvider>
     )
 
 });

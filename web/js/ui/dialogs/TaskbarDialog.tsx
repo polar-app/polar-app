@@ -6,8 +6,14 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface IProgress {
-    readonly value: Percentage;
-    readonly message: string;
+    readonly value: Percentage | 'indeterminate';
+
+    /**
+     * Specify an optional message.  If no new message is given the existing
+     * one is preserved.
+     */
+    readonly message?: string;
+
 }
 
 export type TaskbarProgressCallback = (progress: IProgress) => void;
@@ -36,17 +42,38 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
 export const TaskbarDialog = React.memo((props: TaskbarDialogPropsWithCallback) => {
 
     const [progress, setProgress] = React.useState<IProgress>({value: 0, message: props.message});
+    const [open, setOpen] = React.useState(true);
+
+    function setProgressCallback(updateProgress: IProgress) {
+
+        const newProgress = {
+            ...updateProgress,
+            message: updateProgress.message ? updateProgress.message : progress.message
+        }
+
+        setProgress(newProgress);
+
+        if (newProgress.value === 100) {
+            // close the task but only after a delay so that the user sees that
+            // it finished.
+            setTimeout(() => setOpen(false), 1000);
+        }
+
+    }
 
     useComponentDidMount(() => {
-        props.onProgressCallback(setProgress);
+        props.onProgressCallback(setProgressCallback);
     });
 
+    const Action = () => {
 
-    const Action = () => (
-        <CircularProgress variant="static" value={progress.value} />
-    );
+        if (progress.value === 'indeterminate') {
+            return <CircularProgress />;
+        } else {
+            return <CircularProgress variant="static" value={progress.value}/>
+        }
 
-    const open = progress.value < 100;
+    };
 
     return (
         <Snackbar

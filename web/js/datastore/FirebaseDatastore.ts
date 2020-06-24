@@ -23,7 +23,7 @@ import {
     PrefsProvider,
     SnapshotResult,
     WritableBinaryMetaDatastore,
-    WriteFileOpts,
+    WriteFileOpts, WriteFileProgress,
     WriteOpts
 } from './Datastore';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -190,25 +190,20 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             errorListener(err);
         };
 
+        // Try to get the FIRST snapshot from the cache if possible and then
+        // continue after that working with server snapshots and updated
+        // data
 
-        if (this.preferredSource() === 'cache') {
+        try {
 
-            // Try to get the FIRST snapshot from the cache if possible and then
-            // continue after that working with server snapshots and updated
-            // data
+            const stopwatch = Stopwatches.create();
+            const cachedSnapshot = await query.get({ source: 'cache' });
+            console.log("Initial cached snapshot duration: " + stopwatch.stop());
 
-            try {
+            onNextForSnapshot(cachedSnapshot);
 
-                const stopwatch = Stopwatches.create();
-                const cachedSnapshot = await query.get({ source: 'cache' });
-                log.info("Initial cached snapshot duration: ", stopwatch.stop());
-
-                onNextForSnapshot(cachedSnapshot);
-
-            } catch (e) {
-                // no cached snapshot is available and that's ok.
-            }
-
+        } catch (e) {
+            // no cached snapshot is available and that's ok.
         }
 
         const unsubscribe =
@@ -547,6 +542,20 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 };
 
                 ProgressMessages.broadcast(progress);
+
+                if (opts.progressListener) {
+
+                    // if the write operation has a progress listener then increment
+                    // the listener properly.
+
+                    const writeFileProgress: WriteFileProgress = {
+                        ref: {backend, ...ref},
+                        ...progress
+                    }
+
+                    opts.progressListener(writeFileProgress);
+
+                }
 
                 switch (snapshot.state) {
 
@@ -1012,8 +1021,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 log.warn("No entry for fingerprint (fetching directly from server): " + fingerprint);
 
-                // FIXME: this is wrong... we're going to block on the server to much...
-                return await datastore.getDocMeta(fingerprint, {preferredSource: 'server'});
+                return await datastore.getDocMeta(fingerprint);
 
             }
 

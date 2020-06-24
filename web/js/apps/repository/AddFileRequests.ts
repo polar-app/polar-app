@@ -55,14 +55,14 @@ export class AddFileRequests {
     public static computeDirectly(event: DragEvent): AddFileRequest[] {
 
         if (event.dataTransfer && event.dataTransfer.files) {
-            return this.computeFromFileList(event.dataTransfer.files);
+            return this.computeFromFileList(Array.from(event.dataTransfer.files));
         } else {
             return [];
         }
 
     }
 
-    public static computeFromFileList(files: FileList): AddFileRequest[] {
+    public static computeFromFileList(files: ReadonlyArray<File>): AddFileRequest[] {
 
         return Array.from(files)
             .filter(file => FilePaths.hasExtension(file.name, 'pdf'))
@@ -90,11 +90,6 @@ export class AddFileRequests {
 
     }
 
-    /**
-     * @ElectronRendererContext
-     * @BrowserContext
-     * @param event
-     */
     public static async computeRecursively(event: DragEvent): Promise<Optional<AddFileRequest[]>> {
 
         if (AppRuntime.isElectron()) {

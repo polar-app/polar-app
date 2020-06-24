@@ -14,7 +14,7 @@ import {
     ErrorListener,
     GroupIDStr,
     SnapshotResult,
-    WriteFileOpts
+    WriteFileOpts, WriteFileProgressListener
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
@@ -145,6 +145,12 @@ export interface WriteOpts {
     readonly visibility?: Visibility;
 
     readonly groups?: ReadonlyArray<GroupIDStr>;
+
+    /**
+     * Specify a progress listener so that when you're writing a file you can
+     * keep track of the progress
+     */
+    readonly progressListener?: WriteFileProgressListener;
 
 }
 

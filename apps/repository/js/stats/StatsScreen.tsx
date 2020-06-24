@@ -163,8 +163,7 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 
                     <header>
 
-                        <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                    persistenceLayerController={this.props.persistenceLayerController}/>
+                        <RepoHeader/>
 
                     </header>
 

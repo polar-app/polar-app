@@ -9,6 +9,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import {AccountAuthButton} from "../../../../web/js/ui/cloud_auth/AccountAuthButton";
+import {CloudConnectivityButton} from "../../../../web/js/apps/repository/CloudConnectivityButton";
 
 export namespace RepoHeader {
 
@@ -119,6 +120,10 @@ const Desktop = () => {
                         direction="row"
                         justify="flex-end"
                         alignItems="center">
+
+                        <Grid item>
+                            <CloudConnectivityButton/>
+                        </Grid>
 
                         <Grid item>
                             <AccountAuthButton/>

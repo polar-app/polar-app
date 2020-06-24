@@ -1,14 +1,10 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../../FixedNav';
 import {RepoHeader} from '../../repo_header/RepoHeader';
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from '../../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../../web/js/datastore/PersistenceLayerManager';
 import {CreateGroupForm} from "./CreateGroupForm";
 import {RepoDocMetaManager} from "../../RepoDocMetaManager";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {AuthHandlers} from "../../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
 
 export class CreateGroupScreen extends React.Component<IProps, IState> {
@@ -34,8 +30,7 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
+                    <RepoHeader/>
 
                 </header>
 

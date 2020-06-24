@@ -5,8 +5,8 @@ import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {
+    DeterminateProgress, IndeterminateProgress,
     Progress,
-    ProgressListener
 } from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
 import {UUID} from 'polar-shared/src/metadata/UUID';
@@ -294,7 +294,7 @@ export abstract class AbstractDatastore {
         }
 
         if (opts.writeFile) {
-            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data);
+            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, {progressListener: opts.progressListener});
         }
 
     }
@@ -335,6 +335,12 @@ export interface WriteOpts {
     readonly visibility?: Visibility;
 
     readonly groups?: ReadonlyArray<GroupIDStr>;
+
+    /**
+     * Specify a progress listener so that when you're writing a file you can
+     * keep track of the progress
+     */
+    readonly progressListener?: WriteFileProgressListener;
 
 }
 
@@ -395,6 +401,19 @@ export interface WritableBinaryDatastore {
 
 }
 
+export interface BaseWriteFileProgress {
+    readonly ref: BackendFileRef;
+}
+
+export interface WriteFileProgressDeterminate extends DeterminateProgress, BaseWriteFileProgress {
+}
+export interface WriteFileProgressIndeterminate extends IndeterminateProgress, BaseWriteFileProgress {
+}
+
+export type WriteFileProgress = WriteFileProgressDeterminate | WriteFileProgressIndeterminate;
+
+export type WriteFileProgressListener = (progress: WriteFileProgress) => void;
+
 export interface WriteFileOpts {
 
     /**
@@ -418,7 +437,7 @@ export interface WriteFileOpts {
      * Specify a progress listener so that when you're writing a file you can
      * keep track of the progress
      */
-    readonly progressListener?: ProgressListener;
+    readonly progressListener?: WriteFileProgressListener;
 
 }
 

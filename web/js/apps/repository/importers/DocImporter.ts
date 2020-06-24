@@ -1,4 +1,4 @@
-import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
+import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -12,7 +12,11 @@ import {
     Hashcode,
     HashEncoding
 } from 'polar-shared/src/metadata/Hashcode';
-import {BackendFileRefData, BinaryFileData} from '../../../datastore/Datastore';
+import {
+    BackendFileRefData,
+    BinaryFileData,
+    WriteFileProgress, WriteFileProgressListener
+} from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
 import {BackendFileRefs} from '../../../datastore/BackendFileRefs';
@@ -67,6 +71,7 @@ export namespace DocImporter {
     export interface DocImporterOpts {
         readonly docInfo?: Partial<IDocInfo>;
         readonly docImport?: IDocImport;
+        readonly progressListener?: WriteFileProgressListener;
     }
 
     export async function importFile(persistenceLayerProvider: PersistenceLayerProvider,
@@ -197,10 +202,15 @@ export namespace DocImporter {
         const writeFile: BackendFileRefData = {
             backend: Backend.STASH,
             data: binaryFileData,
-            ...fileRef
+            ...fileRef,
         };
 
-        await persistenceLayer.write(docMetadata.fingerprint, docMeta, {writeFile});
+        const writeFileOpts: WriteOpts = {
+            writeFile,
+            progressListener: opts.progressListener
+        }
+
+        await persistenceLayer.write(docMetadata.fingerprint, docMeta, writeFileOpts);
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta);
 

@@ -4,7 +4,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {ImportedFile, DocImporter} from './importers/DocImporter';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
-import {Optional} from "polar-shared/src/util/ts/Optional";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {DeterminateProgressBar} from '../../ui/progress_bar/DeterminateProgressBar';
 import {DocLoader} from "../main/doc_loaders/DocLoader";
@@ -87,7 +86,7 @@ export class FileImportController {
 
                 if (fileUpload.files !== null) {
 
-                    const addFileRequests = AddFileRequests.computeFromFileList(fileUpload.files);
+                    const addFileRequests = AddFileRequests.computeFromFileList(Array.from(fileUpload.files));
 
                     this.handleAddFileRequests(addFileRequests)
                         .catch(err => log.error("Could not add files: ", err));
@@ -191,12 +190,14 @@ export class FileImportController {
         // we have to do three main things here:
 
         if (event.dataTransfer) {
+
             const directly = AddFileRequests.computeDirectly(event);
             const recursively = await AddFileRequests.computeRecursively(event);
 
             const addFileRequests = [...directly, ...recursively.getOrElse([])];
 
             await this.handleAddFileRequests(addFileRequests);
+
         }
 
     }

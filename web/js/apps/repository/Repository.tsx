@@ -1,6 +1,5 @@
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
@@ -19,7 +18,7 @@ import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
 import {RepositoryApp} from './RepositoryApp';
-import { Tracer } from 'polar-shared/src/util/Tracer';
+import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
@@ -48,8 +47,8 @@ export class Repository {
                 // FIXME: refactor this so that the rest of the app continues to load and
                 // this would allow us to run from cache.
 
-                new FileImportController(() => app.persistenceLayerManager.get(), updatedDocInfoEventDispatcher)
-                    .start();
+                // new FileImportController(() => app.persistenceLayerManager.get(), updatedDocInfoEventDispatcher)
+                //     .start();
 
                 new DocRepoAnkiSyncController(app.persistenceLayerManager, app.syncBarProgress)
                     .start();

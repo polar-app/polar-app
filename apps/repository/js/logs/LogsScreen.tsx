@@ -28,8 +28,7 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader persistenceLayerProvider={this.props.persistenceLayerProvider}
-                                persistenceLayerController={this.props.persistenceLayerController}/>
+                    <RepoHeader />
 
                     <div style={{display: 'flex'}} className="p-1">
 
