@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {AddContentActions} from '../ui/AddContentActions';
 import {AddContent} from '../ui/AddContentButton';
-import { DeviceRouters } from '../../../../web/js/ui/DeviceRouter';
+import {DeviceRouters} from '../../../../web/js/ui/DeviceRouter';
 
 export interface IProps {
 }
 
-export function DocRepoButtonBar(props: IProps) {
+export function DocRepoButtonBar() {
 
     return (
 
@@ -21,9 +20,7 @@ export function DocRepoButtonBar(props: IProps) {
                          marginBottom: 'auto'
                      }}>
 
-                    <AddContent.Desktop
-                        importFromDisk={() => AddContentActions.cmdImportFromDisk()}
-                        captureWebPage={() => AddContentActions.cmdCaptureWebPage()}/>
+                    <AddContent.Desktop/>
 
                 </div>
 

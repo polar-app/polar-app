@@ -9,91 +9,92 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import {AddContentFab} from "./AddContentFab";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import { useHistory } from 'react-router-dom';
+//
+// namespace runtime {
+//
+//     export const Main = () => (
+//         <AppRuntimeRouter browser={<Browser/>}
+//                           electron={<Electron/>}/>
+//     );
+//
+//     const Browser = () => (
+//             <Button id="add-content-dropdown"
+//                     variant="contained"
+//                     color="primary"
+//                     startIcon={<AddIcon/>}
+//                     size="large">
+//                 <label htmlFor="file-upload" className="m-0">
+//                     Add
+//                 </label>
+//             </Button>
+//     );
+//
+//     const Electron = React.memo(() => {
+//
+//         const history = useHistory();
+//
+//         return (
+//             <MUIMenu caret
+//                      button={{
+//                          icon: <AddIcon/>,
+//                          text: 'Add',
+//                          color: 'primary',
+//                          size: 'large',
+//                          disableRipple: true,
+//                          disableFocusRipple: true,
+//                      }}>
+//                 <div>
+//
+//                     <AddContentMenuItem id="add-content-import-from-disk"
+//                                         hidden={AppRuntime.isBrowser()}
+//                                         tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
+//                                         icon={<InsertDriveFileIcon/>}
+//                                         text="Add Files from Disk"
+//                                         onClick={doAdd}/>
+//
+//                 </div>
+//             </MUIMenu>
+//         );
+//     });
+//
+// }
 
-namespace runtime {
+export namespace AddContent {
 
-    function doAddFilesFromDisk(props: IProps) {
-        AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
+    function useAddFileDropzone() {
+
+        const history = useHistory();
+
+        return () => {
+            history.push({hash: "#add"});
+        }
+
     }
 
-    function doFileUpload() {
-        AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
-    }
+    export const Handheld = () => {
 
-    export const Main = () => (
-        <AppRuntimeRouter browser={<Browser/>}
-                          electron={<Electron/>}/>
-    );
+        const doAdd = useAddFileDropzone();
 
-    const Browser = () => (
+        return (
+            <AddContentFab onClick={() => doAdd()}/>
+        );
+
+    };
+
+    export const Desktop = () => {
+
+        const doAdd = useAddFileDropzone();
+
+        return (
             <Button id="add-content-dropdown"
                     variant="contained"
                     color="primary"
                     startIcon={<AddIcon/>}
+                    onClick={doAdd}
                     size="large">
-                <label htmlFor="file-upload" className="m-0">
-                    Add
-                </label>
+                Add
             </Button>
-    );
-
-    const Electron = React.memo(() => {
-
-        const history = useHistory();
-
-        function doAdd() {
-            history.push({hash: "#add"});
-        }
-
-        return (
-            <MUIMenu caret
-                     button={{
-                         icon: <AddIcon/>,
-                         text: 'Add',
-                         color: 'primary',
-                         size: 'large',
-                         disableRipple: true,
-                         disableFocusRipple: true,
-                     }}>
-                <div>
-
-                    <AddContentMenuItem id="add-content-import-from-disk"
-                                        hidden={AppRuntime.isBrowser()}
-                                        tooltip="Add PDF files from disk in bulk.  Select one PDF or multiple PDFs at once."
-                                        icon={<InsertDriveFileIcon/>}
-                                        text="Add Files from Disk"
-                                        onClick={doAdd}/>
-
-                </div>
-            </MUIMenu>
         );
-    });
+    };
 
-}
-
-export namespace AddContent {
-
-    function doAddFilesFromDisk(props: IProps) {
-        AddContentButtons.doAccountVerifiedAction(() => props.importFromDisk());
-    }
-
-    function doFileUpload() {
-        AddContentButtons.doAccountVerifiedAction(() => AddContentButtons.triggerFileUpload());
-    }
-
-    // TODO: this still won't work on desktop safari...
-
-    export const Handheld = () => (
-        <AddContentFab onClick={() => doFileUpload()}/>
-    );
-
-    export const Desktop = () => (
-        <runtime.Main/>
-    );
-
-}
-
-interface IProps {
-    readonly importFromDisk: () => void;
-    readonly captureWebPage: () => void;
 }

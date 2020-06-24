@@ -44,7 +44,7 @@ export const ReviewerDialog2 = React.memo((props: IProps) => {
 
             <>
                 <AppBar className={classes.appBar}
-                        color="inherited">
+                        color="inherit">
                     <Toolbar>
 
                         <PolarSVGIcon width={64} height={64}/>
