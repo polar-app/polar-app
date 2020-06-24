@@ -7,7 +7,7 @@ import {PersistenceLayerController} from "../../../../web/js/datastore/Persisten
 export interface IProps {
 }
 
-export function SupportScreen(props: IProps) {
+export function SupportScreen() {
 
     return (
 
