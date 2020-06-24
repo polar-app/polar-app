@@ -251,8 +251,6 @@ export default class StatsScreen extends React.Component<IProps, IState> {
 }
 
 export interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
     readonly repoDocMetaManager: RepoDocMetaManager;
 }
 

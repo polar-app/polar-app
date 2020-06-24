@@ -1,6 +1,5 @@
 import * as React from "react";
-import {DropzoneArea} from "material-ui-dropzone";
-import {useDropzone} from 'react-dropzone';
+import {DropEvent} from 'react-dropzone';
 import {
     useAddFileDropzoneCallbacks,
     useAddFileDropzoneStore
@@ -9,12 +8,8 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../../../hooks/lifecycle";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import { DropEvent } from 'react-dropzone';
-import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import {AddFileHooks} from "./AddFileHooks";
+import {AddFileDropzoneDialog} from "./AddFileDropzoneDialog";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 
 function isFileTransfer(event: DragEvent) {
@@ -99,58 +94,18 @@ export function useDragAndDropListener() {
 
 }
 
-
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        textContainer: {
-            margin: '5px 15px'
-        }
-    }),
-);
-
-
 export const AddFileDropzone = React.forwardRef((ref) => {
 
     const store = useAddFileDropzoneStore();
     const callbacks = useAddFileDropzoneCallbacks();
-    const classes = useStyles();
-    const addFileImporter = useAddFileImporter();
 
     function closeDialog() {
         callbacks.setActive(false);
     }
 
-    function onDrop(files: File[], event: DropEvent) {
-        closeDialog();
-
-        console.log("Got files: ", files);
-
-        addFileImporter(files);
-
-    }
-
     return (
-        <Dialog open={store.active}
-                maxWidth="lg"
-                onClose={closeDialog}>
-
-            <DialogTitle>
-                Upload PDF and EPUB Files
-            </DialogTitle>
-            <DialogContent>
-                <div className="mt-2 mb-4">
-                    <DropzoneArea
-                        classes={classes}
-                        dropzoneText="Drag and drop PDF or EPUB files to Upload"
-                        showPreviews={false}
-                        showPreviewsInDropzone={false}
-                        onDrop={onDrop}
-                        acceptedFiles={['application/pdf', 'application/epub+zip']}
-                        maxFileSize={500000000}/>
-                </div>
-            </DialogContent>
-        </Dialog>
-
+        <AddFileDropzoneDialog open={store.active}
+                               onClose={closeDialog}/>
     );
+
 });

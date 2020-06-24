@@ -46,6 +46,7 @@ import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/Annotatio
 import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
+import { AddFileDropzoneScreen } from './upload/AddFileDropzoneScreen';
 
 interface IProps {
     readonly app: App;
@@ -162,8 +163,7 @@ export const RepositoryApp = (props: IProps) => {
     ));
 
     const renderWhatsNewScreen = () => (
-        <WhatsNewScreen persistenceLayerProvider={app.persistenceLayerProvider}
-                        persistenceLayerController={app.persistenceLayerController}/>
+        <WhatsNewScreen/>
     );
 
     // const renderCommunityScreen = () => (
@@ -175,9 +175,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderStatsScreen = () => (
         <AuthRequired>
-            <StatsScreen persistenceLayerProvider={app.persistenceLayerProvider}
-                         persistenceLayerController={app.persistenceLayerController}
-                         repoDocMetaManager={repoDocMetaManager}/>
+            <StatsScreen repoDocMetaManager={repoDocMetaManager}/>
         </AuthRequired>
     );
 
@@ -225,10 +223,7 @@ export const RepositoryApp = (props: IProps) => {
     };
 
     const supportScreen = () => {
-        return (<SupportScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}
-                    />);
+        return (<SupportScreen/>);
     };
 
     // const renderGroupScreen = () => {
@@ -256,9 +251,7 @@ export const RepositoryApp = (props: IProps) => {
     // };
 
     const renderInvite = () => {
-        return <InviteScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>;
+        return <InviteScreen/>;
     };
 
 
@@ -375,6 +368,10 @@ export const RepositoryApp = (props: IProps) => {
                                                            persistenceLayerController={app.persistenceLayerController}/>
                                                    </Cached>
                                                }/>
+
+                                        <Route path='#add'>
+                                            <AddFileDropzoneScreen/>
+                                        </Route>
 
                                     </Switch>
 

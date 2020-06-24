@@ -4,6 +4,9 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 
+export interface IProps {
+}
+
 export function SupportScreen(props: IProps) {
 
     return (
@@ -24,9 +27,4 @@ export function SupportScreen(props: IProps) {
         </FixedNav>
 
     );
-}
-
-export interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
 }

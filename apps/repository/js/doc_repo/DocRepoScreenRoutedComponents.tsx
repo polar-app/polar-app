@@ -9,7 +9,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 
-
 export const DocRepoScreenRoutedComponents = React.memo(() => {
 
     const location = useLocationWithPathOnly();

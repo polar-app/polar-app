@@ -87,8 +87,6 @@ export class InviteScreen extends React.Component<IProps> {
 }
 
 export interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
     readonly interval?: accounts.Interval;
     readonly userInfo?: UserInfo;
 }
