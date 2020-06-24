@@ -9,8 +9,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import PauseIcon from '@material-ui/icons/Pause';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +43,11 @@ export const ReviewerDialog2 = React.memo((props: IProps) => {
         <Dialog fullScreen open={props.open} TransitionComponent={Transition}>
 
             <>
-                <AppBar className={classes.appBar}>
+                <AppBar className={classes.appBar}
+                        color="inherited">
                     <Toolbar>
 
-                        <PolarSVGIcon/>
+                        <PolarSVGIcon width={64} height={64}/>
 
                         <Typography variant="h6" className={classes.title}>
                             Review

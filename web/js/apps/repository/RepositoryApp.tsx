@@ -370,7 +370,11 @@ export const RepositoryApp = (props: IProps) => {
                                                }/>
 
                                         <Route path='#add'>
-                                            <AddFileDropzoneScreen/>
+                                            <AuthRequired>
+                                                <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                                                    <AddFileDropzoneScreen/>
+                                                </PersistenceLayerContext.Provider>
+                                            </AuthRequired>
                                         </Route>
 
                                     </Switch>

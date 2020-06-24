@@ -105,6 +105,7 @@ export const AddFileDropzone = React.forwardRef((ref) => {
 
     return (
         <AddFileDropzoneDialog open={store.active}
+                               noButtons={true}
                                onClose={closeDialog}/>
     );
 

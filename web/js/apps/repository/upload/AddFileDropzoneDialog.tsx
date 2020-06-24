@@ -7,20 +7,27 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DropEvent} from 'react-dropzone';
 import {AddFileHooks} from "./AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
-
-interface IProps {
-    readonly open: boolean;
-    readonly onClose: () => void;
-}
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {
+            width: '600px',
+            maxWidth: '100%'
+        },
         textContainer: {
             margin: '5px 15px'
         }
     }),
 );
 
+
+interface IProps {
+    readonly open: boolean;
+    readonly noActions?: boolean;
+    readonly onClose: () => void;
+}
 
 export const AddFileDropzoneDialog = React.memo((props: IProps) => {
 
@@ -52,6 +59,16 @@ export const AddFileDropzoneDialog = React.memo((props: IProps) => {
                         maxFileSize={500000000}/>
                 </div>
             </DialogContent>
+
+            {! props.noActions &&
+                <DialogActions>
+                    <Button color="primary"
+                            onClick={props.onClose}
+                            variant="contained">
+                        Cancel
+                    </Button>
+                </DialogActions>}
+
         </Dialog>
 
     );
