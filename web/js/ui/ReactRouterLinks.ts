@@ -55,8 +55,13 @@ export namespace ReactRouterLinks {
 
         const {pathname, hash} = targetObj;
 
-        return location.pathname === pathname &&
-               ILocations.canonicalizeHash(location.hash) === ILocations.canonicalizeHash(hash);
+        return location.pathname === pathname;
+
+        // TODO we used to be more picky about the hash but really our main
+        // routes are the pathname.
+
+        // return location.pathname === pathname &&
+        //        ILocations.canonicalizeHash(location.hash) === ILocations.canonicalizeHash(hash);
 
     }
 
