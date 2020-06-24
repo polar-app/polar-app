@@ -852,16 +852,14 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
 export const DocRepoStore2 = React.memo((props: IProps) => {
 
     return (
-        <AddFileDropzoneProvider>
-            <>
-                <DocRepoStoreProvider>
-                    <DocRepoStoreLoader>
-                        {props.children}
-                    </DocRepoStoreLoader>
-                </DocRepoStoreProvider>
-                <AddFileDropzone/>
-            </>
-        </AddFileDropzoneProvider>
-    )
+        <DocRepoStoreProvider>
+            <DocRepoStoreLoader>
+                <>
+                    {props.children}
+                    <AddFileDropzone/>
+                </>
+            </DocRepoStoreLoader>
+        </DocRepoStoreProvider>
+    );
 
 });

@@ -55,6 +55,7 @@ import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import { ILogger } from "polar-shared/src/logger/ILogger";
+import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 
 interface IAnnotationRepoStore {
 
@@ -557,7 +558,10 @@ export const AnnotationRepoStore2 = React.memo((props: IProps) => {
     return (
         <AnnotationRepoStoreProvider>
             <AnnotationRepoStoreInner>
-                {props.children}
+                <>
+                    {props.children}
+                    <AddFileDropzone/>
+                </>
             </AnnotationRepoStoreInner>
         </AnnotationRepoStoreProvider>
     )

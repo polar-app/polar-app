@@ -12,7 +12,9 @@ export const RepositoryRoot = React.memo((props: IProps) => {
 
     return (
         <AddFileDropzoneRoot>
-            {props.children}
+            <>
+                {props.children}
+            </>
         </AddFileDropzoneRoot>
     );
 
