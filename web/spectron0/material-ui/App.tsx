@@ -21,7 +21,9 @@ import {createTeleporter} from "react-teleporter";
 import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
 import { SpeedDialDemo } from './SpeedDialDemo';
 import {SaveToPolarDemo} from "./SaveToPolarDemo";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 // configure({logLevel: "debug"});
+import {DropzoneDialog} from 'material-ui-dropzone'
 
 export const App = () => {
 
@@ -154,23 +156,6 @@ export const App = () => {
     //     readonly
     // }
 
-    const HeaderProvider = () => {
-
-    }
-
-    const Header = () => {
-
-        function onRef(ref: HTMLElement | null) {
-
-        }
-
-        return (
-            <div>
-                <div ref={ref => onRef(ref)} id="header-right">
-                </div>
-            </div>
-        );
-    }
 
     interface HeaderRightProps {
         readonly children: React.ReactElement;
@@ -210,8 +195,16 @@ export const App = () => {
 
             {/*<SaveToPolarDemo/>*/}
 
-            <a href="http://asdfasdf.com">not visited</a>
-            <a href="http://getpolarized.io">visited</a>
+            <DropzoneDialog
+                open={true}
+                onSave={NULL_FUNCTION}
+                acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                showPreviews={true}
+                maxFileSize={5000000}
+                onClose={NULL_FUNCTION}/>
+
+            {/*<a href="http://asdfasdf.com">not visited</a>*/}
+            {/*<a href="http://getpolarized.io">visited</a>*/}
 
             {/*this is the teleporter:*/}
             {/*<teleporter.Target/>*/}

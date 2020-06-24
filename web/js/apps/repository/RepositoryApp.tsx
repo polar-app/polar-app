@@ -391,7 +391,7 @@ export const RepositoryApp = (props: IProps) => {
                    type="file"
                    id="file-upload"
                    name="file-upload"
-                   accept=".pdf, .PDF"
+                   accept=".pdf, .PDF, .epub, .EPUB"
                    multiple
                    onChange={() => props.onFileUpload()}
                    style={{

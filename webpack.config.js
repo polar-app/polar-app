@@ -19,8 +19,8 @@ const OUTPUT_PATH = path.resolve(__dirname, 'web/dist');
 console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
 console.log("isDev: " + isDev);
-console.log("target: " + target);
-console.log("devtool: " + devtool);
+console.log("WEBPACK_TARGET: " + target);
+console.log("WEBPACK_DEVTOOL: " + devtool);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
@@ -165,7 +165,6 @@ module.exports = {
         alias: {
         }
     },
-    // only inline-source-map works.
     devtool,
     output: {
         path: OUTPUT_PATH,
