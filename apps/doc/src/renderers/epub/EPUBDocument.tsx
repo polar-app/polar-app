@@ -23,27 +23,20 @@ export const EPUBDocument = React.memo((props: IProps) => {
     const {docURL, docMeta} = props;
 
     const theme = useTheme();
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
-
-    interface EPUBTheme {
-        readonly backgroundColor: string;
-        readonly color: string;
-        readonly fontFamily: string;
-        readonly padding: string;
-    }
+    const {setDocDescriptor, setPageNavigator} = useDocViewerCallbacks();
 
     function createCSS(): object {
 
         return {
             'body, html': {
-                color: theme.palette.text.primary,
-                'font-family': theme.typography.fontFamily,
-                padding: '10px',
-                paddingBottom: '10px !important'
+                'color': `${theme.palette.text.primary} !important`,
+                'background-color': `${theme.palette.background.default} !important`,
+                'font-family': `${theme.typography.fontFamily} !important`,
+                'padding': '10px',
+                'padding-bottom': '10px !important'
             },
-
             'h1, h2, h3': {
-                color: theme.palette.text.primary
+                'color': `${theme.palette.text.primary}`
             },
 
             'header h2': {
@@ -99,13 +92,22 @@ export const EPUBDocument = React.memo((props: IProps) => {
             // height: '100%',
             // layout: 'pre-paginated'
         });
-        const css = createCSS();
 
-        console.log("Using epub css: ", css);
+        function applyCSS() {
 
-        rendition.themes.default(css);
+            const css = createCSS();
+
+            console.log("Using epub css: ", css);
+
+            rendition.themes.default(css);
+
+        }
+
+        rendition.on('locationChanged', (event: any) => {
+        });
 
         await rendition.display();
+        applyCSS();
 
         const metadata = await book.loaded.metadata;
 
@@ -119,7 +121,11 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
                 const newPage = pages[page - 1];
 
-                rendition.display(newPage.index)
+                async function doAsync() {
+                    await rendition.display(newPage.index)
+                }
+
+                doAsync()
                     .catch(err => console.error("Could not set page: ", err));
 
             }
