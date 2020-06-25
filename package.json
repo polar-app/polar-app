@@ -155,7 +155,7 @@
     "@nivo/calendar": "=0.61.1",
     "@nivo/line": "=0.61.1",
     "@nivo/pie": "=0.61.1",
-    "@polar-app/epubjs": "=0.3.89",
+    "@polar-app/epubjs": "=0.3.91",
     "@sentry/electron": "~1.2.0",
     "amplitude-js": "^5.8.0",
     "babel-preset-es2017": "~6.24.1",

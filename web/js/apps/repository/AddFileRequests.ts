@@ -11,9 +11,9 @@ import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 const TOASTER_DESTROY_DELAY = 500;
 const MAX_RECURSIVE_DIRECTORY_SCAN_DURATION = "30s";
 
-export class AddFileRequests {
+export namespace AddFileRequests {
 
-    public static fromURL(url: string): AddFileRequest {
+    export function fromURL(url: string): AddFileRequest {
 
         const toBasename = (input: string): string => {
             input = input.replace( /[?#].*$/, '');
@@ -43,7 +43,7 @@ export class AddFileRequests {
 
     }
 
-    public static fromPath(path: string): AddFileRequest {
+    export function fromPath(path: string): AddFileRequest {
 
         return {
             docPath: path,
@@ -52,20 +52,24 @@ export class AddFileRequests {
 
     }
 
-    public static computeDirectly(event: DragEvent): AddFileRequest[] {
+    export function computeDirectly(event: DragEvent): AddFileRequest[] {
 
         if (event.dataTransfer && event.dataTransfer.files) {
-            return this.computeFromFileList(Array.from(event.dataTransfer.files));
+            return computeFromFileList(Array.from(event.dataTransfer.files));
         } else {
             return [];
         }
 
     }
 
-    public static computeFromFileList(files: ReadonlyArray<File>): AddFileRequest[] {
+    function isFileSupported(name: string) {
+        return FilePaths.hasExtension(name, 'pdf') || FilePaths.hasExtension(name, 'epub')
+    }
+
+    export function computeFromFileList(files: ReadonlyArray<File>): AddFileRequest[] {
 
         return Array.from(files)
-            .filter(file => FilePaths.hasExtension(file.name, 'pdf'))
+            .filter(file => isFileSupported(file.name))
             .map(file => {
 
                 if (file.path) {
@@ -90,7 +94,7 @@ export class AddFileRequests {
 
     }
 
-    public static async computeRecursively(event: DragEvent): Promise<Optional<AddFileRequest[]>> {
+    export async function computeRecursively(event: DragEvent): Promise<Optional<AddFileRequest[]>> {
 
         if (AppRuntime.isElectron()) {
 
@@ -118,7 +122,7 @@ export class AddFileRequests {
 
                             await Files.recursively(path, async newPath => {
 
-                                if (newPath.toLocaleLowerCase().endsWith(".pdf")) {
+                                if (isFileSupported(newPath.toLocaleLowerCase())) {
                                     acceptedFiles.push(newPath);
                                 }
 

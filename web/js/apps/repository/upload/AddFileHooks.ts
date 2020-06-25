@@ -101,7 +101,7 @@ export namespace AddFileHooks {
                 }
 
             } else {
-                throw new Error("Unable to upload files.  Only PDF uploads are supported.");
+                throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");
             }
 
         }
