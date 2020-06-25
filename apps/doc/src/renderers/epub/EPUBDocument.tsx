@@ -104,6 +104,8 @@ export const EPUBDocument = React.memo((props: IProps) => {
         }
 
         rendition.on('locationChanged', (event: any) => {
+            // noop... this is called when the location of the book is changed
+            // so we can use it to re-attach annotations.
         });
 
         await rendition.display();
