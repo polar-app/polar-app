@@ -103,6 +103,9 @@ export class RepoNavbar extends React.Component<IProps, IState> {
             </Grid>
         );
 
+        // REFACTOR: I think this code is legacy and that it's now basically just
+        // NavFirstRow.  We used to toggle the sidebar here but I think that's
+        // now not used.
         return (
 
             <div className="repo-sidebar">
@@ -126,10 +129,6 @@ export class RepoNavbar extends React.Component<IProps, IState> {
 
     }
 
-}
-
-export interface SidebarStatus {
-    readonly expanded: boolean;
 }
 
 interface IProps {
