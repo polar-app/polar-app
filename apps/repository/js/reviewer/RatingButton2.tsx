@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {RatingCallback} from "./Reviewer";
 import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Strings} from "polar-shared/src/util/Strings";
 import {ColorButton} from './ColorButton';
+import {RatingCallback} from "./RatingCallback";
 
 
 export interface IProps<A> {

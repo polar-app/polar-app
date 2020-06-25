@@ -3,9 +3,9 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../RatingButtons";
-import {RatingCallback} from "../Reviewer";
 import {ReadingTaskAction} from "./ReadingTaskAction";
 import {CardPaper} from "./CardPaper";
+import {RatingCallback} from "../RatingCallback";
 
 export class ReadingCard extends React.Component<IProps, IState> {
 

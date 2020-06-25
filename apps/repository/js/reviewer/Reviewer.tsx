@@ -9,6 +9,7 @@ import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ReviewFinished} from "./ReviewFinished";
 import {ReviewerDialog} from "./ReviewerDialog";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import {RatingCallback} from "./RatingCallback";
 
 export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
 
@@ -147,13 +148,6 @@ export class Reviewer<A> extends React.Component<IProps<A>, IState<A>> {
  */
 export type FinishedCallback = (cancelled?: boolean) => void;
 
-
-/**
- * Called when we're finished all the tasks.
- *
- * @param cancelled true if the user explicitly cancelled the review.
- */
-export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => void;
 
 export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => void;
 

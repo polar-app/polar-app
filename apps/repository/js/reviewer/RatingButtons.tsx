@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {RatingCallback} from "./Reviewer";
 import {Stage} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {IRatingOption, RatingButtonSet} from "./RatingButtonSet";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import grey from '@material-ui/core/colors/grey';
+import {RatingCallback} from "./RatingCallback";
 
 const LEARNING_BUTTONS: ReadonlyArray<IRatingOption> = [
     {
