@@ -40,7 +40,7 @@ const globalKeyMap = keyMap(
             OPEN: {
                 name: "Open",
                 description: "Open the current document in the document viewer",
-                sequences: ['command+return', 'control+return']
+                sequences: ['return']
             }
         }
     });

@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {GlobalCompleteListener} from "../../mui/complete_listeners/GlobalCompleteListener";
+import {HotKeyCompleteListener} from "../../mui/complete_listeners/HotKeyCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -95,13 +95,12 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
     const palette = classes[type];
 
     return (
+        <HotKeyCompleteListener onComplete={handleAccept}>
         <Dialog
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
-
-            <GlobalCompleteListener onComplete={handleAccept}/>
 
             <DialogTitle id="alert-dialog-title" className={palette}>
                 {props.title}
@@ -137,5 +136,6 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
             </DialogActions>
 
         </Dialog>
+    </HotKeyCompleteListener>
     );
 };

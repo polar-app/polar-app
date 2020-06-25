@@ -35,9 +35,9 @@ export const InputEscapeListener = (props: IProps) => {
 
     return (
         <div onKeyDown={handleKeyDown}>
-            <GlobalHotKeys keyMap={globalKeyMap} handlers={handlers}/>
+            <GlobalHotKeys allowChanges keyMap={globalKeyMap} handlers={handlers}/>
             {props.children}
-        </div>)
-    ;
+        </div>
+    );
 
 };

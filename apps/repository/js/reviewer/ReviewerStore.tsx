@@ -4,11 +4,7 @@ import {
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import {Logger} from "polar-shared/src/logger/Logger";
-import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-
-const log = Logger.create();
 
 interface IReviewerStore {
     /**

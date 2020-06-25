@@ -247,7 +247,8 @@
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.20",
     "use-persisted-state": "=0.3.0",
-    "uuid": "3.3.3"
+    "uuid": "3.3.3",
+    "@types/mousetrap": ""
   },
   "collective": {
     "type": "opencollective",

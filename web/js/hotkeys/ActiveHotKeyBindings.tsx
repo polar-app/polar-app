@@ -121,7 +121,9 @@ export const ActiveHotKeyBindings = () => {
     const handlers = { SHOW_ALL_HOTKEYS: () => setOpen(true) };
 
     return (
-        <GlobalHotKeys keyMap={keyMap} handlers={handlers}>
+        <GlobalHotKeys allowChanges
+                       keyMap={keyMap}
+                       handlers={handlers}>
 
             <Dialog fullWidth={true}
                     maxWidth="md"
