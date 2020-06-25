@@ -6,7 +6,8 @@ burton@getpolarized.io
 # If you want npm to use Bytesafe as the default registry, you can do that with:
 
 ```sh
-ap ```
+npm config set registry https://polar-app.bytesafe.dev/r/default
+```
 
 ... or by adding the --registry flag when installing or publishing packages:
 
