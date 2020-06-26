@@ -84,8 +84,7 @@ export class Screenshots {
 
         const docFormat = DocFormatFactory.getInstance();
 
-        log.debug(`Capturing via canvas with docFormat: ${docFormat.name} for page ${pageNum}`);
-
+        // FIXME: I dont' think this will work
         const canvas = await docFormat.getCanvas(pageNum);
 
         return await Canvases.extract(canvas, rect);
