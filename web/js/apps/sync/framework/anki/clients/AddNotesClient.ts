@@ -1,6 +1,10 @@
+// @NotStale
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 import * as TypeMoq from "typemoq";
 
+/**
+ *
+ */
 export class AddNotesClient implements IAddNotesClient {
 
     public async execute(notes: Note[]): Promise<number[]> {

@@ -22,6 +22,9 @@ interface IProps {
 
 // FIXME: this isn't just specific to account context now.
 
+/**
+ * @NotStale
+ */
 export const AccountContextSubscriber = (props: IProps) => {
 
     const [account, setAccount] = React.useState<AccountSnapshot>(undefined);

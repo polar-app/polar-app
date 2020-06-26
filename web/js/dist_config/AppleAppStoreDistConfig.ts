@@ -1,3 +1,4 @@
+// @NotStale
 import {IDistConfig} from './IDistConfig';
 
 export const DistConfig: IDistConfig = {

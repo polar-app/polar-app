@@ -6,6 +6,9 @@ import {Mailchimp} from '../../../util/thirdparty/Mailchimp';
 import {LocalPrefs} from '../../../util/LocalPrefs';
 import {Analytics} from "../../../analytics/Analytics";
 
+/**
+ * @NotStale
+ */
 export class MailingList {
 
     /**

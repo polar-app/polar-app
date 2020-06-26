@@ -1,3 +1,4 @@
+// @NotStale
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 
 /**
