@@ -102,7 +102,6 @@
     "@types/universal-analytics": "~0.4.2",
     "@types/use-persisted-state": "=0.3.0",
     "@types/uuid": "3.4.5",
-    "cache-loader": "4.1.0",
     "chai": "4.2.0",
     "dotenv": "^8.2.0",
     "dtsmake": "0.0.10",
