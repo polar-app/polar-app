@@ -2,12 +2,10 @@ import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {App} from './App';
+import {PDFThumbnailer} from "polar-pdf/src/pdf/PDFThumbnailer";
 
-SpectronRenderer.run(async () => {
+async function doAsync() {
+    await PDFThumbnailer.generate('./example.pdf')
+}
 
-    ReactDOM.render(
-        <App />,
-        document.getElementById('root') as HTMLElement
-    );
-
-});
+doAsync().catch(err => console.error(err));

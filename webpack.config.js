@@ -206,12 +206,11 @@ module.exports = {
         // },
     },
     devServer: {
-        publicPath: 'web/dist',
-        contentBase: path.join(__dirname, '.'),
+        publicPath: '/web/dist',
+        contentBase: __dirname,
         compress: true,
-        port: 443,
-        watchContentBase: true,
-        host: 'localapp.getpolarized.io'
+        port: 9000,
+        watchContentBase: true
     }
 
 };

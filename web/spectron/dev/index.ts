@@ -3,8 +3,8 @@ import {ElectronGlobalDatastore} from "../../js/datastore/ElectronGlobalDatastor
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Rewrite} from "polar-shared-webserver/src/webserver/Rewrites";
 
-const webRoot = FilePaths.join(__dirname, "..", "..", "..");
-const appRoot = webRoot;
+const webRoot = __dirname;
+const appRoot = FilePaths.join(__dirname, "..", "..", "..");
 
 const rewrites: ReadonlyArray<Rewrite> = [
     {
@@ -15,7 +15,7 @@ const rewrites: ReadonlyArray<Rewrite> = [
 
 const datastore = ElectronGlobalDatastore.create();
 
-const path = "/web/spectron/dev/content.html";
+const path = "/content.html";
 
 SpectronWebappMain.run({
     initializer: async () => await datastore.init(),
