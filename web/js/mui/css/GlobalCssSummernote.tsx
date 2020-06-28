@@ -1,6 +1,7 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
+import { lighten } from '@material-ui/core/styles';
 
 export const GlobalCssSummernoteStyles = withStyles(() => {
     const theme = useTheme();
@@ -9,7 +10,7 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
         // @global is handled by jss-plugin-global.
         '@global': {
             ".note-frame *": {
-                color: theme.palette.text.primary,
+                color: theme.palette.text.primary
             },
             "kbd": {
                 color: "rgb(255,0,0)",
@@ -20,14 +21,22 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
                 backgroundColor: theme.palette.background.default,
                 borderColor: theme.palette.background.default,
             },
+
+            ".note-btn:active, .note-btn.active": {
+                color: theme.palette.text.primary,
+                backgroundColor: theme.palette.background.paper,
+                borderColor: theme.palette.background.default,
+            },
+
             ".note-btn:focus,.note-btn.focus": {
                 color: theme.palette.text.primary,
-                backgroundColor: "#ebebeb",
+                // backgroundColor: "#ebebeb",
+                backgroundColor: theme.palette.background.paper,
                 borderColor: theme.palette.background.default,
             },
             ".note-btn:hover": {
                 color: theme.palette.text.primary,
-                backgroundColor: "#ebebeb",
+                backgroundColor: theme.palette.background.paper,
                 borderColor: theme.palette.background.default,
             },
             ".note-btn.disabled:focus,.note-btn[disabled]:focus,fieldset[disabled] .note-btn:focus,.note-btn.disabled.focus,.note-btn[disabled].focus,fieldset[disabled] .note-btn.focus": {
@@ -36,20 +45,23 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
             },
             ".note-btn:hover,.note-btn:focus,.note-btn.focus": {
                 color: theme.palette.text.primary,
-                backgroundColor: "#ebebeb",
+                backgroundColor: theme.palette.background.paper,
             },
             ".note-btn-primary": {
                 color: "rgb(255,0,0)",
             },
+
             ".note-btn-primary:hover,.note-btn-primary:focus,.note-btn-primary.focus": {
                 color: "rgb(255,0,0)",
                 backgroundColor: "#fa6362",
             },
+
+
             ".close": {
                 color: "#000",
             },
             ".note-dropdown-item:hover": {
-                backgroundColor: "#ebebeb",
+                backgroundColor: theme.palette.background.paper,
             },
             "a.note-dropdown-item,a.note-dropdown-item:hover": {
                 color: theme.palette.text.primary,
@@ -60,7 +72,12 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
             ".note-modal-footer a:hover,.note-modal-footer a:focus": {
                 color: "#23527c",
             },
-            ".note-modal-footer .note-btn": {},
+
+            ".note-modal-footer .note-btn": {
+                color: theme.palette.text.primary + ' !important',
+                backgroundColor: theme.palette.primary.main + ' !important'
+            },
+
             ".note-modal-title": {
                 color: "#42515f",
             },
@@ -152,11 +169,15 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
                 backgroundColor: theme.palette.background.default,
             },
             '.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"]': {
-                backgroundColor: "#e5e5e5",
+                // backgroundColor: "#e5e5e5",
+                backgroundColor: theme.palette.background.paper,
             },
             ".note-editor.note-frame .note-editing-area .note-codable": {
-                color: "#ccc",
-                backgroundColor: "#222",
+                // color: "#ccc",
+                // backgroundColor: "#222",
+                color: theme.palette.text,
+                backgroundColor: theme.palette.background.default,
+
             },
             ".note-editor.note-frame.fullscreen .note-editable": {
                 backgroundColor: theme.palette.background.default,
@@ -184,38 +205,60 @@ export const GlobalCssSummernoteStyles = withStyles(() => {
             },
             ".note-editor.note-frame .note-status-output .alert": {
                 color: theme.palette.text.primary,
-                backgroundColor: "#f5f5f5",
+                // backgroundColor: "#f5f5f5",
+                backgroundColor: theme.palette.background.paper,
             },
             ".note-editor.note-frame .note-status-output .alert-success": {
-                color: "#3c763d!important",
-                backgroundColor: "#dff0d8!important",
+                color: "#3c763d" + " !important",
+                // backgroundColor: "#dff0d8" + " !important",
+                backgroundColor: theme.palette.background.paper + " !important",
+
             },
             ".note-editor.note-frame .note-status-output .alert-info": {
-                color: "#31708f!important",
-                backgroundColor: "#d9edf7!important",
+                color: "#31708f" + " !important",
+                // backgroundColor: "#d9edf7 " + " !important",
+                backgroundColor: theme.palette.background.paper + " !important",
             },
             ".note-editor.note-frame .note-status-output .alert-warning": {
-                color: "#8a6d3b!important",
-                backgroundColor: "#fcf8e3!important",
+                color: "#8a6d3b " + " !important",
+                // backgroundColor: "#fcf8e3" + " !important",
+                backgroundColor: theme.palette.background.paper + " !important",
             },
             ".note-editor.note-frame .note-status-output .alert-danger": {
-                color: "#a94442!important",
-                backgroundColor: "#f2dede!important",
+                color: "#a94442" + " !important",
+                // backgroundColor: "#f2dede" + " !important",
+                backgroundColor: theme.palette.background.paper + " !important",
             },
             ".note-editor.note-frame .note-statusbar": {
-                backgroundColor: "#f5f5f5",
+                backgroundColor: theme.palette.background.paper,
+
             },
             ".note-popover .note-popover-content,.note-toolbar": {
                 backgroundColor: theme.palette.background.default,
             },
+
+            ".note-modal-title, .note-modal-content *": {
+                backgroundColor: theme.palette.background.paper + ' !important',
+                color: theme.palette.text.primary + ' !important',
+            },
+
+            ".note-modal-footer": {
+                paddingBottom: '5px'
+            },
+
+            ".note-dropdown-menu": {
+                backgroundColor: theme.palette.background.default + ' !important',
+                color: "deepskyblue",
+            },
+
             ".note-popover .note-popover-content .note-color .note-dropdown-menu .note-palette .note-color-reset,.note-toolbar .note-color .note-dropdown-menu .note-palette .note-color-reset": {
-                backgroundColor: theme.palette.background.default,
+                backgroundColor: theme.palette.background.default + ' !important',
             },
             ".note-popover .note-popover-content .note-dropdown-menu.note-check .note-dropdown-item i,.note-toolbar .note-dropdown-menu.note-check .note-dropdown-item i": {
                 color: "deepskyblue",
             },
             ".note-modal .note-modal-body .help-list-item:hover": {
-                backgroundColor: "#e0e0e0",
+                backgroundColor: theme.palette.background.paper,
             },
             ".note-placeholder": {
                 color: " gray",
