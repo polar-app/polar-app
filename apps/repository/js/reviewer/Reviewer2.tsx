@@ -47,7 +47,7 @@ export interface IState<A> {
      */
     readonly taskRep?: TaskRep<A> | undefined;
 
-    readonly pending: TaskRep<A>[];
+    readonly pending: ReadonlyArray<TaskRep<A>>;
 
     readonly finished: number;
 
@@ -59,7 +59,7 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
     const dialogs = useDialogManager();
 
-    const [state, setState] = useState(() => {
+    const [state, setState] = useState<IState<A>>(() => {
 
         const pending = [...props.taskReps];
         const total = props.taskReps.length;
@@ -84,9 +84,10 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
     }
 
-    const doNext = React.useCallback(() => {
+    const doNext = () => {
 
-        const taskRep = state.pending.shift();
+        const pending = [...state.pending];
+        const taskRep = pending.shift();
 
         async function doAsync() {
 
@@ -94,20 +95,22 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
                 await props.doFinished();
             }
 
+            const finished = state.finished + 1;
+
             setState({
                 ...state,
+                pending,
                 taskRep,
-                finished: state.finished + 1
+                finished
             });
 
         }
 
         handleAsyncCallback(doAsync);
 
-    }, []);
+    };
 
-
-    const onSuspended = React.useCallback((taskRep: TaskRep<A>) => {
+    const onSuspended = (taskRep: TaskRep<A>) => {
 
         async function doAsync() {
             await props.doSuspended(taskRep);
@@ -115,10 +118,9 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
         handleAsyncCallback(doAsync);
 
-    }, []);
+    }
 
-
-    const onRating = React.useCallback((taskRep: TaskRep<A>, rating: Rating) => {
+    const onRating = (taskRep: TaskRep<A>, rating: Rating) => {
 
         async function doAsync() {
             await props.doRating(taskRep, rating);
@@ -128,7 +130,7 @@ export const Reviewer2 = function<A>(props: IProps<A>) {
 
         doNext();
 
-    }, []);
+    }
 
     const {taskRep} = state;
 
