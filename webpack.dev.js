@@ -11,7 +11,10 @@ const newConfig = merge(config, {
     },
     mode: 'development',
     target: 'web',
-    devtool: 'sourcemap'
+    devtool: 'sourcemap',
+    optimization: {
+        minimize: false
+    }
 })
 
 console.log("config: ", config);

@@ -40,6 +40,7 @@ function createRules() {
         },
         {
             test: /\.tsx?$/,
+            exclude: /node_modules/,
             use: [
                 {
                     loader: 'thread-loader',
@@ -179,7 +180,7 @@ module.exports = {
             "window.$": "jquery",
             "window.jQuery": "jquery"
         }),
-        new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+        new ForkTsCheckerWebpackPlugin({}),
         new CopyPlugin({
             patterns: [
                 // this is a bit of a hack and it would be better if we supported

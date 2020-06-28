@@ -1,6 +1,7 @@
 import {IXYRect} from 'polar-shared/src/util/rects/IXYRect';
 import {DataURL} from 'polar-shared/src/util/DataURLs';
 import {IDimensions} from "../util/IDimensions";
+import {ImageType} from "polar-shared/src/util/ImageType";
 
 export interface Screenshot {
 
@@ -48,8 +49,6 @@ export interface ICapturedScreenshot {
     readonly width: number;
     readonly height: number;
 }
-
-export type ImageType = 'image/png' | 'image/jpeg';
 
 export type CaptureImageType = 'data-url' | 'png';
 
