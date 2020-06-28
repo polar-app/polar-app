@@ -15,7 +15,6 @@ import {ReviewerCard} from "./cards/ReviewerCard";
  */
 export type FinishedCallback = (cancelled?: boolean) => Promise<void>;
 
-
 /**
  * Called when we're finished all the tasks.
  *
