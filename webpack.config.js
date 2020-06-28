@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
-const {DefaultRewrites} = require('polar-shared-webserver/src/webserver');
+const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
