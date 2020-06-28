@@ -77,8 +77,17 @@ copy pdfviewer-custom "*.css"
 
 showEnv
 
+copy web/dist "*.eot"
+copy web/dist "*.woff2"
+copy web/dist "*.woff"
+copy web/dist "*.ttf"
+copy web/dist "*.png"
+copy web/dist "*.svg"
+copy web/dist "*.gif"
 copy web/dist "*.css"
 copy web/dist "*.js"
+copy web/dist "*.js.map"
+copy web/dist "*.bcmap"
 copy web "*.svg"
 
 # TODO this should no longer be required ... I THINK but we might need the
