@@ -41,10 +41,12 @@ export const AnkiSyncController = React.memo(() => {
     }, [])
 
     useComponentDidMount(() => {
+        console.log("START Listening for Anki sync messages");
         window.addEventListener("message", messageListener, false);
     })
 
     useComponentWillUnmount(() => {
+        console.log("STOP listening to Anki sync messages");
         window.removeEventListener("message", messageListener, false);
     })
 
@@ -57,7 +59,9 @@ export const AnkiSyncController = React.memo(() => {
             let nrTasks = 0;
             let nrFailedTasks = 0;
 
-            const updateProgress = await dialogManager.taskbar({message: "Starting anki sync...", })
+            const updateProgress = await dialogManager.taskbar({message: "Starting anki sync..."});
+
+            updateProgress({value: 'indeterminate'});
 
             const syncProgressListener: SyncProgressListener = syncProgress => {
 
@@ -69,11 +73,10 @@ export const AnkiSyncController = React.memo(() => {
                     .filter(taskResult => taskResult.failed === true)
                     .map(taskResult => ++nrFailedTasks);
 
-                const message = syncProgress.taskResult
-                                            .map(value => value.message)
-                                            .getOrUndefined();
-
-                updateProgress({message, value: syncProgress.percentage as Percentage})
+                updateProgress({
+                    message: "Sending flashcards to Anki.",
+                    value: syncProgress.percentage as Percentage
+                });
 
             };
 
@@ -83,6 +86,7 @@ export const AnkiSyncController = React.memo(() => {
 
             const docMetaFiles = await persistenceLayer.getDocMetaRefs();
 
+            // FIXME this is really hella slow
             const docMetaSuppliers: DocMetaSupplierCollection
                 = docMetaFiles.map(docMetaFile => {
                     return async () => {
@@ -97,10 +101,20 @@ export const AnkiSyncController = React.memo(() => {
 
             await pendingSyncJob.start();
 
-            updateProgress({
-                message: `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`,
-                value: 100
-            });
+            function finalNotifications() {
+
+                const message = `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`;
+
+                updateProgress({
+                    message,
+                    value: 100
+                });
+
+                dialogManager.snackbar({message});
+
+            }
+
+            finalNotifications();
 
             Analytics.event({category: 'anki', action: 'sync-completed'});
 

@@ -338,7 +338,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     /**
      * Get the DocMeta if from the raw docID encoded into the users account.
      */
-    public async getDocMetaDirectly(id: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
+    public async getDocMetaDirectly(id: string,
+                                    opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -351,9 +352,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const preferredSource = opts.preferredSource || this.preferredSource();
 
             if (preferredSource === 'cache') {
-
-                // TODO: migrate this to cache-or-server or somthing along
-                // those lines.
 
                 // Firebase supports three cache strategies.  The first
                 // (default) is server with fall back to cache but what we
@@ -368,16 +366,26 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 // BUT we can get the initial version FASTER since we
                 // can resolve it from cache.
 
+                console.log("getDocMeta: cache+server");
+
                 const cachePromise = ref.get({ source: 'cache' });
                 const serverPromise = ref.get({ source: 'server' });
 
-                return await Promises.any(cachePromise, serverPromise);
+                const cacheResult = await cachePromise;
+
+                if (cacheResult.exists) {
+                    return cacheResult;
+                }
+
+                return await serverPromise;
 
             } else if (isPresent(opts.preferredSource)) {
+                console.log("getDocMeta: " + opts.preferredSource);
                 return await ref.get({ source: opts.preferredSource });
             } else {
                 // now revert to checking the server, then cache if we're
                 // offline.
+                console.log("getDocMeta: standard" );
                 return await ref.get();
             }
 
@@ -1153,13 +1161,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     private preferredSource(): FirestoreSource {
-
-        if (AppRuntime.isBrowser()) {
-            return 'cache';
-        } else {
-            return 'default';
-        }
-
+        // always do cache for now because we're migrating to this the same
+        // behavior across desktop/electron + web
+        return 'cache';
     }
 
 }

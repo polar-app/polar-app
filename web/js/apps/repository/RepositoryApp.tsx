@@ -67,7 +67,6 @@ export const RepositoryApp = (props: IProps) => {
     const RenderDocViewerScreen = React.memo(() => (
         <AuthRequired>
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
-                <AnkiSyncController/>
                 <UserTagsProvider>
                     <DocMetaContextProvider>
                         <DocViewerDocMetaLookupContextProvider>
@@ -94,7 +93,10 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(docRepo) =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
-                                                 <DocRepoScreen2/>
+                                                 <>
+                                                     <AnkiSyncController/>
+                                                     <DocRepoScreen2/>
+                                                 </>
                                              </DocRepoSidebarTagStore>
                                          </DocRepoStore2>
                                      }/>

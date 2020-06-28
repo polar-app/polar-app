@@ -94,7 +94,7 @@ export function useDragAndDropListener() {
 
 }
 
-export const AddFileDropzone = React.forwardRef((ref) => {
+export const AddFileDropzone = React.forwardRef((props: any, ref) => {
 
     const store = useAddFileDropzoneStore();
     const callbacks = useAddFileDropzoneCallbacks();
