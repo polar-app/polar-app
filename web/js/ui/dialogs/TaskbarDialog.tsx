@@ -6,6 +6,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface IProgress {
+
     readonly value: Percentage | 'indeterminate';
 
     /**

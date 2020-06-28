@@ -7,7 +7,6 @@ import {
     PersistenceLayerManager,
     PersistenceLayerTypes
 } from '../../datastore/PersistenceLayerManager';
-import {DocRepoAnkiSyncController} from '../../controller/DocRepoAnkiSyncController';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
@@ -47,12 +46,6 @@ export class Repository {
                 // FIXME: refactor this so that the rest of the app continues to load and
                 // this would allow us to run from cache.
 
-                // new FileImportController(() => app.persistenceLayerManager.get(), updatedDocInfoEventDispatcher)
-                //     .start();
-
-                new DocRepoAnkiSyncController(app.persistenceLayerManager, app.syncBarProgress)
-                    .start();
-
                 // await this.doLoadExampleDocs(app);
 
                 updatedDocInfoEventDispatcher.addEventListener(docInfo => {
@@ -63,10 +56,7 @@ export class Repository {
 
                     if (event.state === 'changed') {
                         event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
-
-
                             this.onUpdatedDocInfo(app, persistenceLayerEvent.docInfo);
-
                         });
                     }
 

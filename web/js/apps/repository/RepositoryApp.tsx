@@ -47,6 +47,7 @@ import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
 import { AddFileDropzoneScreen } from './upload/AddFileDropzoneScreen';
+import {AnkiSyncController} from "../../controller/AnkiSyncController";
 
 interface IProps {
     readonly app: App;
@@ -66,6 +67,7 @@ export const RepositoryApp = (props: IProps) => {
     const RenderDocViewerScreen = React.memo(() => (
         <AuthRequired>
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                <AnkiSyncController/>
                 <UserTagsProvider>
                     <DocMetaContextProvider>
                         <DocViewerDocMetaLookupContextProvider>

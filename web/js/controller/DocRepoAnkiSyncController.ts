@@ -10,6 +10,9 @@ import {Analytics} from "../analytics/Analytics";
 
 const log = Logger.create();
 
+/**
+ * @Deprecated
+ */
 export class DocRepoAnkiSyncController {
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
@@ -27,8 +30,6 @@ export class DocRepoAnkiSyncController {
     private onMessageReceived(event: any) {
 
         log.info("Received message: ", event);
-
-        const triggerEvent = event.data;
 
         switch (event.data.type) {
 
@@ -106,10 +107,6 @@ export class DocRepoAnkiSyncController {
         });
 
         Analytics.event({category: 'anki', action: 'sync-completed'});
-
-
-        // Analytics.event({category: 'anki', action: 'sync-completed-' + nrTasks});
-        // Analytics.event({category: 'anki', action: 'sync-failed-' + nrFailedTasks});
 
     }
 
