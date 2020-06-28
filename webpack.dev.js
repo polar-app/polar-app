@@ -4,9 +4,9 @@ const config = require('./webpack.config.js');
 
 const newConfig = merge(config, {
     entry: {
-        // "repository": [ "./apps/repository/js/entry.tsx"],
+        "repository": "./apps/repository/js/entry.tsx",
         // "preview": [ "./apps/preview/index.ts"],
-        "dev": "./apps/dev/index.ts",
+        // "dev": "./apps/dev/index.ts",
         // "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
     },
     mode: 'development',

@@ -9,6 +9,8 @@ import {Accounts} from "../../../accounts/Accounts";
 const POLAR_APP_SITES = [
     'http://localhost:8500',
     'http://127.0.0.1:8500',
+    'http://localhost:9000',
+    'http://127.0.0.1:9000',
     'https://app.getpolarized.io',
     'https://beta.getpolarized.io'
 ];
@@ -53,7 +55,7 @@ export class AuthHandlers {
 
 abstract class DefaultAuthHandler implements AuthHandler {
 
-    readonly id: string = 'defaultd';
+    readonly id: string = 'default';
 
     public authenticate(signInSuccessUrl?: string): void {
 

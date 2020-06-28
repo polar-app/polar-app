@@ -19,6 +19,8 @@ export const AuthRequired = React.memo((props: IProps) => {
 
     if (! userInfoContext.userInfo) {
 
+        // FIXME: migrate to useLoginAction
+
         // we have user info but the user isn't logged in.
         console.warn("No userInfo: forcing authentication");
 

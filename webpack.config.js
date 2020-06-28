@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
+const {DefaultRewrites} = require('polar-shared-webserver/src/webserver');
 
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
@@ -86,19 +87,6 @@ function createRules() {
             ],
         },
         {
-            test: /fonts\.googleapis\.com\/css/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name]-[contenthash].[ext]',
-                        outputPath: 'images',
-                        publicPath: '/web/dist/images'
-                    }
-                },
-            ],
-        },
-        {
             test: /\.css$/i,
             use: [
                 {
@@ -112,6 +100,19 @@ function createRules() {
         {
             test: /\.scss$/,
             use: ['style-loader', 'css-loader', 'sass-loader'],
+        },
+        {
+            test: /fonts\.googleapis\.com\/css/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name]-[contenthash].[ext]',
+                        outputPath: 'assets',
+                        publicPath: '/web/dist/assets'
+                    }
+                },
+            ],
         },
 
     ];
@@ -154,9 +155,9 @@ module.exports = {
     // stats: 'verbose',
     target,
     entry: {
-        "repository": [ "./apps/repository/js/entry.tsx"],
-        "preview": [ "./apps/preview/index.ts"],
-        "add-shared-doc": [ "./apps/add-shared-doc/js/index.ts"],
+        "repository": "./apps/repository/js/entry.tsx",
+        "preview": "./apps/preview/index.ts",
+        "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
     },
     module: {
         rules: createRules()
@@ -211,7 +212,13 @@ module.exports = {
         contentBase: __dirname,
         compress: true,
         port: 9000,
-        watchContentBase: true
+        watchContentBase: true,
+        historyApiFallback: {
+            rewrites: [
+                // TODO: load DefaultRewrites here and convert them...
+                { from: /^\/login$/, to: '/apps/repository/index.html' },
+            ]
+        }
     }
 
 };
