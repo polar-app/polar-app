@@ -1,7 +1,6 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { lighten } from '@material-ui/core/styles';
 
 export const GlobalCssSummernoteStyles = withStyles(() => {
     const theme = useTheme();
