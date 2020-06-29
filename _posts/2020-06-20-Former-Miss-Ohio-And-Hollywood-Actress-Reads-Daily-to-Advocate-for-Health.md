@@ -28,8 +28,7 @@ As an actress, Lindsay enjoyed the notion of the entertainment industry because 
 
 ## Hypertrophic Cardiomyopathy Advocacy
 
-<img class="img-fluid" src="https://i.imgur.com/lyQUyqc.jpg">
-<a href="https://i.imgur.com/rspjX2R.jpg " target="_blank">Advocacy</a>
+<img class="img-fluid" src="https://i.imgur.com/rspjX2R.jpg">
 
 As a heart health advocate, Lindsay focuses on prevention because sudden cardiac arrest is typically the first symptom of Hypertrophic Cardiomyopathy. Oftentimes HCM isn’t diagnosed before a sudden cardiac arrest, so Lindsay’s objectives are focused on raising awareness on the signs and symptoms attributed to heart disease. Her hope is that heart conditions are diagnosed before they manifest a sudden cardiac arrest and lead to death. 
 
@@ -49,8 +48,7 @@ Many parents reach out to Lindsay and tell her how Lindsay's Law saved their chi
 
 ## Capitol Hill
 
-<img class="img-fluid" src="https://i.imgur.com/lyQUyqc.jpg">
-<a href="https://i.imgur.com/f6JKrCP.jpg " target="_blank">Capitol Hill</a> 
+<img class="img-fluid" src="https://i.imgur.com/f6JKrCP.jpg">
 
 Lindsay is actively advocating for patient and cardiac legislations and increases in research funding on Capitol Hill. Two pieces of legislation that Lindsay supports—the SAFE PLAY Act and HEARTS Act—were recently introduced in Congress. 
 
