@@ -20,7 +20,7 @@ Lindsay had dreams of attending Julliard and joining the Paris Opera Ballet, so 
 
 ## Life as Miss Ohio and a Hollywood Actress
 
-<a href="https://i.imgur.com/lyQUyqc.jpg" target="_blank">Miss Ohio</a>
+<img class="img-fluid" src="https://i.imgur.com/lyQUyqc.jpg">
 
 Instead of allowing the HCM diagnosis to take control of her life, Lindsay turned her pain into a passion for heart health advocacy and awareness. Before committing to advocacy full-time, Lindsay was Miss Ohio and an actress in Hollywood. Lindsay says her title as Miss Ohio prepared her for a career in advocacy. The life of a pageant queen and an advocate are never-ending judged performances that require constant traveling, interviews, and discussions with diverse audiences. 
 
@@ -28,6 +28,7 @@ As an actress, Lindsay enjoyed the notion of the entertainment industry because 
 
 ## Hypertrophic Cardiomyopathy Advocacy
 
+<img class="img-fluid" src="https://i.imgur.com/lyQUyqc.jpg">
 <a href="https://i.imgur.com/rspjX2R.jpg " target="_blank">Advocacy</a>
 
 As a heart health advocate, Lindsay focuses on prevention because sudden cardiac arrest is typically the first symptom of Hypertrophic Cardiomyopathy. Oftentimes HCM isn’t diagnosed before a sudden cardiac arrest, so Lindsay’s objectives are focused on raising awareness on the signs and symptoms attributed to heart disease. Her hope is that heart conditions are diagnosed before they manifest a sudden cardiac arrest and lead to death. 
@@ -38,7 +39,7 @@ Sudden cardiac arrest takes the lives of 14,000 children and young adults annual
 
 ## Lindsay’s Law
 
-<a href="https://i.imgur.com/XIDEoYc.jpg " target="_blank">Lindsay’s Law</a>
+<img class="img-fluid" src="https://i.imgur.com/XIDEoYc.jpg">
 
 By working with the Ohio legislature, Lindsay helped pass an awareness bill called Lindsay’s Law (named after her). The <ahref="https://pubmed.ncbi.nlm.nih.gov/22773708/" target="_blank">Journal of the American Board of Family</a> states that seventy-two percent of children who pass away from sudden cardiac arrest report symptoms that no one attributes to heart disease. As a result, the bill educates coaches, parents, and students on the signs and symptoms of an underlying condition. 
 
@@ -48,11 +49,12 @@ Many parents reach out to Lindsay and tell her how Lindsay's Law saved their chi
 
 ## Capitol Hill
 
+<img class="img-fluid" src="https://i.imgur.com/lyQUyqc.jpg">
 <a href="https://i.imgur.com/f6JKrCP.jpg " target="_blank">Capitol Hill</a> 
 
 Lindsay is actively advocating for patient and cardiac legislations and increases in research funding on Capitol Hill. Two pieces of legislation that Lindsay supports—the SAFE PLAY Act and HEARTS Act—were recently introduced in Congress. 
 
-<a href="https://i.imgur.com/UsoYKaw.jpg" target="_blank">Advocacy on Capitol Hill</a> 
+<img class="img-fluid" src="https://i.imgur.com/UsoYKaw.jpg">
 
 The <ahref="https://www.congress.gov/bill/116th-congress/house-bill/1209" target="_blank">HEARTS Act</a> is bipartisan legislation that is essentially Lindsay’s Law on a national level with added surveillance of heart conditions. Another Lindsay’s Law type legislation is the <ahref="https://www.congress.gov/bill/114th-congress/house-bill/829" target="_blank">SAFE PLAY Act</a>, which focuses on advancing safety guidelines for young athletes. It also includes grants for CPR training and automated external defibrillators for schools. 
 
@@ -74,7 +76,7 @@ Lindsay says that in advocacy work, storytelling is key. Numbers and statistics 
 
 ## A Real Advocate for a Better World
 
-<a href="https://i.imgur.com/dknykda.jpg " target="_blank">Lindsay with child</a>
+<img class="img-fluid" src="https://i.imgur.com/dknykda.jpg">
 
 Lindsay Davis is a powerful example of someone who hasn’t let their circumstances define them. She has taken control of her life and utilized her platform to advocate for children with heart conditions. Her words will live on and continue to positively impact the lives of children for generations. 
 
