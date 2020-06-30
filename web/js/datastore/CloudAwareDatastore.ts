@@ -461,7 +461,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const localSnapshotResultPromise = localInitialSnapshotLatch.createSnapshot(this.local);
         await localInitialSnapshotLatch.latch.get();
 
-        // FIXME this is taking 26 seconds.
         console.timeEnd("localSnapshot");
 
         log.info("Local snapshot...done");
@@ -542,9 +541,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 const cloudSyncOrigin = await toCloudSyncOrigin();
                 const localSyncOrigin = await toLocalSyncOrigin();
 
-                log.info("FIXME: Transferring from cloud -> local...");
+                log.info("Transferring from cloud -> local...");
                 await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, listener, 'cloud-to-local');
-                log.info("FIXME: Transferring from cloud -> local...done");
+                log.info("Transferring from cloud -> local...done");
 
             }
 

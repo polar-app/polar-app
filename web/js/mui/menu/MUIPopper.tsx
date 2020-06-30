@@ -57,8 +57,6 @@ export const MUIPopper = (props: IProps) => {
 
     const handleClose = (event: React.MouseEvent<EventTarget>) => {
 
-        console.log("FIXME: handling close.... ");
-
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
             return;
         }

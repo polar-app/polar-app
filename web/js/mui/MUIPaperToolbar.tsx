@@ -67,7 +67,7 @@ export const MUIPaperToolbar = (props: IProps) => {
         props.borderBottom ? classes.borderBottom : undefined,
     ].filter(current => current !== undefined);
 
-    // FIXME don not use an internal Box and instead use direct CSS padding
+    // FIXME don not use an internal Box and instead use direct CSS padding via CSS
 
     return (
         <Paper square

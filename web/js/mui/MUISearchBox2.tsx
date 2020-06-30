@@ -19,7 +19,7 @@ interface IProps {
 
 export const MUISearchBox2 = React.memo((props: IProps) => {
 
-    // FIXME: need a debouncer here...
+    // TODO: need a debouncer here...
     const handleChange = (text: string) => {
         props.onChange(text);
     };
@@ -42,8 +42,6 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
                        placeholder={props.placeholder}
                        className={props.className}
                        ref={props.ref}
-                       // ref={ref => console.log("FIXME0: " , ref)}
-                       // inputRef={ref => console.log("FIXME1: " , ref)}
                        onChange={event => handleChange(event.currentTarget.value)}/>
     );
 }, isEqual);

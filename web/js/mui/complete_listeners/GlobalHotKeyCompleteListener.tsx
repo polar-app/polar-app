@@ -13,7 +13,6 @@ export const GlobalHotKeyCompleteListener = (props: IProps) => {
 
     const handlers = {
         COMPLETE: () => {
-            console.log("FIXME: got complete");
             props.onComplete()
         }
     };

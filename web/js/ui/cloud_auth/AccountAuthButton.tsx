@@ -8,7 +8,7 @@ import {useHistory} from "react-router-dom";
 
 export function useLogoutCallback() {
 
-    // FIXME: should this use AccountHooks?
+    // TODO: should this use AccountHooks?
 
     const history = useHistory();
 

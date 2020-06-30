@@ -72,7 +72,7 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
         event.stopPropagation();
     }, []);
 
-    // FIXME: double click should expand the node...
+    // TODO: double click should expand the node...
 
     const className = clsx(
         classes.root,

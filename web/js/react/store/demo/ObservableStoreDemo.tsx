@@ -11,7 +11,6 @@ interface ToggleMountedProps {
 class LegacyComponent extends React.Component {
 
     public componentWillUnmount(): void {
-        console.log("FIXMEL legacy component unmounting");
     }
 
     public render() {

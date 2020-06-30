@@ -9,8 +9,6 @@ export const CompleteListener = React.memo((props: IProps) => {
 
     function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>) {
 
-        console.log("FIXME: got the key binding");
-
         if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
             // don't allow anything else to process this event.
             event.stopPropagation();
