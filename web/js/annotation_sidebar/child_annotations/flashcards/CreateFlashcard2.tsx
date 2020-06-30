@@ -28,6 +28,7 @@ export const CreateFlashcard2 = (props: IProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
     const annotationMutations = useAnnotationMutationsContext();
+    const flashcardCallback = annotationMutations.createFlashcardCallback(props.parent);
 
     const onFlashcard = useCallback((flashcardType: FlashcardType,
                                      fields: Readonly<FlashcardInputFieldsType>) => {
@@ -35,14 +36,13 @@ export const CreateFlashcard2 = (props: IProps) => {
         annotationInputContext.reset();
 
         const mutation: IFlashcardCreate = {
-            selected: [props.parent],
             type: 'create',
             flashcardType,
             fields,
             parent: Refs.createRef(props.parent)
         };
 
-        annotationMutations.onFlashcard(mutation);
+        flashcardCallback(mutation);
 
     }, []);
 

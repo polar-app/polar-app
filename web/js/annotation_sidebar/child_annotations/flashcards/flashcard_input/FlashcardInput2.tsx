@@ -6,10 +6,19 @@ import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import isEqual from "react-fast-compare";
+import {
+    IFlashcardUpdate,
+    useAnnotationMutationsContext
+} from "../../../AnnotationMutationsContext";
+import {useAnnotationActiveInputContext} from "../../../AnnotationActiveInputContext";
+import {IDocAnnotationRef} from "../../../DocAnnotation";
+import {Refs} from "polar-shared/src/metadata/Refs";
 
 export interface IProps {
 
     readonly id: string;
+
+    readonly flashcard: IDocAnnotationRef;
 
     /**
      * The default value to show in the flashcard
@@ -55,6 +64,10 @@ function setDefaultFlashcardType(flashcardType: FlashcardType) {
 export const FlashcardInput2 = React.memo((props: IProps) => {
 
     const [flashcardType, setFlashcardType] = useState(props.flashcardType || defaultFlashcardType())
+    const annotationInputContext = useAnnotationActiveInputContext();
+
+    const annotationMutations = useAnnotationMutationsContext();
+    const flashcardCallback = annotationMutations.createFlashcardCallback(props.flashcard);
 
     const onFlashcardChangeType = useCallback((flashcardType: FlashcardType) => {
 
@@ -63,15 +76,21 @@ export const FlashcardInput2 = React.memo((props: IProps) => {
 
     }, []);
 
-    const onFlashcard =  useCallback((flashcardType: FlashcardType,
-                                      fields: Readonly<FlashcardInputFieldsType>) => {
 
-        // FIXME/FIXME: this isn't wired
-        /// props.onFlashcard(flashcardType, fields, this.props.existingFlashcard);
+    const onFlashcard = useCallback((flashcardType: FlashcardType,
+                                     fields: Readonly<FlashcardInputFieldsType>) => {
 
-        // this.setState({
-        //     iter: this.state.iter + 1
-        // });
+        annotationInputContext.reset();
+
+        const mutation: IFlashcardUpdate = {
+            type: 'update',
+            parent: props.flashcard.parent!,
+            flashcardType,
+            fields,
+            existing: props.flashcard
+        };
+
+        flashcardCallback(mutation);
 
     }, []);
 

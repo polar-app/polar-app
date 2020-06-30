@@ -59,6 +59,7 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
 
     } else {
         return <FlashcardInput2 id={'edit-flashcard-for' + props.flashcard.id}
+                                flashcard={props.flashcard}
                                 flashcardType={existingFlashcard.type}
                                 existingFlashcard={existingFlashcard}
                                 cancelButton={cancelButton}/>;

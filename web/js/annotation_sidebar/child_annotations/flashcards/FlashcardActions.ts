@@ -12,6 +12,7 @@ import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export class FlashcardActions {
 
@@ -32,12 +33,13 @@ export class FlashcardActions {
 
     }
 
+    // TODO: we dont' need the full existing flashcard here.. JUST the ID...
     public static update(docMeta: IDocMeta,
                          pageMeta: IPageMeta,
                          parent: IRef,
                          type: FlashcardType,
                          fields: FrontAndBackFields | ClozeFields,
-                         existingFlashcard?: IFlashcard | IDocAnnotationRef) {
+                         existingFlashcardID?: IDStr) {
 
         const flashcard = this.newInstanceFromParentRef(parent, type, fields);
 
@@ -45,8 +47,8 @@ export class FlashcardActions {
 
             DocMetas.withBatchedMutations(docMeta, () => {
 
-                if (existingFlashcard) {
-                    delete pageMeta.flashcards[existingFlashcard.id];
+                if (existingFlashcardID) {
+                    delete pageMeta.flashcards[existingFlashcardID];
                 }
 
                 pageMeta.flashcards[flashcard.id] = <Flashcard> {...flashcard};
@@ -60,10 +62,10 @@ export class FlashcardActions {
     public static delete(docMeta: IDocMeta,
                          pageMeta: IPageMeta,
                          parent: IRef,
-                         existing: Flashcard | IDocAnnotation) {
+                         existingID: IDStr) {
 
         DocMetas.withBatchedMutations(docMeta, () => {
-            delete pageMeta.flashcards[existing.id];
+            delete pageMeta.flashcards[existingID];
         });
 
     }

@@ -91,23 +91,33 @@ export interface ICommentDelete {
 
 export type ICommentMutation = ICommentCreate | ICommentUpdate | ICommentDelete;
 
-export interface IFlashcardCreate extends IAnnotationMutationSelected {
+export interface IFlashcardCreate {
     readonly type: 'create';
     readonly parent: IRef;
     readonly flashcardType: FlashcardType,
     readonly fields: Readonly<FlashcardInputFieldsType>
 }
 
-export interface IFlashcardUpdate extends IAnnotationMutationSelected {
+export interface IFlashcardUpdate {
     readonly type: 'update';
     readonly parent: IRef;
     readonly flashcardType: FlashcardType,
-    readonly fields: Readonly<FlashcardInputFieldsType>
+    readonly fields: Readonly<FlashcardInputFieldsType>;
+    readonly existing: IDocAnnotationRef;
+
 }
-export interface IFlashcardDelete extends IAnnotationMutationSelected {
+
+// export interface IFlashcardUpdate extends IAnnotationMutationSelected {
+//     readonly type: 'update';
+//     readonly parent: IRef;
+//     readonly flashcardType: FlashcardType,
+//     readonly fields: Readonly<FlashcardInputFieldsType>
+// }
+
+export interface IFlashcardDelete {
     readonly type: 'delete';
     readonly parent: IRef;
-    readonly existing: IDocAnnotation;
+    readonly existing: IDocAnnotationRef;
 }
 
 export type IFlashcardMutation = IFlashcardCreate | IFlashcardUpdate | IFlashcardDelete;
@@ -193,7 +203,9 @@ export interface IAnnotationMutationCallbacks {
     readonly createCommentCallback: (annotation: IAnnotationRef) => (mutation: ICommentMutation) => void;
 
     readonly onComment: (holders: ReadonlyArray<IAnnotationMutationHolder<ICommentMutation>>) => void;
-    readonly onFlashcard: (mutation: IFlashcardMutation) => void;
+
+    readonly createFlashcardCallback: (annotation: IAnnotationRef) => (mutation: IFlashcardMutation) => void;
+    readonly onFlashcard: (holders: ReadonlyArray<IAnnotationMutationHolder<IFlashcardMutation>>) => void;
 
     readonly createColorCallback: (selected: IAnnotationMutationSelected) => (mutation: IColorMutation) => void;
 
@@ -215,6 +227,7 @@ const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallba
     createCommentCallback: () => NULL_FUNCTION,
     onComment: NULL_FUNCTION,
 
+    createFlashcardCallback: () => NULL_FUNCTION,
     onFlashcard: NULL_FUNCTION,
 
     createColorCallback: () => NULL_FUNCTION,
@@ -285,9 +298,11 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onFlashcard(docMeta: IDocMeta,
-                                pageMeta: IPageMeta,
-                                mutation: IFlashcardMutation) {
+    export function onFlashcard(holder: IAnnotationMutationHolderWithDocMeta<IFlashcardMutation>) {
+
+        const {mutation, annotation} = holder;
+        const {docMeta, pageNum} = annotation;
+        const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
         switch (mutation.type) {
 
@@ -300,20 +315,12 @@ export namespace DocAnnotationsMutator {
             //
             case "update":
 
-                const selected = mutation.selected || [];
-
-                for (const current of selected) {
-
-                    const flashcard = current.original as IFlashcard;
-
-                    FlashcardActions.update(docMeta,
-                                            pageMeta,
-                                            mutation.parent,
-                                            mutation.flashcardType,
-                                            mutation.fields,
-                                            flashcard);
-
-                }
+                FlashcardActions.update(docMeta,
+                                        pageMeta,
+                                        mutation.parent,
+                                        mutation.flashcardType,
+                                        mutation.fields,
+                                        mutation.existing.id);
 
                 break;
 
@@ -321,12 +328,59 @@ export namespace DocAnnotationsMutator {
                 FlashcardActions.delete(docMeta,
                                         pageMeta,
                                         mutation.parent,
-                                        mutation.existing);
+                                        mutation.existing.id);
                 break;
 
         }
 
     }
+
+
+    /**
+     * @Deprecated
+     */
+    // export function onFlashcard(docMeta: IDocMeta,
+    //                             pageMeta: IPageMeta,
+    //                             mutation: IFlashcardMutation) {
+    //
+    //     switch (mutation.type) {
+    //
+    //         case "create":
+    //             FlashcardActions.create(mutation.parent,
+    //                                     pageMeta,
+    //                                     mutation.flashcardType,
+    //                                     mutation.fields);
+    //             break;
+    //         //
+    //         case "update":
+    //
+    //             const selected = mutation.selected || [];
+    //
+    //             for (const current of selected) {
+    //
+    //                 const flashcard = current.original as IFlashcard;
+    //
+    //                 FlashcardActions.update(docMeta,
+    //                                         pageMeta,
+    //                                         mutation.parent,
+    //                                         mutation.flashcardType,
+    //                                         mutation.fields,
+    //                                         flashcard);
+    //
+    //             }
+    //
+    //             break;
+    //
+    //         case "delete":
+    //             FlashcardActions.delete(docMeta,
+    //                                     pageMeta,
+    //                                     mutation.parent,
+    //                                     mutation.existing);
+    //             break;
+    //
+    //     }
+    //
+    // }
 
     export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
 
@@ -691,9 +745,26 @@ export namespace AnnotationMutationCallbacks {
 
         }
 
-        function onFlashcard(mutation: IFlashcardMutation) {
-            handleUpdate(mutation, DocAnnotationsMutator.onFlashcard)
-                .catch(err => log.error(err));
+        function createFlashcardCallback(annotation: IAnnotationRef): Callback1<IFlashcardMutation> {
+
+            return React.useCallback((mutation: IFlashcardMutation) => {
+
+                const holder: IAnnotationMutationHolder<IFlashcardMutation> = {
+                    annotation,
+                    mutation
+                }
+
+                onFlashcard([holder]);
+
+            }, []);
+
+        }
+
+        function onFlashcard(holders: ReadonlyArray<IAnnotationMutationHolder<IFlashcardMutation>>) {
+
+            handleUpdate2(holders, DocAnnotationsMutator.onFlashcard)
+              .catch(err => log.error(err));
+
         }
 
         function createColorCallback(selected: IAnnotationMutationSelected): Callback1<IColorMutation> {
@@ -731,6 +802,7 @@ export namespace AnnotationMutationCallbacks {
             onTextHighlight,
             createCommentCallback,
             onComment,
+            createFlashcardCallback,
             onFlashcard,
             createColorCallback,
             onColor,
