@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {useCallback, useRef} from 'react';
+import {useRef} from 'react';
 import {RichTextArea} from "../../RichTextArea";
 import {Comment} from '../../../metadata/Comment';
-import {RichTextFeatureIntro} from '../../RichTextFeatureIntro';
 import Button from '@material-ui/core/Button';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from "react-fast-compare";
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 
@@ -33,22 +31,8 @@ export const EditComment2 = React.memo((props: IProps) => {
 
     const id = 'rich-text-editor-' + props.id;
 
-    const onKeyDown = useCallback((event: KeyboardEvent) => {
-
-        // if (event.key === "Escape") {
-        //     this.toggle();
-        // }
-
-        if (event.getModifierState("Control") && event.key === "Enter") {
-            // FIXME no execution here...
-        }
-
-    }, []);
-
     return (
         <div>
-
-            {/*<RichTextFeatureIntro/>*/}
 
             <div id="annotation-comment-box"
                  className="mt-1">
@@ -58,7 +42,6 @@ export const EditComment2 = React.memo((props: IProps) => {
                     <RichTextArea id={id}
                                   value={htmlRef.current}
                                   autofocus={true}
-                                  onKeyDown={onKeyDown}
                                   onChange={(html) => htmlRef.current = html}/>
 
                 </div>

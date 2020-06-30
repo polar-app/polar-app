@@ -16,15 +16,6 @@ interface IDType {
 
 export type SelectedRows = ReadonlyArray<IDStr>;
 
-// FIXME: clean up this code...
-
-/*
-The way this works is that that we have to return an array of IDs for those
-items that are selected.
-
-The input we're given is a selectedID and selectedIDs
- */
-
 /**
  * Code to allow the user to select multiple items where with an array of items
  * which have IDs and a viewPage of items that have IDs.
@@ -44,9 +35,6 @@ export namespace SelectionEvents2 {
         //
         // - add the new selectedIndex to the list of currently selected items.
         //
-        //   - FIXME: really what this is is just select-one but we leave the
-        //     previous items in place and perform no mutation on them...
-
         // - toggle: used when the type is 'checkbox' because we're only toggling
         //   the selection of that one item
         //

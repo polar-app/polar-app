@@ -6,6 +6,7 @@ import {GroupDeletes} from "../../../../web/js/datastore/sharing/rpc/GroupDelete
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import Button from '@material-ui/core/Button';
 
+// TODO refactor to functional component
 export class GroupDeleteButton extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
@@ -49,7 +50,7 @@ export class GroupDeleteButton extends React.Component<IProps, IState> {
 
     private onDelete(group: Group) {
 
-        // FIXME MUI
+        // TODO MUI
         // Dialogs.confirm({
         //     title: "Are you sure you want to delete this group?",
         //     subtitle: "Deleting is final and everyone will lose access to the annotations.  " +

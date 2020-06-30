@@ -19,7 +19,7 @@ interface IProps {
 
     readonly defaultValue?: string;
 
-    // FIXME: I don't think this needs to be passed any more.
+    // TODO: I don't think this needs to be passed any more.
     readonly parent: IDocAnnotationRef;
 
 }

@@ -47,8 +47,7 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
-
-const log = Logger.create();
+import {useLogger} from "../mui/MUILogger";
 
 export interface IAnnotationMutationHolder<M> {
     readonly annotation: IAnnotationRef;
@@ -70,8 +69,6 @@ export interface IAnnotationMutationSelected {
 export interface IAnnotationMutationSelectedWithDocMeta {
     readonly selected: ReadonlyArray<IAnnotationRefWithDocMeta>;
 }
-
-// FIXME: none of these should use IDocAnnotation
 
 export interface ICommentCreate {
     readonly type: 'create';
@@ -425,8 +422,8 @@ export namespace AnnotationMutationCallbacks {
         const dialogs = useDialogManager();
         const persistenceLayerContext = usePersistenceLayerContext();
         const docMetaLookupContext = useDocMetaLookupContext();
-
         const tagsContext = useTagsContext();
+        const log = useLogger();
 
         async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
 
@@ -661,9 +658,6 @@ export namespace AnnotationMutationCallbacks {
 
                     const {docMeta, pageMeta, textHighlight} = mutation;
                     pageMeta.textHighlights[textHighlight.id] = textHighlight;
-
-                    // FIXME: all these catch() functions need to be handled
-                    // with a dialog error.
 
                     writeUpdatedDocMetas([docMeta])
                         .catch(err => log.error(err));

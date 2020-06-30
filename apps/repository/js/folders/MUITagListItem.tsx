@@ -86,7 +86,7 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
 
     const contextMenu = useContextMenu();
 
-    // FIXME: needs tabindex and focus...
+    // TODO: needs tabindex and focus...
     return (
         <div className={className}
              {...contextMenu}

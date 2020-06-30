@@ -36,9 +36,7 @@ export const CreateComment2 = React.memo((props: IProps) => {
 
     }, []);
 
-
     const cancelButton = <CancelButton onClick={() => annotationInputContext.setActive('none')}/>;
-    // FIXME try to use MUI Fade here I think.
 
     if (annotationInputContext.active !== 'comment') {
         return null;

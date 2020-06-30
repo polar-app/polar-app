@@ -13,7 +13,7 @@ import isEqual from "react-fast-compare";
 import { useHistory } from 'react-router-dom';
 
 
-// FIXME needs to be a dedicated function.
+// TODO needs to be a dedicated function.
 export function useAsyncWithError<T>(opts: AsyncOptions<T>) {
     const dialogs = useDialogManager();
     const {data, error} = useAsync(opts);

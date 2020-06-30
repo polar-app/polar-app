@@ -9,13 +9,9 @@ import {Exporters, ExportFormat} from "../metadata/exporter/Exporters";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import { Logger } from "polar-shared/src/logger/Logger";
+import {useLogger} from "../mui/MUILogger";
 
-const log = Logger.create();
-
-interface IProps {
-}
-
-export const AnnotationHeader = (props: IProps) => {
+export const AnnotationHeader = () => {
 
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
     const exportCallback = useExportCallback();
@@ -41,7 +37,6 @@ export const AnnotationHeader = (props: IProps) => {
 
                 <div style={{display: 'flex'}}>
 
-                    {/*FIXME: add this back in!!!*/}
                     <div className="mt-auto mb-auto">
                         <ExportButton onExport={exportCallback}/>
                     </div>
@@ -66,6 +61,7 @@ function useExportCallback(): (format: ExportFormat) => void {
 
     const docMetaContext = useDocMetaContext();
     const persistenceLayer = usePersistenceLayerContext();
+    const log = useLogger();
 
     const docMeta = docMetaContext.doc?.docMeta!;
 

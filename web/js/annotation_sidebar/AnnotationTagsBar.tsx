@@ -12,8 +12,6 @@ export const AnnotationTagsBar = React.memo((props: IProps) => {
 
     const tags = Tags.sortByLabel(Tags.onlyRegular(Object.values(props.tags || {})));
 
-    // FIXME put a border at the bottom
-
     return (
         <>
             <MUIButtonBar className="mb-1">

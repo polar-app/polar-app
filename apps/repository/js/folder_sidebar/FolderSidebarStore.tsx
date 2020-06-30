@@ -331,9 +331,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function doCreateUserTag(userTag: string, type: TagType) {
 
-        // FIXME: the context menu, for tags, MUST only create on the first
-        // folder...
-
         const createNewTag = (): TagStr => {
 
             const store = storeProvider();
@@ -360,10 +357,6 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         }
 
-        // FIXME: I'm going to have to go through and inject my own log.error
-        // handling
-
-        // FIXME: use dialogs.error here() if this fails
         doHandle()
             .catch(err => log.error("Unable to create tag: " + newTag, err));
 

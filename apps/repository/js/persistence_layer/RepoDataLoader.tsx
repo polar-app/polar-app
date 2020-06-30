@@ -59,7 +59,7 @@ class RepoDocMetaLoaderSnapshots {
 
         return (onNext: (value: boolean) => void, onError: ErrorHandlerCallback) => {
 
-            // FIXME use the debouncer API here...
+            // TODO use the debouncer API here...
             const releaser = RepoDocMetaLoaders.addThrottlingEventListener(repoDocMetaLoader, () => onNext(true));
 
             return () => {

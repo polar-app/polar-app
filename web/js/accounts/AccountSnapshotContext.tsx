@@ -20,8 +20,6 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-// FIXME: this isn't just specific to account context now.
-
 /**
  * @NotStale
  */

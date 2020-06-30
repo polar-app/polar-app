@@ -13,11 +13,6 @@ import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 
 
-// FIXME this works BUT:
-//
-// - nested folders aren't being expanded by default on init.
-// - no context menu...
-
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
 const TagsMenu = () => <FolderSidebarMenu type="tag"/>
 

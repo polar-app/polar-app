@@ -30,8 +30,10 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
             throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
         }
 
-        // FIXME: this will yield bugs I think because the second time its' not
-        //  used...  FIXME: I think this should be constructor and thhat way when
+        // FIXME: this will yield bugs I think because the second time it's not
+        // used...
+        //
+        // FIXME: I think this should be constructor and thhat way when
         // it changes, we can reload.
 
         return prefs.subscribe.bind(prefs);

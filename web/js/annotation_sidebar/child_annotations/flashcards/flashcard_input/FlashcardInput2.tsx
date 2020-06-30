@@ -31,7 +31,7 @@ export interface IState {
 
 function defaultFlashcardType() {
 
-    // FIXME migrate AWAY fro musing localStorage direcltly
+    // TODO migrate AWAY fro musing localStorage direcltly
     const defaultFlashcardType = window.localStorage.getItem('default-flashcard-type');
 
     switch (defaultFlashcardType) {
@@ -66,7 +66,7 @@ export const FlashcardInput2 = React.memo((props: IProps) => {
     const onFlashcard =  useCallback((flashcardType: FlashcardType,
                                       fields: Readonly<FlashcardInputFieldsType>) => {
 
-        // FIXME: this isn't wired
+        // FIXME/FIXME: this isn't wired
         /// props.onFlashcard(flashcardType, fields, this.props.existingFlashcard);
 
         // this.setState({
