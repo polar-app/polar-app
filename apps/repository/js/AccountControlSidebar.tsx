@@ -1,7 +1,6 @@
 import React from 'react';
 import {RightSidebar} from "../../../web/js/ui/motion/RightSidebar";
 import {AccountControl} from "../../../web/js/ui/cloud_auth/AccountControl";
-import {UserInfo} from "../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLayer";
 import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
@@ -57,7 +56,6 @@ namespace devices {
 
 }
 
-// FIXME: mui this needs to be a swipable drawer...
 export const AccountControlSidebar = (props: AccountControlSidebarProps) => (
 
     <DeviceRouter phone={<devices.Phone {...props}/>}

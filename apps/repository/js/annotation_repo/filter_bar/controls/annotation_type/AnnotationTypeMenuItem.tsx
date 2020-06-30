@@ -14,8 +14,6 @@ export const AnnotationTypeMenuItem = (props: IProps) => {
 
     const {selected} = props;
 
-    // FIXME: needs CSS for selected I think.
-
     return (
         <MenuItem onClick={() => props.onClick()}
                   className={selected ? 'font-weight-bold' : undefined}>

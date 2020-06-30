@@ -269,7 +269,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                          icon={<PhotoSizeSelectLargeIcon/>}
                          onClick={onCreateAreaHighlight}/>
 
-            {/*FIXME: pagemarks aren't being deleted properly as they're not doing batches             */}
             {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUISubMenu text="Pagemark"
                             icon={<BookmarkIcon/>}>

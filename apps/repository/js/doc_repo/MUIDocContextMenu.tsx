@@ -16,7 +16,8 @@ interface IState {
     readonly mouseY?: number;
 }
 
-// FIXME replace this with useContextMenu like the annotation repo
+// TODO ... migrate to function component and replace this with useContextMenu
+// like the annotation repo
 
 export class MUIDocContextMenu extends React.Component<IProps, IState> {
 

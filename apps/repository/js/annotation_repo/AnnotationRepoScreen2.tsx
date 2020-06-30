@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {FixedNav} from '../FixedNav';
 import {RepoFooter} from "../repo_footer/RepoFooter";
-import {Link} from "react-router-dom";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {FloatingActionButton} from "../../../../web/js/ui/mobile/FloatingActionButton";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
@@ -14,7 +12,7 @@ import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
-import { StartReviewSpeedDial } from './StartReviewSpeedDial';
+import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 
 namespace main {
 
@@ -158,7 +156,6 @@ namespace screen {
                             alignItems: 'center'
                          }}>
 
-                        {/*FIXME add this again*/}
                         <StartReviewDropdown />
 
                         <div style={{

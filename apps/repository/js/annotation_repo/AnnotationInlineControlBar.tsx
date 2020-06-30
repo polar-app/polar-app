@@ -25,7 +25,7 @@ export const AnnotationInlineControlBar = React.memo((props : IProps) => {
                  }}
                  className="p-1">
 
-                {/*FIXME: I think this should be bold, 14px and text-secondary*/}
+                {/* TODO: I think this should be bold, 14px and text-secondary */}
                 <div style={{
                          // fontWeight: 'bold'
                      }}>

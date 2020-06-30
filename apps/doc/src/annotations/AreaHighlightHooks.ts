@@ -12,8 +12,7 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
-
-const log = Logger.create();
+import {useLogger} from "../../../../web/js/mui/MUILogger";
 
 export interface AreaHighlightCreatedOpts {
     readonly pointWithinPageElement: IPoint;
@@ -37,6 +36,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     const {onAreaHighlight} = useAnnotationMutationsContext();
     const {docScale, docMeta} = useDocViewerStore();
+    const log = useLogger();
 
     function onAreaHighlightCreated(opts: AreaHighlightCreatedOpts) {
 
@@ -66,7 +66,6 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         }
 
-        // FIXME: better error handling
         doAsync()
             .catch(err => log.error(err));
 
@@ -101,7 +100,6 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         }
 
-        // FIXME: better error handling
         doAsync()
             .catch(err => log.error(err));
 

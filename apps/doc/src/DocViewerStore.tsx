@@ -322,7 +322,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             deletePagemark(pageNum);
             createPagemarksForRange(pageNum, percentage);
 
-            // FIXME: this isn't writing it to storage
             writeUpdatedDocMetas([docMeta])
                .catch(err => log.error(err));
         }

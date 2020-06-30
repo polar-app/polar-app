@@ -122,14 +122,6 @@ const DocTagsTagsWidget = (props: IRenderProps) => {
 
 const TagInputBody = (props: IRenderProps) => {
 
-    // FIXME: command+enter...
-
-    console.log("FIXME: props; ", props);
-
-    // FIXME: this isn't working because
-    // the autocomplete widget itself has state so we need to control
-    // it directly
-
     return <Dialog open={props.open}
                    onClose={props.onCancel}>
 
@@ -323,20 +315,6 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
 
     }
 
-    // FIXME: make sure escape and enter work here...
-
-    // private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
-    //
-    //     if (event.key === "Escape") {
-    //         this.onCancel();
-    //     }
-    //
-    //     if (event.getModifierState("Control") && event.key === "Enter") {
-    //         this.onDone();
-    //     }
-    //
-    // }
-
     private handleChange(selectedOptions: ReadonlyArray<TagOption>) {
 
         const tags = TagOptions.toTags(selectedOptions);
@@ -350,7 +328,10 @@ export class MUITagInputControl extends React.Component<IProps, IState> {
                 invalidTags.map(current => current.label)
                     .join(", ");
 
-            // FIXME: add this back in with useDialogManager
+            // FIXME: add this back in with useDialogManager but we first have
+            // to port this to a functional component - which we should do
+            // anyway.
+
             // Toaster.warning("Some tags were excluded - spaces and other control characters not supported: " + invalidTagsStr,
             //                 "Invalid tags");
 

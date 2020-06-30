@@ -119,10 +119,6 @@ interface IProps {
     readonly row: RepoDocInfo;
 }
 
-// FIXME: enter keyboard command should open the current row...
-
-
-// FIXME: this is the problem, we're re-rendering each row again
 export const DocRepoTableRow = React.memo((props: IProps) => {
 
     const classes = useStyles();

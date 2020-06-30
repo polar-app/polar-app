@@ -95,7 +95,6 @@ interface IAnnotationRepoStore {
 
 }
 
-// FIXME extends IAnnotationMutationCallbacks
 interface IAnnotationRepoCallbacks {
 
     readonly selectRow: (selectedID: IDStr,
@@ -171,7 +170,8 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
 
     function doSort(data: ReadonlyArray<IDocAnnotation>) {
 
-        // FIXME: try to move to the same sort infra as the doc repo
+        // TODO: try to move to the same sort infra as the doc repo so that
+        // we can reference columns, etc.
 
         return arrayStream(data)
             .sort((a, b) => {
@@ -190,12 +190,12 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
 
         // compute the view, then the viewPage
 
-        // FIXME: we only have to resort and recompute the view when the filters
+        // TODO: we only have to resort and recompute the view when the filters
         // or the sort order changes.
 
-        // FIXME: more sort options...
+        // TODO: more sort options...
 
-        // FIXME: try to auto select the first item BUT the problem is that we
+        // TODO: try to auto select the first item BUT the problem is that we
         // might not want to do this due to updates that aren't reloading the
         // page.  Make sure all the mutation type would work with this.
 
@@ -204,7 +204,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
         // Now that we have new data, we have to also apply the filters and sort
         // order to the results, then update the view + viewPage
 
-        // FIXME: sort with Sorting.stableSort.
+        // TODO: sort with Sorting.stableSort.
         const view = Mappers.create(data)
             .map(current => AnnotationRepoFilters2.execute(current, filter))
             // .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
@@ -347,9 +347,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     function setPage(page: number) {
 
         const store = storeProvider();
-
-        // FIXME: auto-select the first row on the next page when changing
-        // so that we have an item to view.
 
         mutator.doReduceAndUpdateState({
             ...store,

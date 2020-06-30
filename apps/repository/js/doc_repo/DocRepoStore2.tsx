@@ -67,11 +67,6 @@ interface IDocRepoStore {
     readonly viewPage: ReadonlyArray<RepoDocInfo>;
 
     /**
-     * The columns the user wants to view.
-     */
-    readonly columns: DocRepoTableColumnsMap;
-
-    /**
      * The selected records as pointers in to viewPage
      */
     readonly selected: ReadonlyArray<IDStr>;
@@ -173,12 +168,6 @@ const initialStore: IDocRepoStore = {
     viewPage: [],
     selected: [],
 
-    // FIXME this is actually another component and shouldn't be here I think..
-
-    // FIXME: I think some of these are more the view configuration and
-    // should probably be sorted outside the main repo
-    columns: IDMaps.create(Object.values(new DocRepoTableColumns())),
-
     orderBy: 'progress',
     order: 'desc',
     page: 0,
@@ -187,11 +176,6 @@ const initialStore: IDocRepoStore = {
     filters: {},
     _refresh: 0
 }
-
-
-//
-// FIXME might neeed a new object type... mutator... which we can give to the
-// callbacks object so that it can mutate the store without using hooks.
 
 interface Mutator {
     doReduceAndUpdateState: (newStore: IDocRepoStore) => void;
@@ -214,7 +198,7 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
 
         // compute the view, then the viewPage
 
-        // FIXME: we only have to resort and recompute the view when the filters
+        // TODO: we only have to resort and recompute the view when the filters
         // or the sort order changes.
 
         const {data, page, rowsPerPage, order, orderBy, filters} = tmpStore;
@@ -791,9 +775,6 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
                            log);
 
 }
-
-// FIXME: I want to rework this so that, untilyou use the provider DocRepoStoreProvider,
-// a MOCK object is returned... mock/proxy objects would be great here..
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({

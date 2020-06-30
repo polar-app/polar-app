@@ -38,7 +38,7 @@ const FullScreenButton = React.memo(() => {
 
     const [fullScreen, setFullScreen] = useState(false);
 
-    // FIXME: shift+command+f for macos full-screen
+    // TODO: shift+command+f for macos full-screen
     // make this a hook that we can reuse...
 
     function requestFullScreen() {

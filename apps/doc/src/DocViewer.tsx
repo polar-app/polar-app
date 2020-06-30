@@ -240,9 +240,9 @@ export const DocViewer = React.memo(() => {
 
     useAnnotationBar();
 
-    // FIXME: I think I can have hard wired types for state transition functions
-    // like an uninitialized store, with missing values, then an initialized
-    // one with a different 'type' value.
+    // TODO: I think I can have hard wired types for state transition functions
+    // like an uninitialized store, with missing values, then an initialized one
+    // with a different 'type' value.
 
     useComponentDidMount(() => {
 
@@ -259,15 +259,10 @@ export const DocViewer = React.memo(() => {
 
             // FIXME useSnapshotSubscriber for this so that we don't have to worry
             // about component unmount.
-            // FIXME use a Progress control so the page shows itself loading state
 
             const persistenceLayer
                 = persistenceLayerContext.persistenceLayerProvider();
 
-            // FIXME: load the file too
-
-            // FIXME: unsubscribe on component unmount
-            // FIXME not getting intial snapshot
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {

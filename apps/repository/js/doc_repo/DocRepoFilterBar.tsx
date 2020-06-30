@@ -45,7 +45,7 @@ export const DocRepoFilterBar = (props: IProps) => {
                   alignItems="center">
 
                 <Grid item>
-                    {/*FIXME: add tooltips back in */}
+                    {/*TODO: add tooltips back in */}
                     {/*<Tooltip title="Only show flagged items">*/}
                     <MUIToggleButton id="toggle-flagged"
                                      size="medium"

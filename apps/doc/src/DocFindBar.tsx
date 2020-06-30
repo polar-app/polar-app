@@ -31,8 +31,6 @@ function useFindCallback(): FindCallback {
             return;
         }
 
-        // FIXME: we should re-execute if the new query doesn't equal the
-        // current query
         if (findHandler && isEqual(opts, findHandler.opts)) {
             // there's already a find handler so that means there's an active
             // search so we should run the search 'again' to find the next match

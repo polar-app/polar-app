@@ -42,9 +42,6 @@ export const DocRepoTableToolbar = React.memo((props: IProps) => {
         }
     }
 
-    // FIXME the math here is all wrog, we need the total number of items on
-    // the page, and then only teh selected count of items on the page
-
     return (
         <>
             <Grid container

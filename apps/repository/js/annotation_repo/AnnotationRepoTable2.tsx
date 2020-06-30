@@ -22,7 +22,7 @@ interface ToolbarProps {
     readonly onChangeRowsPerPage: (rowsPerPage: number) => void;
 }
 
-// FIXME: move to a dedicated component
+// TODO: move to a dedicated component
 const Toolbar = React.memo((props: ToolbarProps) => {
 
     // TODO: don't use props for callbacks...

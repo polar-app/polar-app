@@ -12,7 +12,6 @@ function useComponentProgressLoader() {
 }
 
 const LoadingBar = () => {
-    console.log("FIXME: showing loading bar");
 
     return (
         <LinearProgress style={{
@@ -30,7 +29,6 @@ const StartLoading = () => {
     const loader = useComponentProgressLoader();
 
     React.useEffect(() => {
-        console.log("FIXME StartLoading");
         loader.setLoading(true);
     }, [])
 
@@ -42,7 +40,6 @@ const EndLoading = () => {
     const loader = useComponentProgressLoader();
 
     React.useEffect(() => {
-        console.log("FIXME EndLoading");
         loader.setLoading(false);
     }, [])
 
@@ -62,8 +59,6 @@ export const ComponentProgressLoader = React.memo((props: IProps) => {
             setLoading
         };
     }, []);
-
-    console.log("FIXME: loading: ", loading);
 
     return (
         <ComponentProgressLoaderContext.Provider value={context}>
