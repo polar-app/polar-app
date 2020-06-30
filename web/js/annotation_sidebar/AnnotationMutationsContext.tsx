@@ -107,12 +107,6 @@ export interface IFlashcardUpdate {
 
 }
 
-// export interface IFlashcardUpdate extends IAnnotationMutationSelected {
-//     readonly type: 'update';
-//     readonly parent: IRef;
-//     readonly flashcardType: FlashcardType,
-//     readonly fields: Readonly<FlashcardInputFieldsType>
-// }
 
 export interface IFlashcardDelete {
     readonly type: 'delete';
@@ -334,53 +328,6 @@ export namespace DocAnnotationsMutator {
         }
 
     }
-
-
-    /**
-     * @Deprecated
-     */
-    // export function onFlashcard(docMeta: IDocMeta,
-    //                             pageMeta: IPageMeta,
-    //                             mutation: IFlashcardMutation) {
-    //
-    //     switch (mutation.type) {
-    //
-    //         case "create":
-    //             FlashcardActions.create(mutation.parent,
-    //                                     pageMeta,
-    //                                     mutation.flashcardType,
-    //                                     mutation.fields);
-    //             break;
-    //         //
-    //         case "update":
-    //
-    //             const selected = mutation.selected || [];
-    //
-    //             for (const current of selected) {
-    //
-    //                 const flashcard = current.original as IFlashcard;
-    //
-    //                 FlashcardActions.update(docMeta,
-    //                                         pageMeta,
-    //                                         mutation.parent,
-    //                                         mutation.flashcardType,
-    //                                         mutation.fields,
-    //                                         flashcard);
-    //
-    //             }
-    //
-    //             break;
-    //
-    //         case "delete":
-    //             FlashcardActions.delete(docMeta,
-    //                                     pageMeta,
-    //                                     mutation.parent,
-    //                                     mutation.existing);
-    //             break;
-    //
-    //     }
-    //
-    // }
 
     export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
 
