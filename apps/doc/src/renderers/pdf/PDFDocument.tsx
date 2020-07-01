@@ -6,10 +6,7 @@ import {
     PDFRenderingQueue,
     PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
-import {
-    PDFDocumentProxy,
-    PDFViewerOptions
-} from "pdfjs-dist";
+import {PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -35,6 +32,16 @@ import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
 
 import 'pdfjs-dist/web/pdf_viewer.css';
 import './PDFDocument.css';
+import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {Pagemarks} from "../../../../../web/js/metadata/Pagemarks";
+import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
+import {
+    usePersistenceLayerContext,
+    usePrefsContext
+} from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
+import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
+import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -114,6 +121,7 @@ export type OnFinderCallback = Callback1<Finder>;
 
 interface IProps {
     readonly docURL: URLStr;
+    readonly docMeta: IDocMeta;
 }
 
 export const PDFDocument = React.memo((props: IProps) => {
@@ -121,10 +129,13 @@ export const PDFDocument = React.memo((props: IProps) => {
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[0]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
+    const log = useLogger();
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
     const {docURL} = props;
     const {setFinder} = useDocFindCallbacks();
+    const {persistenceLayerProvider} = usePersistenceLayerContext();
+    const prefs = usePrefsContext();
 
     useComponentDidMount(() => {
 
@@ -133,7 +144,7 @@ export const PDFDocument = React.memo((props: IProps) => {
         doLoad(docViewerRef.current)
             .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
 
-    })
+    });
 
     const doLoad = async (docViewer: DocViewer) => {
 
@@ -236,6 +247,43 @@ export const PDFDocument = React.memo((props: IProps) => {
         }
 
         setDocScale(new PDFDocScale());
+
+        function enableAutoPagemarks() {
+
+            if (prefs.get(KnownPrefs.AUTO_PAGEMARKS) !== 'true') {
+                // only enable this via prefs now...
+                return;
+            }
+
+            console.log("Auto pagemarks enabled");
+
+            const {docMeta} = props;
+
+            async function doWriteDocMeta() {
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+            }
+
+            const extender = Pagemarks.createExtender(docMeta);
+
+            function onPagemarkExtend(extendPagemark: ExtendPagemark) {
+
+                // perform the mutation of the docMeta now...
+                extender(extendPagemark);
+
+                // then persist it back out..
+
+                doWriteDocMeta()
+                    .catch(err => log.error("Unable to write docMeta: ", err));
+
+            }
+
+            // start the auto-pagemark system.
+            Scrollers.register(onPagemarkExtend, 'full');
+
+        }
+
+        enableAutoPagemarks();
 
     }
 

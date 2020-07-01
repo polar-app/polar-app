@@ -19,10 +19,15 @@ import {PersistenceLayerMutator} from './PersistenceLayerMutator';
 import {Provider} from "polar-shared/src/util/Providers";
 import {
     BaseDocMetaLookupContext,
-    DocMetaLookupContext,
-    IDocMetaLookupContext
+    DocMetaLookupContext
 } from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Pref} from '../../../../web/js/util/prefs/Prefs';
+
+export interface IPrefsContext {
+    readonly get: (key: string) => string | undefined;
+    readonly fetch: (key: string) => Pref | undefined;
+}
 
 export interface ITagsContext {
 
@@ -70,6 +75,27 @@ export function useTagsContext() {
 
 export function useTagDescriptorsContext() {
     return useContextMemo(TagDescriptorsContext);
+}
+
+export function usePrefsContext() {
+
+    const {persistenceLayerProvider} = usePersistenceLayerContext();
+
+    const prefsContext: IPrefsContext = {
+
+        get: (key: string): string | undefined => {
+            const datastore = persistenceLayerProvider().datastore;
+            return datastore.getPrefs().get().get(key).getOrUndefined();
+        },
+        fetch: (key: string): Pref | undefined => {
+            const datastore = persistenceLayerProvider().datastore;
+            return datastore.getPrefs().get().fetch(key);
+        }
+
+    }
+
+    return prefsContext;
+
 }
 
 export type TagsType = 'documents' | 'annotations';

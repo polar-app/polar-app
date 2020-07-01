@@ -80,7 +80,7 @@ const SettingEntry = (props: SettingEntryProps) => {
 
                 <div className="mt-auto mb-auto"
                      style={{flexGrow: 1}}>
-                    <b>{props.title}</b>
+                    <h2><b>{props.title}</b></h2>
                 </div>
 
                 <div className="mt-auto mb-auto">
@@ -141,7 +141,7 @@ export const SettingsScreen = (props: IProps) => {
                 <ConfigureNavbar/>
 
                 <div className="">
-                    <h2>General</h2>
+                    <h1>General</h1>
 
                     <p>
                         General settings. Note that some of
@@ -175,14 +175,14 @@ export const SettingsScreen = (props: IProps) => {
                                   prefs={prefs}
                                   preview={true}/>
 
-                    <DeviceRouters.Desktop>
-                        <SettingEntry
-                            title="Table and phone reading"
-                            description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."
-                            name="mobile-reading"
-                            prefs={prefs}
-                            preview={true}/>
-                    </DeviceRouters.Desktop>
+                    {/*<DeviceRouters.Desktop>*/}
+                    {/*    <SettingEntry*/}
+                    {/*        title="Table and phone reading"*/}
+                    {/*        description="Enabled document reading on tablet and phone devices.  This is currently under development and probably will not work."*/}
+                    {/*        name="mobile-reading"*/}
+                    {/*        prefs={prefs}*/}
+                    {/*        preview={true}/>*/}
+                    {/*</DeviceRouters.Desktop>*/}
 
                     <SettingEntry title="Development"
                                   description="Enables general development features for software engineers working on Polar."
