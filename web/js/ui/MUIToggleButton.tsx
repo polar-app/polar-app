@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import { DeviceRouters } from './DeviceRouter';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,7 +67,11 @@ export const MUIToggleButton = (props: IProps) => {
                 disableRipple
                 size={size}>
 
-            {props.label}
+            <DeviceRouters.NotPhone>
+                <>
+                    {props.label}
+                </>
+            </DeviceRouters.NotPhone>
 
         </Button>
 

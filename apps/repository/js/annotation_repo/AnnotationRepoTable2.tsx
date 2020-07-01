@@ -13,6 +13,10 @@ import {
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
+import {MUINextIconButton} from "../../../../web/js/mui/icon_buttons/MUINextIconButton";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {DeviceRouter, DeviceRouters} from '../../../../web/js/ui/DeviceRouter';
+import {MUIPrevIconButton} from "../../../../web/js/mui/icon_buttons/MUIPrevIconButton";
 
 interface ToolbarProps {
     readonly nrRows: number;
@@ -38,31 +42,81 @@ const Toolbar = React.memo((props: ToolbarProps) => {
     };
 
     return (
-        <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            component="div"
-            size="small"
-            count={props.nrRows}
-            rowsPerPage={props.rowsPerPage}
-            style={{
-                padding: 0,
-                overflow: "hidden",
-                minHeight: '4.5em',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end'
-            }}
-            // onDoubleClick={event => {
-            //     event.stopPropagation();
-            //     event.preventDefault();
-            // }}
-            page={props.page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-    )
+        <DeviceRouter.Desktop>
+            <>
+
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, 50]}
+                    component="div"
+                    size="small"
+                    count={props.nrRows}
+                    rowsPerPage={props.rowsPerPage}
+                    style={{
+                        padding: 0,
+                        overflow: "hidden",
+                        minHeight: '4.5em',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                    }}
+                    // onDoubleClick={event => {
+                    //     event.stopPropagation();
+                    //     event.preventDefault();
+                    // }}
+                    page={props.page}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+
+                <Divider orientation="horizontal"/>
+
+            </>
+        </DeviceRouter.Desktop>
+    );
 
 }, isEqual);
+
+namespace Handheld {
+
+    export const PrevPage = React.memo(() => {
+
+        const {page} = useAnnotationRepoStore();
+        const {setPage} = useAnnotationRepoCallbacks();
+
+        if (page <= 0) {
+            return null;
+        }
+
+        return (
+            <DeviceRouters.Handheld>
+                <MUIPrevIconButton color='secondary'
+                                   onClick={() => setPage(page - 1)}/>
+            </DeviceRouters.Handheld>
+        );
+
+    });
+
+    export const NextPage = React.memo(() => {
+
+        const {page, rowsPerPage, view} = useAnnotationRepoStore();
+        const {setPage} = useAnnotationRepoCallbacks();
+
+        const nrPages = view.length / rowsPerPage;
+
+        if (page === nrPages) {
+            return null;
+        }
+
+        return (
+            <DeviceRouters.Handheld>
+                <MUINextIconButton color='secondary'
+                                   onClick={() => setPage(page + 1)}/>
+            </DeviceRouters.Handheld>
+        );
+
+    });
+
+}
 
 export const AnnotationRepoTable2 = React.memo(() => {
 
@@ -92,8 +146,6 @@ export const AnnotationRepoTable2 = React.memo(() => {
                          onChangePage={setPage}
                          onChangeRowsPerPage={setRowsPerPage}/>
 
-                <Divider orientation="horizontal"/>
-
                 <div id="doc-table"
                      style={{
                          display: 'flex',
@@ -103,6 +155,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                          overflow: 'auto'
                      }}>
 
+                    <Handheld.PrevPage/>
 
                     <TableContainer style={{
                                         flexGrow: 1,
@@ -120,6 +173,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                aria-label="enhanced table">
 
                             <TableBody>
+
                                 {viewPage.map((annotation, index) => {
 
                                         const viewIndex = (page * rowsPerPage) + index;
@@ -134,8 +188,11 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                     })}
 
                             </TableBody>
+
                         </Table>
                     </TableContainer>
+
+                    <Handheld.NextPage/>
 
                 </div>
 
