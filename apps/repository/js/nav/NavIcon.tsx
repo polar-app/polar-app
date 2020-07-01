@@ -37,7 +37,7 @@ export class NavIcon extends React.PureComponent<IProps, IState> {
 
         return (
             <NavLink>
-                <PolarSVGIcon width='35px' height='35px'/>
+                <PolarSVGIcon width={35} height={35}/>
             </NavLink>
         );
 

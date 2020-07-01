@@ -200,8 +200,8 @@ export const TabbedBrowserDemo = () => {
                     {/*            color="inherit"*/}
                     {/*            style={{marginLeft: '5px', marginRight: '5px'}}*/}
                     {/*            aria-label="menu">*/}
-                        <div style={{width: '32px', height: '32px'}}>
-                            <PolarSVGIcon/>
+                        <div>
+                            <PolarSVGIcon width={32} height={32}/>
                         </div>
 
                     {/*</IconButton>*/}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocInfoStatistics} from '../../../../web/js/metadata/DocInfoStatistics';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import StatTitle from './StatTitle';
@@ -36,7 +35,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
             <div id="new-documents-per-day-chart" className="p-1">
 
                 <StatBox style={{height: '325px', width: '100%'}}>
-
+                    <>
                     <StatTitle>New Documents Per Day</StatTitle>
 
                     <ResponsiveBar
@@ -114,7 +113,7 @@ export default class NewDocumentRateChart extends React.Component<IProps, IState
                         motionDamping={15}
 
                     />
-
+                    </>
                 </StatBox>
 
             </div>

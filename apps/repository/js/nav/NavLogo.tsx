@@ -55,12 +55,12 @@ export const NavLogo = React.memo(() => {
                 <NavLink>
 
                     <div style={{
-                        height: '50px',
-                        width: '50px',
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}>
-                        <PolarSVGIcon width={50}/>
+                             height: '50px',
+                             width: '50px',
+                             display: 'flex',
+                             alignItems: 'center'
+                         }}>
+                        <PolarSVGIcon width={50} height={50}/>
                     </div>
 
                 </NavLink>

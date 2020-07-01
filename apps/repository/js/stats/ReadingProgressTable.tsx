@@ -57,6 +57,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
 
         return <div id="reading-progress-table">
             <StatBox>
+                <>
                 <StatTitle>Reading Progress</StatTitle>
 
                 <div style={{height: '150px'}}>
@@ -124,7 +125,7 @@ export default class ReadingProgressTable extends React.Component<IProps, IState
                     </p>
 
                 </div>
-
+                </>
             </StatBox>
 
         </div>;

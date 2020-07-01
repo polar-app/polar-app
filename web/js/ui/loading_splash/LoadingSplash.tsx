@@ -7,8 +7,8 @@ export function LoadingSplash() {
     return (
         <SplashBox>
 
-            <div className="logo" style={{width: 250, height: 250}}>
-                <PolarSVGIcon/>
+            <div className="logo">
+                <PolarSVGIcon width={250} height={250}/>
             </div>
 
         </SplashBox>

@@ -80,7 +80,7 @@ export const LoginScreen = React.memo((props: IProps) => {
 
                     <div className="text-center">
 
-                        <PolarSVGIcon width="175" height="175"/>
+                        <PolarSVGIcon width={175} height={175}/>
 
                         <h1>
                             Login to Polar
