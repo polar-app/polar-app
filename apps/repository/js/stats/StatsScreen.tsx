@@ -113,6 +113,7 @@ const Desktop = (props: ReviewerProps) => {
                    flexGrow: 1,
                    minWidth: 0,
                    minHeight: 0,
+                   overflowY: 'auto'
                }}>
 
             <div style={{
@@ -120,7 +121,6 @@ const Desktop = (props: ReviewerProps) => {
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      flexGrow: 1,
-                     overflowY: 'auto'
                  }}>
 
                 <ReviewerStats isReviewer={props.isReviewer}/>
