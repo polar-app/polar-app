@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
-import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
-import {Proxies} from '../../js/proxies/Proxies';
-import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {Comments} from "../../js/metadata/Comments";
-import {ObjectIDs} from '../../js/util/ObjectIDs';
 
 export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
 
@@ -13,8 +8,6 @@ export class ViewOrEditCommentExample extends React.Component<IProps, IState> {
     }
 
     public render() {
-
-        const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
 
         const html = 'This is <b>the</b> comment.';
 
