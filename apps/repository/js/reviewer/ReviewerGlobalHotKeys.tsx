@@ -1,3 +1,5 @@
+// @NotStale
+
 import React from "react";
 import {GlobalHotKeys} from "react-hotkeys";
 import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";

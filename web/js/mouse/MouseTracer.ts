@@ -1,3 +1,4 @@
+// @NotStale
 
 /**
  * Create a visual identifier on page of the current mouse position from the

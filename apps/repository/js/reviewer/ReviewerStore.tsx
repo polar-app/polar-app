@@ -1,3 +1,5 @@
+// @NotStale
+
 import React from 'react';
 import {
     createObservableStore,
