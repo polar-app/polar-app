@@ -1,34 +1,28 @@
 import * as React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
+import CircularProgress
+    from '@material-ui/core/CircularProgress/CircularProgress';
 
-export class LoadingProgress extends React.Component<IProps, IState> {
+interface IProps {
+    readonly style?: React.CSSProperties;
+}
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
+export const LoadingProgress = React.memo((props: IProps) => {
 
-    public render() {
+    const style = props.style || {};
 
-        return (
-            <div className="mt-2 mb-2"
-                 style={{
-                     display: 'flex',
-                     flexGrow: 1,
-                     opacity: 0.8
-                 }}>
+    return (
+        <div className="mt-2 mb-2"
+             style={{
+                 display: 'flex',
+                 flexGrow: 1,
+                 opacity: 0.8,
+                 ...style
+             }}>
 
-                <div className="m-auto">
-                    <CircularProgress style={{width: '125px', height: '125px'}}/>
-                </div>
-
+            <div className="m-auto">
+                <CircularProgress style={{width: '125px', height: '125px'}}/>
             </div>
-        );
-    }
 
-}
-
-export interface IProps {
-}
-
-export interface IState {
-}
+        </div>
+    );
+});

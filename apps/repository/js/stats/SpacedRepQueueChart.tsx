@@ -10,8 +10,118 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
+import useTheme from '@material-ui/core/styles/useTheme';
+
+const HEIGHT = '300px';
 
 const log = Logger.create();
+
+interface ChartProps {
+    readonly type: 'queue' | 'completed';
+    readonly lineData: Serie[];
+}
+
+const Chart = React.memo((props: ChartProps) => {
+
+    const theme = useTheme();
+
+    const createTitle = () => {
+        switch (props.type) {
+            case "queue":
+                return "Number of tasks pending (queue length)";
+            case "completed":
+                return "Number of tasks completed";
+        }
+    };
+
+    const title = createTitle();
+
+    return (
+
+        <div className="">
+            <StatBox style={{height: HEIGHT, width: '100%'}}>
+                <StatTitle>{title}</StatTitle>
+
+                <ResponsiveLine
+                    data={props.lineData}
+                    margin={{
+                        top: 10,
+                        right: 10,
+                        bottom: 50,
+                        left: 40
+                    }}
+                    // padding={0.3}
+                    colors={{ scheme: 'nivo' }}
+                    // colorBy="id"
+                    enableArea={true}
+                    yScale={{
+                        type: 'linear'
+                    }}
+                    xScale={{
+                        type: 'time',
+                        // format: '%Y-%m-%dT%h:%m:%s.%msZ',
+                        // format: '%Y-%m-%d',
+                        // precision: 'day',
+                    }}
+                    // xFormat="time:%Y-%m-%d"
+                    axisBottom={{
+                        format: '%b %d',
+                        // tickValues: ['every 2 days', 'every 2 days', 'every 2 days'],
+                        tickValues: 5,
+                        // legend: 'time scale',
+                        // legendOffset: -12,
+                    }}
+                    // useMesh={true}
+                    // enablePointLabel={true}
+                    animate={true}
+                    theme={{
+                        // TODO: the key property we need to make the legend
+                        // white is 'fill' and we should clean this up so it is just
+                        // the minimum we need
+                        markers: {
+                            textColor: theme.palette.text.primary
+                        },
+                        axis: {
+                            legend: {
+                                text: {
+                                    fill: theme.palette.text.primary,
+                                    color: theme.palette.text.primary
+                                }
+                            },
+                            ticks: {
+                                text: {
+                                    fill: theme.palette.text.primary,
+                                    color: theme.palette.text.primary
+                                }
+                            }
+                        },
+                        dots: {
+                            text: {
+                                fill: theme.palette.text.primary,
+                                color: theme.palette.text.primary
+                            }
+                        },
+                        legends: {
+                            text: {
+                                fill: theme.palette.text.primary,
+                                color: theme.palette.text.primary
+                            }
+                        },
+                        labels: {
+                            text: {
+                                fill: theme.palette.text.primary,
+                                color: theme.palette.text.primary
+                            }
+                        }
+                    }}
+                />
+            </StatBox>
+        </div>
+
+    );
+
+});
+
 
 export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
@@ -41,7 +151,7 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
         const {data} = this.state;
 
         if (! data) {
-            return <LoadingProgress/>;
+            return <LoadingProgress style={{height: HEIGHT}}/>;
         }
 
 
@@ -145,72 +255,14 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         };
 
-        const Chart = () => {
-
-            const createTitle = () => {
-                switch (this.props.type) {
-                    case "queue":
-                        return "Number of tasks pending (queue length)";
-                    case "completed":
-                        return "Number of tasks completed";
-                }
-            };
-
-            const title = createTitle();
-
-            return (
-
-                <div className="">
-                    <StatBox style={{height: '300px', width: '100%'}}>
-                        <StatTitle>{title}</StatTitle>
-
-                        <ResponsiveLine
-                            data={lineData}
-                            margin={{
-                                top: 10,
-                                right: 10,
-                                bottom: 50,
-                                left: 40
-                            }}
-                            // padding={0.3}
-                            colors="set1"
-                            // colorBy="id"
-                            enableArea={true}
-                            yScale={{
-                                type: 'linear'
-                            }}
-                            xScale={{
-                                type: 'time',
-                                // format: '%Y-%m-%dT%h:%m:%s.%msZ',
-                                // format: '%Y-%m-%d',
-                                // precision: 'day',
-                            }}
-                            // xFormat="time:%Y-%m-%d"
-                            axisBottom={{
-                                format: '%b %d',
-                                // tickValues: ['every 2 days', 'every 2 days', 'every 2 days'],
-                                tickValues: 5,
-                                // legend: 'time scale',
-                                // legendOffset: -12,
-                            }}
-                            // useMesh={true}
-                            // enablePointLabel={true}
-                            animate={true}
-
-                        />
-                    </StatBox>
-                </div>
-
-            );
-
-        };
 
         const Main = () => {
 
             if (lineData[0].data.length < 3) {
                 return <NeedChardData/>;
             } else {
-                return <Chart/>;
+                return <Chart type={this.props.type}
+                              lineData={lineData}/>;
             }
 
         };
