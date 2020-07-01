@@ -38,85 +38,91 @@ const Chart = React.memo((props: ChartProps) => {
 
     return (
 
-        <div className="">
-            <StatBox style={{height: HEIGHT, width: '100%'}}>
+        <StatBox>
+            <>
                 <StatTitle>{title}</StatTitle>
 
-                <ResponsiveLine
-                    data={props.lineData}
-                    margin={{
-                        top: 10,
-                        right: 10,
-                        bottom: 50,
-                        left: 40
-                    }}
-                    // padding={0.3}
-                    colors={{ scheme: 'nivo' }}
-                    // colorBy="id"
-                    enableArea={true}
-                    yScale={{
-                        type: 'linear'
-                    }}
-                    xScale={{
-                        type: 'time',
-                        // format: '%Y-%m-%dT%h:%m:%s.%msZ',
-                        // format: '%Y-%m-%d',
-                        // precision: 'day',
-                    }}
-                    // xFormat="time:%Y-%m-%d"
-                    axisBottom={{
-                        format: '%b %d',
-                        // tickValues: ['every 2 days', 'every 2 days', 'every 2 days'],
-                        tickValues: 5,
-                        // legend: 'time scale',
-                        // legendOffset: -12,
-                    }}
-                    // useMesh={true}
-                    // enablePointLabel={true}
-                    animate={true}
-                    theme={{
-                        // TODO: the key property we need to make the legend
-                        // white is 'fill' and we should clean this up so it is just
-                        // the minimum we need
-                        markers: {
-                            textColor: theme.palette.text.primary
-                        },
-                        axis: {
-                            legend: {
+                <div style={{
+                         height: HEIGHT,
+                         width: '100%'
+                     }}>
+
+                    <ResponsiveLine
+                        data={props.lineData}
+                        margin={{
+                            top: 10,
+                            right: 10,
+                            bottom: 50,
+                            left: 40
+                        }}
+                        // padding={0.3}
+                        colors={{ scheme: 'nivo' }}
+                        // colorBy="id"
+                        enableArea={true}
+                        yScale={{
+                            type: 'linear'
+                        }}
+                        xScale={{
+                            type: 'time',
+                            // format: '%Y-%m-%dT%h:%m:%s.%msZ',
+                            // format: '%Y-%m-%d',
+                            // precision: 'day',
+                        }}
+                        // xFormat="time:%Y-%m-%d"
+                        axisBottom={{
+                            format: '%b %d',
+                            // tickValues: ['every 2 days', 'every 2 days', 'every 2 days'],
+                            tickValues: 5,
+                            // legend: 'time scale',
+                            // legendOffset: -12,
+                        }}
+                        // useMesh={true}
+                        // enablePointLabel={true}
+                        animate={true}
+                        theme={{
+                            // TODO: the key property we need to make the legend
+                            // white is 'fill' and we should clean this up so it is just
+                            // the minimum we need
+                            markers: {
+                                textColor: theme.palette.text.primary
+                            },
+                            axis: {
+                                legend: {
+                                    text: {
+                                        fill: theme.palette.text.primary,
+                                        color: theme.palette.text.primary
+                                    }
+                                },
+                                ticks: {
+                                    text: {
+                                        fill: theme.palette.text.primary,
+                                        color: theme.palette.text.primary
+                                    }
+                                }
+                            },
+                            dots: {
                                 text: {
                                     fill: theme.palette.text.primary,
                                     color: theme.palette.text.primary
                                 }
                             },
-                            ticks: {
+                            legends: {
+                                text: {
+                                    fill: theme.palette.text.primary,
+                                    color: theme.palette.text.primary
+                                }
+                            },
+                            labels: {
                                 text: {
                                     fill: theme.palette.text.primary,
                                     color: theme.palette.text.primary
                                 }
                             }
-                        },
-                        dots: {
-                            text: {
-                                fill: theme.palette.text.primary,
-                                color: theme.palette.text.primary
-                            }
-                        },
-                        legends: {
-                            text: {
-                                fill: theme.palette.text.primary,
-                                color: theme.palette.text.primary
-                            }
-                        },
-                        labels: {
-                            text: {
-                                fill: theme.palette.text.primary,
-                                color: theme.palette.text.primary
-                            }
-                        }
-                    }}
-                />
-            </StatBox>
-        </div>
+                        }}
+                    />
+                </div>
+            </>
+        </StatBox>
 
     );
 

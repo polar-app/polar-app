@@ -45,7 +45,7 @@ const Handheld = () => {
 
                     <RepoHeader.LeftMenuTarget/>
 
-                    <div className="mr-1">
+                    <div className="">
                         <NavIcon/>
                     </div>
 

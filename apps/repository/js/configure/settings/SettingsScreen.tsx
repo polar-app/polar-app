@@ -10,7 +10,6 @@ import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
-import {DeviceRouters} from '../../../../../web/js/ui/DeviceRouter';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 
 interface SettingEntryProps {
@@ -136,7 +135,7 @@ export const SettingsScreen = (props: IProps) => {
 
     return (
 
-        <DefaultPageLayout {...props}>
+        <DefaultPageLayout>
             <ConfigureBody>
                 <ConfigureNavbar/>
 

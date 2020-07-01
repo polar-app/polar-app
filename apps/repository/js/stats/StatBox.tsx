@@ -1,23 +1,19 @@
 import * as React from 'react';
 
-export class StatBox extends React.Component<IProps, IState> {
-
-    public render() {
-
-        return <div className="border rounded p-2 pb-4"
-                    style={this.props.style || {}}>
-
-            {this.props.children}
-
-        </div>;
-
-    }
-}
-
 export interface IProps {
     readonly style?: React.CSSProperties;
+    readonly children: React.ReactElement;
 }
 
-export interface IState {
+export const StatBox = (props: IProps) => {
 
-}
+    return (
+        <div className="p-1"
+             style={props.style || {}}>
+
+            {props.children}
+
+        </div>
+    );
+
+};

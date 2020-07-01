@@ -1,5 +1,3 @@
-import {SimpleTabs} from "../../../../web/js/ui/simple_tab/SimpleTabs";
-import {SimpleTab} from "../../../../web/js/ui/simple_tab/SimpleTab";
 import * as React from "react";
 
 export const ConfigureNavbar = () => (

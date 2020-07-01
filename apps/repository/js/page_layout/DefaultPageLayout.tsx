@@ -1,15 +1,8 @@
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {FixedNav} from "../FixedNav";
 import * as React from "react";
 
 interface IProps {
-
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
-
-    readonly children: any;
-
+    readonly children: React.ReactElement;
 }
 
 export const DefaultPageLayout = (props: IProps) => (
@@ -22,7 +15,7 @@ export const DefaultPageLayout = (props: IProps) => (
                            overflow: 'auto'
                        }}>
 
-            <div className="ml-auto mr-auto mt-3"
+            <div className="ml-auto mr-auto"
                  style={{maxWidth: '700px'}}>
 
                 {props.children}

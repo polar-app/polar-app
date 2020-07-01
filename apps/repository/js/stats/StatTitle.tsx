@@ -9,13 +9,7 @@ export default function StatTitle(props: IProps) {
 
     return (
 
-        <Typography align="center"
-                    color="textPrimary"
-                    variant="h4">
-
-            {props.children}
-
-        </Typography>
+        <h2>{props.children}</h2>
 
     );
 }

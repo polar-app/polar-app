@@ -196,9 +196,10 @@ const Desktop = (props: ReviewerProps) => {
 const PhoneAndTablet = React.memo((props: ReviewerProps) => {
 
     return (
-        <FixedNav id="doc-repository" className="statistics-view">
+        <FixedNav id="doc-repository"
+                  className="statistics-view">
 
-            <FixedNav.Body className="p-1">
+            <FixedNav.Body className="">
 
                 <DockLayout dockPanels={[
                     {
