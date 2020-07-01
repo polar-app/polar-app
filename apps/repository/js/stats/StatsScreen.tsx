@@ -3,16 +3,16 @@ import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import TopTagsChart from './TopTagsChart';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoHeader} from '../repo_header/RepoHeader';
-import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import Paper from '@material-ui/core/Paper';
+import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
+import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
 
 const log = Logger.create();
 
@@ -83,177 +83,172 @@ const SectionHeader = (props: any) => {
 };
 
 const SectionText = (props: any) => {
-    return <p className="text-lg text-grey700">
+    return <p className="text-lg">
         {props.children}
     </p>;
 };
 
-export default class StatsScreen extends React.Component<IProps, IState> {
+function useDocInfos(): ReadonlyArray<IDocInfo> {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const repoDocMetaManager = useRepoDocMetaManager();
 
-        this.getDocInfos = this.getDocInfos.bind(this);
+    return repoDocMetaManager.repoDocInfoIndex.values()
+                             .map(current => current.docInfo);
 
-        this.state = {
-        };
+}
 
-    }
+interface ReviewerProps {
+    readonly isReviewer: boolean;
+}
 
-    public componentDidMount(): void {
+const Desktop = (props: ReviewerProps) => {
+
+    const docInfos = useDocInfos();
+
+    return (
+
+        <FixedNav id="doc-repository"
+                  className="statistics-view pb-2">
+
+            <FixedNavBody style={{display: 'flex'}}>
+
+                <Paper square
+                       elevation={0}
+                       style={{
+                           flexGrow: 1,
+                           overflow: 'auto'
+                       }}>
+
+                    <ReviewerStats isReviewer={props.isReviewer}/>
+
+                    <PremiumFeature required='bronze'
+                                    feature="statistics"
+                                    size="lg">
+                        <TopTagsChart docInfos={docInfos}/>
+                    </PremiumFeature>
+
+                </Paper>
+
+                {/*<Container maxWidth="md">*/}
+
+                {/*<TopTagsChart docInfos={docInfos}/>*/}
+
+                {/*<SectionHeader>*/}
+                {/*    <h1>Statistics</h1>*/}
+
+                {/*    <SectionText>*/}
+                {/*        Polar keeps track of statistics of your document repository so you can better understand*/}
+                {/*        your reading habits and what types of documents are stored in your repository.*/}
+                {/*    </SectionText>*/}
+                {/*</SectionHeader>*/}
+
+                {/*<ReviewerStats isReviewer={this.state.isReviewer}/>*/}
+
+                {/*<SectionHeader>*/}
+                {/*    <h2>Reading</h2>*/}
+
+                {/*    <SectionText>*/}
+                {/*            Polar keeps track of your reading progress by counting pagemarks and number of pages*/}
+                {/*        you've read per day so you can focus setting a reading/study goal.*/}
+                {/*    </SectionText>*/}
+                {/*</SectionHeader>*/}
+
+                {/*<div className="row mt-2">*/}
+
+                {/*    <div className="col-lg-12">*/}
+                {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
+                {/*            <ReadingProgressTable docInfos={docInfos}/>*/}
+                {/*        </PremiumFeature>*/}
+                {/*    </div>*/}
+
+                {/*</div>*/}
+
+                {/*<SectionHeader>*/}
+                {/*    <h2>Documents</h2>*/}
+
+                {/*    <SectionText>*/}
+                {/*        Statistics on the number and type of documents you've added to your repository.*/}
+                {/*    </SectionText>*/}
+                {/*</SectionHeader>*/}
+
+                {/*<div className="row mt-2">*/}
+
+                {/*    <div className="col-lg-12">*/}
+                {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
+                {/*            <NewDocumentRateChart docInfos={docInfos}/>*/}
+                {/*        </PremiumFeature>*/}
+                {/*    </div>*/}
+
+                {/*</div>*/}
+
+                {/*</Container>*/}
+
+            </FixedNavBody>
+
+        </FixedNav>
+    );
+
+};
+
+const PhoneAndTablet = React.memo((props: ReviewerProps) => {
+
+    return (
+        <FixedNav id="doc-repository" className="statistics-view">
+
+            <FixedNav.Body className="p-1">
+
+                <DockLayout dockPanels={[
+                    {
+                        id: 'dock-panel-center',
+                        type: 'grow',
+                        component: (
+                            <div className="ml-1 mr-1">
+                                <ReviewerStats isReviewer={props.isReviewer}/>
+                            </div>
+                        )
+                    },
+                ]}/>
+
+            </FixedNav.Body>
+
+        </FixedNav>
+    );
+
+});
+
+
+export interface IState {
+    readonly isReviewer: boolean;
+}
+
+export const StatsScreen = React.memo(() => {
+
+    const [state, setState] = React.useState<IState>({isReviewer: false});
+
+    useComponentDidMount(() => {
 
         // TODO: we shouldn't use this I think as it's not supported well on modern react...
 
         // TODO: migrate this to the new DataProvider system as there is a race here
         // and this code isn't very pretty
 
-        ReviewerTasks.isReviewer()
-            .then(isReviewer => this.setState({isReviewer}))
+        const doAsync = async () => {
+            const isReviewer = await ReviewerTasks.isReviewer();
+            setState({isReviewer});
+        }
+
+        doAsync()
             .catch(err => log.error(err));
 
-    }
+    })
 
-    public render() {
+    const desktop = <Desktop {...state}/>;
+    const phoneAndTablet = <PhoneAndTablet {...state}/>;
 
-        const desktop = <StatsScreen.Desktop {...this.props}/>;
-        const phoneAndTablet = <StatsScreen.PhoneAndTablet {...this.props}/>;
+    return (
+        <DeviceRouter desktop={desktop}
+                      phone={phoneAndTablet}
+                      tablet={phoneAndTablet}/>
+    );
 
-        return <DeviceRouter desktop={desktop} phone={phoneAndTablet} tablet={phoneAndTablet}/>;
-
-    }
-
-    private getDocInfos(): ReadonlyArray<IDocInfo> {
-        return this.props.repoDocMetaManager.repoDocInfoIndex.values()
-            .map(current => current.docInfo);
-    }
-
-    public static PhoneAndTablet = class extends StatsScreen {
-        public render() {
-            return <FixedNav id="doc-repository" className="statistics-view">
-
-                <FixedNav.Body className="p-1">
-
-                    <DockLayout dockPanels={[
-                        {
-                            id: 'dock-panel-center',
-                            type: 'grow',
-                            component: (
-                                <div className="ml-1 mr-1">
-                                    <ReviewerStats isReviewer={this.state.isReviewer}/>
-                                </div>
-                            )
-                        },
-                    ]}/>
-
-                </FixedNav.Body>
-
-            </FixedNav>;
-        }
-    };
-
-    public static Desktop = class extends StatsScreen {
-
-        public render() {
-
-            const docInfos = this.getDocInfos();
-
-            return (
-
-                <FixedNav id="doc-repository" className="statistics-view pb-2">
-
-                    <header>
-
-                        <RepoHeader/>
-
-                    </header>
-
-                    <FixedNavBody style={{display: 'flex'}}>
-
-                        <Paper square
-                               elevation={0}
-                               style={{
-                                   flexGrow: 1,
-                                   overflow: 'auto'
-                               }}>
-
-                            <ReviewerStats isReviewer={this.state.isReviewer}/>
-
-                            <PremiumFeature required='bronze'
-                                            feature="statistics"
-                                            size="lg">
-                                <TopTagsChart docInfos={docInfos}/>
-                            </PremiumFeature>
-
-                        </Paper>
-
-                        {/*<Container maxWidth="md">*/}
-
-                            {/*<TopTagsChart docInfos={docInfos}/>*/}
-
-                            {/*<SectionHeader>*/}
-                            {/*    <h1>Statistics</h1>*/}
-
-                            {/*    <SectionText>*/}
-                            {/*        Polar keeps track of statistics of your document repository so you can better understand*/}
-                            {/*        your reading habits and what types of documents are stored in your repository.*/}
-                            {/*    </SectionText>*/}
-                            {/*</SectionHeader>*/}
-
-                            {/*<ReviewerStats isReviewer={this.state.isReviewer}/>*/}
-
-                            {/*<SectionHeader>*/}
-                            {/*    <h2>Reading</h2>*/}
-
-                            {/*    <SectionText>*/}
-                            {/*            Polar keeps track of your reading progress by counting pagemarks and number of pages*/}
-                            {/*        you've read per day so you can focus setting a reading/study goal.*/}
-                            {/*    </SectionText>*/}
-                            {/*</SectionHeader>*/}
-
-                            {/*<div className="row mt-2">*/}
-
-                            {/*    <div className="col-lg-12">*/}
-                            {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
-                            {/*            <ReadingProgressTable docInfos={docInfos}/>*/}
-                            {/*        </PremiumFeature>*/}
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
-
-                            {/*<SectionHeader>*/}
-                            {/*    <h2>Documents</h2>*/}
-
-                            {/*    <SectionText>*/}
-                            {/*        Statistics on the number and type of documents you've added to your repository.*/}
-                            {/*    </SectionText>*/}
-                            {/*</SectionHeader>*/}
-
-                            {/*<div className="row mt-2">*/}
-
-                            {/*    <div className="col-lg-12">*/}
-                            {/*        <PremiumFeature required='bronze' feature="statistics" size="lg">*/}
-                            {/*            <NewDocumentRateChart docInfos={docInfos}/>*/}
-                            {/*        </PremiumFeature>*/}
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
-
-                        {/*</Container>*/}
-
-                    </FixedNavBody>
-
-                </FixedNav>
-            );
-        }
-
-    };
-
-}
-
-export interface IProps {
-    readonly repoDocMetaManager: RepoDocMetaManager;
-}
-
-export interface IState {
-    readonly isReviewer?: boolean;
-}
+});

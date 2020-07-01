@@ -8,7 +8,7 @@ import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaMana
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
     from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
-import StatsScreen from '../../../../apps/repository/js/stats/StatsScreen';
+import {StatsScreen} from '../../../../apps/repository/js/stats/StatsScreen';
 import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
@@ -179,7 +179,13 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderStatsScreen = () => (
         <AuthRequired>
-            <StatsScreen repoDocMetaManager={repoDocMetaManager}/>
+            <PersistenceLayerApp tagsType="documents"
+                                 repoDocMetaManager={repoDocMetaManager}
+                                 repoDocMetaLoader={repoDocMetaLoader}
+                                 persistenceLayerManager={persistenceLayerManager}
+                                 render={(docRepo) =>
+                                     <StatsScreen/>
+                                 }/>
         </AuthRequired>
     );
 
