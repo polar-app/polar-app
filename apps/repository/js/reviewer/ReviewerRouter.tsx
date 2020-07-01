@@ -2,7 +2,6 @@ import {useAnnotationRepoStore} from "../annotation_repo/AnnotationRepoStore";
 import {Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {StartReviewBottomSheet} from "../../../../web/js/ui/mobile/StartReviewBottomSheet";
 import {ReviewerScreen} from "./ReviewerScreen";
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -26,10 +25,10 @@ export const ReviewRouter = () => {
                        </LeftSidebar>
                    )}/>
 
-            <Route path='#mobile-review'
-                   render={() => <StartReviewBottomSheet
-                                    onReading={NULL_FUNCTION}
-                                    onFlashcards={NULL_FUNCTION}/>}/>
+            {/*<Route path='#mobile-review'*/}
+            {/*       render={() => <StartReviewBottomSheet*/}
+            {/*                        onReading={NULL_FUNCTION}*/}
+            {/*                        onFlashcards={NULL_FUNCTION}/>}/>*/}
 
             <Route path='#review-flashcards'>
                 <ReviewerScreen mode="flashcard"
@@ -45,3 +44,4 @@ export const ReviewRouter = () => {
 
     );
 };
+
