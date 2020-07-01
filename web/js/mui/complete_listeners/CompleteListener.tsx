@@ -1,3 +1,5 @@
+// @NotStale
+
 import * as React from 'react';
 
 interface IProps {

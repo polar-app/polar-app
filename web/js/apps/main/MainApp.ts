@@ -1,3 +1,4 @@
+// @NotStale
 import {app, BrowserWindow} from 'electron';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';

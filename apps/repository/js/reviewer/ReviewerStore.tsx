@@ -9,6 +9,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 
 interface IReviewerStore {
+
     /**
      * The review we're working with or undefined when there are no more.
      */
