@@ -106,28 +106,32 @@ const Desktop = (props: ReviewerProps) => {
     const docInfos = useDocInfos();
 
     return (
+        <Paper square
+               elevation={0}
+               style={{
+                   display: 'flex',
+                   flexGrow: 1,
+               }}>
 
-        <FixedNav id="doc-repository"
-                  className="statistics-view pb-2">
+            <div style={{
+                     maxWidth: '900px',
+                     marginLeft: 'auto',
+                     marginRight: 'auto',
+                     flexGrow: 1,
+                 }}>
 
-            <FixedNavBody style={{display: 'flex'}}>
+                <ReviewerStats isReviewer={props.isReviewer}/>
 
-                <Paper square
-                       elevation={0}
-                       style={{
-                           flexGrow: 1,
-                           overflow: 'auto'
-                       }}>
+                <PremiumFeature required='bronze'
+                                feature="statistics"
+                                size="lg">
+                    <TopTagsChart docInfos={docInfos}/>
+                </PremiumFeature>
 
-                    <ReviewerStats isReviewer={props.isReviewer}/>
+            </div>
 
-                    <PremiumFeature required='bronze'
-                                    feature="statistics"
-                                    size="lg">
-                        <TopTagsChart docInfos={docInfos}/>
-                    </PremiumFeature>
-
-                </Paper>
+        </Paper>
+    );
 
                 {/*<Container maxWidth="md">*/}
 
@@ -182,11 +186,7 @@ const Desktop = (props: ReviewerProps) => {
                 {/*</div>*/}
 
                 {/*</Container>*/}
-
-            </FixedNavBody>
-
-        </FixedNav>
-    );
+    // );
 
 };
 
