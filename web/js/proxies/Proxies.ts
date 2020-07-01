@@ -12,7 +12,6 @@ import {TraceHandler} from "./TraceHandler";
 import {ObjectPaths} from "./ObjectPaths";
 import {Paths} from "polar-shared/src/util/Paths";
 import {TraceListener, TraceListenerFunction} from './TraceListener';
-import {TraceEvent} from './TraceEvent';
 import {Objects} from "polar-shared/src/util/Objects";
 
 /**

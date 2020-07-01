@@ -1,13 +1,11 @@
 import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
-import {DocMetas} from './DocMetas';
+import {DocMetas, MockDocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {TextHighlights} from './TextHighlights';
-import {Proxies} from '../proxies/Proxies';
-import {MockDocMetas} from './DocMetas';
 import {Pagemarks} from './Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
@@ -92,147 +90,6 @@ describe('DocMetas', function() {
     });
 
     describe('Deserialize', function() {
-
-        it("Test Deserializing and then updating some pagemarks", function() {
-
-            const fingerprint = "0x001";
-
-            const nrPages = 2;
-            let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-
-            docMeta.docInfo.uuid = "__canonicalized__";
-
-            const json = DocMetas.serialize(docMeta, "  ");
-
-            const expected = {
-                    "annotationInfo": {},
-                    "attachments": {},
-                    "docInfo": {
-                        "added": "2012-03-02T11:38:49.321Z",
-                        "archived": false,
-                        "attachments": {},
-                        "fingerprint": "0x001",
-                        "flagged": false,
-                        "nrPages": 2,
-                        "pagemarkType": "SINGLE_COLUMN",
-                        "progress": 100,
-                        "properties": {},
-                        "readingPerDay": {
-                            "2012-03-02": 2
-                        },
-                        "tags": {},
-                        "uuid": "__canonicalized__"
-                    },
-                    "pageMetas": {
-                        "1": {
-                            "areaHighlights": {},
-                            "comments": {},
-                            "flashcards": {},
-                            "notes": {},
-                            "pageInfo": {
-                                "num": 1
-                            },
-                            "pagemarks": {
-                                "1s2gw2Mkwb": {
-                                    "batch": "1Y9CcEHSxc",
-                                    "column": 0,
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "guid": "1s2gw2Mkwb",
-                                    "id": "1s2gw2Mkwb",
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                    "mode": "READ",
-                                    "notes": {},
-                                    "percentage": 100,
-                                    "rect": {
-                                        "height": 100,
-                                        "left": 0,
-                                        "top": 0,
-                                        "width": 100
-                                    },
-                                    "type": "SINGLE_COLUMN"
-                                }
-                            },
-                            "questions": {},
-                            "readingProgress": {
-                                "1QLX4U7vTU": {
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "id": "1QLX4U7vTU",
-                                    "progress": 100,
-                                    "progressByMode": {
-                                        "READ": 100
-                                    }
-                                }
-                            },
-                            "screenshots": {},
-                            "textHighlights": {},
-                            "thumbnails": {}
-                        },
-                        "2": {
-                            "areaHighlights": {},
-                            "comments": {},
-                            "flashcards": {},
-                            "notes": {},
-                            "pageInfo": {
-                                "num": 2
-                            },
-                            "pagemarks": {
-                                "126nS8PMqF": {
-                                    "batch": "1yNbsiPseh",
-                                    "column": 0,
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "guid": "126nS8PMqF",
-                                    "id": "126nS8PMqF",
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                    "mode": "READ",
-                                    "notes": {},
-                                    "percentage": 100,
-                                    "rect": {
-                                        "height": 100,
-                                        "left": 0,
-                                        "top": 0,
-                                        "width": 100
-                                    },
-                                    "type": "SINGLE_COLUMN"
-                                }
-                            },
-                            "questions": {},
-                            "readingProgress": {
-                                "1VtUQQJoXr": {
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "id": "1VtUQQJoXr",
-                                    "progress": 100,
-                                    "progressByMode": {
-                                        "READ": 100
-                                    }
-                                }
-                            },
-                            "screenshots": {},
-                            "textHighlights": {},
-                            "thumbnails": {}
-                        }
-                    },
-                    "version": 2
-                }
-            ;
-
-            assert.equal(typeof json, "string");
-
-            assertJSON(json, expected);
-
-            docMeta = DocMetas.deserialize(json, fingerprint);
-
-            // now we have to trace it like it would be in production..
-            docMeta = Proxies.create(docMeta);
-
-            assertJSON(docMeta, expected);
-
-            const pageMeta = DocMetas.getPageMeta(docMeta, 1);
-
-            (pageMeta as any).pagemarks = {};
-
-            assert.deepEqual(DocMetas.getPageMeta(docMeta, 1).pagemarks, {});
-
-        });
 
     });
 
