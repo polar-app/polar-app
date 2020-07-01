@@ -138,7 +138,6 @@ const Desktop = (props: ReviewerProps) => {
 
                 {/*<Container maxWidth="md">*/}
 
-                {/*<TopTagsChart docInfos={docInfos}/>*/}
 
                 {/*<SectionHeader>*/}
                 {/*    <h1>Statistics</h1>*/}

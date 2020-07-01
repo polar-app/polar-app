@@ -8,7 +8,7 @@ export interface IProps {
 export const StatBox = (props: IProps) => {
 
     return (
-        <div className="p-1"
+        <div className=""
              style={props.style || {}}>
 
             {props.children}
