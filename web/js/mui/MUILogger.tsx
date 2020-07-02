@@ -3,6 +3,8 @@ import {useDialogManager} from "./dialogs/MUIDialogControllers";
 import {DialogManager} from "./dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ILogger} from "polar-shared/src/logger/ILogger";
+import {MultiLogger} from "../logger/MultiLogger";
+import {SentryBrowserLogger} from "../logger/SentryBrowserLogger";
 
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
@@ -12,13 +14,18 @@ export function useLogger(): ILogger {
 
     const dialogManager = useDialogManager();
 
-    // TODO: use a MultiLogger along with a new SentryLogger and do not
-    // use the electron version for now.  Do this all in the browser now.
+    const loggers = [
+        new MUILogger(dialogManager),
+        new SentryBrowserLogger()
+    ];
 
-    return new MUILogger(dialogManager);
+    return new MultiLogger(...loggers);
 
 }
 
+/**
+ * Logger that just uses the DialogManager to display errors in a snackbar.
+ */
 class MUILogger extends ConsoleLogger {
 
     readonly name: string = 'mui-logger';

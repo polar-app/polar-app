@@ -10,17 +10,15 @@ import {Files} from 'polar-shared/src/util/Files';
 import {LogLevels} from './LogLevels';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
-// import {SentryLogger} from './SentryLogger';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
-import {PersistentErrorLogger} from './PersistentErrorLogger';
-
 import process from 'process';
 import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GALogger} from './GALogger';
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
+import {SentryBrowserLogger} from "./SentryBrowserLogger";
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -88,6 +86,13 @@ export class Logging {
         //     // a SNAP container.
         //     loggers.push(new SentryLogger());
         // }
+
+        if (AppRuntime.isBrowser()) {
+            // SentryLogger enabled for INFO will lock us up.
+            // *** first logger is sentry but only if we are not running within
+            // a SNAP container.
+            loggers.push(new SentryBrowserLogger());
+        }
 
         // *** next up is the Toaster Logger to visually show errors.
 
