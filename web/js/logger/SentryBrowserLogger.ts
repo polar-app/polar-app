@@ -1,34 +1,27 @@
 import {ILogger} from 'polar-shared/src/logger/ILogger';
 
-import { init, captureException } from '@sentry/electron';
-import {isPresent} from 'polar-shared/src/Preconditions';
-import process from "process";
-
-// This configures the Electron CrashReporter for native app crashes and
-// captures any uncaught JavaScript exceptions using the JavaScript SDKs under
-// the hood. Be sure to call this function as early as possible in the main
-// process and all renderer processes to also catch errors during startup.
+import { init, captureException } from '@sentry/browser';
 
 let initialized: boolean = false;
 
 // true when sentry is ready for logging.
 let ready: boolean = false;
 
-export class SentryLogger implements ILogger {
+export class SentryBrowserLogger implements ILogger {
 
-    public readonly name: string = 'sentry-logger';
+    public readonly name: string = 'sentry-browser-logger';
 
     public notice(msg: string, ...args: any[]) {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
 
     public warn(msg: string, ...args: any[]) {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
 
     public error(msg: string, ...args: any[]) {
 
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
 
         if (ready) {
 
@@ -52,30 +45,20 @@ export class SentryLogger implements ILogger {
     }
 
     public info(msg: string, ...args: any[]) {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
 
     public verbose(msg: string, ...args: any[]) {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
 
     public debug(msg: string, ...args: any[]) {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
 
     public async sync(): Promise<void> {
-        SentryLogger.initWhenNecessary();
+        SentryBrowserLogger.initWhenNecessary();
     }
-
-    public static isEnabled() {
-
-        if (isPresent(process.env.POLAR_SENTRY_ENABLED)) {
-            return process.env.POLAR_SENTRY_ENABLED === 'true';
-        }
-
-        return ! isPresent(process.env.SNAP);
-    }
-
     private static initWhenNecessary() {
 
         if (initialized) {
@@ -84,12 +67,10 @@ export class SentryLogger implements ILogger {
 
         try {
 
-            if (SentryLogger.isEnabled()) {
-                init({
-                    dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
-                    // more options...
-                });
-            }
+            init({
+                dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
+                // more options...
+            });
 
             ready = true;
 

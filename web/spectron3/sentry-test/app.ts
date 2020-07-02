@@ -1,11 +1,11 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {SentryLogger} from '../../js/logger/SentryLogger';
+import {SentryBrowserLogger} from '../../js/logger/SentryBrowserLogger';
 
 SpectronRenderer.run(async (state) => {
     console.log("Running within SpectronRenderer now.");
 
-    let sentryLogger = new SentryLogger();
-    sentryLogger.error("This is a false error from renderer: ", new Error("Fake error from renderer"));
+    const sentryBrowserLogger = new SentryBrowserLogger();
+    sentryBrowserLogger.error("This is a false error from renderer: ", new Error("Fake error from renderer"));
 
     await state.testResultWriter.write(true);
 });
