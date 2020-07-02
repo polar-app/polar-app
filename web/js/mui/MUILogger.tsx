@@ -9,8 +9,14 @@ import {ILogger} from "polar-shared/src/logger/ILogger";
  * @NotStale
  */
 export function useLogger(): ILogger {
+
     const dialogManager = useDialogManager();
+
+    // TODO: use a MultiLogger along with a new SentryLogger and do not
+    // use the electron version for now.  Do this all in the browser now.
+
     return new MUILogger(dialogManager);
+
 }
 
 class MUILogger extends ConsoleLogger {

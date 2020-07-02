@@ -98,12 +98,10 @@ export class MainAppBrowserWindowFactory {
             readonly defaultValue?: number;
         }
 
-        const MIN_FACTOR = 0.4;
-
         const dimensionMappings: DimensionMapping[] = [
 
-            {original: 'minHeight', dimension: 'height', defaultValue: display.size.width * MIN_FACTOR},
-            {original: 'minWidth', dimension: 'width', defaultValue: display.size.height * MIN_FACTOR},
+            {original: 'minHeight', dimension: 'height', defaultValue: 800},
+            {original: 'minWidth', dimension: 'width', defaultValue: 600},
 
             {original: 'height', dimension: 'height'},
             {original: 'width', dimension: 'width'}
