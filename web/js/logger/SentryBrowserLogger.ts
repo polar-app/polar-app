@@ -1,29 +1,47 @@
 import {ILogger} from 'polar-shared/src/logger/ILogger';
 
-import { init, captureException } from '@sentry/browser';
+import {captureException, init} from '@sentry/browser';
 
 let initialized: boolean = false;
 
-// true when sentry is ready for logging.
-let ready: boolean = false;
+function initWhenNecessary() {
+
+    if (initialized) {
+        return;
+    }
+
+    try {
+
+        init({
+            dsn: 'https://e44af9eaf40f42f096aaa00e59e276e2@o182611.ingest.sentry.io/5306375',
+            // more options...
+        });
+
+    } catch (e) {
+        console.error("Unable to initialize sentry: ", e);
+    } finally {
+        initialized = true;
+    }
+
+}
 
 export class SentryBrowserLogger implements ILogger {
 
     public readonly name: string = 'sentry-browser-logger';
 
     public notice(msg: string, ...args: any[]) {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
 
     public warn(msg: string, ...args: any[]) {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
 
     public error(msg: string, ...args: any[]) {
 
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
 
-        if (ready) {
+        if (initialized) {
 
             args.forEach(arg => {
 
@@ -45,42 +63,20 @@ export class SentryBrowserLogger implements ILogger {
     }
 
     public info(msg: string, ...args: any[]) {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
 
     public verbose(msg: string, ...args: any[]) {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
 
     public debug(msg: string, ...args: any[]) {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
 
     public async sync(): Promise<void> {
-        SentryBrowserLogger.initWhenNecessary();
+        initWhenNecessary();
     }
-    private static initWhenNecessary() {
-
-        if (initialized) {
-            return;
-        }
-
-        try {
-
-            init({
-                dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
-                // more options...
-            });
-
-            ready = true;
-
-        } catch (e) {
-            console.error("Unable to initialize sentry: ", e);
-        } finally {
-            initialized = true;
-        }
-
-    }
-
+    
 }
 
