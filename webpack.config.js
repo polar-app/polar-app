@@ -11,7 +11,7 @@ const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRew
 const mode = process.env.NODE_ENV || 'production';
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
-const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : false;
+const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
 
 const workers = os.cpus().length - 1;
 
@@ -196,6 +196,10 @@ module.exports = {
     optimization: {
         minimize: ! isDev,
         minimizer: [new TerserPlugin({
+            // disable caching to:  node_modules/.cache/terser-webpack-plugin/
+            // because intellij will index this data and lock up my machine
+            // and generally waste space and CPU
+            cache: ".terser-webpack-plugin",
             terserOptions: {
                 output: { ascii_only: true },
             }})
