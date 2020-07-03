@@ -41,7 +41,9 @@ export namespace AddFileHooks {
                     log.error("Failed to import file: ", e, file);
                 } finally {
 
-                    const progress = progressTracker.incr();
+                    updateProgress({value: 100});
+
+                    const progress = progressTracker.terminate();
                     // TODO this should be deprecated...
                     DeterminateProgressBar.update(progress);
 
