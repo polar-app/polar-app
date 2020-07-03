@@ -1161,9 +1161,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     private preferredSource(): FirestoreSource {
-        // always do cache for now because we're migrating to this the same
-        // behavior across desktop/electron + web
-        return 'cache';
+        // we always use default now because 'get' operations fail when the
+        // source is the cache.  It's a BAD API...
+        return 'default';
     }
 
 }

@@ -3,7 +3,6 @@ import {WebContents, Event} from 'electron';
 export class WebContentsPromises {
 
     public static once(webContents: WebContents): Once {
-
         return new Once(webContents);
     }
 

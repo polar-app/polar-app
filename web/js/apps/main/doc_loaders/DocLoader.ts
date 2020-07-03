@@ -1,9 +1,9 @@
 import {LoadDocRequest} from './LoadDocRequest';
-import {DistRuntime} from '../../../dist_runtime/DistRuntime';
 import {ElectronDocLoader} from './electron/ElectronDocLoader';
 import {BrowserDocLoader} from './browser/BrowserDocLoader';
 import {PersistenceLayerProvider} from '../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from './IDocLoader';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 
 export class DocLoader implements IDocLoader {
 
@@ -17,7 +17,7 @@ export class DocLoader implements IDocLoader {
 
     public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
-        if (DistRuntime.get() === 'electron') {
+        if (AppRuntime.get() === 'electron') {
             return this.electronDocLoader.create(loadDocRequest);
         } else {
             return this.browserDocLoader.create(loadDocRequest);

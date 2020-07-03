@@ -162,7 +162,7 @@
     "email-addresses": "^3.0.3",
     "file-exists-promise": "~1.0.2",
     "file-selector": "=0.1.13",
-    "firebase": "=7.15.0",
+    "firebase": "=7.15.5",
     "firebaseui": "=4.5.1",
     "framer-motion": "^1.7.0",
     "jquery": "^3.4.1",

@@ -1,9 +1,8 @@
 import {MainAppController} from '../../../MainAppController';
-import {LoadDocRequest} from "../../LoadDocRequest";
-import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Directories} from "../../../../../datastore/Directories";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {ipcMain} from 'electron';
+import {ILoadBrowserWindowRequest} from '../ElectronDocLoader';
 
 const log = Logger.create();
 
@@ -18,12 +17,11 @@ export class DocLoaderService {
 
     public start(): void {
 
-        ipcMain.on('load-doc-request', (event: Electron.Event, loadDocRequest: LoadDocRequest) => {
+        ipcMain.on('load-browser-window-request', (event: Electron.Event, request: ILoadBrowserWindowRequest) => {
 
-            const path = FilePaths.join(this.directories.stashDir, loadDocRequest.backendFileRef.name);
-            const {fingerprint} = loadDocRequest;
+            const {url, newWindow} = request;
 
-            this.mainAppController.handleLoadDoc(path, fingerprint, loadDocRequest.newWindow)
+            this.mainAppController.handleLoadDoc(url, newWindow)
                 .catch(err => log.error("DocLoaderService: Unable to load doc: ", err));
 
         });

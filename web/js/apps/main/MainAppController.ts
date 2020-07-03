@@ -2,22 +2,25 @@ import {app, BrowserWindow, dialog} from 'electron';
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Services} from '../../util/services/Services';
-import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
+import {
+    BROWSER_WINDOW_OPTIONS,
+    MainAppBrowserWindowFactory
+} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
-import {Capture} from '../../capture/Capture';
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {CaptureOpts} from '../../capture/CaptureOpts';
-import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
-import MenuItem = Electron.MenuItem;
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 import {PathStr} from "polar-shared/src/util/Strings";
+import {EPUBGenerator} from "../../../../../polar-app-public/polar-epub-generator/src/EPUBGenerator";
+import MenuItem = Electron.MenuItem;
+import URLStr = EPUBGenerator.URLStr;
 
 const log = Logger.create();
 
@@ -168,20 +171,19 @@ export class MainAppController {
     /**
      * The user asked to open a file from the command line or via OS event.
      */
-    public async handleLoadDoc(path: string,
-                               fingerprint: string,
+    public async handleLoadDoc(url: URLStr,
                                newWindow: boolean = true): Promise<BrowserWindow> {
 
         const extraTags = {'type': 'viewer'};
 
-        const browserWindowTag = {name: 'viewer', value: Hashcodes.createID(path)};
+        const browserWindowTag = {name: 'viewer', value: Hashcodes.createID(url)};
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
             const computeWindow = async () => {
 
                 const createWindow = async () => {
-                    return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
+                    return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
                 };
 
                 if (newWindow) {
@@ -198,56 +200,9 @@ export class MainAppController {
 
             };
 
-            const window = await computeWindow();
-
-            return await this.loadDoc(path, fingerprint, window);
+            return await computeWindow();
 
         }, extraTags);
-
-    }
-
-    /**
-     * Load the given PDF file in the given target window.
-     */
-    private async loadDoc(path: string,
-                          fingerprint: string,
-                          targetWindow: BrowserWindow): Promise<BrowserWindow> {
-
-        if (!targetWindow) {
-            throw new Error("No target window given");
-        }
-
-        const loadedFile = await this.fileLoader.registerForLoad(path, fingerprint);
-
-        log.info("Loading webapp at: " + loadedFile.webResource);
-
-        loadedFile.webResource.load(targetWindow);
-
-        targetWindow.webContents.once('did-finish-load', () => {
-
-            if (loadedFile.title) {
-                // TODO: this should be driven from the DocMeta and the DocMeta
-                // should be initialized from the descriptor.
-                targetWindow.setTitle(loadedFile.title);
-            }
-
-            if (loadedFile.docDimensions) {
-
-                const [width, height] = targetWindow.getSize();
-
-                // compute the ideal width plus a small buffer for the sides.
-                const idealWidth = loadedFile.docDimensions.width + 100;
-
-                if (width < idealWidth) {
-                    log.info("Adjusting window width");
-                    targetWindow.setSize(idealWidth, height);
-                }
-
-            }
-
-        });
-
-        return targetWindow;
 
     }
 

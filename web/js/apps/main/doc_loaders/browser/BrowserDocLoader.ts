@@ -1,15 +1,9 @@
 import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {PDFLoader} from '../../file_loaders/PDFLoader';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {Nav} from '../../../../ui/util/Nav';
-import {PHZLoader} from '../../file_loaders/PHZLoader';
-import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {EPUBLoader} from "../../file_loaders/EPUBLoader";
-
-const log = Logger.create();
+import {ViewerURLs} from "../ViewerURLs";
 
 export class BrowserDocLoader implements IDocLoader {
 
@@ -25,34 +19,11 @@ export class BrowserDocLoader implements IDocLoader {
         Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
         Preconditions.assertPresent(loadDocRequest.backendFileRef.name, "backendFileRef.name");
 
-        const persistenceLayer = this.persistenceLayerProvider();
+        const viewerURL = ViewerURLs.create(this.persistenceLayerProvider, loadDocRequest);
 
         return {
 
             async load(): Promise<void> {
-
-                const {backendFileRef, fingerprint} = loadDocRequest;
-
-                const datastoreFile = persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
-
-                const toViewerURL = () => {
-
-                    const fileName = backendFileRef.name;
-
-                    if (FilePaths.hasExtension(fileName, "pdf")) {
-                        return PDFLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
-                    } else if (FilePaths.hasExtension(fileName, "phz")) {
-                        return PHZLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
-                    } else if (FilePaths.hasExtension(fileName, "epub")) {
-                        return EPUBLoader.createViewerURL(fingerprint);
-                    } else {
-                        throw new Error("Unable to handle file: " + fileName);
-                    }
-
-                };
-
-                const viewerURL = toViewerURL();
-
                 linkLoader.load(viewerURL);
             }
 
