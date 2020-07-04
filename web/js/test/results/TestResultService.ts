@@ -4,7 +4,6 @@ import {TestResult} from './renderer/TestResult';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {app} from 'electron';
 
 const log = Logger.create();
 

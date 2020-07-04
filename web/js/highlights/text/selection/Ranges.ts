@@ -1,8 +1,4 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {NodeTypes} from './NodeTypes';
-
-const log = Logger.create();
 
 export class Ranges {
 
