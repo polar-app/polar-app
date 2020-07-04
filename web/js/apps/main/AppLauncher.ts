@@ -8,7 +8,6 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {PDFDownloadHandlers} from '../../capture/PDFDownloadHandlers';
 
 const log =  Logger.create();
 
@@ -35,8 +34,6 @@ export class AppLauncher {
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 
         });
-
-        PDFDownloadHandlers.create(browserWindow.webContents);
 
         browserWindow.focus();
 

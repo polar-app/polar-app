@@ -16,10 +16,8 @@ import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileLoader} from './file_loaders/FileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
-import {PathStr} from "polar-shared/src/util/Strings";
-import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
+import {PathStr, URLStr} from "polar-shared/src/util/Strings";
 import MenuItem = Electron.MenuItem;
-import URLStr = EPUBGenerator.URLStr;
 
 const log = Logger.create();
 
