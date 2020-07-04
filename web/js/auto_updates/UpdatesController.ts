@@ -1,10 +1,7 @@
 import {Logger} from "polar-shared/src/logger/Logger";
 import {ProgressInfo} from "builder-util-runtime";
-import electron, {ipcRenderer} from 'electron';
-import {ProgressBar} from "../ui/progress_bar/ProgressBar";
+import {ipcRenderer} from 'electron';
 import {DeterminateProgressBar} from "../ui/progress_bar/DeterminateProgressBar";
-import {ReactInjector} from '../ui/util/ReactInjector';
-import {RestartForUpdateButton} from './RestartForUpdateButton';
 import {RestartForUpdateButtons} from './RestartForUpdateButtons';
 
 const log = Logger.create();

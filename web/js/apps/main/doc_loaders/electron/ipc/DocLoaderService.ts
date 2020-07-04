@@ -9,7 +9,6 @@ const log = Logger.create();
 export class DocLoaderService {
 
     private readonly mainAppController: MainAppController;
-    private readonly directories = new Directories();
 
     constructor(mainAppController: MainAppController) {
         this.mainAppController = mainAppController;

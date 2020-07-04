@@ -3,71 +3,62 @@ import {ipcRenderer} from "electron";
 import Button from '@material-ui/core/Button';
 
 // FIXME: FIXME: this won't look right in MUI
-export class RestartForUpdateButton extends React.Component<any, any> {
+export function RestartForUpdateButton() {
 
-    constructor(props: any) {
-        super(props);
+    return (
 
-    }
-
-    public render() {
-
-        return (
+        <div style={{
+            width: '500px',
+            position: 'fixed',
+            right: 10,
+            bottom: 10,
+            zIndex: 9999,
+        }}
+             className="border rounded shadow p-3 m-2 text-white bg-dark">
 
             <div style={{
-                width: '500px',
-                position: 'fixed',
-                right: 10,
-                bottom: 10,
-                zIndex: 9999,
+                display: 'flex',
+                verticalAlign: 'middle'
             }}
-                 className="border rounded shadow p-3 m-2 text-white bg-dark">
+                 className="mb-3">
 
-                <div style={{
-                    display: 'flex',
-                    verticalAlign: 'middle'
-                }}
-                     className="mb-3">
+                <div className="mr-3 text-success mt-auto mb-auto">
 
-                    <div className="mr-3 text-success mt-auto mb-auto">
-
-                        <i style={{fontSize: '50px'}} className="fas fa-check"></i>
-
-                    </div>
-
-                    <div className="mt-1 mb-1">
-
-                        <div className="mb-1" style={{fontSize: '18px'}}>
-                            <b>Update available.</b> Please restart.
-                        </div>
-
-                        <div className="mt-1 mb-1 h6">
-                            An update was downloaded and ready to be
-                            installed. Please restart to install the latest
-                            version.
-                        </div>
-
-                    </div>
+                    <i style={{fontSize: '50px'}} className="fas fa-check"></i>
 
                 </div>
 
-                <div>
+                <div className="mt-1 mb-1">
 
-                    <div className="text-center text-white">
-                        <Button onClick={() => ipcRenderer.send('app-update:quit-and-install')}
-                                size="large"
-                                variant="contained"
-                                color="primary">
-                            Restart
-                        </Button>
+                    <div className="mb-1" style={{fontSize: '18px'}}>
+                        <b>Update available.</b> Please restart.
+                    </div>
+
+                    <div className="mt-1 mb-1 h6">
+                        An update was downloaded and ready to be
+                        installed. Please restart to install the latest
+                        version.
                     </div>
 
                 </div>
-
 
             </div>
 
-        );
-    }
+            <div>
 
+                <div className="text-center text-white">
+                    <Button
+                        onClick={() => ipcRenderer.send('app-update:quit-and-install')}
+                        size="large"
+                        variant="contained"
+                        color="primary">
+                        Restart
+                    </Button>
+                </div>
+
+            </div>
+
+        </div>
+
+    );
 }
