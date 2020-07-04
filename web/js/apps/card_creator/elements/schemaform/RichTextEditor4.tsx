@@ -1,6 +1,3 @@
-/**
- * This is our main widget for handling text fields which are HTML.
- */
 import React from 'react';
 import {TypedWidgetProps} from './TypedWidgetProps';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -87,11 +84,16 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
      *
      * https://github.com/summernote/react-summernote/issues/38
      */
-    public onImageUpload(images: any[], insertImage: Function) {
+    public onImageUpload(images: any[], insertImage: (arg: any) => void) {
 
         log.debug('onImageUpload', images);
         /* FileList does not support ordinary array methods */
-        for (let i = 0; i < images.length; i++) {
+
+        for (const image of images) {
+
+            // FIXME: this is actually a problem because we CAN NOT store data
+            // URLs without some sort of redirect ...
+
             /* Stores as bas64enc string in the text.
              * Should potentially be stored separately and include just the url
              */
@@ -101,7 +103,8 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                 insertImage(reader.result);
             };
 
-            reader.readAsDataURL(images[i]);
+            reader.readAsDataURL(image);
+
         }
 
     }
@@ -190,15 +193,3 @@ interface IProps {
 interface IState {
 
 }
-
-interface OnChangeCallback {
-    (newValue: string): void;
-}
-
-/**
- * Used for onFocus and onBlur
- */
-interface OnSelectionCallback {
-    (id: string, value: string): void;
-}
-
