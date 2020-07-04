@@ -6,7 +6,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {Promises} from '../../util/Promises';
 import {Updates} from '../../updates/Updates';
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
-import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {Menus} from './Menus';
 import {isPresent} from 'polar-shared/src/Preconditions';
@@ -328,14 +327,6 @@ export class MainAppMenu {
                 // BrowserWindow) => { if (focusedWindow) {
                 // focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
                 // } } },
-
-                {
-                    id: 'toggle-annotation-sidebar',
-                    accelerator: 'F10',
-                    label: 'Toggle Annotation Sidebar',
-                    visible: false,
-                    click: () => AnnotationSidebarClient.toggleAnnotationSidebar()
-                },
 
                 {
                     label: 'Toggle Full Screen',
