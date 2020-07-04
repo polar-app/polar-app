@@ -56,18 +56,6 @@ export class MainAppMenu {
 
             const menu = Menu.getApplicationMenu()!;
 
-            // **** handle toggle-annotation-sidebar
-
-            function handleToggleAnnotationSidebar() {
-                const viewMenu = Menus.find(menu.items, 'view');
-                const viewMenuItems = Menus.submenu(viewMenu);
-                const toggleAnnotationSidebar = Menus.find(viewMenuItems, 'toggle-annotation-sidebar');
-
-                Menus.setVisible(toggleAnnotationSidebar!, isViewer);
-            }
-
-            handleToggleAnnotationSidebar();
-
             // **** handle sync-flashcards-to-anki
 
             function handleSyncFlashcardsToAnki() {
@@ -116,7 +104,7 @@ export class MainAppMenu {
             menuTemplate.unshift(this.createMacOSMenuTemplate());
         }
 
-        return menuTemplate;
+        return menuTemplate.filter(current => current !== undefined);
 
     }
 
@@ -190,42 +178,46 @@ export class MainAppMenu {
 
         const isMacOS = Platforms.get() === Platform.MACOS;
 
+        if (isMacOS) {
+            return undefined;
+        }
+
         return {
             label: 'File',
             // accelerator: 'Ctrl+F',
             submenu: [
 
-                {
-                    label: 'Import from Disk',
-                    accelerator: 'CmdOrCtrl+I',
-                    click: () => {
-                        this.mainAppController.cmdImport()
-                            .catch((err: Error) => log.error("Could not import from disk: ", err));
-                    }
+                // {
+                //     label: 'Import from Disk',
+                //     accelerator: 'CmdOrCtrl+I',
+                //     click: () => {
+                //         this.mainAppController.cmdImport()
+                //             .catch((err: Error) => log.error("Could not import from disk: ", err));
+                //     }
+                //
+                // },
+                //
+                // {
+                //     type: 'separator'
+                // },
 
-                },
-
-                {
-                    type: 'separator'
-                },
-
-                {
-                    label: 'Print',
-                    accelerator: 'CmdOrCtrl+P',
-                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                        if (focusedWindow) {
-                            focusedWindow.webContents.print();
-                        }
-                    }
-                },
+                // {
+                //     label: 'Print',
+                //     accelerator: 'CmdOrCtrl+P',
+                //     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
+                //         if (focusedWindow) {
+                //             focusedWindow.webContents.print();
+                //         }
+                //     }
+                // },
                 // { role: 'hide', visible: isMacOS },
                 // { role: 'hideOthers', visible: isMacOS },
                 // { role: 'unhide', visible: isMacOS },
                 // { type: 'separator', visible: isMacOS},
 
-                {
-                    type: 'separator'
-                },
+                // {
+                //     type: 'separator'
+                // },
                 {
                     role: 'quit',
                     label: 'Quit',
