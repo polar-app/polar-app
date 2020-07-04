@@ -17,8 +17,6 @@ import {MainAPI} from './MainAPI';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 import {FileImportClient} from '../repository/FileImportClient';
 import {RendererAnalyticsService} from '../../ga/RendererAnalyticsService';
-import {AnalyticsFileLoader} from './file_loaders/AnalyticsFileLoader';
-import {DefaultFileLoader} from './file_loaders/DefaultFileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
 import {WebserverConfigs} from "polar-shared-webserver/src/webserver/WebserverConfig";
@@ -66,8 +64,6 @@ export class MainApp {
 
         // const dialogWindowService = new DialogWindowService();
 
-        const defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
-
         const screenshotService = new ScreenshotService();
         screenshotService.start();
 
@@ -110,13 +106,11 @@ export class MainApp {
         // await cacheInterceptorService.start()
         //     .catch(err => log.error(err));
 
-        const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
-
         await new DocInfoBroadcasterService().start();
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-        const mainAppController = new MainAppController(fileLoader, webserver);
+        const mainAppController = new MainAppController(webserver);
 
         global.mainAppController = mainAppController;
 

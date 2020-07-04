@@ -1,5 +1,4 @@
 import {app, BrowserWindow, dialog} from 'electron';
-import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Services} from '../../util/services/Services';
 import {
@@ -13,7 +12,6 @@ import process from 'process';
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
-import {FileLoader} from './file_loaders/FileLoader';
 import {FileImportRequests} from '../repository/FileImportRequests';
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 import {PathStr, URLStr} from "polar-shared/src/util/Strings";
@@ -23,35 +21,13 @@ const log = Logger.create();
 
 export class MainAppController {
 
-    private readonly fileLoader: FileLoader;
-
     private readonly webserver: Webserver;
 
     private readonly directories: Directories;
 
-    constructor(fileLoader: FileLoader,
-                webserver: Webserver) {
-        this.fileLoader = fileLoader;
+    constructor(webserver: Webserver) {
         this.webserver = webserver;
         this.directories = new Directories();
-    }
-
-    public async cmdCaptureWebPage() {
-
-        const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
-
-        browserWindowOptions.width = browserWindowOptions.width! * .9;
-        browserWindowOptions.height = browserWindowOptions.height! * .9;
-        browserWindowOptions.center = true;
-
-        const url = ResourcePaths.resourceURLFromRelativeURL('./apps/capture/start-capture/index.html');
-
-        await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
-
-    }
-
-    public async cmdNewWindow() {
-        await MainAppBrowserWindowFactory.createWindow();
     }
 
     public async cmdImport() {
