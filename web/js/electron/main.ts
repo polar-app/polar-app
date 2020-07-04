@@ -1,10 +1,10 @@
 import {app, BrowserWindow} from 'electron';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {MainApp} from './web/js/apps/main/MainApp';
-import {Logging} from './web/js/logger/Logging';
-import {Datastores} from './web/js/datastore/Datastores';
+import {MainApp} from '../apps/main/MainApp';
+import {Logging} from '../logger/Logging';
+import {Datastores} from '../datastore/Datastores';
 import process from 'process';
-import {LazyWriteDatastore} from './web/js/datastore/LazyWriteDatastore';
+import {LazyWriteDatastore} from '../datastore/LazyWriteDatastore';
 import {Version} from "polar-shared/src/util/Version";
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
