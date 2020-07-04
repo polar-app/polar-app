@@ -20,28 +20,6 @@ var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
 describe('Test computeRectForRow for highlighting text...', function() {
 
-    it('Test with 1 entries', function () {
-
-        var rectElements = [
-            {
-                rect: {
-                    "left": 0,
-                    "top": 4,
-                    "width": 721,
-                    "height": 18,
-                    "right": 721,
-                    "bottom": 22
-                },
-                element: null
-            }
-        ];
-
-        var expected = { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 };
-
-        assert.deepEqual(TextHighlightRows.computeRectForRow(rectElements), expected);
-
-    });
-
     it('Test with 2 entries', function () {
 
         var rects = [

@@ -3,7 +3,6 @@ import {Rect} from '../../../Rect';
 import {Rects} from '../../../Rects';
 import {RectText} from './RectText';
 import {TextNodes} from '../selection/TextNodes';
-import {Objects} from "polar-shared/src/util/Objects";
 
 export class RectTexts {
 
