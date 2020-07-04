@@ -3,6 +3,7 @@
   "version": "2.0.0-beta.7",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
