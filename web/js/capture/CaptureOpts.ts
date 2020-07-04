@@ -1,5 +1,4 @@
 import {PendingWebRequestsCallback} from '../webrequests/PendingWebRequestsListener';
-import {Capture} from './Capture';
 
 export interface CaptureOpts {
 
