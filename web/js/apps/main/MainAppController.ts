@@ -208,7 +208,7 @@ export class MainAppController {
             title: "Import Document",
             defaultPath: downloadsDir,
             filters: [
-                { name: 'Docs', extensions: ['pdf', "phz", "PDF", 'epub', 'EPUB'] }
+                { name: 'Docs', extensions: ['pdf', "PDF", 'epub', 'EPUB'] }
             ],
             properties: ['openFile', 'multiSelections']
             // properties: ['openFile']
