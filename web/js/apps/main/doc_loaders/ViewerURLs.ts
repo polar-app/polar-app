@@ -1,6 +1,5 @@
 import {LoadDocRequest} from "./LoadDocRequest";
 import {PDFLoader} from "../file_loaders/PDFLoader";
-import {PHZLoader} from "../file_loaders/PHZLoader";
 import {EPUBLoader} from "../file_loaders/EPUBLoader";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PersistenceLayerProvider} from "../../../datastore/PersistenceLayer";
@@ -20,8 +19,6 @@ export namespace ViewerURLs {
 
         if (FilePaths.hasExtension(fileName, "pdf")) {
             return PDFLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
-        } else if (FilePaths.hasExtension(fileName, "phz")) {
-            return PHZLoader.createViewerURL(fingerprint, datastoreFile.url, backendFileRef.name);
         } else if (FilePaths.hasExtension(fileName, "epub")) {
             return EPUBLoader.createViewerURL(fingerprint);
         } else {
