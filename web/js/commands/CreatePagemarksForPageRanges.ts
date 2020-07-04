@@ -1,4 +1,3 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {Pagemarks} from '../metadata/Pagemarks';
 import {DocMetas} from "../metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
