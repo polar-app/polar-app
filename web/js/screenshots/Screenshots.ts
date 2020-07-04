@@ -28,6 +28,7 @@ export class Screenshots {
                                 boxRect: ILTRect,
                                 element?: HTMLElement): Promise<ICapturedScreenshot> {
 
+        // FIXME: this WILL NOT work in 2.0 and needs to be fixed.
         const docFormat = DocFormatFactory.getInstance();
 
         const captureDirectly = () => {

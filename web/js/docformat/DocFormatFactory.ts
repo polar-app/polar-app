@@ -5,6 +5,7 @@ import {EPUBFormat} from "./EPUBFormat";
 
 /**
  * Get the proper docFormat to work with.
+ * @Deprecated Remove in 2.0
  */
 export class DocFormatFactory {
 

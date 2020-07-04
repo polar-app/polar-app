@@ -2,6 +2,9 @@ import {DocFormat, PageDetail} from './DocFormat';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 
+/**
+ * @Deprecated Remove in 2.0
+ */
 export class EPUBFormat extends DocFormat {
 
     public readonly name = 'epub';

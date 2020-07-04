@@ -4,6 +4,9 @@ import {PDFModernTextLayers} from "polar-pdf/src/pdf/PDFModernTextLayers";
 
 declare var window: any;
 
+/**
+ * @Deprecated Remove in 2.0
+ */
 export class PDFFormat extends DocFormat {
 
     public readonly name = 'pdf';

@@ -1,9 +1,6 @@
 import {Elements} from '../util/Elements';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
-import {DocMeta} from '../metadata/DocMeta';
-import {Pagemark} from '../metadata/Pagemark';
 import {Rects} from '../Rects';
-import {Reducers} from 'polar-shared/src/util/Reducers';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -37,6 +34,7 @@ export class ReadingProgressResume {
 
         const computePagemarkHeight = (): number => {
 
+            // FIXME: this WILL NOT work in 2.0
             const docFormat = DocFormatFactory.getInstance();
 
             if (docFormat.name === 'pdf') {
@@ -86,19 +84,6 @@ export class ReadingProgressResume {
         return true;
 
     }
-
-    private static pdfjsVersion() {
-
-        const win = (<any> window);
-
-        if (win && win.pdfjsLib) {
-            return (win.pdfjsLib.version);
-        }
-
-        return undefined;
-
-    }
-
     private static getScrollParent(element: HTMLElement) {
 
         const docFormat = DocFormatFactory.getInstance();
@@ -185,10 +170,6 @@ export class ReadingProgressResume {
 
     }
 
-}
-
-interface TargetPagemark {
-    readonly pageNum: number;
 }
 
 interface PagemarkHolder {

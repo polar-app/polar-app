@@ -13,7 +13,6 @@ import {DocMetas} from './DocMetas';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {ArrayBuffers} from 'polar-shared/src/util/ArrayBuffers';
 import {Attachment} from './Attachment';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {AreaHighlightRect} from './AreaHighlightRect';
 import {
     HighlightRects,
@@ -21,20 +20,15 @@ import {
 } from "polar-shared/src/metadata/IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ICapturedScreenshot} from '../screenshots/Screenshot';
-import {Screenshots} from '../screenshots/Screenshots';
 import {Dimensions} from '../util/Dimensions';
-import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {DataURLs} from 'polar-shared/src/util/DataURLs';
-import {Rect} from '../Rect';
 import {Rects} from '../Rects';
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IImage} from "polar-shared/src/metadata/IImage";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-
-const log = Logger.create();
 
 export class AreaHighlights {
 
@@ -55,26 +49,6 @@ export class AreaHighlights {
             // delete pageMeta.areaHighlights[id];
             pageMeta.areaHighlights[id] = updated;
         });
-
-    }
-
-    public static toCorrectScale(overlayRect: Rect) {
-
-        const docFormat = DocFormatFactory.getInstance();
-
-        if (docFormat.name === "pdf") {
-            const currentScale = docFormat.currentScale();
-
-            // we have to scale these number BACK to their original
-            // positions at 100%
-
-            const rescaleFactor = 1 / currentScale;
-
-            overlayRect = Rects.scale(Rects.createFromBasicRect(overlayRect), rescaleFactor);
-
-        }
-
-        return overlayRect;
 
     }
 
@@ -121,65 +95,6 @@ export class AreaHighlights {
             rects: { "0": opts.rect }
 
         });
-
-    }
-
-    public static async doWrite(opts: DoWriteOpts): Promise<AreaHighlight> {
-
-        const {datastore, pageNum, pageMeta, docMeta,
-               areaHighlight, boxRect, target,
-               areaHighlightRect} = opts;
-
-        const {pageDimensions} = this.computePageDimensions(pageNum);
-
-        // TODO: this is a problem because the area highlight isn't created
-        // until we mutate it in the JSON..
-        const extractedImage
-            = await Screenshots.capture(pageNum, boxRect, target);
-
-        const overlayRect = areaHighlightRect.toDimensions(pageDimensions);
-
-        const position: Position = {
-            x: overlayRect.left,
-            y: overlayRect.top,
-            width: overlayRect.width,
-            height: overlayRect.height,
-        };
-
-        const writeOpts: AreaHighlightWriteOpts = {
-            datastore,
-            docMeta,
-            pageMeta,
-            areaHighlight,
-            areaHighlightRect,
-            position,
-            capturedScreenshot: extractedImage
-        };
-
-        const writer = AreaHighlights.createWriter(writeOpts);
-
-        const [writtenAreaHighlight, committer] = writer.prepare();
-
-        await committer.commit();
-
-        return writtenAreaHighlight;
-    }
-
-    public static computePageDimensions(pageNum: number): PageDimensions {
-
-        const docFormat = DocFormatFactory.getInstance();
-
-        const pageElement = docFormat.getPageElementFromPageNum(pageNum);
-
-        const dimensionsElement
-            = <HTMLElement> pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
-
-        const pageDimensions = new Dimensions({
-            width: dimensionsElement.clientWidth,
-            height: dimensionsElement.clientHeight
-        });
-
-        return {pageDimensions, dimensionsElement};
 
     }
 

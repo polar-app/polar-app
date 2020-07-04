@@ -1,8 +1,10 @@
-import {DocFormat, DocFormatName, PageDetail} from './DocFormat';
+import {DocFormat, PageDetail} from './DocFormat';
 import {notNull} from 'polar-shared/src/Preconditions';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {URLs} from 'polar-shared/src/util/URLs';
 
+/**
+ * @Deprecated Remove in 2.0
+ */
 export class HTMLFormat extends DocFormat {
 
     public readonly name = 'html';
