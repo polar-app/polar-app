@@ -5,7 +5,6 @@
 // page's size, which means the actual window's size will include window frame's
 // size and be slightly larger. Default is false.
 
-import {ResourcePaths} from '../electron/webresource/ResourcePaths';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
