@@ -5,6 +5,7 @@ import isEqual from "react-fast-compare";
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
+import Tooltip from "@material-ui/core/Tooltip";
 
 interface IProps {
     readonly annotation: IDocAnnotationRef;
@@ -18,12 +19,14 @@ export const AnnotationTagButton2 = React.memo((props: IProps) => {
     const taggedCallback = annotationMutations.createTaggedCallback({selected: [props.annotation]});
 
     return (
-        <IconButton disabled={! doc?.mutable}
-                    size="small"
-                    onClick={taggedCallback}>
+        <Tooltip title="Change/set the tags on an item.">
+            <IconButton disabled={! doc?.mutable}
+                        size="small"
+                        onClick={taggedCallback}>
 
-            <LocalOfferIcon/>
+                <LocalOfferIcon/>
 
-        </IconButton>
+            </IconButton>
+        </Tooltip>
     );
 }, isEqual);

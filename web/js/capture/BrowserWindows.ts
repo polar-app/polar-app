@@ -1,16 +1,13 @@
 
+import {BrowserProfile} from './BrowserProfile';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import BrowserWindow = Electron.BrowserWindow;
+
 // Investigate this as a way to adjust the screen size automatically:
 
 // useContentSize Boolean (optional) - The width and height would be used as web
 // page's size, which means the actual window's size will include window frame's
 // size and be slightly larger. Default is false.
-
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {BrowserProfile} from './BrowserProfile';
-import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
-import BrowserWindow = Electron.BrowserWindow;
-
-const log = Logger.create();
 
 export class BrowserWindows {
 

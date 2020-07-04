@@ -4,6 +4,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import Grid from "@material-ui/core/Grid";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
+import Tooltip from '@material-ui/core/Tooltip';
 
 export interface IProps {
 
@@ -45,23 +46,24 @@ export const DocRepoFilterBar = (props: IProps) => {
                   alignItems="center">
 
                 <Grid item>
-                    {/*TODO: add tooltips back in */}
-                    {/*<Tooltip title="Only show flagged items">*/}
-                    <MUIToggleButton id="toggle-flagged"
-                                     size="medium"
-                                     label="flagged"
-                                     icon={<FlagIcon/>}
-                                     initialValue={filters.flagged}
-                                     onChange={value => setFilters({...filters, flagged: value})}/>
-                    {/*</Tooltip>*/}
+                    <Tooltip title="Hide/show flaged documents">
+                        <MUIToggleButton id="toggle-flagged"
+                                         size="medium"
+                                         label="flagged"
+                                         icon={<FlagIcon/>}
+                                         initialValue={filters.flagged}
+                                         onChange={value => setFilters({...filters, flagged: value})}/>
+                    </Tooltip>
                 </Grid>
 
                 <Grid item>
-                    <MUIToggleButton id="toggle-archived"
-                                     size="medium"
-                                     label="archived"
-                                     initialValue={filters.archived}
-                                     onChange={value => setFilters({...filters, archived: value})}/>
+                    <Tooltip title="Hide/show archived documents">
+                        <MUIToggleButton id="toggle-archived"
+                                         size="medium"
+                                         label="archived"
+                                         initialValue={filters.archived}
+                                         onChange={value => setFilters({...filters, archived: value})}/>
+                    </Tooltip>
                 </Grid>
 
                 <Grid item>

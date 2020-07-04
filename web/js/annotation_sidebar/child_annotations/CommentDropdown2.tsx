@@ -6,6 +6,7 @@ import {MUIMenuItem} from "../../mui/menu/MUIMenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 import isEqual from "react-fast-compare";
 import {useAnnotationMutationsContext} from "../AnnotationMutationsContext";
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 interface IProps {
@@ -24,7 +25,7 @@ export const CommentDropdown2 = React.memo((props: IProps) => {
 
     return (
 
-        <>
+        <Tooltip title="More comment options...">
 
             <MUIMenu id={props.id}
                      button={{
@@ -43,7 +44,7 @@ export const CommentDropdown2 = React.memo((props: IProps) => {
 
             </MUIMenu>
 
-        </>
+        </Tooltip>
 
     );
 

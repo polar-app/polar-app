@@ -5,6 +5,7 @@ import {useAnnotationRepoCallbacks} from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface IProps {
     readonly annotation: IDocAnnotation;
@@ -37,9 +38,11 @@ export const AnnotationInlineControlBar = React.memo((props : IProps) => {
                                   flexGrow: 1,
                                   justifyContent: "flex-end"
                               }}>
-                    <IconButton onClick={() => callbacks.doOpen(annotation?.docInfo!)}>
-                        <OpenInNewIcon/>
-                    </IconButton>
+                    <Tooltip title="Open document">
+                        <IconButton onClick={() => callbacks.doOpen(annotation?.docInfo!)}>
+                            <OpenInNewIcon/>
+                        </IconButton>
+                    </Tooltip>
                 </MUIButtonBar>
 
             </div>

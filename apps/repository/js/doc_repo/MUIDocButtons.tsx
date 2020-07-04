@@ -30,7 +30,7 @@ interface StandardButtonProps extends ButtonProps {
 }
 
 const StandardButton = (props: StandardButtonProps) => (
-    <Tooltip title={props.tooltip} enterDelay={500}>
+    <Tooltip title={props.tooltip}>
         <IconButton size={props.size || 'small'}
                     onClick={props.onClick}
                     aria-label={props.tooltip.toLowerCase()}

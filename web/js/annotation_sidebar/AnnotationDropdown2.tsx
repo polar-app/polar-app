@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface IProps {
     readonly id: string;
@@ -25,10 +26,11 @@ export const AnnotationDropdown2 = (props: IProps) => {
 
     const handleDelete = annotationMutations.createDeletedCallback({selected: [annotation]});
 
+    // {/*FIXME: move to MUIMenuIconButton*/}
+
     return (
 
-        <>
-            {/*FIXME: move to MUIMenuIconButton*/}
+        <Tooltip title="More options... ">
             <MUIMenu button={{
                          icon: <MoreVertIcon/>,
                          disabled: props.disabled,
@@ -53,7 +55,7 @@ export const AnnotationDropdown2 = (props: IProps) => {
                 </div>
             </MUIMenu>
 
-        </>
+        </Tooltip>
 
     );
 };
