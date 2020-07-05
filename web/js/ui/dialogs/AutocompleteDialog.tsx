@@ -1,16 +1,17 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import MUICreatableAutocomplete, {MUICreatableAutocompleteProps} from "../../mui/autocomplete/MUICreatableAutocomplete";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Box from "@material-ui/core/Box";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
+import Dialog from '@material-ui/core/Dialog';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         cancelButton: {
             color: theme.palette.text.secondary,

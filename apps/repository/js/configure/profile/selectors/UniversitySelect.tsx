@@ -1,9 +1,7 @@
-import AsyncSelect from 'react-select/async';
 import * as React from "react";
 import {Universities, University} from "polar-shared/src/util/Universities";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {nullToUndefined} from "polar-shared/src/util/Nullable";
 
 // use a large limit so that the user sees a bunch of universities and then
 // realizes that they need to type for it...
@@ -79,20 +77,23 @@ export const UniversitySelect = (props: IProps) => {
 
     type RawOption = IOption<University> | null;
 
-    return (
-        <AsyncSelect
-            isClearable
-            autoFocus
-            cacheOptions
-            placeholder={props.placeholder ?? "Search from nearly 10k universities..."}
-            defaultOptions={Loader.defaultOptions()}
-            loadOptions={loadOptions}
-            onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
-            // onKeyDown={event => props.onKeyDown(event)}
-            // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
-            // value={props.pendingTagOptions}
-            // defaultValue={props.pendingTagOptions}
-            />
-    );
+    // return (
+    //     <AsyncSelect
+    //         isClearable
+    //         autoFocus
+    //         cacheOptions
+    //         placeholder={props.placeholder ?? "Search from nearly 10k universities..."}
+    //         defaultOptions={Loader.defaultOptions()}
+    //         loadOptions={loadOptions}
+    //         onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
+    //         // onKeyDown={event => props.onKeyDown(event)}
+    //         // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
+    //         // value={props.pendingTagOptions}
+    //         // defaultValue={props.pendingTagOptions}
+    //         />
+    // );
+
+    return null;
+
 };
 

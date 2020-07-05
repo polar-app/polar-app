@@ -21,11 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface CreateAutocompleteOption {
-    readonly inputValue: string;
-    readonly label: string;
-}
-
 /**
  * An option with a value.
  */
@@ -47,6 +42,12 @@ export interface ValueAutocompleteOption<T> {
     readonly value: T;
 
 }
+
+interface CreateAutocompleteOption {
+    readonly inputValue: string;
+    readonly label: string;
+}
+
 
 type InternalAutocompleteOption<T> = CreateAutocompleteOption | ValueAutocompleteOption<T>;
 
@@ -74,7 +75,7 @@ export interface MUICreatableAutocompleteProps<T> {
 
     /**
      * Used when converting an option entered by the user to an object with
-     * a label.
+     * a label so that new items can be created.
      */
     readonly createOption: (label: string) => ValueAutocompleteOption<T>;
 
@@ -97,13 +98,7 @@ interface IHighlightChangeAutocompleteProps<T> {
                                  reason: HighlightChangeReason) => void;
 }
 
-type IFixedAutocomplete<T> = (props: AutocompleteProps<T> & UseAutocompleteProps<T> & IHighlightChangeAutocompleteProps<T>) => JSX.Element;
-
 export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {
-
-    // TODO this is an ugly hack from 04/2020 that can be removed in the future
-    // when Autocomplete adds back onHighlightChange
-    const FixedAutocomplete: IFixedAutocomplete<any> = Autocomplete
 
     const classes = useStyles();
 
@@ -113,6 +108,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     });
 
     const [open, setOpen] = useState<boolean>(false);
+
+    const inputValue = React.useRef("");
 
     const highlighted = useRef<ValueAutocompleteOption<T> | undefined>(undefined);
 
@@ -140,6 +137,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<ValueAutocompleteOption<T>> => {
 
             const toAutocompleteOption = (option: InternalAutocompleteOption<T>): ValueAutocompleteOption<T> => {
+
                 if (isCreateAutocompleteOption(option)) {
                     return props.createOption(option.inputValue);
                 } else {
@@ -169,7 +167,6 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         };
 
         if (newValues === null) {
-
             setValues([]);
             return;
 
@@ -192,7 +189,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     };
 
-    const filter = createFilterOptions<InternalAutocompleteOption<T>>();
+    const filter = createFilterOptions<ValueAutocompleteOption<T>>();
 
     const computeRelatedOptions = (): ReadonlyArray<ValueAutocompleteOption<T>> => {
         
@@ -241,9 +238,14 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         setOpen(false);
     }
 
+    // TODO: one of our users suggested that 'tab' select the item since this
+    // is somewhat standard but this requires that we use a controlled
+    // auto-complete.  This breaks because there's a but which will cause the
+    // inputValue to be reset when it re-renders again.
+
     return (
         <div className={classes.root}>
-            <FixedAutocomplete
+            <Autocomplete
                 multiple
                 getOptionSelected={isEqual}
                 // freeSolo
@@ -251,21 +253,37 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 value={[...state.values]}
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
-                open={open}
+                // open={open}
                 onClose={handleClose}
-                onOpen={() => setOpen(true)}
+                // NOTE that when we revert to manually managing this then the
+                // input is reset each time we enter a first character of a
+                // tag and then that character isn't shown - it swallows it.  A
+                // solution might have something to do with freeSolo
+                // onOpen={() => setOpen(true)}
                 getOptionLabel={(option) => option.label}
+                onInputChange={(event, nextInputValue, reason) => {
+                    inputValue.current = nextInputValue;
+                }}
                 onChange={(event, value, reason, details) => handleChange(value)}
                 filterSelectedOptions
                 filterOptions={(options, params) => {
 
-                    const filtered = filter(options, params) as InternalAutocompleteOption<T>[];
+                    const filtered = filter(options, params);
 
-                    if (params.inputValue !== '') {
-                        filtered.push({
-                            inputValue: params.inputValue,
-                            label: `Create: "${params.inputValue}"`
-                        });
+                    if (inputValue.current !== '') {
+
+                        const createOption = {
+                            ...props.createOption(inputValue.current),
+                            // label: `Create: "${params.inputValue}"`
+                            // TODO: I think we should prefix this with 'Create'
+                            // but that means it has to be localized and whether
+                            // the option is created or not is kind of
+                            // irrelevant.
+                            label: params.inputValue
+                        }
+
+                        filtered.push(createOption);
+
                     }
 
                     return filtered;

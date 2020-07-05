@@ -1,14 +1,10 @@
 import React from 'react';
 import Paper from "@material-ui/core/Paper";
-import {
-    createStyles, darken, fade,
-    lighten,
-    makeStyles,
-    Theme
-} from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import { lighten, fade, darken, createStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme) => {
 
     // border colors borrowed from here:
     //

@@ -1,5 +1,4 @@
 import React from 'react';
-import CreatableSelect from 'react-select';
 import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
@@ -31,21 +30,21 @@ export class ContactsSelector extends React.Component<IProps, IState> {
 
         return <div onPaste={event => this.onPaste(event)}>
 
-            <CreatableSelect
+            {/*<CreatableSelect*/}
 
-                isMulti
-                isClearable
-                autoFocus
-                // onKeyDown={event => this.onKeyDown(event)}
-                // className="basic-multi-select"
-                classNamePrefix="select"
-                onChange={(selectedOptions) => this.handleChange(selectedOptions as ReadonlyArray<ContactOption>)}
-                value={selectedOptions}
-                defaultValue={selectedOptions}
-                placeholder="Enter names or email addresses"
-                options={options}>
+            {/*    isMulti*/}
+            {/*    isClearable*/}
+            {/*    autoFocus*/}
+            {/*    // onKeyDown={event => this.onKeyDown(event)}*/}
+            {/*    // className="basic-multi-select"*/}
+            {/*    classNamePrefix="select"*/}
+            {/*    onChange={(selectedOptions) => this.handleChange(selectedOptions as ReadonlyArray<ContactOption>)}*/}
+            {/*    value={selectedOptions}*/}
+            {/*    defaultValue={selectedOptions}*/}
+            {/*    placeholder="Enter names or email addresses"*/}
+            {/*    options={options}>*/}
 
-            </CreatableSelect>
+            {/*</CreatableSelect>*/}
 
         </div>;
 

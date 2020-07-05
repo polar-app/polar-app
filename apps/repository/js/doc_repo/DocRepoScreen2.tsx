@@ -13,9 +13,9 @@ import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 
 namespace main {
 

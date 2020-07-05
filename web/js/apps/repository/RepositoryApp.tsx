@@ -46,7 +46,7 @@ import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/Annotatio
 import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
-import { AddFileDropzoneScreen } from './upload/AddFileDropzoneScreen';
+import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {AnkiSyncController} from "../../controller/AnkiSyncController";
 
 interface IProps {

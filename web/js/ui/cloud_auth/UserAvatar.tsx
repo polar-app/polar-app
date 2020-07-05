@@ -1,10 +1,10 @@
 import Avatar from "@material-ui/core/Avatar";
 import React from "react";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import isEqual from "react-fast-compare";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import createStyles from "@material-ui/core/styles/createStyles";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

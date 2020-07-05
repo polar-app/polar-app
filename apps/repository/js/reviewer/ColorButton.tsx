@@ -1,8 +1,8 @@
 import React from 'react';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {ButtonProps, createStyles, darken} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import isEqual from "react-fast-compare";
+import { createStyles, darken } from '@material-ui/core/styles';
 
 // FIXME: it doesn't seem that hover is working properly
 const useStyles = makeStyles((theme) => {
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => {
 interface IProps extends Omit<ButtonProps, "color"> {
     readonly color: string;
 }
+
 
 // https://material-ui.com/styles/basics/#adapting-based-on-props
 export const ColorButton = React.memo((props: IProps) => {

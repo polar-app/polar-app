@@ -1,6 +1,5 @@
 import {MUISearchBox2} from "../../../web/js/mui/MUISearchBox2";
 import * as React from "react";
-import {Logger} from "polar-shared/src/logger/Logger";
 import isEqual from "react-fast-compare";
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,10 +7,10 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import {MUIButtonBar} from "../../../web/js/mui/MUIButtonBar";
 import CloseIcon from '@material-ui/icons/Close';
-import Collapse from "@material-ui/core/Collapse";
 import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
+import Collapse from "@material-ui/core/Collapse/Collapse";
 
 type FindCallback = (opts: IFindOpts) => void;
 

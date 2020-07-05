@@ -1,5 +1,4 @@
 import * as React from "react";
-import CreatableSelect from 'react-select/creatable';
 import {
     academicOccupations,
     businessOccupations,
@@ -53,14 +52,15 @@ export const OccupationSelect = (props: IProps) => {
 
     };
 
-    return (
-        <CreatableSelect
-            isClearable
-            autoFocus
-            placeholder={props.placeholder ?? "Select an occupation..."}
-            options={options}
-            onChange={(option => onSelect(option as RawOption))}
-        />
-    );
+    // return (
+    //     <CreatableSelect
+    //         isClearable
+    //         autoFocus
+    //         placeholder={props.placeholder ?? "Select an occupation..."}
+    //         options={options}
+    //         onChange={(option => onSelect(option as RawOption))}
+    //     />
+    // );
+    return null;
 };
 

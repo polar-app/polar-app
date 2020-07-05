@@ -1,6 +1,4 @@
 import * as React from "react";
-import Select from "react-select";
-import {nullToUndefined} from "polar-shared/src/util/Nullable";
 import {
     EducationLevel,
     educationLevels
@@ -33,14 +31,17 @@ export const EducationLevelSelect = (props: IProps) => {
 
     type RawOption = IOption<EducationLevel> | null;
 
-    return (
-        <Select
-            isClearable
-            autoFocus
-            placeholder={props.placeholder ?? "Select a level of education..."}
-            options={options}
-            onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
-        />
-    );
+    // return (
+    //     <Select
+    //         isClearable
+    //         autoFocus
+    //         placeholder={props.placeholder ?? "Select a level of education..."}
+    //         options={options}
+    //         onChange={(option => props.onSelect(nullToUndefined(option as RawOption)))}
+    //     />
+    // );
+
+    return null;
+
 };
 

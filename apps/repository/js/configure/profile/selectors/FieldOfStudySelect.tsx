@@ -1,5 +1,4 @@
 import * as React from "react";
-import CreatableSelect from 'react-select/creatable';
 import {
     FieldOfStudy,
     fieldsOfStudy,
@@ -48,18 +47,21 @@ export const FieldOfStudySelect = (props: IProps) => {
 
     };
 
-    return (
-        <CreatableSelect
-            isClearable
-            autoFocus
-            placeholder={props.placeholder ?? "Select a field of study..."}
-            options={options}
-            onChange={(option => onSelect(option as RawOption))}
-            // onKeyDown={event => props.onKeyDown(event)}
-            // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
-            // value={props.pendingTagOptions}
-            // defaultValue={props.pendingTagOptions}
-        />
-    );
+    // return (
+    //     <CreatableSelect
+    //         isClearable
+    //         autoFocus
+    //         placeholder={props.placeholder ?? "Select a field of study..."}
+    //         options={options}
+    //         onChange={(option => onSelect(option as RawOption))}
+    //         // onKeyDown={event => props.onKeyDown(event)}
+    //         // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
+    //         // value={props.pendingTagOptions}
+    //         // defaultValue={props.pendingTagOptions}
+    //     />
+    // );
+
+    return null;
+
 };
 

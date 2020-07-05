@@ -1,7 +1,5 @@
 import createPersistedState from "use-persisted-state";
 import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
 import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
@@ -11,6 +9,8 @@ import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
 import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
 import {MUIDialogController} from "./dialogs/MUIDialogController";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -21,6 +21,7 @@ export const MUIAppRoot = (props: IProps) => {
     const usePersistedTheme = createPersistedState('theme');
     const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
 
+    // TODO play responsiveFontSizes ...
     const muiTheme = createMuiTheme({
         typography: {
             htmlFontSize: 12,

@@ -1,15 +1,15 @@
 import * as React from "react";
-import Dialog from "@material-ui/core/Dialog";
 import isEqual from "react-fast-compare";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from '@material-ui/icons/Close';
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Dialog from "@material-ui/core/Dialog";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {

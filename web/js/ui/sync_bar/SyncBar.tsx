@@ -93,7 +93,6 @@ export class SyncBar extends React.Component<IProps, IState> {
 
                 {/*the title string doesn't render properly and looks horrible*/}
                 <LinearProgress variant="determinate"
-                                style={Styles.progress}
                                 value={progress}/>
 
             </div>

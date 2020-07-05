@@ -1,11 +1,6 @@
 import React from 'react';
-import CreatableSelect from 'react-select';
-import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
-import {UserRef} from '../../datastore/sharing/rpc/UserRefs';
-import {ContactProfile} from './GroupSharingRecords';
-import {ContactOptions} from './ContactOptions';
 import {GroupNameStr} from "../../datastore/sharing/db/Groups";
 
 /**
@@ -33,19 +28,19 @@ export class GroupsSelector extends React.Component<IProps, IState> {
 
         return <div onPaste={event => this.onPaste(event)}>
 
-            <CreatableSelect
-                isMulti
-                isClearable
-                // onKeyDown={event => this.onKeyDown(event)}
-                // className="basic-multi-select"
-                classNamePrefix="select"
-                onChange={(selectedOptions) => this.handleChange(selectedOptions as ReadonlyArray<GroupOption>)}
-                value={selectedOptions}
-                defaultValue={selectedOptions}
-                placeholder="Enter or select groups"
-                options={options}>
+            {/*<CreatableSelect*/}
+            {/*    isMulti*/}
+            {/*    isClearable*/}
+            {/*    // onKeyDown={event => this.onKeyDown(event)}*/}
+            {/*    // className="basic-multi-select"*/}
+            {/*    classNamePrefix="select"*/}
+            {/*    onChange={(selectedOptions) => this.handleChange(selectedOptions as ReadonlyArray<GroupOption>)}*/}
+            {/*    value={selectedOptions}*/}
+            {/*    defaultValue={selectedOptions}*/}
+            {/*    placeholder="Enter or select groups"*/}
+            {/*    options={options}>*/}
 
-            </CreatableSelect>
+            {/*</CreatableSelect>*/}
 
         </div>;
 

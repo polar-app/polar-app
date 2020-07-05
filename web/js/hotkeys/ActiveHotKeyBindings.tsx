@@ -6,7 +6,6 @@ import {
     KeyMapOptions
 } from "react-hotkeys"
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -16,6 +15,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from '@material-ui/core/TableCell';
 import grey from "@material-ui/core/colors/grey";
+import Dialog from '@material-ui/core/Dialog';
 
 interface KeySequenceProps {
     readonly sequence: string;
