@@ -9,8 +9,6 @@ import Chip from '@material-ui/core/Chip';
 import {MUIRelatedOptions} from "./MUIRelatedOptions";
 import {PremiumFeature} from "../../ui/premium_feature/PremiumFeature";
 import isEqual from "react-fast-compare";
-import {AutocompleteProps} from "@material-ui/lab/Autocomplete/Autocomplete";
-import {UseAutocompleteProps} from "@material-ui/lab/useAutocomplete";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -88,14 +86,6 @@ export interface MUICreatableAutocompleteProps<T> {
 interface IState<T> {
     readonly values: ReadonlyArray<ValueAutocompleteOption<T>>;
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
-}
-
-type HighlightChangeReason = 'keyboard' | 'auto' | 'mouse';
-
-interface IHighlightChangeAutocompleteProps<T> {
-    readonly onHighlightChange: (event: object,
-                                 option: T,
-                                 reason: HighlightChangeReason) => void;
 }
 
 export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {

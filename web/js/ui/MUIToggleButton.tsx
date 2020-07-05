@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { DeviceRouters } from './DeviceRouter';
+import isEqual from 'react-fast-compare';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,7 +32,7 @@ interface IProps {
     readonly size?: 'small' | 'medium' | 'large';
 }
 
-export const MUIToggleButton = (props: IProps) => {
+export const MUIToggleButton = React.memo(React.forwardRef((props: IProps, ref) => {
 
     const classes = useStyles();
 
@@ -77,6 +78,6 @@ export const MUIToggleButton = (props: IProps) => {
 
     );
 
-}
+}), isEqual);
 
 

@@ -4,7 +4,7 @@ import ArchiveIcon from "@material-ui/icons/Archive";
 import FlagIcon from "@material-ui/icons/Flag";
 import React from "react";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {Callback, Callback1} from "polar-shared/src/util/Functions";
+import {Callback1} from "polar-shared/src/util/Functions";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import grey from "@material-ui/core/colors/grey";
 import DeleteIcon from "@material-ui/icons/Delete";
