@@ -9,7 +9,6 @@ import {
     SyncOrigin
 } from '../../js/datastore/PersistenceLayers';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
-import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {Logging} from '../../js/logger/Logging';
 
 Logging.initForTesting();
@@ -24,12 +23,11 @@ SpectronRenderer.run(async (state) => {
             const firebaseDatastore = new FirebaseDatastore();
 
             const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
-            const progressBar = ProgressBar.create(false);
 
             cloudAwareDatastore.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
                 console.log("Got event: ", docMetaSnapshotEvent);
                 console.log("Progress percentage: " + docMetaSnapshotEvent.progress.progress);
-                progressBar.update(docMetaSnapshotEvent.progress.progress);
+                // progressBar.update(docMetaSnapshotEvent.progress.progress);
             });
 
             await cloudAwareDatastore.init();
@@ -37,8 +35,6 @@ SpectronRenderer.run(async (state) => {
         }
 
         async function initialMergeWithFirebase() {
-
-            const progressBar = ProgressBar.create(false);
 
             const source = new DefaultPersistenceLayer(new DiskDatastore());
             const target = new DefaultPersistenceLayer(new FirebaseDatastore());
@@ -52,7 +48,7 @@ SpectronRenderer.run(async (state) => {
                 try {
                     console.time(timeLabel);
                     return await PersistenceLayers.toSyncDocMap(persistenceLayer.datastore, progressState => {
-                        progressBar.update(progressState.progress);
+                        // progressBar.update(progressState.progress);
                     });
 
                 } finally {
@@ -74,7 +70,7 @@ SpectronRenderer.run(async (state) => {
 
             await PersistenceLayers.merge(await toSyncOrigin(source), await toSyncOrigin(target), async (transferEvent) => {
                 console.log("Transfer event: ", transferEvent);
-                progressBar.update(transferEvent.progress.progress);
+                // progressBar.update(transferEvent.progress.progress);
             });
 
             console.log("Transfer finished.");
