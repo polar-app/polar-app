@@ -5,6 +5,10 @@ import {SimpleReactor} from '../../reactor/SimpleReactor';
 
 const log = Logger.create();
 
+/**
+ * @Deprecated - pretty sure we don't need this anymore now that we're on
+ * Firebase
+ */
 export class DocInfoAdvertisementListenerService {
 
     private readonly reactor: SimpleReactor<DocInfoAdvertisement> = new SimpleReactor();

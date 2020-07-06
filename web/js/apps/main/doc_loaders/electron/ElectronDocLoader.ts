@@ -17,6 +17,9 @@ export class ElectronDocLoader implements IDocLoader {
 
     public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
+        // TODO: this won't be need in the future as window.open now works on
+        // Electron - in 9.x I think.
+
         const viewerURL = ViewerURLs.create(this.persistenceLayerProvider, loadDocRequest);
 
         return {

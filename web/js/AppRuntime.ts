@@ -2,6 +2,7 @@ import {ipcMain, ipcRenderer} from 'electron';
 
 /**
  * Used to determine if we're running in Electron or Chrome.
+ * @Deprected use the one from polar-shared
  */
 export class AppRuntime {
 

@@ -70,6 +70,7 @@ import {
     GetFileOpts,
     NetworkLayers
 } from "polar-shared/src/datastore/IDatastore";
+import { Tracer } from 'polar-shared/src/util/Tracer';
 
 const log = Logger.create();
 
@@ -196,8 +197,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         try {
 
+            // TODO: technically we also, do NOT need to do this as coming from
+            // cache I think is the default, but we should verify.
+
             const stopwatch = Stopwatches.create();
             const cachedSnapshot = await query.get({ source: 'cache' });
+
+            // TODO: this takes a LONG time to resolve from cache!  Almost 2s
+
             console.log("Initial cached snapshot duration: " + stopwatch.stop());
 
             onNextForSnapshot(cachedSnapshot);
