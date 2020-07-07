@@ -1,5 +1,5 @@
 {
-  "name": "polar-pdfjs-dist",
+  "name": "pdfjs-dist",
   "version": "2.0.0",
   "devDependencies": {
     "@babel/core": "^7.8.7",

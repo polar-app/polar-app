@@ -1008,7 +1008,7 @@ class PDFPageProxy {
     imageLayer = null,
     canvasFactory = null,
     // FIXME: this needs to be changed for darkmode
-    background = null,
+    background = localStorage.getItem("pdfjs.canvas.background") || null,
   }) {
     if (this._stats) {
       this._stats.time("Overall");

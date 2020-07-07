@@ -758,8 +758,6 @@ const PDFViewerApplication = {
       }
     }
 
-    console.log("FIXME: getDocument parameters: ", parameters);
-
     const loadingTask = getDocument(parameters);
     this.pdfLoadingTask = loadingTask;
 
