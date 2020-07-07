@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const {GenerateSW} = require('workbox-webpack-plugin');
+
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -15,7 +17,7 @@ const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "
 
 const workers = os.cpus().length - 1;
 
-const OUTPUT_PATH = path.resolve(__dirname, 'web/dist');
+const OUTPUT_PATH = path.resolve(__dirname, 'dist/public');
 
 console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
@@ -81,7 +83,7 @@ function createRules() {
                     options: {
                         name: '[name]-[contenthash].[ext]',
                         outputPath: 'assets',
-                        publicPath: '/web/dist/assets'
+                        publicPath: '/assets'
                     }
                 },
             ],
@@ -109,7 +111,7 @@ function createRules() {
                     options: {
                         name: '[name]-[contenthash].[ext]',
                         outputPath: 'assets',
-                        publicPath: '/web/dist/assets'
+                        publicPath: '/assets'
                     }
                 },
             ],
@@ -184,14 +186,76 @@ module.exports = {
         new ForkTsCheckerWebpackPlugin({}),
         new CopyPlugin({
             patterns: [
+
+                // ***** pdf.js
+                //
                 // this is a bit of a hack and it would be better if we supported
-                // this better and managed as part of the build system
+                // this better and managed as part of webpack directly and copied
+                // these as assets I think but the main issue is that the paths
+                // need to be preserved AND they actually need to be loaded but
+                // PDF.js doesn't link to them directly
+
                 { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
                 { from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
-                { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' }
+                { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' },
+
+                // ***** apps
+                { from: './apps/**/*.html', to: './'},
+                { from: './apps/**/*.css', to: './'},
+                { from: './apps/**/*.svg', to: './'},
+                { from: './apps/init.js', to: './'},
+                { from: './apps//service-worker-registration.js', to: './'},
+                { from: './pdfviewer-custom/**/*.css', to: './'},
+
+                // ***** misc root directory files
+
+                { from: './*.ico', to: './'},
+                { from: './*.png', to: './'},
+                { from: './*.svg', to: './'},
+                { from: './sitemap*.xml', to: './'},
+                { from: './robots.txt', to: './'},
+                { from: './manifest.json', to: './'},
+                { from: './apps/repository/index.html', to: './'},
+
             ],
         }),
-
+        new GenerateSW({
+            // include: [
+            //     "**"
+            // ],
+            cleanupOutdatedCaches: true,
+            skipWaiting: true,
+            directoryIndex: 'index.html',
+            // stripPrefix: 'dist/public',
+            maximumFileSizeToCacheInBytes: 150000000,
+            swDest: 'service-worker.js',
+            // runtimeCaching: [
+            //     {
+            //         urlPattern: /.*/,
+            //         handler: 'staleWhileRevalidate'
+            //     },
+            //     {
+            //         // these URLs are immutable based on content hash as computed by
+            //         // webpack so just use cacheFirst which only fetches them the
+            //         // first time
+            //         urlPattern: /https:\/\/storage.google.com\/stash/,
+            //         handler: 'CacheFirst'
+            //     }
+            // ],
+            // runtimeCaching: [
+            //     {
+            //         // these URLs are immutable based on content hash as computed by
+            //         // webpack so just use cacheFirst which only fetches them the
+            //         // first time
+            //         urlPattern: /web\/dist\/images\/.*/,
+            //         handler: 'CacheFirst'
+            //     }
+            // ],
+            modifyURLPrefix: {
+                // Remove a '/dist' prefix from the URLs:
+                '/dist/public': ''
+            }
+        })
     ],
     optimization: {
         minimize: ! isDev,
@@ -212,10 +276,10 @@ module.exports = {
         // },
     },
     devServer: {
-        publicPath: '/web/dist',
+        publicPath: '/dist/public',
         contentBase: __dirname,
         compress: true,
-        port: 9000,
+        port: 9500,
         watchContentBase: true,
         historyApiFallback: {
             rewrites: [

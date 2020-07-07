@@ -70,12 +70,12 @@ copy apps "*.css"
 copy apps "init.js"
 copy apps "service-worker-registration.js"
 
-copy htmlviewer "*.html"
-copy htmlviewer "*.css"
-
 copy pdfviewer-custom "*.css"
 
 showEnv
+
+# FIXME: it doesn't make a ton of sense to have TWO public directories.  We have
+# web/dist and then dist/public...
 
 copy web/dist "*.eot"
 copy web/dist "*.woff2"

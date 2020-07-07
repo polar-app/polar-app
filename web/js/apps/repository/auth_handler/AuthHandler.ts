@@ -11,6 +11,8 @@ const POLAR_APP_SITES = [
     'http://127.0.0.1:8500',
     'http://localhost:9000',
     'http://127.0.0.1:9000',
+    'http://localhost:9500',
+    'http://127.0.0.1:9500',
     'https://app.getpolarized.io',
     'https://beta.getpolarized.io'
 ];
