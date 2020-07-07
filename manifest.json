@@ -1,6 +1,6 @@
 {
   "short_name": "Polar",
-  "name": "Polar Bookshelf",
+  "name": "Polar",
   "icons": [
     {
       "src": "/icon.png",
@@ -18,6 +18,11 @@
       "sizes": "128x128"
     },
     {
+      "src": "/icon-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
       "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
@@ -30,9 +35,9 @@
     }
   ],
   "start_url": "/",
-  "background_color": "#FFFFFF",
-  "display": "standalone",
-  "scope": "/",
-  "theme_color": "white"
+  "theme_color": "#484848",
+  "background_color": "#484848",
+  "display": "fullscreen",
+  "scope": "/"
 
 }
