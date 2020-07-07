@@ -10,13 +10,23 @@ function isBrowser() {
 
 if ('serviceWorker' in navigator && isBrowser()) {
 
-    window.addEventListener('beforeinstallprompt', () => {
+    let beforeInstallPromptEvent: Event | undefined;
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+
+        beforeInstallPromptEvent = event;
+
+        // TODO: once we have this we need to
+        // https://love2dev.com/blog/beforeinstallprompt/
 
         // Used to trace PWA install so that we know we can install directly.
         // Note that this will NOT fire if the app is already installed.
         console.log("SUCCESS: received beforeinstallprompt and PWA is installable!");
 
         // TODO: keep a copy of the event so that we can reuse it in the future.
+
+        // TODO: we will probably have to use window messages here to communicate
+        // with react I think.
 
     });
 

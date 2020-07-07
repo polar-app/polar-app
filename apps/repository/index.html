@@ -96,56 +96,9 @@
   </body>
 
   <script src="/apps/service-worker-registration.js"></script>
-  <script src="/apps/init.js"></script>
 
-  <script>
+  <!-- TODO: migrate service-worker-registration.js into our main bundle -->
+  <script src="/repository-bundle.js"></script>
 
-      function displayError(msg) {
-
-          // TODO: we need to also include the error stack trace in the future I think.
-
-          const errorElement = document.getElementById("error");
-          errorElement.style.display = 'block';
-          errorElement.textContent = msg;
-
-      }
-
-      function withErrorHandler(delegate) {
-
-          try {
-
-            delegate();
-
-          } catch (e) {
-            displayError(e.message);
-          }
-
-      }
-
-      const fallbackLoader = () => {
-
-          withErrorHandler(() => {
-
-            // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
-            // loading over HTTP we can't find node_modules until we require().  We can
-            // only find standard modules like 'fs' and 'electron' but not custom
-            // modules so we have to just have these four lines repeated over and over
-            // for each of our main apps.  In the future we should try to track down
-            // why this is happening but I spent 1-2 hours on trying to figure out
-            // the root cause with no resolution and this is a temporary workaround.
-            const {remote} = require('electron');
-            const path = require('path');
-            const appPath = remote.getGlobal("appPath");
-            require(path.join(appPath, "apps", "repository", "js", "entry.js"));
-
-          });
-
-      };
-
-      const forceScript = true;
-
-      injectApp('/repository-bundle.js', fallbackLoader, forceScript);
-
-  </script>
 
 </html>
