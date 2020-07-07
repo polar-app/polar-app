@@ -203,8 +203,8 @@ module.exports = {
                 { from: './apps/**/*.html', to: './'},
                 { from: './apps/**/*.css', to: './'},
                 { from: './apps/**/*.svg', to: './'},
-                { from: './apps/init.js', to: './'},
-                { from: './apps//service-worker-registration.js', to: './'},
+                { from: './apps/init.js', to: './apps'},
+                { from: './apps/service-worker-registration.js', to: './apps'},
                 { from: './pdfviewer-custom/**/*.css', to: './'},
 
                 // ***** misc root directory files
@@ -276,8 +276,8 @@ module.exports = {
         // },
     },
     devServer: {
-        publicPath: '/dist/public',
-        contentBase: __dirname,
+        publicPath: 'dist/public',
+        contentBase: 'dist/public',
         compress: true,
         port: 9500,
         watchContentBase: true,
