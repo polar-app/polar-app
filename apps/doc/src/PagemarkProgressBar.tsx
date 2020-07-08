@@ -9,6 +9,7 @@ import {
     useContextMenu
 } from "../../repository/js/doc_repo/MUIContextMenu";
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
+import {useDocViewerFileTypeContext} from "./renderers/DocRenderer";
 
 export const ProgressBar = React.memo(() => {
 
@@ -17,8 +18,10 @@ export const ProgressBar = React.memo(() => {
 
     const perc = DocMetas.computeProgress(docMeta);
 
+    const fileType = useDocViewerFileTypeContext();
+
     const handleDoubleClick = () => {
-        ReadingProgressResume.resume(docMeta);
+        ReadingProgressResume.resume({docMeta, fileType});
     }
 
     const contextMenuHandlers = useContextMenu();

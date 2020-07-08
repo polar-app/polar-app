@@ -279,7 +279,7 @@ export const PDFDocument = React.memo((props: IProps) => {
             }
 
             // start the auto-pagemark system.
-            Scrollers.register(onPagemarkExtend, 'full');
+            Scrollers.register(onPagemarkExtend, {mode: 'full'});
 
         }
 

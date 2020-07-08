@@ -5,6 +5,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 export const GlobalPDFCssDarkStyles = withStyles((theme) => {
 
     return {
+
         '@global': {
 
             ".page canvas": {
@@ -13,9 +14,14 @@ export const GlobalPDFCssDarkStyles = withStyles((theme) => {
 
             ".pdfViewer .page": {
                 backgroundColor: `${theme.palette.background.default} !important`
+            },
+
+            ".pdfViewer .highlight": {
+                backgroundColor: 'rgba(255, 255, 0, 1) !important'
             }
 
         },
+
     }
 
 });

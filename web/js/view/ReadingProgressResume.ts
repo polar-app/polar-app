@@ -4,16 +4,24 @@ import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {FileType} from "../apps/main/file_loaders/FileType";
 
-export class ReadingProgressResume {
+export namespace ReadingProgressResume {
 
-    public static resume(docMeta: IDocMeta) {
-        setTimeout(() => this.doResume(docMeta), 1);
+    export interface ResumeOpts {
+        readonly docMeta: IDocMeta;
+        readonly fileType: FileType;
     }
 
-    private static doResume(docMeta: IDocMeta) {
+    export function resume(opts: ResumeOpts) {
+        setTimeout(() => doResume(opts), 1);
+    }
 
-        const targetPagemark = this.computeTargetPagemark(docMeta);
+    function doResume(opts: ResumeOpts) {
+
+        const {docMeta} = opts;
+
+        const targetPagemark = computeTargetPagemark(docMeta);
 
         if (! targetPagemark) {
             return false;
@@ -25,7 +33,7 @@ export class ReadingProgressResume {
 
         const pageElement = <HTMLElement> pages[pageNum - 1];
 
-        const scrollParent = this.getScrollParent(pageElement);
+        const scrollParent = getScrollParent(pageElement);
 
         const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
 
@@ -34,10 +42,7 @@ export class ReadingProgressResume {
 
         const computePagemarkHeight = (): number => {
 
-            // FIXME: this WILL NOT work in 2.0
-            const docFormat = DocFormatFactory.getInstance();
-
-            if (docFormat.name === 'pdf') {
+            if (opts.fileType === 'pdf') {
 
                 const pagemarkBottom
                     = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
@@ -84,7 +89,8 @@ export class ReadingProgressResume {
         return true;
 
     }
-    private static getScrollParent(element: HTMLElement) {
+
+    function getScrollParent(element: HTMLElement) {
 
         const docFormat = DocFormatFactory.getInstance();
 
@@ -100,7 +106,7 @@ export class ReadingProgressResume {
 
     }
 
-    private static computePagemarks(docMeta: IDocMeta) {
+    function computePagemarks(docMeta: IDocMeta) {
 
         const result: PagemarkHolder[] = [];
 
@@ -124,9 +130,9 @@ export class ReadingProgressResume {
 
     }
 
-    private static computeTargetPagemark(docMeta: IDocMeta): PagemarkHolder | undefined {
+    function computeTargetPagemark(docMeta: IDocMeta): PagemarkHolder | undefined {
 
-        const pagemarkHolders = this.computePagemarks(docMeta);
+        const pagemarkHolders = computePagemarks(docMeta);
 
         let result: PagemarkHolder | undefined;
 

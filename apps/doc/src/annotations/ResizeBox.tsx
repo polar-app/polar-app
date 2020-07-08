@@ -96,6 +96,7 @@ export function ResizeBox(props: IProps) {
             {/*    <ControlBar bottom={state.y} left={state.x} width={state.width}/>}*/}
 
             <Rnd
+                id={props.id}
                 bounds="parent"
                 className={props.className}
                 size={{

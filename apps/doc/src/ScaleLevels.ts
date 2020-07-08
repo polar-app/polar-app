@@ -29,8 +29,8 @@ export interface LabelValueTuple<V> {
 }
 
 export type ScaleLevel =
-    'page-width'
-    | 'page-fit'
+    'page-fit'
+    | 'page-width'
     | '0.5'
     | '0.75'
     | '1'
@@ -41,12 +41,12 @@ export type ScaleLevelTuple = LabelValueTuple<ScaleLevel>;
 
 export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     {
-        label: 'page width',
-        value: 'page-width'
-    },
-    {
         label: 'page fit',
         value: 'page-fit'
+    },
+    {
+        label: 'page width',
+        value: 'page-width'
     },
     {
         label: '50%',

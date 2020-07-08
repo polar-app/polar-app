@@ -48,7 +48,8 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
         return ReactDOM.createPortal(
-            <div data-type="text-highlight"
+            <div id={textHighlight.id}
+                 data-type="text-highlight"
                  data-doc-fingerprint={fingerprint}
                  data-text-highlight-id={textHighlight.id}
                  data-page-num={pageNum}

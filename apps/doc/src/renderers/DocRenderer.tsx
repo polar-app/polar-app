@@ -8,6 +8,7 @@ import {EPUBDocument} from "./epub/EPUBDocument";
 import {EPUBViewerContainer} from "./epub/EPUBViewerContainer";
 import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -36,10 +37,38 @@ const EPUBDocumentRenderer = (props: ILoadedProps) => {
     );
 }
 
-interface IProps {
+const DocViewerFileTypeContext = React.createContext<FileType>(null!);
+
+/**
+ * Provided so we can determine which type of doc type we should load (epub,
+ * pdf, etc)
+ */
+export function useDocViewerFileTypeContext() {
+    return React.useContext(DocViewerFileTypeContext);
 }
 
-export const DocRenderer = React.memo((props: IProps) => {
+interface DocRendererDelegateProps {
+    readonly docURL: string,
+    readonly docMeta: IDocMeta;
+    readonly fileType: FileType;
+}
+
+
+const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
+
+    switch (props.fileType) {
+
+        case "pdf":
+            return <PDFDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}/>;
+        case "epub":
+            return <EPUBDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}/>;
+        default:
+            return null;
+    }
+
+});
+
+export const DocRenderer = React.memo(() => {
 
     const {docURL, docMeta} = useDocViewerStore();
 
@@ -47,17 +76,12 @@ export const DocRenderer = React.memo((props: IProps) => {
         return null;
     }
 
-    const type = FileTypes.create(docURL);
+    const fileType = FileTypes.create(docURL);
 
-    switch (type) {
-
-        case "pdf":
-            return <PDFDocumentRenderer docURL={docURL} docMeta={docMeta}/>;
-        case "epub":
-            return <EPUBDocumentRenderer docURL={docURL} docMeta={docMeta}/>;
-
-    }
-
-    return null;
+    return (
+        <DocViewerFileTypeContext.Provider value={fileType}>
+            <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}/>
+        </DocViewerFileTypeContext.Provider>
+    );
 
 }, isEqual);
