@@ -32,11 +32,13 @@ export class Screenshots {
         const docFormat = DocFormatFactory.getInstance();
 
         const captureDirectly = () => {
+
             if (AppRuntime.isBrowser()) {
                 return this.captureViaBrowser(boxRect, element);
             } else {
                 return this.captureViaElectron(boxRect, element);
             }
+
         };
 
         switch (docFormat.name) {

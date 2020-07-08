@@ -136,10 +136,12 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                 top={overlayRect.top}
                 width={overlayRect.width}
                 height={overlayRect.height}
-                style={{
-                    position: 'absolute',
+                resizeHandleStyle={{
                     ...pagemarkColor,
                     mixBlendMode: 'multiply',
+                }}
+                style={{
+                    position: 'absolute',
                     zIndex: 9
                 }}/>
     );

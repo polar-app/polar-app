@@ -10,6 +10,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 interface IProps {
     readonly id?: string;
     readonly style?: React.CSSProperties;
+    readonly resizeHandleStyle?: React.CSSProperties;
+
     readonly className?: string;
 
     readonly left: number;
@@ -43,7 +45,8 @@ export function ResizeBox(props: IProps) {
 
     // force pointer events on the resize corners.
     const resizeHandleStyle: React.CSSProperties = {
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        ...(props.resizeHandleStyle || {})
     };
 
     const handleOnMouseOver = () => {
