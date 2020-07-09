@@ -71,6 +71,7 @@ class MUILogger extends ConsoleLogger {
             type: 'error',
             title,
             subtitle,
+            noCancel: true,
             onAccept: NULL_FUNCTION
         });
 

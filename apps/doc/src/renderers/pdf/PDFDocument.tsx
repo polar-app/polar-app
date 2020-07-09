@@ -127,7 +127,7 @@ interface IProps {
 export const PDFDocument = React.memo((props: IProps) => {
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
-    const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[0]);
+    const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
     const log = useLogger();
 

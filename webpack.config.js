@@ -280,6 +280,8 @@ module.exports = {
         contentBase: 'dist/public',
         compress: true,
         port: 8050,
+        hot: true,
+
         watchContentBase: true,
         historyApiFallback: {
             rewrites: [
