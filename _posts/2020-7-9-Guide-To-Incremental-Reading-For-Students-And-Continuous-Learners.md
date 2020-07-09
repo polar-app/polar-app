@@ -68,6 +68,7 @@ Import an article into SuperMemo
 Split up the article into manageable sections (paragraphs or by topic)
 If the article is separated into paragraphs, then you would read paragraph 1 and extract key pieces of information (phrases, sentences, keywords, definitions). Then, make cloze deletions or questions/answers out of the key information. 
 A day later, SuperMemo will show you the question/answers you created for paragraph 1. You will do repetitions for these cloze deletions or questions/answers. 
+
 <img class="img-fluid" src="https://i.imgur.com/d3wE7iK.jpg">
 
 In the next couple of days, you will process paragraph 2 and follow the same procedure as you did with paragraph 1.
@@ -108,5 +109,6 @@ Here is the basic life cycle of your flashcards with Polar’s own spaced repeti
 In the beginning, flashcards will be put in **learning** mode until you’ve been able to get a good grasp of the material.
 Next, they will be put in **review** mode. This mode schedules the learning at decreasing intervals of time as you accurately complete the flashcards. 
 The flashcards you’ve mastered (selected “**good**”) will be reviewed every year or so. If you review a flashcard and don’t know the answer, click “**again**.” This card will be sent back to the learning mode, then the review mode if you remember it a second time.
-As you can see, <a href="https://getpolarized.io/docs/incremental-reading.html" target="_blank">incremental reading</a> helps you effectively structure your reading in a way that helps you retain information in the long-term. With modern software like Polar, you can easily organize and manage multiple readings in a document repository. In addition, Polar’s spaced repetition software will schedule your annotations and flashcards for review. All in all, Polar will satisfy your incremental reading needs and help you learn better. 
+
+As you can see, <a href="https://getpolarized.io/docs/incremental-reading.html" target="_blank">incremental reading</a> helps you effectively structure your reading in a way that helps you retain information in the long-term. With a software like Polar, you can easily organize and manage multiple readings in a document repository. In addition, Polar’s spaced repetition software will schedule your annotations and flashcards for review. All in all, Polar will satisfy your incremental reading needs and help you learn better. 
 
