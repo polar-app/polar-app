@@ -11,6 +11,7 @@ import {Screenshots} from "../../../../web/js/screenshots/Screenshots";
 import {ICapturedScreenshot} from "../../../../web/js/screenshots/Screenshot";
 import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {computePageDimensions} from "./AnnotationHooks";
+import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 
 export namespace AreaHighlightRenderers {
 
@@ -24,7 +25,8 @@ export namespace AreaHighlightRenderers {
 
     export async function createAreaHighlightFromEvent(pageNum: number,
                                                        pointWithinPageElement: IPoint,
-                                                       docScale: IDocScale): Promise<ICapturedAreaHighlight> {
+                                                       docScale: IDocScale,
+                                                       fileType: FileType): Promise<ICapturedAreaHighlight> {
 
         const rect = AnnotationRects.createFromPointWithinPageElement(pageNum, pointWithinPageElement);
 
@@ -46,7 +48,7 @@ export namespace AreaHighlightRenderers {
             height: positionRect.height,
         };
 
-        const capturedScreenshot = await Screenshots.capture(pageNum, overlayRect);
+        const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType});
 
         const areaHighlight = AreaHighlights.create({rect});
 
@@ -56,7 +58,8 @@ export namespace AreaHighlightRenderers {
 
     export async function createAreaHighlightFromOverlayRect(pageNum: number,
                                                              overlayRect: ILTRect,
-                                                             docScale: IDocScale): Promise<ICapturedAreaHighlight> {
+                                                             docScale: IDocScale,
+                                                             fileType: FileType): Promise<ICapturedAreaHighlight> {
 
         const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect);
 
@@ -76,7 +79,7 @@ export namespace AreaHighlightRenderers {
             height: positionRect.height,
         };
 
-        const capturedScreenshot = await Screenshots.capture(pageNum, overlayRect);
+        const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType});
 
         const areaHighlight = AreaHighlights.create({rect});
 

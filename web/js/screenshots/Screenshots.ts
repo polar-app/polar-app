@@ -1,53 +1,59 @@
-import {CaptureTarget} from './electron/ElectronScreenshots';
-import {ElectronScreenshots} from './electron/ElectronScreenshots';
-import {DocFormatFactory} from '../docformat/DocFormatFactory';
+import {
+    CaptureTarget,
+    ElectronScreenshots
+} from './electron/ElectronScreenshots';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {Buffers} from 'polar-shared/src/util/Buffers';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ICapturedScreenshot} from './Screenshot';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
+import {FileType} from '../apps/main/file_loaders/FileType';
 
 const log = Logger.create();
 
 /**
  * Captures screenshots of a document in the most elegant way possible.
  */
-export class Screenshots {
+export namespace Screenshots {
+
+    export interface CaptureOpts {
+        // The page number that the annotation is attached.
+        readonly pageNum: number;
+
+        // The rect within the page of for the box (absolutely positioned as pixels).
+        readonly boxRect: ILTRect;
+
+        // The actual HTML element that represents the annotation on screen.
+        readonly element?: HTMLElement;
+
+        readonly fileType: FileType;
+    }
 
     /**
      * Capture a screenshot using the right strategy (via PDF canvas or
      * Electron)
      *
-     * @param pageNum The page number that the annotation is attached.
-     * @param boxRect The rect within the page of for the box (absolutely positioned as pixels).
-     * @param element The actual HTML element that represents the annotation on screen.
      */
-    public static async capture(pageNum: number,
-                                boxRect: ILTRect,
-                                element?: HTMLElement): Promise<ICapturedScreenshot> {
+    export async function capture(opts: CaptureOpts): Promise<ICapturedScreenshot> {
 
-        // FIXME: this WILL NOT work in 2.0 and needs to be fixed.
-        const docFormat = DocFormatFactory.getInstance();
+        const {pageNum, boxRect, element, fileType} = opts;
 
         const captureDirectly = () => {
 
             if (AppRuntime.isBrowser()) {
-                return this.captureViaBrowser(boxRect, element);
+                return captureViaBrowser(boxRect, element);
             } else {
-                return this.captureViaElectron(boxRect, element);
+                return captureViaElectron(boxRect, element);
             }
 
         };
 
-        switch (docFormat.name) {
+        switch (fileType) {
 
             case 'pdf':
-                return this.captureViaCanvas(pageNum, boxRect);
-
-            case 'html':
-                return captureDirectly();
+                return captureViaCanvas(pageNum, boxRect);
 
             case 'epub':
                 return captureDirectly();
@@ -58,11 +64,11 @@ export class Screenshots {
 
     // TODO: Computing the bounding rect directly would be a better option here.
 
-    private static async captureViaElectron(rect: ILTRect, element?: HTMLElement): Promise<ICapturedScreenshot>  {
+    async function captureViaElectron(rect: ILTRect, element?: HTMLElement): Promise<ICapturedScreenshot>  {
 
         log.debug("Capturing via electron");
 
-        rect = Screenshots.computeCaptureRect(rect, element);
+        rect = computeCaptureRect(rect, element);
 
         const {width, height} = rect;
 
@@ -82,20 +88,21 @@ export class Screenshots {
 
     }
 
-    private static async captureViaCanvas(pageNum: number,
-                                          rect: ILTRect): Promise<ICapturedScreenshot> {
+    async function captureViaCanvas(pageNum: number,
+                                    rect: ILTRect): Promise<ICapturedScreenshot> {
 
-        const docFormat = DocFormatFactory.getInstance();
+        function getCanvasForPage(pageNum: number): HTMLCanvasElement {
+            return <HTMLCanvasElement> document.querySelectorAll(".page canvas")[pageNum - 1];
+        }
 
-        // FIXME: I dont' think this will work
-        const canvas = await docFormat.getCanvas(pageNum);
+        const canvas = getCanvasForPage(pageNum);
 
         return await Canvases.extract(canvas, rect);
 
     }
 
-    private static async captureViaBrowser(boxRect: ILTRect,
-                                           element?: HTMLElement) {
+    async function captureViaBrowser(boxRect: ILTRect,
+                                     element?: HTMLElement) {
 
         // we have to capture via our extension
         const browserScreenshot = await BrowserScreenshots.capture(boxRect, element);
@@ -115,7 +122,7 @@ export class Screenshots {
 
     }
 
-    public static computeCaptureRect(rect: ILTRect, element?: HTMLElement) {
+    export function computeCaptureRect(rect: ILTRect, element?: HTMLElement) {
 
         if (element) {
             const {width, height} = rect;
