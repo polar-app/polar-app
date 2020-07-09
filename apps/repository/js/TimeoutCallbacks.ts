@@ -1,19 +1,21 @@
-export namespace Callbacks {
+export namespace TimeoutCallbacks {
 
-    export function executedWithTimeout(delegate: () => void): () => void {
+    export type TimeoutCallback<V> = (value: V) => void;
+
+    export function executedWithTimeout<V>(delegate: TimeoutCallback<V>): TimeoutCallback<V> {
 
         // for some reason when I try to autotag the input is automatically
         // filled with a 't'.  react-hotkeys isn supposed to stop propagation
         // by default but that seems to not be functional.
-        return () => {
-            setTimeout(delegate, 1);
+        return (value: V) => {
+            setTimeout(() => delegate(value), 1);
         };
 
     }
 
-    export type CallbacksMap = {[name: string]: () => void};
+    export type CallbacksMap<V> = {[name: string]: TimeoutCallback<V>};
 
-    export function callbacksWithTimeout(callbacks: CallbacksMap) {
+    export function callbacksWithTimeout<V>(callbacks: CallbacksMap<V>) {
         const result = {...callbacks};
 
         for (const key of Object.keys(result)) {

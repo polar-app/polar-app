@@ -1,5 +1,5 @@
 import React from 'react';
-import {Callbacks} from "../../repository/js/Callbacks";
+import {TimeoutCallbacks} from "../../repository/js/TimeoutCallbacks";
 import {GlobalHotKeys} from "react-hotkeys";
 import {useDocFindCallbacks} from './DocFindStore';
 import {useDocViewerCallbacks} from "./DocViewerStore";
@@ -35,8 +35,17 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
     const callbacks = useDocFindCallbacks();
     const {onPagePrev, onPageNext} = useDocViewerCallbacks();
 
-    const globalKeyHandlers = Callbacks.callbacksWithTimeout({
-        FIND: () => callbacks.setActive(true),
+    const onFind = React.useCallback((event: KeyboardEvent | undefined) => {
+        callbacks.setActive(true);
+        
+        if (event) {
+            event.preventDefault();
+        }
+        
+    }, []);
+
+    const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout<KeyboardEvent | undefined>({
+        FIND: onFind,
         PAGE_NEXT: onPageNext,
         PAGE_PREV: onPagePrev
     });

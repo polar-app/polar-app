@@ -1,5 +1,5 @@
 import React from "react";
-import {Callbacks} from "../Callbacks";
+import {TimeoutCallbacks} from "../TimeoutCallbacks";
 import {GlobalHotKeys, KeyMap} from "react-hotkeys";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
@@ -49,7 +49,7 @@ export const DocRepoGlobalHotKeys = React.memo(() => {
 
     const callbacks = useDocRepoCallbacks();
 
-    const globalKeyHandlers = Callbacks.callbacksWithTimeout({
+    const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout({
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
         FLAG: callbacks.onFlagged,
