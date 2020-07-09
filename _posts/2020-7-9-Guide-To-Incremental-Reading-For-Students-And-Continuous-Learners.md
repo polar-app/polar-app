@@ -39,7 +39,7 @@ Extract key information into flashcards
 
 ## The Jigsaw Puzzle of Incremental Reading
 
-An analogy of incremental reading given by SuperMemo is the <ahref="https://supermemo.guru/wiki/Jigsaw_puzzle_metaphor" target="_blank">jigsaw puzzle metaphor</a>. It states that “for a good model of the world, we need to assemble little pieces of knowledge into a coherent structure.” A foreign concept is incomprehensible in the beginning because the puzzle pieces and bits of information are unconnected to each other. “Chunking” pieces of knowledge (like puzzle pieces) together over time will help you gain a comprehensive understanding of the concept. This is why reading and processing information incrementally is beneficial for learning concepts thoroughly. 
+An analogy of incremental reading given by SuperMemo is the <a href="https://supermemo.guru/wiki/Jigsaw_puzzle_metaphor" target="_blank">jigsaw puzzle metaphor</a>. It states that “for a good model of the world, we need to assemble little pieces of knowledge into a coherent structure.” A foreign concept is incomprehensible in the beginning because the puzzle pieces and bits of information are unconnected to each other. “Chunking” pieces of knowledge (like puzzle pieces) together over time will help you gain a comprehensive understanding of the concept. This is why reading and processing information incrementally is beneficial for learning concepts thoroughly. 
 
 ## Advantages of Incremental Reading
 
@@ -62,15 +62,20 @@ Incremental reading encourages **creativity**. By studying different subjects an
 Here is the basic breakdown of incremental reading in SuperMemo:
 
 Import an article into SuperMemo
+
 <img class="img-fluid" src="https://i.imgur.com/0eM7wow.jpg">
+
 Split up the article into manageable sections (paragraphs or by topic)
 If the article is separated into paragraphs, then you would read paragraph 1 and extract key pieces of information (phrases, sentences, keywords, definitions). Then, make cloze deletions or questions/answers out of the key information. 
 A day later, SuperMemo will show you the question/answers you created for paragraph 1. You will do repetitions for these cloze deletions or questions/answers. 
 <img class="img-fluid" src="https://i.imgur.com/d3wE7iK.jpg">
+
 In the next couple of days, you will process paragraph 2 and follow the same procedure as you did with paragraph 1.
  
 Watch these YouTube videos about the SuperMemo incremental reading feature:
+
 <a href="https://www.youtube.com/watch?v=DoQoeK53bP8&t=90s" target="_blank">Incremental reading: Nutrition from Wikipedia (SuperMemo 17)</a>
+
 <a href="https://www.youtube.com/watch?v=XRuLV2_A3Ts" target="_blank">Learning history of World War 2 with incremental reading</a>
  
 ## Incremental Reading in Polar
@@ -79,10 +84,15 @@ Watch these YouTube videos about the SuperMemo incremental reading feature:
  
 Polar features that support incremental reading:
 Document Repository: You can organize multiple reading materials (pdfs, webpages, ebooks) in one place. 
+
 <img class="img-fluid" src="https://i.imgur.com/4rClAxt.png">
+
 <a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a> in Polar allow you to mark regions of a document and specify multiple ranges of text. You can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and the top of your document, the progress reading bar will show you exactly where you left the pagemark.
+
 <img class="img-fluid" src="https://i.imgur.com/7O1QseQ.png">
+
 Annotations: In Polar, it’s very easy to create annotations. Simply highlight key information and it will automatically appear in the annotation sidebar. You can also create tags for your annotations. 
+
 <img class="img-fluid" src="https://i.imgur.com/beb8Qhh.png">
  
 Here is a guide on how to do incremental reading in Polar:
@@ -91,6 +101,7 @@ Highlight key information from the text and the annotation sidebar will automati
 Auto-convert information in the annotation sidebar into flashcards by clicking the lightning symbol
 Review flashcards in Polar directly or by syncing your flashcards into <a href="https://ankiweb.net/shared/info/734898866" target="_blank">Anki</a> 
 When you want to start studying your annotations and flashcards in Polar, click the “Annotations” tab. Then click “Start Review.”
+
 <img class="img-fluid" src="https://i.imgur.com/SDBrleo.png">
  
 Here is the basic life cycle of your flashcards with Polar’s own spaced repetition software:
