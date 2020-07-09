@@ -1,5 +1,4 @@
 import {Elements} from '../util/Elements';
-import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -19,7 +18,7 @@ export namespace ReadingProgressResume {
 
     function doResume(opts: ResumeOpts) {
 
-        const {docMeta} = opts;
+        const {docMeta, fileType} = opts;
 
         const targetPagemark = computeTargetPagemark(docMeta);
 
@@ -33,7 +32,7 @@ export namespace ReadingProgressResume {
 
         const pageElement = <HTMLElement> pages[pageNum - 1];
 
-        const scrollParent = getScrollParent(pageElement);
+        const scrollParent = getScrollParent(pageElement, fileType);
 
         const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
 
@@ -90,16 +89,10 @@ export namespace ReadingProgressResume {
 
     }
 
-    function getScrollParent(element: HTMLElement) {
+    function getScrollParent(element: HTMLElement, fileType: FileType) {
 
-        const docFormat = DocFormatFactory.getInstance();
-
-        if (docFormat.name === 'pdf') {
+        if (fileType === 'pdf') {
             return <HTMLElement> document.querySelector("#viewerContainer");
-        }
-
-        if (docFormat.name === 'html') {
-            return <HTMLElement> document.querySelector(".polar-viewer");
         }
 
         return  <HTMLElement> Elements.getScrollParent(element);
