@@ -40,7 +40,7 @@ Making flashcards out of notecards may seem like an efficient way to study, but 
 
 In Polar, you can directly create <a href="https://getpolarized.io/docs/annotation-sidebar.html">annotations</a> in your documents (pdf, textbook, web page). Additionally, you can create flashcards from your annotations with a click of a button. You don’t have to worry about losing your flashcards because all of your flashcards will be stored in one place. 
 
-<a href="https://apps.ankiweb.net/">Anki</a> is a software that aims to make remembering easy through the use of flashcards and spaced repetition. More specifically, Anki allows you to study and create your flashcards. In fact, Anki and Polar can both be used through their<a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" target=">integration</a> for flashcards.  
+<a href="https://apps.ankiweb.net/">Anki</a> is a software that aims to make remembering easy through the use of flashcards and spaced repetition. More specifically, Anki allows you to study and create your flashcards. In fact, Anki and Polar can both be used through their<a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html">integration</a> for flashcards.  
 
 <img class="img-fluid" src="https://i.imgur.com/xNtMoQA.png">
 
