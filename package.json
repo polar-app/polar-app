@@ -104,7 +104,7 @@
     "chai": "4.2.0",
     "dotenv": "^8.2.0",
     "dtsmake": "0.0.10",
-    "electron": "=9.0.5",
+    "electron": "=8.4.0",
     "electron-builder": "~22.7.0",
     "electron-notarize": "1.0.0",
     "install": "^0.12.2",
