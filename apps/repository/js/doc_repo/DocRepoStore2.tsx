@@ -1,15 +1,10 @@
 import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
-import {
-    DocRepoTableColumns,
-    DocRepoTableColumnsMap
-} from "./DocRepoTableColumns";
 import {Sorting} from "./Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
 import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
-import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Provider} from "polar-shared/src/util/Providers";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
@@ -32,9 +27,6 @@ import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
 import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
-import {Directories} from "../../../../web/js/datastore/Directories";
-import {FilePaths} from "polar-shared/src/util/FilePaths";
-import {shell} from "electron";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {
     TagSidebarEventForwarder,
@@ -44,13 +36,12 @@ import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
 import {BatchMutators} from "../BatchMutators";
+import {ILogger} from "polar-shared/src/logger/ILogger";
+import {useLogger} from "../../../../web/js/mui/MUILogger";
+import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
-import {ILogger} from "polar-shared/src/logger/ILogger";
-import {useLogger} from "../../../../web/js/mui/MUILogger";
-import { AddFileDropzoneProvider } from "../../../../web/js/apps/repository/upload/AddFileDropzoneStore";
-import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 
 interface IDocRepoStore {
 
@@ -123,9 +114,7 @@ interface IDocRepoCallbacks {
 
     readonly doOpen: (repoDocInfo: RepoDocInfo) => void;
     readonly doRename: (repoDocInfo: RepoDocInfo, title: string) => void;
-    readonly doShowFile: (repoDocInfo: RepoDocInfo) => void;
     readonly doCopyOriginalURL: (repoDocInfo: RepoDocInfo) => void;
-    readonly doCopyFilePath: (repoDocInfo: RepoDocInfo) => void;
     readonly doCopyDocumentID: (repoDocInfo: RepoDocInfo) => void;
     readonly doDeleted: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
     readonly doArchived: (repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean) => void;
@@ -135,9 +124,7 @@ interface IDocRepoCallbacks {
     readonly onTagged: () => void;
     readonly onOpen: () => void;
     readonly onRename: () => void;
-    readonly onShowFile: () => void;
     readonly onCopyOriginalURL: () => void;
-    readonly onCopyFilePath: () => void;
     readonly onCopyDocumentID: () => void;
     readonly onDeleted: () => void;
     readonly onArchived: () => void;
@@ -459,19 +446,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         copyText(text, "Document ID copied to clipboard");
     }
 
-    function doCopyFilePath(repoDocInfo: RepoDocInfo): void {
-
-        function toText() {
-            const directories = new Directories();
-            const filename = repoDocInfo.filename!;
-            return FilePaths.join(directories.stashDir, filename);
-        }
-
-        const text = toText();
-        copyText(text, "File path copied to clipboard");
-
-    }
-
     function doCopyOriginalURL(repoDocInfo: RepoDocInfo): void {
 
         function toText() {
@@ -540,13 +514,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    function doShowFile(repoDocInfo: RepoDocInfo): void {
-        const filename = repoDocInfo.filename!;
-        const directories = new Directories();
-        const path = FilePaths.join(directories.stashDir, filename);
-        shell.showItemInFolder(path);
-    }
-
     // **** event handlers
 
     function onArchived() {
@@ -575,10 +542,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onCopyDocumentID(): void {
         Optional.of(firstSelected()).map(doCopyDocumentID);
-    }
-
-    function onCopyFilePath(): void {
-        Optional.of(firstSelected()).map(doCopyFilePath);
     }
 
     function onCopyOriginalURL(): void {
@@ -612,10 +575,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onOpen(): void {
         doOpen(firstSelected()!);
-    }
-
-    function onShowFile(): void {
-        doShowFile(firstSelected()!);
     }
 
     function onTagSelected(tags: ReadonlyArray<Tag>): void {
@@ -724,9 +683,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doTagged,
         doOpen,
         doRename,
-        doShowFile,
         doCopyOriginalURL,
-        doCopyFilePath,
         doCopyDocumentID,
         doDeleted,
         doArchived,
@@ -737,9 +694,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         onTagged,
         onOpen,
         onRename,
-        onShowFile,
         onCopyOriginalURL,
-        onCopyFilePath,
         onCopyDocumentID,
         onDeleted,
         onArchived,

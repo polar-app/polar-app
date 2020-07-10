@@ -1,17 +1,18 @@
-
-import {PersistenceLayerManager} from '../datastore/PersistenceLayerManager';
-import {PersistenceLayerType} from '../datastore/PersistenceLayerManager';
-import {Directories} from '../datastore/Directories';
-import {Files} from 'polar-shared/src/util/Files';
+import {
+    PersistenceLayerManager,
+    PersistenceLayerType
+} from '../datastore/PersistenceLayerManager';
 import {Firestore} from '../firebase/Firestore';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Executors} from '../util/Executors';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import * as firebase from 'firebase/app';
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 const log = Logger.create();
 
@@ -129,23 +130,6 @@ export class MachineDatastores {
         const nrDocs = docMetaRefs.length;
         let nrCaptures = 0;
         let storageInBytes = 0;
-
-        const directories = new Directories();
-
-        await Files.recursively(directories.dataDir, async (path, stats) => {
-
-            if (path.indexOf(".backup-") !== -1) {
-                // this is part of a snapshot so this is invalid.
-                return;
-            }
-
-            if (path.endsWith(".phz")) {
-                ++nrCaptures;
-            }
-
-            storageInBytes += stats.size;
-
-        });
 
         const written = ISODateTimeStrings.create();
 

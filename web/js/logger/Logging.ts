@@ -4,13 +4,10 @@ import {ConsoleLogger} from 'polar-shared/src/logger/ConsoleLogger';
 import {LevelAnnotatingLogger} from './annotating/LevelAnnotatingLogger';
 import {VersionAnnotatingLogger} from './annotating/VersionAnnotatingLogger';
 import {ILogger} from 'polar-shared/src/logger/ILogger';
-import {Directories} from '../datastore/Directories';
 import {LogLevel} from './LogLevel';
-import {Files} from 'polar-shared/src/util/Files';
 import {LogLevels} from './LogLevels';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
-import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
 import process from 'process';
@@ -143,37 +140,6 @@ export class Logging {
     }
 
     private static async loggingConfig(): Promise<LoggingConfig> {
-
-        if (AppRuntime.isElectron()) {
-
-            const directories = await new Directories().init();
-
-            const path = FilePaths.join(directories.configDir, 'logging.json');
-
-            if (await Files.existsAsync(path)) {
-
-                const buffer = await Files.readFileAsync(path);
-                const json = buffer.toString('utf8');
-                let config = JSON.parse(json) as LoggingConfig;
-
-                if (typeof config.level === 'string') {
-
-                    // needed to convert the symbol back to the enum.  Not sure
-                    // this is very clean though and wish there was a better way
-                    // to do this.
-
-                    config = {
-                        level: LogLevels.fromName(config.level),
-                        target: config.target
-                    };
-
-                }
-
-                return config;
-
-            }
-
-        }
 
         return {
             target: LoggerTarget.CONSOLE,
