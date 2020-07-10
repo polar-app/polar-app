@@ -48,6 +48,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
 import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {AnkiSyncController} from "../../controller/AnkiSyncController";
+import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 
 interface IProps {
     readonly app: App;
@@ -288,6 +289,10 @@ export const RepositoryApp = (props: IProps) => {
 
                                 <Route exact path={["/doc", "/doc/:id"]}>
                                     <RenderDocViewerScreen/>
+                                </Route>
+
+                                <Route exact path="/error">
+                                    <ErrorScreen/>
                                 </Route>
 
                                 <Route>

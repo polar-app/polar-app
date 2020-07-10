@@ -16,6 +16,14 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/error",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/device",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/profile",
         "destination": "/apps/repository/index.html"
       },
