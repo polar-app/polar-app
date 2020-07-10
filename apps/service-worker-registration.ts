@@ -30,10 +30,18 @@ if ('serviceWorker' in navigator && isBrowser()) {
 
     });
 
+    // webpack-dev-server runs on port 8050...
+    const isLocalhost = document.location.host === 'localhost:8050';
+
     // Delay registration until after the page has loaded, to ensure that our
     // precaching requests don't degrade the first visit experience.
     // See https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration
     window.addEventListener('load', function() {
+
+        if (isLocalhost) {
+            console.warn("Not registering service worker - localhost/webpack-dev-server");
+            return;
+        }
 
         async function doAsync() {
 

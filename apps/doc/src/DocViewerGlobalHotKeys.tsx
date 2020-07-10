@@ -41,7 +41,7 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
         if (event) {
             event.preventDefault();
         }
-        
+
     }, []);
 
     const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout<KeyboardEvent | undefined>({
@@ -66,3 +66,4 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
     );
 
 });
+

@@ -4,23 +4,25 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const {GenerateSW} = require('workbox-webpack-plugin');
-
 const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 
-const mode = process.env.NODE_ENV || 'production';
+const isDevServer = process.env.WEBPACK_DEV_SERVER;
+const mode = process.env.NODE_ENV || isDevServer ? 'development' : 'production';
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
 
 const workers = os.cpus().length - 1;
 
-const OUTPUT_PATH = path.resolve(__dirname, 'dist/public');
+const publicPath = 'dist/public'
+const OUTPUT_PATH = path.resolve(__dirname, publicPath);
 
 console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
+console.log("isDevServer: " + isDevServer);
 console.log("isDev: " + isDev);
 console.log("WEBPACK_TARGET: " + target);
 console.log("WEBPACK_DEVTOOL: " + devtool);
@@ -173,10 +175,11 @@ module.exports = {
     output: {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
-        // publicPath: '/web/js/apps'
+        publicPath
     },
     node: createNode(),
     plugins: [
+        // TODO: this won't be needed once we get rid of summernote ....
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -184,7 +187,10 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new ForkTsCheckerWebpackPlugin({}),
-        new CopyPlugin({
+        // FIXME: this causes an infinite build loop!
+        // FIXME: just disable this in webpack-dev-server ... fuck this
+        // is insanely hard to build...
+        ! isDevServer && new CopyPlugin({
             patterns: [
 
                 // ***** pdf.js
@@ -219,7 +225,7 @@ module.exports = {
 
             ],
         }),
-        new GenerateSW({
+        ! isDevServer && new GenerateSW({
             // include: [
             //     "**"
             // ],
@@ -256,7 +262,7 @@ module.exports = {
                 '/dist/public': ''
             }
         })
-    ],
+    ].filter(Boolean),
     optimization: {
         minimize: ! isDev,
         minimizer: [new TerserPlugin({
@@ -275,14 +281,18 @@ module.exports = {
         //     chunks: 'all'
         // },
     },
+    watchOptions: {
+    },
     devServer: {
-        publicPath: 'dist/public',
-        contentBase: 'dist/public',
+        publicPath,
+        contentBase: path.resolve(publicPath),
         compress: true,
         port: 8050,
-        hot: true,
-
-        watchContentBase: true,
+        // open: true,
+        // overlay: true,
+        // hot: true,
+        watchContentBase: false,
+        writeToDisk: true,
         historyApiFallback: {
             rewrites: [
                 // TODO: load DefaultRewrites here and convert them...
@@ -290,5 +300,4 @@ module.exports = {
             ]
         }
     }
-
 };

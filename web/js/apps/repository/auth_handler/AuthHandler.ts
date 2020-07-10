@@ -7,6 +7,8 @@ import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 
 const POLAR_APP_SITES = [
+    'http://localhost:8050',
+    'http://127.0.0.1:8050',
     'http://localhost:8500',
     'http://127.0.0.1:8500',
     'http://localhost:9000',
