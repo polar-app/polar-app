@@ -2,7 +2,7 @@
 title: "Students: Avoid These Flashcard Mistakes for Long-Term Retention"
 date: 2020-10-07T08:00:00.000-08:00
 layout: post
-description: Students: Avoid These Flashcard Mistakes for Long-Term Retention
+description: "Students: Avoid These Flashcard Mistakes for Long-Term Retention"
 large_image: https://i.imgur.com/B35g6ec.jpg
 ---
 
