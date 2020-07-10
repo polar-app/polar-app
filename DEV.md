@@ -3,13 +3,20 @@
 We have a peculiar setup for our version control system due to needing to 
 support both forked NPM modules and private/public version control systems.
 
-## Forked NPM modules
+# Steps to Build 
 
-From time to time we have to make changes to external repositories.  The issue
-is that they're imported by name (example, 'pdfjs-dist') so we can't just rename
-them because dependencies will use the wrong one.
+- clone this repo locally
 
-## TODO
+```bash
 
-- what do I wnat to do about our 'private' node modules that are published but 
-  that I need external developers to have access to?
+./sbin/init                    # pulls all repositories locally
+lerna bootsrap                 # fetches all NPM packages
+lerna run compile              # builds all node packages 
+cd packages/polar-bookshelf    # the main app directory
+npx webpack-dev-server
+```
+
+This *should* mean you have all code running and Polar should load in your 
+browser.
+
+# Entries (TODO)
