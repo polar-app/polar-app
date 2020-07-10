@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {Logging} from '../../../web/js/logger/Logging';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {Repository} from "../../../web/js/apps/repository/Repository";
-
-const log = Logger.create();
 
 async function start() {
 
@@ -16,5 +13,5 @@ async function start() {
 }
 
 start()
-    .catch(err => log.error("Could not start repository app: ", err));
+    .catch(err => console.error("Could not start repository app: ", err));
 

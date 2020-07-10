@@ -17,4 +17,4 @@ async function start() {
 }
 
 start()
-    .catch(err => log.error("Could not start repository app: ", err));
+    .catch(err => log.error("Could not start doc viewer app: ", err));
