@@ -58,12 +58,12 @@ export class MainApp {
 
         const fileRegistry = new FileRegistry(webserverConfig);
 
-        const cacheRegistry = new CacheRegistry();
-
         const directories = new Directories();
 
         // const dialogWindowService = new DialogWindowService();
 
+        // TODO: I don't think we need this any more due to screenshots being
+        // provided via canvas and just images.
         const screenshotService = new ScreenshotService();
         screenshotService.start();
 
@@ -114,6 +114,7 @@ export class MainApp {
 
         global.mainAppController = mainAppController;
 
+        // TODO: not needed anymore I thik...
         const mainAppAPI = new MainAPI(mainAppController, webserver);
         mainAppAPI.start();
 
