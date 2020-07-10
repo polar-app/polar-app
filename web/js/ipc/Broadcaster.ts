@@ -31,7 +31,7 @@ export class Broadcaster {
             log.info("Forwarding message: " , inputChannel, event);
 
             const senderBrowserWindowReference
-                = new BrowserWindowReference(BrowserWindow.fromWebContents(event.sender).id);
+                = new BrowserWindowReference(BrowserWindow.fromWebContents(event.sender)!.id);
 
             Broadcasters.send(outputChannel, arg, senderBrowserWindowReference);
 
