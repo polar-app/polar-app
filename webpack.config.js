@@ -17,8 +17,7 @@ const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "
 
 const workers = os.cpus().length - 1;
 
-const publicPath = 'dist/public'
-const OUTPUT_PATH = path.resolve(__dirname, publicPath);
+const OUTPUT_PATH = path.resolve(__dirname, 'dist/public');
 
 console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
@@ -175,7 +174,6 @@ module.exports = {
     output: {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
-        publicPath
     },
     node: createNode(),
     plugins: [
@@ -284,8 +282,7 @@ module.exports = {
     watchOptions: {
     },
     devServer: {
-        publicPath,
-        contentBase: path.resolve(publicPath),
+        contentBase: path.resolve('dist/public'),
         compress: true,
         port: 8050,
         // open: true,
