@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+
+function readJSON(path) {
+
+    const buff = fs.readFileSync(path);
+    return JSON.parse(buff.toString('utf-8'));
+
+}
+
+function writeJSON(obj, path) {
+
+    const data = JSON.stringify(obj, null, '  ');
+
+    fs.writeFileSync(path, data);
+
+}
+
+const site = process.env['FIREBASE_SITE'] || 'polar-webapp';
+
+console.log("Using firebase site: " + site);
+
+const path = ".firebaserc";
+const hosting = readJSON(path);
+hosting.targets['polar-32b0f'].hosting['app.getpolarized.io'] = [site];
+
+writeJSON(hosting, path);
