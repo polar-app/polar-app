@@ -86,16 +86,6 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
      */
     public async change(type: PersistenceLayerType) {
 
-        if (AppRuntime.isBrowser() && this.persistenceLayer) {
-            // TODO: this is a workaround for the browser.  We should ideally
-            // support some type of class of datastores and (local and cloud)
-            // and their actual implementation (remote, firebase, cloud-aware).
-            // Then toggle on the actual implementation and only change it when
-            // the impl changes.
-            log.warn("Only 'web' persistence layers supported in browsers: " + type);
-            return false;
-        }
-
         if (this.current === type) {
             return false;
         }

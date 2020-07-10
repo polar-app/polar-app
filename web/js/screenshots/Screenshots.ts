@@ -42,11 +42,16 @@ export namespace Screenshots {
 
         const captureDirectly = () => {
 
-            if (AppRuntime.isBrowser()) {
-                return captureViaBrowser(boxRect, element);
-            } else {
-                return captureViaElectron(boxRect, element);
-            }
+            // TODO this isn't really needed anymore as EPUB capture only
+            // supports images
+            return captureViaBrowser(boxRect, element);
+
+            //
+            // if (AppRuntime.isBrowser()) {
+            //     return captureViaBrowser(boxRect, element);
+            // } else {
+            //     return captureViaElectron(boxRect, element);
+            // }
 
         };
 

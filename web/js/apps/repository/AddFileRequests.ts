@@ -1,15 +1,8 @@
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {AddFileRequest} from './AddFileRequest';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {ProgressToasters} from '../../ui/progress_toaster/ProgressToasters';
-import {Aborters, Files} from 'polar-shared/src/util/Files';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Reducers} from 'polar-shared/src/util/Reducers';
-import {PathStr} from "polar-shared/src/util/Strings";
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
-
-const TOASTER_DESTROY_DELAY = 500;
-const MAX_RECURSIVE_DIRECTORY_SCAN_DURATION = "30s";
 
 export namespace AddFileRequests {
 
@@ -96,66 +89,66 @@ export namespace AddFileRequests {
 
     export async function computeRecursively(event: DragEvent): Promise<Optional<AddFileRequest[]>> {
 
-        if (AppRuntime.isElectron()) {
-
-            if (event.dataTransfer) {
-
-                // TODO: I don't like embedding the UI component in here
-                // directly...
-
-                const progressToaster = await ProgressToasters.create();
-
-                try {
-
-                    // the aborter will just throw an exception if the timeout
-                    // exceeds and the caller should show an error.
-                    const aborter = Aborters.maxTime(MAX_RECURSIVE_DIRECTORY_SCAN_DURATION);
-
-                    const paths = Array.from(event.dataTransfer.files)
-                        .map(file => file.path);
-
-                    const acceptedFiles: PathStr[] = [];
-
-                    for (const path of paths) {
-
-                        if (await Files.fileType(path) === 'directory') {
-
-                            await Files.recursively(path, async newPath => {
-
-                                if (isFileSupported(newPath.toLocaleLowerCase())) {
-                                    acceptedFiles.push(newPath);
-                                }
-
-                                progressToaster.update({
-                                    title: `Finding files (${acceptedFiles.length}): `,
-                                    status: newPath
-                                });
-
-                            }, aborter);
-
-                        }
-
-                    }
-
-                    const addFileRequests =
-                        acceptedFiles.map(current => {
-                            return {
-                                docPath: current,
-                                basename: FilePaths.basename(current)
-                            };
-                        });
-
-                    return Optional.of(addFileRequests);
-
-                } finally {
-
-                    setTimeout(() => progressToaster.destroy(), TOASTER_DESTROY_DELAY);
-
-                }
-
-            }
-
-        }
+        // if (AppRuntime.isElectron()) {
+        //
+        //     if (event.dataTransfer) {
+        //
+        //         // TODO: I don't like embedding the UI component in here
+        //         // directly...
+        //
+        //         const progressToaster = await ProgressToasters.create();
+        //
+        //         try {
+        //
+        //             // the aborter will just throw an exception if the timeout
+        //             // exceeds and the caller should show an error.
+        //             const aborter = Aborters.maxTime(MAX_RECURSIVE_DIRECTORY_SCAN_DURATION);
+        //
+        //             const paths = Array.from(event.dataTransfer.files)
+        //                 .map(file => file.path);
+        //
+        //             const acceptedFiles: PathStr[] = [];
+        //
+        //             for (const path of paths) {
+        //
+        //                 if (await Files.fileType(path) === 'directory') {
+        //
+        //                     await Files.recursively(path, async newPath => {
+        //
+        //                         if (isFileSupported(newPath.toLocaleLowerCase())) {
+        //                             acceptedFiles.push(newPath);
+        //                         }
+        //
+        //                         progressToaster.update({
+        //                             title: `Finding files (${acceptedFiles.length}): `,
+        //                             status: newPath
+        //                         });
+        //
+        //                     }, aborter);
+        //
+        //                 }
+        //
+        //             }
+        //
+        //             const addFileRequests =
+        //                 acceptedFiles.map(current => {
+        //                     return {
+        //                         docPath: current,
+        //                         basename: FilePaths.basename(current)
+        //                     };
+        //                 });
+        //
+        //             return Optional.of(addFileRequests);
+        //
+        //         } finally {
+        //
+        //             setTimeout(() => progressToaster.destroy(), TOASTER_DESTROY_DELAY);
+        //
+        //         }
+        //
+        //     }
+        //
+        // }
 
         return Optional.empty();
 

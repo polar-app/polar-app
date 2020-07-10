@@ -1,13 +1,10 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from './DocAnnotation';
-import {DeviceRouter} from "../ui/DeviceRouter";
-import {AppRuntimeRouter} from "../ui/AppRuntimeRouter";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import {AnnotationView2} from "./annotations/AnnotationView2";
 import {useAnnotationSidebarStore} from '../../../apps/doc/src/AnnotationSidebarStore';
 import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
-import {AnnotationInputView} from "./AnnotationInputView";
 import {AnnotationHeader} from './AnnotationSidebarHeader';
 import isEqual from "react-fast-compare";
 

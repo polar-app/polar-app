@@ -1,4 +1,7 @@
-import {PersistenceLayerProvider, WriteOpts} from '../../../datastore/PersistenceLayer';
+import {
+    PersistenceLayerProvider,
+    WriteOpts
+} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -15,7 +18,7 @@ import {
 import {
     BackendFileRefData,
     BinaryFileData,
-    WriteFileProgress, WriteFileProgressListener
+    WriteFileProgressListener
 } from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {InputSources} from 'polar-shared/src/util/input/InputSources';
