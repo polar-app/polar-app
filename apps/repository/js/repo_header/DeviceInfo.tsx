@@ -13,6 +13,7 @@ export const DeviceInfo = () => {
 
     return (
         <div>
+            <h2>Device: </h2>
             <div><b>Version: </b> {version}</div>
             <div><b>Device: </b> {device}</div>
             <div><b>Platform: </b> {platform}</div>
@@ -25,9 +26,57 @@ export const DeviceInfo = () => {
 
 };
 
+interface FmtProps {
+    readonly children: number | undefined;
+}
+const Fmt = (props: FmtProps) => {
+
+    if (! props.children) {
+        return null;
+    }
+
+    return (
+        <span>
+            {Number(props.children).toLocaleString()}
+        </span>
+    );
+
+}
+
+export const StorageInfo = () => {
+
+    const [storageEstimate, setStorageEstimate] = React.useState<StorageEstimate | undefined>();
+
+    if (navigator && navigator.storage) {
+
+        async function doAsync() {
+            const estimate = await navigator.storage.estimate();
+            setStorageEstimate(estimate);
+        }
+
+        doAsync()
+            .catch(err => console.error(err));
+
+    }
+
+    if (storageEstimate) {
+        return (
+            <div>
+                <h2>Storage:</h2>
+                <div><b>quota: </b> <Fmt>{storageEstimate.quota}</Fmt></div>
+                <div><b>usage: </b> <Fmt>{storageEstimate.usage}</Fmt></div>
+            </div>
+        );
+    } else {
+        return null;
+    }
+
+}
+
 export const ExtendedDeviceInfo = () => (
     <div>
         <DeviceInfo/>
+        <StorageInfo/>
         <div>
             <b>User agent: </b>
             <div>
