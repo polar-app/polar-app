@@ -11,6 +11,9 @@ import {ConfigureNavbar} from '../ConfigureNavbar';
 import {ConfigureBody} from "../ConfigureBody";
 import {MUIThemeTypeContext} from "../../../../../web/js/mui/context/MUIThemeTypeContext";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
+import Divider from '@material-ui/core/Divider';
+import {useHistory} from "react-router-dom";
+import Button from '@material-ui/core/Button';
 
 interface SettingEntryProps {
     readonly title: string;
@@ -104,6 +107,18 @@ const SettingEntry = (props: SettingEntryProps) => {
 };
 
 
+const ViewDeviceInfoButton = () => {
+
+    const history = useHistory();
+
+    return (
+        <Button variant="contained" onClick={() => history.push("/device")}>
+            View Device Info
+        </Button>
+    );
+
+}
+
 interface IProps {
     readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
@@ -188,6 +203,12 @@ export const SettingsScreen = (props: IProps) => {
                                   name="dev"
                                   prefs={prefs}
                                   preview={true}/>
+
+                    <Divider/>
+
+                    <p>
+                        <ViewDeviceInfoButton/>
+                    </p>
 
                 </div>
 
