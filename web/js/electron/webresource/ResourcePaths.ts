@@ -1,4 +1,3 @@
-
 import {app, remote} from 'electron';
 import path from 'path';
 import fs from 'fs';
