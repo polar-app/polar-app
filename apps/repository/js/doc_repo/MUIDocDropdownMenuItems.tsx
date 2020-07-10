@@ -77,28 +77,12 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
                 <ListItemText primary="Archive"/>
             </MenuItem>
 
-            {isSingle && ! AppRuntime.isBrowser() &&
-                <MenuItem onClick={callbacks.onShowFile}>
-                    <ListItemIcon>
-                        <InsertDriveFileIcon fontSize="small"/>
-                    </ListItemIcon>
-                    <ListItemText primary="Show File"/>
-                </MenuItem>}
-
             {single && single.url &&
                 <MenuItem onClick={callbacks.onCopyOriginalURL}>
                     <ListItemIcon>
                         <FileCopyIcon fontSize="small"/>
                     </ListItemIcon>
                     <ListItemText primary="Copy Original URL"/>
-                </MenuItem>}
-
-            {isSingle && !AppRuntime.isBrowser() &&
-                <MenuItem onClick={callbacks.onCopyFilePath}>
-                    <ListItemIcon>
-                        <FileCopyIcon fontSize="small"/>
-                    </ListItemIcon>
-                    <ListItemText primary="Copy File Path"/>
                 </MenuItem>}
 
             {isSingle && FeatureToggles.get('dev') &&
