@@ -5,7 +5,6 @@ burton@getpolarized.io
 
 For CLI access run $ npm --registry https://polar-app.bytesafe.dev/r/default login with User: bytesafe Password: 01EBHV66M2QAXH6NA1CQP58TFW
 
-
 # If you want npm to use Bytesafe as the default registry, you can do that with:
 
 ```sh
