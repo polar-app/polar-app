@@ -64,7 +64,12 @@ class DesktopLinkLoader implements LinkLoader {
                     win.focus();
                 }
 
-                win.document.write("Loading...");
+                if (win && win.document) {
+                    // this is primarily for Electron as you can't access the
+                    // document from electron since it's basically emulating
+                    // this API.
+                    win.document.write("Loading...");
+                }
 
             }
 
