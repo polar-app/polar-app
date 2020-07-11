@@ -10,7 +10,7 @@ import {
 
 interface IProps {
     readonly children: React.ReactElement;
-    readonly path: string;
+    readonly path: string | string[];
     readonly exact?: boolean;
 
 }

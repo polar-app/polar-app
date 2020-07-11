@@ -21,6 +21,11 @@ export const MoreActionsDropdown = React.memo(() => {
         AnkiSyncClient.start();
     }
 
+    // - overflow menu: chrome extension,  desktop app (only in webapp),
+    // documentation, device (though not sure exactly why that is needed), logs
+    // (that's issue logs I assume? otherwise maybe leave out), Chat (aka Discord),
+    // Reddit, Twitter
+
     return (
         <MUIMenu caret
                  placement="bottom-end"
