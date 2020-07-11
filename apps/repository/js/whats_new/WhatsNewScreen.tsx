@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
 
 export interface IProps {
 }
@@ -27,7 +26,7 @@ export default class WhatsNewScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 

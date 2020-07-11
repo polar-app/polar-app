@@ -159,8 +159,8 @@ module.exports = {
     target,
     entry: {
         "repository": "./apps/repository/js/entry.tsx",
-        "preview": "./apps/preview/index.ts",
-        "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
+        // "preview": "./apps/preview/index.ts",
+        // "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
     },
     module: {
         rules: createRules()

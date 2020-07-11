@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
 import {RepoFooter} from '../repo_footer/RepoFooter';
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {PersistenceLayerController} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {accounts} from "polar-accounts/src/accounts";
 import {EmailAddressParser} from "../../../../web/js/util/EmailAddressParser";
@@ -32,7 +29,7 @@ export class InviteScreen extends React.Component<IProps> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 

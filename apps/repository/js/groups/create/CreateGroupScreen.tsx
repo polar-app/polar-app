@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../../FixedNav';
-import {RepoHeader} from '../../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../../web/js/datastore/PersistenceLayerManager';
 import {CreateGroupForm} from "./CreateGroupForm";
 import {RepoDocMetaManager} from "../../RepoDocMetaManager";
@@ -30,7 +29,7 @@ export class CreateGroupScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 

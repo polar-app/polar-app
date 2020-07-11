@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {GroupNameStr, Groups} from "../../../../../web/js/datastore/sharing/db/Groups";
+import {
+    GroupNameStr,
+    Groups
+} from "../../../../../web/js/datastore/sharing/db/Groups";
 import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/doc_annotations/GroupDocAnnotations";
 import {GroupHighlightsData} from "./GroupHighlightsData";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {FixedNav, FixedNavBody} from "../../FixedNav";
-import {RepoHeader} from "../../repo_header/RepoHeader";
 import {HighlightsTable} from "./HighlightsTable";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupNavbar} from "../GroupNavbar";
@@ -73,7 +75,7 @@ export class HighlightsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 

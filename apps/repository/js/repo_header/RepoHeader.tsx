@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {AccountAuthButton} from '../../../../web/js/ui/cloud_auth/AccountAuthButton';
-import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoNavbar} from "../RepoNavbar";
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {NavIcon} from "../nav/NavIcon";
 import {Link} from "react-router-dom";

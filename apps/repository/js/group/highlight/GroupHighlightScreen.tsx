@@ -4,15 +4,14 @@ import {GroupDocAnnotations} from "../../../../../web/js/datastore/sharing/db/do
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Toaster} from "../../../../../web/js/ui/toaster/Toaster";
 import {FixedNav, FixedNavBody} from "../../FixedNav";
-import {RepoHeader} from "../../repo_header/RepoHeader";
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from "../../../../../web/js/datastore/PersistenceLayerManager";
+import {PersistenceLayerController} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {ProfileJoins} from "../../../../../web/js/datastore/sharing/db/ProfileJoins";
 import {GroupHighlightData} from "./GroupHighlightData";
 import {HighlightCard} from "../highlights/HighlightCard";
-import {GroupHighlightURL, GroupHighlightURLs} from "polar-webapp-links/src/groups/GroupHighlightURLs";
+import {
+    GroupHighlightURL,
+    GroupHighlightURLs
+} from "polar-webapp-links/src/groups/GroupHighlightURLs";
 import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
 
 const log = Logger.create();
@@ -75,7 +74,7 @@ export class GroupHighlightScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 

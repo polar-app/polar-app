@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import TopTagsChart from './TopTagsChart';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
+import {FixedNav} from '../FixedNav';
 import {SpacedRepQueueChart} from "./SpacedRepQueueChart";
 import {ReviewerTasks} from "../reviewer/ReviewerTasks";
 import {Logger} from "polar-shared/src/logger/Logger";

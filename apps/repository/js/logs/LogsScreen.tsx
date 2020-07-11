@@ -4,7 +4,6 @@ import {LogsContent} from './LogsContent';
 import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
 import ClearLogsButton from './ClearLogsButton';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
 import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 
@@ -28,7 +27,7 @@ export default class LogsScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader />
+                    {/*<RepoHeader />*/}
 
                     <div style={{display: 'flex'}} className="p-1">
 

@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoHeader} from '../repo_header/RepoHeader';
-import {
-    PersistenceLayerController,
-    PersistenceLayerManager
-} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {Groups} from "../../../../web/js/datastore/sharing/db/Groups";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {GroupTable} from "./GroupTable";
@@ -81,7 +77,7 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <RepoHeader/>
+                    {/*<RepoHeader/>*/}
 
                 </header>
 
