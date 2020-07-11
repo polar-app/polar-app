@@ -68,6 +68,9 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
 });
 
+/**
+ * @Deprecated now using this code in polar-desktop-app
+ */
 export class MainAppBrowserWindowFactory {
 
     public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,

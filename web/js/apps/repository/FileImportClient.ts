@@ -1,4 +1,3 @@
-import {ipcRenderer} from "electron";
 import {Broadcasters} from "../../ipc/Broadcasters";
 import {FileImportRequest} from "./FileImportRequest";
 

@@ -9,6 +9,9 @@ export interface ILoadBrowserWindowRequest {
     readonly newWindow: boolean;
 }
 
+/**
+ * @Deprecated now using this code in polar-desktop-app
+ */
 export class ElectronDocLoader implements IDocLoader {
 
     constructor(private readonly persistenceLayerProvider: PersistenceLayerProvider) {

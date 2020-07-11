@@ -30,6 +30,9 @@ const log = Logger.create();
 
 const WEBSERVER_PORT = 8500;
 
+/**
+ * @Deprecated now using this code in polar-desktop-app
+ */
 export class MainApp {
 
     private readonly datastore: Datastore;

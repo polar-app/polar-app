@@ -11,6 +11,9 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 const log =  Logger.create();
 
+/**
+ * @Deprecated now using this code in polar-desktop-app
+ */
 export class AppLauncher {
 
     /**

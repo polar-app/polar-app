@@ -1,11 +1,13 @@
 import {MainAppController} from '../../../MainAppController';
-import {Directories} from "../../../../../datastore/Directories";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {ipcMain} from 'electron';
 import {ILoadBrowserWindowRequest} from '../ElectronDocLoader';
 
 const log = Logger.create();
 
+/**
+ * @Deprecated now using this code in polar-desktop-app
+ */
 export class DocLoaderService {
 
     private readonly mainAppController: MainAppController;

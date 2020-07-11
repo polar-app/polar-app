@@ -1,6 +1,4 @@
 import {remote} from 'electron';
-import {DelegatedDatastore} from './DelegatedDatastore';
-import {Datastore} from './Datastore';
 import {RemoteDatastore} from './RemoteDatastore';
 import {DiskDatastore} from './DiskDatastore';
 
