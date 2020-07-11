@@ -2,12 +2,16 @@ import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { AppRuntime } from "polar-shared/src/util/AppRuntime";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {AnkiSyncClient} from "../../../../web/js/controller/AnkiSyncClient";
 
 export const MoreActionsDropdown = React.memo(() => {
 
     const isElectron = AppRuntime.isElectron();
+
+    function onStartAnkiSync() {
+        AnkiSyncClient.start();
+    }
 
     return (
         <MUIMenu caret
@@ -18,9 +22,8 @@ export const MoreActionsDropdown = React.memo(() => {
                  }}>
 
             <div>
-                {isElectron && (
-                    <MUIMenuItem text="Start Anki Sync"
-                                 onClick={NULL_FUNCTION}/>)}
+                {isElectron &&
+                    <MUIMenuItem text="Start Anki Sync" onClick={onStartAnkiSync}/>}
             </div>
 
         </MUIMenu>
