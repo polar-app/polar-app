@@ -4,10 +4,18 @@ import * as React from "react";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {AnkiSyncClient} from "../../../../web/js/controller/AnkiSyncClient";
+import Divider from "@material-ui/core/Divider";
+import {Nav} from "../../../../web/js/ui/util/Nav";
+import ChatIcon from '@material-ui/icons/Chat';
+import SyncIcon from '@material-ui/icons/Sync';
 
 export const MoreActionsDropdown = React.memo(() => {
 
     const isElectron = AppRuntime.isElectron();
+
+    function onChat() {
+        Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')
+    }
 
     function onStartAnkiSync() {
         AnkiSyncClient.start();
@@ -22,8 +30,14 @@ export const MoreActionsDropdown = React.memo(() => {
                  }}>
 
             <div>
-                {isElectron &&
-                    <MUIMenuItem text="Start Anki Sync" onClick={onStartAnkiSync}/>}
+
+                <MUIMenuItem icon={<ChatIcon/>} text="Chat with Polar Community" onClick={onChat}/>
+
+                {isElectron && (
+                    <>
+                        <Divider/>
+                        <MUIMenuItem icon={<SyncIcon/>} text="Start Anki Sync" onClick={onStartAnkiSync}/>
+                    </>)}
             </div>
 
         </MUIMenu>

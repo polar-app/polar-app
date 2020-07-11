@@ -1,6 +1,4 @@
 import {Platforms} from 'polar-shared/src/util/Platforms';
-import {shell} from 'electron';
-import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
 
 export class Nav {
 
@@ -13,18 +11,10 @@ export class Nav {
 
     public static openLinkWithNewTab(link: string) {
 
-        if (AppRuntime.isBrowser()) {
+        const win = window.open(link, '_blank');
 
-            const win = window.open(link, '_blank');
-
-            if (win) {
-                win.focus();
-            }
-
-        } else {
-            shell.openExternal(link)
-                .catch(err => console.error(err));
-
+        if (win) {
+            win.focus();
         }
 
     }
