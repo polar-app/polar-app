@@ -78,7 +78,7 @@ const Handheld = () => {
 
 const Desktop = () => {
 
-    const Settings = () => {
+    const SettingsButton = React.memo(() => {
 
         return (
             <Link to="/settings">
@@ -93,7 +93,7 @@ const Desktop = () => {
             </Link>
         );
 
-    };
+    });
 
     return (
 
@@ -134,7 +134,7 @@ const Desktop = () => {
                         {/*</Grid>*/}
 
                         <Grid item>
-                            <Settings/>
+                            <SettingsButton/>
                         </Grid>
 
                     </Grid>
@@ -151,6 +151,7 @@ const Desktop = () => {
             </div>
 
         </MUIPaperToolbar>
+
 
     );
 }
