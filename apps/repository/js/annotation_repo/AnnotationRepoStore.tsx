@@ -1,7 +1,4 @@
-import {
-    IDocAnnotation,
-    IDocAnnotationRef
-} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "../doc_repo/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
@@ -28,10 +25,8 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
-import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {AnnotationMutations} from "polar-shared/src/metadata/mutations/AnnotationMutations";
@@ -54,8 +49,9 @@ import {RepoDocMetas} from "../RepoDocMetas";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import { ILogger } from "polar-shared/src/logger/ILogger";
+import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
+import {useDocLoader} from "../../../../web/js/apps/main/doc_loaders/DocLoader";
 
 interface IAnnotationRepoStore {
 
@@ -256,8 +252,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          repoDocMetaManager: RepoDocMetaManager,
                          log: ILogger): IAnnotationRepoCallbacks => {
 
-    const synchronizingDocLoader
-        = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
+    const docLoader = useDocLoader();
 
     type AnnotationMutator<T extends IAnnotationMutationSelected> = (docMeta: IDocMeta,
                                                                      pageMeta: IPageMeta,
@@ -297,9 +292,10 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     function doOpen(docInfo: IDocInfo): void {
 
-        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
 
-        synchronizingDocLoader.load(docInfo.fingerprint, backendFileRef!)
+        docLoader({fingerprint: docInfo.fingerprint, backendFileRef, newWindow: true})
+            .load()
             .catch(err => log.error("Unable to load doc: ", err));
 
     }

@@ -25,7 +25,6 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {Either} from "../../../../web/js/util/Either";
-import {SynchronizingDocLoader} from "../util/SynchronizingDocLoader";
 import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {
@@ -39,6 +38,7 @@ import {BatchMutators} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
+import {useDocLoader} from "../../../../web/js/apps/main/doc_loaders/DocLoader";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
@@ -246,8 +246,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                          persistence: IPersistenceContext,
                          log: ILogger): IDocRepoCallbacks {
 
-    const synchronizingDocLoader
-        = new SynchronizingDocLoader(persistence.persistenceLayerProvider);
+    const docLoader = useDocLoader();
 
     function firstSelected() {
         const selected = selectedProvider();
@@ -495,9 +494,10 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const fingerprint = repoDocInfo.fingerprint;
 
         const docInfo = repoDocInfo.docInfo;
-        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo));
+        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
 
-        synchronizingDocLoader.load(fingerprint, backendFileRef!)
+        docLoader({fingerprint, backendFileRef, newWindow: true})
+            .load()
             .catch(err => log.error("DocRepoStore2: Unable to load doc: ", err));
 
     }

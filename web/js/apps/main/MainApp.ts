@@ -1,6 +1,5 @@
 // @NotStale
 import {app, BrowserWindow} from 'electron';
-import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {Directories} from '../../datastore/Directories';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
@@ -8,7 +7,6 @@ import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/electron/ScreenshotService';
-import {DocLoaderService} from './doc_loaders/electron/ipc/DocLoaderService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import process from "process";
@@ -120,9 +118,6 @@ export class MainApp {
         // TODO: not needed anymore I thik...
         const mainAppAPI = new MainAPI(mainAppController, webserver);
         mainAppAPI.start();
-
-        const mainAppService = new DocLoaderService(mainAppController);
-        mainAppService.start();
 
         // TODO: handle the command line here.. IE if someone opens up a file
         // via argument.
