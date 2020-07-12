@@ -2,6 +2,8 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 
 export interface LoadDocRequest {
 
+    readonly title: string;
+
     readonly fingerprint: string;
 
     readonly backendFileRef: BackendFileRef;

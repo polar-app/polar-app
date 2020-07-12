@@ -38,7 +38,7 @@ import {BatchMutators} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
-import {useDocLoader} from "../../../../web/js/apps/main/doc_loaders/DocLoader";
+import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
@@ -496,7 +496,14 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         const docInfo = repoDocInfo.docInfo;
         const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
 
-        docLoader({fingerprint, backendFileRef, newWindow: true})
+        const docLoadRequest = {
+            fingerprint,
+            title: repoDocInfo.title,
+            backendFileRef,
+            newWindow: true
+        }
+
+        docLoader(docLoadRequest)
             .load()
             .catch(err => log.error("DocRepoStore2: Unable to load doc: ", err));
 

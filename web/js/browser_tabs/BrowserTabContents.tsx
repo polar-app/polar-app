@@ -36,7 +36,8 @@ export const BrowserTabContents = React.memo(() => {
     return (
         <>
             {tabs.map((tab, tabIndex) => tab.component &&
-                <BrowserTabContent active={activeTab === tabIndex}>
+                <BrowserTabContent key={tab.url}
+                                   active={activeTab === tabIndex}>
                     {tab.component}
                 </BrowserTabContent>)}
         </>

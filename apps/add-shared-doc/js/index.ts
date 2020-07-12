@@ -48,6 +48,7 @@ async function redirectToDocumentViewer(persistenceLayer: PersistenceLayer,
 
     const loadDocRequest: LoadDocRequest = {
         fingerprint,
+        title: docMeta.docInfo.title || 'Untitled',
         backendFileRef,
         newWindow: false
     };

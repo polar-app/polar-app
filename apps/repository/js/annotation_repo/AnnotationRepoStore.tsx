@@ -51,7 +51,7 @@ import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
-import {useDocLoader} from "../../../../web/js/apps/main/doc_loaders/DocLoader";
+import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 
 interface IAnnotationRepoStore {
 
@@ -294,7 +294,14 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
 
-        docLoader({fingerprint: docInfo.fingerprint, backendFileRef, newWindow: true})
+        const docLoadRequest = {
+            fingerprint: docInfo.fingerprint,
+            title: docInfo.title || 'Untitled',
+            backendFileRef,
+            newWindow: true
+        }
+
+        docLoader(docLoadRequest)
             .load()
             .catch(err => log.error("Unable to load doc: ", err));
 

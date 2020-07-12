@@ -1,6 +1,8 @@
 import React from 'react';
-import { Provider } from 'polar-shared/src/util/Providers';
+import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
+import {useHistory} from 'react-router-dom';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface TabDescriptor {
 
@@ -86,6 +88,8 @@ function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
                           setStore: (store: IBrowserTabsStore) => void,
                           mutator: Mutator): IBrowserTabsCallbacks {
 
+    const history = useHistory();
+
     function setActiveTab(activeTab: number) {
         const store = storeProvider();
         setStore({...store, activeTab});
@@ -95,12 +99,33 @@ function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
 
         const store = storeProvider();
 
+        function computeExistingTab() {
+            return arrayStream(store.tabs)
+                .withIndex()
+                .filter(current => current.value.url === tabDescriptor.url)
+                .first();
+        }
+
+        function doTabMutation(newStore: IBrowserTabsStore) {
+            history.replace(tabDescriptor.url);
+            setStore(newStore);
+        }
+
+        const existingTab = computeExistingTab();
+
+        if (existingTab) {
+            // just switch to the existing tab when one already exists and we
+            // want to switch to it again.
+            doTabMutation({...store, activeTab: existingTab.index});
+            return;
+        }
+
         const tabs = [...store.tabs, tabDescriptor];
 
         // now switch to the new tab
         const activeTab = tabs.length - 1;
 
-        setStore({...store, tabs, activeTab});
+        doTabMutation({...store, tabs, activeTab});
 
     }
 

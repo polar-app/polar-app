@@ -30,6 +30,7 @@ export const BrowserTabsList = React.memo(() => {
             <>
                 <DragBar/>
                 <Tabs value={activeTab}
+                      indicatorColor="primary"
                       textColor="inherit"
                       variant="standard"
                       onChange={handleChange}>

@@ -42,9 +42,12 @@ export const PersistentRoute = React.memo((props: IProps) => {
 
     const display = active ? 'flex' : 'none';
 
+    // FIXME this provider could cause the item below it to re-render...
+
     return (
 
-        <PersistentRouteContext.Provider value={{active}}>
+        // <PersistentRouteContext.Provider value={{active}}>
+        <>
             <Switch>
                 <Route path="/">
                     <div style={{
@@ -65,8 +68,8 @@ export const PersistentRoute = React.memo((props: IProps) => {
                 </Route>
             </Switch>
 
-       </PersistentRouteContext.Provider>
-
+       {/*</PersistentRouteContext.Provider>*/}
+       </>
     );
 
 }, isEqual);
