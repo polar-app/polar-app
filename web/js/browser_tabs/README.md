@@ -123,5 +123,11 @@ that...
     - ANOTHER big / fatal flaw... the PDF viewer assumes that it's the only app
       and we have things like document.getElementByID and querySelector(.page .canvas)[2]
       
-    - this completely breaks the app             
-            
+        - this completely breaks the app             
+        
+        - I can fix this by:
+        
+            - using React context to determine which PDF I'm working with
+            - NOT using documents with IDs and just using classes
+            - updating the PDF.js CSS
+              

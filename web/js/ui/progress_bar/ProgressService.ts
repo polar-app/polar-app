@@ -25,14 +25,10 @@ export class ProgressService {
         // itself about progress.
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        log.info("started");
-
     }
 
 
     private onMessageReceived(event: any) {
-
-        log.info("Received message: ", event);
 
         switch (event.data.type) {
 

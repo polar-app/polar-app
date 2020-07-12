@@ -379,9 +379,7 @@ export const RepositoryApp = (props: IProps) => {
                                             <Route path='#account'
                                                    component={() =>
                                                        <Cached>
-                                                           <AccountControlSidebar
-                                                               persistenceLayerProvider={app.persistenceLayerProvider}
-                                                               persistenceLayerController={app.persistenceLayerController}/>
+                                                           <AccountControlSidebar persistenceLayerController={app.persistenceLayerController}/>
                                                        </Cached>
                                                    }/>
 

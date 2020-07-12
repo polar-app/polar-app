@@ -20,18 +20,14 @@ export const AnkiSyncController = React.memo(() => {
 
     const onMessageReceived = React.useCallback((event: MessageEvent) => {
 
-        log.info("Received message: ", event);
-
         switch (event.data.type) {
 
             case "start-anki-sync":
+                log.info("AnkiSyncController: started");
                 onStartSync();
-
                 break;
 
         }
-
-        log.info("started");
 
     }, []);
 

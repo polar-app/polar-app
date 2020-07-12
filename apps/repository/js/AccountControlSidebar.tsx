@@ -6,6 +6,7 @@ import {PersistenceLayerProvider} from "../../../web/js/datastore/PersistenceLay
 import {PersistenceLayerController} from "../../../web/js/datastore/PersistenceLayerManager";
 import {AccountActions} from "../../../web/js/accounts/AccountActions";
 import {useUserInfoContext} from "../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import isEqual from 'react-fast-compare';
 
 interface AccountInfoProps extends AccountControlSidebarProps {
     readonly persistenceLayerController: PersistenceLayerController;
@@ -55,11 +56,11 @@ namespace devices {
 
 }
 
-export const AccountControlSidebar = (props: AccountControlSidebarProps) => (
+export const AccountControlSidebar = React.memo((props: AccountControlSidebarProps) => (
 
     <DeviceRouter phone={<devices.Phone {...props}/>}
                   tablet={<devices.TabletAndDesktop {...props}/>}
                   desktop={<devices.TabletAndDesktop {...props}/>}/>
 
-);
+), isEqual);
 
