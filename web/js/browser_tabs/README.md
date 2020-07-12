@@ -120,3 +120,8 @@ that...
           in effect for flashcard review or /stats 
           
             
+    - ANOTHER big / fatal flaw... the PDF viewer assumes that it's the only app
+      and we have things like document.getElementByID and querySelector(.page .canvas)[2]
+      
+    - this completely breaks the app             
+            
