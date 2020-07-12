@@ -13,13 +13,13 @@ export class BrowserDocLoader implements IDocLoader {
 
     public create(loadDocRequest: LoadDocRequest): IDocLoadRequest {
 
+        const viewerURL = ViewerURLs.create(this.persistenceLayerProvider, loadDocRequest);
+
         const linkLoader = Nav.createLinkLoader({focus: true, newWindow: loadDocRequest.newWindow});
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
         Preconditions.assertPresent(loadDocRequest.backendFileRef.name, "backendFileRef.name");
-
-        const viewerURL = ViewerURLs.create(this.persistenceLayerProvider, loadDocRequest);
 
         return {
 

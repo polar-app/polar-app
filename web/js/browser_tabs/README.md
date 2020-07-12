@@ -81,4 +81,42 @@ that...
         
         NO ... allow it to be renedered... but display:none it so that we can 
         swap easily... 
+        
+        
+    - FIXME the way we need to do this moving forward is to pass the component 
+      to the tab, and then specifyc the docID manually, then we do NOT render 
+      a page for /doc in desktop app... and we only render them via the 
+      component
     
+
+    - We whuld have the following
+    
+        DocViewerRoutes
+        RepositoryRoutes
+        
+        ... then DocViewerRoutes needs to be setup only for web.. nothing else
+        
+        Another strategy is to have the BrowserTabs system be its own router 
+        where the /doc URLs are handled as new / dedicated tabs with a "tab 
+        router" created for each
+
+
+    - I have to have a high level TabRouter that:
+        - only works when it's activated
+        - does .replace() in navigation 
+        - allows the other routes to not be activated/ updated until they are
+          reactivated when the tab is restored
+          
+        - 
+        
+    - I need a isActive function to determine if the current tab, is the current
+      screen is on the active screen otherwise the DocViewer key bindings 
+      (and the doc/annotation repo bindings) might be enabled.
+      
+        this only applies to the PersistentRoute issues... and I really only 
+        a isPersistentRouteActive() method now 
+        
+        - this won't really work well because what about key bindings that are 
+          in effect for flashcard review or /stats 
+          
+            

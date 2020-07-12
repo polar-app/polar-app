@@ -28,7 +28,6 @@ const AccountInfo = (props: AccountInfoProps) => {
 };
 
 interface AccountControlSidebarProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly persistenceLayerController: PersistenceLayerController;
 }
 

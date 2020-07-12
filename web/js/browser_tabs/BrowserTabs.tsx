@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserTabsStoreProvider} from './BrowserTabsStore';
 import {BrowserTabsList} from "./BrowserTabsList";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {BrowserTabContents} from './BrowserTabContents';
 
 interface IProps {
     readonly children: React.ReactElement;
@@ -18,6 +19,7 @@ export const BrowserTabs = React.memo((props: IProps) => {
         <BrowserTabsStoreProvider>
             <>
                 <BrowserTabsList/>
+                <BrowserTabContents/>
                 {props.children}
             </>
         </BrowserTabsStoreProvider>

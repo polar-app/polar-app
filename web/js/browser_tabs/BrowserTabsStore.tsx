@@ -5,11 +5,6 @@ import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 export interface TabDescriptor {
 
     /**
-     * A unique ID for this tab.
-     */
-    readonly id: number;
-
-    /**
      * The URL for this tab so that the router can be used with it.
      */
     readonly url: string;
@@ -20,6 +15,8 @@ export interface TabDescriptor {
      * An icon to show for this tab.
      */
     readonly icon?: React.ReactNode;
+
+    readonly component?: React.ReactNode;
 
 }
 
@@ -39,23 +36,22 @@ interface IBrowserTabsCallbacks {
 
 }
 
-function createInitialTabs() {
+function createInitialTabs(): ReadonlyArray<TabDescriptor> {
     return [
         {
-            id: 0,
             url: '/',
             title: 'Polar: Document Repository'
         },
-        {
-            id: 2,
-            url: '/doc/39b730b6e9d281b0eae91b2c2c29b842',
-            title: 'availability.pdf'
-        },
-        {
-            id: 3,
-            url: '/doc/65633831393839653565636565353663396137633437306630313331353264366266323462366463373335343834326562396534303262653534353034363564',
-            title: 'Venture Deals'
-        }
+        // {
+        //     id: 2,
+        //     url: '/doc/39b730b6e9d281b0eae91b2c2c29b842',
+        //     title: 'availability.pdf'
+        // },
+        // {
+        //     id: 3,
+        //     url: '/doc/65633831393839653565636565353663396137633437306630313331353264366266323462366463373335343834326562396534303262653534353034363564',
+        //     title: 'Venture Deals'
+        // }
     ]
 }
 
@@ -96,16 +92,43 @@ function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
     }
 
     function addTab(tabDescriptor: TabDescriptor) {
+
         const store = storeProvider();
 
         const tabs = [...store.tabs, tabDescriptor];
-        setStore({...store, tabs});
+
+        // now switch to the new tab
+        const activeTab = tabs.length - 1;
+
+        setStore({...store, tabs, activeTab});
+
     }
 
     function removeTab(id: number) {
+
         const store = storeProvider();
-        const tabs = store.tabs.filter(tab => tab.id !== id);
-        setStore({...store, tabs});
+
+        function computeTabs() {
+            const tabs = [...store.tabs];
+            tabs.splice(id, 1);
+            return tabs;
+        }
+
+        function computeActiveTab() {
+
+            if (store.activeTab === id) {
+                return Math.max(store.activeTab - 1, 1);
+            }
+
+            return store.activeTab;
+
+        }
+
+        const tabs = computeTabs();
+        const activeTab = computeActiveTab();
+
+        setStore({...store, tabs, activeTab});
+
     }
 
     return {

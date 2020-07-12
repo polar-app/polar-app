@@ -1,5 +1,3 @@
-// FIXME refactor as this is basically the wrong place for this
-
 import {Route, Switch} from "react-router-dom";
 import * as React from "react";
 import isEqual from "react-fast-compare";
@@ -28,15 +26,25 @@ const MountListener = React.memo((props: MountListenerProps) => {
 
 }, isEqual);
 
+export interface IPersistentRouteContext {
+    readonly active: boolean;
+}
+
+const PersistentRouteContext = React.createContext<IPersistentRouteContext>({active: true});
+
+export function usePersistentRouteContext() {
+    return React.useContext(PersistentRouteContext);
+}
+
 export const PersistentRoute = React.memo((props: IProps) => {
 
-    const [mounted, setMounted] = React.useState(false);
+    const [active, setActive] = React.useState(false);
 
-    const display = mounted ? 'flex' : 'none';
+    const display = active ? 'flex' : 'none';
 
     return (
 
-        <>
+        <PersistentRouteContext.Provider value={{active}}>
             <Switch>
                 <Route path="/">
                     <div style={{
@@ -53,11 +61,11 @@ export const PersistentRoute = React.memo((props: IProps) => {
 
             <Switch>
                 <Route exact path={props.path}>
-                    <MountListener onMounted={setMounted}/>
+                    <MountListener onMounted={setActive}/>
                 </Route>
             </Switch>
 
-       </>
+       </PersistentRouteContext.Provider>
 
     );
 
