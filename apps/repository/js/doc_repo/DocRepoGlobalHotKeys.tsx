@@ -1,5 +1,5 @@
 import React from "react";
-import {TimeoutCallbacks} from "../TimeoutCallbacks";
+import {TimeoutCallbacks} from "../../../../web/js/hotkeys/TimeoutCallbacks";
 import {GlobalHotKeys, KeyMap} from "react-hotkeys";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {BrowserRouter, Route, Switch} from "react-router-dom";

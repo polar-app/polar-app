@@ -1,12 +1,12 @@
 import React from 'react';
-import {TimeoutCallbacks} from "../../repository/js/TimeoutCallbacks";
 import {GlobalHotKeys} from "react-hotkeys";
 import {useDocFindCallbacks} from './DocFindStore';
 import {useDocViewerCallbacks} from "./DocViewerStore";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {KeyMaps} from "../../../web/js/hotkeys/KeyMaps";
+import {KeyHandlers} from "../../../web/js/hotkeys/KeyHandlers";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import keyMap = KeyMaps.keyMap;
 
 const globalKeyMap = keyMap({
@@ -32,20 +32,11 @@ const globalKeyMap = keyMap({
 
 export const DocViewerGlobalHotKeys = React.memo(() => {
 
-    const callbacks = useDocFindCallbacks();
+    const findCallbacks = useDocFindCallbacks();
     const {onPagePrev, onPageNext} = useDocViewerCallbacks();
 
-    const onFind = React.useCallback((event: KeyboardEvent | undefined) => {
-        callbacks.setActive(true);
-        
-        if (event) {
-            event.preventDefault();
-        }
-
-    }, []);
-
-    const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout<KeyboardEvent | undefined>({
-        FIND: onFind,
+    const globalKeyHandlers = KeyHandlers.withDefaultBehavior<KeyboardEvent | undefined>({
+        FIND: () => findCallbacks.setActive(true),
         PAGE_NEXT: onPageNext,
         PAGE_PREV: onPagePrev
     });

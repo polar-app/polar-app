@@ -85,9 +85,8 @@ export class Logging {
         // }
 
         if (AppRuntime.isBrowser()) {
-            // SentryLogger enabled for INFO will lock us up.
-            // *** first logger is sentry but only if we are not running within
-            // a SNAP container.
+
+            // it looks like sentry might be mangling webpack stack traces...
             loggers.push(new SentryBrowserLogger());
         }
 
