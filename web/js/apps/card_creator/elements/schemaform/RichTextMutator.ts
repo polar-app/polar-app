@@ -17,6 +17,11 @@ export interface RichTextMutator {
 
     createRange(): Range;
 
+    focus(): void;
+
+    saveRange(): void;
+    restoreRange(): void;
+
 }
 
 export type HTMLString = string;

@@ -203,6 +203,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
             }
 
             noteEditable.html(content);
+            this.focus();
         }
     }
 
@@ -233,6 +234,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
 
     public insertImage(url: any, filenameOrCallback: any) {
         this.editor.summernote('insertImage', url, filenameOrCallback);
+        this.focus();
     }
 
     public insertNode(node: Node) {
@@ -241,6 +243,15 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
 
     public insertText(text: Node) {
         this.editor.summernote('insertText', text);
+        this.focus();
+    }
+
+    public saveRange() {
+        this.editor.summernote('saveRange');
+    }
+
+    public restoreRange() {
+        this.editor.summernote('restoreRange');
     }
 
     get callbacks() {

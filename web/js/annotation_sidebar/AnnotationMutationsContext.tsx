@@ -401,6 +401,7 @@ export namespace DocAnnotationsMutator {
     export function onDeleted(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IDeleteMutationWithDocMeta) {
 
         for (const current of mutation.selected || []) {
+            console.log("Deleting annotation: ", current);
             AnnotationMutations.delete(current);
         }
 
@@ -571,6 +572,7 @@ export namespace AnnotationMutationCallbacks {
 
         function onDeleted(mutation: IDeleteMutation) {
 
+            // FIXME: FIXME FIXME ... verify that this isn't an issue.
             // FIXME area highlight delete does NOT remove attachment references...
 
             // FIXME: do I need to unify this action with doc repo store?

@@ -142,6 +142,10 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
         this.fields.text = this.richTextMutator!.currentValue();
 
+        // TODO this improperly sets the focus by moving the cursor to the
+        // beginning
+        this.richTextMutator!.focus();
+
     }
 
     private onKeyDown(event: KeyboardEvent) {
