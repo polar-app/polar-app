@@ -233,6 +233,16 @@ module.exports = {
             // stripPrefix: 'dist/public',
             maximumFileSizeToCacheInBytes: 150000000,
             swDest: 'service-worker.js',
+            runtimeCaching: [
+                {
+                    // these URLs are immutable based on content hash as computed by
+                    // webpack so just use cacheFirst which only fetches them the
+                    // first time
+                    urlPattern: /https:\/\/storage.google.com\/stash/,
+                    handler: 'CacheFirst'
+                }
+            ],
+
             // runtimeCaching: [
             //     {
             //         urlPattern: /.*/,

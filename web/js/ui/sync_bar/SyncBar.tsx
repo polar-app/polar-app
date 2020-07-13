@@ -30,13 +30,7 @@ const Styles: IStyleMap = {
 
 };
 
-/**
- * The sync bar is a bar in the bottom right of the page that displays sync
- * progress and can bring up a popup displaying what it is currently doing.
- */
 export class SyncBar extends React.Component<IProps, IState> {
-
-    private value: string = '';
 
     private listener?: EventListener<SyncBarProgress>;
 

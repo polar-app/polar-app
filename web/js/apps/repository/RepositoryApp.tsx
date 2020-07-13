@@ -3,7 +3,6 @@ import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {SyncBar} from '../../ui/sync_bar/SyncBar';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
@@ -33,8 +32,6 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
-import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
-import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
 import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
@@ -49,9 +46,9 @@ import {RepositoryRoot} from "./RepositoryRoot";
 import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {AnkiSyncController} from "../../controller/AnkiSyncController";
 import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
-import {BrowserTabs} from "../../browser_tabs/BrowserTabs";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import isEqual from 'react-fast-compare';
+import {RepositoryLayout} from "./RepositoryLayout";
 
 interface IProps {
     readonly app: App;
@@ -105,10 +102,12 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(docRepo) =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
-                                                 <>
-                                                     <AnkiSyncController/>
-                                                     <DocRepoScreen2/>
-                                                 </>
+                                                 <RepositoryLayout>
+                                                     <>
+                                                         <AnkiSyncController/>
+                                                         <DocRepoScreen2/>
+                                                     </>
+                                                 </RepositoryLayout>
                                              </DocRepoSidebarTagStore>
                                          </DocRepoStore2>
                                      }/>
@@ -125,10 +124,12 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(props) =>
                                          <AnnotationRepoStore2>
                                              <AnnotationRepoSidebarTagStore>
-                                                 <>
-                                                     <ReviewRouter/>
-                                                     <AnnotationRepoScreen2/>
-                                                 </>
+                                                 <RepositoryLayout>
+                                                     <>
+                                                         <ReviewRouter/>
+                                                         <AnnotationRepoScreen2/>
+                                                     </>
+                                                 </RepositoryLayout>
                                              </AnnotationRepoSidebarTagStore>
                                          </AnnotationRepoStore2>
                                      }/>
@@ -139,22 +140,26 @@ export const RepositoryApp = (props: IProps) => {
     const LogoutScreen = React.memo(() => {
         return (
             <AuthRequired>
-                <PersistenceLayerApp tagsType="annotations"
-                                     repoDocMetaManager={repoDocMetaManager}
-                                     repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}
-                                     render={(props) =>
-                                         <LogoutDialog/>
-                                     }/>
+                <RepositoryLayout>
+                    <PersistenceLayerApp tagsType="annotations"
+                                         repoDocMetaManager={repoDocMetaManager}
+                                         repoDocMetaLoader={repoDocMetaLoader}
+                                         persistenceLayerManager={persistenceLayerManager}
+                                         render={(props) =>
+                                             <LogoutDialog/>
+                                         }/>
+                </RepositoryLayout>
             </AuthRequired>
         );
     });
 
     const RenderSettingsScreen = () => (
         <Cached>
-            <SettingsScreen
-                persistenceLayerProvider={app.persistenceLayerProvider}
-                persistenceLayerController={app.persistenceLayerController}/>
+            <RepositoryLayout>
+                <SettingsScreen
+                    persistenceLayerProvider={app.persistenceLayerProvider}
+                    persistenceLayerController={app.persistenceLayerController}/>
+            </RepositoryLayout>
         </Cached>
     );
 
@@ -168,9 +173,9 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderDeviceScreen = () => (
         <Cached>
-            <DeviceScreen
-                persistenceLayerProvider={app.persistenceLayerProvider}
-                persistenceLayerController={app.persistenceLayerController}/>
+            <RepositoryLayout>
+                <DeviceScreen/>
+            </RepositoryLayout>
         </Cached>
     );
 
@@ -191,13 +196,15 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderStatsScreen = () => (
         <AuthRequired>
-            <PersistenceLayerApp tagsType="documents"
-                                 repoDocMetaManager={repoDocMetaManager}
-                                 repoDocMetaLoader={repoDocMetaLoader}
-                                 persistenceLayerManager={persistenceLayerManager}
-                                 render={(docRepo) =>
-                                     <StatsScreen/>
-                                 }/>
+            <RepositoryLayout>
+                <PersistenceLayerApp tagsType="documents"
+                                     repoDocMetaManager={repoDocMetaManager}
+                                     repoDocMetaLoader={repoDocMetaLoader}
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(docRepo) =>
+                                         <StatsScreen/>
+                                     }/>
+            </RepositoryLayout>
         </AuthRequired>
     );
 
@@ -312,9 +319,6 @@ export const RepositoryApp = (props: IProps) => {
 
                                         {/*<BrowserTabs>*/}
                                         {/*    <>*/}
-                                                <RepoHeader3 />
-
-                                                <SyncBar key="sync-bar" progress={app.syncBarProgress}/>
 
                                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
@@ -407,7 +411,6 @@ export const RepositoryApp = (props: IProps) => {
 
                                                 </Switch>
 
-                                                <RepoFooter/>
                                         {/*    </>*/}
                                         {/*</BrowserTabs>*/}
 

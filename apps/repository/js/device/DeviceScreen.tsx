@@ -5,8 +5,6 @@ import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {ExtendedDeviceInfo} from "../repo_header/DeviceInfo";
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
 }
 
 export const DeviceScreen = (props: IProps) => (

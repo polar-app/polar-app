@@ -1,34 +1,14 @@
 import * as React from 'react';
 import {WhatsNewContent} from '../splash2/whats_new/WhatsNewContent';
 import {FixedNav, FixedNavBody} from '../FixedNav';
+import {RepositoryLayout} from "../../../../web/js/apps/repository/RepositoryLayout";
 
-export interface IProps {
-}
+export default function WhatsNewScreen() {
 
-export interface IState {
-}
+    return (
 
-export default class WhatsNewScreen extends React.Component<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.state = {
-        };
-
-    }
-
-    public render() {
-
-        return (
-
+        <RepositoryLayout>
             <FixedNav id="doc-repository">
-
-                <header>
-
-                    {/*<RepoHeader/>*/}
-
-                </header>
 
                 <FixedNavBody className="container-fluid">
 
@@ -42,8 +22,7 @@ export default class WhatsNewScreen extends React.Component<IProps, IState> {
                 </FixedNavBody>
 
             </FixedNav>
+        </RepositoryLayout>
 
-        );
-    }
-
+    );
 }
