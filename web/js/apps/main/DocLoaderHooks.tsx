@@ -46,9 +46,7 @@ function useDocLoaderElectron() {
 
                     component: (
                         <PersistentRoute exact path={path}>
-                            <div>
-                                <RepositoryDocViewerScreen persistenceLayerProvider={persistenceLayerProvider}/>
-                            </div>
+                            <RepositoryDocViewerScreen persistenceLayerProvider={persistenceLayerProvider}/>
                         </PersistentRoute>
                     )
                 }

@@ -1,12 +1,11 @@
-import {AddFileRequest} from "../AddFileRequest";
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
 import {useLogger} from "../../../mui/MUILogger";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DeterminateProgressBar} from "../../../ui/progress_bar/DeterminateProgressBar";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {AddFileRequests} from "../AddFileRequests";
 import {WriteFileProgressListener} from "../../../datastore/Datastore";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 
 export namespace AddFileHooks {
 
@@ -16,9 +15,9 @@ export namespace AddFileHooks {
         const {persistenceLayerProvider} = usePersistenceLayerContext()
         const dialogManager = useDialogManager();
 
-        async function doImportFiles(files: AddFileRequest[]): Promise<ReadonlyArray<ImportedFile>> {
+        async function doImportFiles(files: ReadonlyArray<File>): Promise<ReadonlyArray<ImportedFile>> {
 
-            async function doFile(idx: number, file: AddFileRequest) {
+            async function doFile(idx: number, file: File) {
 
                 console.log("Importing file: ", file);
 
@@ -72,21 +71,21 @@ export namespace AddFileHooks {
 
         }
 
-        async function doImportFile(file: AddFileRequest,
+        async function doImportFile(file: File,
                                     progressListener: WriteFileProgressListener): Promise<ImportedFile> {
 
             log.info("Importing file: ", file);
 
             return await DocImporter.importFile(persistenceLayerProvider,
-                                                file.docPath,
-                                                file.basename,
+                                                URL.createObjectURL(file),
+                                                FilePaths.basename(file.name),
                                                 {progressListener});
 
         }
 
-        async function handleAddFileRequests(addFileRequests: AddFileRequest[]) {
+        async function handleAddFileRequests(files: ReadonlyArray<File>) {
 
-            if (addFileRequests.length > 0) {
+            if (files.length > 0) {
 
                 // FIXME: needs to go back in after 2.0 is released
                 // const accountUpgrader = new AccountUpgrader();
@@ -97,9 +96,9 @@ export namespace AddFileHooks {
                 // }
 
                 try {
-                    await doImportFiles(addFileRequests);
+                    await doImportFiles(files);
                 } catch (e) {
-                    log.error("Unable to import files: ", addFileRequests, e);
+                    log.error("Unable to import files: ", files, e);
                 }
 
             } else {
@@ -117,15 +116,7 @@ export namespace AddFileHooks {
             }
 
             async function doAsync() {
-
-                const directly = AddFileRequests.computeFromFileList(files);
-                // const recursively = await AddFileRequests.computeRecursively(event);
-                const recursively: ReadonlyArray<AddFileRequest> = [];
-
-                const addFileRequests = [...directly, ...recursively];
-
-                await handleAddFileRequests(addFileRequests);
-
+                await handleAddFileRequests(files);
             }
 
             doAsync()

@@ -25,7 +25,8 @@ export const FolderSidebar2 = () => {
     const callbacks = useFolderSidebarCallbacks();
 
     return (
-        <Paper square
+        <Paper className="FolderSidebar2"
+               square
                elevation={0}
                style={{
                    display: 'flex',

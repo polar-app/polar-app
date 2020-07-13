@@ -61,29 +61,31 @@ export namespace AddFileRequests {
 
     export function computeFromFileList(files: ReadonlyArray<File>): AddFileRequest[] {
 
+        function toAddFileRequest(file: File): AddFileRequest {
+
+            if (file.path) {
+
+                // On Electron we have the file path directly.
+                return {
+                    docPath: file.path,
+                    basename: FilePaths.basename(file.path)
+                };
+
+            } else {
+
+                // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+
+                return {
+                    docPath: URL.createObjectURL(file),
+                    basename: file.name,
+                };
+            }
+
+        }
+
         return Array.from(files)
             .filter(file => isFileSupported(file.name))
-            .map(file => {
-
-                if (file.path) {
-
-                    // On Electron we have the file path directly.
-                    return {
-                        docPath: file.path,
-                        basename: FilePaths.basename(file.path)
-                    };
-
-                } else {
-
-                    // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-
-                    return {
-                        docPath: URL.createObjectURL(file),
-                        basename: file.name,
-                    };
-                }
-
-            });
+            .map(toAddFileRequest);
 
     }
 

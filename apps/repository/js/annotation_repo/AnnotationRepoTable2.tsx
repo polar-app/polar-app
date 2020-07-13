@@ -131,7 +131,8 @@ export const AnnotationRepoTable2 = React.memo(() => {
     return (
 
         <ContextMenu>
-            <Paper square id="doc-repo-table"
+            <Paper className="AnnotationRepoTable2"
+                   square id="doc-repo-table"
                    elevation={0}
                    style={{
                        display: 'flex',
@@ -147,6 +148,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                          onChangeRowsPerPage={setRowsPerPage}/>
 
                 <div id="doc-table"
+                     className="AnnotationRepoTable2.Body"
                      style={{
                          display: 'flex',
                          flexDirection: 'column',

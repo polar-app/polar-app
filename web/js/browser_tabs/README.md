@@ -142,3 +142,12 @@ that...
       be better AND we'd have less issues with react complexity, etc.  
       
         - BUT if I had a fast app then mulit-core wouldn't be an issue. 
+
+
+    - REMAINING ISSUES:
+        - the second PDF viewer fails... might have to do with using an 'id'
+        - cant useHistory without things becoming unbearably slow
+        - reload won't reload all the tabs.
+        - we will need key bindings, context menus, and close
+            - MUI might be draggable
+        - the CSS is not that pretty but that's obvious

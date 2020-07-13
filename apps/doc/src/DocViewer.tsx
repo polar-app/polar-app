@@ -35,7 +35,8 @@ const Main = React.memo(() => {
 
     return (
 
-        <div style={{
+        <div className="DocViewer.Main"
+             style={{
                  flexGrow: 1,
                  minHeight: 0,
                  display: 'flex',
@@ -46,12 +47,13 @@ const Main = React.memo(() => {
             <DocViewerGlobalHotKeys/>
             <DocFindBar/>
 
-            <div style={{
-                minHeight: 0,
-                overflow: 'auto',
-                flexGrow: 1,
-                position: 'relative'
-            }}>
+            <div className="DocViewer.Main.Body"
+                 style={{
+                     minHeight: 0,
+                     overflow: 'auto',
+                     flexGrow: 1,
+                     position: 'relative'
+                 }}>
 
                 <DocViewerContextMenu>
                     <DocMain/>
@@ -145,7 +147,8 @@ namespace Device {
 
                 </SwipeableDrawer>
 
-                <div style={{
+                <div className="DocViewer.Handheld"
+                     style={{
                          display: 'flex',
                          flexDirection: 'column',
                          flexGrow: 1,
@@ -177,21 +180,23 @@ namespace Device {
 
         return (
 
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flexGrow: 1,
-                minHeight: 0
-            }}>
+            <div className="DocViewer.Desktop"
+                 style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     flexGrow: 1,
+                     minHeight: 0
+                 }}>
 
                 <DocViewerToolbar/>
 
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0
-                }}>
+                <div className="DocViewer.Desktop.Body"
+                     style={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         flexGrow: 1,
+                         minHeight: 0
+                     }}>
 
                     <DockLayout
                         onResize={() => onDockLayoutResize()}

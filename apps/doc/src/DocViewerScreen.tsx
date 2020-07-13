@@ -12,7 +12,8 @@ import {DocViewerDocMetaLookupContextProvider} from "./DocViewerDocMetaLookupCon
 export const DocViewerScreen = React.memo(() => {
 
     return (
-            <div style={{
+            <div className="DocViewerScreen"
+                 style={{
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,

@@ -50,7 +50,8 @@ export const PersistentRoute = React.memo((props: IProps) => {
         <>
             <Switch>
                 <Route path="/">
-                    <div style={{
+                    <div className="PersistentRoute"
+                         style={{
                              display,
                              minHeight: 0,
                              flexDirection: 'column',

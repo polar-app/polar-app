@@ -14,7 +14,8 @@ const BrowserTabContent = React.memo((props: BrowserTabContentProps) => {
     const display = active ? 'flex' : 'none';
 
     return (
-        <div style={{
+        <div className="BrowserTabContents"
+             style={{
                  display,
                  minHeight: 0,
                  flexDirection: 'column',
