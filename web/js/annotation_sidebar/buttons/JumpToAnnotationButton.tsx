@@ -20,7 +20,17 @@ export function onJumpToAnnotation(annotation: IDocAnnotationRef) {
     }
 
     function jumpToAnnotation() {
+
+        const annotationElement = document.getElementById(annotation.id);
+
         document.location.hash = annotation.id;
+
+        if (annotationElement) {
+            annotationElement.scrollIntoView();
+        } else {
+            console.warn("Count not find annotation element to scroll")
+        }
+
     }
 
     scrollToPage();

@@ -252,11 +252,8 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     }
 
     const onDelete = (annotations: ReadonlyArray<IAnnotationMeta>) => {
-
         const selected = annotations.map(annotationMetaResolver);
-
         annotationMutationsContext.onDeleted({selected});
-
     }
 
     return (
@@ -270,36 +267,19 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                          onClick={onCreateAreaHighlight}/>
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&
-                <MUISubMenu text="Pagemark"
-                            icon={<BookmarkIcon/>}>
-
-                    <MUIMenuItem text="Delete"
-                                 icon={<DeleteForeverIcon/>}
-                                 onClick={() => onDeletePagemark(origin.pagemarks)}/>
-
-                </MUISubMenu>}
+                <MUIMenuItem text="Delete Pagemark"
+                             icon={<DeleteForeverIcon/>}
+                             onClick={() => onDeletePagemark(origin.pagemarks)}/>}
 
             {(props.origin?.areaHighlights?.length || 0) > 0 &&
-                <MUISubMenu text="Area Highlight"
-                            icon={<PhotoSizeSelectLargeIcon/>}>
-
-                    <MUIMenuItem text="Delete"
-                                 icon={<DeleteForeverIcon/>}
-                                 onClick={() => onDelete(origin.areaHighlights)}/>
-
-                </MUISubMenu>}
+                <MUIMenuItem text="Delete Area Highlight"
+                             icon={<DeleteForeverIcon/>}
+                             onClick={() => onDelete(origin.areaHighlights)}/>}
 
             {(props.origin?.textHighlights?.length || 0) > 0 &&
-                <MUISubMenu text="Text Highlight"
-                            icon={<ShortTextIcon/>}>
-
-                    <MUIMenuItem text="Delete"
-                                 icon={<DeleteForeverIcon/>}
-                                 onClick={() => onDelete(origin.textHighlights)}/>
-
-                </MUISubMenu>}
-
-
+                <MUIMenuItem text="Delete Text Highlight"
+                             icon={<DeleteForeverIcon/>}
+                             onClick={() => onDelete(origin.textHighlights)}/>}
 
         </>
     );

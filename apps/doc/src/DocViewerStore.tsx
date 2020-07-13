@@ -194,6 +194,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function setDocMeta(docMeta: IDocMeta) {
 
+        Preconditions.assertPresent(docMeta, 'docMeta');
+
         function doExec() {
             const store = storeProvider();
 
