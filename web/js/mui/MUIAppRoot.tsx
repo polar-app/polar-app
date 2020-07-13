@@ -11,6 +11,7 @@ import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider
 import {MUIDialogController} from "./dialogs/MUIDialogController";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { BrowserTabsStoreProvider } from "../browser_tabs/BrowserTabsStore";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -40,22 +41,25 @@ export const MUIAppRoot = (props: IProps) => {
 
         <MuiThemeProvider theme={muiTheme}>
             <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
+                <BrowserTabsStoreProvider>
+                    <>
+                        <CssBaseline/>
+                        <GlobalCss/>
+                        <GlobalCSSBootstrap/>
+                        <GlobalCssSummernote/>
+                        <GlobalCssMobile/>
 
-                <CssBaseline/>
-                <GlobalCss/>
-                <GlobalCSSBootstrap/>
-                <GlobalCssSummernote/>
-                <GlobalCssMobile/>
+                        <ActiveHotKeyBindings/>
 
-                <ActiveHotKeyBindings/>
-
-                <FirestoreProvider>
-                    <UserInfoProvider>
-                        <MUIDialogController>
-                            {props.children}
-                        </MUIDialogController>
-                    </UserInfoProvider>
-                </FirestoreProvider>
+                        <FirestoreProvider>
+                            <UserInfoProvider>
+                                <MUIDialogController>
+                                    {props.children}
+                                </MUIDialogController>
+                            </UserInfoProvider>
+                        </FirestoreProvider>
+                    </>
+                </BrowserTabsStoreProvider>
 
             </MUIThemeTypeContext.Provider>
         </MuiThemeProvider>

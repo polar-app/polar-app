@@ -286,8 +286,8 @@ module.exports = {
         compress: true,
         port: 8050,
         // open: true,
-        // overlay: true,
-        // hot: true,
+        overlay: true,
+        hot: true,
         watchContentBase: false,
         writeToDisk: true,
         historyApiFallback: {

@@ -130,4 +130,11 @@ that...
             - using React context to determine which PDF I'm working with
             - NOT using documents with IDs and just using classes
             - updating the PDF.js CSS
+            
+            
+    - ObservableStore.tsx is our main issue now. The problem is that the 
+      callbacksFactory is being called each time, which is basically a hook, 
+      but it's being reloaded each time for some reason... 
+      
+        - maybe I have to React.useMemo on it??? 
               
