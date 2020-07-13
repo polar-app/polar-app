@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {HotKeys} from "react-hotkeys";
 import {KeyMaps} from "../../hotkeys/KeyMaps";
+import {HotKeyCallbacks} from "../../hotkeys/HotKeyCallbacks";
 
 const keyMap = KeyMaps.keyMap({
    group: "Actions",
@@ -8,7 +9,7 @@ const keyMap = KeyMaps.keyMap({
        COMPLETE: {
            name: "Complete Action",
            description: "Complete the current action",
-           sequences: ['command+return', 'control+return'],
+           sequences: ['return'],
        },
    }
 });
@@ -21,9 +22,7 @@ interface IProps {
 export const HotKeyCompleteListener = (props: IProps) => {
 
     const handlers = {
-        COMPLETE: () => {
-            props.onComplete()
-        }
+        COMPLETE: HotKeyCallbacks.withPreventDefault(props.onComplete)
     };
 
     return (
