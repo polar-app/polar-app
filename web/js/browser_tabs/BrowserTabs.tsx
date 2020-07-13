@@ -16,13 +16,11 @@ export const BrowserTabs = React.memo((props: IProps) => {
     }
 
     return (
-        <BrowserTabsStoreProvider>
-            <>
-                <BrowserTabsList/>
-                <BrowserTabContents/>
-                {props.children}
-            </>
-        </BrowserTabsStoreProvider>
+        <>
+            <BrowserTabsList/>
+            <BrowserTabContents/>
+            {props.children}
+        </>
     );
 
 })

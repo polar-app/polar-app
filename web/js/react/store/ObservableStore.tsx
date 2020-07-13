@@ -245,14 +245,10 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
 
-    const useCallbacksHook: UseContextHook<C> = () => {
-        // TODO: this is efficient in that creating a callback is fast BUT
-        // is this created EVERY single time?  I think it is actually.
-        const callbacksContextFactory = React.useContext(callbacksContext);
-        const callbacks = callbacksContextFactory();
-        Preconditions.assertPresent(callbacks, "callbacks");
-        return callbacks;
-    }
+    // NOTE: the callbacksFactory should be written with EXACTLY the same
+    // semantics as a react hook since it's called directly including useMemo
+    // and useCallbacks
+    const useCallbacksHook = componentCallbacksFactory;
 
     const mutatorContext = React.createContext<M>(mutator);
 

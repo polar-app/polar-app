@@ -137,4 +137,8 @@ that...
       but it's being reloaded each time for some reason... 
       
         - maybe I have to React.useMemo on it??? 
-              
+
+    - if we used webview or iframe then we'd get multi-core loading which would
+      be better AND we'd have less issues with react complexity, etc.  
+      
+        - BUT if I had a fast app then mulit-core wouldn't be an issue. 

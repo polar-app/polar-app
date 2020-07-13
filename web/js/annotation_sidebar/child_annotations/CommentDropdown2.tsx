@@ -25,7 +25,7 @@ export const CommentDropdown2 = React.memo((props: IProps) => {
 
     return (
 
-        <Tooltip title="More comment options...">
+        // <Tooltip title="More comment options...">
 
             <MUIMenu id={props.id}
                      button={{
@@ -44,7 +44,7 @@ export const CommentDropdown2 = React.memo((props: IProps) => {
 
             </MUIMenu>
 
-        </Tooltip>
+        // </Tooltip>
 
     );
 

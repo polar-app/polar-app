@@ -60,9 +60,9 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
             <MUIDocFlagButton onClick={onFlagged}
                               active={props.flagged}/>
 
-            <Tooltip title="More options...">
+            {/*<Tooltip title="More options...">*/}
                 <MUIDocDropdownButton onClick={(event) => callbacks.selectRow(viewID, event, 'click')}/>
-            </Tooltip>
+            {/*</Tooltip>*/}
 
         </div>
     );

@@ -9,6 +9,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import {MUIDropdownCaret} from "../MUIDropdownCaret";
+import isEqual from 'react-fast-compare';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -52,7 +53,7 @@ interface IProps {
 
 // FIXME: move this to MUIPopper
 
-export const MUIMenu = (props: IProps) => {
+export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -161,4 +162,4 @@ export const MUIMenu = (props: IProps) => {
             </div>
         </div>
     );
-}
+}), isEqual);

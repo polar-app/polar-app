@@ -30,7 +30,7 @@ export const AnnotationDropdown2 = (props: IProps) => {
 
     return (
 
-        <Tooltip title="More options... ">
+        // <Tooltip title="More options... ">
             <MUIMenu button={{
                          icon: <MoreVertIcon/>,
                          disabled: props.disabled,
@@ -55,7 +55,7 @@ export const AnnotationDropdown2 = (props: IProps) => {
                 </div>
             </MUIMenu>
 
-        </Tooltip>
+        // </Tooltip>
 
     );
 };

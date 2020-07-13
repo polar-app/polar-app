@@ -31,7 +31,7 @@ export const ColorSelector = (props: IProps) => {
     const onSelected = props.onSelected || NULL_FUNCTION;
 
     return (
-        <Tooltip title={`Used to ${props.role} the color.`}>
+        // <Tooltip title={`Used to ${props.role} the color.`}>
             <MUIPopper size="small"
                        icon={<PaletteIcon/>}>
 
@@ -39,7 +39,7 @@ export const ColorSelector = (props: IProps) => {
                                   onSelected={onSelected}/>
 
             </MUIPopper>
-        </Tooltip>
+        // </Tooltip>
     );
 
 };

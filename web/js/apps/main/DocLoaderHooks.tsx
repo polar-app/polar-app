@@ -1,6 +1,5 @@
 import React from 'react';
 import {LoadDocRequest} from "./doc_loaders/LoadDocRequest";
-import {IDocLoadRequest} from "./doc_loaders/IDocLoader";
 import {usePersistenceLayerContext} from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {
     TabDescriptor,
@@ -11,18 +10,26 @@ import {PersistentRoute} from "../repository/PersistentRoute";
 // import { RepositoryDocViewerScreen } from '../repository/RepositoryApp';
 import {BrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import { RepositoryDocViewerScreen } from '../repository/RepositoryApp';
 
-export type DocLoaderCreator = (loadDocRequest: LoadDocRequest) => IDocLoadRequest;
+
+function useDocLoaderElectron2() {
+
+    // const {persistenceLayerProvider} = usePersistenceLayerContext();
+
+    // FIXME: this is the problem.  For some reason the callbacks are different
+    // each time
+    const {addTab} = useBrowserTabsCallbacks();
+
+    return useDocLoaderNull();
+}
 
 function useDocLoaderElectron() {
-
-    // FIXME: this has SEVERE performance issues and causes the tabs to do a
-    // full re-render...
 
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const {addTab} = useBrowserTabsCallbacks();
 
-    return (loadDocRequest: LoadDocRequest) => {
+    return React.useCallback((loadDocRequest: LoadDocRequest) => {
 
         const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
         const parsedURL = new URL(viewerURL);
@@ -36,12 +43,11 @@ function useDocLoaderElectron() {
                     url: path,
                     title: loadDocRequest.title,
 
-                    // {/*<RepositoryDocViewerScreen persistenceLayerProvider={persistenceLayerProvider}/>*/}
 
                     component: (
                         <PersistentRoute exact path={path}>
                             <div>
-                                Disabled for now.
+                                <RepositoryDocViewerScreen persistenceLayerProvider={persistenceLayerProvider}/>
                             </div>
                         </PersistentRoute>
                     )
@@ -53,7 +59,7 @@ function useDocLoaderElectron() {
 
         };
 
-    }
+    }, []);
 
 }
 
@@ -85,15 +91,11 @@ function useDocLoaderNull() {
 
 }
 
+// There is a performance issue with React / electron where if we have a function
+// that returns a different implementation each time it's super slow.
+//
+// This will ALSO break the rule to only call hooks at the top level and not
+// conditionally.
+export const useDocLoader = AppRuntime.isElectron() ? useDocLoaderElectron : useDocLoaderDefault;
 
-export function useDocLoader(): DocLoaderCreator {
-
-    // if (AppRuntime.isElectron()) {
-    //     return useDocLoaderElectron();
-    // }
-    //
-    return useDocLoaderDefault();
-    //
-    // return useDocLoaderNull();
-
-}
+// export const useDocLoader = useDocLoaderDefault;

@@ -88,81 +88,92 @@ function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
                           setStore: (store: IBrowserTabsStore) => void,
                           mutator: Mutator): IBrowserTabsCallbacks {
 
-    const history = useHistory();
+    // FIXME: now the issue is useHistory here I think...
 
-    function setActiveTab(activeTab: number) {
-        const store = storeProvider();
-        setStore({...store, activeTab});
-    }
+    // const history = useHistory();
 
-    function addTab(tabDescriptor: TabDescriptor) {
+    // FIXME: I think this is better BUT ... the memo is still being called
+    // and created at least once...
 
-        const store = storeProvider();
+    return React.useMemo((): IBrowserTabsCallbacks => {
 
-        function computeExistingTab() {
-            return arrayStream(store.tabs)
+        function setActiveTab(activeTab: number) {
+            const store = storeProvider();
+            setStore({...store, activeTab});
+        }
+
+        function addTab(tabDescriptor: TabDescriptor) {
+
+            const store = storeProvider();
+
+            function computeExistingTab() {
+                return arrayStream(store.tabs)
                 .withIndex()
                 .filter(current => current.value.url === tabDescriptor.url)
                 .first();
-        }
-
-        function doTabMutation(newStore: IBrowserTabsStore) {
-            history.replace(tabDescriptor.url);
-            setStore(newStore);
-        }
-
-        const existingTab = computeExistingTab();
-
-        if (existingTab) {
-            // just switch to the existing tab when one already exists and we
-            // want to switch to it again.
-            doTabMutation({...store, activeTab: existingTab.index});
-            return;
-        }
-
-        const tabs = [...store.tabs, tabDescriptor];
-
-        // now switch to the new tab
-        const activeTab = tabs.length - 1;
-
-        doTabMutation({...store, tabs, activeTab});
-
-    }
-
-    function removeTab(id: number) {
-
-        const store = storeProvider();
-
-        function computeTabs() {
-            const tabs = [...store.tabs];
-            tabs.splice(id, 1);
-            return tabs;
-        }
-
-        function computeActiveTab() {
-
-            if (store.activeTab === id) {
-                return Math.max(store.activeTab - 1, 1);
             }
 
-            return store.activeTab;
+            function doTabMutation(newStore: IBrowserTabsStore) {
+                // history.replace(tabDescriptor.url);
+                history.replaceState(null, tabDescriptor.title, tabDescriptor.url);
+                setStore(newStore);
+            }
+
+            const existingTab = computeExistingTab();
+
+            if (existingTab) {
+                // just switch to the existing tab when one already exists and we
+                // want to switch to it again.
+                doTabMutation({...store, activeTab: existingTab.index});
+                return;
+            }
+
+            const tabs = [...store.tabs, tabDescriptor];
+
+            // now switch to the new tab
+            const activeTab = tabs.length - 1;
+
+            doTabMutation({...store, tabs, activeTab});
 
         }
 
-        const tabs = computeTabs();
-        const activeTab = computeActiveTab();
+        function removeTab(id: number) {
 
-        setStore({...store, tabs, activeTab});
+            const store = storeProvider();
 
-    }
+            function computeTabs() {
+                const tabs = [...store.tabs];
+                tabs.splice(id, 1);
+                return tabs;
+            }
 
-    return {
-        addTab, removeTab, setActiveTab
-    };
+            function computeActiveTab() {
+
+                if (store.activeTab === id) {
+                    return Math.max(store.activeTab - 1, 1);
+                }
+
+                return store.activeTab;
+
+            }
+
+            const tabs = computeTabs();
+            const activeTab = computeActiveTab();
+
+            setStore({...store, tabs, activeTab});
+
+        }
+
+        return {
+            addTab, removeTab, setActiveTab
+        };
+
+    }, [storeProvider, setStore]);
 
 }
 
 export function createBrowserTabsStore() {
+
     return createObservableStore<IBrowserTabsStore, Mutator, IBrowserTabsCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
