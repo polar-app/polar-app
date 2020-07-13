@@ -38,7 +38,9 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
 
     };
 
-    const toReactPortal = (rawTextHighlightRect: IRect, container: HTMLElement) => {
+    const toReactPortal = (rawTextHighlightRect: IRect,
+                           container: HTMLElement,
+                           idx: number) => {
 
         const className = `text-highlight annotation text-highlight-${textHighlight.id}`;
         const textHighlightRect = createScaledRect(rawTextHighlightRect);
@@ -47,8 +49,20 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
 
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
+        function createDOMID() {
+
+            if (idx === 0) {
+                return textHighlight.id;
+            }
+
+            return textHighlight.id + "." + idx;
+
+        }
+
+        const id = createDOMID();
+
         return ReactDOM.createPortal(
-            <div id={textHighlight.id}
+            <div id={id}
                  data-type="text-highlight"
                  data-doc-fingerprint={fingerprint}
                  data-text-highlight-id={textHighlight.id}
@@ -75,7 +89,7 @@ export const TextHighlightRenderer2 = React.memo((props: IProps) => {
     };
 
     const portals = Object.values(textHighlight.rects)
-                          .map(current => toReactPortal(current, container));
+                          .map((current, idx) => toReactPortal(current, container, idx));
 
     return (
         <>

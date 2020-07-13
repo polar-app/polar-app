@@ -258,7 +258,7 @@ export const DocViewer = React.memo(() => {
             const parsedURL = DocViewerAppURLs.parse(document.location.href);
 
             if (! parsedURL) {
-                console.log("No parsed URL")
+                console.warn("Could not parse URL: " + document.location.href)
                 return;
             }
 

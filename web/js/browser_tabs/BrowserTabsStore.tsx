@@ -89,6 +89,9 @@ function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
                           mutator: Mutator): IBrowserTabsCallbacks {
 
     // FIXME: now the issue is useHistory here I think...
+    // FIXME: useHistory caues the components to reload and it might be that
+    // we have two BrowserRouters at the root. I think we should try to go with
+    // just ONE router if possible and more properly use switches.
 
     // const history = useHistory();
 
