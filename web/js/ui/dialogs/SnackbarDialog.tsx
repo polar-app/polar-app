@@ -7,6 +7,12 @@ export interface SnackbarDialogProps {
     readonly type?: 'info' | 'success' | 'warning' | 'error';
     readonly message: string;
     readonly autoHideDuration?: number;
+
+    /**
+     * Use a custom action like an 'open' button
+     */
+    readonly action?: () => JSX.Element;
+
 }
 
 export const SnackbarDialog = (props: SnackbarDialogProps) => {
@@ -28,6 +34,8 @@ export const SnackbarDialog = (props: SnackbarDialogProps) => {
         </IconButton>
     );
 
+    const action = props.action || <Action/>
+
     return (
         <Snackbar
             anchorOrigin={{
@@ -38,7 +46,7 @@ export const SnackbarDialog = (props: SnackbarDialogProps) => {
             autoHideDuration={props.autoHideDuration || 5000}
             onClose={handleClose}
             message={props.message}
-            action={<Action/>}/>
+            action={action}/>
     );
 
 };

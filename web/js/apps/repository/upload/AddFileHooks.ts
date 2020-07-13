@@ -6,6 +6,7 @@ import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {WriteFileProgressListener} from "../../../datastore/Datastore";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
+import {useDocLoader} from "../../main/DocLoaderHooks";
 
 export namespace AddFileHooks {
 
@@ -14,6 +15,7 @@ export namespace AddFileHooks {
         const log = useLogger();
         const {persistenceLayerProvider} = usePersistenceLayerContext()
         const dialogManager = useDialogManager();
+        const docLoader = useDocLoader();
 
         async function doImportFiles(files: ReadonlyArray<File>): Promise<ReadonlyArray<ImportedFile>> {
 
@@ -28,12 +30,17 @@ export namespace AddFileHooks {
 
                 try {
 
-                    const writeFileProgressListener: WriteFileProgressListener = (progress) => {
+                    const progressListener: WriteFileProgressListener = (progress) => {
                         updateProgress({value: progress.progress});
                     };
 
-                    const importedFile = await doImportFile(file, writeFileProgressListener);
+                    const importedFile = await DocImporter.importFile(persistenceLayerProvider,
+                                                                      URL.createObjectURL(file),
+                                                                      FilePaths.basename(file.name),
+                                                                      {progressListener});
+
                     log.info("Imported file: ", importedFile);
+
                     result.push(importedFile);
 
                 } catch (e) {
@@ -63,6 +70,8 @@ export namespace AddFileHooks {
                     await doFile(idx, file);
                 }
 
+                // FIXME bring up a dialog to import the file ... 
+
                 return result;
 
             } finally {
@@ -71,19 +80,7 @@ export namespace AddFileHooks {
 
         }
 
-        async function doImportFile(file: File,
-                                    progressListener: WriteFileProgressListener): Promise<ImportedFile> {
-
-            log.info("Importing file: ", file);
-
-            return await DocImporter.importFile(persistenceLayerProvider,
-                                                URL.createObjectURL(file),
-                                                FilePaths.basename(file.name),
-                                                {progressListener});
-
-        }
-
-        async function handleAddFileRequests(files: ReadonlyArray<File>) {
+        async function doExec(files: ReadonlyArray<File>) {
 
             if (files.length > 0) {
 
@@ -112,14 +109,10 @@ export namespace AddFileHooks {
             // we have to do three main things here:
 
             if (! files || files.length === 0) {
-                log.warn("No dataTransfer");
+                log.warn("No dataTransfer files");
             }
 
-            async function doAsync() {
-                await handleAddFileRequests(files);
-            }
-
-            doAsync()
+            doExec(files)
                 .catch(err => log.error("Unable to handle upload: ", err));
 
         }
