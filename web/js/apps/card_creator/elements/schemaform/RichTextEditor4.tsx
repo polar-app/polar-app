@@ -14,8 +14,6 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
     private readonly typedWidgetProps: TypedWidgetProps;
 
-    private value: string = "";
-
     private id: string;
 
     constructor(props: IProps) {
@@ -27,18 +25,19 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
             throw new Error("No ID");
         }
 
-        this.typedWidgetProps = new TypedWidgetProps(props);
-
-        if (this.typedWidgetProps.value) {
-            this.value = this.typedWidgetProps.value;
-        }
-
         // needed because React changes 'this' to the Element it created which
         // is a bit confusing.
         this.onChange = this.onChange.bind(this);
         this.onImageUpload = this.onImageUpload.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
+
+        this.typedWidgetProps = new TypedWidgetProps(props);
+
+        this.state = {
+            value: this.typedWidgetProps.value || ''
+        };
+
 
     }
 
@@ -52,7 +51,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
         // log.debug('onChange', newValue);
 
-        this.value = newValue;
+        this.setState({value: newValue});
 
         if (this.props.onChange) {
             this.props.onChange(newValue);
@@ -64,7 +63,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
         // log.info("onBlur");
 
         if (this.props.onBlur) {
-            this.props.onBlur(this.id, this.value);
+            this.props.onBlur(this.id, this.state.value);
         }
 
 
@@ -74,7 +73,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
         // log.info("onFocus");
 
         if (this.props.onFocus) {
-            this.props.onFocus(this.id, this.value);
+            this.props.onFocus(this.id, this.state.value);
         }
 
     }
@@ -118,7 +117,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
         return (
             <ReactSummernote4
-                value={this.props.value || ''}
+                value={this.state.value}
                 defaultValue={this.props.defaultValue}
                 options={{
                     id: this.typedWidgetProps.id,
@@ -191,5 +190,5 @@ interface IProps {
 }
 
 interface IState {
-
+    readonly value: string;
 }
