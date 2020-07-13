@@ -1,11 +1,11 @@
 import React from "react";
-import {TimeoutCallbacks} from "../../../../web/js/hotkeys/TimeoutCallbacks";
-import {GlobalHotKeys, KeyMap} from "react-hotkeys";
+import {GlobalHotKeys} from "react-hotkeys";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";
+import {KeyHandlers} from "../../../../web/js/hotkeys/KeyHandlers";
+import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import keyMap = KeyMaps.keyMap;
 
 const globalKeyMap = keyMap(
@@ -49,7 +49,7 @@ export const DocRepoGlobalHotKeys = React.memo(() => {
 
     const callbacks = useDocRepoCallbacks();
 
-    const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout({
+    const globalKeyHandlers = KeyHandlers.withDefaultBehavior({
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
         FLAG: callbacks.onFlagged,

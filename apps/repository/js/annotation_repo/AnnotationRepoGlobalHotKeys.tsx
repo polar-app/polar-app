@@ -1,10 +1,10 @@
 import {GlobalHotKeys} from "react-hotkeys";
 import React from "react";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {TimeoutCallbacks} from "../../../../web/js/hotkeys/TimeoutCallbacks";
 import {KeyMaps} from "../../../../web/js/hotkeys/KeyMaps";
-import keyMap = KeyMaps.keyMap;
 import {HotKeyCallbacks} from "../../../../web/js/hotkeys/HotKeyCallbacks";
+import {KeyHandlers} from "../../../../web/js/hotkeys/KeyHandlers";
+import keyMap = KeyMaps.keyMap;
 
 const globalKeyMap = keyMap(
     {
@@ -27,7 +27,7 @@ export const AnnotationRepoGlobalHotKeys = React.memo(() => {
 
     const callbacks = useAnnotationRepoCallbacks();
     
-    const globalKeyHandlers = TimeoutCallbacks.callbacksWithTimeout({
+    const globalKeyHandlers = KeyHandlers.withDefaultBehavior({
         TAG: HotKeyCallbacks.withPreventDefault(callbacks.onTagged),
         DELETE: HotKeyCallbacks.withPreventDefault(callbacks.onDeleted),
         // FLAG: callbacks.onFlagged,
