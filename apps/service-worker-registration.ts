@@ -41,6 +41,8 @@ if ('serviceWorker' in navigator && isBrowser()) {
         if (isLocalhost) {
             console.warn("Not registering service worker - localhost/webpack-dev-server");
             return;
+        } else {
+            console.log("Service worker being registered.");
         }
 
         async function doAsync() {

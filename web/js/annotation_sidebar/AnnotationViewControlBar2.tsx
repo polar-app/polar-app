@@ -20,7 +20,9 @@ import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles, Tooltip} from "@material-ui/core";
-
+import {memoForwardRef} from "../react/ReactUtils";
+import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
+import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -42,7 +44,7 @@ interface IAnnotationProps {
     readonly mutable: boolean | undefined;
 }
 
-const ChangeTextHighlightButton = React.memo((props: IAnnotationProps) => {
+const ChangeTextHighlightButton = memoForwardRef((props: IAnnotationProps) => {
 
     const {annotation} = props;
 
@@ -52,6 +54,7 @@ const ChangeTextHighlightButton = React.memo((props: IAnnotationProps) => {
         // this should only be added on text highlights.
         return null;
     }
+
     return (
         <Tooltip title="Change the content of a text highlight.">
             <IconButton disabled={! props.mutable}
@@ -63,9 +66,10 @@ const ChangeTextHighlightButton = React.memo((props: IAnnotationProps) => {
             </IconButton>
         </Tooltip>
     );
-}, isEqual);
 
-const CreateCommentButton = React.memo((props: IMutableProps) => {
+});
+
+const CreateCommentButton = memoForwardRef((props: IMutableProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
 
@@ -80,7 +84,7 @@ const CreateCommentButton = React.memo((props: IMutableProps) => {
             </IconButton>
         </Tooltip>
     );
-}, isEqual);
+});
 
 
 const CreateFlashcardButton = React.memo((props: IMutableProps) => {
@@ -145,7 +149,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                                       flexGrow: 1
                                   }}>
 
-                           <ChangeTextHighlightButton annotation={annotation}
+                        <JumpToAnnotationButton annotation={annotation}/>
+
+                        <ChangeTextHighlightButton annotation={annotation}
                                                       mutable={doc?.mutable}/>
 
                            <CreateCommentButton mutable={doc?.mutable}/>
