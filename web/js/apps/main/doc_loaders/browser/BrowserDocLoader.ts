@@ -24,6 +24,7 @@ export class BrowserDocLoader implements IDocLoader {
         return {
 
             async load(): Promise<void> {
+                console.log("Loading URL: ", viewerURL);
                 linkLoader.load(viewerURL);
             }
 

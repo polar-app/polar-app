@@ -42,7 +42,12 @@ class DesktopLinkLoader implements LinkLoader {
 
     constructor(opts: LinkLoaderOpts) {
 
-        const win = opts.newWindow ? window.open('', '_blank') : window;
+        function createWindow() {
+            console.log("Creating new window");
+            return window.open('', '_blank');
+        }
+
+        const win = opts.newWindow ? createWindow() : window;
 
         if (win) {
 
@@ -70,6 +75,7 @@ class DesktopLinkLoader implements LinkLoader {
     }
 
     public load(link: string): void {
+        console.log("Setting window location to: " + link);
         this.win.location.href = link;
     }
 

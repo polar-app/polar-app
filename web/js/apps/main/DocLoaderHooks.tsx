@@ -68,6 +68,7 @@ function useDocLoaderDefault() {
     const browserDocLoader = new BrowserDocLoader(persistenceLayerProvider);
 
     return (loadDocRequest: LoadDocRequest) => {
+        console.log("Creating loader for: ", loadDocRequest);
         return browserDocLoader.create(loadDocRequest);
     }
 
@@ -94,6 +95,6 @@ function useDocLoaderNull() {
 //
 // This will ALSO break the rule to only call hooks at the top level and not
 // conditionally.
-export const useDocLoader = AppRuntime.isElectron() ? useDocLoaderElectron : useDocLoaderDefault;
+// export const useDocLoader = AppRuntime.isElectron() ? useDocLoaderElectron : useDocLoaderDefault;
 
-// export const useDocLoader = useDocLoaderDefault;
+export const useDocLoader = useDocLoaderDefault;
