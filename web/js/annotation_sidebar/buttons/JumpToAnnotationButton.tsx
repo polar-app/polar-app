@@ -6,6 +6,10 @@ import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {Tooltip} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 
+function isDocViewer() {
+    return document.location.href.indexOf('/doc/') !== -1;
+}
+
 export function onJumpToAnnotation(annotation: IDocAnnotationRef) {
 
     function computePageElement() {
@@ -43,6 +47,10 @@ interface IProps {
 }
 
 export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
+
+    if (! isDocViewer()) {
+        return null;
+    }
 
     const {annotation} = props;
 
