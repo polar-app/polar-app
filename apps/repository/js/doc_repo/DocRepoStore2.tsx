@@ -663,29 +663,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
-        // FIXME: needs related tags... where is this stored.. I think it's in the
-        // docRepo...
-
-        const relatedOptionsCalculator: RelatedOptionsCalculator<Tag> =
-            (options) => {
-
-                // FIXME: must be converted to an ReadonlyArray<ValueAutocompleteOption<T>
-
-                function toAutocompleteOption(tag: Tag): ValueAutocompleteOption<Tag> {
-                    return {
-                        id: tag.id,
-                        label: tag.label,
-                        value: tag
-                    }
-                };
-
-                const tags = options.map(current => current.label);
-
-                return repoDocMetaManager.relatedTagsManager.compute(tags)
-                                         .map(current => current.tag)
-                                         .map(Tags.create)
-                                         .map(toAutocompleteOption)
-            };
+        const {relatedTagsManager} = repoDocMetaManager;
+        const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
 
         const opts: TaggedCallbacksOpts<RepoDocInfo> = {
             targets: selectedProvider,

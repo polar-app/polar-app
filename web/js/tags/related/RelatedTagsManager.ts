@@ -1,5 +1,10 @@
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {
+    RelatedOptionsCalculator,
+    ValueAutocompleteOption
+} from "../../mui/autocomplete/MUICreatableAutocomplete";
+import { Tag, Tags } from "polar-shared/src/tags/Tags";
 
 /**
  * Related tag index for in memory related tags computation.  This does not
@@ -109,6 +114,28 @@ export class RelatedTagsManager {
 
 
         return Arrays.head(tagHitsDesc, limit);
+
+    }
+
+    public toRelatedOptionsCalculator(): RelatedOptionsCalculator<Tag> {
+
+        return (options: ReadonlyArray<ValueAutocompleteOption<Tag>>) => {
+
+            function toAutocompleteOption(tag: Tag): ValueAutocompleteOption<Tag> {
+                return {
+                    id: tag.id,
+                    label: tag.label,
+                    value: tag
+                }
+            }
+
+            const tags = options.map(current => current.label);
+
+            return this.compute(tags)
+                                     .map(current => current.tag)
+                                     .map(Tags.create)
+                                     .map(toAutocompleteOption)
+        };
 
     }
 
