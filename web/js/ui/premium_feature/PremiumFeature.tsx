@@ -1,11 +1,10 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Link} from "react-router-dom";
 import {AccountPlans} from "../../accounts/Account";
 import {accounts} from 'polar-accounts/src/accounts';
 import {Analytics} from "../../analytics/Analytics";
-import Button from "@material-ui/core/Button";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
+import {UpgradeButton} from './UpgradeButton';
 
 export type UISize = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -28,7 +27,7 @@ export const PremiumFeature = (props: IProps) => {
 
     const PremiumFeatureWarningSM = () => {
         return <div>
-            <UpgradeButton/>
+            <UpgradeButton required={required} feature={feature}/>
         </div>;
 
     };
@@ -41,7 +40,7 @@ export const PremiumFeature = (props: IProps) => {
             </div>
 
             <div className="text-center mt-1">
-                <UpgradeButton/>
+                <UpgradeButton required={required} feature={feature}/>
             </div>
 
         </div>;
@@ -74,24 +73,6 @@ export const PremiumFeature = (props: IProps) => {
         }
 
         return AccountPlans.hasLevel(required, userInfoContext?.userInfo?.subscription.plan);
-
-    };
-
-    const UpgradeButton = () => {
-
-        const color = AccountPlans.toColor(userInfoContext?.userInfo?.subscription?.plan || 'free');
-
-        return (
-            <Link to={{pathname: '/plans'}}>
-                <Button variant="contained"
-                        className="border"
-                        onClick={() => onUpgrade()}>
-
-                    <i className="fas fa-gem" style={{color}}/> Upgrade to {required} to unlock {feature}
-
-                </Button>
-            </Link>
-        );
 
     };
 
