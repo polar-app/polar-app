@@ -19,7 +19,7 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {
-    usePersistenceLayerContext,
+    usePersistenceLayerContext, useRepoDocMetaManager,
     useTagsContext
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
@@ -425,6 +425,7 @@ export namespace AnnotationMutationCallbacks {
         const persistenceLayerContext = usePersistenceLayerContext();
         const docMetaLookupContext = useDocMetaLookupContext();
         const tagsContext = useTagsContext();
+        const repoDocMetaManager = useRepoDocMetaManager();
         const log = useLogger();
 
         async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
@@ -547,11 +548,15 @@ export namespace AnnotationMutationCallbacks {
 
             }
 
+            const {relatedTagsManager} = repoDocMetaManager;
+            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+
             const opts: TaggedCallbacksOpts<IAnnotationRef & ITagsHolder> = {
                 targets: () => mutation.selected.map(toTarget),
                 tagsProvider: tagsContext.tagsProvider,
                 dialogs,
-                doTagged
+                doTagged,
+                relatedOptionsCalculator
             }
 
             return TaggedCallbacks.create(opts);

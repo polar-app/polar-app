@@ -132,9 +132,9 @@ export class RelatedTagsManager {
             const tags = options.map(current => current.label);
 
             return this.compute(tags)
-                                     .map(current => current.tag)
-                                     .map(Tags.create)
-                                     .map(toAutocompleteOption)
+                       .map(current => current.tag)
+                       .map(Tags.create)
+                       .map(toAutocompleteOption)
         };
 
     }
