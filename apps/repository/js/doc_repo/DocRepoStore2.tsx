@@ -42,6 +42,10 @@ import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
+import {
+    RelatedOptionsCalculator,
+    ValueAutocompleteOption
+} from "../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 
 interface IDocRepoStore {
 
@@ -659,12 +663,37 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onTagged() {
 
+        // FIXME: needs related tags... where is this stored.. I think it's in the
+        // docRepo...
+
+        const relatedOptionsCalculator: RelatedOptionsCalculator<Tag> =
+            (options) => {
+
+                // FIXME: must be converted to an ReadonlyArray<ValueAutocompleteOption<T>
+
+                function toAutocompleteOption(tag: Tag): ValueAutocompleteOption<Tag> {
+                    return {
+                        id: tag.id,
+                        label: tag.label,
+                        value: tag
+                    }
+                };
+
+                const tags = options.map(current => current.label);
+
+                return repoDocMetaManager.relatedTagsManager.compute(tags)
+                                         .map(current => current.tag)
+                                         .map(Tags.create)
+                                         .map(toAutocompleteOption)
+            };
+
         const opts: TaggedCallbacksOpts<RepoDocInfo> = {
             targets: selectedProvider,
             tagsProvider,
             dialogs,
-            doTagged
-        }
+            doTagged,
+            relatedOptionsCalculator
+        };
 
         const callback = TaggedCallbacks.create(opts);
 

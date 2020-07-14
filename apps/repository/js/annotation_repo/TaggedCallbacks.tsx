@@ -4,6 +4,7 @@ import {AutocompleteDialogProps} from "../../../../web/js/ui/dialogs/Autocomplet
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUITagInputControls} from "../MUITagInputControls";
 import {DialogManager} from "../../../../web/js/mui/dialogs/MUIDialogController";
+import {RelatedOptionsCalculator} from "../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 
 export namespace TaggedCallbacks {
 
@@ -29,6 +30,8 @@ export namespace TaggedCallbacks {
         readonly doTagged: (targets: ReadonlyArray<T>,
                             tags: ReadonlyArray<Tag>,
                             strategy: ComputeNewTagsStrategy) => void;
+
+        readonly relatedOptionsCalculator?: RelatedOptionsCalculator<Tag>;
 
     }
 
@@ -95,6 +98,7 @@ export namespace TaggedCallbacks {
                 createOption: MUITagInputControls.createOption,
                 onCancel: NULL_FUNCTION,
                 onChange: NULL_FUNCTION,
+                relatedOptionsCalculator: opts.relatedOptionsCalculator,
                 onDone: tags => doTaggedWithTimeout(tags)
             };
 
