@@ -1,9 +1,9 @@
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
-import {usePrefs} from "../../persistence_layer/UserTagsProvider2";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import {usePrefs} from "../../persistence_layer/PrefsHook";
 
 interface IProps {
     readonly title: string;

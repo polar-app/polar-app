@@ -1,17 +1,14 @@
 import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {usePrefs} from "../../../../repository/js/persistence_layer/UserTagsProvider2";
+import {PREF_PDF_DARK_MODE_OPTIONS} from "../../../../repository/js/configure/settings/SettingsScreen";
+import {usePrefs} from "../../../../repository/js/persistence_layer/PrefsHook";
 
-export const GlobalPDFCssDarkStyles = withStyles((theme) => {
+export const GlobalCssDarkStyles = withStyles((theme) => {
 
     return {
 
         '@global': {
-
-            ".page canvas": {
-                filter: "invert(0.85)"
-            },
 
             ".pdfViewer .page": {
                 backgroundColor: `${theme.palette.background.default} !important`
@@ -27,12 +24,58 @@ export const GlobalPDFCssDarkStyles = withStyles((theme) => {
 
 });
 
-export const GlobalCssDark = GlobalPDFCssDarkStyles(() => null);
+export const GlobalCssDarkForInvertStyles = withStyles((theme) => {
 
-export const GlobalPDFCss = () => {
+    return {
+
+        '@global': {
+
+            ".page canvas": {
+                filter: "invert(0.85)"
+            },
+
+
+        },
+
+    }
+
+});
+
+export const GlobalCssDarkForInvertGreyscaleStyles = withStyles((theme) => {
+
+    return {
+
+        '@global': {
+
+            ".page canvas": {
+                filter: "invert(0.85) grayscale(1)"
+            },
+
+
+        },
+
+    }
+
+});
+
+
+
+export const GlobalCssDark = GlobalCssDarkStyles(() => null);
+export const GlobalCssDarkForInvert = GlobalCssDarkForInvertStyles(() => null);
+export const GlobalCssDarkForInvertGreyscale = GlobalCssDarkForInvertGreyscaleStyles(() => null);
+
+export const GlobalPDFCss = React.memo(() => {
 
     const theme = useTheme();
     const prefs = usePrefs();
+
+    if (! prefs.value) {
+        return null;
+    }
+
+    const mode = prefs.value!.get('dark-mode-pdf').getOrElse(PREF_PDF_DARK_MODE_OPTIONS[0].id)
+
+    console.log("Using dark-mode-pdf mode: ", mode);
 
     return (
         <>
@@ -40,8 +83,15 @@ export const GlobalPDFCss = () => {
             {theme.palette.type === 'dark' &&
                 <GlobalCssDark/>}
 
+            {mode === 'invert' &&
+                <GlobalCssDarkForInvert/>}
+
+            {mode === 'invert-greyscale' &&
+                <GlobalCssDarkForInvertGreyscale/>}
+
+
         </>
     );
 
-};
+});
 

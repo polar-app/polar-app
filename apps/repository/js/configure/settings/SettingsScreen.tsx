@@ -9,7 +9,22 @@ import Divider from '@material-ui/core/Divider';
 import {SettingToggle} from './SettingToggle';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
-import {usePrefs} from '../../persistence_layer/UserTagsProvider2';
+import {usePrefs} from "../../persistence_layer/PrefsHook";
+
+export const PREF_PDF_DARK_MODE_OPTIONS = [
+    {
+        id: 'invert',
+        label: 'Invert PDF colors to dark'
+    },
+    {
+        id: 'invert-greyscale',
+        label: 'Invert PDF colors to dark (greyscale)'
+    },
+    {
+        id: 'natural',
+        label: 'Use the natural colors of the PDF'
+    }
+];
 
 export const SettingsScreen = () => {
 

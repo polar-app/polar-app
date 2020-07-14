@@ -1,50 +1,10 @@
 import * as React from "react";
-import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {UserTag, UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
-import {ITagsContext, TagsContext, usePersistenceLayerContext} from "./PersistenceLayerApp";
-import {
-    SubscriptionValue,
-    useSnapshotSubscriber
-} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {ITagsContext, TagsContext} from "./PersistenceLayerApp";
+import {SubscriptionValue} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
+import {usePrefs} from "./PrefsHook";
 
 // TODO: instead of a SubscriptionValue just return undefined if it's not set
-// yet or throw an Error otherwise.
-export function usePrefs(): SubscriptionValue<PersistentPrefs> {
-
-    const persistenceLayerContext = usePersistenceLayerContext();
-
-    const createSubscription = () => {
-        const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
-
-        if (! persistenceLayer) {
-            return () => NULL_FUNCTION;
-        }
-
-        const datastore = persistenceLayer.datastore;
-        const prefs = datastore.getPrefs();
-
-        if (! prefs) {
-            throw new Error("No prefs found from datastore: " + datastore.id);
-        }
-
-        if (! prefs.subscribe || ! prefs.get) {
-            throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
-        }
-
-        // FIXME: this will yield bugs I think because the second time it's not
-        // used...
-        //
-        // FIXME: I think this should be constructor and thhat way when
-        // it changes, we can reload.
-
-        return prefs.subscribe.bind(prefs);
-
-    }
-
-    return useSnapshotSubscriber(createSubscription());
-
-}
 
 export function useUserTags(): SubscriptionValue<ReadonlyArray<UserTag>> {
 
