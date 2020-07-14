@@ -37,7 +37,7 @@ const EPUBDocumentRenderer = (props: ILoadedProps) => {
     );
 }
 
-const DocViewerFileTypeContext = React.createContext<FileType>(null!);
+export const DocViewerFileTypeContext = React.createContext<FileType>(null!);
 
 /**
  * Provided so we can determine which type of doc type we should load (epub,
@@ -79,9 +79,7 @@ export const DocRenderer = React.memo(() => {
     const fileType = FileTypes.create(docURL);
 
     return (
-        <DocViewerFileTypeContext.Provider value={fileType}>
-            <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}/>
-        </DocViewerFileTypeContext.Provider>
+        <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}/>
     );
 
 }, isEqual);

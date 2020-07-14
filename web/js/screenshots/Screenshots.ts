@@ -10,6 +10,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {FileType} from '../apps/main/file_loaders/FileType';
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 const log = Logger.create();
 
@@ -39,6 +40,8 @@ export namespace Screenshots {
     export async function capture(opts: CaptureOpts): Promise<ICapturedScreenshot> {
 
         const {pageNum, boxRect, element, fileType} = opts;
+
+        Preconditions.assertPresent(fileType, 'fileType');
 
         const captureDirectly = () => {
 
@@ -96,7 +99,10 @@ export namespace Screenshots {
     async function captureViaCanvas(pageNum: number,
                                     rect: ILTRect): Promise<ICapturedScreenshot> {
 
+        console.log("Capturing via canvas");
+
         function getCanvasForPage(pageNum: number): HTMLCanvasElement {
+            // FIXME not portable to multi-tabs in Polar 2.0..
             return <HTMLCanvasElement> document.querySelectorAll(".page canvas")[pageNum - 1];
         }
 

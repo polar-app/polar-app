@@ -28,8 +28,9 @@ import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
-import {DocRenderer} from "./renderers/DocRenderer";
+import {DocRenderer, DocViewerFileTypeContext} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
+import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 
 const Main = React.memo(() => {
 
@@ -292,9 +293,15 @@ export const DocViewer = React.memo(() => {
         return <LoadingProgress/>
     }
 
+    const fileType = FileTypes.create(docURL);
+
     return (
-        <DeviceRouter handheld={<Device.Handheld/>}
-                      desktop={<Device.Desktop/>}/>
+        <DocViewerFileTypeContext.Provider value={fileType}>
+
+            <DeviceRouter handheld={<Device.Handheld/>}
+                          desktop={<Device.Desktop/>}/>
+
+        </DocViewerFileTypeContext.Provider>
     )
 
 }, isEqual);

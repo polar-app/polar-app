@@ -168,11 +168,15 @@ export interface AreaHighlightWriter {
 class DefaultAreaHighlightWriter implements AreaHighlightWriter {
 
     constructor(private readonly opts: AreaHighlightWriteOpts) {
+        Preconditions.assertPresent(opts, 'opts');
+        Preconditions.assertPresent(opts.capturedScreenshot, 'opts.capturedScreenshot');
     }
 
     public prepare(): [AreaHighlight, AreaHighlightCommitter] {
 
         const {docMeta, capturedScreenshot, pageMeta, areaHighlight, areaHighlightRect, position} = this.opts;
+
+        Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot');
 
         const {type, width, height} = capturedScreenshot;
 

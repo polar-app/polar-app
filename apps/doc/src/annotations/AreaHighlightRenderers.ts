@@ -8,6 +8,7 @@ import {Screenshots} from "../../../../web/js/screenshots/Screenshots";
 import {ICapturedScreenshot} from "../../../../web/js/screenshots/Screenshot";
 import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace AreaHighlightRenderers {
 
@@ -45,6 +46,8 @@ export namespace AreaHighlightRenderers {
         };
 
         const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType});
+
+        Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot');
 
         const areaHighlight = AreaHighlights.create({rect});
 

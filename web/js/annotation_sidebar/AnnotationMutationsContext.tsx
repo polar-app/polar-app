@@ -48,6 +48,7 @@ import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {useLogger} from "../mui/MUILogger";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export interface IAnnotationMutationHolder<M> {
     readonly annotation: IAnnotationRef;
@@ -548,8 +549,18 @@ export namespace AnnotationMutationCallbacks {
 
             }
 
-            const {relatedTagsManager} = repoDocMetaManager;
-            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+            function buildRelatedOptionsCalculator() {
+
+                if (repoDocMetaManager) {
+                    const {relatedTagsManager} = repoDocMetaManager;
+                    return relatedTagsManager.toRelatedOptionsCalculator();
+                }
+
+                return undefined;
+
+            }
+
+            const relatedOptionsCalculator = buildRelatedOptionsCalculator();
 
             const opts: TaggedCallbacksOpts<IAnnotationRef & ITagsHolder> = {
                 targets: () => mutation.selected.map(toTarget),
@@ -613,6 +624,8 @@ export namespace AnnotationMutationCallbacks {
             async function doAsync() {
 
                 const {docMeta, pageMeta, areaHighlight, capturedScreenshot, position} = mutation;
+
+                Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot')
 
                 function toAreaHighlightRect() {
                     const rect = Arrays.first(Object.values(areaHighlight.rects));
