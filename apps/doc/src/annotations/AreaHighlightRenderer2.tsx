@@ -65,7 +65,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     };
 
-    const handleResize = (overlayRect: ILTRect) => {
+    const handleRegionResize = (overlayRect: ILTRect) => {
 
         // get the most recent area highlight as since this is using state
         // we have can have a stale highlight.
@@ -118,7 +118,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
                      border: `1px solid #c6c6c6`,
                      zIndex: 1
                  }}
-                 onResized={handleResize}
+                 onResized={handleRegionResize}
                  />,
             container);
     };

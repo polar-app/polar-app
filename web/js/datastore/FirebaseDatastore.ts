@@ -373,6 +373,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
                 console.log("getDocMeta: cache+server");
 
+                // TODO: this will NOT work because 'cache' will throw an
+                // exception if it is not in the cache! but this mode isn't used
+                // anymore since we're 100% on Firebase now.
                 const cachePromise = ref.get({ source: 'cache' });
                 const serverPromise = ref.get({ source: 'server' });
 
@@ -711,7 +714,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
-                const docPermission = await DocPermissions.get(id, {source: 'server'});
+                const docPermission = await DocPermissions.get(id);
 
                 if (docPermission) {
                     return {

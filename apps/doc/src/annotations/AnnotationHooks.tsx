@@ -5,6 +5,7 @@ import {
 } from "../../../../web/js/hooks/lifecycle";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 /**
  * Unsubscribes to the action created by the subscriber.
@@ -80,20 +81,31 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
     return () => {
 
-        const viewerContainer = document.getElementById('viewerContainer')!;
+        const viewerContainer = document.querySelector('#viewerContainer .pdfViewer')!;
 
         const observer = new MutationObserver((mutations) => {
+
             for (const mutation of mutations) {
+
                 if (mutation.type === "attributes") {
                     delegate();
                 }
+
+                if (mutation.type === "childList") {
+                    delegate();
+                }
+
             }
 
         });
 
+        // NOTE: I don't think 'attributes' is actually working here and that we
+        // are in fact depending on scroll (for updates) and then childList (for
+        // initial)
         observer.observe(viewerContainer, {
             // only monitor attributes.
-            attributes: true
+            attributes: true,
+            childList: true,
         });
 
         return () => {
@@ -159,7 +171,8 @@ export function useAnnotationContainer(pageNum: number) {
 }
 
 
-export function getPageElement(page: number): HTMLElement{
+export function getPageElement(page: number): HTMLElement {
+    // FIXME: this is not portable to 2.0 with multiple PDFs loaded.
     return document.querySelectorAll(".page")[page - 1] as HTMLElement;
 }
 
