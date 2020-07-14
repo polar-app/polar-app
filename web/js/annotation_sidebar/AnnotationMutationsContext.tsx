@@ -437,6 +437,10 @@ export namespace AnnotationMutationCallbacks {
 
             const {persistenceLayerProvider} = persistenceLayerContext;
 
+            // TODO: I think this is wrong as we have to update the stores
+            // in the doc viewer and repoDocInfo... so I think we would need
+            // to update those...
+
             for (const docMeta of updatedDocMetas) {
                 const persistenceLayer = persistenceLayerProvider();
                 await persistenceLayer.writeDocMeta(docMeta);
@@ -652,6 +656,8 @@ export namespace AnnotationMutationCallbacks {
                 const writer = AreaHighlights.createWriter(writeOpts);
 
                 const [writtenAreaHighlight, committer] = writer.prepare();
+
+                updateStore([docMeta]);
 
                 await committer.commit();
 

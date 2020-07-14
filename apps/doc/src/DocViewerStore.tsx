@@ -201,6 +201,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             const computeDocURL = (): URLStr | undefined => {
 
+                // this is only computed once, when we don't have a store...
+
                 if (docMeta) {
 
                     const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
