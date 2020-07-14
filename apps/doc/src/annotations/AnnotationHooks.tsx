@@ -116,8 +116,6 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
 }
 
-
-
 function getContainer(page: number): HTMLElement | undefined {
 
     const pageElement = document.querySelector(`.page[data-page-number='${page}']`);

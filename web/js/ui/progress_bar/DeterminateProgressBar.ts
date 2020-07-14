@@ -22,9 +22,8 @@ export class DeterminateProgressBar {
         const progress: number =
             typeof value === 'number' ? value : value.progress;
 
-        if (! progress || progress < 0 || progress > 100) {
+        if (progress === null || progress === undefined || progress < 0 || progress > 100) {
             console.warn("Invalid value: ", progress);
-            // this is an invalid value...
             return;
         }
 
