@@ -48,7 +48,8 @@ import {AnkiSyncController} from "../../controller/AnkiSyncController";
 import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import isEqual from 'react-fast-compare';
-import {RepositoryLayout} from "./RepositoryLayout";
+import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
+import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 
 interface IProps {
     readonly app: App;
@@ -102,12 +103,10 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(docRepo) =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
-                                                 <RepositoryLayout>
-                                                     <>
-                                                         <AnkiSyncController/>
-                                                         <DocRepoScreen2/>
-                                                     </>
-                                                 </RepositoryLayout>
+                                                 <>
+                                                     <AnkiSyncController/>
+                                                     <DocRepoScreen2/>
+                                                 </>
                                              </DocRepoSidebarTagStore>
                                          </DocRepoStore2>
                                      }/>
@@ -124,12 +123,10 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(props) =>
                                          <AnnotationRepoStore2>
                                              <AnnotationRepoSidebarTagStore>
-                                                 <RepositoryLayout>
-                                                     <>
-                                                         <ReviewRouter/>
-                                                         <AnnotationRepoScreen2/>
-                                                     </>
-                                                 </RepositoryLayout>
+                                                 <>
+                                                     <ReviewRouter/>
+                                                     <AnnotationRepoScreen2/>
+                                                 </>
                                              </AnnotationRepoSidebarTagStore>
                                          </AnnotationRepoStore2>
                                      }/>
@@ -140,26 +137,22 @@ export const RepositoryApp = (props: IProps) => {
     const LogoutScreen = React.memo(() => {
         return (
             <AuthRequired>
-                <RepositoryLayout>
-                    <PersistenceLayerApp tagsType="annotations"
-                                         repoDocMetaManager={repoDocMetaManager}
-                                         repoDocMetaLoader={repoDocMetaLoader}
-                                         persistenceLayerManager={persistenceLayerManager}
-                                         render={(props) =>
-                                             <LogoutDialog/>
-                                         }/>
-                </RepositoryLayout>
+                <PersistenceLayerApp tagsType="annotations"
+                                     repoDocMetaManager={repoDocMetaManager}
+                                     repoDocMetaLoader={repoDocMetaLoader}
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(props) =>
+                                         <LogoutDialog/>
+                                     }/>
             </AuthRequired>
         );
     });
 
     const RenderSettingsScreen = () => (
         <Cached>
-            <RepositoryLayout>
-                <SettingsScreen
-                    persistenceLayerProvider={app.persistenceLayerProvider}
-                    persistenceLayerController={app.persistenceLayerController}/>
-            </RepositoryLayout>
+            <SettingsScreen
+                persistenceLayerProvider={app.persistenceLayerProvider}
+                persistenceLayerController={app.persistenceLayerController}/>
         </Cached>
     );
 
@@ -173,9 +166,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderDeviceScreen = () => (
         <Cached>
-            <RepositoryLayout>
-                <DeviceScreen/>
-            </RepositoryLayout>
+            <DeviceScreen/>
         </Cached>
     );
 
@@ -196,15 +187,13 @@ export const RepositoryApp = (props: IProps) => {
 
     const renderStatsScreen = () => (
         <AuthRequired>
-            <RepositoryLayout>
-                <PersistenceLayerApp tagsType="documents"
-                                     repoDocMetaManager={repoDocMetaManager}
-                                     repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}
-                                     render={(docRepo) =>
-                                         <StatsScreen/>
-                                     }/>
-            </RepositoryLayout>
+            <PersistenceLayerApp tagsType="documents"
+                                 repoDocMetaManager={repoDocMetaManager}
+                                 repoDocMetaLoader={repoDocMetaLoader}
+                                 persistenceLayerManager={persistenceLayerManager}
+                                 render={(docRepo) =>
+                                     <StatsScreen/>
+                                 }/>
         </AuthRequired>
     );
 
@@ -298,130 +287,124 @@ export const RepositoryApp = (props: IProps) => {
 
                         <>
 
-                        <BrowserRouter>
+                            <BrowserRouter>
 
-                            <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                <Switch>
 
-                                <Route exact path={["/login", "/login.html"]}>
-                                    <LoginScreen/>
-                                </Route>
+                                    <Route exact path={["/login", "/login.html"]}>
+                                        <LoginScreen/>
+                                    </Route>
 
-                                <Route exact path={["/doc", "/doc/:id"]}>
-                                    <RenderDocViewerScreen/>
-                                </Route>
+                                    <Route exact path={["/doc", "/doc/:id"]}>
+                                        <RenderDocViewerScreen/>
+                                    </Route>
 
-                                <Route exact path="/error">
-                                    <ErrorScreen/>
-                                </Route>
+                                    <Route exact path="/error">
+                                        <ErrorScreen/>
+                                    </Route>
 
-                                <Route>
-                                    <BrowserRouter>
+                                    <Route exact path='/logout'>
+                                        <LogoutScreen/>
+                                    </Route>
 
-                                        {/*<BrowserTabs>*/}
-                                        {/*    <>*/}
+                                    <Route>
+                                        <RepoHeader3/>
 
-                                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                        <PersistentRoute exact path="/">
+                                            <RenderDefaultScreen/>
+                                        </PersistentRoute>
 
-                                                    <Route path='/logout'>
-                                                        <LogoutScreen/>
-                                                    </Route>
+                                        <PersistentRoute exact path="/annotations">
+                                            <RenderAnnotationRepoScreen/>
+                                        </PersistentRoute>
 
-                                                    {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
+                                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                                                    <Route exact path='/whats-new'
-                                                           render={renderWhatsNewScreen}/>
+                                            {/*<RepoHeader3/>*/}
 
-                                                    {/*<Route path='/group/:group/highlights'*/}
-                                                    {/*       render={renderGroupHighlightsScreen}/>*/}
+                                            {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
 
-                                                    {/*<Route path='/group/:group/docs'*/}
-                                                    {/*       render={renderGroupScreen}/>*/}
+                                            <Route exact path='/whats-new'
+                                                   render={renderWhatsNewScreen}/>
 
-                                                    {/*<Route path='/group/:group/highlight/:id'*/}
-                                                    {/*       render={renderGroupHighlightScreen}/>*/}
+                                            {/*<Route path='/group/:group/highlights'*/}
+                                            {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                                                    {/*<Route path='/group/:group'*/}
-                                                    {/*       render={renderGroupHighlightsScreen}/>*/}
+                                            {/*<Route path='/group/:group/docs'*/}
+                                            {/*       render={renderGroupScreen}/>*/}
 
-                                                    {/*<Route exact path='/groups'*/}
-                                                    {/*       render={renderGroupsScreen}/>*/}
+                                            {/*<Route path='/group/:group/highlight/:id'*/}
+                                            {/*       render={renderGroupHighlightScreen}/>*/}
 
-                                                    {/*<Route exact path='/groups/create'*/}
-                                                    {/*       render={renderCreateGroupScreen}/>*/}
+                                            {/*<Route path='/group/:group'*/}
+                                            {/*       render={renderGroupHighlightsScreen}/>*/}
 
-                                                    <Route exact path='/invite' render={renderInvite}/>
+                                            {/*<Route exact path='/groups'*/}
+                                            {/*       render={renderGroupsScreen}/>*/}
 
-                                                    <Route exact path='/plans' render={premiumScreen}/>
+                                            {/*<Route exact path='/groups/create'*/}
+                                            {/*       render={renderCreateGroupScreen}/>*/}
 
-                                                    <Route exact path='/plans-year'
-                                                           render={premiumScreenYear}/>
+                                            <Route exact path='/invite' render={renderInvite}/>
 
-                                                    <Route exact path='/premium' render={premiumScreen}/>
+                                            <Route exact path='/plans' render={premiumScreen}/>
 
-                                                    <Route exact path='/support' render={supportScreen}/>
+                                            <Route exact path='/plans-year'
+                                                   render={premiumScreenYear}/>
 
-                                                    <Route exact path='/stats'
-                                                           component={renderStatsScreen}/>
+                                            <Route exact path='/premium' render={premiumScreen}/>
 
-                                                    {/*/!*<Route exact path="/annotations"*!/*/}
-                                                    {/*/!*       component={RenderAnnotationRepoScreen}/>*!/*/}
+                                            <Route exact path='/support' render={supportScreen}/>
 
-                                                    <Route exact path="/settings"
-                                                           component={RenderSettingsScreen}/>
+                                            <Route exact path='/stats'
+                                                   component={renderStatsScreen}/>
 
-                                                    {/*<Route exact path="/profile"*/}
-                                                    {/*       component={renderProfileScreen}/>*/}
+                                            {/*/!*<Route exact path="/annotations"*!/*/}
+                                            {/*/!*       component={RenderAnnotationRepoScreen}/>*!/*/}
 
-                                                    <Route exact path="/device"
-                                                           component={renderDeviceScreen}/>
+                                            <Route exact path="/settings"
+                                                   component={RenderSettingsScreen}/>
 
-                                                    {/*<Route exact path='/'*/}
-                                                    {/*       component={RenderDefaultScreen}/>*/}
+                                            {/*<Route exact path="/profile"*/}
+                                            {/*       component={renderProfileScreen}/>*/}
 
-                                                    {/*<Route exact path='/'>*/}
-                                                    {/*    <RenderDefaultScreen/>*/}
-                                                    {/*</Route>*/}
+                                            <Route exact path="/device"
+                                                   component={renderDeviceScreen}/>
 
-                                                </Switch>
+                                            {/*<Route exact path='/'*/}
+                                            {/*       component={RenderDefaultScreen}/>*/}
 
-                                                <PersistentRoute exact path="/">
-                                                    <RenderDefaultScreen/>
-                                                </PersistentRoute>
+                                            {/*<Route exact path='/'>*/}
+                                            {/*    <RenderDefaultScreen/>*/}
+                                            {/*</Route>*/}
+                                        </Switch>
+                                        <RepoFooter/>
+                                    </Route>
 
-                                                <PersistentRoute exact path="/annotations">
-                                                    <RenderAnnotationRepoScreen/>
-                                                </PersistentRoute>
+                                </Switch>
 
-                                                <Switch location={ReactRouters.createLocationWithHashOnly()}>
+                                <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
-                                                    <Route path='#account'
-                                                           component={() =>
-                                                               <Cached>
-                                                                   <AccountControlSidebar persistenceLayerController={app.persistenceLayerController}/>
-                                                               </Cached>
-                                                           }/>
+                                    <Route path='#account'
+                                           component={() =>
+                                               <Cached>
+                                                   <AccountControlSidebar persistenceLayerController={app.persistenceLayerController}/>
+                                               </Cached>
+                                           }/>
 
-                                                    <Route path='#add'>
-                                                        <AuthRequired>
-                                                            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
-                                                                <AddFileDropzoneScreen/>
-                                                            </PersistenceLayerContext.Provider>
-                                                        </AuthRequired>
-                                                    </Route>
+                                    <Route path='#add'>
+                                        <AuthRequired>
+                                            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                                                <AddFileDropzoneScreen/>
+                                            </PersistenceLayerContext.Provider>
+                                        </AuthRequired>
+                                    </Route>
 
-                                                </Switch>
-
-                                        {/*    </>*/}
-                                        {/*</BrowserTabs>*/}
-
-                                    </BrowserRouter>
-                                </Route>
-
-                            </Switch>
+                                </Switch>
 
                         </BrowserRouter>
 
-                    </>
+                        </>
 
                     </div>
                 </RepositoryRoot>
