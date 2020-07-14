@@ -53,9 +53,7 @@ export const MUIAppRoot = (props: IProps) => {
 
                         <FirestoreProvider>
                             <UserInfoProvider>
-                                <MUIDialogController>
-                                    {props.children}
-                                </MUIDialogController>
+                                {props.children}
                             </UserInfoProvider>
                         </FirestoreProvider>
                     </>
