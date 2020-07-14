@@ -109,7 +109,6 @@ export interface PersistentPrefs extends Prefs {
     /**
      * Update the current prefs with the source and return true
      * if any changes were made.
-     * @param source
      */
     update(source: StringToPrefDict): boolean;
 

@@ -151,9 +151,9 @@ export const RepositoryApp = (props: IProps) => {
 
     const RenderSettingsScreen = () => (
         <Cached>
-            <SettingsScreen
-                persistenceLayerProvider={app.persistenceLayerProvider}
-                persistenceLayerController={app.persistenceLayerController}/>
+            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                <SettingsScreen/>
+            </PersistenceLayerContext.Provider>
         </Cached>
     );
 

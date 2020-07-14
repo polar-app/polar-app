@@ -8,6 +8,8 @@ import {
 } from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
+// TODO: instead of a SubscriptionValue just return undefined if it's not set
+// yet or throw an Error otherwise.
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
     const persistenceLayerContext = usePersistenceLayerContext();
