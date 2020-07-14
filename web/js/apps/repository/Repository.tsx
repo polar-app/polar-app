@@ -86,6 +86,8 @@ export class Repository {
 
         const handleAuth = async () => {
 
+            console.log("Handling auth...");
+
             // FIXME: first , we're reading authHandler here twice... once in
             // AppInitializer and then again here.  Also, it doesn't make sense
             // to start this code UNTIL we're actually using a client that

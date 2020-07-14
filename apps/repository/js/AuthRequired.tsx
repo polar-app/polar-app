@@ -11,9 +11,9 @@ export const AuthRequired = React.memo((props: IProps) => {
     const userInfoContext = useUserInfoContext();
 
     if (! userInfoContext) {
-        // we do not yet have userInfo so we can't do anything including
-        // returning children.
-        console.warn("No userInfoContext");
+        // we do not yet have userInfo so we can't make any decisions regarding
+        // authentication
+        // console.warn("No userInfoContext");
         return null;
     }
 

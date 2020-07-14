@@ -12,6 +12,9 @@ export class FirestoreCollections {
 
         firestore = firestore || await Firestore.getInstance();
 
+        // TODO: try to migrate firebaseProvider to async as all the functions
+        // should be async...
+
         for (const firestoreBacked of [SpacedReps, SpacedRepStats, DocPreviews, Heartbeats]) {
             if (isPresent(firestoreBacked.firestoreProvider)) {
                 // already configured

@@ -71,6 +71,8 @@ export namespace Firestore {
 
     async function enablePersistence(firestore: firebase.firestore.Firestore) {
 
+        console.log("Enabling firestore persistence....", new Error());
+
         const doExecAsync = async () => {
 
             try {

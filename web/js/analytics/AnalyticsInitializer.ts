@@ -22,6 +22,7 @@ export class AnalyticsInitializer {
 
     public static async init() {
 
+        // TODO: this forces Firestore to be initialized, which I don't like
         await FirestoreCollections.configure();
 
         this.initVersion();
