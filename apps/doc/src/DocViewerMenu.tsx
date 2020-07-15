@@ -10,9 +10,7 @@ import {MenuComponentProps} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
 import {IPoint} from "../../../web/js/Point";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {useAreaHighlightHooks} from "./annotations/AreaHighlightHooks";
-import {MUISubMenu} from "../../../web/js/mui/menu/MUISubMenu";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {
     IAnnotationMeta,
@@ -26,7 +24,6 @@ import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
-import ShortTextIcon from '@material-ui/icons/ShortText';
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -216,7 +213,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
-    const docMetaContext = useDocMetaContext();
     const annotationMetaResolver = useAnnotationMetaResolver();
 
     const origin = props.origin!;
@@ -261,6 +257,10 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             <MUIMenuItem text="Create Pagemark to Point"
                          icon={<BookmarkIcon/>}
                          onClick={onCreatePagemarkToPoint}/>
+
+            {/*<MUIMenuItem text="Create Pagemark from Current Page"*/}
+            {/*             icon={<BookmarkIcon/>}*/}
+            {/*             onClick={onCreatePagemarkFromCurrentPage}/>*/}
 
             <MUIMenuItem text="Create Area Highlight"
                          icon={<PhotoSizeSelectLargeIcon/>}

@@ -328,6 +328,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             writeUpdatedDocMetas([docMeta])
                .catch(err => log.error(err));
+
         }
 
         function updatePagemark(mutation: IPagemarkUpdate) {
