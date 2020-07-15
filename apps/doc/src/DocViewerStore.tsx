@@ -98,9 +98,9 @@ export interface IDocViewerStore {
 
 }
 
-export interface IPagemarkCreate {
+export interface IPagemarkCreateToPoint {
 
-    readonly type: 'create';
+    readonly type: 'create-to-point';
 
     // where to create the pagemark
     readonly x: number;
@@ -112,6 +112,25 @@ export interface IPagemarkCreate {
 
     // the page number of the current page.
     readonly pageNum: number;
+}
+
+export interface IPagemarkCreateFromPage {
+
+    readonly type: 'create-from-page';
+
+    // where to create the pagemark
+    readonly x: number;
+    readonly y: number;
+
+    // the width and height of the current page.
+    readonly width: number;
+    readonly height: number;
+
+    // the page number of the current page.
+    readonly pageNum: number;
+
+    readonly fromPage: number;
+
 }
 
 export interface IPagemarkUpdate {
@@ -126,7 +145,7 @@ export interface IPagemarkDelete {
     readonly pagemark: IPagemark;
 }
 
-export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate | IPagemarkDelete;
+export type IPagemarkMutation = IPagemarkCreateToPoint | IPagemarkCreateFromPage | IPagemarkUpdate | IPagemarkDelete;
 
 export interface IDocViewerCallbacks {
 
@@ -308,7 +327,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function onPagemark(mutation: IPagemarkMutation) {
 
-        function createPagemarkToPoint(opts: IPagemarkCreate) {
+        function createPagemarkToPoint(opts: IPagemarkCreateToPoint, start?: number) {
 
             const store = storeProvider();
             const {docMeta} = store;
@@ -338,7 +357,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             }
 
             function createPagemarksForRange(endPageNum: number, percentage: number) {
-                Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage);
+                Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
             }
 
             deletePagemark(pageNum);
@@ -347,6 +366,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             writeUpdatedDocMetas([docMeta])
                .catch(err => log.error(err));
 
+        }
+
+        function createPagemarkFromPage(opts: IPagemarkCreateFromPage) {
+            createPagemarkToPoint({...opts, type: 'create-to-point'}, opts.fromPage);
         }
 
         function updatePagemark(mutation: IPagemarkUpdate) {
@@ -373,9 +396,14 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         switch (mutation.type) {
 
-            case "create":
+            case "create-to-point":
                 createPagemarkToPoint(mutation);
                 break;
+
+            case "create-from-page":
+                createPagemarkFromPage(mutation);
+                break;
+
             case "update":
                 updatePagemark(mutation);
                 break;

@@ -1,6 +1,7 @@
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import * as React from "react";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import {
     IPagemarkDelete,
     useDocViewerCallbacks,
@@ -24,6 +25,10 @@ import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Numbers} from "polar-shared/src/util/Numbers";
+import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -210,18 +215,77 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
+    const {docDescriptor} = useDocViewerStore();
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
     const annotationMetaResolver = useAnnotationMetaResolver();
+    const dialogManager = useDialogManager();
 
     const origin = props.origin!;
 
     const onCreatePagemarkToPoint = React.useCallback(() => {
 
         onPagemark({
-            type: 'create',
+            type: 'create-to-point',
             ...origin,
+        });
+
+    }, []);
+
+    const onCreatePagemarkFromPage = React.useCallback(() => {
+
+        function onDone(fromPage: number) {
+
+            onPagemark({
+                type: 'create-from-page',
+                ...origin,
+                fromPage
+            });
+
+        }
+
+        const nrPages = docDescriptor!.nrPages;
+
+        function inputValidator(value: string): InvalidInput | undefined {
+
+            function createResult(message: string): InvalidInput {
+                return {message};
+            }
+
+            if (! Numbers.isNumber(value)) {
+                return createResult("Input given must be a number");
+            }
+
+            const fromPage = parseInt(value);
+
+            if (fromPage <= 0) {
+                return createResult("Page must start at 1.");
+            }
+
+            if (fromPage > nrPages) {
+                return createResult(`Page too large. Document is only ${nrPages} in length`);
+            }
+
+            if (fromPage > origin.pageNum) {
+                return createResult("Page may not exceed " + origin.pageNum);
+            }
+
+            return undefined;
+
+        }
+
+        const pageLimit = Math.min(nrPages, origin.pageNum);
+
+        dialogManager.prompt({
+            title: "Create Pagemark From Page",
+            description: "Enter a starting page from which to create the pagemark: ",
+            placeholder: `Enter a page from 1 to ${pageLimit}`,
+            type: 'number',
+            autoComplete: 'off',
+            inputValidator,
+            onCancel: NULL_FUNCTION,
+            onDone: (value: string) => onDone(parseInt(value))
         });
 
     }, []);
@@ -258,9 +322,10 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                          icon={<BookmarkIcon/>}
                          onClick={onCreatePagemarkToPoint}/>
 
-            {/*<MUIMenuItem text="Create Pagemark from Current Page"*/}
-            {/*             icon={<BookmarkIcon/>}*/}
-            {/*             onClick={onCreatePagemarkFromCurrentPage}/>*/}
+            {origin.pageNum > 1 && (
+                <MUIMenuItem text="Create Pagemark from Page To Point"
+                             icon={<BookmarksIcon/>}
+                             onClick={onCreatePagemarkFromPage}/>)}
 
             <MUIMenuItem text="Create Area Highlight"
                          icon={<PhotoSizeSelectLargeIcon/>}

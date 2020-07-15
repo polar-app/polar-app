@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import {AccountAuthButton} from "../../../../web/js/ui/cloud_auth/AccountAuthButton";
 import {CloudConnectivityButton} from "../../../../web/js/apps/repository/connectivity/CloudConnectivityButton";
 import {MoreActionsDropdown} from "./MoreActionsDropdown";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 
 export namespace RepoHeader {
 
@@ -111,38 +112,47 @@ const Desktop = () => {
                 </div>
 
                 <div style={{
-                    flexGrow: 1,
-                    display: 'flex'
-                }}>
+                         flexGrow: 1,
+                         display: 'flex',
+                         justifyContent: 'flex-end'
+                     }}>
 
-                    <Grid
-                        container
-                        spacing={1}
-                        direction="row"
-                        justify="flex-end"
-                        alignItems="center">
+                    <MUIButtonBar>
 
-                        <Grid item>
-                            <CloudConnectivityButton/>
-                        </Grid>
+                        <CloudConnectivityButton/>
 
-                        <Grid item>
-                            <AccountAuthButton/>
-                        </Grid>
+                        <AccountAuthButton/>
 
-                        {/*<Grid item>*/}
-                        {/*    <HelpDropdown/>*/}
-                        {/*</Grid>*/}
+                        <SettingsButton/>
 
-                        <Grid item>
-                            <SettingsButton/>
-                        </Grid>
+                        <MoreActionsDropdown/>
 
-                        <Grid item>
-                            <MoreActionsDropdown/>
-                        </Grid>
+                    </MUIButtonBar>
 
-                    </Grid>
+                    {/*<Grid*/}
+                    {/*    container*/}
+                    {/*    spacing={1}*/}
+                    {/*    direction="row"*/}
+                    {/*    justify="flex-end"*/}
+                    {/*    alignItems="center">*/}
+
+                    {/*    <Grid item>*/}
+                    {/*    </Grid>*/}
+
+                    {/*    <Grid item>*/}
+                    {/*    </Grid>*/}
+
+                    {/*    /!*<Grid item>*!/*/}
+                    {/*    /!*    <HelpDropdown/>*!/*/}
+                    {/*    /!*</Grid>*!/*/}
+
+                    {/*    <Grid item>*/}
+                    {/*    </Grid>*/}
+
+                    {/*    <Grid item>*/}
+                    {/*    </Grid>*/}
+
+                    {/*</Grid>*/}
 
 
                     {/*<ChromeExtensionInstallButton/>*/}

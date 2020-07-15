@@ -38,6 +38,7 @@ export interface PromptDialogProps {
     readonly type?: 'email' | 'number' | 'search' | 'password'
     readonly onCancel: () => void;
     readonly onDone: (value: string) => void;
+    readonly autoComplete?: string;
 }
 
 interface IState {
@@ -105,8 +106,6 @@ export const PromptDialog = (props: PromptDialogProps) => {
         value = text;
     };
 
-    const label = props.label || props.title;
-
     return (
 
         <Dialog open={state.open}
@@ -131,9 +130,10 @@ export const PromptDialog = (props: PromptDialogProps) => {
                                    onChange={event => handleInput(event.currentTarget.value)}
                                    margin="dense"
                                    id="name"
+                                   autoComplete={props.autoComplete}
                                    defaultValue={props.defaultValue}
                                    placeholder={props.placeholder}
-                                   label={label}
+                                   label={props.label}
                                    type={props.type}
                                    fullWidth/>
 
