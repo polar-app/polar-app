@@ -43,6 +43,8 @@ export interface DocMetaSnapshot<T> {
 
     readonly data: T | undefined;
 
+    readonly hasPendingWrites: boolean;
+
     /**
      * Where this data was loaded from
      */
@@ -247,6 +249,7 @@ export abstract class AbstractDatastore {
 
             opts.onSnapshot({
                 data: data || undefined,
+                hasPendingWrites: false,
                 source: 'server',
                 unsubscriber
             });

@@ -24,6 +24,7 @@ import Divider from "@material-ui/core/Divider";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import { DeviceRouters } from "../../../web/js/ui/DeviceRouter";
 import { useDocFindStore } from "./DocFindStore";
+import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -361,8 +362,10 @@ export const DocViewerToolbar = React.memo(() => {
                     <div style={{display: 'flex'}}
                          className="ml-auto vertical-aligned-children">
 
-                        <FullScreenButton/>
-
+                        <MUIButtonBar>
+                            <DocumentWriteStatus/>
+                            <FullScreenButton/>
+                        </MUIButtonBar>
                     </div>
 
                 </div>

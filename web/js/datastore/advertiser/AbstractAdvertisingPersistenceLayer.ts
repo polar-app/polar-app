@@ -80,6 +80,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
                 opts.onSnapshot({
                     data,
                     source: 'server',
+                    hasPendingWrites: false,
                     unsubscriber
                 });
 
@@ -96,6 +97,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
                 opts.onSnapshot({
                     data: event.docMeta,
                     source: 'server',
+                    hasPendingWrites: false,
                     unsubscriber: () => releasable.release()
                 });
 

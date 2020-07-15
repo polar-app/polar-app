@@ -7,6 +7,8 @@ import {
     useComponentWillUnmount
 } from "../../../hooks/lifecycle";
 import Tooltip from '@material-ui/core/Tooltip';
+import Icon from '@material-ui/core/Icon';
+import { CloudOffline } from './CloudOffline';
 
 export function useOnline(): boolean{
 
@@ -45,16 +47,18 @@ export const CloudConnectivityButton = React.memo(() => {
     const online = useOnline();
 
     if (! online) {
+
+        // {/*<Button*/}
+        // {/*    variant="contained"*/}
+        // {/*    color="secondary"*/}
+        // {/*    startIcon={<CloudOffIcon />}>*/}
+        // {/*    Not Connected*/}
+        // {/*</Button>*/}
+
         return (
-            <Tooltip title="You're currently offline and not connected to the cloud.">
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<CloudOffIcon />}>
-                    Not Connected
-                </Button>
-            </Tooltip>
-        )
+            <CloudOffline/>
+        );
+
     }
 
     return null;

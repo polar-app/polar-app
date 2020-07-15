@@ -1,22 +1,27 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
 import {DocumentSaved} from './DocumentSaved';
-import { DocumentSaving } from './DocumentSaving';
+import {DocumentSaving} from './DocumentSaving';
+import {useDocViewerStore} from '../../../../../apps/doc/src/DocViewerStore';
+import {CloudOffline} from "./CloudOffline";
+import {useOnline} from "./CloudConnectivityButton";
 
-interface IProps {
-    readonly status: 'saved' | 'saving' | undefined;
-}
+export const DocumentWriteStatus = React.memo(() => {
 
-export const DocumentWriteStatus = React.memo((props: IProps) => {
+    const {hasPendingWrites} = useDocViewerStore();
+    // const online = useOnline();
+    //
+    // if (! online) {
+    //     return <CloudOffline/>;
+    // }
 
-    const {status} = props;
+    switch (hasPendingWrites) {
 
-    switch (status) {
-
-        case "saved":
-            return <DocumentSaved/>;
-        case "saving":
+        case true:
             return <DocumentSaving/>;
+
+        case false:
+            return <DocumentSaved/>;
 
         default:
             return null;

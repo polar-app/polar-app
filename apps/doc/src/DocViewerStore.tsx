@@ -92,6 +92,10 @@ export interface IDocViewerStore {
 
     readonly scaleLeveler?: ScaleLeveler;
 
+    readonly pendingWrites: number
+
+    readonly hasPendingWrites?: boolean;
+
 }
 
 export interface IPagemarkCreate {
@@ -126,7 +130,7 @@ export type IPagemarkMutation = IPagemarkCreate | IPagemarkUpdate | IPagemarkDel
 
 export interface IDocViewerCallbacks {
 
-    readonly setDocMeta: (docMeta: IDocMeta) => void;
+    readonly setDocMeta: (docMeta: IDocMeta, hasPendingWrites: boolean) => void;
     readonly setDocDescriptor: (docDescriptor: IDocDescriptor) => void;
     readonly setDocScale: (docScale: IDocScale) => void;
     readonly setDocLoaded: (docLoaded: false) => void;
@@ -151,6 +155,7 @@ export interface IDocViewerCallbacks {
 const initialStore: IDocViewerStore = {
     page: 1,
     docLoaded: false,
+    pendingWrites: 0
 }
 
 interface Mutator {
@@ -189,10 +194,23 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }, []);
 
     async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
-        return annotationMutations.writeUpdatedDocMetas(updatedDocMetas);
+
+        function mutatePendingWrites(delta: number) {
+            const store = storeProvider();
+
+            const pendingWrites = store.pendingWrites + delta;
+            const hasPendingWrites = pendingWrites > 0;
+
+            setStore({...store, pendingWrites, hasPendingWrites});
+        }
+
+        mutatePendingWrites(1);
+        await annotationMutations.writeUpdatedDocMetas(updatedDocMetas);
+        mutatePendingWrites(-1);
+
     }
 
-    function setDocMeta(docMeta: IDocMeta) {
+    function setDocMeta(docMeta: IDocMeta, hasPendingWrites: boolean) {
 
         Preconditions.assertPresent(docMeta, 'docMeta');
 
@@ -221,7 +239,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             const docURL = store.docURL || computeDocURL();
 
-            setStore({...store, docMeta, docURL});
+            setStore({...store, docMeta, docURL, hasPendingWrites});
 
         }
 
@@ -285,7 +303,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
         // this is almost always just ONE item at a time so any type of
         // bulk performance updates are pointless
-        docMetas.map(setDocMeta);
+        docMetas.map(docMeta => setDocMeta(docMeta, true));
     }
 
     function onPagemark(mutation: IPagemarkMutation) {
@@ -336,7 +354,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const docMeta = store.docMeta!;
             Pagemarks.updatePagemark(docMeta, mutation.pageNum, mutation.pagemark);
 
-            setDocMeta(docMeta);
+            setDocMeta(docMeta, true);
             writeUpdatedDocMetas([docMeta])
                 .catch(err => log.error(err));
         }
@@ -348,7 +366,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const {pageNum, pagemark} = mutation;
 
             Pagemarks.deletePagemark(docMeta, pageNum, pagemark.id);
-            setDocMeta(docMeta);
+            setDocMeta(docMeta, true);
             writeUpdatedDocMetas([docMeta])
                 .catch(err => log.error(err));
         }

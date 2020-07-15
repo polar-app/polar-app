@@ -6,7 +6,7 @@ import Icon from '@material-ui/core/Icon';
 
 export const DocumentSaving = React.memo(() => {
     return (
-        <Tooltip title="Document being saved to the cloud...">
+        <Tooltip title="Document being saved to the cloud and will be written upon reconnect.">
             <Icon>
                 <CloudUploadIcon/>
             </Icon>

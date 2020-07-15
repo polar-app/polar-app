@@ -319,12 +319,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         const onNext = (snapshot: firebase.firestore.DocumentSnapshot) => {
 
             const source = snapshot.metadata.fromCache ? 'cache' : 'server';
+            const hasPendingWrites = snapshot.metadata.hasPendingWrites;
 
-            console.log('DocMeta snapshot source: ', source);
+            console.log(`DocMeta snapshot source=${source}, hasPendingWrites: ${hasPendingWrites}`);
 
             const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
-            opts.onSnapshot({data: recordHolder?.value?.value, source, unsubscriber});
+            opts.onSnapshot({
+                data: recordHolder?.value?.value,
+                hasPendingWrites,
+                source,
+                unsubscriber
+            });
 
         };
 
@@ -334,7 +340,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             }
         };
 
-        unsubscriber = ref.onSnapshot(snapshot => onNext(snapshot), err => onError(err));
+        unsubscriber = ref.onSnapshot({includeMetadataChanges: true}, snapshot => onNext(snapshot), err => onError(err));
 
         return {unsubscriber};
 
