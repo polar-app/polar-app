@@ -6,7 +6,7 @@ import {
     PDFRenderingQueue,
     PDFViewer
 } from 'pdfjs-dist/web/pdf_viewer';
-import {PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
+import {LinkTarget, PDFDocumentProxy, PDFViewerOptions} from "pdfjs-dist";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {Callback1} from "polar-shared/src/util/Functions";
@@ -61,6 +61,7 @@ function createDocViewer(): DocViewer {
 
     const linkService = new PDFLinkService({
         eventBus,
+        externalLinkTarget: LinkTarget.BLANK
     });
 
     const findController = new PDFFindController({
