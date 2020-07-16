@@ -18,10 +18,8 @@ export const ProgressBar = React.memo(() => {
 
     const perc = DocMetas.computeProgress(docMeta);
 
-    const fileType = useDocViewerFileTypeContext();
-
     const handleDoubleClick = () => {
-        ReadingProgressResume.resume({docMeta, fileType});
+        ReadingProgressResume.resume({docMeta});
     }
 
     const contextMenuHandlers = useContextMenu();

@@ -2,14 +2,11 @@ import {Elements} from '../util/Elements';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import {FileType} from "../apps/main/file_loaders/FileType";
 
 export namespace ReadingProgressResume {
 
     export interface ResumeOpts {
         readonly docMeta: IDocMeta;
-        readonly fileType: FileType;
     }
 
     export function resume(opts: ResumeOpts) {
@@ -18,7 +15,7 @@ export namespace ReadingProgressResume {
 
     function doResume(opts: ResumeOpts) {
 
-        const {docMeta, fileType} = opts;
+        const {docMeta} = opts;
 
         const targetPagemark = computeTargetPagemark(docMeta);
 
@@ -26,56 +23,30 @@ export namespace ReadingProgressResume {
             return false;
         }
 
+        scrollToPagemark(targetPagemark);
+
+        return true;
+
+    }
+
+    function scrollToPagemark(targetPagemark: PagemarkHolder) {
+
         const pages = document.querySelectorAll(".page");
 
         const pageNum = targetPagemark.pageNum;
 
         const pageElement = <HTMLElement> pages[pageNum - 1];
 
-        const scrollParent = getScrollParent(pageElement, fileType);
+        const scrollParent = getScrollParent(pageElement);
 
         const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
 
         const pageTop = pageOffset.top;
         const pageHeight = Math.floor(pageElement.clientHeight);
 
-        const computePagemarkHeight = (): number => {
-
-            if (opts.fileType === 'pdf') {
-
-                const pagemarkBottom
-                    = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
-
-                const pagemarkBottomPerc = pagemarkBottom / 100;
-
-                return pageHeight * pagemarkBottomPerc;
-
-            } else {
-
-                // TODO: should be sorted by time and not by position.
-                const pagemarkElements
-                    = Array.from(pageElement.querySelectorAll(".pagemark"))
-                            .sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom);
-
-                const pagemarkElement = Arrays.last(pagemarkElements);
-
-                if (pagemarkElement) {
-
-                    // in HTML mode or PDFs with smaller
-
-                    return pagemarkElement.clientHeight;
-
-                } else {
-                    throw new Error("No pagemarkElement");
-                }
-
-            }
-
-        };
-
         // now compute the height of the pagemark so that we scroll to that
         // point.
-        const pagemarkHeight = computePagemarkHeight();
+        const pagemarkHeight = computePagemarkHeight(targetPagemark, pageHeight);
 
         // but adjust it a bit so that the bottom portion of the pagemark is
         // visible by computing the height of the window and shifting it
@@ -85,24 +56,69 @@ export namespace ReadingProgressResume {
 
         scrollParent.scrollTop = newScrollTop;
 
-        return true;
+    }
+
+    function computePagemarkHeight(targetPagemark: PagemarkHolder,
+                                   pageHeight: number): number {
+
+            const pagemarkBottom
+                = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
+
+            const pagemarkBottomPerc = pagemarkBottom / 100;
+
+            return pageHeight * pagemarkBottomPerc;
+
+
+        // if (opts.fileType === 'pdf') {
+        //
+        //     const pagemarkBottom
+        //         = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
+        //
+        //     const pagemarkBottomPerc = pagemarkBottom / 100;
+        //
+        //     return pageHeight * pagemarkBottomPerc;
+        //
+        // } else {
+        //
+        //     // TODO: should be sorted by time and not by position.
+        //     const pagemarkElements
+        //         = Array.from(pageElement.querySelectorAll(".pagemark"))
+        //                .sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom);
+        //
+        //     const pagemarkElement = Arrays.last(pagemarkElements);
+        //
+        //     if (pagemarkElement) {
+        //
+        //         // in HTML mode or PDFs with smaller
+        //
+        //         return pagemarkElement.clientHeight;
+        //
+        //     } else {
+        //         throw new Error("No pagemarkElement");
+        //     }
+        //
+        // }
+
+    };
+
+    function getScrollParent(element: HTMLElement) {
+
+        // FIXME not portable /compatible with react
+        return <HTMLElement> document.querySelector("#viewerContainer");
+
+        // if (fileType === 'pdf') {
+        //     return <HTMLElement> document.querySelector("#viewerContainer");
+        // }
+        //
+        // return  <HTMLElement> Elements.getScrollParent(element);
 
     }
 
-    function getScrollParent(element: HTMLElement, fileType: FileType) {
-
-        if (fileType === 'pdf') {
-            return <HTMLElement> document.querySelector("#viewerContainer");
-        }
-
-        return  <HTMLElement> Elements.getScrollParent(element);
-
-    }
-
-    function computePagemarks(docMeta: IDocMeta) {
+    function computePagemarks(docMeta: IDocMeta): ReadonlyArray<PagemarkHolder> {
 
         const result: PagemarkHolder[] = [];
 
+        // TODO: this would be better with arrayStream now...
         for (const pageMeta of Object.values(docMeta.pageMetas)) {
 
             const pagemarks = Object.values(pageMeta.pagemarks || {});

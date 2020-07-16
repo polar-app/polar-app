@@ -42,6 +42,7 @@ import {
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
+import {ReadingProgressResume} from "../../../../../web/js/view/ReadingProgressResume";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -188,7 +189,8 @@ export const PDFDocument = React.memo((props: IProps) => {
         setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
-            // PageContextMenus.start();
+            // PageContextMenus.start()
+            ReadingProgressResume.resume({docMeta: props.docMeta});
         });
 
         const resizeDebouncer = Debouncers.create(() => resize());
