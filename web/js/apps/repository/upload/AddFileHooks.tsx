@@ -1,3 +1,4 @@
+import React from 'react';
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
 import {useLogger} from "../../../mui/MUILogger";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
@@ -7,6 +8,10 @@ import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {WriteFileProgressListener} from "../../../datastore/Datastore";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {useDocLoader} from "../../main/DocLoaderHooks";
+import IconButton from '@material-ui/core/IconButton';
+import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
+import {Either} from "../../../util/Either";
+import LaunchIcon from '@material-ui/icons/Launch';
 
 export namespace AddFileHooks {
 
@@ -70,12 +75,54 @@ export namespace AddFileHooks {
                     await doFile(idx, file);
                 }
 
-                // FIXME bring up a dialog to import the file ... 
-
                 return result;
 
             } finally {
                 // noop
+            }
+
+        }
+
+        function promptToOpenFiles(importedFiles: ReadonlyArray<ImportedFile>) {
+
+            function createSnackbar(importedFile: ImportedFile) {
+
+                const title = importedFile.docInfo.title || 'Untitled';
+                const {docInfo} = importedFile;
+
+                function doOpenDoc() {
+
+                    const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
+
+                    const docLoadRequest = {
+                        fingerprint: docInfo.fingerprint,
+                        title,
+                        backendFileRef,
+                        newWindow: true
+                    };
+
+                    docLoader(docLoadRequest)
+                }
+
+                const Action = () => (
+                    <IconButton size="small"
+                                color="secondary"
+                                onClick={doOpenDoc}>
+                        <LaunchIcon/>
+                    </IconButton>
+                );
+
+                dialogManager.snackbar({
+                    message: `Would you like to open '${title}' now?`,
+                    type: 'success',
+                    action: <Action/>
+                });
+
+            }
+
+            if (importedFiles.length === 1) {
+                const importedFile = importedFiles[0];
+                createSnackbar(importedFile);
             }
 
         }
@@ -93,7 +140,8 @@ export namespace AddFileHooks {
                 // }
 
                 try {
-                    await doImportFiles(files);
+                    const importedFiles = await doImportFiles(files);
+                    promptToOpenFiles(importedFiles);
                 } catch (e) {
                     log.error("Unable to import files: ", files, e);
                 }

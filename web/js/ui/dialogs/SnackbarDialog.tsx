@@ -11,7 +11,7 @@ export interface SnackbarDialogProps {
     /**
      * Use a custom action like an 'open' button
      */
-    readonly action?: () => JSX.Element;
+    readonly action?: React.ReactNode;
 
 }
 
