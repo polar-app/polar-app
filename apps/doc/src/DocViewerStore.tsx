@@ -24,6 +24,7 @@ import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {ScaleLevelTuple} from "./ScaleLevels";
 import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
+import {DocViewerSnapshots} from "./DocViewerSnapshots";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -260,6 +261,16 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             setStore({...store, docMeta, docURL, hasPendingWrites});
 
+        }
+
+        function isStaleUpdate() {
+            const store = storeProvider();
+            return DocViewerSnapshots.isStaleUpdate(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
+        }
+
+        if (isStaleUpdate()) {
+            console.warn("Ignoring stale docMeta update.");
+            return;
         }
 
         // update the main store.

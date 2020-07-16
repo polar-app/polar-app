@@ -23,6 +23,7 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     const annotationMutations = useAnnotationMutationsContext();
 
+    // FIXME: for some reason this is super slow...
     return (opts: ICreateTextHighlightOpts) => {
 
         const {docMeta, pageMeta, textHighlight}

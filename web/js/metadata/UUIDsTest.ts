@@ -1,7 +1,4 @@
 import {assert} from 'chai';
-import {MockDocMetas} from '../metadata/DocMetas';
-import {TestingTime} from 'polar-shared/src/test/TestingTime';
-import uuid from 'uuid';
 import {UUIDs} from './UUIDs';
 import {Promises} from '../util/Promises';
 
