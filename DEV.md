@@ -5,7 +5,7 @@ support both forked NPM modules and private/public version control systems.
 
 # Steps to Build 
 
-- clone this repo locally
+- clone the polar-app repository locally.
 
 ```bash
 
@@ -19,4 +19,6 @@ npx webpack-dev-server
 This *should* mean you have all code running and Polar should load in your 
 browser.
 
-# Entries (TODO)
+# TODO
+
+- the credentials for our apt repo are required... this is a big deal breaker/issue
