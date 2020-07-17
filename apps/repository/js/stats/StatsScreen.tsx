@@ -11,8 +11,33 @@ import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import Paper from '@material-ui/core/Paper';
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
+import {ReadingProgressTable} from "./ReadingProgressTable";
 
 const log = Logger.create();
+
+export interface ReadingStatsProps {
+    readonly docInfos?: ReadonlyArray<IDocInfo>;
+}
+
+const ReadingStats = (props: ReadingStatsProps) => {
+    return (
+        <div>
+
+            <SectionHeader>
+                <h1>Statistics</h1>
+
+                <SectionText>
+                    Polar keeps track of statistics of your document repository so you can better understand
+                    your reading habits and what types of documents are stored in your repository.
+                </SectionText>
+            </SectionHeader>
+
+            <PremiumFeature required='bronze' feature="statistics" size="lg">
+                <ReadingProgressTable docInfos={props.docInfos}/>
+            </PremiumFeature>
+        </div>
+    );
+}
 
 export interface ReviewerStats {
     readonly isReviewer?: boolean;
@@ -120,6 +145,8 @@ const Desktop = (props: ReviewerProps) => {
                      marginRight: 'auto',
                      flexGrow: 1,
                  }}>
+
+                <ReadingStats docInfos={docInfos}/>
 
                 <ReviewerStats isReviewer={props.isReviewer}/>
 

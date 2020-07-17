@@ -11,6 +11,7 @@ import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
 import useTheme from '@material-ui/core/styles/useTheme';
+import {useNivoTheme} from "./NivoHooks";
 
 const HEIGHT = '300px';
 
@@ -23,7 +24,7 @@ interface ChartProps {
 
 const Chart = React.memo((props: ChartProps) => {
 
-    const theme = useTheme();
+    const nivoTheme = useNivoTheme();
 
     const createTitle = () => {
         switch (props.type) {
@@ -79,46 +80,7 @@ const Chart = React.memo((props: ChartProps) => {
                         // useMesh={true}
                         // enablePointLabel={true}
                         animate={true}
-                        theme={{
-                            // TODO: the key property we need to make the legend
-                            // white is 'fill' and we should clean this up so it is just
-                            // the minimum we need
-                            markers: {
-                                textColor: theme.palette.text.primary
-                            },
-                            axis: {
-                                legend: {
-                                    text: {
-                                        fill: theme.palette.text.primary,
-                                        color: theme.palette.text.primary
-                                    }
-                                },
-                                ticks: {
-                                    text: {
-                                        fill: theme.palette.text.primary,
-                                        color: theme.palette.text.primary
-                                    }
-                                }
-                            },
-                            dots: {
-                                text: {
-                                    fill: theme.palette.text.primary,
-                                    color: theme.palette.text.primary
-                                }
-                            },
-                            legends: {
-                                text: {
-                                    fill: theme.palette.text.primary,
-                                    color: theme.palette.text.primary
-                                }
-                            },
-                            labels: {
-                                text: {
-                                    fill: theme.palette.text.primary,
-                                    color: theme.palette.text.primary
-                                }
-                            }
-                        }}
+                        theme={nivoTheme}
                     />
                 </div>
             </>
