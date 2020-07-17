@@ -1,6 +1,8 @@
+import {Theme} from '@nivo/core';
+
 import useTheme from "@material-ui/core/styles/useTheme";
 
-export function useNivoTheme() {
+export function useNivoTheme(): Theme {
 
     const theme = useTheme();
 
@@ -41,6 +43,12 @@ export function useNivoTheme() {
             text: {
                 fill: theme.palette.text.primary,
                 color: theme.palette.text.primary
+            }
+        },
+        tooltip: {
+            container: {
+                background: theme.palette.text.primary,
+                color: theme.palette.background.default
             }
         }
     }

@@ -4,10 +4,17 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {ResponsivePie} from '@nivo/pie';
 import StatTitle from './StatTitle';
 import useTheme from '@material-ui/core/styles/useTheme';
+import isEqual from 'react-fast-compare';
+import {useNivoTheme} from "./NivoHooks";
 
-export default function TopTagsChart(props: IProps) {
+interface IProps {
+    readonly docInfos: ReadonlyArray<IDocInfo>;
+}
+
+export const TopTagsChart = React.memo((props: IProps) => {
 
     const theme = useTheme();
+    const nivoTheme = useNivoTheme();
 
     const topTags = DocInfoStatistics.computeTopTags(props.docInfos, 10);
 
@@ -79,39 +86,12 @@ export default function TopTagsChart(props: IProps) {
                     animate={true}
                     motionStiffness={90}
                     motionDamping={15}
-                    // legends={[
-                    //     {
-                    //         anchor: 'bottom',
-                    //         direction: 'row',
-                    //         translateY: 56,
-                    //         itemWidth: 100,
-                    //         itemHeight: 18,
-                    //         itemTextColor: theme.palette.text.secondary,
-                    //         symbolSize: 18,
-                    //         symbolShape: 'circle',
-                    //         effects: [
-                    //             {
-                    //                 on: 'hover',
-                    //                 style: {
-                    //                     itemTextColor: theme.palette.text.secondary
-                    //                 }
-                    //             }
-                    //         ]
-                    //     }
-                    // ]}
+                    theme={nivoTheme}
                 />
 
             </div>
         </div>
 
     );
-}
-
-export interface IProps {
-    readonly docInfos: ReadonlyArray<IDocInfo>;
-}
-
-export interface IState {
-
-}
+}, isEqual);
 
