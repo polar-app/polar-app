@@ -15,32 +15,32 @@ export function useNivoTheme() {
             legend: {
                 text: {
                     fill: theme.palette.text.primary,
-                        color: theme.palette.text.primary
+                    color: theme.palette.text.primary
                 }
             },
             ticks: {
                 text: {
                     fill: theme.palette.text.primary,
-                        color: theme.palette.text.primary
+                    color: theme.palette.text.primary
                 }
             }
         },
         dots: {
             text: {
                 fill: theme.palette.text.primary,
-                    color: theme.palette.text.primary
+                color: theme.palette.text.primary
             }
         },
         legends: {
             text: {
                 fill: theme.palette.text.primary,
-                    color: theme.palette.text.primary
+                color: theme.palette.text.primary
             }
         },
         labels: {
             text: {
                 fill: theme.palette.text.primary,
-                    color: theme.palette.text.primary
+                color: theme.palette.text.primary
             }
         }
     }
