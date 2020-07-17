@@ -1,7 +1,7 @@
 import * as React from 'react';
 import StatTitle from './StatTitle';
 import {ResponsiveLine, Serie, Datum} from '@nivo/line';
-import {SpacedRepStat, SpacedRepStatRecord, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {SpacedRepStat, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {RepetitionMode, StageCountsCalculator} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
@@ -10,7 +10,6 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
-import useTheme from '@material-ui/core/styles/useTheme';
 import {useNivoTheme} from "./NivoHooks";
 
 const HEIGHT = '300px';
@@ -50,6 +49,7 @@ const Chart = React.memo((props: ChartProps) => {
 
                     <ResponsiveLine
                         data={props.lineData}
+                        // isInteractive={true}
                         margin={{
                             top: 10,
                             right: 10,
@@ -90,6 +90,21 @@ const Chart = React.memo((props: ChartProps) => {
 
 });
 
+const NeedChardData = () => {
+    // return <div className="text-lg text-muted mt-2"
+    //             style={{
+    //                 display: 'flex',
+    //                 height: '100%'
+    //             }}>
+    //
+    //     <div className="m-auto">
+    //         More data needed for reliable chart.
+    //     </div>
+    // </div>;
+
+    return <div/>;
+
+};
 
 export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
@@ -207,23 +222,6 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         const lineData: Serie[] = computeLineData();
 
-        const NeedChardData = () => {
-            // return <div className="text-lg text-muted mt-2"
-            //             style={{
-            //                 display: 'flex',
-            //                 height: '100%'
-            //             }}>
-            //
-            //     <div className="m-auto">
-            //         More data needed for reliable chart.
-            //     </div>
-            // </div>;
-
-            return <div/>;
-
-        };
-
-
         const Main = () => {
 
             if (lineData[0].data.length < 3) {
@@ -235,12 +233,11 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
 
         };
 
-        return <div className=""
-                    style={{}}>
-
-            <Main/>
-
-        </div>;
+        return (
+            <div>
+                <Main/>
+            </div>
+        );
 
     }
 
