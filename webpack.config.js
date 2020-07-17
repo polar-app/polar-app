@@ -240,6 +240,10 @@ module.exports = {
                     // first time
                     urlPattern: /https:\/\/storage.google.com\/stash/,
                     handler: 'CacheFirst'
+                },
+                {
+                    urlPattern: /https:\/\/lh5.googleusercontent.com\//,
+                    handler: 'CacheFirst'
                 }
             ],
 
