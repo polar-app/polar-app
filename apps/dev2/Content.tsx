@@ -3,6 +3,7 @@ import React from 'react';
 export const Content = () => {
     return (
         <div id='content'>
+
             Graph-based neural network models are producing strong results in a
             number of domains, in part because graphs provide flexibility to
             encode domain knowledge in the form of relational structure (edges)
@@ -34,11 +35,10 @@ export const Content = () => {
             <p>
                 This is some more text
             </p>
-                <p>
-                        this is a test
-                </p>
 
-
+            <p>
+                this is a test
+            </p>
 
         </div>
     );

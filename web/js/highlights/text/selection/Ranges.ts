@@ -7,13 +7,12 @@ export class Ranges {
      * our own unique copies that can't be reset.
      *
      */
-    public static cloneRanges(ranges: Range[]) {
+    public static cloneRanges(ranges: ReadonlyArray<Range>): ReadonlyArray<Range> {
         return ranges.map(range => range.cloneRange());
     }
 
     /**
      * Split a text node and get the new / starting node.
-     *
      */
     public static splitTextNode(container: Node,
                                 offset: number,

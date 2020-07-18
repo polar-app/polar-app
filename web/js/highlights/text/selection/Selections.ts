@@ -1,16 +1,9 @@
-/**
- *
- */
-
-export class Selections {
+export namespace Selections {
 
     /**
      * Get the ranges of a selection as an array (easier API).
-     *
-     * @param selection {Selection}
-     * @return {Array<Range>}
      */
-    public static toRanges(selection: Selection): Range[] {
+    export function toRanges(selection: Selection): ReadonlyArray<Range> {
 
         const result = [];
 
@@ -23,6 +16,7 @@ export class Selections {
         }
 
         return result;
+
     }
 
 }
