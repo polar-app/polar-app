@@ -13,6 +13,11 @@ export const App = () => {
 
     function handleSearch(text: string) {
 
+        if (text.trim() === '') {
+            setHits([]);
+            return;
+        }
+
         // use the new search frame work to see if we can find the text on
         // the page...
         const index = DOMTextSearch.createIndex(document, document.getElementById('content')!);
