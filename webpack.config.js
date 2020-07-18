@@ -250,29 +250,6 @@ module.exports = {
                     handler: 'CacheFirst'
                 }
             ],
-
-            // runtimeCaching: [
-            //     {
-            //         urlPattern: /.*/,
-            //         handler: 'staleWhileRevalidate'
-            //     },
-            //     {
-            //         // these URLs are immutable based on content hash as computed by
-            //         // webpack so just use cacheFirst which only fetches them the
-            //         // first time
-            //         urlPattern: /https:\/\/storage.google.com\/stash/,
-            //         handler: 'CacheFirst'
-            //     }
-            // ],
-            // runtimeCaching: [
-            //     {
-            //         // these URLs are immutable based on content hash as computed by
-            //         // webpack so just use cacheFirst which only fetches them the
-            //         // first time
-            //         urlPattern: /web\/dist\/images\/.*/,
-            //         handler: 'CacheFirst'
-            //     }
-            // ],
             modifyURLPrefix: {
                 // Remove a '/dist' prefix from the URLs:
                 '/dist/public': ''
