@@ -5,51 +5,34 @@ import {MUIRouterLink} from "../../../../../web/js/mui/MUIRouterLink";
 import {MUIMenuItem} from "../../../../../web/js/mui/menu/MUIMenuItem";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
+import {memoForwardRef} from "../../../../../web/js/react/ReactUtils";
 
-export interface IProps {
-}
+export const StartReviewDropdown = memoForwardRef(() => (
 
-interface IState {
+    <MUIMenu id="start-review-dropdown"
+             button={{
+                 color: "primary",
+                 text: 'Start Review',
+                 size: 'large',
+                 disableRipple: true,
+                 disableFocusRipple: true,
+                 icon: <RateReviewIcon/>
+             }}
+             caret>
+        <div>
 
-}
+            <MUIRouterLink
+                to={{pathname: '/annotations', hash: '#review-flashcards'}}>
+                <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>}/>
+            </MUIRouterLink>
 
-// TODO: move to functional component
-export class StartReviewDropdown extends React.PureComponent<IProps, IState> {
+            <MUIRouterLink
+                to={{pathname: '/annotations', hash: '#review-reading'}}>
+                <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
+            </MUIRouterLink>
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
-    }
+        </div>
 
-    public render() {
+    </MUIMenu>
 
-        return (
-            <MUIMenu id="start-review-dropdown"
-                     button={{
-                         color: "primary",
-                         text: 'Start Review',
-                         size: 'large',
-                         disableRipple: true,
-                         disableFocusRipple: true,
-                         icon: <RateReviewIcon/>
-                     }}
-                     caret>
-                <div>
-
-                    <MUIRouterLink to={{pathname: '/annotations', hash: '#review-flashcards'}}>
-                        <MUIMenuItem text="Flashcards" icon={<FlashOnIcon/>} />
-                    </MUIRouterLink>
-
-                    <MUIRouterLink to={{pathname: '/annotations', hash: '#review-reading'}}>
-                        <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
-                    </MUIRouterLink>
-
-                </div>
-
-            </MUIMenu>
-
-        );
-
-    }
-
-
-}
+));

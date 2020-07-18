@@ -242,6 +242,10 @@ module.exports = {
                     handler: 'CacheFirst'
                 },
                 {
+                    urlPattern: /https:\/\/fonts.google.com\//,
+                    handler: 'CacheFirst'
+                },
+                {
                     urlPattern: /https:\/\/lh5.googleusercontent.com\//,
                     handler: 'CacheFirst'
                 }
