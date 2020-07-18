@@ -158,7 +158,8 @@ module.exports = {
     // stats: 'verbose',
     target,
     entry: {
-        "repository": "./apps/repository/js/entry.tsx",
+        // "repository": "./apps/repository/js/entry.tsx",
+        "dev": "./apps/dev2/index.tsx",
         // "preview": "./apps/preview/index.ts",
         // "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
     },
@@ -177,7 +178,8 @@ module.exports = {
     },
     node: createNode(),
     plugins: [
-        // TODO: this won't be needed once we get rid of summernote ....
+        // TODO: this won't be needed once we get rid of summernote .... it
+        // should be the only thing depending on jquery moving forward.
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -185,9 +187,11 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new ForkTsCheckerWebpackPlugin({}),
-        // FIXME: this causes an infinite build loop!
-        // FIXME: just disable this in webpack-dev-server ... fuck this
-        // is insanely hard to build...
+        // WARNING: this will ONLY be rebuilt when:
+        //
+        // - running with webpack (not webpack-dev-server because it will break)
+        //
+        // - when the .webpack-cache-loader directory is first removed
         ! isDevServer && new CopyPlugin({
             patterns: [
 

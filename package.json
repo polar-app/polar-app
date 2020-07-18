@@ -41,10 +41,8 @@
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
     "postinstall": "opencollective-postinstall",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "webpack": "mkdir -p web/dist && npx webpack --verbose --config=webpack.config.js && pwd && ls -al web/dist && echo 'Webpack built successfully'",
-    "webpack-electron": "rm -r .webpack-cache-loader && export NODE_ENV=production && export WEBPACK_TARGET=electron-renderer && npm run-script webpack",
+    "webpack": "rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin/ && mkdir -p dist/public && npx webpack  --config=webpack.config.js && pwd && ls -al dist/public && echo 'Webpack built successfully'",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
-    "webpack-dev-server": "webpack-dev-server --https",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
     "serve": "node scripts/serve.js"
   },
