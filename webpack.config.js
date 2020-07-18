@@ -299,7 +299,7 @@ module.exports = {
         contentBase: path.resolve('dist/public'),
         compress: true,
         port: 8050,
-        // open: true,
+        open: true,
         overlay: true,
         hot: true,
         watchContentBase: false,
