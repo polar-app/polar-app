@@ -90,10 +90,24 @@ function intersectWithWindow(position: IPosition) {
 
 }
 
-export const HitHighlighter = memoForwardRef((props: IProps) => {
+/**
+ * Convert a fixed position to an absolute position.
+ */
+function fixedToAbsolute(rect: ILTRect): ILTRect {
 
-    // FIXME: this WORKS but for some reason there is some lag which is mildly
-    // distracting
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    return {
+        top: rect.top + scrollTop,
+        left: rect.left + scrollLeft,
+        width: rect.width,
+        height: rect.height
+    };
+
+}
+
+export const HitHighlighter = memoForwardRef((props: IProps) => {
 
     const [position, setPosition] = React.useState<IPosition>(createPosition(props))
 
@@ -104,21 +118,20 @@ export const HitHighlighter = memoForwardRef((props: IProps) => {
     useScrollEventListener(redrawCallback);
     useResizeEventListener(redrawCallback);
 
-    // FIXME: if the position is actually offscreen, don't draw it to save
-    // some CPU..
-
-    // FIXME: could we improve performance by computing the position relative
-    // to the document, not the client rect...
-
     if (! intersectWithWindow(position)) {
+        // if the position is actually offscreen, don't draw it to save
+        // some CPU..
         return null;
     }
+
+    // we use the absolute position so that on scroll nothing is actually updated
+    const absolutePosition = fixedToAbsolute(position);
 
     return (
         <div style={{
                  backgroundColor: 'rgba(255, 255, 0, 0.5)',
-                 position: 'fixed',
-                 ...position
+                 position: 'absolute',
+                 ...absolutePosition
              }}>
 
         </div>

@@ -5,7 +5,15 @@ import {
 
 function useWindowEventListener(name: 'resize' | 'scroll', delegate: () => void) {
 
-    const opts = {capture: true};
+    const opts = {
+        // capture is needed for scroll to fire on window.\
+        capture: true,
+
+        // passive is needed for performance improvements
+        //
+        // https://developers.google.com/web/updates/2016/06/passive-event-listeners
+        passive: true
+    };
 
     useComponentDidMount(() => {
         window.addEventListener(name, delegate, opts);
