@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from "@material-ui/core/TextField"
+import {DOMTextSearch} from "polar-dom-text-search/src/DOMTextSearch";
 
 export const SearchBar = () => {
 
@@ -8,11 +9,19 @@ export const SearchBar = () => {
     function doSearch(text: string) {
         // use the new search frame work to see if we can find the text on
         // the page...
+        const index = DOMTextSearch.createIndex(document, document.getElementById('content')!);
+
+        const hits = index.search(text);
+        //
+        // TextHighlighter.createTextHighlight()
+
+        console.log("Found N hits: " + hits.length, hits);
+
     }
 
     function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>) {
 
-        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+        if (event.key === 'Enter') {
             // don't allow anything else to process this event.
             event.stopPropagation();
             event.preventDefault();
@@ -28,7 +37,7 @@ export const SearchBar = () => {
     }
 
     return (
-        <TextField label="Outlined"
+        <TextField label="Enter a search: "
                    variant="outlined"
                    onChange={event => handleChange(event.currentTarget.value)}
                    onKeyPress={event => handleKeyPress(event)}/>

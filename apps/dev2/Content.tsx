@@ -26,6 +26,20 @@ export const Content = () => {
             understanding task, and find that using the GFSA layer leads to
             better performance than using hand-engineered semantic edges or
             other baseline methods for adding learned edge types.
+
+            <p>
+                this is a test
+            </p>
+
+            <p>
+                This is some more text
+            </p>
+                <p>
+                        this is a test
+                </p>
+
+
+
         </div>
     );
 }
