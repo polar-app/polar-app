@@ -150,7 +150,7 @@ export const PDFDocument = React.memo((props: IProps) => {
 
     const doLoad = async (docViewer: DocViewer) => {
 
-        const loadingTask = PDFDocs.getDocument({url: docURL});
+        const loadingTask = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
 
         let progressTracker: ProgressTracker | undefined;
         loadingTask.onProgress = (progress) => {

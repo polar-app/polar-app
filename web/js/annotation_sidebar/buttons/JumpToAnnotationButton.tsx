@@ -5,40 +5,48 @@ import {IDocAnnotationRef} from "../DocAnnotation";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {Tooltip} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from "react-router-dom";
 
 function isDocViewer() {
     return document.location.href.indexOf('/doc/') !== -1;
 }
 
-export function onJumpToAnnotation(annotation: IDocAnnotationRef) {
+export function useJumpToAnnotation(): (annotation: IDocAnnotationRef) => void {
 
-    function computePageElement() {
-        // TODO: this isn't portable to multi-tab view in the Electron app
-        const pageElements = Array.from(document.querySelectorAll(".page"));
-        return pageElements[annotation.pageNum - 1] as HTMLElement;
-    }
+    const history = useHistory();
 
-    function scrollToPage() {
-        const pageElement = computePageElement();
-        pageElement.scrollIntoView();
-    }
+    return (annotation: IDocAnnotationRef) => {
 
-    function jumpToAnnotation() {
-
-        const annotationElement = document.getElementById(annotation.id);
-
-        document.location.hash = annotation.id;
-
-        if (annotationElement) {
-            annotationElement.scrollIntoView();
-        } else {
-            console.warn("Count not find annotation element to scroll")
+        function computePageElement() {
+            // TODO: this isn't portable to multi-tab view in the Electron app
+            const pageElements = Array.from(document.querySelectorAll(".page"));
+            return pageElements[annotation.pageNum - 1] as HTMLElement;
         }
 
+        function scrollToPage() {
+            const pageElement = computePageElement();
+            pageElement.scrollIntoView();
+        }
+
+        function jumpToAnnotation() {
+
+            const annotationElement = document.getElementById(annotation.id);
+
+            history.push({hash: annotation.id});
+
+            if (annotationElement) {
+                annotationElement.scrollIntoView();
+            } else {
+                console.warn("Count not find annotation element to scroll")
+            }
+
+        }
+
+        scrollToPage();
+        jumpToAnnotation();
+
     }
 
-    scrollToPage();
-    jumpToAnnotation();
 
 }
 
@@ -47,6 +55,8 @@ interface IProps {
 }
 
 export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
+
+    const jumpToAnnotation = useJumpToAnnotation();
 
     if (! isDocViewer()) {
         return null;
@@ -62,7 +72,7 @@ export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
     return (
         <Tooltip title="Jump to the current annotation in the page.">
             <IconButton size="small"
-                        onClick={() => onJumpToAnnotation(annotation)}>
+                        onClick={() => jumpToAnnotation(annotation)}>
 
                 <CenterFocusStrongIcon/>
 
