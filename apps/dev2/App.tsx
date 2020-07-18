@@ -22,7 +22,7 @@ export const App = () => {
         // the page...
         const index = DOMTextSearch.createIndex(document, document.getElementById('content')!);
 
-        const hits = index.search(text);
+        const hits = index.search(text, 0, {caseInsensitive: true});
         setHits(hits);
 
         //
