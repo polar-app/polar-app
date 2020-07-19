@@ -7,8 +7,8 @@ import {
 import {Highlights} from "./Highlights";
 import {AnimationFrameDebouncer} from "./AnimationFrameDebouncer";
 import IHighlightNode = Highlights.IHighlightNode;
-import IPosition = Highlights.IPosition;
-import createPosition = Highlights.createPosition;
+import IPosition = Highlights.IViewportPosition;
+import createPosition = Highlights.createViewportPosition;
 import intersectWithWindow = Highlights.intersectWithWindow;
 import withAnimationFrame = AnimationFrameDebouncer.withAnimationFrame;
 
