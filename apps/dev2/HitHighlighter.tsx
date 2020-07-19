@@ -125,6 +125,21 @@ export const HitHighlighter = memoForwardRef((props: IProps) => {
 
     // FIXME: I'm going to need unit tests for common operations:
 
+    // FIXME: what I could do here is split the text by words... based on whitespace
+    //
+    // FIXME: I would ALSO need to join the text so that the current highlight
+    // runs up , I think. to the start of the next node, but this might trigger a warap
+
+    // FIXME: do not split the node based on the text, split the regions we
+    // want to highlight... so that each reagoin would start off like
+    //
+    // 'hello world'
+    //
+    // and then I would map them to:
+    //
+    // 'hello '
+    // 'world'
+
     //   - nodes with extra whitespace
     //   - queries that span nodes
     //   - queries that span nodes with whitespace]

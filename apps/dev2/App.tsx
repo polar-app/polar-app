@@ -1,11 +1,9 @@
 import React from 'react';
 import {Content} from "./Content";
 import {SearchBar} from "./SearchBar";
-import {
-    DOMTextHit,
-    DOMTextSearch
-} from "polar-dom-text-search/src/DOMTextSearch";
 import { HitHighlights } from './HitHighlights';
+import { DOMTextHit } from 'polar-dom-text-search/src/DOMTextHit';
+import {DOMTextSearch} from "polar-dom-text-search/src/DOMTextSearch";
 
 export const App = () => {
 
