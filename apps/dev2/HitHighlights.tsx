@@ -23,13 +23,13 @@ export const HitHighlights = memoForwardRef((props: IProps) => {
                                key={key}/>
     }
 
-    const flatHits = arrayStream(props.hits)
-                        .flatMap(current => current.regions)
-                        .collect();
+    const nodeTextRegions = arrayStream(props.hits)
+                                .flatMap(current => current.regions)
+                                .collect();
 
     return (
         <>
-            {flatHits.map(toHitHighlighter)}
+            {nodeTextRegions.map(toHitHighlighter)}
         </>
     );
 

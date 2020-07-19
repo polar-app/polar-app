@@ -140,6 +140,27 @@ export const HitHighlighter = memoForwardRef((props: IProps) => {
     // 'hello '
     // 'world'
 
+    // FIXME: we can't break on whitespace word boundaries as the browser has
+    // its own set of boundaries like '-' that hyphenates words...
+
+    // FIXME: it can break at ANY character!!! so there's no way to determine
+    // if some text is overflowed...
+
+    // FIXME: I could 'cheat' and for every character, compute the region, and
+    // then stitch them together so they are overlayed properly???
+    //
+    //   - I think I ALREADY have an algorithm to do this that I just need to
+    //     lift out now...
+
+    // FIXME: text within overflow regions is being shown even if the text is
+    // ABOVE the overflow window...
+    //
+    // FIXME - for now just punt on nodes that are hidden like this.
+
+    // FIXME: just compute the rows and then groupBy top/bottom being identical..
+    //
+
+
     //   - nodes with extra whitespace
     //   - queries that span nodes
     //   - queries that span nodes with whitespace]

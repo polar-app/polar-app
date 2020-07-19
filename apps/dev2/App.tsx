@@ -23,7 +23,6 @@ export const App = () => {
         const hits = index.search(text, 0, {caseInsensitive: true});
         setHits(hits);
 
-        //
         // TextHighlighter.createTextHighlight()
 
         console.log("Found N hits: " + hits.length, hits);
