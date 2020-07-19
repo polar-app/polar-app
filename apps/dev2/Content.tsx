@@ -4,9 +4,11 @@ export const Content = () => {
     return (
         <div id='content'>
 
-            <p>
-                <b>this</b> and <i>that</i>
-            </p>
+            {/*<p>*/}
+            {/*    <b>this</b> and <i>that</i>*/}
+            {/*</p>*/}
+
+            <p>this</p>
 
             Graph-based neural network models are producing strong results in a
             number of domains, in part because graphs provide flexibility to

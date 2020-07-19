@@ -25,9 +25,12 @@ interface IProps extends IHighlightNode {
 
 function createPosition(highlight: IHighlightNode): IPosition {
 
+    console.log("FIXME highlight: ", highlight);
+
     const range = document.createRange();
     range.setStart(highlight.node, highlight.start);
-    range.setEnd(highlight.node, highlight.end);
+    // FIXME I think setEnd is NOT inclusive ... but I think there's another bug...
+    range.setEnd(highlight.node, highlight.end + 1);
 
     const rect = range.getBoundingClientRect();
 
@@ -108,6 +111,23 @@ function fixedToAbsolute(rect: ILTRect): ILTRect {
 }
 
 export const HitHighlighter = memoForwardRef((props: IProps) => {
+
+    // FIXME ... searching for "In practice" starts off at the wrong place...
+    // "Graph" does the same thing...
+
+    // FIXME if a highlight is across rows, then what happens is that we get a
+    // break to the next row... we might want to just highlight the individual
+    // elements so that we don't have to mutate the DOM and node split...
+
+    // FIXME: I think having ONE div per character is probably a BAD idea but
+    // so is DOM mutation from within React ... it's hacky but I could put it
+    // into a hook...
+
+    // FIXME: I'm going to need unit tests for common operations:
+
+    //   - nodes with extra whitespace
+    //   - queries that span nodes
+    //   - queries that span nodes with whitespace]
 
     const [position, setPosition] = React.useState<IPosition>(createPosition(props))
 
