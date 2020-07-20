@@ -1,6 +1,6 @@
 
-// FIXME: graph-based ends up not getting split properly... 
+searching for: 'Lorem-ipsum-dolor-sit-amet-pro-tota-repudiandae-theophrastus-at-equidem-nostrum-voluptaria-id-mei'
 
-// FIXME: move the components to a DECENT name like Highlight... but nt
-// TextHighlight maybe DOMHighlight
+... will yield TWO rows when I resize...
 
+ - should be an easy bug to fix.

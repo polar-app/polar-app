@@ -4,7 +4,7 @@ export const Content = () => {
     return (
         <div id='content'>
 
-            this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string-this-is-a-very-long-string
+            Lorem-ipsum-dolor-sit-amet-pro-tota-repudiandae-theophrastus-at-equidem-nostrum-voluptaria-id-mei-Ad-rebum-alienum-consequat-his-Ei-usu-magna-phaedrum-Eu-legimus-detracto-eos-Ea-his-mutat-atqui-viris-sed-facete-prompta-ut-et-nam-integre-malorum-diceret-Pro-ea-unum-malis-omnes-soluta-vocent-euismod-mel-cu-Eu-duo-nihil-quodsi-Quo-albucius-sententiae-contentiones-ei-movet-vituperatoribus-qui-at-in-quo-idque-erant
 
             <p>
                 <b>this</b> and <i>that</i>

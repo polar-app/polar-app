@@ -158,7 +158,7 @@ module.exports = {
     // stats: 'verbose',
     target,
     entry: {
-        // "repository": "./apps/repository/js/entry.tsx",
+        "repository": "./apps/repository/js/entry.tsx",
         "dev": "./apps/dev2/index.tsx",
         // "preview": "./apps/preview/index.ts",
         // "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
