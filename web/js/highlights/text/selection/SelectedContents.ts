@@ -5,18 +5,12 @@ import {RectTexts} from '../controller/RectTexts';
 import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
 import {TextNodeRows} from "./TextNodeRows";
 
-/**
- *
- */
 export class SelectedContents {
 
     /**
      * Compute the SelectedContents based on the page offset, not the
      * client/viewport offset, and include additional metadata including the
      * text of the selection, the html, etc.
-     *
-     * @param win {Window}
-     * @return {SelectedContent}
      */
     public static computeFromWindow(win: Window) {
 
@@ -59,9 +53,8 @@ export class SelectedContents {
 
     /**
      * Compute the given ranges as HTML, factoring in sanitization as well.
-     * @param ranges
      */
-    public static toHTML(ranges: Range[]) {
+    public static toHTML(ranges: ReadonlyArray<Range>) {
         return ranges.map(range => Ranges.toHTML(range)).join("");
     }
 

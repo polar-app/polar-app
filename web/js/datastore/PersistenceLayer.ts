@@ -3,7 +3,7 @@ import {
     BackendFileRefData,
     BinaryFileData,
     Datastore,
-    DatastoreCapabilities,
+    DatastoreCapabilities, DatastoreConsistency,
     DatastoreInitOpts,
     DatastoreOverview,
     DeleteResult,
@@ -14,7 +14,7 @@ import {
     ErrorListener,
     GroupIDStr,
     SnapshotResult,
-    WriteFileOpts, WriteFileProgressListener
+    WriteFileOpts, WriteFileProgressListener, WriteOptsBase
 } from './Datastore';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
@@ -132,25 +132,8 @@ export abstract class AbstractPersistenceLayer {
 
 }
 
-export interface WriteOpts {
+export interface WriteOpts extends WriteOptsBase<IDocInfo> {
 
-    readonly datastoreMutation?: DatastoreMutation<IDocInfo>;
-
-    /**
-     * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
-     * and that the operations are ordered properly.
-     */
-    readonly writeFile?: BackendFileRefData;
-
-    readonly visibility?: Visibility;
-
-    readonly groups?: ReadonlyArray<GroupIDStr>;
-
-    /**
-     * Specify a progress listener so that when you're writing a file you can
-     * keep track of the progress
-     */
-    readonly progressListener?: WriteFileProgressListener;
 
 }
 

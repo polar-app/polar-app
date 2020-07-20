@@ -325,9 +325,12 @@ export abstract class AbstractDatastore {
 
 }
 
-export interface WriteOpts {
 
-    readonly datastoreMutation?: DatastoreMutation<boolean>;
+export interface WriteOptsBase<T> {
+
+    readonly consistency?: DatastoreConsistency;
+
+    readonly datastoreMutation?: DatastoreMutation<T>;
 
     /**
      * Also write a file (PDF, PHZ) with the DocMeta data so that it's atomic
@@ -344,6 +347,11 @@ export interface WriteOpts {
      * keep track of the progress
      */
     readonly progressListener?: WriteFileProgressListener;
+
+}
+
+
+export interface WriteOpts extends WriteOptsBase<boolean> {
 
 }
 

@@ -712,11 +712,28 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
+
+        /**
+         * Create our two main doc refs.
+         */
+        const createDocRefs = () => {
+
+            const docMetaRef = this.firestore!
+                .collection(DatastoreCollection.DOC_META)
+                .doc(id);
+
+            const docInfoRef = this.firestore!
+                .collection(DatastoreCollection.DOC_INFO)
+                .doc(id);
+
+            return [docMetaRef, docInfoRef];
+
+        }
+
         try {
 
             docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
-
-            const id = FirebaseDatastores.computeDocMetaID(fingerprint);
 
             const createRecordPermission = async (): Promise<RecordPermission> => {
 
@@ -738,37 +755,51 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const recordPermission
                 = Dictionaries.onlyDefinedProperties(await createRecordPermission());
 
-            const docMetaRef = this.firestore!
-                .collection(DatastoreCollection.DOC_META)
-                .doc(id);
-
-            const docInfoRef = this.firestore!
-                .collection(DatastoreCollection.DOC_INFO)
-                .doc(id);
-
-            this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
-
-            const commitPromise = Promise.all([
-                this.waitForCommit(docMetaRef),
-                this.waitForCommit(docInfoRef)
-            ]);
-
             const batch = this.firestore!.batch();
 
             const dataLen = data.length;
 
             log.notice(`Write of doc with id ${id}, and data length ${dataLen} and permission: `, recordPermission);
 
+            const [docMetaRef, docInfoRef] = createDocRefs();
+
             batch.set(docMetaRef, this.createRecordHolderForDocMeta(docInfo, data, recordPermission));
             batch.set(docInfoRef, this.createRecordHolderForDocInfo(docInfo, recordPermission));
 
             await batch.commit();
 
-            // we need to make sure that we only return when it's committed
-            // remotely...
-            log.debug("Waiting for promise...");
-            await commitPromise;
-            log.debug("Waiting for promise...done");
+            /**
+             * This will verify that the data we have is written to the server
+             * and not just the local cache.
+             */
+            const waitForCommit = async () => {
+
+                // TODO: this might add some EXTRA latency though because (I
+                // think) it's going to wait for another server read.  Ideally
+                // what would happen is that we could listen to the batch
+                // directly to avoid this.
+
+                const [docMetaRef, docInfoRef] = createDocRefs();
+
+                this.handleDatastoreMutations(docMetaRef, datastoreMutation, 'write');
+
+                const commitPromise = Promise.all([
+                    this.waitForCommit(docMetaRef),
+                    this.waitForCommit(docInfoRef)
+                ]);
+
+                log.debug("Waiting for promise...");
+                await commitPromise;
+                log.debug("Waiting for promise...done");
+
+            }
+
+            if (opts.consistency === 'committed') {
+                // normally we would NOT want to wait because this will just
+                // slow down our writes and going into the cache is ok for most
+                // operations.
+                await waitForCommit();
+            }
 
         } finally {
             // noop for now
@@ -958,7 +989,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
                 log.debug(`Got written mutation with op: ${op}`, ref);
-
             }
 
             if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
