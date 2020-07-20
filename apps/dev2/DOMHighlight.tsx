@@ -5,7 +5,7 @@ import {
     useResizeEventListener,
     useScrollEventListener
 } from "../../web/js/react/WindowHooks";
-import {HitHighlightRow} from "./HitHighlightRow";
+import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
 import {AnimationFrameDebouncer} from "./AnimationFrameDebouncer";
 import withAnimationFrame = AnimationFrameDebouncer.withAnimationFrame;
@@ -16,7 +16,7 @@ interface IProps extends DOMTextHit {
 
 }
 
-export const HitHighlight = memoForwardRef((props: IProps) => {
+export const DOMHighlight = memoForwardRef((props: IProps) => {
 
     const {regions} = props;
 
@@ -31,7 +31,7 @@ export const HitHighlight = memoForwardRef((props: IProps) => {
 
     function toHitHighlighterRow(highlightViewportPosition: IHighlightViewportPosition) {
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;
-        return <HitHighlightRow {...highlightViewportPosition}
+        return <DOMHighlightRow {...highlightViewportPosition}
                                 key={key}/>
     }
 

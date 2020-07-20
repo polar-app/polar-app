@@ -1,7 +1,7 @@
 import React from 'react';
 import {Content} from "./Content";
 import {SearchBar} from "./SearchBar";
-import { HitHighlights } from './HitHighlights';
+import { DOMHighlights } from './DOMHighlights';
 import { DOMTextHit } from 'polar-dom-text-search/src/DOMTextHit';
 import {DOMTextSearch} from "polar-dom-text-search/src/DOMTextSearch";
 
@@ -33,7 +33,7 @@ export const App = () => {
         <div style={{padding: '15px'}}>
             <SearchBar onSearch={handleSearch}/>
             <Content/>
-            <HitHighlights hits={hits}/>
+            <DOMHighlights hits={hits}/>
         </div>
     );
 }

@@ -11,7 +11,7 @@ interface IProps extends IHighlightViewportPosition {
 /**
  * Handles rendering a single row of non-overflow text.
  */
-export const HitHighlightRow = memoForwardRef((props: IProps) => {
+export const DOMHighlightRow = memoForwardRef((props: IProps) => {
 
     if (! intersectWithWindow(props)) {
         // if the position is actually offscreen, don't draw it to save
