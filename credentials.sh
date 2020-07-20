@@ -8,8 +8,13 @@ export CSC_IDENTITY_AUTO_DISCOVERY=true
 export APPLEID=burtonator2011@gmail.com
 # export APPLEIDPASS=nlrs-matd-xulq-hvur
 # export APPLEIDPASS=fzuy-vfgn-syyj-dvlb
-export APPLEIDPASS=cfop-pksv-kbwa-wumi
-#
+# export APPLEIDPASS=cfop-pksv-kbwa-wumi
+
+# I don't think app specific passwords last very long and that we have to create
+# a new one with each release...?
+# https://appleid.apple.com/account/manage
+export APPLEIDPASS=krip-ambs-ocjr-hmvr
+
 
 if [ "${TERM_PROGRAM}" = "Apple_Terminal" ] && [ "${APPLEIDPASS}" = "" ]; then
   echo "ERROR: Must set APPLEIDPASS. Hint: pass is F*******3"
