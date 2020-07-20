@@ -29,7 +29,7 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
     useScrollEventListener(redrawCallback);
     useResizeEventListener(redrawCallback);
 
-    function toHitHighlighterRow(highlightViewportPosition: IHighlightViewportPosition) {
+    function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition) {
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;
         return <DOMHighlightRow {...highlightViewportPosition}
                                 key={key}/>
@@ -37,7 +37,7 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
 
     return (
         <>
-            {highlightViewportPositions.map(toHitHighlighterRow)}
+            {highlightViewportPositions.map(toDOMHighlighterRow)}
         </>
     );
 

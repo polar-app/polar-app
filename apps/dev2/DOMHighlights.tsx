@@ -11,14 +11,14 @@ interface IProps {
 
 export const DOMHighlights = memoForwardRef((props: IProps) => {
 
-    function toHitHighlight(hit: DOMTextHit, idx: number) {
+    function toDOMHighlight(hit: DOMTextHit, idx: number) {
         return <DOMHighlight key={idx} {...hit}/>
 
     }
 
     return (
         <>
-            {props.hits.map(toHitHighlight)}
+            {props.hits.map(toDOMHighlight)}
         </>
     );
 

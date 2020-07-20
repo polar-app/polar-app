@@ -4,7 +4,6 @@ import {Highlights} from "./Highlights";
 import intersectWithWindow = Highlights.intersectWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
-
 interface IProps extends IHighlightViewportPosition {
 }
 
