@@ -17,7 +17,7 @@ import {
 } from 'polar-shared/src/metadata/Hashcode';
 import {
     BackendFileRefData,
-    BinaryFileData,
+    BinaryFileData, DatastoreConsistency,
     WriteFileProgressListener
 } from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
@@ -72,6 +72,7 @@ export namespace DocImporter {
     }
 
     export interface DocImporterOpts {
+        readonly consistency?: DatastoreConsistency;
         readonly docInfo?: Partial<IDocInfo>;
         readonly docImport?: IDocImport;
         readonly progressListener?: WriteFileProgressListener;
@@ -209,6 +210,7 @@ export namespace DocImporter {
         };
 
         const writeFileOpts: WriteOpts = {
+            consistency: opts.consistency,
             writeFile,
             progressListener: opts.progressListener
         }
