@@ -1,6 +1,7 @@
+
 ---
 title: "A Former Miss Ohio and Hollywood Actress Reads Daily to Advocate for Health"
-date: 2020-06-17T08:00:00.000-08:00
+date: 2020-07-30T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/JDaRIhF.png
 description: A Former Miss Ohio and Hollywood Actress Reads Daily to Advocate for Health
@@ -34,13 +35,13 @@ As a heart health advocate, Lindsay focuses on prevention because sudden cardiac
 
 As a teen diagnosed with HCM, Lindsay has been able to live a fulfilling life with modifications to her activities and dreams. She wants other children to have the same chance at a long life.
 
-Sudden cardiac arrest takes the lives of 14,000 children and young adults annually in the U.S. (<ahref="https://www.hrsonline.org/" target="_blank">Heart Rhythm Society</a>), and more than 1 in 100 babies are born with congenital heart conditions (<ahref="https://www.cdc.gov/ncbddd/heartdefects/data.html#References">CDC</a>). According to <ahref="https://www.bostonscientific.eu/en-US/heart-disease-facts/young-athletes.html" target="_blank">Boston Scientific</a>, sudden cardiac arrest is the number one killer of student-athletes. 
+Sudden cardiac arrest takes the lives of 14,000 children and young adults annually in the U.S. (<a href="https://www.hrsonline.org/" target="_blank">Heart Rhythm Society</a>), and more than 1 in 100 babies are born with congenital heart conditions (<a href="https://www.cdc.gov/ncbddd/heartdefects/data.html#References">CDC</a>). According to <a href="https://www.bostonscientific.eu/en-US/heart-disease-facts/young-athletes.html" target="_blank">Boston Scientific</a>, sudden cardiac arrest is the number one killer of student-athletes. 
 
 ## Lindsay’s Law
 
 <img class="img-fluid" src="https://i.imgur.com/XIDEoYc.jpg">
 
-By working with the Ohio legislature, Lindsay helped pass an awareness bill called Lindsay’s Law (named after her). The <ahref="https://pubmed.ncbi.nlm.nih.gov/22773708/" target="_blank">Journal of the American Board of Family</a> states that seventy-two percent of children who pass away from sudden cardiac arrest report symptoms that no one attributes to heart disease. As a result, the bill educates coaches, parents, and students on the signs and symptoms of an underlying condition. 
+By working with the Ohio legislature, Lindsay helped pass an awareness bill called Lindsay’s Law (named after her). The <a href="https://pubmed.ncbi.nlm.nih.gov/22773708/" target="_blank">Journal of the American Board of Family</a> states that seventy-two percent of children who pass away from sudden cardiac arrest report symptoms that no one attributes to heart disease. As a result, the bill educates coaches, parents, and students on the signs and symptoms of an underlying condition. 
 
 If a student is exhibiting symptoms they’re removed from play until they are cleared by a doctor. The main goal of Lindsay’s Law is to protect students and educate the people responsible for their safety. 
 
@@ -54,15 +55,15 @@ Lindsay is actively advocating for patient and cardiac legislations and increase
 
 <img class="img-fluid" src="https://i.imgur.com/UsoYKaw.jpg">
 
-The <ahref="https://www.congress.gov/bill/116th-congress/house-bill/1209" target="_blank">HEARTS Act</a> is bipartisan legislation that is essentially Lindsay’s Law on a national level with added surveillance of heart conditions. Another Lindsay’s Law type legislation is the <ahref="https://www.congress.gov/bill/114th-congress/house-bill/829" target="_blank">SAFE PLAY Act</a>, which focuses on advancing safety guidelines for young athletes. It also includes grants for CPR training and automated external defibrillators for schools. 
+The <a href="https://www.congress.gov/bill/116th-congress/house-bill/1209" target="_blank">HEARTS Act</a> is bipartisan legislation that is essentially Lindsay’s Law on a national level with added surveillance of heart conditions. Another Lindsay’s Law type legislation is the <a href="https://www.congress.gov/bill/114th-congress/house-bill/829" target="_blank">SAFE PLAY Act</a>, which focuses on advancing safety guidelines for young athletes. It also includes grants for CPR training and automated external defibrillators for schools. 
 
-Lindsay works closely with the <ahref="https://www.heart.org/" target="_blank">American Heart Foundation</a> and the <ahref="https://www.acc.org/" target="_blank">American College of Cardiology</a> to advocate for legislative initiatives centered on heart health and cardiac patient care. In partnership with the <ahref="https://www.heart.org/" target="_blank">American Heart Association</a>, Lindsay met with members of Congress to discuss banning flavored tobacco products. 
+Lindsay works closely with the <a href="https://www.heart.org/" target="_blank">American Heart Foundation</a> and the <a href="https://www.acc.org/" target="_blank">American College of Cardiology</a> to advocate for legislative initiatives centered on heart health and cardiac patient care. In partnership with the <a href="https://www.heart.org/" target="_blank">American Heart Association</a>, Lindsay met with members of Congress to discuss banning flavored tobacco products. 
 
-Lindsay’s goal as an advocate is to help in any way that she can, no matter how small it may be. Lindsay also advocates for homeless people in New York City. She notices that homeless people are forgotten in the busy city, so she shares their stories on <ahref="https://www.instagram.com/handmehope/?hl=en" target="_blank">Instagram</a> as a way to amplify their voices. She passionately says that homeless people aren’t any less, they’re equals. 
+Lindsay’s goal as an advocate is to help in any way that she can, no matter how small it may be. Lindsay also advocates for homeless people in New York City. She notices that homeless people are forgotten in the busy city, so she shares their stories on <a href="https://www.instagram.com/handmehope/?hl=en" target="_blank">Instagram</a> as a way to amplify their voices. She passionately says that homeless people aren’t any less, they’re equals. 
 
 ## Coming Soon to Bookstores...
 
-In the future, Lindsay wants to better protect children with heart conditions through policy reform and a children’s book. She’s working with the main editor of the <ahref="https://www.amazon.com/Hypertrophic-Cardiomyopathy-Srihari-S-Naidu/dp/3319924222/ref=sr_1_1?dchild=1&keywords=hypertrophic+cardiomyopathy&qid=1591303374&sr=8-1" target="_blank">Hypertrophic Cardiomyopathy textbook</a> and a pediatric psychologist to help create the content of her book. The children’s book will cover topics of the heart and how it functions. 
+In the future, Lindsay wants to better protect children with heart conditions through policy reform and a children’s book. She’s working with the main editor of the <a href="https://www.amazon.com/Hypertrophic-Cardiomyopathy-Srihari-S-Naidu/dp/3319924222/ref=sr_1_1?dchild=1&keywords=hypertrophic+cardiomyopathy&qid=1591303374&sr=8-1" target="_blank">Hypertrophic Cardiomyopathy textbook</a> and a pediatric psychologist to help create the content of her book. The children’s book will cover topics of the heart and how it functions. 
 
 Lindsay hopes that writing a book with relatable characters will give young patients comfort during painful times. She wants children to know that they aren’t alone in their fight with heart disease. Most importantly, Lindsay’s book will help spread awareness about young patients battling heart disease. Books like Lindsay’s have the power to educate the public and transform lives for the better.
 
@@ -78,11 +79,4 @@ Lindsay says that in advocacy work, storytelling is key. Numbers and statistics 
 
 Lindsay Davis is a powerful example of someone who hasn’t let their circumstances define them. She has taken control of her life and utilized her platform to advocate for children with heart conditions. Her words will live on and continue to positively impact the lives of children for generations. 
 
-At <ahref="https://getpolarized.io/" target="_blank">Polar</a>, our vision is to make education a basic human right, and we share Lindsay’s enthusiasm for spreading awareness and knowledge. We strongly believe that written words have the power to open minds and create lasting change. 
-
-
-
-
-
-
-
+At <a href="https://getpolarized.io/" target="_blank">Polar</a>, our vision is to make education a basic human right, and we share Lindsay’s enthusiasm for spreading awareness and knowledge. We strongly believe that written words have the power to open minds and create lasting change. 
