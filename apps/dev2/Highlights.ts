@@ -1,4 +1,4 @@
-import { ILTRect } from "polar-shared/src/util/rects/ILTRect";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {Rects} from "../../web/js/Rects";
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Numbers} from "polar-shared/src/util/Numbers";
@@ -61,10 +61,9 @@ export namespace Highlights {
 
         function createHighlightViewportPositions(nodeTextRegions: ReadonlyArray<NodeTextRegion>) {
 
-            function toIHighlightViewportPositions(nodeTextRegion: NodeTextRegion): IHighlightViewportPosition {
+            function toHighlightViewportPositions(nodeTextRegion: NodeTextRegion): IHighlightViewportPosition {
 
                 const viewportPosition = Highlights.createViewportPosition(nodeTextRegion);
-
                 return {
                     ...viewportPosition,
                     ...nodeTextRegion
@@ -72,7 +71,7 @@ export namespace Highlights {
 
             }
 
-            return nodeTextRegions.map(toIHighlightViewportPositions);
+            return nodeTextRegions.map(toHighlightViewportPositions);
 
         }
 
@@ -120,7 +119,6 @@ export namespace Highlights {
 
         // compute each position in the viewport
         const highlightViewportPositions = createHighlightViewportPositions(splitNodeTextRegions);
-
         // then re-join based on top/height of each one.
         return mergeHighlightViewportPositions(highlightViewportPositions);
 
@@ -143,13 +141,19 @@ export namespace Highlights {
 
     }
 
+    function rangeToText(range: Range): string {
+        const contents = range.cloneContents();
+        const div = document.createElement('div');
+        div.append(contents);
+        return div.innerText;
+    }
+
     export function createViewportPosition(highlight: IHighlightNode): IViewportPosition {
 
         const range = document.createRange();
-        range.setStart(highlight.node, highlight.start);
-        // FIXME I think setEnd is NOT inclusive ... but I think there's another bug...
-        range.setEnd(highlight.node, highlight.end + 1);
 
+        range.setStart(highlight.node, highlight.start);
+        range.setEnd(highlight.node, highlight.end);
         const rect = range.getBoundingClientRect();
 
         return {

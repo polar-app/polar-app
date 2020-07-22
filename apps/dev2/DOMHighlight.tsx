@@ -16,6 +16,9 @@ interface IProps extends DOMTextHit {
 
 }
 
+/**
+ * An individual highlight that might need to be split across rows.
+ */
 export const DOMHighlight = memoForwardRef((props: IProps) => {
 
     const {regions} = props;
