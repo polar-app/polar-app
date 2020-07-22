@@ -8,6 +8,7 @@ import TagID = Tags.TagID;
 import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {useDragContext} from "../../ui/tree/DragTarget2";
+import {useContextMenu} from "../../../../apps/repository/js/doc_repo/MUIContextMenu";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 interface IProps {
+
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
 
     readonly nodeId: string;
@@ -66,6 +68,7 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
 
     const classes = useStyles();
     const drag = useDragContext();
+    const contextMenuCallbacks = useContextMenu();
 
     const onCheckbox = useCallback((event: React.MouseEvent) => {
         props.selectRow(props.nodeId, event, 'checkbox');
@@ -83,7 +86,9 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
     );
 
     return (
-        <div className={className} onClick={event => props.selectRow(props.nodeId, event, 'click')}>
+        <div className={className}
+             {...contextMenuCallbacks}
+             onClick={event => props.selectRow(props.nodeId, event, 'click')}>
 
             <div className={classes.checkbox}
                  onClick={event => onCheckbox(event)}>

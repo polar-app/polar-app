@@ -2,9 +2,9 @@ import React from 'react';
 import TreeView from '@material-ui/lab/TreeView';
 import {TagNode} from "../../tags/TagNode";
 import {MUITreeItem} from "./MUITreeItem";
-import isEqual from "react-fast-compare";
 import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sidebar/FolderSidebarStore";
 import {Tags} from "polar-shared/src/tags/Tags";
+import {memoForwardRef} from "../../react/ReactUtils";
 import TagID = Tags.TagID;
 
 interface IProps {
@@ -21,10 +21,11 @@ interface IProps {
 
 }
 
-export const MUITreeView = React.memo((props: IProps) => {
+export const MUITreeView = memoForwardRef((props: IProps) => {
 
     return (
-        <TreeView selected={[]}
+        <TreeView
+                  selected={[]}
                   expanded={[...props.expanded]}>
 
             <MUITreeItem nodeId={props.root.id}
@@ -39,4 +40,4 @@ export const MUITreeView = React.memo((props: IProps) => {
 
         </TreeView>
     );
-}, isEqual);
+});
