@@ -1,5 +1,5 @@
 import React from 'react';
-import {memoForwardRef} from "../../web/js/react/ReactUtils";
+import {memoForwardRef} from "../react/ReactUtils";
 import {Highlights} from "./Highlights";
 import intersectWithWindow = Highlights.intersectWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;

@@ -108,7 +108,7 @@ export const ActiveHotKeys = () => {
 
 }
 
-const keyMap = { SHOW_ALL_HOTKEYS: "shift+?" };
+const keyMap = { SHOW_ALL_HOTKEYS: ["shift+?", '/'] };
 
 export const ActiveHotKeyBindings = () => {
 

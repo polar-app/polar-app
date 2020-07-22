@@ -1,10 +1,10 @@
-import {memoForwardRef} from "../../web/js/react/ReactUtils";
+import {memoForwardRef} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
 import React from "react";
 import {
     useResizeEventListener,
     useScrollEventListener
-} from "../../web/js/react/WindowHooks";
+} from "../react/WindowHooks";
 import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
 import {AnimationFrameDebouncer} from "./AnimationFrameDebouncer";

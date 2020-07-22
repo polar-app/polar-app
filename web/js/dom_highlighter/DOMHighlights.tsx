@@ -1,5 +1,5 @@
 import React from 'react';
-import {memoForwardRef} from "../../web/js/react/ReactUtils";
+import {memoForwardRef} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
 import {DOMHighlight} from "./DOMHighlight";
 

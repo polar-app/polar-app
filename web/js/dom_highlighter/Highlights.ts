@@ -1,9 +1,9 @@
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {Rects} from "../../web/js/Rects";
+import {Rects} from "../Rects";
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Arrays} from "polar-shared/src/util/Arrays";
+import {Arrays} from "../../../polar-shared/src/util/Arrays";
 
 export namespace Highlights {
 
