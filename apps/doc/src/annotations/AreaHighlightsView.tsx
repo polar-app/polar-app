@@ -5,7 +5,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 
 export const AreaHighlightsView = React.memo(() => {
 
-    const {docMeta} = useDocViewerStore();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     if (!docMeta) {
         return null;

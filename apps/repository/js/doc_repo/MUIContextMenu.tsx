@@ -64,7 +64,7 @@ interface CreateContextMenuOpts<O> {
 
 }
 
-export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element,
+export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
                                      opts: CreateContextMenuOpts<O> = {}): (props: IChildComponentProps) => JSX.Element {
 
     return (props: IChildComponentProps): JSX.Element => {
@@ -100,6 +100,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
         return (
             <ContextMenuContext.Provider value={{onContextMenu}}>
+
                 {active &&
                     <MUIContextMenu {...active}
                                     handleClose={handleClose}>

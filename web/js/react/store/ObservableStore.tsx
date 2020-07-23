@@ -1,9 +1,10 @@
-import {Subject, Subscription} from "rxjs";
-import React, {useContext, useEffect, useState} from "react";
+import {Subject} from "rxjs";
+import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
-import {Preconditions} from "polar-shared/src/Preconditions";
+import {useComponentWillUnmount} from "../../hooks/lifecycle";
+import isEqual from "react-fast-compare";
 
-function pick<T, K extends keyof T>(value: T, keys: K[]): Pick<T, K> {
+function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
 
     const result: any = {};
 
@@ -58,37 +59,42 @@ export interface ObservableStore<V> {
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
-export function useObservableStore<V>(context: React.Context<ObservableStore<V>>): V {
+
+export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
+                                                         keys: ReadonlyArray<K> | undefined): Pick<V, K> {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
-    const subscriptionRef = React.useRef<Subscription | undefined>(undefined);
-
     const [value, setValue] = useState<V>(internalObservableStore.current);
 
-    useEffect(() => {
+    const subscriptionRef = React.useRef(internalObservableStore.subject.subscribe((newValue) => {
 
-        // this is effectively componentDidMount
-        subscriptionRef.current = internalObservableStore.subject.subscribe((value) => {
-            // the internal current in the context is already updated.
-            return setValue(value);
-        });
+        if (keys) {
 
-        return () => {
+            // we have received an update but we're only interested in a few
+            // keys so compare them.
 
-            // this is effectively componentWillUnmount... however it's a bit
-            // different as the component can't have any reference.  It seems
-            // functional component are still referenced don't have this
-            // evaluated
+            const newValuePicked = pick(newValue, keys);
+            const valuePicked = pick(value, keys);
 
-            if (subscriptionRef.current) {
-                subscriptionRef.current.unsubscribe();
+            if (! isEqual(valuePicked, newValuePicked)) {
+                // the internal current in the context is already updated.
+                return setValue(newValue);
             }
 
+        } else {
+            return setValue(newValue);
         }
 
-    },[]);
+    }));
 
+    useComponentWillUnmount(() => {
+        if (subscriptionRef.current) {
+            subscriptionRef.current.unsubscribe();
+        }
+    });
+
+    // return the initial value...
     return value;
 
 }
@@ -125,6 +131,12 @@ interface ObservableStoreProps<V> {
 
 export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
+/**
+ * Hook to listen to store changes. Use undefined to not filter for properties
+ * but we don't recommend it.
+ */
+export type UseStoreHook<V, K extends keyof V> = (keys: ReadonlyArray<K> | undefined) => Pick<V, K>;
+
 export type UseContextHook<V> = () => V;
 
 /**
@@ -134,9 +146,12 @@ export interface StoreMutator {
 
 }
 
+// type FooTuple = [<V extends unknown, K extends keyof V>(keys: ReadonlyArray<K>) => void];
+
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     ObservableStoreProviderComponent<V>,
-    UseContextHook<V>,
+    // NOTE: it's not possible to use a type for this because V is defined in the tuple
+    <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
 ];
@@ -239,8 +254,8 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
-    const useContextHook: UseContextHook<V> = () => {
-        return useObservableStore(storeContext);
+    const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
+        return useObservableStore(storeContext, keys);
     }
 
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
@@ -277,7 +292,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [providerComponent, useContextHook, useCallbacksHook, useMutatorHook];
+    return [providerComponent, useStoreHook, useCallbacksHook, useMutatorHook];
 
 }
 

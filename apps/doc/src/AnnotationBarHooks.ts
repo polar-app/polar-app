@@ -42,10 +42,10 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
 export function useAnnotationBar() {
 
-    const store = React.useRef<IDocViewerStore | undefined>(undefined)
+    const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
     const textHighlightCallback = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
 
-    store.current = useDocViewerStore();
+    store.current = useDocViewerStore(['docMeta', 'docScale']);
     textHighlightCallback.current = useCreateTextHighlightCallback();
 
     React.useMemo(() => {

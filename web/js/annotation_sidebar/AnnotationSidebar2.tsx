@@ -7,6 +7,7 @@ import {useAnnotationSidebarStore} from '../../../apps/doc/src/AnnotationSidebar
 import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputContext";
 import {AnnotationHeader} from './AnnotationSidebarHeader';
 import isEqual from "react-fast-compare";
+import {memoForwardRef} from "../react/ReactUtils";
 
 const LoadRepositoryExplainer = () => (
     <div className="p-2 text-center">
@@ -35,7 +36,7 @@ const LoadRepositoryExplainer = () => (
     </div>
 );
 
-const NoAnnotations = () => {
+const NoAnnotations = memoForwardRef(() => {
     return (
         <div className="p-2"
              style={{
@@ -78,13 +79,13 @@ const NoAnnotations = () => {
 
         </div>
     );
-};
+});
 
 interface AnnotationSidebarItemProps {
     readonly annotation: IDocAnnotationRef;
 }
 
-const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {
+const AnnotationSidebarItem = memoForwardRef((props: AnnotationSidebarItemProps) => {
 
     const {annotation} = props;
 
@@ -100,18 +101,16 @@ const AnnotationSidebarItem = (props: AnnotationSidebarItemProps) => {
 
     );
 
-}
+});
 
 const AnnotationsBlock = React.memo(() => {
 
-    const store = useAnnotationSidebarStore();
+    const store = useAnnotationSidebarStore(['view']);
 
-    const {view} = store;
-
-    if (view.length > 0) {
+    if (store.view.length > 0) {
         return (
             <>
-                {view.map(annotation => (
+                {store.view.map(annotation => (
                     <AnnotationSidebarItem key={annotation.id}
                                            annotation={annotation}/>))}
             </>

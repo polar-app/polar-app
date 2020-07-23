@@ -45,7 +45,7 @@ function mutatorFactory() {
 
 const callbacksFactory: CallbacksFactory<IInvitation, Mutator, IInvitationCallbacks> = (storeProvider, setStore, mutator) => {
 
-    const tagStore = useTagStore()
+    const tagStore = useTagStore(undefined)
 
     return class {
         public static toggleInvited() {

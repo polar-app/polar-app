@@ -14,7 +14,7 @@ interface IProps {
 
 const StoreBinder = (props: IProps) => {
 
-    const store = useDocRepoSidebarTagStoreStore();
+    const store = useDocRepoSidebarTagStoreStore(undefined);
     const callbacks = useDocRepoSidebarTagStoreCallbacks();
 
     return (

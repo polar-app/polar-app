@@ -10,10 +10,9 @@ import {TextFilter2} from "./filter_bar/TextFilter2";
 
 export const AnnotationRepoFilterBar2 = () => {
 
-    const store = useAnnotationRepoStore();
+    const {filter} = useAnnotationRepoStore(['filter']);
     const callbacks = useAnnotationRepoCallbacks();
 
-    const {filter} = store;
     const {setFilter} = callbacks;
 
     return (

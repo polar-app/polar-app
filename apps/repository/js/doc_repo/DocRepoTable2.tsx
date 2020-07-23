@@ -12,8 +12,8 @@ import isEqual from "react-fast-compare";
 
 export const DocRepoTable2 = React.memo(() => {
 
-    const store = useDocRepoStore();
-    const {page, rowsPerPage, viewPage, selected} = store;
+    const {page, rowsPerPage, viewPage, selected} 
+        = useDocRepoStore(['page', 'rowsPerPage', 'viewPage', 'selected']);
 
     return (
         <div style={{

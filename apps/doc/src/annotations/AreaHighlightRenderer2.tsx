@@ -27,7 +27,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     const {areaHighlight, fingerprint, pageNum} = props;
     const {id} = areaHighlight;
     const container = useAnnotationContainer(pageNum);
-    const {docMeta, docScale} = useDocViewerStore();
+    const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
 
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
 

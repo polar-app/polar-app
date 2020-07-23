@@ -9,12 +9,14 @@ import {
     useContextMenu
 } from "../../repository/js/doc_repo/MUIContextMenu";
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
-import {useDocViewerFileTypeContext} from "./renderers/DocRenderer";
 
 export const ProgressBar = React.memo(() => {
 
-    const store = useDocViewerStore();
-    const docMeta = store.docMeta!;
+    const {docMeta} = useDocViewerStore(['docMeta']);
+
+    if (! docMeta) {
+        return null;
+    }
 
     const perc = DocMetas.computeProgress(docMeta);
 

@@ -85,7 +85,7 @@ const FullScreenButton = React.memo(() => {
 
 const PageNumberInput = (props: NumPagesProps) => {
 
-    const {page, pageNavigator} = useDocViewerStore();
+    const {page, pageNavigator} = useDocViewerStore(['page', 'pageNavigator']);
     const {onPageJump} = useDocViewerCallbacks();
 
     // yield to the property, except if we're changing the value, then jump
@@ -216,7 +216,7 @@ const NumPages = (props: NumPagesProps) => (
 const PagePrevButton = React.memo(() => {
 
     const {onPagePrev} = useDocViewerCallbacks();
-    const {pageNavigator, page} = useDocViewerStore();
+    const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);
 
     return (
         <IconButton disabled={! pageNavigator || page <= 1}
@@ -230,7 +230,7 @@ const PagePrevButton = React.memo(() => {
 const PageNextButton = () => {
 
     const {onPageNext} = useDocViewerCallbacks();
-    const {pageNavigator, page} = useDocViewerStore();
+    const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);
 
     return (
         <IconButton disabled={! pageNavigator || page >= pageNavigator.count}
@@ -244,8 +244,8 @@ const PageNextButton = () => {
 
 export const DocViewerToolbar = React.memo(() => {
 
-    const {docScale, pageNavigator} = useDocViewerStore();
-    const {finder} = useDocFindStore();
+    const {docScale, pageNavigator} = useDocViewerStore(['docScale', 'pageNavigator']);
+    const {finder} = useDocFindStore(['finder']);
 
     const {setScale} = useDocViewerCallbacks();
 

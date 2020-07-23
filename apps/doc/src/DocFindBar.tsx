@@ -16,7 +16,7 @@ type FindCallback = (opts: IFindOpts) => void;
 
 function useFindCallback(): FindCallback {
 
-    const {findHandler} = useDocFindStore();
+    const {findHandler} = useDocFindStore(['findHandler']);
     const {doFind, setOpts, reset} = useDocFindCallbacks();
 
     return (opts: IFindOpts) => {
@@ -46,7 +46,7 @@ function useFindCallback(): FindCallback {
 
 const Matches = React.memo(() => {
 
-    const {matches} = useDocFindStore();
+    const {matches} = useDocFindStore(['matches']);
 
     if (! matches) {
         return null;
@@ -62,8 +62,8 @@ const Matches = React.memo(() => {
 
 const MatchNav = React.memo(() => {
 
-    const {matches} = useDocFindStore();
-    const {findHandler} = useDocFindStore();
+    const {matches} = useDocFindStore(['matches']);
+    const {findHandler} = useDocFindStore(['findHandler']);
 
     return (
         <>
@@ -83,7 +83,7 @@ const MatchNav = React.memo(() => {
 
 export const DocFindBar = React.memo(() => {
 
-    const {active, opts} = useDocFindStore();
+    const {active, opts} = useDocFindStore(['active', 'opts']);
     const {reset, setMatches} = useDocFindCallbacks();
 
     const doFind = useFindCallback();

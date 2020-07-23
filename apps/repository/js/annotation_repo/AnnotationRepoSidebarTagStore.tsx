@@ -17,7 +17,7 @@ interface IProps {
 
 const StoreBinder = (props: IProps) => {
 
-    const store = useAnnotationRepoSidebarTagStoreStore();
+    const store = useAnnotationRepoSidebarTagStoreStore(undefined);
     const callbacks = useAnnotationRepoSidebarTagStoreCallbacks();
 
     return (

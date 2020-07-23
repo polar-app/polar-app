@@ -41,7 +41,7 @@ const ToggleMounted = (props: ToggleMountedProps) => {
 }
 
 function myHook() {
-    const tagStore = useTagStore()
+    const tagStore = useTagStore(undefined)
     console.log("FIXME: got my tagStore: ", tagStore);
 }
 
@@ -57,7 +57,7 @@ interface IMyCallbacks {
 // }
 
 function myCallback() {
-    const tagStore = useTagStore();
+    const tagStore = useTagStore(undefined);
     console.log("FIXME it worked");
 }
 
@@ -72,7 +72,7 @@ const myCallbacks: IMyCallbacks = {
 
 const ChildComponent = () => {
 
-    const store = useMyInvitationStore();
+    const store = useMyInvitationStore(undefined);
     const callbacks = useMyInvitationStoreCallbacks();
 
     Preconditions.assertPresent(callbacks, "callbacks");

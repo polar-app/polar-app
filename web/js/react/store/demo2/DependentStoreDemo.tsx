@@ -29,10 +29,10 @@ const ChildComponent = () => {
 
     console.log("FIXME render");
 
-    const alphaStore = useAlphaStore();
+    const alphaStore = useAlphaStore(undefined);
     const alphaCallbacks = useAlphaStoreCallbacks();
 
-    const betaStore = useBetaStore();
+    const betaStore = useBetaStore(undefined);
     const betaCallbacks = useBetaStoreCallbacks();
 
     return (

@@ -32,7 +32,7 @@ const BrowserTabContent = React.memo((props: BrowserTabContentProps) => {
 
 export const BrowserTabContents = React.memo(() => {
 
-    const {activeTab, tabs} = useBrowserTabsStore();
+    const {activeTab, tabs} = useBrowserTabsStore(['activeTab', 'tabs']);
 
     return (
         <>

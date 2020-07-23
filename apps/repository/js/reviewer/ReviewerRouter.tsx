@@ -10,7 +10,7 @@ export const ReviewRouter = () => {
 
     // <MUIAsyncLoader provider={provider} render={Foo}/>
 
-    const store = useAnnotationRepoStore();
+    const store = useAnnotationRepoStore(['view']);
 
     return (
 

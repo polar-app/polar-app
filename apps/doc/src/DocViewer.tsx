@@ -28,9 +28,9 @@ import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
-import {DocRenderer, DocViewerFileTypeContext} from "./renderers/DocRenderer";
+import {DocRenderer} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
-import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
+import { ViewerContainerProvider } from "./ViewerContainerStore";
 
 const Main = React.memo(() => {
 
@@ -67,7 +67,7 @@ const Main = React.memo(() => {
 
 const DocMain = React.memo(() => {
 
-    const {docURL, docMeta} = useDocViewerStore();
+    const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 
     if (! docURL) {
         return null;
@@ -169,7 +169,7 @@ namespace Device {
 
     export const Desktop = React.memo(() => {
 
-        const {resizer, docMeta} = useDocViewerStore();
+        const {resizer, docMeta} = useDocViewerStore(['resizer', 'docMeta']);
 
         function onDockLayoutResize() {
 
@@ -241,7 +241,7 @@ export const DocViewer = React.memo(() => {
 
     const log = useLogger();
     const {setDocMeta} = useDocViewerCallbacks();
-    const {docURL} = useDocViewerStore();
+    const {docURL} = useDocViewerStore(['docURL']);
     const persistenceLayerContext = usePersistenceLayerContext()
 
     useAnnotationBar();
@@ -293,15 +293,11 @@ export const DocViewer = React.memo(() => {
         return <LoadingProgress/>
     }
 
-    const fileType = FileTypes.create(docURL);
-
     return (
-        <DocViewerFileTypeContext.Provider value={fileType}>
-
+        <ViewerContainerProvider>
             <DeviceRouter handheld={<Device.Handheld/>}
                           desktop={<Device.Desktop/>}/>
-
-        </DocViewerFileTypeContext.Provider>
+        </ViewerContainerProvider>
     )
 
 }, isEqual);

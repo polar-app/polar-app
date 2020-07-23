@@ -13,7 +13,7 @@ interface IProps {
 
 export const DocViewerDocMetaLookupContextProvider = React.memo((props: IProps) => {
 
-    const {docMeta} = useDocViewerStore();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     class DefaultDocMetaLookupContext extends BaseDocMetaLookupContext {
 

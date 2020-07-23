@@ -18,10 +18,9 @@ export interface IProps {
 
 export const DocRepoFilterBar = (props: IProps) => {
 
-    const store = useDocRepoStore();
+    const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();
 
-    const {filters} = store;
     const {setFilters} = callbacks;
 
     const Right = () => {

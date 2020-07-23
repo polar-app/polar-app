@@ -96,7 +96,7 @@ export function useDragAndDropListener() {
 
 export const AddFileDropzone = React.forwardRef((props: any, ref) => {
 
-    const store = useAddFileDropzoneStore();
+    const {active} = useAddFileDropzoneStore(['active']);
     const callbacks = useAddFileDropzoneCallbacks();
 
     function closeDialog() {
@@ -104,7 +104,7 @@ export const AddFileDropzone = React.forwardRef((props: any, ref) => {
     }
 
     return (
-        <AddFileDropzoneDialog open={store.active}
+        <AddFileDropzoneDialog open={active}
                                noActions={true}
                                onClose={closeDialog}/>
     );

@@ -27,7 +27,7 @@ function mutatorFactory() {
 
 const callbacksFactory: CallbacksFactory<IBetaStore, Mutator, IBetaCallbacks> = (storeProvider, setStore, mutator) => {
 
-    const alphaStore = useAlphaStore();
+    const alphaStore = useAlphaStore(undefined);
 
     function setName(name: string) {
 

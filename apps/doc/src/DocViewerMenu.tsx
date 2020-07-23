@@ -34,7 +34,7 @@ type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRe
 
 function useAnnotationMetaResolver(): AnnotationMetaResolver {
 
-    const {docMeta} = useDocViewerStore();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     return (annotationMeta: IAnnotationMeta): IAnnotationRef => {
 
@@ -215,7 +215,7 @@ export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLEl
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
-    const {docDescriptor} = useDocViewerStore();
+    const {docDescriptor} = useDocViewerStore(['docDescriptor']);
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();

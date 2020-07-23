@@ -19,9 +19,8 @@ interface IProps {
 export const TextHighlightRenderer2 = React.memo((props: IProps) => {
 
     const {textHighlight, fingerprint, pageNum} = props;
-
     const container = useAnnotationContainer(pageNum);
-    const {docScale} = useDocViewerStore();
+    const {docScale} = useDocViewerStore(['docScale']);
 
     if (! container || ! docScale) {
         return null;

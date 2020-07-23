@@ -7,7 +7,7 @@ import {DragBar} from "./DragBar";
 
 export const BrowserTabsList = React.memo(() => {
 
-    const {activeTab, tabs} = useBrowserTabsStore();
+    const {activeTab, tabs} = useBrowserTabsStore(['activeTab', 'tabs']);
     const {setActiveTab} = useBrowserTabsCallbacks();
     const history = useHistory();
 

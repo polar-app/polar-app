@@ -8,7 +8,7 @@ import {useOnline} from "./CloudConnectivityButton";
 
 export const DocumentWriteStatus = React.memo(() => {
 
-    const {hasPendingWrites} = useDocViewerStore();
+    const {hasPendingWrites} = useDocViewerStore(['hasPendingWrites']);
     // const online = useOnline();
     //
     // if (! online) {

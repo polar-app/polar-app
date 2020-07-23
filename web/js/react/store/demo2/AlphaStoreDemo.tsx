@@ -25,7 +25,7 @@ function mutatorFactory() {
 
 const callbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> = (storeProvider, setStore, mutator) => {
 
-    const betaStore = useBetaStore();
+    const betaStore = useBetaStore(undefined);
 
     function setName(name: string) {
 

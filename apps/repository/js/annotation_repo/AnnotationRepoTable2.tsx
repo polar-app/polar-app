@@ -80,7 +80,7 @@ namespace Handheld {
 
     export const PrevPage = React.memo(() => {
 
-        const {page} = useAnnotationRepoStore();
+        const {page} = useAnnotationRepoStore(['page']);
         const {setPage} = useAnnotationRepoCallbacks();
 
         if (page <= 0) {
@@ -98,7 +98,7 @@ namespace Handheld {
 
     export const NextPage = React.memo(() => {
 
-        const {page, rowsPerPage, view} = useAnnotationRepoStore();
+        const {page, rowsPerPage, view} = useAnnotationRepoStore(['page', 'rowsPerPage', 'view']);
         const {setPage} = useAnnotationRepoCallbacks();
 
         const nrPages = view.length / rowsPerPage;
@@ -120,11 +120,10 @@ namespace Handheld {
 
 export const AnnotationRepoTable2 = React.memo(() => {
 
-    const store = useAnnotationRepoStore();
-    const callbacks = useAnnotationRepoCallbacks();
+    const {page, rowsPerPage, view, viewPage, selected} =
+        useAnnotationRepoStore(['page', 'rowsPerPage', 'view', 'viewPage', 'selected']);
 
-    const {page, rowsPerPage, view, viewPage, selected} = store;
-    const {setPage, setRowsPerPage} = callbacks;
+    const {setPage, setRowsPerPage} = useAnnotationRepoCallbacks();
 
     const ContextMenu = React.useMemo(() => createContextMenu(AnnotationRepoTableMenu), []);
 

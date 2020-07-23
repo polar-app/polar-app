@@ -6,7 +6,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 
 export const TextHighlightsView = React.memo(() => {
 
-    const {docMeta} = useDocViewerStore();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     if (!docMeta) {
         return null;

@@ -6,8 +6,11 @@ import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume"
 
 export const PagemarkProgressBarMenu = () => {
 
-    const store = useDocViewerStore();
-    const docMeta = store.docMeta!;
+    const {docMeta} = useDocViewerStore(['docMeta']);
+
+    if (! docMeta) {
+        return null;
+    }
 
     const handleJump = () => {
         ReadingProgressResume.resume({docMeta});

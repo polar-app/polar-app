@@ -19,10 +19,11 @@ interface IProps {
 
 export const DocRepoTableToolbar = React.memo((props: IProps) => {
 
-    const store = useDocRepoStore();
+    const {rowsPerPage, view, selected, page}
+        = useDocRepoStore(['rowsPerPage', 'view', 'selected', 'page']);
+
     const callbacks = useDocRepoCallbacks();
 
-    const {rowsPerPage, view, selected, page} = store;
     const {setRowsPerPage, setSelected} = callbacks;
 
     const handleChangePage = (event: any, newPage: number) => {

@@ -33,11 +33,8 @@ export function DocRepoTableHead() {
 
     const classes = useStyles();
 
-    const store = useDocRepoStore();
-    const callbacks = useDocRepoCallbacks();
-
-    const {order, orderBy} = store;
-    const {setSort} = callbacks;
+    const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
+    const {setSort} = useDocRepoCallbacks();
 
     return (
         <TableHead>
