@@ -5,23 +5,39 @@ permalink: /docs/incremental-reading.html
 description: Incremental reading is a strategy around suspending and resuming reading of a document over time to track progress using a a 'pagemark.' 
 ---
 
-# Incremental Reading 
+# Incremental Reading
+ 
+Incremental reading is **the technique of reading articles in small portions**. To learn more, read our blog post on **<a href="https://getpolarized.io/2020/07/09/Guide-To-Incremental-Reading-For-Students-And-Continuous-Learners.html" target="_blank">incremental reading</a>** 
+ 
+## Features in Polar that support incremental reading: 
+ 
+**Document Repository**: Users can organize multiple reading materials (pdfs, epubs, webpages, ebooks) in one place. 
 
-Incremental reading is a strategy around suspending and resuming reading of a document over time.  Reading the documents
-in chunks and coming back to the document at any future point in time.
+<img class="img-fluid" src="https://i.imgur.com/4rClAxt.png">
+ 
+**<a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a>** in Polar allow users to mark regions of a document and specify multiple ranges of text. Users can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and at the top of the document, the progress reading bar will show users exactly where they left their pagemark.
 
-Wikipedia has a good overview of
-<a href="https://en.wikipedia.org/wiki/Incremental_reading">incremental reading</a>
+<img class="img-fluid" src="https://i.imgur.com/7O1QseQ.png">
+ 
+**Annotations**: Simply highlight key information and it will automatically appear in the annotation sidebar.  Polar supports different colors for annotation. Users can also create tags, comment, and modify annotations. 
+ 
+Users can work with annotations directly in a document or in the annotation repository. The advantage of the annotation repository for users is having annotations from all documents in one place. This feature allows users to build a graph-based / networked structure of annotations. 
+ 
+<img class="img-fluid" src="https://i.imgur.com/beb8Qhh.png">
+ 
+Here is a guide on how to do incremental reading in Polar:
+1. Use the Polar Chrome extension to capture documents into Polar or upload a pdf or epub
+2. Highlight key information from the text and the annotation sidebar will automatically save information within the document 
+3. Auto-convert information in the annotation sidebar into flashcards by clicking the lightning symbol
+4. Review flashcards in Polar directly or by syncing flashcards into <a href="https://ankiweb.net/shared/info/734898866">Anki</a>. To start studying annotations and flashcards in Polar, click the “Annotations” tab. Then click “Start Review.”
+ 
+<img class="img-fluid" src="https://i.imgur.com/SDBrleo.png">
+ 
+Here is the basic life cycle of your flashcards with Polar’s own spaced repetition software:
+1. In the beginning, flashcards will be put in **learning** mode until you’ve been able to get a good grasp of the material.
+2. Next, they will be put in **review** mode. This mode schedules the learning at decreasing intervals of time as you accurately complete the flashcards. 
+3. The flashcards you’ve mastered (selected “**good**”) will be reviewed approximately every year. If you review a flashcard and don’t know the answer, click “**again**.” This card will be sent back to the learning mode, then the review mode if you remember it a second time.
 
-> Incremental reading is a software-assisted method for learning and retaining information from reading, helping with the creation of flashcards out of electronic articles read in portions inside a prioritized reading list.
+ 
+ 
 
-> It is particularly targeted to people who are trying to learn for life a large amount of information, particularly if that information comes from various sources.
-
-> "Incremental reading" means "reading in portions". Instead of a linear reading of articles one at a time, the method works by keeping a large reading list of electronic articles or books (often dozens or hundreds of them) and reading parts of several articles in each session. Articles in the reading list are prioritized by the user.
-
-> In the course of reading, key points of articles are broken up into flashcards, which are then learned and reviewed over an extended period of time with the help of a spaced repetition algorithm.
-
-Incremental reading in Polar is implemented with the use of ["pagemarks"](/docs/pagemarks.html) which allow the user to
-mark regions of the document as read.
-
-We also support reviewing your annotations using a [spaced repetition](/docs/spaced-repetition.html) schedule 
