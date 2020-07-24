@@ -9,6 +9,12 @@ export namespace PDFFindControllers {
 
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
+        const defaultOpts = {
+            phraseSearch: false,
+            highlightAll: true,
+            findPrevious: false,
+        };
+
         const exec = (opts: IFindOpts): FindHandler => {
 
             function updatefindmatchescount(evt: UpdateFindMatchesCount) {
@@ -35,14 +41,22 @@ export namespace PDFFindControllers {
             };
 
             function next() {
-                findController.executeCommand('findagain', {...opts, findPrevious: false});
+                findController.executeCommand('findagain', {
+                    ...opts,
+                    ...defaultOpts,
+                    findPrevious: false
+                });
             }
 
             function prev() {
-                findController.executeCommand('findagain', {...opts, findPrevious: true});
+                findController.executeCommand('findagain', {
+                    ...opts,
+                    ...defaultOpts,
+                    findPrevious: true
+                });
             }
 
-            findController.executeCommand('find', opts);
+            findController.executeCommand('find', {...opts, ...defaultOpts});
 
             return {opts, cancel, next, prev};
 

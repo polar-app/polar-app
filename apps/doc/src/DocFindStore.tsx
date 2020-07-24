@@ -60,10 +60,7 @@ const initialStore: IDocFindStore = {
     active: false,
     opts: {
         query: "",
-        phraseSearch: false,
-        caseSensitive: false,
-        highlightAll: true,
-        findPrevious: false,
+        caseSensitive: false
     }
 }
 

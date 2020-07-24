@@ -21,6 +21,9 @@ interface ExtendedSpine {
     readonly items: ReadonlyArray<Section>;
 }
 
+// FIXME: the key bindings for find, etc. ALSO need to be injected into the
+// iframe...
+
 export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL, docMeta} = props;

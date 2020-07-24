@@ -3,9 +3,17 @@ import {
     useComponentWillUnmount
 } from "../hooks/lifecycle";
 
-function useWindowEventListener(name: 'resize' | 'scroll', delegate: () => void) {
+interface WindowOpts {
+    readonly win?: Window;
+}
 
-    const opts = {
+function useWindowEventListener(name: 'resize' | 'scroll',
+                                delegate: () => void,
+                                opts: WindowOpts) {
+
+    const win = opts.win || window;
+
+    const listenerOpts = {
         // capture is needed for scroll to fire on window.\
         capture: true,
 
@@ -16,19 +24,19 @@ function useWindowEventListener(name: 'resize' | 'scroll', delegate: () => void)
     };
 
     useComponentDidMount(() => {
-        window.addEventListener(name, delegate, opts);
+        win.addEventListener(name, delegate, listenerOpts);
     });
 
     useComponentWillUnmount(() => {
-        window.removeEventListener(name, delegate, opts);
+        win.removeEventListener(name, delegate, listenerOpts);
     })
 
 }
 
-export function useScrollEventListener(delegate: () => void) {
-    useWindowEventListener('scroll', delegate);
+export function useScrollEventListener(delegate: () => void, opts: WindowOpts = {}) {
+    useWindowEventListener('scroll', delegate, opts);
 }
 
-export function useResizeEventListener(delegate: () => void) {
-    useWindowEventListener('resize', delegate);
+export function useResizeEventListener(delegate: () => void, opts: WindowOpts = {}) {
+    useWindowEventListener('resize', delegate, opts);
 }

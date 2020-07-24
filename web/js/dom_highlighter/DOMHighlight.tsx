@@ -13,7 +13,6 @@ import toHighlightViewportPositions = Highlights.toHighlightViewportPositions;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends DOMTextHit {
-
 }
 
 /**
@@ -29,8 +28,21 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
         setHighlightViewportPositions(toHighlightViewportPositions(regions));
     }), []);
 
-    useScrollEventListener(redrawCallback);
-    useResizeEventListener(redrawCallback);
+    if (props.regions.length === 0) {
+        // no work to do...
+        return null;
+    }
+
+    function computeWindow(): Window {
+        // this is a big hacky as we need to figure out which window is holding
+        // the node.
+        return props.regions[0].node.ownerDocument!.defaultView!;
+    }
+
+    const win = computeWindow();
+
+    useScrollEventListener(redrawCallback, {win});
+    useResizeEventListener(redrawCallback, {win});
 
     function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition) {
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;

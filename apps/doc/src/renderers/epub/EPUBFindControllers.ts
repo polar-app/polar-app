@@ -26,7 +26,7 @@ export namespace EPUBFindControllers {
             // TODO: I think this should/could go into the store
             const hits = EPUBFinder.exec({
                 query: opts.query,
-                caseInsensitive: opts.caseSensitive
+                caseInsensitive: false
             });
 
             callbacks.setHits(hits);

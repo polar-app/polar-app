@@ -128,13 +128,15 @@ export namespace Highlights {
         return Rects.intersect(Rects.createFromBasicRect(parent), Rects.createFromBasicRect(child));
     }
 
-    export function intersectWithWindow(position: IViewportPosition) {
+    export function intersectWithWindow(position: IHighlightViewportPosition) {
+
+        const win = position.node.ownerDocument!.defaultView!;
 
         const parent: ILTRect = {
             top: 0,
             left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight
+            width: win.innerWidth,
+            height: win.innerHeight
         };
 
         return intersects(parent, position);
@@ -170,16 +172,19 @@ export namespace Highlights {
     /**
      * Convert a fixed position to an absolute position.
      */
-    export function fixedToAbsolute(rect: ILTRect): ILTRect {
+    export function fixedToAbsolute(position: IHighlightViewportPosition): ILTRect {
 
-        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const doc = position.node.ownerDocument!;
+        const win = doc.defaultView!;
+
+        const scrollLeft = win.pageXOffset || doc.documentElement.scrollLeft;
+        const scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
 
         return {
-            top: rect.top + scrollTop,
-            left: rect.left + scrollLeft,
-            width: rect.width,
-            height: rect.height
+            top: position.top + scrollTop,
+            left: position.left + scrollLeft,
+            width: position.width,
+            height: position.height
         };
 
     }
