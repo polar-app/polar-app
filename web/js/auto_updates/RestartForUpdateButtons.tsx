@@ -5,7 +5,7 @@ import React from 'react';
 export class RestartForUpdateButtons {
 
     public static create() {
-        ReactInjector.inject(<RestartForUpdateButton/>, 'restart-for-update');
+        ReactInjector.inject(<RestartForUpdateButton/>, {id: 'restart-for-update'});
     }
 
 }

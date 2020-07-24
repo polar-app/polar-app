@@ -8,6 +8,9 @@ import {useDocViewerCallbacks} from "../../DocViewerStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import Section from '@polar-app/epubjs/types/section';
 import blue from '@material-ui/core/colors/blue';
+import {EPUBFindRenderer} from "./EPUBFindRenderer";
+import {EPUBFindControllers} from "./EPUBFindControllers";
+import {useDocFindCallbacks} from "../../DocFindStore";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -21,9 +24,10 @@ interface ExtendedSpine {
 export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL, docMeta} = props;
-
     const theme = useTheme();
     const {setDocDescriptor, setPageNavigator} = useDocViewerCallbacks();
+    const {setFinder} = useDocFindCallbacks();
+    const [active, setActive] = React.useState(false);
 
     function createCSS(): object {
 
@@ -147,6 +151,9 @@ export const EPUBDocument = React.memo((props: IProps) => {
             nrPages: pageNavigator.count
         });
 
+        const finder = EPUBFindControllers.createFinder();
+        setFinder(finder);
+
         console.log({metadata});
 
         const navigation = await book.loaded.navigation;
@@ -165,6 +172,8 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
         console.log("Loaded epub");
 
+        setActive(true);
+
     }
 
     useComponentDidMount(() => {
@@ -172,6 +181,10 @@ export const EPUBDocument = React.memo((props: IProps) => {
             .catch(err => console.error("Could not load EPUB: ", err));
     })
 
-    return null;
+    return (
+        <>
+            {active && <EPUBFindRenderer/>}
+        </>
+    );
 
 })

@@ -1,12 +1,12 @@
 import * as React from "react";
 import {PageAnnotations} from "./PageAnnotations";
 import {TextHighlightRenderer2} from "./TextHighlightRenderer2";
-import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {useAnnotationContainers} from "./AnnotationHooks";
+import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
 
-export const TextHighlightsView = React.memo(() => {
+export const TextHighlightsView = memoForwardRef(() => {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
     const annotationContainers = useAnnotationContainers();
@@ -32,5 +32,5 @@ export const TextHighlightsView = React.memo(() => {
         </>
     );
 
-}, isEqual);
+});
 

@@ -150,7 +150,9 @@ export namespace Highlights {
 
     export function createViewportPosition(highlight: IHighlightNode): IViewportPosition {
 
-        const range = document.createRange();
+        const {node} = highlight;
+        const doc = node.ownerDocument!;
+        const range = doc.createRange();
 
         range.setStart(highlight.node, highlight.start);
         range.setEnd(highlight.node, highlight.end);

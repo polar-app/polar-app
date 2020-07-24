@@ -4,41 +4,50 @@ import * as React from 'react';
 /**
  * Ability to inject a small react app on a page without much hassle.
  */
-export class ReactInjector {
+export namespace ReactInjector {
+
+    export interface Opts {
+        readonly id?: string;
+        readonly doc?: Document;
+        readonly root?: HTMLElement;
+    }
 
 
     /**
      * Inject a component.  When the ID is given we use the ID and ensure
      * that only one component with that ID is created.
-     *
      */
-    public static inject(element: JSX.Element,
-                         id?: string) {
+    export function inject(element: JSX.Element, opts: Opts = {}) {
 
-        let container = document.createElement('div');
+        const {id} = opts;
+
+        const doc = opts.doc || document;
+        const root = opts.root || doc.body;
+
+        let container = doc.createElement('div');
 
         if (id) {
 
-            const existingContainer = document.getElementById(id);
+            const existingContainer = doc.getElementById(id);
 
             if (existingContainer) {
                 return new InjectedComponent(existingContainer);
             } else {
 
-                container = document.createElement('div');
+                container = doc.createElement('div');
                 container.setAttribute('id', id);
 
             }
 
         }
 
-        document.body.appendChild(container);
+        root.appendChild(container);
 
-        return this.create(element, container);
+        return create(element, container);
 
     }
 
-    public static create(element: JSX.Element, container: HTMLElement) {
+    export function create(element: JSX.Element, container: HTMLElement) {
 
         ReactDOM.render(
             element,

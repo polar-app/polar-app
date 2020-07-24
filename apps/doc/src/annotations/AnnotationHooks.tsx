@@ -99,19 +99,25 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
         });
 
-        // NOTE: I don't think 'attributes' is actually working here and that we
-        // are in fact depending on scroll (for updates) and then childList (for
-        // initial)
-        observer.observe(viewerContainer, {
-            // only monitor attributes.
-            attributes: true,
-            childList: true,
-            // subtree: true
-        });
+        if (viewerContainer) {
 
-        return () => {
-            observer.disconnect();
+            // NOTE: I don't think 'attributes' is actually working here and that we
+            // are in fact depending on scroll (for updates) and then childList (for
+            // initial)
+            observer.observe(viewerContainer, {
+                // only monitor attributes.
+                attributes: true,
+                childList: true,
+                // subtree: true
+            });
+
+            return () => {
+                observer.disconnect();
+            }
+
         }
+
+        return () => NULL_FUNCTION;
 
     }
 

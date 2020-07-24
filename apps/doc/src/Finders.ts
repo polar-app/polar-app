@@ -6,10 +6,10 @@ export interface IMatches {
 
 export interface IFindOptsBase {
     query: string;
-    phraseSearch: boolean;
+    // phraseSearch: boolean;
     caseSensitive: boolean;
-    highlightAll: boolean;
-    findPrevious: boolean;
+    // highlightAll: boolean;
+    // findPrevious: boolean;
 }
 
 export interface IFindOpts extends IFindOptsBase {

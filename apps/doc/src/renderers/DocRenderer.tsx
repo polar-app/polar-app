@@ -9,6 +9,7 @@ import {EPUBViewerContainer} from "./epub/EPUBViewerContainer";
 import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
+import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -28,12 +29,14 @@ const PDFDocumentRenderer = (props: ILoadedProps) => {
 
 const EPUBDocumentRenderer = (props: ILoadedProps) => {
     return (
-        <>
-            <EPUBViewerContainer/>
+        <EPUBFinderProvider>
+            <>
+                <EPUBViewerContainer/>
 
-            <EPUBDocument {...props}/>
+                <EPUBDocument {...props}/>
 
-        </>
+            </>
+        </EPUBFinderProvider>
     );
 }
 
