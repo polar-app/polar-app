@@ -6,7 +6,6 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {useAnnotationContainer} from "./AnnotationHooks";
 import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 
@@ -14,12 +13,12 @@ interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
     readonly textHighlight: ITextHighlight;
+    readonly container: HTMLElement,
 }
 
 export const TextHighlightRenderer2 = React.memo((props: IProps) => {
 
-    const {textHighlight, fingerprint, pageNum} = props;
-    const container = useAnnotationContainer(pageNum);
+    const {textHighlight, fingerprint, pageNum, container} = props;
     const {docScale} = useDocViewerStore(['docScale']);
 
     if (! container || ! docScale) {

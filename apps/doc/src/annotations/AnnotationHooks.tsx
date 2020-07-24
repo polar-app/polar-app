@@ -106,6 +106,7 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
             // only monitor attributes.
             attributes: true,
             childList: true,
+            // subtree: true
         });
 
         return () => {
@@ -118,11 +119,18 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
 function getContainer(page: number): HTMLElement | undefined {
 
-    const pageElement = document.querySelector(`.page[data-page-number='${page}']`);
+    const selector = `.page[data-page-number='${page}']`;
+    const pageElement = document.querySelector(selector) as HTMLElement;
 
     if (! pageElement) {
         return undefined;
     }
+
+    return getContainerFromPageElement(pageElement);
+
+}
+
+function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | undefined {
 
     const textLayerElement = pageElement.querySelector(".textLayer");
 
@@ -134,20 +142,39 @@ function getContainer(page: number): HTMLElement | undefined {
 
 }
 
-export function useAnnotationContainer(pageNum: number) {
 
-    const containerRef = React.useRef<HTMLElement | undefined>(undefined);
-    const [, setContainer] = React.useState<HTMLElement | undefined>(undefined);
+export interface AnnotationContainer {
+    readonly pageNum: number;
+    readonly container: HTMLElement;
+}
+
+export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
+
+    // TODO: another optimization, in the future, is going to be to only update
+    // annotations on VISIBLE pages, not hidden ones that are under the screen.
+
+    const [annotationContainers, setAnnotationContainers] = React.useState<ReadonlyArray<AnnotationContainer>>([]);
 
     function doUpdateDelegate() {
 
-        const newContainer = getContainer(pageNum);
-        const container = containerRef.current;
+        const pageElements = Array.from(document.querySelectorAll("#viewerContainer .page")) as ReadonlyArray<HTMLElement>;
 
-        if (container !== newContainer) {
-            containerRef.current = newContainer;
-            setContainer(newContainer);
+        function toAnnotationContainer(pageElement: HTMLElement): AnnotationContainer {
+
+            const pageNum = parseInt(pageElement.getAttribute('data-page-number') || '0');
+            const container = getContainerFromPageElement(pageElement)!;
+
+            return {
+                pageNum, container
+            };
+
         }
+
+        const newAnnotationContainers
+            = pageElements.filter(current => current.getAttribute('data-loaded') === 'true')
+                          .map(toAnnotationContainer);
+
+        setAnnotationContainers(newAnnotationContainers);
 
     }
 
@@ -164,10 +191,9 @@ export function useAnnotationContainer(pageNum: number) {
     useSubscriber(createResizeSubscriber(doUpdate));
     useSubscriber(createMutationObserverSubscriber(doUpdate));
 
-    return containerRef.current;
+    return annotationContainers;
 
 }
-
 
 export function getPageElement(page: number): HTMLElement {
     // FIXME: this is not portable to 2.0 with multiple PDFs loaded.

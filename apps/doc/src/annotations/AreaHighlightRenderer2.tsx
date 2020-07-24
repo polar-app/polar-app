@@ -3,7 +3,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {computePageDimensions, useAnnotationContainer} from "./AnnotationHooks";
+import {computePageDimensions} from "./AnnotationHooks";
 import {AreaHighlightRects} from "../../../../web/js/metadata/AreaHighlightRects";
 import * as ReactDOM from "react-dom";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -20,20 +20,15 @@ interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
     readonly areaHighlight: IAreaHighlight;
+    readonly container: HTMLElement;
 }
 
 export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
-    const {areaHighlight, fingerprint, pageNum} = props;
+    const {areaHighlight, fingerprint, pageNum, container} = props;
     const {id} = areaHighlight;
-    const container = useAnnotationContainer(pageNum);
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
-
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
-
-    if (! container) {
-        return null;
-    }
 
     if (! docScale) {
         return null;
@@ -122,6 +117,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
                  />,
             container);
     };
+
     const portals = Object.values(areaHighlight.rects)
         .map(current => toReactPortal(current, container));
 

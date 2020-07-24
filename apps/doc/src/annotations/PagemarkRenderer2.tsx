@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import {computePageDimensions, useAnnotationContainer} from "./AnnotationHooks";
+import {computePageDimensions} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -94,6 +94,7 @@ interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
     readonly pagemark: IPagemark;
+    readonly container: HTMLElement;
 }
 
 const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
@@ -151,9 +152,7 @@ export const ContextMenu = createContextMenu(PagemarkMenu);
 
 export const PagemarkRenderer2 = React.memo((props: IProps) => {
 
-    const {pagemark, fingerprint, pageNum} = props;
-
-    const container = useAnnotationContainer(pageNum);
+    const {pagemark, fingerprint, pageNum, container} = props;
 
     if (! container) {
         return null;

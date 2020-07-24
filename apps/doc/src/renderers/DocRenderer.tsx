@@ -70,7 +70,7 @@ const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
 
 export const DocRenderer = React.memo(() => {
 
-    const {docURL, docMeta} = useDocViewerStore();
+    const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 
     if (! docURL || ! docMeta) {
         return null;
