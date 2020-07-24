@@ -1,16 +1,17 @@
 import {Finder, FindHandler, IFindOpts} from "../../Finders";
-import {EPUBFinder} from "./EPUBFinder";
 import {DOMTextHitWithIndex, useEPUBFinderCallbacks} from "./EPUBFinderStore";
 import {useHistory} from "react-router-dom";
+import {EPUBFinders, useEPUBRoot} from "./EPUBFinders";
+import EPUBFinder = EPUBFinders.EPUBFinder;
 
 export namespace EPUBFindControllers {
-
-    import useEPUBRoot = EPUBFinder.useEPUBRoot;
 
     export function useEPUBFindController(): Finder {
 
         const history = useHistory();
         const callbacks = useEPUBFinderCallbacks();
+
+        const epubFinderCache = EPUBFinderCaches.create();
 
         const exec = (opts: IFindOpts): FindHandler => {
 
@@ -50,8 +51,10 @@ export namespace EPUBFindControllers {
                 updateHit(callbacks.prev());
             }
 
+            const finder = epubFinderCache.get();
+
             // TODO: I think this should/could go into the store
-            const hits = EPUBFinder.exec({
+            const hits = finder.exec({
                 query: opts.query,
                 caseInsensitive: true
             });
@@ -67,4 +70,44 @@ export namespace EPUBFindControllers {
         return {exec};
 
     }
+}
+
+interface EPUBFinderCache {
+    get(): EPUBFinder;
+}
+
+export namespace EPUBFinderCaches {
+
+    export function create(): EPUBFinderCache {
+
+        function getLocation() {
+            const {root} = useEPUBRoot();
+            return root.ownerDocument!.location.href;
+        }
+
+        interface CacheEntry {
+            readonly location: string;
+            readonly finder: EPUBFinder;
+        }
+
+        let cache: CacheEntry | undefined;
+
+        function get() {
+
+            if (cache?.location !== getLocation()) {
+                const location = getLocation();
+                const finder = EPUBFinders.create();
+                cache = {
+                    location, finder
+                }
+            }
+
+            return cache.finder;
+
+        }
+
+        return {get};
+
+    }
+
 }

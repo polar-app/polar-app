@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {EPUBFinder} from "./EPUBFinder";
 import {DOMHighlights} from "../../../../../web/js/dom_highlighter/DOMHighlights";
 import {memoForwardRef} from "../../../../../web/js/react/ReactUtils";
 import {useEPUBFinderStore} from './EPUBFinderStore';
-import useEPUBRoot = EPUBFinder.useEPUBRoot;
+import {useEPUBRoot} from "./EPUBFinders";
 
 /**
  * Renders the results found with the find controller.
