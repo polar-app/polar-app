@@ -53,7 +53,7 @@ const Matches = React.memo(() => {
     }
 
     return (
-        <div>
+        <div style={{userSelect: 'none'}}>
             {matches.current} of {matches.total}
         </div>
     );

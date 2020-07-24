@@ -13,14 +13,20 @@ export interface IEPUBFinderStore {
 
 }
 
+export interface DOMTextHitWithIndex extends DOMTextHit {
+    readonly idx: number;
+}
+
 export interface IEPUBFinderCallbacks {
+
     readonly setHits: (hits: ReadonlyArray<DOMTextHit>) => void;
     readonly setCurrent: (current: number) => void;
 
-    readonly prev: () => void;
-    readonly next: () => void
+    readonly prev: () => DOMTextHitWithIndex | undefined;
+    readonly next: () => DOMTextHitWithIndex | undefined;
 
     readonly reset: () => void;
+
 }
 
 const initialStore: IEPUBFinderStore = {
@@ -58,12 +64,12 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
         setStore({...store, hits: undefined, current: undefined});
     }
 
-    function changeCurrent(delta: number) {
+    function changeCurrent(delta: number): DOMTextHitWithIndex | undefined {
 
         const store = storeProvider();
 
         if (store.hits === undefined || store.current === undefined) {
-            return;
+            return undefined;
         }
 
         const newCurrent = store.current + delta;
@@ -75,16 +81,23 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
 
         if (newCurrent >= min && newCurrent <= max) {
             setStore({...store, current: newCurrent});
+
+            const hit = store.hits[newCurrent];;
+
+            return {idx: newCurrent, ...hit};
+
         }
+
+        return undefined;
 
     }
 
     function next() {
-        changeCurrent(1);
+        return changeCurrent(1);
     }
 
     function prev() {
-        changeCurrent(-1);
+        return changeCurrent(-1);
     }
 
     return {setHits, setCurrent, reset, next, prev};

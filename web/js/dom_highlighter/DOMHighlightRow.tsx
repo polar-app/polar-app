@@ -5,6 +5,7 @@ import intersectWithWindow = Highlights.intersectWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends IHighlightViewportPosition {
+    readonly id: string;
 }
 
 /**
@@ -22,7 +23,8 @@ export const DOMHighlightRow = memoForwardRef((props: IProps) => {
     const absolutePosition = Highlights.fixedToAbsolute(props);
 
     return (
-        <div style={{
+        <div id={props.id}
+             style={{
                  backgroundColor: 'rgba(255, 255, 0, 0.5)',
                  position: 'absolute',
                  ...absolutePosition

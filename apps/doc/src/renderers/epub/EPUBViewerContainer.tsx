@@ -22,6 +22,7 @@ export const EPUBViewerContainer = React.memo(() => {
                          className="epubViewer">
                         <div className="page"
                              style={{
+                                 userSelect: 'none'
                              }}/>
                     </div>
                 </div>

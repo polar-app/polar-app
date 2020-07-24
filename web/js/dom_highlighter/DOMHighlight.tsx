@@ -13,6 +13,7 @@ import toHighlightViewportPositions = Highlights.toHighlightViewportPositions;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends DOMTextHit {
+    readonly id: string;
 }
 
 /**
@@ -44,9 +45,13 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
     useScrollEventListener(redrawCallback, {win});
     useResizeEventListener(redrawCallback, {win});
 
-    function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition) {
+    function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition, idx: number) {
+
+        const id = idx === 0 ? props.id : (props.id + ":" + idx);
+
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;
         return <DOMHighlightRow {...highlightViewportPosition}
+                                id={id}
                                 key={key}/>
     }
 

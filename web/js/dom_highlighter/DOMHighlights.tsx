@@ -11,7 +11,7 @@ interface IProps {
 
 export const DOMHighlights = memoForwardRef((props: IProps) => {
 
-    function toDOMHighlight(hit: DOMTextHit, idx: number) {
+    function toDOMHighlight(hit: DOMTextHit) {
         return <DOMHighlight key={hit.id} {...hit}/>
     }
 
