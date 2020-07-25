@@ -2,7 +2,7 @@
 - Title for uploaded document is truncated
 - You can now find text in epub documents that you're reading
 - Fixed bug with PDF where you could no longer create area highlights.
-
+- Context menu for folders working again.
 
 # ...
 
