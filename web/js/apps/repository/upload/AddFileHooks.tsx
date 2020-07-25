@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
 import {Either} from "../../../util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
+import {Strings} from "polar-shared/src/util/Strings";
 
 export namespace AddFileHooks {
 
@@ -87,7 +88,7 @@ export namespace AddFileHooks {
 
             function createSnackbar(importedFile: ImportedFile) {
 
-                const title = importedFile.docInfo.title || 'Untitled';
+                const title = Strings.truncate(importedFile.docInfo.title || 'Untitled', 20);
                 const {docInfo} = importedFile;
 
                 function doOpenDoc() {
