@@ -12,6 +12,7 @@ import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import {IFrameEvents} from "./IFrameEvents";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -22,8 +23,7 @@ interface ExtendedSpine {
     readonly items: ReadonlyArray<Section>;
 }
 
-// FIXME: the key bindings for find, etc. ALSO need to be injected into the
-// iframe...
+// FIXME how do I pre-filter the HTML to reject XSS attacks...
 
 function useCSS() {
 
@@ -77,6 +77,14 @@ function useCSS() {
 
 }
 
+function forwardEvents(target: HTMLElement) {
+    // this is needed because keyboard events and other events ould be swallowed
+    // by the iframe.
+
+    const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
+    IFrameEvents.forwardEvents(iframe, target);
+}
+
 export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL, docMeta} = props;
@@ -92,7 +100,7 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
         const book = ePub(docURL);
 
-        const pageElement = document.querySelector(".page")!;
+        const pageElement = document.querySelector(".page")! as HTMLElement;
 
         // TODO:
         //
@@ -113,10 +121,13 @@ export const EPUBDocument = React.memo((props: IProps) => {
         rendition.on('locationChanged', (event: any) => {
             // noop... this is called when the location of the book is changed
             // so we can use it to re-attach annotations.
+
+            forwardEvents(pageElement);
+            applyCSS();
+
         });
 
         await rendition.display();
-        applyCSS();
 
         const metadata = await book.loaded.metadata;
 
