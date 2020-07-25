@@ -30,7 +30,7 @@ module.exports = {
 		filename: filename,
 		sourceMapFilename: sourceMapFilename,
 		library: "ePub",
-		libraryTarget: "umd",
+		libraryTarget: "commonjs",
 		libraryExport: "default",
 		publicPath: "/dist/"
 	},

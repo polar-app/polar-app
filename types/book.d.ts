@@ -30,7 +30,7 @@ export interface BookOptions {
 }
 
 export default class Book {
-    constructor(url: string, options?: BookOptions);
+    constructor(url: string | ArrayBuffer, options?: BookOptions);
     constructor(options?: BookOptions);
 
     settings: BookOptions;
