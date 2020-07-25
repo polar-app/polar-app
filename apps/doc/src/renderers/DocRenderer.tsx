@@ -10,6 +10,7 @@ import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -46,8 +47,14 @@ export const DocViewerFileTypeContext = React.createContext<FileType>(null!);
  * Provided so we can determine which type of doc type we should load (epub,
  * pdf, etc)
  */
-export function useDocViewerFileTypeContext() {
-    return React.useContext(DocViewerFileTypeContext);
+export function useDocViewerFileTypeContext(): FileType {
+    const result = React.useContext(DocViewerFileTypeContext);
+
+    if (! isPresent(result)) {
+        throw new Error("FileType not defined.");
+    }
+
+    return result;
 }
 
 interface DocRendererDelegateProps {

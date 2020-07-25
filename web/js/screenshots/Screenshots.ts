@@ -8,7 +8,6 @@ import {Canvases} from 'polar-shared/src/util/Canvases';
 import {ICapturedScreenshot} from './Screenshot';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {BrowserScreenshots} from './browser/BrowserScreenshots';
-import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {FileType} from '../apps/main/file_loaders/FileType';
 import {Preconditions} from "polar-shared/src/Preconditions";
 
@@ -101,9 +100,22 @@ export namespace Screenshots {
 
         console.log("Capturing via canvas");
 
+        function getPageElementForPage(pageNum: number) {
+            const pages = document.querySelectorAll(".page");
+            return pages[pageNum - 1] as HTMLElement;
+        }
+
         function getCanvasForPage(pageNum: number): HTMLCanvasElement {
             // FIXME not portable to multi-tabs in Polar 2.0..
-            return <HTMLCanvasElement> document.querySelectorAll(".page canvas")[pageNum - 1];
+
+            const pageElement = getPageElementForPage(pageNum);
+            const canvas = pageElement.querySelector("canvas") as HTMLCanvasElement;
+
+            if (! canvas) {
+                throw new Error("Could not find canvas for page: " + pageNum);
+            }
+
+            return canvas;
         }
 
         const canvas = getCanvasForPage(pageNum);

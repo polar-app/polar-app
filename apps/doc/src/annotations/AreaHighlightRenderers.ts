@@ -25,6 +25,8 @@ export namespace AreaHighlightRenderers {
                                                        docScale: IDocScale,
                                                        fileType: FileType): Promise<ICapturedAreaHighlight> {
 
+        Preconditions.assertPresent(fileType, 'fileType');
+
         const rect = AnnotationRects.createFromPointWithinPageElement(pageNum, pointWithinPageElement);
 
         const pageDimensions = getPageElementDimensions(pageNum);
@@ -59,6 +61,7 @@ export namespace AreaHighlightRenderers {
                                                              overlayRect: ILTRect,
                                                              docScale: IDocScale,
                                                              fileType: FileType): Promise<ICapturedAreaHighlight> {
+        Preconditions.assertPresent(fileType, 'fileType');
 
         const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect);
 

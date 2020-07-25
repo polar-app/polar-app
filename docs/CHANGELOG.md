@@ -1,3 +1,9 @@
+- EPUB files can now be uploaded again
+- Title for uploaded document is truncated
+- You can now find text in epub documents that you're reading
+- Fixed bug with PDF where you could no longer create area highlights.
+
+
 # ...
 
 - upgraded to latest version of typescript and tslint
