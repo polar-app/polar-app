@@ -63,7 +63,7 @@ class DesktopLinkLoader implements LinkLoader {
                     // this is primarily for Electron as you can't access the
                     // document from electron since it's basically emulating
                     // this API.
-                    win.document.write("Loading...");
+                    win.document.write(LOADING_HTML);
                 }
 
             }
@@ -99,3 +99,24 @@ export interface LinkLoader {
     load(link: string): void;
 
 }
+
+/**
+ * Loading HTML that should look good in all browsers.  Might also want to add
+ * a Polar logo or something.
+ */
+const LOADING_HTML = `
+<html>
+<head>
+<style>
+    html {
+        background-color: rgb(66, 66, 66);
+        color: rgb(255, 255, 255);
+    }
+</style>
+</head>
+<body>
+Loading... 
+</body>
+</html>
+
+`

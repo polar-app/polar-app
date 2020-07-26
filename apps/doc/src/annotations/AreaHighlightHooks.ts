@@ -13,7 +13,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {useDocViewerFileTypeContext} from "../renderers/DocRenderer";
+import {useDocViewerContext} from "../renderers/DocRenderer";
 
 export interface AreaHighlightCreatedOpts {
     readonly pointWithinPageElement: IPoint;
@@ -37,7 +37,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     const {onAreaHighlight} = useAnnotationMutationsContext();
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
-    const fileType = useDocViewerFileTypeContext();
+    const {fileType} = useDocViewerContext();
     const log = useLogger();
 
     function onAreaHighlightCreated(opts: AreaHighlightCreatedOpts) {

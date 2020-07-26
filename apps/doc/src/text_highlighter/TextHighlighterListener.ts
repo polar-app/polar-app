@@ -6,13 +6,19 @@ export namespace TextHighlighterListener {
 
     export function start() {
 
-        window.addEventListener('message', event => {
+        function handleMessage(event: MessageEvent) {
 
             switch(event.data.type) {
 
             }
 
-        });
+        }
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
 
     }
 

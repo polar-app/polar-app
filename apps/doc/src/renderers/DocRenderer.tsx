@@ -41,17 +41,22 @@ const EPUBDocumentRenderer = (props: ILoadedProps) => {
     );
 }
 
-export const DocViewerFileTypeContext = React.createContext<FileType>(null!);
+interface IDocViewerContext {
+    readonly fileType: FileType;
+    readonly docID: string;
+}
+
+export const DocViewerContext = React.createContext<IDocViewerContext>(null!);
 
 /**
  * Provided so we can determine which type of doc type we should load (epub,
  * pdf, etc)
  */
-export function useDocViewerFileTypeContext(): FileType {
-    const result = React.useContext(DocViewerFileTypeContext);
+export function useDocViewerContext(): IDocViewerContext {
+    const result = React.useContext(DocViewerContext);
 
     if (! isPresent(result)) {
-        throw new Error("FileType not defined.");
+        throw new Error("DocViewerContext not defined.");
     }
 
     return result;
@@ -62,7 +67,6 @@ interface DocRendererDelegateProps {
     readonly docMeta: IDocMeta;
     readonly fileType: FileType;
 }
-
 
 const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
 

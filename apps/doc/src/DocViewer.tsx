@@ -28,7 +28,7 @@ import {DocFindButton} from "./DocFindButton";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
-import {DocRenderer, DocViewerFileTypeContext} from "./renderers/DocRenderer";
+import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import { ViewerContainerProvider } from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
@@ -238,7 +238,7 @@ namespace Device {
 
 }
 
-const DocViewerMain = memoForwardRef(() => {
+const DocViewerMain = React.memo(() => {
 
     return (
         <DeviceRouter handheld={<Device.Handheld/>}
@@ -247,12 +247,16 @@ const DocViewerMain = memoForwardRef(() => {
 
 });
 
-export const DocViewer = memoForwardRef(() => {
+export const DocViewer = React.memo(() => {
 
     const {docURL} = useDocViewerStore(['docURL']);
-    const log = useLogger();
     const {setDocMeta} = useDocViewerCallbacks();
+    const log = useLogger();
     const persistenceLayerContext = usePersistenceLayerContext()
+
+    // TODO: do this in a root context component so we could make
+    // this into a component that takes props, not just a URL.
+    const parsedURL = DocViewerAppURLs.parse(document.location.href);
 
     // TODO: I think I can have hard wired types for state transition functions
     // like an uninitialized store, with missing values, then an initialized one
@@ -261,10 +265,6 @@ export const DocViewer = memoForwardRef(() => {
     useComponentDidMount(() => {
 
         const handleLoad = async () => {
-
-            // TODO: do this in a root context component so we could make
-            // this into a component that takes props, not just a URL.
-            const parsedURL = DocViewerAppURLs.parse(document.location.href);
 
             if (! parsedURL) {
                 console.warn("Could not parse URL: " + document.location.href)
@@ -297,18 +297,27 @@ export const DocViewer = memoForwardRef(() => {
 
     });
 
-    if (! docURL) {
+    if (! docURL || ! parsedURL) {
         return <LoadingProgress/>
     }
 
     const fileType = FileTypes.create(docURL);
+    const docID = parsedURL.id;
 
     return (
-        <DocViewerFileTypeContext.Provider value={fileType}>
-            <ViewerContainerProvider>
-                <DocViewerMain/>
-            </ViewerContainerProvider>
-        </DocViewerFileTypeContext.Provider>
+        <div data-doc-viewer-id={docID}
+             style={{
+                 display: 'flex',
+                 minHeight: 0,
+                 overflow: 'auto',
+                 flexGrow: 1,
+             }}>
+            <DocViewerContext.Provider value={{fileType, docID}}>
+                <ViewerContainerProvider>
+                    <DocViewerMain/>
+                </ViewerContainerProvider>
+            </DocViewerContext.Provider>
+        </div>
     );
 
 });

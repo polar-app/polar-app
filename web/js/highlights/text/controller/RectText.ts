@@ -1,6 +1,3 @@
-/**
- *
- */
 import {Rect} from '../../../Rect';
 
 export interface RectText {

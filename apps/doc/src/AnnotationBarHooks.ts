@@ -15,10 +15,12 @@ import {
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {TextHighlighter} from "./text_highlighter/TextHighlighter";
-import {useDocViewerFileTypeContext} from "./renderers/DocRenderer";
+import {useDocViewerContext} from "./renderers/DocRenderer";
 import {SelectedContents} from "../../../web/js/highlights/text/selection/SelectedContents";
 import {ISelectedContent} from "../../../web/js/highlights/text/selection/ISelectedContent";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {useMessageListener} from "./text_highlighter/PostMessageHooks";
+import {MessageListeners} from "./text_highlighter/MessageListeners";
 
 
 /**
@@ -71,18 +73,27 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
  */
 export type AnnotationBarEventListenerRegisterer = () => void;
 
+const POST_MESSAGE_SERVICE = 'create-text-highlight';
+
 export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
 
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
     const createTextHighlightCallbackRef = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
-    const fileType = useDocViewerFileTypeContext();
+    const {fileType} = useDocViewerContext();
 
     store.current = useDocViewerStore(['docMeta', 'docScale']);
     createTextHighlightCallbackRef.current = useCreateTextHighlightCallback();
 
-    return React.useMemo(() => {
+    const messageListener = MessageListeners.createListener<ICreateTextHighlightCallbackOpts>(POST_MESSAGE_SERVICE, (message) => {
+        const createTextHighlightCallback = createTextHighlightCallbackRef.current!;
+        createTextHighlightCallback(message);
+    });
 
-        // TODO: we need a way to unregister the bar I think.
+    const messageDispatcher = MessageListeners.createDispatcher<ICreateTextHighlightCallbackOpts>(POST_MESSAGE_SERVICE);
+
+    useMessageListener(messageListener);
+
+    return React.useMemo(() => {
 
         const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
         const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
@@ -97,8 +108,6 @@ export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             console.log("onHighlighted: ", highlightCreatedEvent);
 
-            const createTextHighlightCallback = createTextHighlightCallbackRef.current!;
-
             const {selection} = highlightCreatedEvent.activeSelection;
 
             const selectedContent = SelectedContents.computeFromSelection(selection);
@@ -106,9 +115,7 @@ export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
             // now clear the selection since we just highlighted it.
             selection.empty();
 
-            // FIXME: now this needs to be decoupled via postMessage...
-            // but first see if it works with the PDF support...
-            createTextHighlightCallback({
+            messageDispatcher({
                 pageNum: highlightCreatedEvent.pageNum,
                 highlightColor: highlightCreatedEvent.highlightColor,
                 selectedContent

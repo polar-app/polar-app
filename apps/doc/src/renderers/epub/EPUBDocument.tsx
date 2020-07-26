@@ -11,10 +11,11 @@ import blue from '@material-ui/core/colors/blue';
 import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
-import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {IFrameEvents} from "./IFrameEvents";
-import {useAnnotationBar} from "../../AnnotationBarHooks";
-import { SCALE_VALUE_PAGE_WIDTH } from '../../ScaleLevels';
+import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
+import {useAnnotationBar} from '../../AnnotationBarHooks';
+import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import './EPUBDocument.css';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -27,6 +28,13 @@ interface ExtendedSpine {
 
 // FIXME how do I pre-filter the HTML to reject XSS attacks...
 
+// FIXME pageNavigator that is a context object so that I can jump between pages
+//
+// FIXME docID context that knows the currently loaded doc
+//
+// FIXME: use the id of the doc on a <div> with a data attribute so that I can
+// find the main doc element without having to use a ref.
+
 function useCSS() {
 
     const theme = useTheme();
@@ -38,6 +46,9 @@ function useCSS() {
             'font-family': `${theme.typography.fontFamily} !important`,
             'padding': '10px',
             'padding-bottom': '10px !important'
+        },
+        'body': {
+            'margin': '5px',
         },
         'h1, h2, h3': {
             'color': `${theme.palette.text.primary}`
@@ -87,7 +98,7 @@ function forwardEvents(target: HTMLElement) {
     IFrameEvents.forwardEvents(iframe, target);
 }
 
-export const EPUBDocument = React.memo((props: IProps) => {
+export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
     const {setDocDescriptor, setPageNavigator, setDocScale} = useDocViewerCallbacks();
@@ -98,14 +109,20 @@ export const EPUBDocument = React.memo((props: IProps) => {
     const annotationBarInjector = useAnnotationBar();
 
     setFinder(finder);
-    // the doc scale needs to be set to that we're 1.0 as epub doesn't support
-    // scale just yet.
-    setDocScale({scale: SCALE_VALUE_PAGE_WIDTH, scaleValue: 1.0});
+
+    useComponentDidMount(() => {
+
+        // the doc scale needs to be set to that we're 1.0 as epub doesn't support
+        // scale just yet.
+        setDocScale({scale: SCALE_VALUE_PAGE_WIDTH, scaleValue: 1.0});
+
+    })
 
     async function doLoad() {
 
         const book = ePub(docURL);
 
+        // FIXME: not portable to Polar 2.0 tabbed UI
         const pageElement = document.querySelector(".page")! as HTMLElement;
 
         // TODO:
@@ -139,6 +156,13 @@ export const EPUBDocument = React.memo((props: IProps) => {
         const metadata = await book.loaded.metadata;
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
+
+        // FIXME: the page navigator AND the URL navigation system need to support
+        // #page=1&annotation=xyx so that react router can work with this.
+        //
+        // FIXME the page jumping code works differently depending on the context
+        // When we are in the doc repository we need to create a URL and when
+        // we're in the viewer we have to jump to the right page, then scroll.
 
         function createPageNavigator(): PageNavigator {
 
@@ -205,4 +229,4 @@ export const EPUBDocument = React.memo((props: IProps) => {
         </>
     );
 
-})
+};
