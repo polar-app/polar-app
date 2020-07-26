@@ -1,24 +1,25 @@
 import {Logger} from "polar-shared/src/logger/Logger";
-import {SelectedContents} from "../../../web/js/highlights/text/selection/SelectedContents";
-import {TextSelections} from "../../../web/js/highlights/text/controller/TextSelections";
-import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {TextSelections} from "../../../../web/js/highlights/text/controller/TextSelections";
+import {DocMetas} from "../../../../web/js/metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {TextHighlightRecords} from "../../../web/js/metadata/TextHighlightRecords";
+import {TextHighlightRecords} from "../../../../web/js/metadata/TextHighlightRecords";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
-import {AnnotationRects} from "../../../web/js/metadata/AnnotationRects";
-import {Rects} from "../../../web/js/Rects";
+import {Rects} from "../../../../web/js/Rects";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {getPageElement} from "./annotations/AnnotationHooks";
-import {AreaHighlights} from "../../../web/js/metadata/AreaHighlights";
-import {IDocScale} from "./DocViewerStore";
+import {getPageElement} from "../annotations/AnnotationHooks";
+import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
+import {IDocScale} from "../DocViewerStore";
+import {ISelectedContent} from "../../../../web/js/highlights/text/selection/ISelectedContent";
 
 const log = Logger.create()
 
-export namespace TextHighlighter {
+// FIXME: we have to decouple this and use window.postMessage or chrome
+// extension messaging so that I can have lightweight annotation built into
+// the chrome extension too.
 
-    import computeContainerDimensions = AnnotationRects.computeContainerDimensions;
+export namespace TextHighlighter {
 
     interface ICreatedTextHighlight {
         readonly docMeta: IDocMeta;
@@ -28,10 +29,15 @@ export namespace TextHighlighter {
 
     export interface ICreateTextHighlightOpts {
         readonly docMeta: IDocMeta;
-        readonly pageNum: number;
-        readonly highlightColor: HighlightColor;
-        readonly selection: Selection;
+
         readonly docScale: IDocScale;
+
+        readonly pageNum: number;
+
+        readonly highlightColor: HighlightColor;
+
+        readonly selectedContent: ISelectedContent;
+
     }
 
     function getInnerClientRect(element: HTMLElement): ILTRect {
@@ -70,11 +76,9 @@ export namespace TextHighlighter {
 
     export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
 
-        const {highlightColor, docMeta, pageNum, selection, docScale} = opts;
+        const {highlightColor, docMeta, pageNum, selectedContent, docScale} = opts;
 
-        log.info("TextHighlightController.onTextHighlightCreatedModern");
-
-        const selectedContent = SelectedContents.computeFromSelection(selection);
+        log.info("createTextHighlight");
 
         const {rectTexts} = selectedContent;
 
@@ -97,9 +101,6 @@ export namespace TextHighlighter {
         // TODO: there are no screenshots here but we should keep them.
 
         log.info("Added text highlight to model");
-
-        // now clear the selection since we just highlighted it.
-        selection.empty();
 
         const textHighlight = textHighlightRecord.value;
         const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);

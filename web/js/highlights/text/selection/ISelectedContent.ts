@@ -5,29 +5,22 @@
  */
 import {RectText} from '../controller/RectText';
 
-export class SelectedContent {
+export interface ISelectedContent {
 
     /**
      * The text of the selected content.
+     *
      */
-    public readonly text: string;
+    readonly text: string;
 
     /**
      * The html content of the selection.
      */
-    public readonly html: string;
+    readonly html: string;
 
     /**
      * The html content of the selection.
      */
-    public readonly rectTexts: RectText[] = [];
-
-    constructor(obj: any) {
-
-        this.html = obj.html;
-        this.text = obj.text;
-        this.rectTexts = obj.rectTexts;
-
-    }
+    readonly rectTexts: ReadonlyArray<RectText>;
 
 }

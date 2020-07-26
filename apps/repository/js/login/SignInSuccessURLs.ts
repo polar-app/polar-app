@@ -12,8 +12,17 @@ export namespace SignInSuccessURLs {
         return Optional.first(getCustom(), getDefault()).get();
     }
 
-    export function createSignInURL(signInSuccessUrl: string, base: string = document.location?.href) {
-        return base + "?signInSuccessUrl=" + encodeURIComponent(signInSuccessUrl);
+    export function createSignInURL(signInSuccessUrl: string | undefined,
+                                    baseURL: string = document.location?.href) {
+
+        if (! signInSuccessUrl || signInSuccessUrl.indexOf('/login') !== -1) {
+            return baseURL;
+        }
+
+        // TODO: if the base URL has query params or named anchors this won't
+        // work but URL isn't always supported in node
+        return baseURL + "?signInSuccessUrl=" + encodeURIComponent(signInSuccessUrl);
+
     }
 
     /**

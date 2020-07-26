@@ -1,10 +1,10 @@
 import {TextRect} from "../../../metadata/TextRect";
-import {SelectedContent} from "../selection/SelectedContent";
+import {ISelectedContent} from "../selection/ISelectedContent";
 
 
 export class TextSelections {
 
-    public static compute(selectedContent: SelectedContent): ReadonlyArray<TextRect> {
+    public static compute(selectedContent: ISelectedContent): ReadonlyArray<TextRect> {
 
         const result: any[] = [
 

@@ -13,6 +13,8 @@ import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {IFrameEvents} from "./IFrameEvents";
+import {useAnnotationBar} from "../../AnnotationBarHooks";
+import { SCALE_VALUE_PAGE_WIDTH } from '../../ScaleLevels';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -88,13 +90,17 @@ function forwardEvents(target: HTMLElement) {
 export const EPUBDocument = React.memo((props: IProps) => {
 
     const {docURL, docMeta} = props;
-    const {setDocDescriptor, setPageNavigator} = useDocViewerCallbacks();
+    const {setDocDescriptor, setPageNavigator, setDocScale} = useDocViewerCallbacks();
     const {setFinder} = useDocFindCallbacks();
     const [active, setActive] = React.useState(false);
     const css = useCSS();
     const finder = useEPUBFindController();
+    const annotationBarInjector = useAnnotationBar();
 
     setFinder(finder);
+    // the doc scale needs to be set to that we're 1.0 as epub doesn't support
+    // scale just yet.
+    setDocScale({scale: SCALE_VALUE_PAGE_WIDTH, scaleValue: 1.0});
 
     async function doLoad() {
 
@@ -124,6 +130,7 @@ export const EPUBDocument = React.memo((props: IProps) => {
 
             forwardEvents(pageElement);
             applyCSS();
+            annotationBarInjector();
 
         });
 
@@ -164,7 +171,6 @@ export const EPUBDocument = React.memo((props: IProps) => {
             fingerprint: docMeta.docInfo.fingerprint,
             nrPages: pageNavigator.count
         });
-
 
         console.log({metadata});
 

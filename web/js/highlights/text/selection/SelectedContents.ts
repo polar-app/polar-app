@@ -1,5 +1,5 @@
 import {Ranges} from './Ranges';
-import {SelectedContent} from './SelectedContent';
+import {ISelectedContent} from './ISelectedContent';
 import {Selections} from './Selections';
 import {RectTexts} from '../controller/RectTexts';
 import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
@@ -18,7 +18,7 @@ export class SelectedContents {
         return this.computeFromSelection(selection);
     }
 
-    public static computeFromSelection(selection: Selection) {
+    public static computeFromSelection(selection: Selection): ISelectedContent {
 
         // get all the ranges and clone them so they can't vanish.
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));
@@ -43,11 +43,11 @@ export class SelectedContents {
         // FIXME: we have ALL the text nodes now but some of them are wrong/broken...
         const rectTexts = RectTexts.toRectTexts(textNodesRows);
 
-        return new SelectedContent({
+        return {
             text,
             html,
             rectTexts
-        });
+        };
 
     }
 

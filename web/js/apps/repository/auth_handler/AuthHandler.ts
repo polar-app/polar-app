@@ -5,6 +5,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {accounts} from 'polar-accounts/src/accounts';
 import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
+import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 
 const POLAR_APP_SITES = [
     'http://localhost:8050',
@@ -61,26 +62,7 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
     readonly id: string = 'default';
 
-    public authenticate(signInSuccessUrl?: string): void {
-
-        const createNewLocation = () => {
-
-            if (signInSuccessUrl) {
-                return signInSuccessUrl;
-            }
-
-            const base = computeBaseURL();
-
-            return new URL('/apps/repository/login.html', base).toString();
-
-        };
-
-        const newLocation = createNewLocation();
-
-        console.log("Redirecting to authenticate: " + newLocation);
-        window.location.href = newLocation;
-
-    }
+    public abstract authenticate(): void;
 
     public async userInfo(): Promise<Optional<UserInfo>> {
         return Optional.empty();
@@ -153,12 +135,18 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     readonly id: string = 'browser';
 
-    public async authenticate(): Promise<void> {
+    public async authenticate(signInSuccessUrl?: string): Promise<void> {
 
         Firebase.init();
 
-        const base = computeBaseURL();
-        const newLocation = new URL('/login', base).toString();
+        function createLoginURL() {
+            const base = computeBaseURL();
+            const target = new URL('/login', base).toString();
+            return SignInSuccessURLs.createSignInURL(signInSuccessUrl, target);
+        }
+
+        const newLocation = createLoginURL();
+
         console.log("Redirecting to authenticate: " + newLocation);
 
         // TODO/FIXME useHistory here to push so that the app doesn't have to
@@ -175,16 +163,6 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         if (await this.currentUser() === null) {
             return 'needs-authentication';
         }
-
-        return undefined;
-
-    }
-
-}
-
-export class ElectronAuthHandler extends FirebaseAuthHandler {
-
-    public async status(): Promise<AuthStatus> {
 
         return undefined;
 

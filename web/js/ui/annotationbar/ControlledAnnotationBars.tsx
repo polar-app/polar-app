@@ -13,24 +13,26 @@ import {Point} from '../../Point';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Points} from '../../Points';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
-import {Reducers} from "polar-shared/src/util/Reducers";
 import {Elements} from "../../util/Elements";
+import {isPresent} from 'polar-shared/src/Preconditions';
+import {FileType} from "../../apps/main/file_loaders/FileType";
 
 export interface RegisterOpts {
-    readonly mode: 'viewer' | 'web';
+    readonly fileType: FileType;
 }
 
-export class ControlledAnnotationBars {
+export namespace ControlledAnnotationBars {
 
-    public static create(controlledPopupProps: ControlledPopupProps,
-                         annotationBarCallbacks: AnnotationBarCallbacks) {
+    export function create(controlledPopupProps: ControlledPopupProps,
+                           annotationBarCallbacks: AnnotationBarCallbacks,
+                           opts: RegisterOpts) {
 
-        this.registerEventListener(annotationBarCallbacks);
+        registerEventListener(annotationBarCallbacks, opts);
 
     }
 
-    private static registerEventListener(annotationBarCallbacks: AnnotationBarCallbacks,
-                                         opts: RegisterOpts = {mode: 'viewer'}) {
+    function registerEventListener(annotationBarCallbacks: AnnotationBarCallbacks,
+                                   opts: RegisterOpts) {
 
         const handleTarget = (target: HTMLElement) => {
 
@@ -45,7 +47,7 @@ export class ControlledAnnotationBars {
 
                 const computeAnnotationPageInfo = (): AnnotationPageInfo | undefined => {
 
-                    const computeForViewer = (): AnnotationPageInfo | undefined => {
+                    const computeForPDF = (): AnnotationPageInfo | undefined => {
 
                         const pageElement = Elements.untilRoot(activeSelectionEvent.element, ".page");
 
@@ -60,16 +62,16 @@ export class ControlledAnnotationBars {
 
                     };
 
-                    const computeForWeb = (): AnnotationPageInfo | undefined => {
+                    const computeForEPUB = (): AnnotationPageInfo | undefined => {
                         return {pageElement: target, pageNum: 1};
                     };
 
-                    switch (opts.mode) {
-                        case "viewer":
-                            return computeForViewer();
+                    switch (opts.fileType) {
+                        case "pdf":
+                            return computeForPDF();
 
-                        case "web":
-                            return computeForWeb();
+                        case "epub":
+                            return computeForEPUB();
                     }
 
                 };
@@ -84,7 +86,7 @@ export class ControlledAnnotationBars {
 
                     case 'created':
 
-                        annotationBar = this.createAnnotationBar(annotationPageInfo.pageNum,
+                        annotationBar = createAnnotationBar(annotationPageInfo.pageNum,
                                                                  annotationPageInfo.pageElement,
                                                                  annotationBarCallbacks,
                                                                  activeSelectionEvent);
@@ -94,7 +96,7 @@ export class ControlledAnnotationBars {
                     case 'destroyed':
 
                         if (annotationBar) {
-                            this.destroyAnnotationBar(annotationBar);
+                            destroyAnnotationBar(annotationBar);
                         }
 
                         break;
@@ -109,45 +111,51 @@ export class ControlledAnnotationBars {
             }, target);
         };
 
-        const computeTargets = (): ReadonlyArray<HTMLElement> => {
+        const targets = computeTargets(opts.fileType);
 
-            const computeTargetsForLegacyViewer = (): ReadonlyArray<HTMLElement> => {
-                const target = document.getElementById("viewerContainer")!;
-                return [target];
-            };
-
-            const computeTargetsForWebViewer = (): ReadonlyArray<HTMLElement> => {
-
-                const computeDocumentElements = (main: HTMLElement): ReadonlyArray<HTMLElement> => {
-
-                    const iframes = Array.from(main.querySelectorAll("iframe"))
-                        .map(iframe => iframe.contentDocument)
-                        .filter(contentDocument => contentDocument !== null)
-                        .map(contentDocument => contentDocument!)
-                        .map(contentDocument => contentDocument.documentElement)
-                        .map(documentElement => computeDocumentElements(documentElement))
-                        .reduce(Reducers.FLAT, []);
-
-                    return [main, ...iframes];
-
-                };
-
-                return computeDocumentElements(document.documentElement);
-
-            };
-
-            return computeTargetsForWebViewer();
-
-        };
-
-        const targets = computeTargets();
         for (const target of targets) {
             handleTarget(target);
         }
 
     }
 
-    private static destroyAnnotationBar(annotationBar: HTMLElement) {
+    function computeTargets(fileType: FileType): ReadonlyArray<HTMLElement> {
+
+        function computeTargetsForPDF(): ReadonlyArray<HTMLElement> {
+            // FIXME: this is not portable to Polar 2.0 tabbed browsing.
+
+            const pageElements = Array.from(document.querySelectorAll(".page")) as HTMLElement[];
+
+            console.log("FIXME: adding annotaiton bar across N pageElementS: " + pageElements.length);
+
+            return pageElements;
+        }
+
+        function computeTargetsForEPUB(): ReadonlyArray<HTMLElement> {
+
+            return Array.from(document.querySelectorAll("iframe"))
+                        .map(iframe => iframe.contentDocument)
+                        .filter(contentDocument => isPresent(contentDocument))
+                        .map(contentDocument => contentDocument!)
+                        .map(contentDocument => contentDocument.documentElement)
+                        // .map(documentElement => computeDocumentElements(documentElement))
+                        // .reduce(Reducers.FLAT, []);
+
+        }
+
+        switch(fileType) {
+
+            case "pdf":
+                return computeTargetsForPDF();
+
+            case "epub":
+                return computeTargetsForEPUB();
+
+        }
+
+    }
+
+    function destroyAnnotationBar(annotationBar: HTMLElement) {
 
         if (annotationBar && annotationBar.parentElement) {
             annotationBar.parentElement!.removeChild(annotationBar);
@@ -155,9 +163,9 @@ export class ControlledAnnotationBars {
 
     }
 
-    private static computePosition(pageElement: HTMLElement,
-                                   point: Point,
-                                   offset: Point | undefined): Point {
+    function computePosition(pageElement: HTMLElement,
+                             point: Point,
+                             offset: Point | undefined): Point {
 
         // const docFormat = DocFormatFactory.getInstance();
 
@@ -188,10 +196,10 @@ export class ControlledAnnotationBars {
 
     }
 
-    private static createAnnotationBar(pageNum: number,
-                                       pageElement: HTMLElement,
-                                       annotationBarCallbacks: AnnotationBarCallbacks,
-                                       activeSelectionEvent: ActiveSelectionEvent) {
+    function createAnnotationBar(pageNum: number,
+                                 pageElement: HTMLElement,
+                                 annotationBarCallbacks: AnnotationBarCallbacks,
+                                 activeSelectionEvent: ActiveSelectionEvent) {
 
         const point: Point = {
             x: activeSelectionEvent.boundingClientRect.left + (activeSelectionEvent.boundingClientRect.width / 2),
@@ -209,7 +217,7 @@ export class ControlledAnnotationBars {
         // TODO: we have to compute the position above or below based on the
         // direction of the mouse movement.
 
-        const position = this.computePosition(pageElement, point, offset);
+        const position = computePosition(pageElement, point, offset);
 
         const annotationBar = document.createElement('div');
         annotationBar.setAttribute("class", 'polar-annotation-bar');
@@ -226,7 +234,7 @@ export class ControlledAnnotationBars {
             // TODO: there's a delay here and it might be nice to have a progress
             // bar until it completes.
             annotationBarCallbacks.onHighlighted(highlightCreatedEvent);
-            this.destroyAnnotationBar(annotationBar);
+            destroyAnnotationBar(annotationBar);
 
         };
 

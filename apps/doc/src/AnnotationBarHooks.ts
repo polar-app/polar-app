@@ -14,20 +14,46 @@ import {
     ITextHighlightCreate,
     useAnnotationMutationsContext
 } from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {TextHighlighter} from "./TextHighlighter";
-import ICreateTextHighlightOpts = TextHighlighter.ICreateTextHighlightOpts;
+import {TextHighlighter} from "./text_highlighter/TextHighlighter";
+import {useDocViewerFileTypeContext} from "./renderers/DocRenderer";
+import {SelectedContents} from "../../../web/js/highlights/text/selection/SelectedContents";
+import {ISelectedContent} from "../../../web/js/highlights/text/selection/ISelectedContent";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 
-type CreateTextHighlightCallback = (opts: ICreateTextHighlightOpts) => void;
+
+/**
+ * The minimum properties we need to annotate without having to have the full
+ * store context like docMeta.
+ */
+interface ICreateTextHighlightCallbackOpts {
+
+    readonly pageNum: number;
+
+    readonly highlightColor: HighlightColor;
+
+    readonly selectedContent: ISelectedContent;
+
+}
+
+type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => void;
 
 function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     const annotationMutations = useAnnotationMutationsContext();
+    const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
 
-    // FIXME: for some reason this is super slow...
-    return (opts: ICreateTextHighlightOpts) => {
+    return (opts: ICreateTextHighlightCallbackOpts) => {
 
-        const {docMeta, pageMeta, textHighlight}
-            = TextHighlighter.createTextHighlight(opts);
+        if (! docMeta) {
+            throw new Error("No docMeta");
+        }
+
+        if (! docScale) {
+            throw new Error("docScale");
+        }
+
+        const {pageMeta, textHighlight}
+            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale});
 
         const mutation: ITextHighlightCreate = {
             type: 'create',
@@ -40,15 +66,23 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
 }
 
-export function useAnnotationBar() {
+/**
+ * Function that will register our event listeners when returned.
+ */
+export type AnnotationBarEventListenerRegisterer = () => void;
+
+export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
 
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
-    const textHighlightCallback = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
+    const createTextHighlightCallbackRef = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
+    const fileType = useDocViewerFileTypeContext();
 
     store.current = useDocViewerStore(['docMeta', 'docScale']);
-    textHighlightCallback.current = useCreateTextHighlightCallback();
+    createTextHighlightCallbackRef.current = useCreateTextHighlightCallback();
 
-    React.useMemo(() => {
+    return React.useMemo(() => {
+
+        // TODO: we need a way to unregister the bar I think.
 
         const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
         const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
@@ -63,15 +97,21 @@ export function useAnnotationBar() {
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             console.log("onHighlighted: ", highlightCreatedEvent);
 
-            const callback = textHighlightCallback.current!;
-            const {docMeta, docScale} = store.current!;
+            const createTextHighlightCallback = createTextHighlightCallbackRef.current!;
 
-            callback({
-                docMeta: docMeta!,
-                docScale: docScale!,
+            const {selection} = highlightCreatedEvent.activeSelection;
+
+            const selectedContent = SelectedContents.computeFromSelection(selection);
+
+            // now clear the selection since we just highlighted it.
+            selection.empty();
+
+            // FIXME: now this needs to be decoupled via postMessage...
+            // but first see if it works with the PDF support...
+            createTextHighlightCallback({
                 pageNum: highlightCreatedEvent.pageNum,
                 highlightColor: highlightCreatedEvent.highlightColor,
-                selection: highlightCreatedEvent.activeSelection.selection
+                selectedContent
             });
 
             // TextHighlighter.computeTextSelections();
@@ -82,7 +122,13 @@ export function useAnnotationBar() {
             // onComment
         };
 
-        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+        return () => {
+
+            ControlledAnnotationBars.create(annotationBarControlledPopupProps,
+                                            annotationBarCallbacks,
+                                            {fileType});
+
+        }
 
     }, []);
 

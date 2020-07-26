@@ -32,6 +32,7 @@ import {DocRenderer, DocViewerFileTypeContext} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import { ViewerContainerProvider } from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
+import {memoForwardRef} from "../../../web/js/react/ReactUtils";
 
 const Main = React.memo(() => {
 
@@ -237,15 +238,21 @@ namespace Device {
 
 }
 
+const DocViewerMain = memoForwardRef(() => {
 
-export const DocViewer = React.memo(() => {
+    return (
+        <DeviceRouter handheld={<Device.Handheld/>}
+                      desktop={<Device.Desktop/>}/>
+    );
 
+});
+
+export const DocViewer = memoForwardRef(() => {
+
+    const {docURL} = useDocViewerStore(['docURL']);
     const log = useLogger();
     const {setDocMeta} = useDocViewerCallbacks();
-    const {docURL} = useDocViewerStore(['docURL']);
     const persistenceLayerContext = usePersistenceLayerContext()
-
-    useAnnotationBar();
 
     // TODO: I think I can have hard wired types for state transition functions
     // like an uninitialized store, with missing values, then an initialized one
@@ -299,13 +306,12 @@ export const DocViewer = React.memo(() => {
     return (
         <DocViewerFileTypeContext.Provider value={fileType}>
             <ViewerContainerProvider>
-                <DeviceRouter handheld={<Device.Handheld/>}
-                              desktop={<Device.Desktop/>}/>
+                <DocViewerMain/>
             </ViewerContainerProvider>
         </DocViewerFileTypeContext.Provider>
     );
 
-}, isEqual);
+});
 
 
 

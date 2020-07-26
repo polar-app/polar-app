@@ -25,7 +25,7 @@ export const AuthRequired = React.memo((props: IProps) => {
         console.warn("No userInfo: forcing authentication");
 
         const authHandler = AuthHandlers.get();
-        authHandler.authenticate();
+        authHandler.authenticate(document.location.href);
         return null;
 
     }

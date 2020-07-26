@@ -39,15 +39,19 @@ export type ScaleLevel =
     | '4';
 export type ScaleLevelTuple = LabelValueTuple<ScaleLevel>;
 
+export const SCALE_VALUE_PAGE_FIT: ScaleLevelTuple = {
+    label: 'page fit',
+    value: 'page-fit'
+}
+
+export const SCALE_VALUE_PAGE_WIDTH: ScaleLevelTuple = {
+    label: 'page width',
+    value: 'page-width'
+}
+
 export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
-    {
-        label: 'page fit',
-        value: 'page-fit'
-    },
-    {
-        label: 'page width',
-        value: 'page-width'
-    },
+    SCALE_VALUE_PAGE_FIT,
+    SCALE_VALUE_PAGE_WIDTH,
     {
         label: '50%',
         value: '0.5'
@@ -76,5 +80,4 @@ export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
 
 ];
 
-export const ScaleLevelTuplesMap = arrayStream(ScaleLevelTuples)
-                                       .toMap(current => current.label);
+export const ScaleLevelTuplesMap = arrayStream(ScaleLevelTuples).toMap(current => current.label);
