@@ -11,6 +11,7 @@ description: Polar supports long term web page archival via a process called "ca
 
 Polar supports long term web page archival via a process called “capture” which downloads and caches the content locally. We store it in Polar as if it were any other type of document (like PDF or epub).
 This allows you to manage web pages with tags and annotations including text and area highlights, comments, and flashcards. This essentially allows Polar to work as your own personal Internet archive for documents critical to your education. One issue with annotating documents on the web is that the author might change the document (or even delete it) thereby invalidating your annotations. Polar prevents that by capturing the content in the cloud for your own long term usage.
+
 <img class="img-fluid" src="https://i.imgur.com/GFBRgFv.png">
 
 <img class="img-fluid" src="https://i.imgur.com/EmeCg6Q.png">
