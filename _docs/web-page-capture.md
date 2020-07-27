@@ -41,7 +41,9 @@ After the web page is captured and saved locally, it’s saved to the document r
 **Adding tags**
 
 To add tags to your documents in Polar, press the tag symbol (or press t) just right of the progress tracking bar. 
+
 <img class="img-fluid" src="https://i.imgur.com/NM344Rh.pngg">
+
 Furthermore, the document repository supports features like tracking reading progress and custom sorting (by updated time, added time).
 
 <img class="img-fluid" src="https://i.imgur.com/dqdGSOt.png">
