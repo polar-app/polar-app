@@ -1,7 +1,6 @@
 import React from 'react';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
-import {useHistory} from 'react-router-dom';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface TabDescriptor {

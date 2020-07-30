@@ -9,11 +9,12 @@ export namespace ReadingProgressResume {
         readonly docMeta: IDocMeta;
     }
 
-    export function resume(opts: ResumeOpts) {
-        setTimeout(() => doResume(opts), 1);
+    export function resume(opts: ResumeOpts): boolean {
+        // setTimeout(() => doResume(opts), 1);
+        return doResume(opts);
     }
 
-    function doResume(opts: ResumeOpts) {
+    function doResume(opts: ResumeOpts): boolean {
 
         const {docMeta} = opts;
 
@@ -30,6 +31,12 @@ export namespace ReadingProgressResume {
     }
 
     function scrollToPagemark(targetPagemark: PagemarkHolder) {
+
+        // FIXME: this has to be rewritten as a hook so that we can jump to the
+        // page properly and that the toolbar has the right page.
+
+        // FIXME: the 'next' button doesn't work when we jump to a page after load
+        // as I think the current page number isn't changed.
 
         const pages = document.querySelectorAll(".page");
 

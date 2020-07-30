@@ -7,9 +7,7 @@ import {
 } from "../../browser_tabs/BrowserTabsStore";
 import {ViewerURLs} from "./doc_loaders/ViewerURLs";
 import {PersistentRoute} from "../repository/PersistentRoute";
-// import { RepositoryDocViewerScreen } from '../repository/RepositoryApp';
 import {BrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
-import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import { RepositoryDocViewerScreen } from '../repository/RepositoryApp';
 
 

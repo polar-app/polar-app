@@ -23,9 +23,6 @@ describe('FlashcardDescriptors', function() {
 
         assert.equal(flashcardDescriptors.length, 2);
 
-        console.log("FIXME: ", JSON.stringify(flashcardDescriptors, null, "  "));
-
     });
-
 
 });

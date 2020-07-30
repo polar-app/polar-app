@@ -2,7 +2,7 @@ import React from 'react';
 import {ipcRenderer} from "electron";
 import Button from '@material-ui/core/Button';
 
-// FIXME: FIXME: this won't look right in MUI
+// FIXME: this won't look right in MUI
 export function RestartForUpdateButton() {
 
     return (

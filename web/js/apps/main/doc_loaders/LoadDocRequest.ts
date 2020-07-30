@@ -13,4 +13,6 @@ export interface LoadDocRequest {
      */
     readonly newWindow: boolean;
 
+    // TODO: extend with page and annotation parameters.
+
 }

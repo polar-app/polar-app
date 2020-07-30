@@ -432,18 +432,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     function onPageJump(page: number) {
-
-        const {pageNavigator} = storeProvider();
-
-        if (pageNavigator) {
-            pageNavigator.set(page);
-        } else {
-            log.warn("No page navigator");
-        }
-
+        doPageJump(page);
     }
 
-    function doPageNav(delta: number) {
+    function doPageJump(newPage: number) {
 
         const store = storeProvider();
         const {pageNavigator, page} = store;
@@ -451,8 +443,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         if (! pageNavigator) {
             return;
         }
-
-        const newPage = page + delta;
 
         if (newPage <= 0) {
             // invalid page as we requested to jump too low
@@ -470,6 +460,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             page: newPage
         });
 
+    }
+
+    function doPageNav(delta: number) {
+        const store = storeProvider();
+        const {page} = store;
+        const newPage = page + delta;
+        doPageJump(newPage);
     }
 
     function onPageNext() {

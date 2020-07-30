@@ -1,10 +1,3 @@
-// yet or throw an Error otherwise.
-// import {
-//     SubscriptionValue,
-//     useSnapshotSubscriber
-// } from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
-// import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-// import {usePersistenceLayerContext} from "./PersistenceLayerApp";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     SubscriptionValue,
@@ -12,12 +5,14 @@ import {
 } from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {usePersistenceLayerContext} from "./PersistenceLayerApp";
+import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
 
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
     const persistenceLayerContext = usePersistenceLayerContext();
 
-    const createSubscription = () => {
+    const createSubscription = (): SnapshotSubscriber<PersistentPrefs> => {
+
         const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
 
         if (!persistenceLayer) {
@@ -28,7 +23,8 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
         const datastore = persistenceLayer.datastore;
         const prefs = datastore.getPrefs();
 
-        if (!prefs) {
+        if (! prefs) {
+            // this should never happen in practice but is just defensive coding
             throw new Error("No prefs found from datastore: " + datastore.id);
         }
 
@@ -36,12 +32,9 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
             throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
         }
 
-        // FIXME: this will yield bugs I think because the second time it's not
-        // used...
-        //
-        // FIXME: I think this should be constructor and thhat way when
-        // it changes, we can reload.
-
+        // the onNext function will be called in the snapshot subscriber so that
+        // we can receive future values and it also handles unsubscribe on
+        // component unmount
         return prefs.subscribe.bind(prefs);
 
     }

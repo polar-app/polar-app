@@ -4,7 +4,7 @@ import fs from 'fs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from 'polar-shared/src/util/URLs';
 
-const USE_FILE_URL = true;
+const USE_FILE_URL = false;
 
 /**
  * Given a relative path, return a full path to a local app resource.

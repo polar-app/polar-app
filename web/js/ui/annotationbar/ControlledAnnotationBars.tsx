@@ -123,11 +123,9 @@ export namespace ControlledAnnotationBars {
 
         function computeTargetsForPDF(): ReadonlyArray<HTMLElement> {
             // FIXME: this is not portable to Polar 2.0 tabbed browsing.
+            // FIXME: migrate to useDocViewerElementsContext
 
             const pageElements = Array.from(document.querySelectorAll(".page")) as HTMLElement[];
-
-            console.log("FIXME: adding annotaiton bar across N pageElementS: " + pageElements.length);
-
             return pageElements;
         }
 

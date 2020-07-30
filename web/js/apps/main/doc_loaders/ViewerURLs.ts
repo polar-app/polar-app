@@ -15,6 +15,8 @@ export namespace ViewerURLs {
 
         const persistenceLayer = persistenceLayerProvider();
 
+        // TODO: we don't actually have to call getFile to determine the type
+
         const datastoreFile = persistenceLayer.getFile(backendFileRef.backend, backendFileRef);
 
         if (FilePaths.hasExtension(fileName, "pdf")) {

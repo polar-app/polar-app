@@ -15,10 +15,6 @@ import {ISelectedContent} from "../../../../web/js/highlights/text/selection/ISe
 
 const log = Logger.create()
 
-// FIXME: we have to decouple this and use window.postMessage or chrome
-// extension messaging so that I can have lightweight annotation built into
-// the chrome extension too.
-
 export namespace TextHighlighter {
 
     interface ICreatedTextHighlight {

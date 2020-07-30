@@ -1,5 +1,7 @@
 #!/bin/bash
 
+// FIXME: I'm not parsing the output right... ...
+
 const {execSync} = require('child_process');
 
 function toLines(data) {
@@ -24,16 +26,25 @@ function gitAnnotate(path) {
 
 function parseGitAnnotateLine(line) {
 
-  const regexp = '^.......................(.........................)(.*)';
-  const r = new RegExp(regexp);
+  function parseCommitMetaWithCode() {
 
-  const match = r.exec(line);
+    const regexp = '\t\(([^)]+\)).(.*)$';
+    const r = new RegExp(regexp);
 
-  if (match) {
-    return [match[1], match[2]];
+    const match = r.exec(line);
+
+    if (match) {
+      return [match[1], match[3]];
+    }
+
+    throw new Error("Unable to find commit metadata and code");
   }
 
-  throw new Error("No match");
+  const [commitMeta, code] = parseCommitMetaWithCode();
+
+  const commitMetaFields = commitMeta.split('\t');
+  const [username, date, lineNumber] = commitMetaFields;
+  return [date, code];
 
 }
 

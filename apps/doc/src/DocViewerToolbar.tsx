@@ -245,7 +245,7 @@ const PageNextButton = () => {
 
 export const DocViewerToolbar = React.memo(() => {
 
-    const {docScale, pageNavigator} = useDocViewerStore(['docScale', 'pageNavigator']);
+    const {docScale, pageNavigator, scaleLeveler} = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler']);
     const {finder} = useDocFindStore(['finder']);
 
     const {setScale} = useDocViewerCallbacks();
@@ -322,7 +322,7 @@ export const DocViewerToolbar = React.memo(() => {
                          }}
                          className="ml-auto mr-auto vertical-align-children">
 
-                        {docScale && (
+                        {docScale && scaleLeveler && (
                             <DeviceRouters.Desktop>
                                 <MUIButtonBar>
                                     <IconButton onClick={() => handleNextZoomLevel(-1)}>

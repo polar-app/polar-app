@@ -14,8 +14,10 @@ import {useDocFindCallbacks} from "../../DocFindStore";
 import {IFrameEvents} from "./IFrameEvents";
 import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
-import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import './EPUBDocument.css';
+import {DocViewerAnnotationRouter} from '../../DocViewerAnnotationRouter';
+import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import {DocumentInit} from "../DocumentInitHook";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -27,13 +29,6 @@ interface ExtendedSpine {
 }
 
 // FIXME how do I pre-filter the HTML to reject XSS attacks...
-
-// FIXME pageNavigator that is a context object so that I can jump between pages
-//
-// FIXME docID context that knows the currently loaded doc
-//
-// FIXME: use the id of the doc on a <div> with a data attribute so that I can
-// find the main doc element without having to use a ref.
 
 function useCSS() {
 
@@ -101,9 +96,9 @@ function forwardEvents(target: HTMLElement) {
 export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
+    const [active, setActive] = React.useState(false);
     const {setDocDescriptor, setPageNavigator, setDocScale} = useDocViewerCallbacks();
     const {setFinder} = useDocFindCallbacks();
-    const [active, setActive] = React.useState(false);
     const css = useCSS();
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar();
@@ -137,7 +132,6 @@ export const EPUBDocument = (props: IProps) => {
         });
 
         function applyCSS() {
-            console.log("Using epub css: ", css);
             rendition.themes.default(css);
         }
 
@@ -156,13 +150,6 @@ export const EPUBDocument = (props: IProps) => {
         const metadata = await book.loaded.metadata;
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
-
-        // FIXME: the page navigator AND the URL navigation system need to support
-        // #page=1&annotation=xyx so that react router can work with this.
-        //
-        // FIXME the page jumping code works differently depending on the context
-        // When we are in the doc repository we need to create a URL and when
-        // we're in the viewer we have to jump to the right page, then scroll.
 
         function createPageNavigator(): PageNavigator {
 
@@ -223,10 +210,12 @@ export const EPUBDocument = (props: IProps) => {
             .catch(err => console.error("Could not load EPUB: ", err));
     })
 
-    return (
+    return active && (
         <>
-            {active && <EPUBFindRenderer/>}
+            <DocumentInit/>
+            <EPUBFindRenderer/>
+            <DocViewerAnnotationRouter/>
         </>
-    );
+    ) || null;
 
 };

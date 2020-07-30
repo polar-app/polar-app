@@ -2,8 +2,8 @@ import {LoadDocRequest} from '../LoadDocRequest';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
-import {Nav} from '../../../../ui/util/Nav';
 import {ViewerURLs} from "../ViewerURLs";
+import {DocURLLoader} from './DocURLLoader';
 
 export class BrowserDocLoader implements IDocLoader {
 
@@ -15,7 +15,7 @@ export class BrowserDocLoader implements IDocLoader {
 
         const viewerURL = ViewerURLs.create(this.persistenceLayerProvider, loadDocRequest);
 
-        const linkLoader = Nav.createLinkLoader({focus: true, newWindow: loadDocRequest.newWindow});
+        const linkLoader = DocURLLoader.create();
 
         Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
         Preconditions.assertPresent(loadDocRequest.backendFileRef, "backendFileRef");
@@ -25,7 +25,7 @@ export class BrowserDocLoader implements IDocLoader {
 
             async load(): Promise<void> {
                 console.log("Loading URL: ", viewerURL);
-                linkLoader.load(viewerURL);
+                linkLoader(viewerURL);
             }
 
         };

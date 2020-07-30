@@ -42,8 +42,10 @@ import {
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
-import {ReadingProgressResume} from "../../../../../web/js/view/ReadingProgressResume";
 import {useAnnotationBar} from "../../AnnotationBarHooks";
+import {useDocViewerJumpListener} from "../../DocViewerAnnotationHook";
+import {DocumentInit} from "../DocumentInitHook";
+import {DocViewerAnnotationRouter} from "../../DocViewerAnnotationRouter";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -129,17 +131,20 @@ interface IProps {
 
 export const PDFDocument = React.memo((props: IProps) => {
 
+    const {docURL} = props;
+    const [active, setActive] = React.useState(false);
+
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
     const log = useLogger();
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale} = useDocViewerCallbacks();
-    const {docURL} = props;
     const {setFinder} = useDocFindCallbacks();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const prefs = usePrefsContext();
     const annotationBarInjector = useAnnotationBar();
+    useDocViewerJumpListener();
 
     useComponentDidMount(() => {
 
@@ -182,8 +187,6 @@ export const PDFDocument = React.memo((props: IProps) => {
             return to / from;
         };
 
-        const scale = calculateScale(window.innerWidth, viewport.width);
-
         docViewer.viewer.setDocument(docRef.current);
         docViewer.linkService.setDocument(docRef.current, null);
 
@@ -192,9 +195,14 @@ export const PDFDocument = React.memo((props: IProps) => {
         setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
+
             // PageContextMenus.start()
-            ReadingProgressResume.resume({docMeta: props.docMeta});
             annotationBarInjector();
+
+            if (! active) {
+                setActive(true);
+            }
+
         });
 
         const resizeDebouncer = Debouncers.create(() => resize());
@@ -209,10 +217,19 @@ export const PDFDocument = React.memo((props: IProps) => {
         // do first resize async
         setTimeout(() => resize(), 1 );
 
-        const pageNavigator: PageNavigator = {
-            set: (page: number) => docViewer.viewer.currentPageNumber = page,
-            count: docRef.current.numPages
-        };
+        function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
+
+            const count = pdfDocumentProxy.numPages;
+
+            function set(page: number) {
+                docViewer.viewer.currentPageNumber = page;
+            }
+
+            return {count, set};
+
+        }
+
+        const pageNavigator = createPageNavigator(docRef.current);
 
         dispatchPDFDocMeta();
 
@@ -342,7 +359,12 @@ export const PDFDocument = React.memo((props: IProps) => {
 
     }
 
-    return null;
+    return active && (
+        <>
+            <DocumentInit/>
+            <DocViewerAnnotationRouter/>
+        </>
+    ) || null;
 
 }, isEqual);
 

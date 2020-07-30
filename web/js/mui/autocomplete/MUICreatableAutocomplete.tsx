@@ -194,7 +194,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
             return props.relatedOptionsCalculator(values);
 
         } else {
-            console.log("FIXME no related options calculator");
+            console.warn("No related options calculator");
         }
         
         return [];
