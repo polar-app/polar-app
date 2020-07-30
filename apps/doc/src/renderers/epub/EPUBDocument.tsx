@@ -103,9 +103,9 @@ export const EPUBDocument = (props: IProps) => {
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar();
 
-    setFinder(finder);
-
     useComponentDidMount(() => {
+
+        setFinder(finder);
 
         // the doc scale needs to be set to that we're 1.0 as epub doesn't support
         // scale just yet.

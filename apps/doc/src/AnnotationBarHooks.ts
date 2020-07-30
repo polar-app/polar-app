@@ -56,7 +56,7 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
             throw new Error("docScale");
         }
 
-        // TODO: what if this page isn't currently visible.
+        // TODO: what if this page isn't visible
         const pageElement = docViewerElementsContext.getPageElementForPage(opts.pageNum)!;
 
         const {pageMeta, textHighlight}

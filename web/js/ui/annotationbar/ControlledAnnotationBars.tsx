@@ -40,12 +40,19 @@ export namespace ControlledAnnotationBars {
 
             interface AnnotationPageInfo {
                 readonly pageNum: number;
-                readonly pageElement: HTMLElement;
+                /**
+                 * The container to hold the annotation bar.
+                 */
+                readonly popupContainer: HTMLElement;
             }
 
             ActiveSelections.addEventListener(activeSelectionEvent => {
 
                 const computeAnnotationPageInfo = (): AnnotationPageInfo | undefined => {
+
+                    function getPageNumberForPageElement(pageElement: HTMLElement) {
+                        return parseInt(pageElement.getAttribute("data-page-number")!, 10);
+                    }
 
                     const computeForPDF = (): AnnotationPageInfo | undefined => {
 
@@ -56,14 +63,18 @@ export namespace ControlledAnnotationBars {
                             return undefined;
                         }
 
-                        const pageNum = parseInt(pageElement.getAttribute("data-page-number"), 10);
+                        const pageNum = getPageNumberForPageElement(pageElement);
 
-                        return {pageElement, pageNum};
+                        return {popupContainer: pageElement, pageNum};
 
                     };
 
                     const computeForEPUB = (): AnnotationPageInfo | undefined => {
-                        return {pageElement: target, pageNum: 1};
+
+                        const pageElement = window.parent.document.querySelector('.page') as HTMLElement;
+                        const pageNum = getPageNumberForPageElement(pageElement);
+                        return {popupContainer: target, pageNum};
+
                     };
 
                     switch (opts.fileType) {
@@ -87,9 +98,9 @@ export namespace ControlledAnnotationBars {
                     case 'created':
 
                         annotationBar = createAnnotationBar(annotationPageInfo.pageNum,
-                                                                 annotationPageInfo.pageElement,
-                                                                 annotationBarCallbacks,
-                                                                 activeSelectionEvent);
+                                                            annotationPageInfo.popupContainer,
+                                                            annotationBarCallbacks,
+                                                            activeSelectionEvent);
 
                         break;
 
@@ -195,7 +206,7 @@ export namespace ControlledAnnotationBars {
     }
 
     function createAnnotationBar(pageNum: number,
-                                 pageElement: HTMLElement,
+                                 popupContainer: HTMLElement,
                                  annotationBarCallbacks: AnnotationBarCallbacks,
                                  activeSelectionEvent: ActiveSelectionEvent) {
 
@@ -215,7 +226,7 @@ export namespace ControlledAnnotationBars {
         // TODO: we have to compute the position above or below based on the
         // direction of the mouse movement.
 
-        const position = computePosition(pageElement, point, offset);
+        const position = computePosition(popupContainer, point, offset);
 
         const annotationBar = document.createElement('div');
         annotationBar.setAttribute("class", 'polar-annotation-bar');
@@ -226,7 +237,7 @@ export namespace ControlledAnnotationBars {
         const style = `position: absolute; top: ${position.y}px; left: ${position.x}px; z-index: 10000;`;
         annotationBar.setAttribute('style', style);
 
-        pageElement.insertBefore(annotationBar, pageElement.firstChild);
+        popupContainer.insertBefore(annotationBar, popupContainer.firstChild);
 
         const onHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
             // TODO: there's a delay here and it might be nice to have a progress
