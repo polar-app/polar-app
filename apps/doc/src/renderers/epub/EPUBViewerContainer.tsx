@@ -1,33 +1,33 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
+import {useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 
 export const EPUBViewerContainer = React.memo(() => {
 
+    const {page} = useDocViewerStore(['page']);
+
     return (
-        // <Paper className="m-2">
-        //     {/*<Divider/>*/}
-            <main id="viewerContainer"
-                  style={{
-                      position: 'absolute',
-                      overflow: 'auto',
-                      top: '0',
-                      width: '100%',
-                      height: '100%',
-                      overflowX: 'hidden',
-                  }}
-                  itemProp="mainContentOfPage">
+        <main id="viewerContainer"
+              style={{
+                  position: 'absolute',
+                  overflow: 'auto',
+                  top: '0',
+                  width: '100%',
+                  height: '100%',
+                  overflowX: 'hidden',
+              }}
+              itemProp="mainContentOfPage">
 
-                <div>
-                    <div id="viewer"
-                         className="epubViewer">
-                        <div className="page"
-                             style={{
-                                 userSelect: 'none'
-                             }}/>
-                    </div>
+            <div>
+                <div id="viewer"
+                     className="epubViewer">
+                    <div data-page-number={page}
+                         className="page"
+                         style={{
+                             userSelect: 'none'
+                         }}/>
                 </div>
+            </div>
 
-            </main>
-        // </Paper>
+        </main>
     );
 })

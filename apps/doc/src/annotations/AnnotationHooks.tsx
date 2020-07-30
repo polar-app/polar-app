@@ -156,12 +156,16 @@ export interface AnnotationContainer {
 
 export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
+    // FIXME: this needs to be uppdated to use DocViewerElementsContext
+
     // TODO: another optimization, in the future, is going to be to only update
     // annotations on VISIBLE pages, not hidden ones that are under the screen.
 
     const [annotationContainers, setAnnotationContainers] = React.useState<ReadonlyArray<AnnotationContainer>>([]);
 
     function doUpdateDelegate() {
+
+        // FIXME: need to figure out the pageNumber too...
 
         const pageElements = Array.from(document.querySelectorAll("#viewerContainer .page")) as ReadonlyArray<HTMLElement>;
 

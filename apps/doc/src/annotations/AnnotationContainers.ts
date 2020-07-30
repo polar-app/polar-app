@@ -13,9 +13,6 @@ export namespace AnnotationContainers {
 
         function createLookup(): ReadonlyArray<AnnotationContainer | undefined> {
 
-            const pages = annotations.map(current => current.pageNum);
-            const maxPage = Numbers.max(...pages);
-
             const result: AnnotationContainer[] = [];
 
             for (const annotationContainer of annotationContainers) {
