@@ -127,19 +127,6 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
 }
 
-function getContainer(page: number): HTMLElement | undefined {
-
-    const selector = `.page[data-page-number='${page}']`;
-    const pageElement = document.querySelector(selector) as HTMLElement;
-
-    if (! pageElement) {
-        return undefined;
-    }
-
-    return getContainerFromPageElement(pageElement);
-
-}
-
 function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | undefined {
 
     const textLayerElement = pageElement.querySelector(".textLayer");
