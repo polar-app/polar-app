@@ -6,6 +6,10 @@ import {
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {
+    IPageElement,
+    useDocViewerElementsContext
+} from "../renderers/DocViewerElementsContext";
 
 /**
  * Unsubscribes to the action created by the subscriber.
@@ -141,7 +145,7 @@ function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | un
     const textLayerElement = pageElement.querySelector(".textLayer");
 
     if (! textLayerElement) {
-        return undefined;
+        return pageElement;
     }
 
     return textLayerElement as HTMLElement;
@@ -156,33 +160,24 @@ export interface AnnotationContainer {
 
 export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
-    // FIXME: this needs to be uppdated to use DocViewerElementsContext
-
     // TODO: another optimization, in the future, is going to be to only update
     // annotations on VISIBLE pages, not hidden ones that are under the screen.
+
+    const docViewerElementsContext = useDocViewerElementsContext();
 
     const [annotationContainers, setAnnotationContainers] = React.useState<ReadonlyArray<AnnotationContainer>>([]);
 
     function doUpdateDelegate() {
 
-        // FIXME: need to figure out the pageNumber too...
-
-        const pageElements = Array.from(document.querySelectorAll("#viewerContainer .page")) as ReadonlyArray<HTMLElement>;
-
-        function toAnnotationContainer(pageElement: HTMLElement): AnnotationContainer {
-
-            const pageNum = parseInt(pageElement.getAttribute('data-page-number') || '0');
-            const container = getContainerFromPageElement(pageElement)!;
-
-            return {
-                pageNum, container
-            };
-
+        function toAnnotationContainer(pageElement: IPageElement): AnnotationContainer {
+            const container = getContainerFromPageElement(pageElement.element)!;
+            return {pageNum: pageElement.pageNum, container};
         }
 
         const newAnnotationContainers
-            = pageElements.filter(current => current.getAttribute('data-loaded') === 'true')
-                          .map(toAnnotationContainer);
+            = docViewerElementsContext.getPageElements()
+                                      .filter(current => current.loaded)
+                                      .map(toAnnotationContainer);
 
         setAnnotationContainers(newAnnotationContainers);
 
@@ -205,14 +200,7 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
 }
 
-export function getPageElement(page: number): HTMLElement {
-    // FIXME: this is not portable to 2.0 with multiple PDFs loaded.
-    return document.querySelectorAll(".page")[page - 1] as HTMLElement;
-}
-
-export function computePageDimensions(pageNum: number): IDimensions {
-    // TODO this is a bit of a hack.
-    const pageElement = getPageElement(pageNum);
+export function computePageDimensions(pageElement: HTMLElement): IDimensions {
     return {
         width: pageElement.clientWidth,
         height: pageElement.clientHeight

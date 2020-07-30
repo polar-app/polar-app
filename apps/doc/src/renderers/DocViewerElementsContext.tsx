@@ -22,6 +22,7 @@ export interface IDocViewerElements {
  */
 export interface IPageElement {
     readonly pageNum: number;
+    readonly loaded: boolean;
     readonly element: HTMLElement;
 }
 
@@ -52,8 +53,9 @@ export function useDocViewerElementsContext(): IDocViewerElements {
                 throw new Error("No page number");
             }
 
+            const loaded = element.getAttribute('data-loaded') === 'true';
             const pageNum = parseInt(dataPageNumber);
-            return {pageNum, element};
+            return {pageNum, element, loaded};
 
         }
 

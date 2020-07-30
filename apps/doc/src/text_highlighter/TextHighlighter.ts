@@ -8,7 +8,6 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {Rects} from "../../../../web/js/Rects";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {getPageElement} from "../annotations/AnnotationHooks";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IDocScale} from "../DocViewerStore";
 import {ISelectedContent} from "../../../../web/js/highlights/text/selection/ISelectedContent";
@@ -24,11 +23,14 @@ export namespace TextHighlighter {
     }
 
     export interface ICreateTextHighlightOpts {
+
+        readonly pageNum: number;
+
+        readonly pageElement: HTMLElement;
+
         readonly docMeta: IDocMeta;
 
         readonly docScale: IDocScale;
-
-        readonly pageNum: number;
 
         readonly highlightColor: HighlightColor;
 
@@ -72,13 +74,11 @@ export namespace TextHighlighter {
 
     export function createTextHighlight(opts: ICreateTextHighlightOpts): ICreatedTextHighlight {
 
-        const {highlightColor, docMeta, pageNum, selectedContent, docScale} = opts;
+        const {highlightColor, docMeta, pageNum, pageElement, selectedContent, docScale} = opts;
 
         log.info("createTextHighlight");
 
         const {rectTexts} = selectedContent;
-
-        const pageElement = getPageElement(pageNum);
 
         const rects = rectTexts.map(current => computeRectWithinPageElement(pageElement, current.boundingClientRect))
                                .map(Rects.createFromBasicRect)

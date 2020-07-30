@@ -15,6 +15,7 @@ import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -29,6 +30,7 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
     const {id} = areaHighlight;
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
+    const docViewerElementsContext = useDocViewerElementsContext();
 
     if (! docScale) {
         return null;
@@ -36,7 +38,13 @@ export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
 
     const {scaleValue} = docScale;
 
-    const pageDimensions = computePageDimensions(pageNum);
+    const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
+
+    if (! pageElement) {
+        return null;
+    }
+
+    const pageDimensions = computePageDimensions(pageElement);
 
     const toOverlayRect = (areaHighlightRect: AreaHighlightRect): ILTRect => {
 

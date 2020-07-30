@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
+import {useDocViewerStore} from "../../DocViewerStore";
 
 export const EPUBViewerContainer = React.memo(() => {
 
@@ -21,6 +21,7 @@ export const EPUBViewerContainer = React.memo(() => {
                 <div id="viewer"
                      className="epubViewer">
                     <div data-page-number={page}
+                         data-loaded="true"
                          className="page"
                          style={{
                              userSelect: 'none'

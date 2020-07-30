@@ -21,6 +21,7 @@ import {
 } from "../../../repository/js/doc_repo/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
+import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 
 const createPlacementRect = (placementElement: HTMLElement) => {
 
@@ -61,10 +62,10 @@ function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 }
 
 function computePagemarkFromResize(rect: ILTRect,
-                                   page: number,
+                                   pageElement: HTMLElement,
                                    pagemark: IPagemark) {
 
-    const pageDimensions = computePageDimensions(page)
+    const pageDimensions = computePageDimensions(pageElement)
 
     const annotationRect = AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(rect),
                                                                     pageDimensions);
@@ -104,9 +105,12 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
     const contextMenu = useContextMenu();
 
     const callbacks = useDocViewerCallbacks();
+    const docViewerElementsContext = useDocViewerElementsContext();
 
     const handleResized = React.useCallback((rect: ILTRect) => {
-        const newPagemark = computePagemarkFromResize(rect, pageNum, pagemark);
+
+        const pageElement = docViewerElementsContext.getPageElementForPage(pageNum)!;
+        const newPagemark = computePagemarkFromResize(rect, pageElement, pagemark);
 
         const mutation: IPagemarkUpdate = {
             type: 'update',

@@ -21,6 +21,7 @@ import {ISelectedContent} from "../../../web/js/highlights/text/selection/ISelec
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {useMessageListener} from "./text_highlighter/PostMessageHooks";
 import {MessageListeners} from "./text_highlighter/MessageListeners";
+import { useDocViewerElementsContext } from "./renderers/DocViewerElementsContext";
 
 
 /**
@@ -43,6 +44,7 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     const annotationMutations = useAnnotationMutationsContext();
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
+    const docViewerElementsContext = useDocViewerElementsContext();
 
     return (opts: ICreateTextHighlightCallbackOpts) => {
 
@@ -54,8 +56,11 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
             throw new Error("docScale");
         }
 
+        // TODO: what if this page isn't currently visible.
+        const pageElement = docViewerElementsContext.getPageElementForPage(opts.pageNum)!;
+
         const {pageMeta, textHighlight}
-            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale});
+            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale, pageElement});
 
         const mutation: ITextHighlightCreate = {
             type: 'create',
