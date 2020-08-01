@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PageAnnotations} from "./PageAnnotations";
-import {PagemarkRenderer2} from "./PagemarkRenderer2";
+import {PagemarkRenderer} from "./PagemarkRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
@@ -18,7 +18,7 @@ export const PagemarksView = React.memo(() => {
     const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
 
     const renderers = visiblePageAnnotations.map(current =>
-                                              <PagemarkRenderer2
+                                              <PagemarkRenderer
                                                   key={current.annotation.id}
                                                   pageNum={current.pageNum}
                                                   container={current.container}

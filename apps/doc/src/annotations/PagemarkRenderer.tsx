@@ -154,7 +154,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
 export const ContextMenu = createContextMenu(PagemarkMenu);
 
-export const PagemarkRenderer2 = React.memo((props: IProps) => {
+export const PagemarkRenderer = React.memo((props: IProps) => {
 
     const {pagemark, fingerprint, pageNum, container} = props;
 
