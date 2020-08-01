@@ -3,7 +3,8 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {PersistenceLayerProvider} from '../../../../datastore/PersistenceLayer';
 import {IDocLoader, IDocLoadRequest} from '../IDocLoader';
 import {ViewerURLs} from "../ViewerURLs";
-import {DocURLLoader} from './DocURLLoader';
+import {DocURLLoader, useDocURLLoader} from './DocURLLoader';
+import {usePersistenceLayerContext} from "../../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 export class BrowserDocLoader implements IDocLoader {
 
@@ -30,6 +31,18 @@ export class BrowserDocLoader implements IDocLoader {
 
         };
 
+    }
+
+}
+
+export function useBrowserDocLoader() {
+
+    const {persistenceLayerProvider} = usePersistenceLayerContext()
+    const docURLLoader = useDocURLLoader();
+
+    return (loadDocRequest: LoadDocRequest) => {
+        const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
+        docURLLoader(viewerURL);
     }
 
 }

@@ -507,9 +507,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             newWindow: true
         }
 
-        docLoader(docLoadRequest)
-            .load()
-            .catch(err => log.error("DocRepoStore2: Unable to load doc: ", err));
+        docLoader(docLoadRequest);
 
     }
 

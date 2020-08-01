@@ -9,6 +9,7 @@ import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
 export const TextHighlightsView = memoForwardRef(() => {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
+
     const annotationContainers = useAnnotationContainers();
 
     if (!docMeta) {
@@ -17,6 +18,8 @@ export const TextHighlightsView = memoForwardRef(() => {
 
     const pageAnnotations = PageAnnotations.compute(docMeta, pageMeta => Object.values(pageMeta.textHighlights || {}));
     const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
+
+    // FIXME this is being rendered in the .page element not within the iframe.
 
     const rendered = visiblePageAnnotations.map(current =>
                                              <TextHighlightRenderer2

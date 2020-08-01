@@ -1,7 +1,7 @@
 import {useHistory} from "react-router-dom";
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
-import {DocURLLoader} from "../apps/main/doc_loaders/browser/DocURLLoader";
+import {useDocURLLoader} from "../apps/main/doc_loaders/browser/DocURLLoader";
 import {AnnotationLinks} from "./AnnotationLinks";
 
 /**
@@ -11,6 +11,7 @@ import {AnnotationLinks} from "./AnnotationLinks";
 export function useJumpToAnnotationHandler() {
 
     const history = useHistory();
+    const docURLLoader = useDocURLLoader();
 
     function isDocViewer() {
         return DocViewerAppURLs.parse(document.location.href) !== undefined;
@@ -23,8 +24,7 @@ export function useJumpToAnnotationHandler() {
             history.push({hash});
         } else {
             const url = AnnotationLinks.createURL(annotation);
-            const linkLoader = DocURLLoader.create();
-            linkLoader(url);
+            docURLLoader(url);
         }
 
     }

@@ -7,9 +7,8 @@ import {
 } from "../../browser_tabs/BrowserTabsStore";
 import {ViewerURLs} from "./doc_loaders/ViewerURLs";
 import {PersistentRoute} from "../repository/PersistentRoute";
-import {BrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
-import { RepositoryDocViewerScreen } from '../repository/RepositoryApp';
-
+import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
+import {RepositoryDocViewerScreen} from '../repository/RepositoryApp';
 
 function useDocLoaderElectron2() {
 
@@ -60,16 +59,7 @@ function useDocLoaderElectron() {
 }
 
 function useDocLoaderDefault() {
-
-    const {persistenceLayerProvider} = usePersistenceLayerContext();
-
-    const browserDocLoader = new BrowserDocLoader(persistenceLayerProvider);
-
-    return (loadDocRequest: LoadDocRequest) => {
-        console.log("Creating loader for: ", loadDocRequest);
-        return browserDocLoader.create(loadDocRequest);
-    }
-
+    return useBrowserDocLoader();
 }
 
 function useDocLoaderNull() {

@@ -301,9 +301,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             newWindow: true
         }
 
-        docLoader(docLoadRequest)
-            .load()
-            .catch(err => log.error("Unable to load doc: ", err));
+        docLoader(docLoadRequest);
 
     }
 
