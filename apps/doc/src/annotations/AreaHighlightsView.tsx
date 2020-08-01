@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PageAnnotations} from "./PageAnnotations";
-import {AreaHighlightRenderer2} from "./AreaHighlightRenderer2";
+import {AreaHighlightRenderer} from "./AreaHighlightRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
@@ -18,7 +18,7 @@ export const AreaHighlightsView = React.memo(() => {
     const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
 
     const rendered = visiblePageAnnotations.map(current =>
-                                             <AreaHighlightRenderer2
+                                             <AreaHighlightRenderer
                                                  key={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}

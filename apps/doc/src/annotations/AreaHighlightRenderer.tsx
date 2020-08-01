@@ -24,7 +24,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const AreaHighlightRenderer2 = React.memo((props: IProps) => {
+export const AreaHighlightRenderer = React.memo((props: IProps) => {
 
     const {areaHighlight, fingerprint, pageNum, container} = props;
     const {id} = areaHighlight;
