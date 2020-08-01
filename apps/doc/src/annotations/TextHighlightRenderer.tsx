@@ -16,7 +16,7 @@ interface IProps {
     readonly container: HTMLElement,
 }
 
-export const TextHighlightRenderer2 = React.memo((props: IProps) => {
+export const TextHighlightRenderer = React.memo((props: IProps) => {
 
     const {textHighlight, fingerprint, pageNum, container} = props;
     const {docScale} = useDocViewerStore(['docScale']);

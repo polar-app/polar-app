@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PageAnnotations} from "./PageAnnotations";
-import {TextHighlightRenderer2} from "./TextHighlightRenderer2";
+import {TextHighlightRenderer} from "./TextHighlightRenderer";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AnnotationContainers} from "./AnnotationContainers";
 import {useAnnotationContainers} from "./AnnotationHooks";
@@ -22,7 +22,7 @@ export const TextHighlightsView = memoForwardRef(() => {
     // FIXME this is being rendered in the .page element not within the iframe.
 
     const rendered = visiblePageAnnotations.map(current =>
-                                             <TextHighlightRenderer2
+                                             <TextHighlightRenderer
                                                  key={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}
