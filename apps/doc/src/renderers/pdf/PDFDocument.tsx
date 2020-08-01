@@ -127,6 +127,8 @@ export type OnFinderCallback = Callback1<Finder>;
 interface IProps {
     readonly docURL: URLStr;
     readonly docMeta: IDocMeta;
+    readonly children: React.ReactNode;
+
 }
 
 export const PDFDocument = React.memo((props: IProps) => {
@@ -363,6 +365,7 @@ export const PDFDocument = React.memo((props: IProps) => {
         <>
             <DocumentInit/>
             <DocViewerAnnotationRouter/>
+            {props.children}
         </>
     ) || null;
 

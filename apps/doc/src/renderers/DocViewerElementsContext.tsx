@@ -15,6 +15,11 @@ export interface IDocViewerElements {
      */
     getPageElementForPage(pageNum: number): HTMLElement | undefined;
 
+    /**
+     * Get the container from a page element.
+     */
+    getContainerFromPageElement(pageElement: HTMLElement): HTMLElement;
+
 }
 
 /**
@@ -28,7 +33,7 @@ export interface IPageElement {
 
 export function useDocViewerElementsContext(): IDocViewerElements {
 
-    const {docID} = useDocViewerContext();
+    const {docID, fileType} = useDocViewerContext();
 
     function getDocViewerElement(): HTMLElement {
         const selector = `div[data-doc-viewer-id='${docID}']`;
@@ -72,6 +77,43 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     }
 
-    return {getPageElements, getPageElementForPage};
+    function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement {
+
+        function containerForPDF() {
+
+            const textLayerElement = pageElement.querySelector(".textLayer");
+
+            if (! textLayerElement) {
+                return pageElement;
+            }
+
+            return textLayerElement as HTMLElement;
+
+        }
+
+        function containerForEPUB() {
+            const docViewerElement = getDocViewerElement();
+            const iframe = docViewerElement.querySelector('iframe');
+
+            if (! iframe) {
+                throw new Error("No iframe");
+            }
+
+            return iframe!.contentDocument!.body;
+        }
+
+        switch (fileType) {
+
+            case "pdf":
+                return containerForPDF();
+
+            case "epub":
+                return containerForEPUB();
+
+        }
+
+    }
+
+    return {getPageElements, getPageElementForPage, getContainerFromPageElement};
 
 }

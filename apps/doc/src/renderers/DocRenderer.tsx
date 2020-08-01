@@ -15,6 +15,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 interface ILoadedProps {
     readonly docURL: URLStr;
     readonly docMeta: IDocMeta;
+    readonly children: React.ReactNode;
 }
 
 const PDFDocumentRenderer = (props: ILoadedProps) => {
@@ -66,6 +67,7 @@ interface DocRendererDelegateProps {
     readonly docURL: string,
     readonly docMeta: IDocMeta;
     readonly fileType: FileType;
+    readonly children: React.ReactNode;
 }
 
 const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
@@ -73,16 +75,28 @@ const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
     switch (props.fileType) {
 
         case "pdf":
-            return <PDFDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}/>;
+            return (
+                <PDFDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}>
+                    {props.children}
+                </PDFDocumentRenderer>
+            );
         case "epub":
-            return <EPUBDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}/>;
+            return (
+                <EPUBDocumentRenderer docURL={props.docURL} docMeta={props.docMeta}>
+                    {props.children}
+                </EPUBDocumentRenderer>
+            );
         default:
             return null;
     }
 
 });
 
-export const DocRenderer = React.memo(() => {
+interface IProps {
+    readonly children: React.ReactNode;
+}
+
+export const DocRenderer = React.memo((props: IProps) => {
 
     const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 
@@ -93,7 +107,9 @@ export const DocRenderer = React.memo(() => {
     const fileType = FileTypes.create(docURL);
 
     return (
-        <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}/>
+        <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}>
+            {props.children}
+        </DocRendererDelegate>
     );
 
 }, isEqual);

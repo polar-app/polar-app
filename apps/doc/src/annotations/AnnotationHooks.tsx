@@ -128,21 +128,9 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
 }
 
-function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | undefined {
-
-    const textLayerElement = pageElement.querySelector(".textLayer");
-
-    if (! textLayerElement) {
-        return pageElement;
-    }
-
-    return textLayerElement as HTMLElement;
-
-}
-
-
 export interface AnnotationContainer {
     readonly pageNum: number;
+    readonly pageElement: HTMLElement;
     readonly container: HTMLElement;
 }
 
@@ -152,9 +140,9 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
     // annotations on VISIBLE pages, not hidden ones that are under the screen.
 
     // this just tricks us to re-render for the EPUB viewer so we get new
-    // pageElements
-
+    // pageElements .
     const {page} = useDocViewerStore(['page']);
+
     const docViewerElementsContext = useDocViewerElementsContext();
 
     const [annotationContainers, setAnnotationContainers] = React.useState<ReadonlyArray<AnnotationContainer>>([]);
@@ -162,13 +150,18 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
     function doUpdateDelegate() {
 
         function toAnnotationContainer(pageElement: IPageElement): AnnotationContainer {
-            const container = getContainerFromPageElement(pageElement.element)!;
-            return {pageNum: pageElement.pageNum, container};
+
+            const container = docViewerElementsContext.getContainerFromPageElement(pageElement.element)!;
+
+            return {
+                pageNum: pageElement.pageNum,
+                pageElement: pageElement.element,
+                container
+            };
+
         }
 
         const pageElements = docViewerElementsContext.getPageElements();
-
-        console.log("FIXME: pageElements: ", pageElements);
 
         const newAnnotationContainers
             = pageElements.filter(current => current.loaded)

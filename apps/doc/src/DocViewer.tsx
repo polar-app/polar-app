@@ -20,7 +20,6 @@ import {
     IDocViewerContextMenuOrigin
 } from "./DocViewerMenu";
 import {createContextMenu} from "../../repository/js/doc_repo/MUIContextMenu";
-import {useAnnotationBar} from "./AnnotationBarHooks";
 import {Helmet} from "react-helmet";
 import {DeviceRouter} from "../../../web/js/ui/DeviceRouter";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -30,9 +29,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
-import { ViewerContainerProvider } from "./ViewerContainerStore";
+import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
-import {memoForwardRef} from "../../../web/js/react/ReactUtils";
 
 const Main = React.memo(() => {
 
@@ -81,13 +79,15 @@ const DocMain = React.memo(() => {
                 <title>{docMeta?.docInfo.title || ''}</title>
             </Helmet>
 
-            <DocRenderer/>
+            <DocRenderer>
+                <>
+                    <TextHighlightsView />
 
-            <TextHighlightsView />
+                    <AreaHighlightsView/>
 
-            <AreaHighlightsView/>
-
-            <PagemarksView/>
+                    <PagemarksView/>
+                </>
+            </DocRenderer>
 
         </>
     )

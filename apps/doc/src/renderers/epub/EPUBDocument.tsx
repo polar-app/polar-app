@@ -22,6 +22,7 @@ import {DocumentInit} from "../DocumentInitHook";
 interface IProps {
     readonly docURL: URLStr;
     readonly docMeta: IDocMeta;
+    readonly children: React.ReactNode;
 }
 
 interface ExtendedSpine {
@@ -215,6 +216,7 @@ export const EPUBDocument = (props: IProps) => {
             <DocumentInit/>
             <EPUBFindRenderer/>
             <DocViewerAnnotationRouter/>
+            {props.children}
         </>
     ) || null;
 
