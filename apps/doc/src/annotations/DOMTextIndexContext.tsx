@@ -14,7 +14,7 @@ const DOMTextIndexContext = React.createContext<IDOMTextIndexContent>(null!);
 /**
  * Get the DOMTextIndex for the current page.
  */
-export function useDOMTextIndexContext() {
+export function useDOMTextIndexContext(): IDOMTextIndexContent {
     return React.useContext(DOMTextIndexContext);
 }
 

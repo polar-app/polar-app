@@ -13,7 +13,6 @@ import toHighlightViewportPositions = Highlights.toHighlightViewportPositions;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends DOMTextHit {
-    readonly id: string;
 }
 
 /**
