@@ -18,6 +18,7 @@ import './EPUBDocument.css';
 import {DocViewerAnnotationRouter} from '../../DocViewerAnnotationRouter';
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {DocumentInit} from "../DocumentInitHook";
+import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -212,12 +213,12 @@ export const EPUBDocument = (props: IProps) => {
     })
 
     return active && (
-        <>
+        <DOMTextIndexProvider>
             <DocumentInit/>
             <EPUBFindRenderer/>
             <DocViewerAnnotationRouter/>
             {props.children}
-        </>
+        </DOMTextIndexProvider>
     ) || null;
 
 };

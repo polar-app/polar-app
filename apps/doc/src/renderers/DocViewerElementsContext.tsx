@@ -4,6 +4,8 @@ import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 export interface IDocViewerElements {
 
+    getDocViewerElement(): HTMLElement;
+
     /**
      * Get all the elements for a page including their pageNum.
      */
@@ -114,6 +116,6 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     }
 
-    return {getPageElements, getPageElementForPage, getContainerFromPageElement};
+    return {getDocViewerElement, getPageElements, getPageElementForPage, getContainerFromPageElement};
 
 }
