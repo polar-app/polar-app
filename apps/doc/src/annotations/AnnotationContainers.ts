@@ -1,6 +1,5 @@
 import {AnnotationContainer} from "./AnnotationHooks";
 import {PageAnnotation} from "./PageAnnotations";
-import {Numbers} from "polar-shared/src/util/Numbers";
 
 export namespace AnnotationContainers {
 

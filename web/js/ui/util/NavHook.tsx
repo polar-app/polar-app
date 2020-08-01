@@ -48,7 +48,6 @@ function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
         if (typeof location === 'string') {
             const parsedURL = new URL(location);
             const newLocation = {pathname: parsedURL.pathname, hash: parsedURL.hash};
-            console.log("FIXME: newLocation: ", newLocation);
             history.push(newLocation);
         } else {
             history.push(location);
