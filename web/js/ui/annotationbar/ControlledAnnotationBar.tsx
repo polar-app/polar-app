@@ -50,7 +50,8 @@ export const ControlledAnnotationBar = (props: IProps) => {
                      paddingRight: '10px',
                      paddingTop: '5px',
                      paddingBottom: '5px',
-                     borderRadius: '3px'
+                     borderRadius: '3px',
+                     boxShadow: '0 0 5px #000'
                  }}>
 
                 <AnnotationHighlightButton dispatchColor='yellow'
