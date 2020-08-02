@@ -432,10 +432,17 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     function onPageJump(page: number) {
-        doPageJump(page);
+
+        async function doAsync() {
+            await doPageJump(page);
+        }
+
+        doAsync()
+          .catch(err => log.error('Could not handle page jump: ', err));
+
     }
 
-    function doPageJump(newPage: number) {
+    async function doPageJump(newPage: number) {
 
         const store = storeProvider();
         const {pageNavigator, page} = store;
@@ -454,7 +461,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             return;
         }
 
-        pageNavigator.set(newPage);
+        await pageNavigator.set(newPage);
         setStore({
             ...store,
             page: newPage
@@ -463,10 +470,16 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     }
 
     function doPageNav(delta: number) {
-        const store = storeProvider();
-        const {page} = store;
-        const newPage = page + delta;
-        doPageJump(newPage);
+
+        async function doAsync() {
+            const store = storeProvider();
+            const {page} = store;
+            const newPage = page + delta;
+            await doPageJump(newPage);
+        }
+
+        doAsync().catch(err => log.error("Could not handle page nav: ", err));
+
     }
 
     function onPageNext() {

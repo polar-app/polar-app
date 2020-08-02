@@ -22,41 +22,38 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
+
+function computeIndex(page: number, docViewerElement: HTMLElement) {
+
+    // TODO this would be specific to epub...
+    const iframe = docViewerElement.querySelector('iframe');
+
+    if (! iframe) {
+        throw new Error("No iframe");
+    }
+    const doc = iframe.contentDocument!;
+    const root = doc.body;
+
+    const index = DOMTextSearch.createIndex(doc, root);
+
+    return {page, index};
+
+}
+
 export const DOMTextIndexProvider = React.memo((props: IProps) => {
 
     const docViewerElementsContext = useDocViewerElementsContext();
     const {page} = useDocViewerStore(['page']);
-    const indexRef = React.useRef<IDOMTextIndexContent | undefined>();
+    const [index, setIndex] = React.useState<IDOMTextIndexContent | undefined>()
 
-    const docViewerElement = docViewerElementsContext.getDocViewerElement();
-
-    if (indexRef.current === undefined || indexRef.current.page !== page) {
-
-        function computeIndex() {
-
-            // TODO this would be specific to epub...
-            const iframe = docViewerElement.querySelector('iframe');
-
-            if (! iframe) {
-                throw new Error("No iframe");
-            }
-            const doc = iframe.contentDocument!;
-            const root = doc.body;
-
-            console.log("Computing DOMTextIndex for page: " + page);
-
-            const index = DOMTextSearch.createIndex(doc, root);
-
-            return {page, index};
-
-        }
-
-        indexRef.current = computeIndex();
-
+    if (index === undefined || index.page !== page) {
+        const docViewerElement = docViewerElementsContext.getDocViewerElement();
+        setIndex(computeIndex(page, docViewerElement));
+        return null;
     }
 
     return (
-        <DOMTextIndexContext.Provider value={indexRef.current}>
+        <DOMTextIndexContext.Provider value={index!}>
             {props.children}
         </DOMTextIndexContext.Provider>
     );

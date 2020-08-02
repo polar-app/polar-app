@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ReactDOM from "react-dom";
 import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {useDOMTextIndexContext} from "./DOMTextIndexContext";
@@ -16,7 +17,7 @@ interface IProps {
  */
 export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
 
-    const {textHighlight} = props;
+    const {textHighlight, container} = props;
     const {index} = useDOMTextIndexContext();
     const text = Texts.toText(textHighlight.text);
 
@@ -34,8 +35,6 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
         return null;
     }
 
-    return (
-        <DOMHighlight {...hit}/>
-    );
+    return ReactDOM.createPortal(<DOMHighlight {...hit}/>, container);
 
 });

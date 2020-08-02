@@ -44,6 +44,9 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
     useScrollEventListener(redrawCallback, {win});
     useResizeEventListener(redrawCallback, {win});
 
+    useScrollEventListener(redrawCallback);
+    useResizeEventListener(redrawCallback);
+
     function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition, idx: number) {
 
         const id = idx === 0 ? props.id : (props.id + ":" + idx);

@@ -157,16 +157,11 @@ export const EPUBDocument = (props: IProps) => {
 
             const pages = spine.items.filter(current => current.linear);
 
-            function set(page: number) {
+            async function set(page: number) {
 
                 const newPage = pages[page - 1];
 
-                async function doAsync() {
-                    await rendition.display(newPage.index)
-                }
-
-                doAsync()
-                    .catch(err => console.error("Could not set page: ", err));
+                await rendition.display(newPage.index)
 
             }
 
