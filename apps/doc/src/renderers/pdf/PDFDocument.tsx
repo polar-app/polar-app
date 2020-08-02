@@ -223,7 +223,7 @@ export const PDFDocument = React.memo((props: IProps) => {
 
             const count = pdfDocumentProxy.numPages;
 
-            function set(page: number) {
+            async function set(page: number) {
                 docViewer.viewer.currentPageNumber = page;
             }
 
