@@ -4,22 +4,6 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {AnnotationHighlightButton} from "./AnnotationHighlightButton";
-import {IStyleMap} from "../../react/IStyleMap";
-
-const Styles: IStyleMap = {
-
-    bar: {
-        backgroundColor: '#333333',
-        fontSize: '14px',
-        padding: '0',
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        paddingTop: '5px',
-        paddingBottom: '5px',
-        borderRadius: '3px'
-    }
-
-};
 
 export interface IProps extends AnnotationBarCallbacks {
 
@@ -57,7 +41,17 @@ export const ControlledAnnotationBar = (props: IProps) => {
     return (
         <div>
 
-            <div className="" style={Styles.bar}>
+            <div className=""
+                 style={{
+                     backgroundColor: '#333333',
+                     fontSize: '14px',
+                     padding: '0',
+                     paddingLeft: '10px',
+                     paddingRight: '10px',
+                     paddingTop: '5px',
+                     paddingBottom: '5px',
+                     borderRadius: '3px'
+                 }}>
 
                 <AnnotationHighlightButton dispatchColor='yellow'
                                            styleColor='rgba(255,255,0)'
