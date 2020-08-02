@@ -6,6 +6,7 @@ import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;
+    readonly color?: string;
 }
 
 /**
@@ -22,10 +23,12 @@ export const DOMHighlightRow = memoForwardRef((props: IProps) => {
     // we use the absolute position so that on scroll nothing is actually updated
     const absolutePosition = Highlights.fixedToAbsolute(props);
 
+    const backgroundColor = props.color || 'rgba(255, 255, 0, 0.5)';
+
     return (
         <div id={props.id}
              style={{
-                 backgroundColor: 'rgba(255, 255, 0, 0.5)',
+                 backgroundColor: `${backgroundColor}`,
                  position: 'absolute',
                  ...absolutePosition
              }}>

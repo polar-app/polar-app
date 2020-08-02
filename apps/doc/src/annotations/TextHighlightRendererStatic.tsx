@@ -44,7 +44,6 @@ export const TextHighlightRendererStatic = React.memo((props: IProps) => {
         const textHighlightRect = createScaledRect(rawTextHighlightRect);
 
         const color: HighlightColor = textHighlight.color || 'yellow';
-
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
         function createDOMID() {

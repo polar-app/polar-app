@@ -13,6 +13,7 @@ import toHighlightViewportPositions = Highlights.toHighlightViewportPositions;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends DOMTextHit {
+    readonly color?: string;
 }
 
 /**
@@ -53,6 +54,7 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
 
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;
         return <DOMHighlightRow {...highlightViewportPosition}
+                                color={props.color}
                                 id={id}
                                 key={key}/>
     }

@@ -5,6 +5,7 @@ import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {useDOMTextIndexContext} from "./DOMTextIndexContext";
 import { Texts } from 'polar-shared/src/metadata/Texts';
 import {DOMHighlight} from "../../../../web/js/dom_highlighter/DOMHighlight";
+import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 
 interface IProps {
     readonly textHighlight: ITextHighlight;
@@ -26,8 +27,6 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
         return null;
     }
 
-    // FIXME: we don't want to have to rebuild the case insensitivity version
-    // of this index each time.
     const hit = index.find(text, {caseInsensitive: true});
 
     if (! hit) {
@@ -35,6 +34,13 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
         return null;
     }
 
-    return ReactDOM.createPortal(<DOMHighlight {...hit}/>, container);
+    const color = HighlightColors.toBackgroundColor(textHighlight.color || 'yellow', 0.5);
+
+    // this is a bit unclean because it assumes the container is 'body' but it
+    // is actually trying to be a sibling to 'body' so that EPUB CSS rules
+    // don't conflict.
+    const portalContainer = container.parentElement!;
+
+    return ReactDOM.createPortal(<DOMHighlight color={color} {...hit}/>, portalContainer);
 
 });
