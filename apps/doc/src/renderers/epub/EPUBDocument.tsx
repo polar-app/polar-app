@@ -32,61 +32,6 @@ interface ExtendedSpine {
 
 // FIXME how do I pre-filter the HTML to reject XSS attacks...
 
-function useCSS() {
-
-    const theme = useTheme();
-
-    return {
-        'body, html': {
-            'color': `${theme.palette.text.primary} !important`,
-            'background-color': `${theme.palette.background.default} !important`,
-            'font-family': `${theme.typography.fontFamily} !important`,
-            'padding': '10px',
-            'padding-bottom': '10px !important'
-        },
-        'body': {
-            'margin': '5px',
-        },
-        'h1, h2, h3': {
-            'color': `${theme.palette.text.primary}`
-        },
-
-        'header h2': {
-
-        },
-
-        'header > figure': {
-            margin: '0px',
-            display: 'flex'
-        },
-
-        'header > figure > img': {
-            // height: '100%',
-            // width: '100%',
-            // 'object-fit': 'contain'
-            'margin-left': 'auto',
-            'margin-right': 'auto',
-            'max-height': '100% !important',
-            'max-width': '100% !important',
-        },
-
-        "a:link": {
-            color: blue[300],
-        },
-        "a:visited": {
-            color: blue[600],
-        },
-        "a:hover": {
-            color: blue[400],
-        },
-        "a:active": {
-            color: blue[500],
-        },
-
-    };
-
-}
-
 function forwardEvents(target: HTMLElement) {
     // this is needed because keyboard events and other events ould be swallowed
     // by the iframe.
@@ -217,3 +162,65 @@ export const EPUBDocument = (props: IProps) => {
     ) || null;
 
 };
+
+function useCSS() {
+
+    const theme = useTheme();
+
+    const baseColorStyles = {
+        'color': `${theme.palette.text.primary} !important`,
+        'background-color': `${theme.palette.background.default} !important`,
+    };
+
+    return {
+        'body, html': {
+            ...baseColorStyles,
+            'font-family': `${theme.typography.fontFamily} !important`,
+            'padding': '10px',
+            'padding-bottom': '10px !important'
+        },
+        '*': {
+            ...baseColorStyles,
+        },
+        'body': {
+            'margin': '5px',
+        },
+        'h1, h2, h3': {
+            'color': `${theme.palette.text.primary}`
+        },
+
+        'header h2': {
+
+        },
+
+        'header > figure': {
+            margin: '0px',
+            display: 'flex'
+        },
+
+        'header > figure > img': {
+            // height: '100%',
+            // width: '100%',
+            // 'object-fit': 'contain'
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            'max-height': '100% !important',
+            'max-width': '100% !important',
+        },
+
+        "a:link": {
+            color: blue[300],
+        },
+        "a:visited": {
+            color: blue[600],
+        },
+        "a:hover": {
+            color: blue[400],
+        },
+        "a:active": {
+            color: blue[500],
+        },
+
+    };
+
+}
