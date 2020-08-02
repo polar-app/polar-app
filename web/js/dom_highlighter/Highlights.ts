@@ -157,7 +157,7 @@ export namespace Highlights {
         const range = doc.createRange();
 
         range.setStart(highlight.node, highlight.start);
-        range.setEnd(highlight.node, highlight.end);
+        range.setEnd(highlight.node, highlight.end + 1);
         const rect = range.getBoundingClientRect();
 
         return {

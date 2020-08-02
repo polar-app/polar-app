@@ -18,6 +18,6 @@ export const EPUBFindRenderer = memoForwardRef(() => {
         return null;
     }
 
-    return ReactDOM.createPortal(<DOMHighlights hits={hits}/>, epubRoot.root);
+    return ReactDOM.createPortal(<DOMHighlights hits={hits}/>, epubRoot.root.parentElement!);
 
 });
