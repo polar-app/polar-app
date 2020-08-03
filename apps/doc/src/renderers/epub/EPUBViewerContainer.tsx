@@ -1,7 +1,12 @@
 import React from 'react';
 import {useDocViewerStore} from "../../DocViewerStore";
+import {memoForwardRef} from "../../../../../web/js/react/ReactUtils";
 
-export const EPUBViewerContainer = React.memo(() => {
+interface IProps {
+    readonly children: React.ReactNode;
+}
+
+export const EPUBViewerContainer = memoForwardRef((props: IProps) => {
 
     const {page} = useDocViewerStore(['page']);
 
@@ -26,6 +31,8 @@ export const EPUBViewerContainer = React.memo(() => {
                          style={{
                              userSelect: 'none'
                          }}/>
+
+                    {props.children}
                 </div>
             </div>
 

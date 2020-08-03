@@ -35,9 +35,9 @@ const EPUBDocumentRenderer = (props: ILoadedProps) => {
         <EPUBDocumentStoreProvider>
             <EPUBFinderProvider>
                 <>
-                    <EPUBViewerContainer/>
-
-                    <EPUBDocument {...props}/>
+                    <EPUBViewerContainer>
+                        <EPUBDocument {...props}/>
+                    </EPUBViewerContainer>
 
                 </>
             </EPUBFinderProvider>

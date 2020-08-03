@@ -17,9 +17,8 @@ export const TextHighlightsView = memoForwardRef(() => {
     }
 
     const pageAnnotations = PageAnnotations.compute(docMeta, pageMeta => Object.values(pageMeta.textHighlights || {}));
-    const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
 
-    // FIXME this is being rendered in the .page element not within the iframe.
+    const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
 
     const rendered = visiblePageAnnotations.map(current =>
                                              <TextHighlightRenderer

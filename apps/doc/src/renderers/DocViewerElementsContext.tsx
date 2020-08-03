@@ -1,6 +1,7 @@
 import {useDocViewerContext} from "./DocRenderer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import {useDocViewerStore} from "../DocViewerStore";
 
 export interface IDocViewerElements {
 
@@ -43,6 +44,8 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     const {docID, fileType} = useDocViewerContext();
 
+    const {page} = useDocViewerStore(['page']);
+
     function getDocViewerElement(): HTMLElement {
         const selector = `div[data-doc-viewer-id='${docID}']`;
         const element = document.querySelector(selector) as HTMLElement;
@@ -51,28 +54,60 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     function getPageDescriptors(): ReadonlyArray<IPageDescriptor> {
 
-        function computeElements(): ReadonlyArray<HTMLElement> {
+        function getPageDescriptorsForPDF() {
 
-            const docViewerElement = getDocViewerElement();
-            const elements = docViewerElement.querySelectorAll('.page');
-            return Array.from(elements) as HTMLElement[];
+            function computeElements(): ReadonlyArray<HTMLElement> {
 
-        }
+                const docViewerElement = getDocViewerElement();
+                const elements = docViewerElement.querySelectorAll('.page');
+                return Array.from(elements) as HTMLElement[];
 
-        function toPageElement(element: HTMLElement): IPageDescriptor {
-            const dataPageNumber = element.getAttribute('data-page-number');
-
-            if (! dataPageNumber) {
-                throw new Error("No page number");
             }
 
-            const loaded = element.getAttribute('data-loaded') === 'true';
-            const pageNum = parseInt(dataPageNumber);
-            return {pageNum, element, loaded};
+            function toPageElement(element: HTMLElement): IPageDescriptor {
+                const dataPageNumber = element.getAttribute('data-page-number');
+
+                if (! dataPageNumber) {
+                    throw new Error("No page number");
+                }
+
+                const loaded = element.getAttribute('data-loaded') === 'true';
+                const pageNum = parseInt(dataPageNumber);
+                return {pageNum, element, loaded};
+
+            }
+
+            return computeElements().map(toPageElement);
 
         }
 
-        return computeElements().map(toPageElement);
+        function getPageDescriptorsForEPUB(): ReadonlyArray<IPageDescriptor> {
+
+            const docViewerElement = getDocViewerElement();
+            const pageElement = docViewerElement.querySelector('.page') as HTMLElement;
+
+            if (! pageElement) {
+                throw new Error("No pageElement");
+            }
+
+            return [
+                {
+                    pageNum: page,
+                    element: pageElement,
+                    loaded: true
+                }
+            ];
+
+        }
+
+        switch (fileType) {
+
+            case "pdf":
+                return getPageDescriptorsForPDF();
+            case "epub":
+                return getPageDescriptorsForEPUB();
+
+        }
 
     }
 

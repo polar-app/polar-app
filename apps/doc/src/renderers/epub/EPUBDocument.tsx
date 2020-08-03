@@ -23,6 +23,7 @@ import { useEPUBDocumentStore, useEPUBDocumentCallbacks } from './EPUBDocumentSt
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
 import { Arrays } from 'polar-shared/src/util/Arrays';
+import {Latch} from "polar-shared/src/util/Latch";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -113,7 +114,6 @@ export const EPUBDocument = (props: IProps) => {
 
         });
 
-
         rendition.on('rendered', (event: any) => {
             incrRenderIter();
         });
@@ -130,9 +130,17 @@ export const EPUBDocument = (props: IProps) => {
 
             async function set(page: number) {
 
-                const newPage = pages[page - 1];
+                const newSection = pages[page - 1];
 
-                await rendition.display(newPage.index)
+                // we need to use a latch here because the page isn't really
+                // change until it's rendered and other dependencies might
+                // need to wait like highlights that depend on the page being
+                // shown.
+                const renderedLatch = new Latch<boolean>();
+                rendition.once('rendered', () => renderedLatch.resolve(true))
+
+                await rendition.display(newSection.index)
+                await renderedLatch.get();
 
             }
 
@@ -178,8 +186,6 @@ export const EPUBDocument = (props: IProps) => {
         console.log("manifest: ", manifest);
 
         console.log("Loaded epub");
-
-        incrRenderIter();
 
     }
 

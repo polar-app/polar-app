@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     useComponentDidMount,
-    useComponentWillUnmount
+    useComponentWillUnmount, useRefProvider
 } from "../../../../web/js/hooks/lifecycle";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
@@ -11,6 +11,7 @@ import {
     useDocViewerElementsContext
 } from "../renderers/DocViewerElementsContext";
 import { useDocViewerStore } from "../DocViewerStore";
+import isEqual from "react-fast-compare";
 
 /**
  * Unsubscribes to the action created by the subscriber.
@@ -142,45 +143,42 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
     // annotations on VISIBLE pages, not hidden ones that are under the screen.
 
     // this just tricks us to re-render for the EPUB viewer so we get new
-    // pageElements .
+    // pageElements and annotation containers when we change pages.
     const {page} = useDocViewerStore(['page']);
 
-    const docViewerElementsContext = useDocViewerElementsContext();
-
+    const docViewerElementsContext = useRefProvider(useDocViewerElementsContext);
     const [annotationContainers, setAnnotationContainers] = React.useState<ReadonlyArray<AnnotationContainer>>([]);
 
-    function doUpdateDelegate() {
+    const doUpdateDelegate = () => {
 
-        function toAnnotationContainer(pageElement: IPageDescriptor): AnnotationContainer {
+        function toAnnotationContainer(pageDescriptor: IPageDescriptor): AnnotationContainer {
 
-            const container = docViewerElementsContext.getContainerFromPageElement(pageElement.element)!;
+            const container = docViewerElementsContext.current.getContainerFromPageElement(pageDescriptor.element)!;
 
             return {
-                pageNum: pageElement.pageNum,
-                pageElement: pageElement.element,
+                pageNum: pageDescriptor.pageNum,
+                pageElement: pageDescriptor.element,
                 container
             };
 
         }
 
-        const pageDescriptors = docViewerElementsContext.getPageDescriptors();
+        const pageDescriptors = docViewerElementsContext.current.getPageDescriptors();
 
         const newAnnotationContainers
             = pageDescriptors.filter(current => current.loaded)
-                          .map(toAnnotationContainer);
+                             .map(toAnnotationContainer);
 
-        setAnnotationContainers(newAnnotationContainers);
+        if (! isEqual(annotationContainers, newAnnotationContainers)) {
+            // only update the annotation containers if they differ
+            setAnnotationContainers(newAnnotationContainers);
+        }
 
     }
 
     const doUpdate = React.useMemo(() => Debouncers.create(doUpdateDelegate), []);
 
-    useComponentDidMount(() => {
-
-        // call the delegate directly to force a draw when the component mounts
-        doUpdateDelegate();
-
-    });
+    doUpdateDelegate();
 
     useSubscriber(createScrollSubscriber(doUpdate));
     useSubscriber(createResizeSubscriber(doUpdate));
