@@ -11,12 +11,12 @@ interface IDOMTextIndexContent {
     readonly index: DOMTextIndex;
 }
 
-const DOMTextIndexContext = React.createContext<IDOMTextIndexContent>(null!);
+const DOMTextIndexContext = React.createContext<IDOMTextIndexContent | undefined>(undefined);
 
 /**
  * Get the DOMTextIndex for the current page.
  */
-export function useDOMTextIndexContext(): IDOMTextIndexContent {
+export function useDOMTextIndexContext(): IDOMTextIndexContent | undefined {
     return React.useContext(DOMTextIndexContext);
 }
 
@@ -28,13 +28,14 @@ namespace DOMTextIndexContentCache {
 
     export function create(page: number,
                            renderIter: number,
-                           docViewerElement: HTMLElement): IDOMTextIndexContent {
+                           docViewerElement: HTMLElement): IDOMTextIndexContent | undefined {
 
         // TODO: make this into an EPUBDocumentElementsContext
         const iframe = docViewerElement.querySelector('iframe');
 
         if (! iframe) {
-            throw new Error("No iframe");
+            console.warn("DOMTextIndexContentCache: No iframe");
+            return undefined;
         }
         const doc = iframe.contentDocument!;
         const root = doc.body;
@@ -66,7 +67,7 @@ export const DOMTextIndexProvider = React.memo((props: IProps) => {
     }
 
     return (
-        <DOMTextIndexContext.Provider value={index!}>
+        <DOMTextIndexContext.Provider value={index}>
             {props.children}
         </DOMTextIndexContext.Provider>
     );

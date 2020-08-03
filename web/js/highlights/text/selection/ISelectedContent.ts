@@ -19,7 +19,7 @@ export interface ISelectedContent {
     readonly html: string;
 
     /**
-     * The html content of the selection.
+     * The text content of the selection.
      */
     readonly rectTexts: ReadonlyArray<RectText>;
 

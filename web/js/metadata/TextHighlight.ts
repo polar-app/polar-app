@@ -1,4 +1,3 @@
-import {TextRect} from './TextRect';
 import {Text} from 'polar-shared/src/metadata/Text';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {TextType} from 'polar-shared/src/metadata/TextType';

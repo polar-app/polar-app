@@ -26,6 +26,7 @@ import {TextNodes} from './TextNodes';
 import {Rects} from '../../../Rects';
 import {createSiblings} from 'polar-shared/src/util/Functions';
 import {Text} from '../../../util/Text';
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 export class TextRegion {
 
@@ -175,9 +176,6 @@ export class NodeArray {
  */
 export class TextNodeRows {
 
-    /**
-     *
-     */
     public static fromTextNode(textNode: Node) {
 
         if(textNode.nodeType !== Node.TEXT_NODE) {
@@ -198,13 +196,10 @@ export class TextNodeRows {
 
     public static fromTextNodes(textNodes: ReadonlyArray<Node>): ReadonlyArray<Node> {
 
-        const result: Node[] = [];
-
-        textNodes.forEach(textNode => {
-            result.push(...TextNodeRows.fromTextNode(textNode));
-        });
-
-        return result;
+        return arrayStream(textNodes)
+                   .map(TextNodeRows.fromTextNode)
+                   .flatMap(current => current)
+                   .collect();
 
     }
 

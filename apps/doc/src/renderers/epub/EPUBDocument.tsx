@@ -63,7 +63,7 @@ export const EPUBDocument = (props: IProps) => {
 
     const css = useCSS();
     const finder = useEPUBFindController();
-    const annotationBarInjector = useAnnotationBar();
+    const annotationBarInjector = useAnnotationBar({noRectTexts: true});
     const docViewerElements = useDocViewerElementsContext();
     const log = useLogger();
 

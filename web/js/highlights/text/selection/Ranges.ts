@@ -157,12 +157,26 @@ export class Ranges {
     }
 
     /**
-     * Similar to getTextNodes but we return true if the nodes have text in them.
-     *
-     *
-     * @param range
+     * Return true if the range has text.
      */
-    public static hasText(range: Range) {
+    public static hasText(range: Range): boolean {
+
+        const doc = range.startContainer.ownerDocument;
+        const contents = range.cloneContents();
+        const div = doc!.createElement('div');
+        div.appendChild(contents);
+
+        const text = div.innerText;
+
+        return text.trim() !== '';
+
+    }
+
+
+    /**
+     * Similar to getTextNodes but we return true if the nodes have text in them.
+     */
+    public static hasTextWithNodeSplit(range: Range): boolean {
 
         // TODO massive amount of duplication with getTextNodes and might be
         // valuable to rework this to a visitor pattern which accepts a function

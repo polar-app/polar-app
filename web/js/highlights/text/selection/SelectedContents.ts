@@ -4,21 +4,30 @@ import {Selections} from './Selections';
 import {RectTexts} from '../controller/RectTexts';
 import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
 import {TextNodeRows} from "./TextNodeRows";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
-export class SelectedContents {
+export namespace SelectedContents {
+
+    export interface ComputeOpts {
+
+        /**
+         * When true we do not return rects as this splits/mutates the DOM
+         */
+        readonly noRectTexts?: boolean;
+
+    }
 
     /**
      * Compute the SelectedContents based on the page offset, not the
      * client/viewport offset, and include additional metadata including the
      * text of the selection, the html, etc.
      */
-    public static computeFromWindow(win: Window) {
-
+    export function computeFromWindow(win: Window, opts: ComputeOpts = {}) {
         const selection = win.getSelection()!;
-        return this.computeFromSelection(selection);
+        return computeFromSelection(selection, opts);
     }
 
-    public static computeFromSelection(selection: Selection): ISelectedContent {
+    export function computeFromSelection(selection: Selection, opts: ComputeOpts = {}): ISelectedContent {
 
         // get all the ranges and clone them so they can't vanish.
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));
@@ -27,21 +36,19 @@ export class SelectedContents {
         const text = selection.toString();
         const html =  HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
 
-        const textNodes: Node[] = [];
+        function computeRectTexts() {
 
-        ranges.forEach(range => {
-            textNodes.push(...Ranges.getTextNodes(range));
-        });
+            const textNodes = arrayStream(ranges)
+                .map(Ranges.getTextNodes)
+                .flatMap(current => current)
+                .collect();
 
-        // convert textNodes to visual blocks that don't overlap ...
-        // FIXME: this is the problem.. we're splitting the first node and then it's
-        // only a partial node at that point.. we have to keep the children too
-        // and return it as some sort of container.
+            const textNodesRows = TextNodeRows.fromTextNodes(textNodes);
+            return RectTexts.toRectTexts(textNodesRows);
 
-        const textNodesRows = TextNodeRows.fromTextNodes(textNodes);
+        }
 
-        // FIXME: we have ALL the text nodes now but some of them are wrong/broken...
-        const rectTexts = RectTexts.toRectTexts(textNodesRows);
+        const rectTexts = ! opts.noRectTexts ? computeRectTexts() : [];
 
         return {
             text,
@@ -54,7 +61,7 @@ export class SelectedContents {
     /**
      * Compute the given ranges as HTML, factoring in sanitization as well.
      */
-    public static toHTML(ranges: ReadonlyArray<Range>) {
+    export function toHTML(ranges: ReadonlyArray<Range>) {
         return ranges.map(range => Ranges.toHTML(range)).join("");
     }
 

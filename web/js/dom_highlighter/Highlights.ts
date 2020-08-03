@@ -163,11 +163,16 @@ export namespace Highlights {
     export function createViewportPosition(highlight: IHighlightNode): IViewportPosition {
 
         const {node} = highlight;
-        const doc = node.ownerDocument!;
+        const doc = node.ownerDocument;
+
+        if (! doc) {
+            throw new Error("Node has no owner document");
+        }
+
         const range = doc.createRange();
 
-        range.setStart(highlight.node, highlight.start);
-        range.setEnd(highlight.node, highlight.end + 1);
+        range.setStart(node, highlight.start);
+        range.setEnd(node, highlight.end + 1);
         const rect = range.getBoundingClientRect();
 
         return {

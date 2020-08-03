@@ -80,7 +80,11 @@ export type AnnotationBarEventListenerRegisterer = () => void;
 
 const POST_MESSAGE_SERVICE = 'create-text-highlight';
 
-export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
+interface AnnotationBarOpts {
+    readonly noRectTexts?: boolean;
+}
+
+export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEventListenerRegisterer {
 
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
     const createTextHighlightCallbackRef = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
@@ -115,7 +119,7 @@ export function useAnnotationBar(): AnnotationBarEventListenerRegisterer {
 
             const {selection} = highlightCreatedEvent.activeSelection;
 
-            const selectedContent = SelectedContents.computeFromSelection(selection);
+            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts: opts.noRectTexts});
 
             // now clear the selection since we just highlighted it.
             selection.empty();

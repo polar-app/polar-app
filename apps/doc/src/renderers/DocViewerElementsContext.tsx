@@ -27,7 +27,7 @@ export interface IDocViewerElements {
     /**
      * Get the container from a page element.
      */
-    getContainerFromPageElement(pageElement: HTMLElement): HTMLElement;
+    getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | undefined;
 
 }
 
@@ -124,7 +124,7 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     }
 
-    function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement {
+    function getContainerFromPageElement(pageElement: HTMLElement): HTMLElement | undefined {
 
         function containerForPDF() {
 
@@ -143,7 +143,8 @@ export function useDocViewerElementsContext(): IDocViewerElements {
             const iframe = docViewerElement.querySelector('iframe');
 
             if (! iframe) {
-                throw new Error("No iframe");
+                console.warn("useDocViewerElementsContext: No iframe");
+                return undefined;
             }
 
             return iframe!.contentDocument!.body;

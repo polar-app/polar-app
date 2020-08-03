@@ -19,13 +19,20 @@ interface IProps {
 export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
 
     const {textHighlight, container} = props;
-    const {index} = useDOMTextIndexContext();
+    const domTextIndexContext = useDOMTextIndexContext();
     const text = Texts.toText(textHighlight.text);
+
+    if (! domTextIndexContext) {
+        console.log("No domTextIndexContext");
+        return null;
+    }
 
     if (! text) {
         console.log("No text for highlight: " + textHighlight.id);
         return null;
     }
+
+    const {index} = domTextIndexContext;
 
     const hit = index.find(text, {caseInsensitive: true});
 

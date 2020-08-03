@@ -9,11 +9,22 @@ import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
 import {AnimationFrameDebouncer} from "./AnimationFrameDebouncer";
 import withAnimationFrame = AnimationFrameDebouncer.withAnimationFrame;
-import toHighlightViewportPositions = Highlights.toHighlightViewportPositions;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
+import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 
 interface IProps extends DOMTextHit {
     readonly color?: string;
+}
+
+function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
+
+    try {
+        return Highlights.toHighlightViewportPositions(regions);
+    } catch (e) {
+        console.error("Unable to handle viewport position: ", e);
+        return undefined;
+    }
+
 }
 
 /**
@@ -57,6 +68,10 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
                                 color={props.color}
                                 id={id}
                                 key={key}/>
+    }
+
+    if (highlightViewportPositions === undefined) {
+        return null;
     }
 
     return (

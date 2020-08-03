@@ -1,6 +1,6 @@
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextHighlight} from './TextHighlight';
-import {Text} from 'polar-shared/src/metadata/Text';
+import {IText} from 'polar-shared/src/metadata/Text';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
@@ -21,10 +21,10 @@ export class TextHighlightRecords {
      */
     public static create(rects: ReadonlyArray<IRect>,
                          textSelections: ReadonlyArray<ITextRect>,
-                         text: Text,
+                         text: IText,
                          color: HighlightColor = 'yellow'): TextHighlightRecord {
 
-        const id = Hashcodes.createID(rects);
+        const id = Hashcodes.createID(rects.length > 0 ? rects : text);
 
         const created = ISODateTimeStrings.create();
         const lastUpdated = created;

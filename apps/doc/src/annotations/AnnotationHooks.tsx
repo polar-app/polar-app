@@ -43,13 +43,14 @@ function useSubscriber(subscriber: Subscriber) {
 
 }
 
-function createScrollSubscriber(delegate: () => void): Subscriber {
+function useScrollSubscriber(delegate: () => void): Subscriber {
+
+    const docViewerElements = useDocViewerElementsContext();
 
     return () => {
 
-        // FIXME: this isn't porable to polar 2.0 plus viewerContainer isn't
-        // setup in EPUB...
-        const viewerContainer = document.getElementById('viewerContainer');
+        const docViewer = docViewerElements.getDocViewerElement();
+        const viewerContainer = docViewer.querySelector('#viewerContainer');
 
         function handleScroll() {
             delegate();
@@ -57,9 +58,11 @@ function createScrollSubscriber(delegate: () => void): Subscriber {
 
         viewerContainer!.addEventListener('scroll', handleScroll);
 
-        return () => {
+        function unsubscribe () {
             viewerContainer!.removeEventListener('scroll', handleScroll);
         }
+
+        return unsubscribe;
 
     }
 
@@ -75,10 +78,12 @@ function createResizeSubscriber(delegate: () => void): Subscriber {
 
         window.addEventListener('resize', handleResize);
 
-        return () => {
+        function unsubscribe() {
             window.removeEventListener('resize', handleResize);
-
         }
+
+        return unsubscribe;
+
     }
 
 }
@@ -151,9 +156,13 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
     const doUpdateDelegate = () => {
 
-        function toAnnotationContainer(pageDescriptor: IPageDescriptor): AnnotationContainer {
+        function toAnnotationContainer(pageDescriptor: IPageDescriptor): AnnotationContainer | undefined {
 
             const container = docViewerElementsContext.current.getContainerFromPageElement(pageDescriptor.element)!;
+
+            if (! container) {
+                return undefined;
+            }
 
             return {
                 pageNum: pageDescriptor.pageNum,
@@ -167,7 +176,9 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
         const newAnnotationContainers
             = pageDescriptors.filter(current => current.loaded)
-                             .map(toAnnotationContainer);
+                             .map(toAnnotationContainer)
+                             .filter(current => current !== undefined)
+                             .map(current => current!);
 
         if (! isEqual(annotationContainers, newAnnotationContainers)) {
             // only update the annotation containers if they differ
@@ -180,7 +191,7 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
     doUpdateDelegate();
 
-    useSubscriber(createScrollSubscriber(doUpdate));
+    useSubscriber(useScrollSubscriber(doUpdate));
     useSubscriber(createResizeSubscriber(doUpdate));
     useSubscriber(createMutationObserverSubscriber(doUpdate));
 
