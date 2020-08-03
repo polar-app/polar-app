@@ -179,7 +179,7 @@ function useCSS() {
             'padding': '10px',
             'padding-bottom': '10px !important'
         },
-        'body *': {
+        'body :not(.polar-ui)': {
             ...baseColorStyles,
         },
         'body': {

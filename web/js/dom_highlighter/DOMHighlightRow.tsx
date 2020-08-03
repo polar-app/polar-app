@@ -27,6 +27,7 @@ export const DOMHighlightRow = memoForwardRef((props: IProps) => {
 
     return (
         <div id={props.id}
+             className="polar-ui"
              style={{
                  backgroundColor: `${backgroundColor}`,
                  position: 'absolute',

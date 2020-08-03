@@ -41,7 +41,7 @@ export const ControlledAnnotationBar = (props: IProps) => {
     return (
         <div>
 
-            <div className=""
+            <div className="polar-ui"
                  style={{
                      backgroundColor: '#333333',
                      fontSize: '14px',
