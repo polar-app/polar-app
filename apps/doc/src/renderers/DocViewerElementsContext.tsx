@@ -9,7 +9,13 @@ export interface IDocViewerElements {
     /**
      * Get all the elements for a page including their pageNum.
      */
-    getPageElements(): ReadonlyArray<IPageElement>;
+    getPageDescriptors(): ReadonlyArray<IPageDescriptor>;
+
+    /**
+     *
+     * Get all HTMLElements for the page.
+     */
+    getPageElements(): ReadonlyArray<HTMLElement>;
 
     /**
      * Get the element for a page or undefined if it's either not mounted (for
@@ -27,7 +33,7 @@ export interface IDocViewerElements {
 /**
  * The page number and element for a page.
  */
-export interface IPageElement {
+export interface IPageDescriptor {
     readonly pageNum: number;
     readonly loaded: boolean;
     readonly element: HTMLElement;
@@ -43,7 +49,7 @@ export function useDocViewerElementsContext(): IDocViewerElements {
         return Preconditions.assertPresent(element, 'getDocViewerElement');
     }
 
-    function getPageElements(): ReadonlyArray<IPageElement> {
+    function getPageDescriptors(): ReadonlyArray<IPageDescriptor> {
 
         function computeElements(): ReadonlyArray<HTMLElement> {
 
@@ -53,7 +59,7 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
         }
 
-        function toPageElement(element: HTMLElement): IPageElement {
+        function toPageElement(element: HTMLElement): IPageDescriptor {
             const dataPageNumber = element.getAttribute('data-page-number');
 
             if (! dataPageNumber) {
@@ -70,9 +76,13 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     }
 
+    function getPageElements() {
+        return getPageDescriptors().map(current => current.element);
+    }
+
     function getPageElementForPage(pageNum: number): HTMLElement | undefined {
 
-        return arrayStream(getPageElements())
+        return arrayStream(getPageDescriptors())
                 .filter(current => current.pageNum === pageNum)
                 .map(current => current.element)
                 .first()
@@ -116,6 +126,12 @@ export function useDocViewerElementsContext(): IDocViewerElements {
 
     }
 
-    return {getDocViewerElement, getPageElements, getPageElementForPage, getContainerFromPageElement};
+    return {
+        getDocViewerElement,
+        getPageDescriptors,
+        getPageElements,
+        getPageElementForPage,
+        getContainerFromPageElement
+    };
 
 }

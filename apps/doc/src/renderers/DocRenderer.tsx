@@ -11,6 +11,7 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
 import {isPresent} from "polar-shared/src/Preconditions";
+import { EPUBDocumentStoreProvider } from "./epub/EPUBDocumentStore";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -31,14 +32,16 @@ const PDFDocumentRenderer = (props: ILoadedProps) => {
 
 const EPUBDocumentRenderer = (props: ILoadedProps) => {
     return (
-        <EPUBFinderProvider>
-            <>
-                <EPUBViewerContainer/>
+        <EPUBDocumentStoreProvider>
+            <EPUBFinderProvider>
+                <>
+                    <EPUBViewerContainer/>
 
-                <EPUBDocument {...props}/>
+                    <EPUBDocument {...props}/>
 
-            </>
-        </EPUBFinderProvider>
+                </>
+            </EPUBFinderProvider>
+        </EPUBDocumentStoreProvider>
     );
 }
 

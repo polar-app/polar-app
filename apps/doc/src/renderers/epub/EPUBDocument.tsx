@@ -4,7 +4,7 @@ import ePub from "@polar-app/epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {PageNavigator} from "../../PageNavigator";
-import {useDocViewerCallbacks} from "../../DocViewerStore";
+import {Resizer, useDocViewerCallbacks} from "../../DocViewerStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import Section from '@polar-app/epubjs/types/section';
 import blue from '@material-ui/core/colors/blue';
@@ -19,6 +19,10 @@ import {DocViewerAnnotationRouter} from '../../DocViewerAnnotationRouter';
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
+import { useEPUBDocumentStore, useEPUBDocumentCallbacks } from './EPUBDocumentStore';
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
+import {useDocViewerElementsContext} from "../DocViewerElementsContext";
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -43,29 +47,46 @@ function forwardEvents(target: HTMLElement) {
 export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
-    const [active, setActive] = React.useState(false);
-    const {setDocDescriptor, setPageNavigator, setDocScale} = useDocViewerCallbacks();
-    const {setFinder} = useDocFindCallbacks();
+
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer}
+        = useDocViewerCallbacks();
+
+    const {setFinder}
+        = useDocFindCallbacks();
+
+    const {renderIter}
+        = useEPUBDocumentStore(['renderIter'])
+
+    const {incrRenderIter}
+        = useEPUBDocumentCallbacks()
+
     const css = useCSS();
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar();
-
-    useComponentDidMount(() => {
-
-        setFinder(finder);
-
-        // the doc scale needs to be set to that we're 1.0 as epub doesn't support
-        // scale just yet.
-        setDocScale({scale: SCALE_VALUE_PAGE_WIDTH, scaleValue: 1.0});
-
-    })
+    const docViewerElements = useDocViewerElementsContext();
+    const log = useLogger();
 
     async function doLoad() {
 
+        function doInitialCallbacks() {
+
+            setFinder(finder);
+
+            // the doc scale needs to be set to that we're 1.0 as epub doesn't support
+            // scale just yet.
+            setDocScale({scale: SCALE_VALUE_PAGE_WIDTH, scaleValue: 1.0});
+
+        }
+
+        doInitialCallbacks();
+
         const book = ePub(docURL);
 
-        // FIXME: not portable to Polar 2.0 tabbed UI
-        const pageElement = document.querySelector(".page")! as HTMLElement;
+        const pageElement = Arrays.first(docViewerElements.getPageElements());
+
+        if (! pageElement) {
+            throw new Error("No page element");
+        }
 
         // TODO:
         //
@@ -90,6 +111,11 @@ export const EPUBDocument = (props: IProps) => {
             applyCSS();
             annotationBarInjector();
 
+        });
+
+
+        rendition.on('rendered', (event: any) => {
+            incrRenderIter();
         });
 
         await rendition.display();
@@ -125,6 +151,16 @@ export const EPUBDocument = (props: IProps) => {
             nrPages: pageNavigator.count
         });
 
+        function createResizer(): Resizer {
+            return () => {
+                // FIXME: we need a resizer.  The issue now is that epub.js uses
+                // width fixed based on its container size and when the sidebar
+                // is resized it doesn't resize.
+            };
+        }
+
+        setResizer(createResizer());
+
         console.log({metadata});
 
         const navigation = await book.loaded.navigation;
@@ -143,16 +179,16 @@ export const EPUBDocument = (props: IProps) => {
 
         console.log("Loaded epub");
 
-        setActive(true);
+        incrRenderIter();
 
     }
 
     useComponentDidMount(() => {
         doLoad()
-            .catch(err => console.error("Could not load EPUB: ", err));
+            .catch(err => log.error("Could not load EPUB: ", err));
     })
 
-    return active && (
+    return renderIter && (
         <DOMTextIndexProvider>
             <DocumentInit/>
             <EPUBFindRenderer/>

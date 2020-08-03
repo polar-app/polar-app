@@ -3,9 +3,11 @@ import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext
 import {DOMTextIndex} from "polar-dom-text-search/src/DOMTextIndex";
 import {DOMTextSearch} from "polar-dom-text-search/src/DOMTextSearch";
 import { useDocViewerStore } from "../DocViewerStore";
+import {useEPUBDocumentStore} from "../renderers/epub/EPUBDocumentStore";
 
 interface IDOMTextIndexContent {
     readonly page: number;
+    readonly renderIter: number;
     readonly index: DOMTextIndex;
 }
 
@@ -22,21 +24,26 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
+namespace DOMTextIndexContentCache {
 
-function computeIndex(page: number, docViewerElement: HTMLElement) {
+    export function create(page: number,
+                           renderIter: number,
+                           docViewerElement: HTMLElement): IDOMTextIndexContent {
 
-    // TODO this would be specific to epub...
-    const iframe = docViewerElement.querySelector('iframe');
+        // TODO: make this into an EPUBDocumentElementsContext
+        const iframe = docViewerElement.querySelector('iframe');
 
-    if (! iframe) {
-        throw new Error("No iframe");
+        if (! iframe) {
+            throw new Error("No iframe");
+        }
+        const doc = iframe.contentDocument!;
+        const root = doc.body;
+
+        const index = DOMTextSearch.createIndex(doc, root);
+
+        return {page, renderIter, index};
+
     }
-    const doc = iframe.contentDocument!;
-    const root = doc.body;
-
-    const index = DOMTextSearch.createIndex(doc, root);
-
-    return {page, index};
 
 }
 
@@ -44,11 +51,17 @@ export const DOMTextIndexProvider = React.memo((props: IProps) => {
 
     const docViewerElementsContext = useDocViewerElementsContext();
     const {page} = useDocViewerStore(['page']);
+    const {renderIter} = useEPUBDocumentStore(['renderIter'])
     const [index, setIndex] = React.useState<IDOMTextIndexContent | undefined>()
 
-    if (index === undefined || index.page !== page) {
+    function cacheExpired() {
+        return index === undefined || index.renderIter !== renderIter || index.page !== page;
+    }
+
+    if (cacheExpired()) {
         const docViewerElement = docViewerElementsContext.getDocViewerElement();
-        setIndex(computeIndex(page, docViewerElement));
+        const index = DOMTextIndexContentCache.create(page, renderIter, docViewerElement);
+        setIndex(index);
         return null;
     }
 

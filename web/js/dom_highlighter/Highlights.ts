@@ -128,9 +128,19 @@ export namespace Highlights {
         return Rects.intersect(Rects.createFromBasicRect(parent), Rects.createFromBasicRect(child));
     }
 
-    export function intersectWithWindow(position: IHighlightViewportPosition) {
+    export function intersectsWithWindow(position: IHighlightViewportPosition): boolean {
 
-        const win = position.node.ownerDocument!.defaultView!;
+        const doc = position.node.ownerDocument;
+
+        if (! doc) {
+            return false;
+        }
+
+        const win = doc.defaultView;
+
+        if (! win) {
+            return false;
+        }
 
         const parent: ILTRect = {
             top: 0,

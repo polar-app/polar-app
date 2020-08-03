@@ -7,7 +7,7 @@ import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
-    IPageElement,
+    IPageDescriptor,
     useDocViewerElementsContext
 } from "../renderers/DocViewerElementsContext";
 import { useDocViewerStore } from "../DocViewerStore";
@@ -46,6 +46,8 @@ function createScrollSubscriber(delegate: () => void): Subscriber {
 
     return () => {
 
+        // FIXME: this isn't porable to polar 2.0 plus viewerContainer isn't
+        // setup in EPUB...
         const viewerContainer = document.getElementById('viewerContainer');
 
         function handleScroll() {
@@ -149,7 +151,7 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
     function doUpdateDelegate() {
 
-        function toAnnotationContainer(pageElement: IPageElement): AnnotationContainer {
+        function toAnnotationContainer(pageElement: IPageDescriptor): AnnotationContainer {
 
             const container = docViewerElementsContext.getContainerFromPageElement(pageElement.element)!;
 
@@ -161,10 +163,10 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
         }
 
-        const pageElements = docViewerElementsContext.getPageElements();
+        const pageDescriptors = docViewerElementsContext.getPageDescriptors();
 
         const newAnnotationContainers
-            = pageElements.filter(current => current.loaded)
+            = pageDescriptors.filter(current => current.loaded)
                           .map(toAnnotationContainer);
 
         setAnnotationContainers(newAnnotationContainers);

@@ -176,7 +176,10 @@ namespace Device {
         function onDockLayoutResize() {
 
             if (resizer) {
+                console.log("Resizing based on dock layout resize.")
                 resizer();
+            } else {
+                console.warn("No resizer");
             }
 
         }

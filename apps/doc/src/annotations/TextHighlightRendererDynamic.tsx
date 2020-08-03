@@ -40,6 +40,10 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
     // is actually trying to be a sibling to 'body' so that EPUB CSS rules
     // don't conflict.
 
+    if (! container) {
+        return null;
+    }
+
     return ReactDOM.createPortal(<DOMHighlight color={color} {...hit}/>, container);
 
 });

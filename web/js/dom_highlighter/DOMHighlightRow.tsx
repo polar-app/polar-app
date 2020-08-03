@@ -1,7 +1,7 @@
 import React from 'react';
 import {memoForwardRef} from "../react/ReactUtils";
 import {Highlights} from "./Highlights";
-import intersectWithWindow = Highlights.intersectWithWindow;
+import intersectsWithWindow = Highlights.intersectsWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 
 interface IProps extends IHighlightViewportPosition {
@@ -14,7 +14,7 @@ interface IProps extends IHighlightViewportPosition {
  */
 export const DOMHighlightRow = memoForwardRef((props: IProps) => {
 
-    if (! intersectWithWindow(props)) {
+    if (! intersectsWithWindow(props)) {
         // if the position is actually offscreen, don't draw it to save
         // some CPU..
         return null;
