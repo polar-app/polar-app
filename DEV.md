@@ -7,6 +7,16 @@ support both forked NPM modules and private/public version control systems.
 
 - clone the polar-app repository locally.
 
+- login go bytesafe so that you can access our custom NPM packages.  Your 
+  credentials will be available on the bytesafe site.
+
+```bash
+
+npm --registry https://polar-app.bytesafe.dev/r/default login
+npm config set registry https://polar-app.bytesafe.dev/r/default
+
+```
+
 ```bash
 
 ./sbin/init                    # pulls all repositories locally
