@@ -96,6 +96,7 @@ export const EPUBDocument = (props: IProps) => {
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
+            resizeOnOrientationChange: false
             // width: '400px',
             // height: '100%',
             // layout: 'pre-paginated'
