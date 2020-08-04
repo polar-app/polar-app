@@ -144,13 +144,16 @@ class Stage {
 	}
 
 	onResize(func){
-		// Only listen to window for resize event if width and height are not fixed.
-		// This applies if it is set to a percent or auto.
-		if(!isNumber(this.settings.width) ||
-			 !isNumber(this.settings.height) ) {
-			this.resizeFunc = throttle(func, 50);
-			window.addEventListener("resize", this.resizeFunc, false);
-		}
+
+		// burton 2020/08/04 disabling resize as I don't want epub to fight with us.
+
+		// // Only listen to window for resize event if width and height are not fixed.
+		// // This applies if it is set to a percent or auto.
+		// if(!isNumber(this.settings.width) ||
+		// 	 !isNumber(this.settings.height) ) {
+		// 	this.resizeFunc = throttle(func, 50);
+		// 	window.addEventListener("resize", this.resizeFunc, false);
+		// }
 
 	}
 
