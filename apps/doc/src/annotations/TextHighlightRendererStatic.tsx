@@ -20,8 +20,20 @@ export const TextHighlightRendererStatic = React.memo((props: IProps) => {
 
     const {textHighlight, fingerprint, pageNum, container} = props;
     const {docScale} = useDocViewerStore(['docScale']);
+    const rects = Object.values(textHighlight.rects || {})
 
-    if (! container || ! docScale) {
+    if (! container) {
+        console.warn("No container");
+        return null;
+    }
+
+    if (! docScale) {
+        console.log("No docScale");
+        return null;
+    }
+
+    if (rects.length === 0) {
+        console.log("No textHighlight rects");
         return null;
     }
 
@@ -83,10 +95,10 @@ export const TextHighlightRendererStatic = React.memo((props: IProps) => {
                      pointerEvents: 'none',
                  }}/>,
             container);
+
     };
 
-    const portals = Object.values(textHighlight.rects)
-                          .map((current, idx) => toReactPortal(current, container, idx));
+    const portals = rects.map((current, idx) => toReactPortal(current, container, idx));
 
     return (
         <>

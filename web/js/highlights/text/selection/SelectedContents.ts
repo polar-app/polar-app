@@ -44,6 +44,7 @@ export namespace SelectedContents {
                 .collect();
 
             const textNodesRows = TextNodeRows.fromTextNodes(textNodes);
+
             return RectTexts.toRectTexts(textNodesRows);
 
         }
@@ -57,7 +58,7 @@ export namespace SelectedContents {
             return ranges[0].getBoundingClientRect().top;
         }
 
-        const rectTexts = ! opts.noRectTexts ? computeRectTexts() : [];
+        const rectTexts = opts.noRectTexts === true ? [] : computeRectTexts();
 
         const order = computeOrder();
 

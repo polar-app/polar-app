@@ -184,7 +184,7 @@ export class TextNodeRows {
 
         const nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
 
-        const textRegions = TextNodeRows.computeTextRegions(nodeArray, null);
+        const textRegions = TextNodeRows.computeTextRegions(nodeArray);
 
         const textBlocks = TextNodeRows.computeTextBlocks(textRegions);
 
@@ -195,12 +195,10 @@ export class TextNodeRows {
     }
 
     public static fromTextNodes(textNodes: ReadonlyArray<Node>): ReadonlyArray<Node> {
-
         return arrayStream(textNodes)
-                   .map(TextNodeRows.fromTextNode)
-                   .flatMap(current => current)
-                   .collect();
-
+            .map(TextNodeRows.fromTextNode)
+            .flatMap(current => current)
+            .collect();
     }
 
     /**
@@ -228,53 +226,56 @@ export class TextNodeRows {
 
     }
 
+    static computeTextRegions(nodeArray: NodeArray): ReadonlyArray<TextRegion> {
+        return this.computeTextRegions0(nodeArray, []);
+    }
+
     /**
      * Text regions are groups of contiguous text nodes that are back to back
      * without an element in between.
      *
      */
-    static computeTextRegions(nodeArray: any, textRegions: any) {
+    static computeTextRegions0(nodeArray: NodeArray, textRegions: TextRegion[]): ReadonlyArray<TextRegion> {
 
-        Preconditions.assertNotNull(nodeArray, "nodeArray");
+        // TODO: pass textRegions as an array as it's being copied each time.
+
+        Preconditions.assertPresent(nodeArray, "nodeArray");
 
         if(nodeArray.constructor !== NodeArray) {
             throw new Error("Not a node array: " + nodeArray.constructor);
         }
 
-        // Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
-
         // all text regions that we're working on
-        if(!textRegions) {
+        if( ! textRegions) {
             textRegions = [];
         }
 
         let textRegion = new TextRegion();
 
-        createSiblings(nodeArray.nodes).forEach(position => {
+        for (const position of createSiblings(nodeArray.nodes)) {
 
             const currentNode = position.curr;
 
             if (currentNode.nodeType === Node.TEXT_NODE) {
                 textRegion.push(currentNode);
-            }
-
-            if(currentNode.nodeType === Node.ELEMENT_NODE) {
+            } else if( currentNode.nodeType === Node.ELEMENT_NODE) {
 
                 textRegions.push(textRegion);
                 textRegion = new TextRegion();
 
-                TextNodeRows.computeTextRegions(NodeArray.createFromElement(currentNode), textRegions);
+                TextNodeRows.computeTextRegions0(NodeArray.createFromElement(currentNode),
+                                                 textRegions);
 
             }
 
             // *** handle the last node
 
-            if(position.next === null && textRegion.length > 0) {
+            if(position.next === undefined && textRegion.length > 0) {
                 // don't drop the last block
                 textRegions.push(textRegion);
             }
 
-        });
+        }
 
         return textRegions;
 
@@ -288,9 +289,9 @@ export class TextNodeRows {
      * to see if they are different.
      *
      */
-    static computeTextBlocks(textRegions: ReadonlyArray<TextRegion>) {
+    static computeTextBlocks(textRegions: ReadonlyArray<TextRegion>): ReadonlyArray<TextBlock> {
 
-        const textBlocks: any[] = [];
+        const textBlocks: TextBlock[] = [];
 
         textRegions.forEach(textRegion => {
 
@@ -332,7 +333,7 @@ export class TextNodeRows {
 
                 // *** handle the last node
 
-                if(position.next === null && textBlock.length > 0) {
+                if(position.next === undefined && textBlock.length > 0) {
                     // don't drop the last block
                     textBlocks.push(textBlock);
                 }

@@ -100,7 +100,7 @@ export class Ranges {
      * @param range {Range}
      * @return {Array<Node>}
      */
-    public static getTextNodes(range: Range) {
+    public static getTextNodes(range: Range): ReadonlyArray<Node> {
 
         Preconditions.assertPresent(range, "range");
 
