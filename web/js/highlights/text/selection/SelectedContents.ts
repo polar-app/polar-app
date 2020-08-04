@@ -34,7 +34,7 @@ export namespace SelectedContents {
 
         // now get the text and the sanitized HTML
         const text = selection.toString();
-        const html =  HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
+        const html = HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
 
         function computeRectTexts() {
 
@@ -48,12 +48,24 @@ export namespace SelectedContents {
 
         }
 
+        function computeOrder(): number {
+
+            if (ranges.length === 0) {
+                return 0;
+            }
+
+            return ranges[0].getBoundingClientRect().top;
+        }
+
         const rectTexts = ! opts.noRectTexts ? computeRectTexts() : [];
+
+        const order = computeOrder();
 
         return {
             text,
             html,
-            rectTexts
+            rectTexts,
+            order
         };
 
     }

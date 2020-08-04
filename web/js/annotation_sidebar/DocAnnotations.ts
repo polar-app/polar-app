@@ -139,7 +139,8 @@ export namespace DocAnnotations {
             children: () => [],
             docMetaRef: {
                 id: docMeta.docInfo.fingerprint
-            }
+            },
+            order: undefined
         };
 
     }
@@ -183,7 +184,8 @@ export namespace DocAnnotations {
             children: () => [],
             docMetaRef: {
                 id: docMeta.docInfo.fingerprint
-            }
+            },
+            order: undefined
         };
 
     }
@@ -243,14 +245,15 @@ export namespace DocAnnotations {
             children,
             docMetaRef: {
                 id: docMeta.docInfo.fingerprint
-            }
+            },
+            order: annotation.order
         };
 
     }
 
     export function createFromTextHighlight(docMeta: IDocMeta,
-                                          annotation: ITextHighlight,
-                                          pageMeta: IPageMeta): IDocAnnotation {
+                                            annotation: ITextHighlight,
+                                            pageMeta: IPageMeta): IDocAnnotation {
 
         const iTextConverter = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation);
 
@@ -286,7 +289,8 @@ export namespace DocAnnotations {
             children,
             docMetaRef: {
                 id: docMeta.docInfo.fingerprint
-            }
+            },
+            order: annotation.order
         };
 
     }

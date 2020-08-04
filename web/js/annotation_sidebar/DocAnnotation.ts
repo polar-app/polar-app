@@ -12,7 +12,10 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {
+    AnnotationOrder,
+    HighlightColor
+} from "polar-shared/src/metadata/IBaseHighlight";
 import {IAuthor} from "polar-shared/src/metadata/IAuthor";
 import {RepoAnnotation} from "../../../apps/repository/js/RepoAnnotation";
 import {IDStr, PlainTextStr} from "polar-shared/src/util/Strings";
@@ -72,6 +75,8 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
      */
     readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 
+    readonly order: AnnotationOrder | undefined;
+
     /**
      * A reference to the IDocMeta so we can lookup by ID.
      */
@@ -87,6 +92,7 @@ export interface IDocAnnotation extends ObjectID, RepoAnnotation {
  * the react components.
  */
 export interface IDocAnnotationRef extends Omit<IDocAnnotation, 'docMeta' | 'docInfo' | 'pageMeta' | 'children'> {
+
     readonly children: () => ReadonlyArray<IDocAnnotationRef>;
 
     /**
@@ -203,6 +209,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
 
     public readonly docMetaRef: IDocMetaRef;
 
+    public readonly order: AnnotationOrder | undefined;
+
     constructor(readonly index: DocAnnotationIndex,
                 public readonly obj: IDocAnnotation) {
 
@@ -233,7 +241,8 @@ export class DefaultDocAnnotation implements DocAnnotation {
         this.parent = obj.parent;
         this.docMetaRef = {
             id: obj.docInfo.fingerprint
-        }
+        };
+        this.order = obj.order;
 
     }
 

@@ -23,4 +23,9 @@ export interface ISelectedContent {
      */
     readonly rectTexts: ReadonlyArray<RectText>;
 
+    /**
+     * A position in the document to represent the sort order.
+     */
+    readonly order: number;
+
 }

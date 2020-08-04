@@ -8,7 +8,26 @@ export namespace DocAnnotationSorter {
         // TODO: I would prefer that this was a binary tree which was maintained sorted
 
         const computeScore = (item: D) => {
-            return (item.pageNum * 100000) + (item.position.y * 100) + item.position.x;
+
+            function computePrefix() {
+                return item.pageNum * 100000;
+            }
+
+            function computeSuffix() {
+
+                if (item.order !== undefined) {
+                    return item.order * 100;
+                } else {
+                    return (item.position.y * 100) + item.position.x;
+                }
+
+            }
+
+            const prefix = computePrefix();
+            const suffix = computeSuffix();
+
+            return prefix + suffix;
+
         };
 
         const compareFn = (a: D, b: D) => {

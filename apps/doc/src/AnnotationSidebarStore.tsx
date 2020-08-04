@@ -1,6 +1,5 @@
 import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {
     createObservableStore,
     SetStore

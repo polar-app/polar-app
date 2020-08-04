@@ -620,7 +620,8 @@ function createAnnotation(id: string,
         parent,
         docMetaRef: {
             id: '1234'
-        }
+        },
+        order: undefined
     };
 
 }

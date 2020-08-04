@@ -4,7 +4,10 @@ import {IText} from 'polar-shared/src/metadata/Text';
 import {IRect} from 'polar-shared/src/util/rects/IRect';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {
+    AnnotationOrder,
+    HighlightColor
+} from "polar-shared/src/metadata/IBaseHighlight";
 import {ITextRect} from "polar-shared/src/metadata/ITextRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
@@ -22,7 +25,9 @@ export class TextHighlightRecords {
     public static create(rects: ReadonlyArray<IRect>,
                          textSelections: ReadonlyArray<ITextRect>,
                          text: IText,
-                         color: HighlightColor = 'yellow'): TextHighlightRecord {
+                         color: HighlightColor = 'yellow',
+                         // tslint:disable-next-line:no-unnecessary-initializer
+                         order: AnnotationOrder | undefined = undefined): TextHighlightRecord {
 
         const id = Hashcodes.createID(rects.length > 0 ? rects : text);
 
@@ -41,7 +46,8 @@ export class TextHighlightRecords {
             notes: {},
             questions: {},
             flashcards: {},
-            color
+            color,
+            order
         });
 
         return {id, value: textHighlight};

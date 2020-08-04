@@ -87,12 +87,15 @@ export namespace TextHighlighter {
 
         const textSelections = TextSelections.compute(selectedContent);
 
-        const text = selectedContent.text;
+        const {text, order} = selectedContent;
+
+        const position = order;
 
         const textHighlightRecord = TextHighlightRecords.create(rects,
                                                                 textSelections,
                                                                 {TEXT: text},
-                                                                highlightColor);
+                                                                highlightColor,
+                                                                position);
 
         // TODO: there are no screenshots here but we should keep them.
 
