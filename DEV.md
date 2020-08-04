@@ -29,6 +29,24 @@ npx webpack-dev-server
 This *should* mean you have all code running and Polar should load in your 
 browser.
 
+# Background
+
+## Lerna and Multi-Modules
+
+We use lerna to manage our build with multi-modules.  Basically we separate 
+Polar into lots of smaller modules so that the build is easier to understand.
+
+## webpack-dev-server
+
+We standardize now on webpack and webpack-dev-server for building Polar. 
+
+webpack-dev-server will open a port on 8050 and load the Polar app in your 
+browser.
+
+When you make changes to the code it will reload the app.
+
+You can use the 'dev2' app for hacking on custom stuff.  
+
 # TODO
 
 - the credentials for our apt repo are required... this is a big deal breaker/issue
