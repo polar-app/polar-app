@@ -104,7 +104,8 @@ class Snap {
 
 	addListeners() {
 		this._onResize = this.onResize.bind(this);
-		window.addEventListener('resize', this._onResize);
+		// burton: disabled as it was breaking the UI
+		// window.addEventListener('resize', this._onResize);
 
 		this._onScroll = this.onScroll.bind(this);
 		this.scroller.addEventListener('scroll', this._onScroll);

@@ -447,11 +447,13 @@ class Contents {
 	 * @private
 	 */
 	resizeListeners() {
-		var width, height;
-		// Test size again
-		clearTimeout(this.expanding);
-		requestAnimationFrame(this.resizeCheck.bind(this));
-		this.expanding = setTimeout(this.resizeListeners.bind(this), 350);
+		// burton: disabling this for now as it doesn't make sense in our
+		// scenario and I don't want to fight with epub.js.
+		// var width, height;
+		// // Test size again
+		// clearTimeout(this.expanding);
+		// requestAnimationFrame(this.resizeCheck.bind(this));
+		// this.expanding = setTimeout(this.resizeListeners.bind(this), 350);
 	}
 
 	/**

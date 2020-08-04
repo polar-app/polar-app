@@ -159,7 +159,7 @@ class Stage {
 
 	onOrientationChange(func){
 		this.orientationChangeFunc = func;
-		window.addEventListener("orientationchange", this.orientationChangeFunc, false);
+		// window.addEventListener("orientationchange", this.orientationChangeFunc, false);
 	}
 
 	size(width, height){
