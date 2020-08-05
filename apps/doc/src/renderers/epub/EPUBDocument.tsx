@@ -289,8 +289,10 @@ function useCSS() {
                                DarkModeScrollbars.createCSS() :
                                {};
 
+    const color = theme.palette.type === 'dark' ? 'rgb(217, 217, 217)' : theme.palette.text.primary;
+
     const baseColorStyles = {
-        'color': `${theme.palette.text.primary} !important`,
+        'color': `${color} !important`,
         'background-color': `${theme.palette.background.default} !important`,
     };
 

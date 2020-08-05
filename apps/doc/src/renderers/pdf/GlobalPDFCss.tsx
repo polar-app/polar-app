@@ -58,8 +58,6 @@ export const GlobalCssDarkForInvertGreyscaleStyles = withStyles((theme) => {
 
 });
 
-
-
 export const GlobalCssDark = GlobalCssDarkStyles(() => null);
 export const GlobalCssDarkForInvert = GlobalCssDarkForInvertStyles(() => null);
 export const GlobalCssDarkForInvertGreyscale = GlobalCssDarkForInvertGreyscaleStyles(() => null);

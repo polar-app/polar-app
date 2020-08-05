@@ -32,7 +32,7 @@ export const DOMHighlightRow = memoForwardRef((props: IProps) => {
                  backgroundColor: `${backgroundColor}`,
                  position: 'absolute',
                  pointerEvents: 'none',
-                 mixBlendMode: 'multiply',
+                 mixBlendMode: 'overlay',
                  ...absolutePosition
              }}>
 
