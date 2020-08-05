@@ -8,7 +8,7 @@ export const GlobalCssDarkStyles = withStyles(() => {
 
     const theme = useTheme();
 
-    const darkModeScrollbars = DarkModeScrollbars.createCSS();
+    const darkModeScrollbars = DarkModeScrollbars.createCSSForReact();
 
     return {
         // @global is handled by jss-plugin-global.

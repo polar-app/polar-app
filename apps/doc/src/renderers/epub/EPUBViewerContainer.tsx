@@ -16,6 +16,7 @@ const useStyles = makeStyles(() =>
             flexGrow: 1,
             minWidth: 0,
             minHeight: 0,
+            overflow: 'none',
         },
         viewerContainer: {
             position: 'absolute',
