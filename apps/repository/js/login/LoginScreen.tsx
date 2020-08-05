@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Button from '@material-ui/core/Button/Button';
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {
     FirebaseUIAuth,
@@ -16,16 +15,6 @@ interface IProps extends FirebaseUIAuthOptions {
 }
 
 export const LoginScreen = React.memo((props: IProps) => {
-
-    function doCancel() {
-
-        if (document.location.href.startsWith('https://app.getpolarized.io')) {
-            document.location.href = 'https://app.getpolarized.io';
-        } else {
-            document.location.href = '/';
-        }
-
-    }
 
     function doDownloadDesktop() {
         document.location.href = 'https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=login-download-button&utm_medium=site';
@@ -95,13 +84,13 @@ export const LoginScreen = React.memo((props: IProps) => {
                 <MUIButtonBar className="mt-1 p-1"
                               style={{justifyContent: 'flex-end'}}>
 
-                    <Button variant="contained"
-                            color="default"
-                            onClick={doCancel}>
+                    {/*<Button variant="contained"*/}
+                    {/*        color="default"*/}
+                    {/*        onClick={doCancel}>*/}
 
-                        Cancel
+                    {/*    Cancel*/}
 
-                    </Button>
+                    {/*</Button>*/}
 
                     {/*<Button variant="contained"*/}
                     {/*        color="default"*/}
