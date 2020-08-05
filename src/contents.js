@@ -427,19 +427,19 @@ class Contents {
 	 * @private
 	 */
 	resizeCheck() {
-		let width = this.textWidth();
-		let height = this.textHeight();
-
-		if (width != this._size.width || height != this._size.height) {
-
-			this._size = {
-				width: width,
-				height: height
-			};
-
-			this.onResize && this.onResize(this._size);
-			this.emit(EVENTS.CONTENTS.RESIZE, this._size);
-		}
+		// let width = this.textWidth();
+		// let height = this.textHeight();
+		//
+		// if (width != this._size.width || height != this._size.height) {
+		//
+		// 	this._size = {
+		// 		width: width,
+		// 		height: height
+		// 	};
+		//
+		// 	this.onResize && this.onResize(this._size);
+		// 	this.emit(EVENTS.CONTENTS.RESIZE, this._size);
+		// }
 	}
 
 	/**
@@ -526,13 +526,14 @@ class Contents {
 	 * @private
 	 */
 	resizeObservers() {
-		// create an observer instance
-		this.observer = new ResizeObserver((e) => {
-			requestAnimationFrame(this.resizeCheck.bind(this));
-		});
-
-		// pass in the target node
-		this.observer.observe(this.document.documentElement);
+		// burton: disabling for now because resize breaks polar.
+		// // create an observer instance
+		// this.observer = new ResizeObserver((e) => {
+		// 	requestAnimationFrame(this.resizeCheck.bind(this));
+		// });
+		//
+		// // pass in the target node
+		// this.observer.observe(this.document.documentElement);
 	}
 
 	/**
@@ -1027,7 +1028,7 @@ class Contents {
 		if (width >= 0) {
 			this.width(width);
 			viewport.width = width;
-			this.css("padding", "0 "+(width/12)+"px");
+			// this.css("padding", "0 "+(width/12)+"px");
 		}
 
 		if (height >= 0) {

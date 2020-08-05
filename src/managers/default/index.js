@@ -189,7 +189,8 @@ class DefaultViewManager {
 	}
 
 	onResized(e) {
-		this.resize();
+		// burton: disabling this for now.  We don't need it.
+		// this.resize();
 	}
 
 	resize(width, height, epubcfi){

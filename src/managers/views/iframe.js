@@ -5,6 +5,8 @@ import Contents from "../../contents";
 import { EVENTS } from "../../utils/constants";
 import { Pane, Highlight, Underline } from "marks-pane";
 
+const DEFAULT_METHOD = 'blobUrl';
+
 class IframeView {
 	constructor(section, options) {
 		this.settings = extend({
@@ -15,7 +17,7 @@ class IframeView {
 			height: 0,
 			layout: undefined,
 			globalLayoutProperties: {},
-			method: undefined,
+			method: DEFAULT_METHOD,
 			forceRight: false
 		}, options || {});
 
@@ -83,7 +85,7 @@ class IframeView {
 		this.iframe = document.createElement("iframe");
 		this.iframe.setAttribute('sandbox', 'allow-same-origin');
 		this.iframe.id = this.id;
-		this.iframe.scrolling = "no"; // Might need to be removed: breaks ios width calculations
+		// this.iframe.scrolling = "no"; // Might need to be removed: breaks ios width calculations
 		this.iframe.style.overflow = "hidden";
 		this.iframe.seamless = "seamless";
 		// Back up if seamless isn't supported
