@@ -24,6 +24,9 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {Latch} from "polar-shared/src/util/Latch";
+import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
+import { IDimensions } from 'polar-shared/src/util/IDimensions';
+import {DarkModeScrollbars} from "../../../../../web/js/mui/css/DarkModeScrollbars";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -65,7 +68,9 @@ export const EPUBDocument = (props: IProps) => {
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar({noRectTexts: true});
     const docViewerElements = useDocViewerElementsContext();
+    const epubResizer = useEPUBResizer();
     const log = useLogger();
+
 
     async function doLoad() {
 
@@ -103,7 +108,9 @@ export const EPUBDocument = (props: IProps) => {
         });
 
         function applyCSS() {
+
             rendition.themes.default(css);
+
         }
 
         rendition.on('locationChanged', (event: any) => {
@@ -116,8 +123,26 @@ export const EPUBDocument = (props: IProps) => {
 
         });
 
+        function createResizer(): Resizer {
+            return () => {
+                epubResizer()
+            };
+        }
+
+        const resizer = createResizer();
+        setResizer(resizer);
+
+        rendition.on('resize', (event: any) => {
+            console.error("epubjs: resize", new Error());
+        });
+
+        rendition.on('resized', (event: any) => {
+            console.error("epubjs: resized", new Error());
+        });
+
         rendition.on('rendered', (event: any) => {
             incrRenderIter();
+            epubResizer();
         });
 
         await rendition.display();
@@ -161,16 +186,6 @@ export const EPUBDocument = (props: IProps) => {
             nrPages: pageNavigator.count
         });
 
-        function createResizer(): Resizer {
-            return () => {
-                // FIXME: we need a resizer.  The issue now is that epub.js uses
-                // width fixed based on its container size and when the sidebar
-                // is resized it doesn't resize.
-            };
-        }
-
-        setResizer(createResizer());
-
         console.log({metadata});
 
         const navigation = await book.loaded.navigation;
@@ -191,6 +206,8 @@ export const EPUBDocument = (props: IProps) => {
 
     }
 
+    useResizeEventListener(epubResizer);
+
     useComponentDidMount(() => {
         doLoad()
             .catch(err => log.error("Could not load EPUB: ", err));
@@ -207,27 +224,100 @@ export const EPUBDocument = (props: IProps) => {
 
 };
 
+
+function useEPUBResizer() {
+
+    const docViewerElements = useDocViewerElementsContext();
+
+    return () => {
+
+        const docViewer = docViewerElements.getDocViewerElement();
+
+        function computeContainerDimensions(): IDimensions {
+            const element = docViewer.querySelector(".page") as HTMLElement;
+            const width = element!.offsetWidth;
+            const height = element!.offsetHeight;
+            return {width, height}
+        }
+
+        function setWidth(element: HTMLElement, dimensions: IDimensions) {
+            element.style.width = `${dimensions.width}px`;
+            element.style.height = `${dimensions.height}px`;
+        }
+
+        function adjustEpubView(dimensions: IDimensions) {
+            const element = docViewer.querySelector(".epub-view") as HTMLElement;
+            setWidth(element, dimensions);
+        }
+
+        function adjustIframe(dimensions: IDimensions) {
+            const element = docViewer.querySelector(".epub-view iframe") as HTMLElement;
+            setWidth(element, dimensions);
+        }
+
+        function adjustIframeBody(dimensions: IDimensions) {
+            const iframe = docViewer.querySelector(".epub-view iframe") as HTMLIFrameElement;
+            setWidth(iframe.contentDocument!.body, dimensions);
+
+
+            // this epub padding and I can't figure out where    this is being set.
+            // iframe.contentDocument!.documentElement.style.padding = '0';
+            // iframe.contentDocument!.body.style.padding = '5px';
+
+            iframe.contentDocument!.body.style.width = 'auto';
+            iframe.contentDocument!.body.style.height = 'auto';
+
+        }
+
+        const dimensions = computeContainerDimensions();
+        adjustEpubView(dimensions);
+        adjustIframe(dimensions);
+        adjustIframeBody(dimensions);
+
+        console.log("Resized to dimensions: " + dimensions);
+
+    }
+
+}
+
+
 function useCSS() {
 
     const theme = useTheme();
+
+    const darkModeScrollbars = DarkModeScrollbars.createCSS();
 
     const baseColorStyles = {
         'color': `${theme.palette.text.primary} !important`,
         'background-color': `${theme.palette.background.default} !important`,
     };
 
+    const paddingStyles = {
+        "padding-top": "10px",
+        "padding-bottom": "10px",
+        "padding-left": "10px",
+        "padding-right": "10px",
+        "padding": "10px",
+    }
+
     return {
+
+        ...darkModeScrollbars,
         'body, html': {
             ...baseColorStyles,
             'font-family': `${theme.typography.fontFamily} !important`,
-            'padding': '10px',
-            'padding-bottom': '10px !important'
+            'padding': '0px',
+            'padding-bottom': '0px !important'
         },
         'body :not(.polar-ui)': {
             ...baseColorStyles,
         },
         'body': {
             'margin': '5px',
+            ...paddingStyles
+        },
+        'html': {
+            ...paddingStyles
         },
         'h1, h2, h3': {
             'color': `${theme.palette.text.primary}`
