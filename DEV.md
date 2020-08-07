@@ -5,6 +5,8 @@ support both forked NPM modules and private/public version control systems.
 
 # Steps to Build 
 
+- Make sure you're on node >=14.5 and npm >=6.14.5
+
 - clone the polar-app repository locally.
 
 - login go bytesafe so that you can access our custom NPM packages.  Your 
@@ -20,6 +22,7 @@ npm config set registry https://polar-app.bytesafe.dev/r/default
 ```bash
 
 ./sbin/init                    # pulls all repositories locally
+npm install -g lerna           # will install lerna globally
 lerna bootsrap                 # fetches all NPM packages
 lerna run compile              # builds all node packages 
 cd packages/polar-bookshelf    # the main app directory
