@@ -61,8 +61,14 @@ export function useLocationHashChangeCallback(callback: () => void) {
     const location = useLocation();
     const prevLocation = React.useRef<ILocation | undefined>(undefined);
 
-    if (location.hash !== prevLocation.current?.hash) {
-        callback();
+    try {
+
+        if (location.hash !== prevLocation.current?.hash) {
+            callback();
+        }
+
+    } finally {
+        prevLocation.current = location;
     }
 
 }
