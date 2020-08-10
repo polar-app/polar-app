@@ -22,7 +22,7 @@ export function useDocViewerJumpToPageLoader(): (location: ILocation, cause: Doc
 
         const annotationLink = AnnotationLinks.parse(location.hash);
 
-        if (annotationLink.page) {
+        if (annotationLink?.page) {
             console.log(`Jumping to page ${annotationLink.page} cause was ${cause}`);
             onPageJump(annotationLink.page);
             return true;
@@ -40,20 +40,20 @@ export function useDocViewerJumpToAnnotationLoader(): (location: ILocation) => b
 
         const annotationLink = AnnotationLinks.parse(location.hash);
 
-        if (annotationLink.annotation) {
-
-            console.log("Jumping to annotation: " + annotationLink.annotation);
-
-            const annotationElement = document.getElementById(annotationLink.annotation);
-
-            if (annotationElement) {
-                annotationElement.scrollIntoView();
-                return true;
-            } else {
-                console.warn("Count not find annotation element to scroll")
-            }
-
-        }
+        // if (annotationLink?.annotation) {
+        //
+        //     console.log("Jumping to annotation: " + annotationLink.annotation);
+        //
+        //     const annotationElement = document.getElementById(annotationLink.annotation);
+        //
+        //     if (annotationElement) {
+        //         annotationElement.scrollIntoView();
+        //         return true;
+        //     } else {
+        //         console.warn("Count not find annotation element to scroll")
+        //     }
+        //
+        // }
 
         return false;
 
