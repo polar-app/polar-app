@@ -1,4 +1,4 @@
-import {memoForwardRef} from "../react/ReactUtils";
+import {deepMemo, memoForwardRef, memoForwardRefDiv} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
 import React from "react";
 import {
@@ -30,7 +30,7 @@ function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
 /**
  * An individual highlight that might need to be split across rows.
  */
-export const DOMHighlight = memoForwardRef((props: IProps) => {
+export const DOMHighlight = deepMemo((props: IProps) => {
 
     const {regions} = props;
 
@@ -60,9 +60,7 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
     useResizeEventListener(redrawCallback);
 
     function toDOMHighlighterRow(highlightViewportPosition: IHighlightViewportPosition, idx: number) {
-
         const id = idx === 0 ? props.id : (props.id + ":" + idx);
-
         const key = `${highlightViewportPosition.nodeID}:${highlightViewportPosition.start}:${highlightViewportPosition.end}`;
         return <DOMHighlightRow {...highlightViewportPosition}
                                 color={props.color}
@@ -73,6 +71,8 @@ export const DOMHighlight = memoForwardRef((props: IProps) => {
     if (highlightViewportPositions === undefined) {
         return null;
     }
+
+    // FIXME there are multiple here so the ref/refs will be wrong.
 
     return (
         <>

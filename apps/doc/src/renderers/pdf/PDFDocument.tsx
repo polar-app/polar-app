@@ -43,9 +43,8 @@ import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {useAnnotationBar} from "../../AnnotationBarHooks";
-import {useDocViewerJumpListener} from "../../DocViewerAnnotationHook";
 import {DocumentInit} from "../DocumentInitHook";
-import {DocViewerAnnotationRouter} from "../../DocViewerAnnotationRouter";
+import {useDocViewerPageJumpListener} from '../../DocViewerAnnotationHook';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -146,7 +145,7 @@ export const PDFDocument = React.memo((props: IProps) => {
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const prefs = usePrefsContext();
     const annotationBarInjector = useAnnotationBar();
-    useDocViewerJumpListener();
+    useDocViewerPageJumpListener();
 
     useComponentDidMount(() => {
 
@@ -364,7 +363,6 @@ export const PDFDocument = React.memo((props: IProps) => {
     return active && (
         <>
             <DocumentInit/>
-            <DocViewerAnnotationRouter/>
             {props.children}
         </>
     ) || null;

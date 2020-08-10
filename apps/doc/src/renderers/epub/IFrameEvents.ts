@@ -1,5 +1,3 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
-
 /**
  * Moves events from the iframe, into the target element. This allows the event
  * listeners to see the event as if it was called inside the parent .page in the
@@ -32,8 +30,12 @@ export namespace IFrameEvents {
         const newEvent = new anyEvent.constructor(event.type, event);
         target.dispatchEvent(newEvent);
 
-        event.preventDefault();
-        event.stopPropagation();
+        // FIXME only preventDefault and stopPropagation if it's handled in the
+        // main app and it's one of our keybindings there but there isn't a
+        // central list...
+
+        // event.preventDefault();
+        // event.stopPropagation();
     }
 
 }

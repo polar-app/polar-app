@@ -20,13 +20,15 @@ export const TextHighlightsView = memoForwardRef(() => {
 
     const visiblePageAnnotations = AnnotationContainers.visible(annotationContainers, pageAnnotations);
 
+    console.log("FIXME: visiblePageAnnotations: ", visiblePageAnnotations);
+
     const rendered = visiblePageAnnotations.map(current =>
                                              <TextHighlightRenderer
                                                  key={current.annotation.id}
                                                  container={current.container}
                                                  pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
-                                                 textHighlight={current.annotation}/>);
+                                                 annotation={current.annotation}/>);
 
     return (
         <>

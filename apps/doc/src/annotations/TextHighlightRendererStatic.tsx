@@ -6,26 +6,79 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Rects} from "../../../../web/js/Rects";
-import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
+import {deepMemo, memoForwardRefDiv} from "../../../../web/js/react/ReactUtils";
+import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly textHighlight: ITextHighlight;
+    readonly annotation: ITextHighlight;
     readonly container: HTMLElement,
 }
 
-export const TextHighlightRendererStatic = React.memo((props: IProps) => {
+export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
 
-    const {textHighlight, fingerprint, pageNum, container} = props;
+    const {annotation, container} = props;
     const {docScale} = useDocViewerStore(['docScale']);
-    const rects = Object.values(textHighlight.rects || {})
+    const rects = Object.values(annotation.rects || {})
 
     if (! container) {
         console.warn("No container");
         return null;
     }
+
+    if (! docScale) {
+        console.log("No docScale");
+        return null;
+    }
+
+    if (rects.length === 0) {
+        console.log("No textHighlight rects");
+        return null;
+    }
+
+    const toReactPortal = (rawTextHighlightRect: IRect,
+                           container: HTMLElement,
+                           idx: number) => {
+
+        // FIXME this is wrong too as we just render the LAST item
+
+        // FIXME: the best way to render this is going to be to wait until it
+        // mounts and then just scroll to the first ID ... it's a waste of some
+        // work but I can land it because we would do everything other than
+        // use refs.
+
+        return ReactDOM.createPortal(
+            <HighlightDelegate idx={idx}
+                               rawTextHighlightRect={rawTextHighlightRect}
+                               {...props}/>,
+            container);
+
+    };
+
+    const portals = rects.map((current, idx) => toReactPortal(current, container, idx));
+
+    return (
+        <>
+            {portals}
+        </>
+    );
+
+});
+
+interface HighlightDelegateProps extends IProps {
+    readonly idx: number;
+    readonly rawTextHighlightRect: IRect;
+}
+
+export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProps) => {
+
+    const {idx, rawTextHighlightRect} = props;
+    const {annotation, fingerprint, pageNum} = props;
+    const {docScale} = useDocViewerStore(['docScale']);
+    const rects = Object.values(annotation.rects || {})
+    const scrollIntoViewRef = useScrollIntoViewUsingLocation();
 
     if (! docScale) {
         console.log("No docScale");
@@ -48,62 +101,115 @@ export const TextHighlightRendererStatic = React.memo((props: IProps) => {
 
     };
 
-    const toReactPortal = (rawTextHighlightRect: IRect,
-                           container: HTMLElement,
-                           idx: number) => {
+    const className = `text-highlight annotation text-highlight-${annotation.id}`;
+    const textHighlightRect = createScaledRect(rawTextHighlightRect);
 
-        const className = `text-highlight annotation text-highlight-${textHighlight.id}`;
-        const textHighlightRect = createScaledRect(rawTextHighlightRect);
+    const color: HighlightColor = annotation.color || 'yellow';
+    const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
-        const color: HighlightColor = textHighlight.color || 'yellow';
-        const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
+    function createDOMID() {
 
-        function createDOMID() {
-
-            if (idx === 0) {
-                return textHighlight.id;
-            }
-
-            return textHighlight.id + "." + idx;
-
+        if (idx === 0) {
+            return annotation.id;
         }
 
-        const id = createDOMID();
+        return annotation.id + "-" + idx;
 
-        return ReactDOM.createPortal(
-            <div id={id}
-                 data-type="text-highlight"
-                 data-doc-fingerprint={fingerprint}
-                 data-text-highlight-id={textHighlight.id}
-                 data-page-num={pageNum}
-                // annotation descriptor metadata - might not be needed
-                // anymore
-                 data-annotation-type="text-highlight"
-                 data-annotation-id={textHighlight.id}
-                 data-annotation-page-num={pageNum}
-                 data-annotation-doc-fingerprint={fingerprint}
-                 data-annotation-color={color}
-                 className={className}
-                 style={{
-                     position: 'absolute',
-                     backgroundColor,
-                     left: `${textHighlightRect.left}px`,
-                     top: `${textHighlightRect.top}px`,
-                     width: `${textHighlightRect.width}px`,
-                     height: `${textHighlightRect.height}px`,
-                     mixBlendMode: 'multiply',
-                     pointerEvents: 'none',
-                 }}/>,
-            container);
+    }
 
-    };
-
-    const portals = rects.map((current, idx) => toReactPortal(current, container, idx));
+    const id = createDOMID();
 
     return (
-        <>
-            {portals}
-        </>
+        <div id={id}
+             ref={scrollIntoViewRef}
+             data-type="text-highlight"
+             data-doc-fingerprint={fingerprint}
+             data-text-highlight-id={annotation.id}
+             data-page-num={pageNum}
+            // annotation descriptor metadata - might not be needed
+            // anymore
+             data-annotation-type="text-highlight"
+             data-annotation-id={annotation.id}
+             data-annotation-page-num={pageNum}
+             data-annotation-doc-fingerprint={fingerprint}
+             data-annotation-color={color}
+             className={className}
+             style={{
+                 position: 'absolute',
+                 backgroundColor,
+                 left: `${textHighlightRect.left}px`,
+                 top: `${textHighlightRect.top}px`,
+                 width: `${textHighlightRect.width}px`,
+                 height: `${textHighlightRect.height}px`,
+                 mixBlendMode: 'multiply',
+                 pointerEvents: 'none',
+             }}/>
     );
 
-}, isEqual);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// interface HighlightDelegateProps {
+//     readonly id: string;
+//     readonly fingerprint: IDStr;
+//     readonly pageNum: number;
+//     readonly annotation: ITextHighlight;
+// }
+//
+// export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProps, ref) => {
+//
+//     const {id, fingerprint, annotation, pageNum} = props;
+//
+//     const className = `text-highlight annotation text-highlight-${annotation.id}`;
+//     const textHighlightRect = createScaledRect(rawTextHighlightRect);
+//
+//     const color: HighlightColor = annotation.color || 'yellow';
+//     const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
+//
+//     return (
+//         <div id={id}
+//              data-type="text-highlight"
+//              data-doc-fingerprint={fingerprint}
+//              data-text-highlight-id={annotation.id}
+//              data-page-num={pageNum}
+//             // annotation descriptor metadata - might not be needed
+//             // anymore
+//              data-annotation-type="text-highlight"
+//              data-annotation-id={annotation.id}
+//              data-annotation-page-num={pageNum}
+//              data-annotation-doc-fingerprint={fingerprint}
+//              data-annotation-color={color}
+//              className={className}
+//              style={{
+//                  position: 'absolute',
+//                  backgroundColor,
+//                  left: `${textHighlightRect.left}px`,
+//                  top: `${textHighlightRect.top}px`,
+//                  width: `${textHighlightRect.width}px`,
+//                  height: `${textHighlightRect.height}px`,
+//                  mixBlendMode: 'multiply',
+//                  pointerEvents: 'none',
+//              }}/>
+//     );
+//
+// })
+//
+// const createScaledRect = (textHighlightRect: IRect): IRect => {
+//
+//     // this is only needed for PDF and we might be able to use a
+//     // transform in the future which would be easier.  For all other
+//     // document formats the scale should just be '1'
+//     return Rects.scale(textHighlightRect, scaleValue);
+//
+// };

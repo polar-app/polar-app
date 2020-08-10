@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
     useComponentDidMount,
-    useComponentWillUnmount, useRefProvider
+    useComponentWillUnmount
 } from "../../../../web/js/hooks/lifecycle";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
@@ -12,6 +12,7 @@ import {
 } from "../renderers/DocViewerElementsContext";
 import { useDocViewerStore } from "../DocViewerStore";
 import isEqual from "react-fast-compare";
+import {useRefProvider} from "../../../../web/js/hooks/ReactHooks";
 
 /**
  * Unsubscribes to the action created by the subscriber.

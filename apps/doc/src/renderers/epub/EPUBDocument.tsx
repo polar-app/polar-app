@@ -15,7 +15,6 @@ import {IFrameEvents} from "./IFrameEvents";
 import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
 import './EPUBDocument.css';
-import {DocViewerAnnotationRouter} from '../../DocViewerAnnotationRouter';
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
@@ -217,7 +216,6 @@ export const EPUBDocument = (props: IProps) => {
         <DOMTextIndexProvider>
             <DocumentInit/>
             <EPUBFindRenderer/>
-            <DocViewerAnnotationRouter/>
             {props.children}
         </DOMTextIndexProvider>
     ) || null;
@@ -274,7 +272,7 @@ function useEPUBResizer() {
         adjustIframe(dimensions);
         adjustIframeBody(dimensions);
 
-        console.log("Resized to dimensions: " + dimensions);
+        console.log("Resized to dimensions: ", dimensions);
 
     }
 

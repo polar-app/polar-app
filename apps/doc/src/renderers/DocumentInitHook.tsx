@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDocViewerJumpToPageLoader} from "../DocViewerAnnotationHook";
+import {useDocViewerJumpToPageLoader, useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
 import {ReadingProgressResume} from "../../../../web/js/view/ReadingProgressResume";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
@@ -48,6 +48,7 @@ export function useDocumentInit() {
 }
 
 export const DocumentInit = React.memo(() => {
+    useDocViewerPageJumpListener();
     useDocumentInit();
     return null;
 })

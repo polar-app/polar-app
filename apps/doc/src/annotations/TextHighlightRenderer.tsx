@@ -9,7 +9,7 @@ import {TextHighlightRendererDynamic} from "./TextHighlightRendererDynamic";
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly textHighlight: ITextHighlight;
+    readonly annotation: ITextHighlight;
     readonly container: HTMLElement,
 }
 

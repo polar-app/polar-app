@@ -1,14 +1,14 @@
 import React from 'react';
 import * as ReactDOM from "react-dom";
-import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {useDOMTextIndexContext} from "./DOMTextIndexContext";
-import { Texts } from 'polar-shared/src/metadata/Texts';
+import {Texts} from 'polar-shared/src/metadata/Texts';
 import {DOMHighlight} from "../../../../web/js/dom_highlighter/DOMHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 
 interface IProps {
-    readonly textHighlight: ITextHighlight;
+    readonly annotation: ITextHighlight;
     readonly container: HTMLElement,
 }
 
@@ -16,11 +16,14 @@ interface IProps {
  * Text highlight layout that uses the text of the annotation, not the actual
  * fixes position.
  */
-export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
+export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
 
-    const {textHighlight, container} = props;
+    // FIXME: there's a problem with annotations being rendered for pages that
+    // aren't actually displayed ...
+
+    const {annotation, container} = props;
     const domTextIndexContext = useDOMTextIndexContext();
-    const text = Texts.toText(textHighlight.text);
+    const text = Texts.toText(annotation.text);
 
     if (! domTextIndexContext) {
         console.log("No domTextIndexContext");
@@ -28,7 +31,7 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
     }
 
     if (! text) {
-        console.log("No text for highlight: " + textHighlight.id);
+        console.log("No text for highlight: " + annotation.id);
         return null;
     }
 
@@ -41,7 +44,7 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
         return null;
     }
 
-    const color = HighlightColors.toBackgroundColor(textHighlight.color || 'yellow', 0.5);
+    const color = HighlightColors.toBackgroundColor(annotation.color || 'yellow', 0.5);
 
     // this is a bit unclean because it assumes the container is 'body' but it
     // is actually trying to be a sibling to 'body' so that EPUB CSS rules
@@ -51,6 +54,8 @@ export const TextHighlightRendererDynamic = memoForwardRef((props: IProps) => {
         return null;
     }
 
-    return ReactDOM.createPortal(<DOMHighlight color={color} {...hit}/>, container);
+    return ReactDOM.createPortal(<DOMHighlight {...hit}
+                                               color={color}
+                                               id={annotation.id}/>, container);
 
 });
