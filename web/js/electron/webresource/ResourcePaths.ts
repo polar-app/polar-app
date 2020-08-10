@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {URLs} from 'polar-shared/src/util/URLs';
+import {URLStr} from "polar-shared/src/util/Strings";
 
 const USE_FILE_URL = false;
 
@@ -56,7 +57,7 @@ export class ResourcePaths {
      * @param relativeURL
      */
     public static resourceURLFromRelativeURL(relativeURL: string,
-                                             useFileURL: boolean = USE_FILE_URL): string {
+                                             useFileURL: boolean = USE_FILE_URL): URLStr {
 
         let relativePath = relativeURL;
         let queryData = "";

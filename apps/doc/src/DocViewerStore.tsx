@@ -461,6 +461,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             return;
         }
 
+        if (newPage === page) {
+            // noop as this is currently done.
+            return;
+        }
+
         await pageNavigator.set(newPage);
         setStore({
             ...store,

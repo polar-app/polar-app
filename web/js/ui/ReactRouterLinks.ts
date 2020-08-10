@@ -1,12 +1,11 @@
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {ILocation, ILocationWithPathAndHash} from "../react/router/ReactRouters";
 
-interface ILocation {
+export interface RouterLinkObj {
     readonly pathname: string;
     readonly hash?: string;
-}
-
-export interface RouterLinkObj extends ILocation {
+    readonly search?: string;
 }
 
 export type RouterLink = URLPathStr | RouterLinkObj;
@@ -21,7 +20,7 @@ function toRouterLinkObj(routerLink: RouterLink): RouterLinkObj {
         return routerLink;
     }
 
-    return {pathname: routerLink};
+    return {pathname: routerLink, hash: '', search: ''};
 
 }
 

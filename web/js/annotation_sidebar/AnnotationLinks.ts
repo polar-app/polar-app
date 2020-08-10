@@ -1,44 +1,44 @@
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {ResourcePaths} from "../electron/webresource/ResourcePaths";
 import {Optional} from "polar-shared/src/util/ts/Optional";
+import {URLStr} from "polar-shared/src/util/Strings";
+import {HashURLs} from "polar-shared/src/util/HashURLs";
 
 export namespace AnnotationLinks {
 
-    export function createHash(annotation: IDocAnnotationRef) {
-        return `?page=${annotation.pageNum}&annotation=${annotation.id}`;
+    import QueryOrLocation = HashURLs.QueryOrLocation;
+
+    export function createHash(docAnnotationRef: IDocAnnotationRef) {
+        return `?page=${docAnnotationRef.pageNum}&target=${docAnnotationRef.id}`;
     }
 
-    export function createURL(annotation: IDocAnnotationRef) {
-        const docID = annotation.docMetaRef.id;
-        return ResourcePaths.resourceURLFromRelativeURL(`/doc/${docID}#?page=${annotation.pageNum}&annotation=${annotation.id}`);
+    export function createURL(docAnnotationRef: IDocAnnotationRef): URLStr {
+        const docID = docAnnotationRef.docMetaRef.id;
+        const hash = createHash(docAnnotationRef)
+        return ResourcePaths.resourceURLFromRelativeURL(`/doc/${docID}#${hash}`);
     }
 
     export interface IAnnotationLink {
         readonly page?: number;
-        readonly annotation?: string;
+        readonly target?: string;
     }
 
-    export function parse(query: string): IAnnotationLink {
+    export function parse(queryOrLocation: QueryOrLocation): IAnnotationLink | undefined{
 
-        function tokenize(query: string) {
-
-            if (query.startsWith('#')) {
-                return query.substring(1);
-            }
-
-            return query;
-
-        }
-
-        const params = new URLSearchParams(tokenize(query));
+        const params = HashURLs.parse(queryOrLocation);
 
         const page = Optional.of(params.get('page')).map(parseInt).getOrUndefined();
-        const annotation = params.get('annotation') || undefined;
+        const target = params.get('target') || undefined;
+
+        if (page === undefined && target === undefined) {
+            return undefined;
+        }
 
         return {
-            page, annotation
+            page, target
         };
 
     }
 
 }
+

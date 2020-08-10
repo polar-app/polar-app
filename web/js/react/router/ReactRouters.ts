@@ -106,6 +106,12 @@ export namespace ReactRouters {
     }
 }
 
+export interface ILocationWithPathAndHash {
+    readonly pathname: string;
+    readonly search: string;
+    readonly hash: string;
+}
+
 export interface ILocation {
     readonly pathname: string;
     readonly search: string;
