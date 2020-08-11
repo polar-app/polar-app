@@ -9,7 +9,8 @@ export namespace AnnotationLinks {
     import QueryOrLocation = HashURLs.QueryOrLocation;
 
     export function createHash(docAnnotationRef: IDocAnnotationRef) {
-        return `?page=${docAnnotationRef.pageNum}&target=${docAnnotationRef.id}`;
+        const nonce = Math.floor(Math.random() * 100000);
+        return `?page=${docAnnotationRef.pageNum}&target=${docAnnotationRef.id}&n=${nonce}`;
     }
 
     export function createURL(docAnnotationRef: IDocAnnotationRef): URLStr {

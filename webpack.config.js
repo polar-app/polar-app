@@ -238,7 +238,6 @@ module.exports = {
             maximumFileSizeToCacheInBytes: 150000000,
             swDest: 'service-worker.js',
             runtimeCaching: [
-
                 {
                     // cache document URLs returned by polar so that they are
                     // available for reading offline...
