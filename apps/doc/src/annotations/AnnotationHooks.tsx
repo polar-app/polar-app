@@ -2,7 +2,7 @@ import * as React from "react";
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../../../web/js/hooks/lifecycle";
+} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import { IDimensions } from "polar-shared/src/util/IDimensions";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

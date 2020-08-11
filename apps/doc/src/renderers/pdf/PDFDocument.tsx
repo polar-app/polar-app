@@ -19,7 +19,7 @@ import {
     ScaleLevelTuples,
     ScaleLevelTuplesMap
 } from "../../ScaleLevels";
-import {useComponentDidMount} from "../../../../../web/js/hooks/lifecycle";
+import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
 import {
     IDocDescriptor,
     IDocScale,

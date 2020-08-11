@@ -1,7 +1,7 @@
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../../../web/js/hooks/lifecycle";
+} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 /**
  * Use a window message listener but remove it when the component unmounts.

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useComponentDidMount} from "../../../../../web/js/hooks/lifecycle";
+import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
 import ePub from "@polar-app/epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import useTheme from "@material-ui/core/styles/useTheme";

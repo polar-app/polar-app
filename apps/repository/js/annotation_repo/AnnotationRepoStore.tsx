@@ -14,7 +14,7 @@ import {
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../../../web/js/hooks/lifecycle";
+} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {
     TagSidebarEventForwarder,
     TagSidebarEventForwarderContext

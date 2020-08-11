@@ -4,7 +4,7 @@ import isEqual from "react-fast-compare";
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../hooks/lifecycle";
+} from "../../hooks/ReactLifecycleHooks";
 
 interface IProps {
     readonly children: React.ReactElement;

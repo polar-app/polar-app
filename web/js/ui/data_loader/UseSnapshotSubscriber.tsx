@@ -6,7 +6,7 @@ import {
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../hooks/lifecycle";
+} from "../../hooks/ReactLifecycleHooks";
 
 export interface SubscriptionValue<T> {
     readonly value: T | undefined;

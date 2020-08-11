@@ -10,7 +10,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import Paper from '@material-ui/core/Paper';
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
-import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
+import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 
 const log = Logger.create();

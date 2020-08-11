@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../hooks/lifecycle";
+} from "../../hooks/ReactLifecycleHooks";
 import {
     SnapshotSubscriber,
     SnapshotUnsubscriber

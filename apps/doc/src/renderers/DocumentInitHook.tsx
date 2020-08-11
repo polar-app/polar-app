@@ -2,7 +2,7 @@ import React from 'react';
 import {useDocViewerJumpToPageLoader, useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
 import {ReadingProgressResume} from "../../../../web/js/view/ReadingProgressResume";
 import {useDocViewerStore} from "../DocViewerStore";
-import {useComponentDidMount} from "../../../../web/js/hooks/lifecycle";
+import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 /**
  * Uses all the requirements we need including pagemark resume, jump via anchor

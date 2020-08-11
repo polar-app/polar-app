@@ -20,7 +20,7 @@ import {
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../../../web/js/hooks/lifecycle";
+} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";

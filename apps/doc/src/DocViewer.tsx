@@ -8,7 +8,7 @@ import {AnnotationSidebar2} from "../../../web/js/annotation_sidebar/AnnotationS
 import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
-import {useComponentDidMount} from "../../../web/js/hooks/lifecycle";
+import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";

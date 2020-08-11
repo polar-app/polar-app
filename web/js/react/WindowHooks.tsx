@@ -1,7 +1,7 @@
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../hooks/lifecycle";
+} from "../hooks/ReactLifecycleHooks";
 
 interface WindowOpts {
     readonly win?: Window;

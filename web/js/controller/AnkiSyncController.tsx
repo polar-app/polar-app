@@ -7,7 +7,7 @@ import {useLogger} from "../mui/MUILogger";
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../hooks/lifecycle";
+} from "../hooks/ReactLifecycleHooks";
 import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";

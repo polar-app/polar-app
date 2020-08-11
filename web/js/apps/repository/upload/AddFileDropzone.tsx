@@ -7,7 +7,7 @@ import {
 import {
     useComponentDidMount,
     useComponentWillUnmount
-} from "../../../hooks/lifecycle";
+} from "../../../hooks/ReactLifecycleHooks";
 import {AddFileHooks} from "./AddFileHooks";
 import {AddFileDropzoneDialog} from "./AddFileDropzoneDialog";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;

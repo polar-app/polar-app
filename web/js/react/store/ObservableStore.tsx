@@ -1,7 +1,7 @@
 import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
-import {useComponentWillUnmount} from "../../hooks/lifecycle";
+import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import isEqual from "react-fast-compare";
 
 function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
-import {useComponentDidMount} from "../../hooks/lifecycle";
+import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
