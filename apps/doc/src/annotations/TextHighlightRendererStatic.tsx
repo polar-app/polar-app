@@ -42,13 +42,6 @@ export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
                            container: HTMLElement,
                            idx: number) => {
 
-        // FIXME this is wrong too as we just render the LAST item
-
-        // FIXME: the best way to render this is going to be to wait until it
-        // mounts and then just scroll to the first ID ... it's a waste of some
-        // work but I can land it because we would do everything other than
-        // use refs.
-
         return ReactDOM.createPortal(
             <HighlightDelegate idx={idx}
                                rawTextHighlightRect={rawTextHighlightRect}
