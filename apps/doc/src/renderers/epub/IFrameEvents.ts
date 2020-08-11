@@ -30,12 +30,8 @@ export namespace IFrameEvents {
         const newEvent = new anyEvent.constructor(event.type, event);
         target.dispatchEvent(newEvent);
 
-        // FIXME only preventDefault and stopPropagation if it's handled in the
-        // main app and it's one of our keybindings there but there isn't a
-        // central list...
-
-        // event.preventDefault();
-        // event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
     }
 
 }

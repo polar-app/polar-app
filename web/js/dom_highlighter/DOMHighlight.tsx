@@ -72,8 +72,6 @@ export const DOMHighlight = deepMemo((props: IProps) => {
         return null;
     }
 
-    // FIXME there are multiple here so the ref/refs will be wrong.
-
     return (
         <>
             {highlightViewportPositions.map(toDOMHighlighterRow)}

@@ -18,9 +18,6 @@ interface IProps {
  */
 export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
 
-    // FIXME: there's a problem with annotations being rendered for pages that
-    // aren't actually displayed ...
-
     const {annotation, container} = props;
     const domTextIndexContext = useDOMTextIndexContext();
     const text = Texts.toText(annotation.text);
