@@ -1,9 +1,9 @@
 import React from 'react';
-import {deepMemo, memoForwardRef} from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import {Highlights} from "./Highlights";
+import {useScrollIntoViewUsingLocation} from "../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 import intersectsWithWindow = Highlights.intersectsWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
-import {useScrollIntoViewUsingLocation} from "../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;
