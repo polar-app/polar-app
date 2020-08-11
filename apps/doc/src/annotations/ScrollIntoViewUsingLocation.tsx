@@ -4,35 +4,20 @@ import {HashURLs} from "polar-shared/src/util/HashURLs";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ILocation} from "../../../../web/js/react/router/ReactRouters";
 
-export function useLocationHashChangeCallback(callback: () => void) {
-
-    const location = useLocation();
-    const prevLocation = React.useRef<ILocation | undefined>(undefined);
-
-    try {
-
-        if (location.hash !== prevLocation.current?.hash) {
-            callback();
-        }
-
-    } finally {
-        prevLocation.current = location;
-    }
-
-}
-
 export function useScrollIntoViewUsingLocation() {
 
     const scrollTarget = useScrollTargetFromLocation();
-    const ref = React.useRef<HTMLElement | null>(null);
+    const [ref, setRef] = React.useState<HTMLElement | null>(null);
+    const location = useLocation();
+    const prevLocation = React.useRef<ILocation | undefined>(undefined);
 
-    const handleLocation = React.useCallback(() => {
+    function handleLocationChange() {
 
         if (scrollTarget) {
 
-            if (ref.current) {
+            if (ref) {
 
-                const id = ref.current.getAttribute('id');
+                const id = ref.getAttribute('id');
 
                 if (id === scrollTarget) {
 
@@ -40,7 +25,7 @@ export function useScrollIntoViewUsingLocation() {
 
                     // TODO: this component should take scrollIntoView opts and
                     // pass them here.
-                    ref.current.scrollIntoView();
+                    ref.scrollIntoView();
 
                 }
 
@@ -48,14 +33,27 @@ export function useScrollIntoViewUsingLocation() {
 
         }
 
-    }, [scrollTarget]);
+    }
+    if (ref) {
 
-    // use this callback mechanism because we're using scroll listeners and
-    // using that with scrollIntoView caused us to get into infinite loops
-    useLocationHashChangeCallback(handleLocation);
+        try {
+
+            if (location.hash !== prevLocation.current?.hash) {
+                handleLocationChange();
+            }
+
+        } finally {
+            prevLocation.current = location;
+        }
+
+    }
 
     return (newRef: HTMLElement | null) => {
-        ref.current = newRef;
+
+        if (ref !== newRef) {
+            setRef(newRef);
+        }
+
     }
 
 }
