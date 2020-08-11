@@ -238,6 +238,19 @@ module.exports = {
             maximumFileSizeToCacheInBytes: 150000000,
             swDest: 'service-worker.js',
             runtimeCaching: [
+
+                {
+                    // cache document URLs returned by polar so that they are
+                    // available for reading offline...
+                    //
+                    // if we setup custom domains for hosting polar apps in the
+                    // future this will have to be configured.
+                    //
+                    // https://storage.googleapis.com/polar-32b0f.appspot.com/stash/12qGEt93LdQiyfC86gd3zNabtvZcb86spmbhkwuv.epub
+
+                    urlPattern: /https:\/\/storage\.google\.com\/polar-32b0f\.appspot\.com\/stash/,
+                    handler: 'CacheFirst'
+                },
                 {
                     // these URLs are immutable based on content hash as computed by
                     // webpack so just use cacheFirst which only fetches them the

@@ -4,6 +4,7 @@ import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
+import {OnlineAnalytics} from "./online/OnlineAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -12,11 +13,13 @@ export function isBrowser() {
 function createDelegate(): IAnalytics {
 
     if (isBrowser()) {
-        return new CompositeAnalytics([
-            new AmplitudeAnalytics(),
-            new GAAnalytics(),
-            new FirestoreAnalytics()
-        ]);
+        return new OnlineAnalytics(
+            new CompositeAnalytics([
+                new AmplitudeAnalytics(),
+                new GAAnalytics(),
+                new FirestoreAnalytics()
+            ])
+        );
     } else {
         return new NullAnalytics();
     }

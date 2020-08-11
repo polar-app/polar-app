@@ -4,37 +4,51 @@
 import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
-export class GAAnalytics implements IAnalytics {
+export class OnlineAnalytics implements IAnalytics {
+
+    public constructor(private readonly delegate: IAnalytics) {
+    }
 
     public event(evt: IEventArgs) {
         if (navigator.onLine) {
-            RendererAnalytics.event(evt);
+            this.delegate.event(evt);
         }
     }
 
     public event2(event: string, data?: any): void {
+        if (navigator.onLine) {
+            this.delegate.event2(event, data);
+        }
     }
 
     public page(name: string) {
         if (navigator.onLine) {
-            RendererAnalytics.pageview(name);
+            this.delegate.page(name);
         }
     }
 
     public identify(userId: UserIdentificationStr) {
-        // not implemented
+        if (navigator.onLine) {
+            this.delegate.identify(userId);
+        }
     }
 
     public traits(map: TraitsMap) {
-        // not implemented
+        if (navigator.onLine) {
+            this.delegate.traits(map);
+        }
     }
 
     public version(version: string): void {
-        // not implemented
+        if (navigator.onLine) {
+            this.delegate.version(version);
+        }
     }
 
     public heartbeat(): void {
-        // not implemented
+        if (navigator.onLine) {
+            this.delegate.heartbeat();
+        }
     }
 
 }

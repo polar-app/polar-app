@@ -281,7 +281,9 @@ class DefaultTimer implements Timer {
     }
 
     private doAnalytics(duration: TrackedDuration) {
-        RendererAnalytics.timing(this.category, this.variable, duration.durationMS);
+        if (navigator.onLine) {
+            RendererAnalytics.timing(this.category, this.variable, duration.durationMS);
+        }
     }
 
     private doLogging(duration: TrackedDuration) {
