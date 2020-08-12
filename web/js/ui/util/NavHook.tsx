@@ -25,6 +25,9 @@ export type LinkLoaderDelegate = (location: ILocationOrLink, opts: LinkLoaderOpt
  */
 export function useNav(): LinkLoaderDelegate {
 
+    // We can't use window.history as react-router doesn't listen to it. Instead
+    // we have to useHistory which mutates the router
+
     const history = useHistory();
 
     switch (Devices.get()) {
@@ -38,7 +41,6 @@ export function useNav(): LinkLoaderDelegate {
 
     }
 
-
 }
 
 function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
@@ -48,7 +50,6 @@ function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
         if (typeof location === 'string') {
             const parsedURL = new URL(location);
             const newLocation = {pathname: parsedURL.pathname, hash: parsedURL.hash};
-            console.log("FIXME: newLocation: ", newLocation);
             history.push(newLocation);
         } else {
             history.push(location);
