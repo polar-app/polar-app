@@ -119,7 +119,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
             const {selection} = highlightCreatedEvent.activeSelection;
 
-            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts: opts.noRectTexts});
+            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts: opts.noRectTexts, fileType});
 
             // now clear the selection since we just highlighted it.
             selection.empty();

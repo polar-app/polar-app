@@ -5,6 +5,7 @@ import {RectTexts} from '../controller/RectTexts';
 import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
 import {TextNodeRows} from "./TextNodeRows";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {FileType} from "../../../apps/main/file_loaders/FileType";
 
 export namespace SelectedContents {
 
@@ -15,6 +16,8 @@ export namespace SelectedContents {
          */
         readonly noRectTexts?: boolean;
 
+        readonly fileType: FileType;
+
     }
 
     /**
@@ -22,12 +25,12 @@ export namespace SelectedContents {
      * client/viewport offset, and include additional metadata including the
      * text of the selection, the html, etc.
      */
-    export function computeFromWindow(win: Window, opts: ComputeOpts = {}) {
+    export function computeFromWindow(win: Window, opts: ComputeOpts) {
         const selection = win.getSelection()!;
         return computeFromSelection(selection, opts);
     }
 
-    export function computeFromSelection(selection: Selection, opts: ComputeOpts = {}): ISelectedContent {
+    export function computeFromSelection(selection: Selection, opts: ComputeOpts): ISelectedContent {
 
         // get all the ranges and clone them so they can't vanish.
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));
@@ -49,7 +52,11 @@ export namespace SelectedContents {
 
         }
 
-        function computeOrder(): number {
+        function computeOrder(): number | undefined {
+
+            if (opts.fileType === 'pdf') {
+                return undefined;
+            }
 
             if (ranges.length === 0) {
                 return 0;

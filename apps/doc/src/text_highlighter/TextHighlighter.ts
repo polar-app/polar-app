@@ -89,13 +89,11 @@ export namespace TextHighlighter {
 
         const {text, order} = selectedContent;
 
-        const position = order;
-
         const textHighlightRecord = TextHighlightRecords.create(rects,
                                                                 textSelections,
                                                                 {TEXT: text},
                                                                 highlightColor,
-                                                                position);
+                                                                order);
 
         // TODO: there are no screenshots here but we should keep them.
 

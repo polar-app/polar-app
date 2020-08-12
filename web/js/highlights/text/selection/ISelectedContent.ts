@@ -26,6 +26,6 @@ export interface ISelectedContent {
     /**
      * A position in the document to represent the sort order.
      */
-    readonly order: number;
+    readonly order: number | undefined;
 
 }
