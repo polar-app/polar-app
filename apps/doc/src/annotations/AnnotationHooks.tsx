@@ -13,6 +13,7 @@ import {
 import { useDocViewerStore } from "../DocViewerStore";
 import isEqual from "react-fast-compare";
 import {useRefProvider} from "../../../../web/js/hooks/ReactHooks";
+import {useDocViewerContext} from "../renderers/DocRenderer";
 
 /**
  * Unsubscribes to the action created by the subscriber.
@@ -91,11 +92,17 @@ function createResizeSubscriber(delegate: () => void): Subscriber {
 
 
 
-function createMutationObserverSubscriber(delegate: () => void): Subscriber {
+function useMutationObserverSubscriber(delegate: () => void): Subscriber {
+
+    const docViewerElements = useDocViewerElementsContext();
+    const {fileType} = useDocViewerContext();
 
     return () => {
 
-        const viewerContainer = document.querySelector('#viewerContainer .pdfViewer')!;
+        if (fileType !== 'pdf') {
+            // nothing to do when we're not working with PDF documents...
+            return NULL_FUNCTION;
+        }
 
         const observer = new MutationObserver((mutations) => {
 
@@ -113,12 +120,12 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
         });
 
-        if (viewerContainer) {
+        function doObserve(target: HTMLElement): Unsubscriber {
 
             // NOTE: I don't think 'attributes' is actually working here and that we
             // are in fact depending on scroll (for updates) and then childList (for
             // initial)
-            observer.observe(viewerContainer, {
+            observer.observe(target, {
                 // only monitor attributes.
                 attributes: true,
                 childList: true,
@@ -131,7 +138,14 @@ function createMutationObserverSubscriber(delegate: () => void): Subscriber {
 
         }
 
-        return () => NULL_FUNCTION;
+        const pageElements = docViewerElements.getPageElements();
+        const unsubscribers = pageElements.map(doObserve);
+
+        return () => {
+            // we have to unsubscribe to every single one of the unsubscribers
+            // now.
+            unsubscribers.map(unsubscriber => unsubscriber());
+        }
 
     }
 
@@ -194,7 +208,7 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
     useSubscriber(useScrollSubscriber(doUpdate));
     useSubscriber(createResizeSubscriber(doUpdate));
-    useSubscriber(createMutationObserverSubscriber(doUpdate));
+    useSubscriber(useMutationObserverSubscriber(doUpdate));
 
     return annotationContainers;
 

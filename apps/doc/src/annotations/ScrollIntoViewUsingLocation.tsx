@@ -21,7 +21,7 @@ export function useScrollIntoViewUsingLocation() {
 
                 if (id === scrollTarget) {
 
-                    console.log("Scrolling target into view: " + scrollTarget, ref);
+                    // console.log("Scrolling target into view: " + scrollTarget, ref);
 
                     // TODO: this component should take scrollIntoView opts and
                     // pass them here.
