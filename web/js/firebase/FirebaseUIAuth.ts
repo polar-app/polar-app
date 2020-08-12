@@ -21,12 +21,51 @@ export class FirebaseUIAuth {
      */
     public static login(opts: FirebaseUIAuthOptions = {}): firebaseui.auth.AuthUI {
 
-        console.log("Triggering Firebase UI auth");
+        console.log("Triggering Firebase UI auth: ", opts);
 
         Preconditions.assertPresent(firebaseui, 'firebaseui');
         Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
 
         const containerSelector = opts.containerSelector || '#firebaseui-auth-container';
+
+        function computeSignInOptions() {
+            if (opts.provider) {
+
+                console.log("Authenticating with provider: " + opts.provider);
+
+                return [
+                    {
+                        provider: opts.provider
+                    }
+                ]
+            }
+
+            // return the default provider....
+            return [
+                {
+                    provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                    customParameters: {
+                        // Forces account selection even when one account
+                        // is available.
+                        prompt: 'select_account'
+                    }
+                },
+
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+
+                // Leave the lines as is for the providers you want to offer
+                // your users.
+
+                // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+                // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+                // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+                // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+            ]
+
+        }
+
+        const signInOptions = computeSignInOptions();
 
         // FirebaseUI config.
         const uiConfig: firebaseui.auth.Config = {
@@ -45,26 +84,7 @@ export class FirebaseUIAuth {
             queryParameterForWidgetMode: 'mode',
 
             signInSuccessUrl: opts.signInSuccessUrl || SIGN_IN_SUCCESS_URL,
-            signInOptions: [
-                {
-                    provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                    customParameters: {
-                        // Forces account selection even when one account
-                        // is available.
-                        prompt: 'select_account'
-                    }
-                },
-
-                // Leave the lines as is for the providers you want to offer
-                // your users.
-
-                // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-                // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-                // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-                firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-                // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
-            ],
+            signInOptions,
             // tosUrl and privacyPolicyUrl accept either url string or a
             // callback function. Terms of service url/callback.
             tosUrl: TOS_URL,
@@ -90,6 +110,7 @@ export class FirebaseUIAuth {
 }
 
 export interface FirebaseUIAuthOptions {
+
     readonly containerSelector?: string;
     readonly signInSuccessUrl?: string;
 
@@ -97,5 +118,10 @@ export interface FirebaseUIAuthOptions {
      * The sign in flow type.  Either popup or redirect. Default is redirect.
      */
     readonly signInFlow?: 'popup' | 'redirect';
+
+    /**
+     * When provided we use a custom SAML provider with the given name.
+     */
+    readonly provider?: string
 
 }

@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
+import {ProviderURLs} from "./ProviderURLs";
 
 interface IProps extends FirebaseUIAuthOptions {
 
@@ -31,10 +32,12 @@ export const LoginScreen = React.memo((props: IProps) => {
         if (! user) {
 
             const signInSuccessUrl = SignInSuccessURLs.get();
+            const providerURL = ProviderURLs.parse(document.location);
 
             const authOptions: FirebaseUIAuthOptions = {
                 ...props,
-                signInSuccessUrl
+                signInSuccessUrl,
+                provider: providerURL.provider
             }
 
             FirebaseUIAuth.login(authOptions);
