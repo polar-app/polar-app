@@ -19,9 +19,22 @@ export class FirebaseUIAuth {
      *
      * @param opts The opts to use when authenticating.
      */
-    public static login(opts: FirebaseUIAuthOptions = {}): firebaseui.auth.AuthUI {
+    public static login(opts: FirebaseUIAuthOptions = {}) {
 
         console.log("Triggering Firebase UI auth: ", opts);
+
+        const auth = firebase.auth();
+
+        // **
+        // this is how they suggest to do it and this is probably the BEST way
+        // honestly because it removed a button click that's sort of unnecessary
+        //
+        // if (opts.provider) {
+        //     const provider = new firebase.auth.SAMLAuthProvider(opts.provider);
+        //     auth.signInWithRedirect(provider)
+        //         .catch(err => console.error("Could not auth: ", err));
+        //     return;
+        // }
 
         Preconditions.assertPresent(firebaseui, 'firebaseui');
         Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
@@ -99,11 +112,9 @@ export class FirebaseUIAuth {
         // TODO: include metrics on teh number of authorizations started vs completed.
 
         // Initialize the FirebaseUI Widget using Firebase.
-        const ui = new firebaseui.auth.AuthUI(firebase.auth());
+        const ui = new firebaseui.auth.AuthUI(auth);
         // The start method will wait until the DOM is loaded.
         ui.start(containerSelector, uiConfig);
-
-        return ui;
 
     }
 
