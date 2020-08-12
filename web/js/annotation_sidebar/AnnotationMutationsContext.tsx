@@ -43,7 +43,6 @@ import {
     IAnnotationRef,
     IAnnotationRefWithDocMeta
 } from "polar-shared/src/metadata/AnnotationRefs";
-import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
@@ -419,7 +418,7 @@ export namespace AnnotationMutationCallbacks {
      * @param updateStore: Update the store directly.
      * @param refresher called for each mutation to update the store.
      */
-    export function create(updateStore: (docMetas: ReadonlyArray<IDocMeta>) => void,
+    export function create(updateStore: (docMetas: ReadonlyArray<IDocMeta>) => ReadonlyArray<IDocMeta>,
                            refresher: () => void): IAnnotationMutationCallbacks {
 
         const dialogs = useDialogManager();
@@ -431,7 +430,7 @@ export namespace AnnotationMutationCallbacks {
 
         async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
 
-            updateStore(updatedDocMetas);
+            updatedDocMetas = updateStore(updatedDocMetas);
 
             refresher();
 

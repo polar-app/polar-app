@@ -73,8 +73,6 @@ export const GlobalPDFCss = React.memo(() => {
 
     const mode = prefs.value!.get('dark-mode-pdf').getOrElse(PREF_PDF_DARK_MODE_OPTIONS[0].id)
 
-    console.log("Using dark-mode-pdf mode: ", mode);
-
     return (
         <>
 

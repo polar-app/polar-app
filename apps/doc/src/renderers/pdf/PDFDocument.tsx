@@ -222,11 +222,15 @@ export const PDFDocument = React.memo((props: IProps) => {
 
             const count = pdfDocumentProxy.numPages;
 
+            function get(): number {
+                return docViewer.viewer.currentPageNumber;
+            }
+
             async function set(page: number) {
                 docViewer.viewer.currentPageNumber = page;
             }
 
-            return {count, set};
+            return {count, set, get};
 
         }
 

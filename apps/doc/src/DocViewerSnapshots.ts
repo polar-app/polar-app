@@ -8,7 +8,7 @@ export namespace DocViewerSnapshots {
             return false;
         }
 
-        return UUIDs.compare(current, updated) > 0;
+        return UUIDs.compare(current, updated) >= 0;
     }
 
 }

@@ -260,7 +260,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, refresher);
 
-    function updateStore(docMetas: ReadonlyArray<IDocMeta>) {
+    function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
 
         const {persistenceLayerProvider} = persistence;
 
@@ -269,6 +269,8 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
             repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
         }
+
+        return docMetas;
 
     }
 

@@ -285,7 +285,7 @@ export const DocViewer = React.memo(() => {
                 onSnapshot: (snapshot => {
                     // TODO/FIXME: we need a better way to flag that the
                     // document was deleted vs not initialized.
-                    setDocMeta(snapshot.data!, snapshot.hasPendingWrites);
+                    setDocMeta(snapshot.data!, snapshot.hasPendingWrites, 'snapshot');
                 }),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);

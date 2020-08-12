@@ -23,6 +23,8 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {UUIDs} from "./UUIDs";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
@@ -274,6 +276,22 @@ export class DocMetas {
         docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
     }
 
+    /**
+     * Create a copy of the DocMeta and with updated lastUpdate fields and
+     * a new UUID.
+     */
+    public static updated(docMeta: IDocMeta): IDocMeta {
+
+        docMeta = Dictionaries.copyOf(docMeta);
+
+        docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
+        docMeta.docInfo.uuid = UUIDs.create();
+
+        const docInfo = Dictionaries.copyOf(docMeta.docInfo);
+        return Object.assign(new DocMeta(docInfo, {}), docMeta);
+
+    }
+
 }
 
 export class MockDocMetas {
@@ -342,6 +360,7 @@ export class MockDocMetas {
         return result;
 
     }
+
 
 }
 

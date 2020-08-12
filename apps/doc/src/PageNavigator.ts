@@ -1,6 +1,11 @@
 export interface PageNavigator {
 
     /**
+     * Get the current page number.
+     */
+    readonly get: () => number;
+
+    /**
      * Set/jump to the given page.
      */
     readonly set: (page: number) => Promise<void>;

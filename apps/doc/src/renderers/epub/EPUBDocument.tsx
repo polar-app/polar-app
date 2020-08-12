@@ -107,9 +107,7 @@ export const EPUBDocument = (props: IProps) => {
         });
 
         function applyCSS() {
-
             rendition.themes.default(css);
-
         }
 
         rendition.on('locationChanged', (event: any) => {
@@ -152,11 +150,18 @@ export const EPUBDocument = (props: IProps) => {
 
         function createPageNavigator(): PageNavigator {
 
+            let page: number = 1;
             const pages = spine.items.filter(current => current.linear);
+            const count = pages.length;
 
-            async function set(page: number) {
+            function get(): number {
+                return page;
+            }
 
-                const newSection = pages[page - 1];
+            async function set(newPage: number) {
+
+                page = newPage;
+                const newSection = pages[newPage - 1];
 
                 // we need to use a latch here because the page isn't really
                 // change until it's rendered and other dependencies might
@@ -170,10 +175,7 @@ export const EPUBDocument = (props: IProps) => {
 
             }
 
-            return {
-                set,
-                count: spine.items.length
-            };
+            return {count, set, get};
 
         }
 
