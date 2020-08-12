@@ -159,6 +159,12 @@ export class ActiveSelections {
 
         // TODO: this isn't being handled properly and the event doesn't seem
         // to be fired.
+        //
+        // TODO: this wouldn't really work I think because we also need to handle
+        // Escape in the main app window so I need to figure out how to handle
+        // solve this problem. Maybe with Escape it's sent to both the current
+        // iframe and root window (host)
+
         // window.addEventListener('keypress', (event) => {
         //     onKeyPress(event);
         // })

@@ -11,7 +11,7 @@ import blue from '@material-ui/core/colors/blue';
 import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
-import {IFrameEvents} from "./IFrameEvents";
+import {IFrameEventForwarder} from "./IFrameEventForwarder";
 import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
 import './EPUBDocument.css';
@@ -44,7 +44,7 @@ function forwardEvents(target: HTMLElement) {
     // by the iframe.
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
-    IFrameEvents.forwardEvents(iframe, target);
+    IFrameEventForwarder.start(iframe, target);
 }
 
 export const EPUBDocument = (props: IProps) => {
