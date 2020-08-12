@@ -25,6 +25,9 @@ export type LinkLoaderDelegate = (location: ILocationOrLink, opts: LinkLoaderOpt
  */
 export function useNav(): LinkLoaderDelegate {
 
+    // We can't use window.history as react-router doesn't listen to it. Instead
+    // we have to useHistory which mutates the router
+
     const history = useHistory();
 
     switch (Devices.get()) {
@@ -37,7 +40,6 @@ export function useNav(): LinkLoaderDelegate {
             return createDesktopLinkLoader();
 
     }
-
 
 }
 
