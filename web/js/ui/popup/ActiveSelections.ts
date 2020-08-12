@@ -143,6 +143,12 @@ export class ActiveSelections {
 
         };
 
+        const onKeyPress = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                handleDestroyedSelection();
+            }
+        }
+
         target.addEventListener('mousedown', (event: MouseEvent) => {
             onMouseDown(event, 'mouse');
         });
@@ -150,6 +156,12 @@ export class ActiveSelections {
         target.addEventListener('touchstart', (event: TouchEvent) => {
             onMouseDown(event, 'touch');
         });
+
+        // TODO: this isn't being handled properly and the event doesn't seem
+        // to be fired.
+        // window.addEventListener('keypress', (event) => {
+        //     onKeyPress(event);
+        // })
 
         // TODO: I played with closing the annotation bar on right click but
         // it was difficult to setup. It had the following problems:
