@@ -21,11 +21,21 @@ npm config set registry https://polar-app.bytesafe.dev/r/default
 
 ```bash
 
-./sbin/init                    # pulls all repositories locally
-npm install -g lerna           # will install lerna globally
-lerna bootsrap                 # fetches all NPM packages
-lerna run compile              # builds all node packages 
-cd packages/polar-bookshelf    # the main app directory
+# pull down all repositories locally
+./sbin/init                            
+# will install lerna globally
+npm install -g lerna                   
+# fetches all NPM packages
+lerna bootsrap                         
+# builds all our packages 
+lerna run compile                      
+# the main app directory
+cd packages/polar-bookshelf            
+# need to do this just once to init dist/public
+npx webpack                            
+# remove the service worker generated so that webpack-dev-server doesn't get
+# confused (going to automate this in the future)
+rm -f dist/public/service-worker.js  
 npx webpack-dev-server
 ```
 
