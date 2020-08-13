@@ -1,7 +1,7 @@
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {Files} from "polar-shared/src/util/Files";
 
-describe('ThumbnailGenerator', function() {
+xdescribe('ThumbnailGenerator', function() {
 
     it("basic", async function() {
 
