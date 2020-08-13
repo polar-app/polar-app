@@ -3,13 +3,13 @@ import {assertJSON} from "../../../web/js/test/Assertions";
 import {assert} from 'chai';
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-describe('PDFScaleLevels', function() {
+describe('ScaleLevels', function() {
 
     it("basic", function() {
 
         assertJSON(PDFScales.computeNextZoomLevel(0, ScaleLevelTuples[1]), {
-            "label": "page fit",
-            "value": "page-fit"
+            "label": "page width",
+            "value": "page-width"
         });
 
         assertJSON(PDFScales.computeNextZoomLevel(1, ScaleLevelTuples[1]), {
@@ -18,8 +18,8 @@ describe('PDFScaleLevels', function() {
         });
 
         assertJSON(PDFScales.computeNextZoomLevel(-1, ScaleLevelTuples[1]), {
-            "label": "page width",
-            "value": "page-width"
+            "label": "page fit",
+            "value": "page-fit"
         });
 
         assert.isUndefined(PDFScales.computeNextZoomLevel(-1, Arrays.first(ScaleLevelTuples)!));
