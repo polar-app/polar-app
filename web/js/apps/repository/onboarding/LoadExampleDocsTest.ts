@@ -5,7 +5,7 @@ import {AppPath} from '../../../electron/app_path/AppPath';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {DefaultPersistenceLayer} from '../../../datastore/DefaultPersistenceLayer';
 
-describe('LoadExampleDocs', function() {
+xdescribe('LoadExampleDocs', function() {
 
     beforeEach(async function() {
 
