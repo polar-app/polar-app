@@ -29,7 +29,7 @@ describe('Test computeRows for highlighting text...', function() {
 })
 
 
-describe('Testing createSiblingTupples.', function() {
+describe('Testing createSiblingTuples.', function() {
 
     it('Test with no entries', function() {
 
@@ -39,7 +39,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 1 entry', function() {
 
-        assert.deepEqual( createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
+        assert.deepEqual( createSiblingTuples([1]), [ { curr: 1, prev: undefined, next: undefined } ]);
 
     });
 
@@ -47,8 +47,8 @@ describe('Testing createSiblingTupples.', function() {
 
         assert.deepEqual( createSiblingTuples([1,2]),
                           [
-                              { curr: 1, prev: null, next: 2 },
-                              { curr: 2, prev: 1, next: null }
+                              { curr: 1, prev: undefined, next: 2 },
+                              { curr: 2, prev: 1, next: undefined }
                           ]);
 
     });
@@ -57,9 +57,9 @@ describe('Testing createSiblingTupples.', function() {
 
         assert.deepEqual( createSiblingTuples([1,2,3]),
             [
-                { curr: 1, prev: null, next: 2 },
+                { curr: 1, prev: undefined, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
-                { curr: 3, prev: 2, next: null }
+                { curr: 3, prev: 2, next: undefined }
             ]);
 
     });
@@ -68,10 +68,10 @@ describe('Testing createSiblingTupples.', function() {
 
         assert.deepEqual( createSiblingTuples([1,2,3,4]),
             [
-                { curr: 1, prev: null, next: 2 },
+                { curr: 1, prev: undefined, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
                 { curr: 3, prev: 2, next: 4 },
-                { curr: 4, prev: 3, next: null }
+                { curr: 4, prev: 3, next: undefined }
             ]);
 
     });
