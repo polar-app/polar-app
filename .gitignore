@@ -13,6 +13,7 @@ packages/polar-app-private.wiki
 packages/polar-app-public.wiki
 packages/polar-bookshelf.wiki
 packages/readability
+packages/epub.js
 packages
 node_modules
 lerna-debug.log
