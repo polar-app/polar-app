@@ -20,12 +20,12 @@ const globalKeyMap = keyMap({
         PAGE_NEXT: {
             name: "Next Page",
             description: "Jump to the next page",
-            sequences: ['n', 'j']
+            sequences: ['n', 'j', 'ArrowRight']
         },
         PAGE_PREV: {
             name: "Previous Page",
             description: "Jump to the previous page",
-            sequences: ['p', 'k']
+            sequences: ['p', 'k', 'ArrowLeft']
         }
     }
 });
