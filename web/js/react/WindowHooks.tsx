@@ -2,6 +2,7 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../hooks/ReactLifecycleHooks";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface WindowOpts {
     readonly win?: Window;
@@ -14,7 +15,7 @@ function useWindowEventListener(name: 'resize' | 'scroll',
     const win = opts.win || window;
 
     const listenerOpts = {
-        // capture is needed for scroll to fire on window.\
+        // capture is needed for scroll to fire on window.
         capture: true,
 
         // passive is needed for performance improvements
@@ -28,6 +29,7 @@ function useWindowEventListener(name: 'resize' | 'scroll',
     });
 
     useComponentWillUnmount(() => {
+        Preconditions.assertPresent(win, 'win');
         win.removeEventListener(name, delegate, listenerOpts);
     })
 
