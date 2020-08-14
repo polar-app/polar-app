@@ -16,6 +16,9 @@ export namespace Firestore {
         return await createInstance(opts)
     }
 
+    // TODO: since this is created on init, the stack for when it's eventually
+    // called is a bit weird.  We might want to make this into a function
+    // which is init'd when it's actually used to preserve the stack.
     const firestoreProvider = AsyncProviders.memoize1<FirestoreOptions, firebase.firestore.Firestore>(initDelegate);
 
     /**
@@ -80,7 +83,6 @@ export namespace Firestore {
                 // Without synchronizeTabs=true the main document repository works
                 // but the viewer windows complain that they do not have access to
                 // work with the disk persistence.
-
 
                 await firestore.enablePersistence({synchronizeTabs: true});
 

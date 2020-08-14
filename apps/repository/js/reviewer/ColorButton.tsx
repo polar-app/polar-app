@@ -4,7 +4,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import isEqual from "react-fast-compare";
 import { createStyles, darken } from '@material-ui/core/styles';
 
-// FIXME: it doesn't seem that hover is working properly
 const useStyles = makeStyles((theme) => {
     return createStyles({
         // style rule
