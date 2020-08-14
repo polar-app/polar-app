@@ -56,7 +56,7 @@ export const MUIPopper = (props: IProps) => {
     };
 
     const handleClose = (event: React.MouseEvent<EventTarget>) => {
-
+        
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
             return;
         }

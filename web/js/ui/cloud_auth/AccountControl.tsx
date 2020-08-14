@@ -2,14 +2,13 @@
 import React from 'react';
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";
-import {UserAvatar} from "./UserAvatar";
 import Button from "@material-ui/core/Button";
 import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
 import {accounts} from "polar-accounts/src/accounts";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
-import Subscription = accounts.Subscription;
 import {AccountAvatar} from "./AccountAvatar";
-import isEqual from 'react-fast-compare';
+import {memoForwardRefDiv} from "../../react/ReactUtils";
+import Subscription = accounts.Subscription;
 
 const LogoutButton = (props: IProps) => {
 
@@ -78,11 +77,11 @@ interface IProps {
 
 }
 
-export const AccountControl = React.memo(React.forwardRef((props: IProps, ref) => {
+export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
 
     return (
 
-        <div className="p-2">
+        <div className="p-2" ref={ref}>
 
             <div>
                 <div className="text-center">
@@ -149,4 +148,4 @@ export const AccountControl = React.memo(React.forwardRef((props: IProps, ref) =
 
     );
 
-}), isEqual);
+});
