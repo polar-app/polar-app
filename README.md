@@ -6,6 +6,11 @@ Tested only for android. The current 'debug.keystore' in _./android/app_ is
 temporary and contains only placeholder info. A 'debug.keystore' needs to be
 generated with BUCK using actual information before google store release.
 
+```bash
+keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+cp debug.keystore /Users/burton/projects/polar-app/packages/polar-mobile-app/android/app/debug.keystore
+```
+
 ## Android Setup
 
 The standalone APK does compile via expo build:android does not work. It runs
