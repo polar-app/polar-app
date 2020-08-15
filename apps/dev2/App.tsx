@@ -15,6 +15,7 @@ import {
     EPUBIFrameContextProvider,
     useEPUBIFrameContext
 } from './EPUBIFrameContext';
+import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
 
 const IFrameContent = React.memo(() => {
 
@@ -100,16 +101,21 @@ const EPUBIFrameWindowEventListener = () => {
 
 }
 
+const Second = () => (
+    <MUIAppRoot>
+        <EPUBIFrameWindowEventListener/>
+    </MUIAppRoot>
+)
+
+
 const EPUBIFrameContextMenuHost = () => (
     <IFrameContextMenu>
-        <EPUBIFrameWindowEventListener/>
+        <Second/>
     </IFrameContextMenu>
 )
 
 const EPUBIFrameMenuPortal = () => {
-    console.log("FIXME2.0");
     const iframe = useEPUBIFrameContext();
-    console.log("FIXME2.1");
     return ReactDOM.createPortal(<EPUBIFrameContextMenuHost/>, iframe.contentDocument!.body);
 }
 

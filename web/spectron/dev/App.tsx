@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
+import {MUIRepositoryRoot} from "../../js/mui/MUIRepositoryRoot";
 
 export const App = () => {
 
     return (
-        <MUIAppRoot>
+        <MUIRepositoryRoot>
             hello world
-        </MUIAppRoot>
+        </MUIRepositoryRoot>
     );
 
 }

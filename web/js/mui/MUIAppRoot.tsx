@@ -4,14 +4,9 @@ import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
 import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
-import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
-import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
-import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
-import {MUIDialogController} from "./dialogs/MUIDialogController";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { BrowserTabsStoreProvider } from "../browser_tabs/BrowserTabsStore";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -41,24 +36,16 @@ export const MUIAppRoot = (props: IProps) => {
 
         <MuiThemeProvider theme={muiTheme}>
             <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
-                <BrowserTabsStoreProvider>
-                    <>
-                        <CssBaseline/>
-                        <GlobalCss/>
-                        <GlobalCSSBootstrap/>
-                        <GlobalCssSummernote/>
-                        <GlobalCssMobile/>
+                <>
+                    <CssBaseline/>
+                    <GlobalCss/>
+                    <GlobalCSSBootstrap/>
+                    <GlobalCssSummernote/>
+                    <GlobalCssMobile/>
 
-                        <ActiveHotKeyBindings/>
+                    {props.children}
 
-                        <FirestoreProvider>
-                            <UserInfoProvider>
-                                {props.children}
-                            </UserInfoProvider>
-                        </FirestoreProvider>
-                    </>
-                </BrowserTabsStoreProvider>
-
+                </>
             </MUIThemeTypeContext.Provider>
         </MuiThemeProvider>
     );

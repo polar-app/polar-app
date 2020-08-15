@@ -10,7 +10,7 @@ import {MUITagInputControls} from "../../../apps/repository/js/MUITagInputContro
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {TagNodes} from "../../js/tags/TagNodes";
-import {MUIAppRoot} from "../../js/mui/MUIAppRoot";
+import {MUIRepositoryRoot} from "../../js/mui/MUIRepositoryRoot";
 import {MenuItem} from "@material-ui/core";
 import MenuList from "@material-ui/core/MenuList";
 import {MUISubMenu} from '../../js/mui/menu/MUISubMenu';
@@ -191,7 +191,7 @@ export const App = () => {
 
 
     return (
-        <MUIAppRoot>
+        <MUIRepositoryRoot>
 
             {/*<SaveToPolarDemo/>*/}
 
@@ -279,7 +279,7 @@ export const App = () => {
 
             {/*    asdfasdf*/}
             {/*</Paper>*/}
-        </MUIAppRoot>
+        </MUIRepositoryRoot>
     );
 
     // return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import isEqual from "react-fast-compare";
-import {MUIAppRoot} from "../../../web/js/mui/MUIAppRoot";
+import {MUIRepositoryRoot} from "../../../web/js/mui/MUIRepositoryRoot";
 import {UserTagsProvider} from "../../repository/js/persistence_layer/UserTagsProvider2";
 import {DocViewer} from "./DocViewer";
 import {AnnotationSidebarStoreProvider} from './AnnotationSidebarStore';
@@ -20,7 +20,7 @@ export const DocViewerScreen = React.memo(() => {
                     minHeight: 0,
                  }}>
 
-                <MUIAppRoot>
+                <MUIRepositoryRoot>
                     
                     <UserTagsProvider>
                         <DocMetaContextProvider>
@@ -36,7 +36,7 @@ export const DocViewerScreen = React.memo(() => {
                         </DocMetaContextProvider>
                     </UserTagsProvider>
 
-                </MUIAppRoot>
+                </MUIRepositoryRoot>
 
             </div>
 

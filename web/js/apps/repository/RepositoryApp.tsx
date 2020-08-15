@@ -23,7 +23,7 @@ import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {App} from "./AppInitializer";
 import {Callback} from "polar-shared/src/util/Functions";
-import {MUIAppRoot} from "../../mui/MUIAppRoot";
+import {MUIRepositoryRoot} from "../../mui/MUIRepositoryRoot";
 import {DocRepoScreen2} from "../../../../apps/repository/js/doc_repo/DocRepoScreen2";
 import {DocRepoStore2} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {DocRepoSidebarTagStore} from "../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore";
@@ -276,7 +276,7 @@ export const RepositoryApp = (props: IProps) => {
 
     return (
         // <React.StrictMode>
-            <MUIAppRoot>
+            <MUIRepositoryRoot>
                 <RepositoryRoot>
                     <div className="RepositoryApp"
                          style={{
@@ -410,7 +410,7 @@ export const RepositoryApp = (props: IProps) => {
 
                     </div>
                 </RepositoryRoot>
-            </MUIAppRoot>
+            </MUIRepositoryRoot>
         // </React.StrictMode>
     );
 
