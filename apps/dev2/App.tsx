@@ -17,9 +17,26 @@ import {
 } from './EPUBIFrameContext';
 
 const IFrameContent = React.memo(() => {
+
+    const content = `    
+        <html>
+        <body>
+        <p>
+            second para
+        </p>
+
+        <p>
+            first para
+        </p>
+
+
+        </body>
+        </html>
+    `;
+
     return (
         <div>
-            <iframe srcDoc="<html><body>this is the iframe</body></html>"></iframe>
+            <iframe srcDoc={content}></iframe>
         </div>
     );
 });
@@ -29,11 +46,13 @@ const IFrameContent = React.memo(() => {
 //
 const IFrameMenu = (props: MenuComponentProps<IFrameMenuOrigin>) => {
 
+    function handleCreatePagemark() {
+        console.log(props.origin!.target);
+    }
+
     return (
         <>
-            <MUIMenuItem text="Hello World"
-                         onClick={NULL_FUNCTION}/>
-
+            <MUIMenuItem text="Create Pagemark" onClick={handleCreatePagemark}/>
         </>
     );
 
@@ -43,6 +62,7 @@ export interface IFrameMenuOrigin {
 
     readonly clientX: number;
     readonly clientY: number;
+    readonly target: EventTarget | null;
 
 }
 
@@ -52,6 +72,7 @@ export function computeMenuOrigin(event: IMouseEvent): IFrameMenuOrigin | undefi
     return {
         clientX: event.clientX,
         clientY: event.clientY,
+        target: event.target
     };
 
 }
