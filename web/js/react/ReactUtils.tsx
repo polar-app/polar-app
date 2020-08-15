@@ -13,7 +13,7 @@ export function memoForwardRefDiv<P>(component: React.ForwardRefRenderFunction<H
     return React.memo(React.forwardRef<HTMLDivElement, P>((props: P, ref) => component(props, ref)), isEqual);
 }
 
-export function deepMemo<P>(component: React.FunctionComponent<P>) {
-    return React.memo((props: P) => component(props), isEqual);
+export function deepMemo<T extends React.ComponentType<any>>(component: T) {
+    return React.memo(component, isEqual);
 }
 

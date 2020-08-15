@@ -52,6 +52,7 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 
 interface IAnnotationRepoStore {
 
@@ -94,7 +95,7 @@ interface IAnnotationRepoStore {
 interface IAnnotationRepoCallbacks {
 
     readonly selectRow: (selectedID: IDStr,
-                         event: React.MouseEvent,
+                         event: IMouseEvent,
                          type: SelectRowType) => void;
 
     /**
@@ -308,7 +309,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
     }
 
     function selectRow(selectedID: IDStr,
-                       event: React.MouseEvent,
+                       event: IMouseEvent,
                        type: SelectRowType) {
 
 

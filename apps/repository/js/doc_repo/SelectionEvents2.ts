@@ -3,6 +3,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IMouseEvent} from "./MUIContextMenu";
 
 /**
  * The type of event that triggered the row selection.  Either a normal click, a context menu click (right click) or
@@ -25,7 +26,7 @@ export namespace SelectionEvents2 {
     export function selectRow<T extends IDType>(viewID: IDStr,
                                                 currentlySelected: ReadonlyArray<IDStr>,
                                                 viewPage: ReadonlyArray<T>,
-                                                event: React.MouseEvent,
+                                                event: IMouseEvent,
                                                 type: SelectRowType): SelectedRows {
 
         // there are really only three strategies

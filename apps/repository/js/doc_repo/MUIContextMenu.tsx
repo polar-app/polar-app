@@ -3,7 +3,38 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
 import isEqual from "react-fast-compare";
 
-type OnContextMenuCallback = (event: React.MouseEvent<HTMLElement>) => void;
+export namespace MouseEvents {
+    export function fromNativeEvent(event: MouseEvent): IMouseEvent {
+        return {
+            clientX: event.clientX,
+            clientY: event.clientY,
+            target: event.target,
+            nativeEvent: event,
+            preventDefault: event.preventDefault.bind(event),
+            stopPropagation: event.stopPropagation.bind(event),
+            getModifierState: event.getModifierState.bind(event),
+        };
+    }
+}
+
+/**
+ * Used so that we can use either the native mouse events or the react ones.
+ */
+export interface IMouseEvent {
+
+    readonly clientX: number;
+    readonly clientY: number;
+    readonly target: EventTarget | null;
+
+    readonly nativeEvent: MouseEvent;
+
+    preventDefault(): void;
+    stopPropagation(): void;
+    getModifierState(key: string): boolean;
+
+}
+
+type OnContextMenuCallback = (event: IMouseEvent) => void;
 
 interface IContextMenuCallbacks {
     readonly onContextMenu: OnContextMenuCallback;
@@ -13,7 +44,7 @@ export const ContextMenuContext
     = React.createContext<IContextMenuCallbacks>({onContextMenu: NULL_FUNCTION});
 
 interface IChildComponentProps {
-    readonly children: JSX.Element;
+    readonly children: React.ReactNode;
 }
 
 /**
@@ -60,7 +91,7 @@ interface CreateContextMenuOpts<O> {
     /**
      * Create a new origin object that's custom that we can use
      */
-    readonly computeOrigin?: (event: React.MouseEvent<HTMLElement>) => O | undefined;
+    readonly computeOrigin?: (event: IMouseEvent) => O | undefined;
 
 }
 
@@ -78,7 +109,10 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
         const [active, setActive] = useState<IContextMenuActive | undefined>(undefined);
 
-        const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
+        const onContextMenu = React.useCallback((event: IMouseEvent): void => {
+
+            console.log("FIXME: event: ", event);
+
             event.stopPropagation();
             event.preventDefault();
 
@@ -119,7 +153,7 @@ export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): ICont
 
     const contextMenuCallbacks = React.useContext(ContextMenuContext);
 
-    const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const onContextMenu = React.useCallback((event: IMouseEvent) => {
         const parent = opts.onContextMenu || NULL_FUNCTION;
         parent(event);
 

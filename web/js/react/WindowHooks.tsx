@@ -8,9 +8,11 @@ interface WindowOpts {
     readonly win?: Window;
 }
 
-function useWindowEventListener(name: 'resize' | 'scroll',
-                                delegate: () => void,
-                                opts: WindowOpts) {
+export type WindowEventListenerName = 'resize' | 'scroll' | 'contextmenu';
+
+export function useWindowEventListener(name: WindowEventListenerName,
+                                       delegate: () => void,
+                                       opts: WindowOpts = {}) {
 
     const win = opts.win || window;
 

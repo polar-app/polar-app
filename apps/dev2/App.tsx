@@ -1,133 +1,124 @@
 import React from 'react';
-import {memoForwardRef} from "../../web/js/react/ReactUtils";
+import ReactDOM from 'react-dom';
+import {
+    createContextMenu,
+    IMouseEvent,
+    MenuComponentProps, MouseEvents,
+    useContextMenu
+} from "../repository/js/doc_repo/MUIContextMenu";
+import {MUIMenuItem} from "../../web/js/mui/menu/MUIMenuItem";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useComponentDidMount} from "../../web/js/hooks/ReactLifecycleHooks";
+import {ElementFinder} from "./ElementFinder";
+import {deepMemo} from "../../web/js/react/ReactUtils";
+import {
+    EPUBIFrameContextProvider,
+    useEPUBIFrameContext
+} from './EPUBIFrameContext';
 
-interface RefTrackerProps {
-    readonly children: JSX.Element;
-}
-
-
-export type RefListenerCallback = (newRef: HTMLElement | null) => void;
-export type RefListenerComponent = (props: RefTrackerProps) => JSX.Element | null;
-
-export type RefListenerTuple = [RefListenerCallback, RefListenerComponent];
-
-
-/**
- * Function that keeps a handle to the ref, and only renders the RefTracker
- * once its defined so that that the child component renders after the first is
- * defined.
- */
-export function useRefTracker(): RefListenerTuple {
-
-    const [ref, setRef] = React.useState<HTMLElement | null>(null);
-
-    const listener = (newRef: HTMLElement | null) => {
-
-        if (newRef !== ref) {
-            setRef(newRef);
-        }
-
-    }
-
-    const RefTracker = (props: RefTrackerProps) => {
-
-        if (ref) {
-            console.log("FIXME1");
-            return props.children;
-        }
-
-        return null;
-
-    };
-
-    return [listener, RefTracker];
-
-}
-
-
-// interface RefProps {
-//     readonly ref: (ref: HTMLElement | null) => void;
-// }
-//
-// interface RefTrackerProps {
-//     readonly children: (props: RefProps) => JSX.Element;
-// }
-//
-// const RefTracker = React.memo((props: RefTrackerProps) => {
-//
-//     const Child = props.children;
-//
-//     return (
-//         <Child ref={() => console.log('FIXME got ref')}/>
-//     );
-// });
-
-interface PrimaryProps {
-    readonly children: React.ReactNode;
-}
-
-const Primary = memoForwardRef((props: PrimaryProps) => {
-    console.log("primary render");
-
-    const [refListener, RefTracker] = useRefTracker();
-
-    // const [ref, setRef] = React.useState<HTMLElement | null>(null);
-    //
-    // function handleRef(newRef: HTMLElement |  null) {
-    //     console.log('primary ref');
-    //
-    //     if (ref !== newRef) {
-    //         console.log('got new ref');
-    //         setRef(newRef);
-    //     }
-    //
-    // }
-    //
-    // return (
-    //     <div ref={(ref) => handleRef(ref)}>
-    //         primary
-    //         {ref && props.children}
-    //     </div>
-    // );
-
-    return (
-        <div ref={refListener}>
-            primary
-
-            <RefTracker>
-                <Secondary/>
-            </RefTracker>
-
-        </div>
-    );
-
-
-});
-
-const Secondary = memoForwardRef(() => {
-    console.log("secondary render");
-    return (
-        <div>secondary</div>
-    );
-});
-
-export const App = () => {
-
-    console.log('App render')
-
+const IFrameContent = React.memo(() => {
     return (
         <div>
-            <Primary>
-                <Secondary/>
-            </Primary>
-
-
-            {/*<RefTracker>*/}
-            {/*    /!*<Primary>*!/*/}
-            {/*        <Secondary/>*/}
-            {/*    /!*</Primary>*!/*/}
-            {/*</RefTracker>*/}
+            <iframe srcDoc="<html><body>this is the iframe</body></html>"></iframe>
         </div>
+    );
+});
+
+// FIXME: Am going to have to inject the event listener into the root or just
+// use a window event listener?
+//
+const IFrameMenu = (props: MenuComponentProps<IFrameMenuOrigin>) => {
+
+    return (
+        <>
+            <MUIMenuItem text="Hello World"
+                         onClick={NULL_FUNCTION}/>
+
+        </>
     );
 
 }
+
+export interface IFrameMenuOrigin {
+
+    readonly clientX: number;
+    readonly clientY: number;
+
+}
+
+
+export function computeMenuOrigin(event: IMouseEvent): IFrameMenuOrigin | undefined {
+
+    return {
+        clientX: event.clientX,
+        clientY: event.clientY,
+    };
+
+}
+
+const IFrameContextMenu = createContextMenu<IFrameMenuOrigin>(IFrameMenu, {computeOrigin: computeMenuOrigin});
+
+const EPUBIFrameWindowEventListener = () => {
+
+    const iframe = useEPUBIFrameContext();
+    const {onContextMenu} = useContextMenu();
+
+    useComponentDidMount(() => {
+
+        function toEvent(event: MouseEvent): IMouseEvent {
+            return MouseEvents.fromNativeEvent(event);
+        }
+
+        const win = iframe.contentWindow!;
+
+        win.addEventListener('contextmenu', (event) => onContextMenu(toEvent(event)));
+
+    });
+
+    return null;
+
+}
+
+const EPUBIFrameContextMenuHost = () => (
+    <IFrameContextMenu>
+        <EPUBIFrameWindowEventListener/>
+    </IFrameContextMenu>
+)
+
+const EPUBIFrameMenuPortal = () => {
+    console.log("FIXME2.0");
+    const iframe = useEPUBIFrameContext();
+    console.log("FIXME2.1");
+    return ReactDOM.createPortal(<EPUBIFrameContextMenuHost/>, iframe.contentDocument!.body);
+}
+
+interface EPUBContextMenuFinderContextProps {
+    readonly element: HTMLIFrameElement;
+}
+
+// sets up finder and context
+// FIXME: make this a memo so it can never re-render
+const EPUBContextMenuFinderContext = (props: EPUBContextMenuFinderContextProps) => {
+
+    console.log("FIXME1");
+
+    return (
+        <EPUBIFrameContextProvider element={props.element}>
+            <EPUBIFrameMenuPortal/>
+        </EPUBIFrameContextProvider>
+    );
+
+};
+
+const EPUBContextMenuRoot = deepMemo(() => {
+    return (
+        <ElementFinder component={EPUBContextMenuFinderContext}/>
+    );
+});
+
+export const App = () => (
+    <div>
+        <IFrameContent/>
+        <EPUBContextMenuRoot/>
+    </div>
+);

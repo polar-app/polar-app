@@ -7,7 +7,10 @@ import {
     useDocViewerCallbacks,
     useDocViewerStore
 } from "./DocViewerStore";
-import {MenuComponentProps} from "../../repository/js/doc_repo/MUIContextMenu";
+import {
+    IMouseEvent,
+    MenuComponentProps
+} from "../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../web/js/util/Elements";
 import PhotoSizeSelectLargeIcon from '@material-ui/icons/PhotoSizeSelectLarge';
 import {IPoint} from "../../../web/js/Point";
@@ -20,7 +23,6 @@ import {
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {useDocMetaContext} from "../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
@@ -165,7 +167,7 @@ function selectedAnnotationMetas(pageElement: HTMLElement,
 
 }
 
-export function computeDocViewerContextMenuOrigin(event: React.MouseEvent<HTMLElement, MouseEvent>): IDocViewerContextMenuOrigin | undefined {
+export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewerContextMenuOrigin | undefined {
 
     const target = event.target as HTMLElement;
 

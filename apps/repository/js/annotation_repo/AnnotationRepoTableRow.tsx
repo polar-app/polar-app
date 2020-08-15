@@ -5,7 +5,7 @@ import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {useContextMenu} from "../doc_repo/MUIContextMenu";
+import {IMouseEvent, useContextMenu} from "../doc_repo/MUIContextMenu";
 import isEqual from "react-fast-compare";
 
 interface IProps {
@@ -24,7 +24,7 @@ export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps
         callbacks.selectRow(annotation.id, event, 'click');
     }, [callbacks]);
 
-    const onContextMenu = React.useCallback((event: React.MouseEvent) => {
+    const onContextMenu = React.useCallback((event: IMouseEvent) => {
         callbacks.selectRow(annotation.id, event, 'context');
     }, [callbacks]);
 
