@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import {
     createContextMenu,
     IMouseEvent,
-    MenuComponentProps, MouseEvents,
+    MenuComponentProps,
+    MouseEvents,
     useContextMenu
 } from "../repository/js/doc_repo/MUIContextMenu";
 import {MUIMenuItem} from "../../web/js/mui/menu/MUIMenuItem";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useComponentDidMount} from "../../web/js/hooks/ReactLifecycleHooks";
-import {ElementFinder} from "./ElementFinder";
+import {createQuerySelector, QuerySelectorProps} from "./QuerySelector";
 import {deepMemo} from "../../web/js/react/ReactUtils";
 import {
     EPUBIFrameContextProvider,
@@ -21,14 +21,14 @@ const IFrameContent = React.memo(() => {
     const content = `    
         <html>
         <body>
-        <p>
-            second para
-        </p>
 
         <p>
             first para
         </p>
 
+        <p>
+            second para
+        </p>
 
         </body>
         </html>
@@ -131,9 +131,13 @@ const EPUBContextMenuFinderContext = (props: EPUBContextMenuFinderContextProps) 
 
 };
 
+const IFrameQuerySelector = createQuerySelector<HTMLIFrameElement>();
+
 const EPUBContextMenuRoot = deepMemo(() => {
+
     return (
-        <ElementFinder component={EPUBContextMenuFinderContext}/>
+        <IFrameQuerySelector component={EPUBContextMenuFinderContext}
+                             selector={() => document.querySelector('iframe')}/>
     );
 });
 
