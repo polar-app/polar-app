@@ -9,13 +9,15 @@ import {
 } from "../repository/js/doc_repo/MUIContextMenu";
 import {MUIMenuItem} from "../../web/js/mui/menu/MUIMenuItem";
 import {useComponentDidMount} from "../../web/js/hooks/ReactLifecycleHooks";
-import {createQuerySelector, QuerySelectorProps} from "./QuerySelector";
+import {createQuerySelector} from "./QuerySelector";
 import {deepMemo} from "../../web/js/react/ReactUtils";
 import {
     EPUBIFrameContextProvider,
     useEPUBIFrameContext
 } from './EPUBIFrameContext';
-import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
+import { EPUBIFrameMenu } from './EPUBIFrameMenu';
+import { EPUBIFrameWindowEventListener } from './EPUBIFrameWindowEventListener';
+import {IFrameContextMenu} from "./IFrameContextMenu";
 
 const IFrameContent = React.memo(() => {
 
@@ -42,22 +44,6 @@ const IFrameContent = React.memo(() => {
     );
 });
 
-// FIXME: Am going to have to inject the event listener into the root or just
-// use a window event listener?
-//
-const IFrameMenu = (props: MenuComponentProps<IFrameMenuOrigin>) => {
-
-    function handleCreatePagemark() {
-        console.log(props.origin!.target);
-    }
-
-    return (
-        <>
-            <MUIMenuItem text="Create Pagemark" onClick={handleCreatePagemark}/>
-        </>
-    );
-
-}
 
 export interface IFrameMenuOrigin {
 
@@ -67,57 +53,16 @@ export interface IFrameMenuOrigin {
 
 }
 
-
-export function computeMenuOrigin(event: IMouseEvent): IFrameMenuOrigin | undefined {
-
-    return {
-        clientX: event.clientX,
-        clientY: event.clientY,
-        target: event.target
-    };
-
-}
-
-const IFrameContextMenu = createContextMenu<IFrameMenuOrigin>(IFrameMenu, {computeOrigin: computeMenuOrigin});
-
-const EPUBIFrameWindowEventListener = () => {
-
-    const iframe = useEPUBIFrameContext();
-    const {onContextMenu} = useContextMenu();
-
-    useComponentDidMount(() => {
-
-        function toEvent(event: MouseEvent): IMouseEvent {
-            return MouseEvents.fromNativeEvent(event);
-        }
-
-        const win = iframe.contentWindow!;
-
-        win.addEventListener('contextmenu', (event) => onContextMenu(toEvent(event)));
-
-    });
-
-    return null;
-
-}
-
-const Second = () => (
-    <MUIAppRoot>
-        <EPUBIFrameWindowEventListener/>
-    </MUIAppRoot>
-)
-
-
-const EPUBIFrameContextMenuHost = () => (
+const EPUBIFrameContextMenuHost = deepMemo(() => (
     <IFrameContextMenu>
-        <Second/>
+        <EPUBIFrameWindowEventListener/>
     </IFrameContextMenu>
-)
+));
 
-const EPUBIFrameMenuPortal = () => {
+const EPUBIFrameMenuPortal = deepMemo(() => {
     const iframe = useEPUBIFrameContext();
     return ReactDOM.createPortal(<EPUBIFrameContextMenuHost/>, iframe.contentDocument!.body);
-}
+});
 
 interface EPUBContextMenuFinderContextProps {
     readonly element: HTMLIFrameElement;
@@ -126,8 +71,6 @@ interface EPUBContextMenuFinderContextProps {
 // sets up finder and context
 // FIXME: make this a memo so it can never re-render
 const EPUBContextMenuFinderContext = (props: EPUBContextMenuFinderContextProps) => {
-
-    console.log("FIXME1");
 
     return (
         <EPUBIFrameContextProvider element={props.element}>

@@ -15,6 +15,9 @@ export function useEPUBIFrameContext() {
     return React.useContext(EPUBIFrameContext);
 }
 
+/**
+ * Provides the context for the EPUB iframe that's being used.
+ */
 export const EPUBIFrameContextProvider = deepMemo((props: IProps) => (
     <EPUBIFrameContext.Provider value={props.element}>
         {props.children}
