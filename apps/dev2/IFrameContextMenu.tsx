@@ -2,10 +2,9 @@ import {
     createContextMenu,
     IMouseEvent
 } from "../repository/js/doc_repo/MUIContextMenu";
-import {EPUBIFrameMenu} from "./EPUBIFrameMenu";
-import {IFrameMenuOrigin} from "./App";
+import {EPUBIFrameMenu, EPUBIFrameMenuOrigin} from "./EPUBIFrameMenu";
 
-function computeMenuOrigin(event: IMouseEvent): IFrameMenuOrigin | undefined {
+function computeMenuOrigin(event: IMouseEvent): EPUBIFrameMenuOrigin | undefined {
 
     return {
         clientX: event.clientX,
@@ -15,4 +14,4 @@ function computeMenuOrigin(event: IMouseEvent): IFrameMenuOrigin | undefined {
 
 }
 
-export const IFrameContextMenu = createContextMenu<IFrameMenuOrigin>(EPUBIFrameMenu, {computeOrigin: computeMenuOrigin});
+export const IFrameContextMenu = createContextMenu<EPUBIFrameMenuOrigin>(EPUBIFrameMenu, {computeOrigin: computeMenuOrigin});
