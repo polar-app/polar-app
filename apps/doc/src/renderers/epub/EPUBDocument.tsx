@@ -313,7 +313,11 @@ function useCSS() {
             ...baseColorStyles,
             'font-family': `${theme.typography.fontFamily} !important`,
             'padding': '0px',
-            'padding-bottom': '0px !important'
+            'padding-bottom': '5px !important',
+            'max-width': '800px !important',
+            'margin-left': 'auto !important',
+            'margin-right': 'auto !important',
+            'margin-bottom': '5px !important'
         },
         'body :not(.polar-ui)': {
             ...baseColorStyles,

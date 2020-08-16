@@ -183,6 +183,8 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
         return undefined;
     }
 
+    // FIXME: this is wrong as in epub mode the document.body won't have the
+    // a page number...
     const pageNum = parseInt(pageElement.getAttribute("data-page-number"))
 
     const eventTargetOffset = Elements.getRelativeOffsetRect(target, pageElement);
