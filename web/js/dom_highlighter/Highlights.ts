@@ -4,6 +4,7 @@ import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export namespace Highlights {
 
@@ -189,11 +190,13 @@ export namespace Highlights {
      */
     export function fixedToAbsolute(position: IHighlightViewportPosition): ILTRect {
 
+        Preconditions.assertPresent(position, 'position');
+
         const doc = position.node.ownerDocument!;
         const win = doc.defaultView!;
 
-        const scrollLeft = win.pageXOffset || doc.documentElement.scrollLeft;
-        const scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
+        const scrollLeft = win?.pageXOffset || doc.documentElement.scrollLeft;
+        const scrollTop = win?.pageYOffset || doc.documentElement.scrollTop;
 
         return {
             top: position.top + scrollTop,

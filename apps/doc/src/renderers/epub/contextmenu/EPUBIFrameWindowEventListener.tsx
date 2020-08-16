@@ -24,13 +24,15 @@ export const EPUBIFrameWindowEventListener = () => {
         }
 
         if (! iframe) {
-            throw new Error("No iframe");
+            console.warn("No iframe");
+            return;
         }
 
         const win = iframe.contentWindow;
 
         if (! win) {
-            throw new Error("No window for iframe");
+            console.warn("No window for iframe");
+            return;
         }
 
         win.addEventListener('contextmenu', handleContextMenu);
