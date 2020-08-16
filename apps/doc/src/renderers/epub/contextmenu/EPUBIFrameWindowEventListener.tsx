@@ -2,8 +2,8 @@ import {useEPUBIFrameContext} from "./EPUBIFrameContext";
 import {
     IMouseEvent, MouseEvents,
     useContextMenu
-} from "../repository/js/doc_repo/MUIContextMenu";
-import {useComponentDidMount} from "../../web/js/hooks/ReactLifecycleHooks";
+} from "../../../../../repository/js/doc_repo/MUIContextMenu";
+import {useComponentDidMount} from "../../../../../../web/js/hooks/ReactLifecycleHooks";
 
 export const EPUBIFrameWindowEventListener = () => {
 

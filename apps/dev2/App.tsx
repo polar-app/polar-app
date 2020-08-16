@@ -1,5 +1,5 @@
 import React from 'react';
-import {EPUBContextMenuRoot} from './EPUBContextMenuRoot';
+import {EPUBContextMenuRoot} from '../doc/src/renderers/epub/contextmenu/EPUBContextMenuRoot';
 
 const IFrameContent = React.memo(() => {
 

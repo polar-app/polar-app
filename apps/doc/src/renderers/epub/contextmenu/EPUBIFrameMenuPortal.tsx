@@ -1,4 +1,4 @@
-import {deepMemo} from "../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
 import {useEPUBIFrameContext} from "./EPUBIFrameContext";
 import ReactDOM from "react-dom";
 import {EPUBIFrameContextMenuPortalContent} from "./EPUBIFrameContextMenuPortalContent";

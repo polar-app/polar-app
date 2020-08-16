@@ -1,6 +1,6 @@
-import {deepMemo} from "../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
 import React from "react";
-import {createQuerySelector} from "./QuerySelector";
+import {createQuerySelector} from "../../../../../dev2/QuerySelector";
 import {EPUBContextMenuFinderContext} from "./EPUBContextMenuFinderContext";
 
 const EPUBIFrameQuerySelector = createQuerySelector<HTMLIFrameElement>();

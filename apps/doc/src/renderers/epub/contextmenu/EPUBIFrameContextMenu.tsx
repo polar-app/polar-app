@@ -1,7 +1,7 @@
 import {
     createContextMenu,
     IMouseEvent
-} from "../repository/js/doc_repo/MUIContextMenu";
+} from "../../../../../repository/js/doc_repo/MUIContextMenu";
 import {EPUBIFrameMenu, EPUBIFrameMenuOrigin} from "./EPUBIFrameMenu";
 
 function computeMenuOrigin(event: IMouseEvent): EPUBIFrameMenuOrigin | undefined {

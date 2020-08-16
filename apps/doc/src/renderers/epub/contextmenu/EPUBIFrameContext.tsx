@@ -1,5 +1,5 @@
 import React from "react";
-import {deepMemo} from "../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
 
 // TODO make this into a simple/static context style injector that I can
 // create in one function call without all the needless setup.

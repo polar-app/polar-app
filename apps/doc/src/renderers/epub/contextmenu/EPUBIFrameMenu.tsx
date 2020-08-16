@@ -1,9 +1,9 @@
 // FIXME: Am going to have to inject the event listener into the root or just
 // use a window event listener?
 //
-import {deepMemo} from "../../web/js/react/ReactUtils";
-import {MenuComponentProps} from "../repository/js/doc_repo/MUIContextMenu";
-import {MUIMenuItem} from "../../web/js/mui/menu/MUIMenuItem";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
+import {MenuComponentProps} from "../../../../../repository/js/doc_repo/MUIContextMenu";
+import {MUIMenuItem} from "../../../../../../web/js/mui/menu/MUIMenuItem";
 import React from "react";
 
 export interface EPUBIFrameMenuOrigin {
