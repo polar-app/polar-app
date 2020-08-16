@@ -31,6 +31,7 @@ import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
+import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -171,21 +172,60 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     const target = event.target as HTMLElement;
 
-    function computePageElement() {
-        // find the root .page in PDF mode or document.body when in EPUB
-        return Elements.untilRoot(target, ".page") || document.body
+    interface ContextPageMeta {
+        readonly fileType: FileType;
+        readonly pageElement: HTMLElement;
+        readonly pageNum: number;
     }
 
-    const pageElement = computePageElement();
+    function computeContextPageMeta(): ContextPageMeta {
 
-    if (! pageElement) {
-        console.warn("No page element");
-        return undefined;
+        function computePageElementWithFileType(): [HTMLElement, FileType] {
+
+            const pageElement = Elements.untilRoot(target, ".page");
+
+            if (pageElement) {
+                return [pageElement, 'pdf'];
+            }
+
+            // find the root .page in PDF mode or document.body when in EPUB
+            return [document.body, 'epub'];
+
+        }
+
+        const [pageElement, fileType] = computePageElementWithFileType();
+
+        function parsePageNumFromPageElement(pageElement: HTMLElement) {
+            return parseInt(pageElement.getAttribute("data-page-number")!)
+        }
+
+        function computePageNumForPDF(): number {
+            return parsePageNumFromPageElement(pageElement);
+        }
+
+        function computePageNumForEPUB(): number {
+            const pageElement = Elements.untilRoot(event.nativeEvent.view!.frameElement as HTMLElement, '.page');
+            return parsePageNumFromPageElement(pageElement);
+        }
+
+        function computePageNum() {
+
+            switch (fileType) {
+                case "pdf":
+                    return computePageNumForPDF();
+                case "epub":
+                    return computePageNumForEPUB();
+            }
+
+        }
+
+        const pageNum = computePageNum();
+
+        return {pageElement, pageNum, fileType};
+
     }
 
-    // FIXME: this is wrong as in epub mode the document.body won't have the
-    // a page number...
-    const pageNum = parseInt(pageElement.getAttribute("data-page-number"))
+    const {pageElement, pageNum} = computeContextPageMeta();
 
     const eventTargetOffset = Elements.getRelativeOffsetRect(target, pageElement);
 
