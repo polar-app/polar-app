@@ -1,24 +1,55 @@
-import {useEPUBIFrameContext} from "./EPUBIFrameContext";
+import React from 'react';
 import {
-    IMouseEvent, MouseEvents,
+    MouseEvents,
     useContextMenu
 } from "../../../../../repository/js/doc_repo/MUIContextMenu";
-import {useComponentDidMount} from "../../../../../../web/js/hooks/ReactLifecycleHooks";
+import {Callback} from 'polar-shared/src/util/Functions';
+import {useDocViewerStore} from '../../../DocViewerStore';
+import {useDocViewerElementsContext} from "../../DocViewerElementsContext";
+
+// FIXME: rework the iframe context to just use this method...
+function useDocViewerIFrame() {
+
+    const docViewerElementsContext = useDocViewerElementsContext();
+
+    // used so we update on each page...
+    useDocViewerStore(['page']);
+
+    const docViewerElement = docViewerElementsContext.getDocViewerElement();
+    return docViewerElement.querySelector('iframe');
+
+}
 
 export const EPUBIFrameWindowEventListener = () => {
 
-    const iframe = useEPUBIFrameContext();
     const {onContextMenu} = useContextMenu();
+    const iframe = useDocViewerIFrame();
 
-    useComponentDidMount(() => {
+    const unsubscriber = React.useRef<Callback | undefined>(undefined);
 
-        function toEvent(event: MouseEvent): IMouseEvent {
-            return MouseEvents.fromNativeEvent(event);
+    const handleContextMenu = React.useCallback((event: MouseEvent) => {
+        onContextMenu(MouseEvents.fromNativeEvent(event))
+    }, []);
+
+    React.useEffect(() => {
+
+        if (unsubscriber.current) {
+            unsubscriber.current();
         }
 
-        const win = iframe.contentWindow!;
+        if (! iframe) {
+            throw new Error("No iframe");
+        }
 
-        win.addEventListener('contextmenu', (event) => onContextMenu(toEvent(event)));
+        const win = iframe.contentWindow;
+
+        if (! win) {
+            throw new Error("No window for iframe");
+        }
+
+        win.addEventListener('contextmenu', handleContextMenu);
+
+        unsubscriber.current = () => win.removeEventListener('contextmenu', handleContextMenu);
 
     });
 

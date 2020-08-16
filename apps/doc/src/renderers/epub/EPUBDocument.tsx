@@ -26,6 +26,7 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
 import { IDimensions } from 'polar-shared/src/util/IDimensions';
 import {DarkModeScrollbars} from "../../../../../web/js/mui/css/DarkModeScrollbars";
+import {EPUBContextMenuRoot} from "./contextmenu/EPUBContextMenuRoot";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -130,11 +131,11 @@ export const EPUBDocument = (props: IProps) => {
         setResizer(resizer);
 
         rendition.on('resize', (event: any) => {
-            console.error("epubjs: resize", new Error());
+            console.error("epubjs: resize", new Error("FAIL: this should not happen"));
         });
 
         rendition.on('resized', (event: any) => {
-            console.error("epubjs: resized", new Error());
+            console.error("epubjs: resized", new Error("FAIL: this should not happen"));
         });
 
         rendition.on('rendered', (event: any) => {
@@ -218,6 +219,7 @@ export const EPUBDocument = (props: IProps) => {
         <DOMTextIndexProvider>
             <DocumentInit/>
             <EPUBFindRenderer/>
+            <EPUBContextMenuRoot/>
             {props.children}
         </DOMTextIndexProvider>
     ) || null;
