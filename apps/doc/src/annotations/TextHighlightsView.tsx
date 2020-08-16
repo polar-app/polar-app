@@ -26,7 +26,7 @@ export const TextHighlightsView = memoForwardRef(() => {
                                                  container={current.container}
                                                  pageNum={current.pageNum}
                                                  fingerprint={docMeta?.docInfo.fingerprint}
-                                                 annotation={current.annotation}/>);
+                                                 pageAnnotation={current}/>);
 
     return (
         <>

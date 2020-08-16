@@ -6,9 +6,10 @@ import {useDOMTextIndexContext} from "./DOMTextIndexContext";
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {DOMHighlight} from "../../../../web/js/dom_highlighter/DOMHighlight";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
+import {PageAnnotation} from "./PageAnnotations";
 
 interface IProps {
-    readonly annotation: ITextHighlight;
+    readonly pageAnnotation: PageAnnotation<ITextHighlight>;
     readonly container: HTMLElement,
 }
 
@@ -18,7 +19,8 @@ interface IProps {
  */
 export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
 
-    const {annotation, container} = props;
+    const {pageAnnotation, container} = props;
+    const {annotation} = pageAnnotation;
     const domTextIndexContext = useDOMTextIndexContext();
     const text = Texts.toText(annotation.text);
 
@@ -51,8 +53,21 @@ export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
         return null;
     }
 
+    const {fingerprint, pageNum} = pageAnnotation;
+
+    const className = `text-highlight annotation text-highlight-${annotation.id}`;
+
     return ReactDOM.createPortal(<DOMHighlight {...hit}
                                                color={color}
+                                               data-doc-fingerprint={fingerprint}
+                                               data-text-highlight-id={annotation.id}
+                                               data-page-num={pageNum}
+                                               data-annotation-type="text-highlight"
+                                               data-annotation-id={annotation.id}
+                                               data-annotation-page-num={pageNum}
+                                               data-annotation-doc-fingerprint={fingerprint}
+                                               data-annotation-color={color}
+                                               className={className}
                                                id={annotation.id}/>, container);
 
 });

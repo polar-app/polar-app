@@ -171,8 +171,15 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     const target = event.target as HTMLElement;
 
-    const pageElement = Elements.untilRoot(target, ".page");
+    function computePageElement() {
+        // find the root .page in PDF mode or document.body when in EPUB
+        return Elements.untilRoot(target, ".page") || document.body
+    }
+
+    const pageElement = computePageElement();
+
     if (! pageElement) {
+        console.warn("No page element");
         return undefined;
     }
 

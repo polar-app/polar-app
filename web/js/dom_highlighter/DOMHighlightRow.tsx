@@ -4,10 +4,12 @@ import {Highlights} from "./Highlights";
 import {useScrollIntoViewUsingLocation} from "../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 import intersectsWithWindow = Highlights.intersectsWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;
     readonly color?: string;
+    readonly className?: string;
 }
 
 /**
@@ -29,6 +31,7 @@ export const DOMHighlightRow = deepMemo((props: IProps) => {
         return (
             <div id={props.id}
                  ref={scrollIntoViewRef}
+                 className={props.className}
                  style={{
                      position: 'absolute',
                      ...absolutePosition
@@ -37,10 +40,14 @@ export const DOMHighlightRow = deepMemo((props: IProps) => {
         );
 
     } else {
+
+        const dataAttributes = Dictionaries.dataAttributes(props);
+
         return (
             <div id={props.id}
                  ref={scrollIntoViewRef}
-                 className="polar-ui"
+                 {...dataAttributes}
+                 className={"polar-ui " + props.className || ''}
                  style={{
                      backgroundColor: `${backgroundColor}`,
                      position: 'absolute',

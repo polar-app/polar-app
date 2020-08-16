@@ -3,8 +3,10 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export interface PageAnnotation<A> {
+    readonly fingerprint: IDStr;
     readonly pageNum: number;
     readonly annotation: A;
 }
@@ -27,6 +29,7 @@ export namespace PageAnnotations {
 
                     return annotations.map(annotation => {
                         return {
+                            fingerprint: docMeta.docInfo.fingerprint,
                             pageNum, annotation
                         }
                     });

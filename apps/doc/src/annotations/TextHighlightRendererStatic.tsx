@@ -9,17 +9,19 @@ import {Rects} from "../../../../web/js/Rects";
 import {useDocViewerStore} from "../DocViewerStore";
 import {deepMemo, memoForwardRefDiv} from "../../../../web/js/react/ReactUtils";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
+import {PageAnnotation} from "./PageAnnotations";
 
 interface IProps {
     readonly fingerprint: IDStr;
     readonly pageNum: number;
-    readonly annotation: ITextHighlight;
+    readonly pageAnnotation: PageAnnotation<ITextHighlight>;
     readonly container: HTMLElement,
 }
 
 export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
 
-    const {annotation, container} = props;
+    const {pageAnnotation, container} = props;
+    const {annotation} = pageAnnotation;
     const {docScale} = useDocViewerStore(['docScale']);
     const rects = Object.values(annotation.rects || {})
 
@@ -68,7 +70,8 @@ interface HighlightDelegateProps extends IProps {
 export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProps) => {
 
     const {idx, rawTextHighlightRect} = props;
-    const {annotation, fingerprint, pageNum} = props;
+    const {pageAnnotation, fingerprint, pageNum} = props;
+    const {annotation} = pageAnnotation;
     const {docScale} = useDocViewerStore(['docScale']);
     const rects = Object.values(annotation.rects || {})
     const scrollIntoViewRef = useScrollIntoViewUsingLocation();
