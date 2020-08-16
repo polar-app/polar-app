@@ -6,7 +6,7 @@ interface EPUBContextMenuFinderContextProps {
     readonly element: HTMLIFrameElement;
 }
 
-// FIXME: make this a memo so it can never re-render
+// TODO: make this a memo so it can never re-render
 export const EPUBContextMenuFinderContext = (props: EPUBContextMenuFinderContextProps) => {
 
     return (
