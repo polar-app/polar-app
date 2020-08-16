@@ -4,21 +4,7 @@ import {
     useContextMenu
 } from "../../../../../repository/js/doc_repo/MUIContextMenu";
 import {Callback} from 'polar-shared/src/util/Functions';
-import {useDocViewerStore} from '../../../DocViewerStore';
-import {useDocViewerElementsContext} from "../../DocViewerElementsContext";
-
-// FIXME: rework the iframe context to just use this method...
-function useDocViewerIFrame() {
-
-    const docViewerElementsContext = useDocViewerElementsContext();
-
-    // used so we update on each page...
-    useDocViewerStore(['page']);
-
-    const docViewerElement = docViewerElementsContext.getDocViewerElement();
-    return docViewerElement.querySelector('iframe');
-
-}
+import {useDocViewerIFrame} from "./EPUBIFrameHooks";
 
 export const EPUBIFrameWindowEventListener = () => {
 

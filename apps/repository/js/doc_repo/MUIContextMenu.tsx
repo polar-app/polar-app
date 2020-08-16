@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
 import isEqual from "react-fast-compare";
+import {IPoint} from "../../../../web/js/Point";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -43,8 +44,9 @@ interface IContextMenuCallbacks {
 export const ContextMenuContext
     = React.createContext<IContextMenuCallbacks>({onContextMenu: NULL_FUNCTION});
 
-interface IChildComponentProps {
+interface IContextMenuProps {
     readonly children: React.ReactNode;
+    readonly anchorEl?: HTMLElement;
 }
 
 /**
@@ -66,8 +68,6 @@ export interface IEventOrigin {
 export interface MenuComponentProps<O> {
     readonly origin: O | undefined;
 }
-
-
 
 export function computeEventOrigin(event: React.MouseEvent<HTMLElement>): IEventOrigin {
 
@@ -95,10 +95,45 @@ interface CreateContextMenuOpts<O> {
 
 }
 
-export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
-                                     opts: CreateContextMenuOpts<O> = {}): (props: IChildComponentProps) => JSX.Element {
+function computeMenuPoint(event: IMouseEvent): IPoint {
 
-    return (props: IChildComponentProps): JSX.Element => {
+    function computeOffsets(): IPoint {
+
+        if (event.nativeEvent.view && event.nativeEvent.view.frameElement) {
+            const bcr = event.nativeEvent.view.frameElement.getBoundingClientRect();
+
+            return {
+                x: bcr.left,
+                y: bcr.top
+            };
+
+        }
+
+        return {
+            x: 0,
+            y: 0
+        };
+
+    }
+
+    const offsets = computeOffsets();
+
+    const buffer = {
+        x: -2,
+        y: -4
+    };
+
+    return {
+        x: event.clientX + offsets.x + buffer.x,
+        y: event.clientY + offsets.y + buffer.y
+    };
+
+}
+
+export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
+                                     opts: CreateContextMenuOpts<O> = {}): (props: IContextMenuProps) => JSX.Element {
+
+    return (props: IContextMenuProps): JSX.Element => {
 
         interface IContextMenuActive {
             readonly mouseX: number;
@@ -111,16 +146,16 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
         const onContextMenu = React.useCallback((event: IMouseEvent): void => {
 
-            console.log("FIXME: event: ", event);
-
             event.stopPropagation();
             event.preventDefault();
 
             const origin = opts.computeOrigin ?  opts.computeOrigin(event) : undefined;
 
+            const menuPoint = computeMenuPoint(event);
+
             const newActive = {
-                mouseX: event.clientX - 2,
-                mouseY: event.clientY - 4,
+                mouseX: menuPoint.x,
+                mouseY: menuPoint.y,
                 origin
             };
 
@@ -137,6 +172,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
                 {active &&
                     <MUIContextMenu {...active}
+                                    anchorEl={props.anchorEl}
                                     handleClose={handleClose}>
                         <MenuComponent origin={active.origin}/>
                     </MUIContextMenu>}
@@ -175,6 +211,11 @@ interface MUIContextMenuProps {
      */
     readonly handleClose: () => void;
 
+    /**
+     * Where to anchor the menu.
+     */
+    readonly anchorEl?: HTMLElement;
+
     readonly children: React.ReactFragment | JSX.Element;
 
 }
@@ -188,6 +229,7 @@ export const MUIContextMenu = React.memo((props: MUIContextMenuProps) => {
     return (
         <Menu
             keepMounted
+            anchorEl={props.anchorEl}
             open={true}
             onClose={handleClose}
             onClick={handleClose}

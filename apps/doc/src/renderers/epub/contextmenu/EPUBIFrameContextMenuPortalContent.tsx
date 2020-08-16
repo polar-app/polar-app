@@ -3,8 +3,12 @@ import {EPUBIFrameContextMenu} from "./EPUBIFrameContextMenu";
 import {EPUBIFrameWindowEventListener} from "./EPUBIFrameWindowEventListener";
 import React from "react";
 
-export const EPUBIFrameContextMenuPortalContent = deepMemo(() => (
-    <EPUBIFrameContextMenu>
-        <EPUBIFrameWindowEventListener/>
-    </EPUBIFrameContextMenu>
-));
+export const EPUBIFrameContextMenuPortalContent = deepMemo(() => {
+
+    return (
+        <EPUBIFrameContextMenu>
+            <EPUBIFrameWindowEventListener/>
+        </EPUBIFrameContextMenu>
+    );
+
+});
