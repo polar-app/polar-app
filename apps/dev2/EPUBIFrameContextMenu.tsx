@@ -14,4 +14,4 @@ function computeMenuOrigin(event: IMouseEvent): EPUBIFrameMenuOrigin | undefined
 
 }
 
-export const IFrameContextMenu = createContextMenu<EPUBIFrameMenuOrigin>(EPUBIFrameMenu, {computeOrigin: computeMenuOrigin});
+export const EPUBIFrameContextMenu = createContextMenu<EPUBIFrameMenuOrigin>(EPUBIFrameMenu, {computeOrigin: computeMenuOrigin});
