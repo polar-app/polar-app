@@ -143,7 +143,9 @@ function selectedElements(pageElement: HTMLElement,
 
     return withPointerEvents(pageElement, className, () => {
 
-        const elements = document.elementsFromPoint(point.x, point.y) as HTMLElement[];
+        const doc = pageElement.ownerDocument;
+        const elements = doc.elementsFromPoint(point.x, point.y) as HTMLElement[];
+
         return elements.filter(element => element.classList.contains(className));
 
     })
@@ -174,7 +176,12 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     interface ContextPageMeta {
         readonly fileType: FileType;
+
+        /**
+         * Contains the .page
+         */
         readonly pageElement: HTMLElement;
+
         readonly pageNum: number;
     }
 
@@ -189,7 +196,7 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
             }
 
             // find the root .page in PDF mode or document.body when in EPUB
-            return [document.body, 'epub'];
+            return [event.nativeEvent.view!.document.body, 'epub'];
 
         }
 
