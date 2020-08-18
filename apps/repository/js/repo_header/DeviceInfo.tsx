@@ -43,21 +43,35 @@ const Fmt = (props: FmtProps) => {
 
 }
 
-export const StorageInfo = () => {
+export function useStorageEstimate() {
 
     const [storageEstimate, setStorageEstimate] = React.useState<StorageEstimate | undefined>();
 
     if (navigator && navigator.storage) {
 
         async function doAsync() {
+
             const estimate = await navigator.storage.estimate();
-            setStorageEstimate(estimate);
+
+            if (! storageEstimate) {
+                setStorageEstimate(estimate);
+            }
+
         }
 
         doAsync()
             .catch(err => console.error(err));
 
     }
+
+    return storageEstimate;
+
+}
+
+
+export const StorageInfo = () => {
+
+    const storageEstimate = useStorageEstimate();
 
     if (storageEstimate) {
         return (

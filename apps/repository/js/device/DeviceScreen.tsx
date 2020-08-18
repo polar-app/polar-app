@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {ExtendedDeviceInfo} from "../repo_header/DeviceInfo";
 
