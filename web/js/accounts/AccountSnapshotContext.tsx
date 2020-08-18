@@ -1,5 +1,6 @@
 import React from "react";
-import {Accounts, AccountSnapshot} from "./Accounts";
+import {Accounts} from "./Accounts";
+import {Account} from "./Account";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {
     AuthHandlers,
@@ -13,7 +14,7 @@ export interface AuthStatusProps {
     readonly authStatus: AuthStatus;
 }
 
-export const AccountSnapshotContext = React.createContext<AccountSnapshot>(undefined);
+export const AccountSnapshotContext = React.createContext<Account | undefined>(undefined);
 export const AuthStatusContext = React.createContext<AuthStatusProps>({authStatus: undefined});
 
 interface IProps {
@@ -25,7 +26,7 @@ interface IProps {
  */
 export const AccountContextSubscriber = (props: IProps) => {
 
-    const [account, setAccount] = React.useState<AccountSnapshot>(undefined);
+    const [account, setAccount] = React.useState<Account | undefined>(undefined);
     const [authStatus, setAuthStatus] = React.useState<AuthStatus>(undefined);
 
     const doAuthStatus = () => {

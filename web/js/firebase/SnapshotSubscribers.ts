@@ -14,7 +14,7 @@ export class SnapshotSubscribers {
 
     public static createFromAsyncProvider<T>(provider: AsyncProvider<T>): SnapshotSubscriber<T> {
 
-        return (onNext: OnNextCallback<T>, onError: OnErrorCallback): SnapshotUnsubscriber => {
+        return (onNext: OnNextCallback<T>, onError?: OnErrorCallback): SnapshotUnsubscriber => {
 
             const handler = async () => {
 
@@ -24,7 +24,11 @@ export class SnapshotSubscribers {
                     onNext(result);
 
                 } catch (e) {
-                    onError(e);
+
+                    if (onError) {
+                        onError(e);
+                    }
+
                 }
 
             };

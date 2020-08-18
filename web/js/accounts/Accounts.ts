@@ -9,8 +9,6 @@ const log = Logger.create();
 
 const COLLECTION_NAME = "account";
 
-export type AccountSnapshot  = Account;
-
 /**
  * Handles listening for account changes for the user and telling them
  * of changes to their plan over time.
@@ -58,7 +56,7 @@ export class Accounts {
     /**
      * Callback for when we have new data for the account.
      */
-    public static async onSnapshot(onNext: OnNextCallback<AccountSnapshot>,
+    public static async onSnapshot(onNext: OnNextCallback<Account>,
                                    onError: OnErrorCallback = ERR_HANDLER) {
 
         const ref = await this.ref();

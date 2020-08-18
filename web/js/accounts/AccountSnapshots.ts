@@ -1,5 +1,4 @@
 import {Account} from "./Account";
-import {AccountSnapshot} from "./Accounts";
 import {UserIDStr} from "../firebase/Firebase";
 import * as firebase from "firebase";
 import {
@@ -13,7 +12,7 @@ const COLLECTION_NAME = "account";
 
 export namespace AccountSnapshots {
 
-    export function create(firestore: firebase.firestore.Firestore, uid: string): SnapshotSubscriber<AccountSnapshot> {
+    export function create(firestore: firebase.firestore.Firestore, uid: string): SnapshotSubscriber<Account> {
 
         function createRef(uid: UserIDStr) {
 
@@ -23,7 +22,7 @@ export namespace AccountSnapshots {
 
         }
 
-        function onSnapshot(onNext: OnNextCallback<AccountSnapshot>,
+        function onSnapshot(onNext: OnNextCallback<Account>,
                             onError: OnErrorCallback = ERR_HANDLER): SnapshotUnsubscriber {
 
             const ref = createRef(uid);

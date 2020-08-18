@@ -1,12 +1,12 @@
 import React from 'react';
 import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
-import ePub from "@polar-app/epubjs";
+import ePub from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {PageNavigator} from "../../PageNavigator";
 import {Resizer, useDocViewerCallbacks} from "../../DocViewerStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import Section from '@polar-app/epubjs/types/section';
+import Section from 'epubjs/types/section';
 import blue from '@material-ui/core/colors/blue';
 import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";

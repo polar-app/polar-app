@@ -3,11 +3,11 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../../hooks/ReactLifecycleHooks";
+import Alert from "@material-ui/lab/Alert";
 import {
     SnapshotSubscriber,
     SnapshotUnsubscriber
-} from "../../firebase/SnapshotSubscribers";
-import Alert from "@material-ui/lab/Alert";
+} from 'polar-shared/src/util/Snapshots';
 
 export namespace DataSubscribers {
 
