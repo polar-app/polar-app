@@ -89,6 +89,8 @@ export interface IDocViewerContextMenuOrigin {
     readonly clientY: number;
     readonly pointWithinPageElement: IPoint;
 
+    readonly fileType: FileType;
+
     readonly pagemarks: ReadonlyArray<IAnnotationMeta>;
     readonly areaHighlights: ReadonlyArray<IAnnotationMeta>;
     readonly textHighlights: ReadonlyArray<IAnnotationMeta>;
@@ -232,7 +234,7 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     }
 
-    const {pageElement, pageNum} = computeContextPageMeta();
+    const {pageElement, pageNum, fileType} = computeContextPageMeta();
 
     const eventTargetOffset = Elements.getRelativeOffsetRect(target, pageElement);
 
@@ -266,7 +268,8 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
         pageNum,
         pagemarks,
         areaHighlights,
-        textHighlights
+        textHighlights,
+        fileType
     };
 
 }
@@ -282,7 +285,18 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const origin = props.origin!;
 
+    // FIXME this one needs to specify a 'type' or other parameters
+
     const onCreatePagemarkToPoint = React.useCallback(() => {
+
+        // FIXM I think this would need to read the previous pagemark, use that
+        // page and epubcfi,
+        //
+        // FIXME: I could decompose these into smaller pagemarks that take up
+        // 100% of the page
+
+        // FIXME: make a fake/testable function for adding EPUBCFI data to Pagemarks
+        // to make it work properly...
 
         onPagemark({
             type: 'create-to-point',
@@ -290,6 +304,9 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         });
 
     }, []);
+
+    // FIXME: this one also needs to nave an 'end' point but needs to start
+    // from a page so we would need some type of custom range for this.
 
     const onCreatePagemarkFromPage = React.useCallback(() => {
 

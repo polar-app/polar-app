@@ -4,7 +4,6 @@ import {DialogManager} from "./dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {MultiLogger} from "../logger/MultiLogger";
-import {SentryBrowserLogger} from "../logger/SentryBrowserLogger";
 
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
@@ -16,12 +15,13 @@ export function useLogger(): ILogger {
 
     const loggers = [
         new MUILogger(dialogManager),
-        new SentryBrowserLogger()
+        // new SentryBrowserLogger()
     ];
 
     return new MultiLogger(...loggers);
 
 }
+
 
 /**
  * Logger that just uses the DialogManager to display errors in a snackbar.

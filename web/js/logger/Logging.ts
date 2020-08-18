@@ -15,7 +15,6 @@ import {MemoryLogger} from './MemoryLogger';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GALogger} from './GALogger';
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
-import {SentryBrowserLogger} from "./SentryBrowserLogger";
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -86,8 +85,10 @@ export class Logging {
 
         if (AppRuntime.isBrowser()) {
 
+            // TODO: sentry mangles exceptions but it's also causing high
+            // CPU I think.
             // it looks like sentry might be mangling webpack stack traces...
-            loggers.push(new SentryBrowserLogger());
+            // loggers.push(new SentryBrowserLogger());
         }
 
         // *** next up is the Toaster Logger to visually show errors.
