@@ -39,7 +39,7 @@ export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
     const hit = index.find(text, {caseInsensitive: true});
 
     if (! hit) {
-        console.log("No hit for text: ", text);
+        // console.log("No hit for text: ", text);
         return null;
     }
 
