@@ -46,8 +46,11 @@ const FullScreenButton = React.memo(() => {
     function requestFullScreen() {
 
         async function doAsync() {
-            await document.documentElement.requestFullscreen();
-            setFullScreen(true);
+
+            if (! fullScreen) {
+                await document.documentElement.requestFullscreen();
+                setFullScreen(true);
+            }
         }
 
         doAsync()
@@ -59,8 +62,11 @@ const FullScreenButton = React.memo(() => {
     function exitFullScreen() {
 
         async function doAsync() {
-            await document.exitFullscreen();
-            setFullScreen(false);
+
+            if (fullScreen) {
+                await document.exitFullscreen();
+                setFullScreen(false);
+            }
         }
 
         doAsync()
