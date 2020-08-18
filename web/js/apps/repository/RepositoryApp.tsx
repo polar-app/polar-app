@@ -322,30 +322,8 @@ export const RepositoryApp = (props: IProps) => {
 
                                             <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                                                {/*<RepoHeader3/>*/}
-
-                                                {/*<Route exact path='/logs' render={renderLogsScreen}/>*/}
-
                                                 <Route exact path='/whats-new'
                                                        render={renderWhatsNewScreen}/>
-
-                                                {/*<Route path='/group/:group/highlights'*/}
-                                                {/*       render={renderGroupHighlightsScreen}/>*/}
-
-                                                {/*<Route path='/group/:group/docs'*/}
-                                                {/*       render={renderGroupScreen}/>*/}
-
-                                                {/*<Route path='/group/:group/highlight/:id'*/}
-                                                {/*       render={renderGroupHighlightScreen}/>*/}
-
-                                                {/*<Route path='/group/:group'*/}
-                                                {/*       render={renderGroupHighlightsScreen}/>*/}
-
-                                                {/*<Route exact path='/groups'*/}
-                                                {/*       render={renderGroupsScreen}/>*/}
-
-                                                {/*<Route exact path='/groups/create'*/}
-                                                {/*       render={renderCreateGroupScreen}/>*/}
 
                                                 <Route exact path='/invite' render={renderInvite}/>
 
@@ -361,24 +339,12 @@ export const RepositoryApp = (props: IProps) => {
                                                 <Route exact path='/stats'
                                                        component={renderStatsScreen}/>
 
-                                                {/*/!*<Route exact path="/annotations"*!/*/}
-                                                {/*/!*       component={RenderAnnotationRepoScreen}/>*!/*/}
-
                                                 <Route exact path="/settings"
                                                        component={RenderSettingsScreen}/>
-
-                                                {/*<Route exact path="/profile"*/}
-                                                {/*       component={renderProfileScreen}/>*/}
 
                                                 <Route exact path="/device"
                                                        component={renderDeviceScreen}/>
 
-                                                {/*<Route exact path='/'*/}
-                                                {/*       component={RenderDefaultScreen}/>*/}
-
-                                                {/*<Route exact path='/'>*/}
-                                                {/*    <RenderDefaultScreen/>*/}
-                                                {/*</Route>*/}
                                             </Switch>
                                             <RepoFooter/>
                                         </Route>
@@ -404,7 +370,7 @@ export const RepositoryApp = (props: IProps) => {
 
                                     </Switch>
                                 </MUIDialogController>
-                        </BrowserRouter>
+                             </BrowserRouter>
 
                         </>
 

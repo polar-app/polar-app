@@ -8,6 +8,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import {MUIDropdownCaret} from "../MUIDropdownCaret";
+import {deepMemo} from "../../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -46,7 +47,8 @@ interface IProps {
 
 }
 
-export const MUIPopper = (props: IProps) => {
+export const MUIPopper = deepMemo((props: IProps) => {
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -136,4 +138,4 @@ export const MUIPopper = (props: IProps) => {
             </div>
         </div>
     );
-}
+});
