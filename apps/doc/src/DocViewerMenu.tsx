@@ -32,6 +32,9 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
 import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
+import {Ranges} from "../../../web/js/highlights/text/selection/Ranges";
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -90,6 +93,10 @@ export interface IDocViewerContextMenuOrigin {
     readonly pointWithinPageElement: IPoint;
 
     readonly fileType: FileType;
+
+    readonly hasSelection: boolean;
+
+    readonly selectionToText: () => string;
 
     readonly pagemarks: ReadonlyArray<IAnnotationMeta>;
     readonly areaHighlights: ReadonlyArray<IAnnotationMeta>;
@@ -257,6 +264,24 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
     const areaHighlights = selectedAnnotationMetas(pageElement, pageNum, AnnotationType.AREA_HIGHLIGHT, point, 'area-highlight');
     const textHighlights = selectedAnnotationMetas(pageElement, pageNum, AnnotationType.TEXT_HIGHLIGHT, point, 'text-highlight');
 
+    const hasSelection: boolean = event.nativeEvent.view !== null && event.nativeEvent.view.getSelection() !== null;
+
+    function selectionToText(): string {
+
+        if (! event.nativeEvent.view) {
+            return "";
+        }
+
+        const selection = event.nativeEvent.view.getSelection();
+
+        if (! selection) {
+            return "";
+        }
+
+        return Ranges.toText(selection.getRangeAt(0));
+
+    }
+
     return {
         clientX: event.clientX,
         clientY: event.clientY,
@@ -269,7 +294,9 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
         pagemarks,
         areaHighlights,
         textHighlights,
-        fileType
+        fileType,
+        hasSelection,
+        selectionToText
     };
 
 }
@@ -391,27 +418,41 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         annotationMutationsContext.onDeleted({selected});
     }
 
+    const onCopy = () => {
+        const clipboard = Clipboards.getInstance();
+        clipboard.writeText(origin.selectionToText());
+    }
+
+    const isPDF = origin.fileType === 'pdf';
+
     return (
         <>
-            <MUIMenuItem text="Create Pagemark to Point"
-                         icon={<BookmarkIcon/>}
-                         onClick={onCreatePagemarkToPoint}/>
+            {/*{origin.hasSelection &&*/}
+            {/*    <MUIMenuItem text="Copy"*/}
+            {/*                 icon={<AssignmentIcon/>}*/}
+            {/*                 onClick={onCopy}/>}*/}
 
-            {origin.pageNum > 1 && (
+            {isPDF &&
+                <MUIMenuItem text="Create Pagemark to Point"
+                             icon={<BookmarkIcon/>}
+                             onClick={onCreatePagemarkToPoint}/>}
+
+            {isPDF && origin.pageNum > 1 && (
                 <MUIMenuItem text="Create Pagemark from Page To Point"
                              icon={<BookmarksIcon/>}
                              onClick={onCreatePagemarkFromPage}/>)}
 
-            <MUIMenuItem text="Create Area Highlight"
-                         icon={<PhotoSizeSelectLargeIcon/>}
-                         onClick={onCreateAreaHighlight}/>
+            {isPDF &&
+                <MUIMenuItem text="Create Area Highlight"
+                             icon={<PhotoSizeSelectLargeIcon/>}
+                             onClick={onCreateAreaHighlight}/>}
 
-            {(props.origin?.pagemarks?.length || 0) > 0 &&
+            {isPDF && (props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Pagemark"
                              icon={<DeleteForeverIcon/>}
                              onClick={() => onDeletePagemark(origin.pagemarks)}/>}
 
-            {(props.origin?.areaHighlights?.length || 0) > 0 &&
+            {isPDF && (props.origin?.areaHighlights?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Area Highlight"
                              icon={<DeleteForeverIcon/>}
                              onClick={() => onDelete(origin.areaHighlights)}/>}
