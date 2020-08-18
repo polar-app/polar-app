@@ -1,11 +1,13 @@
 import React from 'react';
-import {ErrorHandlerCallback} from "../../../../web/js/firebase/Firebase";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {RepoDocMetaLoaders} from "../RepoDocMetaLoaders";
 import {AppTags} from "./AppTags";
-import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
+import {
+    OnErrorCallback,
+    SnapshotSubscriber
+} from 'polar-shared/src/util/Snapshots';
 import {TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 
 export class RepoDataLoader extends React.Component<IProps, IState> {
@@ -57,7 +59,7 @@ class RepoDocMetaLoaderSnapshots {
 
     public static create(repoDocMetaLoader: RepoDocMetaLoader): SnapshotSubscriber<boolean> {
 
-        return (onNext: (value: boolean) => void, onError: ErrorHandlerCallback) => {
+        return (onNext: (value: boolean) => void, onError?: OnErrorCallback) => {
 
             // TODO use the debouncer API here...
             const releaser = RepoDocMetaLoaders.addThrottlingEventListener(repoDocMetaLoader, () => onNext(true));
@@ -77,7 +79,7 @@ class RepoDocMetaManagerSnapshots {
     public static create(repoDocMetaLoader: RepoDocMetaLoader,
                          repoDocMetaManager: RepoDocMetaManager): SnapshotSubscriber<AppTags> {
 
-        return (onNext: (value: AppTags) => void, onError: ErrorHandlerCallback) => {
+        return (onNext: (value: AppTags) => void, onError?: OnErrorCallback) => {
 
             const loaderSnapshotter = RepoDocMetaLoaderSnapshots.create(repoDocMetaLoader);
 

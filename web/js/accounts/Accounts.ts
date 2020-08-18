@@ -3,13 +3,13 @@ import {Firestore} from '../firebase/Firestore';
 import {Account} from './Account';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
-import {Callback1} from "polar-shared/src/util/Functions";
+import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";
 
 const log = Logger.create();
 
 const COLLECTION_NAME = "account";
 
-export type AccountSnapshot  = Account | undefined;
+export type AccountSnapshot  = Account;
 
 /**
  * Handles listening for account changes for the user and telling them
@@ -58,13 +58,13 @@ export class Accounts {
     /**
      * Callback for when we have new data for the account.
      */
-    public static async onSnapshot(handler: Callback1<AccountSnapshot>,
-                                   errorHandler: Callback1<Error> = ERR_HANDLER) {
+    public static async onSnapshot(onNext: OnNextCallback<AccountSnapshot>,
+                                   onError: OnErrorCallback = ERR_HANDLER) {
 
         const ref = await this.ref();
 
         if (! ref) {
-            handler(undefined);
+            onNext(undefined);
             return;
         }
 
@@ -75,9 +75,9 @@ export class Accounts {
             }
 
             const account = <Account> snapshot.data();
-            handler(account);
+            onNext(account);
 
-        }, errorHandler);
+        }, onError);
 
     }
 

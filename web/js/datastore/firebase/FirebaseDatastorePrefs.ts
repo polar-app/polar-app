@@ -5,10 +5,13 @@ import {
 } from "../../util/prefs/Prefs";
 import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import {Firestore} from "../../firebase/Firestore";
-import {ErrorHandlerCallback, Firebase} from "../../firebase/Firebase";
+import {Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
+import {
+    OnErrorCallback,
+    SnapshotUnsubscriber
+} from 'polar-shared/src/util/Snapshots';
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 
@@ -51,7 +54,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
 
     }
 
-    public onSnapshot(onNext: UserPrefCallback, onError: ErrorHandlerCallback = NULL_FUNCTION): SnapshotUnsubscriber {
+    public onSnapshot(onNext: UserPrefCallback, onError: OnErrorCallback = NULL_FUNCTION): SnapshotUnsubscriber {
 
         const snapshotUnsubscriberLatch = new Latch<SnapshotUnsubscriber>();
 

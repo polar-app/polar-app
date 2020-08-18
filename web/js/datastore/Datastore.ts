@@ -5,7 +5,8 @@ import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {
-    DeterminateProgress, IndeterminateProgress,
+    DeterminateProgress,
+    IndeterminateProgress,
     Progress,
 } from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProvider} from 'polar-shared/src/util/Providers';
@@ -28,10 +29,12 @@ import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {IDStr, PathStr, URLStr} from "polar-shared/src/util/Strings";
-import {ErrorHandlerCallback} from "../firebase/Firebase";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {SimpleReactor} from "../reactor/SimpleReactor";
-import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
+import {
+    OnErrorCallback,
+    SnapshotUnsubscriber
+} from 'polar-shared/src/util/Snapshots';
 import {
     NetworkLayer,
     ReadableBinaryDatastore
@@ -950,7 +953,7 @@ export interface PrefsProvider {
      */
     get(): PersistentPrefs;
 
-    subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber;
+    subscribe(onNext: PersistentPrefsUpdatedCallback, onError?: OnErrorCallback): SnapshotUnsubscriber;
 
 }
 
@@ -964,14 +967,14 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
      * Register a callback with no event listeners for platforms like Firebase that provide listening to the underlying
      * datastore.
      */
-    protected register(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback) {
+    protected register(onNext: PersistentPrefsUpdatedCallback, onError: OnErrorCallback) {
         return NULL_FUNCTION;
     }
 
     /**
      * Default implementation of subscribe which should be used everywhere.
      */
-    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: OnErrorCallback): SnapshotUnsubscriber {
 
         if (! this.get) {
             throw new Error("No get method!");

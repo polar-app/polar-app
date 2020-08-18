@@ -49,7 +49,7 @@ import {
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {ErrorHandlerCallback, Firebase, UserID} from '../firebase/Firebase';
+import {Firebase, UserID} from '../firebase/Firebase';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -64,11 +64,14 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
 import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
-import {SnapshotUnsubscriber} from "../firebase/SnapshotSubscribers";
 import {
     GetFileOpts,
     NetworkLayers
 } from "polar-shared/src/datastore/IDatastore";
+import {
+    OnErrorCallback,
+    SnapshotUnsubscriber
+} from 'polar-shared/src/util/Snapshots';
 
 const log = Logger.create();
 
@@ -848,7 +851,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             }
 
             protected register(onNext: PersistentPrefsUpdatedCallback,
-                               onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+                               onError: OnErrorCallback): SnapshotUnsubscriber {
 
                 const createSnapshotListener = (): SnapshotUnsubscriber => {
 

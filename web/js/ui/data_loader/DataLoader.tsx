@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {SnapshotSubscriber} from "../../firebase/SnapshotSubscribers";
 import Alert from "@material-ui/lab/Alert";
+import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 
 export class DataLoader<T> extends React.Component<IProps<T>, IState<T>> {
 

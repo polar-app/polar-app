@@ -1,11 +1,18 @@
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {DurationStr} from 'polar-shared/src/util/TimeDurations';
-import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
+import {DurationStr, TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {PersistentPrefsUpdatedCallback, PrefsProvider} from "../../datastore/Datastore";
-import {ErrorHandlerCallback} from "../../firebase/Firebase";
-import {SnapshotUnsubscriber} from "../../firebase/SnapshotSubscribers";
+import {
+    ISODateTimeString,
+    ISODateTimeStrings
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {
+    PersistentPrefsUpdatedCallback,
+    PrefsProvider
+} from "../../datastore/Datastore";
+import {
+    OnErrorCallback,
+    SnapshotUnsubscriber
+} from "polar-shared/src/util/Snapshots";
 
 export abstract class Prefs {
 
@@ -143,7 +150,7 @@ export class InterceptedPrefsProvider {
         return this.intercept(this.delegate.get())!;
     }
 
-    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: ErrorHandlerCallback): SnapshotUnsubscriber {
+    public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: OnErrorCallback): SnapshotUnsubscriber {
 
         const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
             onNext(this.intercept(persistentPrefs));

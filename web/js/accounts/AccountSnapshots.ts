@@ -1,20 +1,19 @@
 import {Account} from "./Account";
 import {AccountSnapshot} from "./Accounts";
 import {UserIDStr} from "../firebase/Firebase";
-import {Callback1} from "polar-shared/src/util/Functions";
 import * as firebase from "firebase";
+import {
+    OnErrorCallback,
+    OnNextCallback,
+    SnapshotSubscriber,
+    SnapshotUnsubscriber
+} from "polar-shared/src/util/Snapshots";
 
 const COLLECTION_NAME = "account";
 
-interface IAccountSnapshots {
-    readonly onSnapshot: (uid: string,
-                          handler: Callback1<AccountSnapshot>,
-                          errorHandler?: Callback1<Error>) => void;
-}
-
 export namespace AccountSnapshots {
 
-    export function create(firestore: firebase.firestore.Firestore): IAccountSnapshots {
+    export function create(firestore: firebase.firestore.Firestore, uid: string): SnapshotSubscriber<AccountSnapshot> {
 
         function createRef(uid: UserIDStr) {
 
@@ -24,27 +23,26 @@ export namespace AccountSnapshots {
 
         }
 
-        function onSnapshot(uid: string,
-                            handler: Callback1<AccountSnapshot>,
-                            errorHandler: Callback1<Error> = ERR_HANDLER) {
+        function onSnapshot(onNext: OnNextCallback<AccountSnapshot>,
+                            onError: OnErrorCallback = ERR_HANDLER): SnapshotUnsubscriber {
 
             const ref = createRef(uid);
 
             return ref.onSnapshot(snapshot => {
 
                 if (! snapshot.exists) {
-                    handler(undefined);
+                    onNext(undefined);
                     return;
                 }
 
                 const account = <Account> snapshot.data();
-                handler(account);
+                onNext(account);
 
-            }, errorHandler);
+            }, onError);
 
         }
 
-        return {onSnapshot};
+        return onSnapshot;
 
     }
 

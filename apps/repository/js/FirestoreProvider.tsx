@@ -3,7 +3,7 @@ import {Firestore} from "../../../web/js/firebase/Firestore";
 import {FirestoreCollections} from "./reviewer/FirestoreCollections";
 import {Firebase} from "../../../web/js/firebase/Firebase";
 import {useAsyncWithError} from "./reviewer/ReviewerScreen";
-import isEqual from "react-fast-compare";
+import {deepMemo} from "../../../web/js/react/ReactUtils";
 
 export interface IFirestore {
     readonly uid: string | undefined;
@@ -11,7 +11,9 @@ export interface IFirestore {
     readonly firestore: firebase.firestore.Firestore;
 }
 
-const FirestoreContext = React.createContext<IFirestore | undefined>(undefined);
+// Firestore context which will now ALWAYS be defined anywhere in the app as
+// the provider will not call its children if there is no firestore.
+const FirestoreContext = React.createContext<IFirestore>(null!);
 
 /**
  * Get the firestore context, or undefined if one is not defined yet.
@@ -38,7 +40,7 @@ async function doAsync(): Promise<IFirestore> {
     };
 }
 
-export const FirestoreProvider = React.memo((props: IProps) => {
+export const FirestoreProvider = deepMemo((props: IProps) => {
 
     const data = useAsyncWithError({promiseFn: doAsync});
 
@@ -52,4 +54,4 @@ export const FirestoreProvider = React.memo((props: IProps) => {
 
     return null;
 
-}, isEqual);
+});

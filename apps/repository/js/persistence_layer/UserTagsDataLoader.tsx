@@ -3,8 +3,8 @@ import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
-import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
 import {UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
+import { SnapshotSubscriber } from "polar-shared/src/util/Snapshots";
 
 export class UserTagsDataLoader extends React.Component<IProps, IState> {
 

@@ -3,7 +3,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
 import OrderByDirection = firebase.firestore.OrderByDirection;
-import {SnapshotUnsubscriber} from "../../../firebase/SnapshotSubscribers";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 const log = Logger.create();
 

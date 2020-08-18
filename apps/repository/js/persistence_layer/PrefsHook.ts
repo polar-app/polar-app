@@ -5,7 +5,7 @@ import {
 } from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
 import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {usePersistenceLayerContext} from "./PersistenceLayerApp";
-import {SnapshotSubscriber} from "../../../../web/js/firebase/SnapshotSubscribers";
+import {SnapshotSubscriber} from 'polar-shared/src/util/Snapshots';
 
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
@@ -39,6 +39,6 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
     }
 
-    return useSnapshotSubscriber(createSubscription());
+    return useSnapshotSubscriber({id: 'none', subscribe: createSubscription()});
 
 }
