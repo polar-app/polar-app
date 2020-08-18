@@ -311,14 +311,16 @@ class IframeView {
 		var size;
 
 		if(isNumber(width)){
-			this.element.style.width = width + "px";
-			this.iframe.style.width = width + "px";
+			// burton: don't set width and height
+			// this.element.style.width = width + "px";
+			// this.iframe.style.width = width + "px";
 			this._width = width;
 		}
 
 		if(isNumber(height)){
-			this.element.style.height = height + "px";
-			this.iframe.style.height = height + "px";
+			// burton: don't set width and height
+			// this.element.style.height = height + "px";
+			// this.iframe.style.height = height + "px";
 			this._height = height;
 		}
 
