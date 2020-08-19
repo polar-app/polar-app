@@ -10,7 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 
 const isDevServer = process.env.WEBPACK_DEV_SERVER;
-const mode = process.env.NODE_ENV || isDevServer ? 'development' : 'production';
+const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
