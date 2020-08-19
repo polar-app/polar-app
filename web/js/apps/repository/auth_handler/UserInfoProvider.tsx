@@ -47,7 +47,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 
     function toUserInfoContext(account: Account | undefined): IUserInfoContext | undefined {
 
-        if (! user || ! account) {
+        if (! user) {
             return undefined;
         }
 
@@ -72,6 +72,7 @@ export const UserInfoProvider = deepMemo((props: IProps) => {
     const {value, error} = useSnapshotSubscriber(snapshotSubscriber);
 
     if (error) {
+        console.error("Could not get user info: ", error);
         // TODO: this needs to raise an error in the UI but MUIDialogController
         // is deeper in the tree
         return null;
