@@ -1,16 +1,9 @@
 import * as React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Rects} from "../../../../web/js/Rects";
-import {computePageDimensions} from "./AnnotationHooks";
 import * as ReactDOM from "react-dom";
 import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {Rect} from "../../../../web/js/Rect";
-import {Pagemark} from "../../../../web/js/metadata/Pagemark";
-import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
-import {Styles} from "../../../../web/js/util/Styles";
-import {Optional} from "polar-shared/src/util/ts/Optional";
 import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
 import isEqual from "react-fast-compare";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -19,69 +12,11 @@ import {
     createContextMenu,
     useContextMenu
 } from "../../../repository/js/doc_repo/MUIContextMenu";
-import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
+import {useDocViewerCallbacks} from "../DocViewerStore";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
 import {useEPUBIFrameContext} from "../renderers/epub/contextmenu/EPUBIFrameContext";
-
-const createPlacementRect = (placementElement: HTMLElement) => {
-
-    const positioning = Styles.positioning(placementElement);
-    const positioningPX = Styles.positioningToPX(positioning);
-
-    // TODO: this could be cleaned up a bit...
-
-    // TODO: the offsetWidth does not properly have the width applied to
-    // it for some reason when scale is being used.  getBoundingClientRect
-    // works though.
-
-    const result = {
-        left: Optional.of(positioningPX.left).getOrElse(placementElement.offsetLeft),
-        top: Optional.of(positioningPX.top).getOrElse(placementElement.offsetTop),
-        width: Optional.of(positioningPX.width).getOrElse(placementElement.offsetWidth),
-        height: Optional.of(positioningPX.height).getOrElse(placementElement.offsetHeight),
-    };
-
-    return Rects.createFromBasicRect(result);
-
-};
-
-function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
-
-    const pagemarkRect = new PagemarkRect(pagemark.rect);
-    const overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
-
-    // we have to apply the original placementRect top and left so it's
-    // placed as a proper overlay
-    return Rects.createFromBasicRect({
-        left: overlayRect.left + placementRect.left,
-        top: overlayRect.top + placementRect.top,
-        width: overlayRect.width,
-        height: overlayRect.height,
-    });
-
-}
-
-function computePagemarkFromResize(rect: ILTRect,
-                                   pageElement: HTMLElement,
-                                   pagemark: IPagemark) {
-
-    const pageDimensions = computePageDimensions(pageElement)
-
-    const annotationRect = AnnotationRects.createFromPositionedRect(Rects.createFromBasicRect(rect),
-                                                                    pageDimensions);
-
-    const pagemarkRect = new PagemarkRect(annotationRect);
-
-    const newPagemark = Object.assign({}, pagemark);
-    newPagemark.percentage = pagemarkRect.toPercentage();
-    newPagemark.rect = pagemarkRect;
-
-    return newPagemark;
-
-}
 
 interface PagemarkInnerProps {
     readonly id: string;
@@ -93,26 +28,45 @@ interface PagemarkInnerProps {
 
 }
 
-const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
+function useEPUBIFrameElement(): HTMLIFrameElement {
+    const docViewerElementsContext = useDocViewerElementsContext();
+    const docViewerElement = docViewerElementsContext.getDocViewerElement();
+    return docViewerElement.querySelector('iframe')!;
+}
+
+const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     const {id, fingerprint, pagemark, pageNum, className, pagemarkColor} = props;
 
     const contextMenu = useContextMenu();
 
     const callbacks = useDocViewerCallbacks();
-    const docViewerElementsContext = useDocViewerElementsContext();
-    const iframe = useEPUBIFrameContext();
+    const iframe = useEPUBIFrameElement();
 
+    if (! iframe || ! iframe.contentDocument) {
+        // the iframe isn't mounted yet.
+        console.log("FIXME: no iframe yet");
+        return null;
+    }
 
     function computeHeightFromRange() {
+
         const cfi = pagemark.range?.end?.value
 
         if (! cfi) {
             return undefined;
         }
 
+        console.log("FIXME: finding cfi: ", cfi);
+
+        // FIXME: we need a base here...
         const epubCFI = new EpubCFI(cfi);
         const range = epubCFI.toRange(iframe.contentDocument!);
+
+        if (! range) {
+            console.log("No range found for pagemark with CFI: " + cfi);
+        }
+
         return range.getBoundingClientRect().height;
     }
 
@@ -140,6 +94,8 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
         // callbacks.onPagemark(mutation);
 
     }, []);
+
+    console.log("FIXME: rendering pagemark");
 
     return (
         <ResizeBox
@@ -169,7 +125,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                     zIndex: 9
                 }}/>
     );
-}, isEqual);
+});
 
 export const ContextMenu = createContextMenu(PagemarkMenu);
 

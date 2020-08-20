@@ -4,6 +4,7 @@ import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {PagemarkRendererForFluid} from "./PagemarkRendererForFluid";
 import {PagemarkRendererForFixed} from "./PagemarkRendererForFixed";
+import {useDocViewerContext} from "../renderers/DocRenderer";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -13,7 +14,11 @@ interface IProps {
 }
 
 export const PagemarkRenderer = deepMemo((props: IProps) => {
-    if (props.pagemark.range) {
+
+    const {fileType} = useDocViewerContext();
+
+    if (fileType === 'epub') {
+        // we always have to use fluid pagemarks with epub documents.
         return <PagemarkRendererForFluid {...props}/>
     } else {
         return <PagemarkRendererForFixed {...props}/>

@@ -3,6 +3,7 @@ import {
     createObservableStore,
     SetStore
 } from "../../../../../web/js/react/store/ObservableStore";
+import Section from "epubjs/types/section";
 
 export interface IEPUBDocumentStore {
 
@@ -12,6 +13,11 @@ export interface IEPUBDocumentStore {
      */
     readonly renderIter: number;
 
+    /**
+     * The current section of the epub.
+     */
+    readonly section?: Section;
+
 }
 
 export interface IEPUBDocumentCallbacks {
@@ -20,6 +26,8 @@ export interface IEPUBDocumentCallbacks {
      * Increment the render iter.
      */
     readonly incrRenderIter: () => void;
+
+    readonly setSection: (section: Section) => void;
 }
 
 const initialStore: IEPUBDocumentStore = {
@@ -46,7 +54,12 @@ function callbacksFactory(storeProvider: Provider<IEPUBDocumentStore>,
         setStore({...store, renderIter: store.renderIter + 1});
     }
 
-    return {incrRenderIter};
+    function setSection(section: Section) {
+        const store = storeProvider();
+        setStore({...store, section});
+    }
+
+    return {incrRenderIter, setSection};
 
 }
 

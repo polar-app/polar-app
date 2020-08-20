@@ -380,6 +380,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         const range: IPagemarkRange = {
             end: {
                 type: 'epubcfi',
+                /// FIXME this doesn't include the base so it's not the full CFI
                 value: epubCFI.toString()
             }
         };

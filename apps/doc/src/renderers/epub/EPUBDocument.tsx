@@ -61,7 +61,7 @@ export const EPUBDocument = (props: IProps) => {
     const {renderIter}
         = useEPUBDocumentStore(['renderIter'])
 
-    const {incrRenderIter}
+    const {incrRenderIter, setSection}
         = useEPUBDocumentCallbacks()
 
     const css = useCSS();
@@ -143,10 +143,6 @@ export const EPUBDocument = (props: IProps) => {
             epubResizer();
         });
 
-        await rendition.display();
-
-        const metadata = await book.loaded.metadata;
-
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
 
         function createPageNavigator(): PageNavigator {
@@ -183,10 +179,14 @@ export const EPUBDocument = (props: IProps) => {
         const pageNavigator = createPageNavigator();
         setPageNavigator(pageNavigator);
 
+        await pageNavigator.set(1);
+
         setDocDescriptor({
             fingerprint: docMeta.docInfo.fingerprint,
             nrPages: pageNavigator.count
         });
+
+        const metadata = await book.loaded.metadata;
 
         console.log({metadata});
 
