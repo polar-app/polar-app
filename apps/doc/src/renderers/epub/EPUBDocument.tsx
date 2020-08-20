@@ -138,9 +138,17 @@ export const EPUBDocument = (props: IProps) => {
             console.error("epubjs: resized", new Error("FAIL: this should not happen"));
         });
 
-        rendition.on('rendered', (event: any) => {
+        rendition.on('rendered', (section: Section) => {
             incrRenderIter();
             epubResizer();
+            // FIXME: when we jump between pages in the UI ... by clicking the
+            // ToC the 'page' that we're on isn't updated. We can listen for the
+            // section here, then find out what pages it's on, then set the the
+            // page.
+
+            // we have to update the section here as we jumped within the EPUB
+            // directly.
+            setSection(section);
         });
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
@@ -169,6 +177,7 @@ export const EPUBDocument = (props: IProps) => {
 
                 await rendition.display(newSection.index)
                 await renderedLatch.get();
+                setSection(newSection);
 
             }
 
