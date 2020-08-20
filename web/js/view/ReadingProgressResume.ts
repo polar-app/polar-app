@@ -46,6 +46,10 @@ export namespace ReadingProgressResume {
 
         const scrollParent = getScrollParent(pageElement);
 
+        if (! pageElement) {
+            return;
+        }
+
         const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
 
         const pageTop = pageOffset.top;

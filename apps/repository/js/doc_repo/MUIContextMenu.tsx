@@ -9,6 +9,8 @@ export namespace MouseEvents {
         return {
             clientX: event.clientX,
             clientY: event.clientY,
+            pageX: event.pageX,
+            pageY: event.pageY,
             target: event.target,
             nativeEvent: event,
             preventDefault: event.preventDefault.bind(event),
@@ -25,6 +27,8 @@ export interface IMouseEvent {
 
     readonly clientX: number;
     readonly clientY: number;
+    readonly pageX: number;
+    readonly pageY: number;
     readonly target: EventTarget | null;
 
     readonly nativeEvent: MouseEvent;

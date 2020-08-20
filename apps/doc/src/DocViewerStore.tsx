@@ -26,6 +26,8 @@ import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
 import { DocMetas } from '../../../web/js/metadata/DocMetas';
+import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -114,6 +116,10 @@ export interface IPagemarkCreateToPoint {
 
     // the page number of the current page.
     readonly pageNum: number;
+
+    readonly percentage: number | undefined;
+    readonly range: IPagemarkRange | undefined;
+
 }
 
 export interface IPagemarkCreateFromPage {
@@ -380,28 +386,31 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const {pageNum} = opts;
 
             const verticalOffsetWithinPageElement = opts.y;
-
             const pageHeight = opts.height;
 
             const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
                                                      pageHeight,
                                                      {noRound: true});
 
-            console.log("percentage for pagemark: ", percentage);
+            console.log("Created pagemark with percentage: ", percentage);
 
-            function deletePagemark(pageNum: number) {
-
+            function deletePagemarkForCurrentPage(pageNum: number) {
                 Preconditions.assertNumber(pageNum, "pageNum");
-
                 Pagemarks.deletePagemark(docMeta!, pageNum);
-
             }
 
             function createPagemarksForRange(endPageNum: number, percentage: number) {
-                Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
+                const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
+
+                if (createdPagemarks.length > 0) {
+                    const last = Arrays.last(createdPagemarks)!
+                    // now add the range which is needed for fluid pagemarks.
+                    last.pagemark.range = opts.range;
+                    console.log("FIXME: Wrote last pagemark: ", last.pagemark)
+                }
             }
 
-            deletePagemark(pageNum);
+            deletePagemarkForCurrentPage(pageNum);
             createPagemarksForRange(pageNum, percentage);
 
             writeUpdatedDocMetas([docMeta])
@@ -410,7 +419,16 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
 
         function createPagemarkFromPage(opts: IPagemarkCreateFromPage) {
-            createPagemarkToPoint({...opts, type: 'create-to-point'}, opts.fromPage);
+
+            const createOpts: IPagemarkCreateToPoint = {
+                ...opts,
+                type: 'create-to-point',
+                percentage: undefined,
+                range: undefined
+            };
+
+            createPagemarkToPoint(createOpts, opts.fromPage);
+
         }
 
         function updatePagemark(mutation: IPagemarkUpdate) {

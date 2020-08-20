@@ -33,8 +33,11 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
 import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
 import {Ranges} from "../../../web/js/highlights/text/selection/Ranges";
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
+import {EpubCFI} from "epubjs";
+import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
+import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
+import {Percentages} from "polar-shared/src/util/Percentages";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -92,6 +95,7 @@ export interface IDocViewerContextMenuOrigin {
     readonly clientY: number;
     readonly pointWithinPageElement: IPoint;
 
+    readonly target: EventTarget | null;
     readonly fileType: FileType;
 
     readonly hasSelection: boolean;
@@ -101,6 +105,17 @@ export interface IDocViewerContextMenuOrigin {
     readonly pagemarks: ReadonlyArray<IAnnotationMeta>;
     readonly areaHighlights: ReadonlyArray<IAnnotationMeta>;
     readonly textHighlights: ReadonlyArray<IAnnotationMeta>;
+
+    /**
+     * The first range when we're activated.
+     */
+    readonly range: Range | undefined;
+
+    readonly pageX: number;
+    readonly pageY: number;
+
+    readonly windowWidth: number;
+    readonly windowHeight: number;
 
 }
 
@@ -180,6 +195,9 @@ function selectedAnnotationMetas(pageElement: HTMLElement,
 }
 
 export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewerContextMenuOrigin | undefined {
+
+    console.log("FIXME1: " , event.nativeEvent.currentTarget);
+    console.log("FIXME2: " , event.nativeEvent.target);
 
     const target = event.target as HTMLElement;
 
@@ -282,9 +300,37 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
     }
 
+    function computeRange() {
+
+        const view = event.nativeEvent.view;
+
+        if (! view) {
+            return undefined;
+        }
+
+        const selection = view.getSelection();
+
+        if (! selection) {
+            return undefined;
+        }
+
+        if (selection.rangeCount === 0) {
+            return undefined;
+        }
+
+        return selection.getRangeAt(0);
+
+    }
+
+    const range = computeRange();
+
     return {
         clientX: event.clientX,
         clientY: event.clientY,
+        pageX: event.pageX,
+        pageY: event.pageY,
+        windowWidth: event.nativeEvent.view!.innerWidth,
+        windowHeight: event.nativeEvent.view!.innerHeight,
         x: eventTargetOffset.left + (event.nativeEvent as any).offsetX,
         y: eventTargetOffset.top + (event.nativeEvent as any).offsetY,
         width: pageElement.clientWidth,
@@ -296,7 +342,9 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
         textHighlights,
         fileType,
         hasSelection,
-        selectionToText
+        selectionToText,
+        target: event.target,
+        range
     };
 
 }
@@ -312,22 +360,51 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const origin = props.origin!;
 
-    // FIXME this one needs to specify a 'type' or other parameters
+    // FIXME: I need to specify
+    //
+
+    interface IFluidPagemark {
+        readonly percentage: number;
+        readonly range: IPagemarkRange;
+    }
+
+    const createFluidPagemarkForEPUB = (): IFluidPagemark | undefined => {
+
+        if (! origin.range) {
+            return undefined;
+        }
+
+        const percentage = Percentages.calculate(origin.pageY, origin.windowHeight);
+        const epubCFI = new EpubCFI(origin.range);
+
+        const range: IPagemarkRange = {
+            end: {
+                type: 'epubcfi',
+                value: epubCFI.toString()
+            }
+        };
+
+        return {percentage, range}
+
+    }
+
+    const createFluidPagemark = (): IFluidPagemark | undefined => {
+        return origin.fileType === 'epub' ? createFluidPagemarkForEPUB() : undefined;
+    }
 
     const onCreatePagemarkToPoint = React.useCallback(() => {
 
-        // FIXM I think this would need to read the previous pagemark, use that
-        // page and epubcfi,
-        //
-        // FIXME: I could decompose these into smaller pagemarks that take up
-        // 100% of the page
-
-        // FIXME: make a fake/testable function for adding EPUBCFI data to Pagemarks
-        // to make it work properly...
+        const fluidPagemark = createFluidPagemark();
 
         onPagemark({
             type: 'create-to-point',
-            ...origin,
+            x: origin.x,
+            y: origin.y,
+            width: origin.width,
+            height: origin.height,
+            pageNum: origin.pageNum,
+            percentage: fluidPagemark?.percentage,
+            range: fluidPagemark?.range
         });
 
     }, []);
@@ -336,6 +413,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     // from a page so we would need some type of custom range for this.
 
     const onCreatePagemarkFromPage = React.useCallback(() => {
+
+        if (origin.fileType === 'epub') {
+            console.log("FIXME skip epub for pagemark");
+            return;
+        }
 
         function onDone(fromPage: number) {
 
@@ -432,12 +514,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             {/*                 icon={<AssignmentIcon/>}*/}
             {/*                 onClick={onCopy}/>}*/}
 
-            {isPDF &&
-                <MUIMenuItem text="Create Pagemark to Point"
-                             icon={<BookmarkIcon/>}
-                             onClick={onCreatePagemarkToPoint}/>}
+            <MUIMenuItem text="Create Pagemark to Point"
+                         icon={<BookmarkIcon/>}
+                         onClick={onCreatePagemarkToPoint}/>
 
-            {isPDF && origin.pageNum > 1 && (
+            {origin.pageNum > 1 && (
                 <MUIMenuItem text="Create Pagemark from Page To Point"
                              icon={<BookmarksIcon/>}
                              onClick={onCreatePagemarkFromPage}/>)}
@@ -447,7 +528,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                              icon={<PhotoSizeSelectLargeIcon/>}
                              onClick={onCreateAreaHighlight}/>}
 
-            {isPDF && (props.origin?.pagemarks?.length || 0) > 0 &&
+            {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Pagemark"
                              icon={<DeleteForeverIcon/>}
                              onClick={() => onDeletePagemark(origin.pagemarks)}/>}

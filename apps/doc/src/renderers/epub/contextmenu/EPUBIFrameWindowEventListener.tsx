@@ -28,16 +28,16 @@ export const EPUBIFrameWindowEventListener = () => {
             return;
         }
 
-        const win = iframe.contentWindow;
+        const source = iframe.contentWindow?.document.body;
 
-        if (! win) {
+        if (! source) {
             console.warn("No window for iframe");
             return;
         }
 
-        win.addEventListener('contextmenu', handleContextMenu);
+        source.addEventListener('contextmenu', handleContextMenu);
 
-        unsubscriber.current = () => win.removeEventListener('contextmenu', handleContextMenu);
+        unsubscriber.current = () => source.removeEventListener('contextmenu', handleContextMenu);
 
     });
 
