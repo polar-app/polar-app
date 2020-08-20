@@ -38,6 +38,7 @@ import {EpubCFI} from "epubjs";
 import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import {Percentages} from "polar-shared/src/util/Percentages";
+import {IFluidPagemark} from "./FluidPagemarkFactory";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -351,7 +352,7 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
-    const {docDescriptor} = useDocViewerStore(['docDescriptor']);
+    const {docDescriptor, fluidPagemarkFactory} = useDocViewerStore(['docDescriptor', 'fluidPagemarkFactory']);
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
@@ -360,37 +361,8 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const origin = props.origin!;
 
-    // FIXME: I need to specify
-    //
-
-    interface IFluidPagemark {
-        readonly percentage: number;
-        readonly range: IPagemarkRange;
-    }
-
-    const createFluidPagemarkForEPUB = (): IFluidPagemark | undefined => {
-
-        if (! origin.range) {
-            return undefined;
-        }
-
-        const percentage = Percentages.calculate(origin.pageY, origin.windowHeight);
-        const epubCFI = new EpubCFI(origin.range);
-
-        const range: IPagemarkRange = {
-            end: {
-                type: 'epubcfi',
-                /// FIXME this doesn't include the base so it's not the full CFI
-                value: epubCFI.toString()
-            }
-        };
-
-        return {percentage, range}
-
-    }
-
     const createFluidPagemark = (): IFluidPagemark | undefined => {
-        return origin.fileType === 'epub' ? createFluidPagemarkForEPUB() : undefined;
+        return fluidPagemarkFactory ? fluidPagemarkFactory.create(origin) : undefined;
     }
 
     const onCreatePagemarkToPoint = React.useCallback(() => {

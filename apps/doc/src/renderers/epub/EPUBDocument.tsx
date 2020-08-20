@@ -1,6 +1,6 @@
 import React from 'react';
 import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
-import ePub from "epubjs";
+import ePub, {EpubCFI} from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {PageNavigator} from "../../PageNavigator";
@@ -27,6 +27,11 @@ import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
 import { IDimensions } from 'polar-shared/src/util/IDimensions';
 import {DarkModeScrollbars} from "../../../../../web/js/mui/css/DarkModeScrollbars";
 import {EPUBContextMenuRoot} from "./contextmenu/EPUBContextMenuRoot";
+import {FluidPagemarkFactory, IFluidPagemark} from "../../FluidPagemarkFactory";
+import {IDocViewerContextMenuOrigin} from "../../DocViewerMenu";
+import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
+import { Percentages } from 'polar-shared/src/util/Percentages';
+import section from "epubjs/types/section";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -52,7 +57,7 @@ export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
 
-    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer}
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory}
         = useDocViewerCallbacks();
 
     const {setFinder}
@@ -70,7 +75,7 @@ export const EPUBDocument = (props: IProps) => {
     const docViewerElements = useDocViewerElementsContext();
     const epubResizer = useEPUBResizer();
     const log = useLogger();
-
+    const sectionRef = React.useRef<Section | undefined>(undefined);
 
     async function doLoad() {
 
@@ -138,6 +143,10 @@ export const EPUBDocument = (props: IProps) => {
             console.error("epubjs: resized", new Error("FAIL: this should not happen"));
         });
 
+        // FIXME: in the docViewerStore we can set a PagemarkRangeFactory or
+        // something along those line to help us create pagemarks from the EPUB
+        // directly so that the DocViewerMenu can use that.
+
         rendition.on('rendered', (section: Section) => {
             incrRenderIter();
             epubResizer();
@@ -148,10 +157,15 @@ export const EPUBDocument = (props: IProps) => {
 
             // we have to update the section here as we jumped within the EPUB
             // directly.
-            setSection(section);
+            handleSection(section);
         });
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
+
+        function handleSection(section: Section) {
+            setSection(section);
+            sectionRef.current = section;
+        }
 
         function createPageNavigator(): PageNavigator {
 
@@ -177,7 +191,7 @@ export const EPUBDocument = (props: IProps) => {
 
                 await rendition.display(newSection.index)
                 await renderedLatch.get();
-                setSection(newSection);
+                handleSection(newSection);
 
             }
 
@@ -185,8 +199,42 @@ export const EPUBDocument = (props: IProps) => {
 
         }
 
+        function createFluidPagemarkFactory(): FluidPagemarkFactory {
+
+            function create(origin: IDocViewerContextMenuOrigin): IFluidPagemark | undefined {
+
+                if (! origin.range) {
+                    return undefined;
+                }
+
+                // FIXME: this percentage computation might not be required.
+                const percentage = Percentages.calculate(origin.pageY, origin.windowHeight);
+                const cfiBase = sectionRef.current!.cfiBase;
+                const epubCFI = new EpubCFI(origin.range, cfiBase);
+
+                const range: IPagemarkRange = {
+                    end: {
+                        type: 'epubcfi',
+                        value: epubCFI.toString()
+                    }
+                };
+
+                return {percentage, range}
+
+            }
+
+
+            return {create};
+
+        }
+
         const pageNavigator = createPageNavigator();
         setPageNavigator(pageNavigator);
+
+        // define the fluid pagemark factor so that the menu can use this
+        // when creating pagemarks.
+        const fluidPagemarkFactory = createFluidPagemarkFactory();
+        setFluidPagemarkFactory(fluidPagemarkFactory);
 
         await pageNavigator.set(1);
 

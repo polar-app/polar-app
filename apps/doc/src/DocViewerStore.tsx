@@ -28,6 +28,7 @@ import {DocViewerSnapshots} from "./DocViewerSnapshots";
 import { DocMetas } from '../../../web/js/metadata/DocMetas';
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import { Arrays } from 'polar-shared/src/util/Arrays';
+import {FluidPagemarkFactory} from "./FluidPagemarkFactory";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -99,6 +100,8 @@ export interface IDocViewerStore {
     readonly pendingWrites: number
 
     readonly hasPendingWrites?: boolean;
+
+    readonly fluidPagemarkFactory?: FluidPagemarkFactory;
 
 }
 
@@ -180,6 +183,7 @@ export interface IDocViewerCallbacks {
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
+    readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     onPagemark(opts: IPagemarkMutation): void;
@@ -362,6 +366,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         }
 
+    }
+
+    function setFluidPagemarkFactory(fluidPagemarkFactory: FluidPagemarkFactory) {
+        const store = storeProvider();
+        setStore({...store, fluidPagemarkFactory});
     }
 
     const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
@@ -557,7 +566,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         onPageNext,
         setResizer,
         setScaleLeveler,
-        setScale
+        setScale,
+        setFluidPagemarkFactory
     };
 
 }

@@ -65,15 +65,18 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         if (! range) {
             console.log("No range found for pagemark with CFI: " + cfi);
+            return;
         }
 
-        return range.getBoundingClientRect().height;
+        return range.getBoundingClientRect().bottom;
     }
 
     const top = 0;
     const left = 0;
     const width = iframe.contentDocument!.body.offsetWidth;
     const height = computeHeightFromRange() || iframe.contentDocument!.body.offsetHeight;
+
+    console.log("FIXME: using pagemark dimensions: ", {top, left, width, height});
 
     const handleResized = React.useCallback((rect: ILTRect) => {
 
