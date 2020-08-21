@@ -88,6 +88,19 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
     const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
+    const resizeStyles = {
+        vertical: {
+            width: '5px'
+        },
+        horizontal: {
+            height: '5px'
+        },
+        corner: {
+            width: '5px',
+            height: '5px'
+        }
+    }
+
     return (
         <>
 
@@ -131,14 +144,46 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 }}
                 disableDragging={true}
                 resizeHandleStyles={{
-                    bottom: resizeHandleStyle,
-                    bottomLeft: resizeHandleStyle,
-                    bottomRight: resizeHandleStyle,
-                    top: resizeHandleStyle,
-                    topLeft: resizeHandleStyle,
-                    topRight: resizeHandleStyle,
-                    left: resizeHandleStyle,
-                    right: resizeHandleStyle
+                    top: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.horizontal
+                    },
+                    bottom: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.horizontal
+                    },
+                    left: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.vertical
+                    },
+                    right: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.vertical
+                    },
+                    topLeft: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.corner,
+                        top: '-5px',
+                        left: '-5px'
+                    },
+                    topRight: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.corner,
+                        top: '-5px',
+                        right: '-5px'
+                    },
+                    bottomLeft: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.corner,
+                        bottom: '-5px',
+                        left: '-5px'
+                    },
+                    bottomRight: {
+                        ...resizeHandleStyle,
+                        ...resizeStyles.corner,
+                        bottom: '-5px',
+                        right: '-5px'
+                    },
                 }}
                 style={{
                     ...props.style,
