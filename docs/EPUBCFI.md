@@ -56,3 +56,13 @@ document.body.addEventListener('contextmenu', (event) => {
     const range = window.getSelection().getRangeAt(0);
     console.log(range);
 })
+
+
+- remaining issues:
+
+     - all pagemarks display no matter what the page numbers is.
+     
+     - no ability to resize and re-anchor them to another point.
+     
+     - the pagemarks go outside of the 'body' which has padding now..
+     - 
