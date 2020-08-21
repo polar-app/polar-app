@@ -1,4 +1,4 @@
-import {Rnd} from "react-rnd";
+import {Rnd, HandleStyles} from "react-rnd";
 import * as React from "react";
 import {useState} from "react";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -13,10 +13,17 @@ interface IProps {
 
     readonly className?: string;
 
+    readonly bounds?: string;
+
+    readonly document?: Document;
+    readonly window?: Window;
+
     readonly left: number;
     readonly top: number;
     readonly width: number;
     readonly height: number;
+
+    readonly resizeHandleStyles?: HandleStyles;
 
     readonly onResized?: (resizeRect: ILTRect) => void;
 
@@ -88,16 +95,19 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
     const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
+    const outlineSize = 5
+    const outlineSizePX = `${outlineSize}px`;
+
     const resizeStyles = {
         vertical: {
-            width: '5px'
+            width: outlineSizePX
         },
         horizontal: {
-            height: '5px'
+            height: outlineSizePX
         },
         corner: {
-            width: '5px',
-            height: '5px'
+            width: outlineSizePX,
+            height: outlineSizePX
         }
     }
 
@@ -109,7 +119,9 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
             <Rnd
                 id={props.id}
-                bounds="parent"
+                document={props.document}
+                window={props.window}
+                bounds={props.bounds || "parent"}
                 className={props.className}
                 size={{
                     width: state.width,
@@ -146,43 +158,55 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 resizeHandleStyles={{
                     top: {
                         ...resizeHandleStyle,
-                        ...resizeStyles.horizontal
+                        ...props.resizeHandleStyles?.top,
+                        ...resizeStyles.horizontal,
+                        top: '0px'
                     },
                     bottom: {
                         ...resizeHandleStyle,
-                        ...resizeStyles.horizontal
+                        ...props.resizeHandleStyles?.bottom,
+                        ...resizeStyles.horizontal,
+                        bottom: '0px'
                     },
                     left: {
                         ...resizeHandleStyle,
-                        ...resizeStyles.vertical
+                        ...props.resizeHandleStyles?.left,
+                        ...resizeStyles.vertical,
+                        left: '0px',
                     },
                     right: {
                         ...resizeHandleStyle,
-                        ...resizeStyles.vertical
+                        ...props.resizeHandleStyles?.right,
+                        ...resizeStyles.vertical,
+                        right: '0px'
                     },
                     topLeft: {
                         ...resizeHandleStyle,
+                        ...props.resizeHandleStyles?.topLeft,
                         ...resizeStyles.corner,
-                        top: '-5px',
-                        left: '-5px'
+                        top: `0px`,
+                        left: `0px`
                     },
                     topRight: {
                         ...resizeHandleStyle,
+                        ...props.resizeHandleStyles?.topRight,
                         ...resizeStyles.corner,
-                        top: '-5px',
-                        right: '-5px'
+                        top: `0px`,
+                        right: `0px`
                     },
                     bottomLeft: {
                         ...resizeHandleStyle,
+                        ...props.resizeHandleStyles?.bottomLeft,
                         ...resizeStyles.corner,
-                        bottom: '-5px',
-                        left: '-5px'
+                        bottom: `0px`,
+                        left: `0px`
                     },
                     bottomRight: {
                         ...resizeHandleStyle,
+                        ...props.resizeHandleStyles?.bottomRight,
                         ...resizeStyles.corner,
-                        bottom: '-5px',
-                        right: '-5px'
+                        bottom: `0px`,
+                        right: `0px`
                     },
                 }}
                 style={{

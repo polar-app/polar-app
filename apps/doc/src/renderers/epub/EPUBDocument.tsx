@@ -2,12 +2,10 @@ import React from 'react';
 import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
 import ePub, {EpubCFI} from "epubjs";
 import {URLStr} from "polar-shared/src/util/Strings";
-import useTheme from "@material-ui/core/styles/useTheme";
 import {PageNavigator} from "../../PageNavigator";
 import {Resizer, useDocViewerCallbacks} from "../../DocViewerStore";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import Section from 'epubjs/types/section';
-import blue from '@material-ui/core/colors/blue';
 import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
@@ -15,23 +13,25 @@ import {IFrameEventForwarder} from "./IFrameEventForwarder";
 import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
 import './EPUBDocument.css';
-import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
-import { useEPUBDocumentStore, useEPUBDocumentCallbacks } from './EPUBDocumentStore';
+import {
+    useEPUBDocumentCallbacks,
+    useEPUBDocumentStore
+} from './EPUBDocumentStore';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
-import { Arrays } from 'polar-shared/src/util/Arrays';
+import {Arrays} from 'polar-shared/src/util/Arrays';
 import {Latch} from "polar-shared/src/util/Latch";
 import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
-import { IDimensions } from 'polar-shared/src/util/IDimensions';
-import {DarkModeScrollbars} from "../../../../../web/js/mui/css/DarkModeScrollbars";
+import {IDimensions} from 'polar-shared/src/util/IDimensions';
 import {EPUBContextMenuRoot} from "./contextmenu/EPUBContextMenuRoot";
 import {FluidPagemarkFactory, IFluidPagemark} from "../../FluidPagemarkFactory";
 import {IDocViewerContextMenuOrigin} from "../../DocViewerMenu";
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
-import { Percentages } from 'polar-shared/src/util/Percentages';
-import section from "epubjs/types/section";
+import {Percentages} from 'polar-shared/src/util/Percentages';
+import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import {useCSS} from "./EPUBDocumentHooks";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -336,92 +336,5 @@ function useEPUBResizer() {
         console.log("Resized to dimensions: ", dimensions);
 
     }
-
-}
-
-
-function useCSS() {
-
-    const theme = useTheme();
-
-    const darkModeScrollbars = theme.palette.type === 'dark' ?
-                               DarkModeScrollbars.createCSS() :
-                               {};
-
-    const color = theme.palette.type === 'dark' ? 'rgb(217, 217, 217)' : theme.palette.text.primary;
-
-    const baseColorStyles = {
-        'color': `${color}`,
-        'background-color': `${theme.palette.background.default}`,
-    };
-
-    const paddingStyles = {
-        "padding-top": "10px",
-        "padding-bottom": "10px",
-        "padding-left": "10px",
-        "padding-right": "10px",
-        "padding": "10px",
-    }
-
-    return {
-
-        ...darkModeScrollbars,
-        'body, html': {
-            ...baseColorStyles,
-            'font-family': `${theme.typography.fontFamily} !important`,
-            'padding': '0px',
-            'padding-bottom': '5px !important',
-            'max-width': '800px !important',
-            'margin-left': 'auto !important',
-            'margin-right': 'auto !important',
-            'margin-bottom': '5px !important'
-        },
-        'body :not(.polar-ui)': {
-            ...baseColorStyles,
-        },
-        'body': {
-            'margin': '5px',
-            ...paddingStyles
-        },
-        'html': {
-            ...paddingStyles
-        },
-        'h1, h2, h3': {
-            'color': `${theme.palette.text.primary}`
-        },
-
-        'header h2': {
-
-        },
-
-        'header > figure': {
-            margin: '0px',
-            display: 'flex'
-        },
-
-        'header > figure > img': {
-            // height: '100%',
-            // width: '100%',
-            // 'object-fit': 'contain'
-            'margin-left': 'auto',
-            'margin-right': 'auto',
-            'max-height': '100% !important',
-            'max-width': '100% !important',
-        },
-
-        "a:link": {
-            color: blue[300],
-        },
-        "a:visited": {
-            color: blue[600],
-        },
-        "a:hover": {
-            color: blue[400],
-        },
-        "a:active": {
-            color: blue[500],
-        },
-
-    };
 
 }

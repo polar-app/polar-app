@@ -5,18 +5,15 @@ import {ResizeBox} from "./ResizeBox";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {PagemarkColors} from "polar-shared/src/metadata/PagemarkColors";
-import isEqual from "react-fast-compare";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {PagemarkMenu, PagemarkValueContext} from "./PagemarkMenu";
 import {
     createContextMenu,
     useContextMenu
 } from "../../../repository/js/doc_repo/MUIContextMenu";
-import {useDocViewerCallbacks} from "../DocViewerStore";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
-import {useEPUBIFrameContext} from "../renderers/epub/contextmenu/EPUBIFrameContext";
 
 interface PagemarkInnerProps {
     readonly id: string;
@@ -34,14 +31,26 @@ function useEPUBIFrameElement(): HTMLIFrameElement {
     return docViewerElement.querySelector('iframe')!;
 }
 
+interface IBrowserContext {
+    readonly document: Document;
+    readonly window: Window;
+}
+
+function useEPUBIFrameBrowserContext(): IBrowserContext{
+    const iframe = useEPUBIFrameElement();
+    const document = iframe.contentDocument!;
+    const window = document.defaultView!;
+    return {document, window};
+}
+
 const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     const {id, fingerprint, pagemark, pageNum, className, pagemarkColor} = props;
 
     const contextMenu = useContextMenu();
 
-    const callbacks = useDocViewerCallbacks();
     const iframe = useEPUBIFrameElement();
+    const browserContext = useEPUBIFrameBrowserContext();
 
     if (! iframe || ! iframe.contentDocument) {
         // the iframe isn't mounted yet.
@@ -102,8 +111,10 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     return (
         <ResizeBox
                 {...contextMenu}
+                {...browserContext}
                 onResized={handleResized}
                 id={id}
+                bounds="parent"
                 data-type="pagemark"
                 data-doc-fingerprint={fingerprint}
                 data-pagemark-id={pagemark.id}
