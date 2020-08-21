@@ -68,7 +68,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             return;
         }
 
-        return range.getBoundingClientRect().bottom;
+        const bcr = range.getBoundingClientRect();
+        return bcr.bottom;
     }
 
     const top = 0;
@@ -97,8 +98,6 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         // callbacks.onPagemark(mutation);
 
     }, []);
-
-    console.log("FIXME: rendering pagemark");
 
     return (
         <ResizeBox
@@ -159,7 +158,7 @@ export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
 
         const id = createID();
 
-        const className = `pagemark annotation`;
+        const className = `pagemark annotation polar-ui`;
 
         const pagemarkColor = PagemarkColors.toPagemarkColor(pagemark);
 

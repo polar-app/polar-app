@@ -3,9 +3,8 @@ import * as React from "react";
 import {useState} from "react";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Simulate} from "react-dom/test-utils";
-import keyDown = Simulate.keyDown;
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {
     readonly id?: string;
@@ -33,7 +32,7 @@ interface IState {
     readonly height: number;
 }
 
-export function ResizeBox(props: IProps) {
+export const ResizeBox = deepMemo((props: IProps) => {
 
     const [state, setState] = useState<IState>({
         active: true,
@@ -157,4 +156,4 @@ export function ResizeBox(props: IProps) {
         </>
     );
 
-}
+})

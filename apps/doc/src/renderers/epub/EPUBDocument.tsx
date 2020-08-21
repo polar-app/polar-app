@@ -351,8 +351,8 @@ function useCSS() {
     const color = theme.palette.type === 'dark' ? 'rgb(217, 217, 217)' : theme.palette.text.primary;
 
     const baseColorStyles = {
-        'color': `${color} !important`,
-        'background-color': `${theme.palette.background.default} !important`,
+        'color': `${color}`,
+        'background-color': `${theme.palette.background.default}`,
     };
 
     const paddingStyles = {
