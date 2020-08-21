@@ -40,9 +40,11 @@ export function useCSS() {
         },
         'body': {
             'margin': '5px',
+            'min-height': 'calc(100vh - 20px)',
             ...paddingStyles
         },
         'html': {
+            'background-color': `${theme.palette.background.paper}`,
             'max-width': '800px !important',
             'margin-left': 'auto !important',
             'margin-right': 'auto !important',

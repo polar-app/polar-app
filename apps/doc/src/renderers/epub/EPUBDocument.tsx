@@ -103,6 +103,9 @@ export const EPUBDocument = (props: IProps) => {
         //
         // test no width but set the iframe CSS style to width
 
+        // FIXME another idea would be to hide the document until it's rendered
+        // then apply my themes and then render them.. .
+
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',

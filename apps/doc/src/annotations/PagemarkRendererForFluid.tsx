@@ -14,6 +14,7 @@ import {
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
+import { useDocViewerStore } from "../DocViewerStore";
 
 interface PagemarkInnerProps {
     readonly id: string;

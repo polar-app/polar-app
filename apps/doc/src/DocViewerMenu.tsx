@@ -34,11 +34,8 @@ import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
 import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
 import {Ranges} from "../../../web/js/highlights/text/selection/Ranges";
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
-import {EpubCFI} from "epubjs";
-import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
-import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
-import {Percentages} from "polar-shared/src/util/Percentages";
 import {IFluidPagemark} from "./FluidPagemarkFactory";
+import {MUIMenuSubheader} from "../../../web/js/mui/menu/MUIMenuSubheader";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -486,6 +483,8 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             {/*    <MUIMenuItem text="Copy"*/}
             {/*                 icon={<AssignmentIcon/>}*/}
             {/*                 onClick={onCopy}/>}*/}
+
+            <MUIMenuSubheader>Pagemarks</MUIMenuSubheader>
 
             <MUIMenuItem text="Create Pagemark to Point"
                          icon={<BookmarkIcon/>}
