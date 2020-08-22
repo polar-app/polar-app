@@ -168,6 +168,10 @@ export const EPUBDocument = (props: IProps) => {
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
 
+        // the 'pages' are sections that are defined as 'linear' in the spine.
+        // and the rest are not pages.
+        const pages = spine.items.filter(current => current.linear);
+
         function handleSection(section: Section) {
             setSection(section);
             sectionRef.current = section;
@@ -176,7 +180,6 @@ export const EPUBDocument = (props: IProps) => {
         function createPageNavigator(): PageNavigator {
 
             let page: number = 1;
-            const pages = spine.items.filter(current => current.linear);
             const count = pages.length;
 
             function get(): number {
@@ -186,6 +189,7 @@ export const EPUBDocument = (props: IProps) => {
             async function set(newPage: number) {
 
                 page = newPage;
+
                 const newSection = pages[newPage - 1];
 
                 // we need to use a latch here because the page isn't really
