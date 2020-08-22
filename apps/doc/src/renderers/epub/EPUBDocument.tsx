@@ -26,7 +26,11 @@ import {Latch} from "polar-shared/src/util/Latch";
 import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
 import {IDimensions} from 'polar-shared/src/util/IDimensions';
 import {EPUBContextMenuRoot} from "./contextmenu/EPUBContextMenuRoot";
-import {FluidPagemarkFactory, IFluidPagemark} from "../../FluidPagemarkFactory";
+import {
+    FluidPagemarkCreateOpts,
+    FluidPagemarkFactory,
+    IFluidPagemark
+} from "../../FluidPagemarkFactory";
 import {IDocViewerContextMenuOrigin} from "../../DocViewerMenu";
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import {Percentages} from 'polar-shared/src/util/Percentages';
@@ -243,16 +247,15 @@ export const EPUBDocument = (props: IProps) => {
 
         function createFluidPagemarkFactory(): FluidPagemarkFactory {
 
-            function create(origin: IDocViewerContextMenuOrigin): IFluidPagemark | undefined {
+            function create(opts: FluidPagemarkCreateOpts): IFluidPagemark | undefined {
 
-                if (! origin.range) {
+                if (! opts.range) {
                     return undefined;
                 }
 
                 // FIXME: this percentage computation might not be required.
-                const percentage = Percentages.calculate(origin.pageY, origin.windowHeight);
                 const cfiBase = sectionRef.current!.cfiBase;
-                const epubCFI = new EpubCFI(origin.range, cfiBase);
+                const epubCFI = new EpubCFI(opts.range, cfiBase);
 
                 const range: IPagemarkRange = {
                     end: {
@@ -261,7 +264,7 @@ export const EPUBDocument = (props: IProps) => {
                     }
                 };
 
-                return {percentage, range}
+                return {range}
 
             }
 

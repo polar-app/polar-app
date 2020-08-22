@@ -120,7 +120,6 @@ export interface IPagemarkCreateToPoint {
     // the page number of the current page.
     readonly pageNum: number;
 
-    readonly percentage: number | undefined;
     readonly range: IPagemarkRange | undefined;
 
 }
@@ -416,7 +415,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                     const last = Arrays.last(createdPagemarks)!
                     // now add the range which is needed for fluid pagemarks.
                     last.pagemark.range = opts.range;
-                    console.log("FIXME: Wrote last pagemark: ", last.pagemark)
                 }
             }
 
@@ -433,7 +431,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const createOpts: IPagemarkCreateToPoint = {
                 ...opts,
                 type: 'create-to-point',
-                percentage: undefined,
                 range: undefined
             };
 

@@ -373,7 +373,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             width: origin.width,
             height: origin.height,
             pageNum: origin.pageNum,
-            percentage: fluidPagemark?.percentage,
             range: fluidPagemark?.range
         });
 
