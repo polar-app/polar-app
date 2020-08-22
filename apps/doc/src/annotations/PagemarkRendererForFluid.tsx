@@ -14,14 +14,53 @@ import {
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
+import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
-interface PagemarkInnerProps {
-    readonly id: string;
-    readonly className: string;
-    readonly fingerprint: string;
-    readonly pageNum: number;
-    readonly pagemark: IPagemark;
-    readonly pagemarkColor: PagemarkColors.PagemarkColor;
+function computePagemarkFromResize(rect: ILTRect,
+                                   browserContext: IBrowserContext,
+                                   pagemark: IPagemark) {
+
+    function computeRange(): Range | undefined {
+
+        const doc = browserContext.document;
+
+        const elements = Array.from(doc.querySelectorAll("*")) as HTMLElement[];
+
+        function predicate(element: HTMLElement): boolean {
+
+            if (element.textContent === null || element.textContent.trim() === '') {
+                return false;
+            }
+
+            return (element.offsetTop + element.offsetHeight) < (rect.top + rect.height);
+        }
+
+        const last = Arrays.last(elements.filter(predicate));
+
+        if (! last) {
+            return undefined;
+        }
+
+        const range = doc.createRange();
+
+        range.setStart(last, 0);
+        range.setEnd(last, 0);
+
+        return range;
+
+    }
+
+    const range = computeRange();
+
+    // not needed for EPUB.
+    const pagemarkRect = new PagemarkRect({left: 0, top: 0, width: 0, height: 0});
+
+    const newPagemark = Object.assign({}, pagemark);
+    newPagemark.percentage = pagemarkRect.toPercentage();
+    newPagemark.rect = pagemarkRect;
+
+    return newPagemark;
 
 }
 
@@ -41,6 +80,16 @@ function useEPUBIFrameBrowserContext(): IBrowserContext{
     const document = iframe.contentDocument!;
     const window = document.defaultView!;
     return {document, window};
+}
+
+interface PagemarkInnerProps {
+    readonly id: string;
+    readonly className: string;
+    readonly fingerprint: string;
+    readonly pageNum: number;
+    readonly pagemark: IPagemark;
+    readonly pagemarkColor: PagemarkColors.PagemarkColor;
+
 }
 
 const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
@@ -92,7 +141,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         //
         // const pageElement = docViewerElementsContext.getPageElementForPage(pageNum)!;
-        // const newPagemark = computePagemarkFromResize(rect, pageElement, pagemark);
+        const newPagemark = computePagemarkFromResize(rect, browserContext, pagemark);
         //
         // const mutation: IPagemarkUpdate = {
         //     type: 'update',

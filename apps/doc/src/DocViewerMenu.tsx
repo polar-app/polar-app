@@ -366,6 +366,14 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
         const fluidPagemark = createFluidPagemark();
 
+        // FIXME: we have to push this into the DocViewerStore
+        // (fluidPagemarkFactory is there anyway) and then we have to change the
+        // pagemark 'update' function to properly handle the 'range' when it's
+        // given.
+        //
+        // FIXME: first thing is that I have to compute a proper 'range' for
+        // the update method..
+
         onPagemark({
             type: 'create-to-point',
             x: origin.x,
