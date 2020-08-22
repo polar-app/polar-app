@@ -33,6 +33,7 @@ import {Percentages} from 'polar-shared/src/util/Percentages';
 import {useStylesheetURL} from "./EPUBDocumentHooks";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {AnnotationLinks} from "../../../../../web/js/annotation_sidebar/AnnotationLinks";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -264,7 +265,6 @@ export const EPUBDocument = (props: IProps) => {
 
             }
 
-
             return {create};
 
         }
@@ -277,7 +277,9 @@ export const EPUBDocument = (props: IProps) => {
         const fluidPagemarkFactory = createFluidPagemarkFactory();
         setFluidPagemarkFactory(fluidPagemarkFactory);
 
-        await pageNavigator.jumpToPage(1);
+        const annotationLink = AnnotationLinks.parse(document.location);
+
+        await pageNavigator.jumpToPage(annotationLink?.page || 1);
 
         setDocDescriptor({
             fingerprint: docMeta.docInfo.fingerprint,

@@ -4,11 +4,6 @@ import {AnnotationLinks} from "../../../web/js/annotation_sidebar/AnnotationLink
 import {ILocation} from "../../../web/js/react/router/ReactRouters";
 import React from 'react';
 
-interface ILoaded {
-    readonly page: boolean;
-    readonly annotation: boolean;
-}
-
 export type DocViewerJumpCause = 'init' | 'history';
 
 export function useDocViewerJumpToPageLoader(): (location: ILocation, cause: DocViewerJumpCause) => boolean {
@@ -47,8 +42,4 @@ export function useDocViewerPageJumpListener() {
     const location = useLocation();
     const docViewerJumpToPageLoader = useDocViewerJumpToPageLoader();
     docViewerJumpToPageLoader(location, 'history');
-}
-
-export interface IAnnotationWithID {
-    readonly id: string;
 }
