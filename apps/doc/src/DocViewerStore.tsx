@@ -25,10 +25,12 @@ import {ScaleLevelTuple} from "./ScaleLevels";
 import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
-import { DocMetas } from '../../../web/js/metadata/DocMetas';
-import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
-import { Arrays } from 'polar-shared/src/util/Arrays';
-import {FluidPagemarkFactory} from "./FluidPagemarkFactory";
+import {DocMetas} from '../../../web/js/metadata/DocMetas';
+import {Arrays} from 'polar-shared/src/util/Arrays';
+import {
+    FluidPagemarkFactory,
+    NullFluidPagemarkFactory
+} from "./FluidPagemarkFactory";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -101,7 +103,7 @@ export interface IDocViewerStore {
 
     readonly hasPendingWrites?: boolean;
 
-    readonly fluidPagemarkFactory?: FluidPagemarkFactory;
+    readonly fluidPagemarkFactory: FluidPagemarkFactory;
 
 }
 
@@ -120,7 +122,10 @@ export interface IPagemarkCreateToPoint {
     // the page number of the current page.
     readonly pageNum: number;
 
-    readonly range: IPagemarkRange | undefined;
+    /**
+     * The DOM range for the covering pagemark (use for fluid pagemarks).
+     */
+    readonly range: Range | undefined;
 
 }
 
@@ -200,7 +205,8 @@ export interface IDocViewerCallbacks {
 const initialStore: IDocViewerStore = {
     page: 1,
     docLoaded: false,
-    pendingWrites: 0
+    pendingWrites: 0,
+    fluidPagemarkFactory: new NullFluidPagemarkFactory()
 }
 
 interface Mutator {
@@ -409,13 +415,16 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             }
 
             function createPagemarksForRange(endPageNum: number, percentage: number) {
+
                 const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
 
                 if (createdPagemarks.length > 0) {
                     const last = Arrays.last(createdPagemarks)!
+                    const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range});
                     // now add the range which is needed for fluid pagemarks.
-                    last.pagemark.range = opts.range;
+                    last.pagemark.range = fluidPagemark?.range;
                 }
+
             }
 
             deletePagemarkForCurrentPage(pageNum);

@@ -14,6 +14,14 @@ export interface FluidPagemarkFactory {
     /**
      * Create a fluid pagemark or undefined if one can't be created.
      */
-    readonly create: (opts: FluidPagemarkCreateOpts) => IFluidPagemark | undefined;
+    create: (opts: FluidPagemarkCreateOpts) => IFluidPagemark | undefined;
+
+}
+
+export class NullFluidPagemarkFactory implements FluidPagemarkFactory {
+
+    public create(opts: FluidPagemarkCreateOpts): IFluidPagemark | undefined {
+        return undefined;
+    }
 
 }

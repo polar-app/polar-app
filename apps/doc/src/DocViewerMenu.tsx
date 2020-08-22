@@ -358,21 +358,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const origin = props.origin!;
 
-    const createFluidPagemark = (): IFluidPagemark | undefined => {
-        return fluidPagemarkFactory ? fluidPagemarkFactory.create(origin) : undefined;
-    }
-
     const onCreatePagemarkToPoint = React.useCallback(() => {
-
-        const fluidPagemark = createFluidPagemark();
-
-        // FIXME: we have to push this into the DocViewerStore
-        // (fluidPagemarkFactory is there anyway) and then we have to change the
-        // pagemark 'update' function to properly handle the 'range' when it's
-        // given.
-        //
-        // FIXME: first thing is that I have to compute a proper 'range' for
-        // the update method..
 
         onPagemark({
             type: 'create-to-point',
@@ -381,7 +367,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             width: origin.width,
             height: origin.height,
             pageNum: origin.pageNum,
-            range: fluidPagemark?.range
+            range: origin.range
         });
 
     }, []);
