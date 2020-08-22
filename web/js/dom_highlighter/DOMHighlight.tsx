@@ -2,8 +2,8 @@ import {deepMemo, memoForwardRef, memoForwardRefDiv} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
 import React from "react";
 import {
-    useResizeEventListener,
-    useScrollEventListener
+    useWindowResizeEventListener,
+    useWindowScrollEventListener
 } from "../react/WindowHooks";
 import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
@@ -55,11 +55,11 @@ export const DOMHighlight = deepMemo((props: IProps) => {
 
     const win = computeWindow();
 
-    useScrollEventListener(redrawCallback, {win});
-    useResizeEventListener(redrawCallback, {win});
+    useWindowScrollEventListener(redrawCallback, {win});
+    useWindowResizeEventListener(redrawCallback, {win});
 
-    useScrollEventListener(redrawCallback);
-    useResizeEventListener(redrawCallback);
+    useWindowScrollEventListener(redrawCallback);
+    useWindowResizeEventListener(redrawCallback);
 
     const dataAttributes = Dictionaries.dataAttributes(props);
 

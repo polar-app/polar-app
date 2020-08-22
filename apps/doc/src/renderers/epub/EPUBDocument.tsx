@@ -23,7 +23,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {Latch} from "polar-shared/src/util/Latch";
-import {useResizeEventListener} from "../../../../../web/js/react/WindowHooks";
+import {useWindowResizeEventListener} from "../../../../../web/js/react/WindowHooks";
 import {IDimensions} from 'polar-shared/src/util/IDimensions';
 import {EPUBContextMenuRoot} from "./contextmenu/EPUBContextMenuRoot";
 import {
@@ -311,7 +311,7 @@ export const EPUBDocument = (props: IProps) => {
 
     }
 
-    useResizeEventListener(epubResizer);
+    useWindowResizeEventListener(epubResizer);
 
     useComponentDidMount(() => {
         doLoad()

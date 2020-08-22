@@ -37,10 +37,10 @@ export function useWindowEventListener(name: WindowEventListenerName,
 
 }
 
-export function useScrollEventListener(delegate: () => void, opts: WindowOpts = {}) {
+export function useWindowScrollEventListener(delegate: () => void, opts: WindowOpts = {}) {
     useWindowEventListener('scroll', delegate, opts);
 }
 
-export function useResizeEventListener(delegate: () => void, opts: WindowOpts = {}) {
+export function useWindowResizeEventListener(delegate: () => void, opts: WindowOpts = {}) {
     useWindowEventListener('resize', delegate, opts);
 }
