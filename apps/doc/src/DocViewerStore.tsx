@@ -31,6 +31,8 @@ import {
     FluidPagemarkFactory,
     NullFluidPagemarkFactory
 } from "./FluidPagemarkFactory";
+import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
+import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -107,7 +109,22 @@ export interface IDocViewerStore {
 
 }
 
-export interface IPagemarkCreateToPoint {
+export interface IPagemarkCoverage {
+    readonly percentage: number;
+    readonly rect: PagemarkRect;
+    readonly range: Range | undefined;
+}
+
+export interface IPagemarkCreateOrUpdate {
+
+    /**
+     * The DOM range for the covering pagemark (use for fluid pagemarks).
+     */
+    readonly range: Range | undefined;
+
+}
+
+export interface IPagemarkCreateToPoint extends IPagemarkCreateOrUpdate {
 
     readonly type: 'create-to-point';
 
@@ -122,14 +139,11 @@ export interface IPagemarkCreateToPoint {
     // the page number of the current page.
     readonly pageNum: number;
 
-    /**
-     * The DOM range for the covering pagemark (use for fluid pagemarks).
-     */
-    readonly range: Range | undefined;
-
 }
 
 export interface IPagemarkCreateFromPage {
+
+    // FIXME: this needs range too
 
     readonly type: 'create-from-page';
 
@@ -148,10 +162,26 @@ export interface IPagemarkCreateFromPage {
 
 }
 
-export interface IPagemarkUpdate {
+export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
+
     readonly type: 'update',
     readonly pageNum: number;
-    readonly pagemark: IPagemark;
+
+    /**
+     * The existing pagemark to update.
+     */
+    readonly existing: IPagemark;
+
+    /**
+     * The new pagemark's percentage.
+     */
+    readonly percentage: number;
+
+    /**
+     * The new pagemark's covering rect (for PDF)
+     */
+    readonly rect: IPagemarkRect;
+
 }
 
 export interface IPagemarkDelete {
@@ -389,6 +419,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function onPagemark(mutation: IPagemarkMutation) {
 
+        function updatePagemarkRange(pagemark: IPagemark, range: Range | undefined) {
+            const store = storeProvider();
+            const fluidPagemark = store.fluidPagemarkFactory.create({range});
+            // now add the range which is needed for fluid pagemarks.
+            pagemark.range = fluidPagemark?.range;
+        }
+
         function createPagemarkToPoint(opts: IPagemarkCreateToPoint, start?: number) {
 
             const store = storeProvider();
@@ -423,6 +460,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                     const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range});
                     // now add the range which is needed for fluid pagemarks.
                     last.pagemark.range = fluidPagemark?.range;
+                    updatePagemarkRange(last.pagemark, opts.range)
                 }
 
             }
@@ -450,7 +488,17 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         function updatePagemark(mutation: IPagemarkUpdate) {
             const store = storeProvider();
             const docMeta = store.docMeta!;
-            Pagemarks.updatePagemark(docMeta, mutation.pageNum, mutation.pagemark);
+
+            function createPagemark() {
+                const newPagemark = Object.assign({}, mutation.existing);
+                newPagemark.percentage = mutation.percentage;
+                newPagemark.rect = mutation.rect;
+                return newPagemark;
+            }
+
+            const pagemark = createPagemark();
+            updatePagemarkRange(pagemark, mutation.range);
+            Pagemarks.updatePagemark(docMeta, mutation.pageNum, pagemark);
 
             updateDocMeta(docMeta);
             writeUpdatedDocMetas([docMeta])

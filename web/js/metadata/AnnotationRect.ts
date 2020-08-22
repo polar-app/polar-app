@@ -110,7 +110,6 @@ export class AnnotationRect implements IAnnotationRect {
      * Compute a percentage of the page that this rect holds.
      */
     public toPercentage(): number {
-
         return Percentages.calculate(Rects.createFromBasicRect(this).area, ENTIRE_PAGE.area);
     }
 

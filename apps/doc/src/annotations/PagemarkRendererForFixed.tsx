@@ -20,7 +20,11 @@ import {
     useContextMenu
 } from "../../../repository/js/doc_repo/MUIContextMenu";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
-import {IPagemarkUpdate, useDocViewerCallbacks} from "../DocViewerStore";
+import {
+    IPagemarkCoverage,
+    IPagemarkUpdate,
+    useDocViewerCallbacks
+} from "../DocViewerStore";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
@@ -62,9 +66,8 @@ function toOverlayRect(placementRect: Rect, pagemark: Pagemark | IPagemark) {
 
 }
 
-function computePagemarkFromResize(rect: ILTRect,
-                                   pageElement: HTMLElement,
-                                   pagemark: IPagemark) {
+function computePagemarkCoverageFromResize(rect: ILTRect,
+                                           pageElement: HTMLElement): IPagemarkCoverage {
 
     const pageDimensions = computePageDimensions(pageElement)
 
@@ -73,11 +76,9 @@ function computePagemarkFromResize(rect: ILTRect,
 
     const pagemarkRect = new PagemarkRect(annotationRect);
 
-    const newPagemark = Object.assign({}, pagemark);
-    newPagemark.percentage = pagemarkRect.toPercentage();
-    newPagemark.rect = pagemarkRect;
+    const percentage = pagemarkRect.toPercentage();
 
-    return newPagemark;
+    return {percentage, rect: pagemarkRect, range: undefined};
 
 }
 
@@ -105,21 +106,22 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
     const contextMenu = useContextMenu();
 
-    const callbacks = useDocViewerCallbacks();
+    const {onPagemark} = useDocViewerCallbacks();
     const docViewerElementsContext = useDocViewerElementsContext();
 
     const handleResized = React.useCallback((rect: ILTRect) => {
 
         const pageElement = docViewerElementsContext.getPageElementForPage(pageNum)!;
-        const newPagemark = computePagemarkFromResize(rect, pageElement, pagemark);
+        const pagemarkCoverage = computePagemarkCoverageFromResize(rect, pageElement);
 
         const mutation: IPagemarkUpdate = {
             type: 'update',
             pageNum,
-            pagemark: newPagemark
+            existing: pagemark,
+            ...pagemarkCoverage
         }
 
-        callbacks.onPagemark(mutation);
+        onPagemark(mutation);
 
     }, []);
 

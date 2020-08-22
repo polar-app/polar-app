@@ -16,10 +16,15 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
 import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {
+    IPagemarkCoverage,
+    IPagemarkUpdate,
+    useDocViewerCallbacks
+} from "../DocViewerStore";
 
-function computePagemarkFromResize(rect: ILTRect,
-                                   browserContext: IBrowserContext,
-                                   pagemark: IPagemark) {
+function computePagemarkCoverageFromResize(rect: ILTRect,
+                                           browserContext: IBrowserContext,
+                                           pagemark: IPagemark): IPagemarkCoverage {
 
     function computeRange(): Range | undefined {
 
@@ -55,13 +60,9 @@ function computePagemarkFromResize(rect: ILTRect,
 
     // not needed for EPUB.
     const pagemarkRect = new PagemarkRect({left: 0, top: 0, width: 0, height: 0});
+    const percentage = pagemarkRect.toPercentage();
 
-    const newPagemark = Object.assign({}, pagemark);
-    newPagemark.percentage = pagemarkRect.toPercentage();
-    newPagemark.rect = pagemarkRect;
-
-    return newPagemark;
-
+    return {percentage, rect: pagemarkRect, range};
 }
 
 function useEPUBIFrameElement(): HTMLIFrameElement {
@@ -97,9 +98,9 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     const {id, fingerprint, pagemark, pageNum, className, pagemarkColor} = props;
 
     const contextMenu = useContextMenu();
-
     const iframe = useEPUBIFrameElement();
     const browserContext = useEPUBIFrameBrowserContext();
+    const {onPagemark} = useDocViewerCallbacks();
 
     if (! iframe || ! iframe.contentDocument) {
         // the iframe isn't mounted yet.
@@ -134,22 +135,16 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     const height = computeHeightFromRange() || iframe.contentDocument!.body.offsetHeight;
 
     const handleResized = React.useCallback((rect: ILTRect) => {
+        const pagemarkCoverage = computePagemarkCoverageFromResize(rect, browserContext, pagemark);
 
-        // FIXME this doesn't work just yet and we need a way to handle it properly
-        // because we need to figure out where the pagemarks are being placed
-        // based on the epubcfi...
+        const mutation: IPagemarkUpdate = {
+            type: 'update',
+            pageNum,
+            existing: pagemark,
+            ...pagemarkCoverage
+        }
 
-        //
-        // const pageElement = docViewerElementsContext.getPageElementForPage(pageNum)!;
-        const newPagemark = computePagemarkFromResize(rect, browserContext, pagemark);
-        //
-        // const mutation: IPagemarkUpdate = {
-        //     type: 'update',
-        //     pageNum,
-        //     pagemark: newPagemark
-        // }
-        //
-        // callbacks.onPagemark(mutation);
+        onPagemark(mutation);
 
     }, []);
 
