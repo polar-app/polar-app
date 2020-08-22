@@ -226,11 +226,11 @@ export const PDFDocument = React.memo((props: IProps) => {
                 return docViewer.viewer.currentPageNumber;
             }
 
-            async function set(page: number) {
+            async function jumpToPage(page: number) {
                 docViewer.viewer.currentPageNumber = page;
             }
 
-            return {count, set, get};
+            return {count, jumpToPage, get};
 
         }
 

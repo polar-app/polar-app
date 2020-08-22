@@ -10,7 +10,7 @@ export interface PageNavigator {
     /**
      * Set/jump to the given page.
      */
-    readonly set: (page: number) => Promise<void>;
+    readonly jumpToPage: (page: number) => Promise<void>;
 
     /**
      * The number of pages in the navigation set.

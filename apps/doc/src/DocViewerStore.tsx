@@ -523,7 +523,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             return;
         }
 
-        await pageNavigator.set(newPage);
+        await pageNavigator.jumpToPage(newPage);
         setStore({
             ...store,
             page: newPage

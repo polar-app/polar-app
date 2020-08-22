@@ -186,7 +186,7 @@ export const EPUBDocument = (props: IProps) => {
                 return page;
             }
 
-            async function set(newPage: number) {
+            async function jumpToPage(newPage: number) {
 
                 page = newPage;
 
@@ -205,7 +205,7 @@ export const EPUBDocument = (props: IProps) => {
 
             }
 
-            return {count, set, get};
+            return {count, jumpToPage, get};
 
         }
 
@@ -246,7 +246,7 @@ export const EPUBDocument = (props: IProps) => {
         const fluidPagemarkFactory = createFluidPagemarkFactory();
         setFluidPagemarkFactory(fluidPagemarkFactory);
 
-        await pageNavigator.set(1);
+        await pageNavigator.jumpToPage(1);
 
         setDocDescriptor({
             fingerprint: docMeta.docInfo.fingerprint,
