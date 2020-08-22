@@ -21,6 +21,7 @@ import {
     IPagemarkUpdate,
     useDocViewerCallbacks
 } from "../DocViewerStore";
+import {Percentages} from "polar-shared/src/util/Percentages";
 
 function computePagemarkCoverageFromResize(rect: ILTRect,
                                            browserContext: IBrowserContext,
@@ -60,7 +61,8 @@ function computePagemarkCoverageFromResize(rect: ILTRect,
 
     // not needed for EPUB.
     const pagemarkRect = new PagemarkRect({left: 0, top: 0, width: 0, height: 0});
-    const percentage = pagemarkRect.toPercentage();
+    const percentage = Percentages.calculate(rect.top + rect.height,
+                                             browserContext.document.body.offsetHeight);
 
     return {percentage, rect: pagemarkRect, range};
 }

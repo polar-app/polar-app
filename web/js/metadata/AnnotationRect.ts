@@ -3,7 +3,7 @@ import {Dimensions} from '../util/Dimensions';
 import {Interval} from '../math/Interval';
 import {Rects} from '../Rects';
 import {IAnnotationRect} from "polar-shared/src/metadata/IAnnotationRect";
-import {Percentages} from "polar-shared/src/util/Percentages";
+import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
 import {IDimensions} from 'polar-shared/src/util/IDimensions';
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
@@ -109,7 +109,7 @@ export class AnnotationRect implements IAnnotationRect {
     /**
      * Compute a percentage of the page that this rect holds.
      */
-    public toPercentage(): number {
+    public toPercentage(): Percentage100 {
         return Percentages.calculate(Rects.createFromBasicRect(this).area, ENTIRE_PAGE.area);
     }
 
