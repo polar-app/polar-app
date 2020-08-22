@@ -14,7 +14,6 @@ import {
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
-import { useDocViewerStore } from "../DocViewerStore";
 
 interface PagemarkInnerProps {
     readonly id: string;
@@ -67,11 +66,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             return undefined;
         }
 
-        console.log("FIXME: finding cfi: ", cfi);
-
-        // FIXME: we need a base here...
         const epubCFI = new EpubCFI(cfi);
-        const range = epubCFI.toRange(iframe.contentDocument!);
+        const range = epubCFI.toRange(browserContext.document);
 
         if (! range) {
             console.log("No range found for pagemark with CFI: " + cfi);
@@ -79,15 +75,14 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         }
 
         const bcr = range.getBoundingClientRect();
-        return bcr.bottom;
+        return bcr.bottom + browserContext.window.scrollY;
+
     }
 
     const top = 0;
     const left = 0;
     const width = iframe.contentDocument!.body.offsetWidth;
     const height = computeHeightFromRange() || iframe.contentDocument!.body.offsetHeight;
-
-    console.log("FIXME: using pagemark dimensions: ", {top, left, width, height});
 
     const handleResized = React.useCallback((rect: ILTRect) => {
 
