@@ -30,8 +30,8 @@ import {FluidPagemarkFactory, IFluidPagemark} from "../../FluidPagemarkFactory";
 import {IDocViewerContextMenuOrigin} from "../../DocViewerMenu";
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import {Percentages} from 'polar-shared/src/util/Percentages';
+import {useStylesheetURL} from "./EPUBDocumentHooks";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
-import {useCSS} from "./EPUBDocumentHooks";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -69,13 +69,13 @@ export const EPUBDocument = (props: IProps) => {
     const {incrRenderIter, setSection}
         = useEPUBDocumentCallbacks()
 
-    const css = useCSS();
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar({noRectTexts: true});
     const docViewerElements = useDocViewerElementsContext();
     const epubResizer = useEPUBResizer();
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
+    const stylesheet = useStylesheetURL();
 
     async function doLoad() {
 
@@ -109,23 +109,17 @@ export const EPUBDocument = (props: IProps) => {
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
-            resizeOnOrientationChange: false
-            // width: '400px',
+            resizeOnOrientationChange: false,
+            stylesheet,
             // height: '100%',
             // layout: 'pre-paginated'
         });
-
-        function applyCSS() {
-            rendition.themes.default(css);
-        }
 
         rendition.on('locationChanged', (event: any) => {
             // noop... this is called when the location of the book is changed
             // so we can use it to re-attach annotations.
 
-            forwardEvents(pageElement);
-            applyCSS();
-            annotationBarInjector();
+            console.log('epubjs event: locationChanged', event);
 
         });
 
@@ -139,11 +133,11 @@ export const EPUBDocument = (props: IProps) => {
         setResizer(resizer);
 
         rendition.on('resize', (event: any) => {
-            console.error("epubjs: resize", new Error("FAIL: this should not happen"));
+            console.error("epubjs event: resize", new Error("FAIL: this should not happen"));
         });
 
         rendition.on('resized', (event: any) => {
-            console.error("epubjs: resized", new Error("FAIL: this should not happen"));
+            console.error("epubjs event: resized", new Error("FAIL: this should not happen"));
         });
 
         // FIXME: in the docViewerStore we can set a PagemarkRangeFactory or
@@ -151,7 +145,8 @@ export const EPUBDocument = (props: IProps) => {
         // directly so that the DocViewerMenu can use that.
 
         rendition.on('rendered', (section: Section) => {
-            incrRenderIter();
+            console.log('epubjs event: rendered: ');
+
             epubResizer();
             // FIXME: when we jump between pages in the UI ... by clicking the
             // ToC the 'page' that we're on isn't updated. We can listen for the
@@ -161,6 +156,14 @@ export const EPUBDocument = (props: IProps) => {
             // we have to update the section here as we jumped within the EPUB
             // directly.
             handleSection(section);
+
+            forwardEvents(pageElement);
+
+            // applyCSS();
+            annotationBarInjector();
+
+            incrRenderIter();
+
         });
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
