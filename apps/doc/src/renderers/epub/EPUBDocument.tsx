@@ -213,16 +213,26 @@ export const EPUBDocument = (props: IProps) => {
 
                 const newSection = pages[newPage - 1];
 
-                // we need to use a latch here because the page isn't really
-                // change until it's rendered and other dependencies might
-                // need to wait like highlights that depend on the page being
-                // shown.
-                const renderedLatch = new Latch<boolean>();
-                rendition.once('rendered', () => renderedLatch.resolve(true))
+                async function displayAndWaitForRender() {
 
-                await rendition.display(newSection.index)
-                await renderedLatch.get();
+                    // we need to use a latch here because the page isn't really
+                    // change until it's rendered and other dependencies might
+                    // need to wait like highlights that depend on the page being
+                    // shown.
+                    const renderedLatch = new Latch<boolean>();
+                    rendition.once('rendered', () => renderedLatch.resolve(true))
+                    await rendition.display(newSection.index)
+                    await renderedLatch.get();
+
+                }
+
+                function updateURL() {
+                    document.location.hash = '#page=' + newPage;
+                }
+
+                await displayAndWaitForRender();
                 handleSection(newSection);
+                updateURL();
 
             }
 
