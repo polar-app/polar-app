@@ -1,4 +1,4 @@
-import {Rnd, HandleStyles} from "react-rnd";
+import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
 import * as React from "react";
 import {useState} from "react";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -28,6 +28,10 @@ interface IProps {
     readonly onResized?: (resizeRect: ILTRect) => void;
 
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+
+    readonly enableResizing?: ResizeEnable;
+
+    readonly resizeAxis?: 'y'
 
 }
 
@@ -69,9 +73,27 @@ export const ResizeBox = deepMemo((props: IProps) => {
         });
     }
 
-    const handleResize = React.useCallback((state: IState) => {
+    const handleResize = React.useCallback((newState: IState) => {
 
-        setState(state);
+        function computeDerivedState(): IState {
+
+            if (props.resizeAxis === 'y') {
+                return {
+                    active: newState.active,
+                    x: state.x,
+                    y: newState.y,
+                    width: state.width,
+                    height: newState.height
+                }
+            }
+
+            return newState;
+
+        }
+
+        newState = computeDerivedState();
+
+        setState(newState);
 
         try {
 
@@ -81,10 +103,10 @@ export const ResizeBox = deepMemo((props: IProps) => {
             const onResized = props.onResized || NULL_FUNCTION
 
             onResized({
-                left: state.x,
-                top: state.y,
-                width: state.width,
-                height: state.height
+                left: newState.x,
+                top: newState.y,
+                width: newState.width,
+                height: newState.height
             });
 
         } catch (e) {
@@ -155,6 +177,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
                 }}
                 disableDragging={true}
+                enableResizing={props.enableResizing}
                 resizeHandleStyles={{
                     top: {
                         ...resizeHandleStyle,

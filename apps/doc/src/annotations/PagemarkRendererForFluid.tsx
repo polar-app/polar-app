@@ -125,6 +125,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 top={top}
                 width={width}
                 height={height}
+                resizeAxis='y'
                 resizeHandleStyle={{
                     ...pagemarkColor,
                     mixBlendMode: 'multiply',
