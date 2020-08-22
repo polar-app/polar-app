@@ -32,6 +32,7 @@ import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import {Percentages} from 'polar-shared/src/util/Percentages';
 import {useStylesheetURL} from "./EPUBDocumentHooks";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -57,7 +58,7 @@ export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
 
-    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory}
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage}
         = useDocViewerCallbacks();
 
     const {setFinder}
@@ -173,8 +174,28 @@ export const EPUBDocument = (props: IProps) => {
         const pages = spine.items.filter(current => current.linear);
 
         function handleSection(section: Section) {
+
+            function computePageNumberFromSection(): number | undefined {
+
+                const sectionIndex
+                    = arrayStream(pages)
+                        .withIndex()
+                        .filter(current => current.value.index === section.index)
+                        .first();
+
+                return sectionIndex?.index ? sectionIndex?.index + 1: undefined;
+
+            }
+
             setSection(section);
             sectionRef.current = section;
+
+            const pageNumberFromSection = computePageNumberFromSection();
+
+            if (pageNumberFromSection) {
+                setPage(pageNumberFromSection);
+            }
+
         }
 
         function createPageNavigator(): PageNavigator {

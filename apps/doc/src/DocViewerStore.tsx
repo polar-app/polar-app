@@ -183,6 +183,7 @@ export interface IDocViewerCallbacks {
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
+    readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
@@ -552,6 +553,14 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         doPageNav(-1);
     }
 
+    function setPage(page: number) {
+        const store = storeProvider();
+        setStore({
+             ...store,
+             page
+         });
+    }
+
     return {
         updateDocMeta,
         setDocMeta,
@@ -567,6 +576,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         setResizer,
         setScaleLeveler,
         setScale,
+        setPage,
         setFluidPagemarkFactory
     };
 
