@@ -50,7 +50,7 @@ function computePagemarkCoverageFromResize(rect: ILTRect,
         const range = doc.createRange();
 
         range.setStart(last, 0);
-        range.setEnd(last, 0);
+        range.setEnd(last.firstChild!, last.textContent!.length - 1);
 
         return range;
 
