@@ -84,14 +84,14 @@ export const ResizeBox = deepMemo((props: IProps) => {
         const newState = computeState();
         setState(newState);
 
-        console.log("FIXME666 updating size and position: ", newState);
-
         // rndRef.current!.updateSize(newState);
         // rndRef.current!.updatePosition(newState);
 
     }, {win: props.window});
 
     const handleResize = React.useCallback((newState: IState) => {
+
+        console.log("FIXME newState: ", newState);
 
         function computeDerivedState(): IState {
 
@@ -109,8 +109,26 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
         }
 
-        newState = computeDerivedState();
+        function updateElementStyle(newState: IState) {
 
+            const div = rndRef.current?.resizableElement.current;
+
+            if (div) {
+                console.log("FIXME: using updateElementSType");
+                div.style.top = `${newState.x}px`;
+                div.style.left = `${newState.y}px`;
+                div.style.width = `${newState.width}px`;
+                div.style.height = `${newState.height}px`;
+                div.style.transform = 'none';
+            } else {
+                console.warn('no div');
+            }
+        }
+
+        newState = computeDerivedState();
+        updateElementStyle(newState);
+
+        // setState({...newState, x: 0, y: 0});
         setState(newState);
 
         try {
@@ -171,7 +189,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
         }
     }
 
-    function computePosition(): IPoint {
+    function computePosition(state: IState): IPoint {
 
         if (props.enablePositionHack) {
             return {x: 0, y: 0};
@@ -193,7 +211,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
         return {};
     }
 
-    const position = computePosition();
+    const position = computePosition(state);
     const style = computeStyle();
 
     return (
@@ -221,20 +239,18 @@ export const ResizeBox = deepMemo((props: IProps) => {
                         y: d.y
                     });
                 }}
-                onResizeStop={(e,
+                onResizeStop={(event,
                                direction,
-                               ref,
-                               delta,
-                               position) => {
+                               elementRef,
+                               delta) => {
 
-                    const width = parseInt(ref.style.width);
-                    const height = parseInt(ref.style.height);
+                    const width = state.width + delta.width;
+                    const height = state.height + delta.height;
 
                     handleResize({
                         ...state,
                         width,
                         height,
-                        ...position,
                     });
 
                 }}

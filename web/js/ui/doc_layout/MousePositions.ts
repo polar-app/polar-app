@@ -6,7 +6,8 @@ export interface MousePosition {
 }
 /**
  * Keeps track of window mouse positions without having to add/remove event
- * listeners when components are updated.  This
+ * listeners when components are updated.  We just update the position so it
+ * can be read at any time.
  */
 export class MousePositions {
 

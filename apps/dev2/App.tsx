@@ -1,5 +1,6 @@
 import React from 'react';
 import {EPUBContextMenuRoot} from '../doc/src/renderers/epub/contextmenu/EPUBContextMenuRoot';
+import {Resizable} from "../../web/js/ui/resizable/Resizable";
 
 const IFrameContent = React.memo(() => {
 
@@ -33,7 +34,10 @@ const IFrameContent = React.memo(() => {
 
 export const App = () => (
     <div>
-        <IFrameContent/>
-        <EPUBContextMenuRoot/>
+        <Resizable top={0}
+                   left={0}
+                   width={100}
+                   height={100}
+                   color="rgb(255, 0, 0)"/>
     </div>
 );

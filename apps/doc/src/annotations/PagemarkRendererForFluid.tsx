@@ -143,12 +143,11 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         const bcr = body.getBoundingClientRect();
 
-        console.log("FIXME computeInitialPosition bcr: ", bcr);
-
         const top = bcr.top + win.scrollY;
         const left = bcr.left + win.scrollX;
         // const top = 0;
         // const left = 0;
+
         const width = body.offsetWidth;
         const height = computeHeightFromRange() || body.offsetHeight;
 
