@@ -26,7 +26,7 @@ export const Resizable = deepMemo((props: IProps) => {
     const [position, setPosition] = React.useState<ILTRect>(props)
     const positionRef = React.useRef(position);
     const mouseDown = React.useRef(false);
-    const mouseDownOrigin = React.useRef<IPoint | undefined>(undefined);
+    const mouseEventOrigin = React.useRef<IPoint | undefined>(undefined);
     const mouseMoveHandler = React.useRef<MouseEventHandler | undefined>(undefined);
 
     const win = props.window || window;
@@ -62,7 +62,7 @@ export const Resizable = deepMemo((props: IProps) => {
             return;
         }
 
-        const origin = mouseDownOrigin.current!;
+        const origin = mouseEventOrigin.current!;
         const delta = {
             x: event.clientX - origin.x,
             y: event.clientY - origin.y
@@ -78,34 +78,35 @@ export const Resizable = deepMemo((props: IProps) => {
                 case "top":
                     return {
                         ...positionRef.current,
-                        top: position.top + delta.y,
+                        top: positionRef.current.top + delta.y,
                     };
                 case "bottom":
                     return {
                         ...positionRef.current,
-                        height: position.height + delta.y
+                        height: positionRef.current.height + delta.y
                     };
                 case "left":
                     return {
                         ...positionRef.current,
-                        left: position.left + delta.x,
+                        left: positionRef.current.left + delta.x,
                     };
                 case "right":
                     return {
                         ...positionRef.current,
-                        width: position.width + delta.x,
+                        width: positionRef.current.width + delta.x,
                     };
 
             }
         }
 
         updatePosition(computeNewPosition());
+        mouseEventOrigin.current = event;
 
     }, []);
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent, direction: Direction) => {
         mouseDown.current = true;
-        mouseDownOrigin.current = {x: event.clientX, y: event.clientY};
+        mouseEventOrigin.current = {x: event.clientX, y: event.clientY};
 
         toggleUserSelect(true);
 
