@@ -5,6 +5,7 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
 
 interface IProps {
     readonly id?: string;
@@ -18,10 +19,11 @@ interface IProps {
     readonly document?: Document;
     readonly window?: Window;
 
-    readonly left: number;
-    readonly top: number;
-    readonly width: number;
-    readonly height: number;
+    /**
+     * Used to compute the initial position of the resize box during initial
+     * mount and on resize of the window.
+     */
+    readonly computeInitialPosition: () => ILTRect;
 
     readonly resizeHandleStyles?: HandleStyles;
 
@@ -33,6 +35,12 @@ interface IProps {
 
     readonly resizeAxis?: 'y'
 
+    /**
+     * Enable a 'position hack' to work with iframes since I can't do
+     * positioning myself.
+     */
+    readonly enablePositionHack?: boolean;
+
 }
 
 interface IState {
@@ -43,35 +51,48 @@ interface IState {
     readonly height: number;
 }
 
-export const ResizeBox = deepMemo((props: IProps) => {
+function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): IState {
 
-    const [state, setState] = useState<IState>({
+    console.log("FIXME: deriving state ");
+
+    const initialPosition = computeInitialPosition();
+
+    console.log("FIXME: deriving state: " , initialPosition);
+
+    return {
         active: true,
-        x: props.left,
-        y: props.top,
-        width: props.width,
-        height: props.height
-    });
-
-    // force pointer events on the resize corners.
-    const resizeHandleStyle: React.CSSProperties = {
-        pointerEvents: 'auto',
-        ...(props.resizeHandleStyle || {})
+        x: initialPosition.left,
+        y: initialPosition.top,
+        width: initialPosition.width,
+        height: initialPosition.height
     };
 
-    const handleOnMouseOver = () => {
-        setState({
-            ...state,
-            active: true
-        });
-    }
+}
 
-    const handleOnMouseOut = () => {
-        setState({
-            ...state,
-            active: false
-        });
-    }
+export const ResizeBox = deepMemo((props: IProps) => {
+
+    const computeState = () => deriveStateFromInitialPosition(props.computeInitialPosition);
+
+    const [state, setState] = useState<IState>(computeState);
+    const rndRef = React.useRef<Rnd | null>(null);
+
+    // FIXME: there are two main problems with this component:
+    //
+    // - FIXME: it doesn't seem to work with margin with the body...
+    // - FIXME: I could get it to work with top/left and NO translate but
+    //   otherwise it will fail to work and I'm not sure what resize would do in
+    //   that situation
+
+    useWindowResizeEventListener(() => {
+        const newState = computeState();
+        setState(newState);
+
+        console.log("FIXME666 updating size and position: ", newState);
+
+        // rndRef.current!.updateSize(newState);
+        // rndRef.current!.updatePosition(newState);
+
+    }, {win: props.window});
 
     const handleResize = React.useCallback((newState: IState) => {
 
@@ -115,6 +136,26 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
     }, [])
 
+    // force pointer events on the resize corners.
+    const resizeHandleStyle: React.CSSProperties = {
+        pointerEvents: 'auto',
+        ...(props.resizeHandleStyle || {})
+    };
+
+    const handleOnMouseOver = () => {
+        setState({
+            ...state,
+            active: true
+        });
+    }
+
+    const handleOnMouseOut = () => {
+        setState({
+            ...state,
+            active: false
+        });
+    }
+
     const dataProps = Dictionaries.filter<any>(props, key => key.startsWith('data-'));
 
     const outlineSize = 5
@@ -133,6 +174,9 @@ export const ResizeBox = deepMemo((props: IProps) => {
         }
     }
 
+    // FIXME: even though state x and y position are specified top and left are still zero
+    console.log(`FIXME x: ${state.x} y: ${state.y}, style: `, props.style);
+
     return (
         <>
 
@@ -140,16 +184,16 @@ export const ResizeBox = deepMemo((props: IProps) => {
             {/*    <ControlBar bottom={state.y} left={state.x} width={state.width}/>}*/}
 
             <Rnd
+                ref={ref => rndRef.current = ref}
                 id={props.id}
-                document={props.document}
-                window={props.window}
                 bounds={props.bounds || "parent"}
                 className={props.className}
                 size={{
                     width: state.width,
                     height: state.height
                 }}
-                position={{ x: state.x, y: state.y }}
+                // position={{ x: state.x, y: state.y }}
+                position={{ x: 0, y: 0 }}
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
@@ -235,6 +279,9 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 style={{
                     ...props.style,
                     pointerEvents: 'none',
+                    top: `${state.y}px`,
+                    left: `${state.x}px`,
+                    transform: 'none'
                 }}
                 {...dataProps}>
                 {/*<div onContextMenu={props.onContextMenu}*/}

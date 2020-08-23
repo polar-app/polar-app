@@ -22,6 +22,11 @@ import {
     useDocViewerCallbacks
 } from "../DocViewerStore";
 import {Percentages} from "polar-shared/src/util/Percentages";
+import {
+    useWindowResizeEventListener,
+    useWindowScrollEventListener
+} from "../../../../web/js/react/WindowHooks";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 function computePagemarkCoverageFromResize(rect: ILTRect,
                                            browserContext: IBrowserContext,
@@ -106,7 +111,6 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     if (! iframe || ! iframe.contentDocument) {
         // the iframe isn't mounted yet.
-        console.log("FIXME: no iframe yet");
         return null;
     }
 
@@ -131,10 +135,29 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }
 
-    const top = 0;
-    const left = 0;
-    const width = iframe.contentDocument!.body.offsetWidth;
-    const height = computeHeightFromRange() || iframe.contentDocument!.body.offsetHeight;
+    function computeInitialPosition(): ILTRect {
+
+        const doc = browserContext.document;
+        const win = browserContext.window;
+        const body = doc.body;
+
+        const bcr = body.getBoundingClientRect();
+
+        console.log("FIXME computeInitialPosition bcr: ", bcr);
+
+        const top = bcr.top + win.scrollY;
+        const left = bcr.left + win.scrollX;
+        // const top = 0;
+        // const left = 0;
+        const width = body.offsetWidth;
+        const height = computeHeightFromRange() || body.offsetHeight;
+
+        return {top, left, width, height};
+
+    }
+
+    // FIXME: ok this is re-rendering BUT the position is wrong because while the
+    // props are updating the internal state is not.
 
     const handleResized = React.useCallback((rect: ILTRect) => {
         const pagemarkCoverage = computePagemarkCoverageFromResize(rect, browserContext, pagemark);
@@ -167,10 +190,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 data-annotation-page-num={pageNum}
                 data-annotation-doc-fingerprint={fingerprint}
                 className={className}
-                left={left}
-                top={top}
-                width={width}
-                height={height}
+                computeInitialPosition={computeInitialPosition}
                 resizeAxis='y'
                 resizeHandleStyle={{
                     ...pagemarkColor,
@@ -195,6 +215,8 @@ interface IProps {
 export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
 
     const {pagemark, fingerprint, pageNum, container} = props;
+    useWindowScrollEventListener(NULL_FUNCTION);
+    useWindowResizeEventListener(NULL_FUNCTION);
 
     if (! container) {
         return null;

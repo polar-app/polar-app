@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import Tooltip from '@material-ui/core/Tooltip';
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 export interface IProps {
 
@@ -16,7 +17,7 @@ export interface IProps {
 
 }
 
-export const DocRepoFilterBar = (props: IProps) => {
+export const DocRepoFilterBar = deepMemo((props: IProps) => {
 
     const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();
@@ -151,7 +152,5 @@ export const DocRepoFilterBar = (props: IProps) => {
 
     );
 
-}
+});
 
-
-export type ToggleCallback = (value: boolean) => void;
