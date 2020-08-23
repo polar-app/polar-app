@@ -24,6 +24,7 @@ type MouseEventHandler = (event: MouseEvent) => void;
 export const Resizable = deepMemo((props: IProps) => {
 
     const [position, setPosition] = React.useState<ILTRect>(props)
+    const positionRef = React.useRef(position);
     const mouseDown = React.useRef(false);
     const mouseDownOrigin = React.useRef<IPoint | undefined>(undefined);
     const mouseMoveHandler = React.useRef<MouseEventHandler | undefined>(undefined);
@@ -42,6 +43,11 @@ export const Resizable = deepMemo((props: IProps) => {
         }
 
     };
+
+    function updatePosition(position: ILTRect) {
+        setPosition(position);
+        positionRef.current = position;
+    }
 
     const handleMouseUp = React.useCallback(() => {
         mouseDown.current = false;
@@ -62,17 +68,40 @@ export const Resizable = deepMemo((props: IProps) => {
             y: event.clientY - origin.y
         };
 
-        setPosition({
-            top: position.top,
-            left: position.left,
-            width: position.width,
-            height: position.height + delta.y
-        });
+        function computeNewPosition(): ILTRect {
 
-        console.log("FIXME: mouse move: ", delta);
+            switch (direction) {
+
+                // TODO: this would be cleaner as computePosition which just copies
+                // the other properties and only mutates one
+
+                case "top":
+                    return {
+                        ...positionRef.current,
+                        top: position.top + delta.y,
+                    };
+                case "bottom":
+                    return {
+                        ...positionRef.current,
+                        height: position.height + delta.y
+                    };
+                case "left":
+                    return {
+                        ...positionRef.current,
+                        left: position.left + delta.x,
+                    };
+                case "right":
+                    return {
+                        ...positionRef.current,
+                        width: position.width + delta.x,
+                    };
+
+            }
+        }
+
+        updatePosition(computeNewPosition());
 
     }, []);
-
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent, direction: Direction) => {
         mouseDown.current = true;
