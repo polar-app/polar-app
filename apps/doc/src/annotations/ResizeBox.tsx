@@ -6,6 +6,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
+import {IPoint} from "../../../../web/js/Point";
 
 interface IProps {
     readonly id?: string;
@@ -53,11 +54,7 @@ interface IState {
 
 function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): IState {
 
-    console.log("FIXME: deriving state ");
-
     const initialPosition = computeInitialPosition();
-
-    console.log("FIXME: deriving state: " , initialPosition);
 
     return {
         active: true,
@@ -174,8 +171,30 @@ export const ResizeBox = deepMemo((props: IProps) => {
         }
     }
 
-    // FIXME: even though state x and y position are specified top and left are still zero
-    console.log(`FIXME x: ${state.x} y: ${state.y}, style: `, props.style);
+    function computePosition(): IPoint {
+
+        if (props.enablePositionHack) {
+            return {x: 0, y: 0};
+        }
+
+        return {x: state.x, y: state.y};
+
+    }
+
+    function computeStyle(): React.CSSProperties {
+
+        if (props.enablePositionHack) {
+            return {
+                top: `${state.y}px`,
+                left: `${state.x}px`
+            };
+        }
+
+        return {};
+    }
+
+    const position = computePosition();
+    const style = computeStyle();
 
     return (
         <>
@@ -192,8 +211,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
                     width: state.width,
                     height: state.height
                 }}
-                // position={{ x: state.x, y: state.y }}
-                position={{ x: 0, y: 0 }}
+                position={position}
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
@@ -279,9 +297,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 style={{
                     ...props.style,
                     pointerEvents: 'none',
-                    top: `${state.y}px`,
-                    left: `${state.x}px`,
-                    transform: 'none'
+                    ...style
                 }}
                 {...dataProps}>
                 {/*<div onContextMenu={props.onContextMenu}*/}

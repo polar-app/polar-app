@@ -192,6 +192,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 className={className}
                 computeInitialPosition={computeInitialPosition}
                 resizeAxis='y'
+                enablePositionHack={true}
                 resizeHandleStyle={{
                     ...pagemarkColor,
                     mixBlendMode: 'multiply',
