@@ -1,4 +1,5 @@
 import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
+import {ResizeDirection} from "re-resizable";
 import * as React from "react";
 import {useState} from "react";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
@@ -28,7 +29,7 @@ interface IProps {
 
     readonly resizeHandleStyles?: HandleStyles;
 
-    readonly onResized?: (resizeRect: ILTRect) => void;
+    readonly onResized?: (resizeRect: ILTRect, direction: ResizeDirection) => void;
 
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
@@ -72,7 +73,8 @@ export const ResizeBox = deepMemo((props: IProps) => {
         setState(newState);
     }, {win: props.window});
 
-    const handleResize = React.useCallback((newState: IState) => {
+    const handleResize = React.useCallback((newState: IState,
+                                            direction: ResizeDirection) => {
 
         function computeDerivedState(): IState {
 
@@ -106,7 +108,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 top: newState.y,
                 width: newState.width,
                 height: newState.height
-            });
+            }, direction);
 
         } catch (e) {
             console.error(e);
@@ -177,11 +179,11 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
-                    handleResize({
-                        ...state,
-                        x: d.x,
-                        y: d.y
-                    });
+                    // handleResize({
+                    //     ...state,
+                    //     x: d.x,
+                    //     y: d.y
+                    // });
                 }}
                 onResizeStop={(event,
                                direction,
@@ -195,7 +197,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
                         ...state,
                         width,
                         height,
-                    });
+                    }, direction);
 
                 }}
                 disableDragging={true}
