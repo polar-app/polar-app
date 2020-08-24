@@ -138,15 +138,10 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     function computeInitialPosition(): ILTRect {
 
         const doc = browserContext.document;
-        const win = browserContext.window;
         const body = doc.body;
 
-        const bcr = body.getBoundingClientRect();
-
-        const top = bcr.top + win.scrollY;
-        const left = bcr.left + win.scrollX;
-        // const top = 0;
-        // const left = 0;
+        const top = 0;
+        const left = 0;
 
         const width = body.offsetWidth;
         const height = computeHeightFromRange() || body.offsetHeight;
@@ -191,7 +186,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 className={className}
                 computeInitialPosition={computeInitialPosition}
                 resizeAxis='y'
-                enablePositionHack={true}
+                // enablePositionHack={true}
                 resizeHandleStyle={{
                     ...pagemarkColor,
                     mixBlendMode: 'multiply',

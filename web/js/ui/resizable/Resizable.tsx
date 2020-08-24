@@ -6,14 +6,21 @@ import {HorizontalLine} from "./HorizontalLine";
 import {IPoint} from "../../Point";
 
 interface IProps {
-    readonly top: number;
-    readonly left: number;
-    readonly width: number;
-    readonly height: number;
     readonly color: string;
 
     readonly document?: Document;
     readonly window?: Window;
+
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
+
+    readonly resizeAxis?: 'y';
+
+    readonly computeInitialPosition: () => ILTRect;
+
+    readonly onResized?: (resizeRect: ILTRect) => void;
+
+    readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
 }
 
@@ -23,11 +30,12 @@ type MouseEventHandler = (event: MouseEvent) => void;
 
 export const Resizable = deepMemo((props: IProps) => {
 
-    const [position, setPosition] = React.useState<ILTRect>(props)
+    const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
     const positionRef = React.useRef(position);
     const mouseDown = React.useRef(false);
     const mouseEventOrigin = React.useRef<IPoint | undefined>(undefined);
     const mouseMoveHandler = React.useRef<MouseEventHandler | undefined>(undefined);
+    const elementRef = React.useRef<HTMLElement | null>();
 
     const win = props.window || window;
     const doc = props.document || document;
@@ -70,29 +78,35 @@ export const Resizable = deepMemo((props: IProps) => {
 
         function computeNewPosition(): ILTRect {
 
-            switch (direction) {
+            // FIXME: the lines within the box ADD to the box width and it's not
+            // exactly 100px
 
-                // TODO: this would be cleaner as computePosition which just copies
-                // the other properties and only mutates one
+            switch (direction) {
 
                 case "top":
                     return {
                         ...positionRef.current,
-                        top: positionRef.current.top + delta.y,
+                        top: Math.min(positionRef.current.top + delta.y,
+                                       positionRef.current.top + positionRef.current.height),
+                        height: Math.max(positionRef.current.height - delta.y, 0)
                     };
                 case "bottom":
                     return {
                         ...positionRef.current,
+                        // FIXME: also don't allow this to be dragged too far to the top.
                         height: positionRef.current.height + delta.y
                     };
                 case "left":
                     return {
                         ...positionRef.current,
-                        left: positionRef.current.left + delta.x,
+                        left: Math.min(positionRef.current.left + delta.x,
+                                       positionRef.current.left + positionRef.current.width),
+                        width: Math.max(positionRef.current.width - delta.x, 0)
                     };
                 case "right":
                     return {
                         ...positionRef.current,
+                        // FIXME: also don't allow this to be dragged too far to the bottom.
                         width: positionRef.current.width + delta.x,
                     };
 
@@ -101,6 +115,10 @@ export const Resizable = deepMemo((props: IProps) => {
 
         updatePosition(computeNewPosition());
         mouseEventOrigin.current = event;
+
+        if (props.onResized) {
+            props.onResized(positionRef.current);
+        }
 
     }, []);
 
@@ -128,11 +146,16 @@ export const Resizable = deepMemo((props: IProps) => {
         left: `${position.left}px`,
         width: `${position.width}px`,
         height: `${position.height}px`,
+        overflow: 'none'
     }
 
     return (
 
-        <div style={style} draggable={false}>
+        <div style={{...style, ...props.style}}
+             ref={ref => elementRef.current = ref}
+             draggable={false}
+             className={props.className}
+             onContextMenu={props.onContextMenu}>
 
             <VerticalLine side="left"
                           color={props.color}

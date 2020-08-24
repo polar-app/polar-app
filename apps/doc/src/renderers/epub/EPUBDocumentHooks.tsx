@@ -92,7 +92,8 @@ export function useCSS(): IStylesheetMap {
         'body': {
             'margin': '5px',
             'min-height': 'calc(100vh - 20px)',
-            ...paddingStyles
+            ...paddingStyles,
+            'position': 'relative'
         },
         'html': {
             'background-color': `${theme.palette.background.paper}`,
