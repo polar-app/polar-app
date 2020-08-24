@@ -31,6 +31,10 @@ export namespace RangeRects {
         };
     }
 
+    export function contains(container: IRangeRect, item: IRangeRect): boolean {
+        return item.top > container.top && item.bottom < container.bottom;
+    }
+
 }
 
 export namespace FluidElementPredicates {
@@ -58,10 +62,13 @@ export namespace FluidElementPredicates {
     }
 
     export function create<E extends IHTMLElement>(direction: Direction, boxRect: IRangeRect) {
+
         return  direction === 'top' ? FluidElementPredicates.createTop<E>(boxRect) :
                                       FluidElementPredicates.createBottom<E>(boxRect);
 
     }
+
+
 
     export function createTop<E extends IHTMLElement>(boxRect: IRangeRect): IFluidElementPredicate<E> {
 
@@ -69,11 +76,11 @@ export namespace FluidElementPredicates {
 
         function filter(element: E): boolean {
             const elementRect = RangeRects.fromElement(element);
-            return elementRect.bottom < pointer;
+            return RangeRects.contains(boxRect, elementRect)
         }
 
         function select(elements: ReadonlyArray<E>): E | undefined {
-            return Arrays.last(elements);
+            return Arrays.first(elements);
         }
 
         return {pointer, filter, select}
@@ -86,11 +93,11 @@ export namespace FluidElementPredicates {
 
         function filter(element: E): boolean {
             const elementRect = RangeRects.fromElement(element);
-            return elementRect.top > pointer;
+            return RangeRects.contains(boxRect, elementRect)
         }
 
         function select(elements: ReadonlyArray<E>): E | undefined {
-            return Arrays.first(elements);
+            return Arrays.last(elements);
         }
 
         return {pointer, filter, select}

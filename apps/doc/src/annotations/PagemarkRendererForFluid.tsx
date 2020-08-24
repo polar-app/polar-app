@@ -52,9 +52,12 @@ function computePagemarkCoverageFromResize(box: ILTRect,
         const filtered = elements.filter(textElementPredicate)
                                  .filter(predicate.filter);
 
+        console.log("FIXME: filtered: ", filtered);
+
         const selected = predicate.select(filtered);
 
         if (! selected) {
+            console.log("FIXME: no selected");
             return undefined;
         }
 
@@ -73,6 +76,8 @@ function computePagemarkCoverageFromResize(box: ILTRect,
         // range.setEndAfter(selected);
 
         // TODO: lastChild is working BUT it goes too far for the last item.
+
+        console.log("FIXME: selected element: ", selected);
 
         range.setStart(selected, 0);
         range.setEnd(selected.lastChild!, selected.lastChild?.nodeValue?.length || 0);
