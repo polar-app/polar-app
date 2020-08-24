@@ -36,12 +36,6 @@ interface IProps {
 
     readonly resizeAxis?: 'y'
 
-    /**
-     * Enable a 'position hack' to work with iframes since I can't do
-     * positioning myself.
-     */
-    readonly enablePositionHack?: boolean;
-
 }
 
 interface IState {
@@ -73,20 +67,9 @@ export const ResizeBox = deepMemo((props: IProps) => {
     const [state, setState] = useState<IState>(computeState);
     const rndRef = React.useRef<Rnd | null>(null);
 
-    // FIXME: there are two main problems with this component:
-    //
-    // - FIXME: it doesn't seem to work with margin with the body...
-    // - FIXME: I could get it to work with top/left and NO translate but
-    //   otherwise it will fail to work and I'm not sure what resize would do in
-    //   that situation
-
     useWindowResizeEventListener(() => {
         const newState = computeState();
         setState(newState);
-
-        // rndRef.current!.updateSize(newState);
-        // rndRef.current!.updatePosition(newState);
-
     }, {win: props.window});
 
     const handleResize = React.useCallback((newState: IState) => {
@@ -109,7 +92,6 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
         newState = computeDerivedState();
 
-        // setState({...newState, x: 0, y: 0});
         setState(newState);
 
         try {
@@ -171,29 +153,10 @@ export const ResizeBox = deepMemo((props: IProps) => {
     }
 
     function computePosition(state: IState): IPoint {
-
-        if (props.enablePositionHack) {
-            return {x: 0, y: 0};
-        }
-
         return {x: state.x, y: state.y};
-
-    }
-
-    function computeStyle(): React.CSSProperties {
-
-        if (props.enablePositionHack) {
-            return {
-                top: `${state.y}px`,
-                left: `${state.x}px`
-            };
-        }
-
-        return {};
     }
 
     const position = computePosition(state);
-    const style = computeStyle();
 
     return (
         <>
@@ -294,7 +257,6 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 style={{
                     ...props.style,
                     pointerEvents: 'none',
-                    ...style
                 }}
                 {...dataProps}>
                 {/*<div onContextMenu={props.onContextMenu}*/}
