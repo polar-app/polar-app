@@ -114,9 +114,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         return null;
     }
 
-    function computeHeightFromRange() {
-
-        const cfi = pagemark.range?.end?.value
+    function computeBoundingClientRectFromCFI(cfi: string | undefined): DOMRect | undefined {
 
         if (! cfi) {
             return undefined;
@@ -127,10 +125,35 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         if (! range) {
             console.log("No range found for pagemark with CFI: " + cfi);
-            return;
+            return undefined;
         }
 
-        const bcr = range.getBoundingClientRect();
+        return range.getBoundingClientRect();
+
+    }
+
+    function computeTopFromRange(): number | undefined {
+
+        const cfi = pagemark.range?.start?.value
+        const bcr = computeBoundingClientRectFromCFI(cfi);
+
+        if (! bcr) {
+            return undefined;
+        }
+
+        return bcr.top - browserContext.window.scrollY;
+
+    }
+
+    function computeHeightFromRange(): number | undefined {
+
+        const cfi = pagemark.range?.end?.value
+        const bcr = computeBoundingClientRectFromCFI(cfi);
+
+        if (! bcr) {
+            return undefined;
+        }
+
         return bcr.bottom + browserContext.window.scrollY;
 
     }
@@ -140,18 +163,16 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const doc = browserContext.document;
         const body = doc.body;
 
-        const top = 0;
-        const left = 0;
 
+        const left = 0;
         const width = body.offsetWidth;
+
+        const top = computeTopFromRange() || 0;
         const height = computeHeightFromRange() || body.offsetHeight;
 
         return {top, left, width, height};
 
     }
-
-    // FIXME: ok this is re-rendering BUT the position is wrong because while the
-    // props are updating the internal state is not.
 
     const handleResized = React.useCallback((rect: ILTRect) => {
         const pagemarkCoverage = computePagemarkCoverageFromResize(rect, browserContext, pagemark);

@@ -91,8 +91,6 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
     const handleResize = React.useCallback((newState: IState) => {
 
-        console.log("FIXME newState: ", newState);
-
         function computeDerivedState(): IState {
 
             if (props.resizeAxis === 'y') {
@@ -109,24 +107,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
         }
 
-        function updateElementStyle(newState: IState) {
-
-            const div = rndRef.current?.resizableElement.current;
-
-            if (div) {
-                console.log("FIXME: using updateElementSType");
-                div.style.top = `${newState.x}px`;
-                div.style.left = `${newState.y}px`;
-                div.style.width = `${newState.width}px`;
-                div.style.height = `${newState.height}px`;
-                div.style.transform = 'none';
-            } else {
-                console.warn('no div');
-            }
-        }
-
         newState = computeDerivedState();
-        updateElementStyle(newState);
 
         // setState({...newState, x: 0, y: 0});
         setState(newState);
