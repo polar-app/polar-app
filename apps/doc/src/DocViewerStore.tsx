@@ -28,6 +28,7 @@ import {DocViewerSnapshots} from "./DocViewerSnapshots";
 import {DocMetas} from '../../../web/js/metadata/DocMetas';
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {
+    Direction,
     FluidPagemarkFactory,
     NullFluidPagemarkFactory
 } from "./FluidPagemarkFactory";
@@ -181,6 +182,11 @@ export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
      * The new pagemark's covering rect (for PDF)
      */
     readonly rect: IPagemarkRect;
+
+    /**
+     * Direction must be specified when updating / resizing pagemarks.
+     */
+    readonly direction: Direction;
 
 }
 
@@ -419,9 +425,12 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function onPagemark(mutation: IPagemarkMutation) {
 
-        function updatePagemarkRange(pagemark: IPagemark, range: Range | undefined) {
+        function updatePagemarkRange(pagemark: IPagemark,
+                                     range: Range | undefined,
+                                     direction: Direction | undefined,
+                                     existing: IPagemark | undefined) {
             const store = storeProvider();
-            const fluidPagemark = store.fluidPagemarkFactory.create({range});
+            const fluidPagemark = store.fluidPagemarkFactory.create({range, direction, existing});
             // now add the range which is needed for fluid pagemarks.
             pagemark.range = fluidPagemark?.range;
         }
@@ -457,10 +466,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
                 if (createdPagemarks.length > 0) {
                     const last = Arrays.last(createdPagemarks)!
-                    const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range});
+                    const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range, direction: undefined, existing: undefined});
                     // now add the range which is needed for fluid pagemarks.
                     last.pagemark.range = fluidPagemark?.range;
-                    updatePagemarkRange(last.pagemark, opts.range)
+                    updatePagemarkRange(last.pagemark, opts.range, undefined, undefined);
                 }
 
             }
@@ -478,7 +487,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const createOpts: IPagemarkCreateToPoint = {
                 ...opts,
                 type: 'create-to-point',
-                range: undefined
+                range: undefined,
             };
 
             createPagemarkToPoint(createOpts, opts.fromPage);
@@ -497,7 +506,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             }
 
             const pagemark = createPagemark();
-            updatePagemarkRange(pagemark, mutation.range);
+            updatePagemarkRange(pagemark, mutation.range, mutation.direction, mutation.existing);
             Pagemarks.updatePagemark(docMeta, mutation.pageNum, pagemark);
 
             updateDocMeta(docMeta);

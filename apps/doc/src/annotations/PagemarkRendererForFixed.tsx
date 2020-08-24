@@ -109,7 +109,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
     const {onPagemark} = useDocViewerCallbacks();
     const docViewerElementsContext = useDocViewerElementsContext();
 
-    const handleResized = React.useCallback((rect: ILTRect) => {
+    const handleResized = React.useCallback((rect: ILTRect, direction) => {
 
         const pageElement = docViewerElementsContext.getPageElementForPage(pageNum)!;
         const pagemarkCoverage = computePagemarkCoverageFromResize(rect, pageElement);
@@ -118,7 +118,8 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
             type: 'update',
             pageNum,
             existing: pagemark,
-            ...pagemarkCoverage
+            ...pagemarkCoverage,
+            direction
         }
 
         onPagemark(mutation);

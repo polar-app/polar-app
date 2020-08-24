@@ -31,13 +31,12 @@ import {
     FluidPagemarkFactory,
     IFluidPagemark
 } from "../../FluidPagemarkFactory";
-import {IDocViewerContextMenuOrigin} from "../../DocViewerMenu";
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
-import {Percentages} from 'polar-shared/src/util/Percentages';
 import {useStylesheetURL} from "./EPUBDocumentHooks";
-import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {AnnotationLinks} from "../../../../../web/js/annotation_sidebar/AnnotationLinks";
+import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
+import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -253,16 +252,40 @@ export const EPUBDocument = (props: IProps) => {
                     return undefined;
                 }
 
-                // FIXME: this percentage computation might not be required.
                 const cfiBase = sectionRef.current!.cfiBase;
                 const epubCFI = new EpubCFI(opts.range, cfiBase);
 
-                const range: IPagemarkRange = {
-                    end: {
-                        type: 'epubcfi',
-                        value: epubCFI.toString()
-                    }
+                const anchor: IPagemarkAnchor = {
+                    type: 'epubcfi',
+                    value: epubCFI.toString()
                 };
+
+                function computeRange(): IPagemarkRange | undefined {
+                    switch(opts.direction) {
+                        case "top":
+                            return {
+                                start: anchor,
+                                end: opts.existing?.range?.end
+                            };
+                        case "bottom":
+                            return {
+                                start: opts.existing?.range?.start,
+                                end: anchor
+                            };
+                        default:
+                            return {
+                                start: opts.existing?.range?.start,
+                                end: anchor
+                            };
+
+                    }
+                }
+
+                const range = computeRange();
+
+                if (! range) {
+                    return undefined;
+                }
 
                 return {range}
 

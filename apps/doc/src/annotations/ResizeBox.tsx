@@ -1,4 +1,4 @@
-import {HandleStyles, ResizeEnable, Rnd} from "react-rnd";
+import {HandleStyles, ResizeEnable, Rnd, ResizableDelta} from "react-rnd";
 import {ResizeDirection} from "re-resizable";
 import * as React from "react";
 import {useState} from "react";
@@ -39,12 +39,15 @@ interface IProps {
 
 }
 
-interface IState {
-    readonly active: boolean;
+interface IBox {
     readonly x: number;
     readonly y: number;
     readonly width: number;
     readonly height: number;
+}
+
+interface IState extends IBox {
+    readonly active: boolean;
 }
 
 function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): IState {
@@ -58,6 +61,30 @@ function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): 
         width: initialPosition.width,
         height: initialPosition.height
     };
+
+}
+
+function computeNewBox(box: IBox, direction: ResizeDirection, delta: ResizableDelta): IBox {
+
+    if (direction.startsWith('left') || direction.startsWith('top')) {
+        return {
+            x: box.x - delta.width,
+            width: box.width + delta.width,
+            y: box.y - delta.height,
+            height: box.height + delta.height
+        };
+    }
+
+    if (direction.startsWith('right') || direction.startsWith('bottom')) {
+        return {
+            x: box.x,
+            y: box.y,
+            width: box.width + delta.width,
+            height: box.height + delta.height
+        };
+    }
+
+    throw new Error("unhandled direction: " + direction);
 
 }
 
@@ -76,7 +103,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
     const handleResize = React.useCallback((newState: IState,
                                             direction: ResizeDirection) => {
 
-        function computeDerivedState(): IState {
+        function computeStateWithAxisHandling(): IState {
 
             if (props.resizeAxis === 'y') {
                 return {
@@ -92,7 +119,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
         }
 
-        newState = computeDerivedState();
+        newState = computeStateWithAxisHandling();
 
         setState(newState);
 
@@ -159,6 +186,19 @@ export const ResizeBox = deepMemo((props: IProps) => {
     }
 
     const position = computePosition(state);
+    const doc = props.document || document;
+
+    const toggleUserSelect = (resizing: boolean) => {
+        // this is a hack to disable user select of the document to prevent
+        // parts of the UI from being selected
+
+        if (resizing) {
+            doc.body.style.userSelect = 'none';
+        } else {
+            doc.body.style.userSelect = 'auto';
+        }
+
+    };
 
     return (
         <>
@@ -175,10 +215,13 @@ export const ResizeBox = deepMemo((props: IProps) => {
                     width: state.width,
                     height: state.height
                 }}
+                onMouseDown={() => toggleUserSelect(true)}
+                onMouseUp={() => toggleUserSelect(false)}
                 position={position}
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
+                    console.log("FIXME: dragStop: ", d);
                     // handleResize({
                     //     ...state,
                     //     x: d.x,
@@ -190,13 +233,20 @@ export const ResizeBox = deepMemo((props: IProps) => {
                                elementRef,
                                delta) => {
 
-                    const width = state.width + delta.width;
-                    const height = state.height + delta.height;
+                    console.log("FIXME: delta: ", delta);
+
+                    // FIXME: this is the bug now... we're always given 0,0 as
+                    // it never actually resizes...
+                    //
+                    // They're forcing me to compute the width and height..
+
+                    const box = computeNewBox(state, direction, delta);
+
+                    console.log(`FIXME: box for direction: ${direction}: `, state, box, delta);
 
                     handleResize({
                         ...state,
-                        width,
-                        height,
+                        ...box,
                     }, direction);
 
                 }}

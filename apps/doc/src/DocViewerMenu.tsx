@@ -377,11 +377,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const onCreatePagemarkFromPage = React.useCallback(() => {
 
-        if (origin.fileType === 'epub') {
-            console.log("FIXME skip epub for pagemark");
-            return;
-        }
-
         function onDone(fromPage: number) {
 
             onPagemark({

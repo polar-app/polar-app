@@ -27,10 +27,15 @@ import {
     useWindowScrollEventListener
 } from "../../../../web/js/react/WindowHooks";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Direction} from "../FluidPagemarkFactory";
+import { RangeRects, FluidElementPredicates } from "./pagemarks/FluidElementPredicates";
 
-function computePagemarkCoverageFromResize(rect: ILTRect,
+function computePagemarkCoverageFromResize(box: ILTRect,
                                            browserContext: IBrowserContext,
-                                           pagemark: IPagemark): IPagemarkCoverage {
+                                           pagemark: IPagemark,
+                                           direction: Direction): IPagemarkCoverage {
+
+    const boxRect = RangeRects.fromRect(box);
 
     function computeRange(): Range | undefined {
 
@@ -38,25 +43,39 @@ function computePagemarkCoverageFromResize(rect: ILTRect,
 
         const elements = Array.from(doc.querySelectorAll("*")) as HTMLElement[];
 
-        function predicate(element: HTMLElement): boolean {
-
-            if (element.textContent === null || element.textContent.trim() === '') {
-                return false;
-            }
-
-            return (element.offsetTop + element.offsetHeight) < (rect.top + rect.height);
+        function textElementPredicate(element: HTMLElement): boolean {
+            return element.textContent !== null && element.textContent.trim() !== '';
         }
 
-        const last = Arrays.last(elements.filter(predicate));
+        const predicate = FluidElementPredicates.create<HTMLElement>(direction, boxRect);
 
-        if (! last) {
+        const filtered = elements.filter(textElementPredicate)
+                                 .filter(predicate.filter);
+
+        const selected = predicate.select(filtered);
+
+        if (! selected) {
             return undefined;
         }
 
         const range = doc.createRange();
 
-        range.setStart(last, 0);
-        range.setEnd(last.firstChild!, last.textContent!.length - 1);
+        // TODO: I can't figure out how to reliably handle the computation of
+        // range as epub seems to be finicky about computing it when I'm
+        // updating the pagemarks and won't mount them properly when the pagemark
+        // finally reloads. It also doesn't have a way to include/exclude images
+
+        //
+        // TODO: also, just computing the length of the textContent is wrong too
+        // because it might be a mixed-node element with multiple children.
+
+        // range.setStartBefore(selected);
+        // range.setEndAfter(selected);
+
+        // TODO: lastChild is working BUT it goes too far for the last item.
+
+        range.setStart(selected, 0);
+        range.setEnd(selected.lastChild!, selected.lastChild?.nodeValue?.length || 0);
 
         return range;
 
@@ -66,7 +85,7 @@ function computePagemarkCoverageFromResize(rect: ILTRect,
 
     // not needed for EPUB.
     const pagemarkRect = new PagemarkRect({left: 0, top: 0, width: 0, height: 0});
-    const percentage = Percentages.calculate(rect.top + rect.height,
+    const percentage = Percentages.calculate(box.top + box.height,
                                              browserContext.document.body.offsetHeight);
 
     return {percentage, rect: pagemarkRect, range};
@@ -116,7 +135,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     function computeBoundingClientRectFromCFI(cfi: string | undefined): DOMRect | undefined {
 
-        if (! cfi) {
+        if (cfi === undefined) {
             return undefined;
         }
 
@@ -135,7 +154,11 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     function computeTopFromRange(): number | undefined {
 
         const cfi = pagemark.range?.start?.value
+        console.log("FIXME: top cfi: ", cfi);
+
         const bcr = computeBoundingClientRectFromCFI(cfi);
+
+        console.log("FIXME: top bcr: ", bcr);
 
         if (! bcr) {
             return undefined;
@@ -145,7 +168,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }
 
-    function computeHeightFromRange(): number | undefined {
+    function computeHeightFromRange(top: number): number | undefined {
 
         const cfi = pagemark.range?.end?.value
         const bcr = computeBoundingClientRectFromCFI(cfi);
@@ -154,7 +177,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             return undefined;
         }
 
-        return bcr.bottom + browserContext.window.scrollY;
+        return bcr.bottom + browserContext.window.scrollY - top;
 
     }
 
@@ -163,25 +186,28 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const doc = browserContext.document;
         const body = doc.body;
 
-
         const left = 0;
         const width = body.offsetWidth;
 
         const top = computeTopFromRange() || 0;
-        const height = computeHeightFromRange() || body.offsetHeight;
+        const height = computeHeightFromRange(top) || body.offsetHeight;
+
+        console.log("FIXME: computed initial position for pagemark with range: ", pagemark.range, {top, height});
 
         return {top, left, width, height};
 
     }
 
-    const handleResized = React.useCallback((rect: ILTRect) => {
-        const pagemarkCoverage = computePagemarkCoverageFromResize(rect, browserContext, pagemark);
+    const handleResized = React.useCallback((rect: ILTRect, direction: Direction) => {
+
+        const pagemarkCoverage = computePagemarkCoverageFromResize(rect, browserContext, pagemark, direction);
 
         const mutation: IPagemarkUpdate = {
             type: 'update',
             pageNum,
             existing: pagemark,
-            ...pagemarkCoverage
+            ...pagemarkCoverage,
+            direction
         }
 
         onPagemark(mutation);
