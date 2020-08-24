@@ -90,13 +90,13 @@ function computeNewBox(box: IBox, direction: ResizeDirection, delta: ResizableDe
 
 export const ResizeBox = deepMemo((props: IProps) => {
 
-    const computeState = () => deriveStateFromInitialPosition(props.computeInitialPosition);
+    const computeNewState = () => deriveStateFromInitialPosition(props.computeInitialPosition);
 
-    const [state, setState] = useState<IState>(computeState);
+    const [state, setState] = useState<IState>(computeNewState);
     const rndRef = React.useRef<Rnd | null>(null);
 
     useWindowResizeEventListener(() => {
-        const newState = computeState();
+        const newState = computeNewState();
         setState(newState);
     }, {win: props.window});
 

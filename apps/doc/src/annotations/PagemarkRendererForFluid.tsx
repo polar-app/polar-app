@@ -159,17 +159,15 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     function computeTopFromRange(): number | undefined {
 
         const cfi = pagemark.range?.start?.value
-        console.log("FIXME: top cfi: ", cfi);
 
         const bcr = computeBoundingClientRectFromCFI(cfi);
-
-        console.log("FIXME: top bcr: ", bcr);
 
         if (! bcr) {
             return undefined;
         }
 
-        return bcr.top - browserContext.window.scrollY;
+        const scrollTop = browserContext.document.documentElement.scrollTop;
+        return bcr.top + scrollTop;
 
     }
 
@@ -181,8 +179,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         if (! bcr) {
             return undefined;
         }
-
-        return bcr.bottom + browserContext.window.scrollY - top;
+        const scrollTop = browserContext.document.documentElement.scrollTop;
+        return bcr.bottom + scrollTop - top;
 
     }
 

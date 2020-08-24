@@ -93,11 +93,14 @@ export function useCSS(): IStylesheetMap {
             'margin': '5px',
             'min-height': 'calc(100vh - 20px)',
             ...paddingStyles,
-            'position': 'relative'
+            // TODO: needed for a fixed width layout.
+            // 'position': 'relative'
         },
         'html': {
+            // TODO: needed for a fixed width layout.
             'background-color': `${theme.palette.background.paper}`,
-            'max-width': '800px !important',
+            // TODO: needed for a fixed width layout.
+            // 'max-width': '800px !important',
             'margin-left': 'auto !important',
             'margin-right': 'auto !important',
             'margin-bottom': '5px !important',
