@@ -15,7 +15,6 @@ import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {EpubCFI} from 'epubjs';
 import {PagemarkRect} from "../../../../web/js/metadata/PagemarkRect";
-import {Arrays} from "polar-shared/src/util/Arrays";
 import {
     IPagemarkCoverage,
     IPagemarkUpdate,
@@ -28,7 +27,10 @@ import {
 } from "../../../../web/js/react/WindowHooks";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Direction} from "../FluidPagemarkFactory";
-import { RangeRects, FluidElementPredicates } from "./pagemarks/FluidElementPredicates";
+import {
+    FluidElementPredicates,
+    RangeRects
+} from "./pagemarks/FluidElementPredicates";
 
 function computePagemarkCoverageFromResize(box: ILTRect,
                                            browserContext: IBrowserContext,
@@ -90,7 +92,7 @@ function computePagemarkCoverageFromResize(box: ILTRect,
 
     // not needed for EPUB.
     const pagemarkRect = new PagemarkRect({left: 0, top: 0, width: 0, height: 0});
-    const percentage = Percentages.calculate(box.top + box.height,
+    const percentage = Percentages.calculate(box.height,
                                              browserContext.document.body.offsetHeight);
 
     return {percentage, rect: pagemarkRect, range};
