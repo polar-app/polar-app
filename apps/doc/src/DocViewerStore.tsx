@@ -143,9 +143,7 @@ export interface IPagemarkCreateToPoint extends IPagemarkCreateOrUpdate {
 
 }
 
-export interface IPagemarkCreateFromPage {
-
-    // FIXME: this needs range too
+export interface IPagemarkCreateFromPage extends IPagemarkCreateOrUpdate {
 
     readonly type: 'create-from-page';
 
@@ -233,9 +231,6 @@ export interface IDocViewerCallbacks {
 
     onPagePrev(): void;
     onPageNext(): void;
-
-    // FIXME: where do we put the callback for injecting content from the
-    // annotation control into the main doc.
 
 }
 
@@ -492,7 +487,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const createOpts: IPagemarkCreateToPoint = {
                 ...opts,
                 type: 'create-to-point',
-                range: undefined,
+                range: opts.range,
             };
 
             return createPagemarkToPoint(createOpts, opts.fromPage);
