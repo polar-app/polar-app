@@ -194,9 +194,6 @@ function selectedAnnotationMetas(pageElement: HTMLElement,
 
 export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewerContextMenuOrigin | undefined {
 
-    console.log("FIXME1: " , event.nativeEvent.currentTarget);
-    console.log("FIXME2: " , event.nativeEvent.target);
-
     const target = event.target as HTMLElement;
 
     interface ContextPageMeta {
@@ -372,7 +369,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     }, []);
 
-    // FIXME: this one also needs to nave an 'end' point but needs to start
+    // FIXME: this one also needs to have an 'end' point but needs to start
     // from a page so we would need some type of custom range for this.
 
     const onCreatePagemarkFromPage = React.useCallback(() => {
