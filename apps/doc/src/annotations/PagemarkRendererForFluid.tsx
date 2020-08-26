@@ -31,7 +31,6 @@ import {
     FluidElementPredicates,
     RangeRects
 } from "./pagemarks/FluidElementPredicates";
-import {TOC_NCX} from "../../../../../polar-app-public/polar-epub-generator/src/templates/TOC_NCX";
 
 function computePagemarkCoverageFromResize(box: ILTRect,
                                            browserContext: IBrowserContext,
@@ -55,12 +54,9 @@ function computePagemarkCoverageFromResize(box: ILTRect,
         const filtered = elements.filter(textElementPredicate)
                                  .filter(predicate.filter);
 
-        console.log("FIXME: filtered: ", filtered);
-
         const selected = predicate.select(filtered);
 
         if (! selected) {
-            console.log("FIXME: no selected");
             return undefined;
         }
 
@@ -79,8 +75,6 @@ function computePagemarkCoverageFromResize(box: ILTRect,
         // range.setEndAfter(selected);
 
         // TODO: lastChild is working BUT it goes too far for the last item.
-
-        console.log("FIXME: selected element: ", selected);
 
         range.setStart(selected, 0);
         range.setEnd(selected.lastChild!, selected.lastChild?.nodeValue?.length || 0);
@@ -197,8 +191,6 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         const top = computeTopFromRange(pagemark) || 0;
         const height = computeHeightFromRange(pagemark, top) || body.offsetHeight;
-
-        console.log("FIXME: computed initial position for pagemark with range: ", pagemark.range, {top, height});
 
         return {top, left, width, height};
 
