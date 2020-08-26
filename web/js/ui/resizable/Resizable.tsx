@@ -78,9 +78,6 @@ export const Resizable = deepMemo((props: IProps) => {
 
         function computeNewPosition(): ILTRect {
 
-            // FIXME: the lines within the box ADD to the box width and it's not
-            // exactly 100px
-
             switch (direction) {
 
                 case "top":
@@ -106,7 +103,6 @@ export const Resizable = deepMemo((props: IProps) => {
                 case "right":
                     return {
                         ...positionRef.current,
-                        // FIXME: also don't allow this to be dragged too far to the bottom.
                         width: positionRef.current.width + delta.x,
                     };
 
