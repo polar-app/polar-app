@@ -231,7 +231,6 @@ export const ResizeBox = deepMemo((props: IProps) => {
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
                 onDragStop={(e, d) => {
-                    console.log("FIXME: dragStop: ", d);
                     // handleResize({
                     //     ...state,
                     //     x: d.x,
@@ -243,16 +242,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
                                elementRef,
                                delta) => {
 
-                    console.log("FIXME: delta: ", delta);
-
-                    // FIXME: this is the bug now... we're always given 0,0 as
-                    // it never actually resizes...
-                    //
-                    // They're forcing me to compute the width and height..
-
                     const box = computeNewBox(state, direction, delta);
-
-                    console.log(`FIXME: box for direction: ${direction}: `, state, box, delta);
 
                     handleResize({
                         ...state,
