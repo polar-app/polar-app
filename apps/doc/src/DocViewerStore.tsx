@@ -34,6 +34,7 @@ import {
 } from "./FluidPagemarkFactory";
 import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
 import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
+import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -227,7 +228,7 @@ export interface IDocViewerCallbacks {
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
-    onPagemark(opts: IPagemarkMutation): void;
+    onPagemark(opts: IPagemarkMutation): ReadonlyArray<IPagemarkRef>;
     setPageNavigator(pageNavigator: PageNavigator): void;
 
     onPagePrev(): void;
@@ -423,7 +424,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         return docMetas.map(docMeta => updateDocMeta(docMeta));
     }
 
-    function onPagemark(mutation: IPagemarkMutation) {
+    function onPagemark(mutation: IPagemarkMutation): ReadonlyArray<IPagemarkRef> {
 
         function updatePagemarkRange(pagemark: IPagemark,
                                      range: Range | undefined,
@@ -435,13 +436,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             pagemark.range = fluidPagemark?.range;
         }
 
-        function createPagemarkToPoint(opts: IPagemarkCreateToPoint, start?: number) {
+        function createPagemarkToPoint(opts: IPagemarkCreateToPoint, start?: number): ReadonlyArray<IPagemarkRef> {
 
             const store = storeProvider();
             const {docMeta} = store;
 
             if (!docMeta) {
-                return;
+                return [];
             }
 
             const {pageNum} = opts;
@@ -472,13 +473,17 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                     updatePagemarkRange(last.pagemark, opts.range, undefined, undefined);
                 }
 
+                return createdPagemarks;
+
             }
 
             deletePagemarkForCurrentPage(pageNum);
-            createPagemarksForRange(pageNum, percentage);
+            const createdPagemarks = createPagemarksForRange(pageNum, percentage);
 
             writeUpdatedDocMetas([docMeta])
                .catch(err => log.error(err));
+
+            return createdPagemarks;
 
         }
 
@@ -490,7 +495,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 range: undefined,
             };
 
-            createPagemarkToPoint(createOpts, opts.fromPage);
+            return createPagemarkToPoint(createOpts, opts.fromPage);
 
         }
 
@@ -512,6 +517,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             updateDocMeta(docMeta);
             writeUpdatedDocMetas([docMeta])
                 .catch(err => log.error(err));
+
+            return [{pageNum: mutation.pageNum, pagemark}];
         }
 
         function deletePagemark(mutation: IPagemarkDelete) {
@@ -529,19 +536,14 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         switch (mutation.type) {
 
             case "create-to-point":
-                createPagemarkToPoint(mutation);
-                break;
-
+                return createPagemarkToPoint(mutation);
             case "create-from-page":
-                createPagemarkFromPage(mutation);
-                break;
-
+                return createPagemarkFromPage(mutation);
             case "update":
-                updatePagemark(mutation);
-                break;
+                return updatePagemark(mutation);
             case "delete":
                 deletePagemark(mutation);
-                break;
+                return [];
 
         }
 

@@ -124,6 +124,8 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
         onPagemark(mutation);
 
+        return undefined;
+
     }, []);
 
     return (
@@ -141,7 +143,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
                 data-annotation-page-num={pageNum}
                 data-annotation-doc-fingerprint={fingerprint}
                 className={className}
-                computeInitialPosition={() => overlayRect}
+                computePosition={() => overlayRect}
                 resizeHandleStyle={{
                     ...pagemarkColor,
                     mixBlendMode: 'multiply',

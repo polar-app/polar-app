@@ -86,20 +86,3 @@ export class Pagemark extends Annotation implements IPagemark {
     }
 
 }
-
-export interface PagemarkRef {
-
-    readonly pageNum: number;
-
-    readonly pagemark: IPagemark;
-
-}
-
-export interface PagemarkIDRef {
-
-    readonly pageNum: number;
-
-    readonly id: string;
-
-}
-

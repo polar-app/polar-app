@@ -1,5 +1,5 @@
 import {PagemarkRect} from './PagemarkRect';
-import {Pagemark, PagemarkRef} from './Pagemark';
+import {Pagemark} from './Pagemark';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {PagemarkType} from 'polar-shared/src/metadata/PagemarkType';
@@ -21,6 +21,7 @@ import {IPagemark} from "polar-shared/src/metadata/IPagemark";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {Objects} from "polar-shared/src/util/Objects";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
+import { IPagemarkRef } from 'polar-shared/src/metadata/IPagemarkRef';
 
 const log = Logger.create();
 
@@ -66,7 +67,7 @@ export class Pagemarks {
     public static updatePagemarksForRange(docMeta: IDocMeta,
                                           end: PageNumber,
                                           percentage: Percentage100 = 100,
-                                          opts: UpdatePagemarksForRangeOpts = {}): ReadonlyArray<PagemarkRef> {
+                                          opts: UpdatePagemarksForRangeOpts = {}): ReadonlyArray<IPagemarkRef> {
 
         if (end < 1) {
             throw new Error("Page number must be 1 or more");
@@ -152,7 +153,7 @@ export class Pagemarks {
 
         const start = opts.start || calculateStartPage();
 
-        const result: PagemarkRef[] = [];
+        const result: IPagemarkRef[] = [];
 
         DocMetas.withBatchedMutations(docMeta, () => {
 
@@ -625,7 +626,7 @@ export interface PagemarkOptions {
  */
 export interface PagemarkPTR {
 
-    readonly ref?: PagemarkRef;
+    readonly ref?: IPagemarkRef;
 
     readonly batch?: string;
 

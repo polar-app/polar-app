@@ -8,6 +8,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
 import {IPoint} from "../../../../web/js/Point";
+import {IXYRect} from "polar-shared/src/util/rects/IXYRect";
 
 interface IProps {
     readonly id?: string;
@@ -23,13 +24,19 @@ interface IProps {
 
     /**
      * Used to compute the initial position of the resize box during initial
-     * mount and on resize of the window.
+     * mount
      */
-    readonly computeInitialPosition: () => ILTRect;
+    readonly computePosition: () => ILTRect;
 
     readonly resizeHandleStyles?: HandleStyles;
 
-    readonly onResized?: (resizeRect: ILTRect, direction: ResizeDirection) => void;
+    /**
+     * Handle the box being resized, and we can then return a new rect that is
+     * used to position it after the resize so we could 'snap' to some computed
+     * box after the user re-sizes it manually.  We return undefined if no
+     * mutation needs to be made.
+     */
+    readonly onResized?: (resizeRect: ILTRect, direction: ResizeDirection) => IXYRect | undefined;
 
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
@@ -90,14 +97,13 @@ function computeNewBox(box: IBox, direction: ResizeDirection, delta: ResizableDe
 
 export const ResizeBox = deepMemo((props: IProps) => {
 
-    const computeNewState = () => deriveStateFromInitialPosition(props.computeInitialPosition);
+    const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
 
     const [state, setState] = useState<IState>(computeNewState);
     const rndRef = React.useRef<Rnd | null>(null);
 
     useWindowResizeEventListener(() => {
-        const newState = computeNewState();
-        setState(newState);
+        setState(computeNewState());
     }, {win: props.window});
 
     const handleResize = React.useCallback((newState: IState,
@@ -130,12 +136,16 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
             const onResized = props.onResized || NULL_FUNCTION
 
-            onResized({
+            const newPosition = onResized({
                 left: newState.x,
                 top: newState.y,
                 width: newState.width,
                 height: newState.height
             }, direction);
+
+            if (newPosition) {
+                setState({...state, ...newPosition});
+            }
 
         } catch (e) {
             console.error(e);

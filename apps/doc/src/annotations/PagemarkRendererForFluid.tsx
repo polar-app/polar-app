@@ -31,6 +31,7 @@ import {
     FluidElementPredicates,
     RangeRects
 } from "./pagemarks/FluidElementPredicates";
+import {TOC_NCX} from "../../../../../polar-app-public/polar-epub-generator/src/templates/TOC_NCX";
 
 function computePagemarkCoverageFromResize(box: ILTRect,
                                            browserContext: IBrowserContext,
@@ -158,7 +159,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }
 
-    function computeTopFromRange(): number | undefined {
+    function computeTopFromRange(pagemark: IPagemark): number | undefined {
 
         const cfi = pagemark.range?.start?.value
 
@@ -173,7 +174,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }
 
-    function computeHeightFromRange(top: number): number | undefined {
+    function computeHeightFromRange(pagemark: IPagemark, top: number): number | undefined {
 
         const cfi = pagemark.range?.end?.value
         const bcr = computeBoundingClientRectFromCFI(cfi);
@@ -186,7 +187,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }
 
-    function computeInitialPosition(): ILTRect {
+    function computePositionUsingPagemark(pagemark: IPagemark): ILTRect {
 
         const doc = browserContext.document;
         const body = doc.body;
@@ -194,8 +195,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const left = 0;
         const width = body.offsetWidth;
 
-        const top = computeTopFromRange() || 0;
-        const height = computeHeightFromRange(top) || body.offsetHeight;
+        const top = computeTopFromRange(pagemark) || 0;
+        const height = computeHeightFromRange(pagemark, top) || body.offsetHeight;
 
         console.log("FIXME: computed initial position for pagemark with range: ", pagemark.range, {top, height});
 
@@ -215,7 +216,20 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             direction
         }
 
-        onPagemark(mutation);
+        const updated = onPagemark(mutation);
+
+        if (updated.length === 1) {
+            // recompute the position and return the new box.
+            const rect = computePositionUsingPagemark(updated[0].pagemark);
+            return {
+                x: rect.left,
+                y: rect.top,
+                width: rect.width,
+                height: rect.height
+            }
+        }
+
+        return undefined;
 
     }, []);
 
@@ -236,7 +250,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 data-annotation-page-num={pageNum}
                 data-annotation-doc-fingerprint={fingerprint}
                 className={className}
-                computeInitialPosition={computeInitialPosition}
+                computePosition={() => computePositionUsingPagemark(pagemark)}
+                enableComputePositionOnResize={true}
                 resizeAxis='y'
                 // enablePositionHack={true}
                 resizeHandleStyle={{

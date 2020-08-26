@@ -77,6 +77,9 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
         const areaHighlight = (pageMeta.areaHighlights || {})[id];
 
         onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
+
+        return undefined;
+
     }
 
     const createID = () => {
@@ -110,7 +113,7 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
                  data-annotation-doc-fingerprint={fingerprint}
                  data-annotation-color={color}
                  className={className}
-                 computeInitialPosition={() => overlayRect}
+                 computePosition={() => overlayRect}
                  style={{
                      position: 'absolute',
                      backgroundColor,
