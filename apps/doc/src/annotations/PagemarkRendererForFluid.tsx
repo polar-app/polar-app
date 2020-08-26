@@ -251,7 +251,6 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
                 data-annotation-doc-fingerprint={fingerprint}
                 className={className}
                 computePosition={() => computePositionUsingPagemark(pagemark)}
-                enableComputePositionOnResize={true}
                 resizeAxis='y'
                 // enablePositionHack={true}
                 resizeHandleStyle={{
