@@ -4,6 +4,7 @@ import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControl} from './AccountControl';
 import {MUIPopper} from "../../mui/menu/MUIPopper";
 import {AccountAvatar} from './AccountAvatar';
+import {deepMemo} from "../../react/ReactUtils";
 
 
 interface IProps {
@@ -14,7 +15,7 @@ interface IProps {
 
 }
 
-export const AccountControlDropdown = React.memo((props: IProps) => (
+export const AccountControlDropdown = deepMemo((props: IProps) => (
 
     <MUIPopper id="account-control-button"
                icon={<AccountAvatar size="small"/>}
