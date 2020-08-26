@@ -108,9 +108,6 @@ export const EPUBDocument = (props: IProps) => {
         //
         // test no width but set the iframe CSS style to width
 
-        // FIXME another idea would be to hide the document until it's rendered
-        // then apply my themes and then render them.. .
-
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
@@ -145,18 +142,10 @@ export const EPUBDocument = (props: IProps) => {
             console.error("epubjs event: resized", new Error("FAIL: this should not happen"));
         });
 
-        // FIXME: in the docViewerStore we can set a PagemarkRangeFactory or
-        // something along those line to help us create pagemarks from the EPUB
-        // directly so that the DocViewerMenu can use that.
-
         rendition.on('rendered', (section: Section) => {
             console.log('epubjs event: rendered: ');
 
             epubResizer();
-            // FIXME: when we jump between pages in the UI ... by clicking the
-            // ToC the 'page' that we're on isn't updated. We can listen for the
-            // section here, then find out what pages it's on, then set the the
-            // page.
 
             // we have to update the section here as we jumped within the EPUB
             // directly.
