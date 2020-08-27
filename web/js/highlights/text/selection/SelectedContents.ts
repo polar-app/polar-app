@@ -6,6 +6,7 @@ import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
 import {TextNodeRows} from "./TextNodeRows";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {FileType} from "../../../apps/main/file_loaders/FileType";
+import { Strings } from 'polar-shared/src/util/Strings';
 
 export namespace SelectedContents {
 
@@ -36,8 +37,8 @@ export namespace SelectedContents {
         const ranges = Ranges.cloneRanges(Selections.toRanges(selection));
 
         // now get the text and the sanitized HTML
-        const text = selection.toString();
-        const html = HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
+
+        const html = HTMLSanitizer.sanitize(toHTML(ranges));
 
         function computeRectTexts() {
 
@@ -67,6 +68,24 @@ export namespace SelectedContents {
 
         const rectTexts = opts.noRectTexts === true ? [] : computeRectTexts();
 
+        function computeText(): string {
+
+            if (rectTexts.length > 0) {
+                console.log("FIXME: joining with rectText");
+                // this is PDF mode so we should just compute the text via join
+                // the rect texts...
+                return Strings.joinWithSpacing(rectTexts.map(current => current.text));
+            }
+
+            console.log("FIXME: NOT joining with rectText");
+
+            return toText(ranges)
+
+        }
+
+
+        const text = computeText();
+
         const order = computeOrder();
 
         return {
@@ -83,6 +102,10 @@ export namespace SelectedContents {
      */
     export function toHTML(ranges: ReadonlyArray<Range>) {
         return ranges.map(range => Ranges.toHTML(range)).join("");
+    }
+
+    export function toText(ranges: ReadonlyArray<Range>) {
+        return ranges.map(range => Ranges.toText(range)).join("");
     }
 
 }

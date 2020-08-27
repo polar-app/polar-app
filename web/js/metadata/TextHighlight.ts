@@ -32,18 +32,18 @@ export class TextHighlight extends BaseHighlight implements ITextHighlight {
 
         super(val);
 
-        // FIXME: all these extractions (text, html, etc) should be 'snippet'
+        // TODO: all these extractions (text, html, etc) should be 'snippet'
         // because we also have to include the context with them and with the
         // context we also need to include images as well as the format (markdown,
         // html, etc).  It should probably be a map of each snippet type...
         //
         // There should be one with no context, one with context.
         //
-        // FIXME: text selections should also / probably be a snippet.  Each
+        // TODO: text selections should also / probably be a snippet.  Each
         // snippet should also have a rect associated with it.  The 'text'
         // snippet should have a rect for the boundary of the text.
         //
-        // FIXME: we could probably retain the html and text values as legacy
+        // TODO: we could probably retain the html and text values as legacy
         // for now and add snippets later.
 
         /**
