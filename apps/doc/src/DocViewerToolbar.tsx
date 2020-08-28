@@ -26,6 +26,10 @@ import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import { DeviceRouters } from "../../../web/js/ui/DeviceRouter";
 import { useDocFindStore } from "./DocFindStore";
 import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
+import {
+    MUIDocArchiveButton,
+    MUIDocFlagButton
+} from "../../repository/js/doc_repo/MUIDocButtons";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -251,10 +255,12 @@ const PageNextButton = () => {
 
 export const DocViewerToolbar = React.memo(() => {
 
-    const {docScale, pageNavigator, scaleLeveler} = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler']);
+    const {docScale, pageNavigator, scaleLeveler, docMeta}
+        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
+
     const {finder} = useDocFindStore(['finder']);
 
-    const {setScale} = useDocViewerCallbacks();
+    const {setScale, setDocFlagged, setDocArchived} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
 
@@ -370,7 +376,21 @@ export const DocViewerToolbar = React.memo(() => {
                          className="ml-auto vertical-aligned-children">
 
                         <MUIButtonBar>
-                            <DocumentWriteStatus/>
+
+                            <MUIDocArchiveButton size="medium"
+                                                 onClick={() => setDocArchived(! docMeta?.docInfo?.archived)}
+                                                 active={docMeta?.docInfo?.archived}/>
+
+                            <MUIDocFlagButton size="medium"
+                                              onClick={() => setDocFlagged(! docMeta?.docInfo?.flagged)}
+                                              active={docMeta?.docInfo?.flagged}/>
+
+                            <Divider orientation="vertical"/>
+
+                            <div className="ml-3 mr-2" style={{display: 'flex'}}>
+                                <DocumentWriteStatus/>
+                            </div>
+
                             <FullScreenButton/>
                         </MUIButtonBar>
                     </div>
