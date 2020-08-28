@@ -42,7 +42,7 @@ function createInitialTabs(): ReadonlyArray<TabDescriptor> {
   return [
     {
       tabContentIndex: 0,
-      title: "Polar: Document Repository"
+      title: "Polar: Document Repository",
       url: "/"
     }
     // {
