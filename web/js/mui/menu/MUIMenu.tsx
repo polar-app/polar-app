@@ -40,6 +40,7 @@ export interface IButtonProps {
     readonly disableRipple?: boolean;
     readonly disableFocusRipple?: boolean;
     readonly disabled?: boolean;
+    readonly style?: React.CSSProperties;
 }
 
 interface IProps {
@@ -97,6 +98,7 @@ export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
         disabled: props.button.disabled,
         disableRipple: props.button.disableRipple,
         disableFocusRipple: props.button.disableFocusRipple,
+        style: props.button.style
     };
 
     const placement = props.placement || 'bottom';
@@ -123,7 +125,9 @@ export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
                     </IconButton>}
 
                 {! props.button.icon && props.button.text &&
-                    <Button {...buttonProps} size="large" variant="contained">
+                    <Button {...buttonProps}
+                            size="large"
+                            variant="contained">
                         {props.button.text}
                     </Button>}
 

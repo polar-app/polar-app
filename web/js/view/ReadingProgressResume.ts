@@ -1,18 +1,20 @@
 import {Elements} from '../util/Elements';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
+import {useDocViewerStore, useDocViewerCallbacks} from "../../../apps/doc/src/DocViewerStore";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 
 export namespace ReadingProgressResume {
 
     export interface ResumeOpts {
         readonly docMeta: IDocMeta;
+        // readonly onPageJump: (pageNum: number) => void;
     }
 
     export function useReadingProgressResume() {
 
         const {docMeta} = useDocViewerStore(['docMeta']);
+        const {onPageJump} = useDocViewerCallbacks();
 
         return () => {
 
@@ -20,6 +22,7 @@ export namespace ReadingProgressResume {
                 return;
             }
 
+            // resume({docMeta, onPageJump});
             resume({docMeta});
 
         }
@@ -47,7 +50,7 @@ export namespace ReadingProgressResume {
 
     }
 
-    function scrollToPagemark(targetPagemark: IPagemarkRef) {
+    function scrollToPagemark(targetPagemark: IPagemarkRef, ) {
 
         // FIXME: this has to be rewritten as a hook so that we can jump to the
         // page properly and that the toolbar has the right page.
@@ -55,6 +58,11 @@ export namespace ReadingProgressResume {
         // FIXME: the 'next' button doesn't work when we jump to a page after load
         // as I think the current page number isn't changed.
 
+
+        // FIXME: this is wrong...
+        // FIXME: i think I need to implement this with 'target' and then
+        // implement that in pagemarks too...  including the useWindowScroll and
+        // useWindowCallback...
         const pages = document.querySelectorAll(".page");
 
         const pageNum = targetPagemark.pageNum;
@@ -127,7 +135,7 @@ export namespace ReadingProgressResume {
         //
         // }
 
-    };
+    }
 
     function getScrollParent(element: HTMLElement) {
 

@@ -14,10 +14,7 @@ import {AutoBlur} from "./AutoBlur";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 
-interface IProps {
-}
-
-export const DocRepoTableToolbar = React.memo((props: IProps) => {
+export const DocRepoTableToolbar = React.memo(() => {
 
     const {rowsPerPage, view, selected, page}
         = useDocRepoStore(['rowsPerPage', 'view', 'selected', 'page']);
@@ -52,7 +49,7 @@ export const DocRepoTableToolbar = React.memo((props: IProps) => {
 
                 <Grid item>
 
-                    <Box pl={1}>
+                    <Box pl={0}>
 
                         <Grid container
                               spacing={1}

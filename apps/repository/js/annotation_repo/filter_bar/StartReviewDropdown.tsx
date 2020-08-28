@@ -16,7 +16,10 @@ export const StartReviewDropdown = memoForwardRef(() => (
                  size: 'large',
                  disableRipple: true,
                  disableFocusRipple: true,
-                 icon: <RateReviewIcon/>
+                 icon: <RateReviewIcon/>,
+                 style: {
+                     minWidth: '285px'
+                 }
              }}
              caret>
         <div>

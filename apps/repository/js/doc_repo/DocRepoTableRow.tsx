@@ -153,7 +153,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
             onDoubleClick={callbacks.onOpen}
             selected={selected}>
 
-            <TableCell padding="checkbox">
+            <TableCell padding="none">
                 <AutoBlur>
                     <Checkbox
                         checked={selected}
