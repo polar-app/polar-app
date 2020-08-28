@@ -32,6 +32,8 @@ app.use((req, res) => {
     // https://github.com/stripe-samples/checkout-single-subscription
     const handleRequest = async () => {
 
+        // what I got stuck on here was PRICE_ID
+
         // TODO: we should catch this in Firestore
         const stripePlans = await stripe.plans.list();
         //
