@@ -246,6 +246,10 @@ export interface IDocViewerCallbacks {
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
     readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
+
+    readonly setDocFlagged: (flagged: boolean) => void;
+    readonly setDocArchived: (archived: boolean) => void;
+
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     onPagemark(opts: IPagemarkMutation): ReadonlyArray<IPagemarkRef>;
@@ -639,7 +643,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             await doPageJump(newPage);
         }
 
-        doAsync().catch(err => log.error("Could not handle page nav: ", err));
+        doAsync()
+            .catch(err => log.error("Could not handle page nav: ", err));
 
     }
 
@@ -659,6 +664,34 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
          });
     }
 
+    /**
+     * Execute the mutator on the DocMeta and write the docMeta and update the
+     * UI store.
+     */
+    function writeDocMetaMutation(mutator: (docMeta: IDocMeta) => void) {
+
+        const store = storeProvider();
+        const {docMeta} = store;
+
+        if (! docMeta) {
+            return;
+        }
+
+        mutator(docMeta);
+
+        writeUpdatedDocMetas([docMeta])
+            .catch(err => log.error(err));
+
+    }
+
+    function setDocFlagged(flagged: boolean) {
+        writeDocMetaMutation(docMeta => docMeta.docInfo.flagged = flagged);
+    }
+
+    function setDocArchived(archived: boolean) {
+        writeDocMetaMutation(docMeta => docMeta.docInfo.archived = archived);
+    }
+
     return {
         updateDocMeta,
         setDocMeta,
@@ -675,7 +708,9 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         setScaleLeveler,
         setScale,
         setPage,
-        setFluidPagemarkFactory
+        setFluidPagemarkFactory,
+        setDocFlagged,
+        setDocArchived
     };
 
 }
