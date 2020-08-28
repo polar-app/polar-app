@@ -1,12 +1,29 @@
 import {Elements} from '../util/Elements';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
+import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 
 export namespace ReadingProgressResume {
 
     export interface ResumeOpts {
         readonly docMeta: IDocMeta;
+    }
+
+    export function useReadingProgressResume() {
+
+        const {docMeta} = useDocViewerStore(['docMeta']);
+
+        return () => {
+
+            if (! docMeta) {
+                return;
+            }
+
+            resume({docMeta});
+
+        }
+
     }
 
     export function resume(opts: ResumeOpts): boolean {
@@ -30,7 +47,7 @@ export namespace ReadingProgressResume {
 
     }
 
-    function scrollToPagemark(targetPagemark: PagemarkHolder) {
+    function scrollToPagemark(targetPagemark: IPagemarkRef) {
 
         // FIXME: this has to be rewritten as a hook so that we can jump to the
         // page properly and that the toolbar has the right page.
@@ -69,7 +86,7 @@ export namespace ReadingProgressResume {
 
     }
 
-    function computePagemarkHeight(targetPagemark: PagemarkHolder,
+    function computePagemarkHeight(targetPagemark: IPagemarkRef,
                                    pageHeight: number): number {
 
             const pagemarkBottom
@@ -125,9 +142,9 @@ export namespace ReadingProgressResume {
 
     }
 
-    function computePagemarks(docMeta: IDocMeta): ReadonlyArray<PagemarkHolder> {
+    function computePagemarks(docMeta: IDocMeta): ReadonlyArray<IPagemarkRef> {
 
-        const result: PagemarkHolder[] = [];
+        const result: IPagemarkRef[] = [];
 
         // TODO: this would be better with arrayStream now...
         for (const pageMeta of Object.values(docMeta.pageMetas)) {
@@ -150,17 +167,17 @@ export namespace ReadingProgressResume {
 
     }
 
-    function computeTargetPagemark(docMeta: IDocMeta): PagemarkHolder | undefined {
+    function computeTargetPagemark(docMeta: IDocMeta): IPagemarkRef | undefined {
 
         const pagemarkHolders = computePagemarks(docMeta);
 
-        let result: PagemarkHolder | undefined;
+        let result: IPagemarkRef | undefined;
 
         /**
          * Compare two pagemarks and return the one that is farthest down the
          * page.
          */
-        const comparePagemarks = (p0: PagemarkHolder | undefined, p1: PagemarkHolder) => {
+        const comparePagemarks = (p0: IPagemarkRef | undefined, p1: IPagemarkRef) => {
 
             if (!p0) {
                 return p1;
@@ -197,9 +214,3 @@ export namespace ReadingProgressResume {
     }
 
 }
-
-interface PagemarkHolder {
-    readonly pageNum: number;
-    readonly pagemark: IPagemark;
-}
-
