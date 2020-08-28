@@ -85,6 +85,49 @@ export class PersistenceLayerMutator {
 
     }
 
+    public async renameTag(renameTagID: TagStr,
+                           progressCallback: ProgressCallback = NULL_FUNCTION) {
+
+        const deleteFromRepoDocManager = () => {
+            this.repoDocMetaManager.repoDocAnnotationIndex.prune();
+            this.repoDocMetaManager.repoDocInfoIndex.prune();
+        };
+
+        const renameWithinUserTags = async () => {
+            const persistenceLayer = this.persistenceLayerProvider();
+            const userTagsDB = await persistenceLayer.getUserTagsDB();
+
+            userTagsDB.rename(renameTagID);
+
+            await userTagsDB.commit();
+        };
+
+        const lookupTag = (tag: TagStr): Tag | undefined => {
+
+            const tagMap = IDMaps.create(this.tagsProvider());
+
+            return tagMap[tag] || {
+                id: tag,
+                label: tag
+            };
+
+        };
+
+        const renameTag = lookupTag(renameTagID);
+
+        if (renameTag) {
+
+            // FIXME we could generify removeTagsFromDocMEtas
+            // FIXME: await this.removeTagsFromDocMetas(renameTag, progressCallback);
+            // FIXME: deleteFromRepoDocManager();
+
+        } else {
+            console.warn("Tag does not exist: " + renameTagID);
+        }
+
+    }
+
+
     private async removeTagsFromDocMetas(deleteTag: Tag,
                                          progressCallback: ProgressCallback = NULL_FUNCTION) {
 

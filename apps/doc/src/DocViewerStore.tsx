@@ -35,6 +35,7 @@ import {
 import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
 import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
+import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -189,13 +190,34 @@ export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
 
 }
 
+export interface IPagemarkUpdateMode {
+
+    readonly type: 'update-mode',
+
+    /**
+     * The existing pagemark to update.
+     */
+    readonly existing: IPagemark;
+
+    /**
+     * The new pagemark's percentage.
+     */
+    readonly mode: PagemarkMode;
+
+}
+
+
 export interface IPagemarkDelete {
     readonly type: 'delete',
     readonly pageNum: number;
     readonly pagemark: IPagemark;
 }
 
-export type IPagemarkMutation = IPagemarkCreateToPoint | IPagemarkCreateFromPage | IPagemarkUpdate | IPagemarkDelete;
+export type IPagemarkMutation = IPagemarkCreateToPoint |
+                                IPagemarkCreateFromPage |
+                                IPagemarkUpdate |
+                                IPagemarkDelete |
+                                IPagemarkUpdateMode;
 
 /**
  * The type of update for setDocMeta.
@@ -528,6 +550,20 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 .catch(err => log.error(err));
         }
 
+        function updatePagemarkMode(mutation: IPagemarkUpdateMode) {
+
+            const store = storeProvider();
+            const docMeta = store.docMeta!;
+
+            mutation.existing.mode = mutation.mode;
+            updateDocMeta(docMeta);
+            writeUpdatedDocMetas([docMeta])
+                .catch(err => log.error(err));
+
+            return [];
+
+        }
+
         switch (mutation.type) {
 
             case "create-to-point":
@@ -539,6 +575,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             case "delete":
                 deletePagemark(mutation);
                 return [];
+            case "update-mode":
+                return updatePagemarkMode(mutation);
 
         }
 

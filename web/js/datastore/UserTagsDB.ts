@@ -54,6 +54,14 @@ export class UserTagsDB {
         return delete this.backing[id];
     }
 
+    public rename(id: TagStr) {
+        delete this.backing[id];
+        this.backing[id] = {
+            id,
+            label: id
+        }
+    }
+
     /**
      * Register a tag when it's absent with default values.
      */
