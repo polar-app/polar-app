@@ -99,7 +99,6 @@ describe('FluidElementPredicates', function() {
 
         // console.log(selected);
 
-
     });
 
 });
