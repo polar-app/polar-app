@@ -141,16 +141,22 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             return undefined;
         }
 
-        const epubCFI = new EpubCFI(cfi);
-        const range = epubCFI.toRange(browserContext.document);
+        try {
+            const epubCFI = new EpubCFI(cfi);
 
-        if (! range) {
-            console.log("No range found for pagemark with CFI: " + cfi);
+            const range = epubCFI.toRange(browserContext.document);
+
+            if (! range) {
+                console.log("No range found for pagemark with CFI: " + cfi);
+                return undefined;
+            }
+
+            return range.getBoundingClientRect();
+
+        } catch (e) {
+            console.warn("Unable to render pagemark: ", e);
             return undefined;
         }
-
-        return range.getBoundingClientRect();
-
     }
 
     function computeTopFromRange(pagemark: IPagemark): number | undefined {
@@ -176,6 +182,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         if (! bcr) {
             return undefined;
         }
+
         const scrollTop = browserContext.document.documentElement.scrollTop;
         return bcr.bottom + scrollTop - top;
 
@@ -189,6 +196,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const left = 0;
         const width = body.offsetWidth;
 
+        // FIXME: these returning 'undefined' I think is wrong because it actually
+        // means they weren't found.
         const top = computeTopFromRange(pagemark) || 0;
         const height = computeHeightFromRange(pagemark, top) || body.offsetHeight;
 

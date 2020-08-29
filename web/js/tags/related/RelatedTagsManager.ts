@@ -4,7 +4,11 @@ import {
     RelatedOptionsCalculator,
     ValueAutocompleteOption
 } from "../../mui/autocomplete/MUICreatableAutocomplete";
-import { Tag, Tags } from "polar-shared/src/tags/Tags";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+
+export type TagDocsIndex = {[tag: string]: TagDocs};
+
+export type DocTagsIndex = {[docID: string]: DocTags};
 
 /**
  * Related tag index for in memory related tags computation.  This does not
@@ -18,12 +22,12 @@ export class RelatedTagsManager {
     /**
      * Maps from the tag to the DocIDs for this tag.
      */
-    private tagDocsIndex: {[tag: string]: TagDocs} = {};
+    private tagDocsIndex: TagDocsIndex = {};
 
     /**
      * Maps from the doc ID to the tags for this document.
      */
-    private docTagsIndex: {[docID: string]: DocTags} = {};
+    private docTagsIndex: DocTagsIndex = {};
 
     public update(docID: DocID, mutationType: MutationType, ...tags: TagLiteral[]) {
 

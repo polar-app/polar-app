@@ -28,8 +28,9 @@ import { useDocFindStore } from "./DocFindStore";
 import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
 import {
     MUIDocArchiveButton,
-    MUIDocFlagButton
+    MUIDocFlagButton, MUIDocTagButton
 } from "../../repository/js/doc_repo/MUIDocButtons";
+import {useDocRepoCallbacks} from "../../repository/js/doc_repo/DocRepoStore2";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -255,6 +256,8 @@ const PageNextButton = () => {
 
 export const DocViewerToolbar = React.memo(() => {
 
+    const {onTagged} = useDocRepoCallbacks();
+
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
 
@@ -376,6 +379,9 @@ export const DocViewerToolbar = React.memo(() => {
                          className="ml-auto vertical-aligned-children">
 
                         <MUIButtonBar>
+
+                            {/*<MUIDocTagButton size="medium"*/}
+                            {/*                 onClick={onTagged}/>*/}
 
                             <MUIDocArchiveButton size="medium"
                                                  onClick={() => setDocArchived(! docMeta?.docInfo?.archived)}
