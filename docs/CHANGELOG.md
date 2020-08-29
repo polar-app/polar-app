@@ -1,3 +1,13 @@
+
+# 2.0 beta 17
+
+ - primary call to action buttons (add document, start review) are longer
+   per figma spec
+   
+ - flag and archive buttons are now in the doc viewer (tag will come next)
+
+##
+
 - EPUB files can now be uploaded again
 - Title for uploaded document is truncated
 - You can now find text in epub documents that you're reading

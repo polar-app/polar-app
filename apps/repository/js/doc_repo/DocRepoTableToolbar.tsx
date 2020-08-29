@@ -4,15 +4,13 @@ import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 import TablePagination from "@material-ui/core/TablePagination";
-import {
-    MUIDocArchiveButton,
-    MUIDocDeleteButton,
-    MUIDocFlagButton,
-    MUIDocTagButton
-} from "./MUIDocButtons";
 import {AutoBlur} from "./AutoBlur";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
+import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
+import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
+import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
+import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
 
 export const DocRepoTableToolbar = React.memo(() => {
 

@@ -1,16 +1,11 @@
 import React, {useCallback} from "react";
-import Tooltip from "@material-ui/core/Tooltip";
 import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
-import {
-    MUIDocArchiveButton,
-    MUIDocFlagButton,
-    MUIDocTagButton
-} from "./MUIDocButtons";
-import {
-    useDocRepoCallbacks
-} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import isEqual from "react-fast-compare";
 import {IDStr} from "polar-shared/src/util/Strings";
+import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
+import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
+import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
 
 interface IProps {
 

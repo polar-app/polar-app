@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ScaleLevel, ScaleLevelTuples, PDFScales} from "./ScaleLevels";
+import {PDFScales, ScaleLevel, ScaleLevelTuples} from "./ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -22,15 +22,13 @@ import {
     useDocViewerStore
 } from "./DocViewerStore";
 import Divider from "@material-ui/core/Divider";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
-import { DeviceRouters } from "../../../web/js/ui/DeviceRouter";
-import { useDocFindStore } from "./DocFindStore";
+import {DeviceRouters} from "../../../web/js/ui/DeviceRouter";
+import {useDocFindStore} from "./DocFindStore";
 import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
-import {
-    MUIDocArchiveButton,
-    MUIDocFlagButton, MUIDocTagButton
-} from "../../repository/js/doc_repo/MUIDocButtons";
 import {useDocRepoCallbacks} from "../../repository/js/doc_repo/DocRepoStore2";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import {MUIDocFlagButton} from "../../repository/js/doc_repo/buttons/MUIDocFlagButton";
+import {MUIDocArchiveButton} from "../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
