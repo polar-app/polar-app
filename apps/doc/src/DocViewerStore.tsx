@@ -166,6 +166,7 @@ export interface IPagemarkCreateFromPage extends IPagemarkCreateOrUpdate {
 export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
 
     readonly type: 'update',
+
     readonly pageNum: number;
 
     /**
@@ -193,6 +194,8 @@ export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
 export interface IPagemarkUpdateMode {
 
     readonly type: 'update-mode',
+
+    readonly pageNum: number;
 
     /**
      * The existing pagemark to update.
@@ -559,7 +562,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             const store = storeProvider();
             const docMeta = store.docMeta!;
 
-            mutation.existing.mode = mutation.mode;
+            const {pageNum, existing} = mutation;
+
+            existing.mode = mutation.mode;
+            Pagemarks.updatePagemark(docMeta, pageNum, existing);
+
             updateDocMeta(docMeta);
             writeUpdatedDocMetas([docMeta])
                 .catch(err => log.error(err));

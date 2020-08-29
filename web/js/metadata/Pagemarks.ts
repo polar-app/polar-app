@@ -344,7 +344,11 @@ export class Pagemarks {
      * Update pagemarks on the given page.
      *
      */
-    public static updatePagemark(docMeta: IDocMeta, pageNum: number, pagemark: IPagemark) {
+    public static updatePagemark(docMeta: IDocMeta,
+                                 pageNum: number,
+                                 pagemark: IPagemark) {
+
+        pagemark.lastUpdated = ISODateTimeStrings.create();
 
         this.doDocMetaMutation(docMeta, pageNum, () => {
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);

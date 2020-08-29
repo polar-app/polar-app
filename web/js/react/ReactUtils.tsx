@@ -1,5 +1,7 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
+import {DeepEquals} from "../mui/DeepEquals";
+import debugIsEqual = DeepEquals.debugIsEqual;
 
 /**
  * React.memo and React.forwardRef all in one function with deep isEqual support
@@ -13,7 +15,25 @@ export function memoForwardRefDiv<P>(component: React.ForwardRefRenderFunction<H
     return React.memo(React.forwardRef<HTMLDivElement, P>((props: P, ref) => component(props, ref)), isEqual);
 }
 
-export function deepMemo<T extends React.ComponentType<any>>(component: T) {
-    return React.memo(component, isEqual);
+interface IDeepMemoOpts {
+
+    /**
+     * Enable debug if isEqual when the props change.
+     */
+    readonly debug?: boolean;
+
+}
+
+/**
+ *
+ * @param component The component to render
+ * @param opts The opts for rendering the component
+ */
+export function deepMemo<T extends React.ComponentType<any>>(component: T, opts: IDeepMemoOpts = {}) {
+
+    const equalFunc = opts.debug ? debugIsEqual : isEqual;
+
+    return React.memo(component, equalFunc);
+
 }
 
