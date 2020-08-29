@@ -95,9 +95,9 @@ describe('FluidElementPredicates', function() {
 
         const predicate = FluidElementPredicates.create('bottom', boxRect);
 
-        const selected = predicate.select(elements);
+        // const selected = predicate.select(elements);
 
-        console.log(selected);
+        // console.log(selected);
 
 
     });
