@@ -81,7 +81,7 @@ function computePagemarkCoverageFromResize(box: ILTRect,
             switch (selected.target?.edge) {
 
                 case "top":
-                    range.setStartBefore(selected.target.value);
+                    range.setStart(selected.target.value, 0);
                     range.setEnd(selected.target.value, 0);
                     break;
                 case "bottom":
