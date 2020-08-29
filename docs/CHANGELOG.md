@@ -1,6 +1,16 @@
 
 # 2.0 beta 17
 
+ - Fixed bug where EPUB pagemarks would not render properly when the browser
+   window was resized.
+
+ - improved UI spacing
+
+ - Fixed bug where we would sometimes handle the wrong range and log an 
+   exception and break the UI
+
+ - Fixed bug where EPUB pagemarks would snap to the wrong position.  
+
  - primary call to action buttons (add document, start review) are longer
    per figma spec
    
