@@ -30,6 +30,9 @@ type MouseEventHandler = (event: MouseEvent) => void;
 
 export const Resizable = deepMemo((props: IProps) => {
 
+    // FIXME: bounds isn't implemented at all (which is needed) use a ref callback
+    // and then compute bounds when we're resizing.
+
     const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
     const positionRef = React.useRef(position);
     const mouseDown = React.useRef(false);
