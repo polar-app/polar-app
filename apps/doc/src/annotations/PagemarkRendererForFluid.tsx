@@ -56,11 +56,9 @@ function computePagemarkCoverageFromResize(box: ILTRect,
 
         const selected = predicate.select(filtered);
 
-        if (! selected) {
+        if (! selected.target) {
             return undefined;
         }
-
-        const range = doc.createRange();
 
         // TODO: I can't figure out how to reliably handle the computation of
         // range as epub seems to be finicky about computing it when I'm
@@ -76,10 +74,28 @@ function computePagemarkCoverageFromResize(box: ILTRect,
 
         // TODO: lastChild is working BUT it goes too far for the last item.
 
-        range.setStart(selected, 0);
-        range.setEnd(selected.lastChild!, selected.lastChild?.nodeValue?.length || 0);
+        function createRangeFromTarget() {
 
-        return range;
+            const range = doc.createRange();
+
+            switch (selected.target?.edge) {
+
+                case "top":
+                    range.setStartBefore(selected.target.value);
+                    range.setEnd(selected.target.value, 0);
+                    break;
+                case "bottom":
+                    range.setStart(selected.target.value, 0);
+                    range.setEnd(selected.target.value.lastChild!, selected.target.value.lastChild?.nodeValue?.length || 0);
+                    break;
+
+            }
+
+            return range;
+
+        }
+
+        return createRangeFromTarget();
 
     }
 

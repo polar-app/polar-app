@@ -1,10 +1,19 @@
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Direction} from "../../FluidPagemarkFactory";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export interface IRangeRect {
     readonly top: number;
     readonly bottom: number;
+}
+
+export interface IDefaultView {
+    readonly scrollY: number;
+}
+
+export interface IOwnerDocument {
+    readonly defaultView: IDefaultView | null;
 }
 
 /**
@@ -12,15 +21,16 @@ export interface IRangeRect {
  * testing
  */
 export interface IHTMLElement {
-    readonly offsetTop: number;
-    readonly offsetHeight: number;
+    readonly ownerDocument: IOwnerDocument;
+    readonly getBoundingClientRect: () => ILTRect;
 }
 
 export namespace RangeRects {
 
     export function fromElement(element: IHTMLElement): IRangeRect {
-        const top = element.offsetTop;
-        const bottom = top + element.offsetHeight;
+        const bcr = element.getBoundingClientRect();
+        const top = bcr.top + element.ownerDocument.defaultView!.scrollY;
+        const bottom = top + bcr.height;
         return {top, bottom};
     }
 
@@ -47,7 +57,6 @@ export namespace FluidElementPredicates {
 
     interface IFluidElementPredicate<E extends IHTMLElement> {
 
-        readonly pointer: number;
         /**
          * Create a predicate for filtering elements that would be before/after
          * the element in the HTML flow.
@@ -57,50 +66,93 @@ export namespace FluidElementPredicates {
         /**
          * Pick the most likely candidate from the items.
          */
-        readonly select: (elements: ReadonlyArray<E>) => E | undefined;
+        readonly select: (elements: ReadonlyArray<E>) => ISelected<E>;
 
     }
 
-    export function create<E extends IHTMLElement>(direction: Direction, boxRect: IRangeRect) {
+    export type Edge = 'top' | 'bottom';
 
-        return  direction === 'top' ? FluidElementPredicates.createTop<E>(boxRect) :
-                                      FluidElementPredicates.createBottom<E>(boxRect);
+    interface ITarget<E> {
+        readonly value: E;
+        readonly distance: number;
+        readonly edge: Edge;
+    }
+
+    export interface ElementDistance<E> extends ITarget<E> {
+    }
+
+    export interface ISelected<E> {
+
+        readonly elementDistances: ReadonlyArray<ElementDistance<E>>;
+
+        /**
+         * The resulting element to target the pagemark pointer.
+         */
+        readonly target: ITarget<E> | undefined;
 
     }
 
+    export function create<E extends IHTMLElement>(direction: Direction, boxRect: IRangeRect): IFluidElementPredicate<E> {
 
-
-    export function createTop<E extends IHTMLElement>(boxRect: IRangeRect): IFluidElementPredicate<E> {
-
-        const pointer = boxRect.top;
+        function toPointer(rect: IRangeRect) {
+            return direction === 'top' ? rect.top : rect.bottom
+        }
 
         function filter(element: E): boolean {
             const elementRect = RangeRects.fromElement(element);
             return RangeRects.contains(boxRect, elementRect)
         }
 
-        function select(elements: ReadonlyArray<E>): E | undefined {
-            return Arrays.first(elements);
+        function select(elements: ReadonlyArray<E>): ISelected<E> {
+
+            // computes the CLOSEST endpoint to the item based on direction
+
+            const boxRectPointer = toPointer(boxRect);
+
+            function toJSON() {
+                return elements.map((current, idx) => {
+                    return {
+                        idx,
+                        // offsetTop: current.clientTop,
+                        // clientHeight: current.clientTop
+                    }
+                });
+            }
+
+            function computeDistance(element: E): ElementDistance<E> {
+                const elementRect = RangeRects.fromElement(element);
+
+                const topDistance = Math.abs(elementRect.top - boxRectPointer);
+                const bottomDistance = Math.abs(elementRect.bottom - boxRectPointer);
+
+                function computeDistanceAndEdge(): [number, Edge] {
+
+                    if (topDistance < bottomDistance) {
+                        return [topDistance, 'top'];
+                    } else {
+                        return [bottomDistance, 'bottom'];
+                    }
+
+                }
+
+                const [distance, edge] = computeDistanceAndEdge();
+
+                return {value: element, distance, edge};
+            }
+
+            const elementDistances
+                = arrayStream(elements)
+                    .map(computeDistance)
+                    .sort((a, b) => a.distance - b.distance)
+                    .collect();
+
+            const target = Arrays.first(elementDistances);
+
+            return {elementDistances, target};
+
         }
 
-        return {pointer, filter, select}
-
-    }
-
-    export function createBottom<E extends IHTMLElement>(boxRect: IRangeRect): IFluidElementPredicate<E> {
-
-        const pointer = boxRect.bottom;
-
-        function filter(element: E): boolean {
-            const elementRect = RangeRects.fromElement(element);
-            return RangeRects.contains(boxRect, elementRect)
-        }
-
-        function select(elements: ReadonlyArray<E>): E | undefined {
-            return Arrays.last(elements);
-        }
-
-        return {pointer, filter, select}
+        return {filter, select}
 
     }
 
