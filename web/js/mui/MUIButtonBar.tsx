@@ -1,6 +1,6 @@
 import * as React from "react";
-import isEqual from "react-fast-compare";
 import clsx from "clsx";
+import {deepMemo} from "../react/ReactUtils";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 
-export const MUIButtonBar = React.memo((props: IProps) => {
+export const MUIButtonBar = deepMemo((props: IProps) => {
 
     const className = clsx("gap-box", props.className);
 
@@ -25,4 +25,4 @@ export const MUIButtonBar = React.memo((props: IProps) => {
 
         </div>
     );
-}, isEqual);
+});

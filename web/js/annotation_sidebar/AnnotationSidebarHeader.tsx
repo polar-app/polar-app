@@ -10,6 +10,7 @@ import {useDocMetaContext} from "./DocMetaContextProvider";
 import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import { Logger } from "polar-shared/src/logger/Logger";
 import {useLogger} from "../mui/MUILogger";
+import {MUIButtonBar} from "../mui/MUIButtonBar";
 
 export const AnnotationHeader = () => {
 
@@ -25,10 +26,7 @@ export const AnnotationHeader = () => {
 
         <MUIPaperToolbar borderBottom>
 
-            <Box p={1}
-                 style={{
-                     display: 'flex'
-                 }}>
+            <MUIButtonBar className="ml-1 mr-1">
 
                 <MUISearchBox2 style={{flexGrow: 1}}
                                className="mt-1 mb-1"
@@ -49,7 +47,7 @@ export const AnnotationHeader = () => {
 
                 </div>
 
-            </Box>
+            </MUIButtonBar>
 
         </MUIPaperToolbar>
 
