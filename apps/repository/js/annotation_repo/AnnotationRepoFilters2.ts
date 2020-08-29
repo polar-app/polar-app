@@ -113,7 +113,7 @@ export namespace AnnotationRepoFilters2 {
                                                        filter: Filter): ReadonlyArray<IDocAnnotation> {
 
         if (filter.flagged) {
-            return docAnnotations.filter(current => current.docInfo.flagged);
+            return docAnnotations.filter(current => current.docInfo?.flagged);
         }
 
         return docAnnotations;
@@ -123,7 +123,7 @@ export namespace AnnotationRepoFilters2 {
     function doFilterArchived<D extends IDocAnnotation>(docAnnotations: ReadonlyArray<IDocAnnotation>, filter: Filter): ReadonlyArray<IDocAnnotation> {
 
         if (! filter.archived) {
-            return docAnnotations.filter(current => !current.docInfo.archived);
+            return docAnnotations.filter(current => !current.docInfo?.archived);
         }
 
         return docAnnotations;

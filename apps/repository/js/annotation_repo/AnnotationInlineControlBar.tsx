@@ -30,7 +30,7 @@ export const AnnotationInlineControlBar = React.memo((props : IProps) => {
                 <div style={{
                          // fontWeight: 'bold'
                      }}>
-                    {annotation.docInfo.title || 'Untitled'}
+                    {annotation.docInfo?.title || 'Untitled'}
                 </div>
 
                 <MUIButtonBar style={{

@@ -229,7 +229,7 @@ namespace Device {
                                         {docMeta &&
                                             <AnnotationSidebar2 />}
                                     </>,
-                                width: 375,
+                                width: 390,
                             }
                         ]}/>
                 </div>
