@@ -144,8 +144,6 @@ export const EPUBDocument = (props: IProps) => {
         //
         // test no width but set the iframe CSS style to width
 
-        // FIXME: URLs need to be handled properly and they aren't...
-
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
             width: '100%',
