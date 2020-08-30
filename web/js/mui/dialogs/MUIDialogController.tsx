@@ -23,6 +23,7 @@ import {
     TaskbarProgressCallback
 } from "../../ui/dialogs/TaskbarDialog";
 import {Latch} from "polar-shared/src/util/Latch";
+import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
@@ -31,6 +32,7 @@ export interface DialogManager {
     snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
     taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
     dialog: (dialogProps: IDialogProps) => void;
+    select: (selectProps: SelectDialogProps) => void;
 }
 
 function nullDialog() {
@@ -44,6 +46,7 @@ export const NullDialogManager: DialogManager = {
     snackbar: nullDialog,
     taskbar: async () => NULL_FUNCTION,
     dialog: nullDialog,
+    select: nullDialog,
 }
 
 interface DialogHostProps {
@@ -57,11 +60,11 @@ interface IDialogProps {
     readonly dialog: JSX.Element;
 }
 
-type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar';
+type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar' | 'select';
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps;
     readonly iter: number;
 }
 
@@ -137,13 +140,22 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 
         };
 
+        const select = function(selectProps: SelectDialogProps) {
+            setState({
+                type: 'select',
+                props: selectProps,
+                iter: iter++
+            });
+        };
+
         const dialogManager: DialogManager = {
             confirm,
             prompt,
             autocomplete,
             snackbar,
             dialog,
-            taskbar
+            taskbar,
+            select
         };
 
         // WARN: not sure if this is the appropriate way to do this but we need
@@ -197,6 +209,12 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             return (
                 <TaskbarDialog key={state.iter}
                                {...(state.props as TaskbarDialogPropsWithCallback)}/>
+            );
+
+        case "select":
+            return (
+                <SelectDialog key={state.iter}
+                              {...(state.props as SelectDialogProps)}/>
             );
 
     }
