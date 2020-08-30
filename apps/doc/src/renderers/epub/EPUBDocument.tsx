@@ -37,6 +37,10 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {AnnotationLinks} from "../../../../../web/js/annotation_sidebar/AnnotationLinks";
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
+import {
+    LinkLoaderDelegate,
+    useNav
+} from "../../../../../web/js/ui/util/NavHook";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -56,6 +60,37 @@ function forwardEvents(target: HTMLElement) {
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
     IFrameEventForwarder.start(iframe, target);
+}
+
+function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
+
+    const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
+    const links = Array.from(iframe.contentDocument!.querySelectorAll('a'));
+
+    for (const link of links) {
+
+        link.addEventListener('click', (event) => {
+
+            const href = link.getAttribute('href');
+
+            if (!href) {
+                return;
+            }
+
+            if (! href.startsWith('http')) {
+                return;
+            }
+
+            console.log("linkClicked: ", href);
+
+            linkLoader(href, {focus: true, newWindow: true});
+
+            event.stopPropagation();
+            event.preventDefault();
+
+        });
+
+    }
 }
 
 export const EPUBDocument = (props: IProps) => {
@@ -81,6 +116,7 @@ export const EPUBDocument = (props: IProps) => {
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
+    const linkLoader = useNav();
 
     async function doLoad() {
 
@@ -107,6 +143,8 @@ export const EPUBDocument = (props: IProps) => {
         // TODO:
         //
         // test no width but set the iframe CSS style to width
+
+        // FIXME: URLs need to be handled properly and they aren't...
 
         const rendition = book.renderTo(pageElement, {
             flow: "scrolled-doc",
@@ -152,6 +190,7 @@ export const EPUBDocument = (props: IProps) => {
             handleSection(section);
 
             forwardEvents(pageElement);
+            handleLinkClicks(pageElement, linkLoader);
 
             // applyCSS();
             annotationBarInjector();
