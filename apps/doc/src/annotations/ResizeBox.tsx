@@ -112,7 +112,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
     const handleRndRef = React.useCallback((rnd: Rnd | null) => {
         rndRef.current = rnd;
         // now handle the scroll ref so that we can jump to the pagemark...
-        scrollIntoViewRef(rndRef.current?.resizableElement?.current || null);
+        scrollIntoViewRef(rndRef.current ? rndRef.current.getSelfElement() : null);
     }, []);
 
     const handleResize = React.useCallback((newState: IState,

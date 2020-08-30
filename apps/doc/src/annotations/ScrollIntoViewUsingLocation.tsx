@@ -31,13 +31,20 @@ export function useScrollIntoViewUsingLocation() {
                     // pass them here.
                     ref.scrollIntoView(alignToTop);
 
+                } else {
+                    // noop
                 }
 
+            } else {
+                // noop
             }
 
+        } else {
+            // noop
         }
 
     }
+
     if (ref) {
 
         try {

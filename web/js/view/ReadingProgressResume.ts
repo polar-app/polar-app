@@ -1,8 +1,10 @@
 import {Elements} from '../util/Elements';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useDocViewerStore, useDocViewerCallbacks} from "../../../apps/doc/src/DocViewerStore";
+import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
+import {useJumpToAnnotationHandler} from "../annotation_sidebar/JumpToAnnotationHook";
+import {Callback} from "polar-shared/src/util/Functions";
 
 export namespace ReadingProgressResume {
 
@@ -11,21 +13,35 @@ export namespace ReadingProgressResume {
         // readonly onPageJump: (pageNum: number) => void;
     }
 
-    export function useReadingProgressResume() {
+    export function useReadingProgressResume(): [boolean, Callback] {
 
         const {docMeta} = useDocViewerStore(['docMeta']);
-        const {onPageJump} = useDocViewerCallbacks();
+        const jumpToAnnotationHandler = useJumpToAnnotationHandler();
 
-        return () => {
+        const targetPagemark = computeTargetPagemark(docMeta);
+
+        const active = targetPagemark !== undefined;
+
+        const handler = () => {
 
             if (! docMeta) {
                 return;
             }
 
-            // resume({docMeta, onPageJump});
-            resume({docMeta});
+            if (! targetPagemark) {
+                return;
+            }
+
+            jumpToAnnotationHandler({
+                target: targetPagemark.pagemark.id,
+                pageNum: targetPagemark.pageNum,
+                docID: docMeta.docInfo.fingerprint,
+                pos: 'bottom'
+            });
 
         }
+
+        return [active, handler];
 
     }
 
@@ -175,7 +191,11 @@ export namespace ReadingProgressResume {
 
     }
 
-    function computeTargetPagemark(docMeta: IDocMeta): IPagemarkRef | undefined {
+    function computeTargetPagemark(docMeta: IDocMeta | undefined): IPagemarkRef | undefined {
+
+        if (! docMeta) {
+            return undefined;
+        }
 
         const pagemarkHolders = computePagemarks(docMeta);
 

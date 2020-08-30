@@ -1,8 +1,7 @@
 import {useHistory} from "react-router-dom";
-import {IDocAnnotationRef} from "./DocAnnotation";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useDocURLLoader} from "../apps/main/doc_loaders/browser/DocURLLoader";
-import {AnnotationLinks} from "./AnnotationLinks";
+import {AnnotationLinks, IAnnotationPtr} from "./AnnotationLinks";
 
 /**
  * This is the default jump to annotation button that's used in the document
@@ -17,13 +16,13 @@ export function useJumpToAnnotationHandler() {
         return DocViewerAppURLs.parse(document.location.href) !== undefined;
     }
 
-    return (annotation: IDocAnnotationRef) => {
+    return (ptr: IAnnotationPtr) => {
 
         if (isDocViewer()) {
-            const hash = AnnotationLinks.createHash(annotation);
+            const hash = AnnotationLinks.createHash(ptr);
             history.push({hash});
         } else {
-            const url = AnnotationLinks.createURL(annotation);
+            const url = AnnotationLinks.createURL(ptr);
             docURLLoader(url);
         }
 

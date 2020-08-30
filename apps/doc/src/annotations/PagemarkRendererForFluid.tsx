@@ -305,7 +305,7 @@ export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
     }
 
     const createID = () => {
-        return `primary-pagemark-${pagemark.id}`;
+        return `${pagemark.id}`;
     };
 
     const toReactPortal = (container: HTMLElement) => {

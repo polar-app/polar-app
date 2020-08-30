@@ -21,7 +21,6 @@ import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles, Tooltip} from "@material-ui/core";
 import {memoForwardRef} from "../react/ReactUtils";
-import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 
 const useStyles = makeStyles((theme) =>
