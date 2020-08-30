@@ -9,6 +9,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useWindowResizeEventListener} from "../../../../web/js/react/WindowHooks";
 import {IPoint} from "../../../../web/js/Point";
 import {IXYRect} from "polar-shared/src/util/rects/IXYRect";
+import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 
 interface IProps {
     readonly id?: string;
@@ -100,11 +101,19 @@ export const ResizeBox = deepMemo((props: IProps) => {
     const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
 
     const [state, setState] = useState<IState>(computeNewState);
+    const scrollIntoViewRef = useScrollIntoViewUsingLocation();
+
     const rndRef = React.useRef<Rnd | null>(null);
 
     useWindowResizeEventListener(() => {
         setState(computeNewState());
     }, {win: props.window});
+
+    const handleRndRef = React.useCallback((rnd: Rnd | null) => {
+        rndRef.current = rnd;
+        // now handle the scroll ref so that we can jump to the pagemark...
+        scrollIntoViewRef(rndRef.current?.resizableElement?.current || null);
+    }, []);
 
     const handleResize = React.useCallback((newState: IState,
                                             direction: ResizeDirection) => {
@@ -217,7 +226,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
             {/*    <ControlBar bottom={state.y} left={state.x} width={state.width}/>}*/}
 
             <Rnd
-                ref={ref => rndRef.current = ref}
+                ref={handleRndRef}
                 id={props.id}
                 bounds={props.bounds || "parent"}
                 className={props.className}
