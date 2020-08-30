@@ -34,14 +34,13 @@ import {InvalidInput} from "../../../web/js/ui/dialogs/InputValidators";
 import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
 import {Ranges} from "../../../web/js/highlights/text/selection/Ranges";
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
-import {IFluidPagemark} from "./FluidPagemarkFactory";
 import {MUIMenuSubheader} from "../../../web/js/mui/menu/MUIMenuSubheader";
 import {ISelectOption} from "../../../web/js/ui/dialogs/SelectDialog";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
-function useAnnotationMetaResolver(): AnnotationMetaResolver {
+function useAnnotationMetaToRefResolver(): AnnotationMetaResolver {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
 
@@ -352,7 +351,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
-    const annotationMetaResolver = useAnnotationMetaResolver();
+    const annotationMetaToRefResolver = useAnnotationMetaToRefResolver();
     const dialogManager = useDialogManager();
 
     const origin = props.origin!;
@@ -438,22 +437,22 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     const onDeletePagemark = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 
-        function toMutation(mutation: IAnnotationRef): IPagemarkDelete {
+        function toMutation(annotationRef: IAnnotationRef): IPagemarkDelete {
             return {
                 type: 'delete',
-                pageNum: mutation.pageNum,
-                pagemark: mutation.original as IPagemark
+                pageNum: annotationRef.pageNum,
+                pagemark: annotationRef.original as IPagemark
             }
         }
 
-        annotations.map(annotationMetaResolver)
+        annotations.map(annotationMetaToRefResolver)
                    .map(toMutation)
                    .forEach(onPagemark);
 
     }
 
     const onDelete = (annotations: ReadonlyArray<IAnnotationMeta>) => {
-        const selected = annotations.map(annotationMetaResolver);
+        const selected = annotations.map(annotationMetaToRefResolver);
         annotationMutationsContext.onDeleted({selected});
     }
 
@@ -476,6 +475,15 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             Object.values(PagemarkMode).map(convertPagemarkModeToOption)
 
         function onDone(selected: ISelectOption<PagemarkMode>) {
+
+            const annotationRef = annotationMetaToRefResolver(annotation);
+
+            onPagemark({
+                type: 'update-mode',
+                pageNum: annotation.pageNum,
+                mode: selected.value,
+                existing: annotationRef.original as IPagemark
+            })
         }
 
         dialogManager.select({
