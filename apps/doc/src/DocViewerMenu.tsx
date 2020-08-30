@@ -37,6 +37,7 @@ import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
 import {MUIMenuSubheader} from "../../../web/js/mui/menu/MUIMenuSubheader";
 import {ISelectOption} from "../../../web/js/ui/dialogs/SelectDialog";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -522,7 +523,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&
             <MUIMenuItem text="Set Pagemark Mode"
-                         icon={<DeleteForeverIcon/>}
+                         icon={<BookmarkBorderIcon/>}
                          onClick={() => onPagemarkSetMode(origin.pagemarks[0])}/>}
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&

@@ -1,6 +1,8 @@
 
 # 2.0 beta 18
 
+- Pagemark mode can now be set properly
+
 - Fixed bug in epub when changing pages.
 
 # 2.0 beta 17
