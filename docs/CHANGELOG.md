@@ -1,4 +1,8 @@
 
+# 2.0 beta 18
+
+- Fixed bug in epub when changing pages.
+
 # 2.0 beta 17
 
  - Fixed bug where EPUB pagemarks would not render properly when the browser

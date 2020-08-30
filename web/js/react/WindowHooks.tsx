@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     useComponentDidMount,
     useComponentWillUnmount
@@ -14,7 +15,7 @@ export function useWindowEventListener(name: WindowEventListenerName,
                                        delegate: () => void,
                                        opts: WindowOpts = {}) {
 
-    const win = opts.win || window;
+    const winRef = React.useRef(opts.win || window);
 
     const listenerOpts = {
         // capture is needed for scroll to fire on window.
@@ -27,13 +28,18 @@ export function useWindowEventListener(name: WindowEventListenerName,
     };
 
     useComponentDidMount(() => {
-        win.addEventListener(name, delegate, listenerOpts);
+        winRef.current.addEventListener(name, delegate, listenerOpts);
     });
 
     useComponentWillUnmount(() => {
-        Preconditions.assertPresent(win, 'win');
-        win.removeEventListener(name, delegate, listenerOpts);
-    })
+
+        if (winRef.current) {
+            winRef.current.removeEventListener(name, delegate, listenerOpts);
+        } else {
+            console.warn("No window ref");
+        }
+
+    });
 
 }
 
