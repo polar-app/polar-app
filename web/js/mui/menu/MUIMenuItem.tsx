@@ -15,6 +15,7 @@ interface IProps {
     readonly id?: string;
     readonly icon?: JSX.Element;
     readonly text: string;
+    readonly disabled?: boolean;
 
     readonly onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
@@ -53,6 +54,7 @@ export const MUIMenuItem = React.forwardRef((props: IProps, ref) => {
 
     return (
         <MenuItem id={props.id}
+                  disabled={props.disabled}
                   onClick={onClick}>
 
             {props.icon &&

@@ -25,9 +25,9 @@ export class AnnotationRepoTableDropdown2 extends React.Component<IProps> {
                 <MUIMenu caret
                          placement="bottom-end"
                          button={{
-                                    icon: <MoreVertIcon/>,
-                                    size: 'small'
-                                 }}>
+                             icon: <MoreVertIcon/>,
+                             size: 'small'
+                         }}>
 
                     <div>
                         <MUIMenuItem text="Download as Markdown"

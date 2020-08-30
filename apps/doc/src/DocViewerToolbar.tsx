@@ -29,6 +29,7 @@ import {useDocRepoCallbacks} from "../../repository/js/doc_repo/DocRepoStore2";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import {MUIDocFlagButton} from "../../repository/js/doc_repo/buttons/MUIDocFlagButton";
 import {MUIDocArchiveButton} from "../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
+import {DocViewerToolbarOverflowButton} from "./DocViewerToolbarOverflowButton";
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -396,6 +397,9 @@ export const DocViewerToolbar = React.memo(() => {
                             </div>
 
                             <FullScreenButton/>
+
+                            <DocViewerToolbarOverflowButton docInfo={docMeta?.docInfo}/>
+
                         </MUIButtonBar>
                     </div>
 
