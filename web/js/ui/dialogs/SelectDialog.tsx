@@ -8,31 +8,36 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from '@material-ui/core/ListItem';
 import List from "@material-ui/core/List";
+import Box from "@material-ui/core/Box";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
-export interface SelectItem {
+export interface ISelectOption<V> {
     readonly id: IDStr;
     readonly label: string;
+    readonly value: V;
     // TODO icon in the future.
 }
 
-export interface SelectDialogProps {
+export interface SelectDialogProps<V> {
 
     readonly title: string;
 
-    readonly options: ReadonlyArray<SelectItem>;
+    readonly description?: string;
+
+    readonly options: ReadonlyArray<ISelectOption<V>>;
 
     readonly defaultValue?: IDStr;
 
     readonly onCancel: () => void;
 
-    readonly onDone: (selected: SelectItem) => void;
+    readonly onDone: (selected: ISelectOption<V>) => void;
 
 }
 
 /**
  * Select from a list of options.
  */
-export const SelectDialog = (props: SelectDialogProps) => {
+export const SelectDialog = function<V>(props: SelectDialogProps<V>) {
 
     const [open, setOpen] = React.useState(true);
 
@@ -41,9 +46,10 @@ export const SelectDialog = (props: SelectDialogProps) => {
         setOpen(false);
     }
 
-    const handleDone = (item: SelectItem) => {
+    const handleDone = (option: ISelectOption<V>) => {
         // noop
         setOpen(false);
+        props.onDone(option);
     }
 
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
@@ -58,13 +64,13 @@ export const SelectDialog = (props: SelectDialogProps) => {
 
     };
 
-    function toListItem(item: SelectItem) {
+    function convertOptionToListItem(option: ISelectOption<V>) {
         return (
-            <ListItem key={item.id}
-                      autoFocus={item.id === props.defaultValue}
+            <ListItem key={option.id}
+                      autoFocus={option.id === props.defaultValue}
                       button
-                      onClick={() => handleDone(item)}>
-                <ListItemText primary={item.label} />
+                      onClick={() => handleDone(option)}>
+                <ListItemText primary={option.label} />
             </ListItem>
         );
     }
@@ -78,8 +84,17 @@ export const SelectDialog = (props: SelectDialogProps) => {
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
 
             <DialogContent>
+
+                {props.description !== undefined && (
+                    <Box pt={1}>
+                        <DialogContentText id="dialog-description">
+                            {props.description}
+                        </DialogContentText>
+                    </Box>
+                )}
+
                 <List>
-                    {props.options.map(toListItem)}
+                    {props.options.map(convertOptionToListItem)}
                 </List>
             </DialogContent>
             <DialogActions>

@@ -32,7 +32,7 @@ export interface DialogManager {
     snackbar: (snackbarDialogProps: SnackbarDialogProps) => void;
     taskbar: (taskbarDialogProps: TaskbarDialogProps) => Promise<TaskbarProgressCallback>;
     dialog: (dialogProps: IDialogProps) => void;
-    select: (selectProps: SelectDialogProps) => void;
+    select: <V>(selectProps: SelectDialogProps<V>) => void;
 }
 
 function nullDialog() {
@@ -64,7 +64,7 @@ type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' 
 
 interface DialogState {
     readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps<any>;
     readonly iter: number;
 }
 
@@ -140,7 +140,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
 
         };
 
-        const select = function(selectProps: SelectDialogProps) {
+        const select = function(selectProps: SelectDialogProps<any>) {
             setState({
                 type: 'select',
                 props: selectProps,
@@ -214,7 +214,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
         case "select":
             return (
                 <SelectDialog key={state.iter}
-                              {...(state.props as SelectDialogProps)}/>
+                              {...(state.props as SelectDialogProps<any>)}/>
             );
 
     }

@@ -36,6 +36,8 @@ import {Ranges} from "../../../web/js/highlights/text/selection/Ranges";
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
 import {IFluidPagemark} from "./FluidPagemarkFactory";
 import {MUIMenuSubheader} from "../../../web/js/mui/menu/MUIMenuSubheader";
+import {ISelectOption} from "../../../web/js/ui/dialogs/SelectDialog";
+import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -460,6 +462,31 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         clipboard.writeText(origin.selectionToText());
     }
 
+    const onPagemarkSetMode = (annotation: IAnnotationMeta) => {
+
+        function convertPagemarkModeToOption(mode: PagemarkMode): ISelectOption<PagemarkMode> {
+            return {
+                id: mode,
+                label: mode.replace(/_/g, " "),
+                value: mode
+            };
+        }
+
+        const options: ReadonlyArray<ISelectOption<PagemarkMode>> =
+            Object.values(PagemarkMode).map(convertPagemarkModeToOption)
+
+        function onDone(selected: ISelectOption<PagemarkMode>) {
+        }
+
+        dialogManager.select({
+            title: "Set Pagemark Mode",
+            description: "Change the pagemark mode which impacts the color of the pagemark and how it impacts your reading progress.",
+            options,
+            onCancel: NULL_FUNCTION,
+            onDone
+        });
+    }
+
     const isPDF = origin.fileType === 'pdf';
 
     return (
@@ -484,6 +511,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                 <MUIMenuItem text="Create Area Highlight"
                              icon={<PhotoSizeSelectLargeIcon/>}
                              onClick={onCreateAreaHighlight}/>}
+
+            {(props.origin?.pagemarks?.length || 0) > 0 &&
+            <MUIMenuItem text="Set Pagemark Mode"
+                         icon={<DeleteForeverIcon/>}
+                         onClick={() => onPagemarkSetMode(origin.pagemarks[0])}/>}
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Pagemark"
