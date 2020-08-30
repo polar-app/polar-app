@@ -1,8 +1,12 @@
 import React from 'react';
-import {useDocViewerJumpToPageLoader, useDocViewerPageJumpListener} from "../DocViewerAnnotationHook";
+import {
+    useDocViewerJumpToPageLoader,
+    useDocViewerPageJumpListener
+} from "../DocViewerAnnotationHook";
 import {ReadingProgressResume} from "../../../../web/js/view/ReadingProgressResume";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 
 /**
  * Uses all the requirements we need including pagemark resume, jump via anchor
@@ -12,6 +16,7 @@ export function useDocumentInit() {
 
     const {pageNavigator, docMeta} = useDocViewerStore(['pageNavigator', 'docMeta']);
     const jumpToPageLoader = useDocViewerJumpToPageLoader();
+    const [resumeProgressActive, resumeProgressHandler] = useReadingProgressResume();
 
     function doInit() {
 
@@ -28,8 +33,9 @@ export function useDocumentInit() {
             return;
         }
 
-        if (ReadingProgressResume.resume({docMeta})) {
-            console.log("DocumentInit: Resuming reading progress via pagemarks")
+        if (resumeProgressActive) {
+            console.log("DocumentInit: Resuming reading progress via pagemarks");
+            resumeProgressHandler();
             return;
         }
 
