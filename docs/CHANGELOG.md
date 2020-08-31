@@ -1,6 +1,8 @@
 
 # 2.0 beta 18
 
+- EPUBs can now jump to the most recent reading position.
+
 - Pagemark mode can now be set properly
 
 - Fixed bug in epub when changing pages.

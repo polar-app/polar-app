@@ -36,6 +36,8 @@ import {IPagemarkRect} from "polar-shared/src/metadata/IPagemarkRect";
 import {PagemarkRect} from "../../../web/js/metadata/PagemarkRect";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
+import {Numbers} from 'polar-shared/src/util/Numbers';
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -163,6 +165,12 @@ export interface IPagemarkCreateFromPage extends IPagemarkCreateOrUpdate {
 
 }
 
+export interface IPagemarkCreateForEntireDocument {
+
+    readonly type: 'create-for-entire-document';
+
+}
+
 export interface IPagemarkUpdate extends IPagemarkCreateOrUpdate {
 
     readonly type: 'update',
@@ -220,7 +228,8 @@ export type IPagemarkMutation = IPagemarkCreateToPoint |
                                 IPagemarkCreateFromPage |
                                 IPagemarkUpdate |
                                 IPagemarkDelete |
-                                IPagemarkUpdateMode;
+                                IPagemarkUpdateMode |
+                                IPagemarkCreateForEntireDocument;
 
 /**
  * The type of update for setDocMeta.
@@ -460,7 +469,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             pagemark.range = fluidPagemark?.range;
         }
 
-        function createPagemarkToPoint(opts: IPagemarkCreateToPoint, start?: number): ReadonlyArray<IPagemarkRef> {
+        function createPagemarkToPoint(opts: IPagemarkCreateToPoint,
+                                       start?: number): ReadonlyArray<IPagemarkRef> {
 
             const store = storeProvider();
             const {docMeta} = store;
@@ -575,19 +585,75 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         }
 
+        function createPagemarksForEntireDocument() {
+
+            const store = storeProvider();
+            const docMeta = store.docMeta!;
+
+            interface PagemarksForPage {
+                readonly pageNum: number;
+                readonly pagemarks: ReadonlyArray<IPagemark>;
+            }
+
+            function toPagemarksForPage(pageNum: number): PagemarksForPage {
+                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+                const pagemarks = Object.values(pageMeta.pagemarks || {});
+                return {pageNum, pagemarks};
+            }
+
+            function computePagemarksForPageMapping(): ReadonlyArray<PagemarksForPage> {
+                const pageNumbers = Numbers.range(1, docMeta.docInfo.nrPages);
+                return pageNumbers.map(toPagemarksForPage)
+            }
+
+            const pagemarksForPageMapping = computePagemarksForPageMapping();
+
+            const pagemarkBlocks
+                = arrayStream(pagemarksForPageMapping)
+                    .merge((a, b) => a.pagemarks.length === 0 && b.pagemarks.length === 0)
+                    .collect();
+
+            for (const pagemarkBlock of pagemarkBlocks) {
+
+                if (pagemarkBlock.length > 0) {
+                    // this page already has a pagemark so just expand it to 100%
+                    const start = Arrays.first(pagemarkBlock)!.pageNum;
+                    const end = Arrays.last(pagemarkBlock)!.pageNum;
+                    Pagemarks.updatePagemarksForRange(docMeta!, end, 100, {start});
+                }
+            }
+
+            //
+
+            // const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum);
+
+            updateDocMeta(docMeta);
+            writeUpdatedDocMetas([docMeta])
+                .catch(err => log.error(err));
+
+            return [];
+        }
+
         switch (mutation.type) {
 
             case "create-to-point":
                 return createPagemarkToPoint(mutation);
+
             case "create-from-page":
                 return createPagemarkFromPage(mutation);
+
             case "update":
                 return updatePagemark(mutation);
+
             case "delete":
                 deletePagemark(mutation);
                 return [];
+
             case "update-mode":
                 return updatePagemarkMode(mutation);
+
+            case "create-for-entire-document":
+                return createPagemarksForEntireDocument();
 
         }
 

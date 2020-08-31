@@ -496,6 +496,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         });
     }
 
+    const onPagemarkForEntireDocument = () => {
+        onPagemark({
+            type: 'create-for-entire-document'
+        });
+    }
+
     const isPDF = origin.fileType === 'pdf';
 
     return (
@@ -516,15 +522,19 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                              icon={<BookmarksIcon/>}
                              onClick={onCreatePagemarkFromPage}/>)}
 
+            <MUIMenuItem text="Mark Entire Document as Read"
+                         icon={<BookmarksIcon/>}
+                         onClick={onPagemarkForEntireDocument}/>
+
             {isPDF &&
                 <MUIMenuItem text="Create Area Highlight"
                              icon={<PhotoSizeSelectLargeIcon/>}
                              onClick={onCreateAreaHighlight}/>}
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&
-            <MUIMenuItem text="Set Pagemark Mode"
-                         icon={<BookmarkBorderIcon/>}
-                         onClick={() => onPagemarkSetMode(origin.pagemarks[0])}/>}
+                <MUIMenuItem text="Set Pagemark Mode"
+                             icon={<BookmarkBorderIcon/>}
+                             onClick={() => onPagemarkSetMode(origin.pagemarks[0])}/>}
 
             {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Pagemark"
