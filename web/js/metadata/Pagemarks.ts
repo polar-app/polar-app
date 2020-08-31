@@ -22,6 +22,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {Objects} from "polar-shared/src/util/Objects";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import { IPagemarkRef } from 'polar-shared/src/metadata/IPagemarkRef';
+import {IDStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 
@@ -34,6 +35,7 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
 
 export interface UpdatePagemarksForRangeOpts {
     readonly start?: PageNumber;
+    readonly batch?: IDStr;
 }
 
 export class Pagemarks {
@@ -74,7 +76,7 @@ export class Pagemarks {
         }
 
         const created = ISODateTimeStrings.create();
-        const batch = Hashcodes.createID({created, id: this.sequences.batch++});
+        const batch = opts.batch || Hashcodes.createID({created, id: this.sequences.batch++});
 
         const calculateStartPage = () => {
 

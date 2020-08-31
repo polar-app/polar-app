@@ -38,6 +38,7 @@ import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 import {Numbers} from 'polar-shared/src/util/Numbers';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import { Hashcodes } from 'polar-shared/src/util/Hashcodes';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -613,13 +614,15 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                     .merge((a, b) => a.pagemarks.length === 0 && b.pagemarks.length === 0)
                     .collect();
 
+            const batch = Hashcodes.createRandomID();
+
             for (const pagemarkBlock of pagemarkBlocks) {
 
                 if (pagemarkBlock.length > 0) {
                     // this page already has a pagemark so just expand it to 100%
                     const start = Arrays.first(pagemarkBlock)!.pageNum;
                     const end = Arrays.last(pagemarkBlock)!.pageNum;
-                    Pagemarks.updatePagemarksForRange(docMeta!, end, 100, {start});
+                    Pagemarks.updatePagemarksForRange(docMeta!, end, 100, {start, batch});
                 }
             }
 
