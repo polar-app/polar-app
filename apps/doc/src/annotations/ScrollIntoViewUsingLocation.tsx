@@ -4,36 +4,34 @@ import {HashURLs} from "polar-shared/src/util/HashURLs";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ILocation} from "../../../../web/js/react/router/ReactRouters";
 import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
+import { useLocationChange } from './UseLocationChangeHook';
 
 export function useScrollIntoViewUsingLocation() {
 
     const scrollTarget = useScrollTargetFromLocation();
     const [ref, setRef] = React.useState<HTMLElement | null>(null);
-    const location = useLocation();
-    const prevLocation = React.useRef<ILocation | undefined>(undefined);
+    const location = useLocationChange();
 
-    function handleLocationChange() {
+    if (scrollTarget) {
 
-        if (scrollTarget) {
+        if (ref) {
 
-            if (ref) {
+            const id = ref.getAttribute('id');
 
-                const id = ref.getAttribute('id');
+            if (id === scrollTarget.target) {
 
-                if (id === scrollTarget.target) {
+                // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+                const alignToTop = scrollTarget.pos === 'top';
 
-                    // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
-                    const alignToTop = scrollTarget.pos === 'top';
+                // console.log("Scrolling target into view: " + scrollTarget, ref);
 
-                    // console.log("Scrolling target into view: " + scrollTarget, ref);
+                console.log("FIXME: scrollIntoView")
 
-                    // TODO: this component should take scrollIntoView opts and
-                    // pass them here.
-                    ref.scrollIntoView(alignToTop);
+                // TODO: this component should take scrollIntoView opts and
+                // pass them here.
+                ref.scrollIntoView(alignToTop);
 
-                } else {
-                    // noop
-                }
+                // FIXME: only ever scroll ONCE to this location!!!
 
             } else {
                 // noop
@@ -43,20 +41,8 @@ export function useScrollIntoViewUsingLocation() {
             // noop
         }
 
-    }
-
-    if (ref) {
-
-        try {
-
-            if (location.hash !== prevLocation.current?.hash) {
-                handleLocationChange();
-            }
-
-        } finally {
-            prevLocation.current = location;
-        }
-
+    } else {
+        // noop
     }
 
     return (newRef: HTMLElement | null) => {
