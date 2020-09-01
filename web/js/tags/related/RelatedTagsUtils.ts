@@ -2,7 +2,7 @@ import {DocTagsIndex, TagDocsIndex} from "./RelatedTagsManager";
 
 export namespace RelatedTagsUtils {
 
-    // FIXME: don't we need the type (documents or annotations)
+    // TODO: don't we need the type (documents or annotations)
     export interface RelatedTagsData {
         readonly tagDocsIndex: TagDocsIndex;
         readonly docTagsIndex: DocTagsIndex;

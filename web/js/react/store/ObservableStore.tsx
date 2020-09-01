@@ -165,13 +165,13 @@ export type CallbacksFactory<V, M, C> = (storeProvider: Provider<V>, setStore: S
 
 export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetStore<V>) => M;
 
-// FIXME: refactor this to take opts and include an initialValue and value ...
+// TODO: refactor this to take opts and include an initialValue and value ...
 // initialValue can be the mock
 
-// FIXME: since mutator isn't always needed make it optional and just use defaults
+// TODO: since mutator isn't always needed make it optional and just use defaults
 // otherwise
 
-// FIXME: since callbacks were designed to work with hooks using it outside of
+// TODO: since callbacks were designed to work with hooks using it outside of
 // a component means it will break.  A mutator can be used if you want to work
 // with the store outside of a component.
 
@@ -248,8 +248,6 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    // FIXME: the mutator can't use hooks here...
-
     const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
 
     const [storeContext,] = createObservableStoreContext<V>(store);
@@ -272,9 +270,6 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
     }
 
     const providerComponent = (props: ObservableStoreProps<V>) => {
-
-        // FIXME this now breaks because when I restore and go back to the
-        // document view all the data is gone and a new context is created.
 
         // const [store, mutator, componentCallbacksFactory]
         //     = useMemo(() => createInitialContextValues(opts), []);

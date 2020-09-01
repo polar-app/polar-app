@@ -72,15 +72,15 @@ export namespace ReadingProgressResume {
 
     function scrollToPagemark(targetPagemark: IPagemarkRef, ) {
 
-        // FIXME: this has to be rewritten as a hook so that we can jump to the
+        // TODO: this has to be rewritten as a hook so that we can jump to the
         // page properly and that the toolbar has the right page.
 
-        // FIXME: the 'next' button doesn't work when we jump to a page after load
+        // TODO: the 'next' button doesn't work when we jump to a page after load
         // as I think the current page number isn't changed.
 
 
-        // FIXME: this is wrong...
-        // FIXME: i think I need to implement this with 'target' and then
+        // TODO: this is wrong...
+        // TODO: i think I need to implement this with 'target' and then
         // implement that in pagemarks too...  including the useWindowScroll and
         // useWindowCallback...
         const pages = document.querySelectorAll(".page");

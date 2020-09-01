@@ -82,8 +82,9 @@ export const AnkiSyncController = React.memo(() => {
 
             const docMetaFiles = await persistenceLayer.getDocMetaRefs();
 
-            // FIXME this is really hella slow - migrate it to using the already
-            // in-memory sync'd copy of flashcards since I can useDocRepoStore here
+            // TODO this is really slow - migrate it to using the already
+            // in-memory sync'd copy of flashcards since I can useDocRepoStore
+            // here
             const docMetaSuppliers: DocMetaSupplierCollection
                 = docMetaFiles.map(docMetaFile => {
                     return async () => {

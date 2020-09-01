@@ -87,7 +87,7 @@ export class NotificationForPrivateGroupDoc extends React.Component<IProps, ISta
 
         const {invitation} = this.props;
 
-        // FIXME: removed because of toasters...
+        // TODO: removed because of toasters...
         // GroupJoins.execAndAdd(persistenceLayer, invitation)
         //     .then(() => Toaster.success("Added documents successfully to document repository."))
         //     .catch(err => {

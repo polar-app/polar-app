@@ -52,7 +52,7 @@ interface IProps {
     readonly disabled?: boolean;
 }
 
-// FIXME: move this to MUIPopper
+// TODO: move this to MUIPopper
 
 export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
     const classes = useStyles();

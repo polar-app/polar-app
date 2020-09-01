@@ -21,8 +21,8 @@ export class TextNodes {
             length = textNode.textContent!.length;
         }
 
-        // FIXME: we have to make this iframe aware.
-        const range = document.createRange();
+        const doc = textNode.ownerDocument || document;
+        const range = doc.createRange();
 
         range.setStart(textNode, offset);
         range.setEnd(textNode, length);
