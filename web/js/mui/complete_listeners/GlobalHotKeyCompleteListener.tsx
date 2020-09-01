@@ -2,7 +2,7 @@ import * as React from 'react';
 import {GlobalHotKeys} from "react-hotkeys";
 
 const globalKeyMap = {
-    COMPLETE: ['command+return', 'control+return'],
+    COMPLETE: ['command+return', 'ctrl+return'],
 };
 
 interface IProps {

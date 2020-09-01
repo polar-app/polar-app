@@ -15,7 +15,7 @@ const globalKeyMap = keyMap({
         FIND: {
             name: "Find",
             description: "Search within the document for the given text.",
-            sequences: ['command+f', 'control+f']
+            sequences: ['ctrl+f', 'command+f']
         },
         PAGE_NEXT: {
             name: "Next Page",

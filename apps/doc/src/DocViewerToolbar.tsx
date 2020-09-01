@@ -163,7 +163,7 @@ const PageNumberInput = (props: NumPagesProps) => {
         // just listen to the key directly
 
         if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-            // Make sure NO other modifiers are enabled.. control+escape for example.
+            // Make sure NO other modifiers are enabled.. ctrl+escape for example.
             return;
         }
 
