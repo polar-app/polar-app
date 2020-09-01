@@ -3,10 +3,9 @@ import {memoForwardRef} from "../../react/ReactUtils";
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {IDocAnnotationRef} from "../DocAnnotation";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
-import {Tooltip} from "@material-ui/core";
-import IconButton from '@material-ui/core/IconButton';
 import {useJumpToAnnotationHandler} from "../JumpToAnnotationHook";
 import {IAnnotationPtr} from "../AnnotationLinks";
+import {StandardIconButton} from "../../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 
 interface IProps {
@@ -37,13 +36,12 @@ export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
     };
 
     return (
-        <Tooltip title="Jump to the current annotation in the page.">
-            <IconButton size="small"
-                        onClick={handleJumpToCurrentAnnotation}>
+        <StandardIconButton tooltip="Jump to the current annotation in the page."
+                            size="small"
+                            onClick={handleJumpToCurrentAnnotation}>
 
-                <CenterFocusStrongIcon/>
+            <CenterFocusStrongIcon/>
 
-            </IconButton>
-        </Tooltip>
+        </StandardIconButton>
     );
 });

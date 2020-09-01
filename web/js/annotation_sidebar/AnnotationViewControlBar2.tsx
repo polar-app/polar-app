@@ -19,9 +19,10 @@ import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles, Tooltip} from "@material-ui/core";
-import {memoForwardRef} from "../react/ReactUtils";
+import {deepMemo, memoForwardRef} from "../react/ReactUtils";
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
+import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -43,7 +44,7 @@ interface IAnnotationProps {
     readonly mutable: boolean | undefined;
 }
 
-const ChangeTextHighlightButton = memoForwardRef((props: IAnnotationProps) => {
+const ChangeTextHighlightButton = deepMemo((props: IAnnotationProps) => {
 
     const {annotation} = props;
 
@@ -55,53 +56,51 @@ const ChangeTextHighlightButton = memoForwardRef((props: IAnnotationProps) => {
     }
 
     return (
-        <Tooltip title="Change the content of a text highlight.">
-            <IconButton disabled={! props.mutable}
-                        size="small"
-                        onClick={() => annotationInputContext.setActive('text-highlight')}>
+        <StandardIconButton tooltip="Change the content of a text highlight."
+                            disabled={! props.mutable}
+                            size="small"
+                            onClick={() => annotationInputContext.setActive('text-highlight')}>
 
-                <EditIcon/>
+            <EditIcon/>
 
-            </IconButton>
-        </Tooltip>
+        </StandardIconButton>
     );
 
 });
 
-const CreateCommentButton = memoForwardRef((props: IMutableProps) => {
+const CreateCommentButton = deepMemo((props: IMutableProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <Tooltip title="Create a new comment">
-            <IconButton disabled={! props.mutable}
-                        size="small"
-                        onClick={() => annotationInputContext.setActive('comment')}>
+        <StandardIconButton tooltip="Create a new comment"
+                            disabled={! props.mutable}
+                            size="small"
+                            onClick={() => annotationInputContext.setActive('comment')}>
 
-                <CommentIcon/>
+            <CommentIcon/>
 
-            </IconButton>
-        </Tooltip>
+        </StandardIconButton>
     );
 });
 
 
-const CreateFlashcardButton = React.memo((props: IMutableProps) => {
+const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <Tooltip title="Create a new flashcard">
-            <IconButton disabled={! props.mutable}
-                        size="small"
-                        onClick={() => annotationInputContext.setActive('flashcard')}>
+        <StandardIconButton tooltip="Create a new flashcard"
+                            disabled={! props.mutable}
+                            size="small"
+                            onClick={() => annotationInputContext.setActive('flashcard')}>
 
-                <FlashOnIcon/>
-
-            </IconButton>
-        </Tooltip>
+            <FlashOnIcon/>
+        </StandardIconButton>
     );
-}, isEqual);
+
+
+});
 
 interface IProps {
     readonly annotation: IDocAnnotationRef;
@@ -157,21 +156,21 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                         <ChangeTextHighlightButton annotation={annotation}
                                                    mutable={doc?.mutable}/>
 
-                           <CreateCommentButton mutable={doc?.mutable}/>
+                        <CreateCommentButton mutable={doc?.mutable}/>
 
-                           <CreateFlashcardButton mutable={doc?.mutable}/>
+                        <CreateFlashcardButton mutable={doc?.mutable}/>
+
+                        {! annotation.immutable &&
+                            <ColorSelector role='change'
+                                           color={props.annotation.color || 'yellow'}
+                                           onSelected={(color) => handleColor({color})}/>}
+
+                        <AnnotationTagButton2 annotation={annotation}/>
 
                             {! annotation.immutable &&
-                                <ColorSelector role='change'
-                                               color={props.annotation.color || 'yellow'}
-                                               onSelected={(color) => handleColor({color})}/>}
-
-                           <AnnotationTagButton2 annotation={annotation}/>
-
-                           {! annotation.immutable &&
-                               <MUIDocDeleteButton size="small"
-                                                   onClick={handleDelete}
-                                                   />}
+                                <MUIDocDeleteButton size="small"
+                                                    onClick={handleDelete}
+                                                    />}
 
                            {/*<AnnotationDropdown2 id={'annotation-dropdown-' + annotation.id}*/}
                            {/*                     disabled={annotation.immutable}*/}
