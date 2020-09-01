@@ -70,7 +70,8 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         await this.doInitUserTagsDB();
 
-        // FIXME: this has to go in as part of 2.0
+        // TODO: we might have to put this in as part of 2.0 but I think most
+        // users have migrated.
         // await this.doInitUserTagsLegacyData();
 
     }
