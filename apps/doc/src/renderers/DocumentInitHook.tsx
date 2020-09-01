@@ -28,15 +28,17 @@ export function useDocumentInit() {
             throw new Error("No docMeta");
         }
 
-        if (jumpToPageLoader(document.location, 'init')) {
-            console.log("DocumentInit: Jumped to page via page param.")
-            return;
-        }
-
         if (resumeProgressActive) {
             console.log("DocumentInit: Resuming reading progress via pagemarks");
             resumeProgressHandler();
-            return;
+        } else {
+
+            // TODO: this is probably a bug and we shouldn't reference
+            // document.location here I think.
+            if (jumpToPageLoader(document.location, 'init')) {
+                console.log("DocumentInit: Jumped to page via page param.")
+            }
+
         }
 
         // TODO we aren't doing this right now because the EPUB viewer must

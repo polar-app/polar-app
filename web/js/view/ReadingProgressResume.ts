@@ -25,10 +25,12 @@ export namespace ReadingProgressResume {
         const handler = () => {
 
             if (! docMeta) {
+                console.warn("Progress can not resume (no docMeta)");
                 return;
             }
 
             if (! targetPagemark) {
+                console.warn("Progress can not resume (no targetPagemark)");
                 return;
             }
 
@@ -40,6 +42,8 @@ export namespace ReadingProgressResume {
             });
 
         }
+
+        console.log("FIXME: active: ", active);
 
         return [active, handler];
 
