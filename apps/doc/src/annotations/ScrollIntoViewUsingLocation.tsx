@@ -18,6 +18,16 @@ export function scrollIntoView(scrollTarget: IScrollTarget, ref: HTMLElement) {
 
 export function useScrollIntoViewUsingLocation() {
 
+    // FIXME: I think the 'initial' loader should only allow one 'n' to scroll once
+    // until the 'n' is loaded again?
+
+    // FIXME: write down ALL the issues we're trying to solve..
+
+    // - when components are unmounted, then remounted, but we've scrolled the
+    //   page and the target is still in the URL we don't want to re-scroll.
+
+
+
     const scrollTargetUpdateListener = useScrollTargetUpdateListener();
     const ref = React.useRef<HTMLElement | null>(null);
     const {initialScrollLoader} = useLocationChangeStore(['initialScrollLoader'])
@@ -61,6 +71,8 @@ export interface IScrollTarget {
     // where to align the target
     readonly pos: 'top' | 'bottom';
 
+    readonly n: string;
+
 }
 
 export namespace ScrollTargets {
@@ -71,14 +83,19 @@ export namespace ScrollTargets {
 
         const params = HashURLs.parse(queryOrLocation);
         const target = params.get('target') || undefined;
+        const n = params.get('n');
 
         const pos = params.get('pos') === 'bottom' ? 'bottom' : 'top';
+
+        if (! n) {
+            return undefined;
+        }
 
         if (! target) {
             return undefined;
         }
 
-        return {target, pos};
+        return {target, pos, n};
 
     }
 
