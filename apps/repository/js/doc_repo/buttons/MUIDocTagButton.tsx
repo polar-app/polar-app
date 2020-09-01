@@ -1,10 +1,10 @@
 import React from "react";
 import { ButtonProps } from "./StandardToggleButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import {StandardButton} from "./StandardButton";
+import {StandardIconButton} from "./StandardIconButton";
 
 export const MUIDocTagButton = React.memo((props: ButtonProps) => (
-    <StandardButton tooltip="Tag" {...props}>
+    <StandardIconButton tooltip="Tag" {...props}>
         <LocalOfferIcon/>
-    </StandardButton>
+    </StandardIconButton>
 ));

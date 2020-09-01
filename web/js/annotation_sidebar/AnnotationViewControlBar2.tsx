@@ -15,13 +15,13 @@ import {useAnnotationActiveInputContext} from "./AnnotationActiveInputContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {ColorSelector} from "../ui/colors/ColorSelector";
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
-import {AnnotationDropdown2} from "./AnnotationDropdown2";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {createStyles, Tooltip} from "@material-ui/core";
 import {memoForwardRef} from "../react/ReactUtils";
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
+import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -120,6 +120,10 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
         selected: [annotation],
     });
 
+    const handleDelete = annotationMutations.createDeletedCallback({
+        selected: [annotation]
+    });
+
     return (
 
         <>
@@ -151,7 +155,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                         <JumpToAnnotationButton annotation={annotation}/>
 
                         <ChangeTextHighlightButton annotation={annotation}
-                                                      mutable={doc?.mutable}/>
+                                                   mutable={doc?.mutable}/>
 
                            <CreateCommentButton mutable={doc?.mutable}/>
 
@@ -164,9 +168,15 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                            <AnnotationTagButton2 annotation={annotation}/>
 
-                           <AnnotationDropdown2 id={'annotation-dropdown-' + annotation.id}
-                                                disabled={annotation.immutable}
-                                                annotation={annotation}/>
+                           {! annotation.immutable &&
+                               <MUIDocDeleteButton size="small"
+                                                   onClick={handleDelete}
+                                                   />}
+
+                           {/*<AnnotationDropdown2 id={'annotation-dropdown-' + annotation.id}*/}
+                           {/*                     disabled={annotation.immutable}*/}
+                           {/*                     annotation={annotation}/>*/}
+
                     </MUIButtonBar>
 
                 </div>

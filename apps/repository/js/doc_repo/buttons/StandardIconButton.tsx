@@ -7,15 +7,17 @@ import useTheme from "@material-ui/core/styles/useTheme";
 export interface StandardButtonProps extends ButtonProps {
     readonly tooltip: string;
     readonly children: JSX.Element;
+    readonly disabled?: boolean;
 }
 
-export const StandardButton = (props: StandardButtonProps) => {
+export const StandardIconButton = (props: StandardButtonProps) => {
     const theme = useTheme();
 
     return (
         <Tooltip title={props.tooltip}>
             <IconButton size={props.size || 'small'}
                         onClick={props.onClick}
+                        disabled={props.disabled}
                         aria-label={props.tooltip.toLowerCase()}
                         style={{color: theme.palette.text.secondary}}>
                 {props.children}

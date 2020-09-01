@@ -1,17 +1,16 @@
 import * as React from "react";
-import IconButton from "@material-ui/core/IconButton";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import isEqual from "react-fast-compare";
 import {IDocAnnotationRef} from "./DocAnnotation";
 import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {useDocMetaContext} from "./DocMetaContextProvider";
-import Tooltip from "@material-ui/core/Tooltip";
+import {deepMemo} from "../react/ReactUtils";
+import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 
 interface IProps {
     readonly annotation: IDocAnnotationRef;
 }
 
-export const AnnotationTagButton2 = React.memo((props: IProps) => {
+export const AnnotationTagButton2 = deepMemo((props: IProps) => {
 
     const {doc} = useDocMetaContext();
     const annotationMutations = useAnnotationMutationsContext();
@@ -19,14 +18,15 @@ export const AnnotationTagButton2 = React.memo((props: IProps) => {
     const taggedCallback = annotationMutations.createTaggedCallback({selected: [props.annotation]});
 
     return (
-        <Tooltip title="Change/set the tags on an item.">
-            <IconButton disabled={! doc?.mutable}
-                        size="small"
-                        onClick={taggedCallback}>
+        <StandardIconButton tooltip="Change/set the tags on an item."
+                            disabled={! doc?.mutable}
+                            size="small"
+                            onClick={taggedCallback}>
 
-                <LocalOfferIcon/>
+            <LocalOfferIcon/>
 
-            </IconButton>
-        </Tooltip>
+        </StandardIconButton>
     );
-}, isEqual);
+
+
+});
