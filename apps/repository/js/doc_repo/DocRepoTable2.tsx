@@ -21,6 +21,8 @@ export const DocRepoTable2 = React.memo(() => {
                 height: '100%'
              }}>
 
+            {/*TODO: changing this to paper implements the proper Figma color we */}
+            {/*want*/}
             <Paper square
                    elevation={0}
                    style={{

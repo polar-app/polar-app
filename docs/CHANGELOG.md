@@ -1,6 +1,9 @@
 
 # 2.0 beta 18
 
+- Fixed bug where unicode characters are 'too long' when detecting if they are
+  whitespace.
+
 - Fixed bug with annotation jumps that would break PDF and cause it to shift
   while working with text highlights.
 
