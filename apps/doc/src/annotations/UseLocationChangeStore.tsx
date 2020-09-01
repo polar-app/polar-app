@@ -6,29 +6,22 @@ import {
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {useLocation} from 'react-router-dom';
+import { IDStr } from 'polar-shared/src/util/Strings';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+
+export type InitialScrollLoader = (ref: HTMLElement | null) => void;
 
 interface IUseLocationChangeStore {
-
-    /**
-     * The previous location used to detect the first URL load and any updates
-     * including between component mounts since we mount this as a root
-     * component.
-     */
-    readonly prevLocation: ILocation | undefined;
-
-    readonly location: ILocation;
-
+    readonly initialScrollLoader: InitialScrollLoader;
 }
 
 interface IUseLocationChangeCallbacks {
-    setPrevLocation: (location: ILocation) => void;
-    setLocation: (location: ILocation) => void;
+    setInitialScrollLoader: (initialScrollLoader: InitialScrollLoader) => void;
 }
 
 const initialStore: IUseLocationChangeStore = {
-    prevLocation: undefined,
-    location: document.location
-}
+    initialScrollLoader: NULL_FUNCTION
+};
 
 interface Mutator {
 }
@@ -44,18 +37,13 @@ function callbacksFactory(storeProvider: Provider<IUseLocationChangeStore>,
                           setStore: (store: IUseLocationChangeStore) => void,
                           mutator: Mutator): IUseLocationChangeCallbacks {
 
-    function setPrevLocation(prevLocation: ILocation) {
+    function setInitialScrollLoader(initialScrollLoader: InitialScrollLoader) {
         const store = storeProvider();
-        setStore({...store, prevLocation});
-    }
-
-    function setLocation(location: ILocation) {
-        const store = storeProvider();
-        setStore({...store, location});
+        setStore({...store, initialScrollLoader});
     }
 
     return {
-        setPrevLocation, setLocation
+        setInitialScrollLoader
     };
 
 }

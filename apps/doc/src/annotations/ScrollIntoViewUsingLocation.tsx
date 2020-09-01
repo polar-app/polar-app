@@ -1,38 +1,35 @@
 import React from 'react';
-import {useLocation} from 'react-router-dom';
 import {HashURLs} from "polar-shared/src/util/HashURLs";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {ILocation} from "../../../../web/js/react/router/ReactRouters";
-import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
-import { useLocationChange } from './UseLocationChangeHook';
+import {IListenable, useLocationUpdateListener} from './UseLocationChangeHook';
+import {useLocationChangeStore} from './UseLocationChangeStore';
+import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+
+export function scrollIntoView(scrollTarget: IScrollTarget, ref: HTMLElement) {
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+    const alignToTop = scrollTarget.pos === 'top';
+
+    // TODO: this component should take scrollIntoView opts and
+    // pass them here.
+    ref.scrollIntoView(alignToTop);
+
+}
 
 export function useScrollIntoViewUsingLocation() {
 
-    const scrollTarget = useScrollTargetFromLocation();
-    const [ref, setRef] = React.useState<HTMLElement | null>(null);
-    const location = useLocationChange();
+    const scrollTargetUpdateListener = useScrollTargetUpdateListener();
+    const ref = React.useRef<HTMLElement | null>(null);
+    const {initialScrollLoader} = useLocationChangeStore(['initialScrollLoader'])
 
-    if (scrollTarget) {
+    const unsubscriber = scrollTargetUpdateListener.listen(scrollTarget => {
 
-        if (ref) {
+        if (ref.current) {
 
-            const id = ref.getAttribute('id');
+            const id = ref.current.getAttribute('id');
 
             if (id === scrollTarget.target) {
-
-                // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
-                const alignToTop = scrollTarget.pos === 'top';
-
-                // console.log("Scrolling target into view: " + scrollTarget, ref);
-
-                console.log("FIXME: scrollIntoView")
-
-                // TODO: this component should take scrollIntoView opts and
-                // pass them here.
-                ref.scrollIntoView(alignToTop);
-
-                // FIXME: only ever scroll ONCE to this location!!!
-
+                scrollIntoView(scrollTarget, ref.current);
             } else {
                 // noop
             }
@@ -41,14 +38,16 @@ export function useScrollIntoViewUsingLocation() {
             // noop
         }
 
-    } else {
-        // noop
-    }
+    });
+
+    useComponentWillUnmount(unsubscriber);
+
+    initialScrollLoader(ref.current);
 
     return (newRef: HTMLElement | null) => {
 
-        if (ref !== newRef) {
-            setRef(newRef);
+        if (ref.current !== newRef) {
+            ref.current = newRef;
         }
 
     }
@@ -64,7 +63,7 @@ export interface IScrollTarget {
 
 }
 
-namespace ScrollTargets {
+export namespace ScrollTargets {
 
     import QueryOrLocation = HashURLs.QueryOrLocation;
 
@@ -87,10 +86,26 @@ namespace ScrollTargets {
 
 
 /**
- * Use location to parse the annotation.
+ *
  */
-export function useScrollTargetFromLocation(): IScrollTarget | undefined {
-    // TODO: I don't think this is cached across components...
-    const location = useLocation();
-    return ScrollTargets.parse(location);
+export function useScrollTargetUpdateListener(): IListenable<IScrollTarget> {
+
+    const locationUpdateListener = useLocationUpdateListener();
+
+    function listen(listener: (scrollTarget: IScrollTarget) => void) {
+
+        return locationUpdateListener.listen(newLocation => {
+
+            const scrollTarget = ScrollTargets.parse(newLocation);
+
+            if (scrollTarget) {
+                listener(scrollTarget);
+            }
+
+        });
+
+    }
+
+    return {listen};
+
 }
