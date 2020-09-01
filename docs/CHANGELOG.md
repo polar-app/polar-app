@@ -1,7 +1,10 @@
 
 # 2.0 beta 18
 
-- EPUBs can now jump to the most recent reading position.
+- Fixed bug with annotation jumps that would break PDF and cause it to shift
+  while working with text highlights.
+
+- EPUBs can now jump to the most recent reading position in the context menu.
 
 - Pagemark mode can now be set properly
 
