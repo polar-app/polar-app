@@ -4,6 +4,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {IListenable, useLocationUpdateListener} from './UseLocationChangeHook';
 import {useLocationChangeStore} from './UseLocationChangeStore';
 import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import { useHistory, useLocation } from 'react-router-dom';
 
 export function scrollIntoView(scrollTarget: IScrollTarget, ref: HTMLElement) {
 
@@ -18,46 +19,21 @@ export function scrollIntoView(scrollTarget: IScrollTarget, ref: HTMLElement) {
 
 export function useScrollIntoViewUsingLocation() {
 
-    // FIXME: I think the 'initial' loader should only allow one 'n' to scroll once
-    // until the 'n' is loaded again?
-
-    // FIXME: write down ALL the issues we're trying to solve..
-
-    // - when components are unmounted, then remounted, but we've scrolled the
-    //   page and the target is still in the URL we don't want to re-scroll.
-
-
-
-    const scrollTargetUpdateListener = useScrollTargetUpdateListener();
     const ref = React.useRef<HTMLElement | null>(null);
     const {initialScrollLoader} = useLocationChangeStore(['initialScrollLoader'])
+    const scrollTarget = useScrollTarget();
 
-    const unsubscriber = scrollTargetUpdateListener.listen(scrollTarget => {
-
-        if (ref.current) {
-
-            const id = ref.current.getAttribute('id');
-
-            if (id === scrollTarget.target) {
-                scrollIntoView(scrollTarget, ref.current);
-            } else {
-                // noop
-            }
-
-        } else {
-            // noop
+    function handleRef() {
+        if (scrollTarget) {
+            initialScrollLoader(scrollTarget, ref.current);
         }
-
-    });
-
-    useComponentWillUnmount(unsubscriber);
-
-    initialScrollLoader(ref.current);
+    }
 
     return (newRef: HTMLElement | null) => {
 
         if (ref.current !== newRef) {
             ref.current = newRef;
+            handleRef();
         }
 
     }
@@ -101,17 +77,21 @@ export namespace ScrollTargets {
 
 }
 
+export function useScrollTarget(): IScrollTarget | undefined {
+    const location = useLocation();
+    return ScrollTargets.parse(location);
+}
 
 /**
  *
  */
 export function useScrollTargetUpdateListener(): IListenable<IScrollTarget> {
 
-    const locationUpdateListener = useLocationUpdateListener();
+    const history = useHistory();
 
     function listen(listener: (scrollTarget: IScrollTarget) => void) {
 
-        return locationUpdateListener.listen(newLocation => {
+        return history.listen(newLocation => {
 
             const scrollTarget = ScrollTargets.parse(newLocation);
 

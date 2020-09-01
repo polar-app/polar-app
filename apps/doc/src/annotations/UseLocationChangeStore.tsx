@@ -8,8 +8,9 @@ import {
 import {useLocation} from 'react-router-dom';
 import { IDStr } from 'polar-shared/src/util/Strings';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {IScrollTarget} from "./ScrollIntoViewUsingLocation";
 
-export type InitialScrollLoader = (ref: HTMLElement | null) => void;
+export type InitialScrollLoader = (scrollTarget: IScrollTarget, ref: HTMLElement | null) => void;
 
 interface IUseLocationChangeStore {
     readonly initialScrollLoader: InitialScrollLoader;
