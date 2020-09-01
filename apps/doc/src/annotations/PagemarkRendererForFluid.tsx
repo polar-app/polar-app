@@ -212,8 +212,8 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const left = 0;
         const width = body.offsetWidth;
 
-        // FIXME: these returning 'undefined' I think is wrong because it actually
-        // means they weren't found.
+        // TODO: these returning 'undefined' I think is wrong because it
+        // actually means they weren't found.
         const top = computeTopFromRange(pagemark) || 0;
         const height = computeHeightFromRange(pagemark, top) || body.offsetHeight;
 

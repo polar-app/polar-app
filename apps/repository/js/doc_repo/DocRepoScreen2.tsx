@@ -36,7 +36,7 @@ const Router = () => (
     <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
         <Route path='#folders'>
-            {/*FIXME this is used for mobile and is broken under MUI now*/}
+            {/*TODO this is used for mobile and is broken under MUI now*/}
             <LeftSidebar onClose={onClose}>
                 <main.Folders/>
             </LeftSidebar>

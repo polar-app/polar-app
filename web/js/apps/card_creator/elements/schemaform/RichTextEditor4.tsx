@@ -41,11 +41,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
     }
 
-    // FIXME: there is an errorSchema here too which I might want to look at.
     private onChange(newValue: string) {
-
-        // FIXME: summernote has isEmpty and some other methods I need to use
-        // here.
 
         // console.log('onChange: newValue: ', newValue);
 
@@ -90,7 +86,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
         for (const image of images) {
 
-            // FIXME: this is actually a problem because we CAN NOT store data
+            // TODO: this is actually a problem because we CAN NOT store data
             // URLs without some sort of redirect ...
 
             /* Stores as bas64enc string in the text.
@@ -140,9 +136,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                     //     ['image', []]
                     // ]
 
-                    // FIXME: somehow images paste has broken now...
-
-                    // FIXME: add blockquote, code, and pre, and cite
+                    // TODO: add blockquote, code, and pre, and cite
 
                     // missing the highlight color pulldown...
 

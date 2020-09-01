@@ -117,9 +117,9 @@ export class PersistenceLayerMutator {
 
         if (renameTag) {
 
-            // FIXME we could generify removeTagsFromDocMEtas
-            // FIXME: await this.removeTagsFromDocMetas(renameTag, progressCallback);
-            // FIXME: deleteFromRepoDocManager();
+            // TODO we could generify removeTagsFromDocMEtas
+            // TODO: await this.removeTagsFromDocMetas(renameTag, progressCallback);
+            // TODO: deleteFromRepoDocManager();
 
         } else {
             console.warn("Tag does not exist: " + renameTagID);

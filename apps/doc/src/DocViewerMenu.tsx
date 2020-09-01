@@ -371,9 +371,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     }, []);
 
-    // FIXME: this one also needs to have an 'end' point but needs to start
-    // from a page so we would need some type of custom range for this.
-
     const onCreatePagemarkFromPage = React.useCallback(() => {
 
         function onDone(fromPage: number) {

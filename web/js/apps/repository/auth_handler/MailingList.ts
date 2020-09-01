@@ -17,7 +17,7 @@ export class MailingList {
      */
     public static async subscribeWhenNecessary() {
 
-        // FIXME: add this back in for 2.0?
+        // TODO: add this back in for 2.0?
         // const authHandler = AuthHandlers.get();
         //
         // const optionalUserInfo = await authHandler.userInfo();

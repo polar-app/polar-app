@@ -92,7 +92,7 @@ export class AppInitializer {
 
         new ProgressService().start();
 
-        // FIXME: check if we need authentication but do so in the background.
+        // TODO: check if we need authentication but do so in the background.
 
         async function handleAuth() {
 
@@ -105,7 +105,7 @@ export class AppInitializer {
                 // TODO: removed for group refactor.
                 // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
 
-                // FIXME: do we want to put these back in for 2.0?
+                // TODO: do we want to put these back in for 2.0?
                 // subscribe but do it in the background as this isn't a high priority UI task.
                 // MailingList.subscribeWhenNecessary()
                 //            .catch(err => log.error(err));

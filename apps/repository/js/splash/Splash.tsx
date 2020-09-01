@@ -91,7 +91,7 @@ export class Splash extends React.Component<IProps, IState> {
         //
         // );
 
-        // FIXME disabled until we figure out the best strategy for onboarding
+        // TODO disabled until we figure out the best strategy for onboarding
         return null;
 
     }

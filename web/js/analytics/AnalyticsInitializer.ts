@@ -13,7 +13,7 @@ export class AnalyticsInitializer {
 
     public static doInit() {
 
-        // FIXME: at least SOME if these operations are taking too long...
+        // TODO: at least SOME if these operations are taking too long...
 
         this.init()
             .catch(err => log.error("Could not init analytics: ", err));
@@ -83,7 +83,7 @@ export class AnalyticsInitializer {
 
         };
 
-        // FIXME: add this back in...
+        // TODO: add this back in...
         // const doPlan = async () => {
         //
         //     const account = await Accounts.get();
@@ -101,7 +101,7 @@ export class AnalyticsInitializer {
             Analytics.identify(user.uid);
 
             doUserCreated(user);
-            // FIXME: add this back in.
+            // TODO: add this back in.
             // await doPlan();
 
         }

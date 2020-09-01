@@ -149,7 +149,7 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
         console.log("Redirecting to authenticate: " + newLocation);
 
-        // TODO/FIXME useHistory here to push so that the app doesn't have to
+        // TODO useHistory here to push so that the app doesn't have to
         // reload but the problem is that we need to use hooks for this...
 
         window.location.href = newLocation;

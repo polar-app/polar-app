@@ -43,7 +43,7 @@ export class Repository {
 
             onNeedsAuthentication: async (app: App) => {
 
-                // FIXME: refactor this so that the rest of the app continues to load and
+                // TODO: refactor this so that the rest of the app continues to load and
                 // this would allow us to run from cache.
 
                 // await this.doLoadExampleDocs(app);
@@ -88,7 +88,7 @@ export class Repository {
 
             console.log("Handling auth...");
 
-            // FIXME: first , we're reading authHandler here twice... once in
+            // TODO: first , we're reading authHandler here twice... once in
             // AppInitializer and then again here.  Also, it doesn't make sense
             // to start this code UNTIL we're actually using a client that
             // needs to read this data so in a new tab this just slows us down.

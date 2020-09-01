@@ -274,7 +274,7 @@ export const DocViewer = React.memo(() => {
                 return;
             }
 
-            // FIXME useSnapshotSubscriber for this so that we don't have to worry
+            // TODO useSnapshotSubscriber for this so that we don't have to worry
             // about component unmount.
 
             const persistenceLayer
@@ -283,8 +283,8 @@ export const DocViewer = React.memo(() => {
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {
-                    // TODO/FIXME: we need a better way to flag that the
-                    // document was deleted vs not initialized.
+                    // TODO: we need a better way to flag that the document was
+                    // deleted vs not initialized.
                     setDocMeta(snapshot.data!, snapshot.hasPendingWrites, 'snapshot');
                 }),
                 onError: (err) => {

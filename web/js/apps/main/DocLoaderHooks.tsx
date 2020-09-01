@@ -14,7 +14,7 @@ function useDocLoaderElectron2() {
 
     // const {persistenceLayerProvider} = usePersistenceLayerContext();
 
-    // FIXME: this is the problem.  For some reason the callbacks are different
+    // TODO: this is the problem.  For some reason the callbacks are different
     // each time
     const {addTab} = useBrowserTabsCallbacks();
 

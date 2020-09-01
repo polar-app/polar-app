@@ -13,7 +13,7 @@ interface IState {
     readonly anchorEl: HTMLElement | null;
 }
 
-// TODO: migrate this to a cached functional component...
+// FIXME: migrate this to a cached functional component...
 export class MUIDocDropdownButton extends React.Component<IProps, IState> {
 
     constructor(props: Readonly<IProps>) {
@@ -58,9 +58,8 @@ export class MUIDocDropdownButton extends React.Component<IProps, IState> {
                     <MoreVertIcon/>
                 </IconButton>
                 {anchorEl &&
-                <MUIDocDropdownMenu anchorEl={anchorEl}
-                                    onClose={handleClose}/>
-                }
+                    <MUIDocDropdownMenu anchorEl={anchorEl}
+                                        onClose={handleClose}/>}
             </div>
         );
 

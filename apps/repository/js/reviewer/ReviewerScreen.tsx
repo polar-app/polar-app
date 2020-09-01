@@ -57,7 +57,7 @@ export const ReviewerScreen = React.memo((props: IProps) => {
         return await Reviewers2.create({firestore: firestoreContext!, ...props});
     }
 
-    // FIXME: suspend isn't being run here... we might need to migrate to a
+    // TODO: suspend isn't being run here... we might need to migrate to a
     // store rather than prop drilling which is a pain.
 
     return (

@@ -32,7 +32,6 @@ export function useRefTracker(): RefListenerTuple {
     const RefTracker = (props: RefTrackerProps) => {
 
         if (ref) {
-            console.log("FIXME1");
             return props.children;
         }
 
@@ -44,23 +43,6 @@ export function useRefTracker(): RefListenerTuple {
 
 }
 
-
-// interface RefProps {
-//     readonly ref: (ref: HTMLElement | null) => void;
-// }
-//
-// interface RefTrackerProps {
-//     readonly children: (props: RefProps) => JSX.Element;
-// }
-//
-// const RefTracker = React.memo((props: RefTrackerProps) => {
-//
-//     const Child = props.children;
-//
-//     return (
-//         <Child ref={() => console.log('FIXME got ref')}/>
-//     );
-// });
 
 interface PrimaryProps {
     readonly children: React.ReactNode;

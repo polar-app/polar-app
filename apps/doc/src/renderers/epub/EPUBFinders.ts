@@ -1,5 +1,6 @@
 import {DOMTextSearch} from "polar-dom-text-search/src/DOMTextSearch";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
+import {useDocViewerElementsContext} from "../DocViewerElementsContext";
 
 export namespace EPUBFinders {
 
@@ -49,10 +50,10 @@ export interface EPUBRoot {
 
 export function useEPUBRoot(): EPUBRoot {
 
-    // FIXME: this is not portable to Polar 2.0 as we have no way to know
-    // that we're working with the right iframe.
+    const docViewerElementsContext = useDocViewerElementsContext();
+    const docViewerElement = docViewerElementsContext.getDocViewerElement();
 
-    const iframe = document.querySelector('iframe');
+    const iframe = docViewerElement.querySelector('iframe');
 
     if (! iframe) {
         throw new Error("No iframe - epub probably not mounted yet");
