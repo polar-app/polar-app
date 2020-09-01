@@ -526,11 +526,6 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                          icon={<BookmarksIcon/>}
                          onClick={onPagemarkForEntireDocument}/>
 
-            {isPDF &&
-                <MUIMenuItem text="Create Area Highlight"
-                             icon={<PhotoSizeSelectLargeIcon/>}
-                             onClick={onCreateAreaHighlight}/>}
-
             {(props.origin?.pagemarks?.length || 0) > 0 &&
                 <MUIMenuItem text="Set Pagemark Mode"
                              icon={<BookmarkBorderIcon/>}
@@ -540,6 +535,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                 <MUIMenuItem text="Delete Pagemark"
                              icon={<DeleteForeverIcon/>}
                              onClick={() => onDeletePagemark(origin.pagemarks)}/>}
+
+            {isPDF &&
+                <MUIMenuItem text="Create Area Highlight"
+                             icon={<PhotoSizeSelectLargeIcon/>}
+                             onClick={onCreateAreaHighlight}/>}
 
             {isPDF && (props.origin?.areaHighlights?.length || 0) > 0 &&
                 <MUIMenuItem text="Delete Area Highlight"
