@@ -4,7 +4,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper, {PopperPlacementType} from '@material-ui/core/Popper';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme, useTheme} from '@material-ui/core/styles';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import {MUIDropdownCaret} from "../MUIDropdownCaret";
@@ -49,6 +49,7 @@ interface IProps {
 
 export const MUIPopper = deepMemo((props: IProps) => {
 
+    const theme = useTheme();
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -83,6 +84,7 @@ export const MUIPopper = deepMemo((props: IProps) => {
         size: props.size,
         variant: props.variant || 'contained',
         ref: anchorRef,
+        style: {color: theme.palette.text.secondary}
     };
 
     const placement = props.placement || 'bottom';

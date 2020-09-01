@@ -6,12 +6,13 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Tooltip from '@material-ui/core/Tooltip';
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {
     readonly annotation: IDocAnnotation;
 }
 
-export const AnnotationInlineControlBar = React.memo((props : IProps) => {
+export const AnnotationInlineControlBar = deepMemo((props : IProps) => {
 
     const {annotation} = props;
 
