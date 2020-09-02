@@ -269,6 +269,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     async function withBatch<T>(promises: ReadonlyArray<Promise<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
+        mutator.refresh();
+
         await BatchMutators.exec(promises, {
             ...opts,
             refresh: mutator.refresh,
@@ -514,8 +516,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     function doRename(repoDocInfo: RepoDocInfo, title: string): void {
 
         async function doHandle() {
-            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
             mutator.refresh();
+            await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
         }
 
         doHandle()
