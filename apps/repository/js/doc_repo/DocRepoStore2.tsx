@@ -34,7 +34,7 @@ import {
 import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
-import {BatchMutators} from "../BatchMutators";
+import {BatchMutators, PromiseFactory} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
@@ -266,12 +266,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    async function withBatch<T>(promises: ReadonlyArray<Promise<T>>,
+    async function withBatch<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
         mutator.refresh();
 
-        await BatchMutators.exec(promises, {
+        await BatchMutators.exec(promiseFactories, {
             ...opts,
             refresh: mutator.refresh,
             dialogs
@@ -395,29 +395,33 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                       tags: ReadonlyArray<Tag>,
                       strategy: ComputeNewTagsStrategy = 'set'): void {
 
-        function toPromise(repoDocInfo: RepoDocInfo) {
-            const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
-            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
+        function toPromiseFactory(repoDocInfo: RepoDocInfo) {
+            return () => {
+                const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
+                return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
+            }
         }
 
-        withBatch(repoDocInfos.map(toPromise))
+        withBatch(repoDocInfos.map(toPromiseFactory))
             .catch(err => log.error(err));
 
     }
 
     function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
 
-        const toPromise = (repoDocInfo: RepoDocInfo) => {
-            repoDocInfo.archived = archived;
-            repoDocInfo.docInfo.archived = archived;
-            return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
+        const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
+            return () => {
+                repoDocInfo.archived = archived;
+                repoDocInfo.docInfo.archived = archived;
+                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
+            }
         }
 
         const success = "Documents successfully archived";
         const error = "Failed to some documents: ";
 
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromise), {success, error});
+            await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
         }
 
         doHandle()
@@ -427,17 +431,19 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
 
-        const toPromise = (repoDocInfo: RepoDocInfo) => {
-            repoDocInfo.flagged = flagged;
-            repoDocInfo.docInfo.flagged = flagged;
-            return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
+        const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
+            return () => {
+                repoDocInfo.flagged = flagged;
+                repoDocInfo.docInfo.flagged = flagged;
+                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo);
+            }
         }
 
         const success = "Documents successfully flagged";
         const error = "Failed to flag some documents: ";
 
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromise), {success, error});
+            await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
         }
 
         doHandle()
@@ -466,15 +472,17 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         function doDeleteBatch() {
 
-            const toPromise = (repoDocInfo: RepoDocInfo) => {
-                return repoDocMetaManager.deleteDocInfo(repoDocInfo);
+            const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
+                return () => {
+                    return repoDocMetaManager.deleteDocInfo(repoDocInfo);
+                }
             }
 
             const success = `${repoDocInfos.length} documents successfully deleted.`;
             const error = `Failed to delete document: `;
 
             async function doHandle() {
-                await withBatch(repoDocInfos.map(toPromise), {success, error});
+                await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
             }
 
             doHandle()

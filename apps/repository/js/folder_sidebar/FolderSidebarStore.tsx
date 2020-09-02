@@ -20,7 +20,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {BatchMutators} from "../BatchMutators";
+import {BatchMutators, PromiseFactory} from "../BatchMutators";
 import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
@@ -396,10 +396,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         return store.selected.map(current => tagsMap[current]);
     }
 
-    async function withBatch<T>(promises: ReadonlyArray<Promise<T>>,
+    async function withBatch<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
-        await BatchMutators.exec(promises, {
+        await BatchMutators.exec(promiseFactories, {
             ...opts,
             refresh: NULL_FUNCTION,
             dialogs
@@ -409,10 +409,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function doDelete(selected: ReadonlyArray<Tag>) {
 
-        const promises = selected.map(tag => tag.id)
-                                 .map(tag => persistenceLayerMutator.deleteTag(tag));
+        const promiseFactories = selected.map(tag => tag.id)
+                                         .map(tag => () => persistenceLayerMutator.deleteTag(tag));
 
-        withBatch(promises, {error: "Unable to delete tag: "})
+        withBatch(promiseFactories, {error: "Unable to delete tag: "})
             .catch(err => log.error(err));
 
     }

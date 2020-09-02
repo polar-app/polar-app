@@ -151,6 +151,8 @@ export class RepoDocMetaManager {
 
         if (await persistenceLayer.contains(docInfo.fingerprint)) {
 
+            // TODO: this is probably not necessary in 2.0 and is probably a
+            // waste of time... 
             const docMeta = await persistenceLayer.getDocMeta(docInfo.fingerprint);
 
             if (docMeta === undefined) {
