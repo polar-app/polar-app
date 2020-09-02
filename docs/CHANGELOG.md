@@ -1,5 +1,9 @@
 # 2.0 beta 19
 
+- Fix: we can now remove documents from the archive again.
+
+- Fix: doc repo archives are much faster as we refresh the in-memory store first
+
 - Fix: PDF dark mode note enabled for light mode
 
 - Feature: Can now tag from within the doc viewer
