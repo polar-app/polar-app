@@ -1,8 +1,12 @@
 # 2.0 beta 19
 
-- Fixed EPUB jump in the doc viewer when opening up new documents
+- Fix: PDF dark mode note enabled for light mode
 
-- Fixed ctrl+f on Windows
+- Feature: Can now tag from within the doc viewer
+
+- Fix: Fixed EPUB jump in the doc viewer when opening up new documents
+
+- Fix: Fixed ctrl+f on Windows
 
 # 2.0 beta 18
 
