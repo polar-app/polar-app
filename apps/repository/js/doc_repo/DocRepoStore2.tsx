@@ -39,13 +39,10 @@ import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
-import {
-    RelatedOptionsCalculator,
-    ValueAutocompleteOption
-} from "../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 
 interface IDocRepoStore {
 
@@ -417,8 +414,9 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             }
         }
 
-        const success = "Documents successfully archived";
-        const error = "Failed to some documents: ";
+        const success = archived ? "Document(s) successfully archived" : "Document(s) successfully removed from archive";
+
+        const error = "Failed to archive some documents: ";
 
         async function doHandle() {
             await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
@@ -549,13 +547,41 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         //     return;
         // }
 
-        dialogs.confirm({
-            title: "Are you sure you want to archive these document(s)?",
-            subtitle: "They won't be deleted but will be hidden by default.",
-            onCancel: NULL_FUNCTION,
-            type: 'warning',
-            onAccept: () => doArchived(repoDocInfos, true),
-        });
+        function computeNewArchived() {
+
+            if (repoDocInfos.length === 1) {
+                return ! repoDocInfos[0].archived;
+            }
+
+            const nrArchived = arrayStream(repoDocInfos)
+                .filter(current => current.archived)
+                .collect()
+                .length;
+
+            if (nrArchived === repoDocInfos.length) {
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+
+        const newArchived = computeNewArchived();
+
+        if (newArchived) {
+
+            // only trigger the dialog when we're archiving , not removing from the archive.
+
+            dialogs.confirm({
+                title: "Are you sure you want to archive these document(s)?",
+                subtitle: "They won't be deleted but will be hidden by default.",
+                onCancel: NULL_FUNCTION,
+                type: 'warning',
+                onAccept: () => doArchived(repoDocInfos, newArchived),
+            });
+        } else {
+            doArchived(repoDocInfos, newArchived);
+        }
 
     }
 
