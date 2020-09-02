@@ -142,6 +142,7 @@ export namespace ControlledAnnotationBars {
 
         function computeTargetsForEPUB(): ReadonlyArray<HTMLElement> {
 
+            // FIXME: this is not portable to Polar 2.0 tabbed browsing.
             return Array.from(document.querySelectorAll("iframe"))
                         .map(iframe => iframe.contentDocument)
                         .filter(contentDocument => isPresent(contentDocument))
