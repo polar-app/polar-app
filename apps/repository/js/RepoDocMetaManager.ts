@@ -59,8 +59,10 @@ export class RepoDocMetaManager {
 
             this.repoDocInfoIndex.put(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
 
-            this.relatedTagsManager.update(fingerprint, 'set', ...Object.values(repoDocMeta.repoDocInfo.tags || {})
-                                                                 .map(current => current.label));
+            // TODO: right now there is only ONE RelatedTagsManager and it only
+            // works with documents not annotations (since tags for annotations
+            // was added later).
+            this.relatedTagsManager.update(fingerprint, 'set', Object.values(repoDocMeta.repoDocInfo.tags || {}));
 
             const updateAnnotations = () => {
 

@@ -38,7 +38,18 @@ import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 import {Numbers} from 'polar-shared/src/util/Numbers';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import { Hashcodes } from 'polar-shared/src/util/Hashcodes';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
+import {TaggedCallbacks} from "../../repository/js/annotation_repo/TaggedCallbacks";
+import {Tag, Tags} from "polar-shared/src/tags/Tags";
+import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
+import {LocalRelatedTagsStore} from "../../../web/js/tags/related/LocalRelatedTagsStore";
+import {
+    IRelatedTagsData,
+    RelatedTagsManager
+} from "../../../web/js/tags/related/RelatedTagsManager";
+import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
+import ITagsHolder = TaggedCallbacks.ITagsHolder;
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -262,6 +273,7 @@ export interface IDocViewerCallbacks {
 
     readonly setDocFlagged: (flagged: boolean) => void;
     readonly setDocArchived: (archived: boolean) => void;
+    readonly onDocTagged: () => void;
 
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
@@ -305,6 +317,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const docMetaContext = useDocMetaContext();
     const persistenceLayerContext = usePersistenceLayerContext();
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
+    const dialogs = useDialogManager();
 
     const docMetaProvider = React.useMemo<IDocMetaProvider>(() => {
 
@@ -768,6 +781,85 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         writeDocMetaMutation(docMeta => docMeta.docInfo.archived = archived);
     }
 
+    interface ITaggedDocMetaHolder extends ITagsHolder {
+        readonly docMeta: IDocMeta;
+    }
+
+    function doDocTagged(targets: ReadonlyArray<ITaggedDocMetaHolder>,
+                         tags: ReadonlyArray<Tag>,
+                         strategy: ComputeNewTagsStrategy) {
+
+        if (targets.length === 0) {
+            log.warn("doDocTagged: No targets");
+        }
+
+        for (const target of targets) {
+            const {docMeta} = target;
+            const newTags = Tags.computeNewTags(docMeta.docInfo.tags, tags, strategy);
+            writeDocMetaMutation(docMeta => docMeta.docInfo.tags = Tags.toMap(newTags));
+        }
+
+    }
+
+    function onDocTagged() {
+
+        const {docMeta} = storeProvider();
+
+        if (! docMeta) {
+            return;
+        }
+
+        function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
+
+            if (! docMeta) {
+                return [];
+            }
+
+            return [
+                {
+                    docMeta,
+                    tags: docMeta.docInfo.tags
+                }
+            ];
+
+        }
+
+        function createRelatedTagsManager() {
+
+            function createNullRelatedTagsData(): IRelatedTagsData {
+                console.warn("Using null related tags data");
+                return {
+                    docTagsIndex: {},
+                    tagDocsIndex: {},
+                    tagsIndex: {}
+                };
+            }
+
+            const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
+
+            return new RelatedTagsManager(data);
+
+        }
+
+        const relatedTagsManager = createRelatedTagsManager();
+        const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+
+        const tagsProvider = () => relatedTagsManager.tags();
+
+        const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
+            targets,
+            tagsProvider,
+            dialogs,
+            doTagged: doDocTagged,
+            relatedOptionsCalculator
+        };
+
+        const callback = TaggedCallbacks.create(opts);
+
+        callback();
+
+    }
+
     return {
         updateDocMeta,
         setDocMeta,
@@ -786,7 +878,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         setPage,
         setFluidPagemarkFactory,
         setDocFlagged,
-        setDocArchived
+        setDocArchived,
+        onDocTagged
     };
 
 }

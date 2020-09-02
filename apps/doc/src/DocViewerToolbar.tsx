@@ -25,11 +25,11 @@ import Divider from "@material-ui/core/Divider";
 import {DeviceRouters} from "../../../web/js/ui/DeviceRouter";
 import {useDocFindStore} from "./DocFindStore";
 import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
-import {useDocRepoCallbacks} from "../../repository/js/doc_repo/DocRepoStore2";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import {MUIDocFlagButton} from "../../repository/js/doc_repo/buttons/MUIDocFlagButton";
 import {MUIDocArchiveButton} from "../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
 import {DocViewerToolbarOverflowButton} from "./DocViewerToolbarOverflowButton";
+import {MUIDocTagButton} from "../../repository/js/doc_repo/buttons/MUIDocTagButton";
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 interface PageNumberInputProps {
     readonly docDescriptor: IDocDescriptor | undefined;
@@ -255,14 +255,12 @@ const PageNextButton = () => {
 
 export const DocViewerToolbar = React.memo(() => {
 
-    const {onTagged} = useDocRepoCallbacks();
-
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
 
     const {finder} = useDocFindStore(['finder']);
 
-    const {setScale, setDocFlagged, setDocArchived} = useDocViewerCallbacks();
+    const {setScale, setDocFlagged, setDocArchived, onDocTagged} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
 
@@ -379,8 +377,8 @@ export const DocViewerToolbar = React.memo(() => {
 
                         <MUIButtonBar>
 
-                            {/*<MUIDocTagButton size="medium"*/}
-                            {/*                 onClick={onTagged}/>*/}
+                            <MUIDocTagButton size="medium"
+                                             onClick={onDocTagged}/>
 
                             <MUIDocArchiveButton size="medium"
                                                  onClick={() => setDocArchived(! docMeta?.docInfo?.archived)}

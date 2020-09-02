@@ -22,7 +22,6 @@ export namespace TaggedCallbacks {
          */
         readonly targets: () => ReadonlyArray<T>;
 
-
         readonly tagsProvider: () => ReadonlyArray<Tag>;
 
         readonly dialogs: DialogManager;
