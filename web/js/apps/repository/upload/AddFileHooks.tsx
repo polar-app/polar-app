@@ -37,7 +37,16 @@ export namespace AddFileHooks {
                 try {
 
                     const progressListener: WriteFileProgressListener = (progress) => {
-                        updateProgress({value: progress.progress});
+
+                        switch (progress.type) {
+                            case 'determinate':
+                                updateProgress({value: progress.value});
+                                break;
+                            case 'indeterminate':
+                                updateProgress({value: 'indeterminate'});
+                                break;
+                        }
+
                     };
 
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
