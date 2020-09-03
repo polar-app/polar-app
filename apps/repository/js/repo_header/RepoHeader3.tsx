@@ -41,7 +41,8 @@ const Handheld = () => {
                      style={{
                          flexGrow: 1,
                          display: 'flex',
-                         alignItems: 'center'
+                         alignItems: 'center',
+                         flexWrap: 'nowrap',
                      }}>
 
                     <RepoHeader.LeftMenuTarget/>
@@ -103,7 +104,8 @@ const Desktop = () => {
 
             <div className=""
                  style={{
-                     display: 'flex'
+                     display: 'flex',
+                     flexWrap: 'nowrap',
                  }}>
 
                 <div>
@@ -113,7 +115,8 @@ const Desktop = () => {
                 <div style={{
                          flexGrow: 1,
                          display: 'flex',
-                         justifyContent: 'flex-end'
+                         justifyContent: 'flex-end',
+                         flexWrap: 'nowrap',
                      }}>
 
                     <MUIButtonBar>
@@ -127,38 +130,6 @@ const Desktop = () => {
                         <MoreActionsDropdown/>
 
                     </MUIButtonBar>
-
-                    {/*<Grid*/}
-                    {/*    container*/}
-                    {/*    spacing={1}*/}
-                    {/*    direction="row"*/}
-                    {/*    justify="flex-end"*/}
-                    {/*    alignItems="center">*/}
-
-                    {/*    <Grid item>*/}
-                    {/*    </Grid>*/}
-
-                    {/*    <Grid item>*/}
-                    {/*    </Grid>*/}
-
-                    {/*    /!*<Grid item>*!/*/}
-                    {/*    /!*    <HelpDropdown/>*!/*/}
-                    {/*    /!*</Grid>*!/*/}
-
-                    {/*    <Grid item>*/}
-                    {/*    </Grid>*/}
-
-                    {/*    <Grid item>*/}
-                    {/*    </Grid>*/}
-
-                    {/*</Grid>*/}
-
-
-                    {/*<ChromeExtensionInstallButton/>*/}
-
-                    {/*<Notifications persistenceLayerProvider={this.props.persistenceLayerProvider}/>*/}
-
-                    {/*<LinkDropdown hidden={! isDesktop}/>*/}
 
                 </div>
 

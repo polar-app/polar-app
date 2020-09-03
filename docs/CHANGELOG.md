@@ -1,5 +1,7 @@
 # 2.0 beta 19
 
+- Fix: wrapping issues with Safari
+
 - Fix: we can now remove documents from the archive again.
 
 - Fix: doc repo archives are much faster as we refresh the in-memory store first
