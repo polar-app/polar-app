@@ -86,18 +86,18 @@ export class RelatedTagsManager {
 
         for (const tagLabel of tagLabels) {
 
-            const tagMeta = Dictionaries.computeIfAbsent(this.tagDocsIndex, tagLabel, (): TagDocs => {
+            const tagDocs = Dictionaries.computeIfAbsent(this.tagDocsIndex, tagLabel, (): TagDocs => {
                 return {tag: tagLabel, docs: {}};
             });
 
             switch (mutationType) {
 
                 case 'set':
-                    tagMeta.docs[docID] = true;
+                    tagDocs.docs[docID] = true;
                     break;
 
                 case 'delete':
-                    delete tagMeta.docs[docID];
+                    delete tagDocs.docs[docID];
                     break;
 
             }
