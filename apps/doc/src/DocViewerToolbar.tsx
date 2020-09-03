@@ -303,7 +303,7 @@ export const DocViewerToolbar = React.memo(() => {
                         {finder && (
                             <>
                                 <DocFindButton className="mr-1"/>
-                                <Divider orientation="vertical"/>
+                                <Divider orientation="vertical" flexItem={true}/>
                             </>
                         )}
 
@@ -388,7 +388,7 @@ export const DocViewerToolbar = React.memo(() => {
                                               onClick={() => setDocFlagged(! docMeta?.docInfo?.flagged)}
                                               active={docMeta?.docInfo?.flagged}/>
 
-                            <Divider orientation="vertical"/>
+                            <Divider orientation="vertical" flexItem={true}/>
 
                             <div className="ml-3 mr-2" style={{display: 'flex'}}>
                                 <DocumentWriteStatus/>
