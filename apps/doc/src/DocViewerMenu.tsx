@@ -510,12 +510,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
             <MUIMenuSubheader>Pagemarks</MUIMenuSubheader>
 
-            <MUIMenuItem text="Create Pagemark to Point"
+            <MUIMenuItem text="Create Pagemark to Current Location"
                          icon={<BookmarkIcon/>}
                          onClick={onCreatePagemarkToPoint}/>
 
             {origin.pageNum > 1 && (
-                <MUIMenuItem text="Create Pagemark from Page To Point"
+                <MUIMenuItem text="Create Pagemark from Page To to Current Location"
                              icon={<BookmarksIcon/>}
                              onClick={onCreatePagemarkFromPage}/>)}
 
