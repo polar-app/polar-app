@@ -11,6 +11,7 @@ import {AccountAuthButton} from "../../../../web/js/ui/cloud_auth/AccountAuthBut
 import {CloudConnectivityButton} from "../../../../web/js/apps/repository/connectivity/CloudConnectivityButton";
 import {MoreActionsDropdown} from "./MoreActionsDropdown";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
+import {ChromeExtensionInstallButton} from "../ChromeExtensionInstallButton";
 
 export namespace RepoHeader {
 
@@ -120,6 +121,8 @@ const Desktop = () => {
                      }}>
 
                     <MUIButtonBar>
+
+                        <ChromeExtensionInstallButton/>
 
                         <CloudConnectivityButton/>
 
