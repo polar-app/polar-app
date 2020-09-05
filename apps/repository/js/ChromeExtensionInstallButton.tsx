@@ -19,10 +19,12 @@ export function useWebExtensionInstalled() {
 
         async function doAsync() {
             const response = await WebExtensionPingClient.exec();
+            console.log("FIXME: response: ", response);
             setInstalled(isPresent(response));
         }
 
-        doAsync().catch(err => console.error(err));
+        doAsync()
+            .catch(err => console.error(err));
 
     });
 
