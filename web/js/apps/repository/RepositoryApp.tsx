@@ -137,20 +137,6 @@ export const RepositoryApp = (props: IProps) => {
         );
     });
 
-    const LogoutScreen = React.memo(() => {
-        return (
-            <AuthRequired>
-                <PersistenceLayerApp tagsType="annotations"
-                                     repoDocMetaManager={repoDocMetaManager}
-                                     repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}
-                                     render={(props) =>
-                                         <LogoutDialog/>
-                                     }/>
-            </AuthRequired>
-        );
-    });
-
     const RenderSettingsScreen = () => (
         <Cached>
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
@@ -305,10 +291,6 @@ export const RepositoryApp = (props: IProps) => {
 
                                             <Route exact path="/error">
                                                 <ErrorScreen/>
-                                            </Route>
-
-                                            <Route exact path='/logout'>
-                                                <LogoutScreen/>
                                             </Route>
 
                                             <Route>

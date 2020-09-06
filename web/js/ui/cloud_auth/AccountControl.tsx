@@ -8,9 +8,16 @@ import {accounts} from "polar-accounts/src/accounts";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
 import {AccountAvatar} from "./AccountAvatar";
 import {memoForwardRefDiv} from "../../react/ReactUtils";
+import {useLogoutCallback} from "../../accounts/AccountHooks";
+import {Callback} from "polar-shared/src/util/Functions";
+import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import Subscription = accounts.Subscription;
 
-const LogoutButton = (props: IProps) => {
+interface LogoutButtonProps {
+    readonly onLogout: Callback;
+}
+
+const LogoutButton = (props: LogoutButtonProps) => {
 
     return <Button id="cloud-sync-logout"
                    color="secondary"
@@ -73,11 +80,30 @@ interface IProps {
 
     readonly userInfo: IBasicUserInfo;
 
-    readonly onLogout: () => void;
+}
+
+function useLogoutAction(): Callback {
+
+    const dialogs = useDialogManager();
+
+    const logoutCallback = useLogoutCallback();
+
+    return () => {
+
+        dialogs.confirm({
+            type: 'danger',
+            title: "Are you sure you want to logout?",
+            subtitle: "Just wanted to double check. Are you sure you want to logout?",
+            onAccept: logoutCallback
+        });
+
+    }
 
 }
 
 export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
+
+    const logoutAction = useLogoutAction();
 
     return (
 
@@ -135,7 +161,7 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
                         </div>
 
                         <div>
-                            <LogoutButton {...props}/>
+                            <LogoutButton onLogout={logoutAction}/>
                         </div>
 
                     </div>
