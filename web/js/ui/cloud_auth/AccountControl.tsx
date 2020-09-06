@@ -12,6 +12,7 @@ import {useLogoutCallback} from "../../accounts/AccountHooks";
 import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import Subscription = accounts.Subscription;
+import {usePopperController} from "../../mui/menu/MUIPopper";
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -48,8 +49,11 @@ const LogoutButton = (props: LogoutButtonProps) => {
 
 const ViewPlansAndPricingButton = () => {
 
+    const popperController = usePopperController();
+
     const handler = () => {
         Analytics.event({category: 'premium', action: 'view-plans-and-pricing-button'});
+        popperController.dismiss();
     };
 
     return (
@@ -104,6 +108,12 @@ function useLogoutAction(): Callback {
 export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
 
     const logoutAction = useLogoutAction();
+    const popperController = usePopperController();
+
+    function handleLogout() {
+        popperController.dismiss();
+        logoutAction();
+    }
 
     return (
 
@@ -161,7 +171,7 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
                         </div>
 
                         <div>
-                            <LogoutButton onLogout={logoutAction}/>
+                            <LogoutButton onLogout={handleLogout}/>
                         </div>
 
                     </div>

@@ -1,3 +1,14 @@
+# 2.0 beta 20
+
+- the account control can now dismiss the popper
+
+- rewrote the way we handle EPUB highlights and search hit placement to be a lot
+  more reliable.
+
+- logout now works again properly
+
+- single delete button for comments
+
 # 2.0 beta 19
 
 - Fix: wrapping issues with Safari
