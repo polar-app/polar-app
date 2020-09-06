@@ -43,6 +43,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
+import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 
 interface IDocRepoStore {
 
@@ -263,6 +264,19 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
+    async function withBatchUsingAsyncTransactions<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
+                                                      opts: Partial<BatchMutatorOpts> = {}) {
+
+        mutator.refresh();
+
+        await BatchMutators.execUsingAsyncTransactions(transactions, {
+            ...opts,
+            refresh: mutator.refresh,
+            dialogs
+        });
+
+    }
+
     async function withBatch<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
@@ -392,14 +406,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                       tags: ReadonlyArray<Tag>,
                       strategy: ComputeNewTagsStrategy = 'set'): void {
 
-        function toPromiseFactory(repoDocInfo: RepoDocInfo) {
-            return () => {
-                const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
-                return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
-            }
+        function toAsyncTransaction(repoDocInfo: RepoDocInfo) {
+            const newTags = Tags.computeNewTags(repoDocInfo.tags, tags, strategy);
+            return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
         }
 
-        withBatch(repoDocInfos.map(toPromiseFactory))
+        withBatchUsingAsyncTransactions(repoDocInfos.map(toAsyncTransaction))
             .catch(err => log.error(err));
 
     }
@@ -410,16 +422,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return () => {
                 repoDocInfo.archived = archived;
                 repoDocInfo.docInfo.archived = archived;
-                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo)
+                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
             }
         }
 
-        const success = archived ? "Document(s) successfully archived" : "Document(s) successfully removed from archive";
-
-        const error = "Failed to archive some documents: ";
-
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
+            await withBatch(repoDocInfos.map(toPromiseFactory));
         }
 
         doHandle()
@@ -433,15 +441,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return () => {
                 repoDocInfo.flagged = flagged;
                 repoDocInfo.docInfo.flagged = flagged;
-                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo);
+                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
             }
         }
 
-        const success = "Documents successfully flagged";
-        const error = "Failed to flag some documents: ";
-
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
+            await withBatch(repoDocInfos.map(toPromiseFactory));
         }
 
         doHandle()
@@ -476,7 +481,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
                 }
             }
 
-            const success = `${repoDocInfos.length} documents successfully deleted.`;
+            const success = `${repoDocInfos.length} documents deleted.`;
             const error = `Failed to delete document: `;
 
             async function doHandle() {
@@ -654,6 +659,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function onDropped(tag: Tag) {
 
+        // FIXME: this is what's broken...
         const selected = selectedProvider();
         doDropped(selected, tag);
 

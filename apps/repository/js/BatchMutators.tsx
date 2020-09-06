@@ -3,6 +3,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {DialogManager} from "../../../web/js/mui/dialogs/MUIDialogController";
+import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 
 export type PromiseFactory<T> = () => Promise<T>;
 
@@ -24,6 +25,29 @@ export namespace BatchMutators {
 
     export async function exec<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>, opts: BatchMutatorOpts) {
 
+        function toAsyncTransaction(promiseFactory: PromiseFactory<T>): IAsyncTransaction<T> {
+
+            let promise: Promise<T> | undefined;
+
+            function prepare() {
+                promise = promiseFactory();
+            }
+
+            function commit(): Promise<T> {
+                return promise!;
+            }
+
+
+            return {prepare, commit};
+
+        }
+
+        await execUsingAsyncTransactions(promiseFactories.map(toAsyncTransaction), opts);
+
+    }
+
+    export async function execUsingAsyncTransactions<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>, opts: BatchMutatorOpts) {
+
         const refresh = opts.refresh || NULL_FUNCTION;
         const {dialogs} = opts;
 
@@ -36,7 +60,7 @@ export namespace BatchMutators {
 
         function createProgressReporter(): ProgressReporter {
 
-            if (promiseFactories.length <= 1) {
+            if (transactions.length <= 1) {
                 return {
                     incr: NULL_FUNCTION,
                     terminate: NULL_FUNCTION
@@ -44,7 +68,7 @@ export namespace BatchMutators {
             }
 
             const progressTracker = new ProgressTracker({
-                total: promiseFactories.length,
+                total: transactions.length,
                 id
             });
 
@@ -65,14 +89,14 @@ export namespace BatchMutators {
 
         try {
 
-            for (const promiseFactory of promiseFactories) {
+            for (const transaction of transactions) {
 
-                const promise = promiseFactory();
+                transaction.prepare();
 
                 refresh();
 
                 // TODO update progress of this operation using a snackbar
-                await promise;
+                await transaction.commit();
 
                 // now refresh the UI
                 refresh();
