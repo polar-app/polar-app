@@ -5,10 +5,10 @@ import {DocAnnotationMoment} from "../../DocAnnotationMoment";
 import {NullCollapse} from "../../../ui/null_collapse/NullCollapse";
 import Divider from '@material-ui/core/Divider';
 import isEqual from 'react-fast-compare';
-import {CommentDropdown2} from "../CommentDropdown2";
 import {AnnotationTagButton2} from "../../AnnotationTagButton2";
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {useAnnotationMutationsContext} from "../../AnnotationMutationsContext";
+import {MUIDocDeleteButton} from "../../../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 
 interface IProps {
     readonly comment: IDocAnnotationRef;
@@ -53,10 +53,13 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
 
                     <AnnotationTagButton2 annotation={props.comment}/>
 
-                    <CommentDropdown2 id={'comment-dropdown-' + comment.id}
-                                      disabled={comment.immutable}
-                                      comment={comment}
-                                      onDelete={handleDelete}/>
+                    <MUIDocDeleteButton size="small"
+                                        onClick={handleDelete}/>
+
+                    {/*<CommentDropdown2 id={'comment-dropdown-' + comment.id}*/}
+                    {/*                  disabled={comment.immutable}*/}
+                    {/*                  comment={comment}*/}
+                    {/*                  onDelete={handleDelete}/>*/}
 
                 </MUIButtonBar>
 
