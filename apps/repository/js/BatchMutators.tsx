@@ -23,30 +23,8 @@ export namespace BatchMutators {
 
     }
 
-    export async function exec<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>, opts: BatchMutatorOpts) {
 
-        function toAsyncTransaction(promiseFactory: PromiseFactory<T>): IAsyncTransaction<T> {
-
-            let promise: Promise<T> | undefined;
-
-            function prepare() {
-                promise = promiseFactory();
-            }
-
-            function commit(): Promise<T> {
-                return promise!;
-            }
-
-
-            return {prepare, commit};
-
-        }
-
-        await execUsingAsyncTransactions(promiseFactories.map(toAsyncTransaction), opts);
-
-    }
-
-    export async function execUsingAsyncTransactions<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>, opts: BatchMutatorOpts) {
+    export async function exec<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>, opts: BatchMutatorOpts) {
 
         const refresh = opts.refresh || NULL_FUNCTION;
         const {dialogs} = opts;

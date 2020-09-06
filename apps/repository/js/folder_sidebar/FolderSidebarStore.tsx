@@ -27,6 +27,7 @@ import SelfSelected = FolderSelectionEvents.SelfSelected;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
+import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -396,10 +397,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         return store.selected.map(current => tagsMap[current]);
     }
 
-    async function withBatch<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>,
+    async function withBatch<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
-        await BatchMutators.exec(promiseFactories, {
+        await BatchMutators.exec(transactions, {
             ...opts,
             refresh: NULL_FUNCTION,
             dialogs
@@ -409,10 +410,23 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function doDelete(selected: ReadonlyArray<Tag>) {
 
-        const promiseFactories = selected.map(tag => tag.id)
-                                         .map(tag => () => persistenceLayerMutator.deleteTag(tag));
+        function toAsyncTransaction(tag: Tag) {
 
-        withBatch(promiseFactories, {error: "Unable to delete tag: "})
+            function prepare() {
+                // TODO write a tombstone that this is deleted
+            }
+
+            function commit() {
+                return persistenceLayerMutator.deleteTag(tag.id)
+            }
+
+            return {prepare, commit};
+
+        }
+
+        const transactions = selected.map(toAsyncTransaction);
+
+        withBatch(transactions, {error: "Unable to delete tag: "})
             .catch(err => log.error(err));
 
     }

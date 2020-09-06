@@ -264,25 +264,12 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    async function withBatchUsingAsyncTransactions<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
-                                                      opts: Partial<BatchMutatorOpts> = {}) {
-
-        mutator.refresh();
-
-        await BatchMutators.execUsingAsyncTransactions(transactions, {
-            ...opts,
-            refresh: mutator.refresh,
-            dialogs
-        });
-
-    }
-
-    async function withBatch<T>(promiseFactories: ReadonlyArray<PromiseFactory<T>>,
+    async function withBatch<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
                                 opts: Partial<BatchMutatorOpts> = {}) {
 
         mutator.refresh();
 
-        await BatchMutators.exec(promiseFactories, {
+        await BatchMutators.exec(transactions, {
             ...opts,
             refresh: mutator.refresh,
             dialogs
@@ -411,23 +398,29 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             return repoDocMetaManager!.writeDocInfoTags(repoDocInfo, newTags);
         }
 
-        withBatchUsingAsyncTransactions(repoDocInfos.map(toAsyncTransaction))
+        withBatch(repoDocInfos.map(toAsyncTransaction))
             .catch(err => log.error(err));
 
     }
 
     function doArchived(repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean): void {
 
-        const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
-            return () => {
+        const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
+
+            function prepare() {
                 repoDocInfo.archived = archived;
                 repoDocInfo.docInfo.archived = archived;
+            }
+
+            function commit() {
                 return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
             }
+
+            return {prepare, commit};
         }
 
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromiseFactory));
+            await withBatch(repoDocInfos.map(toAsyncTransaction));
         }
 
         doHandle()
@@ -437,16 +430,23 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     function doFlagged(repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean): void {
 
-        const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
-            return () => {
+        const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
+
+            function prepare() {
                 repoDocInfo.flagged = flagged;
                 repoDocInfo.docInfo.flagged = flagged;
+            }
+
+            function commit() {
                 return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
             }
+
+            return {prepare, commit};
+
         }
 
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toPromiseFactory));
+            await withBatch(repoDocInfos.map(toAsyncTransaction));
         }
 
         doHandle()
@@ -475,17 +475,28 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         function doDeleteBatch() {
 
-            const toPromiseFactory = (repoDocInfo: RepoDocInfo) => {
-                return () => {
+            const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
+
+                function prepare() {
+
+                    // TODO: write a tombstone here so the delete is updated in
+                    // the UI immediately?
+
+                }
+
+                function commit() {
                     return repoDocMetaManager.deleteDocInfo(repoDocInfo);
                 }
+
+                return {prepare, commit};
+
             }
 
             const success = `${repoDocInfos.length} documents deleted.`;
             const error = `Failed to delete document: `;
 
             async function doHandle() {
-                await withBatch(repoDocInfos.map(toPromiseFactory), {success, error});
+                await withBatch(repoDocInfos.map(toAsyncTransaction), {success, error});
             }
 
             doHandle()
