@@ -1,7 +1,10 @@
+import React from 'react';
 import {Finder, FindHandler, IFindOpts} from "../../Finders";
 import {DOMTextHitWithIndex, useEPUBFinderCallbacks} from "./EPUBFinderStore";
 import {useHistory} from "react-router-dom";
-import {EPUBFinders, useEPUBRoot} from "./EPUBFinders";
+import {EPUBFinders, useEPUBRoot, useEPUBRootProvider} from "./EPUBFinders";
+import {URLStr} from 'polar-shared/src/util/Strings';
+import {Provider} from 'polar-shared/src/util/Providers';
 import EPUBFinder = EPUBFinders.EPUBFinder;
 
 export namespace EPUBFindControllers {
@@ -10,8 +13,7 @@ export namespace EPUBFindControllers {
 
         const history = useHistory();
         const callbacks = useEPUBFinderCallbacks();
-
-        const epubFinderCache = EPUBFinderCaches.create();
+        const epubFinderCacheProvider = useEPUBFinderCache();
 
         const exec = (opts: IFindOpts): FindHandler => {
 
@@ -51,7 +53,7 @@ export namespace EPUBFindControllers {
                 updateHit(callbacks.prev());
             }
 
-            const finder = epubFinderCache.get();
+            const finder = epubFinderCacheProvider();
 
             // TODO: I think this should/could go into the store
             const hits = finder.exec({
@@ -72,42 +74,36 @@ export namespace EPUBFindControllers {
     }
 }
 
-interface EPUBFinderCache {
-    get(): EPUBFinder;
+interface EPUBFinderCacheEntry {
+    readonly location: string;
+    readonly finder: EPUBFinder;
 }
 
-export namespace EPUBFinderCaches {
+export function useEPUBFinderCache(): Provider<EPUBFinder> {
 
-    export function create(): EPUBFinderCache {
+    const cacheRef = React.useRef<EPUBFinderCacheEntry | undefined>();
 
-        function getLocation() {
-            const {root} = useEPUBRoot();
-            return root.ownerDocument!.location.href;
-        }
+    const epubRootProvider = useEPUBRootProvider();
 
-        interface CacheEntry {
-            readonly location: string;
-            readonly finder: EPUBFinder;
-        }
+    const getLocation = React.useCallback((): URLStr => {
+        const {root} = epubRootProvider();
+        return root.ownerDocument!.location.href;
+    }, [epubRootProvider]);
 
-        let cache: CacheEntry | undefined;
+    return React.useCallback((): EPUBFinder => {
 
-        function get() {
+        if (cacheRef.current?.location !== getLocation()) {
 
-            if (cache?.location !== getLocation()) {
-                const location = getLocation();
-                const finder = EPUBFinders.create();
-                cache = {
-                    location, finder
-                }
+            const location = getLocation();
+            const finder = EPUBFinders.create(epubRootProvider);
+            cacheRef.current = {
+                location, finder
             }
 
-            return cache.finder;
-
         }
 
-        return {get};
+        return cacheRef.current.finder;
 
-    }
+    }, [epubRootProvider, getLocation])
 
 }
