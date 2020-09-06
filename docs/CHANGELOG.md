@@ -5,7 +5,8 @@
 
 - refactored code to make refreshing the UI faster
 
-- the account control can now dismiss the popper
+- the account control can now dismiss the popper so that when you click on 
+  'pricing' it goes away.
 
 - rewrote the way we handle EPUB highlights and search hit placement to be a lot
   more reliable.
