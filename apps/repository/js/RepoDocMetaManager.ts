@@ -16,6 +16,7 @@ import {RepoDocInfos} from "./RepoDocInfos";
 import {IDocAnnotation} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import { IDocMeta } from 'polar-shared/src/metadata/IDocMeta';
+import {DocViewerSnapshots} from "../../doc/src/DocViewerSnapshots";
 
 const log = Logger.create();
 
@@ -58,6 +59,29 @@ export class RepoDocMetaManager {
                                  repoDocMeta: RepoDocMeta | undefined) {
 
         if (repoDocMeta) {
+
+            const isStaleUpdate = (): boolean => {
+
+                const existing = this.repoDocInfoIndex.get(fingerprint);
+
+                if (DocViewerSnapshots.computeUpdateType(existing?.docInfo.uuid,
+                                                         repoDocMeta.repoDocInfo.docInfo.uuid) === 'stale') {
+                    return true;
+                }
+
+                if (DocViewerSnapshots.computeUpdateType(existing?.docMeta.docInfo.uuid,
+                                                         repoDocMeta.repoDocInfo.docMeta.docInfo.uuid) === 'stale') {
+                    return true;
+                }
+
+                return false;
+
+            }
+
+            if (isStaleUpdate()) {
+                console.log("Skipping stale update.");
+                return;
+            }
 
             this.repoDocInfoIndex.put(repoDocMeta.repoDocInfo.fingerprint, repoDocMeta.repoDocInfo);
 

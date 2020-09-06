@@ -1,5 +1,10 @@
 # 2.0 beta 20
 
+- stale updates are now ignored in the doc repo so that we don't have races
+  in the updating of the UI
+
+- refactored code to make refreshing the UI faster
+
 - the account control can now dismiss the popper
 
 - rewrote the way we handle EPUB highlights and search hit placement to be a lot

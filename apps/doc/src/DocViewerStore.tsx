@@ -389,13 +389,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         const store = storeProvider();
 
-        type UpdateType = 'fresh' | 'stale';
-
-        function computeUpdateType(): UpdateType {
-            return DocViewerSnapshots.isStaleUpdate(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid) ? 'stale' : 'fresh';
-        }
-
-        const updateType = computeUpdateType();
+        const updateType = DocViewerSnapshots.computeUpdateType(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
 
         console.log(`Update for docMeta was ${updateType} for type=${type} - ${store.docMeta?.docInfo?.uuid} vs ${docMeta.docInfo.uuid}`);
 
