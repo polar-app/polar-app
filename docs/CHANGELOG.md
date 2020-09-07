@@ -1,4 +1,6 @@
 
+- chrome extension now shows a dialog box when we're uploading a PDF
+
 - New modal progress upload widget for when the user MUST wait for the document
   to upload when using the save to polar chrome extension.
 
