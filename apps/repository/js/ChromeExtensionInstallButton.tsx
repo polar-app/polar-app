@@ -6,10 +6,10 @@ import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Platforms} from 'polar-shared/src/util/Platforms';
 import {Browsers} from "polar-browsers/src/Browsers";
 import Button from '@material-ui/core/Button';
-import {ChromeSVGIcon} from "../../../web/js/ui/svg_icons/ChromeSVGIcon";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {WebExtensionPingClient} from "polar-web-extension-api/src/WebExtensionPingClient";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {FAChromeIcon} from "../../../web/js/mui/MUIFontAwesome";
 
 export function useWebExtensionInstalled() {
 
@@ -70,8 +70,8 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
         <Button hidden={hidden}
                 onClick={() => onClick()}
                 variant="contained"
-                startIcon={<ChromeSVGIcon/>}
-                size="small"
+                startIcon={<FAChromeIcon/>}
+                size="medium"
                 color="default">
 
             Install Chrome Extension
