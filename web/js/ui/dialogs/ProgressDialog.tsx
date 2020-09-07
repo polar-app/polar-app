@@ -1,17 +1,37 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import LinearProgress from '@material-ui/core/LinearProgress';
+import {LinearProgressWithLabel} from './LinearProgressWithLabel';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {
+
+        },
+        dialogContent: {
+            paddingTop: '20px',
+            paddingBottom: '20px'
+        },
+        title: {
+            fontSize: '1.25rem',
+            fontWeight: 'bold',
+        },
+
         description: {
-            fontSize: '1.25rem'
+            fontSize: '1.00rem',
+            color: theme.palette.text.secondary,
+            paddingTop: '15px',
+            paddingBottom: '15px'
+        },
+
+        progressArea: {
+            paddingTop: '15px',
+            paddingBottom: '5px',
         }
+
     }),
 );
 
@@ -30,41 +50,48 @@ export const ProgressDialog = (props: ProgressDialogProps) => {
 
     return (
 
-        <Dialog open={open}
-                aria-labelledby="form-dialog-title">
+        <Dialog open={open}>
 
-            <>
-                <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
-                <DialogContent>
+            <div className={classes.root}>
+                <DialogContent className={classes.dialogContent}>
 
-                    <DialogContentText className={classes.description}>
+                    <div style={{
+                             display: 'flex',
+                             flexWrap: 'nowrap',
+                             alignItems: 'center'
+                         }}>
 
-                        <div style={{
-                                 display: 'flex',
-                                 flexWrap: 'nowrap'
-                             }}>
+                        {props.icon && (
+                            <div style={{paddingRight: '25px'}}>
+                                {props.icon}
+                            </div>)}
 
-                            <div style={{flexGrow: 1}}>
-                                {props.description}
+                        <div style={{flexGrow: 1}}>
+                            <div id="form-dialog-title" className={classes.title}>{props.title}</div>
+
+                            <div className={classes.description}>
+
+                                <div>
+                                    {props.description}
+                                </div>
+
                             </div>
 
-                            {props.icon && (
-                                <div>
-                                    {props.icon}
-                                </div>)}
+                            <div className={classes.progressArea}>
+
+                                {props.value === 'indeterminate' &&
+                                    <LinearProgress variant="indeterminate" />}
+
+                                {props.value !== 'indeterminate' &&
+                                    <LinearProgressWithLabel variant="determinate" value={props.value}/>}
+
+                            </div>
 
                         </div>
-                    </DialogContentText>
-
-                    {props.value === 'indeterminate' &&
-                        <LinearProgress variant="indeterminate" />}
-
-                    {props.value !== 'indeterminate' &&
-                        <LinearProgress variant="determinate" value={props.value}/>}
-
+                    </div>
                 </DialogContent>
 
-            </>
+            </div>
 
         </Dialog>
     );

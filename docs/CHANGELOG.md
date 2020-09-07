@@ -1,4 +1,7 @@
 
+- New modal progress upload widget for when the user MUST wait for the document
+  to upload when using the save to polar chrome extension.
+
 - Fix to prevent being able to create an autocompleted tag twice.
 
 # 2.0 beta 20
