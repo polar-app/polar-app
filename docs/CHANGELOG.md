@@ -1,3 +1,6 @@
+
+- Fix to prevent being able to create an autocompleted tag twice.
+
 # 2.0 beta 20
 
 - stale updates are now ignored in the doc repo so that we don't have races

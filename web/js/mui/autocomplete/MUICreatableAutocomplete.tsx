@@ -103,6 +103,10 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     const highlighted = useRef<ValueAutocompleteOption<T> | undefined>(undefined);
 
+    // creates an index of the options by ID so that we can lookup quickly if
+    // we have an existing entry to avoid double creating a 'create' option
+    const optionsIndex = React.useMemo(() => arrayStream(props.options).toMap(current => current.id), [props.options])
+
     /**
      * Centrally set the values so we can also reset other states, fire events,
      * etc.
@@ -230,6 +234,14 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         setOpen(false);
     }
 
+    /**
+     * Return true if the given selected values contains the potentially NEW
+     * item so we can not show duplicates.
+     */
+    function hasExistingOption(newValue: string) {
+        return isPresent(optionsIndex[newValue]);
+    }
+
     // TODO: one of our users suggested that 'tab' select the item since this
     // is somewhat standard but this requires that we use a controlled
     // auto-complete.  This breaks because there's a but which will cause the
@@ -262,7 +274,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
                     const filtered = filter(options, params);
 
-                    if (inputValue.current !== '') {
+                    if (inputValue.current !== '' && ! hasExistingOption(inputValue.current)) {
 
                         const createOption = {
                             ...props.createOption(inputValue.current),
