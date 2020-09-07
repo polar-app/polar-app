@@ -3,10 +3,11 @@ import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import {
     OnErrorCallback,
     OnNextCallback,
-    SnapshotSubscriber, SnapshotSubscriberWithID,
+    SnapshotSubscriberWithID,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import {IDStr} from "polar-shared/src/util/Strings";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export interface SubscriptionValue<T> {
     readonly value: T | undefined;
@@ -30,7 +31,15 @@ export function useSnapshotSubscriberUsingCallbacks<T>(subscriber: SnapshotSubsc
     }
 
     if (! unsubscriberRef.current) {
-        unsubscriberRef.current = subscriber.subscribe(onNext, onError)
+
+        const unsubscriber = subscriber.subscribe(onNext, onError);
+
+        if ( ! isPresent(unsubscriber)) {
+            console.warn("No unsubscriber");
+        }
+
+        unsubscriberRef.current = unsubscriber;
+
     }
 
     useComponentWillUnmount(() => {

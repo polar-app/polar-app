@@ -6,10 +6,11 @@ import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Platforms} from 'polar-shared/src/util/Platforms';
 import {Browsers} from "polar-browsers/src/Browsers";
 import Button from '@material-ui/core/Button';
-import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
-import {WebExtensionPingClient} from "polar-web-extension-api/src/WebExtensionPingClient";
-import {isPresent} from "polar-shared/src/Preconditions";
 import {FAChromeIcon} from "../../../web/js/mui/MUIFontAwesome";
+import {useSnapshotSubscriber} from "../../../web/js/ui/data_loader/UseSnapshotSubscriber";
+import {WebExtensionPresenceClient} from "polar-web-extension-api/src/WebExtensionPresenceClient";
+import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export function useWebExtensionInstalled() {
 
@@ -18,15 +19,40 @@ export function useWebExtensionInstalled() {
     useComponentDidMount(() => {
 
         async function doAsync() {
-            const response = await WebExtensionPingClient.exec();
-            console.log("FIXME: response: ", response);
+            const response = await WebExtensionPresenceClient.exec();
             setInstalled(isPresent(response));
         }
 
         doAsync()
-            .catch(err => console.error(err));
+        .catch(err => console.error(err));
 
     });
+
+    return installed;
+
+}
+
+
+export function useWebExtensionInstalledSnapshots() {
+
+    const [installed, setInstalled] = React.useState<boolean | undefined>(undefined);
+    const subscriber = React.useMemo(() => ({
+        id: 'web-extension-presence',
+        subscribe: WebExtensionPresenceClient.subscribe
+    }), []);
+
+    const {value, error} = useSnapshotSubscriber(subscriber);
+
+    if (error) {
+        setInstalled(false);
+        return;
+    }
+
+    if (value) {
+        setInstalled(true);
+    } else {
+        setInstalled(false);
+    }
 
     return installed;
 
