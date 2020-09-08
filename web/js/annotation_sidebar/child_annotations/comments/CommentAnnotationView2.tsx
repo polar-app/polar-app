@@ -14,7 +14,7 @@ export const CommentAnnotationView2 = (props: IProps) => {
     return (
         <div className="comment muted-color-root">
 
-            <div className="pt-1 pb-1">
+            <div className="">
 
                 {/*TODO: based on the state determine if we should be*/}
                 {/*editing or just displaying the comment*/}

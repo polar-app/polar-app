@@ -32,7 +32,6 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                  }}
                  className="pt-1 pb-1">
 
-
                 <MUIButtonBar>
                     <DocAuthor author={comment.author}/>
 
@@ -47,9 +46,7 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                                  justifyContent: 'flex-end'
                               }}>
 
-                    <NullCollapse open={! comment.immutable}>
-                        {props.editButton}
-                    </NullCollapse>
+                    {! comment.immutable && props.editButton}
 
                     <AnnotationTagButton2 annotation={props.comment}/>
 
