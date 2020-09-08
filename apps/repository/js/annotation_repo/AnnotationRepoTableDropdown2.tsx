@@ -3,8 +3,8 @@ import {ExportFormat} from "../../../../web/js/metadata/exporter/Exporters";
 import {Devices} from "polar-shared/src/util/Devices";
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 interface IProps {
     readonly onExport: (format: ExportFormat) => void;
@@ -23,7 +23,7 @@ export const AnnotationRepoTableDropdown2 = deepMemo((props: IProps) => {
             <MUIMenu caret
                      placement="bottom-end"
                      button={{
-                         icon: <CloudDownloadIcon/>,
+                         icon: <GetAppIcon/>,
                          size: 'small'
                      }}>
 

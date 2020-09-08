@@ -105,7 +105,10 @@ export class DockLayout extends React.Component<IProps, IState> {
                 };
 
                 return (
-                    <div className="dock-layout-fixed" style={style} key={idx} id={docPanel.id}>
+                    <div className="dock-layout-fixed"
+                         style={style}
+                         key={idx}
+                         id={docPanel.id}>
                         {docPanel.component}
                     </div>
                 );
@@ -160,7 +163,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 if  (tuple.next !== undefined) {
                     const resizeTarget = computeResizeTarget();
-                    const splitter = <DockSplitter key={tuple.idx}
+                    const splitter = <DockSplitter key='splitter'
                                                    onMouseDown={() => this.onMouseDown(resizeTarget)}/>;
                     result.push(splitter);
                 }
