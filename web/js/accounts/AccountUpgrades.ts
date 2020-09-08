@@ -19,6 +19,10 @@ const _500GB = 500000000000;
 
 export namespace AccountUpgrades {
 
+    export function isV2Grandfathered(created: ISODateTimeString) {
+        return ISODateTimeStrings.compare(created, '2020-10-15T00:00:00+0000') < 0;
+    }
+
     /**
      * Get the required plan per the amount of data being used.
      */
@@ -27,10 +31,6 @@ export namespace AccountUpgrades {
         /**
          * Return true if the user is grandfathered for V2 pricing.
          */
-        function isV2Grandfathered() {
-            return ISODateTimeStrings.compare(accountUsage.created, '2020-10-15T00:00:00+0000') > 0;
-        }
-
         function computePlan(free: number,
                              plus: number,
                              pro: number) {
@@ -59,7 +59,7 @@ export namespace AccountUpgrades {
             return computePlan(_1GB, _50GB, _500GB);
         }
 
-        if (isV2Grandfathered()) {
+        if (isV2Grandfathered(accountUsage.created)) {
             return computeV2Grandfathered();
         } else {
             return computeV2();
