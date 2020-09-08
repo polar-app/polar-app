@@ -26,8 +26,6 @@ describe('AccountUpgrades', function() {
 
         const created = new Date().toISOString();
 
-        // FIXME: verify grandfathered accounts.
-
         function doTest(currentPlan: V2Plan,
                         accountUsage: AccountUsage,
                         expected: V2Plan) {

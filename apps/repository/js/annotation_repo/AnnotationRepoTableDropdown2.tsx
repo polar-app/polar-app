@@ -24,7 +24,7 @@ export const AnnotationRepoTableDropdown2 = deepMemo((props: IProps) => {
                      placement="bottom-end"
                      button={{
                          icon: <CloudDownloadIcon/>,
-                         size: 'large'
+                         size: 'small'
                      }}>
 
                 <div>

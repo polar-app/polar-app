@@ -75,7 +75,7 @@ export const EditTextHighlight2 = (props: IProps) => {
 
     return (
         <InputCompleteListener onComplete={onComplete}>
-            <div className="mt-1">
+            <div className="m-1">
 
                 <div className="">
 

@@ -39,7 +39,7 @@ export const EditComment2 = deepMemo((props: IProps) => {
         <InputCompleteListener onComplete={onComplete}>
 
             <div id="annotation-comment-box"
-                 className="mt-1">
+                 className="m-1">
 
                 <div className="">
 
