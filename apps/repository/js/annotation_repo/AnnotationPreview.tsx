@@ -7,17 +7,10 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import Box from '@material-ui/core/Box';
 import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import useTheme from '@material-ui/core/styles/useTheme';
 
 const MAX_TEXT_LENGTH = 300;
 
-interface IProps {
-    readonly id: string;
-    readonly text?: PlainTextStr;
-    readonly img?: Img;
-    readonly lastUpdated: ISODateTimeString;
-    readonly created: ISODateTimeString;
-    readonly color: HighlightColor | undefined;
-}
 
 const createStyle = (color: HighlightColor | undefined): React.CSSProperties => {
 
@@ -36,38 +29,81 @@ const createStyle = (color: HighlightColor | undefined): React.CSSProperties => 
 
 };
 
-const Body = deepMemo((props: IProps) => {
 
-    const {text, img} = props;
+const ImagePreview = deepMemo((props: IProps) => {
+    const {img} = props;
+    return (
+        <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
+    );
+});
+
+const TextPreview = deepMemo((props: IProps) => {
+
+    const {text} = props;
 
     const truncated = text ? Strings.truncateOnWordBoundary(text, MAX_TEXT_LENGTH, true) : undefined;
 
+    return (
+        <div style={{userSelect: "none"}}
+             dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
+    );
+
+});
+
+interface PreviewParentProps {
+    readonly color: HighlightColor | undefined;
+    readonly children: React.ReactElement;
+}
+
+const PreviewParent = deepMemo((props: PreviewParentProps) => {
+
     const style = createStyle(props.color);
 
-    if (img) {
-        return <div style={style}>
-            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
-        </div>;
+    return (
+        <div style={style}>
+            {props.children}
+        </div>
+    );
 
+});
+
+const Preview = deepMemo((props: IProps) => {
+
+    if (props.img) {
+        return <ImagePreview {...props}/>;
     } else {
-        return (
-            <div id={props.id} style={style}>
-                <div style={{
-                         userSelect: "none",
-                     }}
-                     dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
-            </div>
-        );
+        return <TextPreview {...props}/>;
     }
 
 });
 
-export const AnnotationPreview = React.memo((props: IProps) => (
-    <div id={props.id} className="mt-1">
-        <Body {...props}/>
-        <Box m={1}>
-            <DateTimeTableCell datetime={props.lastUpdated || props.created}
-                               className="text-muted text-xs"/>
-        </Box>
-    </div>
-));
+interface IProps {
+    readonly id: string;
+    readonly text?: PlainTextStr;
+    readonly img?: Img;
+    readonly lastUpdated: ISODateTimeString;
+    readonly created: ISODateTimeString;
+    readonly color: HighlightColor | undefined;
+}
+
+export const AnnotationPreview = deepMemo((props: IProps) => {
+
+    const theme = useTheme();
+
+    return (
+        <div id={props.id} className="mt-1">
+            <PreviewParent color={props.color}>
+                <>
+                    <Preview {...props}/>
+
+                    <Box mt={1} mb={1}>
+                        <DateTimeTableCell
+                            datetime={props.lastUpdated || props.created}
+                            style={{color: theme.palette.text.secondary}}/>
+                    </Box>
+                </>
+
+            </PreviewParent>
+        </div>
+    );
+});
