@@ -9,7 +9,7 @@ const keyMap = KeyMaps.keyMap({
        COMPLETE: {
            name: "Complete Action",
            description: "Complete the current action",
-           sequences: ['return'],
+           sequences: ['ctrl+return', 'command+return'],
        },
    }
 });
