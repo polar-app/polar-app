@@ -82,40 +82,40 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title">
 
-        <InputCompleteListener onComplete={handleDone} onCancel={handleClose}>
-                <>
+            <InputCompleteListener onComplete={handleDone} onCancel={handleClose}>
+                    <>
 
-                    {props.title &&
-                        <DialogTitle>{props.title}</DialogTitle>}
+                        {props.title &&
+                            <DialogTitle>{props.title}</DialogTitle>}
 
-                    <DialogContent>
+                        <DialogContent>
 
-                        {props.description &&
-                            <Box pt={1}>
-                                <DialogContentText className={classes.description}>
-                                    {props.description}
-                                </DialogContentText>
-                            </Box>}
+                            {props.description &&
+                                <Box pt={1}>
+                                    <DialogContentText className={classes.description}>
+                                        {props.description}
+                                    </DialogContentText>
+                                </Box>}
 
-                        <MUICreatableAutocomplete {...props}
-                                                  autoFocus={true}
-                                                  onChange={handleChange}/>
+                            <MUICreatableAutocomplete {...props}
+                                                      autoFocus={true}
+                                                      onChange={handleChange}/>
 
-                    </DialogContent>
+                        </DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleDone}
-                                size="large"
-                                variant="contained"
-                                color="primary">
-                            Done
-                        </Button>
-                    </DialogActions>
-                </>
-            </InputCompleteListener>
+                        <DialogActions>
+                            <Button onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleDone}
+                                    size="large"
+                                    variant="contained"
+                                    color="primary">
+                                Done
+                            </Button>
+                        </DialogActions>
+                    </>
+                </InputCompleteListener>
 
         </Dialog>
     );
