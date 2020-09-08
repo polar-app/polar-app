@@ -11,7 +11,6 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 const MAX_TEXT_LENGTH = 300;
 
-
 const createStyle = (color: HighlightColor | undefined): React.CSSProperties => {
 
     if (color) {

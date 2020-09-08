@@ -249,6 +249,10 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         // TODO: this could be made faster by using Promise.all and a latch
 
+        // we have to update the reference DocMeta docInfo uuid so that we don't
+        // get a latent / stale one from a future snapshot.
+        docMeta.docInfo.uuid = UUIDs.create();
+
         await this.writeDocMetaTags(docMeta);
 
         return this.write(docMeta.docInfo.fingerprint, docMeta, {datastoreMutation});
