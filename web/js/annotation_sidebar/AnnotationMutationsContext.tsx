@@ -505,17 +505,14 @@ export namespace AnnotationMutationCallbacks {
                           tags: ReadonlyArray<Tag>,
                           strategy: ComputeNewTagsStrategy = 'set') {
 
-            if (tags.length === 0) {
-                log.warn("No tags");
-                return;
-            }
-
             handleUpdate({selected: annotations}, (docMeta, pageMeta, mutation) => {
 
                 for (const current of mutation.selected) {
 
+                    const newTags = Tags.computeNewTags(current.original.tags, tags, strategy);
+
                     const updates = {
-                        tags: Tags.toMap(tags)
+                        tags: Tags.toMap(newTags)
                     };
 
                     AnnotationMutations.update({...current, docMeta},
@@ -524,7 +521,6 @@ export namespace AnnotationMutationCallbacks {
                 }
 
             }).catch(err => log.error(err));
-
 
         }
 

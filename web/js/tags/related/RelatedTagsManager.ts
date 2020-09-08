@@ -8,6 +8,7 @@ import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {LocalRelatedTagsStore} from "./LocalRelatedTagsStore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
+import {TagFilters} from "polar-shared/src/tags/TagFilters";
 
 export type TagDocsIndex = {[tag: string]: TagDocs};
 
@@ -193,6 +194,7 @@ export class RelatedTagsManager {
             return this.compute(tags)
                        .map(current => current.tag)
                        .map(Tags.create)
+                       .filter(TagFilters.onlyRegular)
                        .map(toAutocompleteOption)
         };
 

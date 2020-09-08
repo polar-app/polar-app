@@ -83,10 +83,8 @@ export namespace TaggedCallbacks {
 
             const autocompleteStrategy = computeAutocompleteStrategy();
 
-            const doTaggedWithTimeout = (tags: ReadonlyArray<Tag>) => {
-                setTimeout(() => {
-                    doTagged(targets, tags, autocompleteStrategy.strategy);
-                }, 1);
+            const handleDone = (tags: ReadonlyArray<Tag>) => {
+                doTagged(targets, tags, autocompleteStrategy.strategy);
             }
 
             const autocompleteProps: AutocompleteDialogProps<Tag> = {
@@ -98,7 +96,7 @@ export namespace TaggedCallbacks {
                 onCancel: NULL_FUNCTION,
                 onChange: NULL_FUNCTION,
                 relatedOptionsCalculator: opts.relatedOptionsCalculator,
-                onDone: tags => doTaggedWithTimeout(tags)
+                onDone: tags => handleDone(tags)
             };
 
             dialogs.autocomplete(autocompleteProps);
