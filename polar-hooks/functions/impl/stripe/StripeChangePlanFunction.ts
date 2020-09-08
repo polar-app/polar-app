@@ -2,7 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
-import {accounts} from 'polar-accounts/src/accounts';
+import {Billing} from 'polar-accounts/src/Billing';
 import {Accounts} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
@@ -52,7 +52,7 @@ export const StripeChangePlanFunction = functions.https.onRequest(app);
 export interface StripeChangePlanBody {
     readonly uid: string;
     readonly email: string;
-    readonly plan: accounts.Plan;
-    readonly interval: accounts.Interval;
+    readonly plan: Billing.Plan;
+    readonly interval: Billing.Interval;
 }
 

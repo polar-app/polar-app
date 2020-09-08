@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import {StripeUtils} from "./StripeUtils";
-import {accounts} from "polar-accounts/src/accounts";
+import {Billing} from 'polar-accounts/src/Billing';
 import {StripePlanIDs} from "./StripePlanIDs";
 
 export interface StripeCustomerSubscription {
@@ -58,13 +58,13 @@ export class StripeCustomers {
 
     }
 
-    public static async changePlan(email: string, plan: accounts.Plan, interval: accounts.Interval) {
+    public static async changePlan(email: string, plan: Billing.Plan, interval: Billing.Interval) {
 
         console.log(`Changing plan for ${email} to ${plan}`);
 
         const customerSubscription = await this.getCustomerSubscription(email);
 
-        const planID = StripePlanIDs.fromAccountPlan(plan, interval);
+        const planID = StripePlanIDs.fromSubscription(plan, interval);
 
         const stripe = StripeUtils.getStripe();
 

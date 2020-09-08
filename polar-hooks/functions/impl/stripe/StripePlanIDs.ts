@@ -1,4 +1,5 @@
-import { accounts } from "polar-accounts/src/accounts";
+import {Billing} from 'polar-accounts/src/Billing';
+import {Plans} from "polar-accounts/src/Plans";
 
 export enum StripePlanID {
 
@@ -18,9 +19,23 @@ export enum StripeYearPlanID {
 
 }
 
+export enum StripePlanV2ID {
+    FREE = "plan_free",
+    PLUS = "plan_plus",
+    PRO = "plan_pro",
+}
+
+export enum StripeYearPlanV2ID {
+    FREE = "plan_free_year",
+    PLUS = "plan_plus_year",
+    PRO = "plan_pro_year",
+}
+
+
+
 export class StripePlanIDs {
 
-    public static toAccountPlan(planID: StripePlanID | StripeYearPlanID): accounts.Subscription {
+    public static toSubscription(planID: StripePlanID | StripeYearPlanID): Billing.Subscription {
 
         switch (planID) {
             case StripePlanID.GOLD:
@@ -44,39 +59,37 @@ export class StripePlanIDs {
 
     }
 
-    public static fromAccountPlan(plan: accounts.Plan,
-                                  interval: accounts.Interval): StripePlanID | StripeYearPlanID {
+    public static fromSubscription(plan: Billing.Plan,
+                                   interval: Billing.Interval): StripePlanV2ID | StripeYearPlanV2ID {
 
         if (!plan) {
             throw new Error("No plan");
         }
 
+        const planV2 = Plans.toV2(plan);
+
         const convertMonthly = () => {
 
-            switch (plan) {
+            switch (planV2.level) {
                 case "free":
-                    return StripePlanID.FREE;
-                case "bronze":
-                    return StripePlanID.BRONZE;
-                case "silver":
-                    return StripePlanID.SILVER;
-                case "gold":
-                    return StripePlanID.GOLD;
+                    return StripePlanV2ID.FREE;
+                case "plus":
+                    return StripePlanV2ID.PLUS;
+                case "pro":
+                    return StripePlanV2ID.PRO;
             }
 
         };
 
         const convertYearly = () => {
 
-            switch (plan) {
+            switch (planV2.level) {
                 case "free":
-                    return StripeYearPlanID.FREE;
-                case "bronze":
-                    return StripeYearPlanID.BRONZE;
-                case "silver":
-                    return StripeYearPlanID.SILVER;
-                case "gold":
-                    return StripeYearPlanID.GOLD;
+                    return StripeYearPlanV2ID.FREE;
+                case "plus":
+                    return StripeYearPlanV2ID.PLUS;
+                case "pro":
+                    return StripeYearPlanV2ID.PRO;
             }
 
         };

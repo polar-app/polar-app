@@ -1,4 +1,4 @@
-import {accounts} from "polar-accounts/src/accounts";
+import {Billing} from "polar-accounts/src/Billing";
 import {StripeUtils} from "./StripeUtils";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
@@ -13,12 +13,12 @@ const log = Logger.create();
 
 export interface AccountInit {
 
-    readonly plan: accounts.Plan;
+    readonly plan: Billing.Plan;
 
     /**
      * The interval for the account. When undefined it's monthly.
      */
-    readonly interval?: accounts.Interval;
+    readonly interval?: Billing.Interval;
 
 }
 
@@ -43,8 +43,8 @@ export class Accounts {
     }
 
     public static async changePlan(customerID: string,
-                                   plan: accounts.Plan,
-                                   interval: accounts.Interval) {
+                                   plan: Billing.Plan,
+                                   interval: Billing.Interval) {
 
         const stripe = StripeUtils.getStripe();
 
@@ -68,8 +68,8 @@ export class Accounts {
 
     public static async changePlanViaEmail(email: string | undefined | null,
                                            customerID: IDStr,
-                                           plan: accounts.Plan,
-                                           interval: accounts.Interval) {
+                                           plan: Billing.Plan,
+                                           interval: Billing.Interval) {
 
         if (!email) {
             throw new Error("Customer has no email address");

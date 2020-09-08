@@ -28,7 +28,7 @@ app.use((req, res) => {
 
         const planID = <StripePlanID> stripeEvent.data.object.plan.id;
 
-        const sub = StripePlanIDs.toAccountPlan(planID);
+        const sub = StripePlanIDs.toSubscription(planID);
 
         switch (stripeEvent.type) {
 
