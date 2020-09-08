@@ -82,7 +82,7 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title">
 
-        <InputCompleteListener onComplete={handleDone} onCancel={handleClose} stopPropagation={true}>
+        <InputCompleteListener onComplete={handleDone} onCancel={handleClose}>
                 <>
 
                     {props.title &&

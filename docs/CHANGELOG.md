@@ -1,4 +1,8 @@
 
+- fixed bug with annotation repo store where it wasn't updating immediately.
+
+- tags for annotaitons now work
+
 - chrome extension now shows a dialog box when we're uploading a PDF
 
 - New modal progress upload widget for when the user MUST wait for the document
