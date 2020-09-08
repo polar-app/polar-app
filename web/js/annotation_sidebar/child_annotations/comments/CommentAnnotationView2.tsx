@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from '../../DocAnnotation';
+import {deepMemo} from "../../../react/ReactUtils";
 
 interface IProps {
     readonly comment: IDocAnnotationRef;
@@ -7,7 +8,7 @@ interface IProps {
     readonly onEdit: () => void;
 }
 
-export const CommentAnnotationView2 = (props: IProps) => {
+export const CommentAnnotationView2 = deepMemo((props: IProps) => {
 
     const { comment } = props;
 
@@ -28,7 +29,7 @@ export const CommentAnnotationView2 = (props: IProps) => {
         </div>
     );
 
-}
+});
 
 
 

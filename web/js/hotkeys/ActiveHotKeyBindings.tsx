@@ -129,7 +129,7 @@ export const ActiveHotKeyBindings = () => {
                     maxWidth="md"
                     open={open}
                     onClose={handleClose}>
-                <DialogTitle>Active Key Bindings</DialogTitle>
+                <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
                 <DialogContent>
                     <ActiveHotKeys/>
                 </DialogContent>
