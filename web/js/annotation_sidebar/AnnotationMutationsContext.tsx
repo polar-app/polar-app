@@ -3,7 +3,6 @@ import {
     ASYNC_NULL_FUNCTION,
     Callback,
     Callback1,
-    Functions,
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
 import {IDocAnnotationRef} from "./DocAnnotation";
@@ -306,7 +305,7 @@ export namespace DocAnnotationsMutator {
                                         mutation.flashcardType,
                                         mutation.fields);
                 break;
-            //
+
             case "update":
 
                 FlashcardActions.update(docMeta,
@@ -329,25 +328,23 @@ export namespace DocAnnotationsMutator {
 
     }
 
-    export function onAreaHighlight(docMeta: IDocMeta, pageMeta: IPageMeta, mutation: IAreaHighlightMutation) {
+    export function onAreaHighlight(docMeta: IDocMeta,
+                                    pageMeta: IPageMeta,
+                                    mutation: IAreaHighlightMutation) {
+
+        const {areaHighlight} = mutation;
 
         switch (mutation.type) {
 
             case "update":
 
-                Functions.withTimeout(() => {
-                    const {areaHighlight} = mutation;
-                    AreaHighlights.update(areaHighlight.id,docMeta, pageMeta, areaHighlight);
-                });
+                AreaHighlights.update(areaHighlight.id,docMeta, pageMeta, areaHighlight);
 
                 break;
 
             case "create":
 
-                Functions.withTimeout(() => {
-                    const {areaHighlight} = mutation;
-                    pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
-                });
+                pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
                 break;
 
@@ -360,35 +357,23 @@ export namespace DocAnnotationsMutator {
         switch (mutation.type) {
             case "revert":
 
-                Functions.withTimeout(() => {
-
-                    const selected = mutation.selected || [];
-
-                    for (const textHighlight of selected) {
-                        TextHighlights.resetRevisedText(docMeta,
-                                                        pageMeta,
-                                                        textHighlight.id);
-                    }
-
-                });
+                for (const textHighlight of (mutation.selected || [])) {
+                    TextHighlights.resetRevisedText(docMeta,
+                                                    pageMeta,
+                                                    textHighlight.id);
+                }
 
                 break;
 
             case "update":
 
-                Functions.withTimeout(() => {
+                for (const textHighlight of (mutation.selected || [])) {
 
-                    const selected = mutation.selected || [];
-
-                    for (const textHighlight of selected) {
-
-                        TextHighlights.setRevisedText(docMeta,
-                                                      pageMeta,
-                                                      textHighlight.id,
-                                                      mutation.body);
-                    }
-
-                });
+                    TextHighlights.setRevisedText(docMeta,
+                                                  pageMeta,
+                                                  textHighlight.id,
+                                                  mutation.body);
+                }
                 break;
 
             case "create":

@@ -24,7 +24,7 @@ export const DockSplitter = deepMemo((props: IProps) => {
             //     theme.palette.background.default :
             //     theme.palette.background.paper,
             // backgroundColor: grey[500],
-            backgroundColor: '--grey500',
+            backgroundColor: 'var(--grey500)',
             minHeight: 0
         };
 

@@ -163,7 +163,7 @@ export class DockLayout extends React.Component<IProps, IState> {
 
                 if  (tuple.next !== undefined) {
                     const resizeTarget = computeResizeTarget();
-                    const splitter = <DockSplitter key='splitter'
+                    const splitter = <DockSplitter key={'splitter-' + tuple.idx}
                                                    onMouseDown={() => this.onMouseDown(resizeTarget)}/>;
                     result.push(splitter);
                 }
