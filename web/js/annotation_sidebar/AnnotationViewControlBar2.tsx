@@ -136,7 +136,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <MUIAnchor href="#"
                                    onClick={NULL_FUNCTION}>
-                            <DocAnnotationMoment created={annotation.created}/>
+                            <DocAnnotationMoment created={annotation.lastUpdated}/>
                         </MUIAnchor>
 
                     </MUIButtonBar>
