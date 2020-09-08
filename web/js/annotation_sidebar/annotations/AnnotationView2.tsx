@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IDocAnnotationRef} from '../DocAnnotation';
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {MUIHoverController} from "../../mui/context/MUIHoverContext";
 import {AreaHighlightAnnotationView2} from "./AreaHighlightAnnotationView2";
@@ -11,8 +10,6 @@ import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditCommen
 import {AnnotationInputView} from "../AnnotationInputView";
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
 import {deepMemo} from "../../react/ReactUtils";
-
-const log = Logger.create();
 
 interface IProps {
     readonly annotation: IDocAnnotationRef;
@@ -59,12 +56,12 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
     const { annotation } = props;
 
     if (! isPresent(annotation.id)) {
-        log.warn("No annotation id!", annotation);
+        console.warn("No annotation id!", annotation);
         return null;
     }
 
     if (annotation.id.trim() === '') {
-        log.warn("Empty annotation");
+        console.warn("Empty annotation");
         return null;
     }
 
