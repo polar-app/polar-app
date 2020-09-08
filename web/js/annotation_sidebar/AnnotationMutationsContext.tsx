@@ -37,7 +37,6 @@ import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {AreaHighlightRects} from "../metadata/AreaHighlightRects";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useDocMetaLookupContext} from "./DocMetaLookupContextProvider";
-import {DocMetas} from "polar-shared/src/metadata/DocMetas";
 import {
     IAnnotationRef,
     IAnnotationRefWithDocMeta
@@ -46,6 +45,7 @@ import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {useLogger} from "../mui/MUILogger";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {DocMetas} from "../metadata/DocMetas";
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 export interface IAnnotationMutationHolder<M> {

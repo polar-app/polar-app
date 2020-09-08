@@ -23,7 +23,7 @@ import {
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationMutationsContext} from "../../../web/js/annotation_sidebar/AnnotationMutationsContext";
-import {DocMetas} from "polar-shared/src/metadata/DocMetas";
+import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
@@ -53,7 +53,7 @@ function useAnnotationMetaToRefResolver(): AnnotationMetaResolver {
             throw new Error("No docMeta");
         }
 
-        const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+        const pageMeta = IDocMetas.getPageMeta(docMeta, pageNum);
 
         function getOriginal(): IPagemark | ITextHighlight | IAreaHighlight {
 

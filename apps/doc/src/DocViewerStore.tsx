@@ -46,10 +46,11 @@ import {
     IRelatedTagsData,
     RelatedTagsManager
 } from "../../../web/js/tags/related/RelatedTagsManager";
-import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
+import {IDocMetas} from 'polar-shared/src/metadata/IDocMetas';
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
+import {DocMetas} from "../../../web/js/metadata/DocMetas";
 
 /**
  * Lightweight metadata describing the currently loaded document.
