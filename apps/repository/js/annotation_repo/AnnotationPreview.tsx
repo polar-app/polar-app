@@ -11,7 +11,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 const MAX_TEXT_LENGTH = 300;
 
-const createStyle = (color: HighlightColor | undefined): React.CSSProperties => {
+function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 
     if (color) {
 
@@ -24,10 +24,12 @@ const createStyle = (color: HighlightColor | undefined): React.CSSProperties => 
 
     }
 
-    return {};
+    return {
+        paddingLeft: '9px',
+        paddingRight: '5px',
+    };
 
-};
-
+}
 
 const ImagePreview = deepMemo((props: IProps) => {
     const {img} = props;
