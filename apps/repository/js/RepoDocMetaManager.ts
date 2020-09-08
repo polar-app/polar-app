@@ -79,7 +79,7 @@ export class RepoDocMetaManager {
             }
 
             if (isStaleUpdate()) {
-                // console.log("Skipping stale update.");
+                console.log("Skipping stale update.");
                 return;
             }
 
@@ -165,10 +165,6 @@ export class RepoDocMetaManager {
 
     }
 
-    /**
-     * Sync the docInfo to disk.
-     *
-     */
     public async writeDocInfo(docInfo: IDocInfo, docMeta: IDocMeta) {
 
         Preconditions.assertPresent(this.persistenceLayerProvider, 'persistenceLayerProvider');

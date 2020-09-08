@@ -25,7 +25,6 @@ import {ScaleLevelTuple} from "./ScaleLevels";
 import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
-import {DocMetas} from '../../../web/js/metadata/DocMetas';
 import {Arrays} from 'polar-shared/src/util/Arrays';
 import {
     Direction,
@@ -47,6 +46,7 @@ import {
     IRelatedTagsData,
     RelatedTagsManager
 } from "../../../web/js/tags/related/RelatedTagsManager";
+import {DocMetas} from 'polar-shared/src/metadata/DocMetas';
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;

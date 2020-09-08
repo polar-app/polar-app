@@ -276,22 +276,6 @@ export class DocMetas {
         docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
     }
 
-    /**
-     * Create a copy of the DocMeta and with updated lastUpdate fields and
-     * a new UUID.
-     */
-    public static updated(docMeta: IDocMeta): IDocMeta {
-
-        docMeta = Dictionaries.copyOf(docMeta);
-
-        docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
-        docMeta.docInfo.uuid = UUIDs.create();
-
-        const docInfo = Dictionaries.copyOf(docMeta.docInfo);
-        return Object.assign(new DocMeta(docInfo, {}), docMeta);
-
-    }
-
 }
 
 export class MockDocMetas {

@@ -6,7 +6,7 @@ import {
     Functions,
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
-import {IDocAnnotation, IDocAnnotationRef} from "./DocAnnotation";
+import {IDocAnnotationRef} from "./DocAnnotation";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FlashcardInputFieldsType} from "./child_annotations/flashcards/flashcard_input/FlashcardInputs";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
@@ -19,12 +19,12 @@ import {AnnotationMutations} from "polar-shared/src/metadata/mutations/Annotatio
 import {IRef} from "polar-shared/src/metadata/Refs";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {
-    usePersistenceLayerContext, useRepoDocMetaManager,
+    usePersistenceLayerContext,
+    useRepoDocMetaManager,
     useTagsContext
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {TaggedCallbacks} from "../../../apps/repository/js/annotation_repo/TaggedCallbacks";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
@@ -45,9 +45,9 @@ import {
 } from "polar-shared/src/metadata/AnnotationRefs";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import {useLogger} from "../mui/MUILogger";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 
 export interface IAnnotationMutationHolder<M> {
     readonly annotation: IAnnotationRef;
@@ -429,6 +429,8 @@ export namespace AnnotationMutationCallbacks {
         const log = useLogger();
 
         async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
+
+            updatedDocMetas = updatedDocMetas.map(DocMetas.updated)
 
             updatedDocMetas = updateStore(updatedDocMetas);
 
