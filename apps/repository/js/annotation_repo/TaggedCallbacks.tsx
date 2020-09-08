@@ -76,7 +76,7 @@ export namespace TaggedCallbacks {
 
                 return {
                     strategy: 'set',
-                    existingTags: Object.values(annotation.tags || {}),
+                    existingTags: Tags.sortByLabel(Object.values(annotation.tags || {})),
                 };
 
             }
