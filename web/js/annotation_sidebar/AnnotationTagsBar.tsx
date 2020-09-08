@@ -3,6 +3,7 @@ import React from "react";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import {deepMemo} from "../react/ReactUtils";
+import {Mappers} from "polar-shared/src/util/Mapper";
 
 interface IProps {
     readonly tags?: {[id: string]: Tag};
@@ -11,7 +12,12 @@ interface IProps {
 export const AnnotationTagsBar = deepMemo((props: IProps) => {
 
     // TODO: remove document tags too.. .
-    const tags = Tags.sortByLabel(Tags.onlyRegular(Object.values(props.tags || {})));
+
+    const tags = Mappers.create(props.tags)
+        .map(current => Object.values(current || {}))
+        .map(Tags.onlyRegular)
+        .map(Tags.sortByLabel)
+        .collect();
 
     return (
         <>

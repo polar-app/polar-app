@@ -54,7 +54,7 @@ export const AreaHighlightAnnotationView2 = deepMemo((props: IProps) => {
                 <div>
 
                     <div style={{marginTop: '5px'}}>
-                        <AnnotationTagsBar tags={annotation.tags}/>
+                        <AnnotationTagsBar tags={annotation.original.tags}/>
                     </div>
 
                     <div>

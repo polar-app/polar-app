@@ -50,7 +50,7 @@ export const TextHighlightAnnotationView2 = deepMemo((props: IProps) => {
                      }}>
 
                     <div style={{marginTop: '5px'}}>
-                        <AnnotationTagsBar tags={annotation.tags}/>
+                        <AnnotationTagsBar tags={annotation.original.tags}/>
                     </div>
 
                     <div style={{display: 'flex'}}>
