@@ -4,14 +4,14 @@ import {AccountOverview} from "../../../../apps/repository/js/account_overview/A
 import {Analytics} from "../../analytics/Analytics";
 import Button from "@material-ui/core/Button";
 import {EmailStr, URLStr} from "polar-shared/src/util/Strings";
-import {accounts} from "polar-accounts/src/accounts";
+import {Billing} from "polar-accounts/src/Billing";
 import {MUIRouterLink} from "../../mui/MUIRouterLink";
 import {AccountAvatar} from "./AccountAvatar";
 import {memoForwardRefDiv} from "../../react/ReactUtils";
 import {useLogoutCallback} from "../../accounts/AccountHooks";
 import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
-import Subscription = accounts.Subscription;
+import Subscription = Billing.Subscription;
 import {usePopperController} from "../../mui/menu/MUIPopper";
 
 interface LogoutButtonProps {
@@ -117,7 +117,7 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
 
     return (
 
-        <div className="p-2" ref={ref}>
+        <div style={{padding: '10px 20px'}} ref={ref}>
 
             <div>
                 <div className="text-center">

@@ -13,8 +13,11 @@ import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
 import {Either} from "../../../util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
+import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContentButtons";
 
 export namespace AddFileHooks {
+
+    import useAccountVerifiedAction = AddContentButtons.useAccountVerifiedAction;
 
     export function useAddFileImporter() {
 
@@ -22,6 +25,7 @@ export namespace AddFileHooks {
         const {persistenceLayerProvider} = usePersistenceLayerContext()
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
+        const accountVerifiedAction = useAccountVerifiedAction()
 
         async function doImportFiles(files: ReadonlyArray<File>): Promise<ReadonlyArray<ImportedFile>> {
 
@@ -141,20 +145,19 @@ export namespace AddFileHooks {
 
             if (files.length > 0) {
 
-                // FIXME: needs to go back in after 2.0 is released
-                // const accountUpgrader = new AccountUpgrader();
-                //
-                // if (await accountUpgrader.upgradeRequired()) {
-                //     accountUpgrader.startUpgrade();
-                //     return;
-                // }
+                async function doAsync() {
 
-                try {
-                    const importedFiles = await doImportFiles(files);
-                    promptToOpenFiles(importedFiles);
-                } catch (e) {
-                    log.error("Unable to import files: ", files, e);
+                    try {
+                        const importedFiles = await doImportFiles(files);
+                        promptToOpenFiles(importedFiles);
+                    } catch (e) {
+                        log.error("Unable to import files: ", files, e);
+                    }
+
                 }
+
+                accountVerifiedAction(() => doAsync().catch(err => log.error(err)))
+
 
             } else {
                 throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");
