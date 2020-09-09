@@ -43,6 +43,25 @@ export const Resizable = deepMemo((props: IProps) => {
     const win = props.window || window;
     const doc = props.document || document;
 
+    const computeBounds = React.useCallback((): ILTRect => {
+
+        function offsetRect(element: HTMLElement) {
+            return {
+                left: element.offsetLeft,
+                top: element.offsetTop,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            };
+        }
+
+        if (elementRef.current) {
+            return offsetRect(elementRef.current);
+        }
+
+        return offsetRect(doc.body);
+
+    }, [elementRef.current]);
+
     const toggleUserSelect = (resizing: boolean) => {
         // this is a hack to disable user select of the document to prevent
         // parts of the UI from being selected
