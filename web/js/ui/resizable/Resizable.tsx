@@ -4,8 +4,14 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import { VerticalLine } from './VerticalLine';
 import {HorizontalLine} from "./HorizontalLine";
 import {IPoint} from "../../Point";
+import {Rects} from "../../Rects";
+import {ILTRects} from "polar-shared/src/util/rects/ILTRects";
+import {ILTBRRects} from "polar-shared/src/util/rects/ILTBRRects";
+
+export type ResizableBounds = 'parent';
 
 interface IProps {
+
     readonly color: string;
 
     readonly document?: Document;
@@ -22,16 +28,15 @@ interface IProps {
 
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
+    readonly bounds?: ResizableBounds;
+
 }
 
-type Direction = 'top' | 'bottom' | 'left' | 'right';
+export type Direction = 'top' | 'bottom' | 'left' | 'right';
 
 type MouseEventHandler = (event: MouseEvent) => void;
 
 export const Resizable = deepMemo((props: IProps) => {
-
-    // TODO: bounds isn't implemented at all (which is needed) use a ref callback
-    // and then compute bounds when we're resizing.
 
     const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
     const positionRef = React.useRef(position);
@@ -43,22 +48,15 @@ export const Resizable = deepMemo((props: IProps) => {
     const win = props.window || window;
     const doc = props.document || document;
 
-    const computeBounds = React.useCallback((): ILTRect => {
+    const computeBoundsFromParent = React.useCallback((): ILTRect => {
 
-        function offsetRect(element: HTMLElement) {
-            return {
-                left: element.offsetLeft,
-                top: element.offsetTop,
-                width: element.offsetWidth,
-                height: element.offsetHeight
-            };
+        const parentElement = elementRef.current?.parentElement;
+
+        if (parentElement) {
+            return Rects.createFromOffset(parentElement);
         }
 
-        if (elementRef.current) {
-            return offsetRect(elementRef.current);
-        }
-
-        return offsetRect(doc.body);
+        return Rects.createFromOffset(doc.body);
 
     }, [elementRef.current]);
 
@@ -98,7 +96,10 @@ export const Resizable = deepMemo((props: IProps) => {
             y: event.clientY - origin.y
         };
 
-        function computeNewPosition(): ILTRect {
+        /**
+         * Compute the position raw/directly from the current delta.
+         */
+        function computePosition(): ILTRect {
 
             switch (direction) {
 
@@ -129,6 +130,33 @@ export const Resizable = deepMemo((props: IProps) => {
                     };
 
             }
+        }
+
+        /**
+         * Compute the new position but factor in bounds too.
+         */
+        function computeNewPosition(): ILTRect {
+
+            const pos = computePosition();
+
+
+            if (props.bounds) {
+
+                const bounds = computeBoundsFromParent();
+
+                const boundedLTRB = {
+                    left: Math.max(pos.left, 0),
+                    top: Math.max(pos.top, 0),
+                    right: Math.min(pos.left + pos.width, bounds.width),
+                    bottom: Math.min(pos.top + pos.height, bounds.height)
+                }
+
+                return ILTBRRects.toLTRect(boundedLTRB)
+
+            }
+
+            return pos;
+
         }
 
         updatePosition(computeNewPosition());

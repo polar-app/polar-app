@@ -394,12 +394,7 @@ export class Rects {
 
     }
 
-    /**
-     *
-     * @param element {HTMLElement}
-     * @return {Rect}
-     */
-    static createFromOffset(element: HTMLElement) {
+    static createFromOffset(element: HTMLElement): Rect {
 
         // FIXME: if I'm using this it might not be what I want.
 
