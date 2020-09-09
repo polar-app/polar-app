@@ -103,56 +103,11 @@ export const Resizable = deepMemo((props: IProps) => {
             return;
         }
 
-        if (props.bounds) {
-
-            // FIXME: it would be better to compute the DELTA from the original
-            // position so that the points are computed properly.
-
-            // FIXME: make sure the bottom can't be dragged before the top
-            // including the width/height of the drag bars.
-
-            const boundsParentElement = computeBoundsParentElement();
-            //
-            // if (! boundsParentElement) {
-            //     return;
-            // }
-            //
-            // const elementsFromPoint = doc.elementsFromPoint(event.x, event.y);
-            //
-            // if (! elementsFromPoint.includes(boundsParentElement)) {
-            //     // do not include the bounds
-            //     return;
-            // }
-
-        }
-
-        function computeEventClientPoint(): IClientPoint {
-
-            const boundsParentElement = computeBoundsParentElement();
-
-            // if (props.bounds && boundsParentElement) {
-            //     const bcr = boundsParentElement.getBoundingClientRect();
-            //     const clientX = Intervals.within({start: bcr.left, end: bcr.right}, event.clientX);
-            //     const clientY = Intervals.within({start: bcr.top, end: bcr.bottom}, event.clientY);
-            //     return {clientX, clientY};
-            // }
-
-            return event;
-
-        }
-
-        interface IClientPoint {
-            readonly clientX: number;
-            readonly clientY: number;
-        }
-
-        const eventClientPoint = computeEventClientPoint();
-
         const origin = mouseEventOrigin.current!;
 
         const delta = {
-            x: eventClientPoint.clientX - origin.x,
-            y: eventClientPoint.clientY - origin.y
+            x: event.clientX - origin.x,
+            y: event.clientY - origin.y
         };
 
         /**
@@ -172,7 +127,7 @@ export const Resizable = deepMemo((props: IProps) => {
                 case "bottom":
                     return {
                         ...resizingPositionRef.current,
-                        // TODO: also don't allow this to be dragged too far to the top.
+                        // FIXME: also don't allow this to be dragged too far to the top.
                         height: resizingPositionRef.current.height + delta.y
                     };
                 case "left":
@@ -219,7 +174,6 @@ export const Resizable = deepMemo((props: IProps) => {
 
         resizingPositionRef.current = computeResizingPosition();
 
-        // FIXME: we can have a position and a positionResizing
         updatePosition(computePosition());
         mouseEventOrigin.current = event;
 
