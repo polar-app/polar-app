@@ -146,7 +146,6 @@ export const Resizable = deepMemo((props: IProps) => {
                 case "bottom":
                     return {
                         ...resizingPositionRef.current,
-                        // FIXME: also don't allow this to be dragged too far to the top.
                         height: resizingPositionRef.current.height + delta.y
                     };
                 case "left":
