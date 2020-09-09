@@ -39,7 +39,10 @@ type MouseEventHandler = (event: MouseEvent) => void;
 export const Resizable = deepMemo((props: IProps) => {
 
     const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
-    const positionRef = React.useRef(position);
+
+    // the position while we're resizing then truncated to compute the position
+    const resizingPositionRef = React.useRef(position);
+
     const mouseDown = React.useRef(false);
     const mouseEventOrigin = React.useRef<IPoint | undefined>(undefined);
     const mouseMoveHandler = React.useRef<MouseEventHandler | undefined>(undefined);
@@ -80,7 +83,11 @@ export const Resizable = deepMemo((props: IProps) => {
 
     function updatePosition(position: ILTRect) {
         setPosition(position);
-        positionRef.current = position;
+
+        if (props.onResized) {
+            props.onResized(position);
+        }
+
     }
 
     const handleMouseUp = React.useCallback(() => {
@@ -98,58 +105,87 @@ export const Resizable = deepMemo((props: IProps) => {
 
         if (props.bounds) {
 
+            // FIXME: it would be better to compute the DELTA from the original
+            // position so that the points are computed properly.
+
+            // FIXME: make sure the bottom can't be dragged before the top
+            // including the width/height of the drag bars.
+
             const boundsParentElement = computeBoundsParentElement();
-
-            if (! boundsParentElement) {
-                return;
-            }
-
-            const elementsFromPoint = doc.elementsFromPoint(event.x, event.y);
-
-            if (! elementsFromPoint.includes(boundsParentElement)) {
-                // do not include the bounds
-                return;
-            }
+            //
+            // if (! boundsParentElement) {
+            //     return;
+            // }
+            //
+            // const elementsFromPoint = doc.elementsFromPoint(event.x, event.y);
+            //
+            // if (! elementsFromPoint.includes(boundsParentElement)) {
+            //     // do not include the bounds
+            //     return;
+            // }
 
         }
 
+        function computeEventClientPoint(): IClientPoint {
+
+            const boundsParentElement = computeBoundsParentElement();
+
+            // if (props.bounds && boundsParentElement) {
+            //     const bcr = boundsParentElement.getBoundingClientRect();
+            //     const clientX = Intervals.within({start: bcr.left, end: bcr.right}, event.clientX);
+            //     const clientY = Intervals.within({start: bcr.top, end: bcr.bottom}, event.clientY);
+            //     return {clientX, clientY};
+            // }
+
+            return event;
+
+        }
+
+        interface IClientPoint {
+            readonly clientX: number;
+            readonly clientY: number;
+        }
+
+        const eventClientPoint = computeEventClientPoint();
+
         const origin = mouseEventOrigin.current!;
+
         const delta = {
-            x: event.clientX - origin.x,
-            y: event.clientY - origin.y
+            x: eventClientPoint.clientX - origin.x,
+            y: eventClientPoint.clientY - origin.y
         };
 
         /**
          * Compute the position raw/directly from the current delta.
          */
-        function computePosition(): ILTRect {
+        function computeResizingPosition(): ILTRect {
 
             switch (direction) {
 
                 case "top":
                     return {
-                        ...positionRef.current,
-                        top: Math.min(positionRef.current.top + delta.y,
-                                       positionRef.current.top + positionRef.current.height),
-                        height: Math.max(positionRef.current.height - delta.y, 0)
+                        ...resizingPositionRef.current,
+                        top: Math.min(resizingPositionRef.current.top + delta.y,
+                                      resizingPositionRef.current.top + resizingPositionRef.current.height),
+                        height: Math.max(resizingPositionRef.current.height - delta.y, 0)
                     };
                 case "bottom":
                     return {
-                        ...positionRef.current,
+                        ...resizingPositionRef.current,
                         // TODO: also don't allow this to be dragged too far to the top.
-                        height: positionRef.current.height + delta.y
+                        height: resizingPositionRef.current.height + delta.y
                     };
                 case "left":
                     return {
-                        ...positionRef.current,
-                        left: Math.min(positionRef.current.left + delta.x,
-                                       positionRef.current.left + positionRef.current.width),
-                        width: Math.max(positionRef.current.width - delta.x, 0)
+                        ...resizingPositionRef.current,
+                        left: Math.min(resizingPositionRef.current.left + delta.x,
+                                       resizingPositionRef.current.left + resizingPositionRef.current.width),
+                        width: Math.max(resizingPositionRef.current.width - delta.x, 0)
                     };
                 case "right":
                     return {
-                        ...positionRef.current,
-                        width: positionRef.current.width + delta.x,
+                        ...resizingPositionRef.current,
+                        width: resizingPositionRef.current.width + delta.x,
                     };
 
             }
@@ -158,36 +194,34 @@ export const Resizable = deepMemo((props: IProps) => {
         /**
          * Compute the new position but factor in bounds too.
          */
-        function computeNewPosition(): ILTRect {
+        function computePosition(): ILTRect {
 
-            const pos = computePosition();
-
+            const resizingPosition = computeResizingPosition();
 
             if (props.bounds) {
 
                 const boundsParentElementRect = computeBoundsParentElementRect();
 
                 const boundedLTRB = {
-                    left: Math.max(pos.left, 0),
-                    top: Math.max(pos.top, 0),
-                    right: Math.min(pos.left + pos.width, boundsParentElementRect.width),
-                    bottom: Math.min(pos.top + pos.height, boundsParentElementRect.height)
+                    left: Math.max(resizingPosition.left, 0),
+                    top: Math.max(resizingPosition.top, 0),
+                    right: Math.min(resizingPosition.left + resizingPosition.width, boundsParentElementRect.width),
+                    bottom: Math.min(resizingPosition.top + resizingPosition.height, boundsParentElementRect.height)
                 }
 
                 return ILTBRRects.toLTRect(boundedLTRB)
 
             }
 
-            return pos;
+            return resizingPosition;
 
         }
 
-        updatePosition(computeNewPosition());
+        resizingPositionRef.current = computeResizingPosition();
+
+        // FIXME: we can have a position and a positionResizing
+        updatePosition(computePosition());
         mouseEventOrigin.current = event;
-
-        if (props.onResized) {
-            props.onResized(positionRef.current);
-        }
 
     }, []);
 
@@ -255,3 +289,33 @@ export const Resizable = deepMemo((props: IProps) => {
     );
 
 })
+
+namespace Intervals {
+
+    /**
+     * Return a point within the line or truncate it at either the start or end
+     * of the line if it's within the range.
+     */
+    export function within(interval: Interval, point: number): number {
+
+        if (point < interval.start) {
+            return interval.start;
+        }
+
+        if (point > interval.end) {
+            return interval.end;
+        }
+
+        return point;
+
+    }
+
+}
+
+/**
+ * A line with start and end inclusive.
+ */
+interface Interval {
+    readonly start: number;
+    readonly end: number;
+}
