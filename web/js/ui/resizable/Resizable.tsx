@@ -48,12 +48,18 @@ export const Resizable = deepMemo((props: IProps) => {
     const win = props.window || window;
     const doc = props.document || document;
 
-    const computeBoundsFromParent = React.useCallback((): ILTRect => {
+    const computeBoundsParentElement = React.useCallback(() => {
 
-        const parentElement = elementRef.current?.parentElement;
+        return elementRef.current?.parentElement;
 
-        if (parentElement) {
-            return Rects.createFromOffset(parentElement);
+    }, [elementRef.current]);
+
+    const computeBoundsParentElementRect = React.useCallback((): ILTRect => {
+
+        const boundsParentElement = computeBoundsParentElement();
+
+        if (boundsParentElement) {
+            return Rects.createFromOffset(boundsParentElement);
         }
 
         return Rects.createFromOffset(doc.body);
@@ -88,6 +94,23 @@ export const Resizable = deepMemo((props: IProps) => {
         if (! mouseDown.current) {
             // the mouse wasn't clicked here...
             return;
+        }
+
+        if (props.bounds) {
+
+            const boundsParentElement = computeBoundsParentElement();
+
+            if (! boundsParentElement) {
+                return;
+            }
+
+            const elementsFromPoint = doc.elementsFromPoint(event.x, event.y);
+
+            if (! elementsFromPoint.includes(boundsParentElement)) {
+                // do not include the bounds
+                return;
+            }
+
         }
 
         const origin = mouseEventOrigin.current!;
@@ -142,13 +165,13 @@ export const Resizable = deepMemo((props: IProps) => {
 
             if (props.bounds) {
 
-                const bounds = computeBoundsFromParent();
+                const boundsParentElementRect = computeBoundsParentElementRect();
 
                 const boundedLTRB = {
                     left: Math.max(pos.left, 0),
                     top: Math.max(pos.top, 0),
-                    right: Math.min(pos.left + pos.width, bounds.width),
-                    bottom: Math.min(pos.top + pos.height, bounds.height)
+                    right: Math.min(pos.left + pos.width, boundsParentElementRect.width),
+                    bottom: Math.min(pos.top + pos.height, boundsParentElementRect.height)
                 }
 
                 return ILTBRRects.toLTRect(boundedLTRB)
