@@ -1,11 +1,10 @@
 import React from 'react';
 import {deepMemo} from "../../react/ReactUtils";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import { VerticalLine } from './VerticalLine';
+import {VerticalLine} from './VerticalLine';
 import {HorizontalLine} from "./HorizontalLine";
 import {IPoint} from "../../Point";
 import {Rects} from "../../Rects";
-import {ILTRects} from "polar-shared/src/util/rects/ILTRects";
 import {ILTBRRects} from "polar-shared/src/util/rects/ILTBRRects";
 
 export type ResizableBounds = 'parent';
@@ -13,21 +12,14 @@ export type ResizableBounds = 'parent';
 interface IProps {
 
     readonly color: string;
-
     readonly document?: Document;
     readonly window?: Window;
-
     readonly style?: React.CSSProperties;
     readonly className?: string;
-
     readonly resizeAxis?: 'y';
-
     readonly computeInitialPosition: () => ILTRect;
-
     readonly onResized?: (resizeRect: ILTRect) => void;
-
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-
     readonly bounds?: ResizableBounds;
 
 }
@@ -81,6 +73,32 @@ export const Resizable = deepMemo((props: IProps) => {
 
     };
 
+    const toggleCursor = (direction: Direction | undefined) => {
+
+        if (! direction) {
+            doc.body.style.cursor = 'auto';
+            return;
+        }
+
+        function computeCursor(direction: Direction) {
+
+            switch(direction) {
+                case "top":
+                    return 'row-resize';
+                case "bottom":
+                    return 'row-resize';
+                case "left":
+                    return 'col-resize';
+                case "right":
+                    return 'col-resize';
+            }
+
+        }
+
+        doc.body.style.cursor = computeCursor(direction);
+
+    }
+
     function updatePosition(position: ILTRect) {
         setPosition(position);
 
@@ -93,6 +111,7 @@ export const Resizable = deepMemo((props: IProps) => {
     const handleMouseUp = React.useCallback(() => {
         mouseDown.current = false;
         toggleUserSelect(false);
+        toggleCursor(undefined);
         win.removeEventListener('mousemove', mouseMoveHandler.current!);
     }, []);
 
@@ -184,6 +203,7 @@ export const Resizable = deepMemo((props: IProps) => {
         mouseEventOrigin.current = {x: event.clientX, y: event.clientY};
 
         toggleUserSelect(true);
+        toggleCursor(direction);
 
         mouseMoveHandler.current = (event: MouseEvent) => handleMouseMove(event, direction);
 
@@ -243,33 +263,3 @@ export const Resizable = deepMemo((props: IProps) => {
     );
 
 })
-
-namespace Intervals {
-
-    /**
-     * Return a point within the line or truncate it at either the start or end
-     * of the line if it's within the range.
-     */
-    export function within(interval: Interval, point: number): number {
-
-        if (point < interval.start) {
-            return interval.start;
-        }
-
-        if (point > interval.end) {
-            return interval.end;
-        }
-
-        return point;
-
-    }
-
-}
-
-/**
- * A line with start and end inclusive.
- */
-interface Interval {
-    readonly start: number;
-    readonly end: number;
-}
