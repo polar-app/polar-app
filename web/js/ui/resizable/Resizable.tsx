@@ -11,6 +11,7 @@ export type ResizableBounds = 'parent';
 
 interface IProps {
 
+    readonly id?: string;
     readonly color: string;
     readonly document?: Document;
     readonly window?: Window;
@@ -18,9 +19,14 @@ interface IProps {
     readonly className?: string;
     readonly resizeAxis?: 'y';
     readonly computeInitialPosition: () => ILTRect;
-    readonly onResized?: (resizeRect: ILTRect) => void;
+    readonly onResized?: (resizeRect: ILTRect, direction: Direction) => void;
     readonly onContextMenu?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     readonly bounds?: ResizableBounds;
+
+    /**
+     * CSS properties for the resize handles.
+     */
+    readonly resizeHandleStyle?: React.CSSProperties;
 
 }
 
@@ -28,6 +34,9 @@ export type Direction = 'top' | 'bottom' | 'left' | 'right';
 
 type MouseEventHandler = (event: MouseEvent) => void;
 
+// FIXME: I need to add support for positioning based on the positioned ancestor
+// a box might have default positioning so position 'absolute' won't work to
+// position it ... this is going to require some more work
 export const Resizable = deepMemo((props: IProps) => {
 
     const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
@@ -99,11 +108,11 @@ export const Resizable = deepMemo((props: IProps) => {
 
     }
 
-    function updatePosition(position: ILTRect) {
+    function updatePosition(position: ILTRect, direction: Direction) {
         setPosition(position);
 
         if (props.onResized) {
-            props.onResized(position);
+            props.onResized(position, direction);
         }
 
     }
@@ -192,7 +201,7 @@ export const Resizable = deepMemo((props: IProps) => {
 
         resizingPositionRef.current = computeResizingPosition();
 
-        updatePosition(computePosition());
+        updatePosition(computePosition(), direction);
         mouseEventOrigin.current = event;
 
     }, []);
@@ -227,7 +236,8 @@ export const Resizable = deepMemo((props: IProps) => {
 
     return (
 
-        <div style={{...style, ...props.style}}
+        <div id={props.id}
+             style={{...style, ...props.style}}
              ref={ref => elementRef.current = ref}
              draggable={false}
              className={props.className}
