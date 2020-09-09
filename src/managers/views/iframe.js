@@ -412,7 +412,12 @@ class IframeView {
 		this.window = this.iframe.contentWindow;
 		this.document = this.iframe.contentDocument;
 
-		this.contents = new Contents(this.document, this.document.body, this.section.cfiBase, this.section.index);
+		const contentParent = this.document.createElement('div');
+		contentParent.setAttribute('class', 'epub-content-parent');
+
+		this.document.body.appendChild(contentParent);
+
+		this.contents = new Contents(this.document, contentParent, this.section.cfiBase, this.section.index);
 
 		this.rendering = false;
 
