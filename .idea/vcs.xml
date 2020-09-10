@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/epub.js" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
@@ -13,7 +14,7 @@
     <mapping directory="$PROJECT_DIR$/packages/polar-connect-anki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-mobile-app" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-site" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/polar-site2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/readability" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/packages/epub.js" vcs="Git" />
   </component>
 </project>
