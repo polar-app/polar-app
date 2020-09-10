@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "www.getpolarized.io",
     "public": "public",
     "ignore": [
       "firebase.json",
