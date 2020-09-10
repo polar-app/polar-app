@@ -240,12 +240,12 @@ export const PDFDocument = React.memo((props: IProps) => {
 
         setPageNavigator(pageNavigator);
 
-        const scrollDebouncer = Debouncers.create(() => {
+        const handleScroll = Debouncers.create(() => {
             dispatchPDFDocMeta();
         });
 
         docViewer.containerElement.addEventListener('scroll', () => {
-            scrollDebouncer();
+            handleScroll();
         });
 
         const scaleLeveler = (scale: ScaleLevelTuple) => {
