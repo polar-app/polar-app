@@ -272,3 +272,37 @@ export const Resizable = deepMemo((props: IProps) => {
     );
 
 })
+
+export namespace HTMLElements {
+
+    /**
+     * Search backwards in the DOM to find the most positioned ancestor or
+     * the current element if it's positioned.
+     */
+    export function findPositionedAncestor(element: HTMLElement): HTMLElement | undefined {
+
+        if (element.style.position !== null && element.style.position !== 'static') {
+            return element;
+        }
+
+        if (element.parentElement) {
+            return findPositionedAncestor(element.parentElement);
+        }
+
+        return undefined;
+
+    }
+
+    export function computeOffset(parent: HTMLElement, child: HTMLElement): IPoint {
+
+        const parentBCR = parent.getBoundingClientRect();
+        const childBCR = child.getBoundingClientRect();
+
+        const x = childBCR.x - parentBCR.x;
+        const y = childBCR.y - parentBCR.y
+
+        return {x, y};
+
+    }
+
+}
