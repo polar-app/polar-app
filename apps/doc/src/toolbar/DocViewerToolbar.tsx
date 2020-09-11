@@ -1,5 +1,4 @@
 import * as React from "react";
-import {useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {PDFScales, ScaleLevel, ScaleLevelTuples} from "../ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
@@ -7,7 +6,6 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
-import TextField from "@material-ui/core/TextField";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 
 import Select from "@material-ui/core/Select";
@@ -15,11 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import {DocFindButton} from "../DocFindButton";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import {
-    IDocDescriptor,
-    useDocViewerCallbacks,
-    useDocViewerStore
-} from "../DocViewerStore";
+import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import Divider from "@material-ui/core/Divider";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocFindStore} from "../DocFindStore";
@@ -29,146 +23,9 @@ import {MUIDocArchiveButton} from "../../../repository/js/doc_repo/buttons/MUIDo
 import {DocViewerToolbarOverflowButton} from "../DocViewerToolbarOverflowButton";
 import {MUIDocTagButton} from "../../../repository/js/doc_repo/buttons/MUIDocTagButton";
 import {FullScreenButton} from "./FullScreenButton";
+import {NumPages} from "./NumPages";
+import {PageNumberInput} from "./PageNumberInput";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
-
-interface PageNumberInputProps {
-    readonly docDescriptor: IDocDescriptor | undefined;
-}
-
-interface PageNumberInputState {
-    readonly changing: boolean;
-    readonly value: string;
-}
-
-const PageNumberInput = (props: NumPagesProps) => {
-
-    const {page, pageNavigator} = useDocViewerStore(['page', 'pageNavigator']);
-    const {onPageJump} = useDocViewerCallbacks();
-
-    // yield to the property, except if we're changing the value, then jump
-    // to the right value, and then blur the element...
-
-    const numberToString = (value: number | undefined): string => {
-
-        if (value) {
-            return value.toString();
-        }
-
-        return '';
-
-    };
-
-    const [state, setState] = useState<PageNumberInputState>({
-        changing: false,
-        value: ''
-    });
-
-    const value = state.changing ?
-        state.value :
-        numberToString(page);
-
-    const resetState = () => {
-        setState({
-            changing: false,
-            value: ''
-        });
-    };
-
-    const parsePage = (): number | undefined => {
-
-        try {
-
-            const page = parseInt(value);
-
-            if (page <= 0 || page > (props.nrPages || 0)) {
-                return undefined;
-            }
-
-            return page;
-
-        } catch (e) {
-            return undefined;
-        }
-
-    };
-
-    const onEnter = () => {
-
-        const newPage = parsePage();
-
-        if (newPage) {
-            onPageJump(newPage);
-        }
-
-    };
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-
-        // note that react-hotkeys is broken when you listen to 'Enter' on
-        // ObserveKeys when using an <input> but it doesn't matter because we can
-        // just listen to the key directly
-
-        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-            // Make sure NO other modifiers are enabled.. ctrl+escape for example.
-            return;
-        }
-
-        switch (event.key) {
-
-            case 'Enter':
-                onEnter();
-                break;
-
-        }
-
-    };
-
-    const handleChange = (val: string) => {
-        setState({changing: true, value: val});
-    };
-
-    const handleBlur = () => {
-        resetState();
-    };
-
-    return (
-        <div style={{
-                 maxWidth: '5em'
-             }}
-             className="mt-auto mb-auto">
-
-            <TextField value={value}
-                       onChange={event => handleChange(event.currentTarget.value)}
-                       disabled={! pageNavigator || pageNavigator.count <= 1}
-                       onBlur={() => handleBlur()}
-                       onKeyDown={event => handleKeyDown(event)}
-                       type="text"
-                       size="small"
-                       variant="outlined"
-                       inputProps={{
-                           style: {
-                               textAlign: "right"
-                           }
-                       }}
-                       style={{
-                           width: '5em',
-                       }}/>
-        </div>
-
-    );
-
-};
-
-interface NumPagesProps {
-    readonly nrPages: number;
-}
-
-const NumPages = (props: NumPagesProps) => (
-    <div className="ml-1 mt-auto mb-auto"
-         style={{fontSize: "1.3rem", userSelect: 'none'}}>
-        of {props.nrPages}
-    </div>
-);
 
 const PagePrevButton = React.memo(() => {
 
