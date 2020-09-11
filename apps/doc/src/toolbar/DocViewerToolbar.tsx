@@ -25,16 +25,15 @@ import {NumPages} from "./NumPages";
 import {PageNumberInput} from "./PageNumberInput";
 import {PagePrevButton} from "./PagePrevButton";
 import {PageNextButton} from "./PageNextButton";
+import {useLogWhenChanged} from "../../../../web/js/hooks/ReactHooks";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
-
-export const DocViewerToolbar = React.memo(() => {
+export const DocViewerToolbar = deepMemo(() => {
 
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
-
     const {finder} = useDocFindStore(['finder']);
-
     const {setScale, setDocFlagged, setDocArchived, onDocTagged} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {

@@ -32,6 +32,7 @@ import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
+import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
 
 const Main = React.memo(() => {
 
