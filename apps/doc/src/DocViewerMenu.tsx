@@ -463,11 +463,28 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const onPagemarkSetMode = (annotation: IAnnotationMeta) => {
 
         function convertPagemarkModeToOption(mode: PagemarkMode): ISelectOption<PagemarkMode> {
-            return {
-                id: mode,
-                label: mode.replace(/_/g, " "),
-                value: mode
-            };
+
+            function createOption(mode: PagemarkMode, label?: string) {
+
+                label = label || mode.replace(/_/g, " ");
+
+                return {
+                    id: mode,
+                    label,
+                    value: mode
+                };
+
+            }
+
+            switch (mode) {
+
+                case PagemarkMode.PRE_READ:
+                    return createOption(mode, 'PREVIOUSLY READ')
+                default:
+                    return createOption(mode);
+
+            }
+
         }
 
         const options: ReadonlyArray<ISelectOption<PagemarkMode>> =
