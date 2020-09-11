@@ -1,3 +1,8 @@
+# 2.0 beta 23
+
+- Improved performance of the PDF doc viewer.  Not all the performance updates
+  I want though but getting better 
+
 # 2.0 beta 22
 
 - Fixed jumping to epub pagemarks
