@@ -37,8 +37,8 @@ export const DockSplitter = deepMemo((props: IProps) => {
     return (
         <div draggable={false}
              onMouseDown={() => props.onMouseDown()}
-             onMouseOver={() => setActive(true)}
-             onMouseOut={() => setActive(false)}
+             // onMouseOver={() => setActive(true)}
+             // onMouseOut={() => setActive(false)}
              style={splitterStyle}>
 
         </div>

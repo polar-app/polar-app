@@ -69,7 +69,7 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
 
     return (
         <div key={key} className="">
-            <MUIHoverController>
+            {/*<MUIHoverController>*/}
                 <>
 
                     <AnnotationTypeComponent {...props}/>
@@ -82,7 +82,7 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
                     </div>
 
                 </>
-            </MUIHoverController>
+            {/*</MUIHoverController>*/}
         </div>
     );
 
