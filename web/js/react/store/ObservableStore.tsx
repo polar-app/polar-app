@@ -91,9 +91,15 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
             }
 
         } else {
-            // TODO: we can STILL do the lazy comparison here and only update
-            // when the value has actually changed.
-            return doUpdateValue(nextValue);
+
+            const currValue = valueRef.current;
+
+            if (! isEqual(currValue, nextValue)) {
+                // we can STILL do the lazy comparison here and only
+                // update when the value has actually changed.
+                return doUpdateValue(nextValue);
+
+            }
         }
 
     }));
