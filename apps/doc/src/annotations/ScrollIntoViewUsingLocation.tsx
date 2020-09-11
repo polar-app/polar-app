@@ -23,11 +23,19 @@ export function useScrollIntoViewUsingLocation() {
     const {initialScrollLoader} = useLocationChangeStore(['initialScrollLoader'])
     const scrollTarget = useScrollTarget();
 
+    // There are two times when this needs to be called:
+    //
+    // - when the ref is defined because we then might have a ref + scrollTarget
+    //
+    // - when the scrollTarget has changed due to a locatoin change.
+
     function handleRef() {
-        if (scrollTarget) {
+        if (scrollTarget && ref.current) {
             initialScrollLoader(scrollTarget, ref.current);
         }
     }
+
+    handleRef();
 
     return (newRef: HTMLElement | null) => {
 
