@@ -7,7 +7,6 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import TextField from "@material-ui/core/TextField";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 
@@ -29,6 +28,7 @@ import {MUIDocFlagButton} from "../../../repository/js/doc_repo/buttons/MUIDocFl
 import {MUIDocArchiveButton} from "../../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
 import {DocViewerToolbarOverflowButton} from "../DocViewerToolbarOverflowButton";
 import {MUIDocTagButton} from "../../../repository/js/doc_repo/buttons/MUIDocTagButton";
+import {FullScreenButton} from "./FullScreenButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 interface PageNumberInputProps {
@@ -39,60 +39,6 @@ interface PageNumberInputState {
     readonly changing: boolean;
     readonly value: string;
 }
-
-const FullScreenButton = React.memo(() => {
-
-    const [fullScreen, setFullScreen] = useState(false);
-
-    // TODO: shift+command+f for macos full-screen
-    // make this a hook that we can reuse...
-
-    function requestFullScreen() {
-
-        async function doAsync() {
-
-            if (! fullScreen) {
-                await document.documentElement.requestFullscreen();
-                setFullScreen(true);
-            }
-        }
-
-        doAsync()
-            .catch(err => console.error(err));
-
-    }
-
-
-    function exitFullScreen() {
-
-        async function doAsync() {
-
-            if (fullScreen) {
-                await document.exitFullscreen();
-                setFullScreen(false);
-            }
-        }
-
-        doAsync()
-            .catch(err => console.error(err));
-
-    }
-
-    function toggleFullScreen() {
-        if (fullScreen) {
-            exitFullScreen();
-        } else {
-            requestFullScreen();
-        }
-    }
-
-    return (
-        <IconButton onClick={toggleFullScreen}>
-            <FullscreenIcon/>
-        </IconButton>
-    )
-
-});
 
 const PageNumberInput = (props: NumPagesProps) => {
 
