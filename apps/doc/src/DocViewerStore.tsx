@@ -52,6 +52,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
+import isEqual from 'react-fast-compare';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -411,6 +412,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function setDocDescriptor(docDescriptor: IDocDescriptor) {
         const store = storeProvider();
+
+        if (isEqual(store.docDescriptor, docDescriptor)) {
+            // TODO: push this into setStore as it's probably ok to not update
+            // when the values are equal.
+            return;
+        }
+
         setStore({...store, docDescriptor});
     }
 
@@ -743,6 +751,13 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     function setPage(page: number) {
         const store = storeProvider();
+
+        if (store.page === page) {
+            // TODO: push this into setStore as it's probably ok to not update
+            // when the values are equal.
+            return;
+        }
+
         setStore({
              ...store,
              page
