@@ -31,6 +31,7 @@ import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
+import {deepMemo} from "../../../web/js/react/ReactUtils";
 
 const Main = React.memo(() => {
 
@@ -241,7 +242,7 @@ namespace Device {
 
 }
 
-const DocViewerMain = React.memo(() => {
+const DocViewerMain = deepMemo(() => {
 
     return (
         <DeviceRouter handheld={<Device.Handheld/>}
@@ -250,20 +251,30 @@ const DocViewerMain = React.memo(() => {
 
 });
 
-export const DocViewer = React.memo(() => {
+interface DocViewerParentProps {
+    readonly docID: string;
+    readonly children: React.ReactNode;
+}
+
+const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
+    <div data-doc-viewer-id={props.docID}
+         style={{
+             display: 'flex',
+             minHeight: 0,
+             overflow: 'auto',
+             flexGrow: 1,
+         }}>
+        {props.children}
+    </div>
+));
+
+export const DocViewer = deepMemo(() => {
 
     const {docURL} = useDocViewerStore(['docURL']);
     const {setDocMeta} = useDocViewerCallbacks();
     const log = useLogger();
-    const persistenceLayerContext = usePersistenceLayerContext()
-
-    // TODO: do this in a root context component so we could make
-    // this into a component that takes props, not just a URL.
-    const parsedURL = DocViewerAppURLs.parse(document.location.href);
-
-    // TODO: I think I can have hard wired types for state transition functions
-    // like an uninitialized store, with missing values, then an initialized one
-    // with a different 'type' value.
+    const persistenceLayerContext = usePersistenceLayerContext();
+    const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
 
     useComponentDidMount(() => {
 
@@ -308,19 +319,13 @@ export const DocViewer = React.memo(() => {
     const docID = parsedURL.id;
 
     return (
-        <div data-doc-viewer-id={docID}
-             style={{
-                 display: 'flex',
-                 minHeight: 0,
-                 overflow: 'auto',
-                 flexGrow: 1,
-             }}>
+        <DocViewerParent docID={docID}>
             <DocViewerContext.Provider value={{fileType, docID}}>
                 <ViewerContainerProvider>
                     <DocViewerMain/>
                 </ViewerContainerProvider>
             </DocViewerContext.Provider>
-        </div>
+        </DocViewerParent>
     );
 
 });

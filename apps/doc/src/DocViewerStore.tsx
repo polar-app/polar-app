@@ -51,6 +51,7 @@ import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
+import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -855,27 +856,31 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
-    return {
-        updateDocMeta,
-        setDocMeta,
-        setDocDescriptor,
-        setDocScale,
-        setDocLoaded,
-        setPageNavigator,
-        annotationMutations,
-        onPagemark,
-        onPageJump,
-        onPagePrev,
-        onPageNext,
-        setResizer,
-        setScaleLeveler,
-        setScale,
-        setPage,
-        setFluidPagemarkFactory,
-        setDocFlagged,
-        setDocArchived,
-        onDocTagged
-    };
+    // HACK: this is a hack until we find a better way memoize our variables.
+    // I really hate this aspect of hook.
+    return React.useMemo(() => {
+        return {
+            updateDocMeta,
+            setDocMeta,
+            setDocDescriptor,
+            setDocScale,
+            setDocLoaded,
+            setPageNavigator,
+            annotationMutations,
+            onPagemark,
+            onPageJump,
+            onPagePrev,
+            onPageNext,
+            setResizer,
+            setScaleLeveler,
+            setScale,
+            setPage,
+            setFluidPagemarkFactory,
+            setDocFlagged,
+            setDocArchived,
+            onDocTagged
+        };
+    }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks, dialogs]);
 
 }
 

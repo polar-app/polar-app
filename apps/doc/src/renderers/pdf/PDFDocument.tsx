@@ -25,7 +25,6 @@ import {
     IDocScale,
     useDocViewerCallbacks
 } from "../../DocViewerStore";
-import isEqual from 'react-fast-compare';
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
 import {PDFDocs} from "polar-pdf/src/pdf/PDFDocs";
