@@ -2,7 +2,6 @@ import * as React from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {PDFScales, ScaleLevel, ScaleLevelTuples} from "../ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
@@ -25,21 +24,8 @@ import {FullScreenButton} from "./FullScreenButton";
 import {NumPages} from "./NumPages";
 import {PageNumberInput} from "./PageNumberInput";
 import {PagePrevButton} from "./PagePrevButton";
+import {PageNextButton} from "./PageNextButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
-
-const PageNextButton = () => {
-
-    const {onPageNext} = useDocViewerCallbacks();
-    const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);
-
-    return (
-        <IconButton disabled={! pageNavigator || page >= pageNavigator.count}
-                    onClick={onPageNext}>
-            <ArrowDownwardIcon/>
-        </IconButton>
-    );
-
-}
 
 
 export const DocViewerToolbar = React.memo(() => {
