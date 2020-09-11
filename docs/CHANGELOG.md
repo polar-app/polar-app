@@ -1,3 +1,12 @@
+# 2.0 beta 22
+
+- Fixed jumping to epub pagemarks
+- Updated doc viewer menu with better menu entry names
+- EPUB search next,prev works now
+- PDF document scroll page number detection works now...
+- Options (tags) are sorted in options now in the autocomplete dialog
+- No folders when tagging annotations now 
+
 # 2.0 beta 21
 
 - fixed bug with annotation repo store where it wasn't updating immediately.
