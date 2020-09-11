@@ -78,7 +78,7 @@ export namespace EPUBFindControllers {
             });
 
             callbacks.setHits(hits);
-
+            next();
             opts.onMatches({total: hits.length, current: hits.length > 0 ? 1 : 0});
 
             return {opts, cancel, next, prev};

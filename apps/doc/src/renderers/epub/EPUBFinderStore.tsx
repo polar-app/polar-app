@@ -55,7 +55,7 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
 
     function setHits(hits: ReadonlyArray<DOMTextHit>) {
         const store = storeProvider();
-        setStore({...store, hits, current: 0});
+        setStore({...store, hits, current: -1});
     }
 
     function setCurrent(current: number) {
@@ -85,8 +85,8 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
 
         if (newCurrent >= min && newCurrent <= max) {
             setStore({...store, current: newCurrent});
-    
-            const hit = store.hits[newCurrent];;
+
+            const hit = store.hits[newCurrent];
 
             return {
                 idx: newCurrent,
