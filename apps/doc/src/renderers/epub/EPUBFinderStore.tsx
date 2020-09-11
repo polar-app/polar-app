@@ -4,6 +4,7 @@ import {
     createObservableStore,
     SetStore
 } from "../../../../../web/js/react/store/ObservableStore";
+import { useDocViewerStore } from "../../DocViewerStore";
 
 export interface IEPUBFinderStore {
 
@@ -15,6 +16,7 @@ export interface IEPUBFinderStore {
 
 export interface DOMTextHitWithIndex extends DOMTextHit {
     readonly idx: number;
+    readonly pageNum: number;
 }
 
 export interface IEPUBFinderCallbacks {
@@ -49,6 +51,8 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
                           setStore: (store: IEPUBFinderStore) => void,
                           mutator: Mutator): IEPUBFinderCallbacks {
 
+    const {page} = useDocViewerStore(['page']);
+
     function setHits(hits: ReadonlyArray<DOMTextHit>) {
         const store = storeProvider();
         setStore({...store, hits, current: 0});
@@ -81,10 +85,14 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
 
         if (newCurrent >= min && newCurrent <= max) {
             setStore({...store, current: newCurrent});
-
+    
             const hit = store.hits[newCurrent];;
 
-            return {idx: newCurrent, ...hit};
+            return {
+                idx: newCurrent,
+                pageNum: page,
+                ...hit
+            };
 
         }
 
