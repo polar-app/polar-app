@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {PDFScales, ScaleLevel, ScaleLevelTuples} from "./ScaleLevels";
+import {PDFScales, ScaleLevel, ScaleLevelTuples} from "../ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -9,26 +9,26 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import TextField from "@material-ui/core/TextField";
-import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
+import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import {DocFindButton} from "./DocFindButton";
-import {MUIButtonBar} from "../../../web/js/mui/MUIButtonBar";
+import {DocFindButton} from "../DocFindButton";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {
     IDocDescriptor,
     useDocViewerCallbacks,
     useDocViewerStore
-} from "./DocViewerStore";
+} from "../DocViewerStore";
 import Divider from "@material-ui/core/Divider";
-import {DeviceRouters} from "../../../web/js/ui/DeviceRouter";
-import {useDocFindStore} from "./DocFindStore";
-import {DocumentWriteStatus} from "../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
-import {MUIDocFlagButton} from "../../repository/js/doc_repo/buttons/MUIDocFlagButton";
-import {MUIDocArchiveButton} from "../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
-import {DocViewerToolbarOverflowButton} from "./DocViewerToolbarOverflowButton";
-import {MUIDocTagButton} from "../../repository/js/doc_repo/buttons/MUIDocTagButton";
+import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import {useDocFindStore} from "../DocFindStore";
+import {DocumentWriteStatus} from "../../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
+import {MUIDocFlagButton} from "../../../repository/js/doc_repo/buttons/MUIDocFlagButton";
+import {MUIDocArchiveButton} from "../../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
+import {DocViewerToolbarOverflowButton} from "../DocViewerToolbarOverflowButton";
+import {MUIDocTagButton} from "../../../repository/js/doc_repo/buttons/MUIDocTagButton";
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 interface PageNumberInputProps {
