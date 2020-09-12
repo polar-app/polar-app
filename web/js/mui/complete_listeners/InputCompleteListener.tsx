@@ -91,9 +91,10 @@ export const InputCompleteListener = deepMemo((props: IProps) => {
 
     const handlers = useInputCompleteListener(props);
 
-    return <div {...handlers} className="input-complete-listener">
-        {props.children}
-    </div>;
+    return (
+        <div {...handlers} className="input-complete-listener">
+            {props.children}
+        </div>
+    );
 
-})
-;
+});
