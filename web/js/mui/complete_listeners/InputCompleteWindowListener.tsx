@@ -7,6 +7,7 @@ import {
 import {deepMemo} from "../../react/ReactUtils";
 
 export function isInputCompleteEvent(event: KeyboardEvent) {
+    // this should be ctrl+enter and command+enter
     return (event.ctrlKey || event.metaKey) && event.key === 'Enter';
 }
 

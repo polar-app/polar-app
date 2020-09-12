@@ -10,6 +10,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {HotKeyCompleteListener} from "../../mui/complete_listeners/HotKeyCompleteListener";
 import isEqual from 'react-fast-compare';
+import {InputCompleteWindowListener} from "../../mui/complete_listeners/InputCompleteWindowListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -96,47 +97,49 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
     const palette = classes[type];
 
     return (
-        <HotKeyCompleteListener onComplete={handleAccept}>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description">
 
-                <DialogTitle id="alert-dialog-title" className={palette}>
-                    {props.title}
-                </DialogTitle>
+            <InputCompleteWindowListener onComplete={handleAccept} onCancel={handleCancel}>
+                <>
+                    <DialogTitle id="alert-dialog-title" className={palette}>
+                        {props.title}
+                    </DialogTitle>
 
-                <DialogContent>
+                    <DialogContent>
 
-                    <Box pt={1}>
-                        <DialogContentText id="alert-dialog-description"
-                                           className={classes.subtitle}>
-                            {props.subtitle}
-                        </DialogContentText>
-                    </Box>
+                        <Box pt={1}>
+                            <DialogContentText id="alert-dialog-description"
+                                               className={classes.subtitle}>
+                                {props.subtitle}
+                            </DialogContentText>
+                        </Box>
 
-                </DialogContent>
-                <DialogActions>
+                    </DialogContent>
+                    <DialogActions>
 
-                    {! props.noCancel &&
-                    <Button className={classes.cancelButton}
-                            onClick={handleCancel}
-                            size="large">
-                        Cancel
-                    </Button>}
+                        {! props.noCancel &&
+                        <Button className={classes.cancelButton}
+                                onClick={handleCancel}
+                                size="large">
+                            Cancel
+                        </Button>}
 
-                    <Button className={palette}
-                            onClick={handleAccept}
-                            size="large"
-                            variant="contained"
-                            autoFocus={props.autoFocus}>
-                        Accept
-                    </Button>
+                        <Button className={palette}
+                                onClick={handleAccept}
+                                size="large"
+                                variant="contained"
+                                autoFocus={props.autoFocus}>
+                            Accept
+                        </Button>
 
-                </DialogActions>
+                    </DialogActions>
+                </>
+            </InputCompleteWindowListener>
 
-            </Dialog>
-        </HotKeyCompleteListener>
+        </Dialog>
     );
 }, isEqual);
