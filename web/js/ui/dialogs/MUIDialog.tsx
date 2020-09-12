@@ -8,7 +8,6 @@ import React from "react";
 export const MUIDialog = deepMemo((props: DialogProps) => {
 
     function preventEventPropagation(event: React.KeyboardEvent) {
-        console.log("FIXME: blocking");
         event.stopPropagation();
         event.preventDefault();
     }
@@ -16,9 +15,9 @@ export const MUIDialog = deepMemo((props: DialogProps) => {
     return (
 
         <Dialog {...props}
-                // onKeyPress={preventEventPropagation}
-                // onKeyDown={preventEventPropagation}
-                // onKeyUp={preventEventPropagation}
+                onKeyPress={preventEventPropagation}
+                onKeyDown={preventEventPropagation}
+                onKeyUp={preventEventPropagation}
                 >
 
             {props.children}

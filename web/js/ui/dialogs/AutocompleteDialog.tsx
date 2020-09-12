@@ -9,7 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Dialog from '@material-ui/core/Dialog';
-import {InputCompleteWindowListener,} from "../../mui/complete_listeners/InputCompleteWindowListener";
+import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -44,8 +44,6 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
 
     const classes = useStyles();
 
-    // let value: string = props.defaultValue || "";
-
     const [state, setState] = React.useState<IState>({
         open: true
     });
@@ -78,41 +76,42 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
         <Dialog open={state.open}
                 onClose={handleCancel}
                 aria-labelledby="form-dialog-title">
-                <InputCompleteWindowListener onComplete={handleComplete}
-                                             onCancel={handleCancel}>
-                    <>
 
-                        {props.title &&
-                        <DialogTitle>{props.title}</DialogTitle>}
+            <InputCompleteListener onComplete={handleComplete}
+                                   onCancel={handleCancel}>
+                <>
 
-                        <DialogContent>
+                    {props.title &&
+                    <DialogTitle>{props.title}</DialogTitle>}
 
-                            {props.description &&
-                            <Box pt={1}>
-                                <DialogContentText className={classes.description}>
-                                    {props.description}
-                                </DialogContentText>
-                            </Box>}
+                    <DialogContent>
 
-                            <MUICreatableAutocomplete {...props}
-                                                      autoFocus={true}
-                                                      onChange={handleChange}/>
+                        {props.description &&
+                        <Box pt={1}>
+                            <DialogContentText className={classes.description}>
+                                {props.description}
+                            </DialogContentText>
+                        </Box>}
 
-                        </DialogContent>
+                        <MUICreatableAutocomplete {...props}
+                                                  autoFocus={true}
+                                                  onChange={handleChange}/>
 
-                        <DialogActions>
-                            <Button onClick={handleCancel}>
-                                Cancel
-                            </Button>
-                            <Button onClick={handleComplete}
-                                    size="large"
-                                    variant="contained"
-                                    color="primary">
-                                Done
-                            </Button>
-                        </DialogActions>
-                    </>
-                </InputCompleteWindowListener>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={handleCancel}>
+                            Cancel
+                        </Button>
+                        <Button onClick={handleComplete}
+                                size="large"
+                                variant="contained"
+                                color="primary">
+                            Done
+                        </Button>
+                    </DialogActions>
+                </>
+            </InputCompleteListener>
 
         </Dialog>
     );

@@ -32,26 +32,39 @@ function useInputCompleteWindowListener(opts: InputCompleteListenerOpts) {
             opts.onCancel();
         }
 
+        console.log("FIXME1: blocking key binding");
         event.preventDefault();
         event.stopPropagation();
 
     }, []);
 
+    // FIXME:
+    //
+    // this is using react's synthetic event listener system
+    //
+    // https://reactjs.org/docs/events.html
+
     const stopPropagationHandler = React.useCallback((event: KeyboardEvent) => {
+        console.log("FIXME2: blocking key binding");
         event.preventDefault();
         event.stopPropagation();
     }, []);
 
     useComponentDidMount(() => {
-        window.addEventListener('keydown', onKeyDown, {capture: true});
-        window.addEventListener('keyup', stopPropagationHandler, {capture: true});
-        window.addEventListener('keypress', stopPropagationHandler, {capture: true});
+        // FIXME these aren't being remove.d..
+        console.log("FIXME: adding event listeners");
+        document.addEventListener('keydown', onKeyDown, {capture: true});
+        document.addEventListener('keyup', stopPropagationHandler, {capture: true});
+        document.addEventListener('keypress', stopPropagationHandler, {capture: true});
     });
 
     useComponentWillUnmount(() => {
-        window.removeEventListener('keydown', onKeyDown, {capture: true});
-        window.removeEventListener('keypress', stopPropagationHandler, {capture: true});
-        window.removeEventListener('keyup', stopPropagationHandler, {capture: true});
+        console.log("FIXME: removing event listeners");
+        document.removeEventListener('keydown', onKeyDown, {capture: true});
+        document.removeEventListener('keypress', stopPropagationHandler, {capture: true});
+        document.removeEventListener('keyup', stopPropagationHandler, {capture: true});
+        window.blur();
+        window.focus();
     });
 
 }

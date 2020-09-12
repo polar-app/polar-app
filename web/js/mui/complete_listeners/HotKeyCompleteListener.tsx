@@ -19,6 +19,9 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
+/**
+ * @Deprecated
+ */
 export const HotKeyCompleteListener = (props: IProps) => {
 
     const handlers = {

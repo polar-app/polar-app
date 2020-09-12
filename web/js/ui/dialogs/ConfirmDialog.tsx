@@ -8,9 +8,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {HotKeyCompleteListener} from "../../mui/complete_listeners/HotKeyCompleteListener";
 import isEqual from 'react-fast-compare';
 import {InputCompleteWindowListener} from "../../mui/complete_listeners/InputCompleteWindowListener";
+import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -68,6 +68,7 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
 
     const [open, setOpen] = React.useState(true);
 
+
     const classes = useStyles();
 
     const onCancel = props.onCancel || NULL_FUNCTION;
@@ -96,6 +97,7 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
     // tslint:disable-next-line:no-string-literal
     const palette = classes[type];
 
+
     return (
         <Dialog
             open={open}
@@ -103,7 +105,7 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
 
-            <InputCompleteWindowListener onComplete={handleAccept} onCancel={handleCancel}>
+            <InputCompleteListener onComplete={handleAccept} onCancel={handleCancel}>
                 <>
                     <DialogTitle id="alert-dialog-title" className={palette}>
                         {props.title}
@@ -138,7 +140,7 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
 
                     </DialogActions>
                 </>
-            </InputCompleteWindowListener>
+            </InputCompleteListener>
 
         </Dialog>
     );

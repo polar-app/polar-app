@@ -16,6 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from '@material-ui/core/TableCell';
 import grey from "@material-ui/core/colors/grey";
 import Dialog from '@material-ui/core/Dialog';
+import { deepMemo } from '../react/ReactUtils';
 
 interface KeySequenceProps {
     readonly sequence: string;
@@ -110,7 +111,7 @@ export const ActiveHotKeys = () => {
 
 const keyMap = { SHOW_ALL_HOTKEYS: ["shift+?", '/'] };
 
-export const ActiveHotKeyBindings = () => {
+export const ActiveHotKeyBindings = deepMemo(() => {
 
     const [open, setOpen] = React.useState(false);
 
@@ -118,7 +119,12 @@ export const ActiveHotKeyBindings = () => {
         setOpen(false);
     }
 
-    const handlers = { SHOW_ALL_HOTKEYS: () => setOpen(true) };
+    const handlers = {
+        SHOW_ALL_HOTKEYS: () => {
+            console.log("FIXME enabling ActiveHotKeyBindings")
+            setOpen(true)
+        }
+    };
 
     return (
         <GlobalHotKeys allowChanges
@@ -145,4 +151,4 @@ export const ActiveHotKeyBindings = () => {
         </GlobalHotKeys>
     )
 
-}
+});
