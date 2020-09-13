@@ -1,9 +1,13 @@
 import * as React from "react";
-import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../react/ReactUtils";
 import {Providers} from "polar-shared/src/util/Providers";
+import {
+    useComponentDidMount,
+    useComponentWillUnmount
+} from "../../hooks/ReactLifecycleHooks";
 
-export function isInputCompleteEvent(event: React.KeyboardEvent) {
+export function isInputCompleteEvent(event: KeyboardEvent) {
     return event.key === 'Enter';
 }
 
@@ -20,17 +24,11 @@ interface InputCompleteListenerOpts {
 
 }
 
-interface InputCompleteListeners {
-    readonly onKeyPress: (event: React.KeyboardEvent) => void;
-    readonly onKeyUp: (event: React.KeyboardEvent) => void;
-    readonly onKeyDown: (event: React.KeyboardEvent) => void;
-}
-
-export function useInputCompleteListener(opts: InputCompleteListenerOpts): InputCompleteListeners {
+export function useInputCompleteListener(opts: InputCompleteListenerOpts) {
 
     const completable = opts.completable || Providers.of(true);
 
-    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
 
         if (! completable()) {
             return;
@@ -52,11 +50,13 @@ export function useInputCompleteListener(opts: InputCompleteListenerOpts): Input
 
     }, []);
 
-    return {
-        onKeyDown,
-        onKeyPress: NULL_FUNCTION,
-        onKeyUp: NULL_FUNCTION
-    };
+    useComponentDidMount(() => {
+        window.addEventListener('keydown', onKeyDown, {capture: true});
+    });
+
+    useComponentWillUnmount(() => {
+        window.removeEventListener('keydown', onKeyDown, {capture: true});
+    });
 
 }
 
@@ -68,12 +68,8 @@ interface IProps extends InputCompleteListenerOpts {
 
 export const InputCompleteListener = deepMemo((props: IProps) => {
 
-    const handlers = useInputCompleteListener(props);
+    useInputCompleteListener(props);
 
-    return (
-        <div {...handlers} className="input-complete-listener">
-            {props.children}
-        </div>
-    );
+    return props.children;
 
 });
