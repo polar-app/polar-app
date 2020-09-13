@@ -15,6 +15,16 @@ export function useRefProvider<T>(providerHook: () => T) {
     return ref;
 }
 
+/**
+ * Use a ref but update the 'current' value each time so that this could be
+ * used with callbacks easier.
+ */
+export function useRefWithUpdates<T>(value: T) {
+    const ref = React.useRef<T>(value);
+    ref.current = value;
+    return ref;
+}
+
 function pprint(value: any) {
 
     if (value === undefined) {

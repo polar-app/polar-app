@@ -4,10 +4,12 @@ import {
     IKeyboardShortcutWithHandler,
     KeyBinding,
     KeyboardEventHandler,
-    useKeyboardShortcutsStore
+    useKeyboardShortcutsStore,
+    KeyboardEventHandlerUsingPredicate
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
 
 type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
 
@@ -66,7 +68,7 @@ function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 
 }
 
-function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): KeyboardEventHandler {
+function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): KeyboardEventHandlerUsingPredicate {
 
     const keys = sequence.split('+');
 
@@ -85,50 +87,78 @@ function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): Key
     const predicate = createPredicate();
 
     return (event) => {
+
         if (predicate(event)) {
             event.stopPropagation();
             event.preventDefault();
 
             setTimeout(() => handler(event), 1);
+            return true;
+        }
+
+        return false;
+
+    }
+
+}
+
+type SequenceToHandler = [string, KeyboardEventHandler];
+type SequenceToKeyboardEventHandlerPredicate = [string, KeyboardEventHandlerPredicate];
+
+export const KeyboardShortcuts = deepMemo(() => {
+
+    const {shortcuts, active} = useKeyboardShortcutsStore(['shortcuts', 'active']);
+    const shortcutsRef = useRefWithUpdates(shortcuts);
+    const activeRef = useRefWithUpdates(active);
+
+    function computeKeyToHandlers() {
+
+        function toKeyToHandler(keyboardShortcut: IKeyboardShortcutWithHandler):
+
+            ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
+
+            function toKeyboardEventHandlerPredicate(seq: string) {
+                return createHandler(seq, keyboardShortcut.handler);
+            }
+
+            return keyboardShortcut.sequences.map(seq => ([seq, toKeyboardEventHandlerPredicate(seq)]));
 
         }
+
+        return arrayStream(Object.values(shortcutsRef.current))
+            .flatMap(toKeyToHandler)
+            .collect();
+
     }
 
-}
+    const keyToHandlers = useRefProvider(() =>  computeKeyToHandlers());
 
-interface IProps {
-}
+    const handleKeyPress = React.useCallback((event: KeyboardEvent) => {
 
-type KeyToHandler = [string, KeyboardEventHandler];
+        if (! activeRef.current) {
+            // key bindings are deactivated.
+            return;
+        }
 
-export const KeyboardShortcuts = deepMemo((props: IProps) => {
+        for (const keyToHandler of keyToHandlers.current) {
 
-    const {shortcuts} = useKeyboardShortcutsStore(['shortcuts']);
+            const handler = keyToHandler[1];
 
-    function toKeyToHandler(keyboardShortcut: IKeyboardShortcutWithHandler): ReadonlyArray<KeyToHandler> {
-        return keyboardShortcut.sequences.map(seq => ([seq, keyboardShortcut.handler]));
-    }
+            if (handler(event)) {
+                break;
+            }
 
-    const keyHandlers = arrayStream(Object.values(shortcuts))
-                            .flatMap(toKeyToHandler)
-                            .collect();
+        }
 
-    /// FIXMEL the unregister won't work because it will change each time.
+    }, []);
+
     const register = React.useCallback(() => {
-
-        for (const [sequence, handler] of keyHandlers) {
-            window.addEventListener('keypress', createHandler(sequence, handler))
-        }
-
-    }, [keyHandlers])
+        window.addEventListener('keypress', handleKeyPress)
+    }, [])
 
     const unregister = React.useCallback(() => {
-
-        for (const [sequence, handler] of keyHandlers) {
-            window.removeEventListener('keypress', createHandler(sequence, handler))
-        }
-
-    }, [keyHandlers])
+        window.removeEventListener('keypress', handleKeyPress)
+    }, [])
 
     unregister();
     register();

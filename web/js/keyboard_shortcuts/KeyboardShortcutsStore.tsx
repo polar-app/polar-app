@@ -5,6 +5,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 export type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
+export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boolean;
+
 export type KeyBinding = string;
 
 export interface IBaseKeyboardShortcut {
@@ -22,16 +24,29 @@ export interface IKeyboardShortcutWithHandler extends IKeyboardShortcut {
 }
 
 interface IKeyboardShortcutsStore {
+
+    /**
+     * The current keyboard bindings.
+     */
     readonly shortcuts: {[binding: string]: IKeyboardShortcutWithHandler};
+
+    /**
+     * True when the keyboard bindings are active so we could disable them
+     * temporarily.
+     */
+    readonly active: boolean;
+
 }
 
 interface IKeyboardShortcutsCallbacks {
-    readonly addKeyboardShortcut: (shortcut: IKeyboardShortcutWithHandler) => void
-    readonly removeKeyboardShortcut: (shortcut: IKeyboardShortcutWithHandler) => void
+    readonly addKeyboardShortcut: (shortcut: IKeyboardShortcutWithHandler) => void;
+    readonly removeKeyboardShortcut: (shortcut: IKeyboardShortcutWithHandler) => void;
+    readonly setActive: (active: boolean) => void;
 }
 
 const initialStore: IKeyboardShortcutsStore = {
-    shortcuts: {}
+    shortcuts: {},
+    active: true
 }
 
 interface Mutator {
@@ -62,7 +77,12 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         setStore({...store, shortcuts});
     }
 
-    return {addKeyboardShortcut, removeKeyboardShortcut};
+    function setActive(active: boolean) {
+        const store = storeProvider();
+        setStore({...store, active});
+    }
+
+    return {addKeyboardShortcut, removeKeyboardShortcut, setActive};
 
 }
 
