@@ -11,6 +11,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Dialog from '@material-ui/core/Dialog';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
+import {MUIDialog} from "./MUIDialog";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -80,10 +81,10 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
 
     return (
 
-        <Dialog open={state.open}
-                onClose={handleCancel}
-                maxWidth="md"
-                aria-labelledby="form-dialog-title">
+        <MUIDialog open={state.open}
+                   onClose={handleCancel}
+                   maxWidth="md"
+                   aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>
                 <InputCompleteListener onComplete={handleComplete}
@@ -125,6 +126,6 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                 </InputCompleteListener>
             </WithDeactivatedKeyboardShortcuts>
 
-        </Dialog>
+        </MUIDialog>
     );
 };

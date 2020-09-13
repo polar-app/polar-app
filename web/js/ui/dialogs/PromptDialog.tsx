@@ -11,6 +11,7 @@ import {InputValidator} from "./InputValidators";
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {InputValidationErrorSnackbar} from "../../mui/dialogs/InputValidationErrorSnackbar";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
+import { MUIDialog } from './MUIDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -109,10 +110,10 @@ export const PromptDialog = (props: PromptDialogProps) => {
 
     return (
 
-        <Dialog open={state.open}
-                onClose={handleClose}
-                maxWidth="md"
-                aria-labelledby="form-dialog-title">
+        <MUIDialog open={state.open}
+                   onClose={handleClose}
+                   maxWidth="md"
+                   aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>
                 <InputCompleteListener onComplete={handleDone}>
@@ -157,6 +158,6 @@ export const PromptDialog = (props: PromptDialogProps) => {
                 </InputCompleteListener>
             </WithDeactivatedKeyboardShortcuts>
 
-        </Dialog>
+        </MUIDialog>
     );
 };

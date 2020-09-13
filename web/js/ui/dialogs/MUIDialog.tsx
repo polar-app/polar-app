@@ -1,5 +1,5 @@
 import {deepMemo} from "../../react/ReactUtils";
-import Dialog, { DialogProps } from "@material-ui/core/Dialog";
+import Dialog, {DialogProps} from "@material-ui/core/Dialog";
 import React from "react";
 
 /**
@@ -7,18 +7,10 @@ import React from "react";
  */
 export const MUIDialog = deepMemo((props: DialogProps) => {
 
-    function preventEventPropagation(event: React.KeyboardEvent) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
-
     return (
 
         <Dialog {...props}
-                onKeyPress={preventEventPropagation}
-                onKeyDown={preventEventPropagation}
-                onKeyUp={preventEventPropagation}
-                >
+                transitionDuration={50}>
 
             {props.children}
 

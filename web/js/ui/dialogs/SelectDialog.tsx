@@ -11,6 +11,7 @@ import List from "@material-ui/core/List";
 import Box from "@material-ui/core/Box";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
+import { MUIDialog } from "./MUIDialog";
 
 export interface ISelectOption<V> {
     readonly id: IDStr;
@@ -78,9 +79,9 @@ export const SelectDialog = function<V>(props: SelectDialogProps<V>) {
 
     return (
 
-        <Dialog open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title">
+        <MUIDialog open={open}
+                   onClose={handleClose}
+                   aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>
                 <>
@@ -108,7 +109,7 @@ export const SelectDialog = function<V>(props: SelectDialogProps<V>) {
                 </>
             </WithDeactivatedKeyboardShortcuts>
 
-        </Dialog>
+        </MUIDialog>
 
     );
 

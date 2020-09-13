@@ -11,6 +11,7 @@ import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import isEqual from 'react-fast-compare';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
+import {MUIDialog} from "./MUIDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -99,7 +100,7 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
 
 
     return (
-        <Dialog
+        <MUIDialog
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
@@ -144,6 +145,6 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
                 </InputCompleteListener>
             </WithDeactivatedKeyboardShortcuts>
 
-        </Dialog>
+        </MUIDialog>
     );
 }, isEqual);
