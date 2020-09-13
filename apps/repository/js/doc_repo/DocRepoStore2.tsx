@@ -45,6 +45,7 @@ import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
+import { TagFilters } from "polar-shared/src/tags/TagFilters";
 
 interface IDocRepoStore {
 
@@ -720,7 +721,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const opts: TaggedCallbacksOpts<RepoDocInfo> = {
             targets: selectedProvider,
-            tagsProvider,
+            tagsProvider: () => tagsProvider().filter(TagFilters.onlyRegular),
             dialogs,
             doTagged,
             relatedOptionsCalculator

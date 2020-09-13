@@ -104,6 +104,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         options: props.options,
     });
 
+    const [open, setOpen] = useState<boolean>(false);
+
     const openRef = React.useRef(false);
     const inputValue = React.useRef("");
 
@@ -239,6 +241,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     function fireOnOpen() {
         const onOpen = props.onOpen || NULL_FUNCTION;
         onOpen(openRef.current);
+        setOpen(openRef.current);
     }
 
     function handleClose() {
@@ -275,7 +278,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 value={[...state.values]}
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
-                // open={open}
+                open={open}
                 onClose={handleClose}
                 onOpen={handleOpen}
                 // NOTE that when we revert to manually managing this then the
