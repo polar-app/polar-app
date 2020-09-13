@@ -9,6 +9,7 @@ import Chip from '@material-ui/core/Chip';
 import {MUIRelatedOptions} from "./MUIRelatedOptions";
 import {PremiumFeature} from "../../ui/premium_feature/PremiumFeature";
 import isEqual from "react-fast-compare";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -81,6 +82,12 @@ export interface MUICreatableAutocompleteProps<T> {
 
     readonly relatedOptionsCalculator?: RelatedOptionsCalculator<T>;
 
+    /**
+     * Called when the autocomplete options are open with true and then false
+     * when we close it.
+     */
+    readonly onOpen?: (open: boolean) => void;
+
 }
 
 interface IState<T> {
@@ -97,8 +104,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         options: props.options,
     });
 
-    const [open, setOpen] = useState<boolean>(false);
-
+    const openRef = React.useRef(false);
     const inputValue = React.useRef("");
 
     const highlighted = useRef<ValueAutocompleteOption<T> | undefined>(undefined);
@@ -230,9 +236,31 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     };
 
+    const handleKeyDownParent = (event: React.KeyboardEvent) => {
+
+        if (openRef.current) {
+            // when we are open, don't allow the keys to propagate upwards
+            // so that only autocomplete handles it.
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+    };
+
+    function fireOnOpen() {
+        const onOpen = props.onOpen || NULL_FUNCTION;
+        onOpen(openRef.current);
+    }
+
     function handleClose() {
         highlighted.current = undefined;
-        setOpen(false);
+        openRef.current = false;
+        fireOnOpen();
+    }
+
+    function handleOpen() {
+        openRef.current = true;
+        fireOnOpen();
     }
 
     /**
@@ -249,7 +277,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     // inputValue to be reset when it re-renders again.
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root}
+             onKeyDown={handleKeyDownParent}>
             <Autocomplete
                 multiple
                 getOptionSelected={isEqual}
@@ -260,6 +289,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 options={[...state.options]}
                 // open={open}
                 onClose={handleClose}
+                onOpen={handleOpen}
                 // NOTE that when we revert to manually managing this then the
                 // input is reset each time we enter a first character of a
                 // tag and then that character isn't shown - it swallows it.  A

@@ -13,6 +13,7 @@ export interface IBaseKeyboardShortcut {
     readonly name: string;
     readonly description?: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
+    readonly priority?: number;
 }
 
 export interface IKeyboardShortcut extends IBaseKeyboardShortcut {

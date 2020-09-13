@@ -10,6 +10,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {InputValidator} from "./InputValidators";
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {InputValidationErrorSnackbar} from "../../mui/dialogs/InputValidationErrorSnackbar";
+import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -112,46 +113,48 @@ export const PromptDialog = (props: PromptDialogProps) => {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title">
 
-            <InputCompleteListener onComplete={handleDone}>
-                <>
-                    <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
-                    <DialogContent>
+            <WithDeactivatedKeyboardShortcuts>
+                <InputCompleteListener onComplete={handleDone}>
+                    <>
+                        <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
+                        <DialogContent>
 
-                        {state.validationError &&
-                            <InputValidationErrorSnackbar message={state.validationError}/>}
+                            {state.validationError &&
+                                <InputValidationErrorSnackbar message={state.validationError}/>}
 
-                        {props.description &&
-                        <DialogContentText className={classes.description}>
-                            {props.description}
-                        </DialogContentText>}
+                            {props.description &&
+                            <DialogContentText className={classes.description}>
+                                {props.description}
+                            </DialogContentText>}
 
-                        <TextField className={classes.textField}
-                                   autoFocus={autoFocus}
-                                   onChange={event => handleInput(event.currentTarget.value)}
-                                   margin="dense"
-                                   id="name"
-                                   autoComplete={props.autoComplete}
-                                   defaultValue={props.defaultValue}
-                                   placeholder={props.placeholder}
-                                   label={props.label}
-                                   type={props.type}
-                                   fullWidth/>
+                            <TextField className={classes.textField}
+                                       autoFocus={autoFocus}
+                                       onChange={event => handleInput(event.currentTarget.value)}
+                                       margin="dense"
+                                       id="name"
+                                       autoComplete={props.autoComplete}
+                                       defaultValue={props.defaultValue}
+                                       placeholder={props.placeholder}
+                                       label={props.label}
+                                       type={props.type}
+                                       fullWidth/>
 
-                    </DialogContent>
+                        </DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleDone}
-                                size="large"
-                                variant="contained"
-                                color="primary">
-                            Done
-                        </Button>
-                    </DialogActions>
-                </>
-            </InputCompleteListener>
+                        <DialogActions>
+                            <Button onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleDone}
+                                    size="large"
+                                    variant="contained"
+                                    color="primary">
+                                Done
+                            </Button>
+                        </DialogActions>
+                    </>
+                </InputCompleteListener>
+            </WithDeactivatedKeyboardShortcuts>
 
         </Dialog>
     );

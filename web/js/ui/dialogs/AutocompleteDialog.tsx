@@ -10,6 +10,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Dialog from '@material-ui/core/Dialog';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
+import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -77,41 +78,43 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                 onClose={handleCancel}
                 aria-labelledby="form-dialog-title">
 
-            <InputCompleteListener onComplete={handleComplete}
-                                   onCancel={handleCancel}>
-                <>
+            <WithDeactivatedKeyboardShortcuts>
+                <InputCompleteListener onComplete={handleComplete}
+                                       onCancel={handleCancel}>
+                    <>
 
-                    {props.title &&
-                    <DialogTitle>{props.title}</DialogTitle>}
+                        {props.title &&
+                        <DialogTitle>{props.title}</DialogTitle>}
 
-                    <DialogContent>
+                        <DialogContent>
 
-                        {props.description &&
-                        <Box pt={1}>
-                            <DialogContentText className={classes.description}>
-                                {props.description}
-                            </DialogContentText>
-                        </Box>}
+                            {props.description &&
+                            <Box pt={1}>
+                                <DialogContentText className={classes.description}>
+                                    {props.description}
+                                </DialogContentText>
+                            </Box>}
 
-                        <MUICreatableAutocomplete {...props}
-                                                  autoFocus={true}
-                                                  onChange={handleChange}/>
+                            <MUICreatableAutocomplete {...props}
+                                                      autoFocus={true}
+                                                      onChange={handleChange}/>
 
-                    </DialogContent>
+                        </DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleComplete}
-                                size="large"
-                                variant="contained"
-                                color="primary">
-                            Done
-                        </Button>
-                    </DialogActions>
-                </>
-            </InputCompleteListener>
+                        <DialogActions>
+                            <Button onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleComplete}
+                                    size="large"
+                                    variant="contained"
+                                    color="primary">
+                                Done
+                            </Button>
+                        </DialogActions>
+                    </>
+                </InputCompleteListener>
+            </WithDeactivatedKeyboardShortcuts>
 
         </Dialog>
     );

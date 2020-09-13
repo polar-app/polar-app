@@ -71,7 +71,8 @@ export const ActiveHotKeys = () => {
 
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
 
-    const bindings = Object.values(shortcuts);
+    const bindings = Object.values(shortcuts)
+                           .sort((a, b) => (a.priority || 0) - (b.priority || 0))
 
     return (
         <Table size="small">
@@ -90,7 +91,8 @@ const keyMap = {
     SHOW_ALL_HOTKEYS: {
         name: 'Show Keyboard Shortcuts',
         description: "Show the currently active keyboard shortcuts",
-        sequences: ["shift+?", '/']
+        sequences: ["shift+?", '/'],
+        priority: -1
     }
 };
 

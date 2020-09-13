@@ -20,7 +20,7 @@ const globalKeyMap = keyMapWithGroup(
             DELETE: {
                 name: "Delete",
                 description: "Delete the currently selected item.",
-                sequences: ['del', 'backspace'],
+                sequences: ['Delete', 'Backspace'],
             },
             FLAG: {
                 name: "Flag",
