@@ -236,17 +236,6 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     };
 
-    const handleKeyDownParent = (event: React.KeyboardEvent) => {
-
-        // if (openRef.current) {
-        //     // when we are open, don't allow the keys to propagate upwards
-        //     // so that only autocomplete handles it.
-        //     event.preventDefault();
-        //     event.stopPropagation();
-        // }
-
-    };
-
     function fireOnOpen() {
         const onOpen = props.onOpen || NULL_FUNCTION;
         onOpen(openRef.current);
@@ -277,8 +266,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     // inputValue to be reset when it re-renders again.
 
     return (
-        <div className={classes.root}
-             onKeyDown={handleKeyDownParent}>
+        <div className={classes.root}>
             <Autocomplete
                 multiple
                 getOptionSelected={isEqual}
