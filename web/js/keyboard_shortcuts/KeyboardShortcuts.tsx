@@ -21,6 +21,11 @@ function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 
             const key = keys[0];
 
+            // console.log("keyboard shortcuts: key: " + key);
+            // console.log("keyboard shortcuts: ctrlKey: " + event.ctrlKey);
+            // console.log("keyboard shortcuts: metaKey: " + event.metaKey);
+            // console.log("keyboard shortcuts: shiftKey: " + event.shiftKey);
+
             if (key === 'ctrl' && event.ctrlKey) {
                 return true;
             }
@@ -133,7 +138,7 @@ export const KeyboardShortcuts = deepMemo(() => {
 
     const keyToHandlers = useRefProvider(() =>  computeKeyToHandlers());
 
-    const handleKeyPress = React.useCallback((event: KeyboardEvent) => {
+    const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
 
         if (! activeRef.current) {
             // key bindings are deactivated.
@@ -153,11 +158,11 @@ export const KeyboardShortcuts = deepMemo(() => {
     }, []);
 
     const register = React.useCallback(() => {
-        window.addEventListener('keypress', handleKeyPress)
+        window.addEventListener('keydown', handleKeyDown)
     }, [])
 
     const unregister = React.useCallback(() => {
-        window.removeEventListener('keypress', handleKeyPress)
+        window.removeEventListener('keydown', handleKeyDown)
     }, [])
 
     unregister();

@@ -225,6 +225,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
             event.preventDefault();
             event.stopPropagation();
+
         }
 
     };

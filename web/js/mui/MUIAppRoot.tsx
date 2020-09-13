@@ -7,6 +7,7 @@ import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -33,21 +34,23 @@ export const MUIAppRoot = (props: IProps) => {
     });
 
     return (
+        <>
+            <KeyboardShortcuts/>
+            <MuiThemeProvider theme={muiTheme}>
+                <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
+                    <>
+                        <CssBaseline/>
+                        <GlobalCss/>
+                        <GlobalCSSBootstrap/>
+                        <GlobalCssSummernote/>
+                        <GlobalCssMobile/>
 
-        <MuiThemeProvider theme={muiTheme}>
-            <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
-                <>
-                    <CssBaseline/>
-                    <GlobalCss/>
-                    <GlobalCSSBootstrap/>
-                    <GlobalCssSummernote/>
-                    <GlobalCssMobile/>
+                        {props.children}
 
-                    {props.children}
-
-                </>
-            </MUIThemeTypeContext.Provider>
-        </MuiThemeProvider>
+                    </>
+                </MUIThemeTypeContext.Provider>
+            </MuiThemeProvider>
+        </>
     );
 
 };
