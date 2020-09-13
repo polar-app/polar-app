@@ -40,7 +40,7 @@ const globalKeyMap = keyMapWithGroup(
             OPEN: {
                 name: "Open",
                 description: "Open the current document in the document viewer",
-                sequences: ['return']
+                sequences: ['Enter']
             }
         }
     });

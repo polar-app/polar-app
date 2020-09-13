@@ -18,7 +18,7 @@ const globalKeyMap = keyMapWithGroup(
             DELETE: {
                 name: "Delete",
                 description: "Delete the current annotation.",
-                sequences: ['del', 'backspace'],
+                sequences: ['Delete', 'Backspace'],
             }
         }
     });
