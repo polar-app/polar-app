@@ -44,6 +44,7 @@ import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
+import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 
 interface IDocRepoStore {
 
@@ -786,14 +787,30 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
     const persistence = usePersistenceContext();
     const log = useLogger();
 
+    // TODO: we should probably useMemo below but then we get a ton of React
+    // hooks errors for some reason.
+
+    const tagsProviderRef = useRefWithUpdates(tagsProvider);
+
     return createCallbacks(storeProvider,
                            setStore,
                            mutator,
                            repoDocMetaManager,
-                           tagsProvider,
+                           () => tagsProviderRef.current(),
                            dialogs,
                            persistence,
                            log);
+
+    // return React.useMemo(() => {
+    //     return createCallbacks(storeProvider,
+    //                            setStore,
+    //                            mutator,
+    //                            repoDocMetaManager,
+    //                            tagsProvider,
+    //                            dialogs,
+    //                            persistence,
+    //                            log);
+    // }, [dialogs, repoDocMetaManager, tagsProvider, persistence, log]);
 
 }
 

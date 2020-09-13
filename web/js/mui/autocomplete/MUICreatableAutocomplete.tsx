@@ -238,12 +238,12 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     const handleKeyDownParent = (event: React.KeyboardEvent) => {
 
-        if (openRef.current) {
-            // when we are open, don't allow the keys to propagate upwards
-            // so that only autocomplete handles it.
-            event.preventDefault();
-            event.stopPropagation();
-        }
+        // if (openRef.current) {
+        //     // when we are open, don't allow the keys to propagate upwards
+        //     // so that only autocomplete handles it.
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        // }
 
     };
 

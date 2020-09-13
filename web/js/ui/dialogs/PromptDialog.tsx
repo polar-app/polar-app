@@ -111,6 +111,7 @@ export const PromptDialog = (props: PromptDialogProps) => {
 
         <Dialog open={state.open}
                 onClose={handleClose}
+                maxWidth="md"
                 aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>

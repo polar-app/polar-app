@@ -49,6 +49,8 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
         open: true
     });
 
+    const activeRef = React.useRef(false);
+
     const closeDialog = () => {
         setState({open: false});
     };
@@ -72,15 +74,21 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
 
     // useInputCompleteWindowListener({onComplete: handleComplete, onCancel: handleCancel});
 
+    function handleOpen(open: boolean) {
+        setTimeout(() => activeRef.current = open, 1);
+    }
+
     return (
 
         <Dialog open={state.open}
                 onClose={handleCancel}
+                maxWidth="md"
                 aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>
                 <InputCompleteListener onComplete={handleComplete}
-                                       onCancel={handleCancel}>
+                                       onCancel={handleCancel}
+                                       completable={() => ! activeRef.current}>
                     <>
 
                         {props.title &&
@@ -96,6 +104,7 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                             </Box>}
 
                             <MUICreatableAutocomplete {...props}
+                                                      onOpen={handleOpen}
                                                       autoFocus={true}
                                                       onChange={handleChange}/>
 

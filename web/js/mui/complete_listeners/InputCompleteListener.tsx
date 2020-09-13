@@ -1,14 +1,23 @@
 import * as React from "react";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../react/ReactUtils";
+import {Providers} from "polar-shared/src/util/Providers";
 
 export function isInputCompleteEvent(event: React.KeyboardEvent) {
     return event.key === 'Enter';
 }
 
 interface InputCompleteListenerOpts {
+
     readonly onComplete: () => void;
+
     readonly onCancel?: Callback;
+
+    /**
+     * Provide a function which returns true if input is completable.
+     */
+    readonly completable?: () => boolean;
+
 }
 
 interface InputCompleteListeners {
@@ -19,7 +28,13 @@ interface InputCompleteListeners {
 
 export function useInputCompleteListener(opts: InputCompleteListenerOpts): InputCompleteListeners {
 
+    const completable = opts.completable || Providers.of(true);
+
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        if (! completable()) {
+            return;
+        }
 
         // note that react-hotkeys is broken when you listen to 'Enter' on
         // ObserveKeys when using an <input> but it doesn't matter because we
@@ -45,10 +60,7 @@ export function useInputCompleteListener(opts: InputCompleteListenerOpts): Input
 
 }
 
-interface IProps {
-
-    readonly onComplete: Callback;
-    readonly onCancel?: Callback;
+interface IProps extends InputCompleteListenerOpts {
 
     readonly children: JSX.Element;
 
