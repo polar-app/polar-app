@@ -1,10 +1,10 @@
 import React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 import {
-    IKeyboardShortcut,
+    IKeyboardShortcutWithHandler,
     KeyBinding,
-    useKeyboardShortcutsStore,
-    KeyboardEventHandler, IKeyboardShortcutWithHandler
+    KeyboardEventHandler,
+    useKeyboardShortcutsStore
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
@@ -19,11 +19,15 @@ function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 
             const key = keys[0];
 
-            if (key ==='ctrl' + event.ctrlKey) {
+            if (key === 'ctrl' && event.ctrlKey) {
                 return true;
             }
 
-            if (key ==='command' + event.metaKey) {
+            if (key === 'command' && event.metaKey) {
+                return true;
+            }
+
+            if (key === 'shift' && event.shiftKey) {
                 return true;
             }
 
@@ -82,14 +86,17 @@ function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): Key
 
     return (event) => {
         if (predicate(event)) {
-            handler(event);
+            event.stopPropagation();
+            event.preventDefault();
+
+            setTimeout(() => handler(event), 1);
+
         }
     }
 
 }
 
 interface IProps {
-    readonly children: React.ReactElement;
 }
 
 type KeyToHandler = [string, KeyboardEventHandler];
@@ -106,6 +113,7 @@ export const KeyboardShortcuts = deepMemo((props: IProps) => {
                             .flatMap(toKeyToHandler)
                             .collect();
 
+    /// FIXMEL the unregister won't work because it will change each time.
     const register = React.useCallback(() => {
 
         for (const [sequence, handler] of keyHandlers) {
@@ -129,6 +137,6 @@ export const KeyboardShortcuts = deepMemo((props: IProps) => {
         unregister();
     })
 
-    return props.children;
+    return null;
 
 });

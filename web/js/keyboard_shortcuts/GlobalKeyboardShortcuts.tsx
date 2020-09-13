@@ -18,7 +18,6 @@ export type HandlerMap = {[key: string]: KeyboardEventHandler | null};
 interface IProps {
     readonly keyMap: KeyMap;
     readonly handlerMap: HandlerMap;
-    readonly children: React.ReactElement | null;
 }
 
 export const GlobalKeyboardShortcuts = deepMemo((props: IProps) => {
@@ -55,7 +54,7 @@ export const GlobalKeyboardShortcuts = deepMemo((props: IProps) => {
         }
     })
 
-    return props.children;
+    return null;
 
 });
 
