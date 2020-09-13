@@ -72,7 +72,7 @@ export const ActiveHotKeys = () => {
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
 
     const bindings = Object.values(shortcuts)
-                           .sort((a, b) => (a.priority || 0) - (b.priority || 0))
+                           .sort((a, b) => (b.priority || 0) - (a.priority || 0))
 
     return (
         <Table size="small">
