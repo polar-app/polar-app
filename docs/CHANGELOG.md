@@ -1,3 +1,15 @@
+
+
+
+# 2.0 beta 25
+
+- remove archive option from annotations since it makes no sense
+- Fixed key bindings and no longer using react-hotkeys.
+
+# 2.0 beta 24
+
+- another big performance change
+
 # 2.0 beta 23
 
 - Improved performance of the PDF doc viewer.  Not all the performance updates
