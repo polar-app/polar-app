@@ -4,7 +4,7 @@ import {
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import {PlanInterval} from "./PremiumContent2";
+import {PlanInterval} from "./PremiumContent";
 
 interface IPremiumStore {
     readonly interval: PlanInterval;

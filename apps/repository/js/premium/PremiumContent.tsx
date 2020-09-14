@@ -241,7 +241,7 @@ export const ProPlan = deepMemo(() => {
 });
 
 
-export const PremiumContent2 = deepMemo(() => {
+export const PremiumContent = deepMemo(() => {
 
     const phoneOrTablet = (
         <MobileContent/>

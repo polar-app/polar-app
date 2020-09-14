@@ -1,5 +1,5 @@
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {CancelSubscriptionButton} from "./PremiumContent2";
+import {CancelSubscriptionButton} from "./PremiumContent";
 import React from "react";
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 

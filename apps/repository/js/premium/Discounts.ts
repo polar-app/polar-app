@@ -1,4 +1,4 @@
-import {PlanInterval} from "./PremiumContent2";
+import {PlanInterval} from "./PremiumContent";
 import {Billing} from "polar-accounts/src/Billing";
 
 export interface Discount {

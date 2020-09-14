@@ -8,7 +8,7 @@ import {
     PlusPlan,
     PricingOverview,
     ProPlan,
-} from "./PremiumContent2";
+} from "./PremiumContent";
 import {PremiumButton} from "./PremiumButton";
 import React from "react";
 import {Billing} from "polar-accounts/src/Billing";
