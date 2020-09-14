@@ -1,27 +1,27 @@
 import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {
-    BronzePlan,
     CancelSubscriptionButton,
     FindPlan,
     FreePlan,
-    GoldPlan,
     PlanInterval,
     PlanIntervalButton,
+    PlusPlan,
     PricingOverview,
-    SilverPlan
+    ProPlan,
 } from "./PremiumContent2";
 import {PremiumButton} from "./PremiumButton";
 import React from "react";
-import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
 import {Billing} from "polar-accounts/src/Billing";
+import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import {CancelPlan} from "./CancelPlan";
 
-export const MobileContent = (props: IProps) => {
+export const MobileContent = () => {
+
     return <div id="pricing" className="mt-1 pb-1">
         <FindPlan/>
 
         <div className="mb-1">
-            <PlanIntervalButton interval={props.interval}
-                                togglePlanInterval={() => props.togglePlanInterval()}/>
+            <PlanIntervalButton/>
         </div>
 
         <div>
@@ -47,29 +47,7 @@ export const MobileContent = (props: IProps) => {
 
             <hr/>
 
-            <BronzePlan {...props}/>
-
-            <p className="font-weight-bold">
-                Adds the following features:
-            </p>
-
-            <div className="ml-3 mt-1 mb-2">
-                <div><i className="fa fa-check"/> Flashcard review on mobile, desktop, and web. </div>
-                <div><i className="fa fa-check"/> Suggestions for related tags</div>
-                <div><i className="fa fa-check"/> Reading statistics</div>
-                <div><i className="fa fa-check"/> Three (3) cloud sync devices </div>
-                <div><i className="fa fa-check"/> Up to 2GB of storage </div>
-            </div>
-
-            <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.interval}/>
-
-        </div>
-
-        <div className="mt-3">
-
-            <hr/>
-
-            <SilverPlan {...props}/>
+            <PlusPlan/>
 
             <p className="font-weight-bold">
                 Adds the following features:
@@ -80,14 +58,14 @@ export const MobileContent = (props: IProps) => {
                 <div><i className="fa fa-check"/> Up to 5GB of storage </div>
             </div>
 
-            <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.interval}/>
+            <PremiumButton newPlan="plus" />
 
         </div>
 
         <div className="mt-3">
             <hr/>
 
-            <GoldPlan {...props}/>
+            <ProPlan/>
 
             <p className="font-weight-bold">
                 Adds the following features:
@@ -98,28 +76,23 @@ export const MobileContent = (props: IProps) => {
                 <div><i className="fa fa-check"/> Up to 12GB of storage </div>
             </div>
 
-            <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.interval}/>
+            <PremiumButton newPlan="pro" />
 
         </div>
 
         <div className="ml-auto">
-
-            <NullCollapse open={props.plan !== 'free'}>
-                <hr/>
-                <p>
-                    ... and of course in the ultra-rare case that Polar didn't work out you can always cancel at any time.
-                </p>
-
-                <CancelSubscriptionButton {...props}/>
-            </NullCollapse>
+            <CancelPlan/>
         </div>
 
     </div>;
 };
 
-export const DesktopContent =  (props: IProps) => {
+export const DesktopContent =  () => {
+
+    const {plan} = useUserSubscriptionContext();
+
     return (
-        <div className={"plan-" + props.plan} >
+        <div className={"plan-" + plan} >
 
             <div id="pricing" className="hidden-xs m-2">
 
@@ -132,10 +105,7 @@ export const DesktopContent =  (props: IProps) => {
                                 <FindPlan/>
 
                                 <p className="text-center">
-
-                                    <PlanIntervalButton interval={props.interval}
-                                                        togglePlanInterval={() => props.togglePlanInterval()}/>
-
+                                    <PlanIntervalButton />
                                 </p>
 
                             </th>
@@ -143,13 +113,10 @@ export const DesktopContent =  (props: IProps) => {
                                 <FreePlan/>
                             </th>
                             <th className="">
-                                <BronzePlan {...props}/>
+                                <PlusPlan />
                             </th>
                             <th className="">
-                                <SilverPlan {...props}/>
-                            </th>
-                            <th className="">
-                                <GoldPlan {...props}/>
+                                <ProPlan />
                             </th>
                         </tr>
                         </thead>
@@ -160,14 +127,11 @@ export const DesktopContent =  (props: IProps) => {
                             </td>
                             <td>
                             </td>
-                            <td className="">
-                                <PremiumButton from={props.plan} to="bronze" userInfo={props.userInfo} interval={props.interval}/>
-                            </td>
                             <td>
-                                <PremiumButton from={props.plan} to="silver" userInfo={props.userInfo} interval={props.interval}/>
+                                <PremiumButton newPlan="plus" />
                             </td>
                             <td className="">
-                                <PremiumButton from={props.plan} to="gold" userInfo={props.userInfo} interval={props.interval}/>
+                                <PremiumButton newPlan="pro" />
                             </td>
                         </tr>
 
@@ -176,9 +140,6 @@ export const DesktopContent =  (props: IProps) => {
                                 Automatic Updates
                             </td>
 
-                            <td className="">
-                                <i className="fa fa-check"/>
-                            </td>
                             <td className="">
                                 <i className="fa fa-check"/>
                             </td>
@@ -204,9 +165,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td className="">
                                 <i className="fa fa-check"/>
                             </td>
-                            <td className="">
-                                <i className="fa fa-check"/>
-                            </td>
                         </tr>
 
                         <tr>
@@ -216,9 +174,6 @@ export const DesktopContent =  (props: IProps) => {
 
                             <td className="text-danger">
                                 desktop only
-                            </td>
-                            <td>
-                                mobile, web, and desktop
                             </td>
                             <td>
                                 mobile, web, and desktop
@@ -241,9 +196,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td>
                                 3
                             </td>
-                            <td>
-                                4
-                            </td>
                         </tr>
 
                         <tr>
@@ -260,9 +212,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td className="">
                                 4
                             </td>
-                            <td className="">
-                                unlimited
-                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -277,9 +226,6 @@ export const DesktopContent =  (props: IProps) => {
                             </td>
                             <td className="">
                                 Up to 5GB
-                            </td>
-                            <td className="">
-                                Up to 12GB
                             </td>
                         </tr>
                         <tr>
@@ -296,9 +242,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td className="">
                                 Up to 1500
                             </td>
-                            <td className="">
-                                unlimited
-                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -313,9 +256,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td className="">
                                 <i className="fa fa-check"/>
                             </td>
-                            <td className="">
-                                <i className="fa fa-check"/>
-                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -323,9 +263,6 @@ export const DesktopContent =  (props: IProps) => {
                             </td>
 
                             <td className="">
-                            </td>
-                            <td className="">
-                                <i className="fa fa-check"/>
                             </td>
                             <td className="">
                                 <i className="fa fa-check"/>
@@ -348,9 +285,6 @@ export const DesktopContent =  (props: IProps) => {
                             <td className="">
                                 <i className="fa fa-check"/>
                             </td>
-                            <td className="">
-                                <i className="fa fa-check"/>
-                            </td>
                         </tr>
 
                         </tbody>
@@ -360,7 +294,7 @@ export const DesktopContent =  (props: IProps) => {
                      style={{display: 'flex'}}>
 
                     <div className="ml-auto">
-                        <CancelSubscriptionButton {...props}/>
+                        <CancelSubscriptionButton/>
                     </div>
 
                 </div>

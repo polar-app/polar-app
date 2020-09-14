@@ -11,6 +11,8 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {Plans} from "polar-accounts/src/Plans";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import { usePremiumCallbacks, usePremiumStore } from './PremiumStore';
+import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 
 const discounts = Discounts.create();
 
@@ -40,11 +42,12 @@ function useCancelSubscription() {
 
 }
 
-export const CancelSubscriptionButton = deepMemo((props: IProps) => {
+export const CancelSubscriptionButton = deepMemo(() => {
 
+    const {plan} = useUserSubscriptionContext();
     const handleCancelSubscription = useCancelSubscription();
 
-    if (props.plan === 'free') {
+    if (plan.level === 'free') {
         return null;
     }
 
@@ -61,19 +64,17 @@ export const CancelSubscriptionButton = deepMemo((props: IProps) => {
 
 });
 
-interface PlanIntervalProps {
-    readonly interval: PlanInterval;
-    readonly togglePlanInterval: () => void;
-}
+export const PlanIntervalButton = deepMemo(() => {
 
-export const PlanIntervalButton = deepMemo((props: PlanIntervalProps) => {
+    const {interval} = usePremiumStore(['interval']);
+    const {toggleInterval} = usePremiumCallbacks();
 
     return (
         <Button color="secondary"
                    variant="contained"
-                   onClick={() => props.togglePlanInterval()}>
+                   onClick={toggleInterval}>
 
-            Show {props.interval === 'month' ? 'Yearly' : 'Monthly'} Plans
+            Show {interval === 'month' ? 'Yearly' : 'Monthly'} Plans
 
         </Button>
     );
@@ -81,16 +82,16 @@ export const PlanIntervalButton = deepMemo((props: PlanIntervalProps) => {
 });
 
 interface PlanPricingProps {
-    readonly plan: Billing.Plan;
-    readonly planInterval: Billing.Interval;
+    readonly plan: Billing.V2PlanLevel;
 }
+
 const PlanPricing = deepMemo((props: PlanPricingProps) => {
+
+    const {interval} = usePremiumStore(['interval']);
 
     const computeMonthlyPrice = () => {
 
-        const v2Plan = Plans.toV2(props.plan)
-
-        switch (v2Plan.level) {
+        switch (props.plan) {
 
             case "free":
                 return 0.0;
@@ -114,8 +115,8 @@ const PlanPricing = deepMemo((props: PlanPricingProps) => {
 
     const computePrice = (): Pricing => {
 
-        const price = props.planInterval === 'month' ? computeMonthlyPrice() : computeYearlyPrice();
-        const discount = discounts.get(props.planInterval, props.plan);
+        const price = interval === 'month' ? computeMonthlyPrice() : computeYearlyPrice();
+        const discount = discounts.get(interval, props.plan);
 
         return {price, discount};
     };
@@ -128,13 +129,13 @@ const PlanPricing = deepMemo((props: PlanPricingProps) => {
 
             <s>
                 <h3 className="text-xxlarge">${pricing.discount.before}<span
-                    className="text-small">/{props.planInterval}</span>
+                    className="text-small">/{interval}</span>
                 </h3>
             </s>
 
             <h3 className="text-xxlarge">
                     ${pricing.discount.after}<span
-                className="text-small">/{props.planInterval}</span>
+                className="text-small">/{interval}</span>
             </h3>
 
         </div>;
@@ -143,7 +144,7 @@ const PlanPricing = deepMemo((props: PlanPricingProps) => {
 
         return <div>
             <h3 className="text-xxlarge">${pricing.price}<span
-                className="text-small">/{props.planInterval}</span>
+                className="text-small">/{interval}</span>
             </h3>
 
         </div>;
@@ -208,11 +209,12 @@ export const FreePlan = deepMemo(() => {
     </div>;
 });
 
-export const BronzePlan = deepMemo((props: IState) => {
+export const PlusPlan = deepMemo((props: IState) => {
+
     return <div>
         <h2>Bronze</h2>
 
-        <PlanPricing plan='bronze' planInterval={props.interval}/>
+        <PlanPricing plan='plus'/>
 
         <p className="text-small text-tint">Less
             than the price of a cup of
@@ -221,26 +223,14 @@ export const BronzePlan = deepMemo((props: IState) => {
             when you are!</p>
 
     </div>;
+
 });
 
-export const SilverPlan = deepMemo((props: IState) => {
+export const ProPlan = deepMemo(() => {
     return <div>
-        <h2>Silver</h2>
+        <h2>PRO</h2>
 
-        <PlanPricing plan='silver' planInterval={props.interval}/>
-
-        <p className="text-small text-tint">
-            Designed for Polar power users! Need
-            more storage? Let's do this!
-        </p>
-    </div>;
-});
-
-export const GoldPlan = deepMemo((props: IState) => {
-    return <div>
-        <h2>Gold</h2>
-
-        <PlanPricing plan='gold' planInterval={props.interval}/>
+        <PlanPricing plan='pro'/>
 
         <p className="text-small text-tint">
             You can't live without Polar
@@ -252,26 +242,14 @@ export const GoldPlan = deepMemo((props: IState) => {
 });
 
 
-export const PremiumContent2 = deepMemo((props: IProps) => {
-
-    const [state, setState] = React.useState<IState>({interval: props.interval || 'month'});
-
-    function togglePlanInterval() {
-        setState({
-            interval: state.interval === 'month' ? 'year' : 'month'
-        });
-    }
+export const PremiumContent2 = deepMemo(() => {
 
     const phoneOrTablet = (
-        <MobileContent {...props}
-                       {...state}
-                       togglePlanInterval={() => togglePlanInterval()}/>
+        <MobileContent/>
     );
 
     const desktop = (
-        <DesktopContent {...props}
-                        {...state}
-                        togglePlanInterval={() => togglePlanInterval()}/>
+        <DesktopContent/>
     );
 
     return (
@@ -281,13 +259,9 @@ export const PremiumContent2 = deepMemo((props: IProps) => {
 });
 
 interface IProps {
-    readonly plan: Billing.Plan;
-    readonly interval?: Billing.Interval;
-
 }
 
 interface IState {
-    readonly interval: PlanInterval;
 }
 
 export type PlanInterval = 'month' | 'year';

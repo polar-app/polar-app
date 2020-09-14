@@ -14,6 +14,8 @@ interface IPremiumCallbacks {
 
     readonly setInterval: (interval: PlanInterval) => void;
 
+    readonly toggleInterval: () => void;
+
 }
 
 const initialStore: IPremiumStore = {
@@ -40,12 +42,18 @@ function callbacksFactory(storeProvider: Provider<IPremiumStore>,
         setStore({...store, interval});
     }
 
+    function toggleInterval() {
+        const store = storeProvider();
+        const interval = store.interval === 'month' ? 'year' : 'month'
+        setStore({...store, interval});
+    }
+
     return {
-        setInterval
+        setInterval, toggleInterval
     };
 
 }
-export const [PremiumStoreProviderDelegate, usePremiumStore, usePremiumCallbacks, usePremiumMutator]
+export const [PremiumStoreProvider, usePremiumStore, usePremiumCallbacks, usePremiumMutator]
     = createObservableStore<IPremiumStore, Mutator, IPremiumCallbacks>({
         initialValue: initialStore,
         mutatorFactory,

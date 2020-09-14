@@ -1,50 +1,56 @@
 import * as React from 'react';
 import {Nav} from '../../../../web/js/ui/util/Nav';
-import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
 import {AccountActions} from '../../../../web/js/accounts/AccountActions';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {Billing} from "polar-accounts/src/Billing";
 import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {
+    useUserInfoContext,
+    useUserSubscriptionContext
+} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import {usePremiumStore} from './PremiumStore';
 
 export interface IProps {
-    readonly from: Billing.Plan;
-    readonly to: Billing.Plan;
-    readonly interval: Billing.Interval;
-    readonly userInfo?: UserInfo;
+    readonly newPlan: Billing.V2PlanLevel;
 }
 
-export function PremiumButton(props: IProps) {
+export const PremiumButton = deepMemo((props: IProps) => {
+
+    const userInfoContext = useUserInfoContext();
+    const subscription = useUserSubscriptionContext();
+    const {interval} = usePremiumStore(['interval']);
 
     const log = useLogger();
 
-    const {to, from, userInfo, interval} = props;
+    const {newPlan} = props;
 
     // true when this is the current plan and we do not need to show the
     // button
-    const currentPlan = to === from;
+    const currentPlan = newPlan === subscription.plan.level && subscription.interval === interval;
 
-    const email = userInfo ? userInfo.email : undefined;
+    const email = userInfoContext?.userInfo?.email;
 
     // true if we're BUYING a new plan...
-    const buy = from === 'free';
+    const buyingNewPlan = subscription.plan.level === 'free';
 
-    const text = buy ? "Buy" : "Change Plan";
+    const text = buyingNewPlan ? "Buy" : "Change Plan";
 
     const dialogManager = useDialogManager();
 
-    const computePlan = () => {
+    const computeNewPlanID = () => {
 
         if (interval === 'year') {
-            return `${to}_${interval}`;
+            return `${newPlan}_${interval}`;
         }
 
-        return to;
+        return newPlan;
 
     };
 
-    const plan = computePlan();
+    const newPlanID = computeNewPlanID();
 
     const buyHandler = () => {
         // if we're buying a NEW product go ahead and redirect us to
@@ -57,9 +63,9 @@ export function PremiumButton(props: IProps) {
                 email: encodeURIComponent(email)
             };
 
-            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${params.email}&plan=${plan}`);
+            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${params.email}&plan=${newPlanID}`);
         } else {
-            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${plan}`);
+            Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${newPlanID}`);
         }
 
     };
@@ -68,17 +74,17 @@ export function PremiumButton(props: IProps) {
 
         const onAccept = () => {
 
-            console.log("Changing plan to: " + to);
+            console.log("Changing plan to: " + newPlanID);
 
-            dialogManager.snackbar({message: `Changing plan to ${to}, interval: ${interval}.  One moment...`});
+            dialogManager.snackbar({message: `Changing plan to ${newPlan} (${interval}).  One moment...`});
 
-            AccountActions.changePlan(to, interval)
+            AccountActions.changePlan(newPlan, interval)
                           .catch(err => log.error("Unable to upgrade plan: ", err));
 
         };
 
         dialogManager.confirm({
-            title: `Are you sure you want to change to ${to}?`,
+            title: `Are you sure you want to change to ${newPlan}?`,
             subtitle: 'Your billing will automatically be updated and account pro-rated.',
             type: 'warning',
             onAccept
@@ -86,7 +92,7 @@ export function PremiumButton(props: IProps) {
 
     };
 
-    const handler = buy ? buyHandler : changeHandler;
+    const handler = buyingNewPlan ? buyHandler : changeHandler;
 
     return (
         <div>
@@ -105,4 +111,4 @@ export function PremiumButton(props: IProps) {
 
         </div>
     );
-}
+})

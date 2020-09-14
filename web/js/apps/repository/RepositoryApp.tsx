@@ -229,7 +229,7 @@ export const RepositoryApp = (props: IProps) => {
 
     const premiumScreenYear = () => {
         return (
-            <PremiumScreen interval='year'/>
+            <PremiumScreen/>
         );
     };
 
