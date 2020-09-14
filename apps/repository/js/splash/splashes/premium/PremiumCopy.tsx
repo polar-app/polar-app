@@ -1,6 +1,7 @@
 import {UserInfo} from "../../../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {
-    BronzePlan, CancelSubscriptionButton,
+    BronzePlan,
+    CancelSubscriptionButton,
     FindPlan,
     FreePlan,
     GoldPlan,
@@ -13,10 +14,9 @@ import {PremiumButton} from "./PremiumButton";
 import React from "react";
 import {NullCollapse} from "../../../../../../web/js/ui/null_collapse/NullCollapse";
 import {Billing} from "polar-accounts/src/Billing";
-import Paper from "@material-ui/core/Paper";
 
 export const MobileContent = (props: IProps) => {
-    return <div id="pricing" className="mt-1 mb-1">
+    return <div id="pricing" className="mt-1 pb-1">
         <FindPlan/>
 
         <div className="mb-1">
@@ -119,13 +119,12 @@ export const MobileContent = (props: IProps) => {
 
 export const DesktopContent =  (props: IProps) => {
     return (
-        <Paper className={"plan-" + props.plan}>
+        <div className={"plan-" + props.plan} >
 
-            <Paper id="pricing" className="hidden-xs">
+            <div id="pricing" className="hidden-xs m-2">
 
                 <PricingOverview/>
 
-                <Paper>
                     <table className="table">
                         <thead>
                         <tr>
@@ -357,9 +356,7 @@ export const DesktopContent =  (props: IProps) => {
                         </tbody>
                     </table>
 
-                </Paper>
-
-                <div className="mt-2"
+                <div className="m-2"
                      style={{display: 'flex'}}>
 
                     <div className="ml-auto">
@@ -368,9 +365,9 @@ export const DesktopContent =  (props: IProps) => {
 
                 </div>
 
-            </Paper>
+            </div>
 
-        </Paper>
+        </div>
     );
 
 };

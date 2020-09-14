@@ -30,7 +30,7 @@ export function PremiumButton(props: IProps) {
     // true if we're BUYING a new plan...
     const buy = from === 'free';
 
-    const text = buy ? "Buy" : "Upgrade";
+    const text = buy ? "Buy" : "Change Plan";
 
     const dialogManager = useDialogManager();
 
