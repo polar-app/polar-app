@@ -580,7 +580,7 @@ function tableDesktop() {
           </Box>
         </td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       <tr className={classes.row}>
@@ -606,7 +606,7 @@ function tableDesktop() {
           </Box>
         </td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       <tr className={classes.row}>
@@ -616,7 +616,7 @@ function tableDesktop() {
         <td>500 GB</td>
         <td>50 GB</td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       <tr className={classes.row}>
@@ -628,7 +628,7 @@ function tableDesktop() {
         <td>unlimited</td>
         <td>unlimited</td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       <tr className={classes.row}>
@@ -638,7 +638,7 @@ function tableDesktop() {
         <td>unlimited</td>
         <td>unlimited</td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       <tr className={classes.row}>
@@ -664,7 +664,7 @@ function tableDesktop() {
           </Box>
         </td>
       </tr>
-      <td colspan="5">
+      <td colSpan="5">
         <Divider className={classes.divider} />
       </td>
       {/* <tr className={classes.row}>
@@ -676,7 +676,7 @@ function tableDesktop() {
         <td>unlimited</td>
         <td>unlimited</td>
       </tr>*/}
-      {/* <td colspan="5">
+      {/* <td colSpan="5">
         <Divider className={classes.divider} />
       </td> */}
       <tr className={classes.row}>
