@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useLogger} from "../../../../../../web/js/mui/MUILogger";
 import {Plans} from "polar-accounts/src/Plans";
+import {deepMemo} from "../../../../../../web/js/react/ReactUtils";
 
 const discounts = Discounts.create();
 
@@ -82,7 +83,7 @@ interface PlanPricingProps {
     readonly plan: Billing.Plan;
     readonly planInterval: Billing.Interval;
 }
-const PlanPricing = (props: PlanPricingProps) => {
+const PlanPricing = deepMemo((props: PlanPricingProps) => {
 
     const computeMonthlyPrice = () => {
 
@@ -148,10 +149,9 @@ const PlanPricing = (props: PlanPricingProps) => {
 
     }
 
-};
+});
 
-
-export const PricingOverview = () => {
+export const PricingOverview = deepMemo(() => {
     return (
         <div>
             <div className="text-center mb-3">
@@ -171,9 +171,9 @@ export const PricingOverview = () => {
             </p>
         </div>
     );
-};
+});
 
-export const FindPlan = () => {
+export const FindPlan = deepMemo(() => {
 
     return <div>
         <h2 className="text-tint text-left">
@@ -191,9 +191,9 @@ export const FindPlan = () => {
         </p>
     </div>;
 
-};
+});
 
-export const FreePlan = () => {
+export const FreePlan = deepMemo(() => {
     return <div>
         <h2>Free</h2>
 
@@ -205,9 +205,9 @@ export const FreePlan = () => {
         </p>
 
     </div>;
-};
+});
 
-export const BronzePlan = (props: IState) => {
+export const BronzePlan = deepMemo((props: IState) => {
     return <div>
         <h2>Bronze</h2>
 
@@ -220,9 +220,9 @@ export const BronzePlan = (props: IState) => {
             when you are!</p>
 
     </div>;
-};
+});
 
-export const SilverPlan = (props: IState) => {
+export const SilverPlan = deepMemo((props: IState) => {
     return <div>
         <h2>Silver</h2>
 
@@ -233,9 +233,9 @@ export const SilverPlan = (props: IState) => {
             more storage? Let's do this!
         </p>
     </div>;
-};
+});
 
-export const GoldPlan = (props: IState) => {
+export const GoldPlan = deepMemo((props: IState) => {
     return <div>
         <h2>Gold</h2>
 
@@ -248,7 +248,7 @@ export const GoldPlan = (props: IState) => {
         </p>
         <br/>
     </div>;
-};
+});
 
 
 export class PremiumContent2 extends React.Component<IProps, IState> {
