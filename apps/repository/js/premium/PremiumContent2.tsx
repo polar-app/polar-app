@@ -5,6 +5,7 @@ import {
   FACheckCircleIcon,
   FATimesCircleIcon
 } from "../../../../web/js/mui/MUIFontAwesome";
+import {PremiumButton} from "./PremiumButton";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -195,7 +196,6 @@ const Mobile = () => {
       <Box className={classes.pricePlanMobile}>
         <Box className={classes.headerMobile}>Launch</Box>
         <Box className={classes.pricing}> Free </Box>
-        <Button className={classes.buttonSignUpMobile}>Get Started</Button>
         <Box className={classes.subtitleMobile}>Free forever</Box>
 
         <table className={classes.tableMobile}>
@@ -271,7 +271,9 @@ const Mobile = () => {
           $6.99
           <span className={classes.rate}>/mo</span>
         </Box>
-        <Button className={classes.buttonSignUpMobile}>Sign Up</Button>
+
+        <PremiumButton newPlan="plus" />
+
         <Box className={classes.subtitleMobile}>
           1 year commitment <br />
           gets one month free
@@ -349,7 +351,9 @@ const Mobile = () => {
           $14.99
           <span className={classes.rate}>/mo</span>
         </Box>
-        <Button className={classes.buttonSignUpMobile}>Sign Up</Button>
+
+        <PremiumButton newPlan="pro" />
+
         <Box className={classes.subtitleMobile}>
           1 year commitment <br />
           gets one month free
@@ -437,7 +441,7 @@ const Desktop = () => {
         <th style={{ width: "22%" }}>
           <Box className={classes.header}>Launch</Box>
           <Box className={classes.pricing}> Free </Box>
-          <Button className={classes.buttonSignUp}>Get Started</Button>
+          {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
           <Box className={classes.subtitle}>Free forever</Box>
         </th>
         <th style={{ width: "22%" }}>
@@ -447,10 +451,11 @@ const Desktop = () => {
             <span className={classes.rate}>/mo</span>
           </Box>
 
-          <Button className={classes.buttonSignUp}>Sign Up</Button>
-          <Box className={classes.subtitle}>
-            1 year commitment <br /> gets one month free
-          </Box>
+          <PremiumButton newPlan="plus" />
+
+          {/*<Box className={classes.subtitle}>*/}
+          {/*  1 year commitment <br /> gets one month free*/}
+          {/*</Box>*/}
         </th>
         <th style={{ width: "22%" }}>
           <Box className={classes.header}>Pro</Box>
@@ -458,10 +463,11 @@ const Desktop = () => {
             $14.99<span className={classes.rate}>/mo</span>
           </Box>
 
-          <Button className={classes.buttonSignUp}>Sign Up</Button>
-          <Box className={classes.subtitle}>
-            1 year commitment <br /> gets one month free
-          </Box>
+          <PremiumButton newPlan="pro" />
+
+          {/*<Box className={classes.subtitle}>*/}
+          {/*  1 year commitment <br /> gets one month free*/}
+          {/*</Box>*/}
         </th>
       </tr>
 

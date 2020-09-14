@@ -16,7 +16,7 @@ export const PremiumScreen = () => {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent/>
+                            <PremiumContent2/>
                         </div>
                     </div>
 
