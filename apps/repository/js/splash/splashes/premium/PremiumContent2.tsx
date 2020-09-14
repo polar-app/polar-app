@@ -40,7 +40,7 @@ function useCancelSubscription() {
 
 }
 
-export const CancelSubscriptionButton = (props: IProps) => {
+export const CancelSubscriptionButton = deepMemo((props: IProps) => {
 
     const handleCancelSubscription = useCancelSubscription();
 
@@ -59,25 +59,26 @@ export const CancelSubscriptionButton = (props: IProps) => {
         </Button>
     );
 
-};
+});
 
 interface PlanIntervalProps {
     readonly interval: PlanInterval;
     readonly togglePlanInterval: () => void;
 }
 
-export const PlanIntervalButton = (props: PlanIntervalProps) => {
+export const PlanIntervalButton = deepMemo((props: PlanIntervalProps) => {
 
-    return <Button color="secondary"
+    return (
+        <Button color="secondary"
                    variant="contained"
                    onClick={() => props.togglePlanInterval()}>
 
             Show {props.interval === 'month' ? 'Yearly' : 'Monthly'} Plans
 
-        </Button>;
+        </Button>
+    );
 
-};
-
+});
 
 interface PlanPricingProps {
     readonly plan: Billing.Plan;
@@ -251,48 +252,33 @@ export const GoldPlan = deepMemo((props: IState) => {
 });
 
 
-export class PremiumContent2 extends React.Component<IProps, IState> {
+export const PremiumContent2 = deepMemo((props: IProps) => {
 
-    constructor(props: IProps) {
-        super(props);
+    const [state, setState] = React.useState<IState>({interval: props.interval || 'month'});
 
-        this.togglePlanInterval = this.togglePlanInterval.bind(this);
-
-        this.state = {
-            interval: this.props.interval || 'month'
-        };
-
-    }
-
-    public render() {
-
-        const phoneOrTablet = (
-            <MobileContent {...this.props}
-                           {...this.state}
-                           togglePlanInterval={() => this.togglePlanInterval()}/>
-        );
-
-        const desktop = (
-            <DesktopContent {...this.props}
-                            {...this.state}
-                            togglePlanInterval={() => this.togglePlanInterval()}/>
-        );
-
-        return (
-            <DeviceRouter phone={phoneOrTablet} tablet={phoneOrTablet} desktop={desktop}/>
-        );
-
-    }
-
-    private togglePlanInterval() {
-
-        this.setState({
-            interval: this.state.interval === 'month' ? 'year' : 'month'
+    function togglePlanInterval() {
+        setState({
+            interval: state.interval === 'month' ? 'year' : 'month'
         });
-
     }
 
-}
+    const phoneOrTablet = (
+        <MobileContent {...props}
+                       {...state}
+                       togglePlanInterval={() => togglePlanInterval()}/>
+    );
+
+    const desktop = (
+        <DesktopContent {...props}
+                        {...state}
+                        togglePlanInterval={() => togglePlanInterval()}/>
+    );
+
+    return (
+        <DeviceRouter phone={phoneOrTablet} tablet={phoneOrTablet} desktop={desktop}/>
+    );
+
+});
 
 interface IProps {
     readonly plan: Billing.Plan;
