@@ -421,83 +421,6 @@ const Mobile = () => {
           </tr>
         </table>
       </Box>
-      <Box className={classes.pricePlanMobile}>
-        <Box className={classes.headerMobile}>4 year</Box>
-        <Box className={classes.pricing}>
-          $200
-          <span className={classes.rate}>/4 years</span>
-        </Box>
-        <Button className={classes.buttonSignUpMobile}>Sign Up</Button>
-        <Box className={classes.subtitleMobile}>
-          Over 40% discount <br /> vs. monthly plan
-        </Box>
-        <table className={classes.tableMobile}>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Updates
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Web + Desktop
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Storage
-            </td>
-            <td>50 GB</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Captured <br /> Web Documents
-            </td>
-            <td>unlimited</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Devices
-            </td>
-            <td>unlimited</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Priority Support
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-          {/* <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Daily <br /> Flashcard Reviews
-            </td>
-            <td>unlimited</td>
-          </tr> */}
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Related Tags
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-        </table>
-      </Box>
     </Box>
   );
 }
@@ -540,27 +463,10 @@ const Desktop = () => {
             1 year commitment <br /> gets one month free
           </Box>
         </th>
-        <th style={{ width: "22%" }}>
-          <Box className={classes.header}>4 year</Box>
-          <Box className={classes.pricing}>
-            $200
-            <span className={classes.rate}>/4 years</span>
-          </Box>
-
-          <Button className={classes.buttonSignUp}>Sign Up</Button>
-          <Box className={classes.subtitle}>
-            Over 40% discount <br /> vs. monthly plan
-          </Box>
-        </th>
       </tr>
 
       <tr className={classes.row}>
         <td className={classes.rowHead}>Updates</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
         <td>
           <Box className={classes.imgBox}>
             <FACheckCircleIcon className={classes.checkCircle} />
@@ -582,11 +488,6 @@ const Desktop = () => {
       </td>
       <tr className={classes.row}>
         <td className={classes.rowHead}>Web + Desktop</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
         <td>
           <Box className={classes.imgBox}>
             <FACheckCircleIcon className={classes.checkCircle} />
