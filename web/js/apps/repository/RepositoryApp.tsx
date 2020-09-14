@@ -8,7 +8,7 @@ import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoade
 import WhatsNewScreen
     from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
 import {StatsScreen} from '../../../../apps/repository/js/stats/StatsScreen';
-import {PremiumScreen} from '../../../../apps/repository/js/splash/splashes/premium/PremiumScreen';
+import {PremiumScreen} from '../../../../apps/repository/js/premium/PremiumScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {

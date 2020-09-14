@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly selected: boolean;
     readonly className?: string;
+    readonly style?: React.CSSProperties;
     readonly children: React.ReactElement;
 }
 
@@ -44,7 +45,8 @@ export const MUISelected = deepMemo((props: IProps) => {
                     [classes.selected]: selected,
                  },
                  className,
-             )}>
+             )}
+             style={props.style}>
             {props.children}
         </div>
     );

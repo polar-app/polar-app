@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Nav} from '../../../../../../web/js/ui/util/Nav';
-import {UserInfo} from '../../../../../../web/js/apps/repository/auth_handler/AuthHandler';
-import {AccountActions} from '../../../../../../web/js/accounts/AccountActions';
-import {NullCollapse} from '../../../../../../web/js/ui/null_collapse/NullCollapse';
+import {Nav} from '../../../../web/js/ui/util/Nav';
+import {UserInfo} from '../../../../web/js/apps/repository/auth_handler/AuthHandler';
+import {AccountActions} from '../../../../web/js/accounts/AccountActions';
+import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {Billing} from "polar-accounts/src/Billing";
 import Button from '@material-ui/core/Button';
-import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {useLogger} from "../../../../../../web/js/mui/MUILogger";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {useLogger} from "../../../../web/js/mui/MUILogger";
 
 export interface IProps {
     readonly from: Billing.Plan;

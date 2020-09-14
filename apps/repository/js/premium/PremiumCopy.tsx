@@ -1,4 +1,4 @@
-import {UserInfo} from "../../../../../../web/js/apps/repository/auth_handler/AuthHandler";
+import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {
     BronzePlan,
     CancelSubscriptionButton,
@@ -12,7 +12,7 @@ import {
 } from "./PremiumContent2";
 import {PremiumButton} from "./PremiumButton";
 import React from "react";
-import {NullCollapse} from "../../../../../../web/js/ui/null_collapse/NullCollapse";
+import {NullCollapse} from "../../../../web/js/ui/null_collapse/NullCollapse";
 import {Billing} from "polar-accounts/src/Billing";
 
 export const MobileContent = (props: IProps) => {
