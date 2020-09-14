@@ -52,8 +52,7 @@ export const CancelSubscriptionButton = deepMemo(() => {
     }
 
     return (
-        <Button color="primary"
-                size="large"
+        <Button size="large"
                 variant="contained"
                 onClick={handleCancelSubscription}>
 
@@ -197,7 +196,7 @@ export const FindPlan = deepMemo(() => {
 
 export const FreePlan = deepMemo(() => {
     return <div>
-        <h2>Free</h2>
+        <h2>FREE</h2>
 
         <h3 className="text-xxlarge">$0</h3>
         <p className="text-small text-tint">
@@ -212,7 +211,7 @@ export const FreePlan = deepMemo(() => {
 export const PlusPlan = deepMemo((props: IState) => {
 
     return <div>
-        <h2>Bronze</h2>
+        <h2>PLUS</h2>
 
         <PlanPricing plan='plus'/>
 
