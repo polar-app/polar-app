@@ -41,7 +41,6 @@ const useStyles = makeStyles({
   tableDesktop: {
     fontSize: '16px',
     margin: "0px auto 5% auto",
-    background: "#4F4F4F",
     mixBlendMode: "normal",
     width: "80%",
     textAlign: "center",
@@ -139,7 +138,6 @@ const useStyles = makeStyles({
   },
 
   pricePlanTab: {
-    background: "#4F4F4F",
     mixBlendMode: "normal",
     display: "flex",
     flexDirection: "column",
@@ -151,7 +149,6 @@ const useStyles = makeStyles({
   },
 
   pricePlanMobile: {
-    background: "#4F4F4F",
     mixBlendMode: "normal",
     display: "flex",
     flexDirection: "column",
@@ -166,7 +163,6 @@ const useStyles = makeStyles({
   },
 
   tableMobile: {
-    background: "#4F4F4F",
     mixBlendMode: "normal",
     width: "70%",
     borderCollapse: "collapse",

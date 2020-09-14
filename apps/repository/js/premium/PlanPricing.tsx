@@ -3,7 +3,22 @@ import {usePremiumStore} from "./PremiumStore";
 import {Discount} from "./Discounts";
 import React from "react";
 import {Billing} from "polar-accounts/src/Billing";
-import { Numbers } from "polar-shared/src/util/Numbers";
+import createStyles from "@material-ui/core/styles/createStyles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        price: {
+            fontSize: '30px'
+        },
+        interval: {
+            fontSize: '15px',
+            color: theme.palette.text.hint
+        },
+    }),
+);
+
 
 interface IProps {
     readonly plan: Billing.V2PlanLevel;
@@ -11,12 +26,12 @@ interface IProps {
 
 export const PlanPricing = deepMemo((props: IProps) => {
 
+    const classes = useStyles();
     const {interval} = usePremiumStore(['interval']);
 
     const computeMonthlyPrice = () => {
 
         switch (props.plan) {
-
             case "free":
                 return 0.0;
             case "plus":
@@ -28,8 +43,25 @@ export const PlanPricing = deepMemo((props: IProps) => {
     };
 
     const computeYearlyPrice = () => {
-        const monthlyAmount = computeMonthlyPrice();
-        return Numbers.toFixedFloat(monthlyAmount * 11, 2);
+        switch (props.plan) {
+            case "free":
+                return 0.0;
+            case "plus":
+                return 74.99;
+            case "pro":
+                return 164.99;
+        }
+    };
+
+    const compute4YearPrice = () => {
+        switch (props.plan) {
+            case "free":
+                return 0.0;
+            case "plus":
+                return 164.99;
+            case "pro":
+                return 399.99;
+        }
     };
 
     interface Pricing {
@@ -52,26 +84,27 @@ export const PlanPricing = deepMemo((props: IProps) => {
         return <div>
 
             <s>
-                <h3 className="text-xxlarge">${pricing.discount.before}<span
-                    className="text-small">/{interval}</span>
+                <h3 className="">${pricing.discount.before}<span
+                    className="">/{interval}</span>
                 </h3>
             </s>
 
-            <h3 className="text-xxlarge">
+            <h3 className="">
                 ${pricing.discount.after}<span
-                className="text-small">/{interval}</span>
+                className="">/{interval}</span>
             </h3>
 
         </div>;
 
     } else {
 
-        return <div>
-            <h3 className="text-xxlarge">${pricing.price}<span
-                className="text-small">/{interval}</span>
-            </h3>
-
-        </div>;
+        return (
+            <div>
+                <h3 className={classes.price}>${pricing.price}<span
+                    className={classes.interval}>/{interval}</span>
+                </h3>
+            </div>
+        );
 
     }
 
