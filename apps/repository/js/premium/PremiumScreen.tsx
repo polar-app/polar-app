@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {PremiumContent} from './PremiumContent';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PremiumStoreProvider} from './PremiumStore';
+import {PremiumContent2} from "./PremiumContent2";
 
 export const PremiumScreen = () => {
 
@@ -15,7 +15,7 @@ export const PremiumScreen = () => {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent/>
+                            <PremiumContent2/>
                         </div>
                     </div>
 
