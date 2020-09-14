@@ -1,10 +1,8 @@
 import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {
     CancelSubscriptionButton,
-    FindPlan,
     FreePlan,
     PlanInterval,
-    PlanIntervalButton,
     PlusPlan,
     PricingOverview,
     ProPlan,
@@ -14,6 +12,8 @@ import React from "react";
 import {Billing} from "polar-accounts/src/Billing";
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {CancelPlan} from "./CancelPlan";
+import {PlanIntervalButton} from "./PlanIntervalButton";
+import { FindPlan } from "./FindPlan";
 
 export const MobileContent = () => {
 

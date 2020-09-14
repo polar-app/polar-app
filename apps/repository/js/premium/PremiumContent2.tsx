@@ -7,6 +7,9 @@ import {
 } from "../../../../web/js/mui/MUIFontAwesome";
 import {PremiumButton} from "./PremiumButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
+import {PlanPricing} from "./PlanPricing";
+import {PlanIntervalButton} from "./PlanIntervalButton";
+import {FindPlan} from "./FindPlan";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -439,11 +442,16 @@ const Desktop = () => {
     <table className={classes.tableDesktop}>
       <tbody>
       <tr style={{ height: "100px", verticalAlign: "top" }}>
-        <th style={{ width: "12%" }}></th>
+        <th style={{ width: "12%" }}>
+          <div className="mt-2 mb-2">
+            <FindPlan/>
+            <PlanIntervalButton/>
+          </div>
+        </th>
         <th style={{ width: "22%" }}>
           <Box className={classes.header}>Free</Box>
           <Box className={classes.pricing}>
-            $0.00
+            <PlanPricing plan='free'/>
           </Box>
           {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
           <Box className={classes.subtitle}>Free forever</Box>
@@ -451,8 +459,7 @@ const Desktop = () => {
         <th style={{ width: "22%" }}>
           <Box className={classes.header}>Plus</Box>
           <Box className={classes.pricing}>
-            $6.99
-            <span className={classes.rate}>/mo</span>
+            <PlanPricing plan='plus'/>
           </Box>
 
           <PremiumButton newPlan="plus" />
@@ -464,7 +471,7 @@ const Desktop = () => {
         <th style={{ width: "22%" }}>
           <Box className={classes.header}>Pro</Box>
           <Box className={classes.pricing}>
-            $14.99<span className={classes.rate}>/mo</span>
+            <PlanPricing plan='pro'/>
           </Box>
 
           <PremiumButton newPlan="pro" />
