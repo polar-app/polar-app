@@ -6,6 +6,7 @@ import {
   FATimesCircleIcon
 } from "../../../../web/js/mui/MUIFontAwesome";
 import {PremiumButton} from "./PremiumButton";
+import {PlanCheckIcon} from "./PlanCheckIcon";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles({
   },
 
   tableDesktop: {
+    fontSize: '16px',
     margin: "0px auto 5% auto",
     background: "#4F4F4F",
     mixBlendMode: "normal",
@@ -205,7 +207,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -215,7 +217,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -285,7 +287,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -295,7 +297,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -323,7 +325,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -339,7 +341,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -365,7 +367,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -375,7 +377,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -403,7 +405,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -419,7 +421,7 @@ const Mobile = () => {
             </td>
             <td>
               <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FACheckCircleIcon className={classes.checkCircle} />
+                <PlanCheckIcon/>
               </Box>
             </td>
           </tr>
@@ -439,8 +441,10 @@ const Desktop = () => {
       <tr style={{ height: "100px", verticalAlign: "top" }}>
         <th style={{ width: "12%" }}></th>
         <th style={{ width: "22%" }}>
-          <Box className={classes.header}>Launch</Box>
-          <Box className={classes.pricing}> Free </Box>
+          <Box className={classes.header}>Free</Box>
+          <Box className={classes.pricing}>
+            $0.00
+          </Box>
           {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
           <Box className={classes.subtitle}>Free forever</Box>
         </th>
@@ -512,12 +516,12 @@ const Desktop = () => {
         </td>
         <td>
           <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
+            <PlanCheckIcon/>
           </Box>
         </td>
         <td>
           <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
+            <PlanCheckIcon/>
           </Box>
         </td>
       </tr>
@@ -545,12 +549,12 @@ const Desktop = () => {
         </td>
         <td>
           <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
+            <PlanCheckIcon/>
           </Box>
         </td>
         <td>
           <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
+            <PlanCheckIcon/>
           </Box>
         </td>
       </tr>
