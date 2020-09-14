@@ -465,45 +465,6 @@ const Desktop = () => {
         </th>
       </tr>
 
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Updates</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-      </tr>
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Web + Desktop</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-      </tr>
       <td colSpan={5}>
         <Divider className={classes.divider} />
       </td>
@@ -512,7 +473,6 @@ const Desktop = () => {
         <td>1 GB</td>
         <td>50 GB</td>
         <td>500 GB</td>
-        <td>50 GB</td>
       </tr>
       <td colSpan={5}>
         <Divider className={classes.divider} />
@@ -524,7 +484,6 @@ const Desktop = () => {
         <td>250</td>
         <td>unlimited</td>
         <td>unlimited</td>
-        <td>unlimited</td>
       </tr>
       <td colSpan={5}>
         <Divider className={classes.divider} />
@@ -533,7 +492,6 @@ const Desktop = () => {
         <td className={classes.rowHead}>Devices</td>
         <td>2</td>
         <td>3</td>
-        <td>unlimited</td>
         <td>unlimited</td>
       </tr>
       <td colSpan={5}>
@@ -544,11 +502,6 @@ const Desktop = () => {
         <td>
           <Box className={classes.imgBox}>
             <FATimesCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
           </Box>
         </td>
         <td>
@@ -582,11 +535,6 @@ const Desktop = () => {
         <td>
           <Box className={classes.imgBox}>
             <FATimesCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FACheckCircleIcon className={classes.checkCircle} />
           </Box>
         </td>
         <td>
