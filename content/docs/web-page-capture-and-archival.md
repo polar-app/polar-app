@@ -48,9 +48,7 @@ Capture prevents the problem of "link rot" where URLs vanish from the web over
 time due to a natural form of attribution.  Either the domain expires or the 
 content is deleted or the location changed.
 
-The <a
-href="https://blog.archive.org/2018/10/01/more-than-9-million-broken-links-on-wikipedia-are-now-rescued/">Internet
-Archive</a> has found that more than 9M URLs on Wikipedia return 404 error
+The <a href="https://blog.archive.org/2018/10/01/more-than-9-million-broken-links-on-wikipedia-are-now-rescued/">Internet Archive</a> has found that more than 9M URLs on Wikipedia return 404 error
 pages.
 
 With Polar you never have to worry about this being an issue as you have a 
