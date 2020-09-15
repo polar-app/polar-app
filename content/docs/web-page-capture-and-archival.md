@@ -9,15 +9,15 @@ description: Polar supports long term web page archival via a process called "ca
 
 # Web Page Capture
 
-Polar supports long term web page archival via a process called "capture" which
-downloads and caches the content locally.  We store it in Polar as if it were
+Polar supports long term web page capture and archival archival by 
+downloading and caching the content.  We store it in Polar as if it were
 any other type of document (like PDF).
 
-This allows you to manage web pages with tags and annotations including text and
+This allows you to treat webpages like any other document and manage them with tags and annotations including text and
 area highlights, comments, and flashcards.
 
-This essentially allows Polar to work like your own personal Internet archive
-for documents critical to your education and maintain the knowledge 
+A key benefit of this is that it works like your own personal Internet archive
+for documents critical to your education. You can maintain the knowledge 
 contained within using annotations and comments and use incremental reading to 
 read large collections of web pages in parallel.  
 
@@ -32,6 +32,8 @@ a portable PHZ file that can be used for long term archival of web content.
 
 Additionally, we capture the document in a way to make them more usable and more 
 readable.
+
+You can easily open the original URL of any captured webapge through Polar. Any potential changes on the website will not be reflected in the previously captured webpage.
 
 <!-- <img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png"> -->
 <p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/capture-preview-narrow.png"></p>
@@ -69,7 +71,14 @@ pages.
 With Polar you never have to worry about this being an issue as you have a 
 permanent long term copy of important content.
 
-# Usage
+# Chrome Extension
+
+The <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd">Polar Chrome Extension</a> 
+allows you to send directly from Chrome into Polar. This is the easiest way of capturing webpages into your repository.
+
+The extension works for any webpage. In the first step, it converts the webpage into an easy-to-read format. Clicking the button on the top right of that page captures the webpage into your repository.
+
+# Alternative way of capturing web page
 
 To capture a new page just select ```File | Capture Web Page``` then enter a URL.
 
@@ -80,20 +89,13 @@ document will be saved within Polar.
 
 # Document Repository
 
-After the web page is captured and saved locally it's saved to the document 
-repository where you can reference it at any time in the future.
+After the web page is captured and saved in the cloud it's saved to the document 
+repository where you can treat it like any other uploaded document.
 
 The document repository supports features like tagging, tracking reading progress,
 custom sorting (by updated time, added time), etc. 
 
 <p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/document-repository-narrow.png"></p>
-
-# Chrome Extension
-
-The <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd">Polar Chrome Extension</a> 
-allows you to send directly from Chrome into Polar.  You can copy the URL and paste it
-into Polar directly but it's more convenient to have a one click button in integrated
-into your browser. 
 
 # Design
 
