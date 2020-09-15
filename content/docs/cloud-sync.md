@@ -27,27 +27,8 @@ All documents in Polar are only available to your account and we use Google
 Firebase access control credentials to block unauthorized users (anyone other
 than you).
 
-## Future Features
+## Storage and pricing
 
-Additionally, cloud sync was specifically designed to support additional
-features in the future including mobile, selective replication
-online collaboration, and other exciting new capabilities.
-
-Selective replication is something we plan on adding in Q1 2019 and allows
-you to keep the majority if your documents in the cloud and selectively fetch
-them when necessary.  
-
-This enables users with massive repositories to free up disk space by keeping
-most of their data in the cloud.
-
-## Pricing
-
-Right now cloud sync is free for all users.  We plan on making Polar cloud sync
-free for 95% users and the remaining 5% have the added benefit of supporting
-Polar with their monthly subscription fee.            
-
-We expect cloud sync to cost $7.99 per month for users with the largest document 
-repository.
- 
+Every new user gets 1 GB of cloud storage for free. Higher tiers provide you with up to 500 GB storage. See details <a href="https://getpolarized.io/#pricing">here</a> 
 
 
