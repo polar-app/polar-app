@@ -39,8 +39,8 @@ Polar supports both desktop and web and supports cloud sync and storage and sync
 |             |     | full feature set      |     | offline support |
 | ----------- | --- | --------------------- | --- | --------------- |
 | **desktop** |     | yes                   |     | yes             |
-| **web**     |     | yes                   |     | no              |
-| **mobile**  |     | yes                   |     | no              |
+| **web**     |     | yes                   |     | yes             |
+| **mobile**  |     | yes                   |     | yes             |
 
 ## Mobile
 
