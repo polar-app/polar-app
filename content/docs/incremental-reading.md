@@ -11,21 +11,21 @@ Incremental reading is **the technique of reading articles in small portions**. 
  
 ## Features in Polar that support incremental reading: 
  
-**Document Repository**: Users can organize multiple reading materials (pdfs, epubs, webpages, ebooks) in one place. 
+**Document Repository**: You can organize all your reading materials (pdfs, epubs, webpages, ebooks) in one place. 
 
 
 <img class="img-fluid" src="https://i.imgur.com/4rClAxt.png">
 
 
-**<a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a>** in Polar allow users to mark regions of a document and specify multiple ranges of text. Users can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and at the top of the document, the progress reading bar will show users exactly where they left their pagemark.
+**<a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a>** in Polar allow you to mark regions of a document and specify multiple ranges of text. You can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and at the top of the document, the progress reading bar will show you exactly where they left their pagemark.
 
 
 <img class="img-fluid" src="https://i.imgur.com/7O1QseQ.png">
 
 
-**Annotations**: Simply highlight key information and it will automatically appear in the annotation sidebar.  Polar supports different colors for annotation. Users can also create tags, comment, and modify annotations. 
+**Annotations**: Simply highlight key information and it will automatically appear in the annotation sidebar.  Polar supports different colors for annotation. You can also create tags, comment, and modify annotations. 
  
-Users can work with annotations directly in a document or in the annotation repository. The advantage of the annotation repository for users is having annotations from all documents in one place. This feature allows users to build a graph-based / networked structure of annotations. 
+You can work with annotations directly in a document or in the annotation repository. The advantage of the annotation repository is having annotations from all documents in one place. This feature allows you to build a graph-based / non-linear structure of annotations. 
 
  
 <img class="img-fluid" src="https://i.imgur.com/beb8Qhh.png">
@@ -46,7 +46,3 @@ Here is the basic life cycle of your flashcards with Polar’s own spaced repeti
 1. In the beginning, flashcards will be put in **learning** mode until you’ve been able to get a good grasp of the material.
 2. Next, they will be put in **review** mode. This mode schedules the learning at decreasing intervals of time as you accurately complete the flashcards. 
 3. The flashcards you’ve mastered (selected “**good**”) will be reviewed approximately every year. If you review a flashcard and don’t know the answer, click “**again**.” This card will be sent back to the learning mode, then the review mode if you remember it a second time.
-
- 
- 
-
