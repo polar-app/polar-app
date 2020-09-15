@@ -23,7 +23,7 @@ performed 15-60 minutes per day spread out while you're idle.
   
 > Although the principle is useful in many contexts, spaced repetition is commonly applied in contexts in which a learner must acquire many items and retain them indefinitely in memory. It is, therefore, well suited for the problem of vocabulary acquisition in the course of second-language learning. A number of spaced repetition software programs have been developed to aid the learning process.
 
-This is based on research from cognitive science around the [forgetting curve](https://en.wikipedia.org/wiki/Forgetting_curve):
+This is based on research from cognitive science around the <a href="https://en.wikipedia.org/wiki/Forgetting_curve">forgetting curve</a>:
 
 > The forgetting curve hypothesizes the decline of memory retention in time. This curve shows how information is lost
 over time when there is no attempt to retain it.[1] A related concept is the strength of memory that refers to the
@@ -40,18 +40,18 @@ intervals allows you to pursue incremental reading where you re-read important p
 
 Polar supports Anki sync and our own native flashcard and spaced repetition based on similar technology and concepts.
 
-Read our documentation on <a href="/docs/anki-sync-for-spaced-repetition.html">Anki sync</a>.  
+Read our documentation on <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html">Anki sync</a>.  
 
 # Start Review
 
-Polar allows you to review annotations directly and you can go to the annotation view and then select "Start Review"
+Polar allows you to review annotations directly by going to the annotation view and selecting "Start Review"
 which will review ten cards at a time.   
 
 <p class="text-center">
 <img class="img-fluid border" src="https://i.imgur.com/FNEYGTj.png">
 </p>
 
-When you create an annotation or flashcard, they will then be scheduled for the future so that you can review them at a
+When you create an annotation or flashcard, they will be scheduled for the future so that you can review them at a
 later date.
 
 # User Interface
