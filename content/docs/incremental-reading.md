@@ -13,18 +13,24 @@ Incremental reading is **the technique of reading articles in small portions**. 
  
 **Document Repository**: Users can organize multiple reading materials (pdfs, epubs, webpages, ebooks) in one place. 
 
+
 <img class="img-fluid" src="https://i.imgur.com/4rClAxt.png">
- 
+
+
 **<a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a>** in Polar allow users to mark regions of a document and specify multiple ranges of text. Users can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and at the top of the document, the progress reading bar will show users exactly where they left their pagemark.
 
+
 <img class="img-fluid" src="https://i.imgur.com/7O1QseQ.png">
- 
+
+
 **Annotations**: Simply highlight key information and it will automatically appear in the annotation sidebar.  Polar supports different colors for annotation. Users can also create tags, comment, and modify annotations. 
  
 Users can work with annotations directly in a document or in the annotation repository. The advantage of the annotation repository for users is having annotations from all documents in one place. This feature allows users to build a graph-based / networked structure of annotations. 
+
  
 <img class="img-fluid" src="https://i.imgur.com/beb8Qhh.png">
  
+
 Here is a guide on how to do incremental reading in Polar:
 
 1. Use the Polar Chrome extension to capture documents into Polar or upload a pdf or epub
@@ -32,8 +38,10 @@ Here is a guide on how to do incremental reading in Polar:
 3. Auto-convert information in the annotation sidebar into flashcards by clicking the lightning symbol
 4. Review flashcards in Polar directly or by syncing flashcards into <a href="https://ankiweb.net/shared/info/734898866">Anki</a>. To start studying annotations and flashcards in Polar, click the “Annotations” tab. Then click “Start Review.”
  
+
 <img class="img-fluid" src="https://i.imgur.com/SDBrleo.png">
  
+
 Here is the basic life cycle of your flashcards with Polar’s own spaced repetition software:
 1. In the beginning, flashcards will be put in **learning** mode until you’ve been able to get a good grasp of the material.
 2. Next, they will be put in **review** mode. This mode schedules the learning at decreasing intervals of time as you accurately complete the flashcards. 
