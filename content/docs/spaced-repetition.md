@@ -7,16 +7,12 @@ description: Polar implements spaced repetition and review of annotations on mob
 
 # Spaced Repetition
 
-Polar implements spaced repetition for flashcards and annotations on mobile and desktop devices.
-
-For spaced repetition you must be logged in via cloud sync.  Part of the advantage of spaced repetition is reviewing
-on mobile devices, tablets, and your web browser and this requires the cloud sync and online storage of your 
-annotations.
+Polar implements spaced repetition for flashcards and annotations on mobile and desktop devices. Since all files are stored in the cloud, you can easily create flashcards on the desktop and review on mobile.
 
 # Background
 
-If you're not familiar with spaced repetition you can get up to speed by [reading this infographic by ncase](https://ncase.me/remember/) or
-["How can we develop transformative tools for thought?"](https://numinous.productions/ttft/) by [Andy Matuschak](https://andymatuschak.org) and [Michael Nielsen](http://michaelnielsen.org/).
+If you're not familiar with spaced repetition you can get up to speed by <a href="https://ncase.me/remember/">reading this infographic by ncase</a> or
+<a href="https://numinous.productions/ttft/">"How can we develop transformative tools for thought?"</a> by Andy Matuschak and Michael Nielsen.
 
 At a high level spaced repetition allows you to review your notes by efficiently scheduling them into tasks that can be
 performed 15-60 minutes per day spread out while you're idle.
