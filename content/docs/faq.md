@@ -8,9 +8,7 @@ description: Polar Frequently Asked Questions (FAQ)
 
 # How do I support Polar?
 
-The best way to support Polar is to just [buy Polar premium](https://getpolarized.io/#pricing) (bronze, silver, or gold).
-
-We also have an [Open Collective](https://opencollective.com/polar-bookshelf) setup to allow donations.
+The best way to support Polar is to [buy Polar premium](https://getpolarized.io/#pricing).
 
 # How do I import my existing data?
 
@@ -22,55 +20,11 @@ This process is fairly quick taking about 1 minute per 100-200MB.
 
 # Where is my data kept?
 
-Your data is kept in a ```.polar``` directory in your home dir.  
+Your data is encrypted and kept securely in the cloud.
 
-This changes between platforms depending if you're on Windows, MacOS or Linux.
+# How do I backup / export my data?
 
-You can find out the exact directory by going to ```Help | About```.
-
-# How do I backup / restore my data?
-
-If you're using the desktop version of Polar you can perform the following 
-operations to backup/restore your data.
-
-- Go to ```Help | About``` to find the Polar data directory.
-- Stop Polar
-- Backup this directory (copy it to another folder)
-
-## How do I restore?
-
-If you have a backup and want to restore?
-
-- Stop Polar
-- Delete the Polar data directory
-- Copy the data you want to restore to the same path as the Polar data directory
-- Start Polar
-
-Your data should be restored.
-
-# Why is Polar using so much disk space?
-
-The Polar disk repository is actually amazingly efficient in terms of disk 
-usage however the operating system sometimes misreports the total usage.
-
-The main culprit is our .backup directories which are used when performing 
-cloud syncs.  We generally keep one per day for every initial sync (though we
-might keep more in the future).
-
-These contain a full backup/snapshot of your disk repository at the time 
-it was created (once per day).
-
-However, these use what are called 'hard links' where we 'link' the same files
-together and they appear in two places on the filesystem but they're actually
-the same file.
-
-If you have 10 hard links to 1 file, and you count the bytes used, some tools
-report 10x the actual space.
-
-However, we're actually using very little more than the original file size sync
-the data is actually the same.
-
-They're basically just alternative for the same underlying file.        
+You can download all your reading and annotations as a backup. To download your reading, click on the download button in the repository view. To download your annotations, clickon the download button in the annotation viewer.
 
 # Why can't I open files directly?  
 
@@ -90,16 +44,6 @@ Some of these features aren't implemented yet but are on the roadmap.
 
 Please see [Anki Sync for Spaced Repetition](https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html)
 
-# Can I export data from Polar?
-
-Yes.  The PDF and PHZ (web capture) files are in your ```stash``` directory in 
-your local datastore.  You can just copy them out if you wish to export.
-
-The annotations are another issue.  
-
-We have exporters for annotations which can be run per document and are located
-in the annotation sidebar.
-
 # What characters are supported in tags?
 
 Polar documents can be tagged for classification and management.  This allows you
@@ -112,17 +56,14 @@ This is somewhat constrained as characters like '#' and '-' are not supported.
 International characters and any character that can be supported as part of 
 Twitter hashtags are supported within Polar.
 
-We DID extend the framework to support ':' so that we could have typed tags.
+We did extend the framework to support ':' so that we could have typed tags.
 
-The idea was to be compatible with external systems so that data exported from
+The idea is to be compatible with external systems so that data exported from
 Polar was compatible.
 
-We might revisit supporting extended tags in the future with additional characters
-but just issue warnings that these tags aren't supported on all platforms.
+# Do you have any plans to support epub format?
 
-# Do you have any plans to support ePub format?
-
-Yes.  But not in the short term.  Check out our notes on [EPUB](EPUB_SUPPORT.md).
+Yes.  Epub support is available since Polar's 2.0 release.
 
 # How do I build and run from source?
 
