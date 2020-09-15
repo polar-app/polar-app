@@ -60,7 +60,7 @@ and you enter ```compsci``` it will create a new folder at ```/school/compsci```
 ## Tagging a document
 
 You can create a new tag when tagging a document.  In the document repository, select the tag button, then enter your
-new tag in the text area, a new tag will automatically be created and will show up on the sidebar.
+new tag in the text area, a new tag will automatically be created and will show up on the sidebar. You can also press t to tag a document
 
 <img class="img-shadow" src="https://i.imgur.com/DeHNaU6.png">
 
