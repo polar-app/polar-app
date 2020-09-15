@@ -10,14 +10,13 @@ description: Polar supports native integration with Anki via the Polar Connect a
 
 Polar supports native integration with Anki via the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on.
 
-This allows for annotations on document and connecting flashcards to these
-annotations and then synchronizing them directly to Anki.
+This allows you to sync flashcards created from annotations directly to Anki.
 
 Polar supports a robust annotation system internally with features like text and
 area highlights, and allowing comments and flashcards to be attached directly to
 the highlights.
 
-This allows you to create flashcards but keep *context* associated with the 
+The key advantage is that this systems not only creates flashcards but keeps *context* associated with the 
 flashcards.
 
 The context is important.  When using spaced repetition you don't want to forget 
@@ -53,11 +52,10 @@ Cards also support rich text formatting (bold, italic, etc) as well as images.
 
 # Setup
 
-Install the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on 
-and restart Anki.  At this point Polar can sync to Anki properly.
+Install the <a href="https://ankiweb.net/shared/info/734898866">Polar Connect</a> add-on 
+and restart Anki. At this point Polar can sync to Anki properly.
 
-Note that we used to recommend Anki Connect but we suggest you install Polar
-Connect now which will have more functionality.
+If you encounter issues with Polar Connect, you can also try Anki Connect, however, Polar Connect provides more functionality.
 
 # Usage 
 
@@ -93,14 +91,3 @@ on a fix for this issue.
 
 - All flashcards are always sync'd each time. This is probably going to be slower
   for larger decks but we plan to implement differential sync in the future.
-
-# Roadmap
-
-We plan on eventually supporting the following features when creating flashcards:
-
-- Preserving the original context URL so that you can link into polar and
-  have it open the document direction 
-  
-- Storing additional fields in Anki including the name of the document, 
-  original text content of the highlight, possibly images of the highlight
-  that the flashcard is bound to. 
