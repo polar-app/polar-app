@@ -17,7 +17,7 @@ If you're not familiar with spaced repetition you can get up to speed by <a href
 At a high level spaced repetition allows you to review your notes by efficiently scheduling them into tasks that can be
 performed 15-60 minutes per day spread out while you're idle.
 
-[Wikipedia has a good overview of SR](https://en.wikipedia.org/wiki/Spaced_repetition):
+<a href="https://en.wikipedia.org/wiki/Spaced_repetition">Wikipedia has a good overview of SR</a>:
 
 > Spaced repetition is an evidence-based learning technique that is usually performed with flashcards. Newly introduced and more difficult flashcards are shown more frequently while older and less difficult flashcards are shown less frequently in order to exploit the psychological spacing effect. The use of spaced repetition has been shown to increase rate of learning.[1]
   
@@ -33,16 +33,14 @@ learned knowledge in a matter of days or weeks unless they consciously review th
 
 # Flashcards and Incremental Reading
 
-We support spaced repetition for flashcards and your annotations.  Reading your annotations with spaced repetition 
+We support spaced repetition for your flashcards and annotations.  Reading your annotations with spaced repetition 
 intervals allows you to pursue incremental reading where you re-read important parts of documents you've highlighted.
 
 # Anki vs Polar
 
 Polar supports Anki sync and our own native flashcard and spaced repetition based on similar technology and concepts.
 
-If you're a more advanced user, or an existing Anki user, you might still want to use Anki directly.  
-
-Read our documentation on [Anki Sync](/docs/anki-sync-for-spaced-repetition.html) if you want to use Anki.  
+Read our documentation on <a href="/docs/anki-sync-for-spaced-repetition.html">Anki sync</a>.  
 
 # Start Review
 
