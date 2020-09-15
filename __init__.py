@@ -40,10 +40,10 @@ from . import web, util
 
 
 #
-# AnkiConnect
+# PolarConnect
 #
 
-class AnkiConnect:
+class PolarConnect:
     def __init__(self):
         self.log = None
         logPath = util.setting('apiLogPath')
@@ -60,7 +60,7 @@ class AnkiConnect:
         except:
             QMessageBox.critical(
                 self.window(),
-                'AnkiConnect',
+                'PolarConnect',
                 'Failed to listen on port {}.\nMake sure it is available and is not in use.'.format(util.setting('webBindPort'))
             )
 
@@ -1345,4 +1345,4 @@ class AnkiConnect:
 # Entry
 #
 
-ac = AnkiConnect()
+ac = PolarConnect()

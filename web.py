@@ -145,7 +145,7 @@ class WebServer:
 
     def handlerWrapper(self, req):
         if len(req.body) == 0:
-            body = 'AnkiConnect v.{}'.format(util.setting('apiVersion')).encode('utf-8')
+            body = 'PolarConnect v.{}'.format(util.setting('apiVersion')).encode('utf-8')
         else:
             try:
                 params = json.loads(req.body.decode('utf-8'))
