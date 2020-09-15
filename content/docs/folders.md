@@ -12,13 +12,9 @@ Polar supports two strategies for structuring your documents and annotations.
 
 Folders allow for hierarchical storage.
 
-Tags allow for structured storage without hierarchy.
+Tags allow for non-hierarchical (networked) storage.
 
 Both systems have their own advantages and it's up to you how you want to structure your workflow.
-
-# Differences between Folders and Tags
-
-Folders are hierarchical.  Tags are flat.   
 
 ## Folders
 
@@ -27,7 +23,7 @@ You could then have multiple sub-folders under ```/school``` for your studies.
 
 Documents aren't actually stored in folders within Polar. They're just organized that way.
 
-The path separator for Polar is always a forward slash (```/``).  On Windows it's still the 
+The path separator for Polar is always a forward slash (```/```).  On Windows it's still the 
 forward slash. 
 
 ## Tags
