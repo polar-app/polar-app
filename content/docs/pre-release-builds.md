@@ -11,13 +11,7 @@ We sometimes make pre-release builds for testing by the community.
 
 These builds might have some new feature or change that we're concerned might not work for all users.
 
-This only applies to desktop builds.  Not web or mobile builds.
-
-## Backups
-
-These should not cause any damage to your datastore as we're very conservative about what we release to users.
-
-That said, you should probably perform a [backup](/docs/backups.html) of your data just in case.
+This only applies to desktop builds.  Not web or mobile builds. Any pre-release builds on the web will be through a separate URL.
 
 ## Install
 
@@ -27,8 +21,7 @@ That said, you should probably perform a [backup](/docs/backups.html) of your da
 
  - Shut down the current version of Polar
  
- - Install the pre-release as you would a new build.  It will overwrite the version of Polar you have and leave your  
-   data in place.
+ - Install the pre-release as you would a new build.  It will overwrite the version of Polar you have
  
  - Start Polar again and you should have the pre-release version.  You can verify by going to ```Help | About```
  
