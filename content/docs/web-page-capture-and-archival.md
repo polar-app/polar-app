@@ -40,22 +40,7 @@ You can easily open the original URL of any captured webapge through Polar. Any 
 
 # Readability
 
-Polar supports capturing the document in a more readable form by emulating 
-tablet and mobile devices during capture.
-
-Websites usually try to cooperate with tablets and mobile devices by making
-them more readable on smaller screens.
-
-With Polar we emulate these devices during capture to preserve web pages in a
-more readable form - often with sidebar and navigational content removed.
-
-<p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/readability-example-bad-narrow.png"></p>
-
-<p class="text-center"><b>Document Captured with Sidebar</b></p>
-
-<p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/readability-example-good-narrow.png"></p>
-
-<p class="text-center"><b>Captured as Tablet with Sidebar Removed</b></p>
+Polar supports capturing the document in a more readable form by using Mozilla's Readability. The conversion into a more usable format uses epub as a basis.
 
 # Link Rot
 
@@ -78,15 +63,6 @@ allows you to send directly from Chrome into Polar. This is the easiest way of c
 
 The extension works for any webpage. In the first step, it converts the webpage into an easy-to-read format. Clicking the button on the top right of that page captures the webpage into your repository.
 
-# Alternative way of capturing web page
-
-To capture a new page just select ```File | Capture Web Page``` then enter a URL.
-
-A preview window will show what the page will look like in Polar.
-
-After that you have to click the 'capture' button to the top right and a new
-document will be saved within Polar.
-
 # Document Repository
 
 After the web page is captured and saved in the cloud it's saved to the document 
@@ -96,55 +72,3 @@ The document repository supports features like tagging, tracking reading progres
 custom sorting (by updated time, added time), etc. 
 
 <p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/document-repository-narrow.png"></p>
-
-# Design
-
-## Light, Thin, Fat, Full Archives.
-
-We define the following archive types:
-
-- light: URL only (not supported yet)
-- thin: HTML only with iframes.  No CSS, images, audio, or video (supported in Polar 1.x)
-- fat: HTML + CSS + images. No audio or video.  (under development)
-- full: HTML + CSS plus all resources including images, audio, and video (not supported yet).
-
-## Why not use a standard format.
-
-I would have loved to. I didn't want to build a document format and spend months 
-doing so.
-
-We're lucky captured pages work AT ALL.
-
-## What are the challenges of creating a portable HTML archive that mandates something custom.
-
- - CORS access policies prevent the content being access programmatically for
-   things like screenshots.
-   
- - CORS prevents loading resources from our origin and the target origin
-
-## Why not MHTML
-
-- Firefox doesn't support MHTML
-
-- MHTML doesn't support images
-
-- We can't extend it, fix bugs in it, etc.
-
-## Why not WARC
-
-- Chrome can't replace an HTTP response while it's served.  Only send a redirect.
-  This means that you end up building a loader ANYWAY which is 90% of the 
-  requirements for Polar.
-
-- WARC doesn't support compression settings for individual entries.  We only STORE
-  images/video for performance and storage gains.
-  
-- With WARC the full HTTP request would need to be replayed.  With our content 
-  capture we're able to use in-browser assets and cache to rebuild the page.
-  
-- We also cleanup and strip javavascript.
-
-- WARC would only represent the storage, not the extraction.  It might be 
-  possible to WRITE WARC or have export to WARC though.
-     
- 
