@@ -8,11 +8,11 @@ description: Polar uses Google Analytics and other 3rd party services to track y
 
 # Tracking Policy
 
-Polar uses Google Analytics and other 3rd party services to track your usage 
+Polar uses Google Analytics and other 3rd party services to track usage 
 of Polar for quality assurance, UI/UX and usability issues, fault detection, 
 and adoption and usage of new features.
 
-Our *only* goal for tracking is to improve the quality of the application.
+Our *only* goal for tracking is to improve the quality of the application. We only track data in an anonymized fashion which cannot be pinpointed to a specific user.
 
 We are *not* interested in tracking the actual content of the books you read, 
 the annotations, you create, etc.
@@ -26,12 +26,12 @@ potential data leaks.
 
 # What we track
 
-This is a non-exhaustive list of what we track in Polar.  It may be inaccurate 
-but we strive to keep it up to date.
+This is a non-exhaustive list of what we track in Polar.  We update this from time to time.
 
 ## Runtime Faults and Exceptions
 
-We use [Sentry](https://sentry.io) to report exceptions as they are encountered
+We use <a href="https://sentry.io" target="_blank">Sentry</a>
+to report exceptions as they are encountered
 in the application. If Polar has a bug of failure a recording of that is sent
 to sentry which allows us to debug real-world problems fix them.
 
@@ -40,20 +40,13 @@ to sentry which allows us to debug real-world problems fix them.
 We use Google Analytics to track various features and usage of the product 
 including but not limited to:
 
- - Number of documents in your repository
- - Product version
- - The types of documents you're using.
- - The types of features you're using (capture, annotations, etc)
- - Application level events (create comment, create annotation, etc)
+ - Number of total active users
+ - Product version and platform
+ - Polar usage by region (anonymized, non-attributable to a specific user)
+ - The types of features used (anonymized, non-attributable to a specific user)
+ - Application level events (anonymized, non-attributable to a specific user)
 
 # How we track
 
 ALL tracking data is sent via SSL.  We consider this a hard requirement and will
 revert any tracking system that either has insecure or broken SSL.
-
-# Opt-Out
-
-We will implement an opt-out feature in the future.  We would still encourage
-you to leave tracking on as this data is very very valuable for us to continue
-to improve the application and without your usage data we can't improve the 
-application for your specific use case.
