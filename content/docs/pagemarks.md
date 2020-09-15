@@ -64,3 +64,15 @@ This pagemark works exactly as the regular pagemark with the difference that you
  - Meta-Command N - create a new pagemark on the current page
  - Meta-Command click - create a pagemark on the page up until the current mouse click
  - Meta-Command E - erase the current pagemark
+ 
+# Automatic Pagemarks
+
+Auto pagemarks provide the beginning of our new pagemark design.  The idea is that pagemarks are created automatically
+as you scroll the document.  
+
+You can kind of think of them as 'breadcrumbs' in that, as you read naturally, a pagemark is left on the previous page.
+
+When making large jumps within a PDF (say from chapter 2 to chapter 10), pagemarks will not be created and will only
+resume when you start naturally reading at chapter 10.
+
+This feature is currently in beta and available for PDFs after in > 1.90.15
