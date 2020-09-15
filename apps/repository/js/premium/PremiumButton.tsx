@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Nav} from '../../../../web/js/ui/util/Nav';
 import {AccountActions} from '../../../../web/js/accounts/AccountActions';
-import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {Billing} from "polar-accounts/src/Billing";
 import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -12,6 +11,19 @@ import {
     useUserSubscriptionContext
 } from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {usePremiumStore} from './PremiumStore';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        current_plan: {
+            color: theme.palette.secondary.light,
+            fontSize: '18px',
+            fontWeight: 'bold'
+        },
+    }),
+);
+
 
 export interface IProps {
     readonly newPlan: Billing.V2PlanLevel;
@@ -19,6 +31,7 @@ export interface IProps {
 
 export const PremiumButton = deepMemo((props: IProps) => {
 
+    const classes = useStyles();
     const userInfoContext = useUserInfoContext();
     const subscription = useUserSubscriptionContext();
     const {interval} = usePremiumStore(['interval']);
@@ -97,17 +110,18 @@ export const PremiumButton = deepMemo((props: IProps) => {
     return (
         <div>
 
-            <NullCollapse open={!currentPlan}>
+            {currentPlan && (
+                <span className={classes.current_plan}>CURRENT PLAN</span>
+            )}
 
+            {! currentPlan && (
                 <Button color="primary"
                         variant="contained"
                         onClick={() => handler()}>
 
                     {text}
 
-                </Button>
-
-            </NullCollapse>
+                </Button>)}
 
         </div>
     );
