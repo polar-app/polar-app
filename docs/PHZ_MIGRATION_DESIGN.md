@@ -16,9 +16,18 @@
     - we could send it DIRECTLY the metadata we need to save with the .JSON 
         - JUST send the text annotations and comments on them
         - OR we could fetch the doc but that would/could be slower
-            
-
+        - must pass a 'migration' datastructure with the ID and fix this up
+          AFTER  we've loaded the page.
+    
+    - we HAVE to write a message to the localStorage in the chrome extension
+      with a URL and docID and then when they match, we have to trigger
+      the migration code once the doc has finished migrating into Polar.
+          
 # TODO
+
+- tell the user that the OLD document can be deleted... or do it for them...?
+    - we could just have a menu item for purging the old file and have a
+      'migrated' flag for it in the DocInfo so that the old doc can be removed.
 
 - TODO starting the whole repository app seems like it would be slow but this 
   process isn't done very often ... 
