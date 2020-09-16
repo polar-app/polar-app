@@ -3,12 +3,27 @@ import {LoadDocRequest} from "./LoadDocRequest";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useNav} from "../../../ui/util/NavHook";
 
 export type DocMigrationHandler = (loadDocRequest: LoadDocRequest) => boolean;
 
 export function useDocMigration(): DocMigrationHandler {
 
     const dialogs = useDialogManager();
+    const linkLoader = useNav();
+
+    const onAccept = React.useCallback((loadDocRequest: LoadDocRequest) => {
+
+        const params = {
+            url: encodeURIComponent(loadDocRequest.url!),
+            docID: loadDocRequest.fingerprint
+        };
+
+        const url = `https://beta.getpolarized.io/migration/phz?docID=${params.docID}&url=${params.url}`;
+
+        linkLoader(url, {newWindow: true, focus: true});
+
+    }, [linkLoader]);
 
     return React.useCallback((loadDocRequest) => {
         const {backendFileRef} = loadDocRequest;
@@ -52,14 +67,14 @@ export function useDocMigration(): DocMigrationHandler {
 
                     </div>
                 ),
-                onAccept: NULL_FUNCTION
-            });
+                onAccept: () => onAccept(loadDocRequest)
+             });
 
             return true;
         } else {
             return false;
         }
 
-    }, [dialogs])
+    }, [dialogs, onAccept])
 
 }

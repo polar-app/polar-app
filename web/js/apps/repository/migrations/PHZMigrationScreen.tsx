@@ -15,7 +15,9 @@ export const PHZMigrationTrigger = () => {
     const location = useLocation();
     const history = useHistory();
 
-    const parsedURL = new URL(location.toString());
+    console.log("Triggered PHZ migration");
+
+    const parsedURL = new URL(document.location.href);
 
     const docID = parsedURL.searchParams.get('docID')!;
     const url = parsedURL.searchParams.get('url')!;
@@ -24,14 +26,21 @@ export const PHZMigrationTrigger = () => {
 
         async function doAsync() {
 
+            console.log("Testing if web extension installed");
+
+            // FIXME this isn't being returned...
             const presence = await WebExtensionPresenceClient.exec();
 
             if (! presence) {
+                console.log("Web extension NOT installed.")
+
                 // they don't have the chrome store URL so we have to redirect
                 // them to install it.
                 const chromeStoreURL = ChromeStoreURLs.create();
                 history.push(chromeStoreURL);
                 return;
+            } else {
+                console.log("Web extension installed.")
             }
 
             await PHZMigrationClient.exec({docID, url});
