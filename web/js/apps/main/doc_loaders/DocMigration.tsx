@@ -19,11 +19,12 @@ export function useDocMigration(): DocMigrationHandler {
 
             dialogs.confirm({
                 title: "This is a legacy document that needs to be migrated",
+                acceptText: "Start Migration",
                 subtitle: (
                     <div>
                         <p>
                             This is a legacy web capture document which must be
-                            migrated to our new document as part of 2.0.
+                            migrated to our new document format as part of 2.0.
                         </p>
 
                         <p>
