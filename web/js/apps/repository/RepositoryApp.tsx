@@ -53,6 +53,7 @@ import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {deepMemo} from "../../react/ReactUtils";
+import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 
 interface IProps {
     readonly app: App;
@@ -295,6 +296,10 @@ export const RepositoryApp = (props: IProps) => {
 
                                             <Route exact path="/error">
                                                 <ErrorScreen/>
+                                            </Route>
+
+                                            <Route exact path="/migration/phz">
+                                                <PHZMigrationScreen/>
                                             </Route>
 
                                             <Route>
