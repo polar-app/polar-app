@@ -6,7 +6,7 @@ import {GlobalCssSummernote} from "./css/GlobalCssSummernote";
 import {GlobalCSSBootstrap} from "./css/GlobalCSSBootstrap";
 import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 
 interface IProps {
@@ -18,8 +18,8 @@ export const MUIAppRoot = (props: IProps) => {
     const usePersistedTheme = createPersistedState('theme');
     const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
 
-    // TODO play responsiveFontSizes ...
-    const muiTheme = createMuiTheme({
+    // TODO play responsiveFontSizes in MUI...
+    const muiTheme = React.useMemo(() => createMuiTheme({
         typography: {
             htmlFontSize: 12,
             fontSize: 12
@@ -31,12 +31,12 @@ export const MUIAppRoot = (props: IProps) => {
                 main: 'rgb(103, 84, 214)'
             }
         }
-    });
+    }), [theme]);
 
     return (
         <>
             <KeyboardShortcuts/>
-            <MuiThemeProvider theme={muiTheme}>
+            <ThemeProvider theme={muiTheme}>
                 <MUIThemeTypeContext.Provider value={{theme, setTheme}}>
                     <>
                         <CssBaseline/>
@@ -49,7 +49,7 @@ export const MUIAppRoot = (props: IProps) => {
 
                     </>
                 </MUIThemeTypeContext.Provider>
-            </MuiThemeProvider>
+            </ThemeProvider>
         </>
     );
 
