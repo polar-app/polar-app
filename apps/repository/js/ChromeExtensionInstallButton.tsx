@@ -72,7 +72,7 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
         linkLoader(chromeStoreURL, {newWindow: true, focus: true});
     }
 
-    if (webExtensionInstalled) {
+    if (webExtensionInstalled === true) {
         // it's installed so we're good to go
         return null;
     }
