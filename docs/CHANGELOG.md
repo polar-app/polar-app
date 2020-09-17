@@ -1,4 +1,4 @@
-# 2.0 beta 25
+# 2.0 beta 26
 
 - updated to latest MUI version
 - Fixed bug with the first character of tabs being ignored
