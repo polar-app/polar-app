@@ -1,5 +1,14 @@
+# 2.0 beta 25
 
-
+- updated to latest MUI version
+- Fixed bug with the first character of tabs being ignored
+- migration code for legacy PHZ documents should be enabled/working
+- Fixed bug where the chrome extension wasn't being detected
+- Fixed bug with keyboard binding on input elements
+- Fixed bug with attempting to use chrome API on electron.
+- improved pricing page (but not done yet)
+- faster UI for dialogs
+- doc repo only allows regular tags now.
 
 # 2.0 beta 25
 

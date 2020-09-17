@@ -28,7 +28,6 @@ export const PHZMigrationTrigger = () => {
 
             console.log("Testing if web extension installed");
 
-            // FIXME this isn't being returned...
             const presence = await WebExtensionPresenceClient.exec();
 
             if (! presence) {
@@ -43,6 +42,7 @@ export const PHZMigrationTrigger = () => {
                 console.log("Web extension installed.")
             }
 
+            // FIXME: this is the problem now...
             await PHZMigrationClient.exec({docID, url});
 
         }
