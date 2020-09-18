@@ -156,5 +156,5 @@ interface IProps {
 interface IState {
 }
 
-export type PlanInterval = 'month' | 'year';
+export type PlanInterval = 'month' | 'year' | '4year';
 

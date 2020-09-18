@@ -29,7 +29,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
     const classes = useStyles();
     const {interval} = usePremiumStore(['interval']);
 
-    const computeMonthlyPrice = () => {
+    const computeMonthPrice = () => {
 
         switch (props.plan) {
             case "free":
@@ -42,7 +42,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
     };
 
-    const computeYearlyPrice = () => {
+    const computeYearPrice = () => {
         switch (props.plan) {
             case "free":
                 return 0.0;
@@ -71,7 +71,21 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
     const computePrice = (): Pricing => {
 
-        const price = interval === 'month' ? computeMonthlyPrice() : computeYearlyPrice();
+        function computePriceFromInterval() {
+
+            switch(interval) {
+                case "month":
+                    return computeMonthPrice();
+                case "year":
+                    return computeYearPrice();
+                case "4year":
+                    return compute4YearPrice();
+
+            }
+
+        }
+
+        const price = computePriceFromInterval();
         // const discount = discounts.get(interval, props.plan);
 
         return {price, discount: undefined};
