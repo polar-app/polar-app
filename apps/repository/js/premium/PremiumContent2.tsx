@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Button, Divider, makeStyles, Typography} from "@material-ui/core";
+import {Box, Button, Divider, makeStyles, Typography, Paper} from "@material-ui/core";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {
   FACheckCircleIcon,
@@ -14,6 +14,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
 import {PlanInterval} from "./PremiumContent";
+import {TableDemo} from "../../../../web/spectron0/material-ui/TableDemo";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -434,140 +435,155 @@ const Mobile = () => {
   );
 }
 
+const TableRowDivider = React.memo(() => {
+
+  const classes = useStyles();
+
+  return (
+      <tr>
+        <td colSpan={5}>
+          <Divider className={classes.divider} />
+        </td>
+      </tr>
+  );
+
+});
+
 const DesktopTable = () => {
 
   const classes = useStyles();
 
   return (
-    <table className={classes.tableDesktop}>
-      <tbody>
-      <tr style={{ height: "100px", verticalAlign: "top" }}>
-        <th style={{ width: "12%" }}>
-          <div className="mt-2 mb-2">
-            {/*<FindPlan/>*/}
-            {/*<PlanIntervalButton/>*/}
-          </div>
-        </th>
-        <th style={{ width: "22%" }}>
-          <Box className={classes.header}>Free</Box>
-          <Box className={classes.pricing}>
-            <PlanPricing plan='free'/>
-          </Box>
-          {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
-          <Box className={classes.subtitle}>Free forever</Box>
-        </th>
-        <th style={{ width: "22%" }}>
-          <Box className={classes.header}>Plus</Box>
-          <Box className={classes.pricing}>
-            <PlanPricing plan='plus'/>
-          </Box>
+      <Paper className={classes.tableDesktop}>
+        <table>
+          <tbody>
+          <tr style={{ height: "100px", verticalAlign: "top" }}>
+            <th style={{ width: "12%" }}>
+              <div className="mt-2 mb-2">
+                {/*<FindPlan/>*/}
+                {/*<PlanIntervalButton/>*/}
+              </div>
+            </th>
+            <th style={{ width: "22%" }}>
+              <Box className={classes.header}>Free</Box>
+              <Box className={classes.pricing}>
+                <PlanPricing plan='free'/>
+              </Box>
+              {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
+              <Box className={classes.subtitle}>Free forever</Box>
+            </th>
+            <th style={{ width: "22%" }}>
+              <Box className={classes.header}>Plus</Box>
+              <Box className={classes.pricing}>
+                <PlanPricing plan='plus'/>
+              </Box>
 
-          <PremiumButton newPlan="plus" />
+              <PremiumButton newPlan="plus" />
 
-          {/*<Box className={classes.subtitle}>*/}
-          {/*  1 year commitment <br /> gets one month free*/}
-          {/*</Box>*/}
-        </th>
-        <th style={{ width: "22%" }}>
-          <Box className={classes.header}>Pro</Box>
-          <Box className={classes.pricing}>
-            <PlanPricing plan='pro'/>
-          </Box>
+              {/*<Box className={classes.subtitle}>*/}
+              {/*  1 year commitment <br /> gets one month free*/}
+              {/*</Box>*/}
+            </th>
+            <th style={{ width: "22%" }}>
+              <Box className={classes.header}>Pro</Box>
+              <Box className={classes.pricing}>
+                <PlanPricing plan='pro'/>
+              </Box>
 
-          <PremiumButton newPlan="pro" />
+              <PremiumButton newPlan="pro" />
 
-          {/*<Box className={classes.subtitle}>*/}
-          {/*  1 year commitment <br /> gets one month free*/}
-          {/*</Box>*/}
-        </th>
-      </tr>
+              {/*<Box className={classes.subtitle}>*/}
+              {/*  1 year commitment <br /> gets one month free*/}
+              {/*</Box>*/}
+            </th>
+          </tr>
 
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Storage</td>
-        <td>1 GB</td>
-        <td>50 GB</td>
-        <td>500 GB</td>
-      </tr>
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>
-          Maximum Captured <br /> Web Documents
-        </td>
-        <td>250</td>
-        <td>unlimited</td>
-        <td>unlimited</td>
-      </tr>
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Devices</td>
-        <td>2</td>
-        <td>3</td>
-        <td>unlimited</td>
-      </tr>
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Priority Support</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FATimesCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <PlanCheckIcon/>
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <PlanCheckIcon/>
-          </Box>
-        </td>
-      </tr>
-      <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td>
-      {/* <tr className={classes.row}>
-        <td className={classes.rowHead}>
-          Maximum Daily <br /> Flashcard Reviews
-        </td>
-        <td>20</td>
-        <td>unlimited</td>
-        <td>unlimited</td>
-        <td>unlimited</td>
-      </tr>*/}
-      {/* <td colSpan={5}>
-        <Divider className={classes.divider} />
-      </td> */}
-      <tr className={classes.row}>
-        <td className={classes.rowHead}>Related Tags</td>
-        <td>
-          <Box className={classes.imgBox}>
-            <FATimesCircleIcon className={classes.checkCircle} />
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <PlanCheckIcon/>
-          </Box>
-        </td>
-        <td>
-          <Box className={classes.imgBox}>
-            <PlanCheckIcon/>
-          </Box>
-        </td>
-      </tr>
-      <tr style={{ height: "50px" }}></tr>
-      </tbody>
-    </table>
+          <TableRowDivider/>
+
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Storage</td>
+            <td>1 GB</td>
+            <td>50 GB</td>
+            <td>500 GB</td>
+          </tr>
+          <td colSpan={5}>
+            <Divider className={classes.divider} />
+          </td>
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>
+              Maximum Captured <br /> Web Documents
+            </td>
+            <td>250</td>
+            <td>unlimited</td>
+            <td>unlimited</td>
+          </tr>
+          <td colSpan={5}>
+            <Divider className={classes.divider} />
+          </td>
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Devices</td>
+            <td>2</td>
+            <td>3</td>
+            <td>unlimited</td>
+          </tr>
+          <td colSpan={5}>
+            <Divider className={classes.divider} />
+          </td>
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Priority Support</td>
+            <td>
+              <Box className={classes.imgBox}>
+                <FATimesCircleIcon className={classes.checkCircle} />
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+          </tr>
+          <td colSpan={5}>
+            <Divider className={classes.divider} />
+          </td>
+          {/* <tr className={classes.row}>
+            <td className={classes.rowHead}>
+              Maximum Daily <br /> Flashcard Reviews
+            </td>
+            <td>20</td>
+            <td>unlimited</td>
+            <td>unlimited</td>
+            <td>unlimited</td>
+          </tr>*/}
+          {/* <td colSpan={5}>
+            <Divider className={classes.divider} />
+          </td> */}
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Related Tags</td>
+            <td>
+              <Box className={classes.imgBox}>
+                <FATimesCircleIcon className={classes.checkCircle} />
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+          </tr>
+          <tr style={{ height: "50px" }}></tr>
+          </tbody>
+        </table>
+      </Paper>
   );
 }
 
@@ -620,11 +636,18 @@ const Desktop = () => {
                flexDirection: 'column'
            }}>
 
-        <div className="ml-auto mr-auto">
+        <div className="ml-auto mr-auto pb-5">
+          <h1>Plans and Pricing</h1>
+        </div>
+
+        <div className="ml-auto mr-auto pb-5">
           <PlanIntervalToggleButtons/>
         </div>
 
-        <DesktopTable/>
+        <div className="mt-4"
+             style={{display: 'flex'}}>
+          <DesktopTable/>
+        </div>
 
       </div>
   );
