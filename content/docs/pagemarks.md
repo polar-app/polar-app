@@ -55,15 +55,11 @@ This pagemark works exactly as the regular pagemark with the difference that you
 
 ### Linux / Windows key bindings
 
- - Control Alt N - create a new pagemark on the current page
  - Control Alt click - create a pagemark on the page up until the current mouse click
- - Control Alt E - erase the current pagemark
 
 ### MacOS Key bindings
 
- - Meta-Command N - create a new pagemark on the current page
  - Meta-Command click - create a pagemark on the page up until the current mouse click
- - Meta-Command E - erase the current pagemark
  
 # Automatic Pagemarks
 
