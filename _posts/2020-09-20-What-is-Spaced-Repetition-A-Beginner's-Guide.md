@@ -6,7 +6,7 @@ description: What is Spaced Repetition? A Beginner's Guide
 large_image: https://imgur.com/a/2OvXfLc
 ---
 
-<img class="img-fluid" src="https://imgur.com/a/2OvXfLc">
+<img class="img-fluid" src="https://i.imgur.com/loa4RO7.png">
 
 
 **What is Spaced Repetition?: A Beginner’s Guide**
@@ -60,4 +60,4 @@ Lastly, spaced repetition is a handy tool for when you want to learn something a
 
 Spaced repetition is a simple but powerful tool to improve your study habits and memorization abilities. Using a software like Polar or Anki allows you to easily harness the potential of your learning and optimize it, meaning you can spend less time learning more.
 
-<img class="img-fluid" src="https://imgur.com/6ZLwE92">
+<img class="img-fluid" src="https://i.imgur.com/2MZGltZ.png">
