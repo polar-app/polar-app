@@ -15,6 +15,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
 import {PlanInterval} from "./PremiumContent";
 import {TableDemo} from "../../../../web/spectron0/material-ui/TableDemo";
+import {PricingFAQ} from "./PricingFAQ";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -117,8 +118,8 @@ const useStyles = makeStyles({
   subtitle: {
     fontStyle: "normal",
     fontWeight: "normal",
-    fontSize: ".9vw",
-    lineHeight: "19px",
+    fontSize: "1.2em",
+    lineHeight: "1.2em",
     textAlign: "center",
     letterSpacing: "0.15px",
     color: "#E0E0E0",
@@ -202,7 +203,9 @@ const Mobile = () => {
       <Box className={classes.pricePlanMobile}>
         <Box className={classes.headerMobile}>Launch</Box>
         <Box className={classes.pricing}> Free </Box>
-        <Box className={classes.subtitleMobile}>Free forever</Box>
+        <Box className={classes.subtitleMobile}>
+          Free forever
+        </Box>
 
         <table className={classes.tableMobile}>
           <tr className={classes.row}>
@@ -470,7 +473,9 @@ const DesktopTable = () => {
                 <PlanPricing plan='free'/>
               </Box>
               {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
-              <Box className={classes.subtitle}>Free forever</Box>
+              <Box className={classes.subtitle}>
+                Free forever
+              </Box>
             </th>
             <th style={{ width: "22%" }}>
               <Box className={classes.header}>Plus</Box>
@@ -610,13 +615,13 @@ const PlanIntervalToggleButtons = () => {
         <ToggleButton value="year" aria-label="bold">
           <Typography>Yearly</Typography>
           &nbsp;
-          <Typography color="secondary">One Month Free!</Typography>
+          <Typography color="secondary">One Month Free</Typography>
         </ToggleButton>
 
         <ToggleButton value="4year" aria-label="bold">
           <Typography>4 Years</Typography>
           &nbsp;
-          <Typography color="secondary">Save Over 40%!</Typography>
+          <Typography color="secondary">Save Over 40%</Typography>
         </ToggleButton>
 
         {/*<ToggleButton value="4year" aria-label="bold">*/}
@@ -647,6 +652,10 @@ const Desktop = () => {
         <div className="mt-4"
              style={{display: 'flex'}}>
           <DesktopTable/>
+        </div>
+
+        <div className="ml-auto mr-auto">
+          <PricingFAQ/>
         </div>
 
       </div>
