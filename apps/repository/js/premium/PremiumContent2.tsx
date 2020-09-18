@@ -46,7 +46,7 @@ const useStyles = makeStyles({
 
   tableDesktop: {
     fontSize: '16px',
-    margin: "0px auto 5% auto",
+    margin: "10px auto 10px auto",
     mixBlendMode: "normal",
     width: "80%",
     textAlign: "center",
