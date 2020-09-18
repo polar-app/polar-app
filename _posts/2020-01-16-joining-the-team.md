@@ -27,7 +27,7 @@ always fascinated me and so last summer, I decided to take the plunge and pursue
 
 ## Polar & plan ahead
 
-Guess how Kevin and I met? Reddit... actually. Fortunately, we were both located in SF and when we met, we immediately had
+Guess how Kevin and I met? Reddit/HN... actually. Fortunately, we were both located in SF and when we met, we immediately had
 a shared passion for EdTech and building something that can truly change the world. After a few meetings and hikes in
 the Bay Area, it was clear that pursuing this together was the right choice.
 
