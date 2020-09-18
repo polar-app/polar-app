@@ -11,3 +11,5 @@ description: Key Bindings for Common Polar Operations when using Polar, the docu
 You can find all active keybindings in Polar by clicking ```/``` or ```shift``` ```/```.
 
 <img class="img-fluid" src="(https://i.imgur.com/r5OaY5g.png)">
+
+More text
