@@ -8,4 +8,4 @@ description: Key Bindings for Common Polar Operations when using Polar, the docu
 
 # Key Bindings
 
-You can find all active keybindings in Polar by clicking ```/ or ```shift``` ```/```.
+You can find all active keybindings in Polar by clicking ```/``` or ```shift``` ```/```.
