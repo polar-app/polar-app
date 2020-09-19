@@ -35,13 +35,13 @@ export const PlanIntervalToggle = React.memo(() => {
 
             <ToggleButton className={classes.button} value="year" aria-label="bold">
                 <Typography>Yearly</Typography>
-                &nbsp;
+                &nbsp;&nbsp;
                 <Typography color="secondary">One Month Free</Typography>
             </ToggleButton>
 
             <ToggleButton className={classes.button} value="4year" aria-label="bold">
                 <Typography>4 Years</Typography>
-                &nbsp;
+                &nbsp;&nbsp;
                 <Typography color="secondary">Save Over 40%</Typography>
             </ToggleButton>
 
