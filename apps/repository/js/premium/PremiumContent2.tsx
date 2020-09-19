@@ -1,21 +1,14 @@
 import React from "react";
-import {Box, Button, Divider, makeStyles, Typography, Paper} from "@material-ui/core";
+import {Box, Divider, makeStyles, Paper, Typography} from "@material-ui/core";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {
-  FACheckCircleIcon,
-  FATimesCircleIcon
-} from "../../../../web/js/mui/MUIFontAwesome";
+import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {PremiumButton} from "./PremiumButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
-import {PlanIntervalButton} from "./PlanIntervalButton";
-import {FindPlan} from "./FindPlan";
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
 import {PlanInterval} from "./PremiumContent";
-import {TableDemo} from "../../../../web/spectron0/material-ui/TableDemo";
 import {PricingFAQ} from "./PricingFAQ";
+import {PlanIntervalToggle} from "./PlanIntervalToggle";
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -592,47 +585,6 @@ const DesktopTable = () => {
   );
 }
 
-const PlanIntervalToggleButtons = () => {
-
-  const {interval} = usePremiumStore(['interval']);
-  const {setInterval} = usePremiumCallbacks();
-
-  console.log("FIXME: interval: " + interval);
-
-  function handleChange(event: React.MouseEvent, newInterval: PlanInterval | null) {
-    setInterval(newInterval || 'month');
-  }
-
-  return (
-      <ToggleButtonGroup exclusive
-                         value={interval || 'month'}
-                         onChange={handleChange}>
-
-        <ToggleButton value="month" aria-label="bold">
-          Monthly
-        </ToggleButton>
-
-        <ToggleButton value="year" aria-label="bold">
-          <Typography>Yearly</Typography>
-          &nbsp;
-          <Typography color="secondary">One Month Free</Typography>
-        </ToggleButton>
-
-        <ToggleButton value="4year" aria-label="bold">
-          <Typography>4 Years</Typography>
-          &nbsp;
-          <Typography color="secondary">Save Over 40%</Typography>
-        </ToggleButton>
-
-        {/*<ToggleButton value="4year" aria-label="bold">*/}
-        {/*  4 years <i>Save Over 40%!</i>*/}
-        {/*</ToggleButton>*/}
-
-      </ToggleButtonGroup>
-  );
-
-}
-
 const Desktop = () => {
 
   return (
@@ -646,7 +598,7 @@ const Desktop = () => {
         </div>
 
         <div className="ml-auto mr-auto pb-5">
-          <PlanIntervalToggleButtons/>
+          <PlanIntervalToggle/>
         </div>
 
         <div className="mt-4"
