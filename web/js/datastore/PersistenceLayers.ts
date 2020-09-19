@@ -72,9 +72,7 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    public static async toSyncOrigin(persistenceLayer: PersistenceLayer, ...docMetaRefs: DocMetaRef[]): Promise<SyncOrigin> {
-
-        const {datastore} = persistenceLayer;
+    public static async toSyncOrigin(datastore: Datastore, ...docMetaRefs: DocMetaRef[]): Promise<SyncOrigin> {
 
         const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docMetaRefs);
 

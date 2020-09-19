@@ -55,10 +55,10 @@ function useDiskDatastoreMigration() {
 
             const taskProgressCallback = await dialogs.taskbar({
                 message: "Transferring local data to cloud... "
-            })
+            });
 
-            const source = await PersistenceLayers.toSyncOrigin(remotePersistenceLayer);
-            const target = await PersistenceLayers.toSyncOrigin(persistenceLayer);
+            const source = await PersistenceLayers.toSyncOrigin(remotePersistenceLayer.datastore);
+            const target = await PersistenceLayers.toSyncOrigin(persistenceLayer.datastore);
 
             await PersistenceLayers.transfer(source, target, async (snapshot) => {
                 taskProgressCallback({value: snapshot.progress.progress});
