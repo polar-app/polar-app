@@ -10,6 +10,7 @@ import {SettingToggle} from './SettingToggle';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
 import {usePrefs} from "../../persistence_layer/PrefsHook";
+import {DiskDatastoreMigrationButton} from "../../../../../web/js/apps/repository/migrations/DiskDatastoreMigration";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -118,6 +119,8 @@ export const SettingsScreen = () => {
 
                     <p>
                         <ViewDeviceInfoButton/>
+
+                        <DiskDatastoreMigrationButton/>
                     </p>
 
                 </div>

@@ -2,9 +2,14 @@ import React from 'react';
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {RemoteDatastores} from "../../../datastore/RemoteDatastores";
 import {DefaultPersistenceLayer} from "../../../datastore/DefaultPersistenceLayer";
-import {usePersistenceContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    usePersistenceContext,
+    usePersistenceLayerContext
+} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {PersistenceLayers} from "../../../datastore/PersistenceLayers";
 import {useLogger} from "../../../mui/MUILogger";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import Button from '@material-ui/core/Button';
 
 function useDiskDatastoreMigrationPrompt() {
 
@@ -44,11 +49,11 @@ function useDiskDatastoreMigration() {
 
     const dialogs = useDialogManager();
     const log = useLogger();
-    const remotePersistenceLayer = useRemotePersistenceLayer();
-    const {persistenceLayerProvider} = usePersistenceContext();
+    const {persistenceLayerProvider} = usePersistenceLayerContext();
 
     return React.useCallback(() => {
 
+        const remotePersistenceLayer = createRemotePersistenceLayer();
         const persistenceLayer = persistenceLayerProvider();
 
         async function doAsync() {
@@ -69,15 +74,31 @@ function useDiskDatastoreMigration() {
         doAsync().catch(err => log.error(err));
 
 
-    },  [dialogs, log, remotePersistenceLayer, persistenceLayerProvider]);
+    },  [dialogs, log, persistenceLayerProvider]);
 
 }
 
-function useRemoteDatastore() {
+function createRemoteDatastore() {
     return RemoteDatastores.create();
 }
 
-function useRemotePersistenceLayer() {
-    const remoteDatastore = useRemoteDatastore();
+function createRemotePersistenceLayer() {
+    const remoteDatastore = createRemoteDatastore();
     return new DefaultPersistenceLayer(remoteDatastore);
 }
+
+export const DiskDatastoreMigrationButton = React.memo(() => {
+
+    const onClick = useDiskDatastoreMigrationPrompt();
+
+    if (! AppRuntime.isElectron()) {
+        return null;
+    }
+
+    return (
+        <Button onClick={onClick}>
+            Start Polar 1.0 Migration Wizard
+        </Button>
+    );
+
+});
