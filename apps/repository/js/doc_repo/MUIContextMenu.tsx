@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
-import isEqual from "react-fast-compare";
 import {IPoint} from "../../../../web/js/Point";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -224,11 +224,17 @@ interface MUIContextMenuProps {
 
 }
 
-export const MUIContextMenu = React.memo((props: MUIContextMenuProps) => {
+export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
 
     const handleClose = React.useCallback(() => {
         props.handleClose();
     }, [])
+
+    function handleContextMenu(event: React.MouseEvent) {
+        // needed so that you can't bring up a native context menu on a context
+        // menu
+        event.preventDefault();
+    }
 
     return (
         <Menu
@@ -237,6 +243,7 @@ export const MUIContextMenu = React.memo((props: MUIContextMenuProps) => {
             open={true}
             onClose={handleClose}
             onClick={handleClose}
+            onContextMenu={handleContextMenu}
             anchorReference="anchorPosition"
             anchorPosition={{
                 top: props.mouseY,
@@ -249,4 +256,4 @@ export const MUIContextMenu = React.memo((props: MUIContextMenuProps) => {
 
         </Menu>
     );
-}, isEqual);
+});

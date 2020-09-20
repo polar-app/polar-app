@@ -50,6 +50,14 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
             });
         };
 
+        function handleContextMenu(event: React.MouseEvent) {
+            // needed so that you can't bring up a native context menu on a context
+            // menu
+            event.preventDefault();
+        }
+
+        // TODO migrate this to MUIContextMenu
+
         return (
             <>
                 {this.state.mouseX !== undefined && this.state.mouseY !== undefined &&
@@ -58,6 +66,7 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                         open={this.state.mouseX !== undefined}
                         onClose={() => handleClose()}
                         onClick={() => handleClose()}
+                        onContextMenu={handleContextMenu}
                         anchorReference="anchorPosition"
                         anchorPosition={{
                             top: this.state.mouseY,
