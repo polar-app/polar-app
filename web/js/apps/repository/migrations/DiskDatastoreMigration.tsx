@@ -96,7 +96,7 @@ export const DiskDatastoreMigrationButton = React.memo(() => {
     }
 
     return (
-        <Button onClick={onClick}>
+        <Button onClick={onClick} variant="contained">
             Start Polar 1.0 Migration Wizard
         </Button>
     );

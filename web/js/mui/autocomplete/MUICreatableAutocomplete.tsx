@@ -346,7 +346,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 )}
             />
 
-            <PremiumFeature required='bronze' size='sm' feature="related tags">
+            <PremiumFeature required='plus' size='sm' feature="related tags">
                 <MUIRelatedOptions relatedOptions={relatedOptions}
                                    onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
             </PremiumFeature>

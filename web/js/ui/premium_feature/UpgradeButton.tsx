@@ -3,13 +3,14 @@ import React from "react";
 import Button from '@material-ui/core/Button';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import {Billing} from "polar-accounts/src/Billing";
+import {deepMemo} from "../../react/ReactUtils";
 
 interface IProps {
-    readonly required: Billing.Plan;
+    readonly required: Billing.V2PlanLevel;
     readonly feature: string;
 }
 
-export const UpgradeButton = (props: IProps) => {
+export const UpgradeButton = deepMemo((props: IProps) => {
 
     const history = useHistory();
     const {required, feature} = props;
@@ -26,4 +27,4 @@ export const UpgradeButton = (props: IProps) => {
         </Button>
     );
 
-};
+});

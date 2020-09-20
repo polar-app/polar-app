@@ -1,5 +1,4 @@
 import * as React from "react";
-import {DropEvent} from 'react-dropzone';
 import {
     useAddFileDropzoneCallbacks,
     useAddFileDropzoneStore
@@ -10,7 +9,6 @@ import {
 } from "../../../hooks/ReactLifecycleHooks";
 import {AddFileHooks} from "./AddFileHooks";
 import {AddFileDropzoneDialog} from "./AddFileDropzoneDialog";
-import useAddFileImporter = AddFileHooks.useAddFileImporter;
 
 function isFileTransfer(event: DragEvent) {
 

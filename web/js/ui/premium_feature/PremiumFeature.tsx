@@ -9,7 +9,7 @@ import {Billing} from 'polar-accounts/src/Billing';
 export type UISize = 'xs' | 'sm' | 'md' | 'lg';
 
 interface IProps {
-    readonly required: Billing.Plan;
+    readonly required: Billing.V2PlanLevel;
     readonly feature: string;
     readonly size: UISize;
     readonly children: React.ReactElement;

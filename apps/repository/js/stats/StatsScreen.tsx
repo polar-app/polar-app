@@ -32,7 +32,7 @@ const ReadingStats = (props: ReadingStatsProps) => {
                 </SectionText>
             </SectionHeader>
 
-            <PremiumFeature required='bronze' feature="statistics" size="lg">
+            <PremiumFeature required='plus' feature="statistics" size="lg">
                 <ReadingProgressTable docInfos={props.docInfos}/>
             </PremiumFeature>
         </div>
@@ -150,7 +150,7 @@ const Desktop = (props: ReviewerProps) => {
 
                 <ReviewerStats isReviewer={props.isReviewer}/>
 
-                <PremiumFeature required='bronze'
+                <PremiumFeature required='plus'
                                 feature="statistics"
                                 size="lg">
                     <TopTagsChart docInfos={docInfos}/>
