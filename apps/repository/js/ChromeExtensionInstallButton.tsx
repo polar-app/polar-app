@@ -72,6 +72,11 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
         linkLoader(chromeStoreURL, {newWindow: true, focus: true});
     }
 
+    if (AppRuntime.isElectron()) {
+        // we're on electron so we can't install the chrome extension.
+        return null;
+    }
+
     if (webExtensionInstalled === true) {
         // it's installed so we're good to go
         return null;
