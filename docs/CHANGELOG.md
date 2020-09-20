@@ -1,3 +1,5 @@
+- disable context menus on context menus
+
 # 2.0 beta 26
 
 - Fixed bug with the first character of tabs being ignored
