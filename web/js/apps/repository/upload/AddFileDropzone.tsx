@@ -9,19 +9,15 @@ import {
 } from "../../../hooks/ReactLifecycleHooks";
 import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
-import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {AddFileHooks} from "./AddFileHooks";
-import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
 import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
-import {FileSystemFileEntries} from "./FileSystemFileEntries";
 import {FileSystemEntries} from "./FileSystemEntries";
+import {Uploads} from "./Uploads";
+import {UploadFilters} from "./UploadFilters";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
-import {IUpload} from "./IUpload";
-import {Uploads} from "./Uploads";
-import {UploadFilters} from "./UploadFilters";
 
 async function recurseDataTransferItems(items: ReadonlyArray<DataTransferItem>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
     return recurseFileSystemEntries(items.map(item => item.webkitGetAsEntry()));
@@ -71,26 +67,6 @@ async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystem
 
 }
 
-async function filesToUploads(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
-
-    async function toUpload(entry: IWebkitFileSystemFileEntry): Promise<IUpload> {
-
-        const asyncEntry = FileSystemFileEntries.toAsync(entry);
-
-        const file = await asyncEntry.file();
-        return {
-            blob: file,
-            name: entry.name
-        }
-    }
-
-    return await asyncStream(entries)
-        .filter(UploadFilters.filterByDocumentName)
-        .map(toUpload)
-        .collect();
-
-}
-
 function useDropHandler() {
 
     const log = useLogger();
@@ -123,7 +99,7 @@ function useDropHandler() {
                                    .filter(UploadFilters.filterByDocumentType);
 
                 const files = await recurseDataTransferItems(items);
-                const uploads = await filesToUploads(files);
+                const uploads = await Uploads.fromFileSystemEntries(files);
                 addFileImporter(uploads);
 
             } else if (event.dataTransfer.files) {
