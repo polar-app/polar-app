@@ -15,39 +15,12 @@ import {AddFileHooks, IUpload} from "./AddFileHooks";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
 import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
+import {FileSystemFileEntries} from "./FileSystemFileEntries";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import OnErrorCallback = IWebkitFileSystem.OnErrorCallback;
 import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
 
-
-namespace FileSystemFileEntries {
-
-    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
-    import IWebkitFileSystemFileEntryAsync = IWebkitFileSystem.IWebkitFileSystemFileEntryAsync;
-
-    export function toAsync(entry: IWebkitFileSystemFileEntry): IWebkitFileSystemFileEntryAsync {
-        return {
-            isFile: entry.isFile,
-            isDirectory: entry.isDirectory,
-            fullPath: entry.fullPath,
-            name: entry.name,
-            toURL: entry.toURL,
-            file: () => {
-                return new Promise<File>((resolve, reject) => {
-                    entry.file(result => resolve(result), err => reject(err));
-                });
-            }
-        }
-    }
-
-}
-
-function toAsyncCallback<T>(delegate: (callback: Callback1<T>, onError: OnErrorCallback) => void) {
-    return new Promise<T>((resolve, reject) => {
-        delegate(result => resolve(result), err => reject(err));
-    });
-}
 
 namespace FileSystemEntries {
 
