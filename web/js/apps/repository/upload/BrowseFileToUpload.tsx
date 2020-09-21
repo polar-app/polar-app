@@ -26,8 +26,6 @@ export const BrowseFileToUpload = deepMemo((props: IProps) => {
     const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);
     const addFileImporter = useAddFileImporter();
 
-    // FIXME: the path is wrong...
-
     const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 
         const uploads = Uploads.fromFiles(event.target.files);

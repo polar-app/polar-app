@@ -6,8 +6,9 @@ This system enables bulk file uploads with the following features:
 - progress indicators as a file is being uploaded
 - tags are computed on directories so the directory structure is mirrored
 
-
-
 TODO: 
   - FIXME: the progress callbacks don't currently work and they stay indeterminate
   - It would be great if you could drop the files on a directory in the sidebar
+  - Test on Safari
+  - Test on Firefox
+  - Test on Windows

@@ -73,8 +73,6 @@ async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystem
 
 async function filesToUploads(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
 
-    // FIXME: progress callbacks aren't working
-
     async function toUpload(entry: IWebkitFileSystemFileEntry): Promise<IUpload> {
 
         const asyncEntry = FileSystemFileEntries.toAsync(entry);
