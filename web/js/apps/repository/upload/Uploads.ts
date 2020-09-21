@@ -26,6 +26,11 @@ export namespace Uploads {
             const asyncEntry = FileSystemFileEntries.toAsync(entry);
 
             function computeTags() {
+
+                if (! entry.fullPath) {
+                    return undefined;
+                }
+
                 const path = UploadPaths.parse(entry.fullPath);
 
                 return [

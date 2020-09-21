@@ -18,3 +18,6 @@ TODO:
       could be dragging the root or they could be dragging just one directory 
       and they still want to keep that path.  we could fix this by implementing
       a feature for dragging and dropping files in the hierarchy.
+
+  - Folders and Tags don't show up unless Folders and Tags don't exist but
+    they should just be empty items otherwise.
