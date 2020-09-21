@@ -46,7 +46,7 @@ interface IProps {
 /**
  * Shown while the user is hovering while a file ready to drop.
  */
-export const AddFileHoverDialog = React.memo((props: IProps) => {
+export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
 
     const classes = useStyles();
 

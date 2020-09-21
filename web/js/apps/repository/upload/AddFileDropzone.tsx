@@ -8,7 +8,7 @@ import {
     useComponentWillUnmount
 } from "../../../hooks/ReactLifecycleHooks";
 import {Callback1} from "polar-shared/src/util/Functions";
-import {AddFileHoverDialog} from "./AddFileHoverDialog";
+import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {AddFileHooks, IUpload} from "./AddFileHooks";
@@ -413,7 +413,7 @@ export const AddFileDropzone = React.forwardRef((props: any, ref) => {
     }
 
     return (
-        <AddFileHoverDialog open={active} onClose={closeDialog}/>
+        <AddFileDropzoneDialog2 open={active} onClose={closeDialog}/>
         // <AddFileDropzoneDialog open={active}
         //                        noActions={true}
         //                        onClose={closeDialog}/>
