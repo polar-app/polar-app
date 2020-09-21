@@ -3,6 +3,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {BrowseFolderToUpload} from "./BrowseFolderToUpload";
 import Dialog from '@material-ui/core/Dialog';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import {BrowseFilesToUpload} from "./BrowseFilesToUpload";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,9 +77,17 @@ export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
                     subdirectories
                 </p>
 
-                <p>
-                    <BrowseFolderToUpload onClose={props.onClose}/>
-                </p>
+                <div style={{
+                         display: 'flex',
+                         justifyContent: 'center'
+                     }}>
+                    <div className="mr-1">
+                        <BrowseFilesToUpload onClose={props.onClose}/>
+                    </div>
+                    <div className="ml-1">
+                        <BrowseFolderToUpload onClose={props.onClose}/>
+                    </div>
+                </div>
 
             </div>
 
