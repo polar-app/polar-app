@@ -61,8 +61,6 @@ async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystem
 async function filesToUploads(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
 
     // FIXME: progress callbacks aren't working
-    // FIXME: I think we should bring back the last dropbox so you can click on
-    // it to get a upload dialog...
 
     async function toUpload(entry: IWebkitFileSystemFileEntry): Promise<IUpload> {
 
@@ -91,27 +89,14 @@ function useDropHandler() {
 
         event.preventDefault();
 
-        console.log("FIXME: dataTransfer: ", event.dataTransfer);
-
-        if (event.dataTransfer && event.dataTransfer.files) {
-            console.log("FIXME: files: ", event.dataTransfer.files);
-        }
-
-        // FIXME the items have type strings too and we should handle those
-        // here via a filter as well...
         if (event.dataTransfer && event.dataTransfer.items) {
 
             const items = Array.from(event.dataTransfer.items);
-            console.log("FIXME0: items: ", items);
             const entries = items.map(current => current.webkitGetAsEntry());
-            console.log("FIXME0: entries: ", entries);
 
             const first = Arrays.first(Array.from(event.dataTransfer.items));
             if (first) {
-                // FIXME: toURL is not working here.
                 const entry = first.webkitGetAsEntry();
-                console.log("FIXME: entry: ", entry);
-                console.log("FIXME: entry URL: ", entry.toURL());
             }
         }
 
