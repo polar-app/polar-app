@@ -14,72 +14,17 @@ import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {AddFileHooks, IUpload} from "./AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {IWebkitFileSystem} from "./IWebkitFileSystem";
+import OnErrorCallback = IWebkitFileSystem.OnErrorCallback;
+import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
+import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
 
-interface IWebkitFileSystemEntryBase {
-
-    readonly fullPath: string;
-    readonly name: string;
-    readonly toURL: () => string;
-
-}
-
-
-interface IWebkitFileSystemFileEntry extends IWebkitFileSystemEntryBase {
-    readonly isFile: true;
-    readonly isDirectory: false;
-    readonly file: (callback: Callback1<File>, onError: OnErrorCallback) => void;
-}
-
-interface IWebkitFileSystemFileEntryAsync extends IWebkitFileSystemEntryBase {
-    readonly isFile: true;
-    readonly isDirectory: false;
-    readonly file: () => Promise<File>;
-}
-
-
-interface IWebkitFileSystemDirectoryEntry extends IWebkitFileSystemEntryBase {
-    readonly isFile: false;
-    readonly isDirectory: true;
-    readonly createReader: () => IWebkitFileSystemDirectoryReader;
-}
-
-type IWebkitFileSystemEntry = IWebkitFileSystemFileEntry | IWebkitFileSystemDirectoryEntry;
-
-interface IWebkitFileSystemFileMetadata {
-    readonly size: number;
-    readonly modificationTime: Date;
-}
-
-type OnErrorCallback = (err: Error) => void;
-
-interface IWebkitFileSystemReadEntry {
-
-    readonly fullPath: string;
-    readonly isDirectory: boolean;
-    readonly isFile: boolean;
-    readonly name: string;
-
-    readonly getMetadata: (callback: Callback1<IWebkitFileSystemFileMetadata>,
-                           onError: OnErrorCallback) => void;
-
-    readonly getParent: (callback: Callback1<IWebkitFileSystemEntry>,
-                         onError: OnErrorCallback) => void;
-
-    // Creates and returns a URL which identifies the entry. This URL uses the
-    // URL scheme "filesystem:".
-    readonly toURL: () => string;
-
-}
-
-interface IWebkitFileSystemDirectoryReader {
-    readonly readEntries: (callback: Callback1<ReadonlyArray<IWebkitFileSystemEntry>>, onError: OnErrorCallback) => void;
-}
-
-interface IWebkitFileSystemDirectoryReaderAsync {
-    readonly readEntries: () => Promise<ReadonlyArray<IWebkitFileSystemEntry>>;
-}
 
 namespace FileSystemDirectoryReaders {
+
+    import IWebkitFileSystemDirectoryReader = IWebkitFileSystem.IWebkitFileSystemDirectoryReader;
+    import IWebkitFileSystemDirectoryReaderAsync = IWebkitFileSystem.IWebkitFileSystemDirectoryReaderAsync;
+    import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
 
     export function toAsync(reader: IWebkitFileSystemDirectoryReader): IWebkitFileSystemDirectoryReaderAsync {
         return {
@@ -94,6 +39,9 @@ namespace FileSystemDirectoryReaders {
 }
 
 namespace FileSystemFileEntries {
+
+    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
+    import IWebkitFileSystemFileEntryAsync = IWebkitFileSystem.IWebkitFileSystemFileEntryAsync;
 
     export function toAsync(entry: IWebkitFileSystemFileEntry): IWebkitFileSystemFileEntryAsync {
         return {
@@ -119,6 +67,10 @@ function toAsyncCallback<T>(delegate: (callback: Callback1<T>, onError: OnErrorC
 }
 
 namespace FileSystemEntries {
+
+    import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
+    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
+    import IWebkitFileSystemDirectoryEntry = IWebkitFileSystem.IWebkitFileSystemDirectoryEntry;
 
     export function isFile(entry: IWebkitFileSystemEntry): entry is IWebkitFileSystemFileEntry {
         return entry.isFile;

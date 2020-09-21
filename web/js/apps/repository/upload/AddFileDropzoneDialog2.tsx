@@ -52,7 +52,7 @@ export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
 
     return (
         <Dialog transitionDuration={50}
-                maxWidth="md"
+                maxWidth="lg"
                 className={classes.backdrop}
                 onClose={props.onClose}
                 open={props.open}>
