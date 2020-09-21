@@ -30,9 +30,6 @@ async function recurseFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystem
 
     for (const entry of entries) {
 
-        // FIXME: I think we STILL need the add file dialog so that users can
-        // use a system dialog???
-
         if (entry.isFile) {
             result.push(entry);
         } else if (FileSystemEntries.isDirectory(entry)) {
