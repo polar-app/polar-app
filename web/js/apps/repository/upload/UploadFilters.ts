@@ -3,6 +3,18 @@ export namespace UploadFilters {
     /**
      * A value with a type which is a mime type.  Example: 'text/html'
      */
+    interface IName {
+        readonly name: string;
+    }
+
+    export function filterByDocumentName<V extends IName>(value: V) {
+        const name = value.name.toLowerCase();
+        return name.endsWith(".pdf") || name.endsWith(".epub");
+    }
+
+    /**
+     * A value with a type which is a mime type.  Example: 'text/html'
+     */
     interface IType {
         readonly type: string | undefined;
     }

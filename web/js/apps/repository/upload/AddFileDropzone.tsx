@@ -21,6 +21,7 @@ import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
 import {IUpload} from "./IUpload";
 import {Uploads} from "./Uploads";
+import {UploadFilters} from "./UploadFilters";
 
 async function recurseDataTransferItems(items: ReadonlyArray<DataTransferItem>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
     return recurseFileSystemEntries(items.map(item => item.webkitGetAsEntry()));
@@ -75,10 +76,7 @@ async function filesToUploads(entries: ReadonlyArray<IWebkitFileSystemFileEntry>
     }
 
     return await asyncStream(entries)
-        .filter(current => {
-            const name = current.name.toLowerCase();
-            return name.endsWith(".pdf") || name.endsWith(".epub");
-        })
+        .filter(UploadFilters.filterByDocumentName)
         .map(toUpload)
         .collect();
 
@@ -136,9 +134,9 @@ function useDropHandler() {
 
             if (event.dataTransfer.items) {
 
-                // FIXME: need to filter PDF and EPUB files...
+                const items = Array.from(event.dataTransfer.items)
+                                   .filter(UploadFilters.filterByDocumentType);
 
-                const items = Array.from(event.dataTransfer.items);
                 const files = await recurseDataTransferItems(items);
                 const uploads = await filesToUploads(files);
                 addFileImporter(uploads);
