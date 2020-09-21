@@ -100,17 +100,6 @@ function useDropHandler() {
 
         event.preventDefault();
 
-        if (event.dataTransfer && event.dataTransfer.items) {
-
-            const items = Array.from(event.dataTransfer.items);
-            const entries = items.map(current => current.webkitGetAsEntry());
-
-            const first = Arrays.first(Array.from(event.dataTransfer.items));
-            if (first) {
-                const entry = first.webkitGetAsEntry();
-            }
-        }
-
         async function doAsync() {
 
             // https://developers.google.com/web/updates/2012/07/Drag-and-drop-a-folder-onto-Chrome-now-available
