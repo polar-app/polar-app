@@ -7,7 +7,6 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../../../hooks/ReactLifecycleHooks";
-import {Callback1} from "polar-shared/src/util/Functions";
 import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
@@ -16,27 +15,10 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
 import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
 import {FileSystemFileEntries} from "./FileSystemFileEntries";
+import {FileSystemEntries} from "./FileSystemEntries";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
-import OnErrorCallback = IWebkitFileSystem.OnErrorCallback;
 import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
-
-
-namespace FileSystemEntries {
-
-    import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
-    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
-    import IWebkitFileSystemDirectoryEntry = IWebkitFileSystem.IWebkitFileSystemDirectoryEntry;
-
-    export function isFile(entry: IWebkitFileSystemEntry): entry is IWebkitFileSystemFileEntry {
-        return entry.isFile;
-    }
-
-    export function isDirectory(entry: IWebkitFileSystemEntry): entry is IWebkitFileSystemDirectoryEntry {
-        return entry.isDirectory;
-    }
-
-}
 
 async function recurseDataTransferItems(items: ReadonlyArray<DataTransferItem>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
     return recurseFileSystemEntries(items.map(item => item.webkitGetAsEntry()));
