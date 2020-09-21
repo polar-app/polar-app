@@ -1,6 +1,9 @@
 import React from 'react';
 import {AddFileDropzoneProvider} from './AddFileDropzoneStore';
-import {useDragAndDropListener} from "./AddFileDropzone";
+import {
+    useDragAndDropBackdropListener,
+    useDragAndDropImportListener
+} from "./AddFileDropzone";
 
 interface IProps {
     readonly children: React.ReactElement;
@@ -19,6 +22,7 @@ export const AddFileDropzoneRoot = React.memo((props: IProps) => {
 });
 
 const DragAndDropListener = React.memo((props: IProps) => {
-    useDragAndDropListener();
+    useDragAndDropBackdropListener();
+    useDragAndDropImportListener();
     return props.children;
 });

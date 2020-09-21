@@ -5,7 +5,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { DropzoneArea } from 'material-ui-dropzone';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DropEvent} from 'react-dropzone';
-import {AddFileHooks} from "./AddFileHooks";
+import {AddFileHooks, IUpload} from "./AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-
 interface IProps {
     readonly open: boolean;
     readonly noActions?: boolean;
@@ -35,8 +34,18 @@ export const AddFileDropzoneDialog = React.memo((props: IProps) => {
     const addFileImporter = useAddFileImporter();
 
     function onDrop(files: File[], event: DropEvent) {
+
+        function toUpload(file: File): IUpload {
+
+            return {
+                blob: file,
+                name: file.name
+            };
+        }
+
         props.onClose();
-        addFileImporter(files);
+        addFileImporter(files.map(toUpload));
+
     }
 
     return (

@@ -54,6 +54,7 @@ import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotatio
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
 import {deepMemo} from "../../react/ReactUtils";
 import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
+import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 
 interface IProps {
     readonly app: App;
@@ -111,10 +112,12 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(docRepo) =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
-                                                 <>
-                                                     <AnkiSyncController/>
-                                                     <DocRepoScreen2/>
-                                                 </>
+                                                 <AddFileDropzoneRoot>
+                                                     <>
+                                                         <AnkiSyncController/>
+                                                         <DocRepoScreen2/>
+                                                     </>
+                                                 </AddFileDropzoneRoot>
                                              </DocRepoSidebarTagStore>
                                          </DocRepoStore2>
                                      }/>
@@ -131,10 +134,12 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(props) =>
                                          <AnnotationRepoStore2>
                                              <AnnotationRepoSidebarTagStore>
-                                                 <>
-                                                     <ReviewRouter/>
-                                                     <AnnotationRepoScreen2/>
-                                                 </>
+                                                 <AddFileDropzoneRoot>
+                                                     <>
+                                                         <ReviewRouter/>
+                                                         <AnnotationRepoScreen2/>
+                                                     </>
+                                                 </AddFileDropzoneRoot>
                                              </AnnotationRepoSidebarTagStore>
                                          </AnnotationRepoStore2>
                                      }/>

@@ -1,7 +1,10 @@
 import React from 'react';
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
 import {useLogger} from "../../../mui/MUILogger";
-import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    usePersistenceContext,
+    usePersistenceLayerContext
+} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DeterminateProgressBar} from "../../../ui/progress_bar/DeterminateProgressBar";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
@@ -15,6 +18,34 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
 import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContentButtons";
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
+import { Tag } from 'polar-shared/src/tags/Tags';
+
+/**
+ * Represents an upload
+ */
+export interface IUpload {
+
+    /**
+     * The blob backing this upload.
+     */
+    readonly blob: Blob;
+
+    /**
+     * The name of the upload (file name without path)
+     */
+    readonly name: string;
+
+    /**
+     * The relative path to the file so that we can build a path hierarchy.
+     */
+    // readonly relativePath: string | undefined;
+
+    /**
+     * Tabs for the file (when known).
+     */
+    readonly tags?: ReadonlyArray<Tag>
+
+}
 
 export namespace AddFileHooks {
 
@@ -28,14 +59,14 @@ export namespace AddFileHooks {
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
 
-        async function doImportFiles(files: ReadonlyArray<File>): Promise<ReadonlyArray<ImportedFile>> {
+        async function handleUploads(uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> {
 
-            async function doFile(idx: number, file: File) {
+            async function doUpload(idx: number, upload: IUpload) {
 
-                console.log("Importing file: ", file);
+                console.log("Importing file: ", upload.name);
 
                 const updateProgress =
-                    await dialogManager.taskbar({message: `Uploading file ${idx} of ${files.length} file(s)`});
+                    await dialogManager.taskbar({message: `Uploading ${idx} of ${uploads.length} file(s)`});
 
                 updateProgress({value: 'indeterminate'});
 
@@ -55,8 +86,8 @@ export namespace AddFileHooks {
                     };
 
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
-                                                                      URL.createObjectURL(file),
-                                                                      FilePaths.basename(file.name),
+                                                                      URL.createObjectURL(upload.blob),
+                                                                      FilePaths.basename(upload.name),
                                                                       {progressListener});
 
                     log.info("Imported file: ", importedFile);
@@ -64,7 +95,7 @@ export namespace AddFileHooks {
                     result.push(importedFile);
 
                 } catch (e) {
-                    log.error("Failed to import file: ", e, file);
+                    log.error("Failed to import file: ", e, upload);
                 } finally {
 
                     updateProgress({value: 100});
@@ -77,7 +108,7 @@ export namespace AddFileHooks {
 
             }
 
-            const progressTracker = new ProgressTracker({total: files.length, id: 'import-files'});
+            const progressTracker = new ProgressTracker({total: uploads.length, id: 'import-files'});
 
             const result: ImportedFile[] = [];
 
@@ -85,9 +116,9 @@ export namespace AddFileHooks {
 
                 let idx = 0;
 
-                for (const file of files) {
+                for (const upload of uploads) {
                     ++idx;
-                    await doFile(idx, file);
+                    await doUpload(idx, upload);
                 }
 
                 return result;
@@ -143,17 +174,17 @@ export namespace AddFileHooks {
 
         }
 
-        async function doExec(files: ReadonlyArray<File>) {
+        async function doUpload(uploads: ReadonlyArray<IUpload>) {
 
-            if (files.length > 0) {
+            if (uploads.length > 0) {
 
                 async function doAsync() {
 
                     try {
-                        const importedFiles = await doImportFiles(files);
+                        const importedFiles = await handleUploads(uploads);
                         promptToOpenFiles(importedFiles);
                     } catch (e) {
-                        log.error("Unable to import files: ", files, e);
+                        log.error("Unable to upload files: ", uploads, e);
                     }
 
                 }
@@ -167,21 +198,19 @@ export namespace AddFileHooks {
 
         }
 
-        return (files: ReadonlyArray<File>) => {
+        return (uploads: ReadonlyArray<IUpload>) => {
 
             // we have to do three main things here:
 
-            if (! files || files.length === 0) {
+            if (! uploads || uploads.length === 0) {
                 log.warn("No dataTransfer files");
             }
 
-            doExec(files)
+            doUpload(uploads)
                 .catch(err => log.error("Unable to handle upload: ", err));
 
         }
 
-
     }
-
 
 }

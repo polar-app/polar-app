@@ -1,6 +1,6 @@
 import * as React from "react";
-import {AddFileDropzoneDialog} from "./AddFileDropzoneDialog";
 import {useHistory} from "react-router-dom";
+import {AddFileHoverDialog} from "./AddFileHoverDialog";
 
 export const AddFileDropzoneScreen = React.memo(() => {
 
@@ -14,8 +14,7 @@ export const AddFileDropzoneScreen = React.memo(() => {
     }
 
     return (
-        <AddFileDropzoneDialog open={open} onClose={closeDialog}/>
+        <AddFileHoverDialog open={open} onClose={closeDialog}/>
     );
-
 
 });
