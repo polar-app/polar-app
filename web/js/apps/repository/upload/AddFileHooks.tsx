@@ -16,6 +16,7 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContentButtons";
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
+import {Tags} from "polar-shared/src/tags/Tags";
 
 export namespace AddFileHooks {
 
@@ -55,10 +56,14 @@ export namespace AddFileHooks {
 
                     };
 
+                    const docInfo = {
+                        tags: upload.tags ? Tags.toMap(upload.tags) : undefined
+                    }
+
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
                                                                       URL.createObjectURL(upload.blob),
                                                                       FilePaths.basename(upload.name),
-                                                                      {progressListener});
+                                                                      {progressListener, docInfo});
 
                     log.info("Imported file: ", importedFile);
 

@@ -43,8 +43,11 @@ function useDropHandler() {
 
             if (event.dataTransfer.items) {
 
-                const items = Array.from(event.dataTransfer.items)
-                                   .filter(UploadFilters.filterByDocumentType);
+                // note that we DO NOT filter this as it would filter
+                // directories and we wouldn't recurse.  We instead have to
+                // recurse to find all files and then we have to use the file
+                // name as a filter.
+                const items = Array.from(event.dataTransfer.items);
 
                 const files = await FileSystemEntries.recurseDataTransferItems(items);
                 const uploads = await Uploads.fromFileSystemEntries(files);
