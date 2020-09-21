@@ -31,7 +31,11 @@ export enum StripeYearPlanV2ID {
     PRO = "plan_pro_year",
 }
 
-
+export enum Stripe4YearPlanV2ID {
+    FREE = "plan_free_4year",
+    PLUS = "plan_plus_4year",
+    PRO = "plan_pro_4year",
+}
 
 export class StripePlanIDs {
 
@@ -60,7 +64,7 @@ export class StripePlanIDs {
     }
 
     public static fromSubscription(plan: Billing.Plan,
-                                   interval: Billing.Interval): StripePlanV2ID | StripeYearPlanV2ID {
+                                   interval: Billing.Interval): StripePlanV2ID | StripeYearPlanV2ID | Stripe4YearPlanV2ID {
 
         if (!plan) {
             throw new Error("No plan");
@@ -68,7 +72,7 @@ export class StripePlanIDs {
 
         const planV2 = Plans.toV2(plan);
 
-        const convertMonthly = () => {
+        const convertMonth = (): StripePlanV2ID => {
 
             switch (planV2.level) {
                 case "free":
@@ -81,7 +85,7 @@ export class StripePlanIDs {
 
         };
 
-        const convertYearly = () => {
+        const convertYear = (): StripeYearPlanV2ID => {
 
             switch (planV2.level) {
                 case "free":
@@ -94,13 +98,29 @@ export class StripePlanIDs {
 
         };
 
+        const convert4Year = (): Stripe4YearPlanV2ID => {
+
+            switch (planV2.level) {
+                case "free":
+                    return Stripe4YearPlanV2ID.FREE;
+                case "plus":
+                    return Stripe4YearPlanV2ID.PLUS;
+                case "pro":
+                    return Stripe4YearPlanV2ID.PRO;
+            }
+
+        };
+
         switch (interval) {
 
             case "month":
-                return convertMonthly();
+                return convertMonth();
 
             case "year":
-                return convertYearly();
+                return convertYear();
+
+            case "4year":
+                return convert4Year();
 
         }
 
