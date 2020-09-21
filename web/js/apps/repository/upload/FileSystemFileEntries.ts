@@ -1,3 +1,5 @@
+import {IWebkitFileSystem} from "./IWebkitFileSystem";
+
 export namespace FileSystemFileEntries {
 
     import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
