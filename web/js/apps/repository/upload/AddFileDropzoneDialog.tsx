@@ -5,10 +5,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { DropzoneArea } from 'material-ui-dropzone';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {DropEvent} from 'react-dropzone';
-import {AddFileHooks, IUpload} from "./AddFileHooks";
+import {AddFileHooks} from "./AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import {IUpload} from "./IUpload";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

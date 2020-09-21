@@ -1,10 +1,7 @@
 import React from 'react';
 import {DocImporter, ImportedFile} from "../importers/DocImporter";
 import {useLogger} from "../../../mui/MUILogger";
-import {
-    usePersistenceContext,
-    usePersistenceLayerContext
-} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DeterminateProgressBar} from "../../../ui/progress_bar/DeterminateProgressBar";
 import {ProgressTracker} from "polar-shared/src/util/ProgressTracker";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
@@ -18,34 +15,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
 import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContentButtons";
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
-import { Tag } from 'polar-shared/src/tags/Tags';
-
-/**
- * Represents an upload
- */
-export interface IUpload {
-
-    /**
-     * The blob backing this upload.
-     */
-    readonly blob: Blob;
-
-    /**
-     * The name of the upload (file name without path)
-     */
-    readonly name: string;
-
-    /**
-     * The relative path to the file so that we can build a path hierarchy.
-     */
-    // readonly relativePath: string | undefined;
-
-    /**
-     * Tabs for the file (when known).
-     */
-    readonly tags?: ReadonlyArray<Tag>
-
-}
+import {IUpload} from "./IUpload";
 
 export namespace AddFileHooks {
 

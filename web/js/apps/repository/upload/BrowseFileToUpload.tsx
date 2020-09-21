@@ -3,9 +3,12 @@ import {deepMemo} from "../../../react/ReactUtils";
 import Button from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {AddFileHooks, IUpload} from "./AddFileHooks";
+import {AddFileHooks} from "./AddFileHooks";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import AttachmentIcon from '@material-ui/icons/Attachment';
+import {UploadFilters} from "./UploadFilters";
+import {IUpload} from "./IUpload";
+import {Uploads} from "./Uploads";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -29,24 +32,8 @@ export const BrowseFileToUpload = deepMemo((props: IProps) => {
 
     const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 
-        function toUpload(file: File): IUpload {
-
-            return {
-                blob: file,
-                name: file.name,
-                // relativePath: file.webkitRelativePath
-            };
-        }
-
-        // FIXME subdirectory uploads are being attempted... big problem.
-        // FXME should we pass the relativePath and compute the tags LATER?
-        console.log("FIXME: uploading files: ", event.target.files);
-
-        // FIXME filter these down by type to JUST application/pdf a
-        // FIXME: this filte rALSO needs to be done for drag and drop too 
-        // when operating on files...
-        const files = Array.from(event.target.files || []);
-        addFileImporter(files.map(toUpload));
+        const uploads = Uploads.fromFiles(event.target.files);
+        addFileImporter(uploads);
 
         props.onClose();
 

@@ -10,7 +10,7 @@ import {
 import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
-import {AddFileHooks, IUpload} from "./AddFileHooks";
+import {AddFileHooks} from "./AddFileHooks";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
 import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
@@ -19,6 +19,8 @@ import {FileSystemEntries} from "./FileSystemEntries";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
+import {IUpload} from "./IUpload";
+import {Uploads} from "./Uploads";
 
 async function recurseDataTransferItems(items: ReadonlyArray<DataTransferItem>): Promise<ReadonlyArray<IWebkitFileSystemFileEntry>> {
     return recurseFileSystemEntries(items.map(item => item.webkitGetAsEntry()));
@@ -143,18 +145,10 @@ function useDropHandler() {
 
             } else if (event.dataTransfer.files) {
 
-                // fail over to working with individual files which applies to
-                // Firefox and older browsers
+                // This is a fail-over move for working with individual files
+                // which applies to Firefox and older browsers
 
-                function toUpload(file: File): IUpload {
-                    return {
-                        blob: file,
-                        name: file.name
-                    };
-                }
-
-                const files = Array.from(event.dataTransfer.files);
-                const uploads = files.map(toUpload);
+                const uploads = Uploads.fromFiles(event.dataTransfer.files);
                 addFileImporter(uploads);
 
             }
