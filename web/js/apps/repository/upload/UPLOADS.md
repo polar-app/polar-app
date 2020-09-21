@@ -12,3 +12,9 @@ TODO:
   - Test on Safari
   - Test on Firefox
   - Test on Windows
+  
+  - How do we handle directory pruning?
+    - we have no real way of knowing how a directory is being uploaded ... they 
+      could be dragging the root or they could be dragging just one directory 
+      and they still want to keep that path.  we could fix this by implementing
+      a feature for dragging and dropping files in the hierarchy.

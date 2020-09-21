@@ -20,7 +20,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const BrowseFileToUpload = deepMemo((props: IProps) => {
+export const BrowseFolderToUpload = deepMemo((props: IProps) => {
 
     const classes = useStyles();
     const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);
@@ -59,7 +59,7 @@ export const BrowseFileToUpload = deepMemo((props: IProps) => {
                         size="large"
                         component="span"
                         color="primary">
-                    Browse Files to Upload
+                    Upload Folder
                 </Button>
             </label>
         </>

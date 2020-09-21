@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {BrowseFileToUpload} from "./BrowseFileToUpload";
+import {BrowseFolderToUpload} from "./BrowseFolderToUpload";
 import Dialog from '@material-ui/core/Dialog';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
@@ -77,7 +77,7 @@ export const AddFileDropzoneDialog2 = React.memo((props: IProps) => {
                 </p>
 
                 <p>
-                    <BrowseFileToUpload onClose={props.onClose}/>
+                    <BrowseFolderToUpload onClose={props.onClose}/>
                 </p>
 
             </div>
