@@ -12,31 +12,14 @@ import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {AddFileHooks, IUpload} from "./AddFileHooks";
-import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWebkitFileSystem} from "./IWebkitFileSystem";
+import {FileSystemDirectoryReaders} from "./FileSystemDirectoryReaders";
+import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import OnErrorCallback = IWebkitFileSystem.OnErrorCallback;
 import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
 
-
-namespace FileSystemDirectoryReaders {
-
-    import IWebkitFileSystemDirectoryReader = IWebkitFileSystem.IWebkitFileSystemDirectoryReader;
-    import IWebkitFileSystemDirectoryReaderAsync = IWebkitFileSystem.IWebkitFileSystemDirectoryReaderAsync;
-    import IWebkitFileSystemEntry = IWebkitFileSystem.IWebkitFileSystemEntry;
-
-    export function toAsync(reader: IWebkitFileSystemDirectoryReader): IWebkitFileSystemDirectoryReaderAsync {
-        return {
-            readEntries: () => {
-                return new Promise<ReadonlyArray<IWebkitFileSystemEntry>>((resolve, reject) => {
-                    reader.readEntries(result => resolve(result), err => reject(err));
-                });
-            }
-        }
-    }
-
-}
 
 namespace FileSystemFileEntries {
 
