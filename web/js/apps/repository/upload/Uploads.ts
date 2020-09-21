@@ -19,6 +19,24 @@ export namespace Uploads {
         return isPresent((<any> file).webkitRelativePath);
     }
 
+    function computeTagsFromPath(filePath: string | undefined) {
+
+        if (! filePath) {
+            return undefined;
+        }
+
+        const path = UploadPaths.parse(filePath);
+
+        if (! path) {
+            return undefined;
+        }
+
+        return [
+            Tags.create('/' + path)
+        ];
+
+    }
+
     export async function fromFileSystemEntries(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
 
         async function toUpload(entry: IWebkitFileSystemFileEntry): Promise<IUpload> {
@@ -26,17 +44,7 @@ export namespace Uploads {
             const asyncEntry = FileSystemFileEntries.toAsync(entry);
 
             function computeTags() {
-
-                if (! entry.fullPath) {
-                    return undefined;
-                }
-
-                const path = UploadPaths.parse(entry.fullPath);
-
-                return [
-                    Tags.create('/' + path)
-                ];
-
+                return computeTagsFromPath(entry.fullPath);
             }
 
             const tags = computeTags();
@@ -73,18 +81,7 @@ export namespace Uploads {
 
             function computeTags(): ReadonlyArray<Tag> | undefined {
                 const relativePath = computeRelativePath();
-
-                if (relativePath) {
-
-                    const path = UploadPaths.parse(relativePath);
-
-                    return [
-                        Tags.create('/' + path)
-                    ];
-
-                }
-                return undefined;
-
+                return computeTagsFromPath(relativePath);
             }
 
             const tags = computeTags();
