@@ -9,6 +9,9 @@ describe('UploadPaths', function() {
         assert.equal(UploadPaths.parse('/bar/foo.txt'), 'bar');
         assert.equal(UploadPaths.parse('bar/foo.txt'), 'bar');
 
+        assert.equal(UploadPaths.parse('/bar/cat/foo.txt'), 'bar/cat');
+        assert.equal(UploadPaths.parse('bar/cat/foo.txt'), 'bar/cat');
+
     });
 
 });

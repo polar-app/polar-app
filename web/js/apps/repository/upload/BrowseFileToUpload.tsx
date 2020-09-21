@@ -4,11 +4,9 @@ import Button from '@material-ui/core/Button';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {AddFileHooks} from "./AddFileHooks";
-import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import AttachmentIcon from '@material-ui/icons/Attachment';
-import {UploadFilters} from "./UploadFilters";
-import {IUpload} from "./IUpload";
 import {Uploads} from "./Uploads";
+import useAddFileImporter = AddFileHooks.useAddFileImporter;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
