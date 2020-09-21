@@ -98,7 +98,7 @@ export function useCSS(): IStylesheetMap {
         },
         'html': {
             // TODO: needed for a fixed width layout.
-            'background-color': `${theme.palette.background.paper}`,
+            'background-color': `${theme.palette.background.default}`,
             // TODO: needed for a fixed width layout.
             // 'max-width': '800px !important',
             'margin-left': 'auto !important',
