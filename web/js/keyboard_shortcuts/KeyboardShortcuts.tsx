@@ -89,7 +89,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
 
     return (event): boolean => {
-        return event.key === keys[0];
+        return event.key === keys[0] && ! (event.metaKey || event.ctrlKey || event.shiftKey);
     }
 
 }
