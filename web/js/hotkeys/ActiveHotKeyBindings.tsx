@@ -12,9 +12,11 @@ import Dialog from '@material-ui/core/Dialog';
 import {deepMemo} from '../react/ReactUtils';
 import {
     IBaseKeyboardShortcut,
-    useKeyboardShortcutsStore
+    useKeyboardShortcutsStore,
+    useKeyboardShortcutsCallbacks
 } from '../keyboard_shortcuts/KeyboardShortcutsStore';
 import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface KeySequenceProps {
     readonly sequence: string;
@@ -70,9 +72,13 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
 export const ActiveHotKeys = () => {
 
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
+    const {setActive} = useKeyboardShortcutsCallbacks()
 
     const bindings = Object.values(shortcuts)
                            .sort((a, b) => (b.priority || 0) - (a.priority || 0))
+
+    useComponentDidMount(() => setActive(false));
+    useComponentWillUnmount(() => setActive(true));
 
     return (
         <Table size="small">
