@@ -956,7 +956,7 @@ class Rendition {
 		contents.addStylesheetRules({
 			"img" : {
 				"max-width": (this._layout.columnWidth ? (this._layout.columnWidth - horizontalPadding) + "px" : "100%") + "!important",
-				"max-height": height + "px" + "!important",
+				"max-height": height > 0 ? (height + "px" + "!important") :  'none',
 				"object-fit": "contain",
 				"page-break-inside": "avoid",
 				"break-inside": "avoid",
@@ -964,7 +964,7 @@ class Rendition {
 			},
 			"svg" : {
 				"max-width": (this._layout.columnWidth ? (this._layout.columnWidth - horizontalPadding) + "px" : "100%") + "!important",
-				"max-height": height + "px" + "!important",
+				"max-height": height > 0 ? (height + "px" + "!important") : 'none',
 				"page-break-inside": "avoid",
 				"break-inside": "avoid"
 			}
