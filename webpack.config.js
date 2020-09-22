@@ -28,6 +28,9 @@ console.log("WEBPACK_DEVTOOL: " + devtool);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
+// TODO: first time we run this when using webpack-dev-server make sure
+// dist/public is setup and that webpack was run first.
+
 function createRules() {
 
     const rules = [
