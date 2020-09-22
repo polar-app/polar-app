@@ -4,37 +4,65 @@ import {useLogger} from "../../../mui/MUILogger";
 import {AsyncProvider} from "polar-shared/src/util/Providers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import { FileRef } from 'polar-shared/src/datastore/FileRef';
+
+type BlobProvider = () => Promise<Blob>;
+
+interface BaseFileRef {
+    readonly ref: FileRef;
+    readonly data: BlobProvider;
+}
+
+interface ImageFileRef extends BaseFileRef {
+}
+
+interface StashFileRef extends BaseFileRef {
+}
 
 type DocMetaProvider = AsyncProvider<IDocMeta>;
 
-type DocMetaRefsProvider = () => Promise<ReadonlyArray<DocMetaProvider>>
+interface IOpts {
+    readonly docMetaProviders: ReadonlyArray<DocMetaProvider>;
+    readonly stashFileRefs: ReadonlyArray<StashFileRef>;
+    readonly imageFileRefs: ReadonlyArray<ImageFileRef>;
+}
 
 export function useDiskDatastoreMigration() {
 
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
 
-    return React.useCallback((migrationProvider: DocMetaRefsProvider) => {
+    return React.useCallback((opts: IOpts) => {
 
         const persistenceLayer = persistenceLayerProvider();
 
-        async function doDocMetaMigration(docMetaProvider: DocMetaProvider) {
+        async function doDocMeta(docMetaProvider: DocMetaProvider) {
             const docMeta = await docMetaProvider()
             await persistenceLayer.writeDocMeta(docMeta);
         }
 
-        // async function doStashMigration(docMetaProvider: DocMetaProvider) {
-        //     await persistenceLayer.writeFile(Backend.STASH, );
-        // }
+        async function doStashFileRef(stashFileRef: StashFileRef) {
+            const blob = await stashFileRef.data();
+            await persistenceLayer.writeFile(Backend.STASH, stashFileRef.ref, blob);
+        }
+
+        async function doImageFileRef(imageFileRef: ImageFileRef) {
+            const blob = await imageFileRef.data();
+            await persistenceLayer.writeFile(Backend.IMAGE, imageFileRef.ref, blob);
+        }
 
         async function doAsync() {
 
-            const docMetaProviders = await migrationProvider();
+            for (const docMetaProvider of opts.docMetaProviders) {
+                await doDocMeta(docMetaProvider);
+            }
 
-            for (const docMetaProvider of docMetaProviders) {
+            for (const stashFileRef of opts.stashFileRefs) {
+                await doStashFileRef(stashFileRef);
+            }
 
-                const docMeta = await docMetaProvider;
-
+            for (const imageFileRef of opts.imageFileRefs) {
+                await doImageFileRef(imageFileRef);
             }
 
         }
