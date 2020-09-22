@@ -1,6 +1,6 @@
 import React from "react";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {
@@ -41,7 +41,8 @@ const globalKeyMap = keyMapWithGroup(
                 name: "Open",
                 description: "Open the current document in the document viewer",
                 sequences: ['Enter']
-            }
+            },
+
         }
     });
 

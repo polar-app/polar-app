@@ -24,11 +24,11 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
                  }}>
 
             <div>
-                <MUIMenuItem text="Open link in browser"
+                <MUIMenuItem text="Open original URL in browser"
                              disabled={! props.docInfo?.url}
                              onClick={() => linkLoader(props.docInfo?.url!, {focus: true, newWindow: true})}/>
 
-                <MUIMenuItem text="Copy link to clipboard"
+                <MUIMenuItem text="Copy original URL to clipboard"
                              disabled={! props.docInfo?.url}
                              onClick={() => Clipboards.getInstance().writeText(props.docInfo?.url!)}/>
             </div>

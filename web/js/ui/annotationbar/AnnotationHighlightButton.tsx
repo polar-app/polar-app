@@ -37,8 +37,14 @@ export const AnnotationHighlightButton = memoForwardRef((props: IProps) => {
                     padding: '5px',
                 }}>
 
-            <span aria-hidden="true" style={{color: props.styleColor}}>
-                <HighlighterSVGIcon style={{width: '20px', height: '20px'}}/>
+            <span aria-hidden="true" style={{
+                                         color: props.styleColor
+                                     }}>
+                <HighlighterSVGIcon style={{
+                                        color: props.styleColor,
+                                        width: '20px',
+                                        height: '20px'
+                                    }}/>
             </span>
 
         </button>
