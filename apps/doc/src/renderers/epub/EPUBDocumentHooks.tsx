@@ -80,7 +80,7 @@ export function useCSS(): IStylesheetMap {
 
         ...darkModeScrollbars,
         'body, html': {
-            ...baseColorStyles,
+            'background-color': `${theme.palette.background.default}`,
             'font-family': `${theme.typography.fontFamily} !important`,
             'padding': '0px',
             'padding-bottom': '5px !important',
