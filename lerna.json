@@ -9,5 +9,6 @@
   ],
   "version": "2.0.0-beta.27",
   "concurrency": 1,
-  "hoist": true
+  "hoist": true,
+  "mutex": "network"
 }
