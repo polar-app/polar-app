@@ -551,7 +551,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const controller: WriteController = {
                 pause: () => uploadTask.pause(),
-                resume: () => uploadTask.resume()
+                resume: () => uploadTask.resume(),
+                cancel: () => uploadTask.cancel()
             };
 
             if (opts.onController) {

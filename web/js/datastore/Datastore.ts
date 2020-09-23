@@ -442,6 +442,12 @@ export interface WriteController {
      */
     readonly resume: () => boolean;
 
+    /**
+     * Cancels a running task. Has no effect on a complete or failed task.
+     * @return True if the cancel had an effect.
+     */
+    readonly cancel: () => boolean;
+
 }
 
 export interface WriteFileOpts {
