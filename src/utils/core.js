@@ -414,6 +414,15 @@ export function createBlob(content, mime){
  * @memberof Core
  */
 export function createBlobUrl(content, mime){
+
+	// FIXME: I could put XSS handling with dompurify here... We're given
+	// the content (which is a blob) and the mime type.
+	//
+	// - I will need a:
+	//   - reliable way to detect if SVG is being used.  Same thing with HTML...
+	//   - dompurify on all the html being loaded
+	//   -
+
 	var tempUrl;
 	var blob = createBlob(content, mime);
 
