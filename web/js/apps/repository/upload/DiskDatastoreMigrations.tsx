@@ -93,7 +93,7 @@ function useDiskDatastoreMigrationExecutor() {
                 const updateProgress = await uploadProgressTaskbar(idx, uploadHandlers.length);
 
                 try {
-                    uploadHandler(updateProgress);
+                    await uploadHandler(updateProgress);
                 } finally {
                     updateProgress(100);
                 }
@@ -112,7 +112,6 @@ function useDiskDatastoreMigrationExecutor() {
 
 
 export function useDiskDatastoreMigration() {
-
 
     const diskDatastoreMigrationExecutor = useDiskDatastoreMigrationExecutor();
     const dialogManager = useDialogManager();
@@ -159,7 +158,7 @@ export namespace DiskDatastoreMigrations {
 
             function filter(upload: IUpload) {
                 return upload.path !== undefined &&
-                       upload.path.startsWith(".polar/files/image/") &&
+                       upload.path.match(/^\/?\.polar\/files\/image\//) &&
                        upload.path.endsWith(".png")
             }
 
@@ -172,7 +171,7 @@ export namespace DiskDatastoreMigrations {
 
             function filter(upload: IUpload) {
                 return upload.path !== undefined &&
-                       upload.path.startsWith(".polar/stash/") &&
+                       upload.path.match(/^\/?\.polar\/stash\//) &&
                        upload.path.toLowerCase().endsWith(".pdf")
             }
 
@@ -185,7 +184,7 @@ export namespace DiskDatastoreMigrations {
 
             function filter(upload: IUpload) {
                 return upload.path !== undefined &&
-                       upload.path.startsWith(".polar/") &&
+                       upload.path.match(/^\/?\.polar\//) &&
                        upload.path.toLowerCase().endsWith("/state.json");
             }
 
@@ -216,6 +215,8 @@ export namespace DiskDatastoreMigrations {
         const imageFileRefs = computeImageFileRefs();
         const stashFileRefs = computeStashFileRefs();
         const docMetaProviders = computeDocMetaProviders();
+
+        console.log(`Found ${imageFileRefs.length} image files, ${stashFileRefs.length} stash files, and ${docMetaProviders.length} docMeta files.`);
 
         const required = docMetaProviders.length > 0;
 

@@ -126,10 +126,21 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
                         <DialogContent>
 
                             <Box pt={1}>
-                                <DialogContentText id="alert-dialog-description"
+
+                                {typeof props.subtitle === 'string' && (
+                                    <DialogContentText id="alert-dialog-description"
+                                                       className={classes.subtitle}>
+                                        {props.subtitle}
+                                    </DialogContentText>
+                                )}
+
+                                {typeof props.subtitle !== 'string' && (
+                                    <DialogContent id="alert-dialog-description"
                                                    className={classes.subtitle}>
-                                    {props.subtitle}
-                                </DialogContentText>
+                                        {props.subtitle}
+                                    </DialogContent>
+                                )}
+
                             </Box>
 
                         </DialogContent>

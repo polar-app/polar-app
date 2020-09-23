@@ -19,6 +19,7 @@ import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
 import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
+import {UploadFilters} from "./UploadFilters";
 
 export namespace AddFileHooks {
 
@@ -164,10 +165,6 @@ export namespace AddFileHooks {
 
         return (uploads: ReadonlyArray<IUpload>) => {
 
-            // FIXME: I can handle the 1.0 migration here...
-
-            // we have to do three main things here:
-
             if (! uploads || uploads.length === 0) {
                 log.warn("No dataTransfer files");
                 return;
@@ -178,7 +175,7 @@ export namespace AddFileHooks {
             if (migration.required) {
                 diskDatastoreMigration(migration);
             } else {
-                doDirectUpload(uploads)
+                doDirectUpload(uploads.filter(UploadFilters.filterByDocumentName))
                     .catch(err => log.error("Unable to handle upload: ", err));
             }
 

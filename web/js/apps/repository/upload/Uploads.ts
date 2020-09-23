@@ -60,7 +60,6 @@ export namespace Uploads {
         }
 
         return await asyncStream(entries)
-            .filter(UploadFilters.filterByDocumentName)
             .map(toUpload)
             .collect();
 
@@ -97,8 +96,7 @@ export namespace Uploads {
         }
 
         files = Array.from(files || []);
-        return files.filter(UploadFilters.filterByDocumentType)
-                             .map(toUpload);
+        return files.map(toUpload);
 
     }
 }
