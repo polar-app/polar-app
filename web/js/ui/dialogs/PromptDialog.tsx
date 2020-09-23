@@ -12,6 +12,7 @@ import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteL
 import {InputValidationErrorSnackbar} from "../../mui/dialogs/InputValidationErrorSnackbar";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import { MUIDialog } from './MUIDialog';
+import {deepMemo} from "../../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,7 +49,7 @@ interface IState {
     readonly validationError?: string;
 }
 
-export const PromptDialog = (props: PromptDialogProps) => {
+export const PromptDialog = deepMemo((props: PromptDialogProps) => {
 
     const classes = useStyles();
 
@@ -160,4 +161,4 @@ export const PromptDialog = (props: PromptDialogProps) => {
 
         </MUIDialog>
     );
-};
+});

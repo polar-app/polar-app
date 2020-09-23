@@ -2,6 +2,7 @@ import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import {CloseIcon} from "../icons/FixedWidthIcons";
+import {deepMemo} from "../../react/ReactUtils";
 
 export interface SnackbarDialogProps {
     readonly type?: 'info' | 'success' | 'warning' | 'error';
@@ -15,7 +16,7 @@ export interface SnackbarDialogProps {
 
 }
 
-export const SnackbarDialog = (props: SnackbarDialogProps) => {
+export const SnackbarDialog = deepMemo((props: SnackbarDialogProps) => {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
@@ -49,4 +50,4 @@ export const SnackbarDialog = (props: SnackbarDialogProps) => {
             action={action}/>
     );
 
-};
+});

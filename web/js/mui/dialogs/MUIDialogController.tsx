@@ -62,16 +62,28 @@ interface IDialogProps {
 
 type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar' | 'select';
 
+interface DialogElement {
+    readonly key: string;
+    readonly type: DialogType;
+    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps<any>;
+}
+
 interface DialogState {
     readonly type: DialogType;
     readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps<any>;
     readonly iter: number;
 }
 
+function createKey() {
+    return '' + Math.floor(Math.random() * 1000000);
+}
+
 /**
  * Hosts the actual dialogs so that we don't ever re-render sub-components.
  */
 const DialogHost = React.memo((props: DialogHostProps) => {
+
+    const [dialogElements, setDialogElements] = React.useState<ReadonlyArray<DialogElement>>([]);
 
     const [state, setState] = useState<DialogState | undefined>(() => {
 

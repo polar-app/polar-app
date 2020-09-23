@@ -12,6 +12,7 @@ import isEqual from 'react-fast-compare';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
+import {deepMemo} from "../../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -75,7 +76,7 @@ export interface ConfirmDialogProps {
 
 }
 
-export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
+export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
 
     const [open, setOpen] = React.useState(true);
 
@@ -164,4 +165,4 @@ export const ConfirmDialog = React.memo((props: ConfirmDialogProps) => {
 
         </MUIDialog>
     );
-}, isEqual);
+});

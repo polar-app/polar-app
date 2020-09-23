@@ -4,6 +4,7 @@ import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {deepMemo} from "../../react/ReactUtils";
 
 export interface IProgress {
 
@@ -42,7 +43,7 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
 /**
  * Like a Snackbar but it includes progress...
  */
-export const TaskbarDialog = React.memo((props: TaskbarDialogPropsWithCallback) => {
+export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) => {
 
     const [progress, setProgress] = React.useState<IProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);
