@@ -17,6 +17,8 @@ export interface IProgress {
 
 }
 
+// TODO: need a cancel button ...
+// TODO: needs pause / resume functionality...
 export type TaskbarProgressCallback = (progress: IProgress) => void;
 
 export interface TaskbarDialogProps {

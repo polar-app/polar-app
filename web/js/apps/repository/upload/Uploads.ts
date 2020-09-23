@@ -84,8 +84,8 @@ export namespace Uploads {
                 return computeTagsFromPath(relativePath);
             }
 
-            const tags = computeTags();
             const relativePath = computeRelativePath();
+            const tags = computeTags();
 
             return {
                 blob: async () => file,
