@@ -9,6 +9,9 @@ import {Paths} from "polar-shared/src/util/Paths";
 import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {IUpload} from "./IUpload";
+import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
+import {UpdateProgressCallback, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
+import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 
 type BlobProvider = () => Promise<Blob>;
 
@@ -41,38 +44,60 @@ export function useDiskDatastoreMigration() {
 
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
+    const uploadProgressTaskbar = useUploadProgressTaskbar();
 
     return React.useCallback((opts: IMigration) => {
 
         const persistenceLayer = persistenceLayerProvider();
 
-        async function doDocMeta(docMetaProvider: DocMetaProvider) {
-            const docMeta = await docMetaProvider()
-            await persistenceLayer.writeDocMeta(docMeta);
+        type UploadHandler = (uploadProgress: UpdateProgressCallback) => Promise<void>;
+
+        async function createDocMetaUploadHandler(docMetaProvider: DocMetaProvider): Promise<UploadHandler> {
+
+            return async () => {
+                const docMeta = await docMetaProvider()
+                await persistenceLayer.writeDocMeta(docMeta);
+            }
+
         }
 
-        async function doStashFileRef(stashFileRef: StashFileRef) {
-            const blob = await stashFileRef.data();
-            await persistenceLayer.writeFile(Backend.STASH, stashFileRef.ref, blob);
+        async function createStashFileRefUploadHandler(stashFileRef: StashFileRef): Promise<UploadHandler> {
+
+            return async (uploadProgress) => {
+                const blob = await stashFileRef.data();
+                await persistenceLayer.writeFile(Backend.STASH, stashFileRef.ref, blob, {progressListener: uploadProgress});
+            }
+
         }
 
-        async function doImageFileRef(imageFileRef: ImageFileRef) {
-            const blob = await imageFileRef.data();
-            await persistenceLayer.writeFile(Backend.IMAGE, imageFileRef.ref, blob);
+        async function createImageFileRefUploadHandler(imageFileRef: ImageFileRef): Promise<UploadHandler>  {
+
+            return async (uploadProgress) => {
+                const blob = await imageFileRef.data();
+                await persistenceLayer.writeFile(Backend.IMAGE, imageFileRef.ref, blob, {progressListener: uploadProgress});
+            }
+
         }
 
         async function doAsync() {
 
-            for (const docMetaProvider of opts.docMetaProviders) {
-                await doDocMeta(docMetaProvider);
-            }
+            const docMetaUploadHandlers = await asyncStream(opts.docMetaProviders).map(createDocMetaUploadHandler).collect();
+            const stashFileRefUploadHandlers = await asyncStream(opts.stashFileRefs).map(createStashFileRefUploadHandler).collect();
+            const imageFileRefUploadHandlers = await asyncStream(opts.imageFileRefs).map(createImageFileRefUploadHandler).collect();
 
-            for (const stashFileRef of opts.stashFileRefs) {
-                await doStashFileRef(stashFileRef);
-            }
+            const uploadHandlers = [...docMetaUploadHandlers, ...stashFileRefUploadHandlers, ...imageFileRefUploadHandlers];
 
-            for (const imageFileRef of opts.imageFileRefs) {
-                await doImageFileRef(imageFileRef);
+            let idx = 0;
+            for (const uploadHandler of uploadHandlers) {
+                ++idx;
+                const updateProgress = await uploadProgressTaskbar(idx, uploadHandlers.length);
+
+                try {
+                    uploadHandler(updateProgress);
+                } finally {
+                    updateProgress(100);
+                }
+
             }
 
         }
@@ -80,7 +105,7 @@ export function useDiskDatastoreMigration() {
         doAsync()
             .catch(err => log.error(err));
 
-    }, [persistenceLayerProvider, log])
+    }, [persistenceLayerProvider, log, uploadProgressTaskbar])
 
 }
 

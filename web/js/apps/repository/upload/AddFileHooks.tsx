@@ -17,6 +17,8 @@ import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContent
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
+import {DiskDatastoreMigrations} from "./DiskDatastoreMigrations";
+import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 
 export namespace AddFileHooks {
 
@@ -29,6 +31,7 @@ export namespace AddFileHooks {
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
+        const uploadProgressTaskbar = useUploadProgressTaskbar();
 
         async function handleUploads(uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> {
 
@@ -36,25 +39,9 @@ export namespace AddFileHooks {
 
                 console.log("Importing file: ", upload.name);
 
-                const updateProgress =
-                    await dialogManager.taskbar({message: `Uploading ${idx} of ${uploads.length} file(s)`});
-
-                updateProgress({value: 'indeterminate'});
+                const updateProgress = await uploadProgressTaskbar(idx, uploads.length);
 
                 try {
-
-                    const progressListener: WriteFileProgressListener = (progress) => {
-
-                        switch (progress.type) {
-                            case 'determinate':
-                                updateProgress({value: progress.value});
-                                break;
-                            case 'indeterminate':
-                                updateProgress({value: 'indeterminate'});
-                                break;
-                        }
-
-                    };
 
                     const docInfo = {
                         tags: upload.tags ? Tags.toMap(upload.tags) : undefined
@@ -64,7 +51,7 @@ export namespace AddFileHooks {
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
                                                                       URL.createObjectURL(blob),
                                                                       FilePaths.basename(upload.name),
-                                                                      {progressListener, docInfo});
+                                                                      {progressListener: updateProgress, docInfo});
 
                     log.info("Imported file: ", importedFile);
 
@@ -74,7 +61,7 @@ export namespace AddFileHooks {
                     log.error("Failed to import file: ", e, upload);
                 } finally {
 
-                    updateProgress({value: 100});
+                    updateProgress(100);
 
                     const progress = progressTracker.terminate();
                     // TODO this should be deprecated...
@@ -150,7 +137,7 @@ export namespace AddFileHooks {
 
         }
 
-        async function doUpload(uploads: ReadonlyArray<IUpload>) {
+        async function doDirectUpload(uploads: ReadonlyArray<IUpload>) {
 
             if (uploads.length > 0) {
 
@@ -176,14 +163,25 @@ export namespace AddFileHooks {
 
         return (uploads: ReadonlyArray<IUpload>) => {
 
+            // FIXME: I can handle the 1.0 migration here...
+
             // we have to do three main things here:
 
             if (! uploads || uploads.length === 0) {
                 log.warn("No dataTransfer files");
+                return;
             }
 
-            doUpload(uploads)
-                .catch(err => log.error("Unable to handle upload: ", err));
+            const migration = DiskDatastoreMigrations.prepare(uploads);
+
+            if (migration.required) {
+
+                // doMigrationUpload(migration);
+
+            } else {
+                doDirectUpload(uploads)
+                    .catch(err => log.error("Unable to handle upload: ", err));
+            }
 
         }
 
