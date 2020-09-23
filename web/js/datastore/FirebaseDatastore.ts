@@ -22,7 +22,7 @@ import {
     PersistentPrefsUpdatedCallback,
     PrefsProvider,
     SnapshotResult,
-    WritableBinaryMetaDatastore,
+    WritableBinaryMetaDatastore, WriteController,
     WriteFileOpts,
     WriteFileProgress,
     WriteOpts
@@ -548,6 +548,15 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             // never used again
 
             const progressID = 'firebase-upload-' + STORAGE_UPLOAD_ID++;
+
+            const controller: WriteController = {
+                pause: () => uploadTask.pause(),
+                resume: () => uploadTask.resume()
+            };
+
+            if (opts.onController) {
+                opts.onController(controller);
+            }
 
             uploadTask.on('state_changed', (snapshotData: any) => {
 

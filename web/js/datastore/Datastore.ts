@@ -428,6 +428,22 @@ export type WriteFileProgress = WriteFileProgressDeterminate | WriteFileProgress
 
 export type WriteFileProgressListener = (progress: WriteFileProgress) => void;
 
+export interface WriteController {
+
+    /**
+     * Pauses a running task. Has no effect on a paused or failed task.
+     * @return True if the pause had an effect.
+     */
+    readonly pause: () => boolean;
+
+    /**
+     * Resume a running task. Has no effect on a paused or failed task.
+     * @return True if the pause had an effect.
+     */
+    readonly resume: () => boolean;
+
+}
+
 export interface WriteFileOpts {
 
     /**
@@ -452,6 +468,8 @@ export interface WriteFileOpts {
      * keep track of the progress
      */
     readonly progressListener?: WriteFileProgressListener;
+
+    readonly onController?: (controller: WriteController) => void;
 
 }
 
