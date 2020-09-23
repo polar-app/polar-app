@@ -17,7 +17,7 @@ import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContent
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
-import {DiskDatastoreMigrations} from "./DiskDatastoreMigrations";
+import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
 import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 
 export namespace AddFileHooks {
@@ -32,6 +32,7 @@ export namespace AddFileHooks {
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
         const uploadProgressTaskbar = useUploadProgressTaskbar();
+        const diskDatastoreMigration = useDiskDatastoreMigration();
 
         async function handleUploads(uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> {
 
@@ -175,9 +176,7 @@ export namespace AddFileHooks {
             const migration = DiskDatastoreMigrations.prepare(uploads);
 
             if (migration.required) {
-
-                // doMigrationUpload(migration);
-
+                diskDatastoreMigration(migration);
             } else {
                 doDirectUpload(uploads)
                     .catch(err => log.error("Unable to handle upload: ", err));

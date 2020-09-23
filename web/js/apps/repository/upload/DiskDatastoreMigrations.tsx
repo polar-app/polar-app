@@ -40,7 +40,7 @@ interface IMigration {
 
 }
 
-export function useDiskDatastoreMigration() {
+function useDiskDatastoreMigrationExecutor() {
 
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
@@ -106,6 +106,37 @@ export function useDiskDatastoreMigration() {
             .catch(err => log.error(err));
 
     }, [persistenceLayerProvider, log, uploadProgressTaskbar])
+
+
+}
+
+
+export function useDiskDatastoreMigration() {
+
+
+    const diskDatastoreMigrationExecutor = useDiskDatastoreMigrationExecutor();
+    const dialogManager = useDialogManager();
+
+    return React.useCallback((opts: IMigration) => {
+
+        dialogManager.confirm({
+            title: "Migrate Polar 1.0 Data?",
+            type: 'info',
+            subtitle: (
+                <div>
+                    <p>
+                        Looks like you're migrating data from Polar 1.0.
+                    </p>
+                    <p>
+                        This migration tool will migrate all of your data including documents and annotations from
+                        Polar 1.0.
+                    </p>
+                </div>
+            ),
+            onAccept: () => diskDatastoreMigrationExecutor(opts)
+        })
+
+    }, [diskDatastoreMigrationExecutor, dialogManager]);
 
 }
 
