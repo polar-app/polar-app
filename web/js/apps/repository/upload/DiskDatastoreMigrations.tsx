@@ -1,15 +1,14 @@
 import React from 'react';
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useLogger} from "../../../mui/MUILogger";
-import {AsyncProvider, Provider} from "polar-shared/src/util/Providers";
+import {AsyncProvider} from "polar-shared/src/util/Providers";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {Backend} from "polar-shared/src/datastore/Backend";
 import { FileRef } from 'polar-shared/src/datastore/FileRef';
 import {Paths} from "polar-shared/src/util/Paths";
 import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";
-import {IWebkitFileSystem} from "./IWebkitFileSystem";
-import {FileSystemFileEntries} from "./FileSystemFileEntries";
+import {IUpload} from "./IUpload";
 
 type BlobProvider = () => Promise<Blob>;
 
@@ -81,96 +80,64 @@ export function useDiskDatastoreMigration() {
 
 export namespace DiskDatastoreMigrations {
 
-    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
+    export function prepare(uploads: ReadonlyArray<IUpload>) {
 
-    interface IFile {
-        readonly path: string;
-        readonly data: BlobProvider;
-    }
-
-    /**
-     * Prepare from standard files...
-     */
-    export function prepareFromFiles(files: ReadonlyArray<File>) {
-
-        function toIFile(file: File): IFile {
-            return {
-                path: file.path,
-                data: async () => file
-            }
-        }
-
-        return prepare(files.map(toIFile))
-    }
-
-    export function prepareFromFileEntries(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
-
-        function toIFile(file: IWebkitFileSystemFileEntry): IFile {
-
-            const asyncFile = FileSystemFileEntries.toAsync(file);
-
-            return {
-                path: file.fullPath,
-                data: async () => asyncFile.file()
-            }
-        }
-
-        return prepare(entries.map(toIFile))
-
-    }
-
-    export function prepare(files: ReadonlyArray<IFile>) {
-
-        function toBaseFileRef(file: IFile): BaseFileRef {
-            const name = Paths.basename(file.path);
+        function toBaseFileRef(upload: IUpload): BaseFileRef {
+            const name = Paths.basename(upload.path!);
             return {
                 ref: {
                     name
                 },
-                data: file.data
+                data: upload.blob
             };
         }
 
 
         function computeImageFileRefs(): ReadonlyArray<ImageFileRef> {
 
-            function filter(file: IFile) {
-                return file.path.startsWith(".polar/files/image/") && file.path.endsWith(".png")
+            function filter(upload: IUpload) {
+                return upload.path !== undefined &&
+                       upload.path.startsWith(".polar/files/image/") &&
+                       upload.path.endsWith(".png")
             }
 
-            return files.filter(filter)
+            return uploads.filter(filter)
                          .map(toBaseFileRef)
 
         }
 
         function computeStashFileRefs(): ReadonlyArray<StashFileRef> {
 
-            function filter(file: IFile) {
-                return file.path.startsWith(".polar/stash/") && file.path.toLowerCase().endsWith(".pdf")
+            function filter(upload: IUpload) {
+                return upload.path !== undefined &&
+                       upload.path.startsWith(".polar/stash/") &&
+                       upload.path.toLowerCase().endsWith(".pdf")
             }
 
-            return files.filter(filter)
+            return uploads.filter(filter)
                         .map(toBaseFileRef)
 
         }
 
         function computeDocMetaProviders(): ReadonlyArray<DocMetaProvider> {
 
-            function filter(file: IFile) {
-                return file.path.startsWith(".polar/") && file.path.toLowerCase().endsWith("/state.json")
+            function filter(upload: IUpload) {
+                return upload.path !== undefined &&
+                       upload.path.startsWith(".polar/") &&
+                       upload.path.toLowerCase().endsWith("/state.json");
             }
 
-            function toDocMetaProvider(file: IFile) {
+            function toDocMetaProvider(upload: IUpload) {
 
                 return async (): Promise<IDocMeta> => {
 
                     function computeFingerprint() {
-                        const parts = file.path.split('/')
+                        const parts = upload.path!.split('/')
                         return parts[parts.length - 1];
                     }
 
                     const fingerprint = computeFingerprint();
-                    const blob = await file.data();
+                    const blob = await upload.blob();
                     const json = await Blobs.toText(blob);
 
                     return DocMetas.deserialize(json, fingerprint);
@@ -179,7 +146,7 @@ export namespace DiskDatastoreMigrations {
 
             }
 
-            return files.filter(filter)
+            return uploads.filter(filter)
                         .map(toDocMetaProvider)
 
         }

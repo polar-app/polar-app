@@ -51,8 +51,9 @@ export namespace Uploads {
             const file = await asyncEntry.file();
 
             return {
-                blob: file,
+                blob: async () => file,
                 name: entry.name,
+                path: entry.fullPath,
                 tags
             };
 
@@ -80,15 +81,16 @@ export namespace Uploads {
             }
 
             function computeTags(): ReadonlyArray<Tag> | undefined {
-                const relativePath = computeRelativePath();
                 return computeTagsFromPath(relativePath);
             }
 
             const tags = computeTags();
+            const relativePath = computeRelativePath();
 
             return {
-                blob: file,
+                blob: async () => file,
                 name: file.name,
+                path: relativePath,
                 tags
             };
 
