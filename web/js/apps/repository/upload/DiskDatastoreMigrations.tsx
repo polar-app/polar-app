@@ -8,6 +8,8 @@ import { FileRef } from 'polar-shared/src/datastore/FileRef';
 import {Paths} from "polar-shared/src/util/Paths";
 import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";
+import {IWebkitFileSystem} from "./IWebkitFileSystem";
+import {FileSystemFileEntries} from "./FileSystemFileEntries";
 
 type BlobProvider = () => Promise<Blob>;
 
@@ -77,11 +79,44 @@ export function useDiskDatastoreMigration() {
 
 }
 
-export namespace DiskDatastoreMigration {
+export namespace DiskDatastoreMigrations {
+
+    import IWebkitFileSystemFileEntry = IWebkitFileSystem.IWebkitFileSystemFileEntry;
 
     interface IFile {
         readonly path: string;
         readonly data: BlobProvider;
+    }
+
+    /**
+     * Prepare from standard files...
+     */
+    export function prepareFromFiles(files: ReadonlyArray<File>) {
+
+        function toIFile(file: File): IFile {
+            return {
+                path: file.path,
+                data: async () => file
+            }
+        }
+
+        return prepare(files.map(toIFile))
+    }
+
+    export function prepareFromFileEntries(entries: ReadonlyArray<IWebkitFileSystemFileEntry>) {
+
+        function toIFile(file: IWebkitFileSystemFileEntry): IFile {
+
+            const asyncFile = FileSystemFileEntries.toAsync(file);
+
+            return {
+                path: file.fullPath,
+                data: async () => asyncFile.file()
+            }
+        }
+
+        return prepare(entries.map(toIFile))
+
     }
 
     export function prepare(files: ReadonlyArray<IFile>) {
