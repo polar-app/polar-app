@@ -25,10 +25,16 @@ interface StashFileRef extends BaseFileRef {
 
 type DocMetaProvider = AsyncProvider<IDocMeta>;
 
-interface IOpts {
+interface IMigration {
     readonly docMetaProviders: ReadonlyArray<DocMetaProvider>;
     readonly stashFileRefs: ReadonlyArray<StashFileRef>;
     readonly imageFileRefs: ReadonlyArray<ImageFileRef>;
+
+    /**
+     * True if the migration is required.
+     */
+    readonly required: boolean;
+
 }
 
 export function useDiskDatastoreMigration() {
@@ -36,7 +42,7 @@ export function useDiskDatastoreMigration() {
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
 
-    return React.useCallback((opts: IOpts) => {
+    return React.useCallback((opts: IMigration) => {
 
         const persistenceLayer = persistenceLayerProvider();
 
@@ -80,7 +86,7 @@ export function useDiskDatastoreMigration() {
 
 export namespace DiskDatastoreMigrations {
 
-    export function prepare(uploads: ReadonlyArray<IUpload>) {
+    export function prepare(uploads: ReadonlyArray<IUpload>): IMigration {
 
         function toBaseFileRef(upload: IUpload): BaseFileRef {
             const name = Paths.basename(upload.path!);
@@ -155,7 +161,9 @@ export namespace DiskDatastoreMigrations {
         const stashFileRefs = computeStashFileRefs();
         const docMetaProviders = computeDocMetaProviders();
 
-        return {imageFileRefs, stashFileRefs, docMetaProviders};
+        const required = docMetaProviders.length > 0;
+
+        return {imageFileRefs, stashFileRefs, docMetaProviders, required};
 
     }
 
