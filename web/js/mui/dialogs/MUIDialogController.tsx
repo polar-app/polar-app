@@ -24,7 +24,6 @@ import {
 } from "../../ui/dialogs/TaskbarDialog";
 import {Latch} from "polar-shared/src/util/Latch";
 import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
-import {deepMemo} from "../../react/ReactUtils";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
@@ -59,16 +58,6 @@ interface DialogHostProps {
  */
 interface IDialogProps {
     readonly dialog: JSX.Element;
-}
-
-type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar' | 'select';
-
-interface DialogElement {
-    readonly element: JSX.Element;
-}
-
-interface DialogElementWithKey extends DialogElement {
-    readonly key: string;
 }
 
 interface DialogState {
@@ -184,10 +173,6 @@ const DialogHost = (props: DialogHostProps) => {
         return null;
     }
 
-    console.log("FIXME: we now have N elements: " + dialogElements.current.length);
-
-    // FIXME: this isn't working... not sure why...
-    // the key isn't being preserved...
     return (
         <>
             {dialogElements.current}

@@ -11,7 +11,6 @@ import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 import {useLogger} from "../../../mui/MUILogger";
 import {AddFileHooks} from "./AddFileHooks";
 import {Uploads} from "./Uploads";
-import {UploadFilters} from "./UploadFilters";
 import {FileSystemEntries} from "./FileSystemEntries";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
@@ -59,7 +58,12 @@ function useDropHandler() {
                 return;
             }
 
-            const progressCallback = await dialogManager.taskbar({message: "Computing file list... one sec."});
+            const progressCallback = await dialogManager.taskbar({
+                message: "Computing file list... one sec.",
+                autoHideDuration: 1,
+                completedDuration: 1
+            });
+
             progressCallback({value: 'indeterminate'});
 
             if (event.dataTransfer.items) {

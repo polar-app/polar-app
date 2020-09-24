@@ -31,6 +31,8 @@ export interface TaskbarDialogProps {
 
     readonly autoHideDuration?: number;
 
+    readonly completedDuration?: number;
+
 }
 
 export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
@@ -60,7 +62,7 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
         if (newProgress.value === 100) {
             // close the task but only after a delay so that the user sees that
             // it finished.
-            setTimeout(() => setOpen(false), 1000);
+            setTimeout(() => setOpen(false), props.completedDuration || 1000);
         }
 
     }
