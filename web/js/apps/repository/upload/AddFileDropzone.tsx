@@ -14,11 +14,29 @@ import {Uploads} from "./Uploads";
 import {UploadFilters} from "./UploadFilters";
 import {FileSystemEntries} from "./FileSystemEntries";
 import useAddFileImporter = AddFileHooks.useAddFileImporter;
+import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
+
+function useTaskProgress() {
+
+    const dialogManager = useDialogManager();
+
+    return React.useCallback(async (message: string, delegate: () => Promise<void>) => {
+
+        const progressCallback = await dialogManager.taskbar({message});
+
+        progressCallback({value: 'indeterminate'});
+        await delegate();
+        progressCallback({value: 100});
+
+    }, [dialogManager]);
+
+}
 
 function useDropHandler() {
 
     const log = useLogger();
     const addFileImporter = useAddFileImporter();
+    const dialogManager = useDialogManager();
 
     return React.useCallback((event: DragEvent) => {
 
@@ -41,16 +59,20 @@ function useDropHandler() {
                 return;
             }
 
+            const progressCallback = await dialogManager.taskbar({message: "Computing file list... one sec."});
+            progressCallback({value: 'indeterminate'});
+
             if (event.dataTransfer.items) {
 
                 // note that we DO NOT filter this as it would filter
                 // directories and we wouldn't recurse.  We instead have to
                 // recurse to find all files and then we have to use the file
                 // name as a filter.
-                const items = Array.from(event.dataTransfer.items);
 
+                const items = Array.from(event.dataTransfer.items);
                 const files = await FileSystemEntries.recurseDataTransferItems(items);
                 const uploads = await Uploads.fromFileSystemEntries(files);
+                progressCallback({value: 100});
                 addFileImporter(uploads);
 
             } else if (event.dataTransfer.files) {
@@ -59,6 +81,7 @@ function useDropHandler() {
                 // which applies to Firefox and older browsers
 
                 const uploads = Uploads.fromFiles(event.dataTransfer.files);
+                progressCallback({value: 100});
                 addFileImporter(uploads);
 
             }
@@ -68,7 +91,7 @@ function useDropHandler() {
         doAsync()
             .catch(err => log.error(err));
 
-    }, [addFileImporter]);
+    }, [addFileImporter, dialogManager]);
 
 }
 
