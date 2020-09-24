@@ -18,7 +18,7 @@ const globalKeyMap = keyMapWithGroup({
             sequences: ['ctrl+f', 'command+f']
         },
         FIND_NEXT: {
-            name: "Find next match",
+            name: "Find Next Match",
             description: "Jump to the next match in the current search results.",
             sequences: ['ctrl+g', 'command+g']
         },
