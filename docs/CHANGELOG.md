@@ -1,3 +1,8 @@
+
+- Toggle back and forth between full screen mode should work now. 
+
+- Polar 1.0 migration should work now.
+
 - disable context menus on context menus
 
 # 2.0 beta 26

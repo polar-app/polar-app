@@ -5,49 +5,40 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 
 export const FullScreenButton = React.memo(() => {
 
-    const [fullScreen, setFullScreen] = useState(false);
-
     // TODO: shift+command+f for macos full-screen
     // make this a hook that we can reuse...
 
-    function requestFullScreen() {
+    const requestFullScreen = React.useCallback(() => {
 
         async function doAsync() {
-
-            if (!fullScreen) {
-                await document.documentElement.requestFullscreen();
-                setFullScreen(true);
-            }
+            await document.documentElement.requestFullscreen();
         }
 
         doAsync()
-        .catch(err => console.error(err));
+            .catch(err => console.error(err));
 
-    }
+    }, []);
 
-
-    function exitFullScreen() {
+    const exitFullScreen = React.useCallback(() => {
 
         async function doAsync() {
-
-            if (fullScreen) {
-                await document.exitFullscreen();
-                setFullScreen(false);
-            }
+            await document.exitFullscreen();
         }
 
         doAsync()
-        .catch(err => console.error(err));
+            .catch(err => console.error(err));
 
-    }
+    }, []);
 
-    function toggleFullScreen() {
-        if (fullScreen) {
+    const toggleFullScreen = React.useCallback(() => {
+        if (document.fullscreenElement) {
+            console.log("FIXME: exit");
             exitFullScreen();
         } else {
+            console.log("FIXME: request");
             requestFullScreen();
         }
-    }
+    }, []);
 
     return (
         <IconButton onClick={toggleFullScreen}>
