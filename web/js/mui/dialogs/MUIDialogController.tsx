@@ -24,6 +24,7 @@ import {
 } from "../../ui/dialogs/TaskbarDialog";
 import {Latch} from "polar-shared/src/util/Latch";
 import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
+import {deepMemo} from "../../react/ReactUtils";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
@@ -63,14 +64,14 @@ interface IDialogProps {
 type DialogType = 'confirm' | 'prompt' | 'autocomplete' | 'snackbar' | 'dialog' | 'taskbar' | 'select';
 
 interface DialogElement {
+    readonly element: JSX.Element;
+}
+
+interface DialogElementWithKey extends DialogElement {
     readonly key: string;
-    readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps<any>;
 }
 
 interface DialogState {
-    readonly type: DialogType;
-    readonly props: ConfirmDialogProps | PromptDialogProps | AutocompleteDialogProps<any> | SnackbarDialogProps | IDialogProps | SelectDialogProps<any>;
     readonly iter: number;
 }
 
@@ -81,53 +82,57 @@ function createKey() {
 /**
  * Hosts the actual dialogs so that we don't ever re-render sub-components.
  */
-const DialogHost = React.memo((props: DialogHostProps) => {
+const DialogHost = (props: DialogHostProps) => {
 
-    const [dialogElements, setDialogElements] = React.useState<ReadonlyArray<DialogElement>>([]);
+    const dialogElements = React.useRef<ReadonlyArray<JSX.Element>>([]);
+
+    const registerDialogElement = React.useCallback((element: JSX.Element) => {
+        dialogElements.current = [...dialogElements.current, element];
+    }, []);
+
+    // TODO we need a way to handle GCing the dialog boxes so they're removed
 
     const [state, setState] = useState<DialogState | undefined>(() => {
 
         let iter = 0;
 
-        const confirm = (confirmDialogProps: ConfirmDialogProps) => {
+        function doIncr() {
             setState({
-                type: 'confirm',
-                props: confirmDialogProps,
                 iter: iter++
             });
+        }
+
+        const confirm = (confirmDialogProps: ConfirmDialogProps) => {
+            registerDialogElement(<ConfirmDialog key={createKey()}
+                                                 {...confirmDialogProps}/>);
+            doIncr();
         };
 
         const prompt = (promptDialogProps: PromptDialogProps) => {
-            setState({
-                type: 'prompt',
-                props: promptDialogProps,
-                iter: iter++
-            });
+            registerDialogElement(<PromptDialog key={createKey()}
+                                                {...promptDialogProps}/>);
+            doIncr();
         };
 
         const autocomplete = function<T>(autocompleteProps: AutocompleteDialogProps<T>) {
-            setState({
-                type: 'autocomplete',
-                props: autocompleteProps,
-                iter: iter++
-            });
+            registerDialogElement(<AutocompleteDialog key={createKey()}
+                                                      {...autocompleteProps}/>);
+            doIncr();
         };
 
         const snackbar = function(snackbarProps: SnackbarDialogProps) {
-            setState({
-                type: 'snackbar',
-                props: snackbarProps,
-                iter: iter++
-            });
+            registerDialogElement(<SnackbarDialog key={createKey()}
+                                                  {...snackbarProps}/>);
+            doIncr();
         };
 
-        const dialog = function(dialogProps: IDialogProps) {
-            setState({
-                type: 'dialog',
-                props: dialogProps,
-                iter: iter++
-            });
-        };
+        // const dialog = function(dialogProps: IDialogProps) {
+        //     registerDialogElement({
+        //         type: 'dialog',
+        //         props: dialogProps,
+        //     });
+        //     doIncr();
+        // };
 
         const taskbar = async function(taskbarProps: TaskbarDialogProps): Promise<TaskbarProgressCallback> {
 
@@ -142,22 +147,18 @@ const DialogHost = React.memo((props: DialogHostProps) => {
                 onProgressCallback,
             };
 
-            setState({
-                 type: 'taskbar',
-                 props,
-                 iter: iter++
-            });
+            registerDialogElement(<TaskbarDialog key={createKey()}
+                                                 { ...props}/>);
+            doIncr();
 
             return latch.get();
 
         };
 
         const select = function(selectProps: SelectDialogProps<any>) {
-            setState({
-                type: 'select',
-                props: selectProps,
-                iter: iter++
-            });
+            registerDialogElement(<SelectDialog key={createKey()}
+                                                {...selectProps}/>);
+            doIncr();
         };
 
         const dialogManager: DialogManager = {
@@ -165,7 +166,7 @@ const DialogHost = React.memo((props: DialogHostProps) => {
             prompt,
             autocomplete,
             snackbar,
-            dialog,
+            dialog: NULL_FUNCTION,
             taskbar,
             select
         };
@@ -183,57 +184,17 @@ const DialogHost = React.memo((props: DialogHostProps) => {
         return null;
     }
 
-    switch (state.type) {
+    console.log("FIXME: we now have N elements: " + dialogElements.current.length);
 
-        case "confirm":
-            return (
-                <ConfirmDialog key={state.iter}
-                               {...(state.props as ConfirmDialogProps)}/>
-            );
+    // FIXME: this isn't working... not sure why...
+    // the key isn't being preserved...
+    return (
+        <>
+            {dialogElements.current}
+        </>
+    );
 
-        case "prompt":
-            return (
-                <PromptDialog key={state.iter}
-                              {...(state.props as PromptDialogProps)}/>
-            );
-
-        case "autocomplete":
-            return (
-                <AutocompleteDialog key={state.iter}
-                                    {...(state.props as AutocompleteDialogProps<any>)}/>
-            );
-
-        case "snackbar":
-            return (
-                <SnackbarDialog key={state.iter}
-                                {...(state.props as SnackbarDialogProps)}/>
-            );
-
-        case "dialog":
-
-            const dialogProps = state.props as IDialogProps;
-
-            return (
-                dialogProps.dialog
-            );
-
-        case "taskbar":
-            return (
-                <TaskbarDialog key={state.iter}
-                               {...(state.props as TaskbarDialogPropsWithCallback)}/>
-            );
-
-        case "select":
-            return (
-                <SelectDialog key={state.iter}
-                              {...(state.props as SelectDialogProps<any>)}/>
-            );
-
-    }
-
-    return null;
-
-}, isEqual);
+};
 
 interface IProps {
     readonly children: React.ReactNode;

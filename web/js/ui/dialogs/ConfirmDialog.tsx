@@ -80,7 +80,6 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
 
     const [open, setOpen] = React.useState(true);
 
-
     const classes = useStyles();
 
     const onCancel = props.onCancel || NULL_FUNCTION;
@@ -95,20 +94,19 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
     };
 
     const handleCancel = () => {
-        onCancel();
         setOpen(false);
+        onCancel();
     };
 
     const handleAccept = () => {
-        props.onAccept();
         setOpen(false);
+        props.onAccept();
     };
 
     const type: AlertType = props.type || 'error';
 
     // tslint:disable-next-line:no-string-literal
     const palette = classes[type];
-
 
     return (
         <MUIDialog
@@ -127,10 +125,12 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                         <DialogContent>
 
                             {typeof props.subtitle === 'string' && (
-                                <DialogContentText id="alert-dialog-description"
-                                                   className={classes.subtitle}>
-                                    {props.subtitle}
-                                </DialogContentText>
+                                <Box pt={1}>
+                                    <DialogContentText id="alert-dialog-description"
+                                                       className={classes.subtitle}>
+                                        {props.subtitle}
+                                    </DialogContentText>
+                                </Box>
                             )}
 
                             {typeof props.subtitle !== 'string' && (

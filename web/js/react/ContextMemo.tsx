@@ -11,9 +11,9 @@ const ENABLED = false;
  */
 export function createContextMemo<T>(value: T) {
 
-    if (ENABLED) {
-        return React.createContext<T>(value, calculateChangedBitsMemo);
-    }
+    // if (ENABLED) {
+    //     return React.createContext<T>(value, calculateChangedBitsMemo);
+    // }
 
     return React.createContext<T>(value);
 }
