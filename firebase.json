@@ -32,6 +32,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/migration/phz",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/group/:group/highlights",
         "destination": "/apps/repository/index.html"
       },
