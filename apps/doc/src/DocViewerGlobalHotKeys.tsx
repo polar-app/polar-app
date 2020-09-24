@@ -17,6 +17,11 @@ const globalKeyMap = keyMapWithGroup({
             description: "Search within the document for the given text.",
             sequences: ['ctrl+f', 'command+f']
         },
+        FIND_NEXT: {
+            name: "Find next match",
+            description: "Jump to the next match in the current search results.",
+            sequences: ['ctrl+g', 'command+g']
+        },
         PAGE_NEXT: {
             name: "Next Page",
             description: "Jump to the next page",
@@ -37,6 +42,7 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
+        FIND_NEXT: () => findCallbacks.doFindNext(),
         PAGE_NEXT: onPageNext,
         PAGE_PREV: onPagePrev
     };

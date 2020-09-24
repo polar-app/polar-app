@@ -45,6 +45,8 @@ export interface IDocFindCallbacks {
 
     readonly setFindHandler: (findHandler: FindHandler | undefined) => void;
 
+    readonly doFindNext: () => void;
+
     doFind(opts: IFindOpts): void;
     setMatches(matches: IMatches | undefined): void;
     setOpts(opts: IFindOptsBase | undefined): void;
@@ -137,6 +139,16 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
     }
 
+    function doFindNext() {
+
+        const store = storeProvider();
+
+        if (store.findHandler) {
+            store.findHandler.next();
+        }
+
+    }
+
     function setMatches(matches: IMatches | undefined) {
 
         const store = storeProvider();
@@ -181,7 +193,8 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
         doFind,
         setMatches,
         setOpts,
-        reset
+        reset,
+        doFindNext
     };
 
 }
