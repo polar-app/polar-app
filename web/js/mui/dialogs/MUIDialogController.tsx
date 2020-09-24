@@ -208,16 +208,18 @@ export const MUIDialogControllerContext = React.createContext<DialogManager>(Nul
  */
 export const MUIDialogController = React.memo((props: IProps) => {
 
-    const [dialogManager, setDialogManager] = useState<DialogManager>(NullDialogManager);
+    const [dialogManager, setDialogManager] = useState<DialogManager | undefined>();
 
     return (
         <>
 
             <DialogHost onDialogManager={dialogManger => setDialogManager(dialogManger)}/>
 
-            <MUIDialogControllerContext.Provider value={dialogManager}>
-                {props.children}
-            </MUIDialogControllerContext.Provider>
+            {dialogManager && (
+                <MUIDialogControllerContext.Provider value={dialogManager}>
+                    {props.children}
+                </MUIDialogControllerContext.Provider>
+            )}
 
         </>
     );
