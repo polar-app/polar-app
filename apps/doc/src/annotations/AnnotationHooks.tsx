@@ -58,7 +58,9 @@ function useScrollSubscriber(delegate: () => void): Subscriber {
             delegate();
         }
 
-        viewerContainer!.addEventListener('scroll', handleScroll);
+        const listenerOpts = {passive: true};
+
+        viewerContainer!.addEventListener('scroll', handleScroll, listenerOpts);
 
         function unsubscribe () {
             viewerContainer!.removeEventListener('scroll', handleScroll);

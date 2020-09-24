@@ -152,10 +152,14 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
         if (this.isKeyboardControlShiftC(event)) {
             this.onClozeDelete();
+            event.stopPropagation();
+            event.preventDefault();
         }
 
         if (event.getModifierState("Control") && event.key === "Enter") {
             this.onCreate();
+            event.stopPropagation();
+            event.preventDefault();
         }
 
     }

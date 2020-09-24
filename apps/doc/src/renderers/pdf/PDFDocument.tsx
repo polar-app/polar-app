@@ -250,7 +250,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         docViewer.containerElement.addEventListener('scroll', () => {
             handleScroll();
-        });
+        }, {passive: true});
 
         const scaleLeveler = (scale: ScaleLevelTuple) => {
             return setScale(scale);

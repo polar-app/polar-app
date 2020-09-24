@@ -12,7 +12,7 @@ export function usePDFScrollListener(onScroll: () => void) {
 
         containerElement.addEventListener('scroll', () => {
             onScroll();
-        });
+        }, {passive: true});
 
     })
 
