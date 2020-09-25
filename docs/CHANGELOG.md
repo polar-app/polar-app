@@ -1,8 +1,16 @@
+- zoom works wth keyboard bindings now.
+- Folder behavior was wrong when selecting subfolders
+- resize + scroll listeners are now passive which in theory should increase performance
+- impl of finc-next key binding
+- progress bar while we are computing all new files.
 
+- It's now no longer possible to create duplicate + new tags
+- Fixed bug with the document write indicator not properly updating
 - Toggle back and forth between full screen mode should work now. 
 
-- Polar 1.0 migration should work now.
+# 2.0 beta 27/28
 
+- Polar 1.0 migration should work now.
 - disable context menus on context menus
 
 # 2.0 beta 26

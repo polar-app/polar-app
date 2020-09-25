@@ -49,6 +49,7 @@ export const SCALE_VALUE_PAGE_WIDTH: ScaleLevelTuple = {
     value: 'page-width'
 }
 
+// TODO: we need more intervals than ust these - the gaps are too large.
 export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     SCALE_VALUE_PAGE_FIT,
     SCALE_VALUE_PAGE_WIDTH,

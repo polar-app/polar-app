@@ -13,7 +13,72 @@ import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
 
 type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
 
+function createPredicate3(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+
+    // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
+    // ctrl+shift+h then we will match.
+
+    return (event) => {
+
+
+        function matchesModifier(key: string) {
+
+            // console.log("keyboard shortcuts: key: " + key);
+            // console.log("keyboard shortcuts: ctrlKey: " + event.ctrlKey);
+            // console.log("keyboard shortcuts: metaKey: " + event.metaKey);
+            // console.log("keyboard shortcuts: shiftKey: " + event.shiftKey);
+
+            if (key === 'ctrl' && event.ctrlKey) {
+                return true;
+            }
+
+            if (key === 'command' && event.metaKey) {
+                return true;
+            }
+
+            if (key === 'shift' && event.shiftKey) {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        function matchesKey0() {
+            return matchesModifier(keys[0]);
+        }
+
+        function matchesKey1() {
+            return matchesModifier(keys[1]);
+        }
+
+        function matchesKey2() {
+
+            const key = keys[2];
+
+            if (key === event.key) {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        if (matchesKey0() && matchesKey1() && matchesKey2()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+}
+
+
 function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+
+    // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
+    // ctrl+shift+h then we will match.
 
     return (event) => {
 
@@ -42,7 +107,6 @@ function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 
         }
 
-
         function matchesKey1() {
 
             const key = keys[1];
@@ -56,6 +120,63 @@ function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
         }
 
         if (matchesKey0() && matchesKey1()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+}
+
+function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+
+    return (event): boolean => {
+        return event.key === keys[0] && ! (event.metaKey || event.ctrlKey || event.shiftKey);
+    }
+
+}
+
+
+function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): KeyboardEventHandlerUsingPredicate {
+
+    function createPredicate() {
+
+        switch (sequence) {
+
+            // HACK this is just a hack for + key bindings and we should migrate to a better parser eventually
+            case "command++":
+                return createPredicate2(['command', '+']);
+
+            case "ctrl++":
+                return createPredicate2(['ctrl', '+']);
+
+        }
+
+        const keys = sequence.split('+');
+
+        switch (keys.length) {
+            case 1:
+                return createPredicate1(keys);
+            case 2:
+                return createPredicate2(keys);
+            case 3:
+                return createPredicate3(keys);
+            default:
+                throw new Error("Too many keys for event: " + keys.length);
+        }
+
+    }
+
+    const predicate = createPredicate();
+
+    return (event) => {
+
+        if (predicate(event)) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            setTimeout(() => handler(event), 1);
             return true;
         }
 
@@ -86,47 +207,6 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 
 }
 
-function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
-
-    return (event): boolean => {
-        return event.key === keys[0] && ! (event.metaKey || event.ctrlKey || event.shiftKey);
-    }
-
-}
-
-function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): KeyboardEventHandlerUsingPredicate {
-
-    const keys = sequence.split('+');
-
-    function createPredicate() {
-        switch (keys.length) {
-            case 1:
-                return createPredicate1(keys);
-            case 2:
-                return createPredicate2(keys);
-            default:
-                throw new Error("Too many keys for event: " + keys.length);
-        }
-
-    }
-
-    const predicate = createPredicate();
-
-    return (event) => {
-
-        if (predicate(event)) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            setTimeout(() => handler(event), 1);
-            return true;
-        }
-
-        return false;
-
-    }
-
-}
 
 type SequenceToHandler = [string, KeyboardEventHandler];
 type SequenceToKeyboardEventHandlerPredicate = [string, KeyboardEventHandlerPredicate];

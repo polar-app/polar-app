@@ -21,7 +21,7 @@ import {Percentages} from "polar-shared/src/util/Percentages";
 import {Pagemarks} from "../../../web/js/metadata/Pagemarks";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
-import {ScaleLevelTuple} from "./ScaleLevels";
+import {PDFScales, SCALE_VALUE_PAGE_WIDTH, ScaleLevelTuple, ScaleLevelTuples} from "./ScaleLevels";
 import {PageNavigator} from "./PageNavigator";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {DocViewerSnapshots} from "./DocViewerSnapshots";
@@ -53,6 +53,7 @@ import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
 import isEqual from 'react-fast-compare';
+import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -271,6 +272,8 @@ export interface IDocViewerCallbacks {
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
+    readonly doZoom: (delta: number) => void;
+    readonly doZoomRestore: () => void;
     readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
 
@@ -472,6 +475,35 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
 
     }
+
+    function doZoom(delta: number) {
+
+        const {docScale, scaleLeveler} = storeProvider();
+
+        if (! scaleLeveler) {
+            return;
+        }
+
+        const nextScale = computeNextZoomLevel(delta, docScale?.scale);
+
+        if (nextScale) {
+            setScale(nextScale);
+        }
+
+    }
+
+    function doZoomRestore() {
+
+        const {scaleLeveler} = storeProvider();
+
+        if (! scaleLeveler) {
+            return;
+        }
+
+        setScale(SCALE_VALUE_PAGE_WIDTH);
+
+    }
+
 
     function setFluidPagemarkFactory(fluidPagemarkFactory: FluidPagemarkFactory) {
         const store = storeProvider();
@@ -900,6 +932,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setResizer,
             setScaleLeveler,
             setScale,
+            doZoom,
+            doZoomRestore,
             setPage,
             setFluidPagemarkFactory,
             setDocFlagged,

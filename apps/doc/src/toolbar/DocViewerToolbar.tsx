@@ -34,7 +34,7 @@ export const DocViewerToolbar = deepMemo(() => {
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, setDocFlagged, setDocArchived, onDocTagged} = useDocViewerCallbacks();
+    const {setScale, setDocFlagged, setDocArchived, onDocTagged, doZoom} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
 
@@ -44,16 +44,6 @@ export const DocViewerToolbar = deepMemo(() => {
                 .first();
 
         setScale(value!);
-
-    };
-
-    const handleNextZoomLevel = (delta: number) => {
-
-        const nextScale = computeNextZoomLevel(delta, docScale?.scale);
-
-        if (nextScale) {
-            setScale(nextScale);
-        }
 
     };
 
@@ -111,7 +101,7 @@ export const DocViewerToolbar = deepMemo(() => {
                         {docScale && scaleLeveler && (
                             <DeviceRouters.Desktop>
                                 <MUIButtonBar>
-                                    <IconButton onClick={() => handleNextZoomLevel(-1)}>
+                                    <IconButton onClick={() => doZoom(-1)}>
                                         <RemoveIcon/>
                                     </IconButton>
 
@@ -127,7 +117,7 @@ export const DocViewerToolbar = deepMemo(() => {
                                             </Select>
                                         </FormControl>
 
-                                    <IconButton onClick={() => handleNextZoomLevel(1)}>
+                                    <IconButton onClick={() => doZoom(1)}>
                                         <AddIcon/>
                                     </IconButton>
 

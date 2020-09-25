@@ -7,6 +7,9 @@ export type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
 export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boolean;
 
+export type KeyBindingArray2 = readonly [string, string];
+export type KeyBindingArray1 = readonly [string];
+
 export type KeyBinding = string;
 
 export interface IBaseKeyboardShortcut {

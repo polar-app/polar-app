@@ -31,6 +31,21 @@ const globalKeyMap = keyMapWithGroup({
             name: "Previous Page",
             description: "Jump to the previous page",
             sequences: ['p', 'k', 'ArrowLeft']
+        },
+        ZOOM_IN: {
+            name: "Zoom In",
+            description: "Zoom in to the current document",
+            sequences: ['command+shift+=', 'command+=', 'ctrl+shift+=', 'ctrl+=']
+        },
+        ZOOM_OUT: {
+            name: "Zoom Out",
+            description: "Zoom out to the current document",
+            sequences: ['command+shift+-', 'command+-', 'ctrl+shift+-', 'ctrl+-']
+        },
+        ZOOM_RESTORE: {
+            name: "Zoom Restore",
+            description: "Restore the default zoom level",
+            sequences: ['command+0', 'ctrl+0']
         }
     }
 });
@@ -38,13 +53,16 @@ const globalKeyMap = keyMapWithGroup({
 export const DocViewerGlobalHotKeys = React.memo(() => {
 
     const findCallbacks = useDocFindCallbacks();
-    const {onPagePrev, onPageNext} = useDocViewerCallbacks();
+    const {onPagePrev, onPageNext, doZoom, doZoomRestore} = useDocViewerCallbacks();
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
         FIND_NEXT: () => findCallbacks.doFindNext(),
         PAGE_NEXT: onPageNext,
-        PAGE_PREV: onPagePrev
+        PAGE_PREV: onPagePrev,
+        ZOOM_IN: () => doZoom(1),
+        ZOOM_OUT: () => doZoom(-1),
+        ZOOM_RESTORE: doZoomRestore
     };
 
     const location = useLocationWithPathOnly();
