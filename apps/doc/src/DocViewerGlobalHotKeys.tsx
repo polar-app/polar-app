@@ -60,8 +60,8 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
         FIND_NEXT: () => findCallbacks.doFindNext(),
         PAGE_NEXT: onPageNext,
         PAGE_PREV: onPagePrev,
-        ZOOM_IN: () => doZoom(1),
-        ZOOM_OUT: () => doZoom(-1),
+        ZOOM_IN: () => doZoom('+'),
+        ZOOM_OUT: () => doZoom('-'),
         ZOOM_RESTORE: doZoomRestore
     };
 

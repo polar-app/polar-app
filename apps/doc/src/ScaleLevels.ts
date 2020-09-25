@@ -1,24 +1,61 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace PDFScales {
 
-    export function computeNextZoomLevel(delta: number,
-                                         currentScale: ScaleLevelTuple | undefined): ScaleLevelTuple | undefined {
+    /**
+     * The document scale value as a double. For example 100% = 1.0.  140% = 1.4, etc.
+     */
+    export type ScaleValue = number;
 
-        if (! currentScale) {
+    export type ScaleDelta = '+' | '-';
+
+    export function computeNextZoomLevel(delta: ScaleDelta,
+                                         currentScaleValue: ScaleValue | undefined): ScaleLevelTuple | undefined {
+
+        if (currentScaleValue === undefined) {
             return undefined;
         }
 
-        const pdfScaleLevels =
-            arrayStream(ScaleLevelTuples)
-                .map(current => current.value)
+        const discreteScaleLevelTuples = ScaleLevelTuples.filter(current => ! isNaN(parseFloat(current.value)));
+        const discreteZoomLevels = discreteScaleLevelTuples.map(current => parseFloat(current.value));
+
+        type ZoomPredicate = (scaleValue: number) => boolean;
+
+        const predicate: ZoomPredicate =
+            delta === '+' ? (scaleValue) => scaleValue > currentScaleValue :
+                            (scaleValue) => scaleValue < currentScaleValue
+
+        const filteredDiscreteZoomLevels
+            = arrayStream(discreteZoomLevels)
+                .filter(predicate)
                 .collect();
 
-        const currentScaleLevelIdx = pdfScaleLevels.indexOf(currentScale.value);
+        const sortedZoomLevels
+            = arrayStream(filteredDiscreteZoomLevels)
+                .sort((a, b) => a - b)
+                .collect();
 
-        const nextIdx = currentScaleLevelIdx + delta;
+        const newZoomLevel = delta === '+' ? Arrays.first(sortedZoomLevels)! : Arrays.last(sortedZoomLevels)!;
 
-        return ScaleLevelTuples[nextIdx] || undefined;
+        if (newZoomLevel) {
+
+            return arrayStream(ScaleLevelTuples)
+                    .filter(current => current.value === `${newZoomLevel}`)
+                    .first()!;
+
+        } else {
+
+            switch (delta) {
+
+                case "+":
+                    return Arrays.last(discreteScaleLevelTuples)!;
+                case "-":
+                    return Arrays.first(discreteScaleLevelTuples)!;
+
+            }
+
+        }
 
     }
 }

@@ -101,7 +101,7 @@ export const DocViewerToolbar = deepMemo(() => {
                         {docScale && scaleLeveler && (
                             <DeviceRouters.Desktop>
                                 <MUIButtonBar>
-                                    <IconButton onClick={() => doZoom(-1)}>
+                                    <IconButton onClick={() => doZoom('-')}>
                                         <RemoveIcon/>
                                     </IconButton>
 
@@ -117,7 +117,7 @@ export const DocViewerToolbar = deepMemo(() => {
                                             </Select>
                                         </FormControl>
 
-                                    <IconButton onClick={() => doZoom(1)}>
+                                    <IconButton onClick={() => doZoom('+')}>
                                         <AddIcon/>
                                     </IconButton>
 

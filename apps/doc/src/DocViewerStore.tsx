@@ -54,6 +54,7 @@ import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
 import isEqual from 'react-fast-compare';
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
+import ScaleDelta = PDFScales.ScaleDelta;
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -272,7 +273,7 @@ export interface IDocViewerCallbacks {
     readonly annotationMutations: IAnnotationMutationCallbacks;
     readonly onPageJump: (page: number) => void;
     readonly setScale: (scaleLevel: ScaleLevelTuple) => void;
-    readonly doZoom: (delta: number) => void;
+    readonly doZoom: (delta: ScaleDelta) => void;
     readonly doZoomRestore: () => void;
     readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
@@ -476,7 +477,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
-    function doZoom(delta: number) {
+    function doZoom(delta: ScaleDelta) {
 
         const {docScale, scaleLeveler} = storeProvider();
 
@@ -484,7 +485,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             return;
         }
 
-        const nextScale = computeNextZoomLevel(delta, docScale?.scale);
+        const nextScale = computeNextZoomLevel(delta, docScale?.scaleValue);
 
         if (nextScale) {
             setScale(nextScale);
