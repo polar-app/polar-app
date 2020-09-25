@@ -105,6 +105,11 @@ export namespace DocRepoFilters2 {
             return repoDocs;
         }
 
+        if (filter.tags && filter.tags.length === 1 && filter.tags[0].id === '/') {
+            // if the user is selecting the / folder then show all files.
+            return repoDocs;
+        }
+
         const tags = filter.tags.filter(current => current.id !== '/');
 
         return TagMatcher2.filter(repoDocs, tags);
