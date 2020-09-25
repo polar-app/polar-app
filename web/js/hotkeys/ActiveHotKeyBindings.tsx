@@ -24,6 +24,8 @@ interface KeySequenceProps {
 
 const KeySequence = (props: KeySequenceProps) => {
 
+    const sequence = props.sequence.split('+').join( ' + ' );
+
     return (
         <div style={{
                 padding: '5px',
@@ -31,9 +33,12 @@ const KeySequence = (props: KeySequenceProps) => {
                 border: `1px solid ${grey[500]}`,
                 backgroundColor: grey[200],
                 color: grey[900],
-                margin: '5px'
+                margin: '5px',
+                whiteSpace: 'nowrap'
              }}>
-            {props.sequence}
+
+            {sequence}
+
         </div>
     )
 
