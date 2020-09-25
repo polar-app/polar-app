@@ -118,4 +118,82 @@ export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
 
 ];
 
+// export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
+//     SCALE_VALUE_PAGE_FIT,
+//     SCALE_VALUE_PAGE_WIDTH,
+//     {
+//         label: '50%',
+//         value: '0.5'
+//     },
+//     {
+//         label: '60%',
+//         value: '0.6'
+//     },
+//     {
+//         label: '70%',
+//         value: '0.7'
+//     },
+//     {
+//         label: '80%',
+//         value: '0.8'
+//     },
+//     {
+//         label: '90%',
+//         value: '0.9'
+//     },
+//     {
+//         label: '100%',
+//         value: '1'
+//     },
+//     {
+//         label: '110%',
+//         value: '1.1'
+//     },
+//     {
+//         label: '130%',
+//         value: '1.3'
+//     },
+//     {
+//         label: '150%',
+//         value: '1.5'
+//     },
+//     {
+//         label: '170%',
+//         value: '1.7'
+//     },
+//     {
+//         label: '190%',
+//         value: '1.9'
+//     },
+//     {
+//         label: '210%',
+//         value: '2.1'
+//     },
+//     {
+//         label: '240%',
+//         value: '2.4'
+//     },
+//     {
+//         label: '270%',
+//         value: '2.7'
+//     },
+//     {
+//         label: '300%',
+//         value: '3'
+//     },
+//     {
+//         label: '330%',
+//         value: '3.3'
+//     },
+//     {
+//         label: '370%',
+//         value: '3.7'
+//     },
+//     {
+//         label: '400%',
+//         value: '4'
+//     }
+//
+// ];
+
 export const ScaleLevelTuplesMap = arrayStream(ScaleLevelTuples).toMap(current => current.label);
