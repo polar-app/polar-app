@@ -77,20 +77,14 @@ export namespace AddFileHooks {
 
             const result: ImportedFile[] = [];
 
-            try {
+            let idx = 0;
 
-                let idx = 0;
-
-                for (const upload of uploads) {
-                    ++idx;
-                    await doUpload(idx, upload);
-                }
-
-                return result;
-
-            } finally {
-                // noop
+            for (const upload of uploads) {
+                ++idx;
+                await doUpload(idx, upload);
             }
+
+            return result;
 
         }
 

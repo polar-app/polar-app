@@ -176,7 +176,7 @@ export namespace DiskDatastoreMigrations {
             }
 
             return uploads.filter(filter)
-                        .map(toBaseFileRef)
+                          .map(toBaseFileRef)
 
         }
 
@@ -208,7 +208,7 @@ export namespace DiskDatastoreMigrations {
             }
 
             return uploads.filter(filter)
-                        .map(toDocMetaProvider)
+                          .map(toDocMetaProvider)
 
         }
 

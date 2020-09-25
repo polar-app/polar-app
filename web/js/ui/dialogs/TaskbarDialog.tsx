@@ -5,7 +5,8 @@ import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {deepMemo} from "../../react/ReactUtils";
-
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 export interface IProgress {
 
     readonly value: Percentage | 'indeterminate';
@@ -32,6 +33,14 @@ export interface TaskbarDialogProps {
     readonly autoHideDuration?: number;
 
     readonly completedDuration?: number;
+
+
+
+    /**
+     * When given, we enable this taskbar to be cancellable and the user can trigger the task to abort
+     * and onCancel is then called.
+     */
+    readonly onCancel?: () => void;
 
 }
 
@@ -71,7 +80,7 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
         props.onProgressCallback(setProgressCallback);
     });
 
-    const Action = () => {
+    const Progress = () => {
 
         if (progress.value === 'indeterminate') {
             return <CircularProgress />;
@@ -80,6 +89,20 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
         }
 
     };
+
+    const Action = () => {
+        return (
+            <>
+                <Progress/>
+
+                {props.onCancel && (
+                    <IconButton onClick={props.onCancel}>
+                        <CloseIcon/>
+                    </IconButton>
+                )}
+            </>
+        );
+    }
 
     return (
         <Snackbar
