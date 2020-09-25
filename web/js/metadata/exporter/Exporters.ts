@@ -3,7 +3,6 @@ import {JSONExporter} from './JSONExporter';
 import {AnnotationHolders} from 'polar-shared/src/metadata/AnnotationHolders';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BlobWriter} from "./writers/BlobWriter";
-import {PersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {FileSavers} from "polar-file-saver/src/FileSavers";
 import {AnnotationHolder} from "polar-shared/src/metadata/AnnotationHolder";
 import {
