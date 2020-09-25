@@ -212,7 +212,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         const resizeDebouncer = Debouncers.create(() => resize());
 
-        window.addEventListener('resize', resizeDebouncer);
+        window.addEventListener('resize', resizeDebouncer, {passive: true});
 
         document.getElementById("viewerContainer")!
             .addEventListener("resize", resizeDebouncer);

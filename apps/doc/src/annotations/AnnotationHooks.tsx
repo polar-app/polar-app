@@ -80,7 +80,7 @@ function createResizeSubscriber(delegate: () => void): Subscriber {
             delegate();
         }
 
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize, {passive: true});
 
         function unsubscribe() {
             window.removeEventListener('resize', handleResize);
