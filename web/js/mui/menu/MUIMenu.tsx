@@ -78,16 +78,18 @@ export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
         }
     }
 
+    // TODO this is disabled for now and not sure why we added it but we will probably find out in the future.
+    // because when we attempted to focus back if the user hit enter it would cause the menu to open again.
+
     // return focus to the button when we transitioned from !open -> open
-    const prevOpen = React.useRef(open);
-
-    React.useEffect(() => {
-        if (prevOpen.current === true && open === false) {
-            anchorRef.current!.focus();
-        }
-
-        prevOpen.current = open;
-    }, [open]);
+    // const prevOpen = React.useRef(open);
+    // React.useEffect(() => {
+    //     if (prevOpen.current === true && open === false) {
+    //         anchorRef.current!.focus();
+    //     }
+    //
+    //     prevOpen.current = open;
+    // }, [open]);
 
     const buttonProps = {
         onClick: handleToggle || NULL_FUNCTION,

@@ -3,38 +3,36 @@ import AddIcon from '@material-ui/icons/Add';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
-import isEqual from "react-fast-compare";
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {
     readonly onCreateFolder: () => void;
     readonly onCreateTag: () => void;
 }
 
-export const AddTagsDropdown = React.memo((props: IProps) => {
+export const AddTagsDropdown = deepMemo((props: IProps) => {
 
     return (
 
-        <div>
-            <MUIMenu button={{
-                        icon: <AddIcon/>
-                     }}
-                     placement="bottom-end">
-                <div>
+        <MUIMenu button={{
+                    icon: <AddIcon/>
+                 }}
+                 placement="bottom-end">
+            <div>
 
-                    <MUIMenuItem onClick={props.onCreateFolder}
-                                 icon={<CreateNewFolderIcon/>}
-                                 text="Create Folder"/>
+                <MUIMenuItem onClick={props.onCreateFolder}
+                             icon={<CreateNewFolderIcon/>}
+                             text="Create Folder"/>
 
-                    <MUIMenuItem onClick={props.onCreateTag}
-                                 icon={<LocalOfferIcon/>}
-                                 text="Create Tag"/>
+                <MUIMenuItem onClick={props.onCreateTag}
+                             icon={<LocalOfferIcon/>}
+                             text="Create Tag"/>
 
-                </div>
+            </div>
 
-            </MUIMenu>
-        </div>
+        </MUIMenu>
 
     );
-}, isEqual);
+});
 
