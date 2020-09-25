@@ -253,7 +253,7 @@ export type IPagemarkMutation = IPagemarkCreateToPoint |
  * snapshot: update from a firestore snapshot
  *
  */
-export type SetDocMetaType = 'update' | 'snapshot';
+export type SetDocMetaType = 'update' | 'snapshot-server' | 'snapshot-local';
 
 export interface IDocViewerCallbacks {
 
@@ -357,7 +357,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         return updated;
     }
 
-    function setDocMeta(docMeta: IDocMeta, hasPendingWrites: boolean, type: 'update' | 'snapshot') {
+    function setDocMeta(docMeta: IDocMeta,
+                        hasPendingWrites: boolean, type: SetDocMetaType) {
 
         Preconditions.assertPresent(docMeta, 'docMeta');
 
@@ -392,9 +393,19 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         const store = storeProvider();
 
-        const updateType = DocViewerSnapshots.computeUpdateType(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
+        const updateType = DocViewerSnapshots.computeUpdateType2(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
 
         console.log(`Update for docMeta was ${updateType} for type=${type} - ${store.docMeta?.docInfo?.uuid} vs ${docMeta.docInfo.uuid}`);
+
+        if (['snapshot-local', 'snapshot-server'].includes(type) && updateType === 'self') {
+
+            if (type === 'snapshot-server') {
+                // if we received our own update from the server we know we have no more pending writes.
+                setStore({...store, hasPendingWrites: false});
+            }
+
+            return;
+        }
 
         if (updateType === 'stale') {
             return;

@@ -9,7 +9,7 @@ import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
-import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {SetDocMetaType, useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFindBar} from "./DocFindBar";
@@ -295,9 +295,15 @@ export const DocViewer = deepMemo(() => {
             const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
                 fingerprint: parsedURL.id,
                 onSnapshot: (snapshot => {
-                    // TODO: we need a better way to flag that the document was
-                    // deleted vs not initialized.
-                    setDocMeta(snapshot.data!, snapshot.hasPendingWrites, 'snapshot');
+
+                    function computeType() {
+                        return snapshot.hasPendingWrites ? 'snapshot-local' : 'snapshot-server';
+                    }
+
+                    const type = computeType();
+
+                    setDocMeta(snapshot.data!, snapshot.hasPendingWrites, type);
+
                 }),
                 onError: (err) => {
                     log.error("Could not handle snapshot: ", err);

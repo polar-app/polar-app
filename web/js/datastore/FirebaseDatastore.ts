@@ -325,6 +325,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const onNext = (snapshot: firebase.firestore.DocumentSnapshot) => {
 
+            // WARNING: do not use cache for any meaningful use because the cache
+            // doesn't mean 'local' as something can be written and we receive a
+            // snapshot for it but it is actually 'local' and not from the cache.
+            // hasPendingWrites is better for this.
             const source = snapshot.metadata.fromCache ? 'cache' : 'server';
             const hasPendingWrites = snapshot.metadata.hasPendingWrites;
 
