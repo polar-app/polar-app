@@ -166,6 +166,10 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
          */
         function hasChanged() {
 
+            if (store.foldersRoot === undefined) {
+                return true;
+            }
+
             if (! isEqual(store.tags, tags)) {
                 return true;
             }
