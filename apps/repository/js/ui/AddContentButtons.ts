@@ -28,5 +28,4 @@ export namespace AddContentButtons {
 
     }
 
-
 }
