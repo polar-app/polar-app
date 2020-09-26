@@ -32,7 +32,8 @@ import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
+import {useLogWhenChanged, useRefState} from "../../../web/js/hooks/ReactHooks";
+import {NoDocument} from "./NoDocument";
 
 const Main = React.memo(() => {
 
@@ -276,6 +277,7 @@ export const DocViewer = deepMemo(() => {
     const log = useLogger();
     const persistenceLayerContext = usePersistenceLayerContext();
     const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
+    const [exists, setExists, existsRef] = useRefState<boolean | undefined>(undefined);
 
     useComponentDidMount(() => {
 
@@ -300,6 +302,10 @@ export const DocViewer = deepMemo(() => {
                         return snapshot.hasPendingWrites ? 'snapshot-local' : 'snapshot-server';
                     }
 
+                    if (existsRef.current !== snapshot.exists) {
+                        setExists(snapshot.exists)
+                    }
+
                     const type = computeType();
 
                     setDocMeta(snapshot.data!, snapshot.hasPendingWrites, type);
@@ -317,6 +323,10 @@ export const DocViewer = deepMemo(() => {
             .catch(err => log.error(err));
 
     });
+
+    if (exists === false) {
+        return <NoDocument/>;
+    }
 
     if (! docURL || ! parsedURL) {
         return <LoadingProgress/>

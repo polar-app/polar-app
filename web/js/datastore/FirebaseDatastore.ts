@@ -337,6 +337,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
 
             opts.onSnapshot({
+                exists: snapshot.exists,
                 data: recordHolder?.value?.value,
                 hasPendingWrites,
                 source,

@@ -44,6 +44,16 @@ export type DocMetaSnapshotSource = 'default' | 'server' | 'cache';
 
 export interface DocMetaSnapshot<T> {
 
+    /**
+     * True if the document exists.  This can be used to detect if it was
+     * removed or deleted after the fact but also to avoid confusing with
+     * storing an 'undefined' value
+     */
+    readonly exists: boolean;
+
+    /**
+     * The data for the snapshot.
+     */
     readonly data: T | undefined;
 
     readonly hasPendingWrites: boolean;
@@ -251,6 +261,7 @@ export abstract class AbstractDatastore {
             const data = await this.getDocMeta(opts.fingerprint);
 
             opts.onSnapshot({
+                exists: true,
                 data: data || undefined,
                 hasPendingWrites: false,
                 source: 'server',

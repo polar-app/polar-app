@@ -78,6 +78,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
             try {
                 const data = await this.getDocMeta(opts.fingerprint);
                 opts.onSnapshot({
+                    exists: true,
                     data,
                     source: 'server',
                     hasPendingWrites: false,
@@ -95,6 +96,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
             const releasable = this.addEventListenerForDoc(opts.fingerprint, event => {
 
                 opts.onSnapshot({
+                    exists: true,
                     data: event.docMeta,
                     source: 'server',
                     hasPendingWrites: false,
