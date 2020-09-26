@@ -28,6 +28,7 @@ import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -394,7 +395,10 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     function selectedTags(): ReadonlyArray<Tag> {
         const store = storeProvider();
         const tagsMap = Tags.toMap(store.tags);
-        return store.selected.map(current => tagsMap[current]);
+
+        return store.selected.map(current => tagsMap[current])
+                             .filter(current => isPresent(current));
+
     }
 
     async function withBatch<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
@@ -411,6 +415,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     function doDelete(selected: ReadonlyArray<Tag>) {
 
         function toAsyncTransaction(tag: Tag) {
+
+            Preconditions.assertPresent(tag, 'tag');
 
             function prepare() {
                 // TODO write a tombstone that this is deleted

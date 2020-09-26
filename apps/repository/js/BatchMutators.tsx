@@ -23,7 +23,6 @@ export namespace BatchMutators {
 
     }
 
-
     export async function exec<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>, opts: BatchMutatorOpts) {
 
         const refresh = opts.refresh || NULL_FUNCTION;
@@ -89,6 +88,11 @@ export namespace BatchMutators {
         } catch (e) {
 
             if (opts.error) {
+
+                // TODO: migrate this to useLogger.error()
+
+                console.error(opts.error, e);
+
                 // TODO: for the 'error' type it would be nice to associate an
                 // Error so that the user could create a report and send it to
                 // us
@@ -96,6 +100,7 @@ export namespace BatchMutators {
                     message: opts.error + e.message,
                     type: 'error'
                 });
+
             }
 
         }

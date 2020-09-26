@@ -620,7 +620,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const uploadTaskSnapshot = await uploadTask;
 
-            const downloadURL = uploadTaskSnapshot.downloadURL;
+
+            // TODO: we can use bytesTransferred to keep track of accounting
+            const {downloadURL, bytesTransferred} = uploadTaskSnapshot;
 
             const result: DocFileMeta = {
                 backend,
