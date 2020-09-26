@@ -34,13 +34,15 @@ export interface TaskbarDialogProps {
 
     readonly completedDuration?: number;
 
-
-
     /**
      * When given, we enable this taskbar to be cancellable and the user can trigger the task to abort
      * and onCancel is then called.
      */
     readonly onCancel?: () => void;
+
+    readonly onPause?: () => void;
+
+    readonly onResume?: () => void;
 
 }
 

@@ -5,14 +5,22 @@ import { Percentage } from 'polar-shared/src/util/ProgressTracker';
 
 export type UpdateProgressCallback = (progress: WriteFileProgress | number) => void;
 
+interface IOpts {
+    readonly onCancel?: () => void;
+}
+
 export function useUploadProgressTaskbar() {
 
     const dialogManager = useDialogManager();
 
-    return React.useCallback(async (upload: number, nrUploads: number): Promise<UpdateProgressCallback> => {
+    return React.useCallback(async (upload: number, nrUploads: number, opts: IOpts = {}): Promise<UpdateProgressCallback> => {
 
-        const updateProgress =
-            await dialogManager.taskbar({message: `Uploading ${upload} of ${nrUploads} file(s)`});
+        const message = `Uploading ${upload} of ${nrUploads} file(s)`;
+
+        const updateProgress = await dialogManager.taskbar({
+            message,
+            ... opts
+        });
 
         updateProgress({value: 'indeterminate'});
 

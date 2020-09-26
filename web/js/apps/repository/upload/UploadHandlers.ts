@@ -1,4 +1,4 @@
-import {UpdateProgressCallback} from "./UploadProgressTaskbar";
+import {UpdateProgressCallback, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {WriteController} from "../../../datastore/Datastore";
 import React from 'react';
 
@@ -11,12 +11,17 @@ export type UploadHandler = (uploadProgress: UpdateProgressCallback, onWriteCont
  */
 export function useUploadHandlers() {
 
-    return React.useCallback((uploadHandlers: ReadonlyArray<UploadHandler>) => {
+    const uploadProgressTaskbar = useUploadProgressTaskbar();
+
+    return React.useCallback(async (uploadHandlers: ReadonlyArray<UploadHandler>) => {
 
         let controller: WriteController | undefined;
+
         function onWriteController(newController: WriteController) {
             controller = newController;
         }
+
+        let cancelled: boolean = false;
 
         function onCancel() {
 
@@ -25,14 +30,13 @@ export function useUploadHandlers() {
             }
 
             controller.cancel();
+            cancelled = true;
 
         }
 
-        let idx = 0;
-        for (const uploadHandler of uploadHandlers) {
-            ++idx;
+        for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
-            const updateProgress = await uploadProgressTaskbar(idx, uploadHandlers.length, {onCancel});
+            const updateProgress = await uploadProgressTaskbar(idx + 1, uploadHandlers.length, {onCancel});
 
             try {
                 await uploadHandler(updateProgress, onWriteController);
@@ -40,9 +44,12 @@ export function useUploadHandlers() {
                 updateProgress(100);
             }
 
+            if (cancelled) {
+                break;
+            }
+
         }
 
-    })
-    
+    }, [uploadProgressTaskbar])
 
 }
