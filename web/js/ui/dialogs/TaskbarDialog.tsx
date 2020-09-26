@@ -7,7 +7,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {deepMemo} from "../../react/ReactUtils";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-export interface IProgress {
+
+export interface ITaskbarProgress {
 
     readonly value: Percentage | 'indeterminate';
 
@@ -19,9 +20,11 @@ export interface IProgress {
 
 }
 
+export type TaskbarProgressUpdate = ITaskbarProgress | 'terminate';
+
 // TODO: need a cancel button ...
 // TODO: needs pause / resume functionality...
-export type TaskbarProgressCallback = (progress: IProgress) => void;
+export type TaskbarProgressCallback = (progress: TaskbarProgressUpdate) => void;
 
 export interface TaskbarDialogProps {
 
@@ -44,6 +47,12 @@ export interface TaskbarDialogProps {
 
     readonly onResume?: () => void;
 
+    /**
+     * Buy default, we auto-terminate when the task reaches 100%. This disables this feature so we can wait for
+     * a terminate message.
+     */
+    readonly noAutoTerminate?: boolean;
+
 }
 
 export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
@@ -58,10 +67,26 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
  */
 export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) => {
 
-    const [progress, setProgress] = React.useState<IProgress>({value: 0, message: props.message});
+    const [progress, setProgress] = React.useState<ITaskbarProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);
 
-    function setProgressCallback(updateProgress: IProgress) {
+    function setProgressCallback(updateProgress: TaskbarProgressUpdate) {
+
+        function doTerminate() {
+            setTimeout(() => setOpen(false), props.completedDuration || 1000);
+        }
+
+        if (updateProgress === 'terminate') {
+            doTerminate();
+            return;
+        }
+
+        if (! props.noAutoTerminate && updateProgress.value === 100) {
+            // close the task but only after a delay so that the user sees that
+            // it finished.
+            doTerminate();
+            return;
+        }
 
         const newProgress = {
             ...updateProgress,
@@ -70,11 +95,6 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
 
         setProgress(newProgress);
 
-        if (newProgress.value === 100) {
-            // close the task but only after a delay so that the user sees that
-            // it finished.
-            setTimeout(() => setOpen(false), props.completedDuration || 1000);
-        }
 
     }
 
@@ -117,6 +137,6 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
             onClose={NULL_FUNCTION}
             message={props.message}
             action={<Action/>}/>
-    )
+    );
 
 });

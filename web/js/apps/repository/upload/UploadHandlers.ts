@@ -36,6 +36,7 @@ export function useUploadHandlers() {
 
         for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
+            // TODO: work toward keeping ONE snackbar up the whole time,..
             const updateProgress = await uploadProgressTaskbar(idx + 1, uploadHandlers.length, {onCancel});
 
             try {
