@@ -58,6 +58,7 @@ function useDropHandler() {
                 return;
             }
 
+            // create a progress dialog that we're computing the file list... 
             const progressCallback = await dialogManager.taskbar({
                 message: "Computing file list... one sec.",
                 autoHideDuration: 1,

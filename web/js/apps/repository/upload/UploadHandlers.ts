@@ -1,4 +1,4 @@
-import {UpdateProgressCallback, useUploadProgressTaskbar, useUploadProgressTaskbar2} from "./UploadProgressTaskbar";
+import {UpdateProgressCallback, useUploadProgressTaskbar, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
 import {WriteController} from "../../../datastore/Datastore";
 import React from 'react';
 
@@ -11,7 +11,7 @@ export type UploadHandler = (uploadProgress: UpdateProgressCallback, onWriteCont
  */
 export function useUploadHandlers() {
 
-    const uploadProgressTaskbar = useUploadProgressTaskbar2();
+    const uploadProgressTaskbar = useBatchProgressTaskbar();
 
     return React.useCallback(async (uploadHandlers: ReadonlyArray<UploadHandler>) => {
 
@@ -45,7 +45,12 @@ export function useUploadHandlers() {
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
                 try {
-                    updateProgress(0);
+                    // have to call updateProgress here to reset from the previous iteration
+                    updateProgress({
+                        message: "",
+                        value: 0
+                    });
+
                     await uploadHandler(updateProgress, onWriteController);
                 } finally {
                     updateProgress(100);

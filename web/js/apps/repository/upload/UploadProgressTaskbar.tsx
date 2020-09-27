@@ -52,37 +52,53 @@ export function useUploadProgressTaskbar() {
 
 }
 
-interface IOpts2 extends TaskbarDialogProps {
+interface BatchProgressTaskbarOpts extends TaskbarDialogProps {
 }
 
-export function useUploadProgressTaskbar2() {
+export interface BatchProgressUpdate {
+    readonly message?: string;
+    readonly progress: WriteFileProgress | number | 'terminate';
+}
+
+export type BatchProgressCallback = (update: BatchProgressUpdate) => void;
+
+export function useBatchProgressTaskbar() {
 
     const dialogManager = useDialogManager();
 
-    return React.useCallback(async (opts: IOpts2): Promise<UpdateProgressCallback> => {
+    return React.useCallback(async (opts: BatchProgressTaskbarOpts): Promise<BatchProgressCallback> => {
 
         const updateProgress = await dialogManager.taskbar(opts);
 
         updateProgress({value: 'indeterminate'});
 
-        return (progress) => {
+        return (update) => {
 
-            if (progress === 'terminate') {
-                updateProgress(progress);
+            if (update.progress === 'terminate') {
+                updateProgress(update.progress);
                 return;
             }
 
-            if (typeof progress === 'number') {
-                updateProgress({value: progress as Percentage});
+            if (typeof update.progress === 'number') {
+                updateProgress({
+                    message: update.message,
+                    value: update.progress as Percentage
+                });
                 return;
             }
 
-            switch (progress.type) {
+            switch (update.progress.type) {
                 case 'determinate':
-                    updateProgress({value: progress.value});
+                    updateProgress({
+                        message: update.message,
+                        value: update.progress.value
+                    });
                     break;
                 case 'indeterminate':
-                    updateProgress({value: 'indeterminate'});
+                    updateProgress({
+                        message: update.message,
+                        value: 'indeterminate'
+                    });
                     break;
             }
 
