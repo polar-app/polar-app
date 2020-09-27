@@ -2,10 +2,9 @@ import {AccountUpgrades, AccountUsage} from "../../accounts/AccountUpgrades";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
-import {MachineDatastoreHooks} from "../../telemetry/MachineDatastoreHooks";
 import {Billing} from "polar-accounts/src/Billing";
-import useMachineDatastoreSnapshot = MachineDatastoreHooks.useMachineDatastoreSnapshots;
 import V2Plan = Billing.V2Plan;
+import {useAccounting} from "../../apps/repository/accounting/Accounting";
 
 const log = Logger.create();
 
@@ -20,13 +19,9 @@ export interface IAccountUpgrade {
 export function useAccountUpgrader(): IAccountUpgrade | undefined {
 
     const userInfoContext = useUserInfoContext();
-    const [machineDatastore] = useMachineDatastoreSnapshot();
+    const accounting = useAccounting();
 
     if (! userInfoContext?.userInfo) {
-        return undefined;
-    }
-
-    if (! machineDatastore) {
         return undefined;
     }
 
@@ -34,7 +29,7 @@ export function useAccountUpgrader(): IAccountUpgrade | undefined {
 
     const accountUsage: AccountUsage = {
         created: userInfoContext?.userInfo?.creationTime,
-        storageInBytes: machineDatastore.storageInBytes
+        storageInBytes: accounting.nrWebCaptures
     }
 
     const toPlan = AccountUpgrades.computePlanRequiredForAccount(plan, accountUsage);

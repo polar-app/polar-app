@@ -19,8 +19,30 @@ const _500GB = 500000000000;
 
 export namespace AccountUpgrades {
 
+    import V2Plan = Billing.V2Plan;
+
     export function isV2Grandfathered(created: ISODateTimeString) {
         return ISODateTimeStrings.compare(created, '2020-10-15T00:00:00+0000') < 0;
+    }
+
+    export function computeStorageForPlan(accountCreated: ISODateTimeString | undefined,
+                                          plan: V2Plan) {
+
+        const grandfathered = accountCreated !== undefined ? isV2Grandfathered(accountCreated) : false;
+
+        switch (plan.level) {
+
+            case 'free':
+                return grandfathered ? _2GB : _1GB;
+
+            case 'plus':
+                return _50GB;
+
+            case 'pro':
+                return _500GB;
+
+        }
+
     }
 
     /**
@@ -101,4 +123,5 @@ export interface AccountUsage {
      * The number of bytes of storage the user has.
      */
     readonly storageInBytes: number;
+
 }

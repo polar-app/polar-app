@@ -13,6 +13,7 @@ import {Callback} from "polar-shared/src/util/Functions";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
 import Subscription = Billing.Subscription;
 import {usePopperController} from "../../mui/menu/MUIPopper";
+import {PlanUsage} from "../../apps/repository/accounting/PlanUsage";
 
 interface LogoutButtonProps {
     readonly onLogout: Callback;
@@ -150,9 +151,13 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
 
                 </div>
 
-                <div className="mt-2 pt-2 pb-2 border-top text-center">
+                <div className="mt-2 pb-2 border-top text-center">
 
-                    <div className="mt-2 mb-3">
+                    <div className="mt-4 mb-4">
+                        <PlanUsage/>
+                    </div>
+
+                    <div className="mt-2 mb-4">
                         <AccountOverview
                             plan={props.userInfo.subscription.plan}/>
                     </div>
@@ -161,12 +166,12 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
 
                 </div>
 
-                <div className="mt-2 pt-2 pb-2 border-top text-right">
+                <div className="text-right">
 
                     <div style={{display: 'flex', whiteSpace: 'nowrap'}}
                          className="mt-2">
 
-                        <div className="ml-auto mr-1">
+                        <div className="ml-auto">
                             {/*<InviteUsersButton/>*/}
                         </div>
 
