@@ -44,6 +44,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public nrAnnotations?: number;
     public uuid?: string;
     public hashcode?: Hashcode;
+    public bytes?: number;
     public referrer?: string;
     public shareStrategy?: ShareStrategy;
     public storedResources?: Set<StoredResource>;
@@ -58,6 +59,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public authors?: ReadonlyArray<IDocAuthor>;
     public thumbnails?: { [id: string]: IThumbnail };
     public summary?: IText;
+    public webCapture?: boolean;
 
     constructor(val: IDocInfo) {
 

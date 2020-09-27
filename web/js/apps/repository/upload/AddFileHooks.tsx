@@ -45,11 +45,13 @@ export namespace AddFileHooks {
 
                 try {
 
+                    const blob = await upload.blob();
+
                     const docInfo = {
-                        tags: upload.tags ? Tags.toMap(upload.tags) : undefined
+                        tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
+                        bytes: blob.size
                     }
 
-                    const blob = await upload.blob();
                     const importedFile = await DocImporter.importFile(persistenceLayerProvider,
                                                                       URL.createObjectURL(blob),
                                                                       FilePaths.basename(upload.name),
