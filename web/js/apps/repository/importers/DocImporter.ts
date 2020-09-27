@@ -69,6 +69,7 @@ export namespace DocImporter {
         readonly description: string;
         readonly doi?: string;
         readonly nrPages: number;
+        readonly webCapture: boolean;
     }
 
     export interface DocImporterOpts {

@@ -1,3 +1,4 @@
+- 'contenteditable' events weren't being ignored.
 - zoom works wth keyboard bindings now.
 - Folder behavior was wrong when selecting subfolders
 - resize + scroll listeners are now passive which in theory should increase performance
