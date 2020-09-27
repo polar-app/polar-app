@@ -77,12 +77,7 @@ const Documentation = ({ data, pageContext }: PageProps<Data, pageContext>) => {
         <Box
           style={{
             minHeight: "100vh",
-
-            background: `radial-gradient(
-              circle at -80% 100%,
-              rgba(255, 255, 255, 0.4),
-              #424242
-            )`,
+            backgroundColor: "rgb(38, 38, 38)"
           }}
         >
           <Box style={{ margin: "0 auto" }}>
