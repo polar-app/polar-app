@@ -1,12 +1,10 @@
 ---
-title: Integrated reader
-layout: doc
-date: 2019-01-01 08:00:00 -0800
-permalink: /docs/annotation-sidebar.html
+title: Integrated Reader
+permalink: /docs/integrated-reader.html
 description: Polar has an integrated reader for epub, pdfs, and webpages. The annotation sidebar in Polar shows a list of highlights, comments and flashcards associated with a specific document. 
 ---
 
-# Integrated reader
+# Integrated Reader
 
 Polar has an integrated reader for all uploaded documents. The reader supports EPUBs, PDFs, and webpages (captured through the Chrome extension). Any annotation, highlight, or comment created in Polar is captured into your repository.
 
