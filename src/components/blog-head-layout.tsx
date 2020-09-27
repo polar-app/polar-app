@@ -236,32 +236,32 @@ function BlogHeadDesktop({ posts }) {
           margin: "30px 0px 30px 0px",
         }}
       >
-        <img
-          style={{
-            maxWidth: "69px",
-            maxHeight: "69px",
+        {/*<img*/}
+        {/*  style={{*/}
+        {/*    maxWidth: "69px",*/}
+        {/*    maxHeight: "69px",*/}
 
-            borderRadius: "50%",
-            // marginLeft: "0px",
-            // marginRight: "4px",
-          }}
-          src={ImgPolarLogo}
-        />
-        <Box style={{ display: "flex", flexDirection: "column" }}>
-          <h1 style={{ margin: "auto 10px" }}>Polar Blog</h1>
+        {/*    borderRadius: "50%",*/}
+        {/*    // marginLeft: "0px",*/}
+        {/*    // marginRight: "4px",*/}
+        {/*  }}*/}
+        {/*  src={ImgPolarLogo}*/}
+        {/*/>*/}
+        {/*<Box style={{ display: "flex", flexDirection: "column" }}>*/}
+        {/*  /!*<h1 style={{ margin: "auto 10px" }}>Polar Blog</h1>*!/*/}
 
-          <p style={{ marginLeft: "10px", marginTop: "0px" }}>
-            Written by <strong>Polar Team</strong> A place to catch up on all
-            things productivity... and all things Polar!
-            {` `}
-            <a
-              style={{ textDecoration: "none" }}
-              href={`https://twitter.com/getpolarized`}
-            >
-              You should follow us on Twitter
-            </a>
-          </p>
-        </Box>
+        {/*  /!*<p style={{ marginLeft: "10px", marginTop: "0px" }}>*!/*/}
+        {/*  /!*  /!*Written by <strong>Polar Team</strong> A place to catch up on all*!/*!/*/}
+        {/*  /!*  /!*things productivity... and all things Polar!*!/*!/*/}
+        {/*  /!*  {` `}*!/*/}
+        {/*  /!*  /!*<a*!/*!/*/}
+        {/*  /!*  /!*  style={{ textDecoration: "none" }}*!/*!/*/}
+        {/*  /!*  /!*  href={`https://twitter.com/getpolarized`}*!/*!/*/}
+        {/*  /!*  /!*>*!/*!/*/}
+        {/*  /!*  /!*  You should follow us on Twitter*!/*!/*/}
+        {/*  /!*  /!*</a>*!/*!/*/}
+        {/*  /!*</p>*!/*/}
+        {/*</Box>*/}
       </Box>
       <Box
         style={{
