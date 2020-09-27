@@ -201,6 +201,10 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
             return true;
         }
 
+        if (event.target.getAttribute('contenteditable') === 'true') {
+            return true;
+        }
+
     }
 
     return false;

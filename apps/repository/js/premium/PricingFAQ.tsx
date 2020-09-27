@@ -37,8 +37,9 @@ export const PricingFAQ = React.memo(() => {
             <p>
                 With Polar 2.0 we changed pricing to provide more data storage
                 and all 1.0 users have been migrated to larger plans with no
-                pricing increase.  We're also giving 1.0 users on the
-                <i>free</i> tier an extra 1GB of storage.
+                pricing increase.  We're also increasing storage for 1.0 users on the
+                <i>free</i> tier from 350MB to 2GB (vs the standard 1GB for new users
+                on the free tier).
             </p>
 
             <h3>
