@@ -55,12 +55,12 @@ const useStyles = makeStyles({
     height: "500px",
 
     borderRadius: "4px",
-    "&:hover": {
-      boxShadow: " 4px 2px 40px 3px #424242",
-
-      transform: "scale(1.01)",
-      borderBottom: "10px solid #816DE8",
-    },
+    // "&:hover": {
+    //   boxShadow: " 4px 2px 40px 3px #424242",
+    //
+    //   transform: "scale(1.01)",
+    //   borderBottom: "10px solid #816DE8",
+    // },
   },
 
   articleInfo: {
@@ -97,11 +97,11 @@ const useStyles = makeStyles({
     padding: "35px 40px",
 
     borderRadius: "4px",
-    "&:hover": {
-      boxShadow: ` 4px 2px 80px 3px #424242`,
-
-      borderBottom: "10px solid #816DE8",
-    },
+    // "&:hover": {
+    //   boxShadow: ` 4px 2px 80px 3px #424242`,
+    //
+    //   borderBottom: "10px solid #816DE8",
+    // },
   },
   excerpt: {
     marginLeft: "5%",

@@ -23,13 +23,13 @@ const useStyles = makeStyles({
     transform: "scale(1)",
     transition: "all .2s",
 
-    "&:hover": {
-      boxShadow: " 4px 2px 40px 3px #424242",
-      borderBottom: "10px solid #816DE8",
-      borderRadius: "4px",
-
-      transform: "scale(1.01)",
-    },
+    // "&:hover": {
+    //   boxShadow: " 4px 2px 40px 3px #424242",
+    //   borderBottom: "10px solid #816DE8",
+    //   borderRadius: "4px",
+    //
+    //   transform: "scale(1.01)",
+    // },
     padding: "0px 10px",
     margin: "auto 14px",
     color: "#ffffff",

@@ -48,7 +48,7 @@
   z-index: 400;
 }
 /* MAGIC HAPPENS HERE */
-.sideBar:hover .cover-bar {
-  opacity: 0;
-  -webkit-transition: all 0.5s;
-}
+/*.sideBar:hover .cover-bar {*/
+/*  opacity: 0;*/
+/*  -webkit-transition: all 0.5s;*/
+/*}*/

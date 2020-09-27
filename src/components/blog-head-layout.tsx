@@ -26,12 +26,12 @@ const useStyles = makeStyles({
     height: "500px",
 
     borderRadius: "4px",
-    "&:hover": {
-      boxShadow: " 4px 2px 40px 3px #424242",
-
-      transform: "scale(1.01)",
-      borderBottom: "10px solid #816DE8",
-    },
+    // "&:hover": {
+    //   boxShadow: " 4px 2px 40px 3px #424242",
+    //
+    //   transform: "scale(1.01)",
+    //   borderBottom: "10px solid #816DE8",
+    // },
     // maxHeight: "500px",
   },
 
@@ -83,12 +83,12 @@ const useStyles = makeStyles({
     padding: "0 3%",
 
     borderRadius: "4px",
-    "&:hover": {
-      boxShadow: " 4px 2px 40px 3px #424242",
-
-      // transform: "scale(1.01)",
-      borderBottom: "10px solid #816DE8",
-    },
+    // "&:hover": {
+    //   boxShadow: " 4px 2px 40px 3px #424242",
+    //
+    //   // transform: "scale(1.01)",
+    //   borderBottom: "10px solid #816DE8",
+    // },
 
     // backgroundColor: "#606060",
   },
