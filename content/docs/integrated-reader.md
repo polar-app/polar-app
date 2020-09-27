@@ -1,5 +1,6 @@
 ---
 title: Integrated Reader
+layout: doc
 permalink: /docs/integrated-reader.html
 description: Polar has an integrated reader for epub, pdfs, and webpages. The annotation sidebar in Polar shows a list of highlights, comments and flashcards associated with a specific document. 
 ---

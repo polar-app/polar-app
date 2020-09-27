@@ -44,7 +44,7 @@ const Landing = ({ location }) => {
   return (
     <Layout>
       <SEO
-        description="The Polar Homepage. Polar is a reading tool for
+        description="Polar - Read, Learn, Never Forget. Polar is a reading tool for
         networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
         title="Homepage"
         lang="en"
@@ -83,8 +83,8 @@ const Landing = ({ location }) => {
                   breakpoints.md ? classes.headerMobile : classes.headerDesk
                 }
               >
-                A reading tool for <br />
-                networked knowledge
+                Read. Learn.
+                Never Forget.
               </h1>
 
               <p className={breakpoints.md ? classes.subtitleMobile : null}>
