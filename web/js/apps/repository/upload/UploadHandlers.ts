@@ -11,7 +11,7 @@ export type UploadHandler = (uploadProgress: UpdateProgressCallback, onWriteCont
  */
 export function useUploadHandlers() {
 
-    const uploadProgressTaskbar = useBatchProgressTaskbar();
+    const createBatchProgressTaskbar = useBatchProgressTaskbar();
 
     return React.useCallback(async (uploadHandlers: ReadonlyArray<UploadHandler>) => {
 
@@ -35,25 +35,38 @@ export function useUploadHandlers() {
         }
 
         // TODO: work toward keeping ONE snackbar up the whole time,..
-        const updateProgress = await uploadProgressTaskbar( {
+        const updateProgress = await createBatchProgressTaskbar( {
             message: "Starting upload...",
             onCancel,
             noAutoTerminate: true
         });
 
+        const updateProgressCallback: UpdateProgressCallback = (progress) => {
+
+            if (progress === 'terminate') {
+                // this shouldn't happen...
+                return;
+            }
+
+            updateProgress({progress});
+
+        }
+
         try {
+
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
                 try {
                     // have to call updateProgress here to reset from the previous iteration
                     updateProgress({
-                        message: "",
-                        value: 0
+                        message: `Uploading file ${idx + 1} of ${uploadHandlers.length} ..`,
+                        progress: 0
                     });
 
-                    await uploadHandler(updateProgress, onWriteController);
+                    await uploadHandler(updateProgressCallback, onWriteController);
+
                 } finally {
-                    updateProgress(100);
+                    updateProgress({progress: 100});
                 }
 
                 if (cancelled) {
@@ -65,6 +78,6 @@ export function useUploadHandlers() {
             updateProgress('terminate');
         }
 
-    }, [uploadProgressTaskbar])
+    }, [createBatchProgressTaskbar])
 
 }

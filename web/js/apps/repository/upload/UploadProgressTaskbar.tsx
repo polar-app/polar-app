@@ -57,10 +57,10 @@ interface BatchProgressTaskbarOpts extends TaskbarDialogProps {
 
 export interface BatchProgressUpdate {
     readonly message?: string;
-    readonly progress: WriteFileProgress | number | 'terminate';
+    readonly progress: WriteFileProgress | number;
 }
 
-export type BatchProgressCallback = (update: BatchProgressUpdate) => void;
+export type BatchProgressCallback = (update: BatchProgressUpdate | 'terminate') => void;
 
 export function useBatchProgressTaskbar() {
 
@@ -74,8 +74,8 @@ export function useBatchProgressTaskbar() {
 
         return (update) => {
 
-            if (update.progress === 'terminate') {
-                updateProgress(update.progress);
+            if (update === 'terminate') {
+                updateProgress(update);
                 return;
             }
 
