@@ -26,24 +26,28 @@ export const PremiumFeature = (props: IProps) => {
     }
 
     const PremiumFeatureWarningSM = () => {
-        return <div>
-            <UpgradeButton required={required} feature={feature}/>
-        </div>;
+        return (
+            <div>
+                <UpgradeButton required={required} feature={feature}/>
+            </div>
+        );
 
     };
 
     const PremiumFeatureWarningMD = () => {
-        return <div>
+        return (
+            <div>
 
-            <div style={{filter: 'blur(8px)'}}>
-                {props.children}
+                <div style={{filter: 'blur(8px)'}}>
+                    {props.children}
+                </div>
+
+                <div className="text-center mt-1">
+                    <UpgradeButton required={required} feature={feature}/>
+                </div>
+
             </div>
-
-            <div className="text-center mt-1">
-                <UpgradeButton required={required} feature={feature}/>
-            </div>
-
-        </div>;
+        );
 
     };
     const PremiumFeatureWarning = () => {
