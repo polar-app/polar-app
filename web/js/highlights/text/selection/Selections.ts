@@ -1,4 +1,4 @@
-import { Numbers } from "polar-shared/src/util/Numbers";
+import {Ranges} from "./Ranges";
 
 export namespace Selections {
 
@@ -21,5 +21,22 @@ export namespace Selections {
         return result;
 
     }
+
+    export function hasActiveTextSelection(selection: Selection) {
+
+        const ranges = Selections.toRanges(selection);
+
+        for (const range of ranges) {
+            if (Ranges.hasText(range)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+
+
 
 }
