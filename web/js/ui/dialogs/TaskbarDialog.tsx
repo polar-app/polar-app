@@ -8,6 +8,10 @@ import {deepMemo} from "../../react/ReactUtils";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 
+import useTheme from '@material-ui/core/styles/useTheme';
+import {useRefState} from "../../hooks/ReactHooks";
+import {CircularProgressWithLabel} from "../../mui/CircularProgressWithLabel";
+
 export interface ITaskbarProgress {
 
     readonly value: Percentage | 'indeterminate';
@@ -67,7 +71,7 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
  */
 export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) => {
 
-    const [progress, setProgress] = React.useState<ITaskbarProgress>({value: 0, message: props.message});
+    const [progress, setProgress, progressRef] = useRefState<ITaskbarProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);
 
     function setProgressCallback(updateProgress: TaskbarProgressUpdate) {
@@ -90,7 +94,7 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
 
         const newProgress = {
             ...updateProgress,
-            message: updateProgress.message ? updateProgress.message : progress.message
+            message: updateProgress.message ? updateProgress.message : progressRef.current.message
         }
 
         setProgress(newProgress);
@@ -104,10 +108,12 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
 
     const Progress = () => {
 
-        if (progress.value === 'indeterminate') {
-            return <CircularProgress />;
+        if (progress.value === 'indeterminate' || progress.value === 0) {
+            // TODO: don't show indeterminate when we are zero in the future when we can show a circular progress
+            // with a background color
+            return <CircularProgress variant="indeterminate"/>;
         } else {
-            return <CircularProgress variant="static" value={progress.value}/>
+            return <CircularProgressWithLabel variant="static" value={progress.value}/>
         }
 
     };
@@ -118,7 +124,8 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
                 <Progress/>
 
                 {props.onCancel && (
-                    <IconButton onClick={props.onCancel}>
+                    <IconButton color="inherit"
+                                onClick={props.onCancel}>
                         <CloseIcon/>
                     </IconButton>
                 )}
@@ -135,7 +142,7 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
             open={open}
             autoHideDuration={props.autoHideDuration || 5000}
             onClose={NULL_FUNCTION}
-            message={props.message}
+            message={progress.message}
             action={<Action/>}/>
     );
 

@@ -311,7 +311,8 @@ export abstract class AbstractDatastore {
         }
 
         if (opts.writeFile) {
-            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, {progressListener: opts.progressListener});
+            const writeFileOpts: WriteFileOpts = {progressListener: opts.progressListener, onController: opts.onController};
+            await this.writeFile(opts.writeFile.backend, opts.writeFile, opts.writeFile.data, writeFileOpts);
         }
 
     }
@@ -361,6 +362,8 @@ export interface WriteOptsBase<T> {
      * keep track of the progress
      */
     readonly progressListener?: WriteFileProgressListener;
+
+    readonly onController?: (controller: WriteController) => void;
 
 }
 

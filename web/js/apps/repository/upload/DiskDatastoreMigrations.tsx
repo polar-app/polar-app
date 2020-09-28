@@ -12,6 +12,8 @@ import {IUpload} from "./IUpload";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {UpdateProgressCallback, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
+import { UploadHandler } from './UploadHandlers';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type BlobProvider = () => Promise<Blob>;
 
@@ -51,9 +53,7 @@ function useDiskDatastoreMigrationExecutor() {
 
         const persistenceLayer = persistenceLayerProvider();
 
-        type UploadHandler = (uploadProgress: UpdateProgressCallback) => Promise<void>;
-
-        async function createDocMetaUploadHandler(docMetaProvider: DocMetaProvider): Promise<UploadHandler> {
+        async function createDocMetaUploadHandler(docMetaProvider: DocMetaProvider): Promise<UploadHandler<void>> {
 
             return async () => {
                 const docMeta = await docMetaProvider()
@@ -62,20 +62,20 @@ function useDiskDatastoreMigrationExecutor() {
 
         }
 
-        async function createStashFileRefUploadHandler(stashFileRef: StashFileRef): Promise<UploadHandler> {
+        async function createStashFileRefUploadHandler(stashFileRef: StashFileRef): Promise<UploadHandler<void>> {
 
-            return async (uploadProgress) => {
+            return async (uploadProgress, onController) => {
                 const blob = await stashFileRef.data();
-                await persistenceLayer.writeFile(Backend.STASH, stashFileRef.ref, blob, {progressListener: uploadProgress});
+                await persistenceLayer.writeFile(Backend.STASH, stashFileRef.ref, blob, {progressListener: uploadProgress, onController});
             }
 
         }
 
-        async function createImageFileRefUploadHandler(imageFileRef: ImageFileRef): Promise<UploadHandler>  {
+        async function createImageFileRefUploadHandler(imageFileRef: ImageFileRef): Promise<UploadHandler<void>>  {
 
-            return async (uploadProgress) => {
+            return async (uploadProgress, onController) => {
                 const blob = await imageFileRef.data();
-                await persistenceLayer.writeFile(Backend.IMAGE, imageFileRef.ref, blob, {progressListener: uploadProgress});
+                await persistenceLayer.writeFile(Backend.IMAGE, imageFileRef.ref, blob, {progressListener: uploadProgress, onController});
             }
 
         }
@@ -88,13 +88,16 @@ function useDiskDatastoreMigrationExecutor() {
 
             const uploadHandlers = [...docMetaUploadHandlers, ...stashFileRefUploadHandlers, ...imageFileRefUploadHandlers];
 
+
+            // FIXMEL migrate to this to batch upload handlers...
+
             let idx = 0;
             for (const uploadHandler of uploadHandlers) {
                 ++idx;
                 const updateProgress = await uploadProgressTaskbar(idx, uploadHandlers.length);
 
                 try {
-                    await uploadHandler(updateProgress);
+                    await uploadHandler(updateProgress, NULL_FUNCTION);
                 } finally {
                     updateProgress(100);
                 }

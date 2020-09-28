@@ -18,8 +18,9 @@ import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
 import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastoreMigrations";
-import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
+import {useBatchProgressTaskbar, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {UploadFilters} from "./UploadFilters";
+import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 
 export namespace AddFileHooks {
 
@@ -32,61 +33,48 @@ export namespace AddFileHooks {
         const dialogManager = useDialogManager();
         const docLoader = useDocLoader();
         const accountVerifiedAction = useAccountVerifiedAction()
-        const uploadProgressTaskbar = useUploadProgressTaskbar();
         const diskDatastoreMigration = useDiskDatastoreMigration();
+        const batchUploader = useBatchUploader();
 
         async function handleUploads(uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> {
 
-            async function doUpload(idx: number, upload: IUpload) {
+            function toUploadHandler(upload: IUpload): UploadHandler<ImportedFile> {
 
-                console.log("Importing file: ", upload.name);
+                return async (uploadProgress, onController): Promise<ImportedFile> => {
 
-                const updateProgress = await uploadProgressTaskbar(idx, uploads.length);
+                    try {
 
-                try {
+                        console.log("uploading file: ", upload.name);
 
-                    const blob = await upload.blob();
+                        const blob = await upload.blob();
 
-                    const docInfo = {
-                        tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
-                        bytes: blob.size
+                        const docInfo = {
+                            tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
+                            bytes: blob.size
+                        }
+
+                        const importedFile = await DocImporter.importFile(persistenceLayerProvider,
+                                                                          URL.createObjectURL(blob),
+                                                                          FilePaths.basename(upload.name),
+                                                                          {progressListener: uploadProgress, docInfo, onController});
+
+                        console.log("Imported file: ", importedFile);
+
+                        return importedFile;
+
+                    } catch (e) {
+                        log.error("Failed to import file: ", e, upload);
+                        throw e;
                     }
-
-                    const importedFile = await DocImporter.importFile(persistenceLayerProvider,
-                                                                      URL.createObjectURL(blob),
-                                                                      FilePaths.basename(upload.name),
-                                                                      {progressListener: updateProgress, docInfo});
-
-                    log.info("Imported file: ", importedFile);
-
-                    result.push(importedFile);
-
-                } catch (e) {
-                    log.error("Failed to import file: ", e, upload);
-                } finally {
-
-                    updateProgress(100);
-
-                    const progress = progressTracker.terminate();
-                    // TODO this should be deprecated...
-                    DeterminateProgressBar.update(progress);
 
                 }
 
             }
 
-            const progressTracker = new ProgressTracker({total: uploads.length, id: 'import-files'});
 
-            const result: ImportedFile[] = [];
+            const uploadHandlers = uploads.map(toUploadHandler);
 
-            let idx = 0;
-
-            for (const upload of uploads) {
-                ++idx;
-                await doUpload(idx, upload);
-            }
-
-            return result;
+            return await batchUploader(uploadHandlers);
 
         }
 
@@ -160,7 +148,8 @@ export namespace AddFileHooks {
 
         }
 
-        return (uploads: ReadonlyArray<IUpload>) => {
+        // TODO: to many dependencies here and I'm going to need to clean tyhis up.
+        return React.useCallback((uploads: ReadonlyArray<IUpload>) => {
 
             if (! uploads || uploads.length === 0) {
                 log.warn("No dataTransfer files");
@@ -176,7 +165,8 @@ export namespace AddFileHooks {
                     .catch(err => log.error("Unable to handle upload: ", err));
             }
 
-        }
+        }, [log, persistenceLayerProvider, dialogManager, docLoader,
+                  accountVerifiedAction, diskDatastoreMigration, batchUploader]);
 
     }
 

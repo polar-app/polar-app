@@ -4,6 +4,7 @@ import {useAccounting, useAccountingUsage} from "./Accounting";
 import {Bytes} from "polar-shared/src/util/Bytes";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
+import {BorderLinearProgress} from "../../../mui/BorderLinearProgress";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -34,6 +35,8 @@ const useStyles = makeStyles((theme) =>
         },
 
         progress: {
+            marginTop: '2px',
+            marginBottom: '2px',
             height: '0.7em',
         },
 
@@ -73,10 +76,10 @@ const PlanUsageForStorage = () => {
 
             </div>
 
-            <LinearProgress className={classes.progress}
-                            color="secondary"
-                            variant="determinate"
-                            value={accountingUsage.storage.usage || 0}/>
+            <BorderLinearProgress className={classes.progress}
+                                  color="primary"
+                                  variant="determinate"
+                                  value={accountingUsage.storage.usage || 0}/>
 
         </div>
     );

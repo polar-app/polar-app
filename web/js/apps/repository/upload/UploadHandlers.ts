@@ -1,19 +1,19 @@
-import {UpdateProgressCallback, useUploadProgressTaskbar, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
+import {UpdateProgressCallback, useBatchProgressTaskbar} from "./UploadProgressTaskbar";
 import {WriteController} from "../../../datastore/Datastore";
 import React from 'react';
 
 export type OnWriteController = (controller: WriteController) => void;
-export type UploadHandler = (uploadProgress: UpdateProgressCallback, onWriteController : OnWriteController) => Promise<void>;
+export type UploadHandler<V> = (uploadProgress: UpdateProgressCallback, onController : OnWriteController) => Promise<V>;
 
 /**
  * Create a batch uploader which supports suspend and resume.  We have to use a factor to create functions used
  * that create the uploaders individually.
  */
-export function useUploadHandlers() {
+export function useBatchUploader() {
 
     const createBatchProgressTaskbar = useBatchProgressTaskbar();
 
-    return React.useCallback(async (uploadHandlers: ReadonlyArray<UploadHandler>) => {
+    return React.useCallback(async <V>(uploadHandlers: ReadonlyArray<UploadHandler<V>>): Promise<ReadonlyArray<V>> => {
 
         let controller: WriteController | undefined;
 
@@ -36,7 +36,7 @@ export function useUploadHandlers() {
 
         // TODO: work toward keeping ONE snackbar up the whole time,..
         const updateProgress = await createBatchProgressTaskbar( {
-            message: "Starting upload...",
+            message: `Starting upload of ${uploadHandlers.length} files ... `,
             onCancel,
             noAutoTerminate: true
         });
@@ -54,16 +54,19 @@ export function useUploadHandlers() {
 
         try {
 
+            const results: V[] = [];
+
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
                 try {
                     // have to call updateProgress here to reset from the previous iteration
                     updateProgress({
-                        message: `Uploading file ${idx + 1} of ${uploadHandlers.length} ..`,
+                        message: `Uploading file ${idx + 1} of ${uploadHandlers.length} ...`,
                         progress: 0
                     });
 
-                    await uploadHandler(updateProgressCallback, onWriteController);
+                    const result = await uploadHandler(updateProgressCallback, onWriteController);
+                    results.push(result);
 
                 } finally {
                     updateProgress({progress: 100});
@@ -74,6 +77,9 @@ export function useUploadHandlers() {
                 }
 
             }
+
+            return results;
+
         } finally {
             updateProgress('terminate');
         }
