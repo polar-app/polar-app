@@ -42,30 +42,23 @@ export namespace AddFileHooks {
 
                 return async (uploadProgress, onController): Promise<ImportedFile> => {
 
-                    try {
+                    console.log("uploading file: ", upload.name);
 
-                        console.log("uploading file: ", upload.name);
+                    const blob = await upload.blob();
 
-                        const blob = await upload.blob();
-
-                        const docInfo = {
-                            tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
-                            bytes: blob.size
-                        }
-
-                        const importedFile = await DocImporter.importFile(persistenceLayerProvider,
-                                                                          URL.createObjectURL(blob),
-                                                                          FilePaths.basename(upload.name),
-                                                                          {progressListener: uploadProgress, docInfo, onController});
-
-                        console.log("Imported file: ", importedFile);
-
-                        return importedFile;
-
-                    } catch (e) {
-                        log.error("Failed to import file: ", e, upload);
-                        throw e;
+                    const docInfo = {
+                        tags: upload.tags ? Tags.toMap(upload.tags) : undefined,
+                        bytes: blob.size
                     }
+
+                    const importedFile = await DocImporter.importFile(persistenceLayerProvider,
+                                                                      URL.createObjectURL(blob),
+                                                                      FilePaths.basename(upload.name),
+                                                                      {progressListener: uploadProgress, docInfo, onController});
+
+                    console.log("Imported file: ", importedFile);
+
+                    return importedFile;
 
                 }
 

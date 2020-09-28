@@ -25,7 +25,6 @@ export interface ITaskbarProgress {
 
 export type TaskbarProgressUpdate = ITaskbarProgress | 'terminate';
 
-// TODO: need a cancel button ...
 // TODO: needs pause / resume functionality...
 export type TaskbarProgressCallback = (progress: TaskbarProgressUpdate) => void;
 

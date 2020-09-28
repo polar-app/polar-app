@@ -59,6 +59,7 @@ export function useBatchUploader() {
             for (const [idx, uploadHandler] of uploadHandlers.entries()) {
 
                 try {
+
                     // have to call updateProgress here to reset from the previous iteration
                     updateProgress({
                         message: `Uploading file ${idx + 1} of ${uploadHandlers.length} ...`,
@@ -67,6 +68,18 @@ export function useBatchUploader() {
 
                     const result = await uploadHandler(updateProgressCallback, onWriteController);
                     results.push(result);
+
+                } catch (e) {
+
+                    // NOTE that the firestore devs misspelled cancelled as canceled
+                    // so we're checking for both strings so if they ever change it
+                    // we're good
+                    if (['cancelled', 'canceled'].includes(e.code) || ['storage/cancelled', 'storage/canceled'].includes(e.code_)) {
+                        // this is acceptable as the user cancelled the upload
+                        console.log("Caught cancelled upload exception");
+                    } else {
+                        throw e;
+                    }
 
                 } finally {
                     updateProgress({progress: 100});
