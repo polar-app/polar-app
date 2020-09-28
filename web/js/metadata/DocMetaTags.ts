@@ -16,7 +16,7 @@ export class DocMetaTags {
                     return;
                 }
 
-                for (const tag of Object.values(tags)) {
+                for (const tag of Object.values(tags || {})) {
                     this.tags[tag.label] = tag.label;
                 }
 
@@ -24,7 +24,7 @@ export class DocMetaTags {
 
             public registerAnnotations(annotations: {[id: string]: IAnnotation}) {
 
-                for (const annotation of Object.values(annotations)) {
+                for (const annotation of Object.values(annotations || {})) {
                     index.registerTags(annotation.tags);
                 }
 
@@ -40,7 +40,7 @@ export class DocMetaTags {
 
         index.registerTags(docMeta.docInfo.tags);
 
-        for (const pageInfo of Object.values(docMeta.pageMetas)) {
+        for (const pageInfo of Object.values(docMeta.pageMetas || {})) {
             index.registerAnnotations(pageInfo.textHighlights);
             index.registerAnnotations(pageInfo.areaHighlights);
             index.registerAnnotations(pageInfo.flashcards);

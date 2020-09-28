@@ -12,6 +12,7 @@ export type UploadHandler<V> = (uploadProgress: UpdateProgressCallback, onContro
 export function useBatchUploader() {
 
     const createBatchProgressTaskbar = useBatchProgressTaskbar();
+    const cancelled = React.useRef(false);
 
     return React.useCallback(async <V>(uploadHandlers: ReadonlyArray<UploadHandler<V>>): Promise<ReadonlyArray<V>> => {
 
@@ -21,16 +22,15 @@ export function useBatchUploader() {
             controller = newController;
         }
 
-        let cancelled: boolean = false;
-
         function onCancel() {
+
+            cancelled.current = true;
 
             if (! controller) {
                 return;
             }
 
             controller.cancel();
-            cancelled = true;
 
         }
 
@@ -85,7 +85,7 @@ export function useBatchUploader() {
                     updateProgress({progress: 100});
                 }
 
-                if (cancelled) {
+                if (cancelled.current) {
                     break;
                 }
 
@@ -95,6 +95,7 @@ export function useBatchUploader() {
 
         } finally {
             updateProgress('terminate');
+            cancelled.current = false;
         }
 
     }, [createBatchProgressTaskbar])

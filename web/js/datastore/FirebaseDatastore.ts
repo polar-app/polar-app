@@ -726,9 +726,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    /**
-     * Write the datastore to disk.
-     */
     public async write(fingerprint: string,
                        data: string,
                        docInfo: IDocInfo,
