@@ -12,7 +12,7 @@ import {IUpload} from "./IUpload";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {UpdateProgressCallback, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
-import { UploadHandler } from './UploadHandlers';
+import {UploadHandler, useBatchUploader} from './UploadHandlers';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type BlobProvider = () => Promise<Blob>;
@@ -47,7 +47,7 @@ function useDiskDatastoreMigrationExecutor() {
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
     const uploadProgressTaskbar = useUploadProgressTaskbar();
-
+    const batchUploader = useBatchUploader();
 
     return React.useCallback((opts: IMigration) => {
 
@@ -88,28 +88,14 @@ function useDiskDatastoreMigrationExecutor() {
 
             const uploadHandlers = [...docMetaUploadHandlers, ...stashFileRefUploadHandlers, ...imageFileRefUploadHandlers];
 
-
-            // FIXMEL migrate to this to batch upload handlers...
-
-            let idx = 0;
-            for (const uploadHandler of uploadHandlers) {
-                ++idx;
-                const updateProgress = await uploadProgressTaskbar(idx, uploadHandlers.length);
-
-                try {
-                    await uploadHandler(updateProgress, NULL_FUNCTION);
-                } finally {
-                    updateProgress(100);
-                }
-
-            }
+            return await batchUploader(uploadHandlers);
 
         }
 
         doAsync()
             .catch(err => log.error(err));
 
-    }, [persistenceLayerProvider, log, uploadProgressTaskbar])
+    }, [persistenceLayerProvider, log, uploadProgressTaskbar, batchUploader])
 
 
 }
