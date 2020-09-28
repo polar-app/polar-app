@@ -7,10 +7,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {deepMemo} from "../../react/ReactUtils";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-
-import useTheme from '@material-ui/core/styles/useTheme';
 import {useRefState} from "../../hooks/ReactHooks";
 import {CircularProgressWithLabel} from "../../mui/CircularProgressWithLabel";
+import {ConfirmDialog} from "./ConfirmDialog";
 
 export interface ITaskbarProgress {
 
@@ -73,6 +72,21 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
 
     const [progress, setProgress, progressRef] = useRefState<ITaskbarProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);
+    const [cancelRequested, setCancelRequested] = React.useState(false);
+
+    const handleCancel = React.useCallback(() => {
+        setCancelRequested(true);
+    }, []);
+
+    const doCancel = React.useCallback(() => {
+        setCancelRequested(false);
+
+        if (props.onCancel) {
+            props.onCancel();
+        }
+
+    }, []);
+
 
     function setProgressCallback(updateProgress: TaskbarProgressUpdate) {
 
@@ -125,10 +139,17 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
 
                 {props.onCancel && (
                     <IconButton color="inherit"
-                                onClick={props.onCancel}>
+                                onClick={handleCancel}>
                         <CloseIcon/>
                     </IconButton>
                 )}
+
+                {cancelRequested && (
+                    <ConfirmDialog title="Are you sure you wish to cancel?"
+                                   subtitle="This will cancel all pending tasks"
+                                   type="danger"
+                                   onAccept={doCancel}/>)}
+
             </>
         );
     }
