@@ -10,10 +10,9 @@ import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {IUpload} from "./IUpload";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {UpdateProgressCallback, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
+import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {UploadHandler, useBatchUploader} from './UploadHandlers';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type BlobProvider = () => Promise<Blob>;
 
