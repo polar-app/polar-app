@@ -7,7 +7,6 @@ import Table from "@material-ui/core/Table";
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from '@material-ui/core/TableCell';
-import grey from "@material-ui/core/colors/grey";
 import Dialog from '@material-ui/core/Dialog';
 import {deepMemo} from '../react/ReactUtils';
 import {
@@ -17,33 +16,7 @@ import {
 } from '../keyboard_shortcuts/KeyboardShortcutsStore';
 import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
-
-interface KeySequenceProps {
-    readonly sequence: string;
-}
-
-const KeySequence = (props: KeySequenceProps) => {
-
-    const sequence = props.sequence.split('+').join( ' + ' );
-
-    return (
-        <div style={{
-                fontFamily: 'monospace',
-                padding: '5px',
-                borderRadius: '2px',
-                border: `1px solid ${grey[500]}`,
-                backgroundColor: grey[200],
-                color: grey[900],
-                margin: '5px',
-                whiteSpace: 'nowrap'
-             }}>
-
-            {sequence}
-
-        </div>
-    );
-
-}
+import {KeySequence} from "./KeySequence";
 
 interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
@@ -55,11 +28,11 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
     return (
         <TableRow>
 
-            <TableCell>
+            <TableCell style={{fontSize: '1.2em', verticalAlign: 'top'}}>
                 <b>{props.name || 'unnamed'}</b>
             </TableCell>
 
-            <TableCell>
+            <TableCell style={{fontSize: '1.2em', verticalAlign: 'top'}}>
                 {props.description}
             </TableCell>
 
@@ -124,11 +97,11 @@ export const ActiveHotKeyBindings = deepMemo(() => {
 
     return (
         <>
-        <GlobalKeyboardShortcuts keyMap={keyMap}
-                                 handlerMap={handlers}/>
+            <GlobalKeyboardShortcuts keyMap={keyMap}
+                                     handlerMap={handlers}/>
 
             <Dialog fullWidth={true}
-                    maxWidth="md"
+                    maxWidth="lg"
                     open={open}
                     onClose={handleClose}>
                 <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
