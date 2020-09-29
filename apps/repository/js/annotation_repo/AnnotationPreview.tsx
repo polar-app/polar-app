@@ -46,6 +46,7 @@ const TextPreview = deepMemo((props: IProps) => {
 
     return (
         <div style={{userSelect: "none"}}
+             className="text-sm"
              dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
     );
 
