@@ -28,11 +28,11 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
     return (
         <TableRow>
 
-            <TableCell style={{fontSize: '1.2em', verticalAlign: 'top'}}>
+            <TableCell style={{fontSize: '1.2em'}}>
                 <b>{props.name || 'unnamed'}</b>
             </TableCell>
 
-            <TableCell style={{fontSize: '1.2em', verticalAlign: 'top'}}>
+            <TableCell style={{fontSize: '1.2em'}}>
                 {props.description}
             </TableCell>
 
@@ -110,6 +110,7 @@ export const ActiveHotKeyBindings = deepMemo(() => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}
+                            size="large"
                             color="primary"
                             variant="contained">
                         Close

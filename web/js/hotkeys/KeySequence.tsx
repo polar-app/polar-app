@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) =>
             backgroundColor: grey[200],
             color: grey[900],
             margin: '5px',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            userSelect: 'none'
         },
     }),
 );
