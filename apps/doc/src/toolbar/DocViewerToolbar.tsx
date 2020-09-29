@@ -141,6 +141,8 @@ export const DocViewerToolbar = deepMemo(() => {
 
                         <MUIButtonBar>
 
+
+                            {/*TODO: implement keyboard shortcuts for these.*/}
                             <MUIDocTagButton size="medium"
                                              onClick={onDocTagged}/>
 
