@@ -41,7 +41,7 @@ const KeySequence = (props: KeySequenceProps) => {
             {sequence}
 
         </div>
-    )
+    );
 
 }
 
