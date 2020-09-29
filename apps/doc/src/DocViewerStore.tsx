@@ -282,6 +282,9 @@ export interface IDocViewerCallbacks {
     readonly setDocArchived: (archived: boolean) => void;
     readonly onDocTagged: () => void;
 
+    readonly toggleDocFlagged: () => void;
+    readonly toggleDocArchived: () => void;
+
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     onPagemark(opts: IPagemarkMutation): ReadonlyArray<IPagemarkRef>;
@@ -915,6 +918,31 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
     }
 
+    function toggleDocFlagged() {
+
+        const {docMeta} = storeProvider();
+
+        if (! docMeta) {
+            return;
+        }
+
+        setDocFlagged(! docMeta?.docInfo?.flagged)
+
+    }
+    function toggleDocArchived() {
+
+
+        const {docMeta} = storeProvider();
+
+        if (! docMeta) {
+            return;
+        }
+
+        setDocArchived(! docMeta?.docInfo?.archived)
+
+    }
+
+
     // HACK: this is a hack until we find a better way memoize our variables.
     // I really hate this aspect of hook.
     return React.useMemo(() => {
@@ -939,7 +967,9 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setFluidPagemarkFactory,
             setDocFlagged,
             setDocArchived,
-            onDocTagged
+            onDocTagged,
+            toggleDocFlagged,
+            toggleDocArchived
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks, dialogs]);
 

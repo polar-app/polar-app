@@ -28,6 +28,7 @@ const KeySequence = (props: KeySequenceProps) => {
 
     return (
         <div style={{
+                fontFamily: 'monospace',
                 padding: '5px',
                 borderRadius: '2px',
                 border: `1px solid ${grey[500]}`,

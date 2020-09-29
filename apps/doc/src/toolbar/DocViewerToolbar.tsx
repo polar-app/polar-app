@@ -34,7 +34,7 @@ export const DocViewerToolbar = deepMemo(() => {
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, setDocFlagged, setDocArchived, onDocTagged, doZoom} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
 
     const handleScaleChange = (scale: ScaleLevel) => {
 
@@ -147,11 +147,11 @@ export const DocViewerToolbar = deepMemo(() => {
                                              onClick={onDocTagged}/>
 
                             <MUIDocArchiveButton size="medium"
-                                                 onClick={() => setDocArchived(! docMeta?.docInfo?.archived)}
+                                                 onClick={toggleDocArchived}
                                                  active={docMeta?.docInfo?.archived}/>
 
                             <MUIDocFlagButton size="medium"
-                                              onClick={() => setDocFlagged(! docMeta?.docInfo?.flagged)}
+                                              onClick={toggleDocFlagged}
                                               active={docMeta?.docInfo?.flagged}/>
 
                             <Divider orientation="vertical" flexItem={true}/>

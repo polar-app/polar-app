@@ -46,14 +46,30 @@ const globalKeyMap = keyMapWithGroup({
             name: "Zoom Restore",
             description: "Restore the default zoom level",
             sequences: ['command+0', 'ctrl+0']
-        }
+        },
+        TAG: {
+            name: "Tag",
+            description: "Tag the current document",
+            sequences: ['t']
+        },
+        FLAG: {
+            name: "Flag",
+            description: "Flag the current document",
+            sequences: ['f']
+        },
+        ARCHIVE: {
+            name: "Archive",
+            description: "Archive the current document",
+            sequences: ['a']
+        },
+
     }
 });
 
 export const DocViewerGlobalHotKeys = React.memo(() => {
 
     const findCallbacks = useDocFindCallbacks();
-    const {onPagePrev, onPageNext, doZoom, doZoomRestore} = useDocViewerCallbacks();
+    const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
@@ -62,7 +78,10 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
         PAGE_PREV: onPagePrev,
         ZOOM_IN: () => doZoom('+'),
         ZOOM_OUT: () => doZoom('-'),
-        ZOOM_RESTORE: doZoomRestore
+        ZOOM_RESTORE: doZoomRestore,
+        TAG: onDocTagged,
+        FLAG: toggleDocFlagged,
+        ARCHIVE: toggleDocArchived
     };
 
     const location = useLocationWithPathOnly();
