@@ -44,6 +44,7 @@ export const FolderSidebar2 = () => {
                     <MUISearchBox2
                         initialValue={store.filter}
                         placeholder="Filter by tag or folder"
+                        autoComplete="off"
                         style={{
                             flexGrow: 1
                         }}

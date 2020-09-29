@@ -12,6 +12,7 @@ interface IProps {
     readonly initialValue?: string;
     readonly className?: string;
     readonly autoFocus?: boolean;
+    readonly autoComplete?: string;
     readonly style?: React.CSSProperties;
     readonly onChange: (text: string) => void;
     readonly ref?: React.Ref<unknown>;
@@ -42,6 +43,7 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
                        placeholder={props.placeholder}
                        className={props.className}
                        ref={props.ref}
+                       autoComplete={props.autoComplete}
                        onChange={event => handleChange(event.currentTarget.value)}/>
     );
 }, isEqual);

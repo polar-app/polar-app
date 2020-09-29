@@ -71,6 +71,7 @@ export const DocRepoFilterBar = deepMemo((props: IProps) => {
                     <MUISearchBox2 id="filter_title"
                                    placeholder="Search by title"
                                    initialValue={filters.title}
+                                   autoComplete="off"
                                    onChange={text => setFilters({...filters, title: text})}/>
 
                 </Grid>

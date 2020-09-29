@@ -115,6 +115,7 @@ export const DocFindBar = React.memo(() => {
                                                onChange={handleFind}
                                                autoFocus={true}
                                                value={opts.query}
+                                               autoComplete="off"
                                                style={{
                                                    width: '20em'
                                                }}

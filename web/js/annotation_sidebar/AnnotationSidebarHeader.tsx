@@ -31,6 +31,7 @@ export const AnnotationHeader = () => {
                 <MUISearchBox2 style={{flexGrow: 1}}
                                className="mt-1 mb-1"
                                onChange={text => annotationSidebarCallbacks.setFilter(text)}
+                               autoComplete="off"
                                placeholder="Filter annotations by text"/>
 
                 <div style={{display: 'flex'}}>
