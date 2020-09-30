@@ -1,3 +1,11 @@
+# 2.0 Beta 30 (RC2)
+
+- Fixed bug with Anki not using CORS settings on startup
+- Anki sync no longer creates excess tags that are not necessary
+- Anki sync is faster now because we do not need to read DocMeta from firestore but instead have it in memory
+
+# 2.0 Beta 29 (RC1)
+
 - 'contenteditable' events weren't being ignored.
 - zoom works wth keyboard bindings now.
 - Folder behavior was wrong when selecting subfolders
