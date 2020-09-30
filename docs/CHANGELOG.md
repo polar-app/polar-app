@@ -1,3 +1,6 @@
+
+- the cloze ID is computed from the text, not just an integer that's incremented
+
 # 2.0 Beta 30 (RC2)
 
 - Fixed bug with Anki not using CORS settings on startup

@@ -24,8 +24,6 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     private richTextMutator?: RichTextMutator;
 
-    private counter: number = 1;
-
     constructor(props: IProps, context: any) {
         super(props, context);
 
