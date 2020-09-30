@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
+import {Helmet} from "react-helmet";
 
 const log = Logger.create();
 
@@ -274,9 +275,16 @@ export const StatsScreen = React.memo(() => {
     const phoneAndTablet = <PhoneAndTablet {...state}/>;
 
     return (
-        <DeviceRouter desktop={desktop}
-                      phone={phoneAndTablet}
-                      tablet={phoneAndTablet}/>
+
+        <>
+            <Helmet>
+                <title>Polar: Statistics</title>
+            </Helmet>
+
+            <DeviceRouter desktop={desktop}
+                          phone={phoneAndTablet}
+                          tablet={phoneAndTablet}/>
+        </>
     );
 
 });

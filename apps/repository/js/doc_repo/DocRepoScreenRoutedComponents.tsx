@@ -8,6 +8,7 @@ import {DocRepoGlobalHotKeys} from "./DocRepoGlobalHotKeys";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {Helmet} from "react-helmet";
 
 export const DocRepoScreenRoutedComponents = React.memo(() => {
 
@@ -20,6 +21,10 @@ export const DocRepoScreenRoutedComponents = React.memo(() => {
             <Switch location={location}>
 
                 <Route exact path='/'>
+
+                    <Helmet>
+                        <title>Polar: Document Repository</title>
+                    </Helmet>
 
                     <DeviceRouters.Desktop>
                         <DocRepoGlobalHotKeys/>

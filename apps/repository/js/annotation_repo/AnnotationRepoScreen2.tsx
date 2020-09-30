@@ -185,6 +185,11 @@ namespace screen {
 }
 
 export const AnnotationRepoScreen2 = React.memo(() => (
-    <DeviceRouter desktop={<screen.Desktop/>}
-                  handheld={<screen.Handheld/>}/>
+
+    <>
+
+        <DeviceRouter desktop={<screen.Desktop/>}
+                      handheld={<screen.Handheld/>}/>
+
+    </>
 ));

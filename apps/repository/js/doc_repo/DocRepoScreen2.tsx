@@ -145,34 +145,37 @@ export const DocRepoScreen2 = React.memo(() => {
 
     return (
 
-        <FixedNav id="doc-repository">
+        <>
 
-            <DocRepoScreenRoutedComponents/>
+            <FixedNav id="doc-repository">
 
-            {/*<RepositoryTour/>*/}
-            <header>
+                <DocRepoScreenRoutedComponents/>
 
-                <DeviceRouters.Desktop>
-                    <DesktopToolbar/>
-                </DeviceRouters.Desktop>
+                {/*<RepositoryTour/>*/}
+                <header>
 
-            </header>
+                    <DeviceRouters.Desktop>
+                        <DesktopToolbar/>
+                    </DeviceRouters.Desktop>
 
-            {/*<Router/>*/}
+                </header>
 
-            <DeviceRouter handheld={<devices.PhoneAndTablet/>}
-                          desktop={<devices.Desktop/>}/>
+                {/*<Router/>*/}
 
-            <FixedNav.Footer>
+                <DeviceRouter handheld={<devices.PhoneAndTablet/>}
+                              desktop={<devices.Desktop/>}/>
 
-                <DeviceRouter.Handheld>
-                    <AddContent.Handheld/>
-                </DeviceRouter.Handheld>
+                <FixedNav.Footer>
 
-            </FixedNav.Footer>
+                    <DeviceRouter.Handheld>
+                        <AddContent.Handheld/>
+                    </DeviceRouter.Handheld>
 
-        </FixedNav>
+                </FixedNav.Footer>
 
+            </FixedNav>
+
+        </>
     )
 
 }, isEqual);

@@ -6,7 +6,7 @@ import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {RepoHeader} from "../repo_header/RepoHeader3";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
-
+import {Helmet} from "react-helmet";
 
 export const AnnotationRepoRoutedComponents = React.memo(() => {
 
@@ -19,6 +19,10 @@ export const AnnotationRepoRoutedComponents = React.memo(() => {
             <Switch location={location}>
 
                 <Route exact path='/annotations'>
+
+                    <Helmet>
+                        <title>Polar: Annotation Repository</title>
+                    </Helmet>
 
                     <DeviceRouters.Desktop>
                         <AnnotationRepoGlobalHotKeys/>
