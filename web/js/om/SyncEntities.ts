@@ -10,7 +10,7 @@ export interface ISyncEntityInit {
     readonly type: IDStr;
 }
 
-export interface ISyncEntity extends ISyncEntityInit {
+export interface ISyncEntity extends ISyncEntityInit  {
     readonly id: IDStr;
     readonly uid: string;
 }
