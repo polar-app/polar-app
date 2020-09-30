@@ -26,8 +26,8 @@ export namespace SyncEntities {
 
     const COLLECTION = 'sync_entity';
 
-    export function createID(src: IDStr, dest: IDStr) {
-        return Hashcodes.createID({src, dest}, HASHCODE_LEN);
+    export function createID(type: string, src: IDStr) {
+        return Hashcodes.createID({type, src}, HASHCODE_LEN);
     }
 
     export async function listByType(type: string): Promise<ReadonlyArray<ISyncEntity>> {
@@ -47,8 +47,17 @@ export namespace SyncEntities {
 
     }
 
-    export async function write(src: IDStr, dest: IDStr, type: IDStr) {
-        const id = createID(src, dest);
+    export async function get(type: string, src: IDStr): Promise<ISyncEntity | undefined> {
+        const id = createID(type, src);
+        const uid = await Firebase.currentUserID();
+        const firestore = await Firestore.getInstance();
+        const ref = firestore.collection(COLLECTION).doc(id);
+        const doc = await ref.get();
+        return doc.exists ? <ISyncEntity> doc.data() : undefined;
+    }
+
+    export async function set(src: IDStr, dest: IDStr, type: IDStr) {
+        const id = createID(type, src);
         const uid = await Firebase.currentUserID();
         const firestore = await Firestore.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);

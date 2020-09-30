@@ -49,6 +49,9 @@ export class AnkiSyncEngine implements SyncEngine {
     }
 
     private async verifyRequiredModels() {
+
+        // TODO: add new models in the future.
+
         const modelNotesClient = new ModelNamesClient();
         const modelNames = await modelNotesClient.execute();
         ModelNames.verifyRequired(modelNames);

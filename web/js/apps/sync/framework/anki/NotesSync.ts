@@ -101,6 +101,7 @@ export class NotesSync {
 
         } else {
 
+            // TODO: we need to implement updates ... those aren't implemented now.
             const message = 'Note already found. Skipping.';
 
             log.debug(message, normalizedNote);
