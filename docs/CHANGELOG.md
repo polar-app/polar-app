@@ -3,6 +3,9 @@
 - Fixed bug with Anki not using CORS settings on startup
 - Anki sync no longer creates excess tags that are not necessary
 - Anki sync is faster now because we do not need to read DocMeta from firestore but instead have it in memory
+- can now tag, archive, and flag for the document viewer.
+- better font sizes for annotation repo
+- better keyboard shortcuts UI
 
 # 2.0 Beta 29 (RC1)
 
