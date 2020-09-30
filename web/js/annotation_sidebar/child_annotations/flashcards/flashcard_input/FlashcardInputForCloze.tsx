@@ -14,6 +14,7 @@ import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from '@material-ui/core/IconButton';
+import {ClozeDeletions} from "./ClozeDeletions";
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
@@ -127,7 +128,8 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
             return;
         }
 
-        const c = this.counter++;
+        // compute the next close ID from the text
+        const c = ClozeDeletions.next(this.fields.text);
 
         const prefix = document.createTextNode(`{{c${c}::`);
         const suffix = document.createTextNode('}}');
