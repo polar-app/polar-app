@@ -36,7 +36,7 @@ export class AnkiConnectFetch {
                     return port;
 
                 } catch (e) {
-                    console.debug("Unable to connect on port: " + port);
+                    console.error("Unable to connect on port: " + port, e);
                 }
 
             }

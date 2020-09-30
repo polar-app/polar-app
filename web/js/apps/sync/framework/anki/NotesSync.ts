@@ -11,6 +11,7 @@ import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient
 import {SyncTaskResult} from '../SyncTask';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import * as util from "util";
+import {SyncEntities} from "../../../../om/SyncEntities";
 
 const log = Logger.create();
 
@@ -80,16 +81,15 @@ export class NotesSync {
 
         const existingIDs = await this.findNotesClient.execute(`tag:${polarGUID.format()}`);
 
-        if (existingIDs.length === 0) {
+        const syncEntity = await SyncEntities.get('anki', normalizedNote.noteDescriptor.guid);
+
+        const hasExistingSyncEntity = syncEntity !== undefined;
+
+        if (existingIDs.length === 0 && ! hasExistingSyncEntity) {
 
             // add a special tag so that users can back out polar flashcards
             // and delete them if necessary.
             normalizedNote.noteDescriptor.tags.push("_polar-flashcard");
-
-            if (! normalizedNote.noteDescriptor.tags.includes(polarGUID.format())) {
-                //  make sure the noteDescriptor has the proper tag.
-                normalizedNote.noteDescriptor.tags.push(polarGUID.format());
-            }
 
             this.syncQueue.add(async () => await this.canAddNote(normalizedNote));
 
@@ -145,7 +145,11 @@ export class NotesSync {
                 this.syncQueue.add(async () => this.storeMediaFile(current));
             });
 
-            await this.addNoteClient.execute(normalizedNote.noteDescriptor);
+            const createdID = await this.addNoteClient.execute(normalizedNote.noteDescriptor);
+
+            // now add this as a sync entity mapping the source and target so that we don't double
+            // write it
+            await SyncEntities.set('anki', normalizedNote.noteDescriptor.guid, `${createdID}`);
 
             this.results.created.push(normalizedNote.noteDescriptor);
 

@@ -56,7 +56,7 @@ export namespace SyncEntities {
         return doc.exists ? <ISyncEntity> doc.data() : undefined;
     }
 
-    export async function set(src: IDStr, dest: IDStr, type: IDStr) {
+    export async function set(type: IDStr, src: IDStr, dest: IDStr) {
         const id = createID(type, src);
         const uid = await Firebase.currentUserID();
         const firestore = await Firestore.getInstance();
