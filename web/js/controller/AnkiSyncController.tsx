@@ -8,15 +8,25 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../hooks/ReactLifecycleHooks";
-import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    usePersistenceLayerContext,
+    useRepoDocMetaManager
+} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
+import {DocMetaSupplier} from "../metadata/DocMetaSupplier";
 
 export const AnkiSyncController = React.memo(() => {
 
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const dialogManager = useDialogManager();
+
+    const repoDocMetaManager = useRepoDocMetaManager();
+
+    const createDocMetaSuppliers = React.useCallback(():  ReadonlyArray<DocMetaSupplier> => {
+        return repoDocMetaManager.repoDocInfoIndex.values().map(current => async () => current.docMeta);
+    }, []);
 
     const onMessageReceived = React.useCallback((event: MessageEvent) => {
 
@@ -57,71 +67,83 @@ export const AnkiSyncController = React.memo(() => {
 
             const updateProgress = await dialogManager.taskbar({message: "Starting anki sync..."});
 
-            updateProgress({value: 'indeterminate'});
+            try {
 
-            const syncProgressListener: SyncProgressListener = syncProgress => {
+                updateProgress({value: 'indeterminate'});
 
-                log.info("Sync progress: ", syncProgress);
+                const syncProgressListener: SyncProgressListener = syncProgress => {
 
-                syncProgress.taskResult.map(taskResult => ++nrTasks);
+                    log.info("Sync progress: ", syncProgress);
 
-                syncProgress.taskResult
-                    .filter(taskResult => taskResult.failed === true)
-                    .map(taskResult => ++nrFailedTasks);
+                    syncProgress.taskResult.map(taskResult => ++nrTasks);
 
-                updateProgress({
-                    message: "Sending flashcards to Anki.",
-                    value: syncProgress.percentage as Percentage
-                });
+                    syncProgress.taskResult
+                        .filter(taskResult => taskResult.failed === true)
+                        .map(taskResult => ++nrFailedTasks);
 
-            };
+                    updateProgress({
+                        message: "Sending flashcards to Anki.",
+                        value: syncProgress.percentage as Percentage
+                    });
 
-            const ankiSyncEngine = new AnkiSyncEngine();
+                };
 
-            const persistenceLayer = persistenceLayerProvider();
+                const ankiSyncEngine = new AnkiSyncEngine();
 
-            const docMetaFiles = await persistenceLayer.getDocMetaRefs();
+                async function createDocMetaSuppliersFromPersistenceLayer(): Promise<DocMetaSupplierCollection> {
 
-            // TODO this is really slow - migrate it to using the already
-            // in-memory sync'd copy of flashcards since I can useDocRepoStore
-            // here
-            const docMetaSuppliers: DocMetaSupplierCollection
-                = docMetaFiles.map(docMetaFile => {
-                    return async () => {
-                        log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
-                        return (await persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
-                    };
-                });
+                    // this is the OLD strategy for receiving DocMeta suppliers and is super slow.
 
-            const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);
+                    const persistenceLayer = persistenceLayerProvider();
 
-            updateProgress({value: 0});
+                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
 
-            await pendingSyncJob.start();
+                    // TODO this is really slow - migrate it to using the already
+                    // in-memory sync'd copy of flashcards since I can useDocRepoStore
+                    // here
+                    return docMetaFiles.map(docMetaFile => {
+                        return async () => {
+                            log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
+                            return (await persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
+                        };
+                    });
 
-            function finalNotifications() {
+                }
 
-                const message = `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`;
+                // const docMetaSuppliers = await createDocMetaSuppliersFromPersistenceLayer();
+                const docMetaSuppliers = createDocMetaSuppliers();
 
-                updateProgress({
-                    message,
-                    value: 100
-                });
+                const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);
 
-                dialogManager.snackbar({message});
+                updateProgress({value: 0});
 
+                await pendingSyncJob.start();
+
+                function finalNotifications() {
+
+                    const message = `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`;
+
+                    updateProgress({
+                        message,
+                        value: 100
+                    });
+
+                    dialogManager.snackbar({message});
+
+                }
+
+                finalNotifications();
+
+                Analytics.event({category: 'anki', action: 'sync-completed'});
+            } finally {
+                updateProgress('terminate');
             }
-
-            finalNotifications();
-
-            Analytics.event({category: 'anki', action: 'sync-completed'});
-
         }
 
         doAsync()
             .catch(err => log.error("Could not sync to Anki: ", err));
 
-    }, []);
+    }, [log, persistenceLayerProvider, dialogManager]);
 
     return null;
 
