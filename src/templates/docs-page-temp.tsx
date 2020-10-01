@@ -110,7 +110,7 @@ function DocsDesktop({ data, classes }) {
       }}
     >
       <Box className={classes.flexContainer}>
-        <Box style={{ height: "100%", width: "33%" }}>
+        <Box style={{ height: "100%", width: "30%" }}>
           <Docsindex
             currTitle={data.markdownRemark.frontmatter.title}
             docs={data.allMarkdownRemark.edges}
@@ -118,7 +118,7 @@ function DocsDesktop({ data, classes }) {
         </Box>
 
         <Box
-          style={{ flexBasis: "50%" }}
+          style={{ flexBasis: "70%" }}
           className={breakpoints.md ? classes.shiftContent : null}
         >
           <Box style={{ }}>

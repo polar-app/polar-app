@@ -28,7 +28,7 @@ You can also sort by any column to build reading queues and mix and match the ab
 When reading your documents with Polar you can create highlights, comment on highlights, (text & area highlights), annotate them, and manage them
 using the annotation viewer. The annotation viewer captures your highlights and annotations from all files.
 
-<img class="img-fluid" src="../assets/screenshots/2019-11-annotation-view.png">
+<img class="img-fluid" src="../assets/screenshots/2020-10-annotation-view.png">
 
 Like the document repository, the annotation viewer allows you to filter the view, sort by columns, etc.
 
