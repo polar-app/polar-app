@@ -15,7 +15,7 @@ It includes tools to manage documents annotations, and simplify learning from di
 
 Your starting point in Polar is the document repository.
 
-<img class="img-fluid" src="../assets/screenshots/2019-11-document-view.png">
+<img class="img-fluid" src="../assets/screenshots/2020-10-document-view.png">
 <!-- <img  src="./2019-11-document-view"> -->
 
 
