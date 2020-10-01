@@ -62,7 +62,6 @@ export function useWebExtensionInstalledSnapshots() {
 export const ChromeExtensionInstallButton = deepMemo(() => {
 
     const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
-    const hidden = AppRuntime.isElectron() || ! Platforms.isDesktop() || ! isChrome;
     const linkLoader = useNav();
     const webExtensionInstalled = useWebExtensionInstalled();
 
@@ -72,7 +71,7 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
         linkLoader(chromeStoreURL, {newWindow: true, focus: true});
     }
 
-    if (hidden) {
+    if (! isChrome) {
         return null;
     }
 
@@ -93,8 +92,7 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
 
     return (
 
-        <Button hidden={hidden}
-                onClick={() => onClick()}
+        <Button onClick={() => onClick()}
                 variant="contained"
                 startIcon={<FAChromeIcon/>}
                 size="medium"
