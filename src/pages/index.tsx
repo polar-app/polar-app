@@ -15,6 +15,7 @@ import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
+import GatsbyImage from "../components/GatsbyImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -49,6 +50,8 @@ const Landing = ({ location }) => {
         title="Homepage"
         lang="en"
       />
+
+      <GatsbyImage/>
 
       <Box
         style={{
