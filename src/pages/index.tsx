@@ -140,22 +140,10 @@ const Landing = ({ location }) => {
           <TrustedByLogos />
         </div>
 
-        <div
-          className={
-            breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame
-          }
-        >
-          <Box
-            className={
-              breakpoints.md ? classes.pageContentMobile : classes.pageContent
-            }
-          >
-            <Box
-              className={
-                breakpoints.md ? classes.pageTextMobile : classes.pageText
-              }
-              style={{ width: "56%" }}
-            >
+        <div className={breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame}>
+          <Box className={breakpoints.md ? classes.pageContentMobile : classes.pageContent}>
+            <Box className={breakpoints.md ? classes.pageTextMobile : classes.pageText}
+                 style={{ width: "56%" }}>
               {/* <Fade up> */}
               <h1 className={breakpoints.md ? classes.headerMobile : null}>
                 Organize your reading
@@ -165,11 +153,7 @@ const Landing = ({ location }) => {
                 Read and manage multiple documents at the same time.
               </p>
 
-              <p
-                className={
-                  breakpoints.md ? classes.subtitleMobile : classes.hidden
-                }
-              >
+              <p className={breakpoints.md ? classes.subtitleMobile : classes.hidden}>
                 Read and manage multiple documents at the same time.
               </p>
               {/* </Fade> */}
@@ -179,13 +163,13 @@ const Landing = ({ location }) => {
               <img
                 className={classes.imgMobileDimen}
                 src={ImgPoppFeatsMac}
-                alt="Polar App homepage screenshot macbook mockup"
+                alt="Polar App homepage screenshot macbook"
               />
             ) : (
               <img
                 className={classes.imgDimen}
                 src={ImgPoppFeatsMac}
-                alt="Polar App homepage screenshot macbook mockup"
+                alt="Polar App homepage screenshot macbook"
               />
             )}
             {/* </Fade> */}
@@ -201,21 +185,9 @@ const Landing = ({ location }) => {
           {/* </Container> */}
           {/* </Box> */}
         </div>
-        <div
-          className={
-            breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame
-          }
-        >
-          <Box
-            className={
-              breakpoints.md
-                ? classes.pageContentMobile
-                : classes.evenPageContent
-            }
-          >
-            <Box
-              className={breakpoints.md ? classes.evenPageText : classes.hidden}
-            >
+        <div className={breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame}>
+          <Box className={breakpoints.md ? classes.pageContentMobile : classes.evenPageContent}>
+            <Box className={breakpoints.md ? classes.evenPageText : classes.hidden}>
               {/* <Fade up> */}
               <h1 className={breakpoints.md ? classes.headerMobile : null}>
                 Connect your thoughts
