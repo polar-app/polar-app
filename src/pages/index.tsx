@@ -92,17 +92,15 @@ const Landing = ({ location }) => {
                 progress.
               </p>
               {/* </Fade> */}
-              <img
-                style={{
-                  maxWidth: "90vw",
-
-                  margin: "0 auto",
-                }}
-                className={
-                  breakpoints.md ? classes.imgMobileDimen : classes.hidden
-                }
-                src={ImgDocAnnotationsMac}
-                alt="Polar App annotations and notes screenshot macbook mockup"
+              <img style={{
+                       maxWidth: "90vw",
+                       margin: "0 auto",
+                   }}
+                   className={
+                       breakpoints.md ? classes.imgMobileDimen : classes.hidden
+                   }
+                   src={ImgDocAnnotationsMac}
+                  alt="Polar App annotations and notes screenshot macbook"
               />
               <Box
                 style={{
