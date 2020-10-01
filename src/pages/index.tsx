@@ -51,8 +51,6 @@ const Landing = ({ location }) => {
         lang="en"
       />
 
-      <GatsbyImage/>
-
       <Box
         style={{
           flexDirection: "column",
