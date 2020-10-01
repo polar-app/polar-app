@@ -16,6 +16,7 @@ import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
 import GatsbyImage from "../components/GatsbyImage";
+import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -58,6 +59,9 @@ const Landing = ({ location }) => {
         }}
         className={breakpoints.md ? classes.marginsMobile : null}
       >
+
+          <AnnotationRepositoryImage/>
+
         <div
           className={
             breakpoints.md ? classes.topPageFrameMobile : classes.topPageFrame

@@ -2,11 +2,11 @@ import React from "react"
 import {graphql, StaticQuery} from "gatsby"
 import Img from "gatsby-image"
 
-export const AnnotationRepositoryImage = React.memo(() => (
+export default React.memo(() => (
     <StaticQuery
         query={graphql`
             query {
-  file(absolutePath: {eq: "/Users/burton/projects/polar-app/packages/polar-site2/content/assets/screenshots/2020-10-annotation-view.png"}) {
+  file(relativePath: {eq: "screenshots/2020-10-annotation-view.png"}) {
     childImageSharp {
       fluid(maxWidth: 1280) {
           ...GatsbyImageSharpFluid_withWebp
