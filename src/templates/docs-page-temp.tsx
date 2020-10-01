@@ -121,16 +121,12 @@ function DocsDesktop({ data, classes }) {
           style={{ flexBasis: "50%" }}
           className={breakpoints.md ? classes.shiftContent : null}
         >
-          <Box style={{ maxWidth: "500px" }}>
+          <Box style={{ }}>
             <div
               dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }}
             />
           </Box>
         </Box>
-        <IntraPageIndex
-          hiddenBelow={breakpoints.md}
-          headers={data.markdownRemark.headings}
-        />
       </Box>
     </Box>
   );
