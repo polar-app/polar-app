@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby";
 import Link from "@material-ui/core/Link";
 const polarLogo = require("../../content/assets/polar-icon.png");

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import { Box, ThemeProvider, CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { StaticQuery, graphql } from "gatsby";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 
 const ImgTrustedByRows = require("../../content/assets/logos/trusted-by-2-rows.png");
 const ImgTrustedBy = require("../../content/assets/logos/trusted-logos.png");

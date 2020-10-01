@@ -1,12 +1,5 @@
-/**
- * SEO component that queries for data with
- *  Gatsby's useStaticQuery React hook
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import * as PropTypes from "prop-types";
 // import { PageProps } from "gatsby"
 import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
@@ -25,6 +18,12 @@ type Data = {
 const TWITTER_IMAGE =
   "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png";
 
+/**
+ * SEO component that queries for data with
+ *  Gatsby's useStaticQuery React hook
+ *
+ * See: https://www.gatsbyjs.org/docs/use-static-query/
+ */
 const SEO = ({ description, lang, meta, title }) => {
   const { site }: Data = useStaticQuery(
     graphql`

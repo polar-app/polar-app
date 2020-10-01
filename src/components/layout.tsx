@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import Nav from "./nav";
 import { Box, CssBaseline } from "@material-ui/core";
 import { Helmet } from "react-helmet";

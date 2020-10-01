@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import { Container, Box, makeStyles } from "@material-ui/core";
 import { Button } from "gatsby-material-ui-components";

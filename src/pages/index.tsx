@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import { graphql } from "gatsby";
 import { Button } from "gatsby-material-ui-components";
 
@@ -60,8 +60,6 @@ const Landing = ({ location }) => {
         className={breakpoints.md ? classes.marginsMobile : null}
       >
 
-          <AnnotationRepositoryImage/>
-
         <div
           className={
             breakpoints.md ? classes.topPageFrameMobile : classes.topPageFrame
@@ -97,16 +95,26 @@ const Landing = ({ location }) => {
                 progress.
               </p>
               {/* </Fade> */}
-              <img style={{
-                       maxWidth: "90vw",
-                       margin: "0 auto",
-                   }}
-                   className={
-                       breakpoints.md ? classes.imgMobileDimen : classes.hidden
-                   }
-                   src={ImgDocAnnotationsMac}
-                  alt="Polar App annotations and notes screenshot macbook"
-              />
+              {/*<img style={{*/}
+              {/*         maxWidth: "90vw",*/}
+              {/*         margin: "0 auto",*/}
+              {/*     }}*/}
+              {/*     className={*/}
+              {/*         breakpoints.md ? classes.imgMobileDimen : classes.hidden*/}
+              {/*     }*/}
+              {/*     src={ImgDocAnnotationsMac}*/}
+              {/*    alt="Polar App annotations and notes screenshot macbook"*/}
+              {/*/>*/}
+
+            <AnnotationRepositoryImage style={{
+                                           maxWidth: "90vw",
+                                           margin: "0 auto",
+                                       }}
+                                       alt="Polar App annotations and notes screenshot macbook"
+                                       className={
+                                           breakpoints.md ? classes.imgMobileDimen : classes.hidden
+                                       }/>
+
               <Box
                 style={{
                   display: "flex",
@@ -143,6 +151,27 @@ const Landing = ({ location }) => {
           <TrustedByLogos />
         </div>
 
+          <div className={classes.centerSection}>
+
+              <h1>
+                  Organize your reading
+              </h1>
+
+              <p>
+                  Document repository for PDFs, EPUBs, and webpages. <br />
+                  Read and manage multiple documents at the same time.
+              </p>
+
+              <p>
+                  Read and manage multiple documents at the same time.
+              </p>
+
+              <Box boxShadow={3}>
+                  <AnnotationRepositoryImage className={classes.centerImage}
+                                             alt="Polar App homepage screenshot macbook"/>
+              </Box>
+          </div>
+
         <div className={breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame}>
           <Box className={breakpoints.md ? classes.pageContentMobile : classes.pageContent}>
             <Box className={breakpoints.md ? classes.pageTextMobile : classes.pageText}
@@ -161,20 +190,22 @@ const Landing = ({ location }) => {
               </p>
               {/* </Fade> */}
             </Box>
-            {/* <Fade left> */}
-            {breakpoints.md ? (
-              <img
-                className={classes.imgMobileDimen}
-                src={ImgPoppFeatsMac}
-                alt="Polar App homepage screenshot macbook"
-              />
-            ) : (
-              <img
-                className={classes.imgDimen}
-                src={ImgPoppFeatsMac}
-                alt="Polar App homepage screenshot macbook"
-              />
-            )}
+
+              <AnnotationRepositoryImage className={breakpoints.md ? classes.imgMobileDimen : classes.imgDimen}
+                                         alt="Polar App homepage screenshot macbook"/>
+            {/*{breakpoints.md ? (*/}
+            {/*  <img*/}
+            {/*    className={classes.imgMobileDimen}*/}
+            {/*    src={ImgPoppFeatsMac}*/}
+            {/*    alt="Polar App homepage screenshot macbook"*/}
+            {/*  />*/}
+            {/*) : (*/}
+            {/*  <img*/}
+            {/*    className={classes.imgDimen}*/}
+            {/*    src={ImgPoppFeatsMac}*/}
+            {/*    alt="Polar App homepage screenshot macbook"*/}
+            {/*  />*/}
+            {/*)}*/}
             {/* </Fade> */}
             <p
               className={
@@ -188,6 +219,11 @@ const Landing = ({ location }) => {
           {/* </Container> */}
           {/* </Box> */}
         </div>
+
+
+
+
+
         <div className={breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame}>
           <Box className={breakpoints.md ? classes.pageContentMobile : classes.evenPageContent}>
             <Box className={breakpoints.md ? classes.evenPageText : classes.hidden}>

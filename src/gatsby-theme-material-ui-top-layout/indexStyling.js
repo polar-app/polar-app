@@ -1,6 +1,20 @@
 import { makeStyles } from "@material-ui/core";
 
 const IndexStyling = makeStyles({
+
+  centerSection: {
+    display: 'flex',
+    textAlign: 'center',
+    flexDirection: 'column',
+    backgroundColor: 'rgb(78, 78, 78)'
+  },
+  centerImage: {
+    maxWidth: '1280px',
+    margin: '10px',
+    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
   topContent: {
     display: "flex",
     justifyContent: "center",

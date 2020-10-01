@@ -1,8 +1,14 @@
-import React from "react"
+import * as React from "react"
 import {graphql, StaticQuery} from "gatsby"
 import Img from "gatsby-image"
 
-export default React.memo(() => (
+interface IProps {
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
+    readonly alt?: string;
+}
+
+export default React.memo((props: IProps) => (
     <StaticQuery
         query={graphql`
             query {
@@ -16,7 +22,11 @@ export default React.memo(() => (
 }
         `}
         render={data => (
-            <Img fluid={data.file.childImageSharp.fluid} />
+            <Img fluid={data.file.childImageSharp.fluid}
+                 style={props.style}
+                 className={props.className}
+                 alt={props.alt}
+                 />
         )}
     />
 
