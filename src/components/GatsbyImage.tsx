@@ -6,6 +6,11 @@ interface IProps {
 
 }
 
+// does GatsbyImageSharpFluid work? NO ... it does not and I get a build error even with a clean build.
+// YES... it does!
+
+// ??GatsbyImageSharpFluid_withWebp
+
 export default () => (
     <StaticQuery
         query={graphql`
@@ -13,11 +18,7 @@ export default () => (
   file(absolutePath: {eq: "/Users/burton/projects/polar-app/packages/polar-site2/content/assets/screenshots/2020-10-annotation-view.png"}) {
     childImageSharp {
       fluid(maxWidth: 1280) {
-          base64
-          aspectRatio
-          src
-          srcSet
-          sizes
+          ...GatsbyImageSharpFluid_withWebp
       }
     }
   }
