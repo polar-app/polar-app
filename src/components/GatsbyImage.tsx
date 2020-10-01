@@ -10,19 +10,22 @@ export default () => (
     <StaticQuery
         query={graphql`
             query {
-                file(relativePath: { eq: "assets/screenshots/2020-10-annotation-view.png" }) {
-                  childImageSharp {
-                    # Specify the image processing specifications right in the query.
-                    # Makes it trivial to update as your page's design changes.
-                    fluid(maxWidth: 1280) {
-                      ...GatsbyImageSharpFluid
-                    }
-                  }
-                }
-            }
+  file(absolutePath: {eq: "/Users/burton/projects/polar-app/packages/polar-site2/content/assets/screenshots/2020-10-annotation-view.png"}) {
+    childImageSharp {
+      fluid(maxWidth: 1280) {
+          base64
+          aspectRatio
+          src
+          srcSet
+          sizes
+      }
+    }
+  }
+}
+
         `}
         render={data => (
-            <Img fluid={data.file.childImageSharp} />
+            <Img fluid={data.file.childImageSharp.fluid} />
         )}
     />
 
