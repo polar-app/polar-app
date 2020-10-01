@@ -51,7 +51,7 @@ const Landing = ({ location }) => {
         lang="en"
       />
 
-      <GatsbyImage/>
+      {/*<GatsbyImage/>*/}
 
       <Box
         style={{
