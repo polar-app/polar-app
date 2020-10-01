@@ -1,8 +1,8 @@
 ---
 title: Support
 layout: doc
-date: 2019-11-05 09:00:00 -0800
 permalink: /docs/support.html
+description: We take support seriously.
 ---
 
 # Overview

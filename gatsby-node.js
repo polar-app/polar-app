@@ -98,6 +98,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     //onCreate docs nodes
     if (node.frontmatter.layout === "doc") {
       const placement_indent = getPlacementAndIndent(node.frontmatter.title);
+      console.log("========== Working with node ID: " + node.id);
+      // console.log("Working with node: ", node);
       createNodeField({
         name: `slug`,
         node,

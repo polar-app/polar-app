@@ -1,6 +1,6 @@
 
 
-let DOCS_ORDER = [
+const DOCS_ORDER = [
   
   "Getting Started", 0,
   "Frequently Asked Questions (FAQ)", 0,
@@ -25,20 +25,23 @@ let DOCS_ORDER = [
   "Tracking Policy", 0,
   "Support", 0,
   "Roadmap", 0,
-]
+];
 
 // let replaceWithForwardSlash = function (
 
-let getPlacementAndIndent = function (title) {
+const getPlacementAndIndent = function (title) {
+
   for (var x = 0; x < DOCS_ORDER.length; x = x + 2) {
     if (title === DOCS_ORDER[x]) {
-      return [x / 2, DOCS_ORDER[x + 1]]
+      return [x / 2, DOCS_ORDER[x + 1]];
     }
   }
+
+  return 0;
+
 };
 
 module.exports = {
   DOCS_ORDER: DOCS_ORDER,
   getPlacementAndIndent: getPlacementAndIndent,
-
-}
+};
