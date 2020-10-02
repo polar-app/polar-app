@@ -18,6 +18,7 @@ import TrustedByLogos from "../components/trusted-by-logos";
 import GatsbyImage from "../components/GatsbyImage";
 import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
 import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
+import DocumentViewerImage from "./images/DocumentViewerImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -101,59 +102,28 @@ const Landing = ({ location }) => {
                                          alt="Polar App homepage screenshot macbook"/>
           </div>
 
-        <div className={breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame}>
-          <Box className={breakpoints.md ? classes.pageContentMobile : classes.pageContent}>
-            <Box className={breakpoints.md ? classes.pageTextMobile : classes.pageText}
-                 style={{ width: "56%" }}>
-              {/* <Fade up> */}
-              <h1 className={breakpoints.md ? classes.headerMobile : null}>
-                Organize your reading
+
+
+          <div className={classes.centerSection}>
+
+              <h1>
+                  Active Reading
               </h1>
-              <p className={breakpoints.md ? classes.hidden : null}>
-                Document repository for PDFs, epubs, and webpages. <br />
-                Read and manage multiple documents at the same time.
-              </p>
 
-              <p className={breakpoints.md ? classes.subtitleMobile : classes.hidden}>
-                Read and manage multiple documents at the same time.
-              </p>
-              {/* </Fade> */}
-            </Box>
+              <h2>
+                  Annotations and comments, active reading,
+                  incremental reading, and flashcards
+              </h2>
 
-              <AnnotationRepositoryImage className={breakpoints.md ? classes.imgMobileDimen : classes.imgDimen}
-                                         alt="Polar App homepage screenshot macbook"/>
-            {/*{breakpoints.md ? (*/}
-            {/*  <img*/}
-            {/*    className={classes.imgMobileDimen}*/}
-            {/*    src={ImgPoppFeatsMac}*/}
-            {/*    alt="Polar App homepage screenshot macbook"*/}
-            {/*  />*/}
-            {/*) : (*/}
-            {/*  <img*/}
-            {/*    className={classes.imgDimen}*/}
-            {/*    src={ImgPoppFeatsMac}*/}
-            {/*    alt="Polar App homepage screenshot macbook"*/}
-            {/*  />*/}
-            {/*)}*/}
-            {/* </Fade> */}
-            <p
-              className={
-                breakpoints.md ? classes.subtitleMobileBottom : classes.hidden
-              }
-            >
-              Document repository for PDFs, epubs, and webpages.
-            </p>
-          </Box>
-
-          {/* </Container> */}
-          {/* </Box> */}
-        </div>
+              <DocumentViewerImage className={classes.centerImage}
+                                         alt="Polar Document Viewer"/>
+          </div>
 
 
 
 
 
-        <div className={breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame}>
+          <div className={breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame}>
           <Box className={breakpoints.md ? classes.pageContentMobile : classes.evenPageContent}>
             <Box className={breakpoints.md ? classes.evenPageText : classes.hidden}>
               {/* <Fade up> */}
