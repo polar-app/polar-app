@@ -45,7 +45,7 @@ const Landing = ({ location }) => {
       >
 
 
-          <div className={classes.centerSection + ' ' + classes.newHeroSection}>
+          <div className={classes.newHeroSection + ' ' + classes.centerSection}>
 
               <h1 style={{fontSize: '100px', lineHeight: '1em', fontWeight: 500}}>
                   Read. Learn. Never Forget.

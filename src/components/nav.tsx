@@ -34,7 +34,7 @@ const useStyles = makeStyles((darkMode) => ({
     overflow: "none",
   },
   navChoicesContainer: {
-    marginLeft: "8%",
+    marginLeft: "25px",
     textTransform: "lowercase",
     marginRight: "auto",
   },

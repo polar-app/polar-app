@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 const IndexStyling = makeStyles({
 
   newHeroSection: {
-    background: 'linear-gradient( 179.6deg, #6754d6 -18.13%, rgba(111, 93, 216, 0.948419) 8.81%, rgba(113, 109, 134, 0.87) 50.81%, rgba(255, 255, 255, 0) 80.3% ), #424242'
+    background: 'linear-gradient( 179.6deg, #6754d6 -18.13%, rgba(111, 93, 216, 0.948419) 8.81%, rgba(113, 109, 134, 0.87) 50.81%, rgba(255, 255, 255, 0) 80.3% ), #424242 !important'
   },
 
   centerSection: {
@@ -12,6 +12,7 @@ const IndexStyling = makeStyles({
     flexDirection: 'column',
     backgroundColor: 'rgb(78, 78, 78)',
     paddingBottom: '15px',
+    background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
     "& h1": {
       fontWeight: '400',
       fontSize: '64px'
