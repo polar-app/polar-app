@@ -11,8 +11,8 @@ const Styles: IStyleMap = {
 
     textLogo: {
         paddingLeft: '5px',
-        fontWeight: 'bold',
-        fontSize: '20px',
+        fontWeight: 700,
+        fontSize: '27px',
         userSelect: 'none',
         textDecoration: 'none'
     }

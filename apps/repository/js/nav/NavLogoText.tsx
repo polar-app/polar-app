@@ -6,8 +6,8 @@ export const NavLogoText = deepMemo(() => {
         <div style={{
                  paddingLeft: '5px',
                  paddingRight: '5px',
-                 fontWeight: 'bold',
-                 fontSize: '20px',
+                 fontWeight: 700,
+                 fontSize: '27px',
                  userSelect: 'none',
                  textDecoration: 'none'
              }}>
