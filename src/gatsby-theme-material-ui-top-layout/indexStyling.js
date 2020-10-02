@@ -2,6 +2,10 @@ import { makeStyles } from "@material-ui/core";
 
 const IndexStyling = makeStyles({
 
+  newHeroSection: {
+    background: 'linear-gradient( 179.6deg, #6754d6 -18.13%, rgba(111, 93, 216, 0.948419) 8.81%, rgba(113, 109, 134, 0.87) 50.81%, rgba(255, 255, 255, 0) 80.3% ), #424242'
+  },
+
   centerSection: {
     display: 'flex',
     textAlign: 'center',
@@ -138,6 +142,16 @@ const IndexStyling = makeStyles({
     width: "183px",
     height: "36.21px",
   },
+
+  buttonAccount: {
+    textTransform: "none",
+    marginTop: "10px",
+    marginBottom: "10px",
+    backgroundColor: "#6754D6",
+    width: "183px",
+    height: "36.21px",
+  },
+
   logoBar: {
     width: "36%",
     minWidth: "600px",

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     // flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    margin: "138px 0px 50px 0px",
+    margin: "20px 0px 50px 0px",
 
     // alignContent: "flex-end",
     width: "100vw",

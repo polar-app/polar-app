@@ -17,6 +17,7 @@ import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
 import GatsbyImage from "../components/GatsbyImage";
 import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
+import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -42,96 +43,45 @@ const Landing = ({ location }) => {
         className={breakpoints.md ? classes.marginsMobile : null}
       >
 
-        <div
-          className={
-            breakpoints.md ? classes.topPageFrameMobile : classes.topPageFrame
-          }
-        >
-          <Box
-            className={
-              breakpoints.md ? classes.topContentMobile : classes.topContent
-            }
-          >
-            <Box
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignContent: "center",
-                justifyContent: "center",
-                margin: "0px",
-                left: "0",
-              }}
-            >
-              {/* <Fade style={{ marginRight: 0 }} up> */}
-              <h1
-                className={
-                  breakpoints.md ? classes.headerMobile : classes.headerDesk
-                }
-              >
-                Read. Learn.
-                Never Forget.
+
+          <div className={classes.centerSection + ' ' + classes.newHeroSection}>
+
+              <h1 style={{fontSize: '100px', lineHeight: '1em', fontWeight: 500}}>
+                  Read. Learn. Never Forget.
               </h1>
 
-              <p className={breakpoints.md ? classes.subtitleMobile : null}>
-                Effortlessly annotate, highlight, and track your reading
-                progress.
-              </p>
-              {/* </Fade> */}
-              {/*<img style={{*/}
-              {/*         maxWidth: "90vw",*/}
-              {/*         margin: "0 auto",*/}
-              {/*     }}*/}
-              {/*     className={*/}
-              {/*         breakpoints.md ? classes.imgMobileDimen : classes.hidden*/}
-              {/*     }*/}
-              {/*     src={ImgDocAnnotationsMac}*/}
-              {/*    alt="Polar App annotations and notes screenshot macbook"*/}
-              {/*/>*/}
+              <h2>
+                  Effortlessly annotate, highlight, and track your reading progress.
+              </h2>
 
-            <AnnotationRepositoryImage style={{
-                                           maxWidth: "90vw",
-                                           margin: "0 auto",
-                                       }}
-                                       alt="Polar App annotations and notes screenshot macbook"
-                                       className={
-                                           breakpoints.md ? classes.imgMobileDimen : classes.hidden
-                                       }/>
+              <div style={{
+                       marginLeft: 'auto',
+                       marginRight: 'auto'
+                   }}>
 
-              <Box
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                }}
-              >
-                <Button
-                  className={
-                    breakpoints.sm ? classes.buttonAccMobile : classes.buttonAcc
-                  }
-                >
-                  Create Account
-                </Button>
-                <div>
+                  <Button className={classes.buttonAccount}>
+                      Create Account
+                  </Button>
+
+              </div>
+
+              <div>
                   Already using Polar?{" "}
                   <a style={{ color: "#A88CFF" }} href="#">
-                    Sign in
+                      Sign in
                   </a>
-                </div>
-              </Box>
-            </Box>
+              </div>
 
-            <img
-              style={{
-                marginRight: "20%",
-              }}
-              className={breakpoints.md ? classes.hidden : classes.imgDimen}
-              src={ImgDocAnnotationsMac}
-              alt="Polar App annotations and notes screenshot macbook mockup"
-            />
-          </Box>
-          <TrustedByLogos />
-        </div>
+              {/*<h3>*/}
+              {/*    Read and manage multiple documents at the same time.*/}
+              {/*</h3>*/}
+
+              <DocumentRepositoryImage className={classes.centerImage}/>
+
+              <TrustedByLogos />
+
+          </div>
+
 
           <div className={classes.centerSection}>
 
@@ -320,13 +270,3 @@ const Landing = ({ location }) => {
 };
 
 export default Landing;
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;
