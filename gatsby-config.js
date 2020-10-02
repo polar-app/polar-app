@@ -56,7 +56,8 @@ module.exports = {
             options: {
               maxWidth: 1280,
               quality: 100,
-              withWebp: true
+              withWebp: true,
+              durationFadeIn: 100,
             },
           },
         ],

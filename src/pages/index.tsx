@@ -54,8 +54,8 @@ const Landing = ({ location }) => {
                   Read. Learn. Never Forget.
               </h1>
 
-              <h2>
-                  Polar is an integrated reading environment that enables you to build a knowledge base from your reading. Effortlessly read, annotate, connect your thoughts, create flashcards, and track your progress.
+              <h2 style={{width: '1200px', textAlign: 'center'}}>
+                  Polar is an integrated reading environment to build a knowledge base from reading. Actively read, annotate, connect thoughts, create flashcards, and track progress.
               </h2>
 
               <div style={{

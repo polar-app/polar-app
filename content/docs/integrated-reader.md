@@ -9,8 +9,6 @@ description: Polar has an integrated reader for epub, pdfs, and webpages. The an
 
 Polar has an integrated reader for all uploaded documents. The reader supports EPUBs, PDFs, and webpages (captured through the Chrome extension). Any annotation, highlight, or comment created in Polar is captured into your repository.
 
-The reader with all its functionality is also fully functional on mobile
-
 # Annotation Sidebar
 
 The annotation sidebar in the document reader shows a list of highlights, comments and

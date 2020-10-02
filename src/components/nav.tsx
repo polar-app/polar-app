@@ -268,14 +268,6 @@ function NavBarDesktop() {
           <Button
             className={classes.navChoices}
             color="inherit"
-            href="/features"
-            style={{ backgroundColor: "transparent" }}
-          >
-            features
-          </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
             href="/pricing"
           >
             pricing

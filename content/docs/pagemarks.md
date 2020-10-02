@@ -18,7 +18,7 @@ Pagemarks are contrasted with bookmarks in that a bookmark is only a simple poin
 Pagemarks allow you to specify a range, or multiple ranges.  Additionally, pagemarks are used to keep track of the total
 progress of the document and to sort documents in the document repository by their reading progress..
 
-<img class="img-fluid" src="../assets/screenshots/annotations-shadow.png">
+<img class="img-fluid" src="https://i.imgur.com/7opRKhS.png">
 
 <div class="text-center">Screenshot showing a document with 4 pagemarks</div>
 
@@ -38,7 +38,7 @@ current page.
 We have statistics for tracking the number of pages you read per day and an integrated calendar chart showing this
 visually in the stats page.
 
-<img class="img-fluid" src="https://getpolarized.io/assets/screenshots/reading-progress.webp">
+<img class="img-fluid" src="https://i.imgur.com/7OjCYxH.png">
 
 ## Pagemark labels
 

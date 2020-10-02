@@ -25,14 +25,14 @@ const IndexStyling = makeStyles({
 
     "& h1": {
       fontWeight: '400',
-      fontSize: '55px'
+      fontSize: '45px'
     },
     "& h2": {
-      fontSize: '35px',
+      fontSize: '25px',
       lineHeight: '1.3em'
     },
     "& h3": {
-      fontSize: '30px'
+      fontSize: '22px'
     },
     "& > *": {
       marginLeft: 'auto',
@@ -43,7 +43,7 @@ const IndexStyling = makeStyles({
   },
 
   centerImage: {
-    maxWidth: 'min(1280px, 100vw)',
+    maxWidth: 'min(1000px, 100vw)',
     maxHeight: '100vh',
     margin: '20px',
     width: '100%',

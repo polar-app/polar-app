@@ -14,21 +14,19 @@ Incremental reading is **the technique of reading articles in small portions**. 
 **Document Repository**: You can organize all your reading materials (pdfs, epubs, webpages, ebooks) in one place. 
 
 
-<img class="img-fluid" src="https://i.imgur.com/4rClAxt.png">
+<img class="img-fluid" src="../assets/screenshots/2020-10-document-view.png">
 
 
 **<a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">Pagemarks</a>** in Polar allow you to mark regions of a document and specify multiple ranges of text. You can also turn on the auto-pagemark feature to track progress automatically. On the main page of Polar and at the top of the document, the progress reading bar will show you exactly where they left their pagemark.
 
-
-<img class="img-fluid" src="https://i.imgur.com/7O1QseQ.png">
-
+<img class="img-fluid" src="https://i.imgur.com/7opRKhS.png">
 
 **Annotations**: Simply highlight key information and it will automatically appear in the annotation sidebar.  Polar supports different colors for annotation. You can also create tags, comment, and modify annotations. 
  
 You can work with annotations directly in a document or in the annotation repository. The advantage of the annotation repository is having annotations from all documents in one place. This feature allows you to build a graph-based / non-linear structure of annotations. 
 
  
-<img class="img-fluid" src="https://i.imgur.com/beb8Qhh.png">
+<img class="img-fluid" src="https://i.imgur.com/sygxfpR.png">
  
 
 Here is a guide on how to do incremental reading in Polar:
@@ -39,7 +37,7 @@ Here is a guide on how to do incremental reading in Polar:
 4. Review flashcards in Polar directly or by syncing flashcards into <a href="https://ankiweb.net/shared/info/734898866">Anki</a>. To start studying annotations and flashcards in Polar, click the “Annotations” tab. Then click “Start Review.”
  
 
-<img class="img-fluid" src="https://i.imgur.com/SDBrleo.png">
+<img class="img-fluid" src="https://i.imgur.com/2JZu8EV.png">
  
 
 Here is the basic life cycle of your flashcards with Polar’s own spaced repetition software:
