@@ -48,7 +48,7 @@ Polar allows you to review annotations directly by going to the annotation view 
 which will review ten cards at a time.   
 
 <p class="text-center">
-<img class="img-fluid border" src="https://i.imgur.com/FNEYGTj.png">
+<img class="img-fluid border" src="https://i.imgur.com/2JZu8EV.png">
 </p>
 
 When you create an annotation or flashcard, they will be scheduled for the future so that you can review them at a
@@ -58,10 +58,6 @@ later date.
 
 We will compute 10 or more 'tasks' that need to be completed.  Right now these are reading reviews but in the future
 will also be flashcards.
-
-<p class="text-center">
-<img class="img-fluid border" src="https://i.imgur.com/BKkEVKl.png">
-</p>
 
 # Scheduling 
 

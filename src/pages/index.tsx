@@ -55,7 +55,7 @@ const Landing = ({ location }) => {
               </h1>
 
               <h2>
-                  POLAR makes it effortless to annotate, highlight, and track your reading progress.
+                  Polar is an integrated reading environment that enables you to build a knowledge base from your reading. Effortlessly read, annotate, connect your thoughts, create flashcards, and track your progress.
               </h2>
 
               <div style={{
@@ -112,8 +112,8 @@ const Landing = ({ location }) => {
               </h1>
 
               <h2>
-                  Annotations and comments, active reading,
-                  incremental reading, and flashcards
+                  Use Polar's integrated document viewer to read, annotate, highlight text and areas, tag annotations,
+                  comment, and create flashcards from highlights.
               </h2>
 
               <DocumentViewerImage className={classes.centerImage}
@@ -145,7 +145,8 @@ const Landing = ({ location }) => {
               </h1>
 
               <h3>
-                  Easily create flashcards from your annotations.  Embed images and tags and sync them seamlessly to Anki.
+                  Use Polar to create flaschards in one click from your annotations and highlights. Review them using
+                  Polar's spaced repetition algorithm or sync them with Anki
               </h3>
 
               <FlashcardReviewImage className={classes.centerImage}

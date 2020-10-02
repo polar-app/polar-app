@@ -34,9 +34,6 @@ readable.
 
 You can easily open the original URL of any captured webapge through Polar. Any potential changes on the website will not be reflected in the previously captured webpage.
 
-<!-- <img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png"> -->
-<p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/capture-preview-narrow.png"></p>
-
 # Readability
 
 Polar supports capturing the document in a more readable form by using Mozilla's Readability. The conversion into a more usable format uses epub as a basis.
@@ -60,12 +57,3 @@ allows you to send directly from Chrome into Polar. This is the easiest way of c
 
 The extension works for any webpage. In the first step, it converts the webpage into an easy-to-read format. Clicking the button on the top right of that page captures the webpage into your repository.
 
-# Document Repository
-
-After the web page is captured and saved in the cloud it's saved to the document 
-repository where you can treat it like any other uploaded document.
-
-The document repository supports features like tagging, tracking reading progress,
-custom sorting (by updated time, added time), etc. 
-
-<p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/document-repository-narrow.png"></p>
