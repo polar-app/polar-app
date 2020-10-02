@@ -22,7 +22,7 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import TwitterIcon from "@material-ui/icons/Twitter";
 const DiscordIconLight = require("../../content/assets/logos/discord-light.png");
 import IconButton from "@material-ui/core/IconButton";
-const ImgPolarLogo = require("../../content/assets/polar-logo-button.png");
+const ImgPolarLogo = require("../../content/assets//logos/logo.svg");
 import CloseIcon from "@material-ui/icons/Close";
 import { renderStatic } from "react-helmet";
 const useStyles = makeStyles((darkMode) => ({
@@ -63,8 +63,8 @@ const useStyles = makeStyles((darkMode) => ({
   polarButton: {
     width: "auto",
     // marginLeft: "40px",
-    fontSize: "34px",
-    fontWeight: 900,
+    fontSize: "27px",
+    fontWeight: 700,
     backgroundColor: "transparent !important",
     lineHeight: "40px",
     color: "#e0e0e0",
@@ -72,8 +72,8 @@ const useStyles = makeStyles((darkMode) => ({
   polarButtonMobile: {
     width: "auto",
     // marginLeft: "40px",
-    fontSize: "18px",
-    fontWeight: 900,
+    fontSize: "27px",
+    fontWeight: 700,
     backgroundColor: "transparent !important",
     lineHeight: "40px",
     color: "#e0e0e0",
@@ -81,8 +81,8 @@ const useStyles = makeStyles((darkMode) => ({
   polarButtonTab: {
     width: "auto",
     // marginLeft: "40px",
-    fontSize: "28px",
-    fontWeight: 900,
+    fontSize: "27px",
+    fontWeight: 700,
     backgroundColor: "transparent !important",
     lineHeight: "40px",
     color: "#e0e0e0",

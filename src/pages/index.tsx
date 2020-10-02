@@ -177,61 +177,6 @@ const Landing = ({ location }) => {
             </Box>
           </Box>
         </div>
-        <div
-          className={
-            breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame
-          }
-        >
-          <Box
-            className={
-              breakpoints.md ? classes.pageContentMobile : classes.pageContent
-            }
-          >
-            <Box
-              className={
-                breakpoints.md ? classes.pageTextMobile : classes.pageText
-              }
-            >
-              {/* <Fade up> */}
-              <h1 className={breakpoints.md ? classes.headerMobile : null}>
-                Read actively
-              </h1>
-              <p className={breakpoints.md ? classes.hidden : null}>
-                Annotations and comments, active reading, <br /> incremental
-                reading, and flashcards
-              </p>
-              <p
-                style={{
-                  maxWidth: "60%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-                className={
-                  breakpoints.md ? classes.subtitleMobile : classes.hidden
-                }
-              >
-                Annotations and comments, active reading, <br /> incremental
-                reading, and flashcards
-              </p>
-              {/* </Fade> */}
-            </Box>
-            {/* <Fade left> */}
-            <img
-              className={breakpoints.md ? classes.hidden : classes.imgDimen}
-              src={ImgReadDocs}
-              alt="Polar App pdf reader screenshot macbook mockup"
-            />
-
-            <img
-              className={
-                breakpoints.md ? classes.imgMobileDimen : classes.hidden
-              }
-              alt="Polar App pdf reader screenshot macbook mockup"
-              src={ImgReadDocs}
-            />
-            {/* </Fade> */}
-          </Box>
-        </div>
 
         <CreateAccountWLogos transparent={false} />
       </Box>
