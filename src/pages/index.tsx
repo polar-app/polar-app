@@ -21,6 +21,7 @@ import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
+import {CreateAccountButton} from "../components/CreateAccountButton";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -62,9 +63,7 @@ const Landing = ({ location }) => {
                        marginRight: 'auto'
                    }}>
 
-                  <Button className={classes.buttonAccount}>
-                      Create Account
-                  </Button>
+                  <CreateAccountButton/>
 
               </div>
 

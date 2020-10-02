@@ -44,7 +44,7 @@ There are three ways to create folders and tags.
 The sidebar has a ```+``` button you can use to create a new folder or tag.  Just click this and you will
 be presented with a dropdown with options to ```Create Folder``` or ```Create Tag```.
 
-<img class="img-shadow" src="https://i.imgur.com/GJ3wvGv.png">
+<img class="img-shadow" src="https://i.imgur.com/JTctUNd.png">
 
 ## Sidebar context menu
 
@@ -55,7 +55,7 @@ When right click on a specific folder, the new folder will be created as a subfo
 For example.  If you select ```/school``` as your folder, then right click, and create ```Create Folder```
 and you enter ```compsci``` it will create a new folder at ```/school/compsci```.
 
-<img class="img-shadow" src="https://i.imgur.com/1hYaGfB.png">
+<img class="img-shadow" src="https://i.imgur.com/8vfmdT5.png">
 
 ## Tagging a document
 

@@ -25,6 +25,7 @@ import IconButton from "@material-ui/core/IconButton";
 const ImgPolarLogo = require("../../content/assets//logos/logo.svg");
 import CloseIcon from "@material-ui/icons/Close";
 import { renderStatic } from "react-helmet";
+import {CreateAccountButton} from "./CreateAccountButton";
 const useStyles = makeStyles((darkMode) => ({
   list: {
     width: 250,
@@ -334,20 +335,10 @@ function NavBarDesktop() {
           </Box>
         )}
 
-        <Button
-          style={{
-            textTransform: "none",
-            marginRight: "4.5%",
-            backgroundColor: "#6754D6",
-            fontWeight: 300,
-            letterSpacing: ".15px",
-            fontSize: "16px",
-          }}
-          href="https://beta.getpolarized.io/login"
-          target="_blank"
-        >
-          <span style={{ padding: "7 10px" }}> Create account</span>
-        </Button>
+        <div style={{marginRight: '5px'}}>
+          <CreateAccountButton/>
+        </div>
+
       </Toolbar>
     </AppBar>
     // </Box>
