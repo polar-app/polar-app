@@ -2,6 +2,15 @@ import { makeStyles } from "@material-ui/core";
 
 const IndexStyling = makeStyles({
 
+  sectionOdd: {
+    backgroundColor: 'rgb(90,90,90)'
+
+  },
+
+  sectionEven: {
+    backgroundColor: 'rgb(73,73,73)'
+  },
+
   newHeroSection: {
     background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
   },
@@ -12,7 +21,6 @@ const IndexStyling = makeStyles({
     flexDirection: 'column',
     backgroundColor: 'rgb(78, 78, 78)',
     paddingBottom: '15px',
-    background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
     "& h1": {
       fontWeight: '400',
       fontSize: '55px'

@@ -20,6 +20,7 @@ import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
 import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
+import FlashcardReviewImage from "./images/FlashcardReviewImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -85,14 +86,15 @@ const Landing = ({ location }) => {
           </div>
 
 
-          <div className={classes.centerSection}>
+          <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
               <h1>
-                  Organize your reading
+                  Organize Your Reading
               </h1>
 
               <h2>
-                  Document repository for PDFs, EPUBs, and webpages.
+                  Document repository for PDFs, EPUBs, and webpages.  Keep all your documents in one place and manage
+                  them with tags and folders.
               </h2>
 
               {/*<h3>*/}
@@ -104,8 +106,7 @@ const Landing = ({ location }) => {
           </div>
 
 
-
-          <div className={classes.centerSection}>
+          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
               <h1>
                   Active Reading
@@ -148,8 +149,8 @@ const Landing = ({ location }) => {
                   Easily create flashcards from your annotations.  Embed images and tags and sync them seamlessly to Anki.
               </h3>
 
-              <StatisticsImage className={classes.centerImage}
-                               alt="Polar Reading Statistics"/>
+              <FlashcardReviewImage className={classes.centerImage}
+                                    alt="Polar Reading Statistics"/>
           </div>
 
 
