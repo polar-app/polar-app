@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 const IndexStyling = makeStyles({
 
   newHeroSection: {
-    background: 'linear-gradient( 179.6deg, #6754d6 -18.13%, rgba(111, 93, 216, 0.948419) 8.81%, rgba(113, 109, 134, 0.87) 50.81%, rgba(255, 255, 255, 0) 80.3% ), #424242 !important'
+    background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
   },
 
   centerSection: {
@@ -15,16 +15,20 @@ const IndexStyling = makeStyles({
     background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
     "& h1": {
       fontWeight: '400',
-      fontSize: '64px'
+      fontSize: '55px'
     },
     "& h2": {
-      fontSize: '40px',
-      lineHeight: '0em'
+      fontSize: '35px',
+      lineHeight: '1.3em'
     },
     "& h3": {
-      fontSize: '40px'
+      fontSize: '30px'
+    },
+    "& > *": {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      maxWidth: '1280px'
     }
-
 
   },
 

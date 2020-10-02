@@ -19,6 +19,7 @@ import GatsbyImage from "../components/GatsbyImage";
 import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
 import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 import DocumentViewerImage from "./images/DocumentViewerImage";
+import StatisticsImage from "./images/StatisticsImage";
 const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
@@ -52,7 +53,7 @@ const Landing = ({ location }) => {
               </h1>
 
               <h2>
-                  Effortlessly annotate, highlight, and track your reading progress.
+                  POLAR makes it effortless to annotate, highlight, and track your reading progress.
               </h2>
 
               <div style={{
@@ -120,6 +121,36 @@ const Landing = ({ location }) => {
           </div>
 
 
+
+
+          <div className={classes.centerSection}>
+
+              <h1>
+                  Keep Track of Reading Statistics
+              </h1>
+
+              <h2>
+                  Commit to reading a fixed number of pages per day and use it to encourage your reading.
+              </h2>
+
+              <StatisticsImage className={classes.centerImage}
+                               alt="Polar Reading Statistics"/>
+          </div>
+
+
+          <div className={classes.centerSection}>
+
+              <h1>
+                  Flashcards and Integrated Anki Sync
+              </h1>
+
+              <h3>
+                  Easily create flashcards from your annotations.  Embed images and tags and sync them seamlessly to Anki.
+              </h3>
+
+              <StatisticsImage className={classes.centerImage}
+                               alt="Polar Reading Statistics"/>
+          </div>
 
 
 
