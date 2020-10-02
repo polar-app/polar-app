@@ -25,24 +25,6 @@ const Landing = ({ location }) => {
   const breakpoints = useBreakpoint();
   const classes = useStyles();
 
-  // "gatsby-remark-images": "^3.3.8",
-  // "gatsby-remark-prismjs": "^3.5.2",
-  // "gatsby-remark-responsive-iframe": "^2.4.3",
-  // "gatsby-remark-smartypants": "^2.3.2",
-  // "gatsby-plugin-feed": "^2.5.3",
-  // // "gatsby-plugin-offline": "^3.2.7",
-  // "gatsby-plugin-sharp": "^2.6.9",
-  //   "gatsby-plugin-typography": "^2.5.2",
-  //   "gatsby-remark-copy-linked-files": "^2.3.3",
-  // "gatsby-transformer-sharp": "^2.5.3",
-  // "global": "^4.4.0",
-  // "prismjs": "^1.20.0",
-  // // "react-custom-scrollbars": "^4.2.1",
-  // "typeface-merriweather": "0.0.72",
-  // "typeface-montserrat": "0.0.75",
-  // "typography": "^0.16.19"
-  // "gatsby-image": "^2.4.5",
-
   return (
     <Layout>
       <SEO
@@ -157,19 +139,16 @@ const Landing = ({ location }) => {
                   Organize your reading
               </h1>
 
-              <p>
-                  Document repository for PDFs, EPUBs, and webpages. <br />
-                  Read and manage multiple documents at the same time.
-              </p>
+              <h2>
+                  Document repository for PDFs, EPUBs, and webpages.
+              </h2>
 
-              <p>
-                  Read and manage multiple documents at the same time.
-              </p>
+              {/*<h3>*/}
+              {/*    Read and manage multiple documents at the same time.*/}
+              {/*</h3>*/}
 
-              <Box boxShadow={3}>
-                  <AnnotationRepositoryImage className={classes.centerImage}
-                                             alt="Polar App homepage screenshot macbook"/>
-              </Box>
+              <AnnotationRepositoryImage className={classes.centerImage}
+                                         alt="Polar App homepage screenshot macbook"/>
           </div>
 
         <div className={breakpoints.md ? classes.oddPageFrameMobile : classes.oddPageFrame}>

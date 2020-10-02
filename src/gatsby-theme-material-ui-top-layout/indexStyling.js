@@ -6,14 +6,33 @@ const IndexStyling = makeStyles({
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
-    backgroundColor: 'rgb(78, 78, 78)'
+    backgroundColor: 'rgb(78, 78, 78)',
+    paddingBottom: '15px',
+    "& h1": {
+      fontWeight: '400',
+      fontSize: '64px'
+    },
+    "& h2": {
+      fontSize: '40px',
+      lineHeight: '0em'
+    },
+    "& h3": {
+      fontSize: '40px'
+    }
+
+
   },
+
   centerImage: {
-    maxWidth: '1280px',
+    maxWidth: 'min(1280px, 100vw)',
+    maxHeight: '100vh',
     margin: '10px',
     width: '100%',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    "-webkit-box-shadow": '0px 0px 10px 5px rgb(50,50,50)',
+    "-moz-box-shadow": '0px 0px 10px 5px rgb(50,50,50)',
+    boxShadow: "0px 0px 10px 5px rgb(50,50,50)"
   },
   topContent: {
     display: "flex",
