@@ -154,62 +154,8 @@ const Landing = ({ location }) => {
 
 
 
-          <div className={breakpoints.md ? classes.evenPageFrameMobile : classes.evenPageFrame}>
-          <Box className={breakpoints.md ? classes.pageContentMobile : classes.evenPageContent}>
-            <Box className={breakpoints.md ? classes.evenPageText : classes.hidden}>
-              {/* <Fade up> */}
-              <h1 className={breakpoints.md ? classes.headerMobile : null}>
-                Connect your thoughts
-              </h1>
 
-              <p
-                className={
-                  breakpoints.md ? classes.subtitleMobile : classes.hidden
-                }
-              >
-                Build a networked knowledge base.
-              </p>
-
-              <p className={breakpoints.md ? classes.hidden : null}>
-                Build a networked knowledge base. <br />
-                Crosslink annotations and comments across your reading.{" "}
-              </p>
-              {/* </Fade> */}
-            </Box>
-            {/* <Fade left> */}
-
-            <img
-              // style={{ objectFit: "contain",  }}
-              className={
-                breakpoints.md ? classes.imgMobileDimen : classes.imgDimenEven
-              }
-              src={ImgPoppAnnotsMac}
-              alt="Polar App notes and annotations screenshot macbook mockup"
-            />
-            {/* </Fade> */}
-            <p
-              className={
-                breakpoints.md ? classes.subtitleMobileBottom : classes.hidden
-              }
-            >
-              Crosslink annotations and comments across your reading.
-            </p>
-            <Box className={classes.evenPageText}>
-              {/* <Fade up> */}
-              <h1 className={breakpoints.md ? classes.hidden : null}>
-                Connect your thoughts
-              </h1>
-
-              <p className={breakpoints.md ? classes.hidden : null}>
-                Build a networked knowledge base. <br />
-                Crosslink annotations and comments across your reading.{" "}
-              </p>
-              {/* </Fade> */}
-            </Box>
-          </Box>
-        </div>
-
-        <CreateAccountWLogos transparent={false} />
+          <CreateAccountWLogos transparent={false} />
       </Box>
     </Layout>
   );

@@ -23,19 +23,7 @@ const useStyles = makeStyles({
     // flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    margin: "20px 0px 50px 0px",
-
-    // alignContent: "flex-end",
-    width: "100vw",
-    // alignContent: "center",
-  },
-  flexContainerMobile: {
-    display: "flex",
-    flexDirection: "column",
-    // flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "78px 0px 50px 0px",
+    marginBottom: '10px',
 
     // alignContent: "flex-end",
     width: "100vw",
@@ -76,7 +64,7 @@ const TrustedByLogos = () => {
   return (
     <Box
       className={
-        breakpoints.md ? classes.flexContainerMobile : classes.flexContainer
+        classes.flexContainer
       }
     >
       <p>Trusted by users at</p>
