@@ -124,7 +124,7 @@ const Landing = ({ location }) => {
 
 
 
-          <div className={classes.centerSection}>
+          <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
               <h1>
                   Keep Track of Reading Statistics
@@ -139,7 +139,7 @@ const Landing = ({ location }) => {
           </div>
 
 
-          <div className={classes.centerSection}>
+          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
               <h1>
                   Flashcards and Integrated Anki Sync

@@ -19,7 +19,7 @@ const IndexStyling = makeStyles({
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
-    backgroundColor: 'rgb(78, 78, 78)',
+    // backgroundColor: 'rgb(78, 78, 78)',
     paddingBottom: '15px',
     "& h1": {
       fontWeight: '400',
