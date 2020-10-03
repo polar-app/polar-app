@@ -21,13 +21,14 @@ interface IProps {
     readonly childNodes: ReadonlyArray<TNode<TagDescriptorSelected>>;
 
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
-    readonly onDrop: (tagID: TagID) => void;
+    readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 
 }
 
 export const MUITreeItem = React.memo((props: IProps) => {
-    const onDrop = useCallback(() => {
-        props.onDrop(props.nodeId)
+
+    const onDrop = useCallback((event: React.DragEvent) => {
+        props.onDrop(event, props.nodeId)
     }, [])
 
     return (

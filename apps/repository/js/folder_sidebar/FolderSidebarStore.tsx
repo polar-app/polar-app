@@ -382,11 +382,14 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     function onDrop(tagID: TagID) {
 
+        console.log("Handling folder drop for: " + tagID);
+
         const store = storeProvider();
 
         const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID]);
 
         if (selectedTags.length === 0) {
+            console.warn("No tag literal found for: " + tagID);
             return;
         }
 

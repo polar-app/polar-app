@@ -11,6 +11,7 @@ import {
 } from "../folder_sidebar/FolderSidebarStore";
 import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
+import {TagIDStr} from "polar-shared/src/tags/Tags";
 
 
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
@@ -22,7 +23,18 @@ const TagsContextMenu = createContextMenu(TagsMenu);
 export const FolderSidebar2 = () => {
 
     const store = useFolderSidebarStore();
-    const callbacks = useFolderSidebarCallbacks();
+    const {onDrop, onCreateUserTag, setFilter, toggleExpanded, selectRow, collapseNode, expandNode} = useFolderSidebarCallbacks();
+
+    const handleDrop = React.useCallback((event: React.DragEvent, tagID: TagIDStr) => {
+
+        try {
+            onDrop(tagID);
+        } finally {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+    }, [onDrop]);
 
     return (
         <Paper className="FolderSidebar2"
@@ -48,11 +60,11 @@ export const FolderSidebar2 = () => {
                         style={{
                             flexGrow: 1
                         }}
-                        onChange={callbacks.setFilter}/>
+                        onChange={setFilter}/>
 
                     <div className="ml-1">
-                        <AddTagsDropdown onCreateFolder={() => callbacks.onCreateUserTag('folder')}
-                                         onCreateTag={() => callbacks.onCreateUserTag('tag')}/>
+                        <AddTagsDropdown onCreateFolder={() => onCreateUserTag('folder')}
+                                         onCreateTag={() => onCreateUserTag('tag')}/>
                     </div>
 
                 </div>
@@ -68,13 +80,13 @@ export const FolderSidebar2 = () => {
                     <div style={{marginLeft: '8px'}}>
                         <FoldersContextMenu>
                             <MUITreeView root={store.foldersRoot}
-                                         toggleExpanded={callbacks.toggleExpanded}
-                                         selectRow={callbacks.selectRow}
-                                         collapseNode={callbacks.collapseNode}
-                                         expandNode={callbacks.expandNode}
+                                         toggleExpanded={toggleExpanded}
+                                         selectRow={selectRow}
+                                         collapseNode={collapseNode}
+                                         expandNode={expandNode}
                                          selected={store.selected}
                                          expanded={store.expanded}
-                                         onDrop={callbacks.onDrop}
+                                         onDrop={handleDrop}
                                          />
                         </FoldersContextMenu>
                     </div>}
@@ -82,8 +94,8 @@ export const FolderSidebar2 = () => {
                 <TagsContextMenu>
                     <MUITagList tags={store.tagsView}
                                 selected={store.selected}
-                                selectRow={callbacks.selectRow}
-                                onDrop={callbacks.onDrop}/>
+                                selectRow={selectRow}
+                                onDrop={handleDrop}/>
                 </TagsContextMenu>
             </div>
 

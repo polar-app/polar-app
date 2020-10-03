@@ -62,7 +62,7 @@ interface IProps {
     readonly label: string;
     readonly info: string | number;
     readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
-    readonly onDrop: (tagID: TagID) => void;
+    readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 }
 
 export const MUITagListItemInner = React.memo((props: IProps) => {
@@ -112,8 +112,8 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
 
 export const MUITagListItem = React.memo((props: IProps) => {
 
-    const onDrop = useCallback(() => {
-        props.onDrop(props.nodeId)
+    const onDrop = useCallback((event: React.DragEvent) => {
+        props.onDrop(event, props.nodeId)
     }, [])
 
     return (

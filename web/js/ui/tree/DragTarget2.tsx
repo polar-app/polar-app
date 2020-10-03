@@ -17,7 +17,7 @@ interface IProps {
     /**
      * Function to call when a drag has finished.
      */
-    readonly onDrop: () => void;
+    readonly onDrop: (event: React.DragEvent) => void;
     readonly acceptDrag?: () => boolean;
 
 }
@@ -56,7 +56,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
 
     }
 
-    private onDragOver(event: React.DragEvent<HTMLDivElement>) {
+    private onDragOver(event: React.DragEvent) {
 
         if (! this.acceptDrag()) {
             return;
@@ -70,7 +70,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
         event.stopPropagation();
     }
 
-    private onDragLeave(event: React.DragEvent<HTMLDivElement>) {
+    private onDragLeave(event: React.DragEvent) {
 
         if (! this.acceptDrag()) {
             return;
@@ -84,7 +84,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
 
     }
 
-    private onDrop() {
+    private onDrop(event: React.DragEvent) {
 
         if (! this.acceptDrag()) {
             return;
@@ -92,7 +92,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
 
         this.setState({active: false});
 
-        this.props.onDrop();
+        this.props.onDrop(event);
     }
 
     public render() {
@@ -103,7 +103,7 @@ export class DragTarget2 extends React.Component<IProps, IState> {
 
             <div onDragOver={(event) => this.onDragOver(event)}
                  onDragLeave={(event) => this.onDragLeave(event)}
-                 onDrop={() => this.onDrop()}>
+                 onDrop={(event) => this.onDrop(event)}>
 
                 <DragContext.Provider value={{active}}>
                     {this.props.children}

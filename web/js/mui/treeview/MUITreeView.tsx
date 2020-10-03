@@ -17,7 +17,7 @@ interface IProps {
 
     readonly selected: ReadonlyArray<string>;
     readonly expanded: ReadonlyArray<string>;
-    readonly onDrop: (tagID: TagID) => void;
+    readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 
 }
 
