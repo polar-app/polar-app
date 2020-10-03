@@ -55,7 +55,7 @@ const NoAnnotations = memoForwardRef(() => {
 
                     No annotations have yet been created. To create new
                     annotations create a
-                    new <span style={{backgroundColor: "rgba(255,255,0,0.3)"}}>highlight</span> by
+                    new highlight by
                     selecting text in the document.
                 </p>
 

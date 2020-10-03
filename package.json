@@ -159,7 +159,7 @@
     "epubjs": "=0.3.89-polar.14",
     "file-exists-promise": "~1.0.2",
     "file-selector": "=0.1.13",
-    "firebase": "=7.18.0",
+    "firebase": "=7.22.0",
     "firebaseui": "=4.6.1",
     "framer-motion": "^1.7.0",
     "jquery": "^3.4.1",
