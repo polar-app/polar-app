@@ -22,11 +22,16 @@ export const CreateAccountButton = (props: IProps) => {
 
     const classes = useStyles();
 
+    const size = props.size || 'large'
+
+    const fontSize = size === 'large' ? '18px' : '15px';
+
     return (
         <Button className={classes.buttonAccount}
                 variant="contained"
-                size={props.size || 'large'}
+                size={size}
                 color="primary"
+                style={{fontSize}}
                 href="https://app.getpolarized.io">
             Create Account
         </Button>

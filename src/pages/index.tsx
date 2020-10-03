@@ -50,12 +50,23 @@ const Landing = ({ location }) => {
 
           <div className={classes.newHeroSection + ' ' + classes.centerSection}>
 
-              <h1 style={{fontSize: '100px', lineHeight: '1em', fontWeight: 500}}>
+              <h1 style={{
+                      fontSize: '100px',
+                      lineHeight: '1em',
+                      fontWeight: 500,
+                      marginTop: '45px',
+                      marginBottom: '45px'
+                  }}>
                   Read. Learn. Never Forget.
               </h1>
 
-              <h2 style={{width: '1200px', textAlign: 'center'}}>
-                  Polar is an integrated reading environment to build a knowledge base from reading. Actively read, annotate, connect thoughts, create flashcards, and track progress.
+              <h2 style={{
+                      maxWidth: '1200px',
+                      textAlign: 'center',
+                      marginBottom: '20px'
+                  }}>
+                  Polar is an integrated reading environment to build a knowledge base from reading. Actively read,
+                  annotate, connect thoughts, create flashcards, and track progress.
               </h2>
 
               <div style={{

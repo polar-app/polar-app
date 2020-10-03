@@ -2,6 +2,7 @@ import * as React from "react"
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import { Container, Box, makeStyles } from "@material-ui/core";
 import { Button } from "gatsby-material-ui-components";
+import {CreateAccountButton} from "./CreateAccountButton";
 const ImgLogoBar = require("../../content/assets/logos/avaliable-logo-bar.png");
 const ImgLogoBarMobile = require("../../content/assets/logos/avaliable-logo-bar-mobile.png");
 
@@ -87,15 +88,9 @@ const AccountWLogos = ({ transparent }) => {
       <Box
         className={breakpoints.md ? classes.logoFrameMobile : classes.logoFrame}
       >
-        <Button
-          className={
-            breakpoints.md ? classes.buttonAccMobile : classes.buttonAcc
-          }
-          href="https://beta.getpolarized.io/login"
-          target="_blank"
-        >
-          Create Account
-        </Button>
+
+        <CreateAccountButton/>
+
         <h1
           style={{
             textAlign: "center",

@@ -317,18 +317,16 @@ function NavBarDesktop() {
                 style={{ height: "29px", width: "29px", color: "#E0E0E0" }}
               />
             </Button>
-            <Button
-              className={classes.socialIcon}
-              href="https://discord.com/invite/GT8MhA6"
-              target="_blank"
-            >
+            <Button className={classes.socialIcon}
+                    href="https://discord.com/invite/GT8MhA6"
+                    target="_blank">
               <img src={DiscordIconLight} className={classes.navIcon} />
             </Button>
           </Box>
         )}
 
         <div style={{marginRight: '5px'}}>
-          <CreateAccountButton/>
+          <CreateAccountButton size="medium"/>
         </div>
 
       </Toolbar>
