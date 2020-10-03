@@ -3,7 +3,7 @@ import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
     createObservableStore,
-    SetStore, UseStoreHook
+    SetStore, UseContextHook, UseStoreHook
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
@@ -191,7 +191,6 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
         const tags = [...mutation.tags].sort((a, b) => b.count - a.count)
 
         if (hasChanged()) {
-            console.log("FIXME: Rebuilding sidebar store");
             return rebuildStore(tags);
         }
 
@@ -495,6 +494,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 }
 
 export type UseFolderSidebarStore = UseStoreHook<IFolderSidebarStore>;
+export type UseFolderSidebarCallbacks = UseContextHook<IFolderSidebarCallbacks>
 
 export function createFolderSidebarStore() {
     return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
@@ -505,7 +505,7 @@ export function createFolderSidebarStore() {
 }
 
 export const FolderSidebarStoreContext = React.createContext<UseFolderSidebarStore>(null!);
-export const FolderSidebarCallbacksContext = React.createContext<IFolderSidebarCallbacks>(null!);
+export const FolderSidebarCallbacksContext = React.createContext<UseFolderSidebarCallbacks>(null!);
 
 export function useFolderSidebarStore(keys: ReadonlyArray<keyof IFolderSidebarStore> | undefined) {
     const delegate = useContext(FolderSidebarStoreContext);
@@ -513,5 +513,6 @@ export function useFolderSidebarStore(keys: ReadonlyArray<keyof IFolderSidebarSt
 }
 
 export function useFolderSidebarCallbacks() {
-    return useContext(FolderSidebarCallbacksContext);
+    const delegate = useContext(FolderSidebarCallbacksContext);
+    return delegate();
 }

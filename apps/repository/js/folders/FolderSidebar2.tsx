@@ -38,8 +38,6 @@ export const FolderSidebar2 = () => {
 
     }, [onDrop]);
 
-    console.log("FIXME: FolderSidebar2: render");
-
     return (
         <Paper className="FolderSidebar2"
                square
