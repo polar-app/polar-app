@@ -18,9 +18,8 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
-import {BatchMutators, PromiseFactory} from "../BatchMutators";
+import {BatchMutators} from "../BatchMutators";
 import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
@@ -248,7 +247,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     function doSelectRow(nodes: ReadonlyArray<TagID>) {
         const store = storeProvider();
 
-        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes);
+        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes, Tags.create);
         tagSidebarEventForwarder.onTagSelected(selectedTags);
 
     }
