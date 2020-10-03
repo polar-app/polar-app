@@ -386,12 +386,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         const store = storeProvider();
 
-        const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID]);
-
-        if (selectedTags.length === 0) {
-            console.warn("No tag literal found for: " + tagID);
-            return;
-        }
+        const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID], Tags.create);
 
         const selectedTag = selectedTags[0];
 

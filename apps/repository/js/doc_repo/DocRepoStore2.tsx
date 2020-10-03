@@ -673,11 +673,8 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function onDropped(tag: Tag) {
-
-        // FIXME: this is what's broken...
         const selected = selectedProvider();
         doDropped(selected, tag);
-
     }
 
     function onRename() {
