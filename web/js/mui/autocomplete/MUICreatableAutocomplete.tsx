@@ -275,6 +275,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     }
 
+    // TODO: right now there's a bug where we're selecting filtering folder tags from the optiong
+    // but providing them in the value so this returns an error.
     function getOptionSelected<T>(option: ValueAutocompleteOption<T>, value: ValueAutocompleteOption<T>) {
         return option.id === value.id;
     }
