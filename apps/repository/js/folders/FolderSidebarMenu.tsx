@@ -13,16 +13,20 @@ interface IProps {
 
 export const FolderSidebarMenu = (props: IProps) => {
 
-    const callbacks = useFolderSidebarCallbacks();
+    const {onDelete, onCreateUserTag} = useFolderSidebarCallbacks();
 
     return (
         <>
             <MUIMenuItem text={"Create " + Strings.upperFirst(props.type)}
                          icon={<LocalOfferIcon/>}
-                         onClick={() => callbacks.onCreateUserTag(props.type)}/>
+                         onClick={() => onCreateUserTag(props.type)}/>
             <Divider/>
-            <MUIMenuItem text="Delete" icon={<DeleteForeverIcon/>}
-                         onClick={callbacks.onDelete}/>
+
+            <MUIMenuItem text="Delete"
+                         icon={<DeleteForeverIcon/>}
+                         onClick={onDelete}/>
+
         </>
     );
+
 }

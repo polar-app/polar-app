@@ -424,6 +424,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             }
 
             function commit() {
+                console.log("Deleting tag: " + tag.id);
                 return persistenceLayerMutator.deleteTag(tag.id)
             }
 
@@ -456,6 +457,19 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
+    function hasSelectedRootFolder(): boolean {
+        const store = storeProvider();
+
+        console.log("FIXME: selected tags: ", store.selected);
+
+        if (store.selected.length !== 1) {
+            return false;
+        }
+
+        return store.selected[0] === '/';
+
+    }
+
     return {
         toggleExpanded,
         collapseNode,
@@ -464,7 +478,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         selectRow,
         onCreateUserTag,
         onDrop,
-        onDelete
+        onDelete,
     };
 
 }
