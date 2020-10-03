@@ -720,7 +720,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const opts: TaggedCallbacksOpts<RepoDocInfo> = {
             targets: selectedProvider,
-            tagsProvider: () => tagsProvider().filter(TagFilters.onlyRegular),
+            tagsProvider: () => tagsProvider(),
             dialogs,
             doTagged,
             relatedOptionsCalculator

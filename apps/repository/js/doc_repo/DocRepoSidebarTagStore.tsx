@@ -14,11 +14,10 @@ interface IProps {
 
 const StoreBinder = (props: IProps) => {
 
-    const store = useDocRepoSidebarTagStoreStore(undefined);
     const callbacks = useDocRepoSidebarTagStoreCallbacks();
 
     return (
-        <FolderSidebarStoreContext.Provider value={store}>
+        <FolderSidebarStoreContext.Provider value={useDocRepoSidebarTagStoreStore}>
             <FolderSidebarCallbacksContext.Provider value={callbacks}>
                 {props.children}
             </FolderSidebarCallbacksContext.Provider>

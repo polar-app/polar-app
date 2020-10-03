@@ -17,11 +17,10 @@ interface IProps {
 
 const StoreBinder = (props: IProps) => {
 
-    const store = useAnnotationRepoSidebarTagStoreStore(undefined);
     const callbacks = useAnnotationRepoSidebarTagStoreCallbacks();
 
     return (
-        <FolderSidebarStoreContext.Provider value={store}>
+        <FolderSidebarStoreContext.Provider value={useAnnotationRepoSidebarTagStoreStore}>
             <FolderSidebarCallbacksContext.Provider value={callbacks}>
                 {props.children}
             </FolderSidebarCallbacksContext.Provider>

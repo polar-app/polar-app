@@ -151,7 +151,7 @@ export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V
  * Hook to listen to store changes. Use undefined to not filter for properties
  * but we don't recommend it.
  */
-export type UseStoreHook<V, K extends keyof V> = (keys: ReadonlyArray<K> | undefined) => Pick<V, K>;
+export type UseStoreHook<V> = (keys: ReadonlyArray<keyof V> | undefined) => Pick<V, keyof V>;
 
 export type UseContextHook<V> = () => V;
 
@@ -268,7 +268,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
-    const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
+    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
         return useObservableStore(storeContext, keys);
     }
 

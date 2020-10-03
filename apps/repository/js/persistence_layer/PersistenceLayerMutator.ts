@@ -16,6 +16,7 @@ import {
 } from "polar-shared/src/util/ProgressTracker";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
+import { IAsyncTransaction } from "polar-shared/src/util/IAsyncTransaction";
 
 const log = Logger.create();
 
@@ -41,47 +42,90 @@ export class PersistenceLayerMutator {
 
     }
 
-    public async deleteTag(deleteTagID: TagStr,
-                           progressCallback: ProgressCallback = NULL_FUNCTION) {
 
-        const deleteFromRepoDocManager = () => {
+    /**
+     * Delete a tag permanently and remove the tag from any documents it's on.
+     * @param deleteTagID the Tag ID to delete
+     * @param progressCallback a progress callback
+     */
+    public deleteTag(deleteTagID: TagStr,
+                     progressCallback: ProgressCallback = NULL_FUNCTION): IAsyncTransaction<void> {
+
+        const pruneRepoDocManager = () => {
+            console.log("Pruning repo doc manager... ");
+
+            this.repoDocMetaManager.repoDocAnnotationIndex.delete(deleteTagID);
             this.repoDocMetaManager.repoDocAnnotationIndex.prune();
+
+            this.repoDocMetaManager.repoDocInfoIndex.delete(deleteTagID);
             this.repoDocMetaManager.repoDocInfoIndex.prune();
-        };
 
-        const deleteFromUserTags = async () => {
-            const persistenceLayer = this.persistenceLayerProvider();
-            const userTagsDB = await persistenceLayer.getUserTagsDB();
+            console.log("Pruning repo doc manager... done");
+        }
 
-            if (userTagsDB.delete(deleteTagID)) {
-                // noop
+        const prepare = () => {
+            pruneRepoDocManager();
+        }
+
+        const commit = (): Promise<void> => {
+
+            const doCommit = async() => {
+
+                const deleteFromUserTags = async () => {
+
+                    console.log("Deleting user tags... ");
+
+                    const persistenceLayer = this.persistenceLayerProvider();
+                    const userTagsDB = await persistenceLayer.getUserTagsDB();
+
+                    if (userTagsDB.delete(deleteTagID)) {
+                        // noop
+                    }
+
+                    await userTagsDB.commit();
+
+                    console.log("Deleting user tags... done");
+
+                };
+
+                const lookupTag = (tag: TagStr): Tag | undefined => {
+
+                    const tagMap = IDMaps.create(this.tagsProvider());
+
+                    return tagMap[tag] || {
+                        id: tag,
+                        label: tag
+                    };
+
+                };
+
+                const tagToDelete = lookupTag(deleteTagID);
+
+                if (tagToDelete) {
+
+                    pruneRepoDocManager();
+
+
+                    console.log("Removing tags from doc metas... ");
+                    await this.removeTagsFromDocMetas(tagToDelete, progressCallback);
+                    console.log("Removing tags from doc metas... done");
+
+                    await deleteFromUserTags();
+
+                    pruneRepoDocManager();
+
+                } else {
+                    console.warn("Tag does not exist: " + deleteTagID);
+                }
+
+
             }
 
-            await userTagsDB.commit();
-        };
+            return doCommit();
 
-        const lookupTag = (tag: TagStr): Tag | undefined => {
-
-            const tagMap = IDMaps.create(this.tagsProvider());
-
-            return tagMap[tag] || {
-                id: tag,
-                label: tag
-            };
-
-        };
-
-        const deleteTag = lookupTag(deleteTagID);
-
-        if (deleteTag) {
-
-            await this.removeTagsFromDocMetas(deleteTag, progressCallback);
-            await deleteFromUserTags();
-            deleteFromRepoDocManager();
-
-        } else {
-            console.warn("Tag does not exist: " + deleteTagID);
         }
+
+        return {prepare, commit};
 
     }
 

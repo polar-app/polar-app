@@ -22,7 +22,9 @@ const TagsContextMenu = createContextMenu(TagsMenu);
 
 export const FolderSidebar2 = () => {
 
-    const store = useFolderSidebarStore();
+    const {filter, foldersRoot, selected, expanded, tagsView}
+        = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView']);
+
     const {onDrop, onCreateUserTag, setFilter, toggleExpanded, selectRow, collapseNode, expandNode} = useFolderSidebarCallbacks();
 
     const handleDrop = React.useCallback((event: React.DragEvent, tagID: TagIDStr) => {
@@ -35,6 +37,8 @@ export const FolderSidebar2 = () => {
         }
 
     }, [onDrop]);
+
+    console.log("FIXME: FolderSidebar2: render");
 
     return (
         <Paper className="FolderSidebar2"
@@ -54,7 +58,7 @@ export const FolderSidebar2 = () => {
                 }}>
 
                     <MUISearchBox2
-                        initialValue={store.filter}
+                        initialValue={filter}
                         placeholder="Filter by tag or folder"
                         autoComplete="off"
                         style={{
@@ -76,24 +80,24 @@ export const FolderSidebar2 = () => {
                      overflow: 'auto'
                  }}>
 
-                {store.foldersRoot &&
+                {foldersRoot &&
                     <div style={{marginLeft: '8px'}}>
                         <FoldersContextMenu>
-                            <MUITreeView root={store.foldersRoot}
+                            <MUITreeView root={foldersRoot}
                                          toggleExpanded={toggleExpanded}
                                          selectRow={selectRow}
                                          collapseNode={collapseNode}
                                          expandNode={expandNode}
-                                         selected={store.selected}
-                                         expanded={store.expanded}
+                                         selected={selected}
+                                         expanded={expanded}
                                          onDrop={handleDrop}
                                          />
                         </FoldersContextMenu>
                     </div>}
 
                 <TagsContextMenu>
-                    <MUITagList tags={store.tagsView}
-                                selected={store.selected}
+                    <MUITagList tags={tagsView}
+                                selected={selected}
                                 selectRow={selectRow}
                                 onDrop={handleDrop}/>
                 </TagsContextMenu>
