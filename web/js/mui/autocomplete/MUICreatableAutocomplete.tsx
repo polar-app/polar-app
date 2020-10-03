@@ -275,6 +275,10 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     }
 
+    function getOptionSelected<T>(option: ValueAutocompleteOption<T>, value: ValueAutocompleteOption<T>) {
+        return option.id === value.id;
+    }
+
     // TODO: one of our users suggested that 'tab' select the item since this
     // is somewhat standard but this requires that we use a controlled
     // auto-complete.  This breaks because there's a but which will cause the
@@ -284,7 +288,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         <div className={classes.root}>
             <Autocomplete
                 multiple
-                getOptionSelected={isEqual}
+                getOptionSelected={getOptionSelected}
                 // freeSolo
                 inputValue={inputValue}
                 onKeyDown={handleKeyDown}
