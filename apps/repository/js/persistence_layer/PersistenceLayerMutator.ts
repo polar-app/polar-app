@@ -105,7 +105,6 @@ export class PersistenceLayerMutator {
 
                     pruneRepoDocManager();
 
-
                     console.log("Removing tags from doc metas... ");
                     await this.removeTagsFromDocMetas(tagToDelete, progressCallback);
                     console.log("Removing tags from doc metas... done");

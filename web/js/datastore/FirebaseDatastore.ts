@@ -1435,6 +1435,7 @@ interface GetDocMetaOpts {
 }
 
 export class DefaultWriteOpts implements WriteOpts {
+    public readonly consistency = 'written';
     public readonly visibility = Visibility.PRIVATE;
 }
 
