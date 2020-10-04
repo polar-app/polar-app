@@ -16,7 +16,6 @@ export const WhatsNewDialog = React.memo(() => {
     return (
 
         <Dialog
-            fullWidth={true}
             maxWidth='lg'
             open={open}
             onClose={handleClose}>
