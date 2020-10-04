@@ -5,7 +5,7 @@ import {DefaultSplashEngine, SplashEngine, UserFacts} from './SplashEngine';
 import {Version} from 'polar-shared/src/util/Version';
 import {TimeDurations} from 'polar-shared/src/util/TimeDurations';
 import {NPSModal} from './nps/NPSModal';
-import {WhatsNewModal} from './whats_new/WhatsNewModal';
+import {WhatsNewDialog} from './whats_new/WhatsNewDialog';
 import {SuggestionsModal} from './suggestions/SuggestionsModal';
 
 const log = Logger.create();
@@ -70,7 +70,7 @@ export class Splashes extends React.Component<IProps, IState> {
                 return <SuggestionsModal/>;
 
             case 'whats-new':
-                return <WhatsNewModal/>;
+                return <WhatsNewDialog/>;
 
         }
 

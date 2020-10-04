@@ -5,19 +5,12 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 
 const log = Logger.create();
 
-export class WhatsNew {
-
-    /**
-     * Return true if we're blocked by another event.
-     */
-    private static isBlocked() {
-        return ! LifecycleToggle.isMarked(LifecycleEvents.TOUR_TERMINATED);
-    }
+export namespace WhatsNew {
 
     /**
      * Return true if this should be shown under ideal circumstances
      */
-    private static shouldShow(): boolean {
+    function shouldShow(): boolean {
 
         const version = Version.get();
 
@@ -34,17 +27,7 @@ export class WhatsNew {
 
     }
 
-    public static doShow(): boolean {
-
-        const isBlocked = this.isBlocked();
-        const shouldShow = this.shouldShow();
-
-        log.debug("doShow history: ", {isBlocked, shouldShow});
-
-        return ! isBlocked && shouldShow;
-    }
-
-    public static markShown() {
+    export function markShown() {
 
         const version = Version.get();
 

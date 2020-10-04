@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 import {act} from "react-dom/test-utils";
 import Button from "@material-ui/core/Button";
 import {createTeleporter} from "react-teleporter";
-import {WhatsNewModal} from "../../../apps/repository/js/splash2/whats_new/WhatsNewModal";
+import {WhatsNewDialog} from "../../../apps/repository/js/splash2/whats_new/WhatsNewDialog";
 import { SpeedDialDemo } from './SpeedDialDemo';
 import {SaveToPolarDemo} from "./SaveToPolarDemo";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
