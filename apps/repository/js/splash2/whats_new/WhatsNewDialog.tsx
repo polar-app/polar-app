@@ -15,31 +15,28 @@ export const WhatsNewDialog = React.memo(() => {
 
     return (
 
-        <div>
+        <Dialog
+            fullWidth={true}
+            maxWidth='lg'
+            open={open}
+            onClose={handleClose}>
 
-            <Dialog
-                fullWidth={true}
-                maxWidth='lg'
-                open={open}
-                onClose={handleClose}>
+            <DialogContent>
+                <WhatsNewContent/>
+            </DialogContent>
 
-                <DialogContent>
-                    <WhatsNewContent/>
-                </DialogContent>
+            <DialogActions>
 
-                <DialogActions>
+                <Button color="primary"
+                        variant="contained"
+                        size="large"
+                        onClick={handleClose}>
+                    Close
+                </Button>
 
-                    <Button color="primary"
-                            variant="contained"
-                            onClick={handleClose}>
-                        Close
-                    </Button>
+            </DialogActions>
 
-                </DialogActions>
-
-            </Dialog>
-
-        </div>
+        </Dialog>
 
     );
 
