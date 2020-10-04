@@ -89,6 +89,10 @@ const AccountWLogos = ({ transparent }) => {
         className={breakpoints.md ? classes.logoFrameMobile : classes.logoFrame}
       >
 
+        <h1>
+          Get Started with Polar for Free
+        </h1>
+
         <CreateAccountButton/>
 
         <h1
@@ -99,7 +103,7 @@ const AccountWLogos = ({ transparent }) => {
             marginBottom: "40px",
           }}
         >
-          Avaliable on
+          Available on
         </h1>
         {breakpoints.sm ? (
           <Box className={classes.logoBarMobile}>
