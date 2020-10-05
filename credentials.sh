@@ -13,7 +13,7 @@ export APPLEID=burtonator2011@gmail.com
 # I don't think app specific passwords last very long and that we have to create
 # a new one with each release...?
 # https://appleid.apple.com/account/manage
-export APPLEIDPASS=krip-ambs-ocjr-hmvr
+export APPLEIDPASS=pfux-lhbg-lnib-zhgu
 
 
 if [ "${TERM_PROGRAM}" = "Apple_Terminal" ] && [ "${APPLEIDPASS}" = "" ]; then
