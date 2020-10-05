@@ -5,6 +5,7 @@ import {UploadProgressDialog} from "../../web/js/ui/dialogs/UploadProgressDialog
 import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
 import {TwoMigrationDialog} from "../repository/js/gateways/two_migration/TwoMigrationDialog";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MobileGateway} from "../repository/js/gateways/mobile/MobileGateway";
 
 const IFrameContent = React.memo(() => {
 
@@ -69,7 +70,12 @@ export const App = () => (
 
         {/*</div>*/}
 
-        <TwoMigrationDialog onClose={NULL_FUNCTION}/>
+        {/*<TwoMigrationDialog onClose={NULL_FUNCTION}/>*/}
+        <MobileGateway>
+            <div>
+                this is the real content
+            </div>
+        </MobileGateway>
 
     </MUIAppRoot>
 );
