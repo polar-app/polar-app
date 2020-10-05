@@ -3,7 +3,7 @@ import {EPUBContextMenuRoot} from '../doc/src/renderers/epub/contextmenu/EPUBCon
 import {Resizable} from "../../web/js/ui/resizable/Resizable";
 import {UploadProgressDialog} from "../../web/js/ui/dialogs/UploadProgressDialog";
 import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
-import {TwoMigrationDialog} from "../repository/js/splash2/two_migration/TwoMigrationDialog";
+import {TwoMigrationDialog} from "../repository/js/gateways/two_migration/TwoMigrationDialog";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const IFrameContent = React.memo(() => {
