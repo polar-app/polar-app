@@ -28,13 +28,13 @@ export const TwoMigrationDialog = React.memo((props: IProps) => {
                 <TwoMigrationContent/>
             </DialogContent>
 
-            <DialogActions>
+            <DialogActions style={{justifyContent: 'center'}}>
 
                 <Button color="primary"
                         variant="contained"
                         size="large"
                         onClick={handleClose}>
-                    Close
+                    Let's Get Started
                 </Button>
 
             </DialogActions>
