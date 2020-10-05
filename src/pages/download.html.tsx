@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react"
 import { graphql } from "gatsby";
 
 import Layout from "../components/layout";
@@ -6,10 +6,9 @@ import SEO from "../components/seo";
 import { Container, Box, Button } from "@material-ui/core";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import { makeStyles } from "@material-ui/styles";
+import {POLAR_RELEASE} from "../components/release";
+
 const ImgAvailableLabeled = require("../../content/assets/logos/available-for-labeled.png");
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-const ImgDontRun = require("../../content/assets/utility-images/win-do-not-run-annotated.png");
-const ImgRunAnyway = require("../../content/assets/utility-images/win-run-anyway.png");
 
 const useStyles = makeStyles({
   background: {
@@ -87,8 +86,28 @@ const useStyles = makeStyles({
   },
 });
 
-const DOWNLOAD_64_WIN = `https://github.com/burtonator/polar-bookshelf/releases/download/v1.100.13/polar-bookshelf-1.100.13-nsis-x64.exe`;
-const DOWNLOAD_32_WIN = `https://github.com/burtonator/polar-bookshelf/releases/download/v1.100.13/polar-bookshelf-1.100.13-nsis-ia32.exe`;
+
+function triggerDownloadForURL(url: string) {
+    document.location.href = url;
+}
+
+function triggerDownload(): boolean {
+
+    const winDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-nsis-x64.exe`;
+    const macDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}.dmg`;
+
+    if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
+        triggerDownloadForURL(macDownload);
+        return true;
+    }
+
+    if (navigator.userAgent.indexOf("Win64") !== -1) {
+        triggerDownloadForURL(winDownload);
+        return true;
+    }
+
+    return false;
+}
 
 const Landing = ({ location }) => {
   const breakpoints = useBreakpoint();
