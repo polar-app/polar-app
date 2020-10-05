@@ -15,9 +15,9 @@ export const MobileGatewayContent = deepMemo(() => {
                 <h1>Mobile Not Yet Supported</h1>
             </div>
 
-            <h1 style={{textAlign: 'center'}}>
+            <h2 style={{textAlign: 'center'}}>
                 We don't yet support mobile but we're working on it. Please check back soon!
-            </h1>
+            </h2>
 
         </div>
     );
