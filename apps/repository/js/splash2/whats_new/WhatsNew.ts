@@ -1,9 +1,6 @@
-import {LifecycleToggle} from '../../../../../web/js/ui/util/LifecycleToggle';
 import {LifecycleEvents} from '../../../../../web/js/ui/util/LifecycleEvents';
 import {Version} from 'polar-shared/src/util/Version';
-import {Logger} from 'polar-shared/src/logger/Logger';
-
-const log = Logger.create();
+import {LocalPrefs} from "../../../../../web/js/util/LocalPrefs";
 
 export namespace WhatsNew {
 
@@ -17,7 +14,7 @@ export namespace WhatsNew {
         // by default we set the prevVersion to the current version so on the
         // initial install we don't get a whats new dialog box.
         const prevVersion =
-            LifecycleToggle.get(LifecycleEvents.WHATS_NEW_VERSION)
+            LocalPrefs.get(LifecycleEvents.WHATS_NEW_VERSION)
                 .getOrElse(version);
 
         log.debug("Comparing versions: ", {version, prevVersion});
@@ -33,7 +30,7 @@ export namespace WhatsNew {
 
         log.debug("Marking version shown: " + version);
 
-        LifecycleToggle.set(LifecycleEvents.WHATS_NEW_VERSION, version);
+        LocalPrefs.set(LifecycleEvents.WHATS_NEW_VERSION, version);
 
     }
 
