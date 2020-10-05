@@ -313,19 +313,18 @@ function NavBarDesktop() {
               target="_blank"
             >
               {/* <img src={TwitterIconLight} className={classes.navIcon} /> */}
-              <TwitterIcon
-                style={{ height: "29px", width: "29px", color: "#E0E0E0" }}
+              <TwitterIcon style={{ height: "29px", width: "29px", color: "#E0E0E0" }}
               />
             </Button>
             <Button className={classes.socialIcon}
                     href="https://discord.com/invite/GT8MhA6"
                     target="_blank">
-              <img src={DiscordIconLight} className={classes.navIcon} />
+              <img src={DiscordIconLight} className={classes.navIcon} style={{ height: "29px", width: "29px"}} />
             </Button>
           </Box>
         )}
 
-        <div style={{marginRight: '5px'}}>
+        <div style={{marginRight: '10px'}}>
           <CreateAccountButton size="medium"/>
         </div>
 
