@@ -123,46 +123,6 @@ const Landing = ({ location }) => {
                 Github release page.
               </a>
             </Box>
-            <Box className={classes.flexContainerRow}>
-              <Button href={DOWNLOAD_64_WIN} className={classes.downloadButton}>
-                <CloudDownloadIcon />
-                <Box className={classes.downloadText}>Download 64 Bit</Box>
-              </Button>
-              <Button href={DOWNLOAD_32_WIN} className={classes.downloadButton}>
-                <CloudDownloadIcon />
-                <Box className={classes.downloadText}>Download 32 Bit</Box>
-              </Button>
-            </Box>
-            <Box className={classes.flexContainerCol}>
-              <Box className={classes.windowsDisclaim}>
-                Windows builds require to select ‘run anyway’ after clicking on
-                ‘more info’ in the security warning. <br />
-                See images below.
-              </Box>
-              <Box className={classes.windowsDisclaim}>
-                We are waiting for Microsoft to approve our digital code signing
-                certificate as part of their Windows <br /> Defender program and
-                expect to receive it soon.
-              </Box>
-            </Box>
-            <Box
-              className={
-                breakpoints.sm
-                  ? classes.flexContainerCol
-                  : classes.flexContainerRow
-              }
-            >
-              <img
-                src={ImgDontRun}
-                className={classes.windowsImg}
-                alt="Bypass Windows Defender pt. 1: 'Click More Info'"
-              />
-              <img
-                src={ImgRunAnyway}
-                className={classes.windowsImg}
-                alt="Bypass Windows Defender pt. 2: 'Click Run Anyway'"
-              />
-            </Box>
           </Box>
         </Box>
         {/* <p>Get polar here!</p> */}

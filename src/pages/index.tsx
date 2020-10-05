@@ -65,7 +65,7 @@ const Landing = ({ location }) => {
                       textAlign: 'center',
                       marginBottom: '20px'
                   }}>
-                  Polar is an integrated reading environment to build a knowledge base from reading. Actively read,
+                  Polar is an integrated reading environment to build your knowledge base. Actively read,
                   annotate, connect thoughts, create flashcards, and track progress.
               </h2>
 
@@ -78,7 +78,7 @@ const Landing = ({ location }) => {
 
               </div>
 
-              <div>
+              <div style={{marginBottom: '10px'}}>
                   Already using Polar?{" "}
                   <a style={{ color: "#A88CFF" }} href="#">
                       Sign in
@@ -99,12 +99,12 @@ const Landing = ({ location }) => {
           <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
               <h1>
-                  Organize Your Reading
+                  Organize and Prioritize Your Reading
               </h1>
 
               <h2>
-                  Document repository for PDFs, EPUBs, and webpages.  Keep all your documents in one place and manage
-                  them with tags and folders.
+                  Upload PDFs and EPUBs, capture web pages with the Polar Chrome extension. Keep all your documents in one place. Manage and prioritize your reading with progress tracking, flagging, tagging, and more
+
               </h2>
 
               {/*<h3>*/}
@@ -123,8 +123,7 @@ const Landing = ({ location }) => {
               </h1>
 
               <h2>
-                  Use Polar's integrated document viewer to read, annotate, highlight text and areas, tag annotations,
-                  comment, and create flashcards from highlights.
+                  Use Polar's integrated document viewer for active and incremental reading. Annotate, highlight text and areas, tag annotations, comment, use advanced pagemarks, and create flashcards from highlights.
               </h2>
 
               <DocumentViewerImage className={classes.centerImage}
@@ -132,6 +131,24 @@ const Landing = ({ location }) => {
           </div>
 
 
+
+
+
+
+          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+              <h1>
+                  Flashcards and Anki Integration
+              </h1>
+
+              <h3>
+                  Create flashcards in one click from your annotations and highlights. Review them using
+                  spaced repetition algorithm or sync them with Anki.
+              </h3>
+
+              <FlashcardReviewImage className={classes.centerImage}
+                                    alt="Polar Reading Statistics"/>
+          </div>
 
 
           <div className={classes.centerSection + ' ' + classes.sectionEven}>
@@ -147,24 +164,6 @@ const Landing = ({ location }) => {
               <StatisticsImage className={classes.centerImage}
                                alt="Polar Reading Statistics"/>
           </div>
-
-
-          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
-
-              <h1>
-                  Flashcards and Integrated Anki Sync
-              </h1>
-
-              <h3>
-                  Use Polar to create flaschards in one click from your annotations and highlights. Review them using
-                  Polar's spaced repetition algorithm or sync them with Anki
-              </h3>
-
-              <FlashcardReviewImage className={classes.centerImage}
-                                    alt="Polar Reading Statistics"/>
-          </div>
-
-
 
 
           <CreateAccountWLogos transparent={false} />
