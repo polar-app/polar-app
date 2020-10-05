@@ -15,10 +15,9 @@ export const WhatsNewDialog = React.memo(() => {
 
     return (
 
-        <Dialog
-            maxWidth='lg'
-            open={open}
-            onClose={handleClose}>
+        <Dialog maxWidth='lg'
+                open={open}
+                onClose={handleClose}>
 
             <DialogContent>
                 <WhatsNewContent/>
