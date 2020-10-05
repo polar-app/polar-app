@@ -568,7 +568,7 @@ export namespace AnnotationMutationCallbacks {
 
             return React.useCallback(() => {
                 onDeleted(mutation);
-            }, []);
+            }, [mutation]);
 
         }
 
@@ -684,7 +684,7 @@ export namespace AnnotationMutationCallbacks {
 
                 onComment([holder]);
 
-            }, []);
+            }, [annotation]);
 
         }
 
@@ -706,7 +706,7 @@ export namespace AnnotationMutationCallbacks {
 
                 onFlashcard([holder]);
 
-            }, []);
+            }, [annotation]);
 
         }
 
@@ -721,7 +721,7 @@ export namespace AnnotationMutationCallbacks {
 
             return React.useCallback((mutation: IColorMutation) => {
                 onColor({...selected, ...mutation});
-            }, []);
+            }, [selected]);
 
         }
 
