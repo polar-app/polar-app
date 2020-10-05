@@ -103,7 +103,7 @@
     "dotenv": "^8.2.0",
     "dtsmake": "0.0.10",
     "electron": "=8.4.0",
-    "electron-builder": "~22.7.0",
+    "electron-builder": "~22.8.1",
     "electron-notarize": "1.0.0",
     "install": "^0.12.2",
     "jsdom": "16.2.2",
