@@ -1,12 +1,13 @@
 import * as React from "react"
 import { graphql } from "gatsby";
-
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Container, Box, Button } from "@material-ui/core";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
+import {useEffect} from "react";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const ImgAvailableLabeled = require("../../content/assets/logos/available-for-labeled.png");
 
@@ -109,9 +110,23 @@ function triggerDownload(): boolean {
     return false;
 }
 
+const DownloadSnackbar = () => {
+  return (
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                open={true}
+                message="Download started. Open Polar below once the download has finished."/>
+  );
+};
+
 const Landing = ({ location }) => {
-  const breakpoints = useBreakpoint();
   const classes = useStyles();
+  const [downloadStarted, setDownloadStarted] = React.useState(false);
+
+  useEffect(() => {
+    if (triggerDownload()) {
+      setDownloadStarted(true);
+    }
+  }, []);
 
   return (
     <Layout>
@@ -120,6 +135,9 @@ const Landing = ({ location }) => {
         title="Download Polar"
         lang="en"
       />
+
+      {downloadStarted && <DownloadSnackbar/>}
+
       <Box className={classes.background}>
         {/* <div className="page-title">Download</div> */}
         <Box className={classes.margins}>
