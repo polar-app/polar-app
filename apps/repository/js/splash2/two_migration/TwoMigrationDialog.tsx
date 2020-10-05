@@ -20,7 +20,7 @@ export const TwoMigrationDialog = React.memo((props: IProps) => {
 
     return (
 
-        <Dialog maxWidth='lg'
+        <Dialog maxWidth='md'
                 open={open}
                 onClose={handleClose}>
 

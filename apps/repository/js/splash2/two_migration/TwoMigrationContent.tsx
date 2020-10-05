@@ -40,7 +40,7 @@ const Feature = (props: FeatureProps) => {
                             {props.description}
                         </div>
 
-                        <div style={{paddingLeft: '5px'}}>
+                        <div style={{paddingLeft: '5px', whiteSpace: 'nowrap'}}>
                             <a href={props.link}>Read more</a>
                         </div>
 
