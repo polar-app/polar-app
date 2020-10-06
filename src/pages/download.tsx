@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
+import MacOSLogoImage from "./images/MacOSLogoImage";
 
 const useStyles = makeStyles({
   background: {
@@ -160,7 +161,7 @@ const Landing = ({ location }) => {
             <h1>Download POLAR</h1>
 
 
-            {/*<MacOSLogoImage/>*/}
+            <MacOSLogoImage/>
 
             <Box
               style={{ marginTop: "84px", marginBottom: "26px" }}
