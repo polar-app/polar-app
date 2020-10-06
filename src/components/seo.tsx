@@ -20,7 +20,7 @@ const SiteData: Data = {
   site: {
     siteMetadata: {
       title: "POLAR: Read. Learn. Never Forget.",
-      description: "Polar is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
+      description: "POLAR is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
       social: {
         twitter: 'getpolarized'
       }

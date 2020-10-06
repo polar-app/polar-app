@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
+import AppleLogoImage from "./images/AppleLogoImage";
 
 const ImgAvailableLabeled = require("../../content/assets/logos/available-for-labeled.png");
 
@@ -161,10 +162,14 @@ const Landing = ({ location }) => {
         <Box className={classes.margins}>
           <Box className={classes.flexContainerCol}>
             <h1>Download POLAR</h1>
+
+
+            {/*<AppleLogoImage/>*/}
+            <img src="logos/apple.svg"/>
             <img
               style={{ width: "85%" }}
               src={ImgAvailableLabeled}
-              alt="Logos of compatable OSs or browsers"
+              alt="Logos of compatible OSs or browsers"
             />
             <Box
               style={{ marginTop: "84px", marginBottom: "26px" }}
@@ -187,13 +192,3 @@ const Landing = ({ location }) => {
 };
 
 export default Landing;
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;
