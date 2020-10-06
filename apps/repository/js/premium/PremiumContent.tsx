@@ -133,26 +133,6 @@ export const ProPlan = deepMemo(() => {
     </div>;
 });
 
-
-export const PremiumContent = deepMemo(() => {
-
-    const phoneOrTablet = (
-        <MobileContent/>
-    );
-
-    const desktop = (
-        <DesktopContent/>
-    );
-
-    return (
-        <DeviceRouter phone={phoneOrTablet} tablet={phoneOrTablet} desktop={desktop}/>
-    );
-
-});
-
-interface IProps {
-}
-
 interface IState {
 }
 
