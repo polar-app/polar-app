@@ -35,49 +35,6 @@ function useCancelSubscription() {
 
 }
 
-export const CancelSubscriptionButton = deepMemo(() => {
-
-    const {plan} = useUserSubscriptionContext();
-    const handleCancelSubscription = useCancelSubscription();
-
-    if (plan.level === 'free') {
-        return null;
-    }
-
-    return (
-        <Button size="large"
-                variant="contained"
-                onClick={handleCancelSubscription}>
-
-            Cancel Subscription
-
-        </Button>
-    );
-
-});
-
-
-export const PricingOverview = deepMemo(() => {
-    return (
-        <div>
-            <div className="text-center mb-3">
-                <h1>Pricing and Plans</h1>
-            </div>
-
-            <p className="text-center mb-3 text-xlarge">
-                Polar is designed to scale to from both novice users to
-                Power users.
-
-                Just need to read a few PDFs. No problem. Need to manage
-                and read hundreds to thousands of documents? No problem.
-            </p>
-
-            <p className="text-center mb-3 text-xlarge">
-                Have an issue?  Feel free to send us an email at <b>support@getpolarized.io</b>
-            </p>
-        </div>
-    );
-});
 
 export const FreePlan = deepMemo(() => {
     return <div>
