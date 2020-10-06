@@ -153,7 +153,7 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
       >
         <Layout>
           <CssBaseline />
-          <SEO description="The Polar Blog" title="Blog" />
+          {/*<SEO description="The Polar Blog" title="Blog" />*/}
 
           <Container
             disableGutters
