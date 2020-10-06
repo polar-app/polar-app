@@ -4,15 +4,15 @@ import {
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import {PlanInterval} from "./PremiumContent";
+import {Billing} from "polar-accounts/src/Billing";
 
 interface IPremiumStore {
-    readonly interval: PlanInterval;
+    readonly interval: Billing.Interval;
 }
 
 interface IPremiumCallbacks {
 
-    readonly setInterval: (interval: PlanInterval) => void;
+    readonly setInterval: (interval: Billing.Interval) => void;
 
     readonly toggleInterval: () => void;
 
@@ -37,7 +37,7 @@ function callbacksFactory(storeProvider: Provider<IPremiumStore>,
                           setStore: (store: IPremiumStore) => void,
                           mutator: Mutator): IPremiumCallbacks {
 
-    function setInterval(interval: PlanInterval) {
+    function setInterval(interval: Billing.Interval) {
         const store = storeProvider();
         setStore({...store, interval});
     }

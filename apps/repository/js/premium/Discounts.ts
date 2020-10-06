@@ -1,4 +1,3 @@
-import {PlanInterval} from "./PremiumContent";
 import {Billing} from "polar-accounts/src/Billing";
 
 export interface Discount {
@@ -24,12 +23,12 @@ export class Discounts {
 
     }
 
-    public get(interval: PlanInterval, plan: Billing.V2PlanLevel): Discount | undefined {
+    public get(interval: Billing.Interval, plan: Billing.V2PlanLevel): Discount | undefined {
         const key = Discounts.key(interval, plan);
         return this.delegate[key] || undefined;
     }
 
-    private static key(interval: PlanInterval, plan: Billing.V2PlanLevel) {
+    private static key(interval: Billing.Interval, plan: Billing.V2PlanLevel) {
         return `${interval}:${plan}`;
     }
 

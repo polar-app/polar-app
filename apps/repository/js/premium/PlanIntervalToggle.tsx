@@ -1,10 +1,10 @@
 import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
 import React from "react";
-import {PlanInterval} from "./PremiumContent";
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Billing} from "polar-accounts/src/Billing";
 
 const useStyles = makeStyles({
   button: {
@@ -20,7 +20,7 @@ export const PlanIntervalToggle = React.memo(() => {
     const {interval} = usePremiumStore(['interval']);
     const {setInterval} = usePremiumCallbacks();
 
-    function handleChange(event: React.MouseEvent, newInterval: PlanInterval | null) {
+    function handleChange(event: React.MouseEvent, newInterval: Billing.Interval | null) {
         setInterval(newInterval || 'month');
     }
 

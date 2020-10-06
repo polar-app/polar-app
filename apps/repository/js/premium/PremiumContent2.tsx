@@ -5,8 +5,6 @@ import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {PremiumButton} from "./PremiumButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
-import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
-import {PlanInterval} from "./PremiumContent";
 import {PricingFAQ} from "./PricingFAQ";
 import {PlanIntervalToggle} from "./PlanIntervalToggle";
 
