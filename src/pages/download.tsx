@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
-import MacOSLogoImage from "./images/MacOSLogoImage";
+import MacOSLogoImage from "../components/logos/MacOSLogoImage";
 
 const useStyles = makeStyles({
   background: {
