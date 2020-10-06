@@ -68,11 +68,11 @@ const Documentation = ({ data, pageContext }: PageProps<Data, pageContext>) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LayoutDocs>
-        <SEO
-          description="Polar Documentation. Getting started, FAQ, and ways to optimize your Polar process."
-          title="Documentation"
-          lang="en"
-        />
+        {/*<SEO*/}
+        {/*  description="Polar Documentation. Getting started, FAQ, and ways to optimize your Polar process."*/}
+        {/*  title="Documentation"*/}
+        {/*  lang="en"*/}
+        {/*/>*/}
 
         <Box
           style={{

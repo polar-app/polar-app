@@ -254,13 +254,6 @@ function FooterDesktop() {
           >
             Download
           </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/doc_previews"
-          >
-            Doc Previews
-          </Button>
         </Box>
 
         <Box style={{ marginRight: 30 }}>
