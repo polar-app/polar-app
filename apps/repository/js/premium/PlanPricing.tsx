@@ -6,7 +6,6 @@ import {Billing} from "polar-accounts/src/Billing";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-
 const useStyles = makeStyles((theme) =>
     createStyles({
         price: {

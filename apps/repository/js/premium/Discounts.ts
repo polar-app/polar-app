@@ -7,10 +7,6 @@ export interface Discount {
     readonly after: number;
 }
 
-const XMAS_2019: ReadonlyArray<Discount> = [
-
-];
-
 const DISCOUNTS: ReadonlyArray<Discount> = [];
 
 export interface DiscountMap {
