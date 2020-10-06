@@ -47,35 +47,12 @@ Firstly, the free plan is getting an increase in storage from 350 MB to 1 GB to 
 The below table summarizes the new plan structure
 
 
-
-
-Free
-Plus
-Pro
-Storage
-1 GB
-50 GB
-500 GB
-Number of files
-Unlimited
-Unlimited
-Unlimited
-Web page captures
-250
-Unlimited
-Unlimited
-Devices
-2
-3
-Unlimited
-Related tags
-Not included
-Included
-Included
-Price
-$0
-$6.99
-$14.99
+|   |Free   |Plus   |Pro  |
+|---|-------|-------|-----|
+|Storage   |1 GB       |50 GB       |500 GB     |
+|Number of files   |Unlimited       |Unlimited       |Unlimited     |
+|Related tags   |Not included       |Included       |Included     |
+|Devices   |2     |3     |Unlimited     |
+|Price   |Free       |$6.99       |$14.99 / mth     |
 
 We will also include discounts for long-term subscriptions, specifically, 1-year subscriptions will come with one free month of premium
-
