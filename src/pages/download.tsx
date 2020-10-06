@@ -7,6 +7,8 @@ import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MacOSLogoImage from "../components/logos/MacOSLogoImage";
+import MicrosoftWindowsLogo from "../components/logos/MicrosoftWindowsLogo";
+import UbuntuLogo from "../components/logos/UbuntuLogo";
 
 const useStyles = makeStyles({
   background: {
@@ -160,8 +162,21 @@ const Landing = ({ location }) => {
           <Box className={classes.flexContainerCol}>
             <h1>Download POLAR</h1>
 
+            <h2>
+              Available on all major desktop platforms including Windows, MacOS, and Linux.
+            </h2>
 
-            <MacOSLogoImage/>
+            <div style={{display: 'flex', filter: 'grayscale(1)'}}>
+              <div style={{margin: '1em'}}>
+                <MicrosoftWindowsLogo/>
+              </div>
+              <div style={{margin: '1em'}}>
+                <MacOSLogoImage/>
+              </div>
+              <div style={{margin: '1em'}}>
+                <UbuntuLogo/>
+              </div>
+            </div>
 
             <Box
               style={{ marginTop: "84px", marginBottom: "26px" }}
