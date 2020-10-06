@@ -156,7 +156,7 @@ function NavBarMobile() {
                   key={text}
                   href={
                     index === 4
-                      ? "/download.html"
+                      ? "/download"
                       : index === 5
                       ? "/chrome-extension"
                       : "/" + text
@@ -278,18 +278,14 @@ function NavBarDesktop() {
           <Button className={classes.navChoices} color="inherit" href="/blog">
             blog
           </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/download.html"
-          >
+          <Button className={classes.navChoices}
+                  color="inherit"
+                  href="/download">
             download
           </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/chrome-extension"
-          >
+          <Button className={classes.navChoices}
+                  color="inherit"
+                  href="/chrome-extension">
             extension
           </Button>
         </Box>
