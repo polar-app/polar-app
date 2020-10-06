@@ -160,7 +160,7 @@ const Landing = ({ location }) => {
         {/* <div className="page-title">Download</div> */}
         <Box className={classes.margins}>
           <Box className={classes.flexContainerCol}>
-            <h1>Available for: </h1>
+            <h1>Download Polar</h1>
             <img
               style={{ width: "85%" }}
               src={ImgAvailableLabeled}
