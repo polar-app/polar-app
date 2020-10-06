@@ -1,5 +1,4 @@
 import * as React from "react"
-import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import {Box} from "@material-ui/core";
@@ -7,10 +6,6 @@ import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
-import AppleLogoImage from "./images/AppleLogoImage";
-import MacOSLogoImage from "./images/MacOSLogoImage";
-
-const ImgAvailableLabeled = require("../../content/assets/logos/available-for-labeled.png");
 
 const useStyles = makeStyles({
   background: {
@@ -165,13 +160,8 @@ const Landing = ({ location }) => {
             <h1>Download POLAR</h1>
 
 
-            <MacOSLogoImage/>
+            {/*<MacOSLogoImage/>*/}
 
-            <img
-              style={{ width: "85%" }}
-              src={ImgAvailableLabeled}
-              alt="Logos of compatible OSs or browsers"
-            />
             <Box
               style={{ marginTop: "84px", marginBottom: "26px" }}
               className={classes.info}
