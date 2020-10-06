@@ -1,8 +1,6 @@
 import * as React from "react"
 import * as PropTypes from "prop-types";
-// import { PageProps } from "gatsby"
 import { Helmet } from "react-helmet";
-import { useStaticQuery, graphql } from "gatsby";
 
 type Data = {
   site: {

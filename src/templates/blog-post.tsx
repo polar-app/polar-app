@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { PageProps, Link, graphql } from "gatsby";
 
 import Bio from "../components/bio";
@@ -36,10 +36,7 @@ type pageContext = {
   next: Node;
 };
 
-const BlogPostTemplate = ({
-  data,
-  pageContext,
-}: PageProps<Data, pageContext>) => {
+const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) => {
   const post = data.markdownRemark;
 
   const { previous, next } = pageContext;

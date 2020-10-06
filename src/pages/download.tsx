@@ -149,11 +149,11 @@ const Landing = ({ location }) => {
 
   return (
     <Layout>
-      <SEO
-        description="Place to download POLAR App"
-        title="Download POLAR"
-        lang="en"
-      />
+      {/*<SEO*/}
+      {/*  title="Download POLAR to manage PDFs and EPUBs"*/}
+      {/*  description="Download POLAR to manage PDFs and EPUBs"*/}
+      {/*  lang="en"*/}
+      {/*/>*/}
 
       {downloadStarted && <DownloadSnackbar/>}
 
