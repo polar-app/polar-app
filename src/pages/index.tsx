@@ -4,25 +4,18 @@ import { Button } from "gatsby-material-ui-components";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import { Container, Box, makeStyles } from "@material-ui/core";
-const ImgDocAnnotationsMac = require("../../content/assets/macbook-screenshots/doc-annotations-macbook.png");
-const ImgPoppFeatsMac = require("../../content/assets/macbook-screenshots/feature-macbook.png");
-const ImgPoppAnnotsMac = require("../../content/assets/macbook-screenshots/annotations-macbook.png");
-
-const ImgReadDocs = require("../../content/assets/macbook-screenshots/read-docs-macbook.png");
+import {Box} from "@material-ui/core";
 // // import Fade from "react-reveal/Fade";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
-import GatsbyImage from "../components/GatsbyImage";
 import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
 import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
-const twitterImage = require("../../content/assets/polar-pic.jpg");
 
 const useStyles = IndexStyling;
 

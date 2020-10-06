@@ -27,10 +27,22 @@ const theme = createMuiTheme({
         html: {
           WebkitFontSmoothing: "auto",
           backgroundColor: "#222222",
+          height: '100%',
         },
         body: {
           backgroundColor: "#222222",
           color: "#FFFFFF",
+          height: '100%',
+        },
+
+        "#___gatsby": {
+          height: '100%',
+        },
+
+        "#gatsby-focus-wrapper": {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column'
         },
 
         pageTitle: {

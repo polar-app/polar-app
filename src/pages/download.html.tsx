@@ -2,8 +2,7 @@ import * as React from "react"
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import { Container, Box, Button } from "@material-ui/core";
-import { useBreakpoint } from "gatsby-plugin-breakpoints";
+import {Box} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
@@ -20,8 +19,9 @@ const useStyles = makeStyles({
       rgba(255, 255, 255, 0.4),
       #424242
     )`,
-    mixdBlendMode: "normal",
+    mixedBlendMode: "normal",
     opacity: 0.85,
+    flexGrow: 1
   },
 
   flexContainerCol: {
@@ -92,10 +92,28 @@ function triggerDownloadForURL(url: string) {
     document.location.href = url;
 }
 
+function isDev() {
+
+  if (document.location.href.indexOf('localhost') !== -1) {
+    return true;
+  }
+
+  if (document.location.href.indexOf('127.0.0.1') !== -1) {
+    return true;
+  }
+
+  return false;
+
+}
+
 function triggerDownload(): boolean {
 
     const winDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-nsis-x64.exe`;
     const macDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}.dmg`;
+
+    if (isDev()) {
+        return false;
+    }
 
     if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
         triggerDownloadForURL(macDownload);
