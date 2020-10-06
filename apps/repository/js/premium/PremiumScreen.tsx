@@ -3,7 +3,6 @@ import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PremiumStoreProvider} from './PremiumStore';
 import {PremiumContent2} from "./PremiumContent2";
-import { PremiumContent } from './PremiumContent';
 
 export const PremiumScreen = () => {
 
