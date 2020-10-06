@@ -8,6 +8,7 @@ import {POLAR_RELEASE} from "../components/release";
 import {useEffect} from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import AppleLogoImage from "./images/AppleLogoImage";
+import MacOSLogoImage from "./images/MacOSLogoImage";
 
 const ImgAvailableLabeled = require("../../content/assets/logos/available-for-labeled.png");
 
@@ -164,8 +165,8 @@ const Landing = ({ location }) => {
             <h1>Download POLAR</h1>
 
 
-            {/*<AppleLogoImage/>*/}
-            <img src="logos/apple.svg"/>
+            <MacOSLogoImage/>
+
             <img
               style={{ width: "85%" }}
               src={ImgAvailableLabeled}

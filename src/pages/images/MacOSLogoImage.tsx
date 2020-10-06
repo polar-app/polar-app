@@ -1,5 +1,5 @@
 import * as React from "react"
-import AppleImg from "../../../content/assets/logos/apple.svg";
+import Img from "../../../content/assets/logos/macosx.svg";
 
 interface IProps {
     readonly style?: React.CSSProperties;
@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export default (props: IProps) => (
-    <img src={AppleImg}
+    <img src={Img}
          style={props.style}
          className={props.className}
          alt={props.alt}
