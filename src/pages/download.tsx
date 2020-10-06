@@ -132,7 +132,7 @@ const DownloadSnackbar = () => {
   return (
       <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 open={true}
-                message="Download started. Open Polar below once the download has finished."/>
+                message="Download started. Open POLAR below once the download has finished."/>
   );
 };
 
@@ -149,8 +149,8 @@ const Landing = ({ location }) => {
   return (
     <Layout>
       <SEO
-        description="Place to download Polar App"
-        title="Download Polar"
+        description="Place to download POLAR App"
+        title="Download POLAR"
         lang="en"
       />
 
@@ -160,7 +160,7 @@ const Landing = ({ location }) => {
         {/* <div className="page-title">Download</div> */}
         <Box className={classes.margins}>
           <Box className={classes.flexContainerCol}>
-            <h1>Download Polar</h1>
+            <h1>Download POLAR</h1>
             <img
               style={{ width: "85%" }}
               src={ImgAvailableLabeled}

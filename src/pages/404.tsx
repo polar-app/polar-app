@@ -10,11 +10,11 @@ const NotFoundPage = ({ data, location }) => {
 
   return (
     <Layout>
-      <SEO
-        title="404: Not Found"
-        lang="en"
-        description="404 page for non-existent link"
-      />
+      {/*<SEO*/}
+      {/*  title="404: Not Found"*/}
+      {/*  lang="en"*/}
+      {/*  description="404 page for non-existent link"*/}
+      {/*/>*/}
       <Box
         style={{
           background: `radial-gradient(

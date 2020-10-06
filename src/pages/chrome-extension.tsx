@@ -176,11 +176,11 @@ const Landing = ({ location }) => {
 
   return (
     <Layout>
-      <SEO
-        description="The Polar Chrome Extension install page. Want to integrate Polar more completely into your workflow? Start Here."
-        title="Chrome Extension"
-        lang="en"
-      />
+      {/*<SEO*/}
+      {/*  description="The Polar Chrome Extension install page. Want to integrate Polar more completely into your workflow? Start Here."*/}
+      {/*  title="Chrome Extension"*/}
+      {/*  lang="en"*/}
+      {/*/>*/}
       <Box className={classes.background}>
         {/* <div className="page-title">Download</div> */}
         <Box className={classes.margins}>
