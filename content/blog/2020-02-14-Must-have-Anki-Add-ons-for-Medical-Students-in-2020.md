@@ -4,6 +4,7 @@ date: 2020-02-14T08:00:00.000-08:00
 layout: post
 description: We all know med school is tough and the amount of information required to memorize is tremendous. So obviously the question begs why not make it easy on yourself and use some powerful tools?
 large_image: https://lh5.googleusercontent.com/knT-rTG6qdw8OlKZUIijJm2_r2d6-tB3_Dop0AouIW9WUmaFCvsSAxL-b1uqpjxppt1ubnVVqwjobPGfU2qaGZpho1w8YEESLBd2OS_c6AXinYz-YBdO97q9nxR--KXLrOec4sq_
+editorsChoice: true
 ---
 
 # Must-have Anki Add-ons for Medical Students in 2020

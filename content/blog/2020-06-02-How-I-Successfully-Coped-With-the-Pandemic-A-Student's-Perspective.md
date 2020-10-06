@@ -4,6 +4,7 @@ date: 2020-06-02T08:00:00.000-08:00
 layout: post
 large_image: https://i.imgur.com/Exc48ep.jpg
 description: we students were required to study remotely since the COVID pandemic started. This requires a new approach to remote tools, especially remote studying     
+editorsChoice: true
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/Exc48ep.jpg">
