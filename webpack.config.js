@@ -8,6 +8,7 @@ const os = require('os');
 const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
+const svgToMiniDataURI = require('mini-svg-data-uri');
 
 const isDevServer = process.env.WEBPACK_DEV_SERVER;
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
@@ -78,9 +79,7 @@ function createRules() {
 
         },
         {
-            // all image and font assets including SVG, TTFs and an optional
-            // v=xxx identifier at the end if we want to use one.
-            test: /\.(png|jpe?g|gif|bmp|svg|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+            test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
             use: [
                 {
                     loader: 'file-loader',
@@ -88,6 +87,19 @@ function createRules() {
                         name: '[name]-[contenthash].[ext]',
                         outputPath: 'assets',
                         publicPath: '/assets'
+                    }
+                },
+            ],
+        },
+        {
+            // make SVGs use data URLs.
+            test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 32768,
+                        generator: (content) => svgToMiniDataURI(content.toString()),
                     }
                 },
             ],
