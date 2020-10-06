@@ -16,6 +16,18 @@ type Data = {
   };
 };
 
+const SiteData: Data = {
+  site: {
+    siteMetadata: {
+      title: "POLAR: Read. Learn. Never Forget.",
+      description: "Polar is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
+      social: {
+        twitter: 'getpolarized'
+      }
+    }
+  }
+}
+
 const TWITTER_IMAGE =
   "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png";
 
@@ -26,21 +38,7 @@ const TWITTER_IMAGE =
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 const SEO = ({ description, lang, meta, title }) => {
-  const { site }: Data = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            social {
-              twitter
-            }
-          }
-        }
-      }
-    `
-  );
+  const { site }: Data = SiteData;
 
   const metaDescription = description || site.siteMetadata.description;
 

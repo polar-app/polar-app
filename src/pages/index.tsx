@@ -25,12 +25,12 @@ const Landing = ({ location }) => {
 
   return (
     <Layout>
-      <SEO
-        description="Polar - Read, Learn, Never Forget. Polar is a reading tool for
-        networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
-        title="Homepage"
-        lang="en"
-      />
+      {/*<SEO*/}
+      {/*  description="Polar - Read, Learn, Never Forget. Polar is a reading tool for*/}
+      {/*  networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."*/}
+      {/*  title="Homepage"*/}
+      {/*  lang="en"*/}
+      {/*/>*/}
 
       <Box
         style={{
