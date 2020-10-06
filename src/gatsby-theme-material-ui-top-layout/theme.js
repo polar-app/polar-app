@@ -78,7 +78,7 @@ const theme = createMuiTheme({
           // borderLeft: '3px solid #816DE8',
           fontFamily: "Roboto, Helvetica, Arial, sans-serif",
           fontStyle: "normal",
-          fontWeight: "900",
+          fontWeight: "500",
           fontSize: "40px",
           lineHeight: "44px",
           letterSpacing: "0.15px",

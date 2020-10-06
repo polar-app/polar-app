@@ -15,6 +15,7 @@ type Data = {
     };
   };
 };
+
 const TWITTER_IMAGE =
   "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png";
 
