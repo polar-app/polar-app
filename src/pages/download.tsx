@@ -19,9 +19,10 @@ const useStyles = makeStyles({
       rgba(255, 255, 255, 0.4),
       #424242
     )`,
-    mixedBlendMode: "normal",
+    mixBlendMode: "normal",
     opacity: 0.85,
-    flexGrow: 1
+    flexGrow: 1,
+    height: 'calc(100% - 128px)'
   },
 
   flexContainerCol: {

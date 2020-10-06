@@ -27,20 +27,20 @@ const theme = createMuiTheme({
         html: {
           WebkitFontSmoothing: "auto",
           backgroundColor: "#222222",
-          height: '100%',
+          minHeight: '100vh',
         },
         body: {
           backgroundColor: "#222222",
           color: "#FFFFFF",
-          height: '100%',
+          minHeight: '100vh',
         },
 
         "#___gatsby": {
-          height: '100%',
+          minHeight: '100vh',
         },
 
         "#gatsby-focus-wrapper": {
-          height: '100%',
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column'
         },

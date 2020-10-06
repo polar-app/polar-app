@@ -90,7 +90,7 @@ const AccountWLogos = ({ transparent }) => {
       >
 
         <h1>
-          Get Started with Polar for Free
+          Get Started with Polar for FREE
         </h1>
 
         <CreateAccountButton/>
