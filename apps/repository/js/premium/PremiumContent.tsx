@@ -1,21 +1,13 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {AccountActions} from '../../../../web/js/accounts/AccountActions';
-import {Numbers} from "polar-shared/src/util/Numbers";
-import {DesktopContent, MobileContent} from "./PremiumCopy";
-import {Discount, Discounts} from "./Discounts";
-import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {Billing} from "polar-accounts/src/Billing";
 import Button from '@material-ui/core/Button';
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {Plans} from "polar-accounts/src/Plans";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import { usePremiumCallbacks, usePremiumStore } from './PremiumStore';
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {PlanPricing} from "./PlanPricing";
 
-const discounts = Discounts.create();
 
 function useCancelSubscription() {
 
