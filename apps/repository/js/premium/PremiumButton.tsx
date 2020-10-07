@@ -32,11 +32,11 @@ export const PremiumButton = deepMemo((props: IProps) => {
 
     // true when this is the current plan and we do not need to show the
     // button
-    const currentPlan = newSubscription.plan.level === subscription.plan.level &&
-                        newSubscription.interval === subscription.interval;
+    const currentPlan = newSubscription.plan.level === subscription?.plan.level &&
+                        newSubscription.interval === subscription?.interval;
 
     // true if we're BUYING a new plan...
-    const buyingNewPlan = subscription.plan.level === 'free';
+    const buyingNewPlan = subscription?.plan.level === 'free';
 
     const text = buyingNewPlan ? "Buy" : "Change Plan";
 

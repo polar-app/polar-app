@@ -176,7 +176,8 @@ const useStyles = makeStyles({
 export const PricingContent = () => {
 
   return (
-    <DeviceRouter handheld={<Mobile/>} desktop={<Desktop/>}/>
+    // <DeviceRouter handheld={<Mobile/>} desktop={<Desktop/>}/>
+      <Desktop/>
   );
 
 }
@@ -509,9 +510,7 @@ const DesktopTable = () => {
             <td>50 GB</td>
             <td>500 GB</td>
           </tr>
-          <td colSpan={5}>
-            <Divider className={classes.divider} />
-          </td>
+          <TableRowDivider/>
           <tr className={classes.row}>
             <td className={classes.rowHead}>
               Maximum Captured <br /> Web Documents
@@ -520,18 +519,14 @@ const DesktopTable = () => {
             <td>unlimited</td>
             <td>unlimited</td>
           </tr>
-          <td colSpan={5}>
-            <Divider className={classes.divider} />
-          </td>
+          <TableRowDivider/>
           <tr className={classes.row}>
             <td className={classes.rowHead}>Devices</td>
             <td>2</td>
             <td>3</td>
             <td>unlimited</td>
           </tr>
-          <td colSpan={5}>
-            <Divider className={classes.divider} />
-          </td>
+          <TableRowDivider/>
           <tr className={classes.row}>
             <td className={classes.rowHead}>Priority Support</td>
             <td>
@@ -550,9 +545,7 @@ const DesktopTable = () => {
               </Box>
             </td>
           </tr>
-          <td colSpan={5}>
-            <Divider className={classes.divider} />
-          </td>
+          <TableRowDivider/>
           {/* <tr className={classes.row}>
             <td className={classes.rowHead}>
               Maximum Daily <br /> Flashcard Reviews
@@ -598,22 +591,21 @@ const Desktop = () => {
                flexDirection: 'column'
            }}>
 
-        <div className="ml-auto mr-auto pb-5">
+        <div style={{margin: '1em auto 1em auto'}}>
           <h1>Plans and Pricing</h1>
         </div>
 
-        <div className="ml-auto mr-auto pb-5">
+        <div style={{margin: '1em auto 1em auto'}}>
           <PlanIntervalToggle/>
         </div>
 
-        <div className="mt-4"
-             style={{display: 'flex'}}>
+        <div style={{margin: '1em auto 1em auto', display: 'flex'}}>
           <DesktopTable/>
         </div>
 
-        <div className="ml-auto mr-auto">
-          <PricingFAQ/>
-        </div>
+        {/*<div className="ml-auto mr-auto">*/}
+        {/*  <PricingFAQ/>*/}
+        {/*</div>*/}
 
       </div>
   );
