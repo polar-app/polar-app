@@ -42,6 +42,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-  }
+  },
+  "private": true
 }
 
