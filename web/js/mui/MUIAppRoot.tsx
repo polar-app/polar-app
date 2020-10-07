@@ -27,7 +27,6 @@ export const MUIAppRoot = (props: IProps) => {
         palette: {
             type: theme,
             primary: {
-                // main: 'rgb(135, 141, 246)'
                 main: 'rgb(103, 84, 214)'
             }
         }

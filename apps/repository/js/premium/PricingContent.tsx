@@ -599,7 +599,7 @@ const Desktop = () => {
           <PlanIntervalToggle/>
         </div>
 
-        <div style={{margin: '1em auto 1em auto', display: 'flex'}}>
+        <div style={{}}>
           <DesktopTable/>
         </div>
 
