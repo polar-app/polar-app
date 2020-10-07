@@ -21,7 +21,6 @@ export namespace AccountActions {
         window.location.href = LoginURLs.create();
     }
 
-
     export async function cancelSubscription() {
         const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelSubscription/`;
         const data = await createAccountData();

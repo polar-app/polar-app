@@ -24,45 +24,25 @@ function useAction() {
 
         const {interval, plan} = newSubscription;
 
-        const email = userInfoContext?.userInfo?.email;
-
-        const computeNewPlanID = () => {
-
-            // FIXME: this is wrong and we have to read from the correct plans.
-
-            if (interval === 'year') {
-                return `${plan.level}_${interval}`;
-            }
-
-            return plan.level;
-
-        };
-
-        const newPlanID = computeNewPlanID();
+        const email = userInfoContext?.userInfo?.email!;
 
         const buyHandler = () => {
             // if we're buying a NEW product go ahead and redirect us to
             // stripe and use their BUY package.  This is better than embedding
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
 
-            if (email) {
-
-                const params = {
-                    email: encodeURIComponent(email)
-                };
-
-                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?email=${params.email}&plan=${newPlanID}`);
-            } else {
-                Nav.openLinkWithNewTab(`https://getpolarized.io/pay.html?plan=${newPlanID}`);
+            const doAsync = async () => {
+                dialogManager.snackbar({message: 'Creating payment method.  One moment... '});
+                await stripeCheckout(newSubscription, email);
             }
+
+            doAsync().catch(err => log.error(err));
 
         };
 
         const changeHandler = () => {
 
             const onAccept = () => {
-
-                console.log("Changing plan to: " + newPlanID);
 
                 dialogManager.snackbar({message: `Changing plan to ${plan.level} for interval ${interval}.  One moment...`});
 
