@@ -153,15 +153,12 @@ const theme = createMuiTheme({
   },
   palette: {
     type: "dark",
-    primary: {
-      main: "#424242",
-    },
-    secondary: {
-      main: "#19857b",
-    },
     error: {
       main: red.A400,
     },
+    primary: {
+      main: 'rgb(103, 84, 214)'
+    }
   },
 });
 
