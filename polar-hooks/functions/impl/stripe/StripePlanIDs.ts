@@ -20,21 +20,21 @@ export enum StripeYearPlanID {
 }
 
 export enum StripePlanV2ID {
-    FREE = "plan_free",
-    PLUS = "plan_plus",
-    PRO = "plan_pro",
+    FREE = "price_1HZQdbJvJ2rsXwXz3bOYr735",
+    PLUS = "price_1HZ3lvJvJ2rsXwXzdK2V5XnM",
+    PRO = "price_1HZ3mBJvJ2rsXwXzR4AN6Ub8",
 }
 
 export enum StripeYearPlanV2ID {
-    FREE = "plan_free_year",
-    PLUS = "plan_plus_year",
-    PRO = "plan_pro_year",
+    FREE = "price_1HZQdbJvJ2rsXwXz3bOYr735",
+    PLUS = "price_1HZ3mfJvJ2rsXwXzBh0uKg3y",
+    PRO = "price_1HZ3n9JvJ2rsXwXzg8iEHuLg",
 }
 
 export enum Stripe4YearPlanV2ID {
-    FREE = "plan_free_4year",
-    PLUS = "plan_plus_4year",
-    PRO = "plan_pro_4year",
+    FREE = "price_1HZQdbJvJ2rsXwXz3bOYr735",
+    PLUS = "price_1HZ3nPJvJ2rsXwXzN3IlrHtn",
+    PRO = "price_1HZ3ncJvJ2rsXwXzIMze3OBe",
 }
 
 export class StripePlanIDs {
