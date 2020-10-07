@@ -25,6 +25,7 @@ import {SearchFunction} from "./impl/search/SearchFunction";
 import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
 import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
+import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
 
 exports.hello = HelloWorldFunction;
 exports.docPreviewSitemap = DocPreviewSitemapFunction;
@@ -33,6 +34,7 @@ exports.mailinglist = MailinglistFunction;
 exports.StripeWebhook = StripeWebhookFunction;
 exports.StripeChangePlan = StripeChangePlanFunction;
 exports.StripeCancelSubscription = StripeCancelSubscriptionFunction;
+exports.StripeCreateSession = StripeCreateSessionFunction
 exports.datastoreGetFile = DatastoreGetFile;
 exports.groupProvision = GroupProvisionFunction;
 exports.groupJoin = GroupJoinFunction;
