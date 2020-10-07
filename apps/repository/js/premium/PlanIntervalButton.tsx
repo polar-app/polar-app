@@ -1,12 +1,12 @@
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
+import {usePricingCallbacks, usePricingStore} from "./PricingStore";
 import React from "react";
 import Button from "@material-ui/core/Button";
 
 export const PlanIntervalButton = deepMemo(() => {
 
-    const {interval} = usePremiumStore(['interval']);
-    const {toggleInterval} = usePremiumCallbacks();
+    const {interval} = usePricingStore(['interval']);
+    const {toggleInterval} = usePricingCallbacks();
 
     return (
         <Button color="secondary"

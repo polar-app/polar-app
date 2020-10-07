@@ -17,7 +17,7 @@ export namespace WhatsNew {
             LocalPrefs.get(LifecycleEvents.WHATS_NEW_VERSION)
                 .getOrElse(version);
 
-        log.debug("Comparing versions: ", {version, prevVersion});
+        console.debug("Comparing versions: ", {version, prevVersion});
 
         // TODO: this needs semver... from WhatsNewComponent (which is now deprecated)
         return prevVersion !== version;
@@ -28,7 +28,7 @@ export namespace WhatsNew {
 
         const version = Version.get();
 
-        log.debug("Marking version shown: " + version);
+        console.debug("Marking version shown: " + version);
 
         LocalPrefs.set(LifecycleEvents.WHATS_NEW_VERSION, version);
 
