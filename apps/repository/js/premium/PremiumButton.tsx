@@ -10,7 +10,7 @@ import {
     useUserInfoContext,
     useUserSubscriptionContext
 } from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
-import {usePremiumStore} from './PremiumStore';
+import {usePricingStore} from './PricingStore';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 
@@ -34,7 +34,7 @@ export const PremiumButton = deepMemo((props: IProps) => {
     const classes = useStyles();
     const userInfoContext = useUserInfoContext();
     const subscription = useUserSubscriptionContext();
-    const {interval} = usePremiumStore(['interval']);
+    const {interval} = usePricingStore(['interval']);
 
     const log = useLogger();
 

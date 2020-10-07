@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoFooter} from "../repo_footer/RepoFooter";
-import {PremiumStoreProvider} from './PremiumStore';
-import {PricingContent} from "./PremiumContent2";
+import {PricingStoreProvider} from './PricingStore';
+import {PricingContent} from "./PricingContent";
 
 export const PricingScreen = () => {
 
     return (
-        <PremiumStoreProvider>
+        <PricingStoreProvider>
             <FixedNav id="doc-repository">
 
                 <FixedNavBody className="container-fluid">
@@ -24,7 +24,7 @@ export const PricingScreen = () => {
                 <RepoFooter/>
 
             </FixedNav>
-        </PremiumStoreProvider>
+        </PricingStoreProvider>
 
     );
 };

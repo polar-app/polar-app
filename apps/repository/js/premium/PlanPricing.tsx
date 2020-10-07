@@ -1,11 +1,11 @@
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {usePremiumStore} from "./PremiumStore";
+import {usePricingStore} from "./PricingStore";
 import {Discount} from "./Discounts";
 import React from "react";
 import {Billing} from "polar-accounts/src/Billing";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { Numbers } from "polar-shared/src/util/Numbers";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -77,7 +77,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
     const classes = useStyles();
     const {plan} = props;
-    const {interval} = usePremiumStore(['interval']);
+    const {interval} = usePricingStore(['interval']);
 
     interface Pricing {
         readonly price: number;

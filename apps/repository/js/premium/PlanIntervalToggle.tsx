@@ -1,4 +1,4 @@
-import {usePremiumCallbacks, usePremiumStore} from "./PremiumStore";
+import {usePricingCallbacks, usePricingStore} from "./PricingStore";
 import React from "react";
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -17,8 +17,8 @@ export const PlanIntervalToggle = React.memo(() => {
 
     const classes = useStyles();
 
-    const {interval} = usePremiumStore(['interval']);
-    const {setInterval} = usePremiumCallbacks();
+    const {interval} = usePricingStore(['interval']);
+    const {setInterval} = usePricingCallbacks();
 
     function handleChange(event: React.MouseEvent, newInterval: Billing.Interval | null) {
         setInterval(newInterval || 'month');
