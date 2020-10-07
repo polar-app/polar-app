@@ -6,11 +6,11 @@ import {
 import {Provider} from "polar-shared/src/util/Providers";
 import {Billing} from "polar-accounts/src/Billing";
 
-interface IPremiumStore {
+interface IPricingStore {
     readonly interval: Billing.Interval;
 }
 
-interface IPremiumCallbacks {
+interface IPricingCallbacks {
 
     readonly setInterval: (interval: Billing.Interval) => void;
 
@@ -18,7 +18,7 @@ interface IPremiumCallbacks {
 
 }
 
-const initialStore: IPremiumStore = {
+const initialStore: IPricingStore = {
     interval: 'month'
 }
 
@@ -26,16 +26,16 @@ interface Mutator {
 
 }
 
-function mutatorFactory(storeProvider: Provider<IPremiumStore>,
-                        setStore: SetStore<IPremiumStore>): Mutator {
+function mutatorFactory(storeProvider: Provider<IPricingStore>,
+                        setStore: SetStore<IPricingStore>): Mutator {
 
     return {};
 
 }
 
-function callbacksFactory(storeProvider: Provider<IPremiumStore>,
-                          setStore: (store: IPremiumStore) => void,
-                          mutator: Mutator): IPremiumCallbacks {
+function callbacksFactory(storeProvider: Provider<IPricingStore>,
+                          setStore: (store: IPricingStore) => void,
+                          mutator: Mutator): IPricingCallbacks {
 
     function setInterval(interval: Billing.Interval) {
         const store = storeProvider();
@@ -53,8 +53,8 @@ function callbacksFactory(storeProvider: Provider<IPremiumStore>,
     };
 
 }
-export const [PremiumStoreProvider, usePremiumStore, usePremiumCallbacks, usePremiumMutator]
-    = createObservableStore<IPremiumStore, Mutator, IPremiumCallbacks>({
+export const [PricingStoreProvider, usePricingStore, usePricingCallbacks, usePricingMutator]
+    = createObservableStore<IPricingStore, Mutator, IPricingCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
         callbacksFactory
