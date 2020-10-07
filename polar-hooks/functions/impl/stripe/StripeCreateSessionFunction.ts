@@ -18,9 +18,11 @@ app.use((req, res) => {
 
     const plan = <Billing.V2PlanLevel> req.query.plan;
     const interval = <Billing.Interval> req.query.interval;
+    const email = <string> req.query.email;
 
     Preconditions.assertPresent(plan, 'plan');
     Preconditions.assertPresent(interval, 'interval');
+    Preconditions.assertPresent(email, 'email');
 
     const planID = StripePlanIDs.fromSubscription(plan, interval);
 
@@ -28,6 +30,7 @@ app.use((req, res) => {
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
+            customer_email: email,
             line_items: [
                 {
                     price: planID,
