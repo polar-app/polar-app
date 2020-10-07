@@ -169,7 +169,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const PremiumContent2 = () => {
+export const PricingContent = () => {
 
   return (
     <DeviceRouter handheld={<Mobile/>} desktop={<Desktop/>}/>

@@ -8,7 +8,7 @@ import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoade
 import WhatsNewScreen
     from '../../../../apps/repository/js/whats_new/WhatsNewScreen';
 import {StatsScreen} from '../../../../apps/repository/js/stats/StatsScreen';
-import {PremiumScreen} from '../../../../apps/repository/js/premium/PremiumScreen';
+import {PricingScreen} from '../../../../apps/repository/js/premium/PricingScreen';
 import {SupportScreen} from '../../../../apps/repository/js/support/SupportScreen';
 import {AuthRequired} from "../../../../apps/repository/js/AuthRequired";
 import {
@@ -223,13 +223,13 @@ export const RepositoryApp = (props: IProps) => {
 
     const premiumScreen = () => {
         return (
-            <PremiumScreen/>
+            <PricingScreen/>
         );
     };
 
     const premiumScreenYear = () => {
         return (
-            <PremiumScreen/>
+            <PricingScreen/>
         );
     };
 

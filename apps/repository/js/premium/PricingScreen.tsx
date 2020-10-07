@@ -2,9 +2,9 @@ import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {PremiumStoreProvider} from './PremiumStore';
-import {PremiumContent2} from "./PremiumContent2";
+import {PricingContent} from "./PremiumContent2";
 
-export const PremiumScreen = () => {
+export const PricingScreen = () => {
 
     return (
         <PremiumStoreProvider>
@@ -15,7 +15,7 @@ export const PremiumScreen = () => {
                     <div className="row">
 
                         <div className="col-lg-12 w-100 pt-4">
-                            <PremiumContent2/>
+                            <PricingContent/>
                         </div>
                     </div>
 
