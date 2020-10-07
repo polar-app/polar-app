@@ -3,9 +3,9 @@ import {loadStripe} from '@stripe/stripe-js';
 import { Billing } from 'polar-accounts/src/Billing';
 import {IDStr} from "polar-shared/src/util/Strings";
 
-async function startStripeSession(newSubscription: Billing.V2Subscription): Promise<IDStr> {
+async function startStripeSession(newSubscription: Billing.V2Subscription, email: string): Promise<IDStr> {
 
-    const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCreateSession?plan=${newSubscription.plan.level}&interval=${newSubscription.interval}`;
+    const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCreateSession?plan=${newSubscription.plan.level}&interval=${newSubscription.interval}&email=${encodeURIComponent(email)}`;
 
     const response = await fetch(url);
     const json = await response.json();
@@ -21,7 +21,7 @@ async function createStripe() {
 
 export function useStripeCheckout() {
 
-    return React.useCallback(async (newSubscription: Billing.V2Subscription) => {
+    return React.useCallback(async (newSubscription: Billing.V2Subscription, email: string) => {
 
         const stripe = await createStripe();
 
@@ -29,10 +29,9 @@ export function useStripeCheckout() {
             throw new Error("No stripe");
         }
 
-        const sessionId = await startStripeSession(newSubscription);
+        const sessionId = await startStripeSession(newSubscription, email);
         stripe.redirectToCheckout({sessionId})
 
     }, []);
-
 
 }

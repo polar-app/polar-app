@@ -10,6 +10,7 @@ import {
     useUserInfoContext,
     useUserSubscriptionContext
 } from "../../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import {useStripeCheckout} from "./UseStripeCheckout";
 
 function useAction() {
 
@@ -17,6 +18,7 @@ function useAction() {
     const log = useLogger();
     const userInfoContext = useUserInfoContext();
     const currentSubscription = useUserSubscriptionContext();
+    const stripeCheckout = useStripeCheckout();
 
     return React.useCallback((newSubscription: Billing.V2Subscription) => {
 
@@ -86,7 +88,7 @@ function useAction() {
             changeHandler();
         }
 
-    }, [dialogManager, log, userInfoContext, currentSubscription]);
+    }, [dialogManager, log, userInfoContext, currentSubscription, stripeCheckout]);
 
 }
 
