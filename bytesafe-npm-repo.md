@@ -16,3 +16,8 @@ npm config set registry https://polar-app.bytesafe.dev/r/default
 ```sh
 npm install --registry https://polar-app.bytesafe.dev/r/default react
 ```
+
+## YARN
+```bash
+yarn config set registry https://polar-app.bytesafe.dev/r/default
+```
