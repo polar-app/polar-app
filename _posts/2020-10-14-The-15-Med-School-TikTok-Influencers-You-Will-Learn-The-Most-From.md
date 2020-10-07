@@ -1,5 +1,3 @@
-The 15 Med School Influencers You NEED To Follow on TikTok Right Now
-
 Whether you’re looking to learn how to be successful in medical school, study for the MCAT or learn about what it’s like to be a doctor, it’s a great idea to look to people who are in or have already gone through med school for advice. We’ve looked at a long list of influencers and have hand-picked the most relevant ones for you.
 
 These 15 med school influencers will answer your questions, inspire you with day-in-the-life content and give advice on what you should be thinking about. While there are a ton of accounts on Tik Tok right now, here are the ones we think you should be following.
