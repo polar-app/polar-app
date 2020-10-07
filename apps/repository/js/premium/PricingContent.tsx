@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Divider, makeStyles, Paper, Typography} from "@material-ui/core";
+import {Box, Divider, makeStyles, Paper} from "@material-ui/core";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {PremiumButton} from "./PremiumButton";
