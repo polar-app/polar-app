@@ -146,7 +146,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
         return (
             <>
                 <h3 className={classes.price}>${pricing.priceNormalizedPerMonth}
-                    <span className={classes.interval}>/{interval}</span>
+                    <span className={classes.interval}>/month</span>
                 </h3>
 
                 {(interval !== 'month' && plan !== 'free') && (
@@ -154,7 +154,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
                         <s>
                             <h3 className={classes.regularPrice}>${pricing.regularPrice}
-                                <span className={classes.interval}>/{interval}</span>
+                                <span className={classes.interval}>/month</span>
                             </h3>
                         </s>
 
@@ -166,7 +166,7 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
                         {interval === '4year' && (
                             <p className={classes.billedAt}>
-                                Billed once at ${pricing.price} <br/> with a 14 day trial.
+                                Billed once at ${pricing.price} for 4 years <br/> with a 14 day trial.
                             </p>
                         )}
 
