@@ -7,6 +7,10 @@ import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
 import {PricingFAQ} from "./PricingFAQ";
 import {PlanIntervalToggle} from "./PlanIntervalToggle";
+import { usePricingStore } from "./PricingStore";
+import {Billing} from "polar-accounts/src/Billing";
+import V2PlanPlus = Billing.V2PlanPlus;
+import V2PlanPro = Billing.V2PlanPro;
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -179,6 +183,8 @@ export const PricingContent = () => {
 
 const Mobile = () => {
 
+  const {interval} = usePricingStore(['interval']);
+
   const classes = useStyles();
   return (
     <Box
@@ -272,7 +278,7 @@ const Mobile = () => {
           <span className={classes.rate}>/mo</span>
         </Box>
 
-        <PremiumButton newPlan="plus" />
+        <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
 
         <Box className={classes.subtitleMobile}>
           1 year commitment <br />
@@ -352,7 +358,7 @@ const Mobile = () => {
           <span className={classes.rate}>/mo</span>
         </Box>
 
-        <PremiumButton newPlan="pro" />
+        <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
 
         <Box className={classes.subtitleMobile}>
           1 year commitment <br />
@@ -446,6 +452,7 @@ const TableRowDivider = React.memo(() => {
 const DesktopTable = () => {
 
   const classes = useStyles();
+  const {interval} = usePricingStore(['interval']);
 
   return (
       <Paper className={classes.tableDesktop}>
@@ -474,7 +481,7 @@ const DesktopTable = () => {
                 <PlanPricing plan='plus'/>
               </Box>
 
-              <PremiumButton newPlan="plus" />
+              <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
 
               {/*<Box className={classes.subtitle}>*/}
               {/*  1 year commitment <br /> gets one month free*/}
@@ -486,7 +493,7 @@ const DesktopTable = () => {
                 <PlanPricing plan='pro'/>
               </Box>
 
-              <PremiumButton newPlan="pro" />
+              <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
 
               {/*<Box className={classes.subtitle}>*/}
               {/*  1 year commitment <br /> gets one month free*/}
