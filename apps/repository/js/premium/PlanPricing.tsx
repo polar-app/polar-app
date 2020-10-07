@@ -5,32 +5,39 @@ import React from "react";
 import {Billing} from "polar-accounts/src/Billing";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import { Numbers } from "polar-shared/src/util/Numbers";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         price: {
-            fontSize: '30px'
+            fontSize: '30px',
+            margin: 0
+        },
+        regularPrice: {
+            fontSize: '22px',
+            margin: 0
         },
         interval: {
             fontSize: '15px',
             color: theme.palette.text.hint
         },
+        billedAt: {
+            fontSize: '1.3rem',
+            color: theme.palette.text.hint
+        },
+
     }),
 );
-
 
 interface IProps {
     readonly plan: Billing.V2PlanLevel;
 }
 
-export const PlanPricing = deepMemo((props: IProps) => {
+namespace PlanPrices {
 
-    const classes = useStyles();
-    const {interval} = usePremiumStore(['interval']);
+    export function computeMonthPrice(plan: Billing.V2PlanLevel) {
 
-    const computeMonthPrice = () => {
-
-        switch (props.plan) {
+        switch (plan) {
             case "free":
                 return 0.0;
             case "plus":
@@ -39,10 +46,10 @@ export const PlanPricing = deepMemo((props: IProps) => {
                 return 14.99;
         }
 
-    };
+    }
 
-    const computeYearPrice = () => {
-        switch (props.plan) {
+    export function computeYearPrice(plan: Billing.V2PlanLevel) {
+        switch (plan) {
             case "free":
                 return 0.0;
             case "plus":
@@ -50,10 +57,10 @@ export const PlanPricing = deepMemo((props: IProps) => {
             case "pro":
                 return 164.99;
         }
-    };
+    }
 
-    const compute4YearPrice = () => {
-        switch (props.plan) {
+    export function compute4YearPrice(plan: Billing.V2PlanLevel) {
+        switch (plan) {
             case "free":
                 return 0.0;
             case "plus":
@@ -61,11 +68,21 @@ export const PlanPricing = deepMemo((props: IProps) => {
             case "pro":
                 return 399.99;
         }
-    };
+    }
+
+}
+
+export const PlanPricing = deepMemo((props: IProps) => {
+
+    const classes = useStyles();
+    const {plan} = props;
+    const {interval} = usePremiumStore(['interval']);
 
     interface Pricing {
         readonly price: number;
         readonly discount: Discount | undefined;
+        readonly priceNormalizedPerMonth: number;
+        readonly regularPrice: number;
     }
 
     const computePrice = (): Pricing => {
@@ -74,25 +91,39 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
             switch(interval) {
                 case "month":
-                    return computeMonthPrice();
+                    return PlanPrices.computeMonthPrice(plan);
                 case "year":
-                    return computeYearPrice();
+                    return PlanPrices.computeYearPrice(plan);
                 case "4year":
-                    return compute4YearPrice();
+                    return PlanPrices.compute4YearPrice(plan);
 
             }
 
         }
 
-        const price = computePriceFromInterval();
-        // const discount = discounts.get(interval, props.plan);
+        function intervalToMonths() {
+            switch (interval) {
+                case "month":
+                    return 1;
+                case "year":
+                    return 12;
+                case "4year":
+                    return 48;
+            }
+        }
 
-        return {price, discount: undefined};
-    };
+        const price = computePriceFromInterval();
+
+        const priceNormalizedPerMonth = Numbers.toFixedFloat(price / intervalToMonths(), 2);
+        const regularPrice = PlanPrices.computeMonthPrice(plan);
+
+        return {price, discount: undefined, priceNormalizedPerMonth, regularPrice};
+
+    }
 
     const pricing = computePrice();
 
-    if (pricing.discount) {
+    if (pricing.discount !== undefined) {
 
         return <div>
 
@@ -112,11 +143,35 @@ export const PlanPricing = deepMemo((props: IProps) => {
     } else {
 
         return (
-            <div>
-                <h3 className={classes.price}>${pricing.price}<span
-                    className={classes.interval}>/{interval}</span>
+            <>
+                <h3 className={classes.price}>${pricing.priceNormalizedPerMonth}
+                    <span className={classes.interval}>/{interval}</span>
                 </h3>
-            </div>
+
+                {(interval !== 'month' && plan !== 'free') && (
+                    <>
+
+                        <s>
+                            <h3 className={classes.regularPrice}>${pricing.regularPrice}
+                                <span className={classes.interval}>/{interval}</span>
+                            </h3>
+                        </s>
+
+                        {interval === 'year' && (
+                            <p className={classes.billedAt}>
+                                Billed yearly at ${pricing.price} with a 14 day trial.
+                            </p>
+                        )}
+
+                        {interval === '4year' && (
+                            <p className={classes.billedAt}>
+                                Billed once at ${pricing.price} with a 14 day trial.
+                            </p>
+                        )}
+
+                    </>
+                )}
+            </>
         );
 
     }
