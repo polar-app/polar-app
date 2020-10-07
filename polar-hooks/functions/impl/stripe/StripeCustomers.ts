@@ -74,8 +74,12 @@ export class StripeCustomers {
 
             console.log(`Updating subscription ${subscription.id} to plan ID ${planID} (${plan})`);
 
+            // note that proration is the default behavior now:
+            // https://stripe.com/docs/billing/subscriptions/prorations
+            //
+            // Prorating is the default behavior, but you can disable it by setting proration_behavior to none:
+
             await stripe.subscriptions.update(subscription.id, {
-                prorate: true,
                 items: [
                     {
                         id: subscription.items.data[0].id,

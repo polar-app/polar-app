@@ -63,7 +63,7 @@ export class StripePlanIDs {
 
     }
 
-    public static fromSubscription(plan: Billing.Plan,
+    public static fromSubscription(plan: Billing.Plan | Billing.V2PlanLevel,
                                    interval: Billing.Interval): StripePlanV2ID | StripeYearPlanV2ID | Stripe4YearPlanV2ID {
 
         if (!plan) {
