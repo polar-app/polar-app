@@ -9,6 +9,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MacOSLogoImage from "../components/logos/MacOSLogoImage";
 import MicrosoftWindowsLogo from "../components/logos/MicrosoftWindowsLogo";
 import UbuntuLogo from "../components/logos/UbuntuLogo";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles({
   background: {
@@ -88,6 +90,58 @@ const useStyles = makeStyles({
   },
 });
 
+const DownloadForLinux = () => {
+
+  const [active, setActive] = React.useState(false);
+
+  useEffect(() => {
+
+    if (navigator.userAgent.indexOf("Linux") !== -1) {
+      setActive(true);
+    }
+
+  }, [])
+
+
+  if (! active) {
+    return null;
+  }
+
+  return (
+
+      <div>
+
+        <p>
+          We provide .deb (Ubuntu and Debian) packages. AppImage for easy
+          cross-platform images as well as tar.gz static builds.
+        </p>
+
+        <Grid container justify="center" spacing={1}>
+
+          <Grid item>
+            <Button href={createDownloadURL('linux-deb')} variant="contained" color="secondary">
+              Download .deb (Ubuntu and Debian)
+            </Button>
+          </Grid>
+
+          <Grid item>
+            <Button href={createDownloadURL('linux-targz')} variant="contained" color="secondary">
+              Download tar.gz
+            </Button>
+          </Grid>
+
+          <Grid item>
+            <Button href={createDownloadURL('linux-appimage')} variant="contained" color="secondary">
+              Download AppImage
+            </Button>
+          </Grid>
+        </Grid>
+
+      </div>
+
+  );
+}
+
 
 function triggerDownloadForURL(url: string) {
     document.location.href = url;
@@ -107,22 +161,39 @@ function isDev() {
 
 }
 
-function triggerDownload(): boolean {
+type DownloadType = 'mac' | 'win' | 'linux-deb' | 'linux-targz' | 'linux-appimage';
 
-    const winDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-nsis-x64.exe`;
-    const macDownload = `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}.dmg`;
+function createDownloadURL(downloadType: DownloadType) {
+
+  switch (downloadType) {
+    case "mac":
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}.dmg`;
+    case "win":
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-nsis-x64.exe`;
+    case "linux-deb":
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-amd64.deb`;
+    case "linux-targz":
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-x64.tar.gz`;
+    case "linux-appimage":
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-x86_64.AppImage`;
+
+  }
+
+}
+
+function triggerDownload(): boolean {
 
     if (isDev()) {
         return false;
     }
 
     if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
-        triggerDownloadForURL(macDownload);
+        triggerDownloadForURL(createDownloadURL('mac'));
         return true;
     }
 
     if (navigator.userAgent.indexOf("Win64") !== -1) {
-        triggerDownloadForURL(winDownload);
+        triggerDownloadForURL(createDownloadURL('win'));
         return true;
     }
 
@@ -137,7 +208,7 @@ const DownloadSnackbar = () => {
   );
 };
 
-const Landing = ({ location }) => {
+const Download = ({ location }) => {
   const classes = useStyles();
   const [downloadStarted, setDownloadStarted] = React.useState(false);
 
@@ -179,6 +250,8 @@ const Landing = ({ location }) => {
               </div>
             </div>
 
+            <DownloadForLinux/>
+
             <Box
               style={{ marginTop: "84px", marginBottom: "26px" }}
               className={classes.info}
@@ -199,4 +272,4 @@ const Landing = ({ location }) => {
   );
 };
 
-export default Landing;
+export default Download;
