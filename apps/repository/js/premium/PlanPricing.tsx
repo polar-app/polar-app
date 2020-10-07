@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) =>
         },
         billedAt: {
             fontSize: '1.3rem',
+            lineHeight: '1.4rem',
             color: theme.palette.text.hint
         },
 
@@ -159,13 +160,13 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
                         {interval === 'year' && (
                             <p className={classes.billedAt}>
-                                Billed yearly at ${pricing.price} with a 14 day trial.
+                                Billed yearly at ${pricing.price} <br/> with a 14 day trial.
                             </p>
                         )}
 
                         {interval === '4year' && (
                             <p className={classes.billedAt}>
-                                Billed once at ${pricing.price} with a 14 day trial.
+                                Billed once at ${pricing.price} <br/> with a 14 day trial.
                             </p>
                         )}
 
