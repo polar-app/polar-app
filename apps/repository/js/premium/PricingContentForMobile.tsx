@@ -105,6 +105,77 @@ const useStyles = makeStyles({
   },
 });
 
+interface PlanBoxProps {
+    readonly name: string;
+    readonly subtitle: string;
+    readonly storage: string;
+    readonly maxCapturedWebDocuments: number;
+    readonly maxDevices: number;
+    readonly support: boolean;
+    readonly relatedTags: boolean;
+}
+
+const PlanBox = (props: PlanBoxProps) => {
+
+  const classes = useStyles();
+
+  return (
+      <Paper elevation={1}>
+        <Box className={classes.pricePlanMobile}>
+          <Box className={classes.pricing}> {props.name} </Box>
+          <Box className={classes.subtitleMobile}>
+            {props.subtitle}
+          </Box>
+
+          <table className={classes.tableMobile}>
+            <tr className={classes.row}>
+              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+                Storage
+              </td>
+              <td>{props.storage}</td>
+            </tr>
+            <tr className={classes.row}>
+              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+                Maximum Captured <br /> Web Documents
+              </td>
+              <td>
+                {props.maxCapturedWebDocuments}
+              </td>
+            </tr>
+            <tr className={classes.row}>
+              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+                Devices
+              </td>
+              <td>
+                {props.maxDevices}
+              </td>
+            </tr>
+            <tr className={classes.row}>
+              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+                Priority Support
+              </td>
+              <td>
+                <Box style={{ width: "50%" }} className={classes.imgBox}>
+                  <FATimesCircleIcon className={classes.checkCircle} />
+                </Box>
+              </td>
+            </tr>
+            <tr className={classes.row}>
+              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+                Related Tags
+              </td>
+              <td>
+                <Box style={{ width: "50%" }} className={classes.imgBox}>
+                  <FATimesCircleIcon className={classes.checkCircle} />
+                </Box>
+              </td>
+            </tr>
+          </table>
+        </Box>
+      </Paper>
+  );
+}
+
 export const PricingContentForMobile = () => {
 
   const {interval} = usePricingStore(['interval']);
@@ -121,79 +192,14 @@ export const PricingContentForMobile = () => {
         marginBottom: "40px",
       }}
     >
-      <Box className={classes.pricePlanMobile}>
-        <Box className={classes.pricing}> Free </Box>
-        <Box className={classes.subtitleMobile}>
-          Free forever
-        </Box>
+      <PlanBox name="Free"
+               subtitle="Free Forever"
+               storage="1 GB"
+               maxCapturedWebDocuments={250}
+               maxDevices={2}
+               support={false}
+               relatedTags={false}/>
 
-        <table className={classes.tableMobile}>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Updates
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Web + Desktop
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Storage
-            </td>
-            <td>1 GB</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Captured <br /> Web Documents
-            </td>
-            <td>250</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Devices
-            </td>
-            <td>2</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Priority Support
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FATimesCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-          {/* <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Daily <br /> Flashcard Reviews
-            </td>
-            <td>20</td>
-          </tr> */}
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Related Tags
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <FATimesCircleIcon className={classes.checkCircle} />
-              </Box>
-            </td>
-          </tr>
-        </table>
-      </Box>
       <Box className={classes.pricePlanMobile}>
         <Box className={classes.headerMobile}>Plus</Box>
         <Box className={classes.pricing}>
