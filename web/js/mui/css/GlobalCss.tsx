@@ -18,8 +18,10 @@ export const GlobalCssDarkStyles = withStyles(() => {
             ...darkModeScrollbars,
 
             // You should target [class*="MuiButton-root"] instead if you nest themes.
-            '.MuiTooltip-root': {
-                // fontSize: '1rem',
+
+            '.MuiTooltip-tooltip': {
+                fontSize: '1.1rem',
+                backgroundColor: theme.palette.background.default
             },
 
             // **** CSS link colors

@@ -16,6 +16,7 @@ import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import {FeedbackButton} from "../ui/FeedbackButton";
 
 namespace main {
 
@@ -151,7 +152,6 @@ export const DocRepoScreen2 = React.memo(() => {
 
                 <DocRepoScreenRoutedComponents/>
 
-                {/*<RepositoryTour/>*/}
                 <header>
 
                     <DeviceRouters.Desktop>
@@ -159,8 +159,6 @@ export const DocRepoScreen2 = React.memo(() => {
                     </DeviceRouters.Desktop>
 
                 </header>
-
-                {/*<Router/>*/}
 
                 <DeviceRouter handheld={<devices.PhoneAndTablet/>}
                               desktop={<devices.Desktop/>}/>
@@ -170,6 +168,8 @@ export const DocRepoScreen2 = React.memo(() => {
                     <DeviceRouter.Handheld>
                         <AddContent.Handheld/>
                     </DeviceRouter.Handheld>
+
+                    <FeedbackButton/>
 
                 </FixedNav.Footer>
 
