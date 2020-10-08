@@ -11,6 +11,9 @@ import { usePricingStore } from "./PricingStore";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
+import {Plans} from "polar-accounts/src/Plans";
+import V2Plan = Billing.V2Plan;
+import V2PlanFree = Billing.V2PlanFree;
 
 const useStyles = makeStyles({
   checkCircle: {
@@ -85,14 +88,9 @@ const useStyles = makeStyles({
     mixBlendMode: "normal",
     display: "flex",
     flexDirection: "column",
-    // justifyContent: "center",
     alignItems: "center",
     width: "340px",
-    // minWidth: "300px",
-    // width: "70%",
     margin: "15px",
-    // paddingBottom: "5%",
-    height: "705px",
   },
 
   tableMobile: {
@@ -105,27 +103,64 @@ const useStyles = makeStyles({
   },
 });
 
-interface PlanBoxProps {
-    readonly name: string;
-    readonly subtitle: string;
-    readonly storage: string;
-    readonly maxCapturedWebDocuments: number;
-    readonly maxDevices: number;
-    readonly support: boolean;
-    readonly relatedTags: boolean;
+interface CheckRowProps {
+  readonly name: string;
+  readonly checked: boolean;
 }
+
+const CheckRow = (props: CheckRowProps) => {
+
+  const classes = useStyles();
+
+  return (
+      <tr className={classes.row}>
+        <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+          {props.name}
+        </td>
+        <td>
+          <Box style={{ width: "50%" }} className={classes.imgBox}>
+
+            {props.checked && (
+                <PlanCheckIcon/>
+            )}
+
+            {! props.checked && (
+                <FATimesCircleIcon className={classes.checkCircle} />
+            )}
+
+          </Box>
+        </td>
+      </tr>
+
+  );
+}
+
+interface PlanBoxProps {
+  readonly name: string;
+  readonly plan: V2Plan;
+  readonly interval: Billing.Interval;
+  readonly subtitle: string | React.ReactNode;
+  readonly storage: string;
+  readonly maxCapturedWebDocuments: number | 'unlimited';
+  readonly maxDevices: number | 'unlimited';
+  readonly support: boolean;
+  readonly relatedTags: boolean;
+}
+
 
 const PlanBox = (props: PlanBoxProps) => {
 
   const classes = useStyles();
 
   return (
-      <Paper elevation={1}>
+      <Paper elevation={1} style={{margin: '1rem'}}>
         <Box className={classes.pricePlanMobile}>
           <Box className={classes.pricing}> {props.name} </Box>
           <Box className={classes.subtitleMobile}>
             {props.subtitle}
           </Box>
+
+          <PremiumButton newSubscription={{plan: props.plan, interval: props.interval}} />
 
           <table className={classes.tableMobile}>
             <tr className={classes.row}>
@@ -150,26 +185,10 @@ const PlanBox = (props: PlanBoxProps) => {
                 {props.maxDevices}
               </td>
             </tr>
-            <tr className={classes.row}>
-              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-                Priority Support
-              </td>
-              <td>
-                <Box style={{ width: "50%" }} className={classes.imgBox}>
-                  <FATimesCircleIcon className={classes.checkCircle} />
-                </Box>
-              </td>
-            </tr>
-            <tr className={classes.row}>
-              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-                Related Tags
-              </td>
-              <td>
-                <Box style={{ width: "50%" }} className={classes.imgBox}>
-                  <FATimesCircleIcon className={classes.checkCircle} />
-                </Box>
-              </td>
-            </tr>
+
+            <CheckRow name="Priority Support" checked={props.support}/>
+            <CheckRow name="Related Tags" checked={props.relatedTags}/>
+
           </table>
         </Box>
       </Paper>
@@ -181,6 +200,7 @@ export const PricingContentForMobile = () => {
   const {interval} = usePricingStore(['interval']);
 
   const classes = useStyles();
+
   return (
     <Box
       style={{
@@ -190,9 +210,15 @@ export const PricingContentForMobile = () => {
         justifyContent: "center",
         flexWrap: "wrap",
         marginBottom: "40px",
-      }}
-    >
+      }}>
+
+      <div style={{margin: '1em auto 1em auto'}}>
+        <PlanIntervalToggle/>
+      </div>
+
       <PlanBox name="Free"
+               plan={V2PlanFree}
+               interval={interval}
                subtitle="Free Forever"
                storage="1 GB"
                maxCapturedWebDocuments={250}
@@ -200,166 +226,26 @@ export const PricingContentForMobile = () => {
                support={false}
                relatedTags={false}/>
 
-      <Box className={classes.pricePlanMobile}>
-        <Box className={classes.headerMobile}>Plus</Box>
-        <Box className={classes.pricing}>
-          $6.99
-          <span className={classes.rate}>/mo</span>
-        </Box>
+      <PlanBox name="Plus"
+               plan={V2PlanPlus}
+               interval={interval}
+               subtitle={<>1 year commitment <br /> gets one month free</>}
+               storage="50 GB"
+               maxCapturedWebDocuments="unlimited"
+               maxDevices="unlimited"
+               support={true}
+               relatedTags={true}/>
 
-        <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
+      <PlanBox name="Pro"
+               plan={V2PlanPro}
+               interval={interval}
+               subtitle={<>1 year commitment <br /> gets one month free</>}
+               storage="500 GB"
+               maxCapturedWebDocuments="unlimited"
+               maxDevices="unlimited"
+               support={true}
+               relatedTags={true}/>
 
-        <Box className={classes.subtitleMobile}>
-          1 year commitment <br />
-          gets one month free
-        </Box>
-        <table className={classes.tableMobile}>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Updates
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Web + Desktop
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Storage
-            </td>
-            <td>50 GB</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Captured <br /> Web Documents
-            </td>
-            <td>unlimited</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Devices
-            </td>
-            <td>3</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Priority Support
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          {/* <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Daily <br /> Flashcard Reviews
-            </td>
-            <td>unlimited</td>
-          </tr> */}
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Related Tags
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-        </table>
-      </Box>
-      <Box className={classes.pricePlanMobile}>
-        <Box className={classes.headerMobile}>Pro</Box>
-        <Box className={classes.pricing}>
-          $14.99
-          <span className={classes.rate}>/mo</span>
-        </Box>
-
-        <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
-
-        <Box className={classes.subtitleMobile}>
-          1 year commitment <br />
-          gets one month free
-        </Box>
-        <table className={classes.tableMobile}>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Updates
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Web + Desktop
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Storage
-            </td>
-            <td>500 GB</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Captured <br /> Web Documents
-            </td>
-            <td>unlimited</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Devices
-            </td>
-            <td>unlimited</td>
-          </tr>
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Priority Support
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-          {/* <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Maximum Daily <br /> Flashcard Reviews
-            </td>
-            <td>unlimited</td>
-          </tr> */}
-          <tr className={classes.row}>
-            <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
-              Related Tags
-            </td>
-            <td>
-              <Box style={{ width: "50%" }} className={classes.imgBox}>
-                <PlanCheckIcon/>
-              </Box>
-            </td>
-          </tr>
-        </table>
-      </Box>
     </Box>
   );
 }
