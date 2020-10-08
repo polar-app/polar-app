@@ -17,17 +17,6 @@ const useStyles = makeStyles({
     maxHeight: "24px",
   },
 
-  header: {
-    fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    // fontSize: "min(28px, 2.5vw)",
-    fontSize: "28px",
-    lineHeight: "33px",
-    marginTop: "40px",
-    // margin: "20px 0",
-  },
-
   headerMobile: {
     fontFamily: "Roboto",
     fontStyle: "normal",
@@ -39,45 +28,10 @@ const useStyles = makeStyles({
     // margin: "20px 0",
   },
 
-  tableDesktop: {
-    fontSize: '16px',
-    margin: "10px auto 10px auto",
-    mixBlendMode: "normal",
-    width: "80%",
-    textAlign: "center",
-    borderCollapse: "collapse",
-    paddingRight: "25px",
-  },
-
   imgBox: {
     margin: "0 auto",
     display: "flex",
     justifyContent: "center",
-  },
-
-  buttonSignUp: {
-    textTransform: "none",
-    marginBottom: "8px",
-    backgroundColor: "#6754D6",
-    width: "9vw",
-    height: "45px",
-  },
-
-  buttonSignUpMobile: {
-    textTransform: "none",
-    marginBottom: "8px",
-    backgroundColor: "#6754D6",
-    // width: "58%",
-    padding: "0 20%",
-    height: "45px",
-    // minHeight: "45px",
-
-    fontSize: "20px",
-  },
-
-  rowHead: {
-    textAlign: "right",
-    padding: "7px 0px 7px 20px",
   },
 
   divider: {
@@ -110,17 +64,6 @@ const useStyles = makeStyles({
     color: "#E0E0E0",
   },
 
-  subtitle: {
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "1.2em",
-    lineHeight: "1.2em",
-    textAlign: "center",
-    letterSpacing: "0.15px",
-    color: "#E0E0E0",
-    paddingBottom: "10%",
-  },
-
   subtitleMobile: {
     fontStyle: "normal",
     fontWeight: "normal",
@@ -136,17 +79,6 @@ const useStyles = makeStyles({
 
   rowHeadMobile: {
     textAlign: "left",
-  },
-
-  pricePlanTab: {
-    mixBlendMode: "normal",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "33%",
-    marginBottom: "8%",
-    paddingBottom: "5%",
   },
 
   pricePlanMobile: {
