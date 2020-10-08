@@ -160,6 +160,10 @@ const PlanBox = (props: PlanBoxProps) => {
             {props.subtitle}
           </Box>
 
+          <Box className={classes.pricing}>
+            <PlanPricing plan={props.plan.level}/>
+          </Box>
+
           <PremiumButton newSubscription={{plan: props.plan, interval: props.interval}} />
 
           <table className={classes.tableMobile}>
