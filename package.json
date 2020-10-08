@@ -50,7 +50,7 @@
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
-    "serve": "gatsby serve",
+    "serve": "gatsby serve --port=8000",
     "clean": "gatsby clean",
     "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"export const POLAR_RELEASE = '%s';\n\" > src/components/release.ts",
     "prebuild": "npm run-script get-release"
