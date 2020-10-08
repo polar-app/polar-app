@@ -11,6 +11,7 @@ import { usePricingStore } from "./PricingStore";
 import {Billing} from "polar-accounts/src/Billing";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
+import V2PlanFree = Billing.V2PlanFree;
 
 const useStyles = makeStyles({
 
@@ -119,8 +120,6 @@ const DesktopTable = () => {
           <tr style={{ height: "100px", verticalAlign: "top" }}>
             <th style={{ width: "12%" }}>
               <div className="mt-2 mb-2">
-                {/*<FindPlan/>*/}
-                {/*<PlanIntervalButton/>*/}
               </div>
             </th>
             <th style={{ width: "22%" }}>
@@ -129,9 +128,7 @@ const DesktopTable = () => {
                 <PlanPricing plan='free'/>
               </Box>
               {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
-              <Box className={classes.subtitle}>
-                Free forever
-              </Box>
+              <PremiumButton newSubscription={{plan: V2PlanFree, interval}} />
             </th>
             <th style={{ width: "22%" }}>
               <Box className={classes.header}>Plus</Box>

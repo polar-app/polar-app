@@ -45,7 +45,7 @@ export const PremiumButton = deepMemo((props: IProps) => {
     }, [changePlanActionContext]);
 
     return (
-        <div>
+        <div style={{margin: '1rem'}}>
 
             {currentPlan && (
                 <span className={classes.current_plan}>CURRENT PLAN</span>
