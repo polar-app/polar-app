@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import {StripeUtils} from "./StripeUtils";
+import {StripeMode, StripeUtils} from "./StripeUtils";
 import {Billing} from 'polar-accounts/src/Billing';
 import {StripePlanIDs} from "./StripePlanIDs";
 
@@ -10,9 +10,9 @@ export interface StripeCustomerSubscription {
 
 export class StripeCustomers {
 
-    public static async getCustomerByEmail(email: string): Promise<Stripe.Customer | undefined> {
+    public static async getCustomerByEmail(mode: StripeMode, email: string): Promise<Stripe.Customer | undefined> {
 
-        const stripe = StripeUtils.getStripe();
+        const stripe = StripeUtils.getStripe(mode);
 
         const opts = {email};
 
@@ -30,9 +30,9 @@ export class StripeCustomers {
 
     }
 
-    public static async getCustomerSubscription(email: string): Promise<StripeCustomerSubscription> {
+    public static async getCustomerSubscription(mode: StripeMode, email: string): Promise<StripeCustomerSubscription> {
 
-        const customer = await this.getCustomerByEmail(email);
+        const customer = await this.getCustomerByEmail(mode, email);
 
         if (! customer) {
             throw new Error("No customer for email: " + email);
@@ -58,15 +58,18 @@ export class StripeCustomers {
 
     }
 
-    public static async changePlan(email: string, plan: Billing.Plan, interval: Billing.Interval) {
+    public static async changePlan(mode: StripeMode,
+                                   email: string,
+                                   plan: Billing.Plan,
+                                   interval: Billing.Interval) {
 
         console.log(`Changing plan for ${email} to ${plan}`);
 
-        const customerSubscription = await this.getCustomerSubscription(email);
+        const customerSubscription = await this.getCustomerSubscription(mode, email);
 
         const planID = StripePlanIDs.fromSubscription(plan, interval);
 
-        const stripe = StripeUtils.getStripe();
+        const stripe = StripeUtils.getStripe(mode);
 
         const {customer, subscription} = customerSubscription;
 
@@ -102,10 +105,11 @@ export class StripeCustomers {
 
     }
 
-    public static async cancelSubscription(email: string) {
+    public static async cancelSubscription(mode: StripeMode,
+                                           email: string) {
 
-        const stripe = StripeUtils.getStripe();
-        const customerSubscription = await this.getCustomerSubscription(email);
+        const stripe = StripeUtils.getStripe(mode);
+        const customerSubscription = await this.getCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -121,11 +125,13 @@ export class StripeCustomers {
 
     }
 
-    public static async applyCoupon(email: string, coupon: string) {
+    public static async applyCoupon(mode: StripeMode,
+                                    email: string,
+                                    coupon: string) {
 
-        const stripe = StripeUtils.getStripe();
+        const stripe = StripeUtils.getStripe(mode);
 
-        const customerSubscription = await this.getCustomerSubscription(email);
+        const customerSubscription = await this.getCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {

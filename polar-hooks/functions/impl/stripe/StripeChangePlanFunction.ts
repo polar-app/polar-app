@@ -6,6 +6,8 @@ import {Billing} from 'polar-accounts/src/Billing';
 import {Accounts} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
+import { StripeMode } from './StripeUtils';
+import { Plans } from 'polar-accounts/src/Plans';
 
 const app = express();
 
@@ -13,7 +15,6 @@ app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
 app.use((req, res) => {
-
 
     // TODO: I think we need to validate the logged in user here.
 
@@ -25,11 +26,12 @@ app.use((req, res) => {
 
             const body: StripeChangePlanBody = req.body;
 
-            const account = await StripeCustomerAccounts.get(body.email);
+            const plan = Plans.toV2(body.plan);
+            const account = await StripeCustomerAccounts.get(body.mode, body.email);
 
             await Accounts.validate(body.email, body.uid);
-            await StripeCustomers.changePlan(body.email, body.plan, body.interval);
-            await Accounts.changePlanViaEmail(body.email, account.customer.customerID, body.plan, body.interval);
+            await StripeCustomers.changePlan(body.mode, body.email, plan, body.interval);
+            await Accounts.changePlanViaEmail(body.email, account.customer.customerID, plan, body.interval);
 
             res.sendStatus(200);
 
@@ -52,7 +54,8 @@ export const StripeChangePlanFunction = functions.https.onRequest(app);
 export interface StripeChangePlanBody {
     readonly uid: string;
     readonly email: string;
-    readonly plan: Billing.Plan;
+    readonly plan: Billing.PlanLike;
     readonly interval: Billing.Interval;
+    readonly mode: StripeMode;
 }
 

@@ -17,10 +17,7 @@ app.use((req, res) => {
 
     // req.body should be a JSON body for stripe with the payment metadata.
 
-    const plan = req.get('plan');
-    const email = req.get('email');
-
-    const stripe = StripeUtils.getStripe();
+    const stripe = StripeUtils.getStripe('test');
 
     // FIXME: I think I need to list subscriptions, then match the given plan,
     // then I need to use the price_id.

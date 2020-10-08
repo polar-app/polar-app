@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {Billing} from 'polar-accounts/src/Billing';
-import {StripeUtils} from "./StripeUtils";
+import {StripeUtils, StripeMode} from "./StripeUtils";
 import {StripePlanIDs} from "./StripePlanIDs";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
@@ -14,7 +14,9 @@ app.use(cors({ origin: true }));
 
 app.use((req, res) => {
 
-    const stripe = StripeUtils.getStripe();
+    const mode = <StripeMode> req.query.mode;
+
+    const stripe = StripeUtils.getStripe(mode);
 
     const plan = <Billing.V2PlanLevel> req.query.plan;
     const interval = <Billing.Interval> req.query.interval;

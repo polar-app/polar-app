@@ -11,11 +11,11 @@ describe('Stripe', function() {
     it("basic", async function() {
         this.timeout(60000);
 
-        const stripe = StripeUtils.getStripe();
+        const stripe = StripeUtils.getStripe('test');
 
         // await Accounts.changePlan("cus_F9RB6dZIxRMZXj", "bronze");
 
-        let customer = await StripeCustomers.getCustomerByEmail(email);
+        let customer = await StripeCustomers.getCustomerByEmail('test', email);
 
         console.log("Found customer: ", customer);
 
@@ -49,17 +49,17 @@ describe('Stripe', function() {
             source
         });
 
-        await StripeCustomers.changePlan(email, 'bronze', 'month');
-        await StripeCustomers.changePlan(email, 'silver', 'month');
-        await StripeCustomers.changePlan(email, 'gold', 'month');
+        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
+        await StripeCustomers.changePlan('test', email, 'silver', 'month');
+        await StripeCustomers.changePlan('test', email, 'gold', 'month');
 
         // now downgrade...
-        await StripeCustomers.changePlan(email, 'silver', 'month');
-        await StripeCustomers.changePlan(email, 'bronze', 'month');
+        await StripeCustomers.changePlan('test', email, 'silver', 'month');
+        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
 
         // make sure we can double set it to bronze, this should be idempotent.
-        await StripeCustomers.changePlan(email, 'bronze', 'month');
-        await StripeCustomers.cancelSubscription(email);
+        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
+        await StripeCustomers.cancelSubscription('test', email);
 
         // now make sure this customers has no subscriptions after the cancel now.
 

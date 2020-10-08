@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 const testMode = false;
 
-function getStripeKey() {
+function getStripeKey(mode: StripeMode) {
 
     if (process.env.STRIPE_KEY) {
         return process.env.STRIPE_KEY;
@@ -15,15 +15,17 @@ function getStripeKey() {
 
     console.log("Using production stripe credentials");
 
-    return 'sk_live_6N0oXmsdPxKS6gbUhwHFLncD00Gv3ztN4A';
+    return mode === 'live' ? 'sk_live_6N0oXmsdPxKS6gbUhwHFLncD00Gv3ztN4A' : 'sk_test_4qvDsYhxF53NhLCzcGtwaJA100PQdzhkoG';
 
 }
 
 let stripe: Stripe | undefined;
 
+export type StripeMode = 'test' | 'live';
+
 export class StripeUtils {
 
-    public static getStripe() {
+    public static getStripe(mode: StripeMode) {
 
         if (stripe) {
             return stripe;
@@ -34,7 +36,7 @@ export class StripeUtils {
             typescript: true
         }
 
-        stripe = new Stripe(getStripeKey(), config);
+        stripe = new Stripe(getStripeKey(mode), config);
         return stripe;
 
     }

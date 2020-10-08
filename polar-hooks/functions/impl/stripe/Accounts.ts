@@ -1,5 +1,5 @@
 import {Billing} from "polar-accounts/src/Billing";
-import {StripeUtils} from "./StripeUtils";
+import {StripeUtils, StripeMode} from "./StripeUtils";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -42,11 +42,12 @@ export class Accounts {
 
     }
 
-    public static async changePlan(customerID: string,
+    public static async changePlan(mode: StripeMode,
+                                   customerID: string,
                                    plan: Billing.Plan,
                                    interval: Billing.Interval) {
 
-        const stripe = StripeUtils.getStripe();
+        const stripe = StripeUtils.getStripe(mode);
 
         const customer = await stripe.customers.retrieve(customerID);
 

@@ -4,63 +4,69 @@ import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {StripePlanID, StripePlanIDs} from "./StripePlanIDs";
 import {Accounts} from "./Accounts";
+import {StripeMode} from "./StripeUtils";
 
 // TODO:
 //
 // - implement signing for webhooks: https://stripe.com/docs/webhooks/signatures
 
-const app = express();
+function createApp(mode: StripeMode) {
 
-app.use(bodyParser.json());
-app.use(cors({ origin: true }));
+    const app = express();
 
-app.use((req, res) => {
+    app.use(bodyParser.json());
+    app.use(cors({ origin: true }));
 
-    // req.body should be a JSON body for stripe with the payment metadata.
+    app.use((req, res) => {
 
-    const handleRequest = async () => {
+        // req.body should be a JSON body for stripe with the payment metadata.
 
-        console.log(JSON.stringify(req.body, null,  '  '));
+        const handleRequest = async () => {
 
-        const stripeEvent: StripeEvent = req.body;
+            console.log(JSON.stringify(req.body, null,  '  '));
 
-        const customerID = stripeEvent.data.object.customer;
+            const stripeEvent: StripeEvent = req.body;
 
-        const planID = <StripePlanID> stripeEvent.data.object.plan.id;
+            const customerID = stripeEvent.data.object.customer;
 
-        const sub = StripePlanIDs.toSubscription(planID);
+            const planID = <StripePlanID> stripeEvent.data.object.plan.id;
 
-        switch (stripeEvent.type) {
+            const sub = StripePlanIDs.toSubscription(planID);
 
-            case 'customer.subscription.created':
-                await Accounts.changePlan(customerID, sub.plan, sub.interval);
-                break;
-            case 'customer.subscription.updated':
-                await Accounts.changePlan(customerID, sub.plan, sub.interval);
-                break;
-            case 'customer.subscription.deleted':
-                await Accounts.changePlan(customerID, 'free', 'month');
-                break;
+            switch (stripeEvent.type) {
 
-        }
+                case 'customer.subscription.created':
+                    await Accounts.changePlan(mode, customerID, sub.plan, sub.interval);
+                    break;
+                case 'customer.subscription.updated':
+                    await Accounts.changePlan(mode, customerID, sub.plan, sub.interval);
+                    break;
+                case 'customer.subscription.deleted':
+                    await Accounts.changePlan(mode, customerID, 'free', 'month');
+                    break;
 
-    };
+            }
 
-    handleRequest()
-        .then(() => {
-            res.sendStatus(200);
-        })
-        .catch(err => {
-            const now = Date.now();
-            console.error(`Could properly handle webhook: ${now}`, err);
-            console.error(`JSON body for failed webhook: ${now}`, JSON.stringify(req.body, null,  '  '));
-            res.sendStatus(500);
-        });
+        };
 
-});
+        handleRequest()
+            .then(() => {
+                res.sendStatus(200);
+            })
+            .catch(err => {
+                const now = Date.now();
+                console.error(`Could properly handle webhook: ${now}`, err);
+                console.error(`JSON body for failed webhook: ${now}`, JSON.stringify(req.body, null,  '  '));
+                res.sendStatus(500);
+            });
 
-export const StripeWebhookFunction = functions.https.onRequest(app);
+    });
 
+    return app;
+
+}
+
+export const StripeWebhookFunction = functions.https.onRequest(createApp('live'));
 
 export interface StripeEvent {
 
