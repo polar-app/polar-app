@@ -603,9 +603,9 @@ const Desktop = () => {
           <DesktopTable/>
         </div>
 
-        {/*<div className="ml-auto mr-auto">*/}
-        {/*  <PricingFAQ/>*/}
-        {/*</div>*/}
+        <div className="ml-auto mr-auto">
+          <PricingFAQ/>
+        </div>
 
       </div>
   );
