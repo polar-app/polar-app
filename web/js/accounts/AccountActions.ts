@@ -5,6 +5,8 @@ import * as firebase from "firebase/app";
 import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
 import {Firestore} from "../firebase/Firestore";
+import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/impl/stripe/StripeUtils";
+import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 
 export namespace AccountActions {
 
@@ -23,7 +25,9 @@ export namespace AccountActions {
 
     export async function cancelSubscription() {
         const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelSubscription/`;
-        const data = await createAccountData();
+        const accountData = await createAccountData();
+        const mode = StripeUtils.stripeMode();
+        const data: StripeCancelSubscriptionBody = {mode, ...accountData};
 
         await executeAccountMethod(url, data);
 
@@ -32,7 +36,8 @@ export namespace AccountActions {
     export async function changePlan(plan: Billing.V2PlanLevel, interval: Billing.Interval) {
         const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeChangePlan/`;
         const accountData = await createAccountData();
-        const data = {plan, interval, ...accountData};
+        const mode = StripeUtils.stripeMode();
+        const data: StripeChangePlanBody = {mode, plan, interval, ...accountData};
 
         await executeAccountMethod(url, data);
 
@@ -68,8 +73,8 @@ export namespace AccountActions {
         }
 
         return {
+            uid: user.uid,
             email: user.email!,
-            uid: user.uid
         };
 
     }
@@ -77,6 +82,18 @@ export namespace AccountActions {
 }
 
 interface AccountData {
-    readonly email: string;
     readonly uid: string;
+    readonly email: string;
+}
+
+interface StripeCancelSubscriptionBody extends AccountData {
+    readonly uid: string;
+    readonly email: string;
+    readonly mode: StripeMode;
+}
+
+interface StripeChangePlanBody extends AccountData {
+    readonly plan: Billing.PlanLike;
+    readonly interval: Billing.Interval;
+    readonly mode: StripeMode;
 }
