@@ -6,15 +6,15 @@ import {useNav} from "../../../../web/js/ui/util/NavHook";
 import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
 import Tooltip from "@material-ui/core/Tooltip";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
-import {Billing} from "polar-accounts/src/Billing";
-import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             position: 'absolute',
             bottom: theme.spacing(3),
             right: theme.spacing(3),
+            // color: theme.palette.text.secondary
         },
     }),
 );
