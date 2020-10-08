@@ -13,6 +13,7 @@ import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanPro = Billing.V2PlanPro;
 
 const useStyles = makeStyles({
+
   checkCircle: {
     maxHeight: "24px",
   },
@@ -25,17 +26,6 @@ const useStyles = makeStyles({
     fontSize: "28px",
     lineHeight: "33px",
     marginTop: "40px",
-    // margin: "20px 0",
-  },
-
-  headerMobile: {
-    fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    // fontSize: "min(28px, 2.5vw)",
-    fontSize: "38px",
-    lineHeight: "33px",
-    marginTop: "30px",
     // margin: "20px 0",
   },
 
@@ -63,18 +53,6 @@ const useStyles = makeStyles({
     height: "45px",
   },
 
-  buttonSignUpMobile: {
-    textTransform: "none",
-    marginBottom: "8px",
-    backgroundColor: "#6754D6",
-    // width: "58%",
-    padding: "0 20%",
-    height: "45px",
-    // minHeight: "45px",
-
-    fontSize: "20px",
-  },
-
   rowHead: {
     textAlign: "right",
     padding: "7px 0px 7px 20px",
@@ -84,6 +62,7 @@ const useStyles = makeStyles({
     marginLeft: "4%",
     width: "92%",
   },
+
   row: {
     height: "55px",
     width: "65%",
@@ -101,15 +80,6 @@ const useStyles = makeStyles({
     margin: "20px 0",
   },
 
-  rate: {
-    fontStyle: "normal",
-    fontWeight: "bold",
-    fontSize: "12px",
-    lineHeight: "14px",
-    letterSpacing: "0.15px",
-    color: "#E0E0E0",
-  },
-
   subtitle: {
     fontStyle: "normal",
     fontWeight: "normal",
@@ -121,56 +91,6 @@ const useStyles = makeStyles({
     paddingBottom: "10%",
   },
 
-  subtitleMobile: {
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "16px",
-    lineHeight: "19px",
-
-    textAlign: "center",
-    letterSpacing: "0.15px",
-    marginTop: "5px",
-    color: "#E0E0E0",
-    paddingBottom: "8%",
-  },
-
-  rowHeadMobile: {
-    textAlign: "left",
-  },
-
-  pricePlanTab: {
-    mixBlendMode: "normal",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "33%",
-    marginBottom: "8%",
-    paddingBottom: "5%",
-  },
-
-  pricePlanMobile: {
-    mixBlendMode: "normal",
-    display: "flex",
-    flexDirection: "column",
-    // justifyContent: "center",
-    alignItems: "center",
-    width: "340px",
-    // minWidth: "300px",
-    // width: "70%",
-    margin: "15px",
-    // paddingBottom: "5%",
-    height: "705px",
-  },
-
-  tableMobile: {
-    mixBlendMode: "normal",
-    width: "70%",
-    borderCollapse: "collapse",
-    paddingRight: "25px",
-    textAlign: "center",
-    fontSize: "16px",
-  },
 });
 
 const TableRowDivider = React.memo(() => {
