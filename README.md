@@ -33,16 +33,15 @@
 
 Polar is personal knowledge repository which supports advanced
 features like incremental reading, annotation, comments, and spaced repetition. 
-It supports reading PDF and the web content and was created using the [Electron
-framework](https://electron.atom.io) and
-[PDF.js](https://mozilla.github.io/pdf.js)
-
+It supports reading PDF, EPUB, and the web content.
 </div>
 
 # Features
 
 - **PDF support** We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  PDFs work well when reading content in book format or when reading scientific
 research which is often stored as PDF.
+
+- **EPUB support** Add any EPUB and we also capture web content to EPUB/
 
 - **Captured Web Pages** Download HTML content and save them as offline documents which can be annotated.
 
@@ -51,10 +50,6 @@ research which is often stored as PDF.
 - **Text Highlights** Highlight text in PDF and web pages.
 
 - **Area Highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
-
-- **Local Storage** All content is stored locally. 
-
-- **Standards Based** All content is stored as JSON in a well documented schema.  Annotations never mutate the original content.
 
 - **Portable** Run across any platform. ```Linux```, ```MacOS```, and ```Windows``` supported. 
 
