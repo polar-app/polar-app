@@ -1,7 +1,5 @@
 import * as React from "react"
-import { useBreakpoint } from "gatsby-plugin-breakpoints";
-import { Container, Box, makeStyles } from "@material-ui/core";
-import { Button } from "gatsby-material-ui-components";
+import {Box, makeStyles} from "@material-ui/core";
 import {CreateAccountButton} from "./CreateAccountButton";
 const ImgLogoBar = require("../../content/assets/logos/avaliable-logo-bar.png");
 
