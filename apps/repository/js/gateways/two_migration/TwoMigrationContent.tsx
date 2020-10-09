@@ -76,6 +76,9 @@ export const TwoMigrationContent = deepMemo(() => {
 
     const classes = useStyles();
 
+    // link to the blog post describing our changes
+    const link = "https://getpolarized.io/2020/10/05/Polar-2-0-Release.html";
+
     return (
         <MUIBrowserLinks>
             <div className={classes.root}>

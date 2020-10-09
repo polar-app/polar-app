@@ -1031,7 +1031,10 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
 
         this.reactor.addEventListener(eventListener);
 
-        handleOnNext(this.createInterceptedPersistentPrefs(this.get()));
+        // WARN: we used to send the current copy of the prefs but this is wrong.  This would only work for a store
+        // that didn't have the concept of snapshots (like our old DiskDatastore) but with Firestore we don't have
+        // any data until we receive the FIRST snapshot
+        // handleOnNext(this.createInterceptedPersistentPrefs(this.get()));
 
         return () => {
             this.reactor.removeEventListener(eventListener);

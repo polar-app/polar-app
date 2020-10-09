@@ -16,6 +16,10 @@ interface IProps {
 
 }
 
+export type MigrationMarkerCallback = () => Promise<void>;
+
+export type MigrationHookResult = [boolean | undefined, MigrationMarkerCallback];
+
 export const TwoMigrationForAppRuntime = React.memo((props: IProps) => {
 
     const [accepted, setAccepted] = React.useState(false);

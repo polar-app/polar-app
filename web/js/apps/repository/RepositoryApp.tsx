@@ -55,6 +55,7 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {deepMemo} from "../../react/ReactUtils";
 import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
+import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 
 interface IProps {
     readonly app: App;
@@ -278,7 +279,7 @@ export const RepositoryApp = (props: IProps) => {
                                  flexGrow: 1
                              }}>
 
-                            <>
+                            <TwoMigrationForBrowser>
                                 <UseLocationChangeStoreProvider>
                                     <BrowserRouter>
                                         <UseLocationChangeRoot>
@@ -370,7 +371,7 @@ export const RepositoryApp = (props: IProps) => {
                                         </UseLocationChangeRoot>
                                  </BrowserRouter>
                                 </UseLocationChangeStoreProvider>
-                            </>
+                            </TwoMigrationForBrowser>
 
                         </div>
                 </PersistenceLayerContext.Provider>
