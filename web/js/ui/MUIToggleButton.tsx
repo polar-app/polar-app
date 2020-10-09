@@ -4,6 +4,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { DeviceRouters } from './DeviceRouter';
 import isEqual from 'react-fast-compare';
+import {MUITooltip} from "../mui/MUITooltip";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,9 +31,10 @@ interface IProps {
     readonly icon?: JSX.Element;
     readonly onChange: (value: boolean) => void;
     readonly size?: 'small' | 'medium' | 'large';
+    readonly tooltip?: string;
 }
 
-export const MUIToggleButton = React.memo(React.forwardRef((props: IProps, ref) => {
+export const MUIToggleButton = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -47,37 +49,29 @@ export const MUIToggleButton = React.memo(React.forwardRef((props: IProps, ref) 
     const size = props.size || 'medium';
     const icon = props.icon || <CheckIcon/>;
 
-    // return (
-    //     <Chip id={props.id}
-    //           variant={active ? 'default' : 'outlined'}
-    //           color={active ? 'primary' : 'default'}
-    //           onClick={handleToggle}
-    //           label={props.label}
-    //           icon={icon} />
-    // );
-
-    //
     return (
 
-        <Button id={props.id}
-                startIcon={icon}
-                className={active ? classes.buttonActive : classes.button}
-                onClick={handleToggle}
-                variant={active ? "contained" : "outlined"}
-                disableFocusRipple
-                disableRipple
-                size={size}>
+        <MUITooltip title={props.tooltip}>
+            <Button id={props.id}
+                    startIcon={icon}
+                    className={active ? classes.buttonActive : classes.button}
+                    onClick={handleToggle}
+                    variant={active ? "contained" : "outlined"}
+                    disableFocusRipple
+                    disableRipple
+                    size={size}>
 
-            <DeviceRouters.NotPhone>
-                <>
-                    {props.label}
-                </>
-            </DeviceRouters.NotPhone>
+                <DeviceRouters.NotPhone>
+                    <>
+                        {props.label}
+                    </>
+                </DeviceRouters.NotPhone>
 
-        </Button>
+            </Button>
+        </MUITooltip>
 
     );
 
-}), isEqual);
+}, isEqual);
 
 
