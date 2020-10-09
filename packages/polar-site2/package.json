@@ -1,0 +1,58 @@
+{
+  "name": "polar",
+  "private": true,
+  "description": "General information, support, and downloads for the polar app",
+  "version": "0.1.0",
+  "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
+  "dependencies": {
+    "@material-ui/core": "=4.9.13",
+    "@material-ui/icons": "=4.9.1",
+    "@material-ui/styles": "^4.10.0",
+    "@types/react": "=16.9.49",
+    "@types/react-helmet": "=6.1.0",
+    "gatsby": "^2.24.67",
+    "gatsby-plugin-breakpoints": "^1.2.4",
+    "gatsby-plugin-google-analytics": "^2.3.14",
+    "gatsby-plugin-manifest": "^2.4.31",
+    "gatsby-plugin-material-ui": "^2.1.10",
+    "gatsby-plugin-react-helmet": "^3.3.12",
+    "gatsby-plugin-sharp": "^2.6.36",
+    "gatsby-transformer-sharp": "=2.5.16",
+    "gatsby-image": "=2.4.20",
+    "gatsby-plugin-sitemap": "^2.4.13",
+    "gatsby-remark-images": "^3.3.30",
+    "gatsby-source-filesystem": "^2.3.30",
+    "gatsby-theme-material-ui": "^1.0.13",
+    "gatsby-transformer-remark": "^2.8.35",
+    "polar-bookshelf": "^2.0.0-beta.31",
+    "ink": "^3.0.7",
+    "ink-box": "^1.0.0",
+    "react": "=16.13.1",
+    "react-dom": "=16.13.1",
+    "react-helmet": "=6.1.0",
+    "react-reveal": "^1.2.2",
+    "typeface-roboto": "0.0.75"
+  },
+  "devDependencies": {
+    "prettier": "2.1.2"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "scripts": {
+    "build": "gatsby build",
+    "clean-dev": "gatsby clean && gatsby develop",
+    "build-deploy": "gatsby clean && gatsby build && firebase deploy",
+    "build-deploy-dev": "gatsby clean && gatsby build && firebase deploy && gatsby develop",
+    "prune-dev": "npm prune && gatsby develop",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve --port=8000",
+    "clean": "gatsby clean",
+    "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"export const POLAR_RELEASE = '%s';\n\" > src/components/release.ts",
+    "prebuild": "npm run-script get-release"
+  }
+}
