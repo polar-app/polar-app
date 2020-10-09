@@ -52,6 +52,25 @@ const LIVE: PlanIntervalIdentifiers = {
     }
 }
 
+const TEST: PlanIntervalIdentifiers = {
+    _MONTH: {
+        FREE: "price_1Ha2KjJvJ2rsXwXzuzeKA4R6",
+        PLUS: "price_1HPVRyJvJ2rsXwXz3ThL6Mq6",
+        PRO: "price_1HPVTxJvJ2rsXwXzFssQ4DU0",
+    },
+    _YEAR: {
+        FREE: "price_1Ha2KjJvJ2rsXwXzuzeKA4R6",
+        PLUS: "price_1HPVXPJvJ2rsXwXzzB9YFe0f",
+        PRO: "price_1HPVYkJvJ2rsXwXzLXXwxrs9",
+    },
+    _4YEAR: {
+        FREE: "price_1Ha2KjJvJ2rsXwXzuzeKA4R6",
+        PLUS: "price_1HPVc1JvJ2rsXwXzlWOo1oHc",
+        PRO: "price_1Ha2KUJvJ2rsXwXzXDWzFhUx",
+    }
+}
+
+
 export class StripePlanIDs {
 
     public static toSubscription(planID: StripePlanID | StripeYearPlanID): Billing.Subscription {
