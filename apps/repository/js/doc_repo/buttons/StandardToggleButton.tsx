@@ -3,6 +3,7 @@ import {Callback1} from "polar-shared/src/util/Functions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {MUITooltip} from "../../../../../web/js/mui/MUITooltip";
 
 const activeColor = (active: boolean) => {
     const theme = useTheme();
@@ -24,12 +25,12 @@ export interface StandardToggleButtonProps extends ToggleButtonProps {
 }
 
 export const StandardToggleButton = React.memo((props: StandardToggleButtonProps) => (
-    <Tooltip title={props.tooltip} enterDelay={500}>
+    <MUITooltip title={props.tooltip} enterDelay={500}>
         <IconButton size={props.size || 'small'}
                     onClick={props.onClick}
                     aria-label={props.tooltip.toLowerCase()}
                     style={{color: activeColor(props.active || false)}}>
             {props.children}
         </IconButton>
-    </Tooltip>
+    </MUITooltip>
 ));

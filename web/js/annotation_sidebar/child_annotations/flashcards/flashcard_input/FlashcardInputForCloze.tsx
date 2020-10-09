@@ -15,6 +15,7 @@ import {FlashcardStyles} from './FlashcardStyles';
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from '@material-ui/core/IconButton';
 import {ClozeDeletions} from "./ClozeDeletions";
+import {MUITooltip} from "../../../../mui/MUITooltip";
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
@@ -69,13 +70,13 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
                     <div style={FlashcardStyles.BottomBarItem} className="ml-1">
 
-                        <Tooltip title="Create cloze deletion for text">
+                        <MUITooltip title="Create cloze deletion for text">
 
                             <IconButton id={`button-${this.props.id}`}
                                         onClick={() => this.onClozeDelete()}>
                                 […]
                             </IconButton>
-                        </Tooltip>
+                        </MUITooltip>
 
                     </div>
 

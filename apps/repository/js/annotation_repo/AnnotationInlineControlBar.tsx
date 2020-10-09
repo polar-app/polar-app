@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 
 interface IProps {
     readonly annotation: IDocAnnotation;
@@ -39,11 +40,11 @@ export const AnnotationInlineControlBar = deepMemo((props : IProps) => {
                                   flexGrow: 1,
                                   justifyContent: "flex-end"
                               }}>
-                    <Tooltip title="Open document">
+                    <MUITooltip title="Open document">
                         <IconButton onClick={() => callbacks.doOpen(annotation?.docInfo!)}>
                             <OpenInNewIcon/>
                         </IconButton>
-                    </Tooltip>
+                    </MUITooltip>
                 </MUIButtonBar>
 
             </div>

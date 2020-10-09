@@ -4,6 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SendIcon from "@material-ui/icons/Send";
 import ListItemText from "@material-ui/core/ListItemText";
+import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 
 export class AddContentMenuItem extends React.PureComponent<IProps, IState> {
 
@@ -20,8 +21,7 @@ export class AddContentMenuItem extends React.PureComponent<IProps, IState> {
 
         return (
 
-            <Tooltip title={this.props.tooltip}
-                     placement="right">
+            <MUITooltip title={this.props.tooltip}>
 
                 <MenuItem id={this.props.id}
                           onClick={() => this.props.onClick()}>
@@ -35,7 +35,7 @@ export class AddContentMenuItem extends React.PureComponent<IProps, IState> {
 
                 </MenuItem>
 
-            </Tooltip>
+            </MUITooltip>
 
         );
 
