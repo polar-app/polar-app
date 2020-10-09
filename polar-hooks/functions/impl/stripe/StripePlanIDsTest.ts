@@ -23,13 +23,13 @@ describe('StripePlanIDs', function() {
     });
 
     it("fromAccountPlan", async function() {
-        assert.equal(StripePlanIDs.fromSubscription('bronze', 'year'), 'plan_bronze_year');
-        assert.equal(StripePlanIDs.fromSubscription('silver', 'year'), 'plan_silver_year');
-        assert.equal(StripePlanIDs.fromSubscription('gold', 'year'), 'plan_gold_year');
+        assert.equal(StripePlanIDs.fromSubscription('test','bronze', 'year'), 'plan_bronze_year');
+        assert.equal(StripePlanIDs.fromSubscription('test', 'silver', 'year'), 'plan_silver_year');
+        assert.equal(StripePlanIDs.fromSubscription('test', 'gold', 'year'), 'plan_gold_year');
 
-        assert.equal(StripePlanIDs.fromSubscription('bronze', 'month'), 'plan_bronze');
-        assert.equal(StripePlanIDs.fromSubscription('silver', 'month'), 'plan_silver');
-        assert.equal(StripePlanIDs.fromSubscription('gold', 'month'), 'plan_gold');
+        assert.equal(StripePlanIDs.fromSubscription('test', 'bronze', 'month'), 'plan_bronze');
+        assert.equal(StripePlanIDs.fromSubscription('test', 'silver', 'month'), 'plan_silver');
+        assert.equal(StripePlanIDs.fromSubscription('test', 'gold', 'month'), 'plan_gold');
     });
 
 });

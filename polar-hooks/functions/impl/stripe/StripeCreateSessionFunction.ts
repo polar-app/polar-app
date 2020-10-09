@@ -16,6 +16,8 @@ app.use((req, res) => {
 
     const mode = <StripeMode> req.query.mode;
 
+    Preconditions.assertPresent(mode, 'mode');
+
     const stripe = StripeUtils.getStripe(mode);
 
     const plan = <Billing.V2PlanLevel> req.query.plan;
@@ -26,7 +28,7 @@ app.use((req, res) => {
     Preconditions.assertPresent(interval, 'interval');
     Preconditions.assertPresent(email, 'email');
 
-    const planID = StripePlanIDs.fromSubscription(plan, interval);
+    const planID = StripePlanIDs.fromSubscription(mode, plan, interval);
 
     async function doAsync() {
 

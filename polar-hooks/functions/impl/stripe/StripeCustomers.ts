@@ -67,7 +67,7 @@ export class StripeCustomers {
 
         const customerSubscription = await this.getCustomerSubscription(mode, email);
 
-        const planID = StripePlanIDs.fromSubscription(plan, interval);
+        const planID = StripePlanIDs.fromSubscription(mode, plan, interval);
 
         const stripe = StripeUtils.getStripe(mode);
 

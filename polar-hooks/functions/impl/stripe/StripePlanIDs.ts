@@ -1,6 +1,7 @@
 import {Billing} from 'polar-accounts/src/Billing';
 import {Plans} from "polar-accounts/src/Plans";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {StripeMode} from "./StripeUtils";
 
 /**
  * @Deprecated
@@ -97,7 +98,8 @@ export class StripePlanIDs {
 
     }
 
-    public static fromSubscription(plan: Billing.Plan | Billing.V2PlanLevel,
+    public static fromSubscription(mode: StripeMode,
+                                   plan: Billing.Plan | Billing.V2PlanLevel,
                                    interval: Billing.Interval): IDStr {
 
         if (!plan) {
@@ -106,7 +108,7 @@ export class StripePlanIDs {
 
         const planV2 = Plans.toV2(plan);
 
-        const identifiers = LIVE;
+        const identifiers = mode === 'live' ? LIVE : TEST;
 
         const convertMonth = (): IDStr => {
 
