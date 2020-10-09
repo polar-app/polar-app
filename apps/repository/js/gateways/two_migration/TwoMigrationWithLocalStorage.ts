@@ -1,6 +1,6 @@
 import {LocalPrefs} from "../../../../../web/js/util/LocalPrefs";
 
-export namespace TwoMigration {
+export namespace TwoMigrationWithLocalStorage {
 
     const KEY = 'two-migration';
 

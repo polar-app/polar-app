@@ -1,8 +1,7 @@
 import React from 'react';
 import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {TwoMigrationDialog} from "./TwoMigrationDialog";
-import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {TwoMigration} from "./TwoMigration";
+import {useLogger} from "../../../../../web/js/mui/MUILogger";
 
 interface IProps {
 
@@ -13,24 +12,29 @@ interface IProps {
      */
     readonly runtime: AppRuntimeID;
 
+    readonly onClose: () => Promise<void>;
+
 }
 
-export const TwoMigrationForAppRuntime = deepMemo((props: IProps) => {
+export const TwoMigrationForAppRuntime = React.memo((props: IProps) => {
 
     const [accepted, setAccepted] = React.useState(false);
+    const log = useLogger();
 
-    function handleClose() {
-        setAccepted(true)
-        TwoMigration.markShown();
-    }
+    const handleClose = React.useCallback(() => {
+
+        async function doAsync() {
+            await props.onClose();
+            setAccepted(true);
+        }
+
+        doAsync()
+            .catch(err => log.error(err));
+
+    }, [log]);
 
     if (AppRuntime.get() !== props.runtime) {
         // we NEVER run this on anything else other than this runtime because
-        return props.children;
-    }
-
-    if (! TwoMigration.shouldShow()) {
-        // this has already been shown to the user in the past.
         return props.children;
     }
 
