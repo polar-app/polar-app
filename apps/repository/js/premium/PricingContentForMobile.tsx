@@ -216,9 +216,9 @@ export const PricingContentForMobile = () => {
         marginBottom: "40px",
       }}>
 
-      {/*<div style={{margin: '1em auto 1em auto'}}>*/}
-      {/*  <PlanIntervalToggle/>*/}
-      {/*</div>*/}
+      <div style={{margin: '1em auto 1em auto'}}>
+        <PlanIntervalToggle/>
+      </div>
 
       <PlanBox name="Free"
                plan={V2PlanFree}

@@ -6,10 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Billing} from "polar-accounts/src/Billing";
 import Paper from "@material-ui/core/Paper/Paper";
+import { Devices } from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles({
   button: {
-    width: "22em",
+    width: "20em",
   },
 
 });
@@ -21,6 +22,8 @@ export const PlanIntervalToggle = React.memo(() => {
     const {interval} = usePricingStore(['interval']);
     const {setInterval} = usePricingCallbacks();
 
+    const orientation = Devices.isPhone() ? 'vertical' : 'horizontal';
+
     function handleChange(event: React.MouseEvent, newInterval: Billing.Interval | null) {
         setInterval(newInterval || 'month');
     }
@@ -28,6 +31,7 @@ export const PlanIntervalToggle = React.memo(() => {
     return (
         <Paper elevation={1}>
             <ToggleButtonGroup exclusive
+                               orientation={orientation}
                                value={interval || 'month'}
                                onChange={handleChange}>
 
