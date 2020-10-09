@@ -7,7 +7,7 @@ export class FirebaseConfig {
 
         project = project ? project : this.getProject() || '';
 
-        if (['polar-32b0f', 'polar-cors', 'polar-webapp-561bd'].includes(project)) {
+        if (['polar-32b0f', 'polar-cors', 'polar-webapp-561bd', 'polar-cors-beta'].includes(project)) {
 
             const serviceAccount: admin.ServiceAccount = {
                 projectId: "polar-32b0f",
