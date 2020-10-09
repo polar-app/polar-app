@@ -1,5 +1,7 @@
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import isElectron = AppRuntime.isElectron;
 
 interface ILocation {
     readonly hash?: string;
@@ -64,8 +66,11 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
     return (location: ILocationOrLink, opts: LinkLoaderOpts) => {
 
         function createWindow() {
-            console.log("Creating new window");
-            return window.open('', '_blank');
+
+            const initialURL = isElectron() && typeof location === 'string' ? location : '';
+
+            console.log("Creating new window: " + initialURL);
+            return window.open(initialURL, '_blank');
         }
 
         const win = opts.newWindow ? createWindow() : window;
@@ -93,14 +98,16 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
 
         console.log("Setting window location to: ", location);
 
-        if (typeof location === 'string') {
-            win.location.href = location;
-        } else if (location.hash) {
-            // TODO I think this is wrong as nothing is loaded yet.
-            win.location.hash = location.hash;
-        } else if (location.pathname) {
-            // TODO I think this is wrong as nothing is loaded yet.
-            win.location.href = location.pathname;
+        if (! isElectron()) {
+            if (typeof location === 'string') {
+                win.location.href = location;
+            } else if (location.hash) {
+                // TODO I think this is wrong as nothing is loaded yet.
+                win.location.hash = location.hash;
+            } else if (location.pathname) {
+                // TODO I think this is wrong as nothing is loaded yet.
+                win.location.href = location.pathname;
+            }
         }
 
     }
