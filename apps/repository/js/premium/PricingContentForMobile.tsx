@@ -24,11 +24,9 @@ const useStyles = makeStyles({
     fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: "normal",
-    // fontSize: "min(28px, 2.5vw)",
     fontSize: "38px",
     lineHeight: "33px",
     marginTop: "30px",
-    // margin: "20px 0",
   },
 
   imgBox: {
@@ -43,7 +41,6 @@ const useStyles = makeStyles({
   },
   row: {
     height: "55px",
-    width: "65%",
   },
 
   pricing: {
@@ -51,9 +48,7 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "32px",
     lineHeight: "37px",
-
     letterSpacing: "0.15px",
-
     color: "#E0E0E0",
     margin: "20px 0",
   },
@@ -90,16 +85,17 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "300px",
-    margin: "15px",
+    margin: "5px",
   },
 
   tableMobile: {
     mixBlendMode: "normal",
-    width: "70%",
     borderCollapse: "collapse",
-    paddingRight: "25px",
     textAlign: "center",
     fontSize: "16px",
+    width: '100%',
+    marginLeft: '1rem',
+    marginRight: '1rem',
   },
 });
 
@@ -114,11 +110,11 @@ const CheckRow = (props: CheckRowProps) => {
 
   return (
       <tr className={classes.row}>
-        <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+        <td className={classes.rowHeadMobile}>
           {props.name}
         </td>
         <td>
-          <Box style={{ width: "50%" }} className={classes.imgBox}>
+          <Box className={classes.imgBox}>
 
             {props.checked && (
                 <PlanCheckIcon/>
@@ -147,15 +143,15 @@ interface PlanBoxProps {
   readonly relatedTags: boolean;
 }
 
-
 const PlanBox = (props: PlanBoxProps) => {
 
   const classes = useStyles();
 
   return (
       <Paper elevation={1} style={{margin: '1rem'}}>
+
         <Box className={classes.pricePlanMobile}>
-          <Box className={classes.pricing}> {props.name} </Box>
+          <Box className={classes.pricing}>{props.name}</Box>
           <Box className={classes.subtitleMobile}>
             {props.subtitle}
           </Box>
@@ -168,13 +164,13 @@ const PlanBox = (props: PlanBoxProps) => {
 
           <table className={classes.tableMobile}>
             <tr className={classes.row}>
-              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+              <td className={classes.rowHeadMobile}>
                 Storage
               </td>
               <td>{props.storage}</td>
             </tr>
             <tr className={classes.row}>
-              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+              <td className={classes.rowHeadMobile}>
                 Maximum Captured <br /> Web Documents
               </td>
               <td>
@@ -182,7 +178,7 @@ const PlanBox = (props: PlanBoxProps) => {
               </td>
             </tr>
             <tr className={classes.row}>
-              <td style={{ width: "50%" }} className={classes.rowHeadMobile}>
+              <td className={classes.rowHeadMobile}>
                 Devices
               </td>
               <td>
@@ -202,8 +198,6 @@ const PlanBox = (props: PlanBoxProps) => {
 export const PricingContentForMobile = () => {
 
   const {interval} = usePricingStore(['interval']);
-
-  const classes = useStyles();
 
   return (
     <Box
