@@ -3,7 +3,6 @@ import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {useNav} from "../../../web/js/ui/util/NavHook";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
-import {Platforms} from 'polar-shared/src/util/Platforms';
 import {Browsers} from "polar-browsers/src/Browsers";
 import Button from '@material-ui/core/Button';
 import {FAChromeIcon} from "../../../web/js/mui/MUIFontAwesome";
@@ -12,6 +11,7 @@ import {WebExtensionPresenceClient} from "polar-web-extension-api/src/WebExtensi
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {ChromeStoreURLs} from "polar-web-extension-api/src/ChromeStoreURLs";
+import {MUITooltip} from "../../../web/js/mui/MUITooltip";
 
 export function useWebExtensionInstalled() {
 
@@ -92,15 +92,17 @@ export const ChromeExtensionInstallButton = deepMemo(() => {
 
     return (
 
-        <Button onClick={() => onClick()}
-                variant="contained"
-                startIcon={<FAChromeIcon/>}
-                size="medium"
-                color="default">
+        <MUITooltip title="Install our web extension to enable all features including web capture.">
+            <Button onClick={() => onClick()}
+                    variant="contained"
+                    startIcon={<FAChromeIcon/>}
+                    size="medium"
+                    color="default">
 
-            Install Chrome Extension
+                Install Chrome Extension
 
-        </Button>
+            </Button>
+        </MUITooltip>
 
     );
 

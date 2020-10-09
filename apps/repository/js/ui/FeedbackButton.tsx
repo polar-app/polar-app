@@ -4,9 +4,9 @@ import Fab from "@material-ui/core/Fab";
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import {useNav} from "../../../../web/js/ui/util/NavHook";
 import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
-import Tooltip from "@material-ui/core/Tooltip";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
+import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -50,14 +50,14 @@ export function FeedbackButton() {
 
     return (
         <DeviceRouters.Desktop>
-            <Tooltip title="Send us feedback to help improve Polar.">
+            <MUITooltip title="Send us feedback to help improve Polar.">
                 <Fab color="primary"
                      aria-label="Feedback"
                      onClick={handleFeedback}
                      className={classes.root}>
                     <ChatBubbleIcon />
                 </Fab>
-            </Tooltip>
+            </MUITooltip>
         </DeviceRouters.Desktop>
     );
 }
