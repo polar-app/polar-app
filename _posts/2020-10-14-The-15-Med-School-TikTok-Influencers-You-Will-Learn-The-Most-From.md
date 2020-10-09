@@ -9,9 +9,12 @@ The follower/likes numbers you see below are as of September 2020.
 <img class="img-fluid" src="https://i.imgur.com/Tm4cn5b.jpg">
 
 <a href="https://www.tiktok.com/@jakegoodman.med">@Jakegoodman.med</a> - 236.7k followers, 6M Likes
+
 A 4th year medical student with an MBA, Jake Goodman posts videos related to studying, mental health and humor, all with the goal of motivating you through med school. He also has a podcast called Destination Healthcare for aspiring healthcare professionals where he interviews doctors and nurses! 
 
 <img class="img-fluid" src="https://i.imgur.com/NZxKQ50.jpg">
+
+<a href="https://www.tiktok.com/@medstudentkumail">@medstudentkumail</a> - 236.7k followers, 6M Likes
 
 @medstudentkumail-45.1k followers, 954k Likes
 Kumail Hussain, an MS2 at The Chicago Medical School talks about his journey to med school, study tips and premed advice. He champions a positive mindset and staying real with his followers about his experiences so far.
