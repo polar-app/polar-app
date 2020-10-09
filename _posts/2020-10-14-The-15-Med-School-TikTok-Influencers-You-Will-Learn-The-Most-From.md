@@ -8,7 +8,7 @@ The follower/likes numbers you see below are as of September 2020.
 
 <img class="img-fluid" src="https://i.imgur.com/Tm4cn5b.jpg">
 
-@Jakegoodman.med- 236.7k followers, 6M Likes
+<a href="https://www.tiktok.com/@jakegoodman.med">@Jakegoodman.med</a> - 236.7k followers, 6M Likes
 A 4th year medical student with an MBA, Jake Goodman posts videos related to studying, mental health and humor, all with the goal of motivating you through med school. He also has a podcast called Destination Healthcare for aspiring healthcare professionals where he interviews doctors and nurses! 
 
 <img class="img-fluid" src="https://i.imgur.com/NZxKQ50.jpg">
