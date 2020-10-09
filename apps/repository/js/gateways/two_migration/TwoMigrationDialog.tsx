@@ -4,6 +4,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { TwoMigrationContent } from './TwoMigrationContent';
+import {MUIGapBox} from "../../../../../web/js/mui/MUIGapBox";
+import {useNav} from "../../../../../web/js/ui/util/NavHook";
 
 interface IProps {
     readonly onClose: () => void;
@@ -12,6 +14,13 @@ interface IProps {
 export const TwoMigrationDialog = React.memo((props: IProps) => {
 
     const [open, setOpen] = React.useState(true);
+
+    const linkLoader = useNav();
+
+    const handleLink = React.useCallback(() => {
+        const link = "https://getpolarized.io/2020/10/05/Polar-2-0-Release.html";
+        linkLoader(link, {newWindow: true, focus: true});
+    }, [linkLoader]);
 
     function handleClose() {
         setOpen(false);
@@ -30,12 +39,22 @@ export const TwoMigrationDialog = React.memo((props: IProps) => {
 
             <DialogActions style={{justifyContent: 'center'}}>
 
-                <Button color="primary"
-                        variant="contained"
-                        size="large"
-                        onClick={handleClose}>
-                    Let's Go!
-                </Button>
+                <MUIGapBox>
+
+                    <Button variant="contained"
+                            size="large"
+                            onClick={handleLink}>
+                        Read More
+                    </Button>
+
+                    <Button color="primary"
+                            variant="contained"
+                            size="large"
+                            onClick={handleClose}>
+                        Let's Go!
+                    </Button>
+
+                </MUIGapBox>
 
             </DialogActions>
 

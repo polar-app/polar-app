@@ -9,23 +9,14 @@ import SyncIcon from '@material-ui/icons/Sync';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {useNav} from "../../../../../web/js/ui/util/NavHook";
-import Button from '@material-ui/core/Button';
 
 interface FeatureProps {
     readonly title: string;
     readonly description: string;
-    readonly link: string;
     readonly icon: React.ReactNode;
 }
 
 const Feature = (props: FeatureProps) => {
-
-    const linkLoader = useNav();
-
-    const handleLink = React.useCallback(() => {
-        linkLoader(props.link, {newWindow: true, focus: true});
-    }, [linkLoader]);
 
     return (
         <div style={{
@@ -51,9 +42,6 @@ const Feature = (props: FeatureProps) => {
                         </div>
 
                         <div style={{paddingLeft: '5px', whiteSpace: 'nowrap'}}>
-                            <Button variant="contained" onClick={handleLink}>
-                                Read More
-                            </Button>
                         </div>
 
                     </div>
@@ -77,8 +65,6 @@ export const TwoMigrationContent = deepMemo(() => {
     const classes = useStyles();
 
     // link to the blog post describing our changes
-    const link = "https://getpolarized.io/2020/10/05/Polar-2-0-Release.html";
-
     return (
         <MUIBrowserLinks>
             <div className={classes.root}>
@@ -97,30 +83,26 @@ export const TwoMigrationContent = deepMemo(() => {
 
                 <Feature title="Dark Mode"
                          description="You can now pick between light and dark mode."
-                         link="https://getpolarized.io"
                          icon={<Brightness4Icon/>}/>
 
                 <Feature title="Cloud Only"
                          description="We're now cloud-only.  Migration from 1.0 is simple and should just take a few minutes."
-                         link="https://getpolarized.io"
                          icon={<CloudDoneIcon/>}/>
 
                 <Feature title="EPUB Now Supported"
                          description="EPUB is now a supported document format."
-                         link="https://getpolarized.io"
                          icon={<DescriptionIcon/>}/>
 
                 <Feature title="Improved Anki Sync"
                          description="We've improved our Anki sync support and stability."
-                         link="https://getpolarized.io"
                          icon={<SyncIcon/>}/>
 
                 <Feature title="Keyboard Shortcuts"
                          description="We've dramatically improved our support for keyboad shortcuts."
-                         link="https://getpolarized.io"
                          icon={<KeyboardIcon/>}/>
 
             </div>
+
         </MUIBrowserLinks>
     );
 
