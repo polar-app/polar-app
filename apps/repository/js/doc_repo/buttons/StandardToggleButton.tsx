@@ -25,7 +25,7 @@ export interface StandardToggleButtonProps extends ToggleButtonProps {
 }
 
 export const StandardToggleButton = React.memo((props: StandardToggleButtonProps) => (
-    <MUITooltip title={props.tooltip} enterDelay={500}>
+    <MUITooltip title={props.tooltip}>
         <IconButton size={props.size || 'small'}
                     onClick={props.onClick}
                     aria-label={props.tooltip.toLowerCase()}
