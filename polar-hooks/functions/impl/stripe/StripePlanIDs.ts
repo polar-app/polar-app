@@ -1,6 +1,10 @@
 import {Billing} from 'polar-accounts/src/Billing';
 import {Plans} from "polar-accounts/src/Plans";
+import {IDStr} from "polar-shared/src/util/Strings";
 
+/**
+ * @Deprecated
+ */
 export enum StripePlanID {
     FREE = "plan_free",
     GOLD = "plan_gold",
@@ -8,6 +12,9 @@ export enum StripePlanID {
     BRONZE = "plan_bronze"
 }
 
+/**
+ * @Deprecated
+ */
 export enum StripeYearPlanID {
     FREE = "plan_free_year",
     GOLD = "plan_gold_year",
@@ -15,22 +22,34 @@ export enum StripeYearPlanID {
     BRONZE = "plan_bronze_year"
 }
 
-export enum StripePlanV2ID {
-    FREE = "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
-    PLUS = "price_1Ha27jJvJ2rsXwXzY5Yq42aD",
-    PRO = "price_1Ha28iJvJ2rsXwXzlPCQiD0h",
+interface PlanIdentifiers {
+    readonly FREE: IDStr;
+    readonly PLUS: IDStr;
+    readonly PRO: IDStr;
 }
 
-export enum StripeYearPlanV2ID {
-    FREE = "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
-    PLUS = "price_1Ha29PJvJ2rsXwXzEeM0YrOm",
-    PRO = "price_1Ha2F8JvJ2rsXwXzt9zPYMCe",
+interface PlanIntervalIdentifiers {
+    readonly _MONTH: PlanIdentifiers;
+    readonly _YEAR: PlanIdentifiers;
+    readonly _4YEAR: PlanIdentifiers;
 }
 
-export enum Stripe4YearPlanV2ID {
-    FREE = "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
-    PLUS = "price_1Ha2G0JvJ2rsXwXzNe7aumpf",
-    PRO = "price_1Ha2GbJvJ2rsXwXzVp5bHmnC",
+const LIVE: PlanIntervalIdentifiers = {
+    _MONTH: {
+        FREE: "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
+        PLUS: "price_1Ha27jJvJ2rsXwXzY5Yq42aD",
+        PRO: "price_1Ha28iJvJ2rsXwXzlPCQiD0h",
+    },
+    _YEAR: {
+        FREE: "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
+        PLUS: "price_1Ha29PJvJ2rsXwXzEeM0YrOm",
+        PRO: "price_1Ha2F8JvJ2rsXwXzt9zPYMCe",
+    },
+    _4YEAR: {
+        FREE: "price_1Ha2GwJvJ2rsXwXzNDIxQ70K",
+        PLUS: "price_1Ha2G0JvJ2rsXwXzNe7aumpf",
+        PRO: "price_1Ha2GbJvJ2rsXwXzVp5bHmnC",
+    }
 }
 
 export class StripePlanIDs {
@@ -60,7 +79,7 @@ export class StripePlanIDs {
     }
 
     public static fromSubscription(plan: Billing.Plan | Billing.V2PlanLevel,
-                                   interval: Billing.Interval): StripePlanV2ID | StripeYearPlanV2ID | Stripe4YearPlanV2ID {
+                                   interval: Billing.Interval): IDStr {
 
         if (!plan) {
             throw new Error("No plan");
@@ -68,41 +87,43 @@ export class StripePlanIDs {
 
         const planV2 = Plans.toV2(plan);
 
-        const convertMonth = (): StripePlanV2ID => {
+        const identifiers = LIVE;
+
+        const convertMonth = (): IDStr => {
 
             switch (planV2.level) {
                 case "free":
-                    return StripePlanV2ID.FREE;
+                    return identifiers._MONTH.FREE;
                 case "plus":
-                    return StripePlanV2ID.PLUS;
+                    return identifiers._MONTH.PLUS;
                 case "pro":
-                    return StripePlanV2ID.PRO;
+                    return identifiers._MONTH.PRO;
             }
 
         };
 
-        const convertYear = (): StripeYearPlanV2ID => {
+        const convertYear = (): IDStr => {
 
             switch (planV2.level) {
                 case "free":
-                    return StripeYearPlanV2ID.FREE;
+                    return identifiers._YEAR.FREE;
                 case "plus":
-                    return StripeYearPlanV2ID.PLUS;
+                    return identifiers._YEAR.PLUS;
                 case "pro":
-                    return StripeYearPlanV2ID.PRO;
+                    return identifiers._YEAR.PRO;
             }
 
         };
 
-        const convert4Year = (): Stripe4YearPlanV2ID => {
+        const convert4Year = (): IDStr => {
 
             switch (planV2.level) {
                 case "free":
-                    return Stripe4YearPlanV2ID.FREE;
+                    return identifiers._4YEAR.FREE;
                 case "plus":
-                    return Stripe4YearPlanV2ID.PLUS;
+                    return identifiers._4YEAR.PLUS;
                 case "pro":
-                    return Stripe4YearPlanV2ID.PRO;
+                    return identifiers._4YEAR.PRO;
             }
 
         };
