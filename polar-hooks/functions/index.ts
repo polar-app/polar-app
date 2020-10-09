@@ -1,6 +1,6 @@
 import {DatastoreGetFile} from './impl/groups/DatastoreGetFile';
 import {MailinglistFunction} from './impl/MailinglistFunction';
-import {StripeWebhookFunction} from './impl/stripe/StripeWebhookFunction';
+import {createStripeWebhookFunction} from './impl/stripe/StripeWebhookFunction';
 import {StripeChangePlanFunction} from './impl/stripe/StripeChangePlanFunction';
 import {StripeCancelSubscriptionFunction} from './impl/stripe/StripeCancelSubscriptionFunction';
 import {GroupProvisionFunction} from './impl/groups/GroupProvisionFunction';
@@ -31,7 +31,8 @@ exports.hello = HelloWorldFunction;
 exports.docPreviewSitemap = DocPreviewSitemapFunction;
 exports.ssr = SSRFunction;
 exports.mailinglist = MailinglistFunction;
-exports.StripeWebhook = StripeWebhookFunction;
+exports.StripeWebhook = createStripeWebhookFunction('live');
+exports.StripeWebhookTest = createStripeWebhookFunction('test');
 exports.StripeChangePlan = StripeChangePlanFunction;
 exports.StripeCancelSubscription = StripeCancelSubscriptionFunction;
 exports.StripeCreateSession = StripeCreateSessionFunction

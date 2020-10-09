@@ -66,7 +66,9 @@ function createApp(mode: StripeMode) {
 
 }
 
-export const StripeWebhookFunction = functions.https.onRequest(createApp('live'));
+export function createStripeWebhookFunction(mode: StripeMode) {
+    return functions.https.onRequest(createApp(mode))
+}
 
 export interface StripeEvent {
 
