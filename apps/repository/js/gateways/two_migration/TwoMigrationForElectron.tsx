@@ -6,12 +6,12 @@ const KEY = 'two-migration';
 
 function useMigration(): [boolean, () => Promise<void>] {
 
-    const marked = LocalPrefs.isMarked(KEY);
-    const doMarked = async () => {
+    const doMigration = ! LocalPrefs.isMarked(KEY);
+    const onClose = async () => {
         LocalPrefs.mark(KEY);
     }
 
-    return [marked, doMarked];
+    return [doMigration, onClose];
 
 }
 

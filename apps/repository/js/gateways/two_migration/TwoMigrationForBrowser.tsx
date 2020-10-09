@@ -12,14 +12,14 @@ function useMigration(): [boolean, () => Promise<void>] {
 
     if (persistentPrefs) {
 
-        const marked = persistentPrefs.isMarked(KEY) || LocalPrefs.isMarked(KEY);
-        const doMarked = async () => {
+        const doMigration = ! persistentPrefs.isMarked(KEY) || ! LocalPrefs.isMarked(KEY);
+        const onClose = async () => {
             LocalPrefs.mark(KEY);
             persistentPrefs.mark(KEY);
             await persistentPrefs.commit();
         }
 
-        return [marked, doMarked];
+        return [doMigration, onClose];
 
     }
 

@@ -7,6 +7,10 @@ import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DescriptionIcon from '@material-ui/icons/Description';
 import SyncIcon from '@material-ui/icons/Sync';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
+import createStyles from '@material-ui/core/styles/createStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import {useNav} from "../../../../../web/js/ui/util/NavHook";
+import Button from '@material-ui/core/Button';
 
 interface FeatureProps {
     readonly title: string;
@@ -16,6 +20,12 @@ interface FeatureProps {
 }
 
 const Feature = (props: FeatureProps) => {
+
+    const linkLoader = useNav();
+
+    const handleLink = React.useCallback(() => {
+        linkLoader(props.link, {newWindow: true, focus: true});
+    }, [linkLoader]);
 
     return (
         <div style={{
@@ -41,7 +51,9 @@ const Feature = (props: FeatureProps) => {
                         </div>
 
                         <div style={{paddingLeft: '5px', whiteSpace: 'nowrap'}}>
-                            <a href={props.link}>Read more</a>
+                            <Button variant="contained" onClick={handleLink}>
+                                Read More
+                            </Button>
                         </div>
 
                     </div>
@@ -53,48 +65,59 @@ const Feature = (props: FeatureProps) => {
 
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            fontSize: '1.2rem'
+        },
+    }),
+);
 export const TwoMigrationContent = deepMemo(() => {
+
+    const classes = useStyles();
 
     return (
         <MUIBrowserLinks>
+            <div className={classes.root}>
 
-            <div style={{display: 'flex', justifyContent: 'center'}}>
-                <PolarSVGIcon width={150} height={150}/>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <PolarSVGIcon width={150} height={150}/>
+                </div>
+
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <h1>Welcome to Polar 2.0!</h1>
+                </div>
+
+                <h2>
+                    What's new in this release?
+                </h2>
+
+                <Feature title="Dark Mode"
+                         description="You can now pick between light and dark mode."
+                         link="https://getpolarized.io"
+                         icon={<Brightness4Icon/>}/>
+
+                <Feature title="Cloud Only"
+                         description="We're now cloud-only.  Migration from 1.0 is simple and should just take a few minutes."
+                         link="https://getpolarized.io"
+                         icon={<CloudDoneIcon/>}/>
+
+                <Feature title="EPUB Now Supported"
+                         description="EPUB is now a supported document format."
+                         link="https://getpolarized.io"
+                         icon={<DescriptionIcon/>}/>
+
+                <Feature title="Improved Anki Sync"
+                         description="We've improved our Anki sync support and stability."
+                         link="https://getpolarized.io"
+                         icon={<SyncIcon/>}/>
+
+                <Feature title="Keyboard Shortcuts"
+                         description="We've dramatically improved our support for keyboad shortcuts."
+                         link="https://getpolarized.io"
+                         icon={<KeyboardIcon/>}/>
+
             </div>
-
-            <div style={{display: 'flex', justifyContent: 'center'}}>
-                <h1>Welcome to Polar 2.0!</h1>
-            </div>
-
-            <p>
-                What's new in this release?
-            </p>
-
-            <Feature title="Dark Mode"
-                     description="You can now pick between light and dark mode."
-                     link="none"
-                     icon={<Brightness4Icon/>}/>
-
-            <Feature title="Cloud Only"
-                     description="We're now cloud-only.  Migration from 1.0 is simple and should just take a few minutes."
-                     link="none"
-                     icon={<CloudDoneIcon/>}/>
-
-            <Feature title="EPUB Now Supported"
-                     description="EPUB is now a supported document format."
-                     link="none"
-                     icon={<DescriptionIcon/>}/>
-
-            <Feature title="Improved Anki Sync"
-                     description="We've improved our Anki sync support and stability."
-                     link="none"
-                     icon={<SyncIcon/>}/>
-
-            <Feature title="Keyboard Shortcuts"
-                     description="We've dramatically improved our support for keyboad shortcuts."
-                     link="none"
-                     icon={<KeyboardIcon/>}/>
-
         </MUIBrowserLinks>
     );
 

@@ -34,7 +34,7 @@ export const TwoMigrationDialog = React.memo((props: IProps) => {
                         variant="contained"
                         size="large"
                         onClick={handleClose}>
-                    Let's Get Started
+                    Let's Go!
                 </Button>
 
             </DialogActions>
