@@ -158,8 +158,8 @@ const Landing = ({ location }) => {
                                alt="Polar Reading Statistics"/>
           </div>
 
-
           <CreateAccountWLogos transparent={false} />
+
       </Box>
     </Layout>
   );
