@@ -30,10 +30,11 @@ export const PremiumButton = deepMemo((props: IProps) => {
 
     const {subscription} = changePlanActionContext;
 
+
     // true when this is the current plan and we do not need to show the
     // button
-    const currentPlan = newSubscription.plan.level === subscription?.plan.level &&
-                        newSubscription.interval === subscription?.interval;
+    const currentPlan = (newSubscription.plan.level === 'free' && subscription?.plan.level) ||
+                        Subscriptions.isEqual(newSubscription, subscription);
 
     // true if we're BUYING a new plan...
     const buyingNewPlan = subscription?.plan.level === 'free';
@@ -63,3 +64,9 @@ export const PremiumButton = deepMemo((props: IProps) => {
         </div>
     );
 })
+
+namespace Subscriptions {
+    export function isEqual(a: Billing.V2Subscription | undefined, b: Billing.V2Subscription | undefined) {
+        return a?.plan.level === b?.plan.level && a?.interval === b?.interval;
+    }
+}
