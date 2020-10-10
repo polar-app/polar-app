@@ -8,7 +8,7 @@ export namespace FirebaseConfig {
 
         const config = functions.config();
 
-        const serviceAccount = JSON.parse(config.polar.firebase.service_account);
+        const serviceAccount = config.polar.firebase.service_account;
 
         return {
             project: serviceAccount.projectId!,
