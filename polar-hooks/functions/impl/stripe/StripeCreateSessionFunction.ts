@@ -58,7 +58,7 @@ app.use((req, res) => {
             res.json({id: session.id});
 
         } catch (err) {
-            console.error(`Could properly handle webhook: `, err);
+            console.error(`Could not properly handle webhook: `, err);
             res.sendStatus(500);
         }
 

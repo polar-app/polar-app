@@ -2,31 +2,16 @@ import {Billing} from 'polar-accounts/src/Billing';
 import {Plans} from "polar-accounts/src/Plans";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {StripeMode} from "./StripeUtils";
+import V2PlanFree = Billing.V2PlanFree;
+import V2PlanPlus = Billing.V2PlanPlus;
+import V2PlanPro = Billing.V2PlanPro;
 
-/**
- * @Deprecated
- */
-export enum StripePlanID {
-    FREE = "plan_free",
-    GOLD = "plan_gold",
-    SILVER = "plan_silver",
-    BRONZE = "plan_bronze"
-}
-
-/**
- * @Deprecated
- */
-export enum StripeYearPlanID {
-    FREE = "plan_free_year",
-    GOLD = "plan_gold_year",
-    SILVER = "plan_silver_year",
-    BRONZE = "plan_bronze_year"
-}
+export type StripePriceID = string;
 
 interface PlanIdentifiers {
-    readonly FREE: IDStr;
-    readonly PLUS: IDStr;
-    readonly PRO: IDStr;
+    readonly FREE: StripePriceID;
+    readonly PLUS: StripePriceID;
+    readonly PRO: StripePriceID;
 }
 
 interface PlanIntervalIdentifiers {
@@ -74,27 +59,42 @@ const TEST: PlanIntervalIdentifiers = {
 
 export class StripePlanIDs {
 
-    public static toSubscription(planID: StripePlanID | StripeYearPlanID): Billing.Subscription {
+    public static toSubscription(mode: StripeMode, priceID: StripePriceID): Billing.V2Subscription {
 
-        switch (planID) {
-            case StripePlanID.GOLD:
-                return {interval: 'month', plan: 'gold'};
-            case StripePlanID.SILVER:
-                return {interval: 'month', plan: 'silver'};
-            case StripePlanID.BRONZE:
-                return {interval: 'month', plan: 'bronze'};
+        const identifiers = mode === 'live' ? LIVE : TEST;
+
+        switch (priceID) {
+
+            // *** month
+            
+            case identifiers._MONTH.FREE: 
+                return {plan: V2PlanFree, interval: 'month'};
+            case identifiers._MONTH.PLUS:
+                return {plan: V2PlanPlus, interval: 'month'};
+            case identifiers._MONTH.PRO:
+                return {plan: V2PlanPro, interval: 'month'};
+
+            // *** year
+
+            case identifiers._YEAR.FREE:
+                return {plan: V2PlanFree, interval: 'year'};
+            case identifiers._YEAR.PLUS:
+                return {plan: V2PlanPlus, interval: 'year'};
+            case identifiers._YEAR.PRO:
+                return {plan: V2PlanPro, interval: 'year'};
+
+            // *** 4year
+
+            case identifiers._4YEAR.FREE:
+                return {plan: V2PlanFree, interval: '4year'};
+            case identifiers._4YEAR.PLUS:
+                return {plan: V2PlanPlus, interval: '4year'};
+            case identifiers._4YEAR.PRO:
+                return {plan: V2PlanPro, interval: '4year'};
+
         }
 
-        switch (planID) {
-            case StripeYearPlanID.GOLD:
-                return {interval: 'year', plan: 'gold'};
-            case StripeYearPlanID.SILVER:
-                return {interval: 'year', plan: 'silver'};
-            case StripeYearPlanID.BRONZE:
-                return {interval: 'year', plan: 'bronze'};
-        }
-
-        throw new Error("Invalid product: " + planID);
+        throw new Error(`Invalid product: ${priceID} for mode ${mode}`);
 
     }
 

@@ -37,7 +37,7 @@ app.use((req, res) => {
 
         } catch (err) {
             const now = Date.now();
-            console.error(`Could properly handle webhook: ${now}`, err);
+            console.error(`Could not properly handle webhook: ${now}`, err);
             console.error(`JSON body for failed webhook: ${now}`, JSON.stringify(req.body, null,  '  '));
             res.sendStatus(500);
         }
