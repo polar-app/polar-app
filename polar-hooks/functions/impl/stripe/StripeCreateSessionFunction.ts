@@ -6,6 +6,7 @@ import {Billing} from 'polar-accounts/src/Billing';
 import {StripeUtils, StripeMode} from "./StripeUtils";
 import {StripePlanIDs} from "./StripePlanIDs";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {StripeCustomers} from "./StripeCustomers";
 
 const app = express();
 
@@ -36,11 +37,42 @@ app.use((req, res) => {
 
             console.log("Creating stripe checkout session for: " + email);
 
+            // if we already have a customer ID for this email otherwise a NEW customer will be created
+
+            interface CustomerParamsWithEmail {
+                readonly customer_email: string;
+            }
+
+            interface CustomerParamsWithCustomer {
+                readonly customer: string;
+            }
+
+            type CustomerParams = CustomerParamsWithEmail | CustomerParamsWithCustomer;
+
+            async function computeCustomerParams(): Promise<CustomerParams> {
+
+                // we can only specify either customer or customer email but not both...
+                const existingCustomer = await StripeCustomers.getCustomerByEmail(mode, email);
+
+                if (existingCustomer) {
+                    return {
+                        customer: existingCustomer.id
+                    };
+                }
+
+                return {
+                    customer_email: email
+                };
+
+            }
+
+            const customerParams = await computeCustomerParams();
+
             // TODO in stripe 8.109.0 we have to use 'any' here because
             // the typescript codes don't work.
             const session = await stripe.checkout.sessions.create(<any> {
                 payment_method_types: ['card'],
-                customer_email: email,
+                ...customerParams,
                 line_items: [
                     {
                         price: planID,

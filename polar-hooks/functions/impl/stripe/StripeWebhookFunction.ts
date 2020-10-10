@@ -6,6 +6,8 @@ import {StripePlanIDs, StripePriceID} from "./StripePlanIDs";
 import {Accounts} from "./Accounts";
 import {StripeMode} from "./StripeUtils";
 import {StripeCustomers} from "./StripeCustomers";
+import {Billing} from "polar-accounts/src/Billing";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 // TODO:
 //
@@ -38,19 +40,29 @@ function createApp(mode: StripeMode) {
 
                 if (stripeEvent.data.object.status === 'active') {
 
+                    async function doChangePlan(plan: Billing.Plan,
+                                                interval: Billing.Interval) {
+
+                        const subscriptionID = stripeEvent.data.object.id;
+                        await StripeCustomers.cancelActiveCustomerSubscriptions(mode, {id: customerID}, {except: subscriptionID});
+
+                        await Accounts.changePlan(mode, customerID, plan, interval);
+
+                    }
+
                     switch (stripeEvent.type) {
 
                         case 'customer.subscription.created':
                             // we have to set a default payment method so that when they try to change the plan
                             // in the future they have a payment method applied properly.
                             await StripeCustomers.setDefaultPaymentMethod(mode, customerID);
-                            await Accounts.changePlan(mode, customerID, sub.plan, sub.interval);
+                            await doChangePlan(sub.plan, sub.interval);
                             break;
                         case 'customer.subscription.updated':
-                            await Accounts.changePlan(mode, customerID, sub.plan, sub.interval);
+                            await doChangePlan(sub.plan, sub.interval);
                             break;
                         case 'customer.subscription.deleted':
-                            await Accounts.changePlan(mode, customerID, 'free', 'month');
+                            await doChangePlan('free', 'month');
                             break;
 
                     }
@@ -96,6 +108,7 @@ export interface StripeEventData {
 }
 
 export interface StripeEventSubscriptionObject {
+    readonly id: IDStr;
     readonly plan: StripeEventPlan;
     readonly customer: string;
     readonly status: 'incomplete' | 'active';

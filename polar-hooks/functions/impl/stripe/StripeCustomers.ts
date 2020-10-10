@@ -46,94 +46,118 @@ export namespace StripeCustomers {
 
     }
 
-    export async function getCustomerByEmail(mode: StripeMode, email: string): Promise<Stripe.Customer | undefined> {
+    interface CustomerQueryByID {
+        readonly id: string;
+    }
+
+    type CustomerQuery = string | CustomerQueryByID;
+
+    export async function getCustomerByEmail(mode: StripeMode,
+                                             query: CustomerQuery): Promise<Stripe.Customer | undefined> {
 
         const stripe = StripeUtils.getStripe(mode);
 
-        const opts = {email};
+        if (typeof query === 'string') {
 
-        const customers = await stripe.customers.list(opts);
+            const email = query;
+            const opts = {email};
 
-        if (customers.data.length === 0) {
-            return undefined;
+            const customers = await stripe.customers.list(opts);
+
+            if (customers.data.length === 0) {
+                return undefined;
+            }
+
+            const nrRecords = customers.data.length;
+
+            if (nrRecords > 1) {
+                throw new Error(`Too many records (${nrRecords}) for customer in stripe: ${email}`);
+            }
+
+            return customers.data[0];
+
+        } else {
+
+            const retrieved = await stripe.customers.retrieve(query.id);
+
+            if (retrieved.deleted) {
+                throw new Error("Customer is deleted: " + query.id);
+            }
+
+            return retrieved;
+
         }
-
-        const nrRecords = customers.data.length;
-
-        if (nrRecords > 1) {
-            throw new Error(`Too many records (${nrRecords}) for customer in stripe: ${email}`);
-        }
-
-        return customers.data[0];
-
-    }
-
-    export async function getCustomerSubscription(mode: StripeMode,
-                                                  email: string): Promise<StripeCustomerSubscription> {
-
-        const customer = await getCustomerByEmail(mode, email);
-
-        if (! customer) {
-            throw new Error("No customer for email: " + email);
-        }
-
-        if (customer.subscriptions === undefined) {
-            console.log("No subscriptions (subscriptions was undefined)");
-            return {customer};
-        }
-
-        if (customer.subscriptions.data.length === 0) {
-            console.log("No subscriptions (subscriptions array empty)");
-            return {customer};
-        }
-
-        const activeSubscriptions
-            = customer.subscriptions.data.filter(current => current.status === 'active');
-
-        if (activeSubscriptions.length === 0) {
-            console.log("No active subscriptions");
-            return {customer};
-        }
-
-        if (activeSubscriptions.length !== 1) {
-            const msg = `Too many subscriptions for ${email}: ${activeSubscriptions.length}`;
-            console.warn(activeSubscriptions);
-            throw new Error(msg + email);
-        }
-
-        const subscription = activeSubscriptions[0];
-
-        return {customer, subscription};
 
     }
 
     export async function getActiveCustomerSubscriptions(mode: StripeMode,
-                                                         email: string): Promise<StripeCustomerSubscriptions> {
+                                                         customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
 
-        const customer = await getCustomerByEmail(mode, email);
+        const customer = await getCustomerByEmail(mode, customerQuery);
 
         if (! customer) {
-            throw new Error("No customer for email: " + email);
+            throw new Error("No customer for email: " + JSON.stringify(customerQuery));
         }
-
-        if (! customer.subscriptions || customer.subscriptions.data.length === 0) {
-            // we have a customer just no subscription yet
-            return {customer, subscriptions: []};
-        }
-
-        const subscriptions
-            = customer.subscriptions.data.filter(current => current.status === 'active');
-
-        return {customer, subscriptions};
-
-    }
-
-    export async function cancelActiveCustomerSubscriptions(mode: StripeMode, email: string): Promise<void> {
-        const customerSubscriptions = await getActiveCustomerSubscriptions(mode, email);
 
         const stripe = StripeUtils.getStripe(mode);
 
-        for (const subscription of customerSubscriptions.subscriptions) {
+        const subscriptions = await stripe.subscriptions.list({customer: customer.id, status: 'active'});
+
+        if (subscriptions === undefined) {
+            console.log("No subscriptions (subscriptions was undefined)");
+            return {customer, subscriptions: []};
+        }
+
+        const nrSubscriptions = subscriptions.data.length;
+
+        if (nrSubscriptions === 0) {
+            console.log("No subscriptions (subscriptions array empty)");
+            return {customer, subscriptions: []};
+        }
+
+        if (nrSubscriptions !== 1) {
+            const msg = `Too many subscriptions for ${JSON.stringify(customerQuery)}: ${nrSubscriptions}`;
+            console.warn(msg);
+            throw new Error(msg);
+        }
+
+        return {customer, subscriptions: [...subscriptions.data]};
+
+    }
+
+    export async function getActiveCustomerSubscription(mode: StripeMode,
+                                                        email: string): Promise<StripeCustomerSubscription> {
+
+        const {customer, subscriptions} = await getActiveCustomerSubscriptions(mode, email);
+
+        const nrSubscriptions = subscriptions.length;
+        if (nrSubscriptions > 1) {
+            const msg = `Too many subscriptions for ${email}: ${nrSubscriptions}`;
+            console.warn(msg);
+            throw new Error(msg);
+        }
+
+        return {customer, subscription: subscriptions[0]}
+
+    }
+
+    interface CancelActiveCustomerSubscriptionsOpts {
+        readonly except?: IDStr;
+    }
+
+    export async function cancelActiveCustomerSubscriptions(mode: StripeMode,
+                                                            customerQuery: CustomerQuery,
+                                                            opts: CancelActiveCustomerSubscriptionsOpts = {}): Promise<void> {
+
+        const customerSubscriptions = await getActiveCustomerSubscriptions(mode, customerQuery);
+
+        const subscriptions = opts.except ?
+            customerSubscriptions.subscriptions.filter(current => current.id !== opts.except) :
+            customerSubscriptions.subscriptions;
+
+        const stripe = StripeUtils.getStripe(mode);
+
+        for (const subscription of subscriptions) {
             await stripe.subscriptions.del(subscription.id);
         }
 
@@ -146,7 +170,7 @@ export namespace StripeCustomers {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
-        const customerSubscription = await getCustomerSubscription(mode, email);
+        const customerSubscription = await getActiveCustomerSubscription(mode, email);
 
         const planID = StripePlanIDs.fromSubscription(mode, plan, interval);
 
@@ -190,7 +214,7 @@ export namespace StripeCustomers {
                                              email: string) {
 
         const stripe = StripeUtils.getStripe(mode);
-        const customerSubscription = await getCustomerSubscription(mode, email);
+        const customerSubscription = await getActiveCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -212,7 +236,7 @@ export namespace StripeCustomers {
 
         const stripe = StripeUtils.getStripe(mode);
 
-        const customerSubscription = await getCustomerSubscription(mode, email);
+        const customerSubscription = await getActiveCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
