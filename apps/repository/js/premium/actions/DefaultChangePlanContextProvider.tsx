@@ -5,7 +5,6 @@ import {Billing} from 'polar-accounts/src/Billing';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {ChangePlanActionContext} from "./ChangePlanAction";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {Nav} from "../../../../../web/js/ui/util/Nav";
 import {
     useUserInfoContext,
     useUserSubscriptionContext
@@ -21,6 +20,8 @@ function useAction() {
     const stripeCheckout = useStripeCheckout();
 
     return React.useCallback((newSubscription: Billing.V2Subscription) => {
+
+        console.log("Attempting to change to ", newSubscription);
 
         const {interval, plan} = newSubscription;
 
@@ -44,7 +45,7 @@ function useAction() {
 
             const onAccept = () => {
 
-                dialogManager.snackbar({message: `Changing plan to ${plan.level} for interval ${interval}.  One moment...`});
+                dialogManager.snackbar({message: `Changing plan to ${plan.level} billed at interval ${interval}.  One moment...`});
 
                 AccountActions.changePlan(plan.level, interval)
                     .catch(err => log.error("Unable to upgrade plan: ", err));

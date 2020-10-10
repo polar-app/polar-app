@@ -42,7 +42,7 @@ export const PremiumButton = deepMemo((props: IProps) => {
 
     const clickHandler = React.useCallback(() => {
         changePlanActionContext.action(newSubscription);
-    }, [changePlanActionContext]);
+    }, [changePlanActionContext, newSubscription]);
 
     return (
         <div style={{margin: '1rem'}}>

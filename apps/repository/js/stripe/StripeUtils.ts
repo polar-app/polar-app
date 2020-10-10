@@ -26,7 +26,6 @@ export namespace StripeUtils {
     export function stripeMode(): StripeMode {
 
         const stripeApiKey = getStripeAPIKey();
-        console.log("FIXME: " + stripeApiKey);
         return stripeApiKey.startsWith("pk_test_") ? 'test' : 'live';
 
     }
