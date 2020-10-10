@@ -32,27 +32,40 @@ app.use((req, res) => {
 
     async function doAsync() {
 
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            customer_email: email,
-            line_items: [
-                {
-                    price: planID,
-                    quantity: 1,
-                },
-            ],
-            allow_promotion_codes: true,
-            billing_address_collection: 'required',
-            mode: 'subscription',
-            success_url: 'https://app.getpolarized.io/success',
-            cancel_url: 'https://app.getpolarized.io/cancel',
-        });
+        try {
 
-        res.json({ id: session.id });
+            console.log("Creating stripe checkout session for: " + email);
+            const session = await stripe.checkout.sessions.create(<any> {
+                payment_method_types: ['card'],
+                customer_email: email,
+                line_items: [
+                    {
+                        price: planID,
+                        quantity: 1,
+                    },
+                ],
+                allow_promotion_codes: true,
+                billing_address_collection: 'required',
+                mode: 'subscription',
+                success_url: 'https://app.getpolarized.io/success',
+                cancel_url: 'https://app.getpolarized.io/cancel',
+                subscription_data: {
+                    trial_from_plan: true,
+                    payment_behavior: 'allow_incomplete'
+                }
+            });
+
+            res.json({id: session.id});
+
+        } catch (err) {
+            console.error(`Could properly handle webhook: `, err);
+            res.sendStatus(500);
+        }
 
     }
 
-    doAsync().catch(err => console.log(err));
+    doAsync()
+        .catch(err => console.log(err));
 
 });
 
