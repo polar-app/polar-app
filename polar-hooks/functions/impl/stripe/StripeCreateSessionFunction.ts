@@ -35,6 +35,9 @@ app.use((req, res) => {
         try {
 
             console.log("Creating stripe checkout session for: " + email);
+
+            // TODO in stripe 8.109.0 we have to use 'any' here because
+            // the typescript codes don't work.
             const session = await stripe.checkout.sessions.create(<any> {
                 payment_method_types: ['card'],
                 customer_email: email,
@@ -52,6 +55,11 @@ app.use((req, res) => {
                 subscription_data: {
                     trial_from_plan: true,
                     payment_behavior: 'allow_incomplete'
+                },
+                payment_intent_data: {
+                    // used so that this payment is captured with the account so it can be used with future
+                    // payments.
+                    setup_future_usage: 'off_session',
                 }
             });
 

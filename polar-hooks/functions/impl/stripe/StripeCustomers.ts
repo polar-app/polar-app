@@ -22,8 +22,10 @@ export class StripeCustomers {
             return undefined;
         }
 
-        if (customers.data.length > 1) {
-            throw new Error("Too many records for customer in stripe: " + email);
+        const nrRecords = customers.data.length;
+
+        if (nrRecords > 1) {
+            throw new Error(`Too many records (${nrRecords}) for customer in stripe: ${email}`);
         }
 
         return customers.data[0];
