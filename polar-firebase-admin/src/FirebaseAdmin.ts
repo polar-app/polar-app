@@ -18,9 +18,9 @@ export class FirebaseAdmin {
 
     }
 
-    public static createApp(project?: string) {
+    public static createApp() {
 
-        const firebaseConfig = FirebaseConfig.create(project);
+        const firebaseConfig = FirebaseConfig.create();
 
         const initializeApp = () => {
 

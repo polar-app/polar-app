@@ -12,10 +12,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "firebase-tools": "=7.16.1",
+    "firebase-tools": "=8.12.0",
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "firebase-admin": "8.12.1"
+    "firebase-admin": "9.2.0"
   }
 }

@@ -3,7 +3,6 @@
   "version": "2.0.0-beta.31",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
@@ -23,8 +22,8 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "@google-cloud/storage": "5.1.0",
-    "firebase-admin": "8.12.1",
+    "@google-cloud/storage": "5.3.0",
+    "firebase-admin": "9.2.0",
     "polar-firebase": "^2.0.0-beta.31",
     "polar-shared": "^2.0.0-beta.31"
   }
