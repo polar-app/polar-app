@@ -16,6 +16,7 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
+    "@google-cloud/firestore": "4.4.0",
     "firebase-admin": "9.2.0"
   }
 }
