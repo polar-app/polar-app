@@ -8,9 +8,14 @@ export interface StripeCustomerSubscription {
     readonly subscription?: Stripe.Subscription;
 }
 
-export class StripeCustomers {
+export interface StripeCustomerSubscriptions {
+    readonly customer: Stripe.Customer;
+    readonly subscriptions: ReadonlyArray<Stripe.Subscription>;
+}
 
-    public static async getCustomerByEmail(mode: StripeMode, email: string): Promise<Stripe.Customer | undefined> {
+export namespace StripeCustomers {
+
+    export async function getCustomerByEmail(mode: StripeMode, email: string): Promise<Stripe.Customer | undefined> {
 
         const stripe = StripeUtils.getStripe(mode);
 
@@ -32,9 +37,10 @@ export class StripeCustomers {
 
     }
 
-    public static async getCustomerSubscription(mode: StripeMode, email: string): Promise<StripeCustomerSubscription> {
+    export async function getCustomerSubscription(mode: StripeMode,
+                                                  email: string): Promise<StripeCustomerSubscription> {
 
-        const customer = await this.getCustomerByEmail(mode, email);
+        const customer = await getCustomerByEmail(mode, email);
 
         if (! customer) {
             throw new Error("No customer for email: " + email);
@@ -60,14 +66,36 @@ export class StripeCustomers {
 
     }
 
-    public static async changePlan(mode: StripeMode,
-                                   email: string,
-                                   plan: Billing.Plan,
-                                   interval: Billing.Interval) {
+    export async function getActiveCustomerSubscriptions(mode: StripeMode,
+                                                         email: string): Promise<StripeCustomerSubscriptions> {
+
+        const customer = await getCustomerByEmail(mode, email);
+
+        if (! customer) {
+            throw new Error("No customer for email: " + email);
+        }
+
+        if (! customer.subscriptions || customer.subscriptions.data.length === 0) {
+            // we have a customer just no subscription yet
+            return {customer, subscriptions: []};
+        }
+
+        const subscriptions
+            = customer.subscriptions.data.filter(current => current.status === 'active');
+
+        return {customer, subscriptions};
+
+    }
+
+
+    export async function changePlan(mode: StripeMode,
+                                     email: string,
+                                     plan: Billing.V2Plan,
+                                     interval: Billing.Interval) {
 
         console.log(`Changing plan for ${email} to ${plan}`);
 
-        const customerSubscription = await this.getCustomerSubscription(mode, email);
+        const customerSubscription = await getCustomerSubscription(mode, email);
 
         const planID = StripePlanIDs.fromSubscription(mode, plan, interval);
 
@@ -77,7 +105,7 @@ export class StripeCustomers {
 
         if (subscription) {
 
-            console.log(`Updating subscription ${subscription.id} to plan ID ${planID} (${plan})`);
+            console.log(`Updating subscription ${subscription.id} to plan ID ${planID} AKA ${plan.level} using mode ${mode}`);
 
             // note that proration is the default behavior now:
             // https://stripe.com/docs/billing/subscriptions/prorations
@@ -95,7 +123,7 @@ export class StripeCustomers {
 
         } else {
 
-            console.log("Creating new subscription");
+            console.log(`Creating new subscription for plan ID ${planID} AKA ${plan.level} using mode ${mode}`);
 
             await stripe.subscriptions.create({
                 customer: customer.id,
@@ -107,11 +135,11 @@ export class StripeCustomers {
 
     }
 
-    public static async cancelSubscription(mode: StripeMode,
-                                           email: string) {
+    export async function cancelSubscription(mode: StripeMode,
+                                             email: string) {
 
         const stripe = StripeUtils.getStripe(mode);
-        const customerSubscription = await this.getCustomerSubscription(mode, email);
+        const customerSubscription = await getCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -127,13 +155,13 @@ export class StripeCustomers {
 
     }
 
-    public static async applyCoupon(mode: StripeMode,
-                                    email: string,
-                                    coupon: string) {
+    export async function applyCoupon(mode: StripeMode,
+                                      email: string,
+                                      coupon: string) {
 
         const stripe = StripeUtils.getStripe(mode);
 
-        const customerSubscription = await this.getCustomerSubscription(mode, email);
+        const customerSubscription = await getCustomerSubscription(mode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {

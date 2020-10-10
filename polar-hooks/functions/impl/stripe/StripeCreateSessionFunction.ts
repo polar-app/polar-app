@@ -56,11 +56,13 @@ app.use((req, res) => {
                     trial_from_plan: true,
                     payment_behavior: 'allow_incomplete'
                 },
-                payment_intent_data: {
-                    // used so that this payment is captured with the account so it can be used with future
-                    // payments.
-                    setup_future_usage: 'off_session',
-                }
+
+                // 'You can not pass `payment_intent_data` in `subscription` mode.',
+                // payment_intent_data: {
+                //     // used so that this payment is captured with the account so it can be used with future
+                //     // payments.
+                //     setup_future_usage: 'off_session',
+                // }
             });
 
             res.json({id: session.id});

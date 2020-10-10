@@ -2,6 +2,10 @@ import {assert} from 'chai';
 import {StripeUtils} from './StripeUtils';
 import Stripe from 'stripe';
 import {StripeCustomers} from "./StripeCustomers";
+import {Billing} from "polar-accounts/src/Billing";
+import V2PlanFree = Billing.V2PlanFree;
+import V2PlanPlus = Billing.V2PlanPlus;
+import V2PlanPro = Billing.V2PlanPro;
 
 const email = "getpolarized.test+test@gmail.com";
 process.env.STRIPE_TEST = 'true';
@@ -12,8 +16,6 @@ describe('Stripe', function() {
         this.timeout(60000);
 
         const stripe = StripeUtils.getStripe('test');
-
-        // await Accounts.changePlan("cus_F9RB6dZIxRMZXj", "bronze");
 
         let customer = await StripeCustomers.getCustomerByEmail('test', email);
 
@@ -49,16 +51,16 @@ describe('Stripe', function() {
             source
         });
 
-        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
-        await StripeCustomers.changePlan('test', email, 'silver', 'month');
-        await StripeCustomers.changePlan('test', email, 'gold', 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanFree, 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanPlus, 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanPro, 'month');
 
         // now downgrade...
-        await StripeCustomers.changePlan('test', email, 'silver', 'month');
-        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanPlus, 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanFree, 'month');
 
         // make sure we can double set it to bronze, this should be idempotent.
-        await StripeCustomers.changePlan('test', email, 'bronze', 'month');
+        await StripeCustomers.changePlan('test', email, V2PlanFree, 'month');
         await StripeCustomers.cancelSubscription('test', email);
 
         // now make sure this customers has no subscriptions after the cancel now.
