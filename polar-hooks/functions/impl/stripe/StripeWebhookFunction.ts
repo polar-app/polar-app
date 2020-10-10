@@ -5,6 +5,7 @@ import * as functions from 'firebase-functions';
 import {StripePlanIDs, StripePriceID} from "./StripePlanIDs";
 import {Accounts} from "./Accounts";
 import {StripeMode} from "./StripeUtils";
+import {StripeCustomers} from "./StripeCustomers";
 
 // TODO:
 //
@@ -40,6 +41,9 @@ function createApp(mode: StripeMode) {
                     switch (stripeEvent.type) {
 
                         case 'customer.subscription.created':
+                            // we have to set a default payment method so that when they try to change the plan
+                            // in the future they have a payment method applied properly.
+                            await StripeCustomers.setDefaultPaymentMethod(mode, customerID);
                             await Accounts.changePlan(mode, customerID, sub.plan, sub.interval);
                             break;
                         case 'customer.subscription.updated':

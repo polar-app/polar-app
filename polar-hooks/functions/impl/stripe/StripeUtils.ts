@@ -13,7 +13,7 @@ function getStripeKey(mode: StripeMode) {
         return "sk_test_4qvDsYhxF53NhLCzcGtwaJA100PQdzhkoG";
     }
 
-    console.log("Using production stripe credentials");
+    console.log(`Using ${mode} stripe credentials`);
 
     return mode === 'live' ? 'sk_live_6N0oXmsdPxKS6gbUhwHFLncD00Gv3ztN4A' : 'sk_test_4qvDsYhxF53NhLCzcGtwaJA100PQdzhkoG';
 

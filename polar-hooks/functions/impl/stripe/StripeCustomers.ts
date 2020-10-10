@@ -2,6 +2,8 @@ import Stripe from "stripe";
 import {StripeMode, StripeUtils} from "./StripeUtils";
 import {Billing} from 'polar-accounts/src/Billing';
 import {StripePlanIDs} from "./StripePlanIDs";
+import {IDStr} from "polar-shared/src/util/Strings";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export interface StripeCustomerSubscription {
     readonly customer: Stripe.Customer;
@@ -14,6 +16,35 @@ export interface StripeCustomerSubscriptions {
 }
 
 export namespace StripeCustomers {
+
+    export async function setDefaultPaymentMethod(mode: StripeMode, customerID: IDStr) {
+
+        const stripe = StripeUtils.getStripe(mode);
+        const customer = await stripe.customers.retrieve(customerID);
+
+        if (customer.deleted) {
+            throw new Error("Customer is deleted");
+        } else {
+
+            if (isPresent(customer.default_source)) {
+                // we already have a default source so we're done
+                return;
+            }
+
+            if (customer.sources && customer.sources.data.length === 1){
+
+                const sourceID = customer.sources.data[0].id;
+
+                const update = {
+                    default_source: sourceID
+                }
+
+                await stripe.customers.update(customer.id, update);
+            }
+
+        }
+
+    }
 
     export async function getCustomerByEmail(mode: StripeMode, email: string): Promise<Stripe.Customer | undefined> {
 
@@ -46,17 +77,27 @@ export namespace StripeCustomers {
             throw new Error("No customer for email: " + email);
         }
 
-        if (! customer.subscriptions || customer.subscriptions.data.length === 0) {
-            // we have a customer just no subscription yet
+        if (customer.subscriptions === undefined) {
+            console.log("No subscriptions (subscriptions was undefined)");
+            return {customer};
+        }
+
+        if (customer.subscriptions.data.length === 0) {
+            console.log("No subscriptions (subscriptions array empty)");
             return {customer};
         }
 
         const activeSubscriptions
             = customer.subscriptions.data.filter(current => current.status === 'active');
 
+        if (activeSubscriptions.length === 0) {
+            console.log("No active subscriptions");
+            return {customer};
+        }
+
         if (activeSubscriptions.length !== 1) {
-            const msg = "Too many subscriptions: ";
-            console.warn("msg", activeSubscriptions);
+            const msg = `Too many subscriptions for ${email}: ${activeSubscriptions.length}`;
+            console.warn(activeSubscriptions);
             throw new Error(msg + email);
         }
 
@@ -87,13 +128,23 @@ export namespace StripeCustomers {
 
     }
 
+    export async function cancelActiveCustomerSubscriptions(mode: StripeMode, email: string): Promise<void> {
+        const customerSubscriptions = await getActiveCustomerSubscriptions(mode, email);
+
+        const stripe = StripeUtils.getStripe(mode);
+
+        for (const subscription of customerSubscriptions.subscriptions) {
+            await stripe.subscriptions.del(subscription.id);
+        }
+
+    }
 
     export async function changePlan(mode: StripeMode,
                                      email: string,
                                      plan: Billing.V2Plan,
                                      interval: Billing.Interval) {
 
-        console.log(`Changing plan for ${email} to ${plan}`);
+        console.log(`Changing plan for ${email} to ${plan.level}`);
 
         const customerSubscription = await getCustomerSubscription(mode, email);
 
