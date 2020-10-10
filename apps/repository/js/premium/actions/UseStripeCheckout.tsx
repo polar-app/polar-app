@@ -10,16 +10,16 @@ async function startStripeSession(newSubscription: Billing.V2Subscription, email
     const params = {
         plan: newSubscription.plan.level,
         interval: newSubscription.interval,
-        email: encodeURIComponent(email),
+        email,
         mode
     }
 
     const url = URLs.create({
-        base: `https://us-central1-polar-cors.cloudfunctions.net/StripeCreateSession`,
+        base: StripeUtils.createURL('/StripeCreateSession'),
         params
     });
 
-    const response = await fetch(url);
+    const response = await fetch(url, {mode: "cors"});
     const json = await response.json();
 
     return json.id;

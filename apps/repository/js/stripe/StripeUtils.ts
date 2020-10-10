@@ -4,9 +4,29 @@ export namespace StripeUtils {
 
     export type StripeMode = 'test' | 'live';
 
+    export function createURL(path: string) {
+
+        function createHost() {
+
+            switch (StripeUtils.stripeMode()) {
+                case "test":
+                    return 'us-central1-polar-cors-beta.cloudfunctions.net'
+                case "live":
+                    return 'us-central1-polar-cors.cloudfunctions.net'
+            }
+
+        }
+
+        const host = createHost();
+
+        return `https://${host}${path}`;
+
+    }
+
     export function stripeMode(): StripeMode {
 
         const stripeApiKey = getStripeAPIKey();
+        console.log("FIXME: " + stripeApiKey);
         return stripeApiKey.startsWith("pk_test_") ? 'test' : 'live';
 
     }

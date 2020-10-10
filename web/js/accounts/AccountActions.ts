@@ -24,7 +24,7 @@ export namespace AccountActions {
     }
 
     export async function cancelSubscription() {
-        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeCancelSubscription/`;
+        const url = StripeUtils.createURL(`/StripeCancelSubscription/`);
         const accountData = await createAccountData();
         const mode = StripeUtils.stripeMode();
         const data: StripeCancelSubscriptionBody = {mode, ...accountData};
@@ -34,7 +34,7 @@ export namespace AccountActions {
     }
 
     export async function changePlan(plan: Billing.V2PlanLevel, interval: Billing.Interval) {
-        const url = `https://us-central1-polar-cors.cloudfunctions.net/StripeChangePlan/`;
+        const url = StripeUtils.createURL(`/StripeChangePlan/`);
         const accountData = await createAccountData();
         const mode = StripeUtils.stripeMode();
         const data: StripeChangePlanBody = {mode, plan, interval, ...accountData};
