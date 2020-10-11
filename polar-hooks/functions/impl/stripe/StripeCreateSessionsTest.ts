@@ -32,6 +32,7 @@ describe('StripeCreateSessions', function() {
             const plans: ReadonlyArray<Billing.V2PlanLevel> = ['plus', 'pro'];
 
             for (const interval of intervals) {
+
                 for (const plan of plans) {
                     const session = await StripeCreateSessions.create({
                         stripeMode: 'test',
