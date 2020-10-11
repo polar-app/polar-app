@@ -128,15 +128,12 @@ const DesktopTable = () => {
                 <PlanPricing plan='free'/>
               </Box>
               {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
-              <PremiumButton newSubscription={{plan: V2PlanFree, interval}} />
             </th>
             <th style={{ width: "22%" }}>
               <Box className={classes.header}>Plus</Box>
               <Box className={classes.pricing}>
                 <PlanPricing plan='plus'/>
               </Box>
-
-              <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
 
             </th>
             <th style={{ width: "22%" }}>
@@ -145,8 +142,20 @@ const DesktopTable = () => {
                 <PlanPricing plan='pro'/>
               </Box>
 
-              <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
             </th>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td>
+              <PremiumButton newSubscription={{plan: V2PlanFree, interval}} />
+            </td>
+            <td>
+              <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
+            </td>
+            <td>
+              <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
+            </td>
           </tr>
 
           <TableRowDivider/>
