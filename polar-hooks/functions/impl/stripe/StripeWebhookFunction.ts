@@ -2,18 +2,15 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
-import {StripePlanIDs, StripePriceID} from "./StripePlanIDs";
-import {Accounts} from "./Accounts";
 import {StripeMode} from "./StripeUtils";
-import {StripeCustomers} from "./StripeCustomers";
-import {Billing} from "polar-accounts/src/Billing";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {StripeWebhooks} from "./StripeWebhooks";
 
 // TODO:
 //
 // - implement signing for webhooks: https://stripe.com/docs/webhooks/signatures
 
-function createApp(mode: StripeMode) {
+function createApp(stripeMode: StripeMode) {
 
     const app = express();
 
@@ -22,54 +19,26 @@ function createApp(mode: StripeMode) {
 
     app.use((req, res) => {
 
-        // req.body should be a JSON body for stripe with the payment metadata.
-
         const handleRequest = async () => {
 
             try {
 
-                console.log(JSON.stringify(req.body, null, '  '));
-
                 const stripeEvent: StripeEvent = req.body;
 
+                const eventType = stripeEvent.type;
                 const customerID = stripeEvent.data.object.customer;
+                const planID = stripeEvent.data.object.plan.id;
+                const status = stripeEvent.data.object.status;
+                const subscriptionID = stripeEvent.data.object.id;
 
-                const stripePriceID = stripeEvent.data.object.plan.id;
-
-                const sub = StripePlanIDs.toSubscription(mode, stripePriceID);
-
-                if (stripeEvent.data.object.status === 'active') {
-
-                    async function doChangePlan(plan: Billing.Plan,
-                                                interval: Billing.Interval) {
-
-                        const subscriptionID = stripeEvent.data.object.id;
-                        await StripeCustomers.cancelActiveCustomerSubscriptions(mode, {id: customerID}, {except: subscriptionID});
-
-                        await Accounts.changePlan(mode, customerID, plan, interval);
-
-                    }
-
-                    switch (stripeEvent.type) {
-
-                        case 'customer.subscription.created':
-                            // we have to set a default payment method so that when they try to change the plan
-                            // in the future they have a payment method applied properly.
-                            await StripeCustomers.setDefaultPaymentMethod(mode, customerID);
-                            await doChangePlan(sub.plan, sub.interval);
-                            break;
-                        case 'customer.subscription.updated':
-                            await doChangePlan(sub.plan, sub.interval);
-                            break;
-                        case 'customer.subscription.deleted':
-                            await doChangePlan('free', 'month');
-                            break;
-
-                    }
-
-                } else {
-                    console.log("Ignoring incomplete subscription");
-                }
+                await StripeWebhooks.handleEvent({
+                    stripeMode,
+                    eventType,
+                    customerID,
+                    planID,
+                    status,
+                    subscriptionID
+                });
 
                 res.sendStatus(200);
 
