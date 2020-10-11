@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import {AppOptions} from 'firebase-admin';
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export namespace FirebaseConfig {
 
@@ -9,12 +10,35 @@ export namespace FirebaseConfig {
 
         function computeServiceAccount() {
 
-            if (process.env.FIREBASE_CONFIG) {
-                return JSON.parse(process.env.FIREBASE_CONFIG);
-            } else {
+            function computeFirebaseConfigFromEnvironment(): any {
+
+                if (process.env.FIREBASE_CONFIG !== undefined) {
+
+                    const result = JSON.parse(process.env.FIREBASE_CONFIG);
+
+                    if (result.private_key) {
+                        return result;
+                    } else {
+                        return undefined;
+                    }
+
+                }
+
+            }
+
+            function computeFirebaseConfigFromConfig() {
                 const config = functions.config();
                 return config.polar.firebase.service_account;
             }
+
+            const fromEnvironment = computeFirebaseConfigFromEnvironment();
+
+            if (fromEnvironment) {
+                return fromEnvironment;
+            } else {
+                return computeFirebaseConfigFromConfig();
+            }
+
         }
 
         const serviceAccount = computeServiceAccount();

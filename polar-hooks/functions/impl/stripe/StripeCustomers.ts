@@ -17,9 +17,9 @@ export interface StripeCustomerSubscriptions {
 
 export namespace StripeCustomers {
 
-    export async function setDefaultPaymentMethod(mode: StripeMode, customerID: IDStr) {
+    export async function setDefaultPaymentMethod(stripeMode: StripeMode, customerID: IDStr) {
 
-        const stripe = StripeUtils.getStripe(mode);
+        const stripe = StripeUtils.getStripe(stripeMode);
         const customer = await stripe.customers.retrieve(customerID);
 
         if (customer.deleted) {
@@ -52,10 +52,10 @@ export namespace StripeCustomers {
 
     type CustomerQuery = string | CustomerQueryByID;
 
-    export async function getCustomerByEmail(mode: StripeMode,
+    export async function getCustomerByEmail(stripeMode: StripeMode,
                                              query: CustomerQuery): Promise<Stripe.Customer | undefined> {
 
-        const stripe = StripeUtils.getStripe(mode);
+        const stripe = StripeUtils.getStripe(stripeMode);
 
         if (typeof query === 'string') {
 
@@ -90,18 +90,23 @@ export namespace StripeCustomers {
 
     }
 
-    export async function getActiveCustomerSubscriptions(mode: StripeMode,
-                                                         customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
+    interface CustomerSubscriptionsFilter {
+        readonly status?: "active";
+    }
 
-        const customer = await getCustomerByEmail(mode, customerQuery);
+    export async function getCustomerSubscriptions(stripeMode: StripeMode,
+                                                   customerQuery: CustomerQuery,
+                                                   filter: CustomerSubscriptionsFilter = {}): Promise<StripeCustomerSubscriptions> {
+
+        const customer = await getCustomerByEmail(stripeMode, customerQuery);
 
         if (! customer) {
             throw new Error("No customer for email: " + JSON.stringify(customerQuery));
         }
 
-        const stripe = StripeUtils.getStripe(mode);
+        const stripe = StripeUtils.getStripe(stripeMode);
 
-        const subscriptions = await stripe.subscriptions.list({customer: customer.id, status: 'active'});
+        const subscriptions = await stripe.subscriptions.list({customer: customer.id, ...filter});
 
         if (subscriptions === undefined) {
             console.log("No subscriptions (subscriptions was undefined)");
@@ -115,22 +120,24 @@ export namespace StripeCustomers {
             return {customer, subscriptions: []};
         }
 
-        if (nrSubscriptions !== 1) {
-            const msg = `Too many subscriptions for ${JSON.stringify(customerQuery)}: ${nrSubscriptions}`;
-            console.warn(msg);
-            throw new Error(msg);
-        }
-
         return {customer, subscriptions: [...subscriptions.data]};
 
     }
 
-    export async function getActiveCustomerSubscription(mode: StripeMode,
+    export async function getActiveCustomerSubscriptions(stripeMode: StripeMode,
+                                                         customerQuery: CustomerQuery): Promise<StripeCustomerSubscriptions> {
+
+        return await getCustomerSubscriptions(stripeMode, customerQuery, {status: 'active'});
+
+    }
+
+    export async function getActiveCustomerSubscription(stripeMode: StripeMode,
                                                         email: string): Promise<StripeCustomerSubscription> {
 
-        const {customer, subscriptions} = await getActiveCustomerSubscriptions(mode, email);
+        const {customer, subscriptions} = await getActiveCustomerSubscriptions(stripeMode, email);
 
         const nrSubscriptions = subscriptions.length;
+
         if (nrSubscriptions > 1) {
             const msg = `Too many subscriptions for ${email}: ${nrSubscriptions}`;
             console.warn(msg);
@@ -141,46 +148,57 @@ export namespace StripeCustomers {
 
     }
 
-    interface CancelActiveCustomerSubscriptionsOpts {
+    interface DeleteCustomerSubscriptionsFilter {
         readonly except?: IDStr;
     }
 
-    export async function cancelActiveCustomerSubscriptions(mode: StripeMode,
-                                                            customerQuery: CustomerQuery,
-                                                            opts: CancelActiveCustomerSubscriptionsOpts = {}): Promise<void> {
+    export async function deleteCustomerSubscriptions(stripeMode: StripeMode,
+                                                      customerQuery: CustomerQuery,
+                                                      filter: DeleteCustomerSubscriptionsFilter = {}): Promise<void> {
 
-        const customerSubscriptions = await getActiveCustomerSubscriptions(mode, customerQuery);
+        const customerSubscriptions = await getCustomerSubscriptions(stripeMode, customerQuery);
 
-        const subscriptions = opts.except ?
-            customerSubscriptions.subscriptions.filter(current => current.id !== opts.except) :
-            customerSubscriptions.subscriptions;
+        function filterExcept(current: Stripe.Subscription) {
 
-        const stripe = StripeUtils.getStripe(mode);
+            if (isPresent(filter.except)) {
+                return current.id !== filter.except;
+            } else {
+                return true;
+            }
+
+        }
+
+        const subscriptions = customerSubscriptions.subscriptions.filter(filterExcept);
+
+        const stripe = StripeUtils.getStripe(stripeMode);
+
+        console.log("Deleting N subscriptions: " + subscriptions.length);
 
         for (const subscription of subscriptions) {
             await stripe.subscriptions.del(subscription.id);
+            console.log("Delete subscription: " + subscription.id);
         }
 
     }
 
-    export async function changePlan(mode: StripeMode,
+    export async function changePlan(stripeMode: StripeMode,
                                      email: string,
                                      plan: Billing.V2Plan,
                                      interval: Billing.Interval) {
 
         console.log(`Changing plan for ${email} to ${plan.level}`);
 
-        const customerSubscription = await getActiveCustomerSubscription(mode, email);
+        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
 
-        const planID = StripePlanIDs.fromSubscription(mode, plan, interval);
+        const planID = StripePlanIDs.fromSubscription(stripeMode, plan, interval);
 
-        const stripe = StripeUtils.getStripe(mode);
+        const stripe = StripeUtils.getStripe(stripeMode);
 
         const {customer, subscription} = customerSubscription;
 
         if (subscription) {
 
-            console.log(`Updating subscription ${subscription.id} to plan ID ${planID} AKA ${plan.level} using mode ${mode}`);
+            console.log(`Updating subscription ${subscription.id} to plan ID ${planID} AKA ${plan.level} using mode ${stripeMode}`);
 
             // note that proration is the default behavior now:
             // https://stripe.com/docs/billing/subscriptions/prorations
@@ -198,7 +216,7 @@ export namespace StripeCustomers {
 
         } else {
 
-            console.log(`Creating new subscription for plan ID ${planID} AKA ${plan.level} using mode ${mode}`);
+            console.log(`Creating new subscription for plan ID ${planID} AKA ${plan.level} using mode ${stripeMode}`);
 
             await stripe.subscriptions.create({
                 customer: customer.id,
@@ -210,11 +228,11 @@ export namespace StripeCustomers {
 
     }
 
-    export async function cancelSubscription(mode: StripeMode,
+    export async function cancelSubscription(stripeMode: StripeMode,
                                              email: string) {
 
-        const stripe = StripeUtils.getStripe(mode);
-        const customerSubscription = await getActiveCustomerSubscription(mode, email);
+        const stripe = StripeUtils.getStripe(stripeMode);
+        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {
@@ -230,13 +248,13 @@ export namespace StripeCustomers {
 
     }
 
-    export async function applyCoupon(mode: StripeMode,
+    export async function applyCoupon(stripeMode: StripeMode,
                                       email: string,
                                       coupon: string) {
 
-        const stripe = StripeUtils.getStripe(mode);
+        const stripe = StripeUtils.getStripe(stripeMode);
 
-        const customerSubscription = await getActiveCustomerSubscription(mode, email);
+        const customerSubscription = await getActiveCustomerSubscription(stripeMode, email);
         const {customer, subscription} = customerSubscription;
 
         if (!subscription) {

@@ -30,7 +30,7 @@ export namespace StripeWebhooks {
             async function doChangePlan(plan: Billing.Plan,
                                         interval: Billing.Interval) {
 
-                await StripeCustomers.cancelActiveCustomerSubscriptions(stripeMode, {id: customerID}, {except: subscriptionID});
+                await StripeCustomers.deleteCustomerSubscriptions(stripeMode, {id: customerID}, {except: subscriptionID});
 
                 await Accounts.changePlan(stripeMode, customerID, plan, interval);
 
