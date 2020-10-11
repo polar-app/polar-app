@@ -2,7 +2,7 @@
   "name": "polar",
   "private": true,
   "description": "General information, support, and downloads for the polar app",
-  "version": "2.0.0-beta.32",
+  "version": "2.0.0",
   "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
   "dependencies": {
     "@material-ui/core": "=4.9.13",
@@ -26,7 +26,7 @@
     "gatsby-transformer-sharp": "=2.5.16",
     "ink": "^3.0.7",
     "ink-box": "^1.0.0",
-    "polar-bookshelf": "^2.0.0-beta.32",
+    "polar-bookshelf": "^2.0.0",
     "react": "=16.13.1",
     "react-dom": "=16.13.1",
     "react-helmet": "=6.1.0",
