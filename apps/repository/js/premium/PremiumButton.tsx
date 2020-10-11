@@ -32,7 +32,7 @@ export const PremiumButton = deepMemo((props: IProps) => {
 
     // true when this is the current plan and we do not need to show the
     // button
-    const currentPlan = (newSubscription.plan.level === 'free' && subscription?.plan.level) ||
+    const currentPlan = (newSubscription.plan.level === 'free' && newSubscription.plan.level === subscription?.plan.level) ||
                         Subscriptions.isEqual(newSubscription, subscription);
 
     // true if we're BUYING a new plan...
