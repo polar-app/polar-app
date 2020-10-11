@@ -22,8 +22,9 @@ export namespace StripeCreateSessions {
         readonly plan: Billing.V2PlanLevel;
     }
 
-    interface IStripeSession {
+    export interface IStripeSession {
         readonly id: string;
+        readonly customerParams: CustomerParams;
     }
 
     export async function create(opts: ICreateOpts): Promise<IStripeSession> {
@@ -33,8 +34,6 @@ export namespace StripeCreateSessions {
         const stripe = StripeUtils.getStripe(stripeMode);
 
         console.log("Creating stripe checkout session for: " + email);
-
-        // if we already have a customer ID for this email otherwise a NEW customer will be created
 
         const customerParams = await computeCustomerParams(stripeMode, email);
 
@@ -87,7 +86,8 @@ export namespace StripeCreateSessions {
         const session = await stripe.checkout.sessions.create(createOpts);
 
         return {
-            id: session.id
+            id: session.id,
+            customerParams
         };
 
     }
