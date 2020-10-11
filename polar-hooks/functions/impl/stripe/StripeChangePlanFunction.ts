@@ -3,11 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {Billing} from 'polar-accounts/src/Billing';
-import {Accounts} from "./Accounts";
-import {StripeCustomers} from "./StripeCustomers";
-import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import { StripeMode } from './StripeUtils';
-import { Plans } from 'polar-accounts/src/Plans';
+import {StripeChangePlans} from "./StripeChangePlans";
 
 const app = express();
 
@@ -26,12 +23,7 @@ app.use((req, res) => {
 
             const body: StripeChangePlanBody = req.body;
 
-            const plan = Plans.toV2(body.plan);
-            const account = await StripeCustomerAccounts.get(body.mode, body.email);
-
-            await Accounts.validate(body.email, body.uid);
-            await StripeCustomers.changePlan(body.mode, body.email, plan, body.interval);
-            await Accounts.changePlanViaEmail(body.email, account.customer.customerID, plan, body.interval);
+            await StripeChangePlans.changePlans({...body, stripeMode: body.mode});
 
             res.sendStatus(200);
 
