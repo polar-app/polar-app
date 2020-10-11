@@ -4,27 +4,15 @@ import {StripeCustomers} from "./StripeCustomers";
 import {StripeUtils} from "./StripeUtils";
 import IStripeSession = StripeCreateSessions.IStripeSession;
 import {assert} from 'chai';
+import {StripeTesting} from "./StripeTesting";
 
 describe('StripeCreateSessions', function() {
-
-    const email = 'alice@example.com'
-
-    async function purgeCustomer() {
-        const customer = await StripeCustomers.getCustomerByEmail('test', email);
-        if (customer) {
-            const stripe = StripeUtils.getStripe('test');
-            await stripe.customers.del(customer.id);
-        }
-    }
-
-    async function createCustomer() {
-        const stripe = StripeUtils.getStripe('test');
-        return await stripe.customers.create({email});
-    }
 
     it("basic", async function() {
 
         this.timeout(10000);
+
+        const email = StripeTesting.EMAIL;
 
         async function doTest(validator: (session: IStripeSession) => void) {
 
@@ -49,10 +37,10 @@ describe('StripeCreateSessions', function() {
 
         }
 
-        await purgeCustomer();
+        await StripeTesting.purgeCustomer();
         await doTest(session => assert.equal((<any> session.customerParams).customer_email, email));
 
-        const customer = await createCustomer();
+        const customer = await StripeTesting.createCustomer();
         await doTest(session => assert.equal((<any> session.customerParams).customer, customer.id));
 
         // await StripeCreateSessions.create({

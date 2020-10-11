@@ -6,9 +6,18 @@ export namespace FirebaseConfig {
 
     export function create(): FirebaseConfig | undefined {
 
-        const config = functions.config();
 
-        const serviceAccount = config.polar.firebase.service_account;
+        function computeServiceAccount() {
+
+            if (process.env.FIREBASE_CONFIG) {
+                return JSON.parse(process.env.FIREBASE_CONFIG);
+            } else {
+                const config = functions.config();
+                return config.polar.firebase.service_account;
+            }
+        }
+
+        const serviceAccount = computeServiceAccount();
 
         return {
             project: serviceAccount.projectId!,
