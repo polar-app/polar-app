@@ -30,7 +30,6 @@ export const PremiumButton = deepMemo((props: IProps) => {
 
     const {subscription} = changePlanActionContext;
 
-
     // true when this is the current plan and we do not need to show the
     // button
     const currentPlan = (newSubscription.plan.level === 'free' && subscription?.plan.level) ||
