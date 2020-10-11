@@ -4,10 +4,11 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Lazy} from "../util/Lazy";
 
-const firebase = FirebaseAdmin.app();
-const firestore = firebase.firestore();
-const auth = firebase.auth();
+const firebase = Lazy.create(() => FirebaseAdmin.app());
+const firestore = Lazy.create(() => firebase().firestore());
+const auth = Lazy.create(() => firebase().auth());
 
 const log = Logger.create();
 
@@ -30,7 +31,7 @@ export class Accounts {
      */
     public static async validate(email: string, uid: string) {
 
-        const user = await auth.getUserByEmail(email);
+        const user = await auth().getUserByEmail(email);
 
         if (!user) {
             throw new Error("No user for email: " + email);
@@ -76,7 +77,7 @@ export class Accounts {
             throw new Error("Customer has no email address");
         }
 
-        const user = await auth.getUserByEmail(email);
+        const user = await auth().getUserByEmail(email);
 
         const lastModified = new Date().toISOString();
 
@@ -101,7 +102,7 @@ export class Accounts {
 
     public static async get(email: string): Promise<Account | undefined> {
 
-        const query = firestore
+        const query = firestore()
             .collection('account')
             .where('email', '==', email)
             .limit(1);
@@ -120,7 +121,7 @@ export class Accounts {
 
     public static async write(account: Account) {
 
-        const ref = firestore
+        const ref = firestore()
             .collection('account')
             .doc(account.id);
 

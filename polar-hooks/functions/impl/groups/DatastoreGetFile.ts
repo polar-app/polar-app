@@ -8,9 +8,10 @@ import {Datastores} from '../datastore/Datastores';
 import {DatastoreRequests} from '../datastore/DatastoreRequests';
 import {IDUsers} from '../util/IDUsers';
 import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
+import { Lazy } from '../util/Lazy';
 
-const storageConfig = Datastores.createStorage();
-const {storage} = storageConfig;
+const storageConfig = Lazy.create(() => Datastores.createStorage());
+const storage = Lazy.create(() => storageConfig().storage);
 
 /**
  * Handles fetching a a secure and temporary URL for downloading a file using
@@ -81,13 +82,13 @@ async function createSecureURL(path: string): Promise<string> {
         expires
     };
 
-    const project = storageConfig.config.project;
+    const project = storageConfig().config.project;
 
     const bucketName = `gs://${project}.appspot.com`;
 
     trace("Creating secure URL for: ", {bucketName, path});
 
-    const bucket = storage.bucket(bucketName);
+    const bucket = storage().bucket(bucketName);
     const file = new File(bucket, path);
 
     const signedURLs = await file.getSignedUrl(opts);
