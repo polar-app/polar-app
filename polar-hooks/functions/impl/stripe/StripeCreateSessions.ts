@@ -76,8 +76,8 @@ export namespace StripeCreateSessions {
             allow_promotion_codes: true,
             billing_address_collection: 'required',
             mode,
-            success_url: 'https://app.getpolarized.io/success',
-            cancel_url: 'https://app.getpolarized.io/cancel',
+            success_url: 'https://app.getpolarized.io',
+            cancel_url: 'https://app.getpolarized.io',
             ...subscriptionParams
         }
 
