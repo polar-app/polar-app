@@ -1,0 +1,5 @@
+- test 4 year subscription with new customer
+- test 4 year subscription with change plan
+- new customer
+- new customer then cancel, then new buy again
+- 

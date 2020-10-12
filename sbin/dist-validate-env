@@ -14,11 +14,11 @@ validate_npm_auth() {
     npm whoami > /dev/null
 }
 
-validate_snapcraft_auth() {
-    echo "Validating snapcraft auth..."
-    snapcraft whoami > /dev/null
-}
-
+#validate_snapcraft_auth() {
+#    echo "Validating snapcraft auth..."
+#    snapcraft whoami > /dev/null
+#}
+#
 validate_firebase_auth() {
     echo "Validating firebase auth..."
     echo "NOTE: if this fails login via: firebase login --no-localhost"
@@ -57,8 +57,8 @@ set -e
 
 # validate_release_notes
 validate_npm_auth
-validate_snapcraft_auth
-validate_firebase_auth
-validate_credentials
+# validate_snapcraft_auth
+# validate_firebase_auth
+# validate_credentials
 
 echo "SUCCESS"
