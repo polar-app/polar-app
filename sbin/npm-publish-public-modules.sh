@@ -33,5 +33,7 @@ publish_private() {
 
 }
 
+cp packages/polar-bookshelf-secrets/
+
 (publish_public)
 (publish_private)
