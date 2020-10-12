@@ -25,7 +25,7 @@ export type StripeMode = 'test' | 'live';
 
 export class StripeUtils {
 
-    public static getStripe(mode: StripeMode) {
+    public static getStripe(stripeMode: StripeMode) {
 
         if (stripe) {
             return stripe;
@@ -36,7 +36,7 @@ export class StripeUtils {
             typescript: true
         }
 
-        stripe = new Stripe(getStripeKey(mode), config);
+        stripe = new Stripe(getStripeKey(stripeMode), config);
         return stripe;
 
     }
