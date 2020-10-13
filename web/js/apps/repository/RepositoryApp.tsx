@@ -113,10 +113,12 @@ export const RepositoryApp = (props: IProps) => {
                                      render={(docRepo) =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
-                                                 <>
-                                                     <AnkiSyncController/>
-                                                     <DocRepoScreen2/>
-                                                 </>
+                                                 <TwoMigrationForBrowser>
+                                                     <>
+                                                         <AnkiSyncController/>
+                                                         <DocRepoScreen2/>
+                                                     </>
+                                                 </TwoMigrationForBrowser>
                                              </DocRepoSidebarTagStore>
                                          </DocRepoStore2>
                                      }/>
@@ -279,7 +281,7 @@ export const RepositoryApp = (props: IProps) => {
                                  flexGrow: 1
                              }}>
 
-                            <TwoMigrationForBrowser>
+                            <>
                                 <UseLocationChangeStoreProvider>
                                     <BrowserRouter>
                                         <UseLocationChangeRoot>
@@ -371,7 +373,7 @@ export const RepositoryApp = (props: IProps) => {
                                         </UseLocationChangeRoot>
                                  </BrowserRouter>
                                 </UseLocationChangeStoreProvider>
-                            </TwoMigrationForBrowser>
+                            </>
 
                         </div>
                 </PersistenceLayerContext.Provider>
