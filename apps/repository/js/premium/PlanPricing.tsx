@@ -160,13 +160,15 @@ export const PlanPricing = deepMemo((props: IProps) => {
 
                         {interval === 'year' && (
                             <p className={classes.billedAt}>
-                                Billed yearly at ${pricing.price} <br/> with a 14 day trial.
+                                Billed yearly at ${pricing.price}
+                                {/*<br/> with a 14 day trial.*/}
                             </p>
                         )}
 
                         {interval === '4year' && (
                             <p className={classes.billedAt}>
-                                Billed once at ${pricing.price} <br/> with a 14 day trial.
+                                Billed once at ${pricing.price}
+                                {/*<br/> with a 14 day trial.*/}
                             </p>
                         )}
 

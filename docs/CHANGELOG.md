@@ -1,4 +1,11 @@
 
+# 2.0.?
+
+- Remove trial text since we can't currently offer trials
+- 
+
+# ....
+
 - the cloze ID is computed from the text, not just an integer that's incremented
 
 # 2.0 Beta 30 (RC2)
