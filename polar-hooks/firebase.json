@@ -4,6 +4,18 @@
     "public": "functions/node_modules/polar-webapp-dist/public",
     "rewrites": [
       {
+        "source": "/",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/annotations",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/stats",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/sitemap-doc-preview.xml",
         "function": "docPreviewSitemap"
       },
@@ -43,6 +55,46 @@
       {
         "source": "/prerender/**",
         "function": "prerender"
+      },
+      {
+        "source": "/index.html",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/migration/phz",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/device",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/login",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/login.html",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/pdfjsWorker-bundle.js",
+        "destination": "/web/dist/pdfjsWorker-bundle.js"
+      },
+      {
+        "source": "/doc",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/doc/:id",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/doc/:id/:title",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/apps/doc/:id",
+        "destination": "/apps/doc/index.html"
       },
       {
         "source": "**",
