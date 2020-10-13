@@ -1,5 +1,4 @@
 import * as React from "react"
-import { graphql } from "gatsby";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -11,15 +10,12 @@ const useStyles = makeStyles({
   link: {
     textDecoration: "none",
     fontSize: "16px",
-    // color: "rgb(103, 84, 217)",
     "&:hover": {
-      // color: "#816de8",
-
       color: "rgb(102, 98, 217)",
     },
   },
 });
-const Landing = ({ location }) => {
+const Landing = ({}) => {
   const classes = useStyles();
   return (
     <Layout>
@@ -6739,13 +6735,3 @@ const Landing = ({ location }) => {
 };
 
 export default Landing;
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;

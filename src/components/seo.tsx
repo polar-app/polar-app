@@ -1,33 +1,22 @@
 import * as React from "react"
-import * as PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
-type Data = {
-  site: {
-    siteMetadata: {
-      title: string;
-      description: string;
-      social: {
-        twitter: string;
-      };
-    };
-  };
-};
-
-const SiteData: Data = {
-  site: {
-    siteMetadata: {
-      title: "POLAR: Read. Learn. Never Forget.",
-      description: "POLAR is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
-      social: {
-        twitter: 'getpolarized'
-      }
-    }
-  }
+interface IPageMetadata {
+    readonly title: string;
+    readonly description: string;
+    readonly image?: string;
+    readonly twitter?: string;
+    readonly lang?: string;
 }
 
-const TWITTER_IMAGE =
-  "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png";
+const defaultPageData: IPageMetadata = {
+  title: "POLAR: Read. Learn. Never Forget.",
+  description: "POLAR is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
+  twitter: 'getpolarized',
+  // FIXME: this URL is wrong...
+  image: "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png",
+  lang: 'en'
+}
 
 /**
  * SEO component that queries for data with
@@ -35,10 +24,16 @@ const TWITTER_IMAGE =
  *
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
-const SEO = ({ description, lang, meta, title }) => {
-  const { site }: Data = SiteData;
+const SEO = (props: Partial<IPageMetadata>) => {
+  const pageMetadata: IPageMetadata = {
+      title: props.title || defaultPageData.title,
+      description: props.description || defaultPageData.description,
+      image: props.image || defaultPageData.image,
+      twitter: props.twitter || defaultPageData.twitter,
+      lang: props.lang || defaultPageData.lang
+  };
 
-  const metaDescription = description || site.siteMetadata.description;
+  const {lang, title, description} = pageMetadata;
 
   return (
     <Helmet
@@ -46,15 +41,15 @@ const SEO = ({ description, lang, meta, title }) => {
         lang,
       }}
       title={title}
-      titleTemplate={`${site.siteMetadata.title}  | %s `}
+      titleTemplate={`${pageMetadata.title} | %s `}
       meta={[
         {
           name: `description`,
-          content: metaDescription,
+          content: description,
         },
         {
           property: `og:description`,
-          content: metaDescription,
+          content: description,
         },
         {
           property: `og:type`,
@@ -66,7 +61,7 @@ const SEO = ({ description, lang, meta, title }) => {
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata.social.twitter,
+          content: pageMetadata.twitter,
         },
         {
           name: `twitter:title`,
@@ -74,28 +69,15 @@ const SEO = ({ description, lang, meta, title }) => {
         },
         {
           name: `twitter:description`,
-          content: metaDescription,
+          content: description,
         },
         {
           name: `twitter:image`,
-          content: TWITTER_IMAGE,
+          content: pageMetadata.image,
         },
-      ].concat(meta)}
+      ]}
     />
   );
-};
-
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
-};
-
-SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
 };
 
 export default SEO;
