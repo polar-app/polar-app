@@ -176,27 +176,18 @@ const Landing = ({ location }) => {
 
   return (
     <Layout>
-      {/*<SEO*/}
-      {/*  description="The Polar Chrome Extension install page. Want to integrate Polar more completely into your workflow? Start Here."*/}
-      {/*  title="Chrome Extension"*/}
-      {/*  lang="en"*/}
-      {/*/>*/}
+      <SEO title="POLAR Chrome Extension"
+           description="Download the POLAR Chrome Extension to capture and clip web content."
+           lang="en"/>
+
       <Box className={classes.background}>
-        {/* <div className="page-title">Download</div> */}
         <Box className={classes.margins}>
           <Box style={{ width: "85%" }} className={classes.flexContainerCol}>
-            <Box
-              style={{ padding: "5%" }}
-              className={
-                breakpoints.tab
-                  ? classes.poppedRectangleMobile
-                  : classes.poppedRectangle
-              }
-            >
-              <Box
-                style={{ flexBasis: "66%" }}
-                className={classes.flexContainerCol}
-              >
+            <Box style={{ padding: "5%" }}
+                 className={breakpoints.tab ? classes.poppedRectangleMobile : classes.poppedRectangle}>
+
+              <Box style={{ flexBasis: "66%" }}
+                   className={classes.flexContainerCol}>
                 <img
                   style={{
                     opacity: "1 !important",
