@@ -12,10 +12,11 @@ import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
+const {SummaryLargeImage} = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
 
-const Landing = ({ location }) => {
+const Landing = ({}) => {
   const breakpoints = useBreakpoint();
   const classes = useStyles();
 
@@ -25,7 +26,7 @@ const Landing = ({ location }) => {
         title="POLAR - Read. Learn. Never Forget."
         description="POLAR - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
         lang="en"
-      />
+        image={SummaryLargeImage}/>
 
       <Box style={{
                flexDirection: "column",
@@ -66,7 +67,7 @@ const Landing = ({ location }) => {
 
               <div style={{marginBottom: '10px'}}>
                   Already using Polar?{" "}
-                  <a style={{ color: "#A88CFF" }} href="#">
+                  <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io">
                       Sign in
                   </a>
               </div>
