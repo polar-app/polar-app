@@ -21,6 +21,7 @@ publish_public() {
     publish_pkg polar-url
     publish_pkg polar-webapp-links
     publish_pkg polar-spaced-repetition-api
+    publish_pkg polar-test
 
 }
 
