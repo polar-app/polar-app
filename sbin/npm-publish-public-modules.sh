@@ -34,7 +34,7 @@ publish_private() {
 }
 
 set -e
-cp packages/polar-bookshelf-secrets/npm-default-rw.txt ./.nmprc
+cp packages/polar-bookshelf-secrets/npmrc-default-rw.txt ./.nmprc
 
 (publish_public)
 (publish_private)
