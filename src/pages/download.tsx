@@ -220,11 +220,9 @@ const Download = ({ location }) => {
 
   return (
     <Layout>
-      {/*<SEO*/}
-      {/*  title="Download POLAR to manage PDFs and EPUBs"*/}
-      {/*  description="Download POLAR to manage PDFs and EPUBs"*/}
-      {/*  lang="en"*/}
-      {/*/>*/}
+      <SEO title="Download POLAR for the Desktop (MacOS, Windows, and Linux)"
+           description="Download POLAR to manage PDFs and EPUBs on your desktop."
+           lang="en"/>
 
       {downloadStarted && <DownloadSnackbar/>}
 

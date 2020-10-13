@@ -22,8 +22,8 @@ const Landing = ({ location }) => {
   return (
     <Layout>
       <SEO
-        title="Polar - Read. Learn. Never Forget."
-        description="Polar - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
+        title="POLAR - Read. Learn. Never Forget."
+        description="POLAR - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
         lang="en"
       />
 
