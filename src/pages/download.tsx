@@ -167,15 +167,15 @@ function createDownloadURL(downloadType: DownloadType) {
 
   switch (downloadType) {
     case "mac":
-      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}.dmg`;
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/Polar-${POLAR_RELEASE}.dmg`;
     case "win":
-      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-nsis-x64.exe`;
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-desktop-app-${POLAR_RELEASE}-nsis-x64.exe`;
     case "linux-deb":
-      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-amd64.deb`;
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-desktop-app-${POLAR_RELEASE}-amd64.deb`;
     case "linux-targz":
-      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-x64.tar.gz`;
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-desktop-app-${POLAR_RELEASE}-x64.tar.gz`;
     case "linux-appimage":
-      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-bookshelf-${POLAR_RELEASE}-x86_64.AppImage`;
+      return `https://github.com/burtonator/polar-bookshelf/releases/download/v${POLAR_RELEASE}/polar-desktop-app-${POLAR_RELEASE}-x86_64.AppImage`;
 
   }
 
