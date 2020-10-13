@@ -12,10 +12,11 @@ import {DocCaches} from "./DocCaches";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {URLs} from "polar-shared/src/util/URLs";
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
+import { Lazy } from "polar-shared/src/util/Lazy";
 
 const log = Logger.create();
 
-const storageConfig = Datastores.createStorage();
+const storageConfig = Lazy.create(() => Datastores.createStorage());
 
 export class DatastoreFetchImports {
 
@@ -103,9 +104,9 @@ export class DatastoreFetchImports {
 
     private static async createStorageTmpStream(tmpName: string): Promise<TmpFile> {
 
-        const {storage} = storageConfig;
+        const {storage} = storageConfig();
 
-        const project = storageConfig.config.project;
+        const project = storageConfig().config.project;
 
         const bucketName = `gs://${project}.appspot.com`;
 

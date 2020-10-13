@@ -8,9 +8,10 @@ import {ExpressFunctions} from '../util/ExpressFunctions';
 import {UserRequests} from '../util/UserRequests';
 import {UserIDStr} from './db/Profiles';
 import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
+import {Lazy} from "polar-shared/src/util/Lazy";
 
-const storageConfig = Datastores.createStorage();
-const {storage} = storageConfig;
+const storageConfig = Lazy.create(() => Datastores.createStorage());
+const storage = Lazy.create(() => storageConfig().storage);
 
 export class DatastoreImportFileFunctions {
 
@@ -67,13 +68,13 @@ interface DatastoreImportFileResponse {
 
 async function copyFile(src: string, dest: string, uid: UserIDStr) {
 
-    const project = storageConfig.config.project;
+    const project = storageConfig().config.project;
 
     const bucketName = `gs://${project}.appspot.com`;
 
     trace("Creating secure URL for: ", {bucketName, path: src});
 
-    const bucket = storage.bucket(bucketName);
+    const bucket = storage().bucket(bucketName);
 
     const destFile = new File(bucket, dest);
     const srcFile = new File(bucket, src);
