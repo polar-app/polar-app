@@ -1,12 +1,8 @@
 import * as React from "react"
-import { graphql } from "gatsby";
-import { Button } from "gatsby-material-ui-components";
-
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import {Box} from "@material-ui/core";
-// // import Fade from "react-reveal/Fade";
-import { useBreakpoint } from "gatsby-plugin-breakpoints";
+import {useBreakpoint} from "gatsby-plugin-breakpoints";
 import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
@@ -25,20 +21,18 @@ const Landing = ({ location }) => {
 
   return (
     <Layout>
-      {/*<SEO*/}
-      {/*  description="Polar - Read, Learn, Never Forget. Polar is a reading tool for*/}
-      {/*  networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."*/}
-      {/*  title="Homepage"*/}
-      {/*  lang="en"*/}
-      {/*/>*/}
+      <SEO
+        description="Polar - Read, Learn, Never Forget. Polar is a reading tool for
+        networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
+        title="Homepage"
+        lang="en"
+      />
 
-      <Box
-        style={{
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-        className={breakpoints.md ? classes.marginsMobile : null}
-      >
+      <Box style={{
+               flexDirection: "column",
+               overflow: "hidden",
+           }}
+           className={breakpoints.md ? classes.marginsMobile : null}>
 
 
           <div className={classes.newHeroSection + ' ' + classes.centerSection}>
