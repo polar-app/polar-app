@@ -26,6 +26,7 @@ const Landing = ({}) => {
         title="POLAR - Read. Learn. Never Forget."
         description="POLAR - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
         lang="en"
+        card="summary_large_image"
         image={SummaryLargeImage}/>
 
       <Box style={{

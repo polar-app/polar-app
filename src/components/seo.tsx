@@ -1,21 +1,25 @@
 import * as React from "react"
 import { Helmet } from "react-helmet";
 
+export type CardType = 'summary' | 'summary_large_image';
+
 interface IPageMetadata {
     readonly title: string;
     readonly description: string;
     readonly image?: string;
     readonly twitter?: string;
     readonly lang?: string;
+    readonly card?: CardType;
 }
 
 const defaultPageData: IPageMetadata = {
-  title: "POLAR: Read. Learn. Never Forget.",
-  description: "POLAR is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
-  twitter: 'getpolarized',
-  // FIXME: this URL is wrong...
-  image: "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png",
-  lang: 'en'
+    title: "POLAR: Read. Learn. Never Forget.",
+    description: "POLAR is an integrated reading environment to build your knowledge base. Actively read, annotate, connect thoughts, create flashcards, and track progress.",
+    twitter: 'getpolarized',
+    // FIXME: this URL is wrong...
+    image: "https://gatsby-mui.web.app/static/polar-icon-55956145ffc8674cab6a3d312777ae95.png",
+    lang: 'en',
+    card: 'summary'
 }
 
 /**
@@ -30,7 +34,8 @@ const SEO = (props: Partial<IPageMetadata>) => {
       description: props.description || defaultPageData.description,
       image: props.image || defaultPageData.image,
       twitter: props.twitter || defaultPageData.twitter,
-      lang: props.lang || defaultPageData.lang
+      lang: props.lang || defaultPageData.lang,
+      card: props.card || defaultPageData.card
   };
 
   const {lang, title, description} = pageMetadata;
@@ -57,7 +62,7 @@ const SEO = (props: Partial<IPageMetadata>) => {
         },
         {
           name: `twitter:card`,
-          content: `summary`,
+          content: pageMetadata.card,
         },
         {
           name: `twitter:creator`,
