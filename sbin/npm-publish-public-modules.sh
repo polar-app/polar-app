@@ -7,7 +7,7 @@ publish_pkg() {
 
 publish_public() {
 
-    cd polar-app-public
+    cd packages/polar-app-public
 
     publish_pkg polar-accounts
     publish_pkg polar-backend-shared
@@ -26,13 +26,14 @@ publish_public() {
 
 publish_private() {
 
-    cd polar-app-private
+    cd packages/polar-app-private
 
     publish_pkg polar-firebase-admin
     publish_pkg polar-webapp-dist
 
 }
 
+set -e
 cp packages/polar-bookshelf-secrets/npm-default-rw.txt ./.nmprc
 
 (publish_public)
