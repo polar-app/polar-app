@@ -12,7 +12,7 @@ import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
-const {SummaryLargeImage} = require("../../content/assets/screenshots/summary-large-image.png");
+const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
 

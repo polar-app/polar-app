@@ -22,6 +22,16 @@ const defaultPageData: IPageMetadata = {
     card: 'summary'
 }
 
+function toURL(urlOrPath: string) {
+
+    if (urlOrPath.startsWith('/')) {
+        return 'https://getpolarized.io' + urlOrPath;
+    }
+
+    return urlOrPath;
+
+}
+
 /**
  * SEO component that queries for data with
  *  Gatsby's useStaticQuery React hook
@@ -32,7 +42,7 @@ const SEO = (props: Partial<IPageMetadata>) => {
   const pageMetadata: IPageMetadata = {
       title: props.title || defaultPageData.title,
       description: props.description || defaultPageData.description,
-      image: props.image || defaultPageData.image,
+      image: toURL(props.image || defaultPageData.image),
       twitter: props.twitter || defaultPageData.twitter,
       lang: props.lang || defaultPageData.lang,
       card: props.card || defaultPageData.card
