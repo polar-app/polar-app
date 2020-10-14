@@ -7,7 +7,6 @@ import { Container, Box, CssBaseline } from "@material-ui/core";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import Footer from "../components/footer";
-import IntraPageIndex from "../components/intra-page-index/intra-page-index";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
 
 type Node = {
@@ -68,11 +67,11 @@ const Documentation = ({ data, pageContext }: PageProps<Data, pageContext>) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LayoutDocs>
-        {/*<SEO*/}
-        {/*  description="Polar Documentation. Getting started, FAQ, and ways to optimize your Polar process."*/}
-        {/*  title="Documentation"*/}
-        {/*  lang="en"*/}
-        {/*/>*/}
+        <SEO
+          description="POLAR Documentation. Getting started, FAQ, and ways to optimize your Polar process."
+          title="Documentation"
+          lang="en"
+        />
 
         <Box
           style={{

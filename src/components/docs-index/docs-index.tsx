@@ -315,8 +315,6 @@ function MobileDocsIndex({ docs, currTitle }) {
 
 function DesktopDocsIndex({ docs, currTitle }) {
   const classes = useStyles();
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
   var numbering: number = 0;
   // window.addEventListener('resize', alert(window.innerWidth));
   return (
