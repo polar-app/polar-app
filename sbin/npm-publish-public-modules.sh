@@ -39,5 +39,3 @@ cp packages/polar-bookshelf-secrets/npmrc-default-rw.txt ~/.nmprc
 
 (publish_public)
 (publish_private)
-
-rm .nmprc
