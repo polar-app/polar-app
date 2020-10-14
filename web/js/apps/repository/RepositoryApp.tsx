@@ -110,7 +110,7 @@ export const RepositoryApp = (props: IProps) => {
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
                                      persistenceLayerManager={persistenceLayerManager}
-                                     render={(docRepo) =>
+                                     render={() =>
                                          <DocRepoStore2>
                                              <DocRepoSidebarTagStore>
                                                  <TwoMigrationForBrowser>

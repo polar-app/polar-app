@@ -85,7 +85,9 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
     public static toPersistentPrefs(userPref: UserPref | undefined) {
 
         if (! userPref) {
-            return undefined;
+            // the user has no existing prefs in the store so we have to return an empty dict
+            // which will later be written.
+            return new FirebaseDatastorePrefs({});
         }
 
         const dictionaryPrefs = new DictionaryPrefs(userPref.value);
