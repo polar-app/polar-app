@@ -1,25 +1,25 @@
 ---
-title: Cloud Sync
+title: Cloud storage
 layout: doc
 date: 2019-01-14 09:00:00 -0800
 permalink: /docs/cloud-sync.html
 description: Polar supports synchronizing the storage of your documents and annotations with the cloud 
 ---
 
-# Cloud Sync
+# Cloud storage
 
 Polar supports synchronizing the storage of your documents and annotations
 (known as our datastore) with the cloud and synchronizing data across computers.
 
-Cloud sync is near real-time and actively pushes updates to your other devices
+Cloud storage is near real-time and actively pushes updates to your other devices
 so that when you change computers your documents are already up to date - no 
 waiting (assuming your computer is active at the time). 
 
 ## Backed by Firebase
 
-Polar cloud sync is backed by Google's Firebase.  You can read about the design
+Polar Cloud storage is backed by Google's Firebase.  You can read about the design
 in this <a href="https://getpolarized.io/2019/01/03/building-cloud-sync-on-google-firebase.html">blog 
-post in the cloud sync infrastructure.</a>
+post in the Cloud storage infrastructure.</a>
 
 ## Security and Permissions
 
