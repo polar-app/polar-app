@@ -17,6 +17,8 @@ import {Decks} from './Decks';
 import {ModelNamesClient} from "./clients/ModelNamesClient";
 import {ModelNames} from "./ModelNames";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {ModelTemplatesClient} from "./clients/ModelTemplatesClient";
+import {CreateModeClient, ICreateModelOpts} from "./clients/CreateModelClient";
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -48,13 +50,85 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
+    private async createRequiredModelForBasic() {
+
+        console.log("Creating Basic Anki model");
+
+        const opts: ICreateModelOpts = {
+            modelName: "Basic",
+            inOrderFields: ["Front", "FrontSide", "Back"],
+            cardTemplates: [
+                {
+                    Name: "Card 1",
+                    Front: "{{Front}}",
+                    Back: "{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}"
+                }
+            ]
+        };
+
+        const client = new CreateModeClient();
+        await client.execute(opts);
+
+    }
+
+    private async createRequiredModelForCloze() {
+
+        console.log("Creating Cloze Anki model");
+
+        const opts: ICreateModelOpts = {
+            modelName: "Cloze",
+            inOrderFields: ["Text", "Back Extra"],
+            css: ".card {\n" +
+                "  font-family: arial;\n" +
+                "  font-size: 20px;\n" +
+                "  text-align: center;\n" +
+                "  color: black;\n" +
+                "  background-color: white;\n" +
+                "}\n" +
+                "\n" +
+                ".cloze {\n" +
+                " font-weight: bold;\n" +
+                " color: blue;\n" +
+                "}\n" +
+                ".nightMode .cloze {\n" +
+                " color: lightblue;\n" +
+                "}\n",
+            cardTemplates: [
+                {
+                    Name: "Card 1",
+                    Front: "{{cloze:Text}}",
+                    Back: "{{cloze:Text}}<br>\n{{Back Extra}}"
+                }
+            ]
+        };
+
+        const client = new CreateModeClient();
+        await client.execute(opts);
+
+    }
+
+    private async createRequiredModels(missing: ReadonlyArray<string>) {
+
+        if (missing.includes('Basic')) {
+            await this.createRequiredModelForBasic();
+        }
+
+        if (missing.includes('Cloze')) {
+            await this.createRequiredModelForCloze();
+        }
+
+    }
+
     private async verifyRequiredModels() {
 
         // TODO: add new models in the future.
 
         const modelNotesClient = new ModelNamesClient();
         const modelNames = await modelNotesClient.execute();
-        ModelNames.verifyRequired(modelNames);
+        const missing = ModelNames.verifyRequired(modelNames);
+
+        await this.createRequiredModels(missing);
+
 
     }
 

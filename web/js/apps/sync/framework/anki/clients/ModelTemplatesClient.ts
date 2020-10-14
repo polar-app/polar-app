@@ -1,23 +1,5 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 
-/*
-  modelNames
-
- Gets the complete list of model names for the current user.
-
- Sample request:
-
- {
-    "action": "modelNames",
-    "version": 6
-}
- Sample result:
-
- {
-    "result": ["Basic", "Basic (and reversed card)"],
-    "error": null
-}
- */
 export class ModelTemplatesClient implements IModelTemplatesClient {
 
     public async execute(modelName: string): Promise<string[]> {
@@ -35,15 +17,6 @@ export class ModelTemplatesClient implements IModelTemplatesClient {
         return <string[]> await AnkiConnectFetch.fetch(init);
 
     }
-
-    /**
-     * Create a mock that returns the given result.
-     */
-    // public static createMock(result: string[]) {
-    //     const client = TypeMoq.Mock.ofType<IModelNamesClient>();
-    //     client.setup(x => x.execute()).returns(() => Promise.resolve(result));
-    //     return client.object;
-    // }
 
 }
 
