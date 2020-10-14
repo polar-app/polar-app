@@ -55,6 +55,7 @@ export class AnkiSyncEngine implements SyncEngine {
         const modelNotesClient = new ModelNamesClient();
         const modelNames = await modelNotesClient.execute();
         ModelNames.verifyRequired(modelNames);
+
     }
 
     protected async toNoteDescriptors(deckNameStrategy: DeckNameStrategy,

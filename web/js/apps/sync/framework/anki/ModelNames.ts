@@ -1,4 +1,3 @@
-import {ModelNamesClient} from "./clients/ModelNamesClient";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 
 export class ModelNames {
