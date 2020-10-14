@@ -1,9 +1,9 @@
 ---
 title: Polar 2.0 Released. Dark Mode. EPUB, Improved Web Capture, etc.
-date: 2020-10-04T08:00:00.000-08:00
+date: 2020-10-05T08:00:00.000-08:00
 layout: post
-description: "Students: Avoid These Flashcard Mistakes for Long-Term Retention"
-large_image: https://i.imgur.com/B35g6ec.jpg
+description: Polar 2.0 was released on October 12, 2020. This release focused on major stability improvements along with the introduction of various new features. With the introduction of 2.0, the plans have also been updated to reflect changes those changes (e.g., users on the free plan will now receive 1 GB of storage instead of 350 MB).
+large_image: https://i.imgur.com/4quxANr.png
 ---
 
 # Polar 2.0 Released. Dark Mode. EPUB, Improved Web Capture, etc. 
@@ -51,39 +51,6 @@ Polar 2.0 was largely rewritten from the ground up. As with any early-stage tool
 We released updated plans to reflect changes in Polar 2.0 vs. Polar 1.0. 
 
 Firstly, the free plan is getting an increase in storage from 350 MB to 1 GB to reflect the change to cloud storage only. In addition, any existing free plan users will get 2 GB of storage.
-
-The below table summarizes the new plan structure
-
-
-
-
-Free
-Plus
-Pro
-Storage
-1 GB
-50 GB
-500 GB
-Number of files
-Unlimited
-Unlimited
-Unlimited
-Web page captures
-250
-Unlimited
-Unlimited
-Devices
-2
-3
-Unlimited
-Related tags
-Not included
-Included
-Included
-Price
-$0
-$6.99
-$14.99
 
 We will also include discounts for long-term subscriptions, specifically, 1-year subscriptions will come with one free month of premium
 

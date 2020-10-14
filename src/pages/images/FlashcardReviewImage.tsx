@@ -12,7 +12,7 @@ export default (props: IProps) => (
     <StaticQuery
         query={graphql`
   query {
-    file(relativePath: {eq: "screenshots/2020-10-flashcard-review.png"}) {
+    file(relativePath: {eq: "screenshots/2020-10-13-flashcard-review.png"}) {
       childImageSharp {
         fluid(maxWidth: 1280) {
             ...GatsbyImageSharpFluid_withWebp
