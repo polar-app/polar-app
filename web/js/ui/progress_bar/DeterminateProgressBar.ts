@@ -120,8 +120,6 @@ export class DeterminateProgressBar {
 
         element.style.width = `100%`;
 
-        /// progress.style.backgroundColor='#89ADFD';
-        // progress.style.color='#89ADFD';
         element.style.position = 'fixed';
         element.style.top = '0';
         element.style.left = '0';
@@ -130,7 +128,6 @@ export class DeterminateProgressBar {
         element.style.borderLeft = '0';
         element.style.borderRight = '0';
         element.style.borderBottom = '0';
-        // element.style.webkitAppearance = 'none';
         element.style.padding = '0';
         element.style.borderRadius = '0';
 
