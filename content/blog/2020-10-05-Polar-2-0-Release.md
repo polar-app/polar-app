@@ -8,49 +8,98 @@ large_image: https://i.imgur.com/4quxANr.png
 
 # Polar 2.0 Released. Dark Mode. EPUB, Improved Web Capture, etc. 
 
-Polar 2.0 was released on October 12, 2020. This release focused on major stability improvements along with the introduction of various new features. With the introduction of 2.0, the plans have also been updated to reflect changes those changes (e.g., users on the free plan will now receive 1 GB of storage instead of 350 MB).
+After many beta releases over the summer, we have finally released 2.0 to everyone. 
 
-# Dark mode
+<img class="img-fluid" src="https://i.imgur.com/sNmn0dI.png">
 
-This was the #1 requested feature in the past. Polar is from now on dark mode by default. You can easily switch back to light mode in the settings.
+<img class="img-fluid" src="https://i.imgur.com/b6XM6Nv.png">
 
-# EPUB support
+<img class="img-fluid" src="https://i.imgur.com/c0ppR0F.png">
 
-Polar now supports EPUBs. At the time of the 2.0 release, EPUBs supports all features as other files excluding area highlights. The document viewer was also rewritten to support EPUBs.
+The web version is already on 2.0, if you’re running the desktop version, it’ll auto-update over the next few days. 2.0 really served two main purposes. Rebuild the platform from the ground up so we can iterate faster, and secondly, introduce multiple long-requested features
 
-# Improved Anki support
+With the 2.0 release, we are also changing our plans. Two key points already here: 
 
-The Anki sync has been revamped from the ground up. This includes no more excess tags, faster syncing as we removed the need to read DocMeta from Firestore, better shortcuts UI, and various other updates.
+1. Every new user will now get 1 GB of cloud storage free (350 MB previously), 
+2. Every existing free user is getting 2 GB instead of 1 GB, and 
+3. Everyone who was already on a paid plan is getting grandfathered into the new plans with the same (or lower) price but full additional benefits.
 
-# Shortcuts
+# New functionality
 
-Polar now supports a vast array of shortcuts. You can find all shortcuts for a specific page by clicking ```/``` or ```shift``` + ```/```
+## Dark mode
+When we surveyed you, 95% preferred dark mode as default. Well, now it is the default. Not only is the app dark mode, but you can also read all your document in dark mode.  Of course, you can also switch back to light mode if you prefer.  
 
-# Web capture
+## EPUB support
+This was another often-requested feature and finally it’s here. We had to rewrite the reader entirely to support EPUB but this also comes with more stability and a solid platform to add more features to the reader in the near future. As of now, area highlights don’t work in EPUB yet. We will add that in one of the upcoming releases
 
-The Chrome extension was also rebuilt from the ground up. The main reason is to support new features like dark mode or reflow and improve its performance. The web capture now uses Mozilla’s Readability, thereby stripping the page down to just the important parts.
+## Improved Anki support
+This is still an ongoing project but we looked at the key issues here. This includes no more excess tags created, the syncing is now faster, along with some aesthetic changes (font size, keyboard shortcuts). Stay tuned for more updates here. To connect, please use AnkiConnect for now, we have disabled PolarConnect and will let you know when it’s live again
 
-In addition, this redesign enables you to keep using cookies, ad block, and other extensions in your browser while capturing a page.
+## Keyboard Shortcuts
+We now have multiple keyboard shortcuts on all screens and are adding new ones regularly. You can see which shortcuts are available on each screen by clicking / or Shift + /. Let us know any shortcuts you’d like to see
 
-Captured pages are stored as EPUBs.
+## Cloud-first
+As mentioned and discussed in multiple previous posts, we are moving to the cloud entirely. If you want to keep using Polar with a local directory, please keep using the latest Polar 1.x version. As previously mentioned, the two main reasons are 
+i) easy syncing across devices as we introduce mobile apps, and 
+ii) simpler backend infrastructure that will allow us to iterate much faster.
 
-If you want to use pages captured in Polar 1.0, you can use our importer to convert captured pages from 1.0 to 2.0.
+## Improved web capture
+We rebuilt the Chrome extension. When you capture a web page, we now use Readability to make it easier to read. The page is also stored as an EPUB now.
 
-# Cloud-first
+## Many small updates
+There are many other small improvements in the tool, such as improved annotation support, so you can manipulate them directly in the repository, and more
 
-From 2.0 onward, Polar will only support cloud storage. If you have been a user in Polar 1.0 with local storage, Polar will detect your local .polar directory and import it into your cloud account
+# New subscription plans
 
-This design will significantly improve stability, improve the offline experience, allow easy syncing across devices, and improve various other features.
+We’re releasing new plans to reflect the changes in 2.0. First and foremost, any plan will increase a significant increase in storage space. For example the free plans are being increased from 350 MB to 1 GB, while the highest end plan is being increased from 12 GB to 500 GB (at no price increase). 
 
-# General stability
+In addition, all existing users are being grandfathered. Specifically:
+Existing Bronze users will receive Plus at no additional cost
+Existing Silver users will receive Plus at the reduced cost (with all new benefits)
+Existing Gold users will receive Pro
 
-Polar 2.0 was largely rewritten from the ground up. As with any early-stage tool, you will experience bugs from time to time. However, that should be significantly reduced vs. Polar 1.0.
+See below a full summary of the new plans
 
-# Updates to plans
 
-We released updated plans to reflect changes in Polar 2.0 vs. Polar 1.0. 
 
-Firstly, the free plan is getting an increase in storage from 350 MB to 1 GB to reflect the change to cloud storage only. In addition, any existing free plan users will get 2 GB of storage.
 
-We will also include discounts for long-term subscriptions, specifically, 1-year subscriptions will come with one free month of premium
+Free
+Plus
+Pro
+Storage
+1 GB (previously: 350 MB)
+50 GB (previously: 2 GB)
+500 GB (previously: 12 GB)
+Number of files
+Unlimited
+Unlimited
+Unlimited
+Webpage captures
+250 (previously: 100)
+Unlimited
+Unlimited
+Devices
+2
+3
+Unlimited
+Related tags
 
+
+Included
+Included
+Price
+$0
+$6.99
+$14.99
+
+We are also launching the one-year subscriptions, which will come with one month off.
+
+
+Finally, to celebrate this launch, here is a coupon code to get 20% off on a one-year subscription: RELEASE20OFF. This coupon will be valid until November 12th.
+
+# Next steps
+We have tested 2.0 quite extensively so you shouldn’t encounter any major bugs. But as with any software, you might ultimately run into a bug. If so, please let us know. The feedback is immensely valuable to keep improving the platform
+
+Stay tuned for further releases over the coming weeks and months, including a visual redesign, native apps, and more
+
+Kevin & Jonathan
