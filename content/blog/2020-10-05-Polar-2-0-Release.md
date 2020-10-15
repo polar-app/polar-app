@@ -30,13 +30,13 @@ With the 2.0 release, we are also changing our plans. Two key points already her
 When we surveyed you, 95% preferred dark mode as default. Well, now it is the default. Not only is the app dark mode, but you can also read all your document in dark mode.  Of course, you can also switch back to light mode if you prefer.  
 
 ## EPUB support
-This was another often-requested feature and finally it’s here. We had to rewrite the reader entirely to support EPUB but this also comes with more stability and a solid platform to add more features to the reader in the near future. As of now, area highlights don’t work in EPUB yet. We will add that in one of the upcoming releases
+This was another often-requested feature and finally it’s here. We had to rewrite the reader entirely to support EPUB but this also comes with more stability and a solid platform to add more features to the reader in the near future. As of now, area highlights don’t work in EPUB yet. We will add that in one of the upcoming releases.
 
 ## Improved Anki support
-This is still an ongoing project but we looked at the key issues here. This includes no more excess tags created, the syncing is now faster, along with some aesthetic changes (font size, keyboard shortcuts). Stay tuned for more updates here. To connect, please use AnkiConnect for now, we have disabled PolarConnect and will let you know when it’s live again
+This is still an ongoing project but we looked at the key issues here. This includes no more excess tags created, the syncing is now faster, along with some aesthetic changes (font size, keyboard shortcuts). Stay tuned for more updates here. To connect, please use AnkiConnect for now, we have disabled PolarConnect and will let you know when it’s live again.
 
 ## Keyboard Shortcuts
-We now have multiple keyboard shortcuts on all screens and are adding new ones regularly. You can see which shortcuts are available on each screen by clicking / or Shift + /. Let us know any shortcuts you’d like to see
+We now have multiple keyboard shortcuts on all screens and are adding new ones regularly. You can see which shortcuts are available on each screen by clicking / or Shift + /. Let us know any shortcuts you’d like to see.
 
 ## Cloud-first
 As mentioned and discussed in multiple previous posts, we are moving to the cloud entirely. If you want to keep using Polar with a local directory, please keep using the latest Polar 1.x version. As previously mentioned, the two main reasons are 
@@ -47,7 +47,7 @@ ii) simpler backend infrastructure that will allow us to iterate much faster.
 We rebuilt the Chrome extension. When you capture a web page, we now use Readability to make it easier to read. The page is also stored as an EPUB now.
 
 ## Many small updates
-There are many other small improvements in the tool, such as improved annotation support, so you can manipulate them directly in the repository, and more
+There are many other small improvements in the tool, such as improved annotation support, so you can manipulate them directly in the repository, and more.
 
 # New subscription plans
 
@@ -77,8 +77,8 @@ We are also launching the one-year subscriptions, which will come with one month
 Finally, to celebrate this launch, here is a coupon code to get 20% off on a one-year subscription: RELEASE20OFF. This coupon will be valid until November 12th.
 
 # Next steps
-We have tested 2.0 quite extensively so you shouldn’t encounter any major bugs. But as with any software, you might ultimately run into a bug. If so, please let us know. The feedback is immensely valuable to keep improving the platform
+We have tested 2.0 quite extensively so you shouldn’t encounter any major bugs. But as with any software, you might ultimately run into a bug. If so, please let us know. The feedback is immensely valuable to keep improving the platform.
 
-Stay tuned for further releases over the coming weeks and months, including a visual redesign, native apps, and more
+Stay tuned for further releases over the coming weeks and months, including a visual redesign, native apps, and more.
 
 Kevin & Jonathan
