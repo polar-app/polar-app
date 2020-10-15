@@ -54,20 +54,19 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
       >
         <Layout>
           <CssBaseline />
-          <SEO
-            title={data.markdownRemark.frontmatter.title}
-            description={post.frontmatter.description || post.excerpt}
-            image={post.frontmatter.large_image}
-            lang="en"
-          />
-          <Container
-            style={{
-              maxWidth: "1000px",
-              marginLeft: `auto`,
-              marginRight: `auto`,
-            }}
-            // disableGutters
-          >
+
+          <SEO title={data.markdownRemark.frontmatter.title}
+               description={post.frontmatter.description || post.excerpt}
+               image={post.frontmatter.large_image}
+               lang="en"/>
+
+          <Container style={{
+                         maxWidth: "1000px",
+                         marginLeft: `auto`,
+                         marginRight: `auto`,
+                         marginTop: '2rem'
+                     }}>
+
             <section dangerouslySetInnerHTML={{ __html: post.html }} />
 
             <h5>Posted on: {date}</h5>
