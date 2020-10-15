@@ -54,9 +54,9 @@ There are many other small improvements in the tool, such as improved annotation
 We’re releasing new plans to reflect the changes in 2.0. First and foremost, any plan will increase a significant increase in storage space. For example the free plans are being increased from 350 MB to 1 GB, while the highest end plan is being increased from 12 GB to 500 GB (at no price increase). 
 
 In addition, all existing users are being grandfathered. Specifically:
-Existing Bronze users will receive Plus at no additional cost
-Existing Silver users will receive Plus at the reduced cost (with all new benefits)
-Existing Gold users will receive Pro
+- Existing Bronze users will receive Plus at no additional cost
+- Existing Silver users will receive Plus at the reduced cost (with all new benefits)
+- Existing Gold users will receive Pro
 
 See below a full summary of the new plans
 
