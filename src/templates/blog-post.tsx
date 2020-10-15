@@ -62,7 +62,7 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
           />
           <Container
             style={{
-              maxWidth: "800px",
+              maxWidth: "1000px",
               marginLeft: `auto`,
               marginRight: `auto`,
             }}

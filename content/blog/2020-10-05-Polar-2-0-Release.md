@@ -6,15 +6,12 @@ description: Polar 2.0 was released on October 12, 2020. This release focused on
 large_image: https://i.imgur.com/4quxANr.png
 ---
 
+<img class="img-fluid" src="https://i.imgur.com/4quxANr.png">
+
 # Polar 2.0 Released. Dark Mode. EPUB, Improved Web Capture, etc. 
 
 After many beta releases over the summer, we have finally released 2.0 to everyone. 
 
-<img class="img-fluid" src="https://i.imgur.com/sNmn0dI.png">
-
-<img class="img-fluid" src="https://i.imgur.com/b6XM6Nv.png">
-
-<img class="img-fluid" src="https://i.imgur.com/c0ppR0F.png">
 
 The web version is already on 2.0, if you’re running the desktop version, it’ll auto-update over the next few days. 2.0 really served two main purposes. Rebuild the platform from the ground up so we can iterate faster, and secondly, introduce multiple long-requested features
 
@@ -27,7 +24,10 @@ With the 2.0 release, we are also changing our plans. Two key points already her
 # New functionality
 
 ## Dark mode
+
 When we surveyed you, 95% preferred dark mode as default. Well, now it is the default. Not only is the app dark mode, but you can also read all your document in dark mode.  Of course, you can also switch back to light mode if you prefer.  
+
+<img class="img-fluid" src="https://i.imgur.com/c0ppR0F.png">
 
 ## EPUB support
 This was another often-requested feature and finally it’s here. We had to rewrite the reader entirely to support EPUB but this also comes with more stability and a solid platform to add more features to the reader in the near future. As of now, area highlights don’t work in EPUB yet. We will add that in one of the upcoming releases.

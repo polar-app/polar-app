@@ -159,15 +159,14 @@ function BlogHeadMobile({ posts }) {
 
           return (
             <Box className={classes.articleBlob} key={title}>
-              <a
-                style={{ textDecoration: "none", color: "#e0e0e0" }}
-                href={node.fields.slug}
-              >
-                <Container
-                  style={{ textOverflow: "wrap", maxWidth: "800px" }}
-                  disableGutters
-                  key={node.fields.slug}
-                >
+
+              <a style={{ textDecoration: "none", color: "#e0e0e0" }}
+                 href={node.fields.slug}>
+
+                <Container style={{ textOverflow: "wrap", maxWidth: "1000px" }}
+                           disableGutters
+                           key={node.fields.slug}>
+
                   <h4 style={{ marginBottom: "0" }}>
                     <Link color="inherit" href={node.fields.slug}>
                       {title}

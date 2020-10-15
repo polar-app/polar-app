@@ -203,7 +203,7 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                           href={node.fields.slug}
                         >
                           <Container
-                            style={{ textOverflow: "wrap", maxWidth: "800px" }}
+                            style={{ textOverflow: "wrap", maxWidth: "1000px" }}
                             disableGutters
                             key={node.fields.slug}
                           >
