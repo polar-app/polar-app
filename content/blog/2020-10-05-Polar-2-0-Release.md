@@ -60,12 +60,15 @@ In addition, all existing users are being grandfathered. Specifically:
 
 See below a full summary of the new plans
 
+|   |Free   |Plus   |Pro   |
+|---|---|---|---|
+|Storage   |1 GB (prev. 350 MB)   |50 GB (prev. 2 GB)   |500 GB (prev. 12 GB)   |
+|Number of files   |Unlimited   |Unlimited   |Unlimited   |
+|Web page captures   |250 (prev. 100   |Unlimited   |Unlimited   |
+|Number of devices   |2   |3   |Unlimited   |
+|Related tags   |Not inluded   |Included   |Included   |
+|Price   |$0.00   |$6.99   |$14.99   |
 
-
-
-Free
-Plus
-Pro
 Storage
 1 GB (previously: 350 MB)
 50 GB (previously: 2 GB)
