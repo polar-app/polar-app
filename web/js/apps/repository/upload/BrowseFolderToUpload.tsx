@@ -33,7 +33,7 @@ export const BrowseFolderToUpload = deepMemo((props: IProps) => {
 
         props.onClose();
 
-    }, [addFileImporter]);
+    }, [addFileImporter, props]);
 
     const inputProps = {
         // this is a hack to add the directory props.

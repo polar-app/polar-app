@@ -84,8 +84,7 @@ export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) =>
             props.onCancel();
         }
 
-    }, []);
-
+    }, [props]);
 
     function setProgressCallback(updateProgress: TaskbarProgressUpdate) {
 

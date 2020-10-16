@@ -13,6 +13,7 @@ export function useComponentWillUnmount(delegate: () => void) {
     // this isn't REALLY on unmount though.  There can be no remaining reference
     // to the component.
 
-    useEffect(() => delegate, []);
+    useEffect(() => delegate, [delegate]);
+
 }
 

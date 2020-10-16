@@ -45,21 +45,17 @@ function useInputCompleteWindowListener(opts: InputCompleteListenerOpts) {
     // https://reactjs.org/docs/events.html
 
     const stopPropagationHandler = React.useCallback((event: KeyboardEvent) => {
-        console.log("FIXME2: blocking key binding");
         event.preventDefault();
         event.stopPropagation();
     }, []);
 
     useComponentDidMount(() => {
-        // FIXME these aren't being remove.d..
-        console.log("FIXME: adding event listeners");
         document.addEventListener('keydown', onKeyDown, {capture: true});
         document.addEventListener('keyup', stopPropagationHandler, {capture: true});
         document.addEventListener('keypress', stopPropagationHandler, {capture: true});
     });
 
     useComponentWillUnmount(() => {
-        console.log("FIXME: removing event listeners");
         document.removeEventListener('keydown', onKeyDown, {capture: true});
         document.removeEventListener('keypress', stopPropagationHandler, {capture: true});
         document.removeEventListener('keyup', stopPropagationHandler, {capture: true});

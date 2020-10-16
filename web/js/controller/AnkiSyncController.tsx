@@ -27,9 +27,11 @@ export const AnkiSyncController = React.memo(() => {
 
     const repoDocMetaManager = useRepoDocMetaManager();
 
-    const createDocMetaSuppliers = React.useCallback(():  ReadonlyArray<DocMetaSupplier> => {
+    const createDocMetaSuppliers = React.useCallback((): ReadonlyArray<DocMetaSupplier> => {
+
         return repoDocMetaManager.repoDocInfoIndex.values().map(current => async () => current.docMeta);
-    }, []);
+
+    }, [repoDocMetaManager]);
 
     const onMessageReceived = React.useCallback((event: MessageEvent) => {
 
@@ -42,12 +44,10 @@ export const AnkiSyncController = React.memo(() => {
 
         }
 
-    }, []);
+    }, [log]);
 
 
-    const messageListener = React.useCallback((event: MessageEvent) => {
-        onMessageReceived(event)
-    }, [])
+    const messageListener = React.useCallback((event: MessageEvent) => onMessageReceived(event), [onMessageReceived])
 
     useComponentDidMount(() => {
         console.log("START Listening for Anki sync messages");
@@ -190,7 +190,7 @@ export const AnkiSyncController = React.memo(() => {
         doAsync()
             .catch(handleError);
 
-    }, [log, persistenceLayerProvider, dialogManager]);
+    }, [log, persistenceLayerProvider, dialogManager, createDocMetaSuppliers]);
 
     return null;
 

@@ -30,7 +30,7 @@ export const BrowseFilesToUpload = deepMemo((props: IProps) => {
         const uploads = Uploads.fromFiles(event.target.files);
         addFileImporter(uploads);
         props.onClose();
-    }, [addFileImporter]);
+    }, [addFileImporter, props]);
 
     return (
         <>

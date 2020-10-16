@@ -73,7 +73,7 @@ export const MUITreeItemLabel = React.memo((props: IProps) => {
     const onCheckbox = useCallback((event: React.MouseEvent) => {
         props.selectRow(props.nodeId, event, 'checkbox');
         event.stopPropagation();
-    }, []);
+    }, [props]);
 
     // TODO: double click should expand the node...
 

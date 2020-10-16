@@ -50,7 +50,7 @@ export const MUIMenuItem = React.forwardRef((props: IProps, ref) => {
             }
         }
 
-    }, []);
+    }, [props]);
 
     return (
         <MenuItem id={props.id}

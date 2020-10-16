@@ -22,7 +22,7 @@ export const MUILinkLoaderButton = deepMemo((props: IProps) => {
 
     const handleClick = React.useCallback(() => {
         linkLoader(props.href, {newWindow: true, focus: true});
-    }, [linkLoader])
+    }, [linkLoader, props])
 
     return (
         <Button variant={props.variant}
