@@ -50,6 +50,6 @@ export function useBrowserDocLoader() {
             docURLLoader(viewerURL);
         }
 
-    }, [docMigration, docURLLoader]);
+    }, [docMigration, docURLLoader, persistenceLayerProvider]);
 
 }

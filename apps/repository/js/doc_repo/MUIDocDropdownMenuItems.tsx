@@ -136,7 +136,7 @@ export function useJSONDownloadHandler() {
 
         doAsync().catch(err => log.error(err));
 
-    }, [selectedProvider, errorDialog, persistenceLayerProvider]);
+    }, [selectedProvider, errorDialog, persistenceLayerProvider, log]);
 
 }
 

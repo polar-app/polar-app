@@ -113,8 +113,10 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
 export const MUITagListItem = React.memo((props: IProps) => {
 
     const onDrop = useCallback((event: React.DragEvent) => {
-        props.onDrop(event, props.nodeId)
-    }, [])
+
+        props.onDrop(event, props.nodeId);
+
+    }, [props])
 
     return (
         <DragTarget2 onDrop={onDrop}>

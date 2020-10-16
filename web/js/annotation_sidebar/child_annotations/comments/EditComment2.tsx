@@ -31,7 +31,7 @@ export const EditComment2 = deepMemo((props: IProps) => {
     const htmlRef = useRef<string>(props.existingComment?.content.HTML || "");
     const onComplete = React.useCallback(() => {
         props.onComment(htmlRef.current);
-    }, []);
+    }, [props]);
 
     const id = 'rich-text-editor-' + props.id;
 

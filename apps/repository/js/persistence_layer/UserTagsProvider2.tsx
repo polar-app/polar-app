@@ -35,7 +35,7 @@ export const UserTagsProvider = React.memo((props: IProps) => {
     const tagsProvider = React.useMemo(() => () => userTagsRef.current.value || [], []);
     const context: ITagsContext = React.useMemo(() => {
         return {tagsProvider}
-    }, []);
+    }, [tagsProvider]);
 
     return (
         <TagsContext.Provider value={context}>

@@ -35,7 +35,7 @@ export const TwoMigrationForAppRuntime = React.memo((props: IProps) => {
         doAsync()
             .catch(err => log.error(err));
 
-    }, [log]);
+    }, [log, props]);
 
     if (AppRuntime.get() !== props.runtime) {
         // we NEVER run this on anything else other than this runtime because

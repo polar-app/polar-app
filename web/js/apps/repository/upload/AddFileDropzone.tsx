@@ -96,7 +96,7 @@ function useDropHandler() {
         doAsync()
             .catch(err => log.error(err));
 
-    }, [addFileImporter, dialogManager]);
+    }, [addFileImporter, dialogManager, log]);
 
 }
 
@@ -150,8 +150,10 @@ export function useDragAndDropImportListener() {
 
 
     const handleDrop = React.useCallback((event: DragEvent) => {
+
         dropHandler(event);
-    }, []);
+
+    }, [dropHandler]);
 
     useComponentDidMount(() => {
         window.addEventListener('dragover', handleDragOver);
@@ -190,7 +192,7 @@ export function useDragAndDropBackdropListener() {
 
         ++depth.current;
 
-    }, []);
+    }, [setActive]);
 
     const onDragLeaveOrDrop = React.useCallback((event: DragEvent) => {
 
@@ -204,7 +206,7 @@ export function useDragAndDropBackdropListener() {
             setActive(false);
         }
 
-    }, []);
+    }, [setActive]);
 
     useComponentDidMount(() => {
         window.addEventListener('dragenter', onDragEnter);
