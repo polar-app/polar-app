@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import {useEffect} from "react";
 
-export function useComponentDidMount<T>(delegate: () => void) {
+export function useComponentDidMount(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
 
     // will only execute the first time.
