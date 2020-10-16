@@ -1,10 +1,10 @@
+import * as React from "react";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "../doc_repo/Sorting";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {AnnotationRepoFilters2} from "./AnnotationRepoFilters2";
 import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
-import React from "react";
 import {
     IPersistenceContext,
     usePersistenceContext,
@@ -52,7 +52,9 @@ import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFile
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
-import {useAnnotationMutationCallbacks} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
+import {
+    useAnnotationMutationCallbacksFactory
+} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 
 interface IAnnotationRepoStore {
 
@@ -255,223 +257,230 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     const docLoader = useDocLoader();
 
-    const annotationMutations = useAnnotationMutationCallbacks(updateStore, refresher);
+    const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
 
-    function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
+    return React.useMemo(() => {
 
-        const {persistenceLayerProvider} = persistence;
-
-        for (const docMeta of docMetas) {
-            const fingerprint = docMeta.docInfo.fingerprint;
-            const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
-            repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
-        }
-
-        return docMetas;
-
-    }
-
-    function refresher() {
-        mutator.refresh();
-    }
-
-    function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IAnnotationRef> {
-
-        if (opts && opts.selected) {
-            return opts.selected;
-        }
-
-        const store = storeProvider();
-
-        const {selected, viewPage} = store;
-
-        return viewPage.filter(current => selected.includes(current.id));
-
-    }
-
-    function doOpen(docInfo: IDocInfo): void {
-
-        const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
-
-        const docLoadRequest: LoadDocRequest = {
-            fingerprint: docInfo.fingerprint,
-            title: docInfo.title || 'Untitled',
-            backendFileRef,
-            newWindow: true,
-            url: docInfo.url
-        }
-
-        docLoader(docLoadRequest);
-
-    }
-
-    function selectRow(selectedID: IDStr,
-                       event: IMouseEvent,
-                       type: SelectRowType) {
-
-
-        const store = storeProvider();
-
-        const selected = SelectionEvents2.selectRow(selectedID,
-                                                    store.selected,
-                                                    store.viewPage,
-                                                    event,
-                                                    type);
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            selected
-        });
-
-    }
-
-    /**
-     * Called when the user is filtering the UI based on a tag and is narrowing
-     * down what's displayed by one or more tag.
-     */
-    function onTagSelected(tags: ReadonlyArray<Tag>) {
-
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            page: 0,
-            selected: [],
-            filter: {
-                ...store.filter,
-                tags
-            }
-        });
-
-    }
-
-    function setPage(page: number) {
-
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            page,
-            selected: []
-        });
-
-    }
-
-    function setRowsPerPage(rowsPerPage: number) {
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            rowsPerPage,
-            page: 0,
-            selected: []
-        });
-
-    }
-
-    function onTagged() {
-        const selected = selectedAnnotations();
-        annotationMutations.onTagged({selected});
-    }
-
-    function doUpdated(annotation: IDocAnnotation) {
-
-        const {docMeta, original} = annotation;
-
-
-        async function doAsync() {
-
-            AnnotationMutations.update(annotation, original);
-
-            await repoDocMetaLoader.update(docMeta, 'updated');
+        function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
 
             const {persistenceLayerProvider} = persistence;
-            const persistenceLayer = persistenceLayerProvider();
-            await persistenceLayer.writeDocMeta(docMeta);
 
-        }
-
-        doAsync()
-            .catch(err => log.error(err));
-
-    }
-
-    function doExport(format: ExportFormat) {
-
-        const store = storeProvider();;
-
-        async function doAsync() {
-
-            const {persistenceLayerProvider} = persistence;
-            await Exporters.doExportForAnnotations(persistenceLayerProvider,
-                                                   store.view,
-                                                   format);
-        }
-
-        doAsync()
-            .catch(err => log.error("Unable to download: ", err));
-
-    }
-
-    function onExport(format: ExportFormat) {
-        // TODO: we might want to confirm if they are downloading a LARGE
-        // number of annotations
-        doExport(format);
-    }
-
-    function setFilter(filter: Partial<AnnotationRepoFilters2.Filter>) {
-
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            filter: {
-                ...store.filter,
-                ... filter
+            for (const docMeta of docMetas) {
+                const fingerprint = docMeta.docInfo.fingerprint;
+                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+                repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
             }
-        });
 
-    }
+            return docMetas;
 
-    function onDeleted() {
-        const selected = selectedAnnotations();
-        annotationMutations.onDeleted({selected});
-    }
+        }
 
-    function onDragStart(event: React.DragEvent) {
-        // noop
-    }
+        function refresher() {
+            mutator.refresh();
+        }
 
-    function onDragEnd() {
-        // noop
-    }
+        const annotationMutations = annotationMutationCallbacksFactory(updateStore, refresher);
 
-    function doDropped(annotations: ReadonlyArray<IAnnotationRef>, tag: Tag) {
-        annotationMutations.doTagged(annotations, [tag], 'add');
-    }
+        function selectedAnnotations<T extends IAnnotationMutationSelected>(opts?: T): ReadonlyArray<IAnnotationRef> {
 
-    function onDropped(tag: Tag) {
-        const selected = selectedAnnotations();
-        doDropped(selected, tag);
-    }
+            if (opts && opts.selected) {
+                return opts.selected;
+            }
 
-    return {
-        doOpen,
-        selectRow,
-        onTagSelected,
-        setPage,
-        setRowsPerPage,
-        onTagged,
-        onExport,
-        setFilter,
-        doUpdated,
-        onDeleted,
-        onDragStart,
-        onDragEnd,
-        doDropped,
-        onDropped,
-        annotationMutations
-    };
+            const store = storeProvider();
+
+            const {selected, viewPage} = store;
+
+            return viewPage.filter(current => selected.includes(current.id));
+
+        }
+
+        function doOpen(docInfo: IDocInfo): void {
+
+            const backendFileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(docInfo))!;
+
+            const docLoadRequest: LoadDocRequest = {
+                fingerprint: docInfo.fingerprint,
+                title: docInfo.title || 'Untitled',
+                backendFileRef,
+                newWindow: true,
+                url: docInfo.url
+            }
+
+            docLoader(docLoadRequest);
+
+        }
+
+        function selectRow(selectedID: IDStr,
+                           event: IMouseEvent,
+                           type: SelectRowType) {
+
+
+            const store = storeProvider();
+
+            const selected = SelectionEvents2.selectRow(selectedID,
+                                                        store.selected,
+                                                        store.viewPage,
+                                                        event,
+                                                        type);
+
+            mutator.doReduceAndUpdateState({
+                ...store,
+                selected
+            });
+
+        }
+
+        /**
+         * Called when the user is filtering the UI based on a tag and is narrowing
+         * down what's displayed by one or more tag.
+         */
+        function onTagSelected(tags: ReadonlyArray<Tag>) {
+
+            const store = storeProvider();
+
+            mutator.doReduceAndUpdateState({
+                ...store,
+                page: 0,
+                selected: [],
+                filter: {
+                    ...store.filter,
+                    tags
+                }
+            });
+
+        }
+
+        function setPage(page: number) {
+
+            const store = storeProvider();
+
+            mutator.doReduceAndUpdateState({
+                ...store,
+                page,
+                selected: []
+            });
+
+        }
+
+        function setRowsPerPage(rowsPerPage: number) {
+            const store = storeProvider();
+
+            mutator.doReduceAndUpdateState({
+                ...store,
+                rowsPerPage,
+                page: 0,
+                selected: []
+            });
+
+        }
+
+        function onTagged() {
+            const selected = selectedAnnotations();
+            annotationMutations.onTagged({selected});
+        }
+
+        function doUpdated(annotation: IDocAnnotation) {
+
+            const {docMeta, original} = annotation;
+
+
+            async function doAsync() {
+
+                AnnotationMutations.update(annotation, original);
+
+                await repoDocMetaLoader.update(docMeta, 'updated');
+
+                const {persistenceLayerProvider} = persistence;
+                const persistenceLayer = persistenceLayerProvider();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+            }
+
+            doAsync()
+                .catch(err => log.error(err));
+
+        }
+
+        function doExport(format: ExportFormat) {
+
+            const store = storeProvider();;
+
+            async function doAsync() {
+
+                const {persistenceLayerProvider} = persistence;
+                await Exporters.doExportForAnnotations(persistenceLayerProvider,
+                                                       store.view,
+                                                       format);
+            }
+
+            doAsync()
+                .catch(err => log.error("Unable to download: ", err));
+
+        }
+
+        function onExport(format: ExportFormat) {
+            // TODO: we might want to confirm if they are downloading a LARGE
+            // number of annotations
+            doExport(format);
+        }
+
+        function setFilter(filter: Partial<AnnotationRepoFilters2.Filter>) {
+
+            const store = storeProvider();
+
+            mutator.doReduceAndUpdateState({
+                ...store,
+                filter: {
+                    ...store.filter,
+                    ... filter
+                }
+            });
+
+        }
+
+        function onDeleted() {
+            const selected = selectedAnnotations();
+            annotationMutations.onDeleted({selected});
+        }
+
+        function onDragStart(event: React.DragEvent) {
+            // noop
+        }
+
+        function onDragEnd() {
+            // noop
+        }
+
+        function doDropped(annotations: ReadonlyArray<IAnnotationRef>, tag: Tag) {
+            annotationMutations.doTagged(annotations, [tag], 'add');
+        }
+
+        function onDropped(tag: Tag) {
+            const selected = selectedAnnotations();
+            doDropped(selected, tag);
+        }
+
+        return {
+            doOpen,
+            selectRow,
+            onTagSelected,
+            setPage,
+            setRowsPerPage,
+            onTagged,
+            onExport,
+            setFilter,
+            doUpdated,
+            onDeleted,
+            onDragStart,
+            onDragEnd,
+            doDropped,
+            onDropped,
+            annotationMutations
+        };
+
+    }, [docLoader, annotationMutationCallbacksFactory, log, mutator,
+        persistence, repoDocMetaLoader, repoDocMetaManager, storeProvider]);
 
 }
 
@@ -521,7 +530,7 @@ const AnnotationRepoStoreInner = React.memo((props: IProps) => {
 
     const doRefresh = React.useCallback(Debouncers.create(() => {
         annotationRepoMutator.refresh();
-    }), []);
+    }), [annotationRepoMutator]);
 
     useComponentDidMount(() => {
         annotationRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocAnnotationIndex.values());

@@ -34,6 +34,8 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "react-hooks/rules-of-hooks": "warn",
+        "react-hooks/exhaustive-deps": "error",
         "@typescript-eslint/adjacent-overload-signatures": "error",
         // "@typescript-eslint/array-type": [
         //     "error",
