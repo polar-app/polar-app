@@ -36,7 +36,6 @@ import {
 } from "../../../../web/js/metadata/exporter/Exporters";
 import {RepoDocMetaLoader} from "../RepoDocMetaLoader";
 import {
-    AnnotationMutationCallbacks,
     AnnotationMutationsContextProvider,
     IAnnotationMutationCallbacks,
     IAnnotationMutationSelected
@@ -46,7 +45,6 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
-import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IAnnotationRef} from "polar-shared/src/metadata/AnnotationRefs";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
@@ -54,6 +52,7 @@ import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFile
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
+import {useAnnotationMutationCallbacks} from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 
 interface IAnnotationRepoStore {
 
@@ -256,7 +255,7 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
     const docLoader = useDocLoader();
 
-    const annotationMutations = AnnotationMutationCallbacks.create(updateStore, refresher);
+    const annotationMutations = useAnnotationMutationCallbacks(updateStore, refresher);
 
     function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
 
