@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
 import {Logger} from "polar-shared/src/logger/Logger";

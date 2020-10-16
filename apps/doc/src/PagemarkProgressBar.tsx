@@ -10,11 +10,13 @@ import {
 } from "../../repository/js/doc_repo/MUIContextMenu";
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
 import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
+import {deepMemo} from "../../../web/js/react/ReactUtils";
 
-export const ProgressBar = React.memo(() => {
+export const ProgressBar = deepMemo(() => {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
-    const [resumeProgressActive, resumeProgressHandler] = useReadingProgressResume();
+    const [, resumeProgressHandler] = useReadingProgressResume();
+    const contextMenuHandlers = useContextMenu();
 
     if (! docMeta) {
         return null;
@@ -26,8 +28,6 @@ export const ProgressBar = React.memo(() => {
         resumeProgressHandler();
     }
 
-    const contextMenuHandlers = useContextMenu();
-
     return (
         <progress {...contextMenuHandlers}
                   value={perc}
@@ -36,7 +36,7 @@ export const ProgressBar = React.memo(() => {
                   style={{flexGrow: 1}}/>
     );
 
-}, isEqual);
+});
 
 export const PagemarkProgressBar = React.memo(() => {
 
