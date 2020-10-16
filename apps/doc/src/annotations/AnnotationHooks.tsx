@@ -204,7 +204,7 @@ export function useAnnotationContainers(): ReadonlyArray<AnnotationContainer> {
 
     }
 
-    const doUpdate = React.useMemo(() => Debouncers.create(doUpdateDelegate), []);
+    const doUpdate = React.useMemo(() => Debouncers.create(doUpdateDelegate), [doUpdateDelegate]);
 
     doUpdateDelegate();
 

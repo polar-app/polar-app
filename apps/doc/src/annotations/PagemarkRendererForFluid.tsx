@@ -173,7 +173,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             console.warn("Unable to render pagemark: ", e);
             return undefined;
         }
-    }, []);
+    }, [browserContext]);
 
     const computeTopFromRange = React.useCallback((pagemark: IPagemark): number | undefined => {
 
@@ -188,7 +188,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const scrollTop = browserContext.document.documentElement.scrollTop;
         return bcr.top + scrollTop;
 
-    }, []);
+    }, [browserContext]);
 
     const computeHeightFromRange = React.useCallback((pagemark: IPagemark, top: number): number | undefined => {
 
@@ -202,7 +202,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const scrollTop = browserContext.document.documentElement.scrollTop;
         return bcr.bottom + scrollTop - top;
 
-    }, []);
+    }, [browserContext]);
 
     const computePositionUsingPagemark = React.useCallback((pagemark: IPagemark): ILTRect => {
 
@@ -219,7 +219,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         return {top, left, width, height};
 
-    }, []);
+    }, [browserContext]);
 
     const handleResized = React.useCallback((rect: ILTRect, direction: Direction) => {
 

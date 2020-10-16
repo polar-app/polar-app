@@ -90,7 +90,7 @@ export const DocFindBar = React.memo(() => {
 
     const cancelFind = React.useCallback(() => {
         reset();
-    }, []);
+    }, [reset]);
 
     const handleFind = React.useCallback((query: string) => {
 

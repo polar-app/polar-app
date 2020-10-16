@@ -33,32 +33,6 @@ export const AnkiSyncController = React.memo(() => {
 
     }, [repoDocMetaManager]);
 
-    const onMessageReceived = React.useCallback((event: MessageEvent) => {
-
-        switch (event.data.type) {
-
-            case "start-anki-sync":
-                log.info("AnkiSyncController: started");
-                onStartSync();
-                break;
-
-        }
-
-    }, [log]);
-
-
-    const messageListener = React.useCallback((event: MessageEvent) => onMessageReceived(event), [onMessageReceived])
-
-    useComponentDidMount(() => {
-        console.log("START Listening for Anki sync messages");
-        window.addEventListener("message", messageListener, false);
-    })
-
-    useComponentWillUnmount(() => {
-        console.log("STOP listening to Anki sync messages");
-        window.removeEventListener("message", messageListener, false);
-    })
-
     const onStartSync = React.useCallback(() => {
 
         async function doAsync(): Promise<void> {
@@ -93,25 +67,25 @@ export const AnkiSyncController = React.memo(() => {
 
                 const ankiSyncEngine = new AnkiSyncEngine();
 
-                async function createDocMetaSuppliersFromPersistenceLayer(): Promise<DocMetaSupplierCollection> {
-
-                    // this is the OLD strategy for receiving DocMeta suppliers and is super slow.
-
-                    const persistenceLayer = persistenceLayerProvider();
-
-                    const docMetaFiles = await persistenceLayer.getDocMetaRefs();
-
-                    // TODO this is really slow - migrate it to using the already
-                    // in-memory sync'd copy of flashcards since I can useDocRepoStore
-                    // here
-                    return docMetaFiles.map(docMetaFile => {
-                        return async () => {
-                            log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
-                            return (await persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
-                        };
-                    });
-
-                }
+                // async function createDocMetaSuppliersFromPersistenceLayer(): Promise<DocMetaSupplierCollection> {
+                //
+                //     // this is the OLD strategy for receiving DocMeta suppliers and is super slow.
+                //
+                //     const persistenceLayer = persistenceLayerProvider();
+                //
+                //     const docMetaFiles = await persistenceLayer.getDocMetaRefs();
+                //
+                //     // TODO this is really slow - migrate it to using the already
+                //     // in-memory sync'd copy of flashcards since I can useDocRepoStore
+                //     // here
+                //     return docMetaFiles.map(docMetaFile => {
+                //         return async () => {
+                //             log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
+                //             return (await persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
+                //         };
+                //     });
+                //
+                // }
 
                 // const docMetaSuppliers = await createDocMetaSuppliersFromPersistenceLayer();
                 const docMetaSuppliers = createDocMetaSuppliers();
@@ -191,6 +165,31 @@ export const AnkiSyncController = React.memo(() => {
             .catch(handleError);
 
     }, [log, persistenceLayerProvider, dialogManager, createDocMetaSuppliers]);
+
+    const onMessageReceived = React.useCallback((event: MessageEvent) => {
+
+        switch (event.data.type) {
+
+            case "start-anki-sync":
+                log.info("AnkiSyncController: started");
+                onStartSync();
+                break;
+
+        }
+
+    }, [log, onStartSync]);
+
+    const messageListener = React.useCallback((event: MessageEvent) => onMessageReceived(event), [onMessageReceived])
+
+    useComponentDidMount(() => {
+        console.log("START Listening for Anki sync messages");
+        window.addEventListener("message", messageListener, false);
+    })
+
+    useComponentWillUnmount(() => {
+        console.log("STOP listening to Anki sync messages");
+        window.removeEventListener("message", messageListener, false);
+    })
 
     return null;
 
