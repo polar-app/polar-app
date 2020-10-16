@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Devices} from "polar-shared/src/util/Devices";
 import Button from "@material-ui/core/Button";

@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";

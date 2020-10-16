@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {Feedback, Rating} from '../../../../../web/js/ui/feedback/Feedback';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';

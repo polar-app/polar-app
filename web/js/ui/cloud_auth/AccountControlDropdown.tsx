@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {UserInfo} from '../../apps/repository/auth_handler/AuthHandler';
 import {AccountControl} from './AccountControl';

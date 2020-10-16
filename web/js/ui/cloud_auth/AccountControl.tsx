@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {AccountOverview} from "../../../../apps/repository/js/account_overview/AccountOverview";
 import {Analytics} from "../../analytics/Analytics";

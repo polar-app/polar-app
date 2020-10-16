@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
 import {NullCollapse} from '../../../../web/js/ui/null_collapse/NullCollapse';
 import {Billing} from "polar-accounts/src/Billing";
