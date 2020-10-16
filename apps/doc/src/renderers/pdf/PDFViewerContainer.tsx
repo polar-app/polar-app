@@ -22,7 +22,7 @@ export const PDFViewerContainer = () => {
 
         contextMenu.onContextMenu(event);
 
-    }, []);
+    }, [contextMenu]);
 
     return (
         <>

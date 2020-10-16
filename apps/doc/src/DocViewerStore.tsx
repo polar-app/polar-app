@@ -317,8 +317,6 @@ function mutatorFactory(storeProvider: Provider<IDocViewerStore>,
 
 }
 
-type IDocMetaProvider = () => IDocMeta | undefined;
-
 function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
                           setStore: (store: IDocViewerStore) => void,
                           mutator: Mutator): IDocViewerCallbacks {

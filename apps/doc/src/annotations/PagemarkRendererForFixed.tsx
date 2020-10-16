@@ -126,7 +126,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
 
         return undefined;
 
-    }, []);
+    }, [onPagemark, pageNum, pagemark]);
 
     return (
         <ResizeBox

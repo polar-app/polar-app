@@ -14,8 +14,10 @@ export const EPUBIFrameWindowEventListener = () => {
     const unsubscriber = React.useRef<Callback | undefined>(undefined);
 
     const handleContextMenu = React.useCallback((event: MouseEvent) => {
+
         onContextMenu(MouseEvents.fromNativeEvent(event))
-    }, []);
+
+    }, [onContextMenu]);
 
     React.useEffect(() => {
 

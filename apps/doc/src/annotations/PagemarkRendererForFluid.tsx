@@ -151,7 +151,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         return null;
     }
 
-    function computeBoundingClientRectFromCFI(cfi: string | undefined): DOMRect | undefined {
+    const computeBoundingClientRectFromCFI = React.useCallback((cfi: string | undefined): DOMRect | undefined => {
 
         if (cfi === undefined) {
             return undefined;
@@ -173,9 +173,9 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
             console.warn("Unable to render pagemark: ", e);
             return undefined;
         }
-    }
+    }, []);
 
-    function computeTopFromRange(pagemark: IPagemark): number | undefined {
+    const computeTopFromRange = React.useCallback((pagemark: IPagemark): number | undefined => {
 
         const cfi = pagemark.range?.start?.value
 
@@ -188,9 +188,9 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const scrollTop = browserContext.document.documentElement.scrollTop;
         return bcr.top + scrollTop;
 
-    }
+    }, []);
 
-    function computeHeightFromRange(pagemark: IPagemark, top: number): number | undefined {
+    const computeHeightFromRange = React.useCallback((pagemark: IPagemark, top: number): number | undefined => {
 
         const cfi = pagemark.range?.end?.value
         const bcr = computeBoundingClientRectFromCFI(cfi);
@@ -202,9 +202,9 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
         const scrollTop = browserContext.document.documentElement.scrollTop;
         return bcr.bottom + scrollTop - top;
 
-    }
+    }, []);
 
-    function computePositionUsingPagemark(pagemark: IPagemark): ILTRect {
+    const computePositionUsingPagemark = React.useCallback((pagemark: IPagemark): ILTRect => {
 
         const doc = browserContext.document;
         const body = doc.body;
@@ -219,7 +219,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         return {top, left, width, height};
 
-    }
+    }, []);
 
     const handleResized = React.useCallback((rect: ILTRect, direction: Direction) => {
 
@@ -248,7 +248,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         return undefined;
 
-    }, []);
+    }, [browserContext, computePositionUsingPagemark, onPagemark, pageNum, pagemark]);
 
     return (
         <ResizeBox

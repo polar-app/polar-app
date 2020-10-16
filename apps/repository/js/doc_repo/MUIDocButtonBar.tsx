@@ -29,7 +29,7 @@ function useSelectRowCallback(id: IDStr,
         callbacks.selectRow(id, event, 'click');
         delegate();
 
-    }, [id, delegate]);
+    }, [callbacks, id, delegate]);
 
 }
 

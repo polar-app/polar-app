@@ -228,7 +228,7 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
 
     const handleClose = React.useCallback(() => {
         props.handleClose();
-    }, [])
+    }, [props])
 
     function handleContextMenu(event: React.MouseEvent) {
         // needed so that you can't bring up a native context menu on a context

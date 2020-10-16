@@ -28,22 +28,26 @@ const LoadingBar = () => {
 };
 
 const StartLoading = () => {
+
     const loader = useComponentProgressLoader();
 
     React.useEffect(() => {
         loader.setLoading(true);
-    }, [])
+    }, [loader])
 
     return null;
 
 }
 
 const EndLoading = () => {
+
     const loader = useComponentProgressLoader();
 
     React.useEffect(() => {
+
         loader.setLoading(false);
-    }, [])
+
+    }, [loader])
 
     return null;
 }
@@ -56,11 +60,9 @@ export const ComponentProgressLoader = React.memo((props: IProps) => {
 
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    const context = React.useMemo<IComponentProgressLoader>(() => {
-        return {
-            setLoading
-        };
-    }, []);
+    const context = React.useMemo<IComponentProgressLoader>(() => ({
+        setLoading
+    }), [setLoading  ]);
 
     return (
         <ComponentProgressLoaderContext.Provider value={context}>

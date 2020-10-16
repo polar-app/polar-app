@@ -18,15 +18,15 @@ export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps
     const {viewIndex, annotation, rowSelected} = props;
 
     const callbacks = useAnnotationRepoCallbacks();
-    const {onDragStart, onDragEnd, setPage, setRowsPerPage} = callbacks;
+    const {onDragStart, onDragEnd} = callbacks;
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
         callbacks.selectRow(annotation.id, event, 'click');
-    }, [callbacks]);
+    }, [callbacks, annotation]);
 
     const onContextMenu = React.useCallback((event: IMouseEvent) => {
         callbacks.selectRow(annotation.id, event, 'context');
-    }, [callbacks]);
+    }, [callbacks, annotation]);
 
     const contextMenu = useContextMenu({onContextMenu});
 
