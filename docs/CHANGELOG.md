@@ -6,6 +6,7 @@
 - Fixed bug with app not exiting on last window.
 - Remove trial text since we can't currently offer trials
 - WAY better error message when we can't connect to Anki.
+- Fixed bug where determinate progress bar on MacOS had rounded corners (regression)
 
 # ....
 

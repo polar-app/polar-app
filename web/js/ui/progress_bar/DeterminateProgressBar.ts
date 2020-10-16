@@ -130,6 +130,9 @@ export class DeterminateProgressBar {
         element.style.borderBottom = '0';
         element.style.padding = '0';
         element.style.borderRadius = '0';
+        // this is deprecated but on MacOS we don't want rounded and padded progress bars
+        // or else it looks weird.
+        element.style.webkitAppearance = 'none';
 
         document.body.appendChild(element);
 
