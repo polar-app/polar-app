@@ -199,7 +199,7 @@ export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): ICont
 
         contextMenuCallbacks.onContextMenu(event);
 
-    }, []);
+    }, [contextMenuCallbacks, opts]);
 
     return {onContextMenu};
 

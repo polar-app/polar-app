@@ -61,7 +61,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
 
         commentCallback(mutation);
 
-    }, []);
+    }, [annotationInputContext, commentCallback, comment]);
 
     return (
         <div className="p-1">

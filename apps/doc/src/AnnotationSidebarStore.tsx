@@ -155,7 +155,7 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
             setDocMeta
         });
 
-    }, [persistenceLayerContext])
+    }, [persistenceLayerContext, mutator])
 
 }
 

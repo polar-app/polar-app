@@ -32,13 +32,11 @@ export const FullScreenButton = React.memo(() => {
 
     const toggleFullScreen = React.useCallback(() => {
         if (document.fullscreenElement) {
-            console.log("FIXME: exit");
             exitFullScreen();
         } else {
-            console.log("FIXME: request");
             requestFullScreen();
         }
-    }, []);
+    }, [exitFullScreen, requestFullScreen]);
 
     return (
         <IconButton onClick={toggleFullScreen}>

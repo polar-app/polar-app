@@ -42,7 +42,7 @@ export const CreateFlashcard2 = deepMemo((props: IProps) => {
 
         flashcardCallback(mutation);
 
-    }, []);
+    }, [annotationInputContext, flashcardCallback, props]);
 
     if (annotationInputContext.active !== 'flashcard') {
         return null;

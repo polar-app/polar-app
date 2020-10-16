@@ -35,7 +35,7 @@ export const CreateComment2 = deepMemo((props: IProps) => {
 
         commentCallback(mutation);
 
-    }, []);
+    }, [annotationInputContext, commentCallback, props]);
 
     const cancelButton = <CancelButton onClick={() => annotationInputContext.setActive('none')}/>;
 
