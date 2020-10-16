@@ -19,7 +19,7 @@ export namespace DataSubscribers {
 
     export type DataSubscriberTuple<D> = [DataProvider, React.Context<D>];
 
-    export function create<D>(snapshotSubscriber: SnapshotSubscriber<D>) {
+    export function useDataSubscriber<D>(snapshotSubscriber: SnapshotSubscriber<D>) {
 
         const context = React.createContext<D | undefined>(undefined);
 

@@ -27,10 +27,10 @@ type InternalUseContext<T> = <T>(context: Context<T>, observedBits?: number|bool
 
 export function useContextMemo<T>(context: Context<T>) {
 
-    if (ENABLED) {
-        const internalUseContext = useContext as InternalUseContext<T>;
-        return internalUseContext(context, MAX_INTEGER);
-    }
+    // if (ENABLED) {
+    //     const internalUseContext = useContext as InternalUseContext<T>;
+    //     return internalUseContext(context, MAX_INTEGER);
+    // }
 
     return useContext(context);
 

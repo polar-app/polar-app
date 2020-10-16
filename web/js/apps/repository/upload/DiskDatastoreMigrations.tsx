@@ -10,7 +10,6 @@ import {Blobs} from "polar-shared/src/util/Blobs";
 import {DocMetas} from "../../../metadata/DocMetas";
 import {IUpload} from "./IUpload";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
-import {useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {asyncStream} from "polar-shared/src/util/AsyncArrayStreams";
 import {UploadHandler, useBatchUploader} from './UploadHandlers';
 
@@ -45,7 +44,6 @@ function useDiskDatastoreMigrationExecutor() {
 
     const log = useLogger();
     const {persistenceLayerProvider} = usePersistenceLayerContext()
-    const uploadProgressTaskbar = useUploadProgressTaskbar();
     const batchUploader = useBatchUploader();
 
     return React.useCallback((opts: IMigration) => {
@@ -94,7 +92,7 @@ function useDiskDatastoreMigrationExecutor() {
         doAsync()
             .catch(err => log.error(err));
 
-    }, [persistenceLayerProvider, log, uploadProgressTaskbar, batchUploader])
+    }, [persistenceLayerProvider, log, batchUploader])
 
 
 }

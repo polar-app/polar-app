@@ -9,6 +9,8 @@ interface IProps {
 
 export const MUIHoverController = (props: IProps) => {
 
+    const [active, setActive] = React.useState(false);
+
     const device = Devices.get();
 
     if (device !== "desktop") {
@@ -16,9 +18,6 @@ export const MUIHoverController = (props: IProps) => {
         // state on phone/table
         return props.children;
     }
-
-
-    const [active, setActive] = React.useState(false);
 
     const handleToggleActive = (newActive: boolean) => {
         setActive(newActive);

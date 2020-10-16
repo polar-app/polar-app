@@ -1,6 +1,6 @@
-import {deepMemo, memoForwardRef, memoForwardRefDiv} from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import {DOMTextHit} from "polar-dom-text-search/src/DOMTextHit";
-import React from "react";
+import * as React from "react";
 import {
     useWindowResizeEventListener,
     useWindowScrollEventListener

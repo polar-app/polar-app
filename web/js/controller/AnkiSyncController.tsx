@@ -1,7 +1,6 @@
 import React from 'react';
 import {SyncProgressListener} from '../apps/sync/framework/SyncProgressListener';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
-import {DocMetaSupplierCollection} from '../metadata/DocMetaSupplierCollection';
 import {Analytics} from "../analytics/Analytics";
 import {useLogger} from "../mui/MUILogger";
 import {
@@ -9,7 +8,6 @@ import {
     useComponentWillUnmount
 } from "../hooks/ReactLifecycleHooks";
 import {
-    usePersistenceLayerContext,
     useRepoDocMetaManager
 } from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
@@ -22,7 +20,6 @@ import {MUILinkLoaderButton} from "../mui/MUILinkLoaderButton";
 export const AnkiSyncController = React.memo(() => {
 
     const log = useLogger();
-    const {persistenceLayerProvider} = usePersistenceLayerContext();
     const dialogManager = useDialogManager();
 
     const repoDocMetaManager = useRepoDocMetaManager();
@@ -52,11 +49,11 @@ export const AnkiSyncController = React.memo(() => {
 
                     log.info("Sync progress: ", syncProgress);
 
-                    syncProgress.taskResult.map(taskResult => ++nrTasks);
+                    syncProgress.taskResult.map(() => ++nrTasks);
 
                     syncProgress.taskResult
                         .filter(taskResult => taskResult.failed === true)
-                        .map(taskResult => ++nrFailedTasks);
+                        .map(() => ++nrFailedTasks);
 
                     updateProgress({
                         message: "Sending flashcards to Anki.",
@@ -164,7 +161,7 @@ export const AnkiSyncController = React.memo(() => {
         doAsync()
             .catch(handleError);
 
-    }, [log, persistenceLayerProvider, dialogManager, createDocMetaSuppliers]);
+    }, [log, dialogManager, createDocMetaSuppliers]);
 
     const onMessageReceived = React.useCallback((event: MessageEvent) => {
 
