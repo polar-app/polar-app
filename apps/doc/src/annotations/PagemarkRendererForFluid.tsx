@@ -219,7 +219,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
         return {top, left, width, height};
 
-    }, [browserContext, computeHeightFromRange]);
+    }, [browserContext, computeHeightFromRange, computeTopFromRange]);
 
     const handleResized = React.useCallback((rect: ILTRect, direction: Direction) => {
 
