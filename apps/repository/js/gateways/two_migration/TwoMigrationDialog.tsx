@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { TwoMigrationContent } from './TwoMigrationContent';
 import {MUIGapBox} from "../../../../../web/js/mui/MUIGapBox";
-import {useNav} from "../../../../../web/js/ui/util/NavHook";
+import {useLinkLoader} from "../../../../../web/js/ui/util/LinkLoaderHook";
 
 interface IProps {
     readonly onClose: () => void;
@@ -15,7 +15,7 @@ export const TwoMigrationDialog = React.memo((props: IProps) => {
 
     const [open, setOpen] = React.useState(true);
 
-    const linkLoader = useNav();
+    const linkLoader = useLinkLoader();
 
     const handleLink = React.useCallback(() => {
         const link = "https://getpolarized.io/2020/10/05/Polar-2-0-Release.html";

@@ -3,14 +3,14 @@ import {LoadDocRequest} from "./LoadDocRequest";
 import {useDialogManager} from "../../../mui/dialogs/MUIDialogControllers";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useNav} from "../../../ui/util/NavHook";
+import {useLinkLoader} from "../../../ui/util/LinkLoaderHook";
 
 export type DocMigrationHandler = (loadDocRequest: LoadDocRequest) => boolean;
 
 export function useDocMigration(): DocMigrationHandler {
 
     const dialogs = useDialogManager();
-    const linkLoader = useNav();
+    const linkLoader = useLinkLoader();
 
     const onAccept = React.useCallback((loadDocRequest: LoadDocRequest) => {
 

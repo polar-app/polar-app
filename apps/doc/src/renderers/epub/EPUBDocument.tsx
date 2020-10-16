@@ -39,8 +39,8 @@ import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 import {IPagemarkAnchor} from "polar-shared/src/metadata/IPagemarkAnchor";
 import {
     LinkLoaderDelegate,
-    useNav
-} from "../../../../../web/js/ui/util/NavHook";
+    useLinkLoader
+} from "../../../../../web/js/ui/util/LinkLoaderHook";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -116,7 +116,7 @@ export const EPUBDocument = (props: IProps) => {
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
-    const linkLoader = useNav();
+    const linkLoader = useLinkLoader();
 
     async function doLoad() {
 

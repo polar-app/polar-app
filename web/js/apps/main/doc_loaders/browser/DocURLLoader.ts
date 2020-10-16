@@ -1,5 +1,5 @@
 import {Nav} from '../../../../ui/util/Nav';
-import {useNav} from "../../../../ui/util/NavHook";
+import {useLinkLoader} from "../../../../ui/util/LinkLoaderHook";
 
 export namespace DocURLLoader {
 
@@ -20,7 +20,7 @@ export namespace DocURLLoader {
 
 export function useDocURLLoader(): (url: string) => void {
 
-    const nav = useNav();
+    const nav = useLinkLoader();
 
     const opts = {focus: true, newWindow: true};
 

@@ -4,7 +4,7 @@ import {MUIMenu} from "../../../web/js/mui/menu/MUIMenu";
 import {MUIMenuItem} from "../../../web/js/mui/menu/MUIMenuItem";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {useNav} from "../../../web/js/ui/util/NavHook";
+import {useLinkLoader} from "../../../web/js/ui/util/LinkLoaderHook";
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
 
 interface IProps {
@@ -13,7 +13,7 @@ interface IProps {
 
 export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
 
-    const linkLoader = useNav();
+    const linkLoader = useLinkLoader();
 
     return (
         <MUIMenu caret

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../web/js/analytics/Analytics";
-import {useNav} from "../../../web/js/ui/util/NavHook";
+import {useLinkLoader} from "../../../web/js/ui/util/LinkLoaderHook";
 import {AppRuntime} from 'polar-shared/src/util/AppRuntime';
 import {Browsers} from "polar-browsers/src/Browsers";
 import Button from '@material-ui/core/Button';
@@ -62,7 +62,7 @@ export function useWebExtensionInstalledSnapshots() {
 export const ChromeExtensionInstallButton = deepMemo(() => {
 
     const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
-    const linkLoader = useNav();
+    const linkLoader = useLinkLoader();
     const webExtensionInstalled = useWebExtensionInstalled();
 
     function onClick(): void {

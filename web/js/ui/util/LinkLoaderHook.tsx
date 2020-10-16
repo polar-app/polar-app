@@ -25,7 +25,7 @@ export type LinkLoaderDelegate = (location: ILocationOrLink, opts: LinkLoaderOpt
  * Nav function that uses history to jump to the next page not forcibly changing
  * the window which doesn't use react router.
  */
-export function useNav(): LinkLoaderDelegate {
+export function useLinkLoader(): LinkLoaderDelegate {
 
     // We can't use window.history as react-router doesn't listen to it. Instead
     // we have to useHistory which mutates the router
