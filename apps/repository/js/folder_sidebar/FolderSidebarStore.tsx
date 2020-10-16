@@ -234,9 +234,13 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const persistence = usePersistenceContext();
     const log = useLogger();
 
-    const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
-                                                                persistence.persistenceLayerProvider,
-                                                                tagDescriptorsContext.tagDescriptorsProvider);
+    const persistenceLayerMutator = React.useMemo(() => {
+
+        return new PersistenceLayerMutator(repoDocMetaManager,
+                                           persistence.persistenceLayerProvider,
+                                           tagDescriptorsContext.tagDescriptorsProvider);
+
+    }, [repoDocMetaManager, persistence, tagDescriptorsContext]);
 
     function doHookUpdate() {
 
@@ -250,227 +254,229 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     doHookUpdate();
 
-    function doSelectRow(nodes: ReadonlyArray<TagID>) {
-        const store = storeProvider();
+    return React.useMemo(() => {
 
-        const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes, Tags.create);
-        tagSidebarEventForwarder.onTagSelected(selectedTags);
 
-    }
+        function doSelectRow(nodes: ReadonlyArray<TagID>) {
+            const store = storeProvider();
 
-    function selectRow(node: TagID,
-                       event: React.MouseEvent,
-                       source: 'checkbox' | 'click'): void {
-
-        const store = storeProvider();
-
-        function toSelected(): Selected {
-
-            if (store.selected.length > 1) {
-                return 'multiple';
-            } else if (store.selected.length === 1) {
-                return 'single';
-            } else {
-                return 'none';
-            }
+            const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes, Tags.create);
+            tagSidebarEventForwarder.onTagSelected(selectedTags);
 
         }
 
-        function toSelfSelected(): SelfSelected {
-            return store.selected.includes(node) ? 'yes' : 'no';
-        }
-
-        const eventType = FolderSelectionEvents.toEventType(event, source);
-        const selected = toSelected();
-        const selfSelected = toSelfSelected();
-
-        const strategy = FolderSelectionEvents.toStrategy({eventType, selected, selfSelected});
-
-        const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
-
-        mutator.doUpdate({...store, selected: newSelected});
-        doSelectRow(newSelected);
-
-    }
-
-    function toggleExpanded(nodes: ReadonlyArray<TagID>): void {
-
-        const store = storeProvider();
-
-        // const expanded = doToggle(store.expanded, nodes);
-
-        setStore({
-            ...store,
-            expanded: nodes
-        });
-    }
-
-    function collapseNode(node: TagID) {
-
-        const store = storeProvider();
-
-        const expanded = [...store.expanded]
-            .filter(current => current !== node);
-
-        setStore({...store, expanded});
-
-    }
-
-    function expandNode(node: TagID) {
-
-        const store = storeProvider();
-
-        const expanded = [...store.expanded];
-
-        if (! expanded.includes(node)) {
-            expanded.push(node);
-        }
-
-        setStore({...store, expanded});
-
-    }
-
-    function setFilter(filter: string) {
-
-        const store = storeProvider();
-
-        // TODO: it might be nice if this was a state, which can be restore
-        // after the filter but not sure about that
-        mutator.doUpdate({...store, filter, selected: []});
-
-    }
-
-    function doCreateUserTag(userTag: string, type: TagType) {
-
-        const createNewTag = (): TagStr => {
+        function selectRow(node: TagID,
+                           event: React.MouseEvent,
+                           source: 'checkbox' | 'click'): void {
 
             const store = storeProvider();
-            const selectedTags = store.selected;
 
-            switch (type) {
-                case "tag":
-                    return userTag;
-                case "folder":
-                    const parent = selectedTags.length > 0 ? selectedTags[0] : '/';
-                    return Paths.create(parent, userTag);
+            function toSelected(): Selected {
+
+                if (store.selected.length > 1) {
+                    return 'multiple';
+                } else if (store.selected.length === 1) {
+                    return 'single';
+                } else {
+                    return 'none';
+                }
+
             }
 
-        };
+            function toSelfSelected(): SelfSelected {
+                return store.selected.includes(node) ? 'yes' : 'no';
+            }
 
-        const newTag = createNewTag();
+            const eventType = FolderSelectionEvents.toEventType(event, source);
+            const selected = toSelected();
+            const selfSelected = toSelfSelected();
 
-        async function doHandle() {
+            const strategy = FolderSelectionEvents.toStrategy({eventType, selected, selfSelected});
 
-            const {persistenceLayerMutator} = persistence;
-            await persistenceLayerMutator.createTag(newTag);
+            const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
 
-            dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
+            mutator.doUpdate({...store, selected: newSelected});
+            doSelectRow(newSelected);
 
         }
 
-        doHandle()
-            .catch(err => log.error("Unable to create tag: " + newTag, err));
+        function toggleExpanded(nodes: ReadonlyArray<TagID>): void {
 
-    }
+            const store = storeProvider();
 
-    function onCreateUserTag(type: TagType) {
+            // const expanded = doToggle(store.expanded, nodes);
 
-        dialogs.prompt({
-            title: "Create new " + type,
-            description: "May not create spaces and some extended unicode characters.",
-            autoFocus: true,
-            onCancel: NULL_FUNCTION,
-            onDone: (text) => doCreateUserTag(text, type)
-        });
+            setStore({
+                ...store,
+                expanded: nodes
+            });
+        }
 
-    }
+        function collapseNode(node: TagID) {
 
-    function onDrop(tagID: TagID) {
+            const store = storeProvider();
 
-        console.log("Handling folder drop for: " + tagID);
+            const expanded = [...store.expanded]
+                .filter(current => current !== node);
 
-        const store = storeProvider();
+            setStore({...store, expanded});
 
-        const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID], Tags.create);
+        }
 
-        const selectedTag = selectedTags[0];
+        function expandNode(node: TagID) {
 
-        tagSidebarEventForwarder.onDropped(selectedTag);
+            const store = storeProvider();
 
-    }
+            const expanded = [...store.expanded];
 
-    function selectedTags(): ReadonlyArray<Tag> {
-        const store = storeProvider();
-        const tagsMap = Tags.toMap(store.tags);
+            if (! expanded.includes(node)) {
+                expanded.push(node);
+            }
 
-        return store.selected.map(current => tagsMap[current])
-                             .filter(current => isPresent(current));
+            setStore({...store, expanded});
 
-    }
+        }
 
-    async function withBatch<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
-                                opts: Partial<BatchMutatorOpts> = {}) {
+        function setFilter(filter: string) {
 
-        await BatchMutators.exec(transactions, {
-            ...opts,
-            refresh: mutator.refresh,
-            dialogs
-        });
+            const store = storeProvider();
 
-    }
+            // TODO: it might be nice if this was a state, which can be restore
+            // after the filter but not sure about that
+            mutator.doUpdate({...store, filter, selected: []});
 
-    function doDelete(selected: ReadonlyArray<Tag>) {
+        }
 
-        function toAsyncTransaction(tag: Tag): IAsyncTransaction<void> {
+        function doCreateUserTag(userTag: string, type: TagType) {
 
-            Preconditions.assertPresent(tag, 'tag');
-
-            const deleteTagTransaction = persistenceLayerMutator.deleteTag(tag.id);
-
-            function prepare() {
-
-                deleteTagTransaction.prepare();
+            const createNewTag = (): TagStr => {
 
                 const store = storeProvider();
-                const tags = store.tags.filter(current => current.id !== tag.id);
-                mutator.doUpdate({...store, tags, selected: []});
+                const selectedTags = store.selected;
+
+                switch (type) {
+                    case "tag":
+                        return userTag;
+                    case "folder":
+                        const parent = selectedTags.length > 0 ? selectedTags[0] : '/';
+                        return Paths.create(parent, userTag);
+                }
+
+            };
+
+            const newTag = createNewTag();
+
+            async function doHandle() {
+
+                const {persistenceLayerMutator} = persistence;
+                await persistenceLayerMutator.createTag(newTag);
+
+                dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
 
             }
 
-            function commit() {
-                return deleteTagTransaction.commit();
-            }
-
-            return {prepare, commit};
+            doHandle()
+                .catch(err => log.error("Unable to create tag: " + newTag, err));
 
         }
 
-        const transactions = selected.map(toAsyncTransaction);
+        function onCreateUserTag(type: TagType) {
 
-        withBatch(transactions, {error: "Unable to delete tag: "})
-            .catch(err => log.error(err));
+            dialogs.prompt({
+                title: "Create new " + type,
+                description: "May not create spaces and some extended unicode characters.",
+                autoFocus: true,
+                onCancel: NULL_FUNCTION,
+                onDone: (text) => doCreateUserTag(text, type)
+            });
 
-    }
+        }
 
-    function onDelete() {
+        function onDrop(tagID: TagID) {
 
-        const selected = selectedTags();
+            console.log("Handling folder drop for: " + tagID);
 
-        dialogs.confirm({
-            title: `Are you sure you want to delete these tags/folders?`,
-            subtitle: <div>
-                <p>
-                    This is a permanent operation and can't be undone.
-                </p>
-                </div>,
-            onCancel: NULL_FUNCTION,
-            type: 'danger',
-            onAccept: () => doDelete(selected)
-        });
+            const store = storeProvider();
 
-    }
+            const selectedTags = Tags.lookupByTagLiteral(store.tags, [tagID], Tags.create);
 
-    return React.useMemo(() => {
+            const selectedTag = selectedTags[0];
+
+            tagSidebarEventForwarder.onDropped(selectedTag);
+
+        }
+
+        function selectedTags(): ReadonlyArray<Tag> {
+            const store = storeProvider();
+            const tagsMap = Tags.toMap(store.tags);
+
+            return store.selected.map(current => tagsMap[current])
+                                 .filter(current => isPresent(current));
+
+        }
+
+        async function withBatch<T>(transactions: ReadonlyArray<IAsyncTransaction<T>>,
+                                    opts: Partial<BatchMutatorOpts> = {}) {
+
+            await BatchMutators.exec(transactions, {
+                ...opts,
+                refresh: mutator.refresh,
+                dialogs
+            });
+
+        }
+
+        function doDelete(selected: ReadonlyArray<Tag>) {
+
+            function toAsyncTransaction(tag: Tag): IAsyncTransaction<void> {
+
+                Preconditions.assertPresent(tag, 'tag');
+
+                const deleteTagTransaction = persistenceLayerMutator.deleteTag(tag.id);
+
+                function prepare() {
+
+                    deleteTagTransaction.prepare();
+
+                    const store = storeProvider();
+                    const tags = store.tags.filter(current => current.id !== tag.id);
+                    mutator.doUpdate({...store, tags, selected: []});
+
+                }
+
+                function commit() {
+                    return deleteTagTransaction.commit();
+                }
+
+                return {prepare, commit};
+
+            }
+
+            const transactions = selected.map(toAsyncTransaction);
+
+            withBatch(transactions, {error: "Unable to delete tag: "})
+                .catch(err => log.error(err));
+
+        }
+
+        function onDelete() {
+
+            const selected = selectedTags();
+
+            dialogs.confirm({
+                title: `Are you sure you want to delete these tags/folders?`,
+                subtitle: <div>
+                    <p>
+                        This is a permanent operation and can't be undone.
+                    </p>
+                    </div>,
+                onCancel: NULL_FUNCTION,
+                type: 'danger',
+                onAccept: () => doDelete(selected)
+            });
+
+        }
+
         return {
             toggleExpanded,
             collapseNode,
@@ -481,13 +487,16 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             onDrop,
             onDelete,
         };
+
     }, [
-        repoDocMetaManager,
-        tagDescriptorsContext,
         tagSidebarEventForwarder,
         dialogs,
         persistence,
-        log
+        log,
+        mutator,
+        persistenceLayerMutator,
+        storeProvider,
+        setStore
     ]);
 
 
