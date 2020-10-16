@@ -12,7 +12,6 @@ import {
 } from "../../../AnnotationMutationsContext";
 import {useAnnotationActiveInputContext} from "../../../AnnotationActiveInputContext";
 import {IDocAnnotationRef} from "../../../DocAnnotation";
-import {Refs} from "polar-shared/src/metadata/Refs";
 
 export interface IProps {
 
@@ -92,7 +91,7 @@ export const FlashcardInput2 = React.memo((props: IProps) => {
 
         flashcardCallback(mutation);
 
-    }, []);
+    }, [annotationInputContext, flashcardCallback, props]);
 
     if (flashcardType === FlashcardType.BASIC_FRONT_BACK) {
 

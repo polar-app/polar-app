@@ -264,7 +264,7 @@ export const KeyboardShortcuts = deepMemo(() => {
 
         }
 
-    }, []);
+    }, [activeRef, keyToHandlers]);
 
     const register = React.useCallback(() => {
         window.addEventListener('keydown', handleKeyDown)

@@ -69,7 +69,7 @@ export namespace AddFileHooks {
 
             return await batchUploader(uploadHandlers);
 
-        }, []);
+        }, [batchUploader, persistenceLayerProvider]);
 
         const promptToOpenFiles = React.useCallback((importedFiles: ReadonlyArray<ImportedFile>) => {
 
@@ -114,7 +114,7 @@ export namespace AddFileHooks {
                 createSnackbar(importedFile);
             }
 
-        }, []);
+        }, [dialogManager, docLoader]);
 
         const doDirectUpload = React.useCallback(async (uploads: ReadonlyArray<IUpload>) => {
 
@@ -139,7 +139,7 @@ export namespace AddFileHooks {
                 throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");
             }
 
-        }, []);
+        }, [accountVerifiedAction, handleUploads, log, promptToOpenFiles]);
 
         // TODO: to many dependencies here and I'm going to need to clean tyhis up.
         return React.useCallback((uploads: ReadonlyArray<IUpload>) => {
@@ -158,9 +158,7 @@ export namespace AddFileHooks {
                     .catch(err => log.error("Unable to handle upload: ", err));
             }
 
-        }, [log, persistenceLayerProvider, dialogManager, docLoader,
-            accountVerifiedAction, diskDatastoreMigration, batchUploader,
-            doDirectUpload]);
+        }, [log, diskDatastoreMigration, doDirectUpload]);
 
     }
 
