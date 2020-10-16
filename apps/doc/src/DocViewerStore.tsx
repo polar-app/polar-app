@@ -329,623 +329,614 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
     const annotationSidebarCallbacks = useAnnotationSidebarCallbacks();
     const dialogs = useDialogManager();
 
-    const docMetaProvider = React.useMemo<IDocMetaProvider>(() => {
+    // HACK: this is a hack until we find a better way memoize our variables.
+    // I really hate this aspect of hook.
+    return React.useMemo(() => {
 
-        return () => {
-            const store = storeProvider();
-            return store.docMeta;
+
+        async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
+
+            function mutatePendingWrites(delta: number) {
+                const store = storeProvider();
+
+                const pendingWrites = store.pendingWrites + delta;
+                const hasPendingWrites = pendingWrites > 0;
+
+                setStore({...store, pendingWrites, hasPendingWrites});
+            }
+
+            try {
+                mutatePendingWrites(1);
+                await annotationMutations.writeUpdatedDocMetas(updatedDocMetas);
+            } finally {
+                mutatePendingWrites(-1);
+            }
+
         }
 
-    }, []);
-
-    async function writeUpdatedDocMetas(updatedDocMetas: ReadonlyArray<IDocMeta>) {
-
-        function mutatePendingWrites(delta: number) {
-            const store = storeProvider();
-
-            const pendingWrites = store.pendingWrites + delta;
-            const hasPendingWrites = pendingWrites > 0;
-
-            setStore({...store, pendingWrites, hasPendingWrites});
+        function updateDocMeta(docMeta: IDocMeta): IDocMeta {
+            const updated = DocMetas.updated(docMeta);
+            setDocMeta(updated, true, 'update');
+            return updated;
         }
 
-        try {
-            mutatePendingWrites(1);
-            await annotationMutations.writeUpdatedDocMetas(updatedDocMetas);
-        } finally {
-            mutatePendingWrites(-1);
-        }
+        function setDocMeta(docMeta: IDocMeta,
+                            hasPendingWrites: boolean, type: SetDocMetaType) {
 
-    }
+            Preconditions.assertPresent(docMeta, 'docMeta');
 
-    function updateDocMeta(docMeta: IDocMeta): IDocMeta {
-        const updated = DocMetas.updated(docMeta);
-        setDocMeta(updated, true, 'update');
-        return updated;
-    }
+            function doExec() {
+                const store = storeProvider();
 
-    function setDocMeta(docMeta: IDocMeta,
-                        hasPendingWrites: boolean, type: SetDocMetaType) {
+                const computeDocURL = (): URLStr | undefined => {
 
-        Preconditions.assertPresent(docMeta, 'docMeta');
+                    // this is only computed once, when we don't have a store...
 
-        function doExec() {
-            const store = storeProvider();
+                    if (docMeta) {
 
-            const computeDocURL = (): URLStr | undefined => {
+                        const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
+                        const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
 
-                // this is only computed once, when we don't have a store...
+                        if (docMetaFileRef.docFile) {
+                            const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
+                            return file.url;
+                        }
 
-                if (docMeta) {
-
-                    const docMetaFileRef = DocMetaFileRefs.createFromDocMeta(docMeta);
-                    const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
-
-                    if (docMetaFileRef.docFile) {
-                        const file = persistenceLayer.getFile(Backend.STASH, docMetaFileRef.docFile);
-                        return file.url;
                     }
 
-                }
+                    return undefined;
 
-                return undefined;
+                };
 
-            };
+                const docURL = store.docURL || computeDocURL();
 
-            const docURL = store.docURL || computeDocURL();
+                setStore({...store, docMeta, docURL, hasPendingWrites});
 
-            setStore({...store, docMeta, docURL, hasPendingWrites});
-
-        }
-
-        const store = storeProvider();
-
-        const updateType = DocViewerSnapshots.computeUpdateType2(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
-
-        console.log(`Update for docMeta was ${updateType} for type=${type} - ${store.docMeta?.docInfo?.uuid} vs ${docMeta.docInfo.uuid}`);
-
-        if (['snapshot-local', 'snapshot-server'].includes(type) && updateType === 'self') {
-
-            if (type === 'snapshot-server') {
-                // if we received our own update from the server we know we have no more pending writes.
-                setStore({...store, hasPendingWrites: false});
             }
-
-            return;
-        }
-
-        if (updateType === 'stale') {
-            return;
-        }
-
-        // update the main store.
-        doExec();
-
-        docMetaContext.setDoc({docMeta, mutable: true});
-
-        // update the annotation sidebar
-        annotationSidebarCallbacks.setDocMeta(docMeta);
-
-    }
-
-    function setDocDescriptor(docDescriptor: IDocDescriptor) {
-        const store = storeProvider();
-
-        if (isEqual(store.docDescriptor, docDescriptor)) {
-            // TODO: push this into setStore as it's probably ok to not update
-            // when the values are equal.
-            return;
-        }
-
-        setStore({...store, docDescriptor});
-    }
-
-    function setDocScale(docScale: IDocScale) {
-        const store = storeProvider();
-        setStore({...store, docScale});
-    }
-
-    function setDocLoaded(docLoaded: boolean) {
-        const store = storeProvider();
-        setStore({...store, docLoaded});
-    }
-
-    function setResizer(resizer: Resizer) {
-        const store = storeProvider();
-        setStore({...store, resizer});
-    }
-
-    function setScaleLeveler(scaleLeveler: ScaleLeveler) {
-        const store = storeProvider();
-        setStore({...store, scaleLeveler});
-    }
-
-    function setScale(scaleLevel: ScaleLevelTuple) {
-        const store = storeProvider();
-
-        const {scaleLeveler} = store;
-
-        if (scaleLeveler) {
-
-            const scaleValue = scaleLeveler(scaleLevel);
-
-            const docScale: IDocScale = {
-                scale: scaleLevel,
-                scaleValue,
-            }
-
-            setDocScale(docScale);
-
-        }
-
-    }
-
-    function doZoom(delta: ScaleDelta) {
-
-        const {docScale, scaleLeveler} = storeProvider();
-
-        if (! scaleLeveler) {
-            return;
-        }
-
-        const nextScale = computeNextZoomLevel(delta, docScale?.scaleValue);
-
-        if (nextScale) {
-            setScale(nextScale);
-        }
-
-    }
-
-    function doZoomRestore() {
-
-        const {scaleLeveler} = storeProvider();
-
-        if (! scaleLeveler) {
-            return;
-        }
-
-        setScale(SCALE_VALUE_PAGE_WIDTH);
-
-    }
-
-
-    function setFluidPagemarkFactory(fluidPagemarkFactory: FluidPagemarkFactory) {
-        const store = storeProvider();
-        setStore({...store, fluidPagemarkFactory});
-    }
-
-    const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
-
-    function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
-        // this is almost always just ONE item at a time so any type of
-        // bulk performance updates are pointless
-        return docMetas.map(docMeta => updateDocMeta(docMeta));
-    }
-
-    function onPagemark(mutation: IPagemarkMutation): ReadonlyArray<IPagemarkRef> {
-
-        function updatePagemarkRange(pagemark: IPagemark,
-                                     range: Range | undefined,
-                                     direction: Direction | undefined,
-                                     existing: IPagemark | undefined) {
-            const store = storeProvider();
-            const fluidPagemark = store.fluidPagemarkFactory.create({range, direction, existing});
-            // now add the range which is needed for fluid pagemarks.
-            pagemark.range = fluidPagemark?.range;
-        }
-
-        function createPagemarkToPoint(opts: IPagemarkCreateToPoint,
-                                       start?: number): ReadonlyArray<IPagemarkRef> {
 
             const store = storeProvider();
-            const {docMeta} = store;
 
-            if (!docMeta) {
-                return [];
-            }
+            const updateType = DocViewerSnapshots.computeUpdateType2(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
 
-            const {pageNum} = opts;
+            console.log(`Update for docMeta was ${updateType} for type=${type} - ${store.docMeta?.docInfo?.uuid} vs ${docMeta.docInfo.uuid}`);
 
-            const verticalOffsetWithinPageElement = opts.y;
-            const pageHeight = opts.height;
+            if (['snapshot-local', 'snapshot-server'].includes(type) && updateType === 'self') {
 
-            const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
-                                                     pageHeight,
-                                                     {noRound: true});
-
-            console.log("Created pagemark with percentage: ", percentage);
-
-            function deletePagemarkForCurrentPage(pageNum: number) {
-                Preconditions.assertNumber(pageNum, "pageNum");
-                Pagemarks.deletePagemark(docMeta!, pageNum);
-            }
-
-            function createPagemarksForRange(endPageNum: number, percentage: number) {
-
-                const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
-
-                if (createdPagemarks.length > 0) {
-                    const last = Arrays.last(createdPagemarks)!
-                    const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range, direction: undefined, existing: undefined});
-                    // now add the range which is needed for fluid pagemarks.
-                    last.pagemark.range = fluidPagemark?.range;
-                    updatePagemarkRange(last.pagemark, opts.range, undefined, undefined);
+                if (type === 'snapshot-server') {
+                    // if we received our own update from the server we know we have no more pending writes.
+                    setStore({...store, hasPendingWrites: false});
                 }
+
+                return;
+            }
+
+            if (updateType === 'stale') {
+                return;
+            }
+
+            // update the main store.
+            doExec();
+
+            docMetaContext.setDoc({docMeta, mutable: true});
+
+            // update the annotation sidebar
+            annotationSidebarCallbacks.setDocMeta(docMeta);
+
+        }
+
+        function setDocDescriptor(docDescriptor: IDocDescriptor) {
+            const store = storeProvider();
+
+            if (isEqual(store.docDescriptor, docDescriptor)) {
+                // TODO: push this into setStore as it's probably ok to not update
+                // when the values are equal.
+                return;
+            }
+
+            setStore({...store, docDescriptor});
+        }
+
+        function setDocScale(docScale: IDocScale) {
+            const store = storeProvider();
+            setStore({...store, docScale});
+        }
+
+        function setDocLoaded(docLoaded: boolean) {
+            const store = storeProvider();
+            setStore({...store, docLoaded});
+        }
+
+        function setResizer(resizer: Resizer) {
+            const store = storeProvider();
+            setStore({...store, resizer});
+        }
+
+        function setScaleLeveler(scaleLeveler: ScaleLeveler) {
+            const store = storeProvider();
+            setStore({...store, scaleLeveler});
+        }
+
+        function setScale(scaleLevel: ScaleLevelTuple) {
+            const store = storeProvider();
+
+            const {scaleLeveler} = store;
+
+            if (scaleLeveler) {
+
+                const scaleValue = scaleLeveler(scaleLevel);
+
+                const docScale: IDocScale = {
+                    scale: scaleLevel,
+                    scaleValue,
+                }
+
+                setDocScale(docScale);
+
+            }
+
+        }
+
+        function doZoom(delta: ScaleDelta) {
+
+            const {docScale, scaleLeveler} = storeProvider();
+
+            if (! scaleLeveler) {
+                return;
+            }
+
+            const nextScale = computeNextZoomLevel(delta, docScale?.scaleValue);
+
+            if (nextScale) {
+                setScale(nextScale);
+            }
+
+        }
+
+        function doZoomRestore() {
+
+            const {scaleLeveler} = storeProvider();
+
+            if (! scaleLeveler) {
+                return;
+            }
+
+            setScale(SCALE_VALUE_PAGE_WIDTH);
+
+        }
+
+        function setFluidPagemarkFactory(fluidPagemarkFactory: FluidPagemarkFactory) {
+            const store = storeProvider();
+            setStore({...store, fluidPagemarkFactory});
+        }
+
+        const annotationMutations = AnnotationMutationCallbacks.create(updateStore, NULL_FUNCTION);
+
+        function updateStore(docMetas: ReadonlyArray<IDocMeta>): ReadonlyArray<IDocMeta> {
+            // this is almost always just ONE item at a time so any type of
+            // bulk performance updates are pointless
+            return docMetas.map(docMeta => updateDocMeta(docMeta));
+        }
+
+        function onPagemark(mutation: IPagemarkMutation): ReadonlyArray<IPagemarkRef> {
+
+            function updatePagemarkRange(pagemark: IPagemark,
+                                         range: Range | undefined,
+                                         direction: Direction | undefined,
+                                         existing: IPagemark | undefined) {
+                const store = storeProvider();
+                const fluidPagemark = store.fluidPagemarkFactory.create({range, direction, existing});
+                // now add the range which is needed for fluid pagemarks.
+                pagemark.range = fluidPagemark?.range;
+            }
+
+            function createPagemarkToPoint(opts: IPagemarkCreateToPoint,
+                                           start?: number): ReadonlyArray<IPagemarkRef> {
+
+                const store = storeProvider();
+                const {docMeta} = store;
+
+                if (!docMeta) {
+                    return [];
+                }
+
+                const {pageNum} = opts;
+
+                const verticalOffsetWithinPageElement = opts.y;
+                const pageHeight = opts.height;
+
+                const percentage = Percentages.calculate(verticalOffsetWithinPageElement,
+                                                         pageHeight,
+                                                         {noRound: true});
+
+                console.log("Created pagemark with percentage: ", percentage);
+
+                function deletePagemarkForCurrentPage(pageNum: number) {
+                    Preconditions.assertNumber(pageNum, "pageNum");
+                    Pagemarks.deletePagemark(docMeta!, pageNum);
+                }
+
+                function createPagemarksForRange(endPageNum: number, percentage: number) {
+
+                    const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum, percentage, {start});
+
+                    if (createdPagemarks.length > 0) {
+                        const last = Arrays.last(createdPagemarks)!
+                        const fluidPagemark = store.fluidPagemarkFactory.create({range: opts.range, direction: undefined, existing: undefined});
+                        // now add the range which is needed for fluid pagemarks.
+                        last.pagemark.range = fluidPagemark?.range;
+                        updatePagemarkRange(last.pagemark, opts.range, undefined, undefined);
+                    }
+
+                    return createdPagemarks;
+
+                }
+
+                deletePagemarkForCurrentPage(pageNum);
+                const createdPagemarks = createPagemarksForRange(pageNum, percentage);
+
+                writeUpdatedDocMetas([docMeta])
+                   .catch(err => log.error(err));
 
                 return createdPagemarks;
 
             }
 
-            deletePagemarkForCurrentPage(pageNum);
-            const createdPagemarks = createPagemarksForRange(pageNum, percentage);
+            function createPagemarkFromPage(opts: IPagemarkCreateFromPage) {
 
-            writeUpdatedDocMetas([docMeta])
-               .catch(err => log.error(err));
+                const createOpts: IPagemarkCreateToPoint = {
+                    ...opts,
+                    type: 'create-to-point',
+                    range: opts.range,
+                };
 
-            return createdPagemarks;
+                return createPagemarkToPoint(createOpts, opts.fromPage);
 
-        }
-
-        function createPagemarkFromPage(opts: IPagemarkCreateFromPage) {
-
-            const createOpts: IPagemarkCreateToPoint = {
-                ...opts,
-                type: 'create-to-point',
-                range: opts.range,
-            };
-
-            return createPagemarkToPoint(createOpts, opts.fromPage);
-
-        }
-
-        function updatePagemark(mutation: IPagemarkUpdate) {
-            const store = storeProvider();
-            const docMeta = store.docMeta!;
-
-            function createPagemark() {
-                const newPagemark = Object.assign({}, mutation.existing);
-                newPagemark.percentage = mutation.percentage;
-                newPagemark.rect = mutation.rect;
-                return newPagemark;
             }
 
-            const pagemark = createPagemark();
-            updatePagemarkRange(pagemark, mutation.range, mutation.direction, mutation.existing);
-            Pagemarks.updatePagemark(docMeta, mutation.pageNum, pagemark);
+            function updatePagemark(mutation: IPagemarkUpdate) {
+                const store = storeProvider();
+                const docMeta = store.docMeta!;
 
-            updateDocMeta(docMeta);
-            writeUpdatedDocMetas([docMeta])
-                .catch(err => log.error(err));
-
-            return [{pageNum: mutation.pageNum, pagemark}];
-        }
-
-        function deletePagemark(mutation: IPagemarkDelete) {
-
-            const store = storeProvider();
-            const docMeta = store.docMeta!;
-            const {pageNum, pagemark} = mutation;
-
-            Pagemarks.deletePagemark(docMeta, pageNum, pagemark.id);
-            updateDocMeta(docMeta);
-            writeUpdatedDocMetas([docMeta])
-                .catch(err => log.error(err));
-        }
-
-        function updatePagemarkMode(mutation: IPagemarkUpdateMode) {
-
-            const store = storeProvider();
-            const docMeta = store.docMeta!;
-
-            const {pageNum, existing} = mutation;
-
-            existing.mode = mutation.mode;
-            Pagemarks.updatePagemark(docMeta, pageNum, existing);
-
-            updateDocMeta(docMeta);
-            writeUpdatedDocMetas([docMeta])
-                .catch(err => log.error(err));
-
-            return [];
-
-        }
-
-        function createPagemarksForEntireDocument() {
-
-            const store = storeProvider();
-            const docMeta = store.docMeta!;
-
-            interface PagemarksForPage {
-                readonly pageNum: number;
-                readonly pagemarks: ReadonlyArray<IPagemark>;
-            }
-
-            function toPagemarksForPage(pageNum: number): PagemarksForPage {
-                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
-                const pagemarks = Object.values(pageMeta.pagemarks || {});
-                return {pageNum, pagemarks};
-            }
-
-            function computePagemarksForPageMapping(): ReadonlyArray<PagemarksForPage> {
-                const pageNumbers = Numbers.range(1, docMeta.docInfo.nrPages);
-                return pageNumbers.map(toPagemarksForPage)
-            }
-
-            const pagemarksForPageMapping = computePagemarksForPageMapping();
-
-            const pagemarkBlocks
-                = arrayStream(pagemarksForPageMapping)
-                    .merge((a, b) => a.pagemarks.length === 0 && b.pagemarks.length === 0)
-                    .collect();
-
-            const batch = Hashcodes.createRandomID();
-
-            for (const pagemarkBlock of pagemarkBlocks) {
-
-                if (pagemarkBlock.length > 0) {
-                    // this page already has a pagemark so just expand it to 100%
-                    const start = Arrays.first(pagemarkBlock)!.pageNum;
-                    const end = Arrays.last(pagemarkBlock)!.pageNum;
-                    Pagemarks.updatePagemarksForRange(docMeta!, end, 100, {start, batch});
+                function createPagemark() {
+                    const newPagemark = Object.assign({}, mutation.existing);
+                    newPagemark.percentage = mutation.percentage;
+                    newPagemark.rect = mutation.rect;
+                    return newPagemark;
                 }
+
+                const pagemark = createPagemark();
+                updatePagemarkRange(pagemark, mutation.range, mutation.direction, mutation.existing);
+                Pagemarks.updatePagemark(docMeta, mutation.pageNum, pagemark);
+
+                updateDocMeta(docMeta);
+                writeUpdatedDocMetas([docMeta])
+                    .catch(err => log.error(err));
+
+                return [{pageNum: mutation.pageNum, pagemark}];
             }
 
-            //
+            function deletePagemark(mutation: IPagemarkDelete) {
 
-            // const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum);
+                const store = storeProvider();
+                const docMeta = store.docMeta!;
+                const {pageNum, pagemark} = mutation;
 
-            updateDocMeta(docMeta);
-            writeUpdatedDocMetas([docMeta])
-                .catch(err => log.error(err));
+                Pagemarks.deletePagemark(docMeta, pageNum, pagemark.id);
+                updateDocMeta(docMeta);
+                writeUpdatedDocMetas([docMeta])
+                    .catch(err => log.error(err));
+            }
 
-            return [];
-        }
+            function updatePagemarkMode(mutation: IPagemarkUpdateMode) {
 
-        switch (mutation.type) {
+                const store = storeProvider();
+                const docMeta = store.docMeta!;
 
-            case "create-to-point":
-                return createPagemarkToPoint(mutation);
+                const {pageNum, existing} = mutation;
 
-            case "create-from-page":
-                return createPagemarkFromPage(mutation);
+                existing.mode = mutation.mode;
+                Pagemarks.updatePagemark(docMeta, pageNum, existing);
 
-            case "update":
-                return updatePagemark(mutation);
+                updateDocMeta(docMeta);
+                writeUpdatedDocMetas([docMeta])
+                    .catch(err => log.error(err));
 
-            case "delete":
-                deletePagemark(mutation);
                 return [];
 
-            case "update-mode":
-                return updatePagemarkMode(mutation);
+            }
 
-            case "create-for-entire-document":
-                return createPagemarksForEntireDocument();
+            function createPagemarksForEntireDocument() {
+
+                const store = storeProvider();
+                const docMeta = store.docMeta!;
+
+                interface PagemarksForPage {
+                    readonly pageNum: number;
+                    readonly pagemarks: ReadonlyArray<IPagemark>;
+                }
+
+                function toPagemarksForPage(pageNum: number): PagemarksForPage {
+                    const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+                    const pagemarks = Object.values(pageMeta.pagemarks || {});
+                    return {pageNum, pagemarks};
+                }
+
+                function computePagemarksForPageMapping(): ReadonlyArray<PagemarksForPage> {
+                    const pageNumbers = Numbers.range(1, docMeta.docInfo.nrPages);
+                    return pageNumbers.map(toPagemarksForPage)
+                }
+
+                const pagemarksForPageMapping = computePagemarksForPageMapping();
+
+                const pagemarkBlocks
+                    = arrayStream(pagemarksForPageMapping)
+                        .merge((a, b) => a.pagemarks.length === 0 && b.pagemarks.length === 0)
+                        .collect();
+
+                const batch = Hashcodes.createRandomID();
+
+                for (const pagemarkBlock of pagemarkBlocks) {
+
+                    if (pagemarkBlock.length > 0) {
+                        // this page already has a pagemark so just expand it to 100%
+                        const start = Arrays.first(pagemarkBlock)!.pageNum;
+                        const end = Arrays.last(pagemarkBlock)!.pageNum;
+                        Pagemarks.updatePagemarksForRange(docMeta!, end, 100, {start, batch});
+                    }
+                }
+
+                //
+
+                // const createdPagemarks = Pagemarks.updatePagemarksForRange(docMeta!, endPageNum);
+
+                updateDocMeta(docMeta);
+                writeUpdatedDocMetas([docMeta])
+                    .catch(err => log.error(err));
+
+                return [];
+            }
+
+            switch (mutation.type) {
+
+                case "create-to-point":
+                    return createPagemarkToPoint(mutation);
+
+                case "create-from-page":
+                    return createPagemarkFromPage(mutation);
+
+                case "update":
+                    return updatePagemark(mutation);
+
+                case "delete":
+                    deletePagemark(mutation);
+                    return [];
+
+                case "update-mode":
+                    return updatePagemarkMode(mutation);
+
+                case "create-for-entire-document":
+                    return createPagemarksForEntireDocument();
+
+            }
 
         }
 
-    }
-
-    function setPageNavigator(pageNavigator: PageNavigator) {
-        const store = storeProvider();
-        setStore({...store, pageNavigator})
-    }
-
-    function onPageJump(page: number) {
-
-        async function doAsync() {
-            await doPageJump(page);
-        }
-
-        doAsync()
-          .catch(err => log.error('Could not handle page jump: ', err));
-
-    }
-
-    async function doPageJump(newPage: number) {
-
-        const store = storeProvider();
-        const {pageNavigator, page} = store;
-
-        if (! pageNavigator) {
-            return;
-        }
-
-        if (newPage <= 0) {
-            // invalid page as we requested to jump too low
-            return;
-        }
-
-        if (newPage > pageNavigator.count) {
-            // went past the end.
-            return;
-        }
-
-        if (newPage === pageNavigator.get()) {
-            // noop as this is currently done.
-            return;
-        }
-
-        await pageNavigator.jumpToPage(newPage);
-        setStore({
-            ...store,
-            page: newPage
-        });
-
-    }
-
-    function doPageNav(delta: number) {
-
-        async function doAsync() {
+        function setPageNavigator(pageNavigator: PageNavigator) {
             const store = storeProvider();
-            const {page} = store;
-            const newPage = page + delta;
-            await doPageJump(newPage);
+            setStore({...store, pageNavigator})
         }
 
-        doAsync()
-            .catch(err => log.error("Could not handle page nav: ", err));
+        function onPageJump(page: number) {
 
-    }
+            async function doAsync() {
+                await doPageJump(page);
+            }
 
-    function onPageNext() {
-        doPageNav(1);
-    }
+            doAsync()
+              .catch(err => log.error('Could not handle page jump: ', err));
 
-    function onPagePrev() {
-        doPageNav(-1);
-    }
-
-    function setPage(page: number) {
-        const store = storeProvider();
-
-        if (store.page === page) {
-            // TODO: push this into setStore as it's probably ok to not update
-            // when the values are equal.
-            return;
         }
 
-        setStore({
-             ...store,
-             page
-         });
-    }
+        async function doPageJump(newPage: number) {
 
-    /**
-     * Execute the mutator on the DocMeta and write the docMeta and update the
-     * UI store.
-     */
-    function writeDocMetaMutation(mutator: (docMeta: IDocMeta) => void) {
+            const store = storeProvider();
+            const {pageNavigator, page} = store;
 
-        const store = storeProvider();
-        const {docMeta} = store;
+            if (! pageNavigator) {
+                return;
+            }
 
-        if (! docMeta) {
-            return;
+            if (newPage <= 0) {
+                // invalid page as we requested to jump too low
+                return;
+            }
+
+            if (newPage > pageNavigator.count) {
+                // went past the end.
+                return;
+            }
+
+            if (newPage === pageNavigator.get()) {
+                // noop as this is currently done.
+                return;
+            }
+
+            await pageNavigator.jumpToPage(newPage);
+            setStore({
+                ...store,
+                page: newPage
+            });
+
         }
 
-        mutator(docMeta);
+        function doPageNav(delta: number) {
 
-        writeUpdatedDocMetas([docMeta])
-            .catch(err => log.error(err));
+            async function doAsync() {
+                const store = storeProvider();
+                const {page} = store;
+                const newPage = page + delta;
+                await doPageJump(newPage);
+            }
 
-    }
+            doAsync()
+                .catch(err => log.error("Could not handle page nav: ", err));
 
-    function setDocFlagged(flagged: boolean) {
-        writeDocMetaMutation(docMeta => docMeta.docInfo.flagged = flagged);
-    }
-
-    function setDocArchived(archived: boolean) {
-        writeDocMetaMutation(docMeta => docMeta.docInfo.archived = archived);
-    }
-
-    interface ITaggedDocMetaHolder extends ITagsHolder {
-        readonly docMeta: IDocMeta;
-    }
-
-    function doDocTagged(targets: ReadonlyArray<ITaggedDocMetaHolder>,
-                         tags: ReadonlyArray<Tag>,
-                         strategy: ComputeNewTagsStrategy) {
-
-        if (targets.length === 0) {
-            log.warn("doDocTagged: No targets");
         }
 
-        for (const target of targets) {
-            const {docMeta} = target;
-            const newTags = Tags.computeNewTags(docMeta.docInfo.tags, tags, strategy);
-            writeDocMetaMutation(docMeta => docMeta.docInfo.tags = Tags.toMap(newTags));
+        function onPageNext() {
+            doPageNav(1);
         }
 
-    }
-
-    function onDocTagged() {
-
-        const {docMeta} = storeProvider();
-
-        if (! docMeta) {
-            return;
+        function onPagePrev() {
+            doPageNav(-1);
         }
 
-        function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
+        function setPage(page: number) {
+            const store = storeProvider();
+
+            if (store.page === page) {
+                // TODO: push this into setStore as it's probably ok to not update
+                // when the values are equal.
+                return;
+            }
+
+            setStore({
+                 ...store,
+                 page
+             });
+        }
+
+        /**
+         * Execute the mutator on the DocMeta and write the docMeta and update the
+         * UI store.
+         */
+        function writeDocMetaMutation(mutator: (docMeta: IDocMeta) => void) {
+
+            const store = storeProvider();
+            const {docMeta} = store;
 
             if (! docMeta) {
-                return [];
+                return;
             }
 
-            return [
-                {
-                    docMeta,
-                    tags: docMeta.docInfo.tags
+            mutator(docMeta);
+
+            writeUpdatedDocMetas([docMeta])
+                .catch(err => log.error(err));
+
+        }
+
+        function setDocFlagged(flagged: boolean) {
+            writeDocMetaMutation(docMeta => docMeta.docInfo.flagged = flagged);
+        }
+
+        function setDocArchived(archived: boolean) {
+            writeDocMetaMutation(docMeta => docMeta.docInfo.archived = archived);
+        }
+
+        interface ITaggedDocMetaHolder extends ITagsHolder {
+            readonly docMeta: IDocMeta;
+        }
+
+        function doDocTagged(targets: ReadonlyArray<ITaggedDocMetaHolder>,
+                             tags: ReadonlyArray<Tag>,
+                             strategy: ComputeNewTagsStrategy) {
+
+            if (targets.length === 0) {
+                log.warn("doDocTagged: No targets");
+            }
+
+            for (const target of targets) {
+                const {docMeta} = target;
+                const newTags = Tags.computeNewTags(docMeta.docInfo.tags, tags, strategy);
+                writeDocMetaMutation(docMeta => docMeta.docInfo.tags = Tags.toMap(newTags));
+            }
+
+        }
+
+        function onDocTagged() {
+
+            const {docMeta} = storeProvider();
+
+            if (! docMeta) {
+                return;
+            }
+
+            function targets(): ReadonlyArray<ITaggedDocMetaHolder> {
+
+                if (! docMeta) {
+                    return [];
                 }
-            ];
 
-        }
+                return [
+                    {
+                        docMeta,
+                        tags: docMeta.docInfo.tags
+                    }
+                ];
 
-        function createRelatedTagsManager() {
-
-            function createNullRelatedTagsData(): IRelatedTagsData {
-                console.warn("Using null related tags data");
-                return {
-                    docTagsIndex: {},
-                    tagDocsIndex: {},
-                    tagsIndex: {}
-                };
             }
 
-            const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
+            function createRelatedTagsManager() {
 
-            return new RelatedTagsManager(data);
+                function createNullRelatedTagsData(): IRelatedTagsData {
+                    console.warn("Using null related tags data");
+                    return {
+                        docTagsIndex: {},
+                        tagDocsIndex: {},
+                        tagsIndex: {}
+                    };
+                }
+
+                const data = LocalRelatedTagsStore.read() || createNullRelatedTagsData();
+
+                return new RelatedTagsManager(data);
+
+            }
+
+            const relatedTagsManager = createRelatedTagsManager();
+            const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+
+            const tagsProvider = () => relatedTagsManager.tags();
+
+            const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
+                targets,
+                tagsProvider,
+                dialogs,
+                doTagged: doDocTagged,
+                relatedOptionsCalculator
+            };
+
+            const callback = TaggedCallbacks.create(opts);
+
+            callback();
 
         }
 
-        const relatedTagsManager = createRelatedTagsManager();
-        const relatedOptionsCalculator = relatedTagsManager.toRelatedOptionsCalculator();
+        function toggleDocFlagged() {
 
-        const tagsProvider = () => relatedTagsManager.tags();
+            const {docMeta} = storeProvider();
 
-        const opts: TaggedCallbacksOpts<ITaggedDocMetaHolder> = {
-            targets,
-            tagsProvider,
-            dialogs,
-            doTagged: doDocTagged,
-            relatedOptionsCalculator
-        };
+            if (! docMeta) {
+                return;
+            }
 
-        const callback = TaggedCallbacks.create(opts);
+            setDocFlagged(! docMeta?.docInfo?.flagged)
 
-        callback();
+        }
+        function toggleDocArchived() {
 
-    }
 
-    function toggleDocFlagged() {
+            const {docMeta} = storeProvider();
 
-        const {docMeta} = storeProvider();
+            if (! docMeta) {
+                return;
+            }
 
-        if (! docMeta) {
-            return;
+            setDocArchived(! docMeta?.docInfo?.archived)
+
         }
 
-        setDocFlagged(! docMeta?.docInfo?.flagged)
-
-    }
-    function toggleDocArchived() {
-
-
-        const {docMeta} = storeProvider();
-
-        if (! docMeta) {
-            return;
-        }
-
-        setDocArchived(! docMeta?.docInfo?.archived)
-
-    }
-
-
-    // HACK: this is a hack until we find a better way memoize our variables.
-    // I really hate this aspect of hook.
-    return React.useMemo(() => {
         return {
             updateDocMeta,
             setDocMeta,

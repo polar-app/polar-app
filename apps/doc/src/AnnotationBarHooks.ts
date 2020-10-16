@@ -103,6 +103,8 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
     useMessageListener(messageListener);
 
+    const {noRectTexts} = opts;
+
     return React.useMemo(() => {
 
         const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
@@ -120,7 +122,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
             const {selection} = highlightCreatedEvent.activeSelection;
 
-            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts: opts.noRectTexts, fileType});
+            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts, fileType});
 
             // now clear the selection since we just highlighted it.
             selection.empty();
@@ -149,7 +151,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
         }
 
-    }, []);
+    }, [docViewerElementsContext, fileType, messageDispatcher, noRectTexts]);
 
 }
 

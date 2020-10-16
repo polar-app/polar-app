@@ -349,7 +349,7 @@ export function computeDocViewerContextMenuOrigin(event: IMouseEvent): IDocViewe
 
 export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOrigin>) => {
 
-    const {docDescriptor, fluidPagemarkFactory} = useDocViewerStore(['docDescriptor', 'fluidPagemarkFactory']);
+    const {docDescriptor} = useDocViewerStore(['docDescriptor']);
     const {onPagemark} = useDocViewerCallbacks();
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const annotationMutationsContext = useAnnotationMutationsContext();
@@ -370,7 +370,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             range: origin.range
         });
 
-    }, []);
+    }, [onPagemark, origin]);
 
     const onCreatePagemarkFromPage = React.useCallback(() => {
 
@@ -427,7 +427,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             onDone: (value: string) => onDone(parseInt(value))
         });
 
-    }, []);
+    }, [dialogManager, docDescriptor, onPagemark, origin]);
 
     const onCreateAreaHighlight = () => {
         const {pageNum, pointWithinPageElement} = origin;

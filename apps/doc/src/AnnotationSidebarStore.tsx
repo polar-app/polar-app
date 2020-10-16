@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {
     createObservableStore,
@@ -132,26 +132,30 @@ function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
 
     const persistenceLayerContext = usePersistenceLayerContext();
 
-    function setFilter(text: string) {
-        mutator.doUpdate({mutation: 'set-filter', filter: text});
-    }
+    return React.useMemo(() => {
 
-    function toAnnotations(docMeta: IDocMeta): ReadonlyArray<IDocAnnotationRef> {
-        const {persistenceLayerProvider} = persistenceLayerContext;
-        const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
-        return DocAnnotationLoader2.load(docMeta, docFileResolver).map(DocAnnotations.toRef);
-    }
+        function setFilter(text: string) {
+            mutator.doUpdate({mutation: 'set-filter', filter: text});
+        }
 
-    function setDocMeta(docMeta: IDocMeta) {
-        Preconditions.assertPresent(docMeta, 'docMeta');
-        const data = toAnnotations(docMeta);
-        mutator.doUpdate({mutation: 'set-data', data});
-    }
+        function toAnnotations(docMeta: IDocMeta): ReadonlyArray<IDocAnnotationRef> {
+            const {persistenceLayerProvider} = persistenceLayerContext;
+            const docFileResolver = DocFileResolvers.createForPersistenceLayer(persistenceLayerProvider);
+            return DocAnnotationLoader2.load(docMeta, docFileResolver).map(DocAnnotations.toRef);
+        }
 
-    return React.useMemo(() => ({
-        setFilter,
-        setDocMeta
-    }), [persistenceLayerContext])
+        function setDocMeta(docMeta: IDocMeta) {
+            Preconditions.assertPresent(docMeta, 'docMeta');
+            const data = toAnnotations(docMeta);
+            mutator.doUpdate({mutation: 'set-data', data});
+        }
+
+        return ({
+            setFilter,
+            setDocMeta
+        });
+
+    }, [persistenceLayerContext])
 
 }
 
