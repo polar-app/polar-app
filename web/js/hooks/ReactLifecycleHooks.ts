@@ -4,7 +4,7 @@ export function useComponentDidMount<T>(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
 
     // will only execute the first time.
-    useEffect(() => delegate(), [delegate]);
+    useEffect(() => delegate(), []);
 }
 
 export function useComponentWillUnmount(delegate: () => void) {
@@ -13,7 +13,7 @@ export function useComponentWillUnmount(delegate: () => void) {
     // this isn't REALLY on unmount though.  There can be no remaining reference
     // to the component.
 
-    useEffect(() => delegate, [delegate]);
+    useEffect(() => delegate, []);
 
 }
 
