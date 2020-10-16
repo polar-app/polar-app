@@ -34,7 +34,7 @@ import {
 import {SelectionEvents2, SelectRowType} from "./SelectionEvents2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {TaggedCallbacks} from "../annotation_repo/TaggedCallbacks";
-import {BatchMutators, PromiseFactory} from "../BatchMutators";
+import {BatchMutators} from "../BatchMutators";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
@@ -45,7 +45,6 @@ import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
-import { TagFilters } from "polar-shared/src/tags/TagFilters";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 
 interface IDocRepoStore {
