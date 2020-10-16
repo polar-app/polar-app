@@ -1,6 +1,9 @@
 
+
+
 # 2.0.?
 
+- Fixed bug with app not exiting on last window.
 - Remove trial text since we can't currently offer trials
 - 
 

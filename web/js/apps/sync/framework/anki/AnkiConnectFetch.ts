@@ -1,6 +1,7 @@
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 import {Logger} from 'polar-shared/src/logger/Logger';
+import { AnkiSyncError } from './AnkiSyncError';
 
 const log = Logger.create();
 
@@ -16,7 +17,6 @@ export class AnkiConnectFetch {
     public static async initialize<T>(): Promise<any> {
 
         // try to determine which port to use based on polar connect vs anki connect
-
         const detectPort = async (): Promise<number> => {
 
             for (const port of this.PORTS) {
@@ -43,7 +43,7 @@ export class AnkiConnectFetch {
 
             const msg = `Unable to connect to anki with ports ${this.PORTS} (make sure Anki Connect is installed)`;
             log.error(msg);
-            throw new Error(msg);
+            throw new AnkiSyncError(msg, 'no-anki-connect');
 
         };
 
