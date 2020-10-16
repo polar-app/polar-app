@@ -16,7 +16,7 @@ interface IProps {
     readonly size?: 'small' | 'medium' | 'large';
 }
 
-export const MUILinkButton = deepMemo((props: IProps) => {
+export const MUILinkLoaderButton = deepMemo((props: IProps) => {
 
     const linkLoader = useLinkLoader();
 

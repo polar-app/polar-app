@@ -15,6 +15,9 @@ import {
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {DocMetaSupplier} from "../metadata/DocMetaSupplier";
+import {AnkiSyncError} from "../apps/sync/framework/anki/AnkiSyncError";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {MUILinkLoaderButton} from "../mui/MUILinkLoaderButton";
 
 export const AnkiSyncController = React.memo(() => {
 
@@ -140,8 +143,52 @@ export const AnkiSyncController = React.memo(() => {
             }
         }
 
+        function handleError(err: Error) {
+            if (err instanceof AnkiSyncError) {
+
+                console.error("Could not sync to Anki: ", err);
+
+                dialogManager.confirm({
+                    type: 'error',
+                    title: "Could not sync to Anki",
+                    subtitle: (
+                        <>
+                            We were unable to sync to Anki.  But don't worry - it's probably one of the following
+                            items:
+
+                            <ul>
+                                <li>Make sure Anki is running.</li>
+
+                                <li>
+
+                                    Make sure you have the Anki Connect add-on installed.
+
+                                    <p>
+                                        <MUILinkLoaderButton href="https://ankiweb.net/shared/info/2055492159" variant="contained">
+                                            Install Anki Connect
+                                        </MUILinkLoaderButton>
+                                    </p>
+
+                                </li>
+
+                                <li>
+                                    Make sure you don't have a firewall preventing us from connecting to port 8765.
+                                </li>
+                            </ul>
+
+                        </>
+                    ),
+                    noCancel: true,
+                    onAccept: NULL_FUNCTION
+                });
+
+            } else {
+                log.error("Could not sync to Anki: ", err);
+            }
+        }
+
         doAsync()
-            .catch(err => log.error("Could not sync to Anki: ", err));
+            .catch(handleError);
 
     }, [log, persistenceLayerProvider, dialogManager]);
 
