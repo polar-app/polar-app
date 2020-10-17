@@ -45,7 +45,6 @@ import {
     DocAnnotationsMutator,
     IAreaHighlightMutation, ITextHighlightMutation, ICommentMutation, IFlashcardMutation, IColorMutation
 } from "./AnnotationMutationsContext";
-import {UUIDs} from "../metadata/UUIDs";
 
 /**
  * @param updateStore: Update the store directly.
