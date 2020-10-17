@@ -14,7 +14,6 @@ import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlight
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {UUIDs} from "../../../../web/js/metadata/UUIDs";
 import {useCallbackWithTracing} from "../../../../web/js/hooks/UseCallbackWithTracing";
 
 export interface AreaHighlightCreatedOpts {
@@ -43,13 +42,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 
-    // FIXME: this is the ug... the docViewerStore isn't being updated!!!
-
-    console.log("FIXME: DOC_WRITE useAreaHighlightHooks: got update with docMeta: " + UUIDs.format(docMeta?.docInfo.uuid) );
-
     const onAreaHighlightCreatedAsync = useCallbackWithTracing('onAreaHighlightCreatedAsync', async (opts: AreaHighlightCreatedOpts) => {
-
-        console.log("FIXME: DOC_WRITE onAreaHighlightCreatedAsync: " + UUIDs.format(docMeta?.docInfo.uuid));
 
         const {pageNum, pointWithinPageElement} = opts;
 
@@ -97,8 +90,6 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
-            console.log("FIXME: DOC_WRITE onAreaHighlightUpdatedAsync: updating with docMeta: ", UUIDs.format(docMeta?.docInfo.uuid));
-
             const mutation: IAreaHighlightUpdate = {
                 type: 'update',
                 docMeta,
@@ -106,8 +97,6 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
                 ...capturedAreaHighlight,
                 areaHighlight,
             };
-
-            console.log("FIXME: DOC_WRITE calling onAreaHighlight...: ", onAreaHighlight);
 
             onAreaHighlight(mutation);
 
