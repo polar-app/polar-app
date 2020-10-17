@@ -12,8 +12,11 @@ import {IXYRect} from "polar-shared/src/util/rects/IXYRect";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 
 interface IProps {
+
     readonly id?: string;
+
     readonly style?: React.CSSProperties;
+
     readonly resizeHandleStyle?: React.CSSProperties;
 
     readonly className?: string;
@@ -162,7 +165,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
             console.error(e);
         }
 
-    }, [])
+    }, [props.onResized, props.resizeAxis, state])
 
     // force pointer events on the resize corners.
     const resizeHandleStyle: React.CSSProperties = {

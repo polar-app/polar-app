@@ -5,7 +5,7 @@ import debugIsEqual = DeepEquals.debugIsEqual;
 
 /**
  * React.memo and React.forwardRef all in one function with deep isEqual support
- *  for ease of use.
+ * for ease of use.
  */
 export function memoForwardRef<E, P>(component: React.ForwardRefRenderFunction<E, P>) {
     return React.memo(React.forwardRef<E, P>((props: P, ref) => component(props, ref)), isEqual);

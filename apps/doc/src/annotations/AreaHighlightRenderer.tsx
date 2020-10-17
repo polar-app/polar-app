@@ -17,6 +17,8 @@ import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useCallbackWithTracing} from "../../../../web/js/hooks/UseCallbackWithTracing";
+import {Arrays} from "polar-shared/src/util/Arrays";
+import isEqual from 'react-fast-compare';
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -25,7 +27,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const AreaHighlightRenderer = deepMemo((props: IProps) => {
+export const AreaHighlightRenderer = React.memo((props: IProps) => {
 
     const {areaHighlight, fingerprint, pageNum, container} = props;
     const {id} = areaHighlight;
@@ -91,11 +93,19 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
         console.log("FIXME: createing new portal")
 
+        // FIXME: this is complicated:
+        //
+        // - handleRegionResize is being called wth version 1 and NEVER getting to call the new version
+        // - toReactPortal IS being called with the right version but the version of handleRegionResize
+        //   we're working with is wrong
+        // - handleRegionResize IS being invalidated...
+        // - TODO: how do keys in portals work?
+
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
 
         if (! overlayRect) {
-            return;
+            return null;
         }
 
         const id = createID();
@@ -104,8 +114,6 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
         const color: HighlightColor = areaHighlight.color || 'yellow';
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
-
-        // FIXME: this might be the issue.. that the portals don't have keys...
 
         return ReactDOM.createPortal(
             <ResizeBox
@@ -137,13 +145,21 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect]);
 
-    const portals = Object.values(areaHighlight.rects)
-        .map(current => toReactPortal(current, container));
+    const rect = Arrays.first(Object.values(areaHighlight.rects));
 
-    return (
-        <>
-            {portals}
-        </>
-    );
+    if (rect) {
+        return toReactPortal(rect, container)
+    } else {
+        return null;
+    }
 
-});
+    // const portals = Object.values(areaHighlight.rects)
+    //     .map(current => toReactPortal(current, container));
+    //
+    // return (
+    //     <>
+    //         {portals}
+    //     </>
+    // );
+
+}, isEqual);
