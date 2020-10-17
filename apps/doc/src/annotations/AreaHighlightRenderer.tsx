@@ -16,6 +16,7 @@ import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {useCallbackWithTracing} from "../../../../web/js/hooks/UseCallbackWithTracing";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -32,19 +33,19 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
     const docViewerElementsContext = useDocViewerElementsContext();
 
-    if (! docScale) {
-        return null;
-    }
-
-    const {scaleValue} = docScale;
-
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
-    if (! pageElement) {
-        return null;
-    }
+    const toOverlayRect = useCallbackWithTracing('toOverlayRect', (areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
 
-    const toOverlayRect = React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect => {
+        if (! pageElement) {
+            return undefined;
+        }
+
+        if (! docScale) {
+            return undefined;
+        }
+
+        const {scaleValue} = docScale;
 
         const pageDimensions = computePageDimensions(pageElement);
 
@@ -66,9 +67,9 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
         return areaHighlightRect.toDimensions(pageDimensions);
 
-    }, [areaHighlight, pageElement, scaleValue]);
+    }, [areaHighlight.position, docScale, pageElement]);
 
-    const handleRegionResize = React.useCallback((overlayRect: ILTRect) => {
+    const handleRegionResize = useCallbackWithTracing('handleRegionResize', (overlayRect: ILTRect) => {
 
         // get the most recent area highlight as since this is using state
         // we have can have a stale highlight.
@@ -82,14 +83,20 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
 
-    const createID = React.useCallback(() => {
+    const createID = useCallbackWithTracing('createID', () => {
         return `area-highlight-${areaHighlight.id}`;
     }, [areaHighlight]);
 
-    const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
+    const toReactPortal = useCallbackWithTracing('toReactPortal', (rect: IRect, container: HTMLElement) => {
+
+        console.log("FIXME: createing new portal")
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
+
+        if (! overlayRect) {
+            return;
+        }
 
         const id = createID();
 
@@ -97,6 +104,8 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
         const color: HighlightColor = areaHighlight.color || 'yellow';
         const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
+
+        // FIXME: this might be the issue.. that the portals don't have keys...
 
         return ReactDOM.createPortal(
             <ResizeBox
@@ -106,8 +115,8 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
                  data-area-highlight-id={areaHighlight.id}
                  data-annotation-id={areaHighlight.id}
                  data-page-num={pageNum}
-                // annotation descriptor metadata - might not be needed
-                // anymore
+                 // annotation descriptor metadata - might not be needed
+                 // anymore
                  data-annotation-type="area-highlight"
                  data-annotation-page-num={pageNum}
                  data-annotation-doc-fingerprint={fingerprint}
@@ -123,7 +132,9 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
                  }}
                  onResized={handleRegionResize}
                  />,
-            container);
+            container,
+            id);
+
     }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect]);
 
     const portals = Object.values(areaHighlight.rects)
