@@ -64,13 +64,13 @@ export class RepoDocMetaManager {
 
                 const existing = this.repoDocInfoIndex.get(fingerprint);
 
-                if (DocViewerSnapshots.computeUpdateType(existing?.docInfo.uuid,
-                                                         repoDocMeta.repoDocInfo.docInfo.uuid) === 'stale') {
+                if (DocViewerSnapshots.computeUpdateType3(existing?.docInfo.uuid,
+                                                          repoDocMeta.repoDocInfo.docInfo.uuid).type === 'stale') {
                     return true;
                 }
 
-                if (DocViewerSnapshots.computeUpdateType(existing?.docMeta.docInfo.uuid,
-                                                         repoDocMeta.repoDocInfo.docMeta.docInfo.uuid) === 'stale') {
+                if (DocViewerSnapshots.computeUpdateType3(existing?.docMeta.docInfo.uuid,
+                                                         repoDocMeta.repoDocInfo.docMeta.docInfo.uuid).type === 'stale') {
                     return true;
                 }
 

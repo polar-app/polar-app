@@ -1,9 +1,9 @@
-/**
- * System that just uses the legacy RendererAnalytics until we do away with GA.
- */
 import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
+/**
+ * System that just uses the legacy RendererAnalytics until we do away with GA.
+ */
 export class GAAnalytics implements IAnalytics {
 
     public event(evt: IEventArgs) {
