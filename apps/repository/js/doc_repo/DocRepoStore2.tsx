@@ -1,8 +1,8 @@
+import * as React from "react";
 import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "./Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";
-import React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -838,7 +838,7 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
 
     const doRefresh = React.useCallback(Debouncers.create(() => {
         docRepoMutator.refresh();
-    }), []);
+    }), [docRepoMutator]);
 
     useComponentDidMount(() => {
         docRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocInfoIndex.values());

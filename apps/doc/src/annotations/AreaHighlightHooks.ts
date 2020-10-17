@@ -41,74 +41,74 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 
-    const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
+    const onAreaHighlightCreatedAsync = React.useCallback(async (opts: AreaHighlightCreatedOpts) => {
 
         const {pageNum, pointWithinPageElement} = opts;
 
-        async function doAsync() {
+        if (docScale && docMeta) {
 
-            if (docScale && docMeta) {
+            const capturedAreaHighlight =
+                await createAreaHighlightFromEvent(pageNum,
+                    pointWithinPageElement,
+                    docScale,
+                    fileType);
 
-                const capturedAreaHighlight =
-                    await createAreaHighlightFromEvent(pageNum,
-                                                       pointWithinPageElement,
-                                                       docScale,
-                                                       fileType);
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
-                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+            const mutation: IAreaHighlightCreate = {
+                type: 'create',
+                docMeta,
+                pageMeta,
+                ...capturedAreaHighlight
+            };
 
-                const mutation: IAreaHighlightCreate = {
-                    type: 'create',
-                    docMeta,
-                    pageMeta,
-                    ...capturedAreaHighlight
-                };
-
-                onAreaHighlight(mutation);
-
-            }
+            onAreaHighlight(mutation);
 
         }
 
-        doAsync()
+    }, [docMeta, docScale, fileType, onAreaHighlight]);
+
+    const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
+
+        onAreaHighlightCreatedAsync(opts)
             .catch(err => log.error(err));
 
-    }, [docMeta, docScale, fileType, log, onAreaHighlight]);
+    }, [log, onAreaHighlightCreatedAsync]);
 
-    const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
+    const onAreaHighlightUpdatedAsync = React.useCallback(async (opts: AreaHighlightUpdatedOpts) => {
 
         const {areaHighlight, pageNum, overlayRect} = opts;
 
-        async function doAsync() {
+        if (docScale && docMeta) {
 
-            if (docScale && docMeta) {
+            const capturedAreaHighlight =
+                await createAreaHighlightFromOverlayRect(pageNum,
+                    overlayRect,
+                    docScale,
+                    fileType);
 
-                const capturedAreaHighlight =
-                    await createAreaHighlightFromOverlayRect(pageNum,
-                                                             overlayRect,
-                                                             docScale,
-                                                             fileType);
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
-                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+            const mutation: IAreaHighlightUpdate = {
+                type: 'update',
+                docMeta,
+                pageMeta,
+                ...capturedAreaHighlight,
+                areaHighlight,
+            };
 
-                const mutation: IAreaHighlightUpdate = {
-                    type: 'update',
-                    docMeta,
-                    pageMeta,
-                    ...capturedAreaHighlight,
-                    areaHighlight,
-                };
-
-                onAreaHighlight(mutation);
-
-            }
+            onAreaHighlight(mutation);
 
         }
 
-        doAsync()
+    }, [docMeta, docScale, fileType, onAreaHighlight]);
+
+    const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
+
+        onAreaHighlightUpdatedAsync(opts)
             .catch(err => log.error(err));
 
-    }, [docMeta, docScale, fileType, log, onAreaHighlight]);
+    }, [log, onAreaHighlightUpdatedAsync]);
 
     return {onAreaHighlightCreated, onAreaHighlightUpdated};
 
