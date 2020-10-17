@@ -20,7 +20,6 @@ import {
 } from "polar-shared/src/metadata/IBaseHighlight";
 import {DatastoreFileCache} from '../datastore/DatastoreFileCache';
 import {ICapturedScreenshot} from '../screenshots/Screenshot';
-import {Dimensions} from '../util/Dimensions';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {DataURLs} from 'polar-shared/src/util/DataURLs';
 import {Rects} from '../Rects';
@@ -119,11 +118,6 @@ export class AreaHighlights {
 
     }
 
-}
-
-interface PageDimensions {
-    readonly pageDimensions: Dimensions;
-    readonly dimensionsElement: HTMLElement;
 }
 
 export interface DoWriteOpts {

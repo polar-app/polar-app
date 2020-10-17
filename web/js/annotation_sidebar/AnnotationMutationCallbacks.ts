@@ -45,6 +45,7 @@ import {
     DocAnnotationsMutator,
     IAreaHighlightMutation, ITextHighlightMutation, ICommentMutation, IFlashcardMutation, IColorMutation
 } from "./AnnotationMutationsContext";
+import {UUIDs} from "../metadata/UUIDs";
 
 /**
  * @param updateStore: Update the store directly.
@@ -257,6 +258,8 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 const {docMeta, pageMeta, areaHighlight, capturedScreenshot, position} = mutation;
 
+                console.log("FIXME: onAreaHighlight: DOC_WRITE", UUIDs.format(docMeta.docInfo.uuid));
+
                 Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot')
 
                 function toAreaHighlightRect() {
@@ -295,7 +298,8 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
             }
 
-            doAsync().catch(err => log.error(err));
+            doAsync()
+                .catch(err => log.error(err));
 
         }
 

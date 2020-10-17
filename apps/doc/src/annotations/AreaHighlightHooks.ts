@@ -14,6 +14,7 @@ import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlight
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {useDocViewerContext} from "../renderers/DocRenderer";
+import {UUIDs} from "../../../../web/js/metadata/UUIDs";
 
 export interface AreaHighlightCreatedOpts {
     readonly pointWithinPageElement: IPoint;
@@ -37,35 +38,46 @@ interface IAreaHighlightHooks {
 export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     const {onAreaHighlight} = useAnnotationMutationsContext();
-    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
+    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta'], {debug: true});
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 
-    const onAreaHighlightCreatedAsync = React.useCallback(async (opts: AreaHighlightCreatedOpts) => {
+    // FIXME: this is the ug... the docViewerStore isn't being updated!!!
 
-        const {pageNum, pointWithinPageElement} = opts;
+    console.log("FIXME: DOC_WRITE useAreaHighlightHooks: got update with docMeta: " + UUIDs.format(docMeta?.docInfo.uuid) );
 
-        if (docScale && docMeta) {
+    const onAreaHighlightCreatedAsync = React.useMemo(() => {
 
-            const capturedAreaHighlight =
-                await createAreaHighlightFromEvent(pageNum,
-                    pointWithinPageElement,
-                    docScale,
-                    fileType);
+        console.log("FIXME: DOC_WRITE: recreating function: onAreaHighlightCreatedAsync ");
 
-            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+        return async (opts: AreaHighlightCreatedOpts) => {
 
-            const mutation: IAreaHighlightCreate = {
-                type: 'create',
-                docMeta,
-                pageMeta,
-                ...capturedAreaHighlight
-            };
+            console.log("FIXME: DOC_WRITE onAreaHighlightCreatedAsync: " + UUIDs.format(docMeta?.docInfo.uuid));
 
-            onAreaHighlight(mutation);
+            const {pageNum, pointWithinPageElement} = opts;
 
-        }
+            if (docScale && docMeta) {
 
+                const capturedAreaHighlight =
+                    await createAreaHighlightFromEvent(pageNum,
+                        pointWithinPageElement,
+                        docScale,
+                        fileType);
+
+                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+
+                const mutation: IAreaHighlightCreate = {
+                    type: 'create',
+                    docMeta,
+                    pageMeta,
+                    ...capturedAreaHighlight
+                };
+
+                onAreaHighlight(mutation);
+
+            }
+
+        };
     }, [docMeta, docScale, fileType, onAreaHighlight]);
 
     const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
@@ -75,42 +87,58 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }, [log, onAreaHighlightCreatedAsync]);
 
-    const onAreaHighlightUpdatedAsync = React.useCallback(async (opts: AreaHighlightUpdatedOpts) => {
+    const onAreaHighlightUpdatedAsync = React.useMemo(() => {
 
-        const {areaHighlight, pageNum, overlayRect} = opts;
+        console.log("FIXME: DOC_WRITE: recreating function: onAreaHighlightUpdatedAsync ");
 
-        if (docScale && docMeta) {
+        return async (opts: AreaHighlightUpdatedOpts) => {
 
-            const capturedAreaHighlight =
-                await createAreaHighlightFromOverlayRect(pageNum,
-                    overlayRect,
-                    docScale,
-                    fileType);
+            const {areaHighlight, pageNum, overlayRect} = opts;
 
-            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+            if (docScale && docMeta) {
 
-            const mutation: IAreaHighlightUpdate = {
-                type: 'update',
-                docMeta,
-                pageMeta,
-                ...capturedAreaHighlight,
-                areaHighlight,
-            };
+                const capturedAreaHighlight =
+                    await createAreaHighlightFromOverlayRect(pageNum,
+                        overlayRect,
+                        docScale,
+                        fileType);
 
-            onAreaHighlight(mutation);
+                const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
-        }
+                console.log("FIXME: DOC_WRITE onAreaHighlightUpdatedAsync: updating with docMeta: ", UUIDs.format(docMeta?.docInfo.uuid));
 
+                const mutation: IAreaHighlightUpdate = {
+                    type: 'update',
+                    docMeta,
+                    pageMeta,
+                    ...capturedAreaHighlight,
+                    areaHighlight,
+                };
+
+                console.log("FIXME: DOC_WRITE calling onAreaHighlight...: ", onAreaHighlight);
+
+                onAreaHighlight(mutation);
+
+            }
+
+        };
     }, [docMeta, docScale, fileType, onAreaHighlight]);
 
-    const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
+    const onAreaHighlightUpdated = React.useMemo(() => {
 
-        onAreaHighlightUpdatedAsync(opts)
-            .catch(err => log.error(err));
+        console.log("FIXME: DOC_WRITE: recreating function: onAreaHighlightUpdated ");
 
+        return (opts: AreaHighlightUpdatedOpts) => {
+
+            onAreaHighlightUpdatedAsync(opts)
+                .catch(err => log.error(err));
+
+        };
     }, [log, onAreaHighlightUpdatedAsync]);
 
-    return {onAreaHighlightCreated, onAreaHighlightUpdated};
+    return React.useMemo(() => {
+        return {onAreaHighlightCreated, onAreaHighlightUpdated};
+    }, [onAreaHighlightCreated, onAreaHighlightUpdated]);
 
 }
 

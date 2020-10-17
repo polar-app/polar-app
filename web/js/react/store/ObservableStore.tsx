@@ -24,7 +24,7 @@ function usePick<T, K extends keyof T>(useStoreHook: () => T,
 
     const store = useStoreHook();
 
-    const [value, setValue] = React.useState<Pick<T, K>>(pick(store, keys));
+    const [value, ] = React.useState<Pick<T, K>>(pick(store, keys));
 
     return value;
 
@@ -61,7 +61,8 @@ export type Store<V> = [V, SetStore<V>];
 
 
 export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
-                                                         keys: ReadonlyArray<K> | undefined): Pick<V, K> {
+                                                         keys: ReadonlyArray<K> | undefined,
+                                                         opts?: IUseStoreHooksOpts): Pick<V, K> {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
@@ -75,7 +76,15 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
     const subscriptionRef = React.useRef(internalObservableStore.subject.subscribe((nextValue) => {
 
+        function debug(msg: string, ...args: any[]) {
+            if (opts?.debug) {
+                console.log("DEBUG: " + msg, args);
+            }
+        }
+
         if (keys) {
+
+            debug("Using keys");
 
             // we have received an update but we're only interested in a few
             // keys so compare them.
@@ -87,7 +96,10 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
             if (! isEqual(currValuePicked, nextValuePicked)) {
                 // the internal current in the context is already updated.
+                debug("values are updated: ", nextValuePicked, currValuePicked);
                 return doUpdateValue(nextValue);
+            } else {
+                debug("values are NOT updated: ", nextValuePicked, currValuePicked);
             }
 
         } else {
@@ -141,11 +153,11 @@ function createObservableStoreContext<V>(store: InternalObservableStore<V>): Int
 
 }
 
-interface ObservableStoreProps<V> {
+interface ObservableStoreProps {
     readonly children: JSX.Element | Provider<JSX.Element>;
 }
 
-export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
+export type ObservableStoreProviderComponent = (props: ObservableStoreProps) => JSX.Element;
 
 /**
  * Hook to listen to store changes. Use undefined to not filter for properties
@@ -162,12 +174,14 @@ export interface StoreMutator {
 
 }
 
-// type FooTuple = [<V extends unknown, K extends keyof V>(keys: ReadonlyArray<K>) => void];
+export interface IUseStoreHooksOpts {
+    readonly debug?: boolean;
+}
 
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
-    ObservableStoreProviderComponent<V>,
+    ObservableStoreProviderComponent,
     // NOTE: it's not possible to use a type for this because V is defined in the tuple
-    <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => Pick<V, K>,
+    <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
 ];
@@ -268,8 +282,8 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
-    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
-        return useObservableStore(storeContext, keys);
+    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => {
+        return useObservableStore(storeContext, keys, opts);
     }
 
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
@@ -285,7 +299,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return React.useContext(mutatorContext);
     }
 
-    const providerComponent = (props: ObservableStoreProps<V>) => {
+    const providerComponent = (props: ObservableStoreProps) => {
 
         // const [store, mutator, componentCallbacksFactory]
         //     = useMemo(() => createInitialContextValues(opts), []);

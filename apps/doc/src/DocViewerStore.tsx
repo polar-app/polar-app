@@ -45,16 +45,15 @@ import {
     IRelatedTagsData,
     RelatedTagsManager
 } from "../../../web/js/tags/related/RelatedTagsManager";
-import {IDocMetas} from 'polar-shared/src/metadata/IDocMetas';
 import TaggedCallbacksOpts = TaggedCallbacks.TaggedCallbacksOpts;
 import ComputeNewTagsStrategy = Tags.ComputeNewTagsStrategy;
 import ITagsHolder = TaggedCallbacks.ITagsHolder;
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
-import {useLogWhenChanged} from "../../../web/js/hooks/ReactHooks";
 import isEqual from 'react-fast-compare';
 import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import ScaleDelta = PDFScales.ScaleDelta;
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
+import {UUIDs} from "../../../web/js/metadata/UUIDs";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -363,7 +362,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             Preconditions.assertPresent(docMeta, 'docMeta');
 
-            function doExec() {
+            function doSetStoreAndUpdate(docMeta: IDocMeta) {
+
                 const store = storeProvider();
 
                 const computeDocURL = (): URLStr | undefined => {
@@ -394,31 +394,48 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
             const store = storeProvider();
 
-            const updateType = DocViewerSnapshots.computeUpdateType2(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
+            const docViewerSnapshotUpdate = DocViewerSnapshots.computeUpdateType3(store.docMeta?.docInfo?.uuid, docMeta.docInfo.uuid);
 
-            console.log(`Update for docMeta was ${updateType} for type=${type} - ${store.docMeta?.docInfo?.uuid} vs ${docMeta.docInfo.uuid}`);
+            console.log(`DOC_WRITE: Update for docMeta was ${docViewerSnapshotUpdate.type} for type=${type}, cmp=${docViewerSnapshotUpdate.cmp}: \n    curr=${UUIDs.format(store.docMeta?.docInfo?.uuid)} \n    next=${UUIDs.format(docMeta.docInfo.uuid)}`);
 
-            if (['snapshot-local', 'snapshot-server'].includes(type) && updateType === 'self') {
+            if (['snapshot-local', 'snapshot-server'].includes(type) && docViewerSnapshotUpdate.type === 'self') {
 
                 if (type === 'snapshot-server') {
                     // if we received our own update from the server we know we have no more pending writes.
                     setStore({...store, hasPendingWrites: false});
                 }
 
+                console.log(`DOC_WRITE: Skipping update (type=${type}, update type: ${docViewerSnapshotUpdate.type})`);
+
                 return;
             }
 
-            if (updateType === 'stale') {
+            if (docViewerSnapshotUpdate.type === 'stale') {
+                console.log("DOC_WRITE: Skipping update (stale)");
                 return;
             }
 
-            // update the main store.
-            doExec();
+            /**
+             * Internally the docMeta may NOT actually be a new object because some functions update the DocMeta
+             * directly (which they really shouldn't be doing) so we just perform a deep copy of the object so
+             * that the stores actually fire that they were updated because they just do a shallow/quick object
+             * comparison not a deep comparison.
+             */
+            function cloneDocMetaAndUpdate() {
 
-            docMetaContext.setDoc({docMeta, mutable: true});
+                docMeta = DocMetas.copyOf(docMeta);
 
-            // update the annotation sidebar
-            annotationSidebarCallbacks.setDocMeta(docMeta);
+                // update the main store.
+                doSetStoreAndUpdate(docMeta);
+
+                docMetaContext.setDoc({docMeta, mutable: true});
+
+                // update the annotation sidebar
+                annotationSidebarCallbacks.setDocMeta(docMeta);
+
+            }
+
+            cloneDocMetaAndUpdate();
 
         }
 
@@ -739,7 +756,7 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         async function doPageJump(newPage: number) {
 
             const store = storeProvider();
-            const {pageNavigator, page} = store;
+            const {pageNavigator} = store;
 
             if (! pageNavigator) {
                 return;

@@ -208,14 +208,23 @@ export interface IAnnotationMutationCallbacks {
 
 }
 
+function createNullFunction1<V>(functionName: string): (value: V) => void {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return (value: V) => {
+        console.warn("NULL function called: " + functionName);
+    }
+
+}
+
 const AnnotationMutationsContext = React.createContext<IAnnotationMutationCallbacks>({
 
     writeUpdatedDocMetas: ASYNC_NULL_FUNCTION,
 
     createDeletedCallback: () => NULL_FUNCTION,
     onDeleted: NULL_FUNCTION,
-    onAreaHighlight: NULL_FUNCTION,
-    onTextHighlight: NULL_FUNCTION,
+    onAreaHighlight: createNullFunction1('onAreaHighlight'),
+    onTextHighlight: createNullFunction1('onTextHighlight'),
 
     createCommentCallback: () => NULL_FUNCTION,
     onComment: NULL_FUNCTION,
@@ -332,13 +341,15 @@ export namespace DocAnnotationsMutator {
                                     pageMeta: IPageMeta,
                                     mutation: IAreaHighlightMutation) {
 
+        console.log("FIXME: onAreaHighlight: updating with docMeta: ", docMeta?.docInfo.uuid);
+
         const {areaHighlight} = mutation;
 
         switch (mutation.type) {
 
             case "update":
 
-                AreaHighlights.update(areaHighlight.id,docMeta, pageMeta, areaHighlight);
+                AreaHighlights.update(areaHighlight.id, docMeta, pageMeta, areaHighlight);
 
                 break;
 

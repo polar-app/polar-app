@@ -18,4 +18,27 @@ describe('UUIDs', function() {
 
     });
 
+    describe("cmp", function() {
+
+        it('basic', async function() {
+            // FIXME: I think this might be INVERSE of what normal sring comparison is...
+            assert.equal(UUIDs.cmp('0000', '0000'), 0);
+            assert.equal(UUIDs.cmp('0001', '0000'), 1);
+            assert.equal(UUIDs.cmp('0000', '0001'), -1);
+        });
+
+    });
+
+    describe("cmp2", function() {
+
+        it('basic', async function() {
+            // FIXME: I think this might be INVERSE of what normal sring comparison is...
+            assert.equal(UUIDs.cmp2('0000', '0000'), 0);
+            assert.equal(UUIDs.cmp2('0001', '0000'), -1);
+            assert.equal(UUIDs.cmp2('0000', '0001'), 1);
+        });
+
+    });
+
+
 });

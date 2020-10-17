@@ -25,6 +25,7 @@ import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "./UUIDs";
+import {IDocLoader} from "../apps/main/doc_loaders/IDocLoader";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
@@ -59,6 +60,7 @@ export class DocMetas {
     /**
      * Create the basic DocInfo structure that we can use with required / basic
      * field structure.
+     *
      * @param fingerprint The fingerprint of the document
      * @param nrPages The number of pages in this document.
      */
@@ -87,6 +89,7 @@ export class DocMetas {
     /**
      * Create a DocMeta object but place initial pagemarks on it. This is useful
      * for testing.
+     *
      * @deprecated use MockDocMetas
      */
     public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
@@ -289,6 +292,12 @@ export class DocMetas {
         const docInfo = Dictionaries.copyOf(docMeta.docInfo);
         return Object.assign(new DocMeta(docInfo, {}), docMeta);
 
+    }
+
+    public static copyOf(docMeta: IDocMeta): IDocMeta {
+        docMeta = Dictionaries.copyOf(docMeta);
+        const docInfo = Dictionaries.copyOf(docMeta.docInfo);
+        return Object.assign(new DocMeta(docInfo, {}), docMeta);
     }
 
 }

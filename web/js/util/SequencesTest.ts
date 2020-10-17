@@ -1,10 +1,6 @@
 import {assert} from 'chai';
-import {ProgressCalculator} from './ProgressCalculator';
-import {ResolvablePromise} from './ResolvablePromise';
 import {TestingTime} from 'polar-shared/src/test/TestingTime';
 import {Sequences} from './Sequences';
-import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-
 
 describe('Sequences', function() {
 
@@ -34,7 +30,6 @@ describe('Sequences', function() {
 
     });
 
-
     it("Small machine and nonces", async function() {
 
         TestingTime.freeze();
@@ -45,6 +40,21 @@ describe('Sequences', function() {
         const seq = Sequences.create();
 
         assert.equal(seq, "z2012-03-02T11:38:49.321Z+000000-000000000000");
+
+    });
+
+
+    it("Parse", async function() {
+
+        const input = "z2012-03-02T11:38:49.321Z+000001-100000000000";
+
+        const sequence = Sequences.parse(input);
+
+        assert.isDefined(sequence);
+
+        assert.equal(sequence?.timestamp, "2012-03-02T11:38:49.321Z")
+        assert.equal(sequence?.nonce, "000001")
+        assert.equal(sequence?.machine, "100000000000")
 
     });
 
