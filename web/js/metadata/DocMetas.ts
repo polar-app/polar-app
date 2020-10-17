@@ -25,7 +25,6 @@ import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "./UUIDs";
-import {IDocLoader} from "../apps/main/doc_loaders/IDocLoader";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,

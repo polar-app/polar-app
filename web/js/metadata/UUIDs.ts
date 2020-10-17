@@ -59,21 +59,16 @@ export namespace UUIDs {
     export function compare2(u0?: UUID, u1?: UUID) {
 
         if (u0 === undefined && u1 !== undefined) {
-            console.log("FIXME1");
             return -1;
         }
 
         if (u0 === undefined && u1 === undefined) {
-            console.log("FIXME2");
             return 0;
         }
 
         if (u0 !== undefined && u1 === undefined) {
-            console.log("FIXME3");
             return 1;
         }
-
-        console.log("FIXME: cmp ");
 
         return cmp2(u0!, u1!);
 

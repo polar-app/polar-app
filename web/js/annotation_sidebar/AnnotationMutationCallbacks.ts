@@ -258,8 +258,6 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 const {docMeta, pageMeta, areaHighlight, capturedScreenshot, position} = mutation;
 
-                console.log("FIXME: onAreaHighlight: DOC_WRITE", UUIDs.format(docMeta.docInfo.uuid));
-
                 Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot')
 
                 function toAreaHighlightRect() {

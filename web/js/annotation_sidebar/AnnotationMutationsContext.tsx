@@ -341,8 +341,6 @@ export namespace DocAnnotationsMutator {
                                     pageMeta: IPageMeta,
                                     mutation: IAreaHighlightMutation) {
 
-        console.log("FIXME: onAreaHighlight: updating with docMeta: ", docMeta?.docInfo.uuid);
-
         const {areaHighlight} = mutation;
 
         switch (mutation.type) {

@@ -33,7 +33,6 @@ describe('DocViewerSnapshots', function() {
         assert.equal(UUIDs.cmp('z2020-10-17T16:00:20.885Z', 'z2020-10-17T16:01:08.120Z'), -1);
         assert.equal(UUIDs.cmp(currUUID, nextUUID), -1);
 
-        // FIXME: this is definitely a problem as I'm not sure how this is being generated.
         assert.equal(DocViewerSnapshots.computeUpdateType2(currUUID, nextUUID), 'stale');
 
     });

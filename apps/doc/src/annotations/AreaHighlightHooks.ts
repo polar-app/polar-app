@@ -37,7 +37,7 @@ interface IAreaHighlightHooks {
 export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     const {onAreaHighlight} = useAnnotationMutationsContext();
-    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta'], {debug: true});
+    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 

@@ -31,8 +31,6 @@ export namespace DocViewerSnapshots {
 
         const cmp = UUIDs.compare(current, updated);
 
-        console.log("FIXME: foo" + cmp);
-
         if (cmp > 0) {
             return 'stale'
         }
