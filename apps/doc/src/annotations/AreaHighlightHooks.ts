@@ -14,7 +14,6 @@ import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlight
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {useCallbackWithTracing} from "../../../../web/js/hooks/UseCallbackWithTracing";
 
 export interface AreaHighlightCreatedOpts {
     readonly pointWithinPageElement: IPoint;
@@ -42,7 +41,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 
-    const onAreaHighlightCreatedAsync = useCallbackWithTracing('onAreaHighlightCreatedAsync', async (opts: AreaHighlightCreatedOpts) => {
+    const onAreaHighlightCreatedAsync = React.useCallback(async (opts: AreaHighlightCreatedOpts) => {
 
         const {pageNum, pointWithinPageElement} = opts;
 
@@ -76,7 +75,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }, [log, onAreaHighlightCreatedAsync]);
 
-    const onAreaHighlightUpdatedAsync = useCallbackWithTracing('onAreaHighlightUpdatedAsync', async (opts: AreaHighlightUpdatedOpts) => {
+    const onAreaHighlightUpdatedAsync = React.useCallback(async (opts: AreaHighlightUpdatedOpts) => {
 
         const {areaHighlight, pageNum, overlayRect} = opts;
 
@@ -104,7 +103,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
     }, [docMeta, docScale, fileType, onAreaHighlight]);
 
-    const onAreaHighlightUpdated = useCallbackWithTracing('onAreaHighlightUpdated', (opts: AreaHighlightUpdatedOpts) => {
+    const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
 
         onAreaHighlightUpdatedAsync(opts)
             .catch(err => log.error(err));

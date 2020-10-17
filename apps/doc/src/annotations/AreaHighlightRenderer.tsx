@@ -16,7 +16,6 @@ import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {useCallbackWithTracing} from "../../../../web/js/hooks/UseCallbackWithTracing";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -35,7 +34,7 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
-    const toOverlayRect = useCallbackWithTracing('toOverlayRect', (areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
+    const toOverlayRect = React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
 
         if (! pageElement) {
             return undefined;
@@ -69,7 +68,7 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     }, [areaHighlight.position, docScale, pageElement]);
 
-    const handleRegionResize = useCallbackWithTracing('handleRegionResize', (overlayRect: ILTRect) => {
+    const handleRegionResize = React.useCallback((overlayRect: ILTRect) => {
 
         // get the most recent area highlight as since this is using state
         // we have can have a stale highlight.
@@ -83,11 +82,11 @@ export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
 
-    const createID = useCallbackWithTracing('createID', () => {
+    const createID = React.useCallback(() => {
         return `area-highlight-${areaHighlight.id}`;
     }, [areaHighlight]);
 
-    const toReactPortal = useCallbackWithTracing('toReactPortal', (rect: IRect, container: HTMLElement) => {
+    const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
