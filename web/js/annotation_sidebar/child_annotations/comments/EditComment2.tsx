@@ -36,19 +36,18 @@ export const EditComment2 = deepMemo((props: IProps) => {
     const id = 'rich-text-editor-' + props.id;
 
     return (
-        <InputCompleteListener onComplete={onComplete}>
+        <>
 
-            <div id="annotation-comment-box"
-                 className="m-1">
+            <div id="annotation-comment-box" className="m-1">
 
-                <div className="">
+                <InputCompleteListener type='meta+enter' onComplete={onComplete}>
 
                     <RichTextArea id={id}
                                   value={htmlRef.current}
                                   autofocus={true}
                                   onChange={(html) => htmlRef.current = html}/>
 
-                </div>
+                </InputCompleteListener>
 
                 <div className="pt-1 pb-1">
 
@@ -73,8 +72,7 @@ export const EditComment2 = deepMemo((props: IProps) => {
 
             </div>
 
-
-        </InputCompleteListener>
+        </>
 
     );
 

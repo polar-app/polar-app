@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -8,7 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import isEqual from 'react-fast-compare';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
@@ -116,7 +114,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
             aria-describedby="alert-dialog-description">
 
             <WithDeactivatedKeyboardShortcuts>
-                <InputCompleteListener onComplete={handleAccept} onCancel={handleCancel}>
+                <InputCompleteListener type='enter' noHint={true} onComplete={handleAccept} onCancel={handleCancel}>
                     <>
                         <DialogTitle id="alert-dialog-title" className={palette}>
                             {props.title}

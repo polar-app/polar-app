@@ -8,7 +8,6 @@ import Box from "@material-ui/core/Box";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import Dialog from '@material-ui/core/Dialog';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
@@ -87,7 +86,9 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
                    aria-labelledby="form-dialog-title">
 
             <WithDeactivatedKeyboardShortcuts>
-                <InputCompleteListener onComplete={handleComplete}
+                <InputCompleteListener type='enter'
+                                       noHint={true}
+                                       onComplete={handleComplete}
                                        onCancel={handleCancel}
                                        completable={() => ! activeRef.current}>
                     <>

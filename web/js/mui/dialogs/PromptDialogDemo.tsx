@@ -107,7 +107,7 @@ export const PromptDialog = (props: IProps) => {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title">
 
-            <InputCompleteListener onComplete={handleDone}>
+            <InputCompleteListener onComplete={handleDone} type='enter' noHint={true}>
                 <>
                     <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
                     <DialogContent>

@@ -74,10 +74,10 @@ export const EditTextHighlight2 = (props: IProps) => {
     }
 
     return (
-        <InputCompleteListener onComplete={onComplete}>
+        <>
             <div className="m-1">
 
-                <div className="">
+                <InputCompleteListener type='meta+enter' onComplete={onComplete}>
 
                     <RichTextArea id={props.id}
                                   defaultValue={props.html}
@@ -85,7 +85,7 @@ export const EditTextHighlight2 = (props: IProps) => {
                                   onKeyDown={handleKeyDown}
                                   onChange={(html) => htmlRef.current = html}/>
 
-                </div>
+                </InputCompleteListener>
 
                 <div style={{
                          display: 'flex',
@@ -111,6 +111,6 @@ export const EditTextHighlight2 = (props: IProps) => {
                 </div>
 
             </div>
-        </InputCompleteListener>
+        </>
     );
 };
