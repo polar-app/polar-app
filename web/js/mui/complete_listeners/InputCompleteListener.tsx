@@ -28,6 +28,10 @@ export function useInputCompleteListener(opts: InputCompleteListenerOpts) {
 
     const completable = opts.completable || Providers.of(true);
 
+    // TODO: I think this is technically wrong because we have to
+    // listen and unmount the key listeners on both unmount but also
+    // when dependencies change.
+
     const onKeyDown = React.useCallback((event: KeyboardEvent) => {
 
         if (! completable()) {
