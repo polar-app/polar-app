@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
     IAreaHighlightCreate,
     IAreaHighlightUpdate,
@@ -7,7 +8,6 @@ import {IPoint} from "../../../../web/js/Point";
 import {DocMetas} from "../../../../web/js/metadata/DocMetas";
 import {useDocViewerStore} from "../DocViewerStore";
 import {AreaHighlightRenderers} from "./AreaHighlightRenderers";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlightFromEvent;
@@ -27,6 +27,7 @@ export interface AreaHighlightUpdatedOpts {
 }
 
 interface IAreaHighlightHooks {
+
     readonly onAreaHighlightCreated: (opts: AreaHighlightCreatedOpts) => void;
 
     readonly onAreaHighlightUpdated: (opts: AreaHighlightUpdatedOpts) => void;
@@ -40,7 +41,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const {fileType} = useDocViewerContext();
     const log = useLogger();
 
-    function onAreaHighlightCreated(opts: AreaHighlightCreatedOpts) {
+    const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
 
         const {pageNum, pointWithinPageElement} = opts;
 
@@ -72,9 +73,9 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
         doAsync()
             .catch(err => log.error(err));
 
-    }
+    }, [docMeta, docScale, fileType, log, onAreaHighlight]);
 
-    function onAreaHighlightUpdated(opts: AreaHighlightUpdatedOpts) {
+    const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
 
         const {areaHighlight, pageNum, overlayRect} = opts;
 
@@ -107,7 +108,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
         doAsync()
             .catch(err => log.error(err));
 
-    }
+    }, [docMeta, docScale, fileType, log, onAreaHighlight]);
 
     return {onAreaHighlightCreated, onAreaHighlightUpdated};
 

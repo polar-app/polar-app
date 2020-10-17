@@ -11,11 +11,11 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AreaHighlightRect} from "../../../../web/js/metadata/AreaHighlightRect";
 import {IRect} from "polar-shared/src/util/rects/IRect";
 import {ResizeBox} from "./ResizeBox";
-import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "../DocViewerStore";
 import {useAreaHighlightHooks} from "./AreaHighlightHooks";
 import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -24,7 +24,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const AreaHighlightRenderer = React.memo((props: IProps) => {
+export const AreaHighlightRenderer = deepMemo((props: IProps) => {
 
     const {areaHighlight, fingerprint, pageNum, container} = props;
     const {id} = areaHighlight;
@@ -44,9 +44,9 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
         return null;
     }
 
-    const pageDimensions = computePageDimensions(pageElement);
+    const toOverlayRect = React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect => {
 
-    const toOverlayRect = (areaHighlightRect: AreaHighlightRect): ILTRect => {
+        const pageDimensions = computePageDimensions(pageElement);
 
         if (areaHighlight.position) {
 
@@ -66,9 +66,9 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
 
         return areaHighlightRect.toDimensions(pageDimensions);
 
-    };
+    }, [areaHighlight, pageElement, scaleValue]);
 
-    const handleRegionResize = (overlayRect: ILTRect) => {
+    const handleRegionResize = React.useCallback((overlayRect: ILTRect) => {
 
         // get the most recent area highlight as since this is using state
         // we have can have a stale highlight.
@@ -80,13 +80,13 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
 
         return undefined;
 
-    }
+    }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
 
-    const createID = () => {
+    const createID = React.useCallback(() => {
         return `area-highlight-${areaHighlight.id}`;
-    };
+    }, [areaHighlight]);
 
-    const toReactPortal = (rect: IRect, container: HTMLElement) => {
+    const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
@@ -124,7 +124,7 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
                  onResized={handleRegionResize}
                  />,
             container);
-    };
+    }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect]);
 
     const portals = Object.values(areaHighlight.rects)
         .map(current => toReactPortal(current, container));
@@ -135,5 +135,4 @@ export const AreaHighlightRenderer = React.memo((props: IProps) => {
         </>
     );
 
-
-}, isEqual);
+});

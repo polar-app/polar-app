@@ -21,8 +21,6 @@ export class Sequences {
 
         // 41ccf660-fb5a-11e8-ae78-3bf708237363
 
-        const now = new Date();
-
         const nonce = Strings.lpad(this.NONCE++, '0', 6); // how do I deal with nonce rollover?  I just need to handle
         const machine = Strings.lpad(this.MACHINE, '0', 12);
 
