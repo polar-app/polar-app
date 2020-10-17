@@ -8,7 +8,7 @@ import {
 } from "../../hooks/ReactLifecycleHooks";
 
 export function isInputCompleteEvent(event: KeyboardEvent) {
-    return event.key === 'Enter';
+    return (event.ctrlKey || event.metaKey) && event.key === 'Enter';
 }
 
 interface InputCompleteListenerOpts {
