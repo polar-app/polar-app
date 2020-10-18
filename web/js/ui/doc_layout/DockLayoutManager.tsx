@@ -259,9 +259,10 @@ export interface FixedDocPanelStateMap {
     [id: string]: FixedDocPanelState;
 }
 
-interface FixedDocPanelState {
+export interface FixedDocPanelState {
     readonly id: string;
     readonly width: CSSWidth;
+    readonly side: SideType | undefined;
 }
 
 export interface ResizeTarget {

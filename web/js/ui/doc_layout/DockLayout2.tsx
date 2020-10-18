@@ -13,7 +13,8 @@ const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutSt
         if (docPanel.type === 'fixed') {
             panels[docPanel.id] = {
                 id: docPanel.id,
-                width: docPanel.width || 400
+                width: docPanel.width || 400,
+                side: docPanel.side
             };
         }
 

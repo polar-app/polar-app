@@ -90,6 +90,7 @@ namespace devices {
             {
                 id: "dock-panel-left",
                 type: 'fixed',
+                side: 'left',
                 component: <FolderSidebar2/>,
                 width: 300,
                 style: {
