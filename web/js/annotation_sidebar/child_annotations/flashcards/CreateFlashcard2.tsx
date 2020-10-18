@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useCallback} from 'react';
-import {CancelButton} from "../CancelButton";
 import {FlashcardInput} from './flashcard_input/FlashcardInput';
 import {ScrollIntoView} from '../../../ui/ScrollIntoView';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
@@ -50,15 +49,13 @@ export const CreateFlashcard2 = deepMemo((props: IProps) => {
 
     const defaultValue = props.parent.text;
 
-    const cancelButton = <CancelButton onClick={annotationInputContext.reset}/>;
-
     return (
 
         <ScrollIntoView>
             <FlashcardInput id={'edit-flashcard-for' + props.id}
                             onFlashcard={onFlashcard}
                             defaultValue={defaultValue}
-                            cancelButton={cancelButton}/>
+                            onCancel={annotationInputContext.reset}/>
         </ScrollIntoView>
 
     );

@@ -87,7 +87,7 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
                              alignItems: 'center'
                          }}>
 
-                        <FlashcardButtons cancelButton={this.props.cancelButton}
+                        <FlashcardButtons onCancel={this.props.onCancel}
                                           existingFlashcard={this.props.existingFlashcard}
                                           onCreate={() => this.onCreate()}/>
 
@@ -211,7 +211,7 @@ interface IProps {
 
     readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
 
-    readonly cancelButton: JSX.Element;
+    readonly onCancel: () => void;
 
     readonly existingFlashcard?: Flashcard;
 

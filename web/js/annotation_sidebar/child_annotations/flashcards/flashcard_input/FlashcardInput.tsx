@@ -18,7 +18,7 @@ export interface IProps {
 
     readonly onFlashcard: FlashcardCallback;
 
-    readonly cancelButton: JSX.Element;
+    readonly onCancel: () => void;
 
     readonly existingFlashcard?: Flashcard;
 
@@ -55,7 +55,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
         if (this.state.flashcardType === FlashcardType.BASIC_FRONT_BACK) {
 
             return ( <FlashcardInputForFrontAndBack id={this.props.id}
-                                                    cancelButton={this.props.cancelButton}
+                                                    onCancel={this.props.onCancel}
                                                     existingFlashcard={this.props.existingFlashcard}
                                                     defaultValue={this.props.defaultValue}
                                                     onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}
@@ -64,7 +64,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
         } else {
 
             return ( <FlashcardInputForCloze id={this.props.id}
-                                             cancelButton={this.props.cancelButton}
+                                             onCancel={this.props.onCancel}
                                              existingFlashcard={this.props.existingFlashcard}
                                              defaultValue={this.props.defaultValue}
                                              onFlashcard={(flashcardType, fields) => this.onFlashcard(flashcardType, fields)}

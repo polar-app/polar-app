@@ -8,7 +8,6 @@ import {
     FlashcardInputs,
     FrontAndBackFields
 } from './FlashcardInputs';
-import {FlashcardStyles} from './FlashcardStyles';
 import {Flashcard} from '../../../../metadata/Flashcard';
 
 // TODO: to functional component.
@@ -33,8 +32,6 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
     public render() {
 
-        const { id } = this.props;
-
         const fields = this.toFields();
 
         return (
@@ -56,8 +53,6 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
                               onChange={(html) => this.fields.back = html}
                 />
 
-                {/*- quote annotation ... to copy the annotation text.*/}
-
                 <div style={{
                         display: 'flex',
                         alignItems: 'center'
@@ -73,7 +68,7 @@ export class FlashcardInputForFrontAndBack extends React.Component<IProps, IStat
 
                     <div>
 
-                        <FlashcardButtons cancelButton={this.props.cancelButton}
+                        <FlashcardButtons onCancel={this.props.onCancel}
                                           existingFlashcard={this.props.existingFlashcard}
                                           onCreate={() => this.onCreate()}/>
 
@@ -142,9 +137,7 @@ interface IProps {
 
     readonly onFlashcardChangeType: (flashcardType: FlashcardType) => void;
 
-    readonly onCancel?: () => void;
-
-    readonly cancelButton: JSX.Element;
+    readonly onCancel: () => void;
 
     readonly existingFlashcard?: Flashcard;
 

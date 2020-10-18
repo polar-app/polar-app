@@ -29,8 +29,6 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
                                    onClick={onEdit}
                                    type="flashcard"/>;
 
-    const cancelButton = <CancelButton onClick={onCancel}/>;
-
     const existingFlashcard = props.flashcard.original as Flashcard;
 
     // return (
@@ -62,7 +60,7 @@ export const ViewOrEditFlashcard2 = React.memo((props: IProps) => {
                                 flashcard={props.flashcard}
                                 flashcardType={existingFlashcard.type}
                                 existingFlashcard={existingFlashcard}
-                                cancelButton={cancelButton}/>;
+                                onCancel={onCancel}/>;
     }
 
 }, isEqual);
