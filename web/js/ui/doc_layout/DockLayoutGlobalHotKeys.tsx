@@ -5,6 +5,7 @@ import { Callback } from 'polar-shared/src/util/Functions';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Sidebar Panels",
+    groupPriority: -1,
     keyMap: {
 
         TOGGLE_LEFT: {

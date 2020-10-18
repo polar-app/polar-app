@@ -61,6 +61,7 @@ export const GlobalKeyboardShortcuts = deepMemo((props: IProps) => {
 
 export interface IKeyMapWithGroup {
     readonly group: string;
+    readonly groupPriority?: number;
     readonly keyMap: {[key: string]: IBaseKeyboardShortcut};
 }
 
@@ -71,16 +72,17 @@ export function keyMapWithGroup(opts: IKeyMapWithGroup): KeyMap {
         return {
             sequences: option.sequences,
             name: option.name,
-            group,
             description: option.description,
-            priority: option.priority
+            priority: option.priority,
+            group,
+            groupPriority: groupPriority !== undefined ? groupPriority : 0
         }
 
     }
 
     const result: KeyMap = {};
 
-    const {group, keyMap} = opts;
+    const {group, groupPriority, keyMap} = opts;
 
     for (const key of Object.keys(keyMap)) {
         result[key] = toKeyboardShortcut(keyMap[key]);

@@ -12,11 +12,12 @@ import {deepMemo} from '../react/ReactUtils';
 import {
     IBaseKeyboardShortcut,
     useKeyboardShortcutsStore,
-    useKeyboardShortcutsCallbacks
+    useKeyboardShortcutsCallbacks, IKeyboardShortcutWithHandler
 } from '../keyboard_shortcuts/KeyboardShortcutsStore';
 import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {KeySequence} from "./KeySequence";
+import {arrayStream, PartitionKey} from "polar-shared/src/util/ArrayStreams";
 
 interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
@@ -48,10 +49,32 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
 }
 
+interface KeyboardShortcutGroup {
+    readonly group: string;
+    readonly groupPriority: number;
+}
+
 export const ActiveKeyboardShortcutsTable = () => {
 
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
     const {setActive} = useKeyboardShortcutsCallbacks()
+
+    function toPartition(shortcut: IKeyboardShortcutWithHandler): PartitionKey<KeyboardShortcutGroup> {
+
+        const id = shortcut.group || '';
+
+        const group: KeyboardShortcutGroup = {
+            group: shortcut.group || '',
+            groupPriority: shortcut.groupPriority !== undefined ? shortcut.groupPriority : 0
+
+        }
+
+        return [id, group];
+
+    }
+
+    const partitions = arrayStream(Object.values(shortcuts))
+                        .partition(toPartition);
 
     const bindings = Object.values(shortcuts)
                            .sort((a, b) => (b.priority || 0) - (a.priority || 0))

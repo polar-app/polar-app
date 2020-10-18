@@ -21,6 +21,7 @@ export interface IBaseKeyboardShortcut {
 
 export interface IKeyboardShortcut extends IBaseKeyboardShortcut {
     readonly group?: string;
+    readonly groupPriority?: number;
 }
 
 export interface IKeyboardShortcutWithHandler extends IKeyboardShortcut {

@@ -56,7 +56,7 @@ export const EditComment2 = deepMemo((props: IProps) => {
                                       justifyContent: "flex-end"
                                    }}>
 
-                        <CancelButton onClick={props.onCancel}/>;
+                        <CancelButton onClick={props.onCancel}/>
 
                         <Button color="primary"
                                 variant="contained"

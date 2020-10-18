@@ -112,7 +112,7 @@ const Desktop = () => {
 
                 <MUIButtonBar>
 
-                    <DockLayoutToggleButton side='left'/>
+                    {/* <DockLayoutToggleButton side='left'/> */}
                     <RepoNavbar/>
 
                 </MUIButtonBar>

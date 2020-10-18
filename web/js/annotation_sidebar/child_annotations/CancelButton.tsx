@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 
 /**
+ * TODO: refactor as functional component
  */
 export class CancelButton extends React.PureComponent<IProps, IState> {
 
