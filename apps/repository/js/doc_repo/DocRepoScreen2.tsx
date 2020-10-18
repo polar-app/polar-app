@@ -21,7 +21,7 @@ import {FeedbackButton} from "../ui/FeedbackButton";
 namespace main {
 
     export const Documents = React.memo(() => (
-        <DocRepoTable2 />
+        <DocRepoTable2/>
     ));
 
     export const Folders = React.memo(() => (
@@ -127,13 +127,13 @@ const DesktopToolbar = () => {
                          display: 'flex'
                      }}>
 
-                    <DocRepoButtonBar />
+                    <DocRepoButtonBar/>
 
                 </div>
 
                 <div style={{marginLeft: 'auto'}}>
 
-                    <DocRepoFilterBar />
+                    <DocRepoFilterBar/>
 
                 </div>
 

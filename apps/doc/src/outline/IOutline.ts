@@ -1,3 +1,5 @@
+export type OutlineLocation = string;
+
 /**
  * Outline node which contains a URL that can be triggered when navigation
  * changes, a title, and children.
@@ -14,7 +16,7 @@ export interface IOutline {
      * position.  Undefined if it's not a location but just a placeholder in
      * the outline.
      */
-    readonly location: string | undefined;
+    readonly location: OutlineLocation | undefined;
 
     /**
      * The child nodes under this outline. Not to be confused with React children.
@@ -22,3 +24,5 @@ export interface IOutline {
     readonly children: ReadonlyArray<IOutline>;
 
 }
+
+export type IOutlineLocationHandler = () => void;
