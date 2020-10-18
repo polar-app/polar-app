@@ -36,12 +36,21 @@ export function useRefState<V>(value: V): RefState<V> {
     const ref = React.useRef<V>(value);
 
     function setState(newValue: V) {
-        setStateDelegate(newValue);
         ref.current = newValue;
+        setStateDelegate(newValue);
     }
 
     return [state, setState, ref];
 
+}
+
+/**
+ * Create a ref for the value and always update it so that inner functions can see the most recent value.
+ */
+export function useRefValue<V>(value: V) {
+    const ref = React.useRef(value);
+    ref.current = value;
+    return ref;
 }
 
 function pprint(value: any) {

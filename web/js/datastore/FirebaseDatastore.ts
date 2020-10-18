@@ -818,6 +818,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             }
 
             if (opts.consistency === 'committed') {
+                console.log("Waiting for commit...");
                 // normally we would NOT want to wait because this will just
                 // slow down our writes and going into the cache is ok for most
                 // operations.

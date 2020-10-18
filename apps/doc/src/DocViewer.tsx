@@ -32,7 +32,7 @@ import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {useLogWhenChanged, useRefState} from "../../../web/js/hooks/ReactHooks";
+import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 
 const Main = React.memo(() => {
@@ -176,16 +176,17 @@ namespace Device {
 
         const {resizer, docMeta} = useDocViewerStore(['resizer', 'docMeta']);
 
-        function onDockLayoutResize() {
+        const resizerRef = useRefValue(resizer);
 
-            if (resizer) {
-                console.log("Resizing based on dock layout resize.")
-                resizer();
+        const onDockLayoutResize = React.useCallback(() => {
+
+            if (resizerRef.current) {
+                resizerRef.current();
             } else {
                 console.warn("No resizer");
             }
 
-        }
+        }, [resizer]);
 
         return (
 
@@ -208,7 +209,7 @@ namespace Device {
                      }}>
 
                     <DockLayout
-                        onResize={() => onDockLayoutResize()}
+                        onResize={onDockLayoutResize}
                         dockPanels={[
                             {
                                 id: "dock-panel-viewer",
