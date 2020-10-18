@@ -53,7 +53,7 @@ function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
             if (panel) {
 
                 const newPanel = {...panel};
-                newPanel.width = 0;
+                newPanel.collapsed = ! panel.collapsed;
 
                 const newPanels = {...store.panels}
                 newPanels[newPanel.id] = newPanel;

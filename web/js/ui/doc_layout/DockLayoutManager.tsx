@@ -152,7 +152,7 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
             const panel = panels[docPanel.id];
 
-            const {width} = panel;
+            const width = panel.collapsed ? 0 : panel.width;
 
             const baseStyle = createBaseStyle();
 
@@ -169,7 +169,7 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
                      style={style}
                      key={idx}
                      id={docPanel.id}>
-                    {docPanel.component}
+                    {! panel.collapsed && docPanel.component}
                 </div>
             );
 
@@ -263,6 +263,12 @@ export interface FixedDocPanelState {
     readonly id: string;
     readonly width: CSSWidth;
     readonly side: SideType | undefined;
+
+    /**
+     * True if a given side is collapsed and should be rendered with zero width.
+     */
+    readonly collapsed: boolean;
+
 }
 
 export interface ResizeTarget {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {deepMemo} from "../../react/ReactUtils";
 import {DockLayoutManager, DockPanel, DocLayoutProps, FixedDocPanelStateMap} from "./DockLayoutManager";
 import { DockLayoutStoreProvider, IDockLayoutStore } from './DockLayoutStore';
+import { DockLayoutGlobalHotKeys } from './DockLayoutGlobalHotKeys';
 
 
 const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutStore => {
@@ -14,7 +15,8 @@ const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutSt
             panels[docPanel.id] = {
                 id: docPanel.id,
                 width: docPanel.width || 400,
-                side: docPanel.side
+                side: docPanel.side,
+                collapsed: false
             };
         }
 
@@ -36,7 +38,10 @@ export const DockLayout2 = deepMemo((props: DocLayoutProps) => {
 
     return (
         <DockLayoutStoreProvider store={store}>
-            <DockLayoutManager {...props}/>
+            <>
+                <DockLayoutGlobalHotKeys/>
+                <DockLayoutManager {...props}/>
+            </>
         </DockLayoutStoreProvider>
     );
 
