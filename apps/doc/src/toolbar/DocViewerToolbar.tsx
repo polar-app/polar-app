@@ -1,11 +1,10 @@
 import * as React from "react";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {PDFScales, ScaleLevel, ScaleLevelTuples} from "../ScaleLevels";
+import {ScaleLevel, ScaleLevelTuples} from "../ScaleLevels";
 import IconButton from "@material-ui/core/IconButton";
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
-
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -25,9 +24,8 @@ import {NumPages} from "./NumPages";
 import {PageNumberInput} from "./PageNumberInput";
 import {PagePrevButton} from "./PagePrevButton";
 import {PageNextButton} from "./PageNextButton";
-import {useLogWhenChanged} from "../../../../web/js/hooks/ReactHooks";
-import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 
 export const DocViewerToolbar = deepMemo(() => {
 
@@ -163,6 +161,8 @@ export const DocViewerToolbar = deepMemo(() => {
                             <FullScreenButton/>
 
                             <DocViewerToolbarOverflowButton docInfo={docMeta?.docInfo}/>
+
+                            <DockLayoutToggleButton side='right'/>
 
                         </MUIButtonBar>
                     </div>

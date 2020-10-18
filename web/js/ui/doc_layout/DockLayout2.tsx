@@ -39,7 +39,7 @@ export const DockLayout2 = deepMemo((props: DocLayoutProps) => {
     return (
         <DockLayoutStoreProvider store={store}>
             <>
-                <DockLayoutGlobalHotKeys/>
+                <DockLayoutGlobalHotKeys onResize={props.onResize}/>
                 <DockLayoutManager {...props}/>
             </>
         </DockLayoutStoreProvider>

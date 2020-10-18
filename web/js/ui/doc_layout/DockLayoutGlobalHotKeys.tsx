@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import { useDockLayoutCallbacks } from './DockLayoutStore';
+import { Callback } from 'polar-shared/src/util/Functions';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Sidebar Panels",
@@ -21,13 +22,29 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const DockLayoutGlobalHotKeys = React.memo(() => {
+interface IProps {
+    readonly onResize?: Callback;
+}
+
+export const DockLayoutGlobalHotKeys = React.memo((props: IProps) => {
 
     const {toggleSide} = useDockLayoutCallbacks();
 
+    const handleResize = React.useCallback(() => {
+        if (props.onResize) {
+            props.onResize();
+        }
+    }, [props]);
+
     const globalKeyHandlers = {
-        TOGGLE_LEFT: () => toggleSide('left'),
-        TOGGLE_RIGHT: () => toggleSide('right'),
+        TOGGLE_LEFT: () => {
+            toggleSide('left');
+            handleResize();
+        },
+        TOGGLE_RIGHT: () => {
+            toggleSide('right');
+            handleResize();
+        },
     };
     return (
         <GlobalKeyboardShortcuts
