@@ -37,7 +37,6 @@ export const DockLayout2 = deepMemo((props: DocLayoutProps) => {
         <DockLayoutStoreProvider store={store}>
             <DockLayoutManager {...props}/>
         </DockLayoutStoreProvider>
-
     );
 
 });

@@ -69,7 +69,6 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
     }, [markResizing]);
 
     const onMouseDown = React.useCallback((resizeTarget: ResizeTarget) => {
-        console.log("FIXME121")
 
         mousePosition.current = MousePositions.get();
 
@@ -85,12 +84,9 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
     const onMouseMove = React.useCallback(() => {
 
-        console.log("FIXME222");
-
         if (! mouseDown.current) {
             return;
         }
-        console.log("FIXME222.1");
 
         const lastMousePosition = MousePositions.get();
 
@@ -101,12 +97,8 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
         const delta = mult * (lastMousePosition.clientX - mousePosition.current.clientX);
 
-        console.log("FIXME: delta: " + delta);
-
         const panelState = panels[resizeTarget.id];
         const width = panelState.width + delta;
-
-        console.log("FIXME: width: " + width);
 
         const newPanelState = {
             ...panelState,
@@ -121,13 +113,11 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
         (props.onResize || NULL_FUNCTION)();
 
-        console.log("FIXME: newPanels: " , newPanels);
         setPanels(newPanels);
 
         mousePosition.current = lastMousePosition;
 
     }, [stateRef, panels, props.onResize, setPanels]);
-
 
     // I'm not sure how much CPU this is going to save. It might be test
     // to show a sort of live preview of where the bar would go, then drop
@@ -163,8 +153,6 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
             const panel = panels[docPanel.id];
 
             const {width} = panel;
-
-            console.log("FIXME: using panel: ", panel);
 
             const baseStyle = createBaseStyle();
 

@@ -244,7 +244,9 @@ type ComponentCallbacksFactory<C> = () => C;
 type InitialContextValues<V, M, C> = [
     InternalObservableStore<V>,
     M,
-    ComponentCallbacksFactory<C>];
+    ComponentCallbacksFactory<C>,
+    SetStore<V>
+];
 
 /**
  * Create the initial values of the components we're working with (store
@@ -276,13 +278,13 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
     const componentCallbacksFactory = () => callbacksFactory(storeProvider, setStore, mutator);
 
-    return [store, mutator, componentCallbacksFactory];
+    return [store, mutator, componentCallbacksFactory, setStore];
 
 }
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    const [store, mutator, componentCallbacksFactory] = createInitialContextValues(opts);
+    const [store, mutator, componentCallbacksFactory, setStore] = createInitialContextValues(opts);
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
@@ -305,8 +307,15 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const providerComponent = (props: ObservableStoreProps<V>) => {
 
+        React.useMemo(() => {
+            // this is a hack to setStore only on the initial render and only when we have a props.store
+            if (props.store !== undefined) {
+                setStore(props.store);
+            }
+        }, [props.store]);
+
         return (
-            <storeContext.Provider value={props.store ? createInternalObservableStore(props.store) : store}>
+            <storeContext.Provider value={store}>
                 <callbacksContext.Provider value={componentCallbacksFactory}>
                     <mutatorContext.Provider value={mutator}>
                         {props.children}
