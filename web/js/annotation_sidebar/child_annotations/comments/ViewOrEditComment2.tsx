@@ -40,8 +40,6 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
                                    onClick={onEdit}
                                    type="comment"/>;
 
-    const cancelButton = <CancelButton onClick={onCancel}/>;
-
     const existingComment = props.comment.original as Comment;
 
     const commentCallback = annotationMutations.createCommentCallback(comment);
@@ -74,7 +72,7 @@ export const ViewOrEditComment2 = React.memo((props: IProps) => {
             {mode === 'edit' &&
                 <EditComment2 id={'edit-comment-for' + props.comment.id}
                               existingComment={existingComment}
-                              cancelButton={cancelButton}
+                              onCancel={onCancel}
                               onComment={handleComment}
                 />}
 

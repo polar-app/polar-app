@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import {MUIButtonBar} from "../../../mui/MUIButtonBar";
 import {deepMemo} from "../../../react/ReactUtils";
 import {InputCompleteListener} from "../../../mui/complete_listeners/InputCompleteListener";
+import {CancelButton} from "../CancelButton";
 
 
 interface IProps {
@@ -17,10 +18,7 @@ interface IProps {
      */
     readonly existingComment?: Comment;
 
-    /**
-     *
-     */
-    readonly cancelButton: JSX.Element;
+    readonly onCancel: () => void;
 
     readonly onComment: (html: string) => void;
 
@@ -40,7 +38,9 @@ export const EditComment2 = deepMemo((props: IProps) => {
 
             <div id="annotation-comment-box" className="m-1">
 
-                <InputCompleteListener type='meta+enter' onComplete={onComplete}>
+                <InputCompleteListener type='meta+enter'
+                                       onComplete={onComplete}
+                                       onCancel={props.onCancel}>
 
                     <RichTextArea id={id}
                                   value={htmlRef.current}
@@ -56,7 +56,7 @@ export const EditComment2 = deepMemo((props: IProps) => {
                                       justifyContent: "flex-end"
                                    }}>
 
-                        {props.cancelButton}
+                        <CancelButton onClick={props.onCancel}/>;
 
                         <Button color="primary"
                                 variant="contained"

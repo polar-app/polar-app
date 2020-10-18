@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {CancelButton} from "../CancelButton";
 import {
     ICommentCreate,
     useAnnotationMutationsContext
@@ -37,14 +36,13 @@ export const CreateComment2 = deepMemo((props: IProps) => {
 
     }, [annotationInputContext, commentCallback, props]);
 
-    const cancelButton = <CancelButton onClick={() => annotationInputContext.setActive('none')}/>;
-
     if (annotationInputContext.active !== 'comment') {
         return null;
     }
 
     return (
-        <EditComment2 cancelButton={cancelButton} onComment={handleComment}/>
+        <EditComment2 onCancel={() => annotationInputContext.setActive('none')}
+                      onComment={handleComment}/>
     );
 
 });
