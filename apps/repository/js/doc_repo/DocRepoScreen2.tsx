@@ -17,6 +17,7 @@ import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {FeedbackButton} from "../ui/FeedbackButton";
+import {DockLayout2} from "../../../../web/js/ui/doc_layout/DockLayout2";
 
 namespace main {
 
@@ -85,7 +86,7 @@ namespace devices {
 
     export const Desktop = React.memo(() => (
 
-        <DockLayout dockPanels={[
+        <DockLayout2 dockPanels={[
             {
                 id: "dock-panel-left",
                 type: 'fixed',

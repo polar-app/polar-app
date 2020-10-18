@@ -290,6 +290,8 @@ interface IState {
  */
 export type CSSWidth = number;
 
+export type SideType = 'left' | 'right';
+
 export type DocPanelType = 'fixed' | 'grow';
 
 export interface BaseDockPanel {
@@ -303,6 +305,11 @@ export interface FixedDockPanel extends BaseDockPanel {
     readonly type: 'fixed';
     readonly component: JSX.Element;
     readonly width?: CSSWidth;
+
+    /**
+     * Specify which side this dock is so that we can easily toggle.
+     */
+    readonly side?: SideType;
 }
 
 export interface GrowDockPanel extends BaseDockPanel {

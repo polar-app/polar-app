@@ -1,7 +1,7 @@
 import React from 'react';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from "../../react/store/ObservableStore";
-import {FixedDocPanelStateMap} from './DockLayoutManager';
+import {FixedDocPanelStateMap, SideType} from './DockLayoutManager';
 
 export interface IDockLayoutStore {
 
@@ -12,6 +12,7 @@ export interface IDockLayoutStore {
 export interface IDockLayoutCallbacks {
 
     readonly setPanels: (panels: FixedDocPanelStateMap) => void;
+    readonly toggleSide: (side: SideType) => void;
 
 }
 
@@ -40,8 +41,12 @@ function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
             setStore({...store, panels});
         }
 
+        function toggleSide(side: SideType) {
+
+        }
+
         return {
-            setPanels
+            setPanels, toggleSide
         };
 
     }, [storeProvider, setStore]);
