@@ -24,6 +24,24 @@ interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
 }
 
+
+interface GroupRowProps {
+    readonly group: string;
+}
+
+const GroupRow = (props: GroupRowProps) => {
+
+    return (
+        <TableRow>
+
+            <TableCell style={{fontSize: '1.2em'}}>
+                <b>{props.group}</b>
+            </TableCell>
+        </TableRow>
+
+    );
+}
+
 const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
     return (
@@ -46,6 +64,20 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
         </TableRow>
     );
+
+}
+
+interface GroupBindingsProps {
+
+}
+
+const GroupBindings = (props: GroupBindingsProps) => {
+
+    return (
+        <>
+            {/*<GroupRow/>*/}
+        </>
+    )
 
 }
 
@@ -73,8 +105,15 @@ export const ActiveKeyboardShortcutsTable = () => {
 
     }
 
-    const partitions = arrayStream(Object.values(shortcuts))
-                        .partition(toPartition);
+    // const partitions = arrayStream(Object.values(shortcuts))
+    //                        .partition(toPartition);
+
+    // const partitionsSorted = Object.entries(partitions)
+    //     .sort((a, b) => a[0].)
+    //
+    // for (const partition of Object.keys(partitions)) {
+    //     const value = partitions[partition];
+    // }
 
     const bindings = Object.values(shortcuts)
                            .sort((a, b) => (b.priority || 0) - (a.priority || 0))

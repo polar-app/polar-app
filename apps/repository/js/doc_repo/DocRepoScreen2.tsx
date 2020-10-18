@@ -86,11 +86,11 @@ namespace devices {
 
     export const Desktop = React.memo(() => (
 
-        <DockLayout2 dockPanels={[
+        <DockLayout dockPanels={[
             {
                 id: "dock-panel-left",
                 type: 'fixed',
-                side: 'left',
+                // side: 'left',
                 component: <FolderSidebar2/>,
                 width: 300,
                 style: {
