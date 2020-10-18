@@ -3,9 +3,10 @@ import {deepMemo} from "../../react/ReactUtils";
 import {DockLayoutManager, DockPanel, DocLayoutProps, FixedDocPanelStateMap} from "./DockLayoutManager";
 import { DockLayoutStoreProvider, IDockLayoutStore } from './DockLayoutStore';
 import { DockLayoutGlobalHotKeys } from './DockLayoutGlobalHotKeys';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
-const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutStore => {
+const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPanelStateMap => {
 
     const panels: FixedDocPanelStateMap = {};
 
@@ -22,7 +23,7 @@ const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutSt
 
     }
 
-    return {panels};
+    return panels;
 
 };
 
@@ -34,12 +35,18 @@ const createInitialStore = (dockPanels: ReadonlyArray<DockPanel>): IDockLayoutSt
  */
 export const DockLayout2 = deepMemo((props: DocLayoutProps) => {
 
-    const store = createInitialStore(props.dockPanels)
+    const panels = React.useMemo(() => createInitialPanels(props.dockPanels), [props.dockPanels]);
+    const store = React.useMemo((): IDockLayoutStore => {
+        return {
+            panels,
+            onResize: props.onResize || NULL_FUNCTION
+        }
+    }, [panels, props.onResize]);
 
     return (
         <DockLayoutStoreProvider store={store}>
             <>
-                <DockLayoutGlobalHotKeys onResize={props.onResize}/>
+                <DockLayoutGlobalHotKeys/>
                 <DockLayoutManager {...props}/>
             </>
         </DockLayoutStoreProvider>

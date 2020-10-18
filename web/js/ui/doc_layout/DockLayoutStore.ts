@@ -3,10 +3,16 @@ import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from "../../react/store/ObservableStore";
 import {FixedDocPanelStateMap, SideType} from './DockLayoutManager';
 import { arrayStream } from 'polar-shared/src/util/ArrayStreams';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface IDockLayoutStore {
 
     readonly panels: FixedDocPanelStateMap;
+
+    /**
+     * Called when internal components resize.
+     */
+    readonly onResize: () => void;
 
 }
 
@@ -18,7 +24,8 @@ export interface IDockLayoutCallbacks {
 }
 
 const initialStore: IDockLayoutStore = {
-    panels: {}
+    panels: {},
+    onResize: NULL_FUNCTION
 }
 
 interface Mutator {
@@ -60,6 +67,7 @@ function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
 
                 setStore({...store, panels: newPanels});
 
+                store.onResize();
             }
 
         }
