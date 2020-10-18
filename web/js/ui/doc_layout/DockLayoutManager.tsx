@@ -106,6 +106,8 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
         const panelState = panels[resizeTarget.id];
         const width = panelState.width + delta;
 
+        console.log("FIXME: width: " + width);
+
         const newPanelState = {
             ...panelState,
             width
@@ -119,8 +121,8 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
         (props.onResize || NULL_FUNCTION)();
 
-        console.log("FIXME: panels: " , panels);
-        setPanels(panels);
+        console.log("FIXME: newPanels: " , newPanels);
+        setPanels(newPanels);
 
         mousePosition.current = lastMousePosition;
 
@@ -161,6 +163,8 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
             const panel = panels[docPanel.id];
 
             const {width} = panel;
+
+            console.log("FIXME: using panel: ", panel);
 
             const baseStyle = createBaseStyle();
 
@@ -237,6 +241,7 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
             }
 
         }
+
 
         return result;
 
@@ -319,3 +324,4 @@ export interface GrowDockPanel extends BaseDockPanel {
 }
 
 export type DockPanel = FixedDockPanel | GrowDockPanel;
+
