@@ -12,10 +12,10 @@ import {
 import {Ranges} from '../../../../highlights/text/selection/Ranges';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {FlashcardStyles} from './FlashcardStyles';
-import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from '@material-ui/core/IconButton';
 import {ClozeDeletions} from "./ClozeDeletions";
 import {MUITooltip} from "../../../../mui/MUITooltip";
+import {InputCompleteListener} from "../../../../mui/complete_listeners/InputCompleteListener";
 
 export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
@@ -40,23 +40,24 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { id } = this.props;
-
         const fields = this.toFields();
 
         return (
 
             <div id="annotation-flashcard-box" className="m-1">
 
-                <RichTextArea id={`text-${this.props.id}`}
-                              value={fields.text}
-                              defaultValue={this.props.defaultValue}
-                              autofocus={true}
-                              onKeyDown={event => this.onKeyDown(event)}
-                              onRichTextMutator={richTextMutator => this.richTextMutator = richTextMutator}
-                              onChange={(html) => this.fields.text = html}/>
+                <InputCompleteListener type='meta+enter'
+                                       onCancel={this.props.onCancel}
+                                       onComplete={() => this.onCreate()}>
 
-                {/*- quote annotation ... to copy the annotation text.*/}
+                    <RichTextArea id={`text-${this.props.id}`}
+                                  value={fields.text}
+                                  defaultValue={this.props.defaultValue}
+                                  autofocus={true}
+                                  onKeyDown={event => this.onKeyDown(event)}
+                                  onRichTextMutator={richTextMutator => this.richTextMutator = richTextMutator}
+                                  onChange={(html) => this.fields.text = html}/>
+                </InputCompleteListener>
 
                 <div style={FlashcardStyles.BottomBar}>
 
