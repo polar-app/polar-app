@@ -153,14 +153,15 @@ function createObservableStoreContext<V>(store: InternalObservableStore<V>): Int
 
 }
 
-interface ObservableStoreProps {
+interface ObservableStoreProps<V> {
+
     readonly children: JSX.Element | Provider<JSX.Element>;
 
     readonly store?: V;
 
 }
 
-export type ObservableStoreProviderComponent = (props: ObservableStoreProps) => JSX.Element;
+export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
 
 /**
  * Hook to listen to store changes. Use undefined to not filter for properties
@@ -182,7 +183,7 @@ export interface IUseStoreHooksOpts {
 }
 
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
-    ObservableStoreProviderComponent,
+    ObservableStoreProviderComponent<V>,
     // NOTE: it's not possible to use a type for this because V is defined in the tuple
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => Pick<V, K>,
     UseContextHook<C>,
@@ -302,7 +303,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return React.useContext(mutatorContext);
     }
 
-    const providerComponent = (props: ObservableStoreProps) => {
+    const providerComponent = (props: ObservableStoreProps<V>) => {
 
         return (
             <storeContext.Provider value={props.store ? createInternalObservableStore(props.store) : store}>
