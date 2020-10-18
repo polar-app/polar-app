@@ -45,6 +45,9 @@ import {useAnnotationBar} from "../../AnnotationBarHooks";
 import {DocumentInit} from "../DocumentInitHook";
 import {useDocViewerPageJumpListener} from '../../DocViewerAnnotationHook';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
+import {IOutlineItem} from "../../outline/IOutlineItem";
+import Outline = _pdfjs.Outline;
+import {IOutline} from "../../outline/IOutline";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -142,7 +145,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     const log = useLogger();
 
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale, setPage}
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale, setPage, setOutline}
         = useDocViewerCallbacks();
 
     const {setFinder} = useDocFindCallbacks();
@@ -185,12 +188,6 @@ export const PDFDocument = deepMemo((props: IProps) => {
         docRef.current = await loadingTask.promise;
 
         const page = await docRef.current.getPage(1);
-        const viewport = page.getViewport({scale: 1.0});
-
-        const calculateScale = (to: number, from: number) => {
-            console.log(`Calculating scale from ${from} to ${to}...`);
-            return to / from;
-        };
 
         docViewer.viewer.setDocument(docRef.current);
         docViewer.linkService.setDocument(docRef.current, null);
@@ -221,6 +218,32 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         // do first resize async
         setTimeout(() => resize(), 1 );
+
+        async function createOutline(): Promise<IOutline | undefined> {
+
+            function convertOutline(outline: Outline): IOutlineItem {
+
+                return {
+                    title: outline.title,
+                    location: outline.url!,
+                    children: outline.items.map(convertOutline)
+                };
+
+            }
+
+            const outline = await docRef.current!.getOutline();
+
+            if (! outline) {
+                return undefined;
+            }
+
+            const items = outline.map(convertOutline);
+            return {items};
+
+        }
+
+        const outline = await createOutline();
+        setOutline(outline);
 
         function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
 

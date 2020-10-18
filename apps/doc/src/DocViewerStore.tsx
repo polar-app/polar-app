@@ -54,6 +54,7 @@ import computeNextZoomLevel = PDFScales.computeNextZoomLevel;
 import ScaleDelta = PDFScales.ScaleDelta;
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 import {UUIDs} from "../../../web/js/metadata/UUIDs";
+import { IOutline } from './outline/IOutline';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -127,6 +128,8 @@ export interface IDocViewerStore {
     readonly hasPendingWrites?: boolean;
 
     readonly fluidPagemarkFactory: FluidPagemarkFactory;
+
+    readonly outline?: IOutline;
 
 }
 
@@ -285,6 +288,8 @@ export interface IDocViewerCallbacks {
     readonly toggleDocArchived: () => void;
 
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
+
+    readonly setOutline: (outline: IOutline | undefined) => void;
 
     onPagemark(opts: IPagemarkMutation): ReadonlyArray<IPagemarkRef>;
     setPageNavigator(pageNavigator: PageNavigator): void;
@@ -942,7 +947,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
         function toggleDocArchived() {
 
-
             const {docMeta} = storeProvider();
 
             if (! docMeta) {
@@ -953,6 +957,10 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         }
 
+        function setOutline(outline: IOutline | undefined) {
+            const store = storeProvider();
+            setStore({...store, outline});
+        }
 
         return {
             updateDocMeta,
@@ -977,7 +985,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setDocArchived,
             onDocTagged,
             toggleDocFlagged,
-            toggleDocArchived
+            toggleDocArchived,
+            setOutline
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);
