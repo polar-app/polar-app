@@ -12,6 +12,7 @@ import {CloudConnectivityButton} from "../../../../web/js/apps/repository/connec
 import {MoreActionsDropdown} from "./MoreActionsDropdown";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {ChromeExtensionInstallButton} from "../ChromeExtensionInstallButton";
+import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 
 export namespace RepoHeader {
 
@@ -109,9 +110,12 @@ const Desktop = () => {
                      flexWrap: 'nowrap',
                  }}>
 
-                <div>
+                <MUIButtonBar>
+
+                    <DockLayoutToggleButton side='left'/>
                     <RepoNavbar/>
-                </div>
+
+                </MUIButtonBar>
 
                 <div style={{
                          flexGrow: 1,

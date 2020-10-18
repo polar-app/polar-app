@@ -34,6 +34,7 @@ import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
+import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 
 const Main = React.memo(() => {
 
@@ -163,7 +164,7 @@ namespace Device {
 
                     <HandheldToolbar toggleRightDrawer={() => setOpen(!open)}/>
 
-                    {/*<DocToolbar/>*/}
+                    {/* <DocToolbar/> */}
 
                     <Main/>
 
@@ -186,7 +187,7 @@ namespace Device {
                 console.warn("No resizer");
             }
 
-        }, [resizer]);
+        }, [resizerRef]);
 
         return (
 
@@ -208,7 +209,7 @@ namespace Device {
                          minHeight: 0
                      }}>
 
-                    <DockLayout
+                    <DockLayout2
                         onResize={onDockLayoutResize}
                         dockPanels={[
                             {
@@ -222,6 +223,7 @@ namespace Device {
                             {
                                 id: "doc-panel-sidebar",
                                 type: 'fixed',
+                                side: 'right',
                                 style: {
                                     display: 'flex',
                                     flexDirection: 'column',
