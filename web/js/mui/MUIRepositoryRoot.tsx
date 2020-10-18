@@ -1,6 +1,6 @@
 import * as React from "react";
 import {FirestoreProvider} from "../../../apps/repository/js/FirestoreProvider";
-import {ActiveHotKeyBindings} from "../hotkeys/ActiveHotKeyBindings";
+import {ActiveKeyboardShortcuts} from "../hotkeys/ActiveKeyboardShortcuts";
 import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
 import {BrowserTabsStoreProvider} from "../browser_tabs/BrowserTabsStore";
 import {MUIAppRoot} from "./MUIAppRoot";
@@ -16,7 +16,7 @@ export const MUIRepositoryRoot = (props: IProps) => {
         <MUIAppRoot>
             <BrowserTabsStoreProvider>
                 <>
-                    <ActiveHotKeyBindings/>
+                    <ActiveKeyboardShortcuts/>
 
                     <FirestoreProvider>
                         <UserInfoProvider>

@@ -48,7 +48,7 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
 }
 
-export const ActiveHotKeys = () => {
+export const ActiveKeyboardShortcutsTable = () => {
 
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
     const {setActive} = useKeyboardShortcutsCallbacks()
@@ -81,7 +81,7 @@ const keyMap = {
     }
 };
 
-export const ActiveHotKeyBindings = deepMemo(() => {
+export const ActiveKeyboardShortcuts = deepMemo(() => {
 
     const [open, setOpen] = React.useState(false);
 
@@ -106,7 +106,7 @@ export const ActiveHotKeyBindings = deepMemo(() => {
                     onClose={handleClose}>
                 <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
                 <DialogContent>
-                    <ActiveHotKeys/>
+                    <ActiveKeyboardShortcutsTable/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}
