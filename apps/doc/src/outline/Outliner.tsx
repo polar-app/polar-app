@@ -58,7 +58,7 @@ const OutlineTreeView = React.memo(() => {
             //              onDrop={NULL_FUNCTION}/>
         );
 
-    }, []);
+    }, [handleNavigation]);
 
     if (! outline) {
         return (
