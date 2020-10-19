@@ -62,6 +62,8 @@ export const DocViewerToolbar = deepMemo(() => {
 
                     <MUIButtonBar>
 
+                        <DockLayoutToggleButton side='left'/>
+
                         {finder && (
                             <>
                                 <DocFindButton className="mr-1"/>
