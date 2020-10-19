@@ -1,4 +1,4 @@
-# Cookies Policy of https://getpolarized.io
+# Cookies Policy of Polar (getpolarized.io)
 
 This website, https://getpolarized.io (the "Website"), is operated by Polar.
 
