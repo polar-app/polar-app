@@ -101,7 +101,7 @@ export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
 
-    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage, setOutline}
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage, setOutline, setOutlineNavigator}
         = useDocViewerCallbacks();
 
     const {setFinder}
@@ -357,7 +357,7 @@ export const EPUBDocument = (props: IProps) => {
                 return {
                     id,
                     title: item.label,
-                    destination: item,
+                    destination: item.href,
                     children: (item.subitems || []) .map(toOutline)
                 };
 
@@ -369,9 +369,20 @@ export const EPUBDocument = (props: IProps) => {
 
             return {items};
 
-        };
+        }
 
         setOutline(createOutline());
+
+        setOutlineNavigator((destination: any) => {
+
+            async function doAsync() {
+                await rendition.display(destination)
+            }
+
+            doAsync()
+                .catch(err => console.error(err));
+
+        });
 
         console.log("landmarks: ", navigation.landmarks);
 
