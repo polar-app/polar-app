@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useDocViewerStore } from '../DocViewerStore';
+import { useDocViewerStore, useDocViewerCallbacks } from '../DocViewerStore';
 import { useOutlinerStore, useOutlinerCallbacks, OutlinerStoreProviderDelegate } from './OutlinerStore';
 import TreeView from '@material-ui/lab/TreeView';
-import { IOutlineItem } from './IOutlineItem';
+import {IOutlineItem, OutlineLocation} from './IOutlineItem';
 import TreeItem from '@material-ui/lab/TreeItem';
 
 const NoOutlineAvailable = React.memo(() => {
@@ -15,9 +15,25 @@ const NoOutlineAvailable = React.memo(() => {
 
 const OutlineTreeView = React.memo(() => {
 
-    const {outline} = useDocViewerStore(['outline']);
+    const {outline, outlineNavigator} = useDocViewerStore(['outline', 'outlineNavigator']);
     const {selected, expanded} = useOutlinerStore(['selected', 'expanded']);
     const {toggleExpanded, selectRow, collapseNode, expandNode} = useOutlinerCallbacks();
+
+    const handleNavigation = React.useCallback((location: OutlineLocation | undefined) => {
+
+        if (! outlineNavigator) {
+            console.warn("No outlineNavigator: ", outlineNavigator);
+            return;
+        }
+
+        if (! location) {
+            console.warn("No location");
+            return;
+        }
+
+        outlineNavigator(location);
+
+    }, [outlineNavigator]);
 
     const toTreeItem = React.useCallback((item: IOutlineItem) => {
 
@@ -25,6 +41,7 @@ const OutlineTreeView = React.memo(() => {
             <TreeItem key={item.id}
                       nodeId={item.id}
                       label={item.title}
+                      onClick={() => handleNavigation(item.location)}
                       TransitionProps={{timeout: 75}}>
 
                 {item.children.map(toTreeItem)}

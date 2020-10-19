@@ -45,10 +45,11 @@ import {useAnnotationBar} from "../../AnnotationBarHooks";
 import {DocumentInit} from "../DocumentInitHook";
 import {useDocViewerPageJumpListener} from '../../DocViewerAnnotationHook';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {IOutlineItem} from "../../outline/IOutlineItem";
+import {IOutlineItem, OutlineLocation} from "../../outline/IOutlineItem";
 import Outline = _pdfjs.Outline;
 import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
+import Destination = _pdfjs.Destination;
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -146,7 +147,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     const log = useLogger();
 
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale, setPage, setOutline}
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale, setPage, setOutline, setOutlineNavigator}
         = useDocViewerCallbacks();
 
     const {setFinder} = useDocFindCallbacks();
@@ -260,6 +261,8 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         const outline = await createOutline();
         setOutline(outline);
+
+        setOutlineNavigator((location: OutlineLocation) => docViewer.linkService.navigateTo((location as any) as Destination));
 
         function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
 

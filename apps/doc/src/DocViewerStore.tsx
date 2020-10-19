@@ -55,6 +55,7 @@ import ScaleDelta = PDFScales.ScaleDelta;
 import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 import {UUIDs} from "../../../web/js/metadata/UUIDs";
 import { IOutline } from './outline/IOutline';
+import {OutlineNavigator} from "./outline/IOutlineItem";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -130,6 +131,8 @@ export interface IDocViewerStore {
     readonly fluidPagemarkFactory: FluidPagemarkFactory;
 
     readonly outline?: IOutline;
+
+    readonly outlineNavigator?: OutlineNavigator;
 
 }
 
@@ -290,6 +293,8 @@ export interface IDocViewerCallbacks {
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     readonly setOutline: (outline: IOutline | undefined) => void;
+
+    readonly setOutlineNavigator: (outlineNavigator: OutlineNavigator) => void;
 
     onPagemark(opts: IPagemarkMutation): ReadonlyArray<IPagemarkRef>;
     setPageNavigator(pageNavigator: PageNavigator): void;
@@ -962,6 +967,12 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setStore({...store, outline});
         }
 
+        function setOutlineNavigator(outlineNavigator: OutlineNavigator) {
+            console.log("FIXME: setting outline nav: ", outlineNavigator)
+            const store = storeProvider();
+            setStore({...store, outlineNavigator});
+        }
+
         return {
             updateDocMeta,
             setDocMeta,
@@ -986,7 +997,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             onDocTagged,
             toggleDocFlagged,
             toggleDocArchived,
-            setOutline
+            setOutline,
+            setOutlineNavigator
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

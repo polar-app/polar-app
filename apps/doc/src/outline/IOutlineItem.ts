@@ -27,4 +27,4 @@ export interface IOutlineItem {
 
 }
 
-export type IOutlineLocationHandler = () => void;
+export type OutlineNavigator = (location: OutlineLocation) => void;
