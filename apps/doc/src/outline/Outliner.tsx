@@ -19,12 +19,6 @@ const OutlineTreeView = React.memo(() => {
     const {selected, expanded} = useOutlinerStore(['selected', 'expanded']);
     const {toggleExpanded, selectRow, collapseNode, expandNode} = useOutlinerCallbacks();
 
-    if (! outline) {
-        return (
-            <NoOutlineAvailable/>
-        );
-    }
-
     const toTreeItem = React.useCallback((item: IOutlineItem) => {
 
         return (
@@ -46,6 +40,12 @@ const OutlineTreeView = React.memo(() => {
         );
 
     }, []);
+
+    if (! outline) {
+        return (
+            <NoOutlineAvailable/>
+        );
+    }
 
     return (
 
