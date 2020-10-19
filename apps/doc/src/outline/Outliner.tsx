@@ -46,6 +46,7 @@ const OutlineTreeView = React.memo(() => {
                      fontSize: '1.25rem',
                      cursor: 'pointer',
                      overflow: 'hidden',
+                     whiteSpace: 'nowrap',
                      textOverflow: 'ellipsis'
                  }}
                  onClick={() => handleNavigation(item.destination)}>
