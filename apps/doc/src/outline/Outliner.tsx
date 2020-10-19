@@ -27,6 +27,8 @@ const OutlineTreeView = React.memo(() => {
                       label={item.title}
                       TransitionProps={{timeout: 75}}>
 
+                {item.children.map(toTreeItem)}
+
             </TreeItem>
             //
             // <MUITreeItem nodeId={item.id}
