@@ -24,8 +24,7 @@ interface IProps {
 export const MUITreeView = memoForwardRef((props: IProps) => {
 
     return (
-        <TreeView
-                  selected={[]}
+        <TreeView selected={[]}
                   expanded={[...props.expanded]}>
 
             <MUITreeItem nodeId={props.root.id}

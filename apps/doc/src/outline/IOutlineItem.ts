@@ -6,6 +6,8 @@ export type OutlineLocation = string;
  */
 export interface IOutlineItem {
 
+    readonly id: string;
+
     /**
      * The title of this outline item for display in the UI.
      */

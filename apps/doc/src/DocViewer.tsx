@@ -35,6 +35,7 @@ import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
+import {Outliner} from "./outline/Outliner";
 
 const Main = React.memo(() => {
 
@@ -212,6 +213,21 @@ namespace Device {
                     <DockLayout2
                         onResize={onDockLayoutResize}
                         dockPanels={[
+                            {
+                                id: "doc-panel-outline",
+                                type: 'fixed',
+                                side: 'left',
+                                style: {
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    minHeight: 0,
+                                    flexGrow: 1
+                                },
+                                component: (
+                                    <Outliner/>
+                                ),
+                                width: 410,
+                            },
                             {
                                 id: "dock-panel-viewer",
                                 type: 'grow',

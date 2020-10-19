@@ -41,8 +41,7 @@ export const MUITreeItem = React.memo((props: IProps) => {
                                                info={props.info}/>}
                       collapseIcon={<CollapseIcon nodeId={props.nodeId} onNodeCollapse={props.onNodeCollapse} />}
                       expandIcon={<ExpandIcon nodeId={props.nodeId} onNodeExpand={props.onNodeExpand}/>}
-                      TransitionProps={{timeout: 75}}
-                      >
+                      TransitionProps={{timeout: 75}}>
 
                 {props.childNodes.map((child) => {
                      return (

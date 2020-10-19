@@ -48,6 +48,7 @@ import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IOutlineItem} from "../../outline/IOutlineItem";
 import Outline = _pdfjs.Outline;
 import {IOutline} from "../../outline/IOutline";
+import {Numbers} from "polar-shared/src/util/Numbers";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -221,15 +222,30 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         async function createOutline(): Promise<IOutline | undefined> {
 
+            function createSequenceFactory()  {
+
+                let seq = 0;
+
+                return () => {
+                    return seq++;
+                };
+
+            }
+
             function convertOutline(outline: Outline): IOutlineItem {
 
+                const id = Numbers.toString(sequenceFactory());
+
                 return {
+                    id,
                     title: outline.title,
                     location: outline.url!,
                     children: outline.items.map(convertOutline)
                 };
 
             }
+
+            const sequenceFactory = createSequenceFactory();
 
             const outline = await docRef.current!.getOutline();
 
