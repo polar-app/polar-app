@@ -40,15 +40,33 @@ const OutlineTreeView = React.memo(() => {
         // FIXME: TreeItem swallows key events... for some reaosn..
 
         return (
-            <TreeItem key={item.id}
-                      nodeId={item.id}
-                      label={item.title}
-                      onClick={() => handleNavigation(item.destination)}
-                      TransitionProps={{timeout: 75}}>
 
-                {item.children.map(toTreeItem)}
+            <div key={item.id}
+                 style={{
+                     fontSize: '1.25rem',
+                     cursor: 'pointer',
+                     overflow: 'hidden',
+                     textOverflow: 'ellipsis'
+                 }}
+                 onClick={() => handleNavigation(item.destination)}>
 
-            </TreeItem>
+                {item.title}
+
+                <div style={{marginLeft: '1.25rem'}}>
+                    {item.children.map(toTreeItem)}
+                </div>
+
+            </div>
+
+            // <TreeItem key={item.id}
+            //           nodeId={item.id}
+            //           label={item.title}
+            //           onClick={() => handleNavigation(item.destination)}
+            //           TransitionProps={{timeout: 75}}>
+            //
+            //     {item.children.map(toTreeItem)}
+            //
+            // </TreeItem>
             //
             // <MUITreeItem nodeId={item.id}
             //              label={item.title}
@@ -70,12 +88,14 @@ const OutlineTreeView = React.memo(() => {
 
     return (
 
-        <TreeView selected={[...selected]}
-                  expanded={[...expanded]}>
+        // <TreeView selected={[...selected]}
+        //           expanded={[...expanded]}>
 
+        <div style={{margin: '1rem'}}>
             {outline.items.map(toTreeItem)}
-
-        </TreeView>
+        </div>
+        //
+        // </TreeView>
 
         // <MUITreeView root={foldersRoot}
         //              toggleExpanded={toggleExpanded}
