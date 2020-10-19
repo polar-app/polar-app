@@ -41,7 +41,7 @@ const OutlineTreeView = React.memo(() => {
             <TreeItem key={item.id}
                       nodeId={item.id}
                       label={item.title}
-                      onClick={() => handleNavigation(item.location)}
+                      onClick={() => handleNavigation(item.destination)}
                       TransitionProps={{timeout: 75}}>
 
                 {item.children.map(toTreeItem)}

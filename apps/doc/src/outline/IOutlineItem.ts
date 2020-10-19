@@ -14,11 +14,11 @@ export interface IOutlineItem {
     readonly title: string;
 
     /**
-     * The location string to trigger the viewer to jump to this outline
+     * The destination string to trigger the viewer to jump to this outline
      * position.  Undefined if it's not a location but just a placeholder in
      * the outline.
      */
-    readonly location: OutlineLocation | undefined;
+    readonly destination: any;
 
     /**
      * The child nodes under this outline. Not to be confused with React children.
@@ -27,4 +27,4 @@ export interface IOutlineItem {
 
 }
 
-export type OutlineNavigator = (location: OutlineLocation) => void;
+export type OutlineNavigator = (destination: any) => void;
