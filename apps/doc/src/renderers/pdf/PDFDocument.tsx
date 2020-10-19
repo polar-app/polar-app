@@ -45,11 +45,12 @@ import {useAnnotationBar} from "../../AnnotationBarHooks";
 import {DocumentInit} from "../DocumentInitHook";
 import {useDocViewerPageJumpListener} from '../../DocViewerAnnotationHook';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {IOutlineItem, OutlineLocation} from "../../outline/IOutlineItem";
+import {IOutlineItem} from "../../outline/IOutlineItem";
 import Outline = _pdfjs.Outline;
 import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import Destination = _pdfjs.Destination;
+import {Nonces} from "polar-shared/src/util/Nonces";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -223,30 +224,20 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         async function createOutline(): Promise<IOutline | undefined> {
 
-            function createSequenceFactory()  {
+            function toOutline(outline: Outline): IOutlineItem {
 
-                let seq = 0;
-
-                return () => {
-                    return seq++;
-                };
-
-            }
-
-            function convertOutline(outline: Outline): IOutlineItem {
-
-                const id = Numbers.toString(sequenceFactory());
+                const id = Numbers.toString(nonceFactory());
 
                 return {
                     id,
                     title: outline.title,
                     destination: outline.dest,
-                    children: outline.items.map(convertOutline)
+                    children: outline.items.map(toOutline)
                 };
 
             }
 
-            const sequenceFactory = createSequenceFactory();
+            const nonceFactory = Nonces.createFactory();
 
             const outline = await docRef.current!.getOutline();
 
@@ -254,7 +245,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
                 return undefined;
             }
 
-            const items = outline.map(convertOutline);
+            const items = outline.map(toOutline);
             return {items};
 
         }

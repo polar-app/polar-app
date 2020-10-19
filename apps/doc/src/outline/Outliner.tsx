@@ -37,6 +37,8 @@ const OutlineTreeView = React.memo(() => {
 
     const toTreeItem = React.useCallback((item: IOutlineItem) => {
 
+        // FIXME: TreeItem swallows key events... for some reaosn..
+
         return (
             <TreeItem key={item.id}
                       nodeId={item.id}

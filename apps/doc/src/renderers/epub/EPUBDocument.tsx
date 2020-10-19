@@ -41,6 +41,10 @@ import {
     LinkLoaderDelegate,
     useLinkLoader
 } from "../../../../../web/js/ui/util/LinkLoaderHook";
+import {IOutlineItem} from "../../outline/IOutlineItem";
+import {Nonces} from "polar-shared/src/util/Nonces";
+import {Numbers} from "polar-shared/src/util/Numbers";
+import {NavItem} from 'epubjs/types/navigation';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -97,7 +101,7 @@ export const EPUBDocument = (props: IProps) => {
 
     const {docURL, docMeta} = props;
 
-    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage}
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage, setOutline}
         = useDocViewerCallbacks();
 
     const {setFinder}
@@ -170,11 +174,11 @@ export const EPUBDocument = (props: IProps) => {
         const resizer = createResizer();
         setResizer(resizer);
 
-        rendition.on('resize', (event: any) => {
+        rendition.on('resize', () => {
             console.error("epubjs event: resize", new Error("FAIL: this should not happen"));
         });
 
-        rendition.on('resized', (event: any) => {
+        rendition.on('resized', () => {
             console.error("epubjs event: resized", new Error("FAIL: this should not happen"));
         });
 
@@ -343,6 +347,31 @@ export const EPUBDocument = (props: IProps) => {
         console.log({metadata});
 
         const navigation = await book.loaded.navigation;
+
+        function createOutline() {
+
+            function toOutline(item: NavItem): IOutlineItem {
+
+                const id = Numbers.toString(nonceFactory());
+
+                return {
+                    id,
+                    title: item.label,
+                    destination: item,
+                    children: (item.subitems || []) .map(toOutline)
+                };
+
+            }
+
+            const nonceFactory = Nonces.createFactory();
+
+            const items = navigation.toc.map(toOutline);
+
+            return {items};
+
+        };
+
+        setOutline(createOutline());
 
         console.log("landmarks: ", navigation.landmarks);
 
