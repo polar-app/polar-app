@@ -5,7 +5,6 @@ import { DockLayoutStoreProvider, IDockLayoutStore } from './DockLayoutStore';
 import { DockLayoutGlobalHotKeys } from './DockLayoutGlobalHotKeys';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-
 const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPanelStateMap => {
 
     const panels: FixedDocPanelStateMap = {};

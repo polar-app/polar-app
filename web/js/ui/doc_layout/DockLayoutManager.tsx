@@ -156,12 +156,14 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
 
             const baseStyle = createBaseStyle();
 
+            const display = panel.collapsed ? 'none' : 'block';
             const style: React.CSSProperties = {
                 ...baseStyle,
                 width,
                 maxWidth: width,
                 minWidth: width,
-                ...(docPanel.style || {})
+                ...(docPanel.style || {}),
+                display
             };
 
             return (
@@ -169,7 +171,9 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
                      style={style}
                      key={idx}
                      id={docPanel.id}>
-                    {! panel.collapsed && docPanel.component}
+
+                    {docPanel.component}
+
                 </div>
             );
 
