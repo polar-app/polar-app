@@ -1,16 +1,12 @@
 import * as React from 'react';
-import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
+import {Tags} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
     createObservableStore,
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Paths} from "polar-shared/src/util/Paths";
 import TagID = Tags.TagID;
-import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
-import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {FolderSelectionEvents} from "../../../repository/js/folder_sidebar/FolderSelectionEvents";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;

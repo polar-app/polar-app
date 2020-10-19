@@ -968,7 +968,6 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
 
         function setOutlineNavigator(outlineNavigator: OutlineNavigator) {
-            console.log("FIXME: setting outline nav: ", outlineNavigator)
             const store = storeProvider();
             setStore({...store, outlineNavigator});
         }
