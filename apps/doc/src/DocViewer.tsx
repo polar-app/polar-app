@@ -217,6 +217,7 @@ namespace Device {
                                 id: "doc-panel-outline",
                                 type: 'fixed',
                                 side: 'left',
+                                collapsed: true,
                                 style: {
                                     display: 'flex',
                                     flexDirection: 'column',

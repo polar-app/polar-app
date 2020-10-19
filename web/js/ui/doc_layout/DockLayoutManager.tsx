@@ -305,6 +305,7 @@ export interface FixedDockPanel extends BaseDockPanel {
     readonly type: 'fixed';
     readonly component: JSX.Element;
     readonly width?: CSSWidth;
+    readonly collapsed?: boolean;
 
     /**
      * Specify which side this dock is so that we can easily toggle.

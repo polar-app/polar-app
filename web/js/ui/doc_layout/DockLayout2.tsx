@@ -17,7 +17,7 @@ const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPane
                 id: docPanel.id,
                 width: docPanel.width || 400,
                 side: docPanel.side,
-                collapsed: false
+                collapsed: docPanel.collapsed || false
             };
         }
 
