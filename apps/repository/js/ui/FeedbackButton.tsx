@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             position: 'absolute',
-            bottom: theme.spacing(3),
+            bottom: theme.spacing(2),
             right: theme.spacing(3),
             // color: theme.palette.text.secondary
         },
