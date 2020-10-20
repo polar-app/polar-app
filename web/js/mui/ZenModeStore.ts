@@ -2,6 +2,9 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {SetStore, createObservableStore} from "../react/store/ObservableStore";
 
+/**
+ * High level store so that sub-components can determine if we're in zen mode to turn on/off specific UI components.
+ */
 interface IZenModeStore {
     readonly zenMode: boolean;
 }
