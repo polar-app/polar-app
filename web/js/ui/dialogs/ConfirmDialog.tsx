@@ -82,24 +82,24 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
 
     const onCancel = props.onCancel || NULL_FUNCTION;
 
-    const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
+    const handleClose = React.useCallback((event: any, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
 
         if (reason !== undefined) {
             onCancel();
         }
 
         setOpen(false);
-    };
+    }, [onCancel]);
 
-    const handleCancel = () => {
+    const handleCancel = React.useCallback(() => {
         setOpen(false);
         onCancel();
-    };
+    }, [onCancel]);
 
-    const handleAccept = () => {
+    const handleAccept = React.useCallback(() => {
         setOpen(false);
         props.onAccept();
-    };
+    }, [props]);
 
     const type: AlertType = props.type || 'error';
 
@@ -114,7 +114,10 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
             aria-describedby="alert-dialog-description">
 
             <WithDeactivatedKeyboardShortcuts>
-                <InputCompleteListener type='enter' noHint={true} onComplete={handleAccept} onCancel={handleCancel}>
+                <InputCompleteListener type='enter'
+                                       noHint={true}
+                                       onComplete={handleAccept}
+                                       onCancel={handleCancel}>
                     <>
                         <DialogTitle id="alert-dialog-title" className={palette}>
                             {props.title}

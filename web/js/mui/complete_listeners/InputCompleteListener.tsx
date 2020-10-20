@@ -57,15 +57,19 @@ export function useInputCompleteListener(opts: InputCompleteListenerOpts) {
 
         if (isInputCompleteEvent(opts.type, event)) {
             opts.onComplete();
+            event.preventDefault();
+            event.stopPropagation();
             return;
         }
 
         if (event.key === 'Escape' && opts.onCancel) {
             opts.onCancel();
+            event.preventDefault();
+            event.stopPropagation();
             return;
         }
 
-    }, []);
+    }, [completable, opts]);
 
     useComponentDidMount(() => {
         window.addEventListener('keydown', onKeyDown, {capture: true});

@@ -5,7 +5,6 @@ import {useAnnotationRepoCallbacks} from './AnnotationRepoStore';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import Divider from "@material-ui/core/Divider";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import Tooltip from '@material-ui/core/Tooltip';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 

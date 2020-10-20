@@ -53,11 +53,6 @@ export const CommentAnnotationControlBar2 = React.memo((props: IProps) => {
                     <MUIDocDeleteButton size="small"
                                         onClick={handleDelete}/>
 
-                    {/*<CommentDropdown2 id={'comment-dropdown-' + comment.id}*/}
-                    {/*                  disabled={comment.immutable}*/}
-                    {/*                  comment={comment}*/}
-                    {/*                  onDelete={handleDelete}/>*/}
-
                 </MUIButtonBar>
 
             </div>

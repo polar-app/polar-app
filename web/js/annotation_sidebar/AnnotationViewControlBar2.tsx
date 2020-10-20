@@ -166,12 +166,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                             {! annotation.immutable &&
                                 <MUIDocDeleteButton size="small"
-                                                    onClick={handleDelete}
-                                                    />}
-
-                           {/*<AnnotationDropdown2 id={'annotation-dropdown-' + annotation.id}*/}
-                           {/*                     disabled={annotation.immutable}*/}
-                           {/*                     annotation={annotation}/>*/}
+                                                    onClick={handleDelete}/>}
 
                     </MUIButtonBar>
 
