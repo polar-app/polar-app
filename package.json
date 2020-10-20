@@ -2,7 +2,7 @@
   "name": "polar",
   "private": true,
   "description": "General information, support, and downloads for the polar app",
-  "version": "2.0.51",
+  "version": "2.0.52",
   "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
   "scripts": {
     "build": "gatsby build",
@@ -40,7 +40,7 @@
     "gatsby-transformer-sharp": "=2.5.17",
     "ink": "^3.0.7",
     "ink-box": "^1.0.0",
-    "polar-bookshelf": "^2.0.51",
+    "polar-bookshelf": "^2.0.52",
     "react": "=16.14.0",
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
