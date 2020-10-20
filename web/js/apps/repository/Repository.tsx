@@ -101,7 +101,7 @@ export class Repository {
 
             // TODO: return authStatus as an object and then do authState.authenticated
             // and unauthenticated so that if statements are cleaner
-            if (authStatus !== 'needs-authentication') {
+            if (authStatus.type !== 'needs-authentication') {
 
                 this.handleRepoDocInfoEvents();
 

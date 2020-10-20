@@ -23,6 +23,7 @@ import * as React from "react";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {Tracer} from "polar-shared/src/util/Tracer";
 import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import { MailingList } from "./auth_handler/MailingList";
 
 const log = Logger.create();
 
@@ -100,15 +101,14 @@ export class AppInitializer {
 
             const authStatus = await Tracer.async(authHandler.status(), 'AppInitializer.authHandler.status');
 
-            if (authStatus !== 'needs-authentication') {
+            if (authStatus.type !== 'needs-authentication') {
 
                 // TODO: removed for group refactor.
                 // await Tracer.async('user-groups', PrefetchedUserGroupsBackgroundListener.start());
 
-                // TODO: do we want to put these back in for 2.0?
                 // subscribe but do it in the background as this isn't a high priority UI task.
-                // MailingList.subscribeWhenNecessary()
-                //            .catch(err => log.error(err));
+                MailingList.subscribeWhenNecessary(authStatus)
+                           .catch(err => console.error(err));
 
                 // MachineDatastores.triggerBackgroundUpdates(persistenceLayerManager);
                 //

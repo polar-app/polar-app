@@ -163,17 +163,30 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
         Firebase.init();
 
-        if (await this.currentUser() === null) {
-            return 'needs-authentication';
+        const user = await this.currentUser();
+
+        if (user === null) {
+            return {
+                user: undefined,
+                type: 'needs-authentication'
+            };
         }
 
-        return undefined;
+        return {
+            user,
+            type: 'authenticated'
+        };
 
     }
 
 }
 
-export type AuthStatus = 'needs-authentication' |  undefined;
+export type AuthType = 'needs-authentication' | 'authenticated';
+
+export interface AuthStatus {
+    readonly user: firebase.User | undefined;
+    readonly type: AuthType;
+}
 
 /**
  * A generic UserInfo object for this auth handler. If there's no email the user
