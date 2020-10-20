@@ -27,4 +27,4 @@ export interface IOutlineItem {
 
 }
 
-export type OutlineNavigator = (destination: any) => void;
+export type OutlineNavigator = (destination: any) => Promise<void>;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useDocViewerStore} from '../DocViewerStore';
 import {OutlinerStoreProviderDelegate} from './OutlinerStore';
 import {IOutlineItem, OutlineLocation} from './IOutlineItem';
+import {useLogger} from "../../../../web/js/mui/MUILogger";
 
 const NoOutlineAvailable = React.memo(() => {
 
@@ -14,22 +15,29 @@ const NoOutlineAvailable = React.memo(() => {
 const OutlineTreeView = React.memo(() => {
 
     const {outline, outlineNavigator} = useDocViewerStore(['outline', 'outlineNavigator']);
+    const log = useLogger();
 
     const handleNavigation = React.useCallback((location: OutlineLocation | undefined) => {
-
-        if (! outlineNavigator) {
-            console.warn("No outlineNavigator: ", outlineNavigator);
-            return;
-        }
 
         if (! location) {
             console.warn("No location");
             return;
         }
 
-        outlineNavigator(location);
+        async function doAsync() {
 
-    }, [outlineNavigator]);
+            if (! outlineNavigator) {
+                console.warn("No outlineNavigator: ", outlineNavigator);
+                return;
+            }
+
+            await outlineNavigator(location);
+
+        }
+
+        doAsync().catch(err => log.error(err));
+
+    }, [log, outlineNavigator]);
 
     const toTreeItem = React.useCallback((item: IOutlineItem) => {
 

@@ -253,7 +253,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
         const outline = await createOutline();
         setOutline(outline);
 
-        setOutlineNavigator((destination: any) => docViewer.linkService.navigateTo(destination as Destination));
+        setOutlineNavigator(async (destination: any) => docViewer.linkService.navigateTo(destination as Destination));
 
         function createPageNavigator(pdfDocumentProxy: _pdfjs.PDFDocumentProxy): PageNavigator {
 

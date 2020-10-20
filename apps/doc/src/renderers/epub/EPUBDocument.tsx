@@ -373,15 +373,8 @@ export const EPUBDocument = (props: IProps) => {
 
         setOutline(createOutline());
 
-        setOutlineNavigator((destination: any) => {
-
-            async function doAsync() {
-                await rendition.display(destination)
-            }
-
-            doAsync()
-                .catch(err => console.error(err));
-
+        setOutlineNavigator(async (destination: any) => {
+            await rendition.display(destination)
         });
 
         console.log("landmarks: ", navigation.landmarks);
