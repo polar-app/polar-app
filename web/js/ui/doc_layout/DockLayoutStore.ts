@@ -67,7 +67,8 @@ function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
 
                 setStore({...store, panels: newPanels});
 
-                store.onResize();
+                setTimeout(store.onResize, 1);
+
             }
 
         }
