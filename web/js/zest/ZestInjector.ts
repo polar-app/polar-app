@@ -7,6 +7,7 @@ declare var window: any;
 
 interface IZest {
     readonly supported: boolean;
+    readonly trigger: () => void;
 }
 
 /**
@@ -34,7 +35,8 @@ export function useZest(): IZest {
     }
 
     return {
-        supported
+        supported,
+        trigger
     }
 
 }
@@ -76,6 +78,17 @@ export namespace ZestInjector {
 
         if (! supportsZest()) {
             console.warn("Zest not supported");
+
+            // if (window.zest.widget.opened()) {
+            //     window.zest.widget.close();
+            // } else {
+            //     window.zest.widget.open();
+            // }
+
+            if (! window.zest.widget.opened()) {
+                window.zest.widget.open();
+            }
+
             return;
         }
 
