@@ -418,6 +418,8 @@ function useEPUBResizer() {
 
     return () => {
 
+        console.log("Resizing EPUB");
+
         const docViewer = docViewerElements.getDocViewerElement();
 
         function computeContainerDimensions(): IDimensions {
