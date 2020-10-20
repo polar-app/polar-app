@@ -1,1 +1,1 @@
-export const POLAR_RELEASE = '2.0.42';
+export const POLAR_RELEASE = '2.0.53';
