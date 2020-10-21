@@ -303,7 +303,8 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
         const html = value || defaultValue || "";
 
         return (
-            <div className={className}>
+            <div className={className}
+                 style={{fontSize: '14px'}}>
                 <div id={this.uid} dangerouslySetInnerHTML={{ __html: html }} />
             </div>
         );
