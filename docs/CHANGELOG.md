@@ -1,3 +1,4 @@
+# 2.0.54
 
 - we support zest feedback recording now
 - fixed bug with copy/paste that would be grey.
