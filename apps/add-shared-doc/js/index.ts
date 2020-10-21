@@ -60,28 +60,28 @@ async function redirectToDocumentViewer(persistenceLayer: PersistenceLayer,
 }
 
 async function doHandle() {
-
-    Analytics.event({category: 'add-shared-doc', action: 'do-handle'});
-
-    const authHandler = AuthHandlers.get();
-
-    const authStatus = await authHandler.status();
-
-    if (authStatus === 'needs-authentication') {
-        // the user needs to authenticate so log them in and then redirect them
-        // back to this page.
-        await authHandler.authenticate(document.location.href);
-        return;
-    }
-
-    const persistenceLayer = WebPersistenceLayerFactory.create();
-    await persistenceLayer.init(); // TODO an error listener?
-
-    const invitation = createInvitation();
-
-    await GroupJoins.execAndAdd(persistenceLayer, invitation);
-
-    await redirectToDocumentViewer(persistenceLayer, invitation);
+    //
+    // Analytics.event({category: 'add-shared-doc', action: 'do-handle'});
+    //
+    // const authHandler = AuthHandlers.get();
+    //
+    // const authStatus = await authHandler.status();
+    //
+    // if (authStatus === 'needs-authentication') {
+    //     // the user needs to authenticate so log them in and then redirect them
+    //     // back to this page.
+    //     await authHandler.authenticate(document.location.href);
+    //     return;
+    // }
+    //
+    // const persistenceLayer = WebPersistenceLayerFactory.create();
+    // await persistenceLayer.init(); // TODO an error listener?
+    //
+    // const invitation = createInvitation();
+    //
+    // await GroupJoins.execAndAdd(persistenceLayer, invitation);
+    //
+    // await redirectToDocumentViewer(persistenceLayer, invitation);
 
 }
 
