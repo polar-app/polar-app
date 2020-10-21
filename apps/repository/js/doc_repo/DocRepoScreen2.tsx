@@ -16,7 +16,7 @@ import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import {FeedbackButton} from "../ui/FeedbackButton";
+import {FeedbackButton2} from "../ui/FeedbackButton2";
 
 namespace main {
 
@@ -170,7 +170,7 @@ export const DocRepoScreen2 = React.memo(() => {
                         <AddContent.Handheld/>
                     </DeviceRouter.Handheld>
 
-                    <FeedbackButton/>
+                    <FeedbackButton2/>
 
                 </FixedNav.Footer>
 

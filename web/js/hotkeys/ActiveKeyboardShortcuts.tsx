@@ -152,9 +152,7 @@ export const ActiveKeyboardShortcuts = deepMemo(() => {
     }
 
     const handlers = {
-        SHOW_ALL_HOTKEYS: () => {
-            setOpen(true)
-        }
+        SHOW_ALL_HOTKEYS: () => setOpen(true)
     };
 
     return (

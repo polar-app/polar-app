@@ -49,24 +49,29 @@ interface ZestUserMetadata {
 
 export namespace ZestInjector {
 
+    let injected = false;
+
     export function doInject(user: ZestUserMetadata) {
 
-        window.zestSettings={
+        if (injected) {
+            // don't allow double inject
+            return;
+        }
+
+        window.zestSettings = {
             app_id:"vft7zpk4",
             contact_name: user.name,
             contact_email: user.email,
             contact_id: user.id
         };
 
-        (function(){
-            window.addEventListener("load" ,function(){
-                const t=document.createElement("script");
-                t.type="text/javascript";
-                t.async=!0;
-                t.src="https://hellozest.io/widget/"+window.zestSettings.app_id;
-                document.body.appendChild(t);
-            });
-        })();
+        const t=document.createElement("script");
+        t.type="text/javascript";
+        t.async=!0;
+        t.src="https://hellozest.io/widget/"+window.zestSettings.app_id;
+        document.body.appendChild(t);
+
+        injected = true;
 
     }
 
@@ -76,8 +81,7 @@ export namespace ZestInjector {
 
     export function triggerZest() {
 
-        if (! supportsZest()) {
-            console.warn("Zest not supported");
+        if (supportsZest()) {
 
             // if (window.zest.widget.opened()) {
             //     window.zest.widget.close();
@@ -86,10 +90,15 @@ export namespace ZestInjector {
             // }
 
             if (! window.zest.widget.opened()) {
+                console.log("Opening Zest...");
                 window.zest.widget.open();
+            } else {
+                console.log("Zest already opened");
             }
 
             return;
+        } else {
+            console.warn("Zest not supported");
         }
 
     }
@@ -102,10 +111,10 @@ export namespace ZestInjector {
         if (! AppRuntime.isBrowser()) {
             return false;
         }
-
-        if (AppRuntime.isElectron()) {
-            return false;
-        }
+        //
+        // if (AppRuntime.isElectron()) {
+        //     return false;
+        // }
 
         if (! Platforms.isDesktop()) {
             return false;

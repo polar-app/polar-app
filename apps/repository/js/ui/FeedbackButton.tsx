@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+/**
+ * @Deprecated we're using FeedbackButton2 now
+ * @constructor
+ */
 export function FeedbackButton() {
 
     const classes = useStyles();

@@ -13,7 +13,7 @@ import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
-import {FeedbackButton} from "../ui/FeedbackButton";
+import {FeedbackButton2} from '../ui/FeedbackButton2';
 
 namespace main {
 
@@ -177,7 +177,7 @@ namespace screen {
             <AnnotationRepoRoutedComponents/>
             <main.Desktop />
 
-            <FeedbackButton/>
+            <FeedbackButton2/>
 
             <RepoFooter/>
 
