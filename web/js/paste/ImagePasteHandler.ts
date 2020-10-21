@@ -1,7 +1,4 @@
-/**
- * @NotStale planning on using this when we make summernote handle screenshots
- * better.
- */
+
 export class ImagePasteHandler {
 
     private element: any;
@@ -24,7 +21,7 @@ export class ImagePasteHandler {
 
         this.element.addEventListener("paste", async function (event: any) {
 
-            let imagePasted = await ImagePasteHandler.handlePasteData(event);
+            const imagePasted = await ImagePasteHandler.handlePasteData(event);
 
             if (imagePasted.image) {
 
@@ -57,7 +54,7 @@ export class ImagePasteHandler {
     static handlePasteData(e: any): Promise<any> {
 
         // call .originalEvent if running with jquery.
-        let orgEvent = e;
+        const orgEvent = e;
 
         for (let i = 0; i < orgEvent.clipboardData.items.length; i++) {
 
