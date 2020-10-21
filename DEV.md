@@ -1,23 +1,13 @@
-# Overview
-
-We have a peculiar setup for our version control system due to needing to 
-support both forked NPM modules and private/public version control systems.
 
 # Steps to Build 
+
+- Copy .npmrc to your home directory
 
 - Make sure you're on node >=14.5 and npm >=6.14.5
 
 - clone the polar-app repository locally.
 
-- login go bytesafe so that you can access our custom NPM packages.  Your 
-  credentials will be available on the bytesafe site.
-
-```bash
-
-npm --registry https://polar-app.bytesafe.dev/r/default login
-npm config set registry https://polar-app.bytesafe.dev/r/default
-
-```
+- Follow the following instructions
 
 ```bash
 
