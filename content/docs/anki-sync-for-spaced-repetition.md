@@ -3,12 +3,12 @@ title: Anki Sync for Spaced Repetition
 layout: doc
 date: 2018-12-19 07:22:47 -0800
 permalink: /docs/anki-sync-for-spaced-repetition.html
-description: Polar supports native integration with Anki via the Polar Connect add-on. 
+description: Polar supports native integration with Anki via the Anki Connect add-on. 
 ---
 
 # Anki and Spaced Repetition
 
-Polar supports native integration with Anki via the [Polar Connect](https://ankiweb.net/shared/info/734898866) add-on.
+Polar supports native integration with Anki via the [Anki Connect](https://ankiweb.net/shared/info/2055492159) add-on.
 
 This allows you to sync flashcards created from annotations directly to Anki.
 
@@ -52,14 +52,12 @@ Cards also support rich text formatting (bold, italic, etc) as well as images.
 
 # Setup
 
-Install the <a href="https://ankiweb.net/shared/info/734898866">Polar Connect</a> add-on 
+Install the <a href="https://ankiweb.net/shared/info/2055492159">Anki Connect</a> add-on 
 and restart Anki. At this point Polar can sync to Anki properly.
-
-If you encounter issues with Polar Connect, you can also try Anki Connect, however, Polar Connect provides more functionality.
 
 # Usage 
 
-Once Polar Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
+Once Anki Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
 within the Document Repository. 
 
 # Issues
@@ -67,7 +65,7 @@ within the Document Repository.
 ## Firewall
 
 If you have any issues connecting Anki make sure you don't have a firewall in 
-place.  Polar Connect runs Anki on a specific port and Polar needs to connect
+place.  Anki Connect runs Anki on a specific port and Polar needs to connect
 via TCP to sync your flashcards.
 
 ## International Users!
@@ -83,7 +81,7 @@ on a fix for this issue.
   update UI so this needs to be added to Polar before we can implement this in 
   Anki sync.
 
-- Anki must have Polar Connect. This will always be a hard requirement but we
+- Anki must have Anki Connect. This will always be a hard requirement, but we
   might create a Polar Sync plugin for Anki.
 
 - No support for nested decks.  Each deck is created at the root.  If you move it
