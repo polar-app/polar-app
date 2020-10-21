@@ -46,9 +46,10 @@ const NoAnnotations = memoForwardRef(() => {
              }}>
 
             <div style={{flexGrow: 1}}>
-                <h4 className="text-center text-muted text-xxl">
+
+                <h2 className="text-center text-muted text-xxl">
                     No Annotations
-                </h4>
+                </h2>
 
                 <p className="text-muted"
                    style={{fontSize: '16px'}}>
@@ -68,14 +69,6 @@ const NoAnnotations = memoForwardRef(() => {
                 </p>
 
             </div>
-
-            {/*<div>*/}
-            {/*    <AppRuntimeRouter browser={(*/}
-            {/*        <DeviceRouter desktop={(*/}
-            {/*            <LoadRepositoryExplainer/>*/}
-            {/*        )}/>*/}
-            {/*    )}/>*/}
-            {/*</div>*/}
 
         </div>
     );
