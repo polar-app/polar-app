@@ -5,6 +5,7 @@ import 'summernote/dist/summernote-lite.css';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {HTMLString, RichTextMutator} from './RichTextMutator';
+import {HTMLSanitizer} from "polar-html/src/sanitize/HTMLSanitizer";
 
 const randomUid = () => Math.floor(Math.random() * 100000);
 
@@ -55,6 +56,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
 
         this.onInit = this.onInit.bind(this);
         this.onImageUpload = this.onImageUpload.bind(this);
+        this.onPaste = this.onPaste.bind(this);
         this.focus = this.focus.bind(this);
         this.isEmpty = this.isEmpty.bind(this);
         this.reset = this.reset.bind(this);
@@ -178,6 +180,32 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
         }
     }
 
+    public onPaste(event: any) {
+
+        const originalEvent = event.originalEvent as ClipboardEvent;
+
+        if (! originalEvent.clipboardData) {
+            // nothing to do...
+            return;
+        }
+
+        if (originalEvent.clipboardData.types.includes('text/html')) {
+
+            const srcHTML = originalEvent.clipboardData.getData('text/html');
+            const sanitizedHTML = HTMLSanitizer.sanitizePasteData(srcHTML);
+
+            const spanElement = document.createElement('span');
+            spanElement.innerHTML = sanitizedHTML;
+
+            this.insertNode(spanElement);
+
+            originalEvent.preventDefault();
+            originalEvent.stopPropagation();
+
+        }
+
+    }
+
     public focus() {
         this.editor.summernote('focus');
     }
@@ -191,7 +219,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
     }
 
     public replace(content: string) {
-        const { noteEditable, notePlaceholder } = this;
+        const {noteEditable, notePlaceholder} = this;
         const prevContent = noteEditable.html();
         const contentLength = content.length;
 
@@ -264,7 +292,7 @@ export class ReactSummernote4 extends Component<IProps, any> implements RichText
             onBlur: props.onBlur,
             onKeyup: props.onKeyUp,
             onKeydown: props.onKeyDown,
-            onPaste: props.onPaste,
+            onPaste: props.onPaste || this.onPaste,
             onChange: props.onChange,
             onImageUpload: this.onImageUpload
         };
