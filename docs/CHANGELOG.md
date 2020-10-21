@@ -1,7 +1,11 @@
 
+- we support zest feedback recording now
+- fixed bug with copy/paste that would be grey.
+- fixed bug with double delete trigger
+- margin to the bottom of UI to prevent obscuring buttons
+- added back mailing list subscriptions
 
-
-# 2.0.?
+# 2.0.50
 
 - Fixed bug with app not exiting on last window.
 - Remove trial text since we can't currently offer trials

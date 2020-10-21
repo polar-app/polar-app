@@ -111,10 +111,10 @@ export namespace ZestInjector {
         if (! AppRuntime.isBrowser()) {
             return false;
         }
-        //
-        // if (AppRuntime.isElectron()) {
-        //     return false;
-        // }
+
+        if (AppRuntime.isElectron()) {
+            return false;
+        }
 
         if (! Platforms.isDesktop()) {
             return false;
