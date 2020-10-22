@@ -1,6 +1,4 @@
-// @NotStale
-
-import React from 'react';
+import * as React from 'react';
 import {
     createObservableStore,
     SetStore
@@ -25,6 +23,8 @@ interface IReviewerStore {
 
 interface IReviewerCallbacks {
 
+    readonly next: () => boolean;
+
 }
 
 const initialStore: IReviewerStore = {
@@ -41,22 +41,38 @@ interface Mutator {
 function mutatorFactory<A>(storeProvider: Provider<IReviewerStore>,
                            setStore: SetStore<IReviewerStore>): Mutator {
 
-    function reduce(): IReviewerStore | undefined {
-
-        return undefined;
-
-    }
-
     return {};
 
 }
 
-function callbacksFactory<A>(storeProvider: Provider<IReviewerStore>,
-                             setStore: (store: IReviewerStore) => void,
-                             mutator: Mutator): IReviewerCallbacks {
+function callbacksFactory(storeProvider: Provider<IReviewerStore>,
+                          setStore: (store: IReviewerStore) => void,
+                          mutator: Mutator): IReviewerCallbacks {
 
-    return {
-    };
+    function next(): boolean {
+
+        const store = storeProvider();
+
+        const pending = [...store.pending];
+        const taskRep = pending.shift();
+
+        if (! taskRep) {
+            return true;
+        }
+
+        const finished = store.finished + 1;
+
+        setStore({
+            ...store,
+            pending,
+            taskRep,
+            finished
+        });
+
+        return false;
+    }
+
+    return {next};
 
 }
 
