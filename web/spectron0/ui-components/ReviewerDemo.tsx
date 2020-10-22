@@ -19,7 +19,7 @@ import {
 } from "../../../apps/repository/js/reviewer/Reviewer2";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
-import {Reviewer2} from "../../../apps/repository/js/reviewer/Reviewer2";
+import {Reviewer3} from "../../../apps/repository/js/reviewer/Reviewer3";
 import {ReviewerDialog2} from "../../../apps/repository/js/reviewer/ReviewerDialog2";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 //
@@ -116,7 +116,7 @@ export const ReviewerDemo = () => {
                 <ReviewerDialog2 open={open}
                                  onClose={() => setOpen(false)}>
 
-                    <Reviewer2 taskReps={taskReps}
+                    <Reviewer3 taskReps={taskReps}
                                doRating={doRating}
                                doSuspended={doSuspended}
                                doFinished={doFinished}/>

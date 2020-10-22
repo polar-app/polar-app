@@ -3,7 +3,6 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Reviewers2} from "./Reviewers2";
 import {AsyncOptions, useAsync} from 'react-async';
-import {Reviewer2} from "./Reviewer2";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useFirestore} from "../FirestoreProvider";
