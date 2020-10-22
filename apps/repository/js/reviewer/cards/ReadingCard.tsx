@@ -44,6 +44,3 @@ export const ReadingCard = (props: IProps) => {
     );
 
 }
-
-export interface IState {
-}
