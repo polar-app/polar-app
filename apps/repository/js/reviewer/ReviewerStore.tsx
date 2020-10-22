@@ -51,51 +51,59 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                           setStore: (store: IReviewerStore) => void,
                           mutator: Mutator): IReviewerCallbacks {
 
-    function init<A>(taskReps: ReadonlyArray<TaskRep<A>>) {
+    return React.useMemo(() => {
 
-        const pending = [...taskReps];
-        const total = taskReps.length;
+        function init<A>(taskReps: ReadonlyArray<TaskRep<A>>) {
 
-        setStore({
-            taskRep: pending.shift(),
-            pending,
-            total,
-            finished: 0
-        });
-
-    }
-
-    function next(): boolean {
-
-        const store = storeProvider();
-
-        const pending = [...store.pending];
-        const taskRep = pending.shift();
-
-        if (! taskRep) {
+            const pending = [...taskReps];
+            const total = taskReps.length;
 
             setStore({
-                ...store,
-                taskRep: undefined
+                taskRep: pending.shift(),
+                pending,
+                total,
+                finished: 0
             });
-
-            return true;
 
         }
 
-        const finished = store.finished + 1;
+        function next(): boolean {
 
-        setStore({
-            ...store,
-            pending,
-            taskRep,
-            finished
-        });
+            const store = storeProvider();
 
-        return false;
-    }
+            const pending = [...store.pending];
+            const taskRep = pending.shift();
 
-    return {init, next};
+            if (! taskRep) {
+
+                setStore({
+                    ...store,
+                    taskRep: undefined
+                });
+
+                return true;
+
+            }
+
+            const finished = store.finished + 1;
+
+            setStore({
+                ...store,
+                pending,
+                taskRep,
+                finished
+            });
+
+            return false;
+        }
+
+        return {
+            init, next
+        };
+
+        return result;
+
+    }, [setStore, storeProvider]);
 
 }
 
