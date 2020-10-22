@@ -19,7 +19,7 @@ const globalKeyMap = keyMapWithGroup({
         HARD: {
             name: "Hard",
             description: "Rate the item 'hard'",
-            sequences: ['1']
+            sequences: ['2']
         },
         GOOD: {
             name: "Good",
