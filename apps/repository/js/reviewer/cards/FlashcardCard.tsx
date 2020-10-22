@@ -153,20 +153,22 @@ export const FlashcardCard = (props: IProps) => {
         }
     };
 
-    return <TaskBody taskRep={taskRep}>
+    return (
+        <TaskBody taskRep={taskRep}>
 
-        <TaskBody.Main taskRep={taskRep}>
-            <Main/>
-        </TaskBody.Main>
+            <TaskBody.Main taskRep={taskRep}>
+                <Main/>
+            </TaskBody.Main>
 
-        <TaskBody.Footer taskRep={taskRep}>
+            <TaskBody.Footer taskRep={taskRep}>
 
-            <div className="mt-2 mb-2">
-                <Buttons/>
-            </div>
+                <div className="mt-2 mb-2">
+                    <Buttons/>
+                </div>
 
-        </TaskBody.Footer>
+            </TaskBody.Footer>
 
-    </TaskBody>;
+        </TaskBody>
+    );
 
 };
