@@ -37,7 +37,7 @@ export const LearningRatingButtons = deepMemo(function <A>(props: IProps<A>) {
         <>
             <LearningRatingGlobalHotKeys/>
             <RatingButtonSet taskRep={props.taskRep}
-                                options={BUTTONS}/>
+                             options={BUTTONS}/>
         </>
     );
 

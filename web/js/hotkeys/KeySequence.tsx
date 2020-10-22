@@ -28,7 +28,20 @@ interface IProps {
 export const KeySequence = deepMemo((props: IProps) => {
 
     const classes = useStyles();
-    const sequence = props.sequence.split('+').join( ' + ' );
+
+    function prettyPrintSequence() {
+
+        let result = props.sequence;
+
+        if (result === ' ') {
+            result = 'space';
+        }
+
+        return result.split('+').join( ' + ' );
+
+    }
+
+    const sequence = prettyPrintSequence();
 
     return (
         <div className={classes.root}>

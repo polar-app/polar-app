@@ -23,7 +23,7 @@ export const RatingButtonSet = function<A>(props: IProps<A>) {
 
     const handleRating = React.useCallback((taskRep: TaskRep<any>, rating: Rating) => {
         onRating(taskRep, rating);
-        // setState({side: 'front'});
+
     }, [onRating]);
 
     return (

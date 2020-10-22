@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {TaskBody} from "./TaskBody";
 import {RatingButtons} from "../ratings/RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
@@ -8,6 +7,9 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import {CardPaper} from "./CardPaper";
+import { useFlashcardStore, useFlashcardCallbacks, FlashcardStoreProvider } from './FlashcardStore';
+import {deepMemo} from "../../../../../web/js/react/ReactUtils";
+import { FlashcardGlobalHotKeys } from './FlashcardGlobalHotKeys';
 
 namespace card {
 
@@ -77,20 +79,18 @@ export interface IProps {
 
 }
 
-export interface IState {
-    readonly side: FlashcardSide;
-}
-
 /**
  * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
  */
-export const FlashcardCard = (props: IProps) => {
+export const FlashcardCardInner = deepMemo((props: IProps) => {
 
-    const [state, setState] = useState<IState>({side: 'front'});
+    const {side} = useFlashcardStore(['side']);
+    const {setSide} = useFlashcardCallbacks();
+    React.useMemo(() => setSide('front'), [setSide]);
 
-    function onShowAnswer() {
-        setState({side: 'back'});
-    }
+    const handleShowAnswer = React.useCallback(() => {
+        setSide('back');
+    }, [setSide]);
 
     Preconditions.assertPresent(props.front, 'front');
     Preconditions.assertPresent(props.back, 'back');
@@ -99,7 +99,7 @@ export const FlashcardCard = (props: IProps) => {
 
     const Main = () => {
 
-        switch (state.side) {
+        switch (side) {
 
             case 'front':
                 return (
@@ -115,30 +115,32 @@ export const FlashcardCard = (props: IProps) => {
                 );
 
             default:
-                throw new Error("Invalid side: " + state.side);
+                throw new Error("Invalid side: " + side);
 
         }
 
     };
 
     const Buttons = () => {
-        switch (state.side) {
+        switch (side) {
 
             case 'front':
                 return (
                     <Button color="primary"
                             variant="contained"
                             size="large"
-                            onClick={() => onShowAnswer()}>
+                            onClick={handleShowAnswer}>
                         Show Answer
                     </Button>
                 );
 
             case 'back':
-                return <RatingButtons taskRep={taskRep}
-                                      stage={taskRep.stage}/>;
+                return (
+                    <RatingButtons taskRep={taskRep}
+                                      stage={taskRep.stage}/>
+                );
             default:
-                throw new Error("Invalid side: " + state.side);
+                throw new Error("Invalid side: " + side);
 
         }
     };
@@ -161,4 +163,16 @@ export const FlashcardCard = (props: IProps) => {
         </TaskBody>
     );
 
-};
+});
+
+export const FlashcardCard = (props: IProps) => {
+
+    return (
+        <FlashcardStoreProvider>
+            <>
+                <FlashcardGlobalHotKeys/>
+                <FlashcardCardInner {...props}/>
+            </>
+        </FlashcardStoreProvider>
+    );
+}

@@ -17,7 +17,7 @@ import {
 import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {KeySequence} from "./KeySequence";
-import {arrayStream, PartitionKey} from "polar-shared/src/util/ArrayStreams";
+import {PartitionKey} from "polar-shared/src/util/ArrayStreams";
 
 interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 

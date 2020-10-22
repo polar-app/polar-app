@@ -40,7 +40,7 @@ export const ReviewRatingButtons = deepMemo(function <A>(props: IProps<A>) {
         <>
             <ReviewRatingGlobalHotKeys/>
             <RatingButtonSet taskRep={props.taskRep}
-                                options={BUTTONS}/>;
+                                options={BUTTONS}/>
         </>
     );
 
