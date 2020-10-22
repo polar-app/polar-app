@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import {TaskBody} from "./TaskBody";
-import {RatingButtons} from "../RatingButtons";
+import {RatingButtons} from "../ratings/RatingButtons";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {Preconditions} from "polar-shared/src/Preconditions";

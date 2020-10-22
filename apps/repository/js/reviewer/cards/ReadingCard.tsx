@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {TaskBody} from "./TaskBody";
 import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
-import {RatingButtons} from "../RatingButtons";
+import {RatingButtons} from "../ratings/RatingButtons";
 import {ReadingTaskAction} from "./ReadingTaskAction";
 import {CardPaper} from "./CardPaper";
 import {RatingCallback} from "../RatingCallback";
