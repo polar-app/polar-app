@@ -5,7 +5,6 @@ import {AnnotationPreview} from "../../annotation_repo/AnnotationPreview";
 import {RatingButtons} from "../ratings/RatingButtons";
 import {ReadingTaskAction} from "./ReadingTaskAction";
 import {CardPaper} from "./CardPaper";
-import {RatingCallback} from "../RatingCallback";
 
 export interface IProps {
     readonly taskRep: TaskRep<ReadingTaskAction>;
