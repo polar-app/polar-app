@@ -11,6 +11,7 @@ import {MUIAsyncLoader} from "../../../../web/js/mui/MUIAsyncLoader";
 import {ReviewerDialog2} from "./ReviewerDialog2";
 import isEqual from "react-fast-compare";
 import { useHistory } from 'react-router-dom';
+import { Reviewer3 } from './Reviewer3';
 
 
 // TODO needs to be a dedicated function.
@@ -65,7 +66,7 @@ export const ReviewerScreen = React.memo((props: IProps) => {
                          open={open}
                          onClose={handleClose}>
 
-            <MUIAsyncLoader provider={provider} render={Reviewer2} onReject={handleClose}/>
+            <MUIAsyncLoader provider={provider} render={Reviewer3} onReject={handleClose}/>
 
         </ReviewerDialog2>
     );

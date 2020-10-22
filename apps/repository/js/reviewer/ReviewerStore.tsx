@@ -9,7 +9,7 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 interface IReviewerStore {
 
     /**
-     * The review we're working with or undefined when there are no more.
+     * The current TaskRep we're working with or undefined when there are no more.
      */
     readonly taskRep?: TaskRep<any> | undefined;
 
@@ -22,6 +22,8 @@ interface IReviewerStore {
 }
 
 interface IReviewerCallbacks {
+
+    readonly init: <A>(taskReps: ReadonlyArray<TaskRep<A>>) => void;
 
     readonly next: () => boolean;
 
@@ -49,6 +51,20 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                           setStore: (store: IReviewerStore) => void,
                           mutator: Mutator): IReviewerCallbacks {
 
+    function init<A>(taskReps: ReadonlyArray<TaskRep<A>>) {
+
+        const pending = [...taskReps];
+        const total = taskReps.length;
+
+        setStore({
+            taskRep: pending.shift(),
+            pending,
+            total,
+            finished: 0
+        });
+
+    }
+
     function next(): boolean {
 
         const store = storeProvider();
@@ -57,7 +73,14 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
         const taskRep = pending.shift();
 
         if (! taskRep) {
+
+            setStore({
+                ...store,
+                taskRep: undefined
+            });
+
             return true;
+
         }
 
         const finished = store.finished + 1;
@@ -72,7 +95,7 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
         return false;
     }
 
-    return {next};
+    return {init, next};
 
 }
 

@@ -7,19 +7,17 @@ import {ReadingTaskAction} from "./ReadingTaskAction";
 import {CardPaper} from "./CardPaper";
 import {RatingCallback} from "../RatingCallback";
 
-export class ReadingCard extends React.Component<IProps, IState> {
+export interface IProps {
+    readonly taskRep: TaskRep<ReadingTaskAction>;
+    readonly onRating: RatingCallback<ReadingTaskAction>;
+}
+export const ReadingCard = (props: IProps) => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const taskRep = props.taskRep;
+    const {id, action, created, color} = taskRep;
 
-    }
-
-    public render() {
-
-        const taskRep = this.props.taskRep;
-        const {id, action, created, color} = taskRep;
-
-        return <TaskBody taskRep={taskRep}>
+    return (
+        <TaskBody taskRep={taskRep}>
 
             <TaskBody.Main taskRep={taskRep}>
 
@@ -38,19 +36,13 @@ export class ReadingCard extends React.Component<IProps, IState> {
 
                 <RatingButtons taskRep={taskRep}
                                stage={taskRep.stage}
-                               onRating={this.props.onRating}/>
+                               onRating={props.onRating}/>
 
             </TaskBody.Footer>
 
-        </TaskBody>;
+        </TaskBody>
+    );
 
-    }
-
-}
-
-export interface IProps {
-    readonly taskRep: TaskRep<ReadingTaskAction>;
-    readonly onRating: RatingCallback<ReadingTaskAction>;
 }
 
 export interface IState {
