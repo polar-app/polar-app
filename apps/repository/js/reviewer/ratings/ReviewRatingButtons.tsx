@@ -5,6 +5,7 @@ import {IRatingOption, RatingButtonSet} from "./RatingButtonSet";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
+import {ReviewRatingGlobalHotKeys} from "./ReviewRatingGlobalHotKeys";
 
 const BUTTONS: ReadonlyArray<IRatingOption> = [
     {
@@ -35,7 +36,12 @@ export interface IProps<A> {
 
 export const ReviewRatingButtons = deepMemo(function <A>(props: IProps<A>) {
 
-    return <RatingButtonSet taskRep={props.taskRep}
-                            options={BUTTONS}/>;
+    return (
+        <>
+            <ReviewRatingGlobalHotKeys/>
+            <RatingButtonSet taskRep={props.taskRep}
+                                options={BUTTONS}/>;
+        </>
+    );
 
 });
