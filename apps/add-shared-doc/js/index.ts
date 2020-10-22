@@ -1,13 +1,9 @@
 import {Logger} from "polar-shared/src/logger/Logger";
-import {AuthHandlers} from "../../../web/js/apps/repository/auth_handler/AuthHandler";
-import {GroupJoins} from "../../../web/js/datastore/sharing/rpc/GroupJoins";
-import {WebPersistenceLayerFactory} from "../../../web/js/datastore/factories/WebPersistenceLayerFactory";
 import {GroupMemberInvitation} from "../../../web/js/datastore/sharing/db/GroupMemberInvitations";
 import {PersistenceLayer} from "../../../web/js/datastore/PersistenceLayer";
 import {BrowserDocLoader} from "../../../web/js/apps/main/doc_loaders/browser/BrowserDocLoader";
 import {LoadDocRequest} from "../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {BackendFileRefs} from "../../../web/js/datastore/BackendFileRefs";
-import {Analytics} from "../../../web/js/analytics/Analytics";
 
 // *****
 //
