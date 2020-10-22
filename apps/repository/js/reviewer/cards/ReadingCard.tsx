@@ -9,7 +9,6 @@ import {RatingCallback} from "../RatingCallback";
 
 export interface IProps {
     readonly taskRep: TaskRep<ReadingTaskAction>;
-    readonly onRating: RatingCallback<ReadingTaskAction>;
 }
 export const ReadingCard = (props: IProps) => {
 
@@ -35,8 +34,7 @@ export const ReadingCard = (props: IProps) => {
             <TaskBody.Footer taskRep={taskRep}>
 
                 <RatingButtons taskRep={taskRep}
-                               stage={taskRep.stage}
-                               onRating={props.onRating}/>
+                               stage={taskRep.stage}/>
 
             </TaskBody.Footer>
 

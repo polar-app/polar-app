@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {FadeIn} from "../../../../../web/js/ui/motion/FadeIn";
 import Divider from '@material-ui/core/Divider';
 
 export class TaskBody extends React.Component<IProps, IState> {

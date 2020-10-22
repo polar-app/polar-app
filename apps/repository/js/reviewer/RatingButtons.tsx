@@ -5,7 +5,7 @@ import {IRatingOption, RatingButtonSet} from "./RatingButtonSet";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import grey from '@material-ui/core/colors/grey';
-import {RatingCallback} from "./RatingCallback";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 const LEARNING_BUTTONS: ReadonlyArray<IRatingOption> = [
     {
@@ -45,36 +45,25 @@ export interface IProps<A> {
 
     readonly taskRep: TaskRep<A>;
     readonly stage: Stage;
-    readonly onRating: RatingCallback<A>;
 
 }
 
-export class RatingButtons<A> extends React.Component<IProps<A>> {
+export const RatingButtons = deepMemo(function<A>(props: IProps<A>) {
 
-    constructor(props: IProps<A>, context: any) {
-        super(props, context);
+    const Learning = () => {
+        return <RatingButtonSet taskRep={props.taskRep}
+                                options={LEARNING_BUTTONS}/>;
+    };
+
+    const Review = () => {
+        return <RatingButtonSet taskRep={props.taskRep}
+                                options={REVIEW_BUTTONS}/>;
+    };
+
+    if (['new', 'learning'].includes(props.stage)) {
+        return <Learning/>;
+    } else {
+        return <Review/>;
     }
 
-    public render() {
-
-        const Learning = () => {
-            return <RatingButtonSet taskRep={this.props.taskRep}
-                                    options={LEARNING_BUTTONS}
-                                    onRating={this.props.onRating}/>;
-        };
-
-        const Review = () => {
-            return <RatingButtonSet taskRep={this.props.taskRep}
-                                    options={REVIEW_BUTTONS}
-                                    onRating={this.props.onRating}/>;
-        };
-
-        if (['new', 'learning'].includes(this.props.stage)) {
-            return <Learning/>;
-        } else {
-            return <Review/>;
-        }
-
-    }
-
-}
+});

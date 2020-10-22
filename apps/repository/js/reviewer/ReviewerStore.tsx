@@ -5,13 +5,22 @@ import {
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
+import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+
+/**
+ * Called when we're finished all the tasks.
+ *
+ * @param cancelled true if the user explicitly cancelled the review.
+ */
+export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => Promise<void>;
 
 interface IReviewerStore {
 
     /**
      * The current TaskRep we're working with or undefined when there are no more.
      */
-    readonly taskRep?: TaskRep<any> | undefined;
+    readonly taskRep?: TaskRep<any>;
 
     readonly pending: TaskRep<any>[];
 
@@ -19,13 +28,17 @@ interface IReviewerStore {
 
     readonly total: number;
 
+    readonly doRating?: RatingCallback<any>;
 }
 
 interface IReviewerCallbacks {
 
-    readonly init: <A>(taskReps: ReadonlyArray<TaskRep<A>>) => void;
+    readonly init: <A>(taskReps: ReadonlyArray<TaskRep<A>>,
+                       doRating: RatingCallback<any>) => void;
 
     readonly next: () => boolean;
+
+    readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
 
 }
 
@@ -51,9 +64,12 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                           setStore: (store: IReviewerStore) => void,
                           mutator: Mutator): IReviewerCallbacks {
 
+    const dialogs = useDialogManager();
+
     return React.useMemo(() => {
 
-        function init<A>(taskReps: ReadonlyArray<TaskRep<A>>) {
+        function init<A>(taskReps: ReadonlyArray<TaskRep<A>>,
+                         doRating: RatingCallback<any>) {
 
             const pending = [...taskReps];
             const total = taskReps.length;
@@ -62,7 +78,8 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                 taskRep: pending.shift(),
                 pending,
                 total,
-                finished: 0
+                finished: 0,
+                doRating
             });
 
         }
@@ -97,13 +114,43 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             return false;
         }
 
+
+        function handleAsyncCallback(delegate: () => Promise<void>) {
+
+            function handleError(err: Error) {
+                dialogs.snackbar({type: 'error', message: err.message});
+            }
+
+            delegate()
+                .catch(handleError)
+
+        }
+
+        function onRating(taskRep: TaskRep<any>, rating: Rating) {
+
+            const store = storeProvider();
+
+            async function doAsync() {
+
+                if (! store.doRating) {
+                    return;
+                }
+
+                await store.doRating(taskRep, rating);
+            }
+
+            handleAsyncCallback(doAsync);
+
+            next();
+
+        }
+
+
         return {
-            init, next
+            init, next, onRating
         };
 
-        return result;
-
-    }, [setStore, storeProvider]);
+    }, [dialogs, setStore, storeProvider]);
 
 }
 

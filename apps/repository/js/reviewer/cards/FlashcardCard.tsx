@@ -7,9 +7,7 @@ import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S
 import {Preconditions} from "polar-shared/src/Preconditions";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {CardPaper} from "./CardPaper";
-import {RatingCallback} from "../RatingCallback";
 
 namespace card {
 
@@ -73,8 +71,6 @@ export interface IProps {
 
     readonly taskRep: TaskRep<FlashcardTaskAction>;
 
-    readonly onRating: RatingCallback<FlashcardTaskAction>;
-
     readonly front: React.ReactElement<any>;
 
     readonly back: React.ReactElement<any>;
@@ -94,11 +90,6 @@ export const FlashcardCard = (props: IProps) => {
 
     function onShowAnswer() {
         setState({side: 'back'});
-    }
-
-    function onRating(taskRep: TaskRep<any>, rating: Rating) {
-        props.onRating(taskRep, rating);
-        setState({side: 'front'});
     }
 
     Preconditions.assertPresent(props.front, 'front');
@@ -145,8 +136,7 @@ export const FlashcardCard = (props: IProps) => {
 
             case 'back':
                 return <RatingButtons taskRep={taskRep}
-                                      stage={taskRep.stage}
-                                      onRating={onRating}/>;
+                                      stage={taskRep.stage}/>;
             default:
                 throw new Error("Invalid side: " + state.side);
 

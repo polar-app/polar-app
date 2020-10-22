@@ -1,21 +1,24 @@
+import * as React from "react";
 import {ReadingTaskAction} from "./ReadingTaskAction";
 import {ReadingCard} from "./ReadingCard";
 import {FlashcardTaskAction} from "./FlashcardTaskAction";
 import {FlashcardCard} from "./FlashcardCard";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
-import * as React from "react";
+import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 
-const DoReadingCard = (props: ReviewerCardProps) => {
+interface ReviewerCardProps {
+    readonly taskRep: TaskRep<any>;
+}
+
+const DoReadingCard = deepMemo((props: ReviewerCardProps) => {
     const {taskRep} = props;
     const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
 
-    return <ReadingCard taskRep={readingTaskRep}
-                        onRating={props.onRating}/>;
+    return <ReadingCard taskRep={readingTaskRep}/>;
 
-};
+});
 
-const DoFlashcardCard = (props: ReviewerCardProps) => {
+const DoFlashcardCard = deepMemo((props: ReviewerCardProps) => {
     const {taskRep} = props;
 
     const flashcardTaskRep = taskRep as any as TaskRep<FlashcardTaskAction>;
@@ -26,14 +29,8 @@ const DoFlashcardCard = (props: ReviewerCardProps) => {
 
     return <FlashcardCard taskRep={flashcardTaskRep}
                           front={front}
-                          back={back}
-                          onRating={props.onRating}/>;
-};
-
-interface ReviewerCardProps {
-    readonly taskRep: TaskRep<any>;
-    readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
-}
+                          back={back}/>;
+});
 
 export const ReviewerCard = (props: ReviewerCardProps) => {
 

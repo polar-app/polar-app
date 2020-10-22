@@ -6,7 +6,7 @@ import {ReviewFinished} from "./ReviewFinished";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {ReviewerCard} from "./cards/ReviewerCard";
-import { useReviewerCallbacks, useReviewerStore } from './ReviewerStore';
+import {RatingCallback, useReviewerCallbacks, useReviewerStore} from './ReviewerStore';
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 /**
@@ -16,12 +16,6 @@ import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks
  */
 export type FinishedCallback = (cancelled?: boolean) => Promise<void>;
 
-/**
- * Called when we're finished all the tasks.
- *
- * @param cancelled true if the user explicitly cancelled the review.
- */
-export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => Promise<void>;
 
 export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => Promise<void>;
 
@@ -39,7 +33,7 @@ export const ReviewerRunner = function<A>(props: ReviewerRunnerProps<A>) {
 
     const dialogs = useDialogManager();
 
-    const {pending, taskRep, finished, total} = useReviewerStore(['pending', 'taskRep', 'finished', 'total']);
+    const {taskRep, finished, total} = useReviewerStore(['taskRep', 'finished', 'total']);
     const {next} = useReviewerCallbacks();
 
     const handleAsyncCallback = (delegate: () => Promise<void>) => {
@@ -86,8 +80,7 @@ export const ReviewerRunner = function<A>(props: ReviewerRunnerProps<A>) {
             </div>
 
             <ReviewerCard key={taskRep.id}
-                          taskRep={taskRep}
-                          onRating={onRating}/>
+                          taskRep={taskRep}/>
 
         </>
 
@@ -115,7 +108,7 @@ export const Reviewer3 = function<A>(props: IProps<A>) {
     const {init} = useReviewerCallbacks();
 
     useComponentDidMount(() => {
-        init(props.taskReps);
+        init(props.taskReps, props.doRating);
     });
 
     return (

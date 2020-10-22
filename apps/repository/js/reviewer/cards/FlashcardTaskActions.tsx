@@ -8,7 +8,7 @@ import {
     Region
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/util/ClozeParser";
 import {Texts} from "polar-shared/src/metadata/Texts";
-import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
+import {Preconditions} from 'polar-shared/src/Preconditions';
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 
 export class FlashcardTaskActions {
