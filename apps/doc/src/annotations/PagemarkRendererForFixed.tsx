@@ -169,11 +169,11 @@ export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
         throw new Error("Pagemark has no percentage");
     }
 
-    const createID = () => {
+    const createID = React.useCallback(() => {
         return `${pagemark.id}`;
-    };
+    }, [pagemark.id]);
 
-    const toReactPortal = (container: HTMLElement) => {
+    const toReactPortal = React.useCallback((container: HTMLElement) => {
 
         const placementRect = createPlacementRect(container);
         const overlayRect = toOverlayRect(placementRect, pagemark);
@@ -197,7 +197,7 @@ export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
                 </ContextMenu>
             </PagemarkValueContext.Provider>,
             container);
-    };
+    }, [createID, fingerprint, pageNum, pagemark]);
 
     return toReactPortal(container);
 
