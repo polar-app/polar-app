@@ -29,7 +29,7 @@ export const StringField = deepMemo((props: IProps) => {
 
     return (
         <div>
-            <TextField required
+            <TextField required={! props.optional}
                        label={props.name}
                        defaultValue={props.value || ''}
                        onChange={event => handleUpdate(event.target.value)}/>

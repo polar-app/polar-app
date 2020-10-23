@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
+import { StringField } from './StringField';
 
 export interface IField {
     readonly name: keyof IDocInfo;
