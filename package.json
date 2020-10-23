@@ -7,7 +7,8 @@
   "scripts": {
     "build": "gatsby build",
     "clean-dev": "gatsby clean && gatsby develop",
-    "build-deploy": "gatsby clean && gatsby build && firebase deploy",
+    "dist": "gatsby clean && gatsby build",
+    "dist-release": "npm run-script dist && firebase deploy",
     "build-deploy-dev": "gatsby clean && gatsby build && firebase deploy && gatsby develop",
     "prune-dev": "npm prune && gatsby develop",
     "develop": "gatsby develop",
