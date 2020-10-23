@@ -40,7 +40,7 @@ export const DOMHighlight = deepMemo((props: IProps) => {
 
     const redrawCallback = React.useCallback(withAnimationFrame(() => {
         setHighlightViewportPositions(toHighlightViewportPositions(regions));
-    }), []);
+    }), [regions]);
 
     if (props.regions.length === 0) {
         // no work to do...

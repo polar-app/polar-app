@@ -68,7 +68,7 @@ export const Resizable = deepMemo((props: IProps) => {
 
         return Rects.createFromOffset(doc.body);
 
-    }, [elementRef.current]);
+    }, [computeBoundsParentElement, doc.body]);
 
     const toggleUserSelect = (resizing: boolean) => {
         // this is a hack to disable user select of the document to prevent
@@ -122,7 +122,7 @@ export const Resizable = deepMemo((props: IProps) => {
         toggleUserSelect(false);
         toggleCursor(undefined);
         win.removeEventListener('mousemove', mouseMoveHandler.current!);
-    }, []);
+    }, [toggleCursor, toggleUserSelect, win]);
 
     const handleMouseMove = React.useCallback((event: MouseEvent, direction: Direction) => {
 
@@ -204,7 +204,7 @@ export const Resizable = deepMemo((props: IProps) => {
         updatePosition(computePosition(), direction);
         mouseEventOrigin.current = event;
 
-    }, []);
+    }, [computeBoundsParentElementRect, props.bounds, updatePosition]);
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent, direction: Direction) => {
         mouseDown.current = true;
@@ -223,7 +223,7 @@ export const Resizable = deepMemo((props: IProps) => {
             handleMouseUp();
         }, {once: true});
 
-    }, []);
+    }, [handleMouseMove, handleMouseUp, toggleCursor, toggleUserSelect, win]);
 
     const style: React.CSSProperties = {
         position: 'absolute',
