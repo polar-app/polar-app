@@ -72,7 +72,19 @@ export function useSnapshotSubscriber<T>(subscriber: SnapshotSubscriberWithID<T>
         error: undefined
     });
 
+    const created = React.useMemo(() => Date.now(), []);
+
+    const hasRecordedInitialLatency = React.useRef(false);
+
     function onNext(value: T | undefined) {
+
+        if (! hasRecordedInitialLatency.current) {
+            const lag = Date.now() - created;
+            if (lag > 100) {
+                console.warn(`Snapshot subscriber has high latency: id=${subscriber.id}, lag=${lag}ms`)
+            }
+        }
+
         setState({value, error: undefined});
     }
 

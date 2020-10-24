@@ -39,6 +39,6 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
     }
 
-    return useSnapshotSubscriber({id: 'none', subscribe: createSubscription()});
+    return useSnapshotSubscriber({id: 'prefs', subscribe: createSubscription()});
 
 }

@@ -77,7 +77,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
     }
 
     const subscribe = SnapshotSubscribers.converted<Account, IUserInfoContext>(accountSnapshotSubscriber, toUserInfoContext);
-    return {id: user.uid, subscribe};
+    return {id: 'user-info-context:' + user.uid, subscribe};
 
 }
 
