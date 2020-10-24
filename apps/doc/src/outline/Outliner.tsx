@@ -7,7 +7,9 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 const NoOutlineAvailable = React.memo(() => {
 
     return (
-        <h2>This document does not provide an outline.</h2>
+        <div style={{textAlign: 'center'}}>
+            <h2>No Outline Available</h2>
+        </div>
     );
 
 });

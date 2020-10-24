@@ -256,7 +256,6 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                          log: ILogger): IAnnotationRepoCallbacks => {
 
     const docLoader = useDocLoader();
-
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
 
     return React.useMemo(() => {
