@@ -113,6 +113,9 @@ export function FeedbackButton2() {
                          placement="left"
                          title="Feedback and Resources.">
                     <Fab ref={anchorRef}
+                         style={{
+                             zIndex: 1000
+                         }}
                          color="primary"
                          aria-label="Feedback"
                          onClick={handleClick}
