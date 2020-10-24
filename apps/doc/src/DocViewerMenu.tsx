@@ -46,7 +46,7 @@ function useAnnotationMetaToRefResolver(): AnnotationMetaResolver {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
 
-    return (annotationMeta: IAnnotationMeta): IAnnotationRef => {
+    return React.useCallback((annotationMeta: IAnnotationMeta): IAnnotationRef => {
 
         const {id, annotationType, pageNum} = annotationMeta;
 
@@ -81,7 +81,7 @@ function useAnnotationMetaToRefResolver(): AnnotationMetaResolver {
             original
         }
 
-    }
+    }, [docMeta]);
 
 }
 

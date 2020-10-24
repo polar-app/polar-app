@@ -133,7 +133,6 @@ interface IProps {
     readonly docURL: URLStr;
     readonly docMeta: IDocMeta;
     readonly children: React.ReactNode;
-
 }
 
 export const PDFDocument = deepMemo((props: IProps) => {
@@ -148,13 +147,15 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     const log = useLogger();
 
-    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler, setDocScale, setPage, setOutline, setOutlineNavigator}
+    const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler,
+           setDocScale, setPage, setOutline, setOutlineNavigator, docMetaProvider}
         = useDocViewerCallbacks();
 
     const {setFinder} = useDocFindCallbacks();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const prefs = usePrefsContext();
     const annotationBarInjector = useAnnotationBar();
+
     useDocViewerPageJumpListener();
 
     useComponentDidMount(() => {
@@ -322,23 +323,26 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
             console.log("Auto pagemarks enabled");
 
-            const {docMeta} = props;
-
-            async function doWriteDocMeta() {
-                const persistenceLayer = persistenceLayerProvider();
-                await persistenceLayer.writeDocMeta(docMeta);
-            }
-
-            const extender = Pagemarks.createExtender(docMeta);
-
             function onPagemarkExtend(extendPagemark: ExtendPagemark) {
+
+                const docMeta = docMetaProvider();
+
+                if (! docMeta) {
+                    return;
+                }
+
+                const extender = Pagemarks.createExtender(docMeta);
 
                 // perform the mutation of the docMeta now...
                 extender(extendPagemark);
 
                 // then persist it back out..
+                async function doAsync(docMeta: IDocMeta) {
+                    const persistenceLayer = persistenceLayerProvider();
+                    await persistenceLayer.writeDocMeta(docMeta);
+                }
 
-                doWriteDocMeta()
+                doAsync(docMeta)
                     .catch(err => log.error("Unable to write docMeta: ", err));
 
             }

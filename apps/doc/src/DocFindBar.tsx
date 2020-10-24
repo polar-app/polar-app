@@ -19,7 +19,7 @@ function useFindCallback(): FindCallback {
     const {findHandler} = useDocFindStore(['findHandler']);
     const {doFind, setOpts, reset} = useDocFindCallbacks();
 
-    return (opts: IFindOpts) => {
+    return React.useCallback((opts: IFindOpts) => {
 
         const {query} = opts;
 
@@ -40,7 +40,7 @@ function useFindCallback(): FindCallback {
 
         doFind(opts);
 
-    }
+    }, [doFind, findHandler, reset, setOpts]);
 
 }
 

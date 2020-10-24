@@ -290,6 +290,7 @@ export interface IDocViewerCallbacks {
     readonly toggleDocFlagged: () => void;
     readonly toggleDocArchived: () => void;
 
+    readonly docMetaProvider: () => IDocMeta | undefined;
     // readonly getAnnotationsFromDocMeta: (refs: ReadonlyArray<IAnnotationRef>) => void;
 
     readonly setOutline: (outline: IOutline | undefined) => void;
@@ -972,6 +973,11 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setStore({...store, outlineNavigator});
         }
 
+        function docMetaProvider(): IDocMeta | undefined {
+            const store = storeProvider();
+            return store.docMeta;
+        }
+
         return {
             updateDocMeta,
             setDocMeta,
@@ -997,7 +1003,8 @@ function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
             toggleDocFlagged,
             toggleDocArchived,
             setOutline,
-            setOutlineNavigator
+            setOutlineNavigator,
+            docMetaProvider
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

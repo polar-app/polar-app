@@ -40,9 +40,9 @@ export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
         return null;
     }
 
-    const toReactPortal = (rawTextHighlightRect: IRect,
-                           container: HTMLElement,
-                           idx: number) => {
+    const toReactPortal = React.useCallback((rawTextHighlightRect: IRect,
+                                             container: HTMLElement,
+                                             idx: number) => {
 
         return ReactDOM.createPortal(
             <HighlightDelegate idx={idx}
@@ -50,7 +50,7 @@ export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
                                {...props}/>,
             container);
 
-    };
+    }, [props]);
 
     const portals = rects.map((current, idx) => toReactPortal(current, container, idx));
 
@@ -88,14 +88,14 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
 
     const {scaleValue} = docScale;
 
-    const createScaledRect = (textHighlightRect: IRect): IRect => {
+    const createScaledRect = React.useCallback((textHighlightRect: IRect): IRect => {
 
         // this is only needed for PDF and we might be able to use a
         // transform in the future which would be easier.  For all other
         // document formats the scale should just be '1'
         return Rects.scale(textHighlightRect, scaleValue);
 
-    };
+    }, [scaleValue]);
 
     const className = `text-highlight annotation text-highlight-${annotation.id}`;
     const textHighlightRect = createScaledRect(rawTextHighlightRect);
@@ -103,7 +103,7 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
     const color: HighlightColor = annotation.color || 'yellow';
     const backgroundColor = HighlightColors.toBackgroundColor(color, 0.5);
 
-    function createDOMID() {
+    const createDOMID = React.useCallback(() => {
 
         if (idx === 0) {
             return annotation.id;
@@ -111,7 +111,7 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
 
         return annotation.id + "-" + idx;
 
-    }
+    }, [annotation.id, idx]);
 
     const id = createDOMID();
 

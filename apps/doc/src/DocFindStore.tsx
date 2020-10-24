@@ -186,6 +186,8 @@ function callbacksFactory(storeProvider: Provider<IDocFindStore>,
 
     }
 
+    // TODO: migrate to useMemo
+
     return {
         setActive,
         setFinder,
