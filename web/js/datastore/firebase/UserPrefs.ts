@@ -59,6 +59,7 @@ export class UserPrefs {
         return ref.onSnapshot(handleSnapshot, onError);
 
     }
+
     public static async set(prefs: PersistentPrefs) {
 
         const uid  = await this.getUserID();
