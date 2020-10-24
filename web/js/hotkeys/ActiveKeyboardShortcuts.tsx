@@ -18,6 +18,7 @@ import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShort
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {KeySequence} from "./KeySequence";
 import {PartitionKey} from "polar-shared/src/util/ArrayStreams";
+import { useActiveKeyboardShortcutsStore, useActiveKeyboardShortcutsCallbacks } from './ActiveKeyboardShortcutsStore';
 
 interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
@@ -145,14 +146,15 @@ const keyMap = {
 
 export const ActiveKeyboardShortcuts = deepMemo(() => {
 
-    const [open, setOpen] = React.useState(false);
+    const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
+    const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks();
 
     function handleClose() {
-        setOpen(false);
+        setShowActiveShortcuts(false);
     }
 
     const handlers = {
-        SHOW_ALL_HOTKEYS: () => setOpen(true)
+        SHOW_ALL_HOTKEYS: () => setShowActiveShortcuts(true)
     };
 
     return (
@@ -162,7 +164,7 @@ export const ActiveKeyboardShortcuts = deepMemo(() => {
 
             <Dialog fullWidth={true}
                     maxWidth="lg"
-                    open={open}
+                    open={showActiveShortcuts}
                     onClose={handleClose}>
                 <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
                 <DialogContent>
