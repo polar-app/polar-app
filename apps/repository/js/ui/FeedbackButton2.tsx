@@ -5,12 +5,13 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenuPopper} from "../../../../web/js/mui/menu/MUIMenuPopper";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Tooltip from "@material-ui/core/Tooltip";
 import {useZest} from "../../../../web/js/zest/ZestInjector";
 import {useLinkLoader} from "../../../../web/js/ui/util/LinkLoaderHook";
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import { Plans } from "polar-accounts/src/Plans";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {useActiveKeyboardShortcutsCallbacks} from "../../../../web/js/hotkeys/ActiveKeyboardShortcutsStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -53,15 +54,53 @@ function useReportFeedback() {
 
 }
 
+namespace MenuItems {
+
+    export const SendVideoFeedback = deepMemo(() => {
+
+        const zest = useZest();
+
+        if (! zest.supported) {
+            return null;
+        }
+
+        return (
+            <MUIMenuItem text="Send Video Feedback"
+                         onClick={zest.trigger}/>
+        );
+
+    });
+
+    export const RequestFeatures = deepMemo(() => {
+
+        const reportFeedback = useReportFeedback();
+
+        return (
+            <MUIMenuItem text="Request Features and Help Improve Polar"
+                         onClick={reportFeedback}/>
+        );
+
+    });
+
+    export const ShowActiveKeyboardShortcuts = deepMemo(() => {
+
+        const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks()
+
+        return (
+            <MUIMenuItem text="Show Active Keyboard Shortcuts"
+                         onClick={() => setShowActiveShortcuts(true)}/>
+        );
+
+    });
+
+}
+
 export function FeedbackButton2() {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [tooltipActive, setTooltipActive] = React.useState(false);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
-
-    const reportFeedback = useReportFeedback();
-    const zest = useZest();
 
     const handleClick = React.useCallback(() => {
         setOpen(! open);
@@ -91,12 +130,11 @@ export function FeedbackButton2() {
 
                     <div>
 
-                        {zest.supported && (
-                            <MUIMenuItem text="Send Video Feedback"
-                                         onClick={zest.trigger}/>)}
+                        <MenuItems.SendVideoFeedback/>
 
-                        <MUIMenuItem text="Request Features and Help Improve Polar"
-                                     onClick={reportFeedback}/>
+                        <MenuItems.RequestFeatures/>
+
+                        <MenuItems.ShowActiveKeyboardShortcuts/>
 
                     </div>
 
