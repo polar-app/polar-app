@@ -36,6 +36,7 @@ import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
+import {FeedbackButton2} from "../../repository/js/ui/FeedbackButton2";
 
 const Main = React.memo(() => {
 
@@ -201,6 +202,7 @@ namespace Device {
                  }}>
 
                 <DocViewerToolbar/>
+                <FeedbackButton2/>
 
                 <div className="DocViewer.Desktop.Body"
                      style={{
