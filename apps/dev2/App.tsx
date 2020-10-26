@@ -1,12 +1,12 @@
 import React from 'react';
-import {EPUBContextMenuRoot} from '../doc/src/renderers/epub/contextmenu/EPUBContextMenuRoot';
-import {Resizable} from "../../web/js/ui/resizable/Resizable";
-import {UploadProgressDialog} from "../../web/js/ui/dialogs/UploadProgressDialog";
-import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
-import {TwoMigrationDialog} from "../repository/js/gateways/two_migration/TwoMigrationDialog";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {MobileGateway} from "../repository/js/gateways/mobile/MobileGateway";
-import {TwoMigrationForBrowser} from "../repository/js/gateways/two_migration/TwoMigrationForBrowser";
+import CKEditor from '@ckeditor/ckeditor5-react';
+// const ClassicEditor = require('@ckeditor/ckeditor5-build-classic')
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
+import '@ckeditor/ckeditor5-theme-lark';
+
+// import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
 const IFrameContent = React.memo(() => {
 
@@ -39,44 +39,24 @@ const IFrameContent = React.memo(() => {
 
 
 export const App = () => (
-    <MUIAppRoot>
-
-        {/*<div style={{height: '1200px', position: 'absolute'}}>*/}
-
-        {/*    <div style={{*/}
-        {/*             position: "absolute",*/}
-        {/*             top: '100px',*/}
-        {/*             left: '100px',*/}
-        {/*             width: '800px',*/}
-        {/*             height: '1000px',*/}
-        {/*             marginLeft: 'auto',*/}
-        {/*             marginRight: 'auto',*/}
-        {/*             backgroundColor: 'orange',*/}
-        {/*             // position: 'relative'*/}
-        {/*         }}>*/}
-
-        {/*        <Resizable computeInitialPosition={() => ({*/}
-        {/*                       top: 0,*/}
-        {/*                       left: 0,*/}
-        {/*                       width: 100,*/}
-        {/*                       height: 100*/}
-        {/*                   })}*/}
-        {/*                   bounds="parent"*/}
-        {/*                   color="rgb(255, 0, 0)"/>*/}
-
-
-        {/*    </div>*/}
-
-        {/*    /!*<UploadProgressDialog value='indeterminate'/>*!/*/}
-
-        {/*</div>*/}
-
-        {/*<TwoMigrationDialog onClose={NULL_FUNCTION}/>*/}
-        <TwoMigrationForBrowser>
-            <div>
-                this is the real content
-            </div>
-        </TwoMigrationForBrowser>
-
-    </MUIAppRoot>
+    <div>
+        <CKEditor
+            editor={ ClassicEditor }
+            data="<p>Hello from CKEditor 5!</p>"
+            onInit={ (editor: any) => {
+                // You can store the "editor" and use when it is needed.
+                console.log( 'Editor is ready to use!', editor );
+            } }
+            onChange={ ( event: any, editor: any ) => {
+                const data = editor.getData();
+                console.log( { event, editor, data } );
+            } }
+            onBlur={ ( event: any, editor: any ) => {
+                console.log( 'Blur.', editor );
+            } }
+            onFocus={ ( event: any, editor: any ) => {
+                console.log( 'Focus.', editor );
+            } }
+        />
+    </  div>
 );

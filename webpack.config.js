@@ -9,6 +9,9 @@ const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+
 
 const isDevServer = process.env.WEBPACK_DEV_SERVER;
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
@@ -47,7 +50,7 @@ function createRules() {
             }
         },
         {
-            test: /\.tsx?$/,
+            test: /\.(jsx|tsx|ts)$/,
             exclude: /node_modules/,
             use: [
                 {
@@ -94,6 +97,7 @@ function createRules() {
         {
             // make SVGs use data URLs.
             test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
+            exclude: /ckeditor5/,
             use: [
                 {
                     loader: 'url-loader',
@@ -106,6 +110,7 @@ function createRules() {
         },
         {
             test: /\.css$/i,
+            exclude: /ckeditor5/,
             use: [
                 {
                     loader: 'style-loader',
@@ -132,22 +137,51 @@ function createRules() {
                 },
             ],
         },
+        {
+            test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+            use: [ 'raw-loader' ]
+        },
+        {
+            test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+            use: [
+                {
+                    loader: 'style-loader',
+                    options: {
+                        injectType: 'singletonStyleTag',
+                        attributes: {
+                            'data-cke': true
+                        }
+                    }
+                },
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: styles.getPostCssConfig( {
+                            themeImporter: {
+                                themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+                            },
+                            minify: true
+                        } )
+                    }
+                },
+            ]
+        },
 
     ];
 
     if (target !== 'electron-renderer') {
 
-        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js')
+        const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js');
 
         if (! fs.existsSync(electronPath)) {
-            throw new Error("Electron dir doesn't exist: " + electronPath)
+            throw new Error("Electron dir doesn't exist: " + electronPath);
         }
 
         console.log("Adding null-loader for electron libraries: " + electronPath);
         rules.push({
             test: electronPath,
             use: 'null-loader'
-        })
+        });
     }
 
     return rules;
@@ -163,7 +197,7 @@ function createNode() {
             fs: 'empty',
             net: 'empty',
             tls: 'empty',
-        }
+        };
     }
 
 }
@@ -182,7 +216,7 @@ module.exports = {
         rules: createRules()
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js'],
+        extensions: [ '.tsx', '.ts', '.js', '.jsx'],
         alias: {
         }
     },
@@ -193,6 +227,13 @@ module.exports = {
     },
     node: createNode(),
     plugins: [
+        // TODO: this is needed for a localized build and it does not support en
+        // new CKEditorWebpackPlugin( {
+        //     // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
+        //     // language: 'en',
+        //     // addMainLanguageTranslationsToAllAssets: true,
+        //     // buildAllTranslationsToSeparateFiles: true
+        // } ),
         // TODO: this won't be needed once we get rid of summernote .... it
         // should be the only thing depending on jquery moving forward.
         new webpack.ProvidePlugin({
@@ -294,7 +335,7 @@ module.exports = {
             // disable caching to:  node_modules/.cache/terser-webpack-plugin/
             // because intellij will index this data and lock up my machine
             // and generally waste space and CPU
-            cache: ".terser-webpack-plugin",
+            // cache: ".terser-webpack-plugin",
             terserOptions: {
                 output: { ascii_only: true },
             }})
