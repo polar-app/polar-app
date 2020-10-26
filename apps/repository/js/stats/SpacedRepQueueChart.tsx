@@ -123,8 +123,12 @@ export class SpacedRepQueueChart extends React.Component<IProps, IState> {
         // TODO: migrate to the new data loader component which also means we will get one copy
         // and use snapshots too.
 
-        ReviewerStatistics.statistics(this.props.mode, this.props.type)
-            .then(data => this.setState({data}))
+        const doAsync = async () => {
+            const data = await ReviewerStatistics.statistics(this.props.mode, this.props.type);
+            this.setState({data});
+        }
+
+        doAsync()
             .catch(err => log.error("Could not fetch queue stats: ", err));
 
     }

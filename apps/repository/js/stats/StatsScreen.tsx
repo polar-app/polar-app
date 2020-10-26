@@ -13,6 +13,7 @@ import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 import {Helmet} from "react-helmet";
+import {FeedbackButton2} from "../ui/FeedbackButton2";
 
 const log = Logger.create();
 
@@ -139,6 +140,8 @@ const Desktop = (props: ReviewerProps) => {
                    minHeight: 0,
                    overflowY: 'auto'
                }}>
+
+            <FeedbackButton2/>
 
             <div style={{
                      maxWidth: '900px',
