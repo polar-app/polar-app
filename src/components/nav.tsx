@@ -149,7 +149,7 @@ function NavBarMobile() {
           <IconButton>
             <CloseIcon />
           </IconButton>
-          {["pricing", "docs", "blog", "download", "extension"].map(
+          {links.map(
             (text, index) => (
               <Box>
                 <ListItem
