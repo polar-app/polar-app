@@ -42,34 +42,73 @@ const IFrameContent = React.memo(() => {
 
 // sets up finder and context
 
-interface Note {
+interface INote {
+    readonly id: string;
     readonly content: string
-    readonly children?: ReadonlyArray<Note>;
+    readonly children?: ReadonlyArray<INote>;
 }
 
-const notes: ReadonlyArray<Note> = [
+const notes: ReadonlyArray<INote> = [
     {
+        id: '101',
         content: 'first note',
     },
     {
+        id: '102',
         content: 'this is the second note',
+        children: [
+            {
+                id: '103',
+                content: 'This is a child note'
+            }
+        ]
     }
 ]
 
-export const App = () => {
+interface NoteProps {
+    readonly notes: ReadonlyArray<INote> | undefined;
+}
+
+const Notes = (props: NoteProps) => {
+
+    if ( ! props.notes) {
+        return null;
+    }
 
     return (
         <ul>
 
-            {notes.map((note, idx) => (
-                <li key={idx}>
+            {props.notes.map((note) => (
+                <li key={note.id}>
                     <Editor content={note.content}
                             onChange={NULL_FUNCTION}/>
+                     <Notes notes={note.children}/>
                 </li>))}
 
         </ul>
 
     );
+
+}
+
+export const App = () => {
+
+    return (
+        <Notes notes={notes}/>
+    );
+
+    // return (
+    //     <ul>
+    //
+    //         {notes.map((note) => (
+    //             <li key={note.id}>
+    //                 <Editor content={note.content}
+    //                         onChange={NULL_FUNCTION}/>
+    //             </li>))}
+    //
+    //     </ul>
+    //
+    // );
 
 }
 
