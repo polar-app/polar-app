@@ -86,8 +86,6 @@ export class Repository {
 
         const handleAuth = async () => {
 
-            console.log("Handling auth...");
-
             // TODO: first , we're reading authHandler here twice... once in
             // AppInitializer and then again here.  Also, it doesn't make sense
             // to start this code UNTIL we're actually using a client that
@@ -97,7 +95,10 @@ export class Repository {
             // only when the repository needs it...
 
             const authHandler = AuthHandlers.get();
+
+            console.log("Getting auth status...");
             const authStatus = await Tracer.async(authHandler.status(), 'auth-handler');
+            console.log("Getting auth status...done");
 
             // TODO: return authStatus as an object and then do authState.authenticated
             // and unauthenticated so that if statements are cleaner

@@ -74,9 +74,9 @@ export namespace Firestore {
 
     async function enablePersistence(firestore: firebase.firestore.Firestore) {
 
-        console.log("Enabling firestore persistence....");
 
         const doExecAsync = async () => {
+
 
             try {
 
@@ -84,7 +84,9 @@ export namespace Firestore {
                 // but the viewer windows complain that they do not have access to
                 // work with the disk persistence.
 
+                console.log("Enabling firestore persistence....");
                 await firestore.enablePersistence({synchronizeTabs: true});
+                console.log("Enabling firestore persistence....done");
 
             } catch (e) {
                 // we've probably exceeded the local quota so we can't run with caching for now.

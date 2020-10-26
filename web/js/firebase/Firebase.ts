@@ -80,6 +80,11 @@ export class Firebase {
 
         Firebase.init();
 
+        // const auth = firebase.auth();
+        // const user = auth.currentUser;
+        // return user;
+
+        // TODO: I think this actually might be wrong.
         return new Promise<firebase.User | null>((resolve, reject) => {
 
             const unsubscribe = firebase.auth()
