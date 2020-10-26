@@ -199,6 +199,10 @@ export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
         value: '1.9'
     },
     {
+        label: '200%',
+        value: '2'
+    },
+    {
         label: '210%',
         value: '2.1'
     },
