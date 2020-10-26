@@ -1,6 +1,5 @@
 import * as React from "react"
 import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -10,7 +9,6 @@ import { Box } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuIcon from "@material-ui/icons/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
 import clsx from "clsx";
@@ -24,8 +22,8 @@ const DiscordIconLight = require("../../content/assets/logos/discord-light.png")
 import IconButton from "@material-ui/core/IconButton";
 const ImgPolarLogo = require("../../content/assets//logos/logo.svg");
 import CloseIcon from "@material-ui/icons/Close";
-import { renderStatic } from "react-helmet";
 import {CreateAccountButton} from "./CreateAccountButton";
+import {Devices} from "polar-shared/src/util/Devices";
 const useStyles = makeStyles((darkMode) => ({
   list: {
     width: 250,
@@ -96,7 +94,7 @@ class NavBar extends React.Component {
     super(props);
   }
   render() {
-    const { breakpoints } = this.props;
+    const {breakpoints} = this.props;
 
     return (
       <React.Fragment>
@@ -133,15 +131,19 @@ function NavBarMobile() {
     setState({ ...state, [anchor]: open });
   };
 
+
+  const links = Devices.isDesktop() ?
+      ["pricing", "docs", "blog", "download", "extension"] :
+      ["docs", "blog", "download", "extension"];
+
   const list = (anchor) => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === "top" || anchor === "bottom",
-      })}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
+    <div className={clsx(classes.list, {
+            [classes.fullList]: anchor === "top" || anchor === "bottom",
+         })}
+         role="presentation"
+         onClick={toggleDrawer(anchor, false)}
+         onKeyDown={toggleDrawer(anchor, false)}>
+
       <List>
         <React.Fragment>
           <IconButton>
