@@ -10,6 +10,8 @@ import '@ckeditor/ckeditor5-theme-lark';
 import {EditableContent} from "./EditableContent";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Editor} from "./Editor";
+import Memory = WebAssembly.Memory;
+import {deepMemo} from "../../web/js/react/ReactUtils";
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
@@ -69,7 +71,7 @@ interface NoteProps {
     readonly notes: ReadonlyArray<INote> | undefined;
 }
 
-const Notes = (props: NoteProps) => {
+const Notes = deepMemo((props: NoteProps) => {
 
     if ( ! props.notes) {
         return null;
@@ -89,7 +91,7 @@ const Notes = (props: NoteProps) => {
 
     );
 
-}
+});
 
 export const App = () => {
 
