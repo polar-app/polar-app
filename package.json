@@ -230,6 +230,7 @@
     "universal-analytics": "~0.4.23",
     "use-persisted-state": "=0.3.0",
     "uuid": "3.3.3",
+    "readable-stream": "=3.6.0",
     "@ckeditor/ckeditor5-build-classic": "=23.0.0",
     "@ckeditor/ckeditor5-build-balloon": "=23.0.0",
     "@ckeditor/ckeditor5-react": "=2.1.0",
