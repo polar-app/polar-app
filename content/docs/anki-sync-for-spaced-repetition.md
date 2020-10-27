@@ -57,8 +57,8 @@ and restart Anki. At this point Polar can sync to Anki properly.
 
 # Usage 
 
-Once Anki Connect is running, go to ```Tools | Sync Flashcards to Anki``` from 
-within the Document Repository. 
+Once Anki Connect is running, go to the overflow menu to the right in the navbar
+and select ```Start Anki Sync``` from within the Document Repository.
 
 # Issues
 
