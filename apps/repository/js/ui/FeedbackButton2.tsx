@@ -1,7 +1,6 @@
 import React from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import { DeviceRouters } from "../../../../web/js/ui/DeviceRouter";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenuPopper} from "../../../../web/js/mui/menu/MUIMenuPopper";
@@ -122,7 +121,14 @@ export function FeedbackButton2() {
                          onMouseEnter={() => setTooltipActive(true)}
                          onMouseLeave={() => setTooltipActive(false)}
                          className={classes.root}>
-                        <ChatBubbleIcon />
+
+                        <div style={{
+                                  fontSize: '28px',
+                                  lineHeight: '28px'
+                              }}>
+                            ?
+                        </div>
+
                     </Fab>
                 </Tooltip>
 
