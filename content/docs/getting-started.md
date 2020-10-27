@@ -56,7 +56,7 @@ The <a href="https://app.getpolarized.io" target="_blank">web version of Polar</
 
 # Cloud
 
-Polar is a cloud-based app. Every new user gets 1 GB of free storage. Your documents are available across all your devices. Up to 500 GB of storage is available when <a href="https://getpolarized.io/#pricing" target="_blank">upgrading</a>.
+Polar is a cloud-based app. Every new user gets 1 GB of free storage. Your documents are available across all your devices. Up to 500 GB of storage is available when <a href="https://getpolarized.io/pricing" target="_blank">upgrading</a>.
 
 # Footnotes
 

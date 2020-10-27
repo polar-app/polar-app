@@ -8,7 +8,7 @@ description: Polar Frequently Asked Questions (FAQ)
 
 # How do I support Polar?
 
-The best way to support Polar is to [buy Polar premium](https://getpolarized.io/#pricing).
+The best way to support Polar is to [buy Polar premium](https://getpolarized.io/pricing).
 
 # How do I import my existing data?
 

@@ -29,6 +29,6 @@ than you).
 
 ## Storage and pricing
 
-Every new user gets 1 GB of cloud storage for free. Higher tiers provide you with up to 500 GB storage. See details <a href="https://getpolarized.io/#pricing">here</a> 
+Every new user gets 1 GB of cloud storage for free. Higher tiers provide you with up to 500 GB storage. See details <a href="https://getpolarized.io/pricing">here</a> 
 
 
