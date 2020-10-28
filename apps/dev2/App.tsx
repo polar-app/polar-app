@@ -12,6 +12,8 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Editor} from "./Editor";
 import Memory = WebAssembly.Memory;
 import {deepMemo} from "../../web/js/react/ReactUtils";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
@@ -41,6 +43,11 @@ const IFrameContent = React.memo(() => {
 });
 
 
+const tags = [
+    "linux",
+    "microsoft",
+    "google"
+]
 
 // sets up finder and context
 
@@ -96,7 +103,40 @@ const Notes = deepMemo((props: NoteProps) => {
 export const App = () => {
 
     return (
-        <Notes notes={notes}/>
+        <>
+            <Notes notes={notes}/>
+
+            <Menu
+                id="fade-menu"
+                keepMounted
+                open={true}
+                style={{height: '100px'}}>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>My account</MenuItem>
+                <MenuItem>Logout</MenuItem>
+            </Menu>
+        </>
     );
 
     // return (
