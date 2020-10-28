@@ -14,19 +14,19 @@ export interface AutoFlashcardResponse {
 
 
 interface GPT3Config {
-    readonly apiKey: string;
+    readonly apikey: string;
 }
 
 function getConfig(): GPT3Config {
 
     const config = functions.config();
-    const apiKey = config?.polar?.openAI?.apiKey;
+    const apikey = config?.polar?.openai?.apikey;
 
-    if (! apiKey) {
-        throw new Error("No config: polar.openAI.apiKey");
+    if (! apikey) {
+        throw new Error("No config: polar.openai.apikey");
     }
 
-    return {apiKey}
+    return {apikey}
 
 }
 
