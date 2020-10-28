@@ -1,11 +1,14 @@
 
 # Steps to Build 
 
+- you might need to run ```ulimit -n 500000``` and then 'ulimit -n' to make sure
+  this setting was accepted by the OS.  Some users report a bug with npm that 
+  causes it to tail to garbage collect open file handles and this fixes it.
+
 - Make sure you're on node >=14.5 and npm >=6.14.5
 - clone the polar-app repository locally.
 - Copy .npmrc to your home directory.  
 - npm config set registry https://polar-app.bytesafe.dev/r/default
-
 
 - Follow the following instructions
 
