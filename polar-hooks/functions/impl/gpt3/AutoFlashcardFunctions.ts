@@ -54,7 +54,10 @@ export class AutoFlashcardFunctions {
 
         const response = await Fetches.fetch('http://www.gpt3-example-api-url.com', {
             method: 'POST',
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
+            headers: {
+                'X-Foo': 'This is the X-foo header... I think this works.'
+            }
         });
 
         // this will be a JSON object with the response from gpt3...
