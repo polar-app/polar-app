@@ -52,7 +52,7 @@
     "polar-webapp-links": "^2.0.57",
     "prerender-node": "^3.2.5",
     "prompts": "^2.3.2",
-    "stripe": "=8.109.0",
+    "stripe": "=8.119.0",
     "typescript": "3.9.5",
     "uuid": "3.3.3",
     "yargs": "^15.3.1"
