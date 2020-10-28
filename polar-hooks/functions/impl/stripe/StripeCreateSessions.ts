@@ -37,9 +37,9 @@ export namespace StripeCreateSessions {
 
         const customerParams = await computeCustomerParams(stripeMode, email);
 
-        const mode = 'subscription';
+        const mode = interval === '4year' ? 'payment' : 'subscription';
 
-        function computeSubscriptionParams(): any {
+        function createPlanParams(): any {
             switch (mode) {
                 case "subscription":
                     return {
@@ -48,22 +48,22 @@ export namespace StripeCreateSessions {
                             payment_behavior: 'allow_incomplete'
                         }
                     };
-                //
-                // case "payment":
-                //     return {
-                //         subscription_data: {
-                //             payment_behavior: 'allow_incomplete'
-                //         }
-                //     };
+
+                case "payment":
+                    return {
+                        // subscription_data: {
+                        //     payment_behavior: 'allow_incomplete'
+                        // }
+                    };
 
             }
         }
 
-        const subscriptionParams = computeSubscriptionParams();
+        const subscriptionParams = createPlanParams();
 
         const planID = StripePlanIDs.fromSubscription(stripeMode, plan, interval);
 
-        // TODO in stripe 8.109.0 we have to use 'any' here because the typescript codes don't work.
+        // TODO in stripe 8.109.0 we have to use 'any' here because the typescript interface doesn't work.
         const createOpts: any = {
             payment_method_types: ['card'],
             ...customerParams,

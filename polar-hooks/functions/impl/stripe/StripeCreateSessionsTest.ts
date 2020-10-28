@@ -16,7 +16,10 @@ describe('StripeCreateSessions', function() {
 
         async function doTest(validator: (session: IStripeSession) => void) {
 
-            const intervals: ReadonlyArray<Billing.Interval> = ['month', 'year'];
+            // const intervals: ReadonlyArray<Billing.Interval> = ['month', 'year', '4year'];
+            // const intervals: ReadonlyArray<Billing.Interval> = ['month'];
+            const intervals: ReadonlyArray<Billing.Interval> = ['4year'];
+
             const plans: ReadonlyArray<Billing.V2PlanLevel> = ['plus', 'pro'];
 
             for (const interval of intervals) {
