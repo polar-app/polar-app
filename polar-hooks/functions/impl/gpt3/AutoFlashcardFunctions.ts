@@ -17,13 +17,13 @@ interface GPT3Config {
     readonly apiKey: string;
 }
 
-function getConfig(): GPT3Config | undefined {
+function getConfig(): GPT3Config {
 
     const config = functions.config();
     const apiKey = config?.polar?.openAI?.apiKey;
 
     if (! apiKey) {
-        return undefined;
+        throw new Error("No config: polar.openAI.apiKey");
     }
 
     return {apiKey}
