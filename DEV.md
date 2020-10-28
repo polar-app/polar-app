@@ -1,28 +1,34 @@
 
 # Steps to Build 
 
-- Copy .npmrc to your home directory
-
 - Make sure you're on node >=14.5 and npm >=6.14.5
-
 - clone the polar-app repository locally.
+- Copy .npmrc to your home directory.  
+- npm config set registry https://polar-app.bytesafe.dev/r/default
+
 
 - Follow the following instructions
 
 ```bash
 
 # pull down all repositories locally
-./sbin/init                            
+./sbin/init
+                            
 # will install lerna globally
 npm install -g lerna                   
+
 # fetches all NPM packages
 lerna bootsrap                         
+
 # builds all our packages 
 lerna run compile                      
+
 # the main app directory
 cd packages/polar-bookshelf            
+
 # need to do this just once to init dist/public
 npx webpack                            
+
 # remove the service worker generated so that webpack-dev-server doesn't get
 # confused (going to automate this in the future)
 rm -f dist/public/service-worker.js  
