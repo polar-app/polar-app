@@ -59,6 +59,11 @@ When you make changes to the code it will reload the app.
 
 You can use the 'dev2' app for hacking on custom stuff.  
 
+## admin credentials 
+
+If what you're working on requires credentials please contact an admin 
+(probably Kevin Burton early on so these can be setup on Firebase)
+
 # TODO
 
 - the credentials for our apt repo are required... this is a big deal breaker/issue
