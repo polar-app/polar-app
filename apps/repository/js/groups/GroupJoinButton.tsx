@@ -9,7 +9,6 @@ import {
     GroupNameStr,
     Groups
 } from "../../../../web/js/datastore/sharing/db/Groups";
-import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import Button from '@material-ui/core/Button';
 
 const log = Logger.create();
