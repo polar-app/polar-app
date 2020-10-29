@@ -11,6 +11,8 @@ import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handle
 import { Plans } from "polar-accounts/src/Plans";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useActiveKeyboardShortcutsCallbacks} from "../../../../web/js/hotkeys/ActiveKeyboardShortcutsStore";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -58,14 +60,28 @@ namespace MenuItems {
     export const SendVideoFeedback = deepMemo(() => {
 
         const zest = useZest();
+        const dialogs = useDialogManager();
 
-        if (! zest.supported) {
-            return null;
-        }
+        const handleClick = React.useCallback(() => {
+
+            if (zest.supported) {
+                zest.trigger();
+            } else {
+
+                dialogs.confirm({
+                    title: "Video Feedback Not Support",
+                    subtitle: "Video feedback is not supported on this platform. Please use our web application to send video feedback.",
+                    type: 'error',
+                    onAccept: NULL_FUNCTION
+                });
+
+            }
+
+        }, [dialogs, zest]);
 
         return (
             <MUIMenuItem text="Send Video Feedback"
-                         onClick={zest.trigger}/>
+                         onClick={handleClick}/>
         );
 
     });
