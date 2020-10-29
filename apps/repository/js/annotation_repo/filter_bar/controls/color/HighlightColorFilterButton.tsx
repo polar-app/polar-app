@@ -4,9 +4,11 @@ import {
     ColorSelectorBox,
     ColorStr
 } from "../../../../../../../web/js/ui/colors/ColorSelectorBox";
-import {Buttons} from "../Buttons";
 import PaletteIcon from '@material-ui/icons/Palette';
-import {MUIPopper} from "../../../../../../../web/js/mui/menu/MUIPopper";
+import {MUIPopper, usePopperController} from "../../../../../../../web/js/mui/menu/MUIPopper";
+import {ResetableColorSelectorBox} from "../../../../../../../web/js/ui/colors/ResetableColorSelectorBox";
+import {deepMemo} from "../../../../../../../web/js/react/ReactUtils";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 interface IProps {
 
@@ -24,16 +26,12 @@ interface IProps {
 
 }
 
-export const HighlightColorFilterButton = (props: IProps) => {
+const ColorSelector = deepMemo((props: IProps) => {
 
-    const {selected} = props;
+    const popperController = usePopperController();
+    const onSelected = props.onSelected || NULL_FUNCTION;
 
-    const active = selected !== undefined && selected.length > 0;
-    const buttonProps = Buttons.activeProps(active);
-
-    const handleSelected = (color: ColorStr) => {
-
-        const onSelected = props.onSelected || NULL_FUNCTION;
+    const handleSelected = React.useCallback((color: ColorStr) => {
 
         const selected = props.selected || [];
 
@@ -43,7 +41,24 @@ export const HighlightColorFilterButton = (props: IProps) => {
 
         onSelected(newSelected);
 
-    };
+    }, [onSelected, props.selected]);
+
+    const handleReset = React.useCallback(() => {
+        onSelected([]);
+        popperController.dismiss();
+    }, [onSelected, popperController]);
+
+    return (
+        <ClickAwayListener onClickAway={popperController.dismiss}>
+            <ResetableColorSelectorBox selected={props.selected}
+                                       onReset={handleReset}
+                                       onSelected={handleSelected}/>
+        </ClickAwayListener>
+    );
+
+});
+
+export const HighlightColorFilterButton = deepMemo((props: IProps) => {
 
     return (
 
@@ -60,12 +75,11 @@ export const HighlightColorFilterButton = (props: IProps) => {
                        icon={<PaletteIcon/>}
                        >
 
-                <ColorSelectorBox selected={props.selected}
-                                  onSelected={(color) => handleSelected(color)}/>
+                <ColorSelector {...props}/>
 
             </MUIPopper>
         </div>
 
     );
 
-};
+});

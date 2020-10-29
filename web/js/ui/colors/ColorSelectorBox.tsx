@@ -66,11 +66,8 @@ const ColorButtons = (props: IProps) => {
 
 
 interface IProps {
-
     readonly selected?: ReadonlyArray<ColorStr>;
-
     readonly onSelected?: (color: ColorStr) => void;
-
 }
 
 export const ColorSelectorBox = deepMemo((props: IProps) => {
