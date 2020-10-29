@@ -34,6 +34,10 @@ readable.
 
 You can easily open the original URL of any captured webapge through Polar. Any potential changes on the website will not be reflected in the previously captured webpage.
 
+# Capturing text only
+
+Instead of capturing an entire page, you can also capture just specific text. To do that, select the text to be captured and then click the Chrome extension. It will convert the selected text only into a file in your Polar repository.
+
 # Readability
 
 Polar supports capturing the document in a more readable form by using Mozilla's Readability. The conversion into a more usable format uses epub as a basis.
