@@ -17,7 +17,7 @@ const log = Logger.create();
 
 export class FirebaseDatastores {
 
-    private static user: firebase.User | null;
+    private static user: firebase.User | undefined;
 
     private static initialized: boolean = false;
 
@@ -34,9 +34,9 @@ export class FirebaseDatastores {
         log.notice("Initializing FirebaseDatastores...");
 
         // set the current version before we return
-        this.user = await Firebase.currentUserAsync();
+        this.user = Firebase.currentUser();
 
-        const formatUser = (user: firebase.User | null) => {
+        const formatUser = (user: firebase.User | undefined) => {
 
             if (user) {
                 return `${user.displayName}, uid=${user.uid}`;
@@ -50,10 +50,10 @@ export class FirebaseDatastores {
 
         // update in the background
         firebase.auth()
-            .onAuthStateChanged((user) => this.user = user,
+            .onAuthStateChanged((user) => this.user = user || undefined,
                                 (err) => {
                                     log.error("Unable to handle user: ", err);
-                                    this.user = null;
+                                    this.user = undefined;
                                 });
 
         this.initialized = true;

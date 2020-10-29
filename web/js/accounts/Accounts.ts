@@ -17,7 +17,7 @@ export class Accounts {
 
     public static async ref() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = Firebase.currentUser();
 
         if (! user) {
             // the user is not logged in so we do not have an account that they
@@ -84,7 +84,7 @@ export class Accounts {
 
     public static async listenForPlanUpgrades() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = Firebase.currentUser();
 
         if (! user) {
             return;

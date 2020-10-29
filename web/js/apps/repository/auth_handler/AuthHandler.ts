@@ -118,7 +118,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
         const user = await this.currentUser();
 
-        if (user === null) {
+        if (! user) {
             return Optional.empty();
         }
 
@@ -128,8 +128,8 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
     }
 
-    protected async currentUser(): Promise<firebase.User | null> {
-        return await Firebase.currentUserAsync();
+    protected async currentUser(): Promise<firebase.User | undefined> {
+        return Firebase.currentUser();
     }
 
 }

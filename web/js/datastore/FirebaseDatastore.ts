@@ -834,7 +834,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async overview(): Promise<DatastoreOverview | undefined> {
 
         const docMetaRefs = await this.getDocMetaRefs();
-        const user = await Firebase.currentUserAsync();
+        const user = Firebase.currentUser();
 
         return {
             nrDocs: docMetaRefs.length,

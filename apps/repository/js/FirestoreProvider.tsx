@@ -29,7 +29,7 @@ interface IProps {
 async function doAsync(): Promise<IFirestore> {
 
     const firestore = await Firestore.getInstance();
-    const user = await Firebase.currentUserAsync();
+    const user = Firebase.currentUser();
     const uid = user?.uid;
 
     await FirestoreCollections.configure(firestore);

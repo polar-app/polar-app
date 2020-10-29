@@ -21,7 +21,7 @@ export class UserPrefs {
 
     private static async getUserID(): Promise<UserIDStr> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = Firebase.currentUser();
 
         if (! user) {
             throw new Error("No user");

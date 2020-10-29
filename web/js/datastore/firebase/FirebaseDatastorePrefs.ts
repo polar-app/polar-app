@@ -27,7 +27,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
     public async init() {
 
         this.firestore = await Firestore.getInstance();
-        this.user = (await Firebase.currentUserAsync())!;
+        this.user = Firebase.currentUser();
 
         function onError(err: Error) {
             console.error("Unable to read user prefs:", err);

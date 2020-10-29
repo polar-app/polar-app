@@ -66,7 +66,7 @@ export namespace AccountActions {
 
     async function createAccountData(): Promise<AccountData> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = Firebase.currentUser();
 
         if (! user) {
             throw new Error("No account");
