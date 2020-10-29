@@ -13,9 +13,9 @@ const COLLECTION_NAME = "account";
  * Handles listening for account changes for the user and telling them
  * of changes to their plan over time.
  */
-export class Accounts {
+export namespace Accounts {
 
-    public static async ref() {
+    export async function createRef() {
 
         const user = Firebase.currentUser();
 
@@ -38,9 +38,9 @@ export class Accounts {
     /**
      * @Deprecated use a snapshot / hook version of this
      */
-    public static async get(): Promise<Account | undefined> {
+    export async function get(): Promise<Account | undefined> {
 
-        const ref = await this.ref();
+        const ref = await createRef();
 
         if (! ref) {
             return undefined;
@@ -59,10 +59,10 @@ export class Accounts {
     /**
      * Callback for when we have new data for the account.
      */
-    public static async onSnapshot(onNext: OnNextCallback<Account>,
+    export async function onSnapshot(onNext: OnNextCallback<Account>,
                                    onError: OnErrorCallback = ERR_HANDLER) {
 
-        const ref = await this.ref();
+        const ref = await createRef();
 
         if (! ref) {
             onNext(undefined);
@@ -82,7 +82,7 @@ export class Accounts {
 
     }
 
-    public static async listenForPlanUpgrades() {
+    export async function listenForPlanUpgrades() {
 
         const user = Firebase.currentUser();
 
