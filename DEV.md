@@ -1,28 +1,37 @@
 
 # Steps to Build 
 
-- Copy .npmrc to your home directory
+- you might need to run ```ulimit -n 500000``` and then 'ulimit -n' to make sure
+  this setting was accepted by the OS.  Some users report a bug with npm that 
+  causes it to tail to garbage collect open file handles and this fixes it.
 
 - Make sure you're on node >=14.5 and npm >=6.14.5
-
 - clone the polar-app repository locally.
+- Copy .npmrc to your home directory.  
+- npm config set registry https://polar-app.bytesafe.dev/r/default
 
 - Follow the following instructions
 
 ```bash
 
 # pull down all repositories locally
-./sbin/init                            
+./sbin/init
+                            
 # will install lerna globally
 npm install -g lerna                   
+
 # fetches all NPM packages
 lerna bootsrap                         
+
 # builds all our packages 
 lerna run compile                      
+
 # the main app directory
 cd packages/polar-bookshelf            
+
 # need to do this just once to init dist/public
 npx webpack                            
+
 # remove the service worker generated so that webpack-dev-server doesn't get
 # confused (going to automate this in the future)
 rm -f dist/public/service-worker.js  
@@ -49,6 +58,11 @@ browser.
 When you make changes to the code it will reload the app.
 
 You can use the 'dev2' app for hacking on custom stuff.  
+
+## admin credentials 
+
+If what you're working on requires credentials please contact an admin 
+(probably Kevin Burton early on so these can be setup on Firebase)
 
 # TODO
 

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# tracing version of npm that allows us to trace the output by doing a tee of stdout and stderr along with
+# the command line.
+
+NPM_REAL=/usr/local/bin/npm
+
+id=$(date +%s)
+
+logfile=/tmp/npm-${id}.log
+
+${NPM_REAL} $@ 2>&1 | tee ${logfile}
+
