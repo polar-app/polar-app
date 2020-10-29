@@ -73,7 +73,8 @@ export class Firebase {
 
     public static currentUser(): firebase.User | undefined {
         Firebase.init();
-        return firebase.auth().currentUser || undefined;
+        const auth = firebase.auth();
+        return auth.currentUser || undefined;
     }
 
     public static async currentUserAsync(): Promise<firebase.User | null> {
@@ -102,14 +103,7 @@ export class Firebase {
     }
 
     public static async currentUserID(): Promise<UserIDStr | undefined> {
-
-        const user = this.currentUser();
-
-        if  (user) {
-            return user.uid;
-        }
-
-        return undefined;
+        return this.currentUser()?.uid;
     }
 
 }
