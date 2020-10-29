@@ -1,11 +1,11 @@
 /**
  * Represents a mathematical interval between two values.
  */
-import {Line} from '../util/Line';
+import {ILine, Line} from '../util/Line';
 
 export class Interval {
 
-    public line: any;
+    public line: ILine;
 
     constructor(start: number, end: number) {
         this.line = new Line(start, end, "x");

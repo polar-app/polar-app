@@ -97,7 +97,15 @@ export class AnnotationRect implements IAnnotationRect {
 
         const interval = new Interval(0, 100);
 
-        const assertInterval = (value: number) => interval.containsPoint(value);
+        const assertInterval = (value: number) => {
+
+            if (! interval.containsPoint(value)) {
+                throw new Error(`Interval [${interval.line.start}, ${interval.line.end}] does not contain point: ${value}`);
+            }
+
+            return true;
+
+        }
 
         Preconditions.assert(this.top, assertInterval, "top");
         Preconditions.assert(this.left, assertInterval, "left");

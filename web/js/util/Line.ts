@@ -1,26 +1,32 @@
 import {isPresent, notNull, Preconditions} from 'polar-shared/src/Preconditions';
 
+export type Axis = 'x' | 'y';
+
+export interface ILine {
+
+    readonly start: number;
+
+    readonly end: number;
+
+    readonly axis: Axis;
+
+    readonly containsPoint: (pt: number) => boolean;
+
+}
 
 /**
  * Simple line with just a start and end.
  */
-export class Line {
+export class Line implements ILine {
 
     public readonly start: number;
     public readonly end: number;
-    public readonly axis?: string;
+    public readonly axis: Axis;
 
-    /**
-     *
-     * @param start
-     * @param end
-     * @param [axis] Optional axis parameter ('x' or 'y')
-     */
-    constructor(start: number, end: number, axis?: string) {
+    constructor(start: number, end: number, axis: Axis) {
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
-        this.axis = axis; // TODO validate
-        // this.length = length;
+        this.axis = axis;
     }
 
     get length() {
@@ -121,7 +127,7 @@ class LineBuilder {
 
     private length?: number;
 
-    private axis?: string;
+    private axis?: Axis;
 
     setStart(value: number) {
         this.start = value;
@@ -138,7 +144,7 @@ class LineBuilder {
         return this;
     }
 
-    setAxis(value: string) {
+    setAxis(value: Axis) {
         this.axis = value;
         return this;
     }
@@ -153,7 +159,7 @@ class LineBuilder {
 
         const end = notNull(this.end);
 
-        return new Line(start, end);
+        return new Line(start, end, this.axis || 'x');
 
     }
 
