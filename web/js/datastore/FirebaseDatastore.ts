@@ -811,18 +811,19 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                     this.waitForCommit(docInfoRef)
                 ]);
 
-                log.debug("Waiting for promise...");
+                log.debug("write: Waiting for commit promise...");
                 await commitPromise;
-                log.debug("Waiting for promise...done");
+                log.debug("write: Waiting for commit promise...done");
 
             }
 
             if (opts.consistency === 'committed') {
-                console.log("Waiting for commit...");
+                console.log("write: Waiting for commit...");
                 // normally we would NOT want to wait because this will just
                 // slow down our writes and going into the cache is ok for most
                 // operations.
                 await waitForCommit();
+                console.log("write: Waiting for commit...done");
             }
 
         } finally {
