@@ -1,8 +1,7 @@
 import {ILogger} from 'polar-shared/src/logger/ILogger';
-
-import { init, captureException } from '@sentry/electron';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import process from "process";
+// import { init, captureException } from '@sentry/electron';
 
 // This configures the Electron CrashReporter for native app crashes and
 // captures any uncaught JavaScript exceptions using the JavaScript SDKs under
@@ -39,7 +38,7 @@ export class SentryNodeLogger implements ILogger {
                     try {
                         // This captures 'handles' exceptions as Sentry wouldn't actually
                         // capture these as they aren't surfaced to Electron.
-                        captureException(arg);
+                        // captureException(arg);
                     } catch (e) {
                         // guard against errors within sentry itself.
                         console.error("Failed to process exception for sentry: ", e);
@@ -85,10 +84,10 @@ export class SentryNodeLogger implements ILogger {
         try {
 
             if (SentryNodeLogger.isEnabled()) {
-                init({
-                    dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
-                    // more options...
-                });
+                // init({
+                //     dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
+                //     // more options...
+                // });
             }
 
             ready = true;
