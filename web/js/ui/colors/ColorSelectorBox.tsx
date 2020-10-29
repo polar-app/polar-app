@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {ColorButton} from './ColorButton';
 import Box from '@material-ui/core/Box';
+import {deepMemo} from "../../react/ReactUtils";
 
 interface ColorButtonsRowProps extends IProps {
     readonly colors: ReadonlyArray<string>;
@@ -63,50 +64,6 @@ const ColorButtons = (props: IProps) => {
 
 };
 
-export class ColorSelectorBox extends React.PureComponent<IProps, IState> {
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.deactivate = this.deactivate.bind(this);
-
-        this.state = {
-            open: false
-        };
-
-    }
-
-    private deactivate() {
-
-        this.setState({
-            open: false
-        });
-    }
-
-    private activate() {
-
-        this.setState({
-            open: true
-        });
-    }
-
-    public render() {
-
-        const props = this.props;
-
-        return (
-            <div>
-
-                <ColorButtons {...props}/>
-
-            </div>
-        );
-
-    }
-}
-
-
-export type ColorStr = string;
 
 interface IProps {
 
@@ -114,10 +71,18 @@ interface IProps {
 
     readonly onSelected?: (color: ColorStr) => void;
 
-    // readonly clearable?: boolean;
-
 }
 
-interface IState {
-    readonly open: boolean;
-}
+export const ColorSelectorBox = deepMemo((props: IProps) => {
+
+    return (
+        <div>
+            <ColorButtons {...props}/>
+        </div>
+    );
+
+});
+
+
+export type ColorStr = string;
+
