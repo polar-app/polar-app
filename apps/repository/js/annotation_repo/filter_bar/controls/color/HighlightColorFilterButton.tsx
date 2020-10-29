@@ -50,9 +50,11 @@ const ColorSelector = deepMemo((props: IProps) => {
 
     return (
         <ClickAwayListener onClickAway={popperController.dismiss}>
-            <ResetableColorSelectorBox selected={props.selected}
-                                       onReset={handleReset}
-                                       onSelected={handleSelected}/>
+            <div>
+                <ResetableColorSelectorBox selected={props.selected}
+                                           onReset={handleReset}
+                                           onSelected={handleSelected}/>
+            </div>
         </ClickAwayListener>
     );
 
