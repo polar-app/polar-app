@@ -3,13 +3,12 @@ import {Fetches} from "polar-shared/src/util/Fetch";
 import * as functions from 'firebase-functions';
 
 export interface AutoFlashcardRequest {
-
-
+    user_text: string;
 }
 
 export interface AutoFlashcardResponse {
-
-
+    front: string;
+    back: string;
 }
 
 
@@ -48,6 +47,30 @@ export class AutoFlashcardFunctions {
         // authorized Polar users are requesting this so we're not getting hit with too many
         // spam API requests.
 
+        const prompt = `
+Text: Human life expectancy in the US is 78 years which is 2 years less than in Germany.
+Q: What is human life expectancy in the US?
+Q: How much less is human life expectancy in the US compared to Germany?
+-----
+
+The US has had 45 presidents and Dwight D. Eisenhower was president in 1955.
+Q: How many presidents has the US had?
+Q: Who was president of the US in 1955?
+-----
+
+Text: The United States was founded in 1776. Its population is 320 million.
+Q: When was the United States founded?
+Q: What is the US population?
+-----
+
+Text: Dwight D. Eisenhower was a US General and the president of the United States in 1955 and had three wives
+Q: Who was president of the United States in 1955?
+Q: How many wives did he have?
+-----
+
+Text: ${request.user_text}
+Q:`
+
         const body: any = {
           "max_tokens": 200,
           "temperature": 1,
@@ -55,7 +78,8 @@ export class AutoFlashcardFunctions {
           "n": 1,
           "stream": false,
           "logprobs": null,
-          "stop": "\n"
+          "stop": "-----",
+          "prompt": prompt
         };
 
         const response = await Fetches.fetch('https://api.openai.com/v1/engines/davinci/completions', {
@@ -70,9 +94,13 @@ export class AutoFlashcardFunctions {
         // this will be a JSON object with the response from gpt3...
         const json = await response.json();
 
+        // json['text']: is the key in which we get the completion response from the GPT3 API
+        // front: We try to get the Question by trying to get the substring BEFORE the string "A: "
+        // back: We try to get the Answer by trying to get the substring AFTER the string "A: "
+
         return {
-            // this is the AutoFlashcardResponse and will be JSON encoded and sent to the requester.
-            // just put all output data here.
+            front: json['text'].substring(0, json['text'].indexOf('A: ')),
+            back: json['text'].substring(json['text'].indexOf('A: '))
         }
 
     }
