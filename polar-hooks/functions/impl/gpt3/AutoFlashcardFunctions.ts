@@ -69,7 +69,7 @@ Q: How many wives did Dwight D. Eisenhower have?
 A: Three
 -----
 
-Text: ${request.query_text}
+Text: ${request.query_text.trim()}
 Q:`
 
         const body: any = {
@@ -95,10 +95,6 @@ Q:`
 
         // this will be a JSON object with the response from gpt3...
         const gptResponse: GPTResponse = await response.json();
-
-        // json['text']: is the key in which we get the completion response from the GPT3 API
-        // front: We try to get the Question by trying to get the substring BEFORE the string "A: "
-        // back: We try to get the Answer by trying to get the substring AFTER the string "A: "
 
         return GPTResponses.toAutoFlashcardResponse(gptResponse);
 
