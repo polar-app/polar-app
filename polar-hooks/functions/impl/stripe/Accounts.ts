@@ -23,13 +23,13 @@ export interface AccountInit {
 
 }
 
-export class Accounts {
+export namespace Accounts {
 
     /**
      * Validate that the given HTTP request has the right uid or someone
      * is just trying to monkey with someone's account.
      */
-    public static async validate(email: string, uid: string) {
+    export async function validate(email: string, uid: string) {
 
         const user = await auth().getUserByEmail(email);
 
@@ -43,10 +43,10 @@ export class Accounts {
 
     }
 
-    public static async changePlan(mode: StripeMode,
-                                   customerID: string,
-                                   plan: Billing.Plan,
-                                   interval: Billing.Interval) {
+    export async function changePlan(mode: StripeMode,
+                                     customerID: string,
+                                     plan: Billing.Plan,
+                                     interval: Billing.Interval) {
 
         const stripe = StripeUtils.getStripe(mode);
 
@@ -64,14 +64,14 @@ export class Accounts {
             throw new Error(msg);
         }
 
-        await this.changePlanViaEmail(email, customerID, plan, interval);
+        await changePlanViaEmail(email, customerID, plan, interval);
 
     }
 
-    public static async changePlanViaEmail(email: string | undefined | null,
-                                           customerID: IDStr,
-                                           plan: Billing.Plan,
-                                           interval: Billing.Interval) {
+    export async function changePlanViaEmail(email: string | undefined | null,
+                                             customerID: IDStr,
+                                             plan: Billing.Plan,
+                                             interval: Billing.Interval) {
 
         if (!email) {
             throw new Error("Customer has no email address");
@@ -100,7 +100,7 @@ export class Accounts {
 
     }
 
-    public static async get(email: string): Promise<Account | undefined> {
+    export async function get(email: string): Promise<Account | undefined> {
 
         const query = firestore()
             .collection('account')
@@ -115,11 +115,11 @@ export class Accounts {
 
         const doc = querySnapshot.docs[0].data();
 
-        return <Account> doc;
+        return <Account>doc;
 
     }
 
-    public static async write(account: Account) {
+    export async function write(account: Account) {
 
         const ref = firestore()
             .collection('account')
