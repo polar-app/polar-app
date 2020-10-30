@@ -1,6 +1,6 @@
 # Feedback and feature requests
 
-There are two main ways to provide feedback – either by video or through our 2-question survey. You can find both in the ```?``` button on the bottom right.
+There are two main ways to provide feedback – either by video or through our 2-question survey. You can find both when pressing the ```?``` button on the bottom right.
 
 <img class="img-fluid" src="https://i.imgur.com/uKih2fw.png">
 
