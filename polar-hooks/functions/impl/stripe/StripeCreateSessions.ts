@@ -43,6 +43,7 @@ export namespace StripeCreateSessions {
             switch (mode) {
                 case "subscription":
                     return {
+                        allow_promotion_codes: true,
                         subscription_data: {
                             trial_from_plan: true,
                             payment_behavior: 'allow_incomplete'
@@ -50,10 +51,8 @@ export namespace StripeCreateSessions {
                     };
 
                 case "payment":
+                    // for some reason 4 year plans don't allow promo codes
                     return {
-                        // subscription_data: {
-                        //     payment_behavior: 'allow_incomplete'
-                        // }
                     };
 
             }
@@ -73,7 +72,6 @@ export namespace StripeCreateSessions {
                     quantity: 1,
                 },
             ],
-            allow_promotion_codes: true,
             billing_address_collection: 'required',
             mode,
             success_url: 'https://app.getpolarized.io',

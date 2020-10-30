@@ -1,7 +1,5 @@
 import {StripeCreateSessions} from "./StripeCreateSessions";
 import {Billing} from "polar-accounts/src/Billing";
-import {StripeCustomers} from "./StripeCustomers";
-import {StripeUtils} from "./StripeUtils";
 import IStripeSession = StripeCreateSessions.IStripeSession;
 import {assert} from 'chai';
 import {StripeTesting} from "./StripeTesting";
@@ -16,9 +14,7 @@ describe('StripeCreateSessions', function() {
 
         async function doTest(validator: (session: IStripeSession) => void) {
 
-            // const intervals: ReadonlyArray<Billing.Interval> = ['month', 'year', '4year'];
-            // const intervals: ReadonlyArray<Billing.Interval> = ['month'];
-            const intervals: ReadonlyArray<Billing.Interval> = ['4year'];
+            const intervals: ReadonlyArray<Billing.Interval> = ['month', 'year', '4year'];
 
             const plans: ReadonlyArray<Billing.V2PlanLevel> = ['plus', 'pro'];
 
@@ -45,20 +41,6 @@ describe('StripeCreateSessions', function() {
 
         const customer = await StripeTesting.createCustomer();
         await doTest(session => assert.equal((<any> session.customerParams).customer, customer.id));
-
-        // await StripeCreateSessions.create({
-        //     stripeMode: 'test',
-        //     email: 'alice@example.com',
-        //     interval: '4year',
-        //     plan: 'plus',
-        // });
-        //
-        // await StripeCreateSessions.create({
-        //     stripeMode: 'test',
-        //     email: 'alice@example.com',
-        //     interval: '4year',
-        //     plan: 'pro',
-        // });
 
     });
 
