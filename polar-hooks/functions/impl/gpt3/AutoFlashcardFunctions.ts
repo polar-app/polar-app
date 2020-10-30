@@ -49,14 +49,21 @@ export class AutoFlashcardFunctions {
         // spam API requests.
 
         const body: any = {
-            // this is the request body that we're going to send to GPT3/openai
+          "max_tokens": 200,
+          "temperature": 1,
+          "top_p": 1,
+          "n": 1,
+          "stream": false,
+          "logprobs": null,
+          "stop": "\n"
         };
 
-        const response = await Fetches.fetch('http://www.gpt3-example-api-url.com', {
+        const response = await Fetches.fetch('https://api.openai.com/v1/engines/davinci/completions', {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
-                'X-Foo': 'This is the X-foo header... I think this works.'
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${config.apiKey}`
             }
         });
 
