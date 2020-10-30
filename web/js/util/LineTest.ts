@@ -10,9 +10,10 @@ describe('Line', function() {
         assert.equal(line.length, 10);
 
         const expected = {
+            "axis": "x",
             "start": 10,
             "end": 20,
-            "length": 10
+            "length": 10,
         };
 
         assertJSON(line, expected, undefined, true);
