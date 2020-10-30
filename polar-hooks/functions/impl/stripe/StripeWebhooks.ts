@@ -8,7 +8,8 @@ export namespace StripeWebhooks {
 
     export type EventType = 'customer.subscription.created' |
                             'customer.subscription.updated' |
-                            'customer.subscription.deleted';
+                            'customer.subscription.deleted' |
+                            'checkout.session.completed';
 
     interface IHandleEventOpts {
         readonly stripeMode: StripeMode;
@@ -49,6 +50,21 @@ export namespace StripeWebhooks {
                     break;
                 case 'customer.subscription.deleted':
                     await doChangePlan('free', 'month');
+                    break;
+
+                case 'checkout.session.completed':
+
+                    if (sub.interval === '4year') {
+                        // we're only handling 4 year here right now and we
+                        // should use the regular functions for other plans
+                        // because they're not subscriptions.
+                        await doChangePlan(sub.plan, sub.interval);
+                    }
+
+                    break;
+
+                default:
+                    console.log("No handler for event type: " + opts.eventType);
                     break;
 
             }
