@@ -3,12 +3,12 @@ import {Fetches} from "polar-shared/src/util/Fetch";
 import * as functions from 'firebase-functions';
 
 export interface AutoFlashcardRequest {
-    user_text: string;
+    readonly query_text: string;
 }
 
 export interface AutoFlashcardResponse {
-    front: string;
-    back: string;
+    readonly front: string;
+    readonly back: string;
 }
 
 
@@ -68,7 +68,7 @@ Q: Who was president of the United States in 1955?
 Q: How many wives did he have?
 -----
 
-Text: ${request.user_text}
+Text: ${request.query_text}
 Q:`
 
         const body: any = {
