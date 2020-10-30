@@ -87,7 +87,7 @@ Q:`
             body: JSON.stringify(body),
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${config.apiKey}`
+              "Authorization": `Bearer ${config.apikey}`
             }
         });
 
