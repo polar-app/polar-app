@@ -1,9 +1,9 @@
-import { AutoFlashcardResponse } from "./AutoFlashcardFunctions";
+import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 import {GPTResponse} from "./GPTResponse";
 
 export namespace GPTResponses {
 
-    export function toAutoFlashcardResponse(gptResponse: GPTResponse): AutoFlashcardResponse {
+    export function toAutoFlashcardResponse(gptResponse: GPTResponse): AutoFlashcards.AutoFlashcardResponse {
 
         // json['text']: is the key in which we get the completion response from the GPT3 API
         // front: We try to get the Question by trying to get the substring BEFORE the string "A: "

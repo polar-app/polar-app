@@ -3,19 +3,7 @@ import {Fetches} from "polar-shared/src/util/Fetch";
 import * as functions from 'firebase-functions';
 import {GPTResponse} from "./GPTResponse";
 import {GPTResponses} from "./GPTResponses";
-
-export interface AutoFlashcardRequest {
-    readonly query_text: string;
-}
-
-export interface AutoFlashcardResponse {
-    readonly front: string;
-    readonly back: string;
-}
-
-export interface AutoFlashcardError {
-    readonly error: 'no-result';
-}
+import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 
 interface GPT3Config {
     readonly apikey: string;
@@ -26,7 +14,7 @@ function getConfig(): GPT3Config {
     const config = functions.config();
     const apikey = config?.polar?.openai?.apikey;
 
-    if (! apikey) {
+    if (!apikey) {
         throw new Error("No config: polar.openai.apikey");
     }
 
@@ -43,7 +31,7 @@ export class AutoFlashcardFunctions {
      * params need but this is send with the original POST with what we want to classify.
      */
     public static async exec(idUser: IDUser,
-                             request: AutoFlashcardRequest): Promise<AutoFlashcardResponse | AutoFlashcardError> {
+                             request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | AutoFlashcards.AutoFlashcardError> {
 
         // this will have the openapi GPT3 apiKey
         const config = getConfig();
@@ -77,26 +65,26 @@ Text: ${request.query_text.trim()}
 Q:`
 
         const body: any = {
-          "max_tokens": 200,
-          "temperature": 1,
-          "top_p": 1,
-          "n": 1,
-          "stream": false,
-          "logprobs": null,
-          "stop": "-----",
-          "prompt": prompt
+            "max_tokens": 200,
+            "temperature": 1,
+            "top_p": 1,
+            "n": 1,
+            "stream": false,
+            "logprobs": null,
+            "stop": "-----",
+            "prompt": prompt
         };
 
         const response = await Fetches.fetch('https://api.openai.com/v1/engines/davinci/completions', {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${config.apikey}`
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${config.apikey}`
             }
         });
 
-        if (! response.ok) {
+        if (!response.ok) {
             return {error: 'no-result'};
         }
 

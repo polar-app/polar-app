@@ -50,6 +50,7 @@
     "polar-url": "^2.0.58",
     "polar-webapp-dist": "^2.0.58",
     "polar-webapp-links": "^2.0.58",
+    "polar-backend-api": "^2.0.58",
     "prerender-node": "^3.2.5",
     "prompts": "^2.3.2",
     "stripe": "=8.119.0",
