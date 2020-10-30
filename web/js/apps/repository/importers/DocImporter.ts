@@ -112,13 +112,15 @@ export namespace DocImporter {
 
         const persistenceLayer = persistenceLayerProvider();
 
+        const docID = docMetadata.fingerprint;
+
         // TODO: this is slow to begin with... maybe we NEVER need to check if
         // we know we're always writing a NEW document.
-        if (await persistenceLayer.contains(docMetadata.fingerprint)) {
+        if (await persistenceLayer.contains(docID)) {
 
-            log.warn(`File already present in datastore: fingerprint=${docMetadata.fingerprint}: ${docPathOrURL}`);
+            log.warn(`File already present in datastore: docID=${docID}: ${docPathOrURL}`);
 
-            const docMeta = await persistenceLayer.getDocMeta(docMetadata.fingerprint);
+            const docMeta = await persistenceLayer.getDocMeta(docID);
 
             if (docMeta) {
 
@@ -186,7 +188,7 @@ export namespace DocImporter {
 
         const binaryFileData: BinaryFileData = await toBinaryFileData();
 
-        const docMeta = DocMetas.create(docMetadata.fingerprint, docMetadata.nrPages, filename);
+        const docMeta = DocMetas.create(docID, docMetadata.nrPages, filename);
 
         const docInfo: IDocInfo = {
             ...docMeta.docInfo,
@@ -221,7 +223,7 @@ export namespace DocImporter {
             onController: opts.onController
         }
 
-        await persistenceLayer.write(docMetadata.fingerprint, docMeta, writeFileOpts);
+        await persistenceLayer.write(docID, docMeta, writeFileOpts);
 
         const backendFileRef = BackendFileRefs.toBackendFileRef(docMeta);
 
