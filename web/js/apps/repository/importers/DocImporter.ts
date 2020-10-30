@@ -17,7 +17,7 @@ import {
 } from 'polar-shared/src/metadata/Hashcode';
 import {
     BackendFileRefData,
-    BinaryFileData, DatastoreConsistency, WriteController,
+    BinaryFileData, DatastoreConsistency,
     WriteFileProgressListener
 } from '../../../datastore/Datastore';
 import {URLs} from 'polar-shared/src/util/URLs';
@@ -110,9 +110,19 @@ export namespace DocImporter {
 
         const docMetadata = opts.docImport || await DocMetadata.getMetadata(docPathOrURL, docType);
 
+        // NOTE: about hashcode computation.  We perform all hashcode computation
+        // on the client.  If the user gives a URL to the chrome extension, we
+        // first download it, then work with the blob locally, and never re-download
+        // it if we're using the Cache API to write the blobl
+
+        // TODO(webapp): this doesn't work either becasue it assumes that we can
+        // easily and cheaply read from the URL / blob URL but I guess that's
+        // true in this situation though it's assuming a FILE and not a blob URL
+        const fileHashMeta = await computeHashPrefix(docPathOrURL);
+
         const persistenceLayer = persistenceLayerProvider();
 
-        const docID = docMetadata.fingerprint;
+        const docID = fileHashMeta.hashcode;
 
         // TODO: this is slow to begin with... maybe we NEVER need to check if
         // we know we're always writing a NEW document.
@@ -152,18 +162,6 @@ export namespace DocImporter {
         }
 
         const defaultTitle = opts?.docInfo?.title || basename || "";
-
-        // TODO: this is not particularly efficient to create the hashcode
-        // first, then copy the bytes to the target location.  It would be
-        // better, locally, copy and compute the hash on copy but we would have
-        // to rename it and that's not an operation I want to support in the
-        // datastore. This could be optimized but wait until people complain
-        // about it as it's probably premature at this point.
-
-        // TODO(webapp): this doesn't work either becasue it assumes that we can
-        // easily and cheaply read from the URL / blob URL but I guess that's
-        // true in this situation though it's assuming a FILE and not a blob URL
-        const fileHashMeta = await computeHashPrefix(docPathOrURL);
 
         const sanitizedFilename = DatastoreFiles.sanitizeFileName(basename!);
         const filename = `${fileHashMeta.hashPrefix}-${sanitizedFilename}`;
