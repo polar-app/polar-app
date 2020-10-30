@@ -13,6 +13,10 @@ export interface AutoFlashcardResponse {
     readonly back: string;
 }
 
+export interface AutoFlashcardError {
+    readonly error: 'no-result';
+}
+
 interface GPT3Config {
     readonly apikey: string;
 }
@@ -39,7 +43,7 @@ export class AutoFlashcardFunctions {
      * params need but this is send with the original POST with what we want to classify.
      */
     public static async exec(idUser: IDUser,
-                             request: AutoFlashcardRequest): Promise<AutoFlashcardResponse> {
+                             request: AutoFlashcardRequest): Promise<AutoFlashcardResponse | AutoFlashcardError> {
 
         // this will have the openapi GPT3 apiKey
         const config = getConfig();
@@ -91,6 +95,10 @@ Q:`
               "Authorization": `Bearer ${config.apikey}`
             }
         });
+
+        if (! response.ok) {
+            return {error: 'no-result'};
+        }
 
 
         // this will be a JSON object with the response from gpt3...
