@@ -26,6 +26,7 @@ import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
 import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
+import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
 
 exports.hello = HelloWorldFunction;
 exports.docPreviewSitemap = DocPreviewSitemapFunction;
@@ -56,3 +57,4 @@ exports.sitemap = Sitemap;
 exports.docAdd = DocAddFunction;
 exports.docPreview = DocPreviewFunction;
 exports.search = SearchFunction;
+exports.autoFlashcard = AutoFlashcardFunction
