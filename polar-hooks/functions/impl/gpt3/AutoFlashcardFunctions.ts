@@ -1,6 +1,8 @@
 import {IDUser} from '../util/IDUsers';
 import {Fetches} from "polar-shared/src/util/Fetch";
 import * as functions from 'firebase-functions';
+import {GPTResponse} from "./GPTResponse";
+import {GPTResponses} from "./GPTResponses";
 
 export interface AutoFlashcardRequest {
     readonly query_text: string;
@@ -10,7 +12,6 @@ export interface AutoFlashcardResponse {
     readonly front: string;
     readonly back: string;
 }
-
 
 interface GPT3Config {
     readonly apikey: string;
@@ -91,9 +92,6 @@ Q:`
             }
         });
 
-        interface GPTResponse {
-            readonly text: string;
-        }
 
         // this will be a JSON object with the response from gpt3...
         const gptResponse: GPTResponse = await response.json();
@@ -102,10 +100,7 @@ Q:`
         // front: We try to get the Question by trying to get the substring BEFORE the string "A: "
         // back: We try to get the Answer by trying to get the substring AFTER the string "A: "
 
-        return {
-            front: gptResponse.text.substring(0, gptResponse.text.indexOf('A: ')),
-            back: gptResponse.text.substring(gptResponse.text.indexOf('A: '))
-        };
+        return GPTResponses.toAutoFlashcardResponse(gptResponse);
 
     }
 
