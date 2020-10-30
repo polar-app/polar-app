@@ -51,22 +51,22 @@ export class AutoFlashcardFunctions {
         const prompt = `
 Text: Human life expectancy in the US is 78 years which is 2 years less than in Germany.
 Q: What is human life expectancy in the US?
-Q: How much less is human life expectancy in the US compared to Germany?
+A: 78 years
 -----
 
 The US has had 45 presidents and Dwight D. Eisenhower was president in 1955.
-Q: How many presidents has the US had?
 Q: Who was president of the US in 1955?
+A: Dwight D. Eisenhower
 -----
 
 Text: The United States was founded in 1776. Its population is 320 million.
 Q: When was the United States founded?
-Q: What is the US population?
+A: 320 million
 -----
 
-Text: Dwight D. Eisenhower was a US General and the president of the United States in 1955 and had three wives
-Q: Who was president of the United States in 1955?
-Q: How many wives did he have?
+Text: Dwight D. Eisenhower was a US General and the president of the United States in 1955 and had three wives.
+Q: How many wives did Dwight D. Eisenhower have?
+A: Three
 -----
 
 Text: ${request.query_text}
