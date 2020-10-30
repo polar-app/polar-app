@@ -91,17 +91,21 @@ Q:`
             }
         });
 
+        interface GPTResponse {
+            readonly text: string;
+        }
+
         // this will be a JSON object with the response from gpt3...
-        const json = await response.json();
+        const gptResponse: GPTResponse = await response.json();
 
         // json['text']: is the key in which we get the completion response from the GPT3 API
         // front: We try to get the Question by trying to get the substring BEFORE the string "A: "
         // back: We try to get the Answer by trying to get the substring AFTER the string "A: "
 
         return {
-            front: json['text'].substring(0, json['text'].indexOf('A: ')),
-            back: json['text'].substring(json['text'].indexOf('A: '))
-        }
+            front: gptResponse.text.substring(0, gptResponse.text.indexOf('A: ')),
+            back: gptResponse.text.substring(gptResponse.text.indexOf('A: '))
+        };
 
     }
 
