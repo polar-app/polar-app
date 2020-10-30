@@ -165,7 +165,8 @@ export namespace DocImporter {
         // true in this situation though it's assuming a FILE and not a blob URL
         const fileHashMeta = await computeHashPrefix(docPathOrURL);
 
-        const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename!);
+        const sanitizedFilename = DatastoreFiles.sanitizeFileName(basename!);
+        const filename = `${fileHashMeta.hashPrefix}-${sanitizedFilename}`;
 
         // always read from a stream here as some of the documents we might want
         // to import could be rather large.  Also this needs to be a COPY of the
