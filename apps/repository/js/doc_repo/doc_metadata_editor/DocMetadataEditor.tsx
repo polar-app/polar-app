@@ -46,6 +46,18 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         type: 'text'
     },
     {
+        name: 'month',
+        description: 'The month this document was published',
+        optional: true,
+        type: 'month'
+    },
+    {
+        name: 'year',
+        description: 'The year this document was published',
+        optional: true,
+        type: 'string'
+    },
+    {
         name: 'volume',
         description: "The volume of a journal or multi-volume book.",
         optional: true,
@@ -121,14 +133,6 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         optional: true,
         type: 'string[]'
     },
-    {
-        name: 'month',
-        description: 'The month this document was published',
-        optional: true,
-        type: 'month'
-    }
-
-    // TODO: month, year
 
 ];
 
