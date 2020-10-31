@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DocMetadataEditor} from "../../repository/js/doc_repo/doc_metadata_editor/DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const docInfo: IDocInfo = {
     title: "Zombies Invade Paris",
@@ -19,7 +20,7 @@ const docInfo: IDocInfo = {
 export const App = () => {
     return (
         <div style={{width: '600px', margin: '5px'}}>
-            <DocMetadataEditor docInfo={docInfo}/>
+            <DocMetadataEditor docInfo={docInfo} onUpdate={NULL_FUNCTION}/>
         </div>
     );
 }

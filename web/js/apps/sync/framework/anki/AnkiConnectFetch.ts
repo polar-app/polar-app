@@ -10,11 +10,15 @@ const log = Logger.create();
  */
 export class AnkiConnectFetch {
 
-    public static PORTS = [8766, 8765];
+    /**
+     * The ports to connect to.. we used to try on 8765 (Anki Connect) and 8766 (Polar Connect)
+     * but now just Anki Connect.
+     */
+    public static PORTS = [8765];
 
-    private static port: number = 8766;
+    private static port: number = 8765;
 
-    public static async initialize<T>(): Promise<any> {
+    public static async initialize(): Promise<any> {
 
         // try to determine which port to use based on polar connect vs anki connect
         const detectPort = async (): Promise<number> => {
@@ -60,7 +64,7 @@ export class AnkiConnectFetch {
 
     // TODO: since the response is wrapped in a closure, we can handle errors
     // properly here.
-    public static async fetch<T>(init: RequestInit, port: number = this.port): Promise<any> {
+    public static async fetch(init: RequestInit, port: number = this.port): Promise<any> {
 
         try {
 

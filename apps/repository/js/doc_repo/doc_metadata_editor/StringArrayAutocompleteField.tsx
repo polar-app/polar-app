@@ -4,14 +4,13 @@ import {IField} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import { Strings } from "polar-shared/src/util/Strings";
 import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps extends IField {
     readonly className?: string;
     readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
     readonly values: ReadonlyArray<string> | undefined;
-    readonly onUpdate: (docInfo: IDocInfo) => void;
+    readonly onChange: (values: ReadonlyArray<string>) => void;
 }
 
 export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
@@ -41,6 +40,6 @@ export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
                                   placeholder={options.length === 0 ? label : undefined}
                                   defaultOptions={options}
                                   createOption={createOption}
-                                  onChange={NULL_FUNCTION}/>
+                                  onChange={props.onChange}/>
     );
 });

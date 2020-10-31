@@ -11,24 +11,10 @@ interface IProps extends IField {
     readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
     readonly value: string | undefined;
-    readonly onUpdate: (docInfo: IDocInfo) => void;
+    readonly onChange: (value: string) => void;
 }
 
 export const StringField = deepMemo((props: IProps) => {
-
-    const handleUpdate = React.useCallback((value: string) => {
-
-        const newDocInfo = Dictionaries.copyOf(props.docInfo);
-
-        if (props.optional) {
-            newDocInfo[props.name] = value.trim() === '' ? undefined : '';
-        } else {
-            newDocInfo[props.name] = value;
-        }
-
-        props.onUpdate(newDocInfo);
-
-    }, [props]);
 
     const label = props.label || Strings.upperFirst(props.name);
 
@@ -39,6 +25,6 @@ export const StringField = deepMemo((props: IProps) => {
                    label={label}
                    defaultValue={props.value || ''}
                    helperText={props.description}
-                   onChange={event => handleUpdate(event.target.value)}/>
+                   onChange={event => props.onChange(event.target.value)}/>
     );
 });

@@ -7,6 +7,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {StringArrayField} from "./StringArrayField";
 import { StringArrayAutocompleteField } from './StringArrayAutocompleteField';
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 export interface IField {
     readonly name: keyof IDocInfo;
@@ -92,12 +93,41 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly docInfo: IDocInfo;
+    readonly onUpdate: (docInfo: IDocInfo) => void;
 }
 
 export const DocMetadataEditor = deepMemo((props: IProps) => {
 
     const [docInfo, setDocInfo] = React.useState(props.docInfo);
     const classes = useStyles();
+
+    const handleFieldChangeForString = React.useCallback((field: IField, value: string) => {
+
+        const newDocInfo = Dictionaries.copyOf(props.docInfo);
+
+        if (field.optional) {
+            newDocInfo[field.name] = value.trim() === '' ? undefined : '';
+        } else {
+            newDocInfo[field.name] = value;
+        }
+
+        props.onUpdate(newDocInfo);
+
+    }, [props]);
+
+    const handleFieldChangeForStringArray = React.useCallback((field: IField, values: ReadonlyArray<string>) => {
+
+        const newDocInfo = Dictionaries.copyOf(props.docInfo);
+
+        if (field.optional) {
+            newDocInfo[field.name] = values.length === 0 ? undefined : values;
+        } else {
+            newDocInfo[field.name] = values;
+        }
+
+        props.onUpdate(newDocInfo);
+
+    }, [props]);
 
     const toComponent = React.useCallback((field: IField) => {
 
@@ -107,7 +137,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                     <StringField className={classes.field}
                                  docInfo={docInfo}
                                  value={docInfo[field.name] as string}
-                                 onUpdate={setDocInfo}
+                                 onChange={value => handleFieldChangeForString(field, value)}
                                  {...field}/>
                 );
             case "string[]":
@@ -123,7 +153,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                     <StringArrayAutocompleteField className={classes.field}
                                                   docInfo={docInfo}
                                                   values={docInfo[field.name] as string[]}
-                                                  onUpdate={setDocInfo}
+                                                  onChange={values => handleFieldChangeForStringArray(field, values)}
                                                   {...field}/>
                 );
 
