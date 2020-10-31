@@ -35,8 +35,11 @@ export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
 
     return (
         <MUICreatableAutocomplete className={props.className}
-                                  style={props.style}
+                                  style={{
+                                      ...props.style
+                                  }}
                                   options={options}
+                                  label={label}
                                   placeholder={options.length === 0 ? label : undefined}
                                   defaultOptions={options}
                                   createOption={createOption}
