@@ -209,7 +209,7 @@ module.exports = {
     entry: {
         "repository": "./apps/repository/js/entry.tsx",
         "dev": "./apps/dev2/index.tsx",
-        "document-metadata-editor": "./apps/stories/document-metadata-editor/index.tsx",
+        "stories": "./apps/stories/index.tsx",
     },
     module: {
         rules: createRules()
