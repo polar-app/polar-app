@@ -8,6 +8,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import { StringArrayAutocompleteProperty } from './StringArrayAutocompleteProperty';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import { TextProperty } from './TextProperty';
+import {MonthProperty} from "./MonthProperty";
 
 /**
  * Represents a property on the DocInfo
@@ -17,7 +18,7 @@ export interface DocInfoProperty {
     readonly label?: string;
     readonly description: string;
     readonly optional?: true;
-    readonly type: 'string' | 'string[]' | 'text';
+    readonly type: 'string' | 'string[]' | 'text' | 'month';
 }
 
 // TODO: we will need to special handle arrays with a component that can work
@@ -119,6 +120,12 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         description: 'The editor or editors of this document',
         optional: true,
         type: 'string[]'
+    },
+    {
+        name: 'month',
+        description: 'The month this document was published',
+        optional: true,
+        type: 'month'
     }
 
     // TODO: month, year
@@ -209,6 +216,16 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                                   onChange={value => handleFieldChangeForString(property, value)}
                                   {...property}/>
                 );
+
+            case "month":
+                return (
+                    <MonthProperty className={classes.property}
+                                   docInfo={docInfo}
+                                   value={docInfo[property.name] as string}
+                                   onChange={value => handleFieldChangeForString(property, value)}
+                                   {...property}/>
+                );
+
 
             default:
                 return null;
