@@ -208,7 +208,6 @@ module.exports = {
     target,
     entry: {
         "repository": "./apps/repository/js/entry.tsx",
-        "dev": "./apps/dev2/index.tsx",
         "stories": "./apps/stories/index.tsx",
     },
     module: {
