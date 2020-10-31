@@ -33,6 +33,17 @@ const FIELDS: ReadonlyArray<IField> = [
         type: 'string'
     },
     {
+        name: 'volume',
+        optional: true,
+        type: 'string'
+    },
+    {
+        name: 'issn',
+        label: 'ISSN',
+        optional: true,
+        type: 'string'
+    },
+    {
         name: 'doi',
         label: 'DOI',
         description: 'Document Identifier (doi)',
