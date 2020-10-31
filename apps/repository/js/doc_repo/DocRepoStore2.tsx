@@ -124,6 +124,11 @@ interface IDocRepoCallbacks {
     readonly doArchived: (repoDocInfos: ReadonlyArray<RepoDocInfo>, archived: boolean) => void;
     readonly doFlagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>, flagged: boolean) => void;
 
+    /**
+     * Called when we've updated a raw IDocInfo object.
+     */
+    readonly onUpdated: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+
     // ** callbacks that might need prompts, confirmation, etc.
     readonly onTagged: () => void;
     readonly onOpen: () => void;
@@ -456,6 +461,31 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
+    function onUpdated(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
+
+        const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
+
+            function prepare() {
+            }
+
+            function commit() {
+                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
+            }
+
+            return {prepare, commit};
+
+        }
+
+        async function doHandle() {
+            await withBatch(repoDocInfos.map(toAsyncTransaction));
+        }
+
+        doHandle()
+            .catch(err => log.error(err));
+
+    }
+
+
     function doCopyDocumentID(repoDocInfo: RepoDocInfo): void {
         const text = repoDocInfo.fingerprint;
 
@@ -754,6 +784,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         doDeleted,
         doArchived,
         doFlagged,
+        onUpdated,
 
         doDropped,
 
