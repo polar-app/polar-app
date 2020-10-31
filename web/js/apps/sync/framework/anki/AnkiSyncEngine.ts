@@ -41,6 +41,8 @@ export class AnkiSyncEngine implements SyncEngine {
 
         const deckNames = SetArrays.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
 
+        console.log("Going to sync over N notes: " + noteDescriptors.length);
+
         const deckDescriptors: DeckDescriptor[] = Array.from(deckNames)
             .map(deckName => {
                 return {name: deckName};
@@ -133,7 +135,7 @@ export class AnkiSyncEngine implements SyncEngine {
     }
 
     protected async toNoteDescriptors(deckNameStrategy: DeckNameStrategy,
-                                      docMetaSupplierCollection: DocMetaSupplierCollection): Promise<NoteDescriptor[]> {
+                                      docMetaSupplierCollection: DocMetaSupplierCollection): Promise<ReadonlyArray<NoteDescriptor>> {
 
         const  flashcardDescriptors = await FlashcardDescriptors.toFlashcardDescriptors(docMetaSupplierCollection);
 

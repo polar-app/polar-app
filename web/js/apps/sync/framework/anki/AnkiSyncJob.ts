@@ -11,17 +11,9 @@ const log = Logger.create();
 
 abstract class AnkiSyncJob {
 
-    protected readonly syncProgressListener: SyncProgressListener;
-    protected readonly deckDescriptors: DeckDescriptor[];
-    protected readonly noteDescriptors: NoteDescriptor[];
-
-    public constructor(syncProgressListener: SyncProgressListener,
-                       deckDescriptors: DeckDescriptor[],
-                       noteDescriptors: NoteDescriptor[]) {
-
-        this.syncProgressListener = syncProgressListener;
-        this.deckDescriptors = deckDescriptors;
-        this.noteDescriptors = noteDescriptors;
+    public constructor(protected readonly syncProgressListener: SyncProgressListener,
+                       protected readonly deckDescriptors: ReadonlyArray<DeckDescriptor>,
+                       protected readonly noteDescriptors: ReadonlyArray<NoteDescriptor>) {
 
     }
 

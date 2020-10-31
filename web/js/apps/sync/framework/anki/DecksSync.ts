@@ -1,23 +1,17 @@
-/**
- * Code that synchronizes decks by creating new decks when the required decks
- * are missing.
- */
 import {DeckDescriptor} from './DeckDescriptor';
 import {SetArrays} from 'polar-shared/src/util/SetArrays';
 import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
-import {SyncProgressListener} from '../SyncProgressListener';
-import {Abortable} from '../Abortable';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {SyncQueue} from '../SyncQueue';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {SyncTaskResult} from '../SyncTask';
-import {NormalizedNote} from './NotesSync';
 
 const log = Logger.create();
 
 /**
- * Sync decks to Anki.
+ * Code that synchronizes decks by creating new decks when the required decks
+ * are missing.
  */
 export class DecksSync {
 
@@ -46,7 +40,7 @@ export class DecksSync {
      * @param deckDescriptors The decks we need created.
      *
      */
-    public enqueue(deckDescriptors: DeckDescriptor[]) {
+    public enqueue(deckDescriptors: ReadonlyArray<DeckDescriptor>) {
 
         this.syncQueue.add(async () => {
             return await this.findExistingDecks(deckDescriptors);
@@ -60,7 +54,7 @@ export class DecksSync {
 
     }
 
-    private async findExistingDecks(deckDescriptors: DeckDescriptor[]): Promise<Optional<SyncTaskResult>> {
+    private async findExistingDecks(deckDescriptors: ReadonlyArray<DeckDescriptor>): Promise<Optional<SyncTaskResult>> {
 
         log.info("Fetching existing decks for deckDescriptors: ", deckDescriptors);
 

@@ -47,7 +47,7 @@ export class NotesSync {
      *
      * @param noteDescriptors The notes we need to sync.
      */
-    public enqueue(noteDescriptors: NoteDescriptor[]): NotesSynchronized {
+    public enqueue(noteDescriptors: ReadonlyArray<NoteDescriptor>): NotesSynchronized {
 
         this.syncQueue.add(async () => {
             return await this.findNotes(noteDescriptors);
@@ -57,7 +57,7 @@ export class NotesSync {
 
     }
 
-    private async findNotes(noteDescriptors: NoteDescriptor[]): Promise<Optional<SyncTaskResult>> {
+    private async findNotes(noteDescriptors: ReadonlyArray<NoteDescriptor>): Promise<Optional<SyncTaskResult>> {
 
         const normalizedNotes = noteDescriptors.map(current => this.normalize(current));
 
