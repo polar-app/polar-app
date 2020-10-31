@@ -6,7 +6,8 @@ import {deepMemo} from "../../web/js/react/ReactUtils";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {HashRouter, Route, Switch, useHistory} from 'react-router-dom';
+import {HashRouter, Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 interface IStory {
     readonly name: string;
@@ -40,7 +41,7 @@ const StoriesSidebar = deepMemo(() => {
     const history = useHistory();
 
     const handleClick = React.useCallback((story: IStoryWithID) => {
-        history.push('#id=' + story.id);
+        history.push('/id/' + story.id);
     }, [history]);
 
     const toListItem = React.useCallback((story: IStoryWithID) => {
@@ -72,10 +73,38 @@ const StoryView = deepMemo((props: StoryViewProps) => {
 
 const StoryViewRoute = deepMemo(() => {
 
+    const location = useLocation();
+
+    console.log("FIXME:", location);
+
+    if (! location.pathname) {
+        console.warn("No pathname");
+        return null;
+    }
+
+    if (! location.pathname.startsWith('/id/')) {
+        console.warn("Not starting with id");
+        return null;
+    }
+
+    const id = Arrays.last(location.pathname.split('/'));
+
+    if (! id) {
+        console.warn("No id");
+        return null;
+    }
+
+    const matchingStories = stories.filter(current => current.id === id);
+
+    if (matchingStories.length === 0) {
+        console.warn("No story for id: " + id);
+        return null;
+    }
+
+    const story = matchingStories[0];
+
     return (
-        <div>
-            this is a route
-        </div>
+        <StoryView story={story}/>
     );
 
 });
@@ -83,7 +112,7 @@ const StoryViewRoute = deepMemo(() => {
 const StoriesRouter = deepMemo(() => {
     return (
         <Switch>
-            <Route exact path="/id">
+            <Route path="/id">
                 <StoryViewRoute/>
             </Route>
         </Switch>
@@ -94,7 +123,7 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            <HashRouter>
+            <HashRouter hashType="noslash">
                 <DockLayout2
                     dockPanels={[
                         {
