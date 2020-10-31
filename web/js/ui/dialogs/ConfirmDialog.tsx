@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.info.contrastText,
         },
         none: {
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
         },
         cancelButton: {
             color: theme.palette.text.secondary,
@@ -159,7 +159,6 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                                 </Button>}
 
                             <Button className={palette}
-                                    color={type === 'none' ? 'primary' : undefined}
                                     onClick={handleAccept}
                                     size="large"
                                     variant="contained"
