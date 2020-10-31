@@ -15,7 +15,7 @@ import { TextProperty } from './TextProperty';
 export interface DocInfoProperty {
     readonly name: keyof IDocInfo;
     readonly label?: string;
-    readonly description?: string;
+    readonly description: string;
     readonly optional?: true;
     readonly type: 'string' | 'string[]' | 'text';
 }
@@ -28,33 +28,37 @@ export interface DocInfoProperty {
 const FIELDS: ReadonlyArray<DocInfoProperty> = [
     {
         name: 'title',
+        description: "The title of the document/work",
         optional: true,
         type: 'string'
     },
     {
         name: 'description',
-        description: "A short description for the document",
+        description: "A short description for the document.",
         optional: true,
         type: 'string'
     },
     {
         name: 'abstract',
-        description: "A long text overview of the document",
+        description: "A long text overview of the document.",
         optional: true,
         type: 'text'
     },
     {
         name: 'volume',
+        description: "The volume of a journal or multi-volume book.",
         optional: true,
         type: 'string'
     },
     {
         name: 'edition',
+        description: "The edition of a book--for example, 'Second'.",
         optional: true,
         type: 'string'
     },
     {
         name: 'issn',
+        description: "International Standard Serial Number (ISSN) of a journal or magazine",
         label: 'ISSN',
         optional: true,
         type: 'string'
@@ -69,7 +73,7 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
     {
         name: 'doi',
         label: 'DOI',
-        description: 'Document Identifier (doi)',
+        description: 'Document Identifier (DOI)',
         optional: true,
         type: 'string'
     },
@@ -82,6 +86,7 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
     },
     {
         name: 'journal',
+        description: "The name of the journal in which this work was published.",
         optional: true,
         type: 'string'
     },
@@ -116,7 +121,7 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         type: 'string[]'
     }
 
-    // TODO: abstract, subtitle
+    // TODO: month, year
 
 ];
 
