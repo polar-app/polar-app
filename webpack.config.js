@@ -209,8 +209,7 @@ module.exports = {
     entry: {
         "repository": "./apps/repository/js/entry.tsx",
         "dev": "./apps/dev2/index.tsx",
-        // "preview": "./apps/preview/index.ts",
-        // "add-shared-doc": "./apps/add-shared-doc/js/index.ts",
+        "document-metadata-editor": "./apps/stories/document-metadata-editor/index.tsx",
     },
     module: {
         rules: createRules()
