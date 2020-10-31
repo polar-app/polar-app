@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import {StringArrayField} from "./StringArrayField";
+import { StringArrayAutocompleteField } from './StringArrayAutocompleteField';
 
 export interface IField {
     readonly name: keyof IDocInfo;
@@ -110,13 +111,24 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                                  {...field}/>
                 );
             case "string[]":
+                // return (
+                //     <StringArrayField className={classes.field}
+                //                       docInfo={docInfo}
+                //                       values={docInfo[field.name] as string[]}
+                //                       onUpdate={setDocInfo}
+                //                       {...field}/>
+                // );
+
                 return (
-                    <StringArrayField className={classes.field}
-                                      docInfo={docInfo}
-                                      values={docInfo[field.name] as string[]}
-                                      onUpdate={setDocInfo}
-                                      {...field}/>
+                    <StringArrayAutocompleteField className={classes.field}
+                                                  docInfo={docInfo}
+                                                  values={docInfo[field.name] as string[]}
+                                                  onUpdate={setDocInfo}
+                                                  {...field}/>
                 );
+
+
+
             default:
                 return null;
         }

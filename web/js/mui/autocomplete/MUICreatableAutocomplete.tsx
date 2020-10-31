@@ -196,7 +196,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     const filter = createFilterOptions<ValueAutocompleteOption<T>>();
 
-    const computeRelatedOptions = (): ReadonlyArray<ValueAutocompleteOption<T>> => {
+    const computeRelatedOptions = (): ReadonlyArray<ValueAutocompleteOption<T>> | undefined => {
         
         if (props.relatedOptionsCalculator) {
 
@@ -209,11 +209,10 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
             return props.relatedOptionsCalculator(values);
 
         } else {
-            console.warn("No related options calculator");
+            // console.warn("No related options calculator");
+            return undefined;
         }
-        
-        return [];
-        
+
     };
     
     const relatedOptions = computeRelatedOptions();
@@ -364,11 +363,14 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 )}
             />
 
-            <PremiumFeature required='plus' size='sm' feature="related tags">
-                <MUIRelatedOptions relatedOptions={relatedOptions}
-                                   onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
-            </PremiumFeature>
-            
+            {relatedOptions !== undefined && (
+                <PremiumFeature required='plus' size='sm' feature="related tags">
+                    <>
+                    <MUIRelatedOptions relatedOptions={relatedOptions}
+                                      onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
+                    </>
+                </PremiumFeature>)}
+
         </div>
     );
 }
