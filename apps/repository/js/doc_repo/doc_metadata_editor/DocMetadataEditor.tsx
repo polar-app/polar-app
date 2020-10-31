@@ -167,7 +167,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
         const newDocInfo = Dictionaries.copyOf(props.docInfo);
 
         if (field.optional) {
-            newDocInfo[field.name] = value.trim() === '' ? undefined : '';
+            newDocInfo[field.name] = value.trim() === '' ? undefined : value.trim();
         } else {
             newDocInfo[field.name] = value;
         }

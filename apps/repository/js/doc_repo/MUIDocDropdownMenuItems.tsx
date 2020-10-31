@@ -151,14 +151,7 @@ const UpdateDocMetadataMenuItem = deepMemo(() => {
 
     const handleUpdated = React.useCallback((repoDocInfo: RepoDocInfo, docInfo: IDocInfo) => {
 
-        repoDocInfo.docMeta.docInfo = docInfo;
-
-        const newRepoDocInfo = {
-            ...repoDocInfo,
-            docInfo,
-        }
-
-        onUpdated([newRepoDocInfo])
+        onUpdated(repoDocInfo, docInfo)
 
     }, [onUpdated]);
 

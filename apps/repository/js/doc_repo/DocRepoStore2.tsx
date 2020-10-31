@@ -46,6 +46,8 @@ import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {RepoDocInfos} from "../RepoDocInfos";
 
 interface IDocRepoStore {
 
@@ -127,7 +129,7 @@ interface IDocRepoCallbacks {
     /**
      * Called when we've updated a raw IDocInfo object.
      */
-    readonly onUpdated: (repoDocInfos: ReadonlyArray<RepoDocInfo>) => void;
+    readonly onUpdated: (repoDocInfo: RepoDocInfo, docInfo: IDocInfo) => void;
 
     // ** callbacks that might need prompts, confirmation, etc.
     readonly onTagged: () => void;
@@ -461,15 +463,24 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
     }
 
-    function onUpdated(repoDocInfos: ReadonlyArray<RepoDocInfo>): void {
+    function onUpdated(repoDocInfo: RepoDocInfo, docInfo: IDocInfo): void {
 
         const toAsyncTransaction = (repoDocInfo: RepoDocInfo): IAsyncTransaction<void> => {
 
             function prepare() {
+
+                const docMeta = repoDocInfo.docMeta;
+                docMeta.docInfo = docInfo;
+                const newRepoDocInfo = RepoDocInfos.convert(docMeta);
+
+                repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, newRepoDocInfo);
+
             }
 
             function commit() {
-                return repoDocMetaManager.writeDocInfo(repoDocInfo.docInfo, repoDocInfo.docMeta);
+                repoDocInfo.docMeta.docInfo = docInfo;
+
+                return repoDocMetaManager.writeDocInfo(docInfo, repoDocInfo.docMeta);
             }
 
             return {prepare, commit};
@@ -477,7 +488,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         async function doHandle() {
-            await withBatch(repoDocInfos.map(toAsyncTransaction));
+            await withBatch([repoDocInfo].map(toAsyncTransaction));
         }
 
         doHandle()
