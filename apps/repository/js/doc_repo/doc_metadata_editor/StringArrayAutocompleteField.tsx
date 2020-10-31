@@ -2,10 +2,6 @@ import * as React from "react";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IField} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import TextField from "@material-ui/core/TextField/TextField";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import { Strings } from "polar-shared/src/util/Strings";
 import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -20,8 +16,13 @@ interface IProps extends IField {
 
 export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
 
-    const options: ReadonlyArray<ValueAutocompleteOption<string>> = [
-    ];
+    const options = React.useMemo((): ReadonlyArray<ValueAutocompleteOption<string>> => {
+        return (props.values || []).map(current => ({
+            id: current,
+            label: current,
+            value: current
+        }))
+    }, [props.values]);
 
     const createOption = React.useCallback((label): ValueAutocompleteOption<string> => {
         return {
@@ -31,8 +32,13 @@ export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
         }
     }, []);
 
+    const label = props.label || Strings.upperFirst(props.name);
+
     return (
-        <MUICreatableAutocomplete options={options}
+        <MUICreatableAutocomplete className={props.className}
+                                  style={props.style}
+                                  options={options}
+                                  placeholder={options.length === 0 ? label : undefined}
                                   defaultOptions={options}
                                   createOption={createOption}
                                   onChange={NULL_FUNCTION}/>

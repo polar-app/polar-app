@@ -62,6 +62,10 @@ export type RelatedOptionsCalculator<T> = (options: ReadonlyArray<ValueAutocompl
 
 export interface MUICreatableAutocompleteProps<T> {
 
+    readonly className?: string;
+
+    readonly style?: React.CSSProperties;
+
     readonly label?: string;
 
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
@@ -286,7 +290,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     // inputValue to be reset when it re-renders again.
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root + ' ' + (props.className || '')}
+             style={props.style}>
             <Autocomplete
                 multiple
                 getOptionSelected={getOptionSelected}
