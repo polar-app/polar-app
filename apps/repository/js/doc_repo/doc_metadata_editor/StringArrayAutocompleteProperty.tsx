@@ -1,12 +1,12 @@
 import * as React from "react";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {IField} from "./DocMetadataEditor";
+import {DocInfoProperty} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import { Strings } from "polar-shared/src/util/Strings";
 import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
-interface IProps extends IField {
+interface IProps extends DocInfoProperty {
     readonly className?: string;
     readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
@@ -14,7 +14,7 @@ interface IProps extends IField {
     readonly onChange: (values: ReadonlyArray<string>) => void;
 }
 
-export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
+export const StringArrayAutocompleteProperty = deepMemo((props: IProps) => {
 
     const options = React.useMemo((): ReadonlyArray<ValueAutocompleteOption<string>> => {
         return (props.values || []).map(current => ({

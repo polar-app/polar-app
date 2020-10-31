@@ -1,20 +1,23 @@
 import * as React from 'react';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import { StringField } from './StringField';
+import { StringProperty } from './StringProperty';
 import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {StringArrayField} from "./StringArrayField";
-import { StringArrayAutocompleteField } from './StringArrayAutocompleteField';
+import { StringArrayAutocompleteProperty } from './StringArrayAutocompleteProperty';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import { TextProperty } from './TextProperty';
 
-export interface IField {
+/**
+ * Represents a property on the DocInfo
+ */
+export interface DocInfoProperty {
     readonly name: keyof IDocInfo;
     readonly label?: string;
     readonly description?: string;
     readonly optional?: true;
-    readonly type: 'string' | 'string[]';
+    readonly type: 'string' | 'string[]' | 'text';
 }
 
 // TODO: we will need to special handle arrays with a component that can work
@@ -22,7 +25,7 @@ export interface IField {
 
 // TODO: move over every field from IDocBib.
 
-const FIELDS: ReadonlyArray<IField> = [
+const FIELDS: ReadonlyArray<DocInfoProperty> = [
     {
         name: 'title',
         optional: true,
@@ -33,6 +36,12 @@ const FIELDS: ReadonlyArray<IField> = [
         description: "A short description for the document",
         optional: true,
         type: 'string'
+    },
+    {
+        name: 'abstract',
+        description: "A long text overview of the document",
+        optional: true,
+        type: 'text'
     },
     {
         name: 'volume',
@@ -111,12 +120,12 @@ const FIELDS: ReadonlyArray<IField> = [
 
 ];
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         box: {
             display: 'flex'
         },
-        field: {
+        property: {
             flexGrow: 1
         },
     }),
@@ -132,7 +141,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
     const [docInfo, setDocInfo] = React.useState(props.docInfo);
     const classes = useStyles();
 
-    const handleFieldChangeForString = React.useCallback((field: IField, value: string) => {
+    const handleFieldChangeForString = React.useCallback((field: DocInfoProperty, value: string) => {
 
         const newDocInfo = Dictionaries.copyOf(props.docInfo);
 
@@ -146,7 +155,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
 
     }, [props]);
 
-    const handleFieldChangeForStringArray = React.useCallback((field: IField, values: ReadonlyArray<string>) => {
+    const handleFieldChangeForStringArray = React.useCallback((field: DocInfoProperty, values: ReadonlyArray<string>) => {
 
         const newDocInfo = Dictionaries.copyOf(props.docInfo);
 
@@ -160,16 +169,16 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
 
     }, [props]);
 
-    const toComponent = React.useCallback((field: IField) => {
+    const toComponent = React.useCallback((property: DocInfoProperty) => {
 
-        switch (field.type) {
+        switch (property.type) {
             case "string":
                 return (
-                    <StringField className={classes.field}
-                                 docInfo={docInfo}
-                                 value={docInfo[field.name] as string}
-                                 onChange={value => handleFieldChangeForString(field, value)}
-                                 {...field}/>
+                    <StringProperty className={classes.property}
+                                    docInfo={docInfo}
+                                    value={docInfo[property.name] as string}
+                                    onChange={value => handleFieldChangeForString(property, value)}
+                                    {...property}/>
                 );
             case "string[]":
                 // return (
@@ -181,20 +190,26 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                 // );
 
                 return (
-                    <StringArrayAutocompleteField className={classes.field}
-                                                  docInfo={docInfo}
-                                                  values={docInfo[field.name] as string[]}
-                                                  onChange={values => handleFieldChangeForStringArray(field, values)}
-                                                  {...field}/>
+                    <StringArrayAutocompleteProperty className={classes.property}
+                                                     docInfo={docInfo}
+                                                     values={docInfo[property.name] as string[]}
+                                                     onChange={values => handleFieldChangeForStringArray(property, values)}
+                                                     {...property}/>
                 );
-
-
+            case "text":
+                return (
+                    <TextProperty className={classes.property}
+                                  docInfo={docInfo}
+                                  value={docInfo[property.name] as string}
+                                  onChange={value => handleFieldChangeForString(property, value)}
+                                  {...property}/>
+                );
 
             default:
                 return null;
         }
 
-    }, [classes.field, docInfo, handleFieldChangeForString, handleFieldChangeForStringArray]);
+    }, [classes.property, docInfo, handleFieldChangeForString, handleFieldChangeForStringArray]);
 
     return (
         <div>

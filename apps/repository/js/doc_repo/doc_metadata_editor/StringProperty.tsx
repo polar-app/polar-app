@@ -1,11 +1,11 @@
 import * as React from "react";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
-import {IField} from "./DocMetadataEditor";
+import {DocInfoProperty} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import TextField from "@material-ui/core/TextField/TextField";
 import {Strings} from "polar-shared/src/util/Strings";
 
-interface IProps extends IField {
+interface IProps extends DocInfoProperty {
     readonly className?: string;
     readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
@@ -13,7 +13,7 @@ interface IProps extends IField {
     readonly onChange: (value: string) => void;
 }
 
-export const StringField = deepMemo((props: IProps) => {
+export const StringProperty = deepMemo((props: IProps) => {
 
     const label = props.label || Strings.upperFirst(props.name);
 
