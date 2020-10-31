@@ -46,6 +46,24 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         type: 'text'
     },
     {
+        name: 'keywords',
+        description: 'The keywords that are defined by the publisher for this document',
+        optional: true,
+        type: 'string[]'
+    },
+    {
+        name: 'authors',
+        description: 'The author or authors of this document',
+        optional: true,
+        type: 'string[]'
+    },
+    {
+        name: 'editor',
+        description: 'The editor or editors of this document',
+        optional: true,
+        type: 'string[]'
+    },
+    {
         name: 'month',
         description: 'The month this document was published',
         optional: true,
@@ -114,25 +132,7 @@ const FIELDS: ReadonlyArray<DocInfoProperty> = [
         description: 'The copyright of this document.',
         optional: true,
         type: 'string'
-    },
-    {
-        name: 'keywords',
-        description: 'The keywords that are defined by the publisher for this document',
-        optional: true,
-        type: 'string[]'
-    },
-    {
-        name: 'authors',
-        description: 'The author or authors of this document',
-        optional: true,
-        type: 'string[]'
-    },
-    {
-        name: 'editor',
-        description: 'The editor or editors of this document',
-        optional: true,
-        type: 'string[]'
-    },
+    }
 
 ];
 
