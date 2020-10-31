@@ -5,6 +5,8 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
+import { Strings } from "polar-shared/src/util/Strings";
 
 interface IProps extends IField {
     readonly className?: string;
@@ -39,17 +41,27 @@ export const StringArrayField = deepMemo((props: IProps) => {
 
     }, [handleUpdate, values]);
 
+    const label = props.label || Strings.upperFirst(props.name);
+
     return (
         <div className={props.className}
-             style={props.style}>
+             style={{
+                 ...props.style,
+                 display: 'flex',
+                 flexDirection: 'column'
+             }}>
 
-            {values.map((current, idx) => (
-                <TextField key={idx}
-                           required={false}
-                           label={props.name}
-                           defaultValue={current || ''}
-                           onChange={event => handleUpdatedValue(event.target.value, idx)}/>
-            ))}
+            {values.map((current, idx) => {
+                return (
+                    <Box key={idx} mb={1} style={{display: 'flex'}}>
+                        <TextField required={false}
+                                   style={{flexGrow: 1}}
+                                   label={idx === 0 ? label : undefined}
+                                   defaultValue={current || ''}
+                                   onChange={event => handleUpdatedValue(event.target.value, idx)}/>
+                    </Box>
+                );
+            })}
 
 
            <div style={{textAlign: 'right'}}>
@@ -57,7 +69,7 @@ export const StringArrayField = deepMemo((props: IProps) => {
                <Button variant="contained"
                        size="small"
                        onClick={handleAddValue}>
-                   Add Value
+                   Add
                </Button>
 
            </div>

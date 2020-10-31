@@ -4,6 +4,7 @@ import {IField} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import TextField from "@material-ui/core/TextField/TextField";
+import {Strings} from "polar-shared/src/util/Strings";
 
 interface IProps extends IField {
     readonly className?: string;
@@ -29,11 +30,13 @@ export const StringField = deepMemo((props: IProps) => {
 
     }, [props]);
 
+    const label = props.label || Strings.upperFirst(props.name);
+
     return (
         <TextField className={props.className}
                    style={props.style}
                    required={! props.optional}
-                   label={props.label || props.name}
+                   label={label}
                    defaultValue={props.value || ''}
                    helperText={props.description}
                    onChange={event => handleUpdate(event.target.value)}/>
