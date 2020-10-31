@@ -157,6 +157,11 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
     const [docInfo, setDocInfo] = React.useState(props.docInfo);
     const classes = useStyles();
 
+    const handleDocInfo = React.useCallback((newDocInfo: IDocInfo) => {
+        props.onUpdate(newDocInfo);
+        setDocInfo(newDocInfo);
+    }, [props]);
+
     const handleFieldChangeForString = React.useCallback((field: DocInfoProperty, value: string) => {
 
         const newDocInfo = Dictionaries.copyOf(props.docInfo);
@@ -167,9 +172,9 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
             newDocInfo[field.name] = value;
         }
 
-        props.onUpdate(newDocInfo);
+        handleDocInfo(newDocInfo);
 
-    }, [props]);
+    }, [handleDocInfo, props.docInfo]);
 
     const handleFieldChangeForStringArray = React.useCallback((field: DocInfoProperty, values: ReadonlyArray<string>) => {
 
@@ -181,9 +186,9 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
             newDocInfo[field.name] = values;
         }
 
-        props.onUpdate(newDocInfo);
+        handleDocInfo(newDocInfo);
 
-    }, [props]);
+    }, [handleDocInfo, props.docInfo]);
 
     const toComponent = React.useCallback((property: DocInfoProperty) => {
 

@@ -382,4 +382,3 @@ export const RepositoryApp = (props: IProps) => {
     );
 
 };
-

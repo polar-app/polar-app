@@ -1,7 +1,8 @@
-import {Callback1, NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Callback1, NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
 import isEqual from "react-fast-compare";
 import {
+    AlertType,
     ConfirmDialog,
     ConfirmDialogProps
 } from "../../ui/dialogs/ConfirmDialog";
@@ -57,7 +58,30 @@ interface DialogHostProps {
  * Inject a raw dialog
  */
 interface IDialogProps {
-    readonly dialog: JSX.Element;
+    readonly title: string;
+    readonly body: JSX.Element;
+    readonly onCancel?: Callback;
+    readonly onAccept: Callback;
+    readonly type?: AlertType;
+    readonly autoFocus?: boolean;
+
+    /**
+     * The text to use for the cancel button.
+     */
+    readonly cancelText?: string;
+
+    /**
+     * The text to use for the accept button.
+     */
+    readonly acceptText?: string;
+
+    /**
+     * When true, do not show the cancel button.
+     */
+    readonly noCancel?: boolean
+
+    readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
+
 }
 
 interface DialogState {
@@ -93,6 +117,13 @@ const DialogHost = (props: DialogHostProps) => {
 
         const confirm = (confirmDialogProps: ConfirmDialogProps) => {
             registerDialogElement(<ConfirmDialog key={createKey()}
+                                                 {...confirmDialogProps}/>);
+            doIncr();
+        };
+
+        const dialog = (confirmDialogProps: IDialogProps) => {
+            registerDialogElement(<ConfirmDialog key={createKey()}
+                                                 subtitle={confirmDialogProps.body}
                                                  {...confirmDialogProps}/>);
             doIncr();
         };
@@ -155,7 +186,7 @@ const DialogHost = (props: DialogHostProps) => {
             prompt,
             autocomplete,
             snackbar,
-            dialog: NULL_FUNCTION,
+            dialog,
             taskbar,
             select
         };

@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: theme.palette.info.main,
             color: theme.palette.info.contrastText,
         },
+        none: {
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+        },
         cancelButton: {
             color: theme.palette.text.secondary,
         },
@@ -45,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info';
+export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info' | 'none';
 
 export interface ConfirmDialogProps {
     readonly title: string;
@@ -71,6 +75,8 @@ export interface ConfirmDialogProps {
     readonly noCancel?: boolean
 
     // TOD: we need noCancel
+
+    readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 
 }
 
@@ -108,6 +114,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
 
     return (
         <MUIDialog
+            maxWidth={props.maxWidth}
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
@@ -145,13 +152,14 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                         <DialogActions>
 
                             {! props.noCancel &&
-                            <Button className={classes.cancelButton}
-                                    onClick={handleCancel}
-                                    size="large">
-                                {props.cancelText || 'Cancel'}
-                            </Button>}
+                                <Button className={classes.cancelButton}
+                                        onClick={handleCancel}
+                                        size="large">
+                                    {props.cancelText || 'Cancel'}
+                                </Button>}
 
                             <Button className={palette}
+                                    color={type === 'none' ? 'primary' : undefined}
                                     onClick={handleAccept}
                                     size="large"
                                     variant="contained"

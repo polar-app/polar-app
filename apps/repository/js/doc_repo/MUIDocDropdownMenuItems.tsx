@@ -23,7 +23,9 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import {FADatabaseIcon} from "../../../../web/js/mui/MUIFontAwesome";
-
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import BallotIcon from '@material-ui/icons/Ballot';
+import {useDocMetadataEditor} from "./doc_metadata_editor/DocMetadataEditorHook";
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
 
@@ -140,6 +142,33 @@ export function useJSONDownloadHandler() {
 
 }
 
+const UpdateDocMetadataMenuItem = deepMemo(() => {
+
+    const {selectedProvider} = useDocRepoCallbacks();
+    const docMetadataEditor = useDocMetadataEditor()
+
+    const handleUpdateMetadata = React.useCallback(() => {
+
+        const selected = selectedProvider();
+
+        if (selected.length === 0) {
+            return;
+        }
+
+        docMetadataEditor(selected[0].docInfo, NULL_FUNCTION);
+
+    }, [docMetadataEditor, selectedProvider]);
+
+    return (
+        <MenuItem onClick={handleUpdateMetadata}>
+            <ListItemIcon>
+                <BallotIcon fontSize="small"/>
+            </ListItemIcon>
+            <ListItemText primary="Update Metadata"/>
+        </MenuItem>
+    );
+});
+
 export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProps, ref) => {
 
     const callbacks = useDocRepoCallbacks();
@@ -200,6 +229,9 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
                 </ListItemIcon>
                 <ListItemText primary="Archive"/>
             </MenuItem>
+
+            {isSingle &&
+                <UpdateDocMetadataMenuItem/>}
 
             {single && single.url &&
                 <MenuItem onClick={callbacks.onCopyOriginalURL}>
