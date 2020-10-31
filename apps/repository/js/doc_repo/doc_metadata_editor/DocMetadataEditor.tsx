@@ -40,8 +40,20 @@ const FIELDS: ReadonlyArray<IField> = [
         type: 'string'
     },
     {
+        name: 'edition',
+        optional: true,
+        type: 'string'
+    },
+    {
         name: 'issn',
         label: 'ISSN',
+        optional: true,
+        type: 'string'
+    },
+    {
+        name: 'isbn',
+        label: 'ISBN',
+        description: 'An International Standard Book Number is a numeric commercial book identifier.',
         optional: true,
         type: 'string'
     },
@@ -60,6 +72,11 @@ const FIELDS: ReadonlyArray<IField> = [
         type: 'string'
     },
     {
+        name: 'journal',
+        optional: true,
+        type: 'string'
+    },
+    {
         name: 'publisher',
         description: 'The publisher of this document.  Usually the name of an academic journal',
         optional: true,
@@ -72,11 +89,25 @@ const FIELDS: ReadonlyArray<IField> = [
         type: 'string'
     },
     {
+        name: 'keywords',
+        description: 'The keywords that are defined by the publisher for this document',
+        optional: true,
+        type: 'string[]'
+    },
+    {
         name: 'authors',
         description: 'The author or authors of this document',
         optional: true,
         type: 'string[]'
+    },
+    {
+        name: 'editor',
+        description: 'The editor or editors of this document',
+        optional: true,
+        type: 'string[]'
     }
+
+    // TODO: abstract, subtitle
 
 ];
 
@@ -163,7 +194,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                 return null;
         }
 
-    }, [classes.field, docInfo]);
+    }, [classes.field, docInfo, handleFieldChangeForString, handleFieldChangeForStringArray]);
 
     return (
         <div>

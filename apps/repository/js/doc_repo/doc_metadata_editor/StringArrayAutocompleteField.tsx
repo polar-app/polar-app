@@ -4,6 +4,7 @@ import {IField} from "./DocMetadataEditor";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import { Strings } from "polar-shared/src/util/Strings";
 import MUICreatableAutocomplete, {ValueAutocompleteOption} from "../../../../../web/js/mui/autocomplete/MUICreatableAutocomplete";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 interface IProps extends IField {
     readonly className?: string;
@@ -34,15 +35,24 @@ export const StringArrayAutocompleteField = deepMemo((props: IProps) => {
     const label = props.label || Strings.upperFirst(props.name);
 
     return (
-        <MUICreatableAutocomplete className={props.className}
-                                  style={{
-                                      ...props.style
-                                  }}
-                                  options={options}
-                                  label={label}
-                                  placeholder={options.length === 0 ? label : undefined}
-                                  defaultOptions={options}
-                                  createOption={createOption}
-                                  onChange={props.onChange}/>
+        <div className={props.className}
+             style={{
+                 ...props.style,
+             }}>
+            <div style={{display: 'flex'}}>
+                <MUICreatableAutocomplete options={options}
+                                          label={label}
+                                          style={{flexGrow: 1}}
+                                          placeholder={options.length === 0 ? label : undefined}
+                                          defaultOptions={options}
+                                          createOption={createOption}
+                                          onChange={props.onChange}/>
+            </div>
+            {props.description !== undefined && (
+                <div>
+                    <FormHelperText>{props.description}</FormHelperText>
+                </div>
+            )}
+      </div>
     );
 });
