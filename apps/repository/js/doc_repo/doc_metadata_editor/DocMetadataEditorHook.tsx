@@ -9,6 +9,10 @@ export function useDocMetadataEditor() {
 
     const docInfoRef = React.useRef<IDocInfo | undefined>();
 
+    const handleUpdate = React.useCallback((docInfo: IDocInfo) => {
+        docInfoRef.current = docInfo
+    }, []);
+
     return React.useCallback((docInfo: IDocInfo,
                               onUpdate: (docInfo: IDocInfo) => void) => {
 
@@ -19,16 +23,16 @@ export function useDocMetadataEditor() {
             body: (
                 <>
                     {docInfo && (
-                        <DocMetadataEditor docInfo={docInfo} onUpdate={docInfo => docInfoRef.current = docInfo}/>
+                        <DocMetadataEditor docInfo={docInfo} onUpdate={handleUpdate}/>
                     )}
                 </>
             ),
             type: 'none',
-            onAccept: () => onUpdate(docInfo!),
+            onAccept: () => onUpdate(docInfoRef.current!),
             acceptText: "Update",
             maxWidth: "lg"
         });
 
-    }, [dialogs])
+    }, [dialogs, handleUpdate])
 
 }
