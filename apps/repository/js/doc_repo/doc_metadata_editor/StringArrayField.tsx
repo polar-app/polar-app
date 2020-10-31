@@ -7,6 +7,8 @@ import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button";
 
 interface IProps extends IField {
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
     readonly values: ReadonlyArray<string> | undefined;
     readonly onUpdate: (docInfo: IDocInfo) => void;
@@ -38,7 +40,8 @@ export const StringArrayField = deepMemo((props: IProps) => {
     }, [handleUpdate, values]);
 
     return (
-        <div>
+        <div className={props.className}
+             style={props.style}>
 
             {values.map((current, idx) => (
                 <TextField key={idx}
@@ -52,7 +55,10 @@ export const StringArrayField = deepMemo((props: IProps) => {
            <div style={{textAlign: 'right'}}>
 
                <Button variant="contained"
-                       onClick={handleAddValue}>Add Value</Button>
+                       size="small"
+                       onClick={handleAddValue}>
+                   Add Value
+               </Button>
 
            </div>
 

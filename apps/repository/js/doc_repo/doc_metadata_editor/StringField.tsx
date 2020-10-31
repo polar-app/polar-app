@@ -6,6 +6,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import TextField from "@material-ui/core/TextField/TextField";
 
 interface IProps extends IField {
+    readonly className?: string;
+    readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
     readonly value: string | undefined;
     readonly onUpdate: (docInfo: IDocInfo) => void;
@@ -28,11 +30,12 @@ export const StringField = deepMemo((props: IProps) => {
     }, [props]);
 
     return (
-        <div>
-            <TextField required={! props.optional}
-                       label={props.name}
-                       defaultValue={props.value || ''}
-                       onChange={event => handleUpdate(event.target.value)}/>
-        </div>
+        <TextField className={props.className}
+                   style={props.style}
+                   required={! props.optional}
+                   label={props.label || props.name}
+                   defaultValue={props.value || ''}
+                   helperText={props.description}
+                   onChange={event => handleUpdate(event.target.value)}/>
     );
 });
