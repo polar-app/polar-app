@@ -6,6 +6,7 @@ import {deepMemo} from "../../web/js/react/ReactUtils";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import {HashRouter, Route, Switch, useHistory} from 'react-router-dom';
 
 interface IStory {
     readonly name: string;
@@ -19,7 +20,7 @@ interface IStoryWithID extends IStory {
 function createStoryIndex(stories: ReadonlyArray<IStory>) {
 
     function toStoryWithID(story: IStory): IStoryWithID {
-        const id = story.name.toLowerCase().replace(' ', '-');
+        const id = story.name.toLowerCase().replace(/ /g, '-');
         return {...story, id};
     }
 
@@ -36,14 +37,21 @@ const stories = createStoryIndex([
 
 const StoriesSidebar = deepMemo(() => {
 
+    const history = useHistory();
+
+    const handleClick = React.useCallback((story: IStoryWithID) => {
+        history.push('#id=' + story.id);
+    }, [history]);
+
     const toListItem = React.useCallback((story: IStoryWithID) => {
+
         return (
-            <ListItem button key={story.id}>
+            <ListItem button key={story.id} onClick={() => handleClick(story)}>
                 <ListItemText primary={story.name} />
             </ListItem>
         );
 
-    }, []);
+    }, [handleClick]);
 
     return (
         <List component="nav" aria-label="stories">
@@ -52,11 +60,33 @@ const StoriesSidebar = deepMemo(() => {
     );
 });
 
-const StoriesRouter = deepMemo(() => {
+interface StoryViewProps {
+    readonly story: IStoryWithID;
+}
+
+const StoryView = deepMemo((props: StoryViewProps) => {
+    return (
+        props.story.component
+    );
+});
+
+const StoryViewRoute = deepMemo(() => {
+
     return (
         <div>
-
+            this is a route
         </div>
+    );
+
+});
+
+const StoriesRouter = deepMemo(() => {
+    return (
+        <Switch>
+            <Route exact path="/id">
+                <StoryViewRoute/>
+            </Route>
+        </Switch>
     );
 });
 
@@ -64,34 +94,36 @@ export const App = () => {
     return (
         <MUIAppRoot>
 
-            <DockLayout2
-                dockPanels={[
-                    {
-                        id: "doc-panel-outline",
-                        type: 'fixed',
-                        side: 'left',
-                        style: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: 0,
-                            flexGrow: 1
+            <HashRouter>
+                <DockLayout2
+                    dockPanels={[
+                        {
+                            id: "doc-panel-outline",
+                            type: 'fixed',
+                            side: 'left',
+                            style: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                minHeight: 0,
+                                flexGrow: 1
+                            },
+                            component: (
+                                <StoriesSidebar/>
+                            ),
+                            width: 410,
                         },
-                        component: (
-                            <StoriesSidebar/>
-                        ),
-                        width: 410,
-                    },
-                    {
-                        id: "dock-panel-viewer",
-                        type: 'grow',
-                        style: {
-                            display: 'flex'
-                        },
-                        component: (
-                            <DocMetadataEditorStory/>
-                        )
-                    }
-                ]}/>
+                        {
+                            id: "dock-panel-viewer",
+                            type: 'grow',
+                            style: {
+                                display: 'flex'
+                            },
+                            component: (
+                                <StoriesRouter/>
+                            )
+                        }
+                    ]}/>
+            </HashRouter>
 
         </MUIAppRoot>
     );
