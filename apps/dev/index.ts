@@ -18,14 +18,6 @@ function showImage(thumbnail: ImageData) {
 
 }
 
-async function doPDFThumbnail() {
-
-    const thumbnail = await PDFThumbnailer.generate2('../../docs/example.pdf')
-    console.log(`FIXME: generated thumbnail of type: ${thumbnail.type}, width: ${thumbnail.width}, height: ${thumbnail.height}`);
-    showImage(thumbnail);
-
-}
-
 async function doImageThumbnail() {
 
     const response = await fetch('./example.jpg')

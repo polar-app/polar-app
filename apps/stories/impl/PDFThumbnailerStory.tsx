@@ -36,7 +36,7 @@ export const PDFThumbnailerStory = () => {
 
     const doAsync = React.useCallback(async () => {
         console.log("Generating thumbnail...")
-        const thumbnail = await PDFThumbnailer.generate2({
+        const thumbnail = await PDFThumbnailer.generate({
             pathOrURL: url,
             scaleBy: 'width',
             value: 98
