@@ -3,14 +3,17 @@ import {CheckedSVGIcon} from "../../../../web/js/ui/svg_icons/CheckedSVGIcon";
 import {SVGIcon} from "../../../../web/js/ui/svg_icons/SVGIcon";
 import {useHistory} from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import { useReviewerCallbacks } from './ReviewerStore';
 
 const ReviewLayout = (props: any) => {
 
     const history = useHistory();
+    const {onReset} = useReviewerCallbacks();
 
-    const onContinue = () => {
+    const onContinue = React.useCallback(() => {
+        onReset();
         history.replace({pathname: '/annotations', hash: ""});
-    }
+    }, [history, onReset]);
 
     return (
 

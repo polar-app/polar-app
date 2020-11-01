@@ -78,6 +78,8 @@ interface IReviewerCallbacks {
 
     readonly onFinished: () => void;
 
+    readonly onReset: () => void;
+
 }
 
 const initialStore: IReviewerStore = {
@@ -112,6 +114,22 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
     const dialogs = useDialogManager();
 
     return React.useMemo(() => {
+
+        function reset() {
+            setStore({
+                initialized: false,
+                taskRep: undefined,
+                pending: [],
+                finished: 0,
+                total: 0,
+                doFinished: ASYNC_NULL_FUNCTION,
+                doSuspended: ASYNC_NULL_FUNCTION,
+                doRating: ASYNC_NULL_FUNCTION,
+                ratings: [],
+                hasSuspended: undefined,
+                hasFinished: undefined,
+            })
+        }
 
         function init<A>(taskReps: ReadonlyArray<TaskRep<A>>,
                          doRating: RatingCallback<any>,
@@ -195,8 +213,16 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             console.log("ReviewerStore: onSuspended");
             const store = storeProvider();
             const {taskRep} = store;
+
             setStore({...store, hasSuspended: true});
-            handleAsyncCallback(async () => store.doSuspended(taskRep!));
+
+            if (! taskRep) {
+                // we suspended when we didn't have any tasks left.
+                return;
+            }
+
+            handleAsyncCallback(async () => store.doSuspended(taskRep));
+            reset();
         }
 
         function onFinished() {
@@ -206,8 +232,12 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             handleAsyncCallback(async () => storeProvider().doFinished());
         }
 
+        function onReset() {
+            reset();
+        }
+
         return {
-            init, next, onRating, onSuspended, onFinished
+            init, next, onRating, onSuspended, onFinished, onReset
         };
 
     }, [dialogs, setStore, storeProvider]);
