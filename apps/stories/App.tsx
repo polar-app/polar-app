@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {HashRouter, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
+import Box from '@material-ui/core/Box';
 
 interface IStory {
     readonly name: string;
@@ -117,7 +118,9 @@ const StoriesRouter = deepMemo(() => {
     return (
         <Switch>
             <Route path="/id">
-                <StoryViewRoute/>
+                <Box m={1}>
+                    <StoryViewRoute/>
+                </Box>
             </Route>
         </Switch>
     );
