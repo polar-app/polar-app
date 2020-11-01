@@ -13,6 +13,8 @@ const Thumbnail = (props: IThumbnail) => {
 
     const toDataURL = React.useCallback(() => {
 
+        console.log("FIXME: converting: " + props.type);
+
         switch(props.format) {
             case "arraybuffer":
                 return DataURLs.encode(props.data as ArrayBuffer, props.type);
