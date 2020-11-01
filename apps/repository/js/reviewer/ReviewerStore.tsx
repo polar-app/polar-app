@@ -74,7 +74,7 @@ interface IReviewerCallbacks {
 
     readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
 
-    readonly onSuspended: (taskRep: TaskRep<any>) => void;
+    readonly onSuspended: () => void;
 
     readonly onFinished: () => void;
 
@@ -184,15 +184,23 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
         }
 
         function onRating(taskRep: TaskRep<any>, rating: Rating) {
+            console.log("ReviewerStore: onRating: " + rating);
             handleAsyncCallback(async () => storeProvider().doRating(taskRep, rating));
             next(rating);
         }
 
-        function onSuspended(taskRep: TaskRep<any>) {
-            handleAsyncCallback(async () => storeProvider().doSuspended(taskRep));
+        function onSuspended() {
+            console.log("ReviewerStore: onSuspended");
+            const store = storeProvider();
+            const {taskRep} = store;
+            setStore({...store, hasSuspended: true});
+            handleAsyncCallback(async () => store.doSuspended(taskRep!));
         }
 
         function onFinished(cancelled?: boolean) {
+            console.log("ReviewerStore: onFinished");
+            const store = storeProvider();
+            setStore({...store, hasFinished: true});
             handleAsyncCallback(async () => storeProvider().doFinished(cancelled));
         }
 

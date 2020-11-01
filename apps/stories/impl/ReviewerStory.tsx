@@ -12,9 +12,8 @@ import {MockDocMetas} from "../../../web/js/metadata/DocMetas";
 import {Flashcards} from "../../../web/js/metadata/Flashcards";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {FlashcardTaskActions} from "../../repository/js/reviewer/cards/FlashcardTaskActions";
-import {Reviewer3} from "../../repository/js/reviewer/Reviewer3";
+import {Reviewer, ReviewerProvider} from "../../repository/js/reviewer/Reviewer";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
-import {ReviewerDialog} from "../../repository/js/reviewer/ReviewerDialog";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
@@ -99,8 +98,8 @@ const ReviewerStats = () => {
 
     return (
         <div>
-            <b>suspended:</b> {hasSuspended} <br/>
-            <b>finished:</b> {hasFinished} <br/>
+            <b>suspended:</b> {hasSuspended ? 'true' : 'false'} <br/>
+            <b>finished:</b> {hasFinished ? 'true' : 'false'} <br/>
             <b>ratings:</b> {ratings.join(', ')} <br/>
         </div>
     );
@@ -115,16 +114,25 @@ export const ReviewerStory = () => {
         console.log("onRating: ", {taskRep, rating});
     }, []);
 
-    const doSuspended = React.useCallback(async (taskRep) => {
+    const doSuspended = React.useCallback(async (taskRep: TaskRep<any>) => {
         console.log("onSuspended: ", {taskRep});
     }, []);
 
-    const doFinished = React.useCallback(async (cancelled) => {
-        console.log("onFinished: ", {cancelled});
+    const doFinished = React.useCallback(async () => {
+        console.log("onFinished: ");
         setOpen(false);
     }, []);
 
     console.log("Working with N tasks: ", taskReps.length);
+
+    const reviewerProvider: ReviewerProvider = async () => {
+        return {
+            taskReps,
+            doRating,
+            doSuspended,
+            doFinished
+        }
+    }
 
     return (
 
@@ -133,15 +141,7 @@ export const ReviewerStory = () => {
 
                 <>
                     {open && (
-                        <ReviewerDialog open={open}
-                                        onClose={() => setOpen(false)}>
-
-                            <Reviewer3 taskReps={taskReps}
-                                       doRating={doRating}
-                                       doSuspended={doSuspended}
-                                       doFinished={doFinished}/>
-
-                        </ReviewerDialog>)}
+                        <Reviewer reviewerProvider={reviewerProvider}/>)}
 
                     <Button variant="contained"
                             color="primary"

@@ -12,15 +12,9 @@ import {TasksCalculator} from "polar-spaced-repetition/src/spaced_repetition/sch
 import {FlashcardTaskActions} from "../../../apps/repository/js/reviewer/cards/FlashcardTaskActions";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {MockDocMetas} from "../../js/metadata/DocMetas";
-import {
-    FinishedCallback,
-    SuspendedCallback
-} from "../../../apps/repository/js/reviewer/Reviewer3";
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
-import {Reviewer3} from "../../../apps/repository/js/reviewer/Reviewer3";
-import {ReviewerDialog} from "../../../apps/repository/js/reviewer/ReviewerDialog";
-import {RatingCallback} from "../../../apps/repository/js/reviewer/ReviewerStore";
+import {RatingCallback, SuspendedCallback, FinishedCallback} from "../../../apps/repository/js/reviewer/ReviewerStore";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -112,15 +106,6 @@ export const ReviewerDemo = () => {
 
         <BrowserRouter key="browser-router">
             <Switch location={ReactRouters.createLocationWithPathAndHash()}>
-                <ReviewerDialog open={open}
-                                onClose={() => setOpen(false)}>
-
-                    <Reviewer3 taskReps={taskReps}
-                               doRating={doRating}
-                               doSuspended={doSuspended}
-                               doFinished={doFinished}/>
-
-                </ReviewerDialog>
             </Switch>
         </BrowserRouter>
 

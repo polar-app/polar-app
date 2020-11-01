@@ -1,24 +1,6 @@
-import React from 'react';
-import CircularProgress from "@material-ui/core/CircularProgress";
-import {useAsyncWithError} from "../../../apps/repository/js/reviewer/ReviewerScreen";
-
-export const Loading = () => (
-    <div style={{
-             width: '100%',
-             height: '100%',
-             display: 'flex',
-             overflow: 'hidden'
-         }}>
-
-        <CircularProgress style={{
-                               margin: 'auto',
-                               width: '75px',
-                               height: '75px',
-                          }}/>
-
-    </div>
-);
-
+import * as React from "react";
+import {MUILoading} from "./MUILoading";
+import {useAsyncWithError} from "../hooks/ReactLifecycleHooks";
 
 interface IProps<T> {
     readonly provider: () => Promise<T>;
@@ -34,5 +16,5 @@ export const MUIAsyncLoader = function<T>(props: IProps<T>) {
         return React.createElement(props.render, data);
     }
 
-    return <Loading/>;
+    return <MUILoading/>;
 };

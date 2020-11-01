@@ -1,6 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import {useEffect} from "react";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {AsyncOptions, useAsync} from 'react-async';
+import { NULL_FUNCTION } from "polar-shared/src/util/Functions";
 
 export function useComponentDidMount(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
@@ -19,3 +20,20 @@ export function useComponentWillUnmount(delegate: () => void) {
 
 }
 
+export function useAsyncWithError<T>(opts: AsyncOptions<T>) {
+
+    const dialogs = useDialogManager();
+    const {data, error} = useAsync(opts);
+
+    if (error) {
+        dialogs.confirm({
+            title: "An error occurred.",
+            subtitle: "We encountered an error: " + error.message,
+            type: 'error',
+            onAccept: NULL_FUNCTION,
+        })
+    }
+
+    return data;
+
+}

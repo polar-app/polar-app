@@ -1,11 +1,10 @@
 import * as React from "react";
-import {PDFThumbnailer} from "polar-pdf/src/pdf/PDFThumbnailer";
-import {Loading} from "../../../web/js/mui/MUIAsyncLoader";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {DataURLs} from "polar-shared/src/util/DataURLs";
 import Box from "@material-ui/core/Box";
 import {IThumbnail} from "polar-shared/src/util/Thumbnailer";
 import {EPUBThumbnailer} from "polar-epub/src/EPUBThumbnailer";
+import {MUILoading} from "../../../web/js/mui/MUILoading";
 
 const url = 'https://storage.googleapis.com/polar-32b0f.appspot.com/stash/12qGEt93LdQiyfC86gd3zNabtvZcb86spmbhkwuv.epub';
 
@@ -55,7 +54,7 @@ export const EPUBThumbnailerStory = () => {
     })
 
     if (! thumbnail) {
-        return <Loading/>;
+        return <MUILoading/>;
     }
 
     return (
