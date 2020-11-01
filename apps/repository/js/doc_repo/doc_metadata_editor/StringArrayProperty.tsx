@@ -22,7 +22,7 @@ export const StringArrayProperty = deepMemo((props: IProps) => {
 
     const handleUpdate = React.useCallback((values: ReadonlyArray<string>) => {
 
-        const newDocInfo = Dictionaries.copyOf(props.docInfo);
+        const newDocInfo: any = Dictionaries.deepCopy(props.docInfo);
         newDocInfo[props.name] = values.filter(current => current.trim() !== '');
 
         props.onUpdate(newDocInfo);

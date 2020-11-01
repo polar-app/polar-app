@@ -17,12 +17,18 @@ interface IProps extends DocInfoProperty {
 export const StringArrayAutocompleteProperty = deepMemo((props: IProps) => {
 
     const options = React.useMemo((): ReadonlyArray<ValueAutocompleteOption<string>> => {
-        return (props.values || []).map(current => ({
+
+        if (props.values === undefined || props.values === null) {
+            return [];
+        }
+
+        return (props.values).map(current => ({
             id: current,
             label: current,
             value: current
-        }))
-    }, [props.values]);
+        }));
+
+    }, [props]);
 
     const createOption = React.useCallback((label): ValueAutocompleteOption<string> => {
         return {
