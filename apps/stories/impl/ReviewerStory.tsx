@@ -14,7 +14,7 @@ import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations"
 import {FlashcardTaskActions} from "../../repository/js/reviewer/cards/FlashcardTaskActions";
 import {Reviewer3} from "../../repository/js/reviewer/Reviewer3";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
-import {ReviewerDialog2} from "../../repository/js/reviewer/ReviewerDialog2";
+import {ReviewerDialog} from "../../repository/js/reviewer/ReviewerDialog";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
@@ -133,15 +133,15 @@ export const ReviewerStory = () => {
 
                 <>
                     {open && (
-                        <ReviewerDialog2 open={open}
-                                     onClose={() => setOpen(false)}>
+                        <ReviewerDialog open={open}
+                                        onClose={() => setOpen(false)}>
 
                             <Reviewer3 taskReps={taskReps}
                                        doRating={doRating}
                                        doSuspended={doSuspended}
                                        doFinished={doFinished}/>
 
-                        </ReviewerDialog2>)}
+                        </ReviewerDialog>)}
 
                     <Button variant="contained"
                             color="primary"

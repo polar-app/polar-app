@@ -19,7 +19,7 @@ import {
 import {BrowserRouter, Switch} from "react-router-dom";
 import {ReactRouters} from "../../js/react/router/ReactRouters";
 import {Reviewer3} from "../../../apps/repository/js/reviewer/Reviewer3";
-import {ReviewerDialog2} from "../../../apps/repository/js/reviewer/ReviewerDialog2";
+import {ReviewerDialog} from "../../../apps/repository/js/reviewer/ReviewerDialog";
 import {RatingCallback} from "../../../apps/repository/js/reviewer/ReviewerStore";
 //
 // const createFlashcardTaskReps = async () => {
@@ -112,15 +112,15 @@ export const ReviewerDemo = () => {
 
         <BrowserRouter key="browser-router">
             <Switch location={ReactRouters.createLocationWithPathAndHash()}>
-                <ReviewerDialog2 open={open}
-                                 onClose={() => setOpen(false)}>
+                <ReviewerDialog open={open}
+                                onClose={() => setOpen(false)}>
 
                     <Reviewer3 taskReps={taskReps}
                                doRating={doRating}
                                doSuspended={doSuspended}
                                doFinished={doFinished}/>
 
-                </ReviewerDialog2>
+                </ReviewerDialog>
             </Switch>
         </BrowserRouter>
 

@@ -35,7 +35,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const ReviewerDialog2 = React.memo((props: IProps) => {
+export const ReviewerDialog = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -52,9 +52,6 @@ export const ReviewerDialog2 = React.memo((props: IProps) => {
                         <Typography variant="h6" className={classes.title}>
                             Review
                         </Typography>
-                        {/*<IconButton  onClick={props.onClose}>*/}
-                        {/*    <PauseIcon/>*/}
-                        {/*</IconButton>*/}
                         <IconButton edge="start"
                                     color="inherit"
                                     onClick={props.onClose}

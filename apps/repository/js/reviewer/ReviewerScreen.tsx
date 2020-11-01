@@ -7,7 +7,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useFirestore} from "../FirestoreProvider";
 import {MUIAsyncLoader} from "../../../../web/js/mui/MUIAsyncLoader";
-import {ReviewerDialog2} from "./ReviewerDialog2";
+import {ReviewerDialog} from "./ReviewerDialog";
 import isEqual from "react-fast-compare";
 import { useHistory } from 'react-router-dom';
 import { Reviewer3 } from './Reviewer3';
@@ -61,13 +61,13 @@ export const ReviewerScreen = React.memo((props: IProps) => {
     // store rather than prop drilling which is a pain.
 
     return (
-        <ReviewerDialog2 className="reviewer"
-                         open={open}
-                         onClose={handleClose}>
+        <ReviewerDialog className="reviewer"
+                        open={open}
+                        onClose={handleClose}>
 
             <MUIAsyncLoader provider={provider} render={Reviewer3} onReject={handleClose}/>
 
-        </ReviewerDialog2>
+        </ReviewerDialog>
     );
 
 }, isEqual);
