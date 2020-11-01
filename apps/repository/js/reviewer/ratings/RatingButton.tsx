@@ -15,7 +15,7 @@ interface IProps {
 
 }
 
-export const RatingButton2 = deepMemo((props: IProps) => {
+export const RatingButton = deepMemo((props: IProps) => {
 
     const {rating, taskRep, color} = props;
 
