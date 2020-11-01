@@ -11,6 +11,7 @@ import { Arrays } from 'polar-shared/src/util/Arrays';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 import Box from '@material-ui/core/Box';
 import {CKEditor5Story} from "./impl/CKEditor5Story";
+import {NotesStory} from "./impl/NotesStory";
 
 interface IStory {
     readonly name: string;
@@ -44,7 +45,12 @@ const stories = createStoryIndex([
     {
         name: "CKEditor5",
         component: <CKEditor5Story/>
+    },
+    {
+        name: "Notes",
+        component: <NotesStory/>
     }
+
 
 
 ]);
