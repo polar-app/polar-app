@@ -46,6 +46,7 @@ const stories = createStoryIndex([
 const StoriesSidebar = deepMemo(() => {
 
     const history = useHistory();
+    const id = useLocationID();
 
     const handleClick = React.useCallback((story: IStoryWithID) => {
         history.push('/id/' + story.id);
@@ -54,12 +55,15 @@ const StoriesSidebar = deepMemo(() => {
     const toListItem = React.useCallback((story: IStoryWithID) => {
 
         return (
-            <ListItem button key={story.id} onClick={() => handleClick(story)}>
+            <ListItem button
+                      key={story.id}
+                      selected={story.id === id}
+                      onClick={() => handleClick(story)}>
                 <ListItemText primary={story.name} />
             </ListItem>
         );
 
-    }, [handleClick]);
+    }, [handleClick, id]);
 
     return (
         <List component="nav" aria-label="stories">
@@ -78,21 +82,25 @@ const StoryView = deepMemo((props: StoryViewProps) => {
     );
 });
 
-const StoryViewRoute = deepMemo(() => {
+function useLocationID(): string | undefined {
 
     const location = useLocation();
 
     if (! location.pathname) {
-        console.warn("No pathname");
-        return null;
+        return undefined;
     }
 
     if (! location.pathname.startsWith('/id/')) {
-        console.warn("Not starting with id");
-        return null;
+        return undefined;
     }
 
-    const id = Arrays.last(location.pathname.split('/'));
+    return Arrays.last(location.pathname.split('/'));
+
+}
+
+const StoryViewRoute = deepMemo(() => {
+
+    const id = useLocationID();
 
     if (! id) {
         console.warn("No id");

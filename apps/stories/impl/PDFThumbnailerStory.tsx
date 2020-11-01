@@ -38,7 +38,7 @@ export const PDFThumbnailerStory = () => {
         const thumbnail = await PDFThumbnailer.generate2({
             pathOrURL: url,
             scaleBy: 'width',
-            value: 300
+            value: 98
         });
 
         setThumbnail(thumbnail);
