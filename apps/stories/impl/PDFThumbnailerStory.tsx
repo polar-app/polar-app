@@ -4,10 +4,11 @@ import {Loading} from "../../../web/js/mui/MUIAsyncLoader";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {DataURLs} from "polar-shared/src/util/DataURLs";
 import Box from "@material-ui/core/Box";
+import {IThumbnail} from "polar-shared/src/util/Thumbnailer";
 
 const url = 'https://storage.googleapis.com/polar-32b0f.appspot.com/stash/1PwtutApP6pbC1SszLuEzjBpU8V14EZDAnUfGmPN.pdf';
 
-const Thumbnail = (props: PDFThumbnailer.IThumbnail) => {
+const Thumbnail = (props: IThumbnail) => {
 
     const toDataURL = React.useCallback(() => {
 
@@ -31,7 +32,7 @@ const Thumbnail = (props: PDFThumbnailer.IThumbnail) => {
 
 export const PDFThumbnailerStory = () => {
 
-    const [thumbnail, setThumbnail] = React.useState<PDFThumbnailer.IThumbnail | undefined>();
+    const [thumbnail, setThumbnail] = React.useState<IThumbnail | undefined>();
 
     const doAsync = React.useCallback(async () => {
         console.log("Generating thumbnail...")

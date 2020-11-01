@@ -10,6 +10,7 @@ import {HashRouter, Route, Switch, useHistory, useLocation} from 'react-router-d
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 import Box from '@material-ui/core/Box';
+import {CKEditor5Story} from "./impl/CKEditor5Story";
 
 interface IStory {
     readonly name: string;
@@ -39,7 +40,12 @@ const stories = createStoryIndex([
     {
         name: "PDF Thumbnailer",
         component: <PDFThumbnailerStory/>
+    },
+    {
+        name: "CKEditor5",
+        component: <CKEditor5Story/>
     }
+
 
 ]);
 

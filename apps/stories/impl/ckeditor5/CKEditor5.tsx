@@ -1,14 +1,14 @@
 import CKEditor from "@ckeditor/ckeditor5-react";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import React from "react";
-import {deepMemo} from "../../web/js/react/ReactUtils";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 interface IProps {
     readonly content: string;
     readonly onChange: (content: string) => void;
 }
 
-export const Editor = deepMemo((props: IProps) => {
+export const CKEditor5 = deepMemo((props: IProps) => {
     return (
         <CKEditor
             editor={ BalloonEditor }
