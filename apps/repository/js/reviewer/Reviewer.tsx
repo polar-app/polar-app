@@ -3,8 +3,8 @@ import {useReviewerCallbacks} from './ReviewerStore';
 import {ReviewerRunner} from "./ReviewerRunner";
 import {ReviewerDialog} from "./ReviewerDialog";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {Reviewers2} from "./Reviewers2";
-import IReviewer = Reviewers2.IReviewer;
+import {Reviewers} from "./Reviewers";
+import IReviewer = Reviewers.IReviewer;
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 export type ReviewerProvider = () => Promise<IReviewer>;

@@ -29,7 +29,7 @@ const log = Logger.create();
 
 export const DEFAULT_LIMIT = 10;
 
-export namespace Reviewers2 {
+export namespace Reviewers {
 
     export interface IReviewer {
         readonly taskReps: ReadonlyArray<TaskRep<any>>;
