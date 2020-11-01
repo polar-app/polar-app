@@ -19,8 +19,9 @@ export const RatingButton2 = deepMemo((props: IProps) => {
 
     const {rating, taskRep, color} = props;
 
+    // TODO: this isn't returning the right time so we're not really getting exponential
+    // backoff
     const spacedRep = TasksCalculator.computeNextSpacedRep(taskRep, rating);
-
     const duration = TimeDurations.format(spacedRep.state.interval);
 
     return (
@@ -29,7 +30,7 @@ export const RatingButton2 = deepMemo((props: IProps) => {
                      size="large"
                      style={{flexGrow: 1}}
                      onClick={() => props.onRating(taskRep, rating)}>
-            {rating} - {duration}
+            {rating}
         </ColorButton>
     );
 
