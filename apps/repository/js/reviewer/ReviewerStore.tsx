@@ -14,7 +14,7 @@ import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
  *
  * @param cancelled true if the user explicitly cancelled the review.
  */
-export type FinishedCallback = (cancelled?: boolean) => Promise<void>;
+export type FinishedCallback = () => Promise<void>;
 
 export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => Promise<void>;
 
@@ -152,6 +152,8 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                     ratings: [...store.ratings, rating]
                 });
 
+                onFinished();
+
                 return true;
 
             }
@@ -197,11 +199,11 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             handleAsyncCallback(async () => store.doSuspended(taskRep!));
         }
 
-        function onFinished(cancelled?: boolean) {
+        function onFinished() {
             console.log("ReviewerStore: onFinished");
             const store = storeProvider();
             setStore({...store, hasFinished: true});
-            handleAsyncCallback(async () => storeProvider().doFinished(cancelled));
+            handleAsyncCallback(async () => storeProvider().doFinished());
         }
 
         return {
