@@ -132,7 +132,7 @@ const StoriesRouter = deepMemo(() => {
     return (
         <Switch>
             <Route path="/id">
-                <Box m={1}>
+                <Box m={1} style={{flexGrow: 1}}>
                     <StoryViewRoute/>
                 </Box>
             </Route>
