@@ -13,6 +13,7 @@ import Box from '@material-ui/core/Box';
 import {CKEditor5Story} from "./impl/CKEditor5Story";
 import {NotesStory} from "./impl/NotesStory";
 import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
+import {ReviewerStory} from "./impl/ReviewerStory";
 
 interface IStory {
     readonly name: string;
@@ -54,9 +55,11 @@ const stories = createStoryIndex([
     {
         name: "Notes",
         component: <NotesStory/>
+    },
+    {
+        name: "Reviewer",
+        component: <ReviewerStory/>
     }
-
-
 
 ]);
 
