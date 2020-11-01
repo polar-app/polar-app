@@ -17,6 +17,7 @@ import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import {ReviewerDialog2} from "../../repository/js/reviewer/ReviewerDialog2";
 import Button from '@material-ui/core/Button';
 import {HTMLStr} from "polar-shared/src/util/Strings";
+import {RatingCallback, useReviewerStore} from "../../repository/js/reviewer/ReviewerStore";
 //
 // const createFlashcardTaskReps = async () => {
 //
@@ -57,14 +58,14 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> 
     const tasks: ReadonlyArray<Task<FlashcardTaskAction>> = [
         {
             id: "10102",
-            action: createClozeAction('The capital of california is {{c1::Sacramento}}.'),
+            action: createClozeAction('The capital of California is {{c1::Sacramento}}.'),
             created: ISODateTimeStrings.create(),
             color: 'red',
             mode: 'flashcard'
         },
         {
             id: "10103",
-            action: createFrontAndBackAction('What is the capital of California? ', 'Sacramento'),
+            action: createFrontAndBackAction('What is the capital of the United States? ', 'Washington, DC'),
             created: ISODateTimeStrings.create(),
             color: 'red',
             mode: 'flashcard'
@@ -92,11 +93,25 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> 
 
 const taskReps = createFlashcardTaskReps();
 
+const ReviewerStats = () => {
+
+    const {ratings, hasSuspended, hasFinished} = useReviewerStore(['ratings', 'hasSuspended', 'hasFinished']);
+
+    return (
+        <div>
+            <b>suspended:</b> {hasSuspended} <br/>
+            <b>finished:</b> {hasFinished} <br/>
+            <b>ratings:</b> {ratings.join(', ')} <br/>
+        </div>
+    );
+
+}
+
 export const ReviewerStory = () => {
 
     const [open, setOpen] = React.useState(false);
 
-    const doRating = React.useCallback(async (taskRep, rating) => {
+    const doRating: RatingCallback<FlashcardTaskAction> = React.useCallback(async (taskRep, rating) => {
         console.log("onRating: ", {taskRep, rating});
     }, []);
 
@@ -134,6 +149,9 @@ export const ReviewerStory = () => {
                             onClick={() => setOpen(true)}>
                         Start Review
                     </Button>
+
+                    <ReviewerStats/>
+
                 </>
 
             </Switch>

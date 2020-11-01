@@ -5,8 +5,18 @@ import {
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TaskRep} from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
-import {Rating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {Rating, ReviewRating} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {ASYNC_NULL_FUNCTION} from "polar-shared/src/util/Functions";
+
+/**
+ * Called when we're finished all the tasks.
+ *
+ * @param cancelled true if the user explicitly cancelled the review.
+ */
+export type FinishedCallback = (cancelled?: boolean) => Promise<void>;
+
+export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => Promise<void>;
 
 /**
  * Called when we're finished all the tasks.
@@ -30,17 +40,43 @@ interface IReviewerStore {
 
     readonly total: number;
 
-    readonly doRating?: RatingCallback<any>;
+    readonly doRating: RatingCallback<any>;
+
+    readonly doSuspended: SuspendedCallback<any>;
+
+    readonly doFinished: FinishedCallback;
+
+    /**
+     * The history of ratings (mostly for debug)
+     */
+    readonly ratings: ReadonlyArray<ReviewRating>;
+
+    /**
+     * True if the user has finished.
+     */
+    readonly hasFinished: boolean | undefined;
+
+    /**
+     * True if the user has suspended.
+     */
+    readonly hasSuspended: boolean | undefined;
+
 }
 
 interface IReviewerCallbacks {
 
     readonly init: <A>(taskReps: ReadonlyArray<TaskRep<A>>,
-                       doRating: RatingCallback<any>) => void;
+                       doRating: RatingCallback<any>,
+                       doSuspended: SuspendedCallback<any>,
+                       doFinished: FinishedCallback) => void;
 
-    readonly next: () => boolean;
+    readonly next: (rating: Rating) => boolean;
 
     readonly onRating: (taskRep: TaskRep<any>, rating: Rating) => void;
+
+    readonly onSuspended: (taskRep: TaskRep<any>) => void;
+
+    readonly onFinished: () => void;
 
 }
 
@@ -49,7 +85,13 @@ const initialStore: IReviewerStore = {
     taskRep: undefined,
     pending: [],
     finished: 0,
-    total: 0
+    total: 0,
+    ratings: [],
+    hasSuspended: undefined,
+    hasFinished: undefined,
+    doFinished: ASYNC_NULL_FUNCTION,
+    doSuspended: ASYNC_NULL_FUNCTION,
+    doRating: ASYNC_NULL_FUNCTION
 }
 
 interface Mutator {
@@ -72,7 +114,9 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
     return React.useMemo(() => {
 
         function init<A>(taskReps: ReadonlyArray<TaskRep<A>>,
-                         doRating: RatingCallback<any>) {
+                         doRating: RatingCallback<any>,
+                         doSuspended: SuspendedCallback<any>,
+                         doFinished: FinishedCallback) {
 
             const pending = [...taskReps];
             const total = taskReps.length;
@@ -83,12 +127,17 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                 pending,
                 total,
                 finished: 0,
-                doRating
+                doRating,
+                doSuspended,
+                doFinished,
+                ratings: [],
+                hasFinished: undefined,
+                hasSuspended: undefined
             });
 
         }
 
-        function next(): boolean {
+        function next(rating: Rating): boolean {
 
             const store = storeProvider();
 
@@ -99,7 +148,8 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
 
                 setStore({
                     ...store,
-                    taskRep: undefined
+                    taskRep: undefined,
+                    ratings: [...store.ratings, rating]
                 });
 
                 return true;
@@ -114,7 +164,8 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
                 ...store,
                 pending,
                 taskRep,
-                finished
+                finished,
+                ratings: [...store.ratings, rating]
             });
 
             return false;
@@ -133,27 +184,20 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
         }
 
         function onRating(taskRep: TaskRep<any>, rating: Rating) {
-
-            const store = storeProvider();
-
-            async function doAsync() {
-
-                if (! store.doRating) {
-                    return;
-                }
-
-                await store.doRating(taskRep, rating);
-            }
-
-            handleAsyncCallback(doAsync);
-
-            next();
-
+            handleAsyncCallback(async () => storeProvider().doRating(taskRep, rating));
+            next(rating);
         }
 
+        function onSuspended(taskRep: TaskRep<any>) {
+            handleAsyncCallback(async () => storeProvider().doSuspended(taskRep));
+        }
+
+        function onFinished(cancelled?: boolean) {
+            handleAsyncCallback(async () => storeProvider().doFinished(cancelled));
+        }
 
         return {
-            init, next, onRating
+            init, next, onRating, onSuspended, onFinished
         };
 
     }, [dialogs, setStore, storeProvider]);
