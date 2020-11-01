@@ -38,7 +38,7 @@ export const EPUBThumbnailerStory = () => {
 
     const doAsync = React.useCallback(async () => {
         console.log("Generating thumbnail...")
-         await EPUBThumbnailer.generate({
+         const thumbnail = await EPUBThumbnailer.generate({
             pathOrURL: url,
             scaleBy: 'width',
             value: 300
@@ -46,7 +46,7 @@ export const EPUBThumbnailerStory = () => {
 
         setThumbnail(thumbnail);
 
-    }, []);
+    }, [thumbnail]);
 
     useComponentDidMount(() => {
         doAsync().catch(err => console.error(err));
