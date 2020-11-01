@@ -20,7 +20,8 @@ export const RatingButton2 = deepMemo((props: IProps) => {
     const {rating, taskRep, color} = props;
 
     // TODO: this isn't returning the right time so we're not really getting exponential
-    // backoff
+    // backoff.  To fix this just dump the taskRep as JSON and debug from there.  It
+    // must not be returning the right value due to the TaskRep data.
     const spacedRep = TasksCalculator.computeNextSpacedRep(taskRep, rating);
     const duration = TimeDurations.format(spacedRep.state.interval);
 

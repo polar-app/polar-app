@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     SubscriptionValue,
@@ -9,11 +10,11 @@ import {SnapshotSubscriber} from 'polar-shared/src/util/Snapshots';
 
 export function usePrefs(): SubscriptionValue<PersistentPrefs> {
 
-    const persistenceLayerContext = usePersistenceLayerContext();
+    const {persistenceLayerProvider} = usePersistenceLayerContext();
 
-    const createSubscription = (): SnapshotSubscriber<PersistentPrefs> => {
+    const createSubscription = React.useCallback((): SnapshotSubscriber<PersistentPrefs> => {
 
-        const persistenceLayer = persistenceLayerContext.persistenceLayerProvider();
+        const persistenceLayer = persistenceLayerProvider();
 
         if (!persistenceLayer) {
             console.warn("No persistence layer");
@@ -37,7 +38,7 @@ export function usePrefs(): SubscriptionValue<PersistentPrefs> {
         // component unmount
         return prefs.subscribe.bind(prefs);
 
-    }
+    }, [persistenceLayerProvider]);
 
     return useSnapshotSubscriber({id: 'prefs', subscribe: createSubscription()});
 
