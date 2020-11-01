@@ -9,7 +9,7 @@ import {
 import useTheme from "@material-ui/core/styles/useTheme";
 import { Platforms, Platform } from "polar-shared/src/util/Platforms";
 
-export function isInputCompleteEvent(type: InputType, event: KeyboardEvent) {
+export function isInputCompleteEvent(type: InputCompletionType, event: KeyboardEvent) {
 
     switch (type) {
 
@@ -33,7 +33,7 @@ interface InputCompleteListenerOpts {
      */
     readonly completable?: () => boolean;
 
-    readonly type: InputType;
+    readonly type: InputCompletionType;
 
 }
 
@@ -116,13 +116,13 @@ const InputCompleteSuggestion = () => {
     )
 };
 
-type InputType = 'enter' | 'meta+enter';
+export type InputCompletionType = 'enter' | 'meta+enter';
 
 interface IProps extends InputCompleteListenerOpts {
 
     readonly children: JSX.Element;
 
-    readonly type: InputType;
+    readonly type: InputCompletionType;
 
     readonly noHint?: boolean;
 

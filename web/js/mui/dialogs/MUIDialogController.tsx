@@ -25,6 +25,7 @@ import {
 } from "../../ui/dialogs/TaskbarDialog";
 import {Latch} from "polar-shared/src/util/Latch";
 import {SelectDialog, SelectDialogProps} from "../../ui/dialogs/SelectDialog";
+import {InputCompletionType} from "../complete_listeners/InputCompleteListener";
 
 export interface DialogManager {
     confirm: (props: ConfirmDialogProps) => void;
@@ -81,6 +82,8 @@ interface IDialogProps {
     readonly noCancel?: boolean
 
     readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
+
+    readonly inputCompletionType?: InputCompletionType;
 
 }
 

@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from "@material-ui/core/Box";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
+import {InputCompleteListener, InputCompletionType} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
 import {deepMemo} from "../../react/ReactUtils";
@@ -78,6 +78,8 @@ export interface ConfirmDialogProps {
 
     readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 
+    readonly inputCompletionType?: InputCompletionType;
+
 }
 
 export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
@@ -121,7 +123,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
             aria-describedby="alert-dialog-description">
 
             <WithDeactivatedKeyboardShortcuts>
-                <InputCompleteListener type='enter'
+                <InputCompleteListener type={props.inputCompletionType || 'enter'}
                                        noHint={true}
                                        onComplete={handleAccept}
                                        onCancel={handleCancel}>

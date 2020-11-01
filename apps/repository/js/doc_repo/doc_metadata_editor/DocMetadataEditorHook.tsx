@@ -30,7 +30,8 @@ export function useDocMetadataEditor() {
             type: 'none',
             onAccept: () => onUpdate(docInfoRef.current!),
             acceptText: "Update",
-            maxWidth: "lg"
+            maxWidth: "lg",
+            inputCompletionType: 'meta+enter'
         });
 
     }, [dialogs, handleUpdate])
