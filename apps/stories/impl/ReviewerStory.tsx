@@ -63,21 +63,21 @@ const createFlashcardTaskReps = (): ReadonlyArray<TaskRep<FlashcardTaskAction>> 
             mode: 'flashcard'
         },
         {
-            id: "10102",
+            id: "10103",
             action: createFrontAndBackAction('What is the capital of California? ', 'Sacramento'),
             created: ISODateTimeStrings.create(),
             color: 'red',
             mode: 'flashcard'
         },
         {
-            id: "10103",
+            id: "10104",
             action: createFrontAndBackAction('Who let the dogs out?', 'woof, woof, woof, woof.'),
             created: ISODateTimeStrings.create(),
             color: 'red',
             mode: 'flashcard'
         },
         {
-            id: "10103",
+            id: "10105",
             action: createFrontAndBackAction('Who is your daddy and what does he do?', "It's not a tumor!"),
             created: ISODateTimeStrings.create(),
             color: 'red',
@@ -108,6 +108,8 @@ export const ReviewerStory = () => {
         console.log("onFinished: ", {cancelled});
         setOpen(false);
     }, []);
+
+    console.log("Working with N tasks: ", taskReps.length);
 
     return (
 

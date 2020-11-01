@@ -13,7 +13,7 @@ const globalKeyMap = keyMapWithGroup({
         SHOW_ANSWER: {
             name: "Show Answer",
             description: "Show the answer (flip) of the current flashcard",
-            sequences: [' ']
+            sequences: [' ', 'Enter']
         },
 
     }

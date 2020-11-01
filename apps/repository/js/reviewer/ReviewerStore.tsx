@@ -17,6 +17,8 @@ export type RatingCallback<A> = (taskRep: TaskRep<A>, rating: Rating) => Promise
 
 interface IReviewerStore {
 
+    readonly initialized: boolean;
+
     /**
      * The current TaskRep we're working with or undefined when there are no more.
      */
@@ -43,6 +45,7 @@ interface IReviewerCallbacks {
 }
 
 const initialStore: IReviewerStore = {
+    initialized: false,
     taskRep: undefined,
     pending: [],
     finished: 0,
@@ -75,6 +78,7 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             const total = taskReps.length;
 
             setStore({
+                initialized: true,
                 taskRep: pending.shift(),
                 pending,
                 total,
@@ -103,6 +107,8 @@ function callbacksFactory(storeProvider: Provider<IReviewerStore>,
             }
 
             const finished = store.finished + 1;
+
+            console.log(`next: finished: ${finished}, nr pending: ${pending.length}`);
 
             setStore({
                 ...store,

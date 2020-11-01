@@ -7,7 +7,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {ReviewerCard} from "./cards/ReviewerCard";
 import {RatingCallback, useReviewerCallbacks, useReviewerStore} from './ReviewerStore';
-import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 /**
  * Called when we're finished all the tasks.
@@ -16,48 +16,11 @@ import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks
  */
 export type FinishedCallback = (cancelled?: boolean) => Promise<void>;
 
-
 export type SuspendedCallback<A> = (taskRep: TaskRep<A>) => Promise<void>;
 
-interface ReviewerRunnerProps<A> {
-
-    readonly doRating: RatingCallback<A>;
-
-    readonly doSuspended: SuspendedCallback<A>;
-
-    readonly doFinished: FinishedCallback;
-
-}
-
-export const ReviewerRunner = function<A>(props: ReviewerRunnerProps<A>) {
-
-    const dialogs = useDialogManager();
+export const ReviewerRunner = deepMemo(() => {
 
     const {taskRep, finished, total} = useReviewerStore(['taskRep', 'finished', 'total']);
-    const {next} = useReviewerCallbacks();
-
-    const handleAsyncCallback = (delegate: () => Promise<void>) => {
-
-        function handleError(err: Error) {
-            dialogs.snackbar({type: 'error', message: err.message});
-        }
-
-        delegate()
-            .catch(handleError)
-
-    }
-
-    const onRating = (taskRep: TaskRep<A>, rating: Rating) => {
-
-        async function doAsync() {
-            await props.doRating(taskRep, rating);
-        }
-
-        handleAsyncCallback(doAsync);
-
-        next();
-
-    }
 
     if (! taskRep) {
 
@@ -86,7 +49,7 @@ export const ReviewerRunner = function<A>(props: ReviewerRunnerProps<A>) {
 
     );
 
-};
+});
 
 
 export interface IProps<A> {
@@ -106,15 +69,35 @@ export interface IProps<A> {
 export const Reviewer3 = function<A>(props: IProps<A>) {
 
     const {init} = useReviewerCallbacks();
+    const dialogs = useDialogManager();
 
-    useComponentDidMount(() => {
-        init(props.taskReps, props.doRating);
-    });
+    const handleAsyncCallback = React.useCallback((delegate: () => Promise<void>) => {
+
+        function handleError(err: Error) {
+            dialogs.snackbar({type: 'error', message: err.message});
+        }
+
+        delegate()
+            .catch(handleError)
+
+    }, [dialogs]);
+
+    const onRating: RatingCallback<A> = React.useCallback(async (taskRep: TaskRep<A>, rating: Rating) => {
+
+        async function doAsync() {
+            await props.doRating(taskRep, rating);
+        }
+
+        handleAsyncCallback(doAsync);
+
+    }, [handleAsyncCallback, props]);
+
+    React.useEffect(() => {
+        init(props.taskReps, onRating);
+    }, [init, onRating, props.doRating, props.taskReps])
 
     return (
-        <ReviewerRunner doFinished={props.doFinished}
-                        doSuspended={props.doSuspended}
-                        doRating={props.doRating}/>
+        <ReviewerRunner/>
     );
 
 };
