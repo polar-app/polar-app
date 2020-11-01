@@ -120,7 +120,6 @@ export const ReviewerStory = () => {
 
     const doFinished = React.useCallback(async () => {
         console.log("onFinished: ");
-        setOpen(false);
     }, []);
 
     console.log("Working with N tasks: ", taskReps.length);
