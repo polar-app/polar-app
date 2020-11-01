@@ -1,3 +1,8 @@
+
+- cloze deletions no longer lock cards in the 'shown' position
+- enter can show the answer to a flashcard, not just space
+- rewrote a significant amount of the flashcard reviewer
+
 # 2.0.54
 
 - we support zest feedback recording now
