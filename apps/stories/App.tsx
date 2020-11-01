@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {HashRouter, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
+import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 
 interface IStory {
     readonly name: string;
@@ -33,7 +34,12 @@ const stories = createStoryIndex([
     {
         name: "Doc Metadata Editor",
         component: <DocMetadataEditorStory/>
+    },
+    {
+        name: "PDF Thumbnailer",
+        component: <PDFThumbnailerStory/>
     }
+
 ]);
 
 const StoriesSidebar = deepMemo(() => {
@@ -74,8 +80,6 @@ const StoryView = deepMemo((props: StoryViewProps) => {
 const StoryViewRoute = deepMemo(() => {
 
     const location = useLocation();
-
-    console.log("FIXME:", location);
 
     if (! location.pathname) {
         console.warn("No pathname");
