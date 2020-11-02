@@ -46,7 +46,6 @@ interface ProviderProps {
     readonly children: JSX.Element;
 }
 
-
 /**
  * The underlying value 'V' can be undefined in which case 'exists' will be false.
  *
@@ -70,7 +69,7 @@ export function createCachedSnapshotSubscriber<V>() {
      * This component gets the context, then starts listening to it and
      * unsubscribes on component unmount.
      */
-    const useSnapshot = React.useCallback(() => {
+    const useSnapshot = () => {
 
         const storeContext = React.useContext(context);
         const [value, setValue] = React.useState<ISnapshot<V> | undefined>(storeContext.current);
@@ -85,9 +84,10 @@ export function createCachedSnapshotSubscriber<V>() {
 
         return value;
 
-    }, [context]);
+    };
 
     const ProviderDelegate = (props: ProviderProps) => {
+
         const storeContext = React.useContext(context);
         const value = useCachedSnapshotSubscriber({id: props.key, subscriber: props.snapshotSubscriber})
         storeContext.current = value;

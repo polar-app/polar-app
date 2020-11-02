@@ -429,9 +429,15 @@ function useEPUBResizer() {
             return {width, height}
         }
 
-        function setWidth(element: HTMLElement, dimensions: IDimensions) {
-            element.style.width = `${dimensions.width}px`;
-            element.style.height = `${dimensions.height}px`;
+        function setWidth(element: HTMLElement | null | undefined, dimensions: IDimensions) {
+
+            if (element) {
+                element.style.width = `${dimensions.width}px`;
+                element.style.height = `${dimensions.height}px`;
+            } else {
+                console.warn("Can not set element style (no element)");
+            }
+
         }
 
         function adjustEpubView(dimensions: IDimensions) {
@@ -448,8 +454,10 @@ function useEPUBResizer() {
 
         function adjustIframeBody(dimensions: IDimensions) {
             const iframe = docViewer.querySelector(".epub-view iframe") as HTMLIFrameElement;
-            setWidth(iframe.contentDocument!.body, dimensions);
 
+            const body = iframe.contentDocument?.body
+
+            setWidth(body, dimensions);
 
             // this epub padding and I can't figure out where    this is being set.
             // iframe.contentDocument!.documentElement.style.padding = '0';
