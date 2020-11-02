@@ -9,7 +9,19 @@ Sentry.GCPFunction.init({
 export namespace SentryFunctions {
 
     export function wrapHttpFunction(delegate: HttpFunction) {
-        return Sentry.GCPFunction.wrapHttpFunction(delegate);
+
+        const wrappedFunction = Sentry.GCPFunction.wrapHttpFunction(delegate);
+
+        if (wrappedFunction === null) {
+            throw new Error("Wrapped sentry function was null");
+        }
+
+        if (wrappedFunction === undefined) {
+            throw new Error("Wrapped sentry function was undefined");
+        }
+
+        return wrappedFunction;
+
     }
 
     // export const wrapHttpFunction = Sentry.GCPFunction.wrapHttpFunction;
