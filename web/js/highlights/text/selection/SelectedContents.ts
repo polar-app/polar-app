@@ -63,7 +63,15 @@ export namespace SelectedContents {
                 return 0;
             }
 
-            return ranges[0].getBoundingClientRect().top;
+            // TODO this isn't perfect because if we are resizing the EPUB
+            // there's no way to determine the right position. I would need some
+            // way to find out where things would reflow and with CSS it's
+            // imprecise.
+
+            const scrollY = ranges[0].startContainer?.parentElement?.ownerDocument?.defaultView?.scrollY;
+
+            return ranges[0].getBoundingClientRect().top + (scrollY || 0);
+
         }
 
         const rectTexts = opts.noRectTexts === true ? [] : computeRectTexts();
