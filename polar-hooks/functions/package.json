@@ -51,6 +51,7 @@
     "polar-url": "^2.0.59",
     "polar-webapp-dist": "^2.0.59",
     "polar-webapp-links": "^2.0.59",
+    "polar-sentry-cloud-functions": "^2.0.59",
     "prerender-node": "^3.2.5",
     "prompts": "^2.3.2",
     "stripe": "=8.119.0",
