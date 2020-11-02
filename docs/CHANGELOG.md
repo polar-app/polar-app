@@ -1,6 +1,6 @@
 # 2.0.60
 
-- can edit metadata on documents directly now..
+- can edit metadata on documents directly now.
 - cloze deletions no longer lock cards in the 'shown' position
 - enter can show the answer to a flashcard, not just space
 - rewrote a significant amount of the flashcard reviewer
