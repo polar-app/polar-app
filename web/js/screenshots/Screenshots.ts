@@ -101,6 +101,7 @@ export namespace Screenshots {
         console.log("Capturing via canvas");
 
         function getPageElementForPage(pageNum: number) {
+            // FIXME: https://github.com/burtonator/polar-app-private/issues/345
             const pages = document.querySelectorAll(".page");
             return pages[pageNum - 1] as HTMLElement;
         }
@@ -109,6 +110,7 @@ export namespace Screenshots {
             // FIXME not portable to multi-tabs in Polar 2.0..
 
             const pageElement = getPageElementForPage(pageNum);
+            // FIXME: https://github.com/burtonator/polar-app-private/issues/345
             const canvas = pageElement.querySelector("canvas") as HTMLCanvasElement;
 
             if (! canvas) {
