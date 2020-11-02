@@ -14,6 +14,7 @@ import {CKEditor5Story} from "./impl/CKEditor5Story";
 import {NotesStory} from "./impl/NotesStory";
 import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
+import {DocCardStory} from "./impl/DocCardStory";
 
 interface IStory {
     readonly name: string;
@@ -59,6 +60,10 @@ const stories = createStoryIndex([
     {
         name: "Reviewer",
         component: <ReviewerStory/>
+    },
+    {
+        name: "Doc Cards",
+        component: <DocCardStory/>
     }
 
 ]);
