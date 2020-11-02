@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/serverless";
+import { HttpFunction } from "@google-cloud/functions-framework/build/src/functions";
 
 Sentry.GCPFunction.init({
     dsn: "https://9527bda147244447bd2d8b79a60f4854@o182611.ingest.sentry.io/5499705",
@@ -6,5 +7,11 @@ Sentry.GCPFunction.init({
 });
 
 export namespace SentryFunctions {
-    export const wrapHttpFunction = Sentry.GCPFunction.wrapHttpFunction;
+
+    export function wrapHttpFunction(delegate: HttpFunction) {
+        return Sentry.GCPFunction.wrapHttpFunction(delegate);
+    }
+
+    // export const wrapHttpFunction = Sentry.GCPFunction.wrapHttpFunction;
+
 }
