@@ -30,6 +30,7 @@ publish_private() {
 
     cd packages/polar-app-private
 
+    publish_pkg polar-sentry-cloud-functions
     publish_pkg polar-firebase-admin
     publish_pkg polar-webapp-dist
 
