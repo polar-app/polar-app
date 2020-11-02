@@ -7,7 +7,7 @@ export interface CachedSnapshotSubscriberOpts<T> {
     /**
      * The cache key used to cache this entry.
      */
-    readonly key: string;
+    readonly id: string;
 
     readonly subscriber: SnapshotSubscriber<T>;
 
@@ -22,9 +22,11 @@ export interface CachedSnapshotSubscriberOpts<T> {
  */
 export function useCachedSnapshotSubscriber<T>(opts: CachedSnapshotSubscriberOpts<T>) {
 
+    const cacheKey = React.useMemo(() => 'cache:' + opts.id, [opts.id]);
+
     const readCacheData = React.useCallback((): T | undefined => {
 
-        const value = localStorage.getItem(opts.key)
+        const value = localStorage.getItem(cacheKey)
 
         if (value === null) {
             return undefined;
@@ -32,18 +34,17 @@ export function useCachedSnapshotSubscriber<T>(opts: CachedSnapshotSubscriberOpt
 
         return JSON.parse(value);
 
-    }, [opts.key]);
+    }, [cacheKey]);
 
     const writeCacheData = React.useCallback((value: T | undefined) => {
 
         if (value === undefined) {
-            localStorage.removeItem(opts.key);
+            localStorage.removeItem(cacheKey);
         } else {
-            localStorage.setItem(opts.key, JSON.stringify(value))
+            localStorage.setItem(cacheKey, JSON.stringify(value))
         }
 
-    }, [opts.key]);
-
+    }, [cacheKey]);
 
     const initialValue = React.useMemo(readCacheData, [readCacheData]);
     const [value, setValue] = React.useState(initialValue);
