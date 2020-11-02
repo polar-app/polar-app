@@ -10,6 +10,7 @@ publish_public() {
     cd packages/polar-app-public
 
     publish_pkg polar-accounts
+    publish_pkg polar-backend-api
     publish_pkg polar-backend-shared
     publish_pkg polar-firebase
     publish_pkg polar-html
@@ -29,6 +30,7 @@ publish_private() {
 
     cd packages/polar-app-private
 
+    publish_pkg polar-sentry-cloud-functions
     publish_pkg polar-firebase-admin
     publish_pkg polar-webapp-dist
 
