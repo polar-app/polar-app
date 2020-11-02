@@ -1,4 +1,4 @@
-import {Elements} from '../util/Elements';
+import * as React from 'react';
 import {Rects} from '../Rects';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
@@ -10,7 +10,6 @@ export namespace ReadingProgressResume {
 
     export interface ResumeOpts {
         readonly docMeta: IDocMeta;
-        // readonly onPageJump: (pageNum: number) => void;
     }
 
     export function useReadingProgressResume(): [boolean, Callback] {
@@ -22,7 +21,7 @@ export namespace ReadingProgressResume {
 
         const active = targetPagemark !== undefined;
 
-        const handler = () => {
+        const handler = React.useCallback(() => {
 
             if (! docMeta) {
                 console.warn("Progress can not resume (no docMeta)");
@@ -41,130 +40,9 @@ export namespace ReadingProgressResume {
                 pos: 'bottom'
             });
 
-        }
+        }, [docMeta, jumpToAnnotationHandler, targetPagemark]);
 
         return [active, handler];
-
-    }
-
-    export function resume(opts: ResumeOpts): boolean {
-        // setTimeout(() => doResume(opts), 1);
-        return doResume(opts);
-    }
-
-    function doResume(opts: ResumeOpts): boolean {
-
-        const {docMeta} = opts;
-
-        const targetPagemark = computeTargetPagemark(docMeta);
-
-        if (! targetPagemark) {
-            return false;
-        }
-
-        scrollToPagemark(targetPagemark);
-
-        return true;
-
-    }
-
-    function scrollToPagemark(targetPagemark: IPagemarkRef, ) {
-
-        // TODO: this has to be rewritten as a hook so that we can jump to the
-        // page properly and that the toolbar has the right page.
-
-        // TODO: the 'next' button doesn't work when we jump to a page after load
-        // as I think the current page number isn't changed.
-
-
-        // TODO: this is wrong...
-        // TODO: i think I need to implement this with 'target' and then
-        // implement that in pagemarks too...  including the useWindowScroll and
-        // useWindowCallback...
-        const pages = document.querySelectorAll(".page");
-
-        const pageNum = targetPagemark.pageNum;
-
-        const pageElement = <HTMLElement> pages[pageNum - 1];
-
-        const scrollParent = getScrollParent(pageElement);
-
-        if (! pageElement) {
-            return;
-        }
-
-        const pageOffset = Elements.getRelativeOffsetRect(pageElement, scrollParent);
-
-        const pageTop = pageOffset.top;
-        const pageHeight = Math.floor(pageElement.clientHeight);
-
-        // now compute the height of the pagemark so that we scroll to that
-        // point.
-        const pagemarkHeight = computePagemarkHeight(targetPagemark, pageHeight);
-
-        // but adjust it a bit so that the bottom portion of the pagemark is
-        // visible by computing the height of the window and shifting it
-        const windowDelta = window.innerHeight * (0.2);
-
-        const newScrollTop = Math.floor(pageTop + pagemarkHeight - windowDelta);
-
-        scrollParent.scrollTop = newScrollTop;
-
-    }
-
-    function computePagemarkHeight(targetPagemark: IPagemarkRef,
-                                   pageHeight: number): number {
-
-            const pagemarkBottom
-                = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
-
-            const pagemarkBottomPerc = pagemarkBottom / 100;
-
-            return pageHeight * pagemarkBottomPerc;
-
-
-        // if (opts.fileType === 'pdf') {
-        //
-        //     const pagemarkBottom
-        //         = Math.floor(Rects.createFromBasicRect(targetPagemark.pagemark.rect).bottom);
-        //
-        //     const pagemarkBottomPerc = pagemarkBottom / 100;
-        //
-        //     return pageHeight * pagemarkBottomPerc;
-        //
-        // } else {
-        //
-        //     // TODO: should be sorted by time and not by position.
-        //     const pagemarkElements
-        //         = Array.from(pageElement.querySelectorAll(".pagemark"))
-        //                .sort((a, b) => a.getBoundingClientRect().bottom - b.getBoundingClientRect().bottom);
-        //
-        //     const pagemarkElement = Arrays.last(pagemarkElements);
-        //
-        //     if (pagemarkElement) {
-        //
-        //         // in HTML mode or PDFs with smaller
-        //
-        //         return pagemarkElement.clientHeight;
-        //
-        //     } else {
-        //         throw new Error("No pagemarkElement");
-        //     }
-        //
-        // }
-
-    }
-
-    function getScrollParent(element: HTMLElement) {
-
-        // FIXME not portable /compatible with react
-        return <HTMLElement> document.querySelector("#viewerContainer");
-
-        // if (fileType === 'pdf') {
-        //     return <HTMLElement> document.querySelector("#viewerContainer");
-        // }
-        //
-        // return  <HTMLElement> Elements.getScrollParent(element);
 
     }
 
