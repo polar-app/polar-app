@@ -62,7 +62,8 @@ function createApp(stripeMode: StripeMode) {
 }
 
 export function createStripeWebhookFunction(mode: StripeMode) {
-    return SentryFunctions.wrapHttpFunction(functions.https.onRequest(createApp(mode)));
+    // return SentryFunctions.wrapHttpFunction(functions.https.onRequest(createApp(mode)));
+    return functions.https.onRequest(createApp(mode));
 }
 
 export interface StripeEvent {
