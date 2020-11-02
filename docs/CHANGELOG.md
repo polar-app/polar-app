@@ -1,7 +1,10 @@
+# 2.0.60
 
+- can edit metadata on documents directly now..
 - cloze deletions no longer lock cards in the 'shown' position
 - enter can show the answer to a flashcard, not just space
 - rewrote a significant amount of the flashcard reviewer
+- some mild fixes to anki sync so that data that we're going to sync is copied properly.
 
 # 2.0.54
 
