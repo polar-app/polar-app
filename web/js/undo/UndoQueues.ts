@@ -51,6 +51,10 @@ export namespace UndoQueues {
 
     export type RedoResult = 'at-tail' | 'executed';
 
+    /**
+     * Create an UndoQueue. You should also immediately push a state to restore
+     * the first value.
+     */
     export function create(opts: ICreateOpts = {}): UndoQueue {
 
         const actions: UndoAction[] = [];
@@ -123,7 +127,7 @@ export namespace UndoQueues {
                 return 'at-tail';
             }
 
-            const action = actions[ptr];
+            const action = actions[ptr + 1];
             await action.exec();
             ptr = ptr + 1;
 

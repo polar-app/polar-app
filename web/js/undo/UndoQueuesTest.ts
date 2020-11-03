@@ -66,6 +66,40 @@ describe('UndoQueues', function() {
     });
 
 
+    it("undo first just the last action", async function() {
+        const undoQueue = UndoQueues.create();
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+
+        await undoQueue.undo();
+
+        assert.equal(store.value(), 101);
+
+    });
+
+    it("undo and redo", async function() {
+        const undoQueue = UndoQueues.create();
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+
+        assert.equal(undoQueue.pointer(), 0);
+
+        await undoQueue.undo();
+
+        assert.equal(store.value(), 101);
+
+        assert.equal(await undoQueue.redo(), 'executed');
+
+        assert.equal(store.value(), 102);
+
+    });
+
     it("basic", async function() {
 
         const undoQueue = UndoQueues.create();
