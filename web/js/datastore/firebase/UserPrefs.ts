@@ -11,7 +11,10 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+import {
+    createCachedFirestoreSnapshotSubscriber,
+} from "../../react/CachedSnapshotSubscriber";
+import {ISnapshot} from "../../../../apps/repository/js/persistence_layer/CachedSnapshot";
 
 export type UserPrefCallback = (data: UserPref | undefined) => void;
 
@@ -51,12 +54,19 @@ export class UserPrefs {
 
         const ref = firestore.collection(this.COLLECTION).doc(uid);
 
-        const handleSnapshot = (snapshot: DocumentSnapshot) => {
-            const data = <UserPref | undefined> snapshot.data();
-            onSnapshot(data);
+        const handleSnapshot = (snapshot: ISnapshot<UserPref> | undefined) => {
+            if (snapshot) {
+                const data = <UserPref | undefined> snapshot.value;
+                onSnapshot(data);
+            }
         };
 
-        return ref.onSnapshot(handleSnapshot, onError);
+        return createCachedFirestoreSnapshotSubscriber<UserPref>({
+            id: 'prefs',
+            ref,
+            onNext: handleSnapshot,
+            onError
+        });
 
     }
 
