@@ -45,11 +45,11 @@ export const PlanIntervalToggle = React.memo(() => {
                     <Typography color="secondary">One Month Free</Typography>
                 </ToggleButton>
 
-                {/*<ToggleButton className={classes.button} value="4year" aria-label="bold">*/}
-                {/*    <Typography>4 Years</Typography>*/}
-                {/*    &nbsp;&nbsp;*/}
-                {/*    <Typography color="secondary">Save Over 40%</Typography>*/}
-                {/*</ToggleButton>*/}
+                <ToggleButton className={classes.button} value="4year" aria-label="bold">
+                    <Typography>4 Years</Typography>
+                    &nbsp;&nbsp;
+                    <Typography color="secondary">Save Over 40%</Typography>
+                </ToggleButton>
 
                 {/*<ToggleButton value="4year" aria-label="bold">*/}
                 {/*  4 years <i>Save Over 40%!</i>*/}

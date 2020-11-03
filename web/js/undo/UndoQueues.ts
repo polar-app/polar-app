@@ -92,7 +92,7 @@ export namespace UndoQueues {
 
         async function undo(): Promise<UndoResult> {
 
-            if (ptr === 0) {
+            if (ptr <= 0) {
                 // we are at the head of the queue so nothing left to complete.
                 return 'at-head';
             }
