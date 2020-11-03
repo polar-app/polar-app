@@ -1,4 +1,12 @@
-export namespace Undo {
+/**
+ * Functionality for working with undo/redo
+ *
+ * Design inspired by:
+ *
+ * https://stackoverflow.com/questions/3541383/undo-redo-implementation
+ *
+ */
+export namespace UndoQueues {
 
     export type UndoFunction = () => Promise<void>;
 

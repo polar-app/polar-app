@@ -1,11 +1,11 @@
 import {assert} from 'chai';
-import {Undo} from "./Undo";
+import {UndoQueues} from "./UndoQueues";
 
-describe('Undo', function() {
+describe('UndoQueues', function() {
 
     it("basic", async function() {
 
-        const undo = Undo.create();
+        const undo = UndoQueues.create();
 
         let value = 100;
 
