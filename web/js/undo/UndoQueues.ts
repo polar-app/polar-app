@@ -39,6 +39,7 @@ export namespace UndoQueues {
     }
 
     export interface IPushResult {
+        readonly id: number;
         readonly removedFromHead: number;
         readonly removedFromTail: number;
     }
@@ -50,7 +51,11 @@ export namespace UndoQueues {
     export function create(opts: ICreateOpts = {}): UndoQueue {
 
         const actions: UndoAction[] = [];
-        let ptr: number = -1;
+
+        // the pointer we're working with into the queue. we have to start at -2
+        // (before he head of the queue) because we have to be one behind the
+        // beginning.
+        let ptr: number = -2;
         const limit = opts.limit || 25;
 
         let seq = 0;
@@ -71,33 +76,35 @@ export namespace UndoQueues {
                 pushResult.removedFromHead = 1;
             }
 
-            const end = actions.length - 1;
-
-            if (ptr < end) {
-                const count = end - ptr;
-                actions.splice(ptr, count);
+            if (actions.length > limit) {
+                const end = limit - 1;
+                const count = actions.length - end;
+                actions.splice(end, count);
                 pushResult.removedFromTail = count;
             }
 
+            const id = seq++;
+
             actions.push({
-                id: seq++,
+                id,
                 exec: undoFunction
             });
 
             ptr = ptr + 1;
 
-            return pushResult;
+            return {id, ...pushResult};
 
         }
 
         async function undo(): Promise<UndoResult> {
 
-            if (ptr <= 0) {
+            if (ptr < 0) {
                 // we are at the head of the queue so nothing left to complete.
                 return 'at-head';
             }
 
             const action = actions[ptr];
+            console.log("Applying action ID: " + action.id);
             await action.exec();
             ptr = ptr - 1;
 

@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {UndoQueues} from "./UndoQueues";
+import { assertJSON } from '../test/Assertions';
 
 describe('UndoQueues', function() {
 
@@ -23,19 +24,34 @@ describe('UndoQueues', function() {
 
         let value = 100;
 
-        await undoQueue.push(async () => {
-            value = 101
+        function createUndoFunction(val: number) {
+            return async () => {
+                console.log("undo function: set=" + val);
+                value = val;
+            }
+        }
+
+        assertJSON(await undoQueue.push(createUndoFunction(101)), {
+            "id": 0,
+            "removedFromHead": 0,
+            "removedFromTail": 0
         });
 
-        await undoQueue.push(async () => {
-            value = 102
+        assert.equal(undoQueue.size(), 1);
+
+        assertJSON(await undoQueue.push(createUndoFunction(102)), {
+            "id": 1,
+            "removedFromHead": 0,
+            "removedFromTail": 0
         });
+
+        assert.equal(undoQueue.size(), 2);
 
         assert.equal(value, 102);
 
-        assert.equal(undoQueue.pointer(), 1);
+        assert.equal(undoQueue.pointer(), 0);
 
-        await undoQueue.undo();
+        assert.equal(await undoQueue.undo(), 'executed')
 
         assert.equal(value, 101);
 
