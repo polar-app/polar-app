@@ -60,7 +60,7 @@ export namespace Accounts {
      * Callback for when we have new data for the account.
      */
     export async function onSnapshot(onNext: OnNextCallback<Account>,
-                                   onError: OnErrorCallback = ERR_HANDLER) {
+                                     onError: OnErrorCallback = ERR_HANDLER) {
 
         const ref = await createRef();
 
