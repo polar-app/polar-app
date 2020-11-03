@@ -47,6 +47,32 @@ describe('UndoQueues', function() {
         assert.equal(result, 'at-head');
     });
 
+    it("try to redo when the queue is empty", async function() {
+        const undoQueue = UndoQueues.create();
+        assert.equal(await undoQueue.redo(), 'at-tail');
+    });
+
+
+    it("try to undo when at the head of the queue. No action should be taken", async function() {
+        const undoQueue = UndoQueues.create({limit: 3});
+        assert.equal(undoQueue.limit, 3);
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+        await undoQueue.push(store.createUndoFunction(103))
+
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(await undoQueue.undo(), 'at-head');
+        assert.equal(await undoQueue.undo(), 'at-head');
+
+        assert.equal(store.value(), 101);
+
+    });
+
+
     it("test queue limits", async function() {
         const undoQueue = UndoQueues.create({limit: 3});
         assert.equal(undoQueue.limit, 3);
