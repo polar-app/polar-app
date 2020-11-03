@@ -1,8 +1,36 @@
 import {assert} from 'chai';
 import {UndoQueues} from "./UndoQueues";
 import { assertJSON } from '../test/Assertions';
+import UndoFunction = UndoQueues.UndoFunction;
 
 describe('UndoQueues', function() {
+
+
+    interface IStore {
+        readonly value: () => number;
+        readonly createUndoFunction: (val: number) => UndoFunction;
+    }
+
+    function createStore(): IStore {
+
+        let current = 100;
+
+        function createUndoFunction(val: number) {
+            return async () => {
+                console.log("undo function: set=" + val);
+                current = val;
+            }
+        }
+
+        function value() {
+            return current;
+        }
+
+        return {
+            value, createUndoFunction
+        };
+
+    }
 
     // TODO: thing to test
     //
@@ -11,12 +39,32 @@ describe('UndoQueues', function() {
     // - write 1 entry, try to undo it..
     // - write 2 entries, try to undo it
     // - write 2 entries, undo one, push a new value, make sure we can't redo now.
+    // - test hitting the limit of the undo queue
 
-    it("try to undo when at the head of the queue", async function() {
+    it("try to undo when the queue is empty", async function() {
         const undoQueue = UndoQueues.create();
         const result = await undoQueue.undo();
         assert.equal(result, 'at-head');
     });
+
+    it("test queue limits", async function() {
+        const undoQueue = UndoQueues.create({limit: 3});
+        assert.equal(undoQueue.limit, 3);
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+        await undoQueue.push(store.createUndoFunction(103))
+        await undoQueue.push(store.createUndoFunction(104))
+        await undoQueue.push(store.createUndoFunction(105))
+        await undoQueue.push(store.createUndoFunction(106))
+
+        assert.equal(store.value(), 106);
+        assert.equal(undoQueue.size(), 3);
+
+    });
+
 
     it("basic", async function() {
 

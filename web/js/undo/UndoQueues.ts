@@ -32,6 +32,9 @@ export namespace UndoQueues {
          */
         readonly pointer: () => number;
 
+
+        readonly limit: number;
+
     }
 
     export interface ICreateOpts {
@@ -76,7 +79,7 @@ export namespace UndoQueues {
                 pushResult.removedFromHead = 1;
             }
 
-            if (actions.length > limit) {
+            if (actions.length >= limit) {
                 const end = limit - 1;
                 const count = actions.length - end;
                 actions.splice(end, count);
@@ -136,7 +139,7 @@ export namespace UndoQueues {
             return ptr;
         }
 
-        return {push, undo, redo, size, pointer};
+        return {push, undo, redo, size, pointer, limit};
 
     }
 
