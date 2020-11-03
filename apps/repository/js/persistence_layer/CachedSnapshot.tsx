@@ -40,11 +40,19 @@ interface ICachedSnapshotContext<V> {
 
 }
 
-interface ProviderProps {
-    readonly key: string;
-    readonly snapshotSubscriber: SnapshotSubscriber<any>;
+interface ProviderProps<V> {
+    readonly id: string;
+    readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
     readonly children: JSX.Element;
 }
+
+export type CacheProviderComponent<V> = (props: ProviderProps<V>) => JSX.Element;
+export type UseSnapshotHook<V> = () => ISnapshot<V>;
+
+export type CachedSnapshotTuple<V> = [
+    CacheProviderComponent<V>,
+    UseSnapshotHook<V>
+];
 
 /**
  * The underlying value 'V' can be undefined in which case 'exists' will be false.
@@ -54,7 +62,7 @@ interface ProviderProps {
  *
  * However, we do not call render 'children' until we have the first snapshot.
  */
-export function createCachedSnapshotSubscriber<V>() {
+export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
 
     const subject = new Subject<ISnapshot<V>>();
 
@@ -69,7 +77,7 @@ export function createCachedSnapshotSubscriber<V>() {
      * This component gets the context, then starts listening to it and
      * unsubscribes on component unmount.
      */
-    const useSnapshot = () => {
+    const useSnapshot: UseSnapshotHook<V> = () => {
 
         const storeContext = React.useContext(context);
         const [value, setValue] = React.useState<ISnapshot<V> | undefined>(storeContext.current);
@@ -82,14 +90,16 @@ export function createCachedSnapshotSubscriber<V>() {
             }
         })
 
-        return value;
+        // the value can never be undefined as we're only returning once we have
+        // the first value
+        return value!;
 
     };
 
-    const ProviderDelegate = (props: ProviderProps) => {
+    const ProviderDelegate = (props: ProviderProps<V>) => {
 
         const storeContext = React.useContext(context);
-        const value = useCachedSnapshotSubscriber({id: props.key, subscriber: props.snapshotSubscriber})
+        const value = useCachedSnapshotSubscriber({id: props.id, subscriber: props.snapshotSubscriber})
         storeContext.current = value;
         storeContext.subject.next(value);
 
@@ -101,17 +111,19 @@ export function createCachedSnapshotSubscriber<V>() {
 
     }
 
-    const Provider = (props: ProviderProps) => {
+    const Provider = (props: ProviderProps<V>) => {
 
         return (
 
             <context.Provider value={initialContext}>
-                <ProviderDelegate key={props.key} snapshotSubscriber={props.snapshotSubscriber}>
+                <ProviderDelegate id={props.id}
+                                  snapshotSubscriber={props.snapshotSubscriber}>
                     {props.children}
                 </ProviderDelegate>
             </context.Provider>
 
-        )
+        );
+
     }
 
     return [Provider, useSnapshot];

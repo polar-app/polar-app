@@ -15,6 +15,7 @@ import {NotesStory} from "./impl/NotesStory";
 import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
 import {DocCardStory} from "./impl/DocCardStory";
+import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
 
 interface IStory {
     readonly name: string;
@@ -64,6 +65,10 @@ const stories = createStoryIndex([
     {
         name: "Doc Cards",
         component: <DocCardStory/>
+    },
+    {
+        name: "Cached Snapshot",
+        component: <CachedSnapshotStory/>
     }
 
 ]);
