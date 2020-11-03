@@ -5,7 +5,6 @@ import UndoFunction = UndoQueues.UndoFunction;
 
 describe('UndoQueues', function() {
 
-
     interface IStore {
         readonly value: () => number;
         readonly createUndoFunction: (val: number) => UndoFunction;
@@ -72,6 +71,25 @@ describe('UndoQueues', function() {
 
     });
 
+    it("try to unredodo when at the tail of the queue. No action should be taken", async function() {
+        const undoQueue = UndoQueues.create({limit: 3});
+        assert.equal(undoQueue.limit, 3);
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+        await undoQueue.push(store.createUndoFunction(103))
+
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(await undoQueue.redo(), 'at-tail');
+
+        assert.equal(store.value(), 103);
+
+    });
 
     it("test queue limits", async function() {
         const undoQueue = UndoQueues.create({limit: 3});
