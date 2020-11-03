@@ -73,18 +73,11 @@ export namespace UndoQueues {
 
             await undoFunction();
 
-            if (actions.length > limit) {
+            if (actions.length >= limit) {
                 // we have too many items so we have to prune one and move it down.
                 actions.shift();
-                ptr = ptr -1;
+                ptr = ptr - 1;
                 pushResult.removedFromHead = 1;
-            }
-
-            if (actions.length >= limit) {
-                const end = limit - 1;
-                const count = actions.length - end;
-                actions.splice(end, count);
-                pushResult.removedFromTail = count;
             }
 
             const id = seq++;

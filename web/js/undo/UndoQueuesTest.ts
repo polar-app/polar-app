@@ -31,15 +31,6 @@ describe('UndoQueues', function() {
 
     }
 
-    // TODO: thing to test
-    //
-    // - try to undo when at the head of the queue. No action should be taken
-    // - try to redo when at the tail of the queue. No action should be taken
-    // - write 1 entry, try to undo it..
-    // - write 2 entries, try to undo it
-    // - write 2 entries, undo one, push a new value, make sure we can't redo now.
-    // - test hitting the limit of the undo queue
-
     it("try to undo when the queue is empty", async function() {
         const undoQueue = UndoQueues.create();
         const result = await undoQueue.undo();
@@ -143,6 +134,24 @@ describe('UndoQueues', function() {
         assert.equal(store.value(), 102);
 
     });
+
+    it("undo and then push to more entries to the queue thereby clearing the head", async function() {
+        const undoQueue = UndoQueues.create();
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(store.value(), 101);
+
+        assert.equal(undoQueue.pointer(), 0);
+
+
+    });
+
+
 
     it("basic", async function() {
 
