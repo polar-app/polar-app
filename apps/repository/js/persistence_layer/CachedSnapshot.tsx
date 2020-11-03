@@ -86,8 +86,6 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
         const storeContext = React.useContext(context);
         const [value, setValue] = React.useState<ISnapshot<V> | undefined>(storeContext.current);
 
-        console.log("FIXME: in useSnapshot ", value );
-
         const subscriptionRef = React.useRef(storeContext.subject.subscribe(setValue));
 
         useComponentWillUnmount(() => {
@@ -107,31 +105,11 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
         readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
     }
 
-    const ProviderDelegate = React.memo((props: ProviderDelegateProps<V>) => {
-
-        const storeContext = React.useContext(context);
-        const value = useCachedSnapshotSubscriber({id: props.id, subscriber: props.snapshotSubscriber})
-        storeContext.current = value;
-        storeContext.subject.next(value);
-
-        // if (storeContext.current !== undefined) {
-        //     return props.children;
-        // } else {
-        //     return null;
-        // }
-        //
-
-        return null;
-
-    });
-
     const Provider = React.memo((props: ProviderProps<V>) => {
 
         const storeContext = React.useContext(context);
 
         const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
-
-            console.log("FIXME got a snapshot: ", snapshot);
 
             storeContext.current = snapshot;
             storeContext.subject.next(snapshot);
