@@ -59,10 +59,7 @@ export namespace UndoQueues {
 
         const actions: UndoAction[] = [];
 
-        // the pointer we're working with into the queue. we have to start at -2
-        // (before he head of the queue) because we have to be one behind the
-        // beginning.
-        let ptr: number = -2;
+        let ptr: number = -1;
         const limit = opts.limit || 25;
 
         let seq = 0;
@@ -110,7 +107,7 @@ export namespace UndoQueues {
                 return 'at-head';
             }
 
-            const action = actions[ptr];
+            const action = actions[ptr - 1];
             console.log("Applying action ID: " + action.id);
             await action.exec();
             ptr = ptr - 1;

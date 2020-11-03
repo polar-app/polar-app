@@ -88,7 +88,7 @@ describe('UndoQueues', function() {
         await undoQueue.push(store.createUndoFunction(101))
         await undoQueue.push(store.createUndoFunction(102))
 
-        assert.equal(undoQueue.pointer(), 0);
+        assert.equal(undoQueue.pointer(), 1);
 
         await undoQueue.undo();
 
@@ -131,7 +131,7 @@ describe('UndoQueues', function() {
 
         assert.equal(value, 102);
 
-        assert.equal(undoQueue.pointer(), 0);
+        assert.equal(undoQueue.pointer(), 1);
 
         assert.equal(await undoQueue.undo(), 'executed')
 
