@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 export interface CachedSnapshotSubscriberOpts<T> {
 
@@ -56,9 +56,9 @@ export function useCachedSnapshotSubscriber<T>(opts: CachedSnapshotSubscriberOpt
         setValue(value);
     }, [writeCacheData]);
 
-    React.useEffect(() => {
+    useComponentDidMount(() => {
         unsubscriberRef.current = opts.subscriber(onNext, () => setValue(undefined))
-    }, [onNext, opts]);
+    });
 
     useComponentWillUnmount(() => {
         if (unsubscriberRef.current) {
