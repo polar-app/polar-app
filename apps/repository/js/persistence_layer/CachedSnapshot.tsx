@@ -3,8 +3,7 @@ import {Subject} from "rxjs";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {
-    useCachedSnapshotSubscriber,
-    useCachedSnapshotSubscriber2
+    useCachedSnapshotSubscriber
 } from "../../../../web/js/react/CachedSnapshotSubscriber";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
@@ -100,11 +99,6 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
 
     };
 
-    interface ProviderDelegateProps<V> {
-        readonly id: string;
-        readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
-    }
-
     const Provider = React.memo((props: ProviderProps<V>) => {
 
         const storeContext = React.useContext(context);
@@ -116,7 +110,7 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
 
         }, [storeContext]);
 
-        useCachedSnapshotSubscriber2({
+        useCachedSnapshotSubscriber({
             id: props.id,
             subscriber: props.snapshotSubscriber,
             onNext,
