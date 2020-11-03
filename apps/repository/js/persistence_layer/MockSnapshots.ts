@@ -20,11 +20,13 @@ export function createMockSnapshotSubscriber(): SnapshotSubscriber<ISnapshot<num
             return unsubscriber;
         }
 
-        onNext({
-            value: iter,
-            exists: true,
-            source: 'server'
-        });
+        if (iter > 0) {
+            onNext({
+                value: iter,
+                exists: true,
+                source: 'server'
+            });
+        }
 
         ++iter;
 

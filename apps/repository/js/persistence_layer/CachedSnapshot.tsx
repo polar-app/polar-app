@@ -2,7 +2,11 @@ import * as React from 'react';
 import {Subject} from "rxjs";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
-import {useCachedSnapshotSubscriber} from "../../../../web/js/react/CachedSnapshotSubscriber";
+import {
+    useCachedSnapshotSubscriber,
+    useCachedSnapshotSubscriber2
+} from "../../../../web/js/react/CachedSnapshotSubscriber";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface ISnapshot<V> {
 
@@ -46,7 +50,7 @@ interface ProviderProps<V> {
     readonly children: JSX.Element;
 }
 
-export type CacheProviderComponent<V> = (props: ProviderProps<V>) => JSX.Element;
+export type CacheProviderComponent<V> = (props: ProviderProps<V>) => JSX.Element | null;
 export type UseSnapshotHook<V> = () => ISnapshot<V>;
 
 export type CachedSnapshotTuple<V> = [
@@ -82,6 +86,8 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
         const storeContext = React.useContext(context);
         const [value, setValue] = React.useState<ISnapshot<V> | undefined>(storeContext.current);
 
+        console.log("FIXME: in useSnapshot ", value );
+
         const subscriptionRef = React.useRef(storeContext.subject.subscribe(setValue));
 
         useComponentWillUnmount(() => {
@@ -96,35 +102,58 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
 
     };
 
-    const ProviderDelegate = (props: ProviderProps<V>) => {
+    interface ProviderDelegateProps<V> {
+        readonly id: string;
+        readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
+    }
+
+    const ProviderDelegate = React.memo((props: ProviderDelegateProps<V>) => {
 
         const storeContext = React.useContext(context);
         const value = useCachedSnapshotSubscriber({id: props.id, subscriber: props.snapshotSubscriber})
         storeContext.current = value;
         storeContext.subject.next(value);
 
-        if (storeContext.current !== undefined) {
-            return props.children;
-        } else {
-            return null;
-        }
+        // if (storeContext.current !== undefined) {
+        //     return props.children;
+        // } else {
+        //     return null;
+        // }
+        //
 
-    }
+        return null;
 
-    const Provider = (props: ProviderProps<V>) => {
+    });
+
+    const Provider = React.memo((props: ProviderProps<V>) => {
+
+        const storeContext = React.useContext(context);
+
+        const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
+
+            console.log("FIXME got a snapshot: ", snapshot);
+
+            storeContext.current = snapshot;
+            storeContext.subject.next(snapshot);
+
+        }, [storeContext]);
+
+        useCachedSnapshotSubscriber2({
+            id: props.id,
+            subscriber: props.snapshotSubscriber,
+            onNext,
+            onError: NULL_FUNCTION
+        });
 
         return (
 
             <context.Provider value={initialContext}>
-                <ProviderDelegate id={props.id}
-                                  snapshotSubscriber={props.snapshotSubscriber}>
-                    {props.children}
-                </ProviderDelegate>
+                {props.children}
             </context.Provider>
 
         );
 
-    }
+    });
 
     return [Provider, useSnapshot];
 
