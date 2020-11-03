@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {createMockSnapshotSubscriber} from "../../repository/js/persistence_layer/MockSnapshots";
 import {createCachedSnapshotSubscriber} from "../../repository/js/persistence_layer/CachedSnapshot";
+import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
 const [CacheStoryProvider, useCachedSnapshot] = createCachedSnapshotSubscriber()
@@ -22,9 +24,19 @@ const Inner = () => {
 export const CachedSnapshotStory = () => {
 
     const snapshotSubscriber = createMockSnapshotSubscriber();
+    const dialogs = useDialogManager();
+
+    const onError = () => {
+        dialogs.confirm({
+            type: 'error',
+            title: 'something bad',
+            subtitle: 'some bad stuff',
+            onAccept: NULL_FUNCTION
+        })
+    }
 
     return (
-        <CacheStoryProvider id='story' snapshotSubscriber={snapshotSubscriber}>
+        <CacheStoryProvider id='story' snapshotSubscriber={snapshotSubscriber} onError={onError}>
             <Inner/>
         </CacheStoryProvider>
     )

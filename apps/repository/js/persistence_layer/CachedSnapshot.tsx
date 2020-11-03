@@ -5,7 +5,6 @@ import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHo
 import {
     useCachedSnapshotSubscriber
 } from "../../../../web/js/react/CachedSnapshotSubscriber";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export interface ISnapshot<V> {
 
@@ -46,6 +45,7 @@ interface ICachedSnapshotContext<V> {
 interface ProviderProps<V> {
     readonly id: string;
     readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
+    readonly onError: (err: Error) => void;
     readonly children: JSX.Element;
 }
 
@@ -114,7 +114,7 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
             id: props.id,
             subscriber: props.snapshotSubscriber,
             onNext,
-            onError: NULL_FUNCTION
+            onError: props.onError
         });
 
         return (
