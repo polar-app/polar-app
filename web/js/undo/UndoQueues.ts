@@ -80,6 +80,13 @@ export namespace UndoQueues {
                 pushResult.removedFromHead = 1;
             }
 
+            if (ptr !== (actions.length - 1)) {
+                const end = ptr + 1;
+                const count = actions.length - end;
+                actions.splice(end, count);
+                pushResult.removedFromTail = count;
+            }
+
             const id = seq++;
 
             actions.push({

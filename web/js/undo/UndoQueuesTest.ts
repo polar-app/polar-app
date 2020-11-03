@@ -135,22 +135,6 @@ describe('UndoQueues', function() {
 
     });
 
-    it("undo and then push to more entries to the queue thereby clearing the head", async function() {
-        const undoQueue = UndoQueues.create();
-
-        const store = createStore();
-
-        await undoQueue.push(store.createUndoFunction(101))
-        await undoQueue.push(store.createUndoFunction(102))
-
-        assert.equal(await undoQueue.undo(), 'executed');
-        assert.equal(store.value(), 101);
-
-        assert.equal(undoQueue.pointer(), 0);
-
-
-    });
-
 
 
     it("basic", async function() {
@@ -192,4 +176,38 @@ describe('UndoQueues', function() {
 
     });
 
+
+    it("undo and then push to more entries to the queue thereby clearing the tail", async function() {
+        const undoQueue = UndoQueues.create();
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        await undoQueue.push(store.createUndoFunction(102))
+        assert.equal(undoQueue.size(), 2);
+
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(store.value(), 101);
+
+        assert.equal(undoQueue.pointer(), 0);
+
+        assertJSON(await undoQueue.push(store.createUndoFunction(103)), {
+            "id": 2,
+            "removedFromHead": 0,
+            "removedFromTail": 1
+        });
+
+        await undoQueue.push(store.createUndoFunction(104))
+        assert.equal(undoQueue.size(), 3);
+
+        assert.equal(store.value(), 104);
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(store.value(), 103);
+
+        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(store.value(), 101);
+
+    });
+
 });
+
