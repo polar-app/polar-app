@@ -8,7 +8,7 @@ export const StripeCancelSubscriptionFunction = ExpressFunctions.createHook((req
 
     // req.body should be a JSON body for stripe with the payment metadata.
 
-    const handleRequest = async () => {
+    const doAsync = async () => {
 
         console.log(JSON.stringify(req.body, null,  '  '));
 
@@ -24,7 +24,7 @@ export const StripeCancelSubscriptionFunction = ExpressFunctions.createHook((req
 
     };
 
-    handleRequest()
+    doAsync()
         .catch(err => next(err));
 
 })
