@@ -11,10 +11,8 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {
-    createCachedFirestoreSnapshotSubscriber,
-} from "../../react/CachedSnapshotSubscriber";
 import {ISnapshot} from "../../../../apps/repository/js/persistence_layer/CachedSnapshot";
+import {createCachedFirestoreSnapshotSubscriber} from "../../react/CachedFirestoreSnapshotSubscriber";
 
 export type UserPrefCallback = (data: UserPref | undefined) => void;
 
