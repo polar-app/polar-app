@@ -4,7 +4,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {StripeCreateSessions} from "./StripeCreateSessions";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeCreateSessionFunction = ExpressFunctions.createHook((req, res, next) => {
+export const StripeCreateSessionFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
     const stripeMode = <StripeMode> req.query.mode;
     const plan = <Billing.V2PlanLevel> req.query.plan;
@@ -16,16 +16,9 @@ export const StripeCreateSessionFunction = ExpressFunctions.createHook((req, res
     Preconditions.assertPresent(interval, 'interval');
     Preconditions.assertPresent(email, 'email');
 
-    async function doAsync() {
+    const session = await StripeCreateSessions.create({stripeMode, plan, interval, email});
 
-        const session = await StripeCreateSessions.create({stripeMode, plan, interval, email});
-
-        res.json({id: session.id});
-
-    }
-
-    doAsync()
-        .catch(err => next(err));
+    res.json({id: session.id});
 
 });
 

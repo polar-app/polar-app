@@ -9,33 +9,26 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 
 function createApp(stripeMode: StripeMode) {
 
-    return ExpressFunctions.createHook((req, res, next) => {
+    return ExpressFunctions.createHookAsync(async (req, res, next) => {
 
-        async function doAsync() {
+        const stripeEvent: StripeEvent = req.body;
 
-            const stripeEvent: StripeEvent = req.body;
+        const eventType = stripeEvent.type;
+        const customerID = stripeEvent.data.object.customer;
+        const planID = stripeEvent.data.object.plan.id;
+        const status = stripeEvent.data.object.status;
+        const subscriptionID = stripeEvent.data.object.id;
 
-            const eventType = stripeEvent.type;
-            const customerID = stripeEvent.data.object.customer;
-            const planID = stripeEvent.data.object.plan.id;
-            const status = stripeEvent.data.object.status;
-            const subscriptionID = stripeEvent.data.object.id;
+        await StripeWebhooks.handleEvent({
+            stripeMode,
+            eventType,
+            customerID,
+            planID,
+            status,
+            subscriptionID
+        });
 
-            await StripeWebhooks.handleEvent({
-                stripeMode,
-                eventType,
-                customerID,
-                planID,
-                status,
-                subscriptionID
-            });
-
-            res.sendStatus(200);
-
-        }
-
-        doAsync()
-            .catch(err => next(err));
+        res.sendStatus(200);
 
     });
 

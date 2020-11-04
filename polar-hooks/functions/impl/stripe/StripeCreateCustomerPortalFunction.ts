@@ -2,22 +2,16 @@ import { StripeMode } from './StripeUtils';
 import {StripeCreateCustomerPortalSessions} from "./StripeCreateCustomerPortalSessions";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeCreateCustomerPortalFunction = ExpressFunctions.createHook((req, res, next) => {
+export const StripeCreateCustomerPortalFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
-    async function doAsync() {
+    const body: StripeCreateCustomerPortalBody = req.body;
 
-        const body: StripeCreateCustomerPortalBody = req.body;
+    const session = await StripeCreateCustomerPortalSessions.create({
+        stripeMode: body.mode,
+        email: body.email
+    })
 
-        const session = await StripeCreateCustomerPortalSessions.create({
-            stripeMode: body.mode,
-            email: body.email
-        })
-
-        res.redirect(session.url);
-
-    }
-
-    doAsync().catch(err => next(err));
+    res.redirect(session.url);
 
 });
 

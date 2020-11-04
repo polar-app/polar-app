@@ -9,10 +9,35 @@ import { Rollbars } from './Rollbars';
 
 const rollbar = Rollbars.create();
 
+const errorHandler = rollbar.errorHandler();
+
 export class ExpressFunctions {
 
     public static createApp() {
         return express();
+    }
+
+    public static createHookAsync(delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>) {
+
+        const app = this.createApp();
+
+        app.use(bodyParser.json());
+        app.use(cors({ origin: true }));
+
+        app.use((req, res, next) => {
+
+            async function doAsync() {
+                await delegate(req, res, next);
+            }
+
+            doAsync().catch(err => {
+                errorHandler(err, req, res, next)
+            })
+
+        });
+
+        return functions.https.onRequest(app);
+
     }
 
     public static createHook(delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => void) {
@@ -22,11 +47,14 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors({ origin: true }));
 
-        app.use(delegate);
+        app.use((req, res, next) => {
 
-        // using with express:
-        // https://docs.rollbar.com/docs/nodejs
-        app.use(rollbar.errorHandler());
+            try {
+                delegate(req, res, next);
+            } catch (err) {
+                errorHandler(err, req, res, next)
+            }
+        });
 
         return functions.https.onRequest(app);
 

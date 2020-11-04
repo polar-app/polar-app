@@ -4,28 +4,19 @@ import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {StripeMode} from "./StripeUtils";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeCancelSubscriptionFunction = ExpressFunctions.createHook((req, res, next) => {
+export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync(async (req, res, next) => {
 
-    // req.body should be a JSON body for stripe with the payment metadata.
+    console.log(JSON.stringify(req.body, null,  '  '));
 
-    const doAsync = async () => {
+    const body: StripeCancelSubscriptionBody = req.body;
 
-        console.log(JSON.stringify(req.body, null,  '  '));
+    const account = await StripeCustomerAccounts.get(body.mode, body.email);
 
-        const body: StripeCancelSubscriptionBody = req.body;
+    await Accounts.validate(body.email, body.uid);
+    await StripeCustomers.cancelSubscription(body.mode, body.email);
+    await Accounts.changePlanViaEmail(body.email, account.customer.customerID, 'free', 'month');
 
-        const account = await StripeCustomerAccounts.get(body.mode, body.email);
-
-        await Accounts.validate(body.email, body.uid);
-        await StripeCustomers.cancelSubscription(body.mode, body.email);
-        await Accounts.changePlanViaEmail(body.email, account.customer.customerID, 'free', 'month');
-
-        res.sendStatus(200);
-
-    };
-
-    doAsync()
-        .catch(err => next(err));
+    res.sendStatus(200);
 
 })
 

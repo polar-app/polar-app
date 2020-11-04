@@ -3,24 +3,15 @@ import { StripeMode } from './StripeUtils';
 import {StripeChangePlans} from "./StripeChangePlans";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeChangePlanFunction = ExpressFunctions.createHook((req, res, next) => {
+export const StripeChangePlanFunction = ExpressFunctions.createHookAsync(async (req, res, next) => {
 
-    // TODO: I think we need to validate the logged in user here.
+    console.log(JSON.stringify(req.body, null, '  '));
 
-    async function doAsync() {
+    const body: StripeChangePlanBody = req.body;
 
-        console.log(JSON.stringify(req.body, null, '  '));
+    await StripeChangePlans.changePlans({...body, stripeMode: body.mode});
 
-        const body: StripeChangePlanBody = req.body;
-
-        await StripeChangePlans.changePlans({...body, stripeMode: body.mode});
-
-        res.sendStatus(200);
-
-    }
-
-    doAsync()
-        .catch(err => next(err));
+    res.sendStatus(200);
 
 });
 
