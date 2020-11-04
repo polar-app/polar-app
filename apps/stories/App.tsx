@@ -16,6 +16,7 @@ import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
 import {DocCardStory} from "./impl/DocCardStory";
 import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
+import {SideNavStory} from "./impl/SideNavStory";
 
 interface IStory {
     readonly name: string;
@@ -69,6 +70,10 @@ const stories = createStoryIndex([
     {
         name: "Cached Snapshot",
         component: <CachedSnapshotStory/>
+    },
+    {
+        name: "Side Nav",
+        component: <SideNavStory/>
     }
 
 ]);
@@ -156,7 +161,11 @@ const StoriesRouter = deepMemo(() => {
     return (
         <Switch>
             <Route path="/id">
-                <Box m={1} style={{flexGrow: 1}}>
+                <Box m={1}
+                     style={{
+                         flexGrow: 1,
+                         display: 'flex'
+                     }}>
                     <StoryViewRoute/>
                 </Box>
             </Route>
