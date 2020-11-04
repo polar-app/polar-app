@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {SideNav} from "../../../web/js/sidenav/SideNav";
-import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
+import {SideNavStoreProvider, useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 import Button from '@material-ui/core/Button';
 
-export const SideNavStory = () => {
+export const Main = () => {
 
     const {addTab} = useSideNavCallbacks();
 
@@ -34,9 +34,18 @@ export const SideNavStory = () => {
 
             </div>
         </div>
-    )
+    );
 }
 
+
+export const SideNavStory = () => {
+
+    return (
+        <SideNavStoreProvider>
+            <Main/>
+        </SideNavStoreProvider>
+    );
+}
 
 
 
