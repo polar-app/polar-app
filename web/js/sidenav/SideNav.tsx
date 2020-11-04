@@ -1,7 +1,7 @@
 import * as React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import { useSideNavStore, TabDescriptor } from './SideNavStore';
+import { useSideNavStore, TabDescriptor, useSideNavCallbacks } from './SideNavStore';
 import clsx from 'clsx';
 import Tooltip from '@material-ui/core/Tooltip';
 import Card from '@material-ui/core/Card/Card';
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) =>
     const classes = useStyles();
 
     const {tabs, activeTab} = useSideNavStore(['tabs', 'activeTab']);
+    const {setActiveTab} = useSideNavCallbacks();
 
     const toNavButton = React.useCallback((tab: TabDescriptor) => {
 
@@ -94,13 +95,14 @@ const useStyles = makeStyles((theme) =>
                      title={<Title/>}>
 
                 <div key={`${tab.id}`}
+                     onClick={() => setActiveTab(tab.id)}
                      className={clsx(classes.button, active && classes.activeButton)}>
                     {tab.icon}
                 </div>
             </Tooltip>
         );
 
-    }, [activeTab, classes.activeButton, classes.button, classes.root]);
+    }, [activeTab, classes.activeButton, classes.button, setActiveTab]);
 
     return (
         <div className={classes.root}>
