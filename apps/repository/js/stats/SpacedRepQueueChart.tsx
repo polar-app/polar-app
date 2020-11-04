@@ -4,13 +4,14 @@ import {ResponsiveLine, Serie, Datum} from '@nivo/line';
 import {SpacedRepStat, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {RepetitionMode, StageCountsCalculator} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
+import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {ReviewerStatistics} from "../reviewer/ReviewerStatistics";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {StatBox} from "./StatBox";
 import {LoadingProgress} from "../../../../web/js/ui/LoadingProgress";
 import { minDatapointsReducer, sumDatapointsReducer } from './StatisticsReducers';
 import {useNivoTheme} from "./NivoHooks";
+import useTheme from '@material-ui/core/styles/useTheme';
 
 const HEIGHT = '300px';
 
@@ -24,6 +25,7 @@ interface ChartProps {
 const Chart = React.memo((props: ChartProps) => {
 
     const nivoTheme = useNivoTheme();
+    const theme = useTheme();
 
     const createTitle = () => {
         switch (props.type) {
@@ -81,6 +83,29 @@ const Chart = React.memo((props: ChartProps) => {
                         // enablePointLabel={true}
                         animate={true}
                         theme={nivoTheme}
+                        legends={[{
+                            anchor: 'bottom',
+                            direction: 'row',
+                            justify: false,
+                            translateX: 0,
+                            translateY: 50,
+                            itemWidth: 100,
+                            itemHeight: 20,
+                            itemsSpacing: 4,
+                            symbolSize: 20,
+                            symbolShape: 'circle',
+                            itemDirection: 'left-to-right',
+                            itemTextColor: theme.palette.text.secondary,
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        // itemBackground: 'rgba(0, 0, 0, .03)',
+                                        itemOpacity: 1
+                                    }
+                                }
+                            ]
+                        }]}
                     />
                 </div>
             </>
