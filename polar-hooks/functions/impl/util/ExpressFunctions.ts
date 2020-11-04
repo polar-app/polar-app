@@ -9,8 +9,6 @@ import { Rollbars } from './Rollbars';
 
 const rollbar = Rollbars.create();
 
-const errorHandler = rollbar.errorHandler();
-
 export class ExpressFunctions {
 
     public static createApp() {
@@ -31,7 +29,7 @@ export class ExpressFunctions {
             }
 
             doAsync().catch(err => {
-                errorHandler(err, req, res, next)
+                this.handleError(req, res, err);
             })
 
         });
@@ -52,11 +50,29 @@ export class ExpressFunctions {
             try {
                 delegate(req, res, next);
             } catch (err) {
-                errorHandler(err, req, res, next)
+                this.handleError(req, res, err);
             }
         });
 
         return functions.https.onRequest(app);
+
+    }
+
+    private static handleError(req: express.Request, res: express.Response, err: Error) {
+
+        function createMessage() {
+            if (req.body) {
+                return `Could not handle HTTP ${req.method} request at: ${req.url}` + JSON.stringify(req.body, null, "  ");
+            } else {
+                return `Could not handle HTTP ${req.method} request at: ${req.url}`;
+            }
+        }
+
+        const msg = createMessage();
+
+        rollbar.log(msg, err);
+
+        // errorHandler(err, req, res, next)
 
     }
 
