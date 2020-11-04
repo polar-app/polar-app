@@ -1,18 +1,10 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import * as functions from 'firebase-functions';
 import {Billing} from 'polar-accounts/src/Billing';
 import {StripeMode} from "./StripeUtils";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {StripeCreateSessions} from "./StripeCreateSessions";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = ExpressFunctions.createApp();
-
-app.use(bodyParser.json());
-app.use(cors({ origin: true }));
-
-app.use((req, res) => {
+export const StripeCreateSessionFunction = ExpressFunctions.createHook((req, res, next) => {
 
     const stripeMode = <StripeMode> req.query.mode;
     const plan = <Billing.V2PlanLevel> req.query.plan;
@@ -26,25 +18,16 @@ app.use((req, res) => {
 
     async function doAsync() {
 
-        try {
+        const session = await StripeCreateSessions.create({stripeMode, plan, interval, email});
 
-            const session = await StripeCreateSessions.create({stripeMode, plan, interval, email});
-
-            res.json({id: session.id});
-
-        } catch (err) {
-            console.error(`Could not properly handle webhook: `, err);
-            res.sendStatus(500);
-        }
+        res.json({id: session.id});
 
     }
 
     doAsync()
-        .catch(err => console.log(err));
+        .catch(err => next(err));
 
 });
-
-export const StripeCreateSessionFunction = functions.https.onRequest(app);
 
 export interface StripeChangePlanBody {
     readonly uid: string;
