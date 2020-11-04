@@ -10,18 +10,7 @@ import { Rollbars } from './Rollbars';
 export class ExpressFunctions {
 
     public static createApp() {
-
-        // using with express:
-        //
-        // https://docs.rollbar.com/docs/nodejs
-
-        const rollbar = Rollbars.create();
-
-        const app = express();
-
-        app.use(rollbar.errorHandler());
-        return app;
-
+        return express();
     }
 
     public static createHook(delegate: (req: express.Request, res: express.Response) => void) {
@@ -32,6 +21,11 @@ export class ExpressFunctions {
         app.use(cors({ origin: true }));
 
         app.use(delegate);
+
+        // using with express:
+        // https://docs.rollbar.com/docs/nodejs
+        const rollbar = Rollbars.create();
+        app.use(rollbar.errorHandler());
 
         return functions.https.onRequest(app);
 

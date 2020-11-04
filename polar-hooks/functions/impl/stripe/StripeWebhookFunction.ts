@@ -1,6 +1,3 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import * as functions from 'firebase-functions';
 import {StripeMode} from "./StripeUtils";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {StripeWebhooks} from "./StripeWebhooks";
@@ -12,12 +9,7 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 
 function createApp(stripeMode: StripeMode) {
 
-    const app = ExpressFunctions.createApp();
-
-    app.use(bodyParser.json());
-    app.use(cors({ origin: true }));
-
-    app.use((req, res) => {
+    return ExpressFunctions.createHook((req, res) => {
 
         const handleRequest = async () => {
 
@@ -56,12 +48,10 @@ function createApp(stripeMode: StripeMode) {
 
     });
 
-    return app;
-
 }
 
 export function createStripeWebhookFunction(mode: StripeMode) {
-    return functions.https.onRequest(createApp(mode));
+    return createApp(mode);
 }
 
 export interface StripeEvent {
