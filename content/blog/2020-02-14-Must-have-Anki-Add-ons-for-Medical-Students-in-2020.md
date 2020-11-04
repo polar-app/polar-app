@@ -11,14 +11,14 @@ editorsChoice: true
 
 We all know med school is tough and the amount of information required to memorize is tremendous. So obviously the question begs why not make it easy on yourself and use some powerful tools?
 
-Anki is an open source flashcard software. If you’re here, you likely know how popular it is among med school students. Since it’s open source, anyone can build on top of it. So we decided to compile a list of most popular add-ons we heard from [our users](https://getpolarized.io/)!
+Anki is an open source flashcard software. If you’re here, you likely know how popular it is among med school students. Since it’s open source, anyone can build on top of it. So we decided to compile a list of most popular add-ons we heard from <a href="https://getpolarized.io/">our users</a>!
   
 
 <img class="img-fluid border" src="https://lh5.googleusercontent.com/knT-rTG6qdw8OlKZUIijJm2_r2d6-tB3_Dop0AouIW9WUmaFCvsSAxL-b1uqpjxppt1ubnVVqwjobPGfU2qaGZpho1w8YEESLBd2OS_c6AXinYz-YBdO97q9nxR--KXLrOec4sq_">
 
   
 
-You can find the free add-ons on the [Anki website](https://ankiweb.net/shared/addons/2.1) to improve your Anki experience.
+You can find the free add-ons on the <a href="https://ankiweb.net/shared/addons/2.1">Anki website</a> to improve your Anki experience.
 
 There are hundreds of add-ons by other Anki users. With every Anki update, more functionality is added, especially through support of more add-ons.
 
@@ -46,7 +46,7 @@ These add-ons will bring some fun to your learning habits.
 
   
 
-### [Pokemanki](https://ankiweb.net/shared/info/633922407)
+### <a href="https://ankiweb.net/shared/info/633922407">Pokemanki</a>
 
   
 
@@ -74,7 +74,7 @@ Anki code: 633922407
 
   
 
-### [Kitten Rewards](https://ankiweb.net/shared/info/1627107763)
+### <a href="https://ankiweb.net/shared/info/1627107763">Kitten Rewards</a>
 
   
 
