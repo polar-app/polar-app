@@ -9,6 +9,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
+import Divider from '@material-ui/core/Divider';
+import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -26,20 +28,30 @@ const useStyles = makeStyles((theme) =>
             borderLeftColor: 'transparent',
             marginBottom: '5px',
             paddingLeft: '3px',
+            cursor: 'pointer',
 
             "& img": {
                 width: '92px',
                 borderRadius: '5px',
             },
             '&:hover': {
-                borderLeftColor: theme.palette.primary.light
+                borderLeftColor: theme.palette.secondary.main
             },
 
         },
         activeButton: {
-            borderLeftColor: theme.palette.primary.main
+            borderLeftColor: theme.palette.secondary.main
         },
-
+        logo: {
+            display: 'flex',
+            "& *": {
+                marginLeft: 'auto',
+                marginRight: 'auto',
+            },
+        },
+        divider: {
+            marginBottom: '5px',
+        }
     }),
 );
 
@@ -114,6 +126,15 @@ const useStyles = makeStyles((theme) =>
 
     return (
         <div className={classes.root}>
+
+            <div className={classes.logo}>
+                <PolarSVGIcon width={85} height={85}/>
+            </div>
+
+            <div className={classes.divider}>
+                <Divider/>
+            </div>
+
             {tabs.map(toNavButton)}
         </div>
     );
