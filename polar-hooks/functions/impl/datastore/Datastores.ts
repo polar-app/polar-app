@@ -8,6 +8,7 @@ import {IDUser} from '../util/IDUsers';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {GroupIDStr} from '../groups/db/Groups';
 import {Arrays, ToArrayLike} from "polar-shared/src/util/Arrays";
+import IFirebaseConfig = FirebaseConfig.IFirebaseConfig;
 
 /**
  * Code for working with datastores.
@@ -73,6 +74,6 @@ export class Datastores {
 }
 
 export interface StorageConfig {
-    readonly config: FirebaseConfig;
+    readonly config: IFirebaseConfig;
     readonly storage: Storage;
 }
