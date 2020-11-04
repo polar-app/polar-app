@@ -103,7 +103,7 @@ Anki code: 1627107763
 
   
 
-### [Anki Fanfare](https://ankiweb.net/shared/info/2073603704)
+### <a href="https://ankiweb.net/shared/info/2073603704">Anki Fanfare</a>
 
   
 
@@ -135,7 +135,7 @@ Anki code: 2073603704
 
   
 
-### [Anki Habitat](https://ankiweb.net/shared/info/1758045507)
+### <a href="https://ankiweb.net/shared/info/1758045507">Anki Habitat</a>
 
   
 
@@ -175,7 +175,7 @@ Some Anki plugins to boost your productivity and ace your card review.
 
   
 
-### [Polar Connect - PDF and Incremental Reading with Anki Sync](https://getpolarized.io)
+### <a href="https://getpolarized.io">Polar</a>
 
   
 
@@ -207,7 +207,7 @@ Anki code: 734898866
 
   
 
-### [More Overview Stats](https://ankiweb.net/shared/info/2116130837)
+### <a href="https://ankiweb.net/shared/info/2116130837">More Overview Stats</a>
 
   
 
@@ -231,7 +231,7 @@ Anki code: 2116130837
 
   
 
-### [Batch Editing](https://ankiweb.net/shared/info/291119185)
+### <a href="https://ankiweb.net/shared/info/291119185">Batch Editing</a>
 
   
 
@@ -270,7 +270,7 @@ Visual upgrades to Anki enhance the way it looks, giving it room for more memory
 
   
 
-### [Night Mode](https://ankiweb.net/shared/info/1496166067)
+### <a href="https://ankiweb.net/shared/info/1496166067">Night Mode</a>
 
   
 
@@ -298,7 +298,7 @@ Anki code: 1496166067
 
   
 
-### [Button Colors](https://ankiweb.net/shared/info/2494384865)
+### <a href="https://ankiweb.net/shared/info/2494384865">Button Colors</a>
 
   
 
@@ -330,7 +330,7 @@ Anki code: 2494384865
 
   
 
-### [Full Screen Toggle](https://ankiweb.net/shared/info/1612375712)
+### <a href="https://ankiweb.net/shared/info/1612375712">Full Screen Toggle</a>
 
   
 
@@ -358,7 +358,7 @@ Anki code: 1612375712
 
   
 
-### [Customize Keyboard Shortcuts](https://ankiweb.net/shared/info/24411424)
+### <a href="https://ankiweb.net/shared/info/24411424">Customize Keyboard Shortcuts</a>
 
   
 
@@ -394,7 +394,7 @@ The add-ons under this category add extra features to the way you use Anki. With
 
   
 
-### [ImageResizer](https://ankiweb.net/shared/info/1214357311)
+### <a href="https://ankiweb.net/shared/info/1214357311">ImageResizer</a>
 
   
 
@@ -422,7 +422,7 @@ Anki code: 1214357311
 
   
 
-### [Image Occlusion Enhanced](https://ankiweb.net/shared/info/1374772155)
+### <a href="https://ankiweb.net/shared/info/1374772155">Image Occlusion Enhanced</a>
 
   
 
@@ -454,7 +454,7 @@ Anki code: 1374772155
 
   
 
-### [AwesomeTTS](https://ankiweb.net/shared/info/427598962)
+### <a href="https://ankiweb.net/shared/info/427598962">AwesomeTTS</a>
 
   
 
@@ -482,7 +482,7 @@ Anki code: 427598962
 
   
 
-### [Batch Download Pictures From Google Images](https://ankiweb.net/shared/info/561924305)
+### <a href="https://ankiweb.net/shared/info/561924305">Batch Download Pictures From Google Images</a>
 
   
 
@@ -510,7 +510,7 @@ Anki code: 561924305
 
   
 
-### [Web Browser - Search terms, Import texts and images automatically](https://ankiweb.net/shared/info/864545277)
+### <a href="https://ankiweb.net/shared/info/864545277">Web Browser- Search terms, Import texts and images automatically</a>
 
   
 
@@ -538,7 +538,7 @@ Anki code: 864545277
 
   
 
-### [Review Heatmap](https://github.com/glutanimate/review-heatmap/releases)
+### <a href="https://github.com/glutanimate/review-heatmap/releases">Review Heatmap</a>
 
   
 
@@ -562,7 +562,7 @@ The newest release for Anki 2.1 is still in Beta, and you can download it from [
 
   
 
-Anki code: Suggested download from the [beta page on GitHub](https://github.com/glutanimate/review-heatmap/releases/tag/v0.7.0-beta.1).
+Anki code: Suggested download from the <a href="https://github.com/glutanimate/review-heatmap/releases/tag/v0.7.0-beta.1">beta page on GitHub</a>.
 
   
   
