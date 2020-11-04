@@ -12,15 +12,14 @@ large_image: https://lh3.googleusercontent.com/iYQT8NIMpLc_INNphQ1PKFUb58tQltgpY
 
   
 
-Flashcards have a reputation for being one of the most popular ways of studying and retaining information. They’re also a time-tested tool. Their history dates back to the 19th century when English educator Favell Lee Mortimer used a set of phonics flashcards. Here's a nice read on the [history of flashcards](https://www.brainscape.com/blog/2012/04/history-of-flashcards/).
-
+Flashcards have a reputation for being one of the most popular ways of studying and retaining information. They’re also a time-tested tool. Their history dates back to the 19th century when English educator Favell Lee Mortimer used a set of phonics flashcards. Here's a nice read on the <a href="https://www.brainscape.com/blog/2012/04/history-of-flashcards/">history of flashcards</a>.
   
 
 Since then, flashcards have come a long way and have been adapted for mobile platforms.
 
   
 
-It’s quite handy to know how to write good flashcards. You can start by mixing pictures and words — imagery helps you recollect experiences a lot better. This is also known as the [Picture Superiority Effect](https://www.youtube.com/watch?v=27CsEELSkrw) in cognitive psychology. You can also try to break complex concepts into multiple simpler questions. Making good flashcards goes a long way in learning and retaining new information.
+It’s quite handy to know how to write good flashcards. You can start by mixing pictures and words — imagery helps you recollect experiences a lot better. This is also known as the <a href="https://www.youtube.com/watch?v=27CsEELSkrw">Picture Superiority Effect</a> in cognitive psychology. You can also try to break complex concepts into multiple simpler questions. Making good flashcards goes a long way in learning and retaining new information.
 
   
 
@@ -32,7 +31,7 @@ To make things simpler, here’s our list of top flashcard tools for 2020.
 
   
 
-## 1. [Anki](https://apps.ankiweb.net/)
+## 1. <a href="https://apps.ankiweb.net/">Anki</a>
 
   
 
@@ -44,11 +43,11 @@ Overview: Anki in Japanese stands for memorization. It's free and open source, a
 
   
 
-There are quite a few handy [Anki add-ons](https://ankiweb.net/shared/addons/2.1) that you can download for free and use it to customize Anki as per your needs. These Anki add-ons add numerous customization options to make your learning experience more engaging.
+There are quite a few handy <a href="https://ankiweb.net/shared/addons/2.1">Anki add-ons</a> that you can download for free and use it to customize Anki as per your needs. These Anki add-ons add numerous customization options to make your learning experience more engaging.
 
   
 
-For beginners, it might take some time to get used to Anki's interface. But if you ever feel stuck, you can check out [Anki’s manual](https://apps.ankiweb.net/docs/manual.html) which has extensive resources on using the software, making flashcards, and working around them. .
+For beginners, it might take some time to get used to Anki's interface. But if you ever feel stuck, you can check out <a href="https://apps.ankiweb.net/docs/manual.html">Anki's manual</a> which has extensive resources on using the software, making flashcards, and working around them. .
 
   
 
@@ -66,7 +65,7 @@ Integration: Anki add-ons
 
 Pricing: Free for Windows, Mac, Linux and Android; $24.99 for iOS
 
-## 2. [Polar](https://getpolarized.io/)
+## 2. <a href="https://getpolarized.io">Polar</a>
 
 <img class="img-fluid border" src="https://lh6.googleusercontent.com/yHGvyNl84L4IyDOIZnGsGkmIOEGxGbs_HNJHz-ucg2shHSq2lro01qImL1HHpX605QFdbHnFxPVadvSKBm6E-Xt3WF0IknKxWglDcYVQAUii-lqaJJi6aYQIe-ttG3I0OVEVciAM">
 
@@ -94,7 +93,7 @@ Pricing: Free; paid plans starting at $4.99 per month.
 
   
 
-## 3. [TinyCards by Duolingo](https://tinycards.duolingo.com/)
+## 3. <a href="https://tinycards.duolingo.com/">TinyCards by Duolingo</a>
 
 <img class="img-fluid border" src="https://lh6.googleusercontent.com/sf0EfevV4Kc4zP39kTKT-lD-vCJkWOM20Z1DXBz0wjMebnX0m2z71bZfVhFoXajoVb5_K2isQddBOty5l4U94qtc6xiQvVAahDC1DVNoKhlXyueO01g-qY3VO9l9Mc0hyHSfZZ2N">
 
@@ -128,7 +127,7 @@ Pricing: Free
 
   
 
-## 4. [Quizlet](https://quizlet.com/)
+## 4. <a href="https://quizlet.com/">Quizlet</a>
 
   
 
@@ -159,7 +158,7 @@ Integration: Quizlet image library
 
 Pricing: Free download and paid upgrades
 
-## 5. [Cram](https://www.cram.com/)
+## 5. <a href="https://www.cram.com">Cram</a>
 
 <img class="img-fluid border" src="https://lh3.googleusercontent.com/hRGDdEAIxkW7wnsSjUzP8rrStojSJOf1myp1vyNgM8brHj7wKHV8C7PbrHexMr1Pg5WAttvNrpOKME9L7dS_uMXleFzXICWjHt_saWh-cOVKm7lQBvtGPFKxc5eu5UJTftp4uDCV">
 
@@ -189,7 +188,7 @@ Pricing: Free
 
   
 
-People and developers are finding new ways of using flashcard tools. [Some are opposing it](https://thesector.com.au/2020/02/03/a-21st-century-approach-to-emergent-literacy-no-flashcards-in-preschool-please/) as well, especially in playschools, saying that early learning needs to be creative and challenging. Flashcards have nothing against extensive print learning, they’re a proven way of learning new information. Sometimes the new stuff does not have much of a creative approach to it, as in the case of the many medical terminologies.
+People and developers are finding new ways of using flashcard tools. <a href="https://thesector.com.au/2020/02/03/a-21st-century-approach-to-emergent-literacy-no-flashcards-in-preschool-please/">Some are opposing it</a> as well, especially in playschools, saying that early learning needs to be creative and challenging. Flashcards have nothing against extensive print learning, they’re a proven way of learning new information. Sometimes the new stuff does not have much of a creative approach to it, as in the case of the many medical terminologies.
 
   
 
