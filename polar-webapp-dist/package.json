@@ -1,6 +1,6 @@
 {
   "name": "polar-webapp-dist",
-  "version": "2.0.67",
+  "version": "2.0.68",
   "description": "An internal package to contain our assets for bundling with the webapp so that we can just depend on the bundle to include our assets.",
   "main": "index.js",
   "private": false,
