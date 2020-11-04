@@ -51,7 +51,7 @@ const Chart = React.memo((props: ChartProps) => {
 
                     <ResponsiveLine
                         data={props.lineData}
-                        // isInteractive={true}
+                        isInteractive={true}
                         margin={{
                             top: 10,
                             right: 10,

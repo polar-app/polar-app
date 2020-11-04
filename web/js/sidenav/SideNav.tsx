@@ -63,15 +63,17 @@ const useStyles = makeStyles((theme) =>
                 //     {tab.title}
                 // </div>
 
-
                 <Card>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            alt="Contemplative Reptile"
-                            height="140"
-                            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-                            title="Contemplative Reptile"
+                            alt={tab.title}
+                            height="200"
+                            style={{
+                                objectPosition: "0% 0%"
+                            }}
+                            image={tab.image.url}
+                            title={tab.title}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
@@ -90,6 +92,7 @@ const useStyles = makeStyles((theme) =>
         return (
             <div key={`${tab.id}`}>
                 <Tooltip placement="right"
+                         style={{padding: 0}}
                          enterDelay={0}
                          leaveDelay={0}
                          arrow={true}
