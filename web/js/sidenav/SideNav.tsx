@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) =>
             backgroundColor: theme.palette.background.default
         },
         button: {
-            borderRadius: '5px'
+            borderRadius: '5px',
+            width: '100px'
         }
 
     }),
@@ -27,7 +28,7 @@ export const SideNav = React.memo(() => {
 
         return (
             <div key={`${tab.id}`}>
-
+                {tab.icon}
             </div>
         );
 
