@@ -14,7 +14,13 @@ const useStyles = makeStyles({
     },
 });
 
-export const DocCard = () => {
+interface IProps {
+    readonly title: string;
+    readonly imgURL: string;
+    readonly description: string;
+}
+
+export const DocCard = React.memo((props: IProps) => {
     const classes = useStyles();
 
     return (
@@ -22,18 +28,20 @@ export const DocCard = () => {
             <CardActionArea>
                 <CardMedia
                     component="img"
-                    alt="Contemplative Reptile"
-                    height="140"
-                    image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-                    title="Contemplative Reptile"
+                    alt={props.title}
+                    height="200"
+                    style={{
+                        objectPosition: '0% 0%'
+                    }}
+                    image={props.imgURL}
+                    title={props.title}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        Lizard
+                        {props.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                        across all continents except Antarctica
+                        {props.description}
                     </Typography>
                 </CardContent>
             </CardActionArea>
@@ -42,9 +50,9 @@ export const DocCard = () => {
                     Share
                 </Button>
                 <Button size="small" color="primary">
-                    Learn More
+                    Open
                 </Button>
             </CardActions>
         </Card>
     );
-}
+});
