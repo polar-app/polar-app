@@ -69,6 +69,7 @@ export namespace Accounts {
             return;
         }
 
+        // TODO: use firestore cached snapshots here...
         return ref.onSnapshot(snapshot => {
 
             if (! snapshot.exists) {

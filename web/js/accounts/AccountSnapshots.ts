@@ -3,16 +3,15 @@ import {UserIDStr} from "../firebase/Firebase";
 import * as firebase from "firebase";
 import {
     OnErrorCallback,
-    OnNextCallback,
-    SnapshotSubscriber,
     SnapshotUnsubscriber
 } from "polar-shared/src/util/Snapshots";
+import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../react/CachedFirestoreSnapshotSubscriber";
 
 const COLLECTION_NAME = "account";
 
 export namespace AccountSnapshots {
 
-    export function create(firestore: firebase.firestore.Firestore, uid: string): SnapshotSubscriber<Account> {
+    export function create(firestore: firebase.firestore.Firestore, uid: string): CachedSnapshotSubscriber<Account> {
 
         function createRef(uid: UserIDStr) {
 
@@ -22,24 +21,32 @@ export namespace AccountSnapshots {
 
         }
 
-        function onSnapshot(onNext: OnNextCallback<Account>,
+        function onSnapshot(onNext: OnNextCachedSnapshot<Account>,
                             onError: OnErrorCallback = ERR_HANDLER): SnapshotUnsubscriber {
 
             const ref = createRef(uid);
 
-            return ref.onSnapshot(snapshot => {
+            // return ref.onSnapshot(snapshot => {
+            //
+            //     if (! snapshot.exists) {
+            //         onNext(undefined);
+            //         return;
+            //     }
+            //
+            //     const account = <Account> snapshot.data();
+            //     onNext(account);
+            //
+            // }, onError);
 
-                if (! snapshot.exists) {
-                    onNext(undefined);
-                    return;
-                }
-
-                const account = <Account> snapshot.data();
-                onNext(account);
-
-            }, onError);
+            return createCachedFirestoreSnapshotSubscriber({
+                id: 'accounts',
+                ref,
+                onNext,
+                onError
+            })
 
         }
+
 
         return onSnapshot;
 

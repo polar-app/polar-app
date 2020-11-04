@@ -1,5 +1,10 @@
 import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshot";
 import {CachedSnapshotStore} from "./CachedSnapshotSubscriber";
+import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+
+export type OnNextCachedSnapshot<V> = (snapshot: ISnapshot<V> | undefined) => void;
+
+export type CachedSnapshotSubscriber<V> = (onNext: OnNextCachedSnapshot<V>, onError?: OnErrorCallback) => SnapshotUnsubscriber;
 
 interface CachedFirestoreSnapshotSubscriberOpts<V> {
 
@@ -8,11 +13,9 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
      */
     readonly id: string;
 
-    // readonly ref: IFirestoreDocumentReference<V>;
     readonly ref: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
-    // readonly subscribe: (onNext: (snapshot: IFirestoreSnapshot<V>) => void, onError?: (err: Error) => void) => SnapshotUnsubscriber;
 
-    readonly onNext: (value: ISnapshot<V> | undefined) => void;
+    readonly onNext: OnNextCachedSnapshot<V>;
 
     readonly onError?: (err: Error) => void;
 
