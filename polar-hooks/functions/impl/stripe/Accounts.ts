@@ -115,7 +115,7 @@ export namespace Accounts {
 
         const doc = querySnapshot.docs[0].data();
 
-        return <Account>doc;
+        return <Account> doc;
 
     }
 

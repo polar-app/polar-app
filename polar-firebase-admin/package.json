@@ -22,8 +22,8 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
-    "@google-cloud/storage": "5.3.0",
-    "firebase-admin": "9.2.0",
+    "@google-cloud/storage": "=5.4.0",
+    "firebase-admin": "=9.3.0",
     "polar-firebase": "^2.0.69",
     "polar-shared": "^2.0.69"
   }
