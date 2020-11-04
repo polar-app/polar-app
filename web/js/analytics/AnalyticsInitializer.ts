@@ -1,44 +1,40 @@
 import {Analytics} from "./Analytics";
 import {Version} from "polar-shared/src/util/Version";
 import {Firebase} from "../firebase/Firebase";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
-import {AnalyticsURLCanonicalizer} from "./AnalyticsURLCanonicalizer";
 
-const log = Logger.create();
+export namespace AnalyticsInitializer {
 
-export class AnalyticsInitializer {
+   export function doInit() {
 
-    public static doInit() {
-
-        this.init()
-            .catch(err => log.error("Could not init analytics: ", err));
+        init()
+            .catch(err => console.error("Could not init analytics: ", err));
 
     }
 
-    public static async init() {
+   export async function init() {
 
-        // TODO: this forces Firestore to be initialized, which I don't like
+        // TODO: this forces Firestore to be initialized, which I don't like and
+        // this should happen somewhere else like a root component.
         await FirestoreCollections.configure();
 
-        this.initVersion();
-        // await this.initAccount();
-        await this.initNavigation();
-        this.initHeartbeat();
+        initVersion();
+        initAccount();
+        initHeartbeat();
 
     }
 
-    private static initVersion() {
+    function initVersion() {
         Analytics.version(Version.get());
     }
 
-    private static initHeartbeat() {
+    function initHeartbeat() {
         Analytics.heartbeat();
     }
 
-    private static async initAccount() {
+    function initAccount() {
 
         const doUserCreated = (user: firebase.User) => {
 
@@ -103,37 +99,6 @@ export class AnalyticsInitializer {
             // await doPlan();
 
         }
-
-    }
-
-    private static async initNavigation() {
-
-        const onNavChange = () => {
-
-            try {
-
-                const url = new URL(document.location!.href);
-
-                // TODO: what about query params??
-                const path = AnalyticsURLCanonicalizer.canonicalize(url.pathname + url.hash || "");
-                const hostname = url.hostname;
-                const title = document.title;
-
-                log.info("Navigating to: ", { path, hostname, title });
-
-                Analytics.page(path);
-
-            } catch (e) {
-                log.error("Unable to handle hash change", e);
-            }
-
-        };
-
-        // must be called the first time so that we have analytics for the home
-        // page on first load.
-        onNavChange();
-
-        window.addEventListener("hashchange", () => onNavChange(), false);
 
     }
 

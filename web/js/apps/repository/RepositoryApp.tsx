@@ -32,7 +32,6 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
-import {LogoutDialog} from "../../../../apps/repository/js/LogoutDialog";
 import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
 import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
 import {DocMetaContextProvider} from "../../annotation_sidebar/DocMetaContextProvider";
@@ -56,6 +55,7 @@ import {deepMemo} from "../../react/ReactUtils";
 import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
+import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 
 interface IProps {
     readonly app: App;
@@ -284,6 +284,7 @@ export const RepositoryApp = (props: IProps) => {
                             <>
                                 <UseLocationChangeStoreProvider>
                                     <BrowserRouter>
+                                        <AnalyticsLocationListener/>
                                         <UseLocationChangeRoot>
                                             <MUIDialogController>
                                                 <AddFileDropzoneRoot>
