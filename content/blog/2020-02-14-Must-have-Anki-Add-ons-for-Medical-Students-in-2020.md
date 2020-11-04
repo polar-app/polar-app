@@ -175,7 +175,7 @@ Some Anki plugins to boost your productivity and ace your card review.
 
   
 
-### [Polar Connect - PDF and Incremental Reading with Anki Sync](https://ankiweb.net/shared/info/734898866)
+### [Polar Connect - PDF and Incremental Reading with Anki Sync](https://getpolarized.io)
 
   
 
