@@ -25,7 +25,7 @@ export interface TabDescriptor {
      */
     readonly icon?: React.ReactNode;
 
-    readonly component?: React.ReactNode;
+    readonly content?: React.ReactNode;
 
     readonly image: ITabImage;
 
