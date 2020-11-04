@@ -3,7 +3,7 @@ import { StripeMode } from './StripeUtils';
 import {StripeChangePlans} from "./StripeChangePlans";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeChangePlanFunction = ExpressFunctions.createHookAsync(async (req, res, next) => {
+export const StripeChangePlanFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
     console.log(JSON.stringify(req.body, null, '  '));
 

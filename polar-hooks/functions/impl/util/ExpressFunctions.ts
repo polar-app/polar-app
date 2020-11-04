@@ -29,7 +29,7 @@ export class ExpressFunctions {
             }
 
             doAsync().catch(err => {
-                this.handleError(req, res, err);
+                this.handleError(req, err);
             })
 
         });
@@ -50,7 +50,7 @@ export class ExpressFunctions {
             try {
                 delegate(req, res, next);
             } catch (err) {
-                this.handleError(req, res, err);
+                this.handleError(req, err);
             }
         });
 
@@ -58,7 +58,7 @@ export class ExpressFunctions {
 
     }
 
-    private static handleError(req: express.Request, res: express.Response, err: Error) {
+    private static handleError(req: express.Request, err: Error) {
 
         function createMessage() {
             if (req.body) {
@@ -70,6 +70,7 @@ export class ExpressFunctions {
 
         const msg = createMessage();
 
+        console.log("Handling error and sending to rollbar: ", err);
         rollbar.log(msg, err);
 
         // errorHandler(err, req, res, next)
