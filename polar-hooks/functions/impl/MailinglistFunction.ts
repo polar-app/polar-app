@@ -1,15 +1,7 @@
-import * as functions from 'firebase-functions';
 import {Mailchimp} from './util/Mailchimp';
-import bodyParser from 'body-parser';
-import cors from 'cors';
 import {ExpressFunctions} from "./util/ExpressFunctions";
 
-const app = ExpressFunctions.createApp();
-
-app.use(bodyParser.json());
-app.use(cors({ origin: true }));
-
-app.use((req, res) => {
+export const MailinglistFunction = ExpressFunctions.createHook((req, res) => {
 
     const subscription: Subscription = req.body;
 
@@ -25,8 +17,6 @@ app.use((req, res) => {
         });
 
 });
-
-export const MailinglistFunction = functions.https.onRequest(app);
 
 interface Subscription {
     readonly email: string;
