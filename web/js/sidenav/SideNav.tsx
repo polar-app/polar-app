@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) =>
 
         },
         activeButton: {
-            borderLeftColor: theme.palette.primary.light
+            borderLeftColor: theme.palette.primary.main
         },
 
     }),
@@ -88,18 +88,19 @@ const useStyles = makeStyles((theme) =>
         }
 
         return (
-            <Tooltip placement="right"
-                     enterDelay={0}
-                     leaveDelay={0}
-                     arrow={true}
-                     title={<Title/>}>
+            <div key={`${tab.id}`}>
+                <Tooltip placement="right"
+                         enterDelay={0}
+                         leaveDelay={0}
+                         arrow={true}
+                         title={<Title/>}>
 
-                <div key={`${tab.id}`}
-                     onClick={() => setActiveTab(tab.id)}
-                     className={clsx(classes.button, active && classes.activeButton)}>
-                    {tab.icon}
-                </div>
-            </Tooltip>
+                    <div onClick={() => setActiveTab(tab.id)}
+                         className={clsx(classes.button, active && classes.activeButton)}>
+                        {tab.icon}
+                    </div>
+                </Tooltip>
+            </div>
         );
 
     }, [activeTab, classes.activeButton, classes.button, setActiveTab]);
