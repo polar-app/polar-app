@@ -1,17 +1,9 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import * as functions from 'firebase-functions';
 import {Billing} from 'polar-accounts/src/Billing';
 import { StripeMode } from './StripeUtils';
 import {StripeChangePlans} from "./StripeChangePlans";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = ExpressFunctions.createApp();
-
-app.use(bodyParser.json());
-app.use(cors({ origin: true }));
-
-app.use((req, res) => {
+export const StripeChangePlanFunction = ExpressFunctions.createHook((req, res) => {
 
     // TODO: I think we need to validate the logged in user here.
 
@@ -40,8 +32,6 @@ app.use((req, res) => {
         .catch(err => console.error("Failed to handle request: ", err));
 
 });
-
-export const StripeChangePlanFunction = functions.https.onRequest(app);
 
 export interface StripeChangePlanBody {
     readonly uid: string;
