@@ -22,17 +22,27 @@ export namespace CachedSnapshotStore {
 
     export function read<V>(cacheKey: string): ISnapshot<V> | undefined {
 
-        const value = localStorage.getItem(cacheKey)
+        const cacheValue = localStorage.getItem(cacheKey)
 
-        if (value === null) {
+        if (cacheValue === null) {
             return undefined;
         }
 
-        return {
-            exists: true,
-            value: JSON.parse(value),
-            source: 'cache'
-        };
+        try {
+
+            const value = JSON.parse(cacheValue)
+
+            return {
+                exists: true,
+                value,
+                source: 'cache'
+            };
+
+        } catch (e) {
+            console.error("Unable to parse JSON: " + cacheValue, e);
+            return undefined;
+        }
+
 
     }
 
