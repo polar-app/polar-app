@@ -12,7 +12,7 @@ const createWebCard = (id: number): TabDescriptor => {
 
         id,
         url: `http://example.com/${id}`,
-        title: 'this is the title',
+        title: "Alice's Adventures in Wonderland",
         icon: (
             <img src={DocCardImages.WEB_CARD_IMAGE_URL} alt='foo'/>
         ),
@@ -33,7 +33,7 @@ const createPDFCard = (id: number): TabDescriptor => {
 
         id,
         url: `http://example.com/${id}`,
-        title: 'this is the title',
+        title: 'Large-scale Cluster Management at Google with Borg',
         icon: (
             <img src={DocCardImages.PDF_CARD_IMAGE_URL} alt='foo'/>
         ),

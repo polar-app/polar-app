@@ -39,7 +39,7 @@ export namespace CachedSnapshotStore {
             };
 
         } catch (e) {
-            console.error("Unable to parse JSON: " + cacheValue, e);
+            console.error(`Unable to parse JSON for cached subscriber ${cacheKey}: ` + cacheValue, e);
             return undefined;
         }
 
