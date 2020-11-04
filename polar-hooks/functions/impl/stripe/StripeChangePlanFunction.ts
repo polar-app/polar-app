@@ -7,6 +7,8 @@ export const StripeChangePlanFunction = ExpressFunctions.createHookAsync(async (
 
     console.log(JSON.stringify(req.body, null, '  '));
 
+    console.log("Running v1 of StripeChangePlanFunction.");
+
     const body: StripeChangePlanBody = req.body;
 
     await StripeChangePlans.changePlans({...body, stripeMode: body.mode});
