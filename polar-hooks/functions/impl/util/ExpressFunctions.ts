@@ -71,7 +71,8 @@ export class ExpressFunctions {
         const msg = createMessage();
 
         console.log("Handling error and sending to rollbar: ", err);
-        rollbar.log(msg, err);
+        rollbar.log("Sending message from google cloud function...");
+        rollbar.error(msg, err);
 
         // errorHandler(err, req, res, next)
 
