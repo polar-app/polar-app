@@ -24,7 +24,12 @@ export const Main = () => {
             ),
             component: (
                 <div>this is the body</div>
-            )
+            ),
+            image: {
+                url: IMG,
+                width: 200,
+                height: 200
+            }
         });
 
     }, [addTab]);

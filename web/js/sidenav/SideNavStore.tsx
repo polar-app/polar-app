@@ -3,6 +3,12 @@ import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
+export interface ITabImage {
+    readonly url: string;
+    readonly width: number;
+    readonly height: number;
+}
+
 export interface TabDescriptor {
 
     readonly id: number;
@@ -20,6 +26,8 @@ export interface TabDescriptor {
     readonly icon?: React.ReactNode;
 
     readonly component?: React.ReactNode;
+
+    readonly image: ITabImage;
 
 }
 
@@ -41,11 +49,11 @@ interface ISideNavCallbacks {
 
 function createInitialTabs(): ReadonlyArray<TabDescriptor> {
     return [
-        {
-            id: 0,
-            url: '/',
-            title: 'Documents'
-        },
+        // {
+        //     id: 0,
+        //     url: '/',
+        //     title: 'Documents'
+        // },
         // {
         //     id: 2,
         //     url: '/doc/39b730b6e9d281b0eae91b2c2c29b842',

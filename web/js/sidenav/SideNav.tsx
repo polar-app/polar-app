@@ -4,6 +4,11 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import { useSideNavStore, TabDescriptor } from './SideNavStore';
 import clsx from 'clsx';
 import Tooltip from '@material-ui/core/Tooltip';
+import Card from '@material-ui/core/Card/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -53,9 +58,31 @@ const useStyles = makeStyles((theme) =>
 
         const Title = () => {
             return (
-                <b>
-                    {tab.title}
-                </b>
+                // <div>
+                //     {tab.title}
+                // </div>
+
+
+                <Card>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Contemplative Reptile"
+                            height="140"
+                            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+                            title="Contemplative Reptile"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {tab.title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                                across all continents except Antarctica
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
             );
         }
 
@@ -63,6 +90,7 @@ const useStyles = makeStyles((theme) =>
             <Tooltip placement="right"
                      enterDelay={0}
                      leaveDelay={0}
+                     arrow={true}
                      title={<Title/>}>
 
                 <div key={`${tab.id}`}
@@ -72,7 +100,7 @@ const useStyles = makeStyles((theme) =>
             </Tooltip>
         );
 
-    }, [activeTab, classes.activeButton, classes.button]);
+    }, [activeTab, classes.activeButton, classes.button, classes.root]);
 
     return (
         <div className={classes.root}>
