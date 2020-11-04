@@ -120,7 +120,8 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             function doTabMutation(newStore: ISideNavStore) {
                 // history.replace(tabDescriptor.url);
-                history.replaceState(null, tabDescriptor.title, tabDescriptor.url);
+                // history.replaceState(null, tabDescriptor.title, tabDescriptor.url);
+                console.log("FIXME: newStore: ", newStore);
                 setStore(newStore);
             }
 
@@ -135,8 +136,10 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             const tabs = [...store.tabs, tabDescriptor];
 
+            console.log("FIXME: tabs: ", tabs);
+
             // now switch to the new tab
-            const activeTab = tabs.length - 1;
+            const activeTab = tabDescriptor.id;
 
             doTabMutation({...store, tabs, activeTab});
 

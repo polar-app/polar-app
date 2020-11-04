@@ -3,14 +3,21 @@ import {SideNav} from "../../../web/js/sidenav/SideNav";
 import {SideNavStoreProvider, useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 import Button from '@material-ui/core/Button';
 
+let seq = 0;
+
 export const Main = () => {
 
     const {addTab} = useSideNavCallbacks();
 
     const doAddTab = React.useCallback(() => {
+
+        seq = seq + 1;
+
+        const id = seq;
+
         addTab({
-            id: 1,
-            url: 'http://example.com',
+            id,
+            url: `http://example.com/${id}`,
             title: 'this is the title',
             icon: (
                 <img src={IMG} alt='foo'/>
@@ -18,7 +25,8 @@ export const Main = () => {
             component: (
                 <div>this is the body</div>
             )
-        })
+        });
+
     }, [addTab]);
 
     return (
