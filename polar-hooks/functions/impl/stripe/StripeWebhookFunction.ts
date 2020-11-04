@@ -1,11 +1,10 @@
 import bodyParser from 'body-parser';
-import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {StripeMode} from "./StripeUtils";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {StripeWebhooks} from "./StripeWebhooks";
-import {SentryFunctions} from "polar-sentry-cloud-functions/src/SentryFunctions";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
 // TODO:
 //
@@ -13,7 +12,7 @@ import {SentryFunctions} from "polar-sentry-cloud-functions/src/SentryFunctions"
 
 function createApp(stripeMode: StripeMode) {
 
-    const app = express();
+    const app = ExpressFunctions.createApp();
 
     app.use(bodyParser.json());
     app.use(cors({ origin: true }));
@@ -62,8 +61,7 @@ function createApp(stripeMode: StripeMode) {
 }
 
 export function createStripeWebhookFunction(mode: StripeMode) {
-    return SentryFunctions.wrapHttpFunction(functions.https.onRequest(createApp(mode)));
-    // return functions.https.onRequest(createApp(mode));
+    return functions.https.onRequest(createApp(mode));
 }
 
 export interface StripeEvent {

@@ -5,12 +5,28 @@ import * as functions from 'firebase-functions';
 import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
+import { Rollbars } from './Rollbars';
 
 export class ExpressFunctions {
 
-    public static createHook(delegate: (req: express.Request, res: express.Response) => void) {
+    public static createApp() {
+
+        // using with express:
+        //
+        // https://docs.rollbar.com/docs/nodejs
+
+        const rollbar = Rollbars.create();
 
         const app = express();
+
+        app.use(rollbar.errorHandler());
+        return app;
+
+    }
+
+    public static createHook(delegate: (req: express.Request, res: express.Response) => void) {
+
+        const app = this.createApp();
 
         app.use(bodyParser.json());
         app.use(cors({ origin: true }));
