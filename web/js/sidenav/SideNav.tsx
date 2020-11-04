@@ -92,10 +92,14 @@ const useStyles = makeStyles((theme) =>
         return (
             <div key={`${tab.id}`}>
                 <Tooltip placement="right"
-                         style={{padding: 0}}
                          enterDelay={0}
                          leaveDelay={0}
                          arrow={true}
+                         PopperProps={{
+                             style: {
+                                 display: active ? 'none' : undefined
+                             }
+                         }}
                          title={<Title/>}>
 
                     <div onClick={() => setActiveTab(tab.id)}
