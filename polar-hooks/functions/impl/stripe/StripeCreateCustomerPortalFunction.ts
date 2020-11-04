@@ -1,11 +1,11 @@
 import bodyParser from 'body-parser';
-import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import { StripeMode } from './StripeUtils';
 import {StripeCreateCustomerPortalSessions} from "./StripeCreateCustomerPortalSessions";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = express();
+const app = ExpressFunctions.createApp();
 
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));

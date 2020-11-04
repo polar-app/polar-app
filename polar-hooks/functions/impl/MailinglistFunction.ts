@@ -1,10 +1,10 @@
 import * as functions from 'firebase-functions';
 import {Mailchimp} from './util/Mailchimp';
 import bodyParser from 'body-parser';
-import express from 'express';
 import cors from 'cors';
+import {ExpressFunctions} from "./util/ExpressFunctions";
 
-const app = express();
+const app = ExpressFunctions.createApp();
 
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));

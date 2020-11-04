@@ -6,8 +6,9 @@ import {Accounts} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {StripeMode} from "./StripeUtils";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = express();
+const app = ExpressFunctions.createApp();
 
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));

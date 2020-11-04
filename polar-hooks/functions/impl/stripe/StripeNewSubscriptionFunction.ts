@@ -1,14 +1,9 @@
 import bodyParser from 'body-parser';
-import express from 'express';
 import cors from 'cors';
-import * as functions from 'firebase-functions';
-import {Accounts} from "./Accounts";
-import {StripeCustomers} from "./StripeCustomers";
-import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {StripeUtils} from "./StripeUtils";
-import {Arrays} from "polar-shared/src/util/Arrays";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = express();
+const app = ExpressFunctions.createApp();
 
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));

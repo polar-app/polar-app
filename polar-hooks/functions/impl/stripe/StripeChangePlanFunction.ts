@@ -1,12 +1,12 @@
 import bodyParser from 'body-parser';
-import express from 'express';
 import cors from 'cors';
 import * as functions from 'firebase-functions';
 import {Billing} from 'polar-accounts/src/Billing';
 import { StripeMode } from './StripeUtils';
 import {StripeChangePlans} from "./StripeChangePlans";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = express();
+const app = ExpressFunctions.createApp();
 
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));

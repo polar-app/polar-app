@@ -1,4 +1,4 @@
-import express, {Express} from "express";
+import {Express} from "express";
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
 import {
     MetadataEngineHandlerRef,
@@ -14,6 +14,7 @@ import {
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {Reducers} from "polar-shared/src/util/Reducers";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
 export class Webapps {
 
@@ -71,7 +72,7 @@ export class Webapps {
 
     }
 
-    public static createWebapp(app: Express = express()) {
+    public static createWebapp(app: Express = ExpressFunctions.createApp()) {
         const rewrites = this.createRewrites();
 
         const dir = "/srv/node_modules/polar-webapp-dist/public";
