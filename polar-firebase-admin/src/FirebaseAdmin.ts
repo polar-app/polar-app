@@ -25,9 +25,7 @@ export class FirebaseAdmin {
         const initializeApp = () => {
 
             if (firebaseConfig) {
-
                 console.log("Creating app for project: " + firebaseConfig.project);
-
                 return admin.initializeApp(firebaseConfig.appOptions);
 
             } else {

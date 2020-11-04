@@ -205,14 +205,21 @@ export namespace StripeCustomers {
             //
             // Prorating is the default behavior, but you can disable it by setting proration_behavior to none:
 
-            await stripe.subscriptions.update(subscription.id, {
-                items: [
-                    {
-                        id: subscription.items.data[0].id,
-                        plan: planID
-                    }
-                ]
-            });
+            if (interval === '4year') {
+                throw new Error("4 year plans not supported yet");
+            } else {
+
+                await stripe.subscriptions.update(subscription.id, {
+                    items: [
+                        {
+                            id: subscription.items.data[0].id,
+                            plan: planID
+                        }
+                    ]
+                });
+
+            }
+
 
         } else {
 

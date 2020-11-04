@@ -4,23 +4,35 @@ import {AppOptions} from 'firebase-admin';
 
 export namespace FirebaseConfig {
 
-    export function create(): FirebaseConfig | undefined {
+    export interface IServiceAccount {
+        readonly projectId: string;
+        readonly clientEmail: string;
+        readonly privateKey: string;
+    }
+
+    export interface IFirebaseConfig {
+        readonly project: string;
+        readonly serviceAccount: admin.ServiceAccount;
+        readonly appOptions: AppOptions;
+    }
+
+    export function create(): IFirebaseConfig | undefined {
 
         function computeServiceAccount() {
 
-            function computeFirebaseConfigFromEnvironment(): any {
+            function computeFirebaseConfigFromEnvironment(): IServiceAccount | undefined {
 
                 if (process.env.FIREBASE_CONFIG !== undefined) {
 
                     const result = JSON.parse(process.env.FIREBASE_CONFIG);
 
-                    if (result.private_key) {
+                    if (result.privateKey) {
                         return result;
-                    } else {
-                        return undefined;
                     }
 
                 }
+
+                return undefined;
 
             }
 
@@ -41,6 +53,10 @@ export namespace FirebaseConfig {
 
         const serviceAccount = computeServiceAccount();
 
+        if (! serviceAccount) {
+            throw new Error("No service account found . Set firebase.config or FIREBASE_CONFIG");
+        }
+
         return {
             project: serviceAccount.projectId!,
             serviceAccount,
@@ -52,11 +68,5 @@ export namespace FirebaseConfig {
 
     }
 
-}
-
-export interface FirebaseConfig {
-    readonly project: string;
-    readonly serviceAccount: admin.ServiceAccount;
-    readonly appOptions: AppOptions;
 }
 
