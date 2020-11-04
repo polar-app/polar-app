@@ -24,7 +24,7 @@ export namespace CachedSnapshotStore {
 
         const cacheValue = localStorage.getItem(cacheKey)
 
-        if (cacheValue === null) {
+        if (cacheValue === null || cacheValue === undefined) {
             return undefined;
         }
 
