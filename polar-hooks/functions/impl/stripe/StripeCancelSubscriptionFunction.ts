@@ -1,19 +1,10 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import cors from 'cors';
-import * as functions from 'firebase-functions';
 import {Accounts} from "./Accounts";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {StripeMode} from "./StripeUtils";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-const app = ExpressFunctions.createApp();
-
-app.use(bodyParser.json());
-app.use(cors({ origin: true }));
-
-app.use((req, res) => {
+export const StripeCancelSubscriptionFunction = ExpressFunctions.createHook((req, res, next) => {
 
     // req.body should be a JSON body for stripe with the payment metadata.
 
@@ -29,22 +20,14 @@ app.use((req, res) => {
         await StripeCustomers.cancelSubscription(body.mode, body.email);
         await Accounts.changePlanViaEmail(body.email, account.customer.customerID, 'free', 'month');
 
+        res.sendStatus(200);
+
     };
 
     handleRequest()
-        .then(() => {
-            res.sendStatus(200);
-        })
-        .catch(err => {
-            const now = Date.now();
-            console.error(`Could not properly handle webhook: ${now}`, err);
-            console.error(`JSON body for failed webhook: ${now}`, JSON.stringify(req.body, null,  '  '));
-            res.sendStatus(500);
-        });
+        .catch(err => next(err));
 
-});
-
-export const StripeCancelSubscriptionFunction = functions.https.onRequest(app);
+})
 
 export interface StripeCancelSubscriptionBody {
     readonly uid: string;

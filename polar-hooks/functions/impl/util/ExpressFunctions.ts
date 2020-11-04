@@ -13,7 +13,7 @@ export class ExpressFunctions {
         return express();
     }
 
-    public static createHook(delegate: (req: express.Request, res: express.Response) => void) {
+    public static createHook(delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => void) {
 
         const app = this.createApp();
 
