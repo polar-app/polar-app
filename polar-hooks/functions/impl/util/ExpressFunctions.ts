@@ -7,6 +7,8 @@ import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
 import { Rollbars } from './Rollbars';
 
+const rollbar = Rollbars.create();
+
 export class ExpressFunctions {
 
     public static createApp() {
@@ -24,7 +26,6 @@ export class ExpressFunctions {
 
         // using with express:
         // https://docs.rollbar.com/docs/nodejs
-        const rollbar = Rollbars.create();
         app.use(rollbar.errorHandler());
 
         return functions.https.onRequest(app);
@@ -51,7 +52,10 @@ export class ExpressFunctions {
     }
 
     public static sendError(res: express.Response, err: Error) {
-        console.error("Unable to handle request: ", err);
+
+        const msg = "Unable to handle request: ";
+        rollbar.log(msg, err);
+        console.error(msg, err);
         const body = ErrorResponses.create(err.message);
         this.sendResponse(res, body, 500);
     }
