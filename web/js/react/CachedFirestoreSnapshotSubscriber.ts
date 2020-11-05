@@ -1,5 +1,5 @@
-import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshot";
-import {CachedSnapshotStore} from "./CachedSnapshotSubscriber";
+import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshotSubscriberContext";
+import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export type OnNextCachedSnapshot<V> = (snapshot: ISnapshot<V> | undefined) => void;
@@ -23,8 +23,8 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
 
 export function createCachedFirestoreSnapshotSubscriber<V>(opts: CachedFirestoreSnapshotSubscriberOpts<V>) {
 
-    const cacheKey = CachedSnapshotStore.createKey(opts.id);
-    const initialValue = CachedSnapshotStore.read<V>(cacheKey);
+    const cacheKey = LocalCache.createKey(opts.id);
+    const initialValue = LocalCache.read<V>(cacheKey);
 
     if (initialValue) {
         opts.onNext(initialValue);
@@ -49,7 +49,7 @@ export function createCachedFirestoreSnapshotSubscriber<V>(opts: CachedFirestore
 
         const snapshot = toSnapshot();
         opts.onNext(snapshot);
-        CachedSnapshotStore.write(cacheKey, snapshot);
+        LocalCache.write(cacheKey, snapshot);
 
     }
 

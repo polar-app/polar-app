@@ -1,5 +1,5 @@
 import {OnNextCallback, SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import { ISnapshot } from "./CachedSnapshot";
+import { ISnapshot } from "./CachedSnapshotSubscriberContext";
 
 export function createMockSnapshotSubscriber(): SnapshotSubscriber<ISnapshot<number>> {
 

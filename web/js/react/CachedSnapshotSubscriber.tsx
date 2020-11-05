@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
-import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshot";
+import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshotSubscriberContext";
 
 export interface CachedSnapshotSubscriberOpts<V> {
 
@@ -18,7 +18,7 @@ export interface CachedSnapshotSubscriberOpts<V> {
 
 }
 
-export namespace CachedSnapshotStore {
+export namespace LocalCache {
 
     export function read<V>(cacheKey: string): ISnapshot<V> | undefined {
 
@@ -69,10 +69,10 @@ export namespace CachedSnapshotStore {
  * Cached snapshot provider that uses write through and then reads future cached
  * values from cache.
  */
-export function createCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriberOpts<V>) {
+export function createLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriberOpts<V>) {
 
-    const cacheKey = CachedSnapshotStore.createKey(opts.id);
-    const initialValue = CachedSnapshotStore.read<V>(cacheKey);
+    const cacheKey = LocalCache.createKey(opts.id);
+    const initialValue = LocalCache.read<V>(cacheKey);
 
     if (initialValue) {
         opts.onNext(initialValue);
@@ -81,7 +81,7 @@ export function createCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriber
     const onNext = (snapshot: ISnapshot<V> | undefined) => {
 
         opts.onNext(snapshot);
-        CachedSnapshotStore.write(cacheKey, snapshot);
+        LocalCache.write(cacheKey, snapshot);
 
     }
 
@@ -90,16 +90,16 @@ export function createCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriber
 }
 
 
-export function useCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriberOpts<V>) {
+export function useLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscriberOpts<V>) {
 
-    const cacheKey = React.useMemo(() => CachedSnapshotStore.createKey(opts.id), [opts.id]);
+    const cacheKey = React.useMemo(() => LocalCache.createKey(opts.id), [opts.id]);
 
     const readCacheData = React.useCallback((): ISnapshot<V> | undefined => {
-        return CachedSnapshotStore.read(cacheKey);
+        return LocalCache.read(cacheKey);
     }, [cacheKey]);
 
     const writeCacheData = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
-        CachedSnapshotStore.write(cacheKey, snapshot);
+        LocalCache.write(cacheKey, snapshot);
     }, [cacheKey]);
 
     const initialValue = React.useMemo(readCacheData, [readCacheData]);

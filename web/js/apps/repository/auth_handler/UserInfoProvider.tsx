@@ -12,7 +12,7 @@ import {useSnapshotSubscriber} from "../../../ui/data_loader/UseSnapshotSubscrib
 import { Billing } from 'polar-accounts/src/Billing';
 import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
-import {ISnapshot} from "../../../../../apps/repository/js/persistence_layer/CachedSnapshot";
+import {ISnapshot} from "../../../../../apps/repository/js/persistence_layer/CachedSnapshotSubscriberContext";
 
 interface IUserInfoContext {
 

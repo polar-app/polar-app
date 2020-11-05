@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
-        maxWidth: 345,
+        maxWidth: 300,
+        maxHeight: 350,
     },
 });
 
@@ -29,7 +30,7 @@ export const DocCard = React.memo((props: IProps) => {
                 <CardMedia
                     component="img"
                     alt={props.title}
-                    height="200"
+                    height="150"
                     style={{
                         objectPosition: '0% 0%'
                     }}
@@ -37,12 +38,24 @@ export const DocCard = React.memo((props: IProps) => {
                     title={props.title}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom
+                                variant="h6"
+                                component="h6"
+                                style={{
+                                    lineHeight: '1.2em'
+                                }}>
                         {props.title}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="body2"
+                                color="textSecondary"
+                                component="p"
+                                style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }}>
                         {props.description}
                     </Typography>
+
                 </CardContent>
             </CardActionArea>
             <CardActions>

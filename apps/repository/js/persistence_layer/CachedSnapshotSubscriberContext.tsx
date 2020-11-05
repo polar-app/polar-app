@@ -3,7 +3,7 @@ import {Subject} from "rxjs";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {
-    useCachedSnapshotSubscriber
+    useLocalCachedSnapshotSubscriber
 } from "../../../../web/js/react/CachedSnapshotSubscriber";
 
 export interface ISnapshot<V> {
@@ -65,7 +65,7 @@ export type CachedSnapshotTuple<V> = [
  *
  * However, we do not call render 'children' until we have the first snapshot.
  */
-export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
+export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<V> {
 
     const subject = new Subject<ISnapshot<V>>();
 
@@ -110,7 +110,7 @@ export function createCachedSnapshotSubscriber<V>(): CachedSnapshotTuple<V> {
 
         }, [storeContext]);
 
-        useCachedSnapshotSubscriber({
+        useLocalCachedSnapshotSubscriber({
             id: props.id,
             subscriber: props.snapshotSubscriber,
             onNext,

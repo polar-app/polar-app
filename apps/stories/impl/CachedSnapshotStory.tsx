@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {createMockSnapshotSubscriber} from "../../repository/js/persistence_layer/MockSnapshots";
-import {createCachedSnapshotSubscriber} from "../../repository/js/persistence_layer/CachedSnapshot";
+import {createCachedSnapshotSubscriberContext} from "../../repository/js/persistence_layer/CachedSnapshotSubscriberContext";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 
-const [CacheStoryProvider, useCachedSnapshot] = createCachedSnapshotSubscriber()
+const [CacheStoryProvider, useCachedSnapshot] = createCachedSnapshotSubscriberContext()
 
 const Inner = () => {
 
