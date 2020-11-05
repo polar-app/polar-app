@@ -10,6 +10,9 @@ import {SettingToggle} from './SettingToggle';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
 import {usePrefs} from "../../persistence_layer/PrefsHook";
+import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
+import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
+import Box from '@material-ui/core/Box';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -116,9 +119,12 @@ export const SettingsScreen = () => {
 
                     <Divider/>
 
-                    <p>
-                        <ViewDeviceInfoButton/>
-                    </p>
+                    <Box mt={1}>
+                        <MUIButtonBar>
+                            <ViewDeviceInfoButton/>
+                            <CancelSubscriptionButton/>
+                        </MUIButtonBar>
+                    </Box>
 
                 </div>
 

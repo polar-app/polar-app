@@ -5,9 +5,44 @@ import {
     Callback1,
     NULL_FUNCTION
 } from "polar-shared/src/util/Functions";
+import {useLogger} from "../MUILogger";
 
 export function useDialogManager() {
     return React.useContext(MUIDialogControllerContext);
+}
+
+interface ILatentActionOpts {
+    readonly message: string;
+    readonly action: () => Promise<void>;
+}
+
+/**
+ * Taskbar so that we tell the user that something is in progress.
+ */
+export function useAsyncActionTaskbar() {
+    const dialogs = useDialogManager();
+    const logger = useLogger();
+
+    return React.useCallback((opts: ILatentActionOpts) => {
+
+        async function doAsync() {
+
+            const updateProgress = await dialogs.taskbar({
+                message: opts.message
+            });
+
+            updateProgress({value: 'indeterminate'})
+
+            await opts.action();
+
+            updateProgress({value: 100})
+
+        }
+
+        doAsync().catch(err => logger.error(err));
+
+    }, [dialogs, logger]);
+
 }
 
 export function useDeleteConfirmation<T>(onAccept: Callback1<ReadonlyArray<T>>,
