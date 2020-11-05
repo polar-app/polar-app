@@ -206,21 +206,7 @@ export namespace StripeCustomers {
             // Prorating is the default behavior, but you can disable it by setting proration_behavior to none:
 
             if (interval === '4year') {
-
-                throw new Error("We do not support 4 year plans");
-
-                // await stripe.invoices.create({
-                //     customer: '1234',
-                //     collection_method: 'charge_automatically',
-                //     items: [
-                //         {
-                //             id: subscription.items.data[0].id,
-                //             plan: planID
-                //         }
-                //     ]
-                // });
-
-
+                throw new Error("We do not support 4 year plans with 'change plan'");
             } else {
 
                 await stripe.subscriptions.update(subscription.id, {
