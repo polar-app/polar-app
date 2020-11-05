@@ -4,7 +4,7 @@ import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {
     useLocalCachedSnapshotSubscriber
-} from "../../../../web/js/react/CachedSnapshotSubscriber";
+} from "../../../../web/js/snapshots/CachedSnapshotSubscriber";
 
 export interface ISnapshot<V> {
 

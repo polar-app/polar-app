@@ -5,7 +5,7 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from "polar-shared/src/util/Snapshots";
-import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../react/CachedFirestoreSnapshotSubscriber";
+import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../snapshots/CachedFirestoreSnapshotSubscriber";
 
 const COLLECTION_NAME = "account";
 
