@@ -27,6 +27,7 @@ import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
 import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
+import {StripeCreateCustomerPortalFunction} from "./impl/stripe/StripeCreateCustomerPortalFunction";
 
 exports.hello = HelloWorldFunction;
 // exports.docPreviewSitemap = DocPreviewSitemapFunction;
@@ -58,3 +59,4 @@ exports.docAdd = DocAddFunction;
 // exports.docPreview = DocPreviewFunction;
 exports.search = SearchFunction;
 exports.autoFlashcard = AutoFlashcardFunction
+exports.StripeCreateCustomerPortal = StripeCreateCustomerPortalFunction;
