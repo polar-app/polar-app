@@ -23,6 +23,15 @@ export namespace AccountActions {
         window.location.href = LoginURLs.create();
     }
 
+    export async function redirectToStripeCustomerPortal() {
+        const url = StripeUtils.createURL(`/StripeCreateCustomerPortal/`);
+        const stripeMode = StripeUtils.stripeMode();
+        const data = {stripeMode};
+
+        await executeAccountMethod(url, data);
+    }
+
+
     export async function cancelSubscription() {
         const url = StripeUtils.createURL(`/StripeCancelSubscription/`);
         const accountData = await createAccountData();
@@ -30,7 +39,6 @@ export namespace AccountActions {
         const data: StripeCancelSubscriptionBody = {mode, ...accountData};
 
         await executeAccountMethod(url, data);
-
     }
 
     export async function changePlan(plan: Billing.V2PlanLevel, interval: Billing.Interval) {
