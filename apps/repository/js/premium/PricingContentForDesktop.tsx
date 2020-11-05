@@ -2,7 +2,7 @@ import React from "react";
 import {Box, Divider, makeStyles, Paper} from "@material-ui/core";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
-import {PremiumButton} from "./PremiumButton";
+import {PurchaseOrChangePlanButton} from "./PurchaseOrChangePlanButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
 import {PricingFAQ} from "./PricingFAQ";
@@ -148,13 +148,13 @@ const DesktopTable = () => {
           <tr>
             <td></td>
             <td>
-              <PremiumButton newSubscription={{plan: V2PlanFree, interval}} />
+              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanFree, interval}} />
             </td>
             <td>
-              <PremiumButton newSubscription={{plan: V2PlanPlus, interval}} />
+              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPlus, interval}} />
             </td>
             <td>
-              <PremiumButton newSubscription={{plan: V2PlanPro, interval}} />
+              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPro, interval}} />
             </td>
           </tr>
 

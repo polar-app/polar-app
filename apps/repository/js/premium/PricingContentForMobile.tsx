@@ -2,7 +2,7 @@ import React from "react";
 import {Box, Divider, makeStyles, Paper} from "@material-ui/core";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {FATimesCircleIcon} from "../../../../web/js/mui/MUIFontAwesome";
-import {PremiumButton} from "./PremiumButton";
+import {PurchaseOrChangePlanButton} from "./PurchaseOrChangePlanButton";
 import {PlanCheckIcon} from "./PlanCheckIcon";
 import {PlanPricing} from "./PlanPricing";
 import {PricingFAQ} from "./PricingFAQ";
@@ -160,7 +160,7 @@ const PlanBox = (props: PlanBoxProps) => {
             <PlanPricing plan={props.plan.level}/>
           </Box>
 
-          <PremiumButton newSubscription={{plan: props.plan, interval: props.interval}} />
+          <PurchaseOrChangePlanButton newSubscription={{plan: props.plan, interval: props.interval}} />
 
           <table className={classes.tableMobile}>
             <tr className={classes.row}>

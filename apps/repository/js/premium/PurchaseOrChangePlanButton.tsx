@@ -21,7 +21,7 @@ export interface IProps {
     readonly newSubscription: Billing.V2Subscription;
 }
 
-export const PremiumButton = deepMemo((props: IProps) => {
+export const PurchaseOrChangePlanButton = deepMemo((props: IProps) => {
 
     const classes = useStyles();
     const changePlanActionContext = useChangePlanActionContext();
@@ -38,7 +38,7 @@ export const PremiumButton = deepMemo((props: IProps) => {
     // true if we're BUYING a new plan...
     const buyingNewPlan = subscription?.plan.level === 'free';
 
-    const text = buyingNewPlan ? "Buy" : "Change Plan";
+    const text = buyingNewPlan ? "Purchase" : "Change Plan";
 
     const clickHandler = React.useCallback(() => {
         changePlanActionContext.action(newSubscription);
