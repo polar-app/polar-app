@@ -11,7 +11,7 @@ import {
 } from "../../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useStripeCheckout} from "./UseStripeCheckout";
 
-function useAction() {
+function usePurchaseOrChangePlanAction() {
 
     const dialogManager = useDialogManager();
     const log = useLogger();
@@ -33,7 +33,7 @@ function useAction() {
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
 
             const doAsync = async () => {
-                dialogManager.snackbar({message: 'Creating payment method.  One moment... '});
+                dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
                 await stripeCheckout(newSubscription, email);
             }
 
@@ -61,7 +61,7 @@ function useAction() {
 
         }
 
-        const buyingNewPlan = currentSubscription.plan.level === 'free';
+        const buyingNewPlan = currentSubscription.plan.level === 'free' || newSubscription.interval === '4year';
 
         if (buyingNewPlan) {
             buyHandler();
@@ -80,7 +80,7 @@ interface IProps {
 export const DefaultChangePlanContextProvider = deepMemo((props: IProps) => {
 
     const type = 'change';
-    const action = useAction();
+    const action = usePurchaseOrChangePlanAction();
     const subscription = useUserSubscriptionContext();
 
     return (
