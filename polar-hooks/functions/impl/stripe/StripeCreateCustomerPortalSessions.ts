@@ -1,16 +1,23 @@
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeMode, StripeUtils} from "./StripeUtils";
+import {IDUser} from "../util/IDUsers";
 
 export namespace StripeCreateCustomerPortalSessions {
 
-    interface ICreateOpts {
+    interface IStripeCreateCustomerPortalSessionRequest {
         readonly stripeMode: StripeMode;
-        readonly email: string;
     }
 
-    export async function create(opts: ICreateOpts) {
+    export async function create(idUser: IDUser,
+                                 request: IStripeCreateCustomerPortalSessionRequest) {
 
-        const {stripeMode, email} = opts;
+        const {stripeMode} = request;
+        const email = idUser.user.email;
+
+        if (! email) {
+            throw new Error("No email for user");
+        }
+
         const customer = await StripeCustomers.getCustomerByEmail(stripeMode, email);
 
         if (! customer) {

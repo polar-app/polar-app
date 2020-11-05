@@ -5,7 +5,7 @@
  * Separating the value from the idToken means we avoid accidentally copying
  * the idToken in rest (...) arguments but also avoid conflating object usage.
  */
-export interface UserRequest<R> {
+export interface UserRequest<B> {
 
     /**
      * The token to authenticate the user.
@@ -13,9 +13,10 @@ export interface UserRequest<R> {
     readonly idToken: IDTokenStr;
 
     /**
-     * The actual request object.
+     * The actual request JSON body
      */
-    readonly request: R;
+    readonly body: B;
+
 }
 
 export type IDTokenStr = string;

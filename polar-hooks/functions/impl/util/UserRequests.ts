@@ -6,9 +6,13 @@ import express from 'express';
 
 export class UserRequests {
 
-    public static execute<R, V>(req: express.Request,
+    public static execute<B, V>(req: express.Request,
                                 res: express.Response,
-                                handler: (idUser: IDUser, request: R) => Promise<V>): void {
+                                handler: (idUser: IDUser,
+                                          body: B,
+                                          req: express.Request,
+                                          res: express.Response) => Promise<V>): void {
+
 
         const doHandle = async () => {
 
@@ -29,12 +33,12 @@ export class UserRequests {
 
             };
 
-            const userRequest: UserRequest<R> = toBody();
-            const {request} = userRequest;
+            const userRequest: UserRequest<B> = toBody();
+            const {body} = userRequest;
 
             const idUser = await IDUsers.fromIDToken(userRequest.idToken);
 
-            const response = await handler(idUser, request);
+            const response = await handler(idUser, body, req, res);
 
             ExpressFunctions.sendResponse(res, response || {});
 
