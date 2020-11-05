@@ -12,7 +12,7 @@ description: For the past few years I've been using Anki to capture anything I w
 
 For the past few years I've been using Anki to capture anything I want to
 remember long term.  If I'm reading an important Wikipedia page I save it to
-[Polar](https://getpolarized.io/), annotate it directly, then create flashcards 
+<a href="https://getpolarized.io" target="_blank">Polar</a>, annotate it directly, then create flashcards 
 from the annotations.
 
 I do this to my textbooks and anything else I find important enough to remember
@@ -31,7 +31,7 @@ or Memrise.
 
 ## Understand How It Works
 
-First, you should read a bit about [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) and make sure you know how
+First, you should read a bit about <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank">spaced reptition</a> and make sure you know how
 it works.
 
 This is key or you're going to make silly mistakes and revert to the old strategy
@@ -44,7 +44,7 @@ of learning and cramming.
 ## Make it Easy.
 
 Creating flashcards needs to be easy use a tool like
-[Polar](https://getpolarized.io/) so that you can create flashcards, comments,
+<a href="https://getpolarized.io" target="_blank">Polar</a> so that you can create flashcards, comments,
 and annotations directly while you're reading the material.
 
 Once created the flashcards can all be sync'd to Anki in batch.
@@ -60,7 +60,7 @@ between books and continue where you left off.
 
 ## Active Recall
 
-You should also understand why [active recall](https://en.wikipedia.org/wiki/Active_recall) is so important
+You should also understand why <a href="https://en.wikipedia.org/wiki/Active_recall" target="_blank">active recall</a> is so important
 
 > Active recall is a principle of efficient learning, which claims the need to
 actively stimulate memory during the learning process. It contrasts with passive
