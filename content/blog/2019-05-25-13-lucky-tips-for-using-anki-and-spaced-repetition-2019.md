@@ -149,11 +149,7 @@ I have trouble with matching names to faces and I used to avoid talking to peopl
 
 Now I just create a card with their picture and the answer is their name.
 
-It's really help avoid awkward social situations.
-
-<p class="text-center">
-<img class="img-fluid border border-secondary" src="https://i.imgur.com/qP4My84.png">
-</p>
+It really helps avoid awkward social situations.
 
 ## Related Cards
 
