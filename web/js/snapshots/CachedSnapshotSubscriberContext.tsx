@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Subject} from "rxjs";
 import {SnapshotSubscriber} from "polar-shared/src/util/Snapshots";
-import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {
     useLocalCachedSnapshotSubscriber
-} from "../../../../web/js/snapshots/CachedSnapshotSubscriber";
+} from "./CachedSnapshotSubscriber";
 
 export interface ISnapshot<V> {
 

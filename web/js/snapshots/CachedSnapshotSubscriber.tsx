@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {SnapshotSubscriber, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
-import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshotSubscriberContext";
+import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 
 export interface CachedSnapshotSubscriberOpts<V> {
 

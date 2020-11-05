@@ -1,4 +1,4 @@
-import {ISnapshot} from "../../../apps/repository/js/persistence_layer/CachedSnapshotSubscriberContext";
+import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
