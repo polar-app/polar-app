@@ -4,16 +4,21 @@ import {useDialogManager} from "./dialogs/MUIDialogControllers";
 import {DialogManager} from "./dialogs/MUIDialogController";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {ILogger} from "polar-shared/src/logger/ILogger";
+import {SentryBrowserLogger} from "../logger/SentryBrowserLogger";
+import {MultiLogger} from "../logger/MultiLogger";
 
 /**
  * Used so that we can use our MUI error dialog if an error was raised.
- * @NotStale
  */
 export function useLogger(): ILogger {
     const dialogManager = useDialogManager();
+    const sentryLogger = React.useMemo(() => new SentryBrowserLogger(), []);
     // it's important to useMemo here or the value will change and can trigger
     // too many renders of root components and nuke performance.
-    return React.useMemo(() => new MUILogger(dialogManager), [dialogManager]);
+    return React.useMemo(() => {
+        const muiLogger = new MUILogger(dialogManager);
+        return new MultiLogger(muiLogger, sentryLogger);
+    }, [dialogManager, sentryLogger]);
 }
 
 /**

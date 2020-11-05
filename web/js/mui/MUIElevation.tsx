@@ -3,9 +3,9 @@ import {deepMemo} from "../react/ReactUtils";
 import {useTheme} from "@material-ui/core/styles";
 import grey from '@material-ui/core/colors/grey'
 
-export type Elevation = 1 | 2 | 3 | 4;
+export type Elevation = 0 | 1 | 2 | 3 | 4;
 
-function useElevationBackground(elevation: Elevation) {
+export function useElevationBackground(elevation: Elevation) {
 
     // this would be better as a CSS style.
 
@@ -15,6 +15,8 @@ function useElevationBackground(elevation: Elevation) {
 
         switch(elevation) {
 
+            case 0:
+                return grey[900];
             case 1:
                 return grey[800];
             case 2:
@@ -30,6 +32,8 @@ function useElevationBackground(elevation: Elevation) {
 
         switch(elevation) {
 
+            case 0:
+                return grey[200];
             case 1:
                 return grey[300];
             case 2:
@@ -47,7 +51,9 @@ function useElevationBackground(elevation: Elevation) {
 
 interface IProps {
     readonly elevation: Elevation;
-    readonly children: React.ReactElement;
+    readonly children?: React.ReactElement;
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
 }
 
 /**
@@ -56,11 +62,17 @@ interface IProps {
  * https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
  */
 export const MUIElevation = deepMemo((props: IProps) => {
+
     const background = useElevationBackground(props.elevation);
 
     return (
-        <div style={{background}}>
+        <div style={{
+                 background,
+                 ...props.style
+             }}>
+
             {props.children}
+
         </div>
     );
 });

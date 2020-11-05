@@ -17,6 +17,7 @@ import {ReviewerStory} from "./impl/ReviewerStory";
 import {DocCardStory} from "./impl/DocCardStory";
 import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
 import {SideNavStory} from "./impl/SideNavStory";
+import {ElevationsStory} from "./impl/ElevationsStory";
 
 interface IStory {
     readonly name: string;
@@ -74,6 +75,10 @@ const stories = createStoryIndex([
     {
         name: "Side Nav",
         component: <SideNavStory/>
+    },
+    {
+        name: "Elevations",
+        component: <ElevationsStory/>
     }
 
 ]);
