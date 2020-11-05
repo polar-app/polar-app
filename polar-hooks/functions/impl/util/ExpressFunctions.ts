@@ -6,6 +6,8 @@ import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
 import { Rollbars } from './Rollbars';
+import {RollbarReporters} from "../reporters/RollbarReporters";
+import {SentryReporters} from "../reporters/SentryReporter";
 
 const rollbar = Rollbars.create();
 
@@ -70,9 +72,10 @@ export class ExpressFunctions {
 
         const msg = createMessage();
 
-        console.log("Handling error and sending to rollbar: ", err);
+        console.error("Handling error and sending to rollbar: ", err);
         rollbar.log("Sending message from google cloud function...");
-        rollbar.error(msg, err);
+        RollbarReporters.reportError(msg, err);
+        SentryReporters.reportError(msg, err);
 
         // errorHandler(err, req, res, next)
 
