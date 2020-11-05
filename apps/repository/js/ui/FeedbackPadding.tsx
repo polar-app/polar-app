@@ -9,11 +9,11 @@ interface IProps {
 /**
  * Provide enough margin so scrolling can never obscure the feedback button
  */
-export const FeedbackMargin = deepMemo((props: IProps) => {
+export const FeedbackPadding = deepMemo((props: IProps) => {
 
     const theme = useTheme();
     return (
-        <div style={{marginBottom: theme.spacing(8)}}>
+        <div style={{paddingBottom: theme.spacing(8)}}>
             {props.children}
         </div>
     )

@@ -8,7 +8,7 @@ import {AnnotationActiveInputContextProvider} from "../../../../web/js/annotatio
 import {DocMetaContextProvider} from "../../../../web/js/annotation_sidebar/DocMetaContextProvider";
 import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
 import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
-import {FeedbackMargin} from "../ui/FeedbackMargin";
+import {FeedbackPadding} from "../ui/FeedbackPadding";
 
 const NoAnnotationSelected = () => (
     <Box p={1}>
@@ -54,11 +54,11 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                         <>
                             <AnnotationInlineControlBar annotation={annotation}/>
 
-                            <FeedbackMargin>
+                            <FeedbackPadding>
                                 <div className="mt-1">
                                     <AnnotationView2 annotation={annotation}/>
                                 </div>
-                            </FeedbackMargin>
+                            </FeedbackPadding>
                         </>
                     </DocMetaContextProvider>
                 </>

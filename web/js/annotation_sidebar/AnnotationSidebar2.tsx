@@ -8,7 +8,7 @@ import {AnnotationActiveInputContextProvider} from "./AnnotationActiveInputConte
 import {AnnotationHeader} from './AnnotationSidebarHeader';
 import isEqual from "react-fast-compare";
 import {memoForwardRef} from "../react/ReactUtils";
-import {FeedbackMargin} from "../../../apps/repository/js/ui/FeedbackMargin";
+import {FeedbackPadding} from "../../../apps/repository/js/ui/FeedbackPadding";
 
 const LoadRepositoryExplainer = () => (
     <div className="p-2 text-center">
@@ -128,9 +128,9 @@ const Annotations = React.memo(() => {
                    flexDirection: 'column',
                    overflow: 'auto'
                }}>
-            <FeedbackMargin>
+            <FeedbackPadding>
                 <AnnotationsBlock/>
-            </FeedbackMargin>
+            </FeedbackPadding>
         </Paper>
     );
 
