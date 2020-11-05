@@ -4,7 +4,6 @@ import {createCachedSnapshotSubscriberContext} from "../../../web/js/snapshots/C
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
-
 const [CacheStoryProvider, useCachedSnapshot] = createCachedSnapshotSubscriberContext()
 
 const Inner = () => {
@@ -36,7 +35,9 @@ export const CachedSnapshotStory = () => {
     }
 
     return (
-        <CacheStoryProvider id='story' snapshotSubscriber={snapshotSubscriber} onError={onError}>
+        <CacheStoryProvider id='story'
+                            snapshotSubscriber={snapshotSubscriber}
+                            onError={onError}>
             <Inner/>
         </CacheStoryProvider>
     )
