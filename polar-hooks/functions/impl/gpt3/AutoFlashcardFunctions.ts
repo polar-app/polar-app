@@ -92,6 +92,33 @@ Q:`
         // this will be a JSON object with the response from gpt3...
         const gptResponse: GPTResponse = await response.json();
 
+        // Passing the reponse through the content-filter
+        const filterBody: any = {
+            "prompt": `<|endoftext|>${gptResponse.text}\n--\nLabel:`,
+            "temperature": 0,
+            "max_tokens": 1,
+            "top_p": 0
+        }
+
+        const filter_response = await Fetches.fetch('https://api.openai.com/v1/engines/content-filter-alpha-c4/completions', {
+            method: 'POST',
+            body: JSON.stringify(filterBody),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${config.apikey}`
+            }
+        });
+
+        // Sample response
+        // {'id': 'cmpl-skJkTnMh8CsMjQYuqWFlrXLm', 'object': 'text_completion', 'created': 1604603497, 'model': 'toxicity-double-18', 'choices': [{'text': '0', 'index': 0, 'logprobs': None, 'finish_reason': 'length'}]}
+        const filterResponse: any = await filter_response.json();
+
+        // Get the value from
+        // label = filterReponse["choices"][0]["text"]
+        // 0 - The text is safe.
+        // 1 - This text is sensitive. This means that the text could be talking about a sensitive topic, something political, religious, or talking about a protected class such as race or nationality.
+        // 2 - This text is unsafe. This means that the text contains profane language, prejudiced or hateful language, something that could be NSFW, or text that portrays certain groups/people in a harmful manner.
+
         return GPTResponses.toAutoFlashcardResponse(gptResponse);
 
     }
