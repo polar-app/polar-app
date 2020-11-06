@@ -12,7 +12,7 @@ import {SnapshotConverter, SnapshotSubscribers} from "polar-shared/src/util/Snap
 export const [PrefsContextProvider, usePrefsContext] = createCachedSnapshotSubscriberContext<PersistentPrefs>();
 
 interface IProps {
-    readonly children: JSX.Element;
+    readonly children: JSX.Element | React.ReactNode;
 }
 
 export const PrefsContext = React.memo((props: IProps) => {
@@ -53,7 +53,9 @@ export const PrefsContext = React.memo((props: IProps) => {
         <PrefsContextProvider id='story'
                               snapshotSubscriber={convertedSnapshotSubscriber}
                               onError={onError}
-                              filter={value => value !== undefined}>
+                              filter={value => {
+                                  return value !== undefined
+                              }}>
 
             {props.children}
 

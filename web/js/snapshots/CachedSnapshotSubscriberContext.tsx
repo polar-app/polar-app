@@ -46,7 +46,7 @@ interface ProviderProps<V> {
     readonly id: string;
     readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
     readonly onError: (err: Error) => void;
-    readonly children: JSX.Element;
+    readonly children: JSX.Element | React.ReactNode;
     readonly filter?: (value: ISnapshot<V> | undefined) => boolean;
 }
 
@@ -121,7 +121,7 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
         return (
 
             <context.Provider value={initialContext}>
-                {props.filter ? props.filter(storeContext.current) && props.children : props.children}
+                {props.filter ? (props.filter(storeContext.current) && props.children) : props.children}
             </context.Provider>
 
         );
