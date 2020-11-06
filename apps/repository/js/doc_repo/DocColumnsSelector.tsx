@@ -43,7 +43,9 @@ export const DocColumnsSelector = (props: IProps) => {
 
     const handleAccept = React.useCallback(() => {
         setOpen(false);
-        props.onAccept(columns);
+        const newColumns = COLUMNS.filter(current => columns.includes(current.id))
+                                  .map(current => current.id);
+        props.onAccept(newColumns);
     }, [columns, props]);
 
     return (

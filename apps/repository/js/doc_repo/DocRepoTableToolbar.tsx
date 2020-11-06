@@ -11,6 +11,7 @@ import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
 import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
+import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 
 export const DocRepoTableToolbar = React.memo(() => {
 
@@ -99,25 +100,29 @@ export const DocRepoTableToolbar = React.memo(() => {
 
                 </Grid>
 
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 50]}
-                    component="div"
-                    size="small"
-                    count={view.length}
-                    rowsPerPage={rowsPerPage}
-                    style={{
-                        padding: 0,
-                        minHeight: 0
-                    }}
-                    // onDoubleClick={event => {
-                    //     event.stopPropagation();
-                    //     event.preventDefault();
-                    // }}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+                <div style={{display: 'flex'}}>
 
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, 50]}
+                        component="div"
+                        size="small"
+                        count={view.length}
+                        rowsPerPage={rowsPerPage}
+                        style={{
+                            padding: 0,
+                            minHeight: 0
+                        }}
+                        // onDoubleClick={event => {
+                        //     event.stopPropagation();
+                        //     event.preventDefault();
+                        // }}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+
+                    <DocColumnsSelectorWithPrefs/>
+                </div>
             </Grid>
         </>
     );
