@@ -25,9 +25,7 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import {FADatabaseIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
-import {useDocMetadataEditor, useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
-import {RepoDocInfo} from "../RepoDocInfo";
-import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
+import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
 
