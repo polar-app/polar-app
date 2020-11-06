@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {RGBColor} from './ColorButton';
 import {ColorSelectorBox} from './ColorSelectorBox';
-import {MUIPopper} from "../../mui/menu/MUIPopper";
+import {MUIPopper, usePopperController} from "../../mui/menu/MUIPopper";
 import PaletteIcon from "@material-ui/icons/Palette";
 import {deepMemo} from "../../react/ReactUtils";
 
@@ -25,24 +25,45 @@ interface IProps {
 
 }
 
+interface ColorSelectorInnerProps {
+    readonly color: RGBColor;
+    readonly onColor: (color: string) => void;
+}
+
+const ColorSelectorInner = deepMemo((props: ColorSelectorInnerProps) => {
+
+    const popperController = usePopperController();
+
+    const handleSelected = React.useCallback((color: RGBColor) => {
+        props.onColor(color);
+        popperController.dismiss();
+    }, [popperController, props]);
+
+    return (
+        <ColorSelectorBox selected={[props.color]}
+                          onSelected={handleSelected}/>
+    );
+
+});
+
 export const ColorSelector = deepMemo((props: IProps) => {
 
     const onSelected = props.onSelected || NULL_FUNCTION;
 
     const [color, setColor] = React.useState<RGBColor>(props.color);
 
-    function handleSelected(color: RGBColor) {
+    const handleSelected = React.useCallback((color: RGBColor) => {
         setColor(color);
         onSelected(color);
-    }
+    }, [onSelected]);
 
     return (
         // <Tooltip title={`Used to ${props.role} the color.`}>
             <MUIPopper size="small"
                        icon={<PaletteIcon/>}>
-
-                <ColorSelectorBox selected={[color]}
-                                  onSelected={handleSelected}/>
+                <div>
+                    <ColorSelectorInner color={color} onColor={handleSelected}/>
+                </div>
 
             </MUIPopper>
         // </Tooltip>
