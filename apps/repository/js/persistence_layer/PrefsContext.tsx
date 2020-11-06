@@ -52,8 +52,11 @@ export const PrefsContext = React.memo((props: IProps) => {
     return (
         <PrefsContextProvider id='story'
                               snapshotSubscriber={convertedSnapshotSubscriber}
-                              onError={onError}>
+                              onError={onError}
+                              filter={value => value !== undefined}>
+
             {props.children}
+
         </PrefsContextProvider>
     )
 
