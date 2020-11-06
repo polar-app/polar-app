@@ -28,6 +28,8 @@ import {PrefsContext} from "./PrefsContext";
 export interface IPrefsContext {
     readonly get: (key: string) => string | undefined;
     readonly fetch: (key: string) => Pref | undefined;
+    readonly commit: () => Promise<void>;
+    readonly set: (key: string, value: string) => void
 }
 
 export interface ITagsContext {
@@ -91,6 +93,14 @@ export function usePrefsContext() {
         fetch: (key: string): Pref | undefined => {
             const datastore = persistenceLayerProvider().datastore;
             return datastore.getPrefs().get().fetch(key);
+        },
+        commit: async (): Promise<void> => {
+            const datastore = persistenceLayerProvider().datastore;
+            await datastore.getPrefs().get().commit();
+        },
+        set: (key: string, value: string): void => {
+            const datastore = persistenceLayerProvider().datastore;
+            datastore.getPrefs().get().set(key, value);
         }
 
     }
