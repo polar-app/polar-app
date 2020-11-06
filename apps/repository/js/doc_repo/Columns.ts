@@ -1,10 +1,10 @@
-import {RepoDocInfo} from "../RepoDocInfo";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Sorting} from "./Sorting";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 export interface ColumnDescriptor {
     disablePadding: boolean;
-    id: keyof RepoDocInfo;
+    id: keyof IDocInfo;
     label: string;
     numeric: boolean;
     width: string;
@@ -20,6 +20,7 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'added', numeric: false, disablePadding: true, label: 'Added', width: '7em', defaultOrder: 'desc' },
     { id: 'lastUpdated', numeric: false, disablePadding: true, label: 'Updated', width: '7em', defaultOrder: 'desc' },
     { id: 'tags', numeric: true, disablePadding: true, label: 'Tags', width: '250px', defaultOrder: 'asc' },
+    { id: 'authors', numeric: true, disablePadding: true, label: 'Authors', width: '250px', defaultOrder: 'asc' },
     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px', defaultOrder: 'desc' },
 ];
 

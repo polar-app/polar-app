@@ -4,11 +4,12 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {COLUMNS, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
+import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {Sorting} from "./Sorting";
 import {
     useDocRepoStore, useDocRepoCallbacks
 } from "./DocRepoStore2";
+import {useDocRepoColumns} from "./DocRepoColumnsHook";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,12 +37,16 @@ export function DocRepoTableHead() {
     const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
     const {setSort} = useDocRepoCallbacks();
 
+    const selectedColumns = useDocRepoColumns();
+
+    const columns = selectedColumns.map(current => COLUMN_MAP[current]);
+
     return (
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
                 </TableCell>
-                {COLUMNS.map((column) => {
+                {columns.map((column) => {
 
                     const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
 

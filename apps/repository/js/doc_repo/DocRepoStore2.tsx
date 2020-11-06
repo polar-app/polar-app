@@ -76,7 +76,7 @@ interface IDocRepoStore {
     /**
      * The column we are sorting by.
      */
-    readonly orderBy: keyof RepoDocInfo;
+    readonly orderBy: keyof IDocInfo;
 
     /**
      * The page number we're viewing
@@ -111,7 +111,7 @@ interface IDocRepoCallbacks {
     readonly setRowsPerPage: (rowsPerPage: number) => void;
     readonly setSelected: (selected: ReadonlyArray<IDStr> | 'all' | 'none') => void;
     readonly setFilters: (filters: DocRepoFilters2.Filter) => void;
-    readonly setSort: (order: Sorting.Order, orderBy: keyof RepoDocInfo) => void;
+    readonly setSort: (order: Sorting.Order, orderBy: keyof IDocInfo) => void;
 
     // *** actual actions that manipulate the backend
     readonly doTagged: (repoDocInfos: ReadonlyArray<RepoDocInfo>,
@@ -376,7 +376,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         });
     }
 
-    function setSort(order: Sorting.Order, orderBy: keyof RepoDocInfo) {
+    function setSort(order: Sorting.Order, orderBy: keyof IDocInfo) {
         const store = storeProvider();
 
         mutator.doReduceAndUpdateState({

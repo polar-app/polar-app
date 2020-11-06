@@ -213,7 +213,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                 return (
                     <StringArrayAutocompleteProperty className={classes.property}
                                                      docInfo={docInfo}
-                                                     values={docInfo[property.name] as string[]}
+                                                     values={Object.values(docInfo[property.name] || {}) as string[]}
                                                      onChange={values => handleFieldChangeForStringArray(property, values)}
                                                      {...property}/>
                 );

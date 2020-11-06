@@ -16,6 +16,8 @@ import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import {useDocRepoColumns} from "./DocRepoColumnsHook";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -64,6 +66,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         colTags: {
             width: COLUMN_MAP.tags.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colAuthors: {
+            width: COLUMN_MAP.authors.width,
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             userSelect: 'none',
@@ -138,6 +147,106 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     };
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
+    const columns = useDocRepoColumns();
+
+    const toCell = React.useCallback((id: keyof IDocInfo) => {
+
+        switch(id) {
+
+            case 'title':
+                return (
+                    <TableCell key={id}
+                               component="th"
+                               id={labelId}
+                               scope="row"
+                               className={classes.colTitle}
+                               padding="none"
+                               onClick={selectRowClickHandler}
+                               onContextMenu={contextMenuHandler}>
+                        {row.title}
+                    </TableCell>
+                );
+
+            case 'added':
+                return (
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCell className={classes.colAdded}
+                                   padding="none"
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            <DateTimeTableCell datetime={row.added}/>
+
+                        </TableCell>
+                    </DeviceRouters.NotPhone>
+                );
+
+            case 'lastUpdated':
+                return (
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCell className={classes.colLastUpdated}
+                                   padding="none"
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            <DateTimeTableCell datetime={row.lastUpdated}/>
+
+                        </TableCell>
+                    </DeviceRouters.NotPhone>
+                );
+
+            case 'tags':
+                return (
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCellTags contextMenuHandler={contextMenuHandler}
+                                       selectRow={selectRow}
+                                       viewID={row.id}
+                                       tags={row.tags}/>
+                    </DeviceRouters.NotPhone>
+                );
+
+            case 'authors':
+
+                return (
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCell padding="none"
+                                   className={classes.colAuthors}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            {Object.values(row.docInfo.authors || {}).join(', ')}
+
+                        </TableCell>
+                    </DeviceRouters.NotPhone>
+                );
+
+            case 'progress':
+
+                return (
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCell className={classes.colProgress}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}
+                                   padding="none">
+
+                            <progress className={classes.progress}
+                                      value={row.progress}
+                                      max={100}/>
+
+                        </TableCell>
+                    </DeviceRouters.NotPhone>
+
+                );
+
+            default:
+                return (
+                    <div key={id}>
+                        column {id} not supported
+                    </div>
+                );
+        }
+
+    }, [classes, contextMenuHandler, labelId, row, selectRow, selectRowClickHandler]);
 
     return (
         <TableRow
@@ -164,67 +273,22 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                 </AutoBlur>
             </TableCell>
 
-            <TableCell component="th"
-                       id={labelId}
-                       scope="row"
-                       className={classes.colTitle}
-                       padding="none"
-                       onClick={selectRowClickHandler}
-                       onContextMenu={contextMenuHandler}>
-                {row.title}
-            </TableCell>
+            {columns.map(toCell)}
 
             <DeviceRouters.NotPhone>
-                <>
-                    <TableCell className={classes.colAdded}
-                               padding="none"
-                               onClick={selectRowClickHandler}
-                               onContextMenu={contextMenuHandler}>
+                <TableCell align="right"
+                           padding="none"
+                           className={classes.colDocButtons}
+                           onClick={event => event.stopPropagation()}
+                           onDoubleClick={event => event.stopPropagation()}>
 
-                        <DateTimeTableCell datetime={row.added}/>
+                    <MUIDocButtonBar className={classes.docButtons}
+                                     flagged={row.flagged}
+                                     archived={row.archived}
+                                     viewID={row.id}
+                                     {...props}/>
 
-                    </TableCell>
-
-                    <TableCell className={classes.colLastUpdated}
-                               padding="none"
-                               onClick={selectRowClickHandler}
-                               onContextMenu={contextMenuHandler}>
-
-                        <DateTimeTableCell datetime={row.lastUpdated}/>
-
-                    </TableCell>
-
-                    <TableCellTags contextMenuHandler={contextMenuHandler}
-                                   selectRow={selectRow}
-                                   viewID={row.id}
-                                   tags={row.tags}/>
-
-                    <TableCell className={classes.colProgress}
-                               onClick={selectRowClickHandler}
-                               onContextMenu={contextMenuHandler}
-                               padding="none">
-
-                        <progress className={classes.progress}
-                                  value={row.progress}
-                                  max={100}/>
-
-                    </TableCell>
-
-                    <TableCell align="right"
-                               padding="none"
-                               className={classes.colDocButtons}
-                               onClick={event => event.stopPropagation()}
-                               onDoubleClick={event => event.stopPropagation()}>
-
-                        <MUIDocButtonBar className={classes.docButtons}
-                                         flagged={row.flagged}
-                                         archived={row.archived}
-                                         viewID={row.id}
-                                         {...props}/>
-
-                    </TableCell>
-
-                </>
+                </TableCell>
             </DeviceRouters.NotPhone>
         </TableRow>
     );
