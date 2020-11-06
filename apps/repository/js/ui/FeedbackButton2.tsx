@@ -13,6 +13,9 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {useActiveKeyboardShortcutsCallbacks} from "../../../../web/js/hotkeys/ActiveKeyboardShortcutsStore";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import VideoCallIcon from '@material-ui/icons/VideoCall';
+import AllInboxIcon from '@material-ui/icons/AllInbox';
+import KeyboardIcon from '@material-ui/icons/Keyboard';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -81,6 +84,7 @@ namespace MenuItems {
 
         return (
             <MUIMenuItem text="Send Video Feedback"
+                         icon={<VideoCallIcon/>}
                          onClick={handleClick}/>
         );
 
@@ -92,6 +96,7 @@ namespace MenuItems {
 
         return (
             <MUIMenuItem text="Request Features and Help Improve Polar"
+                         icon={<AllInboxIcon/>}
                          onClick={reportFeedback}/>
         );
 
@@ -103,6 +108,7 @@ namespace MenuItems {
 
         return (
             <MUIMenuItem text="Show Active Keyboard Shortcuts"
+                         icon={<KeyboardIcon/>}
                          onClick={() => setShowActiveShortcuts(true)}/>
         );
 
