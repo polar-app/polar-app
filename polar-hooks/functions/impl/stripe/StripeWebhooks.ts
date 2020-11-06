@@ -67,9 +67,9 @@ export namespace StripeWebhooks {
         async function retrieveInvoice() {
 
             if (paymentIntent.invoice === null) {
+                // FIXME: now this is the problem.  There's no invoice even though there should be...
                 throw new Error("No invoice")
             }
-
 
             if (typeof paymentIntent.invoice === 'string') {
                 return stripe.invoices.retrieve(paymentIntent.invoice);
