@@ -11,7 +11,6 @@ import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
 import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
-import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 
 export const DocRepoTableToolbar = React.memo(() => {
 
@@ -121,7 +120,6 @@ export const DocRepoTableToolbar = React.memo(() => {
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                     />
 
-                    <DocColumnsSelectorWithPrefs/>
                 </div>
             </Grid>
         </>

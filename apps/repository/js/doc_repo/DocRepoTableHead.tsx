@@ -10,6 +10,7 @@ import {
     useDocRepoStore, useDocRepoCallbacks
 } from "./DocRepoStore2";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
+import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,6 +27,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         th: {
             whiteSpace: 'nowrap'
+        },
+        row: {
+            "& th": {
+                paddingTop: '3px',
+                paddingBottom: '3px',
+                paddingLeft: 0,
+                paddingRight: 0
+            }
         }
     }),
 );
@@ -43,7 +52,7 @@ export function DocRepoTableHead() {
 
     return (
         <TableHead>
-            <TableRow>
+            <TableRow className={classes.row}>
                 <TableCell padding="checkbox">
                 </TableCell>
                 {columns.map((column) => {
@@ -75,7 +84,13 @@ export function DocRepoTableHead() {
                     )
                 })}
 
-                <TableCell style={{width: DOC_BUTTON_COLUMN_WIDTH}}/>
+                <TableCell style={{
+                               width: DOC_BUTTON_COLUMN_WIDTH,
+                           }}>
+                    <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                        <DocColumnsSelectorWithPrefs/>
+                    </div>
+                </TableCell>
 
             </TableRow>
         </TableHead>

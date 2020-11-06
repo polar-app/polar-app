@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import {MUIDialog} from "../../../../web/js/ui/dialogs/MUIDialog";
@@ -12,7 +11,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Box from '@material-ui/core/Box';
 interface IProps {
     readonly columns: ReadonlyArray<keyof IDocInfo>;
     readonly onAccept: (columns: ReadonlyArray<keyof IDocInfo>) => void;
@@ -51,9 +51,14 @@ export const DocColumnsSelector = (props: IProps) => {
     return (
 
         <>
-            <IconButton onClick={() => setOpen(true)}>
-                <EditAttributesIcon/>
-            </IconButton>
+            <Box mr={1}>
+                <IconButton size="small"
+                            onClick={() => setOpen(true)}>
+                    <Box color="text.secondary">
+                        <FilterListIcon/>
+                    </Box>
+                </IconButton>
+            </Box>
 
             <MUIDialog open={open} onClose={() => setOpen(false)}>
 
