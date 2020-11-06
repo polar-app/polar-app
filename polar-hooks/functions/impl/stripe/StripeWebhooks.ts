@@ -117,14 +117,14 @@ export namespace StripeWebhooks {
 
         const stripeMode = event.stripeMode;
 
-        if (status === 'active') {
+        async function handleSubscriptionEvent() {
 
-            async function handleSubscriptionEvent() {
+            const subscriptionEvent = toSubscriptionEvent(event.value);
 
-                const subscriptionEvent = toSubscriptionEvent(event.value);
+            const {status, customerID, planID, subscriptionID} = subscriptionEvent;
+            const sub = StripePlanIDs.toSubscription(stripeMode, planID);
 
-                const {customerID, planID, subscriptionID} = subscriptionEvent;
-                const sub = StripePlanIDs.toSubscription(stripeMode, planID);
+            if (status === 'active') {
 
                 switch (event.eventType) {
 
@@ -143,43 +143,43 @@ export namespace StripeWebhooks {
 
                 }
 
+            } else {
+                console.log("Ignoring incomplete subscription");
             }
 
-            async function handleCheckoutSessionCompleted() {
+        }
 
-                const checkoutSessionCompletedEvent = await toCheckoutSessionCompletedEvent(stripeMode, event.value);
-                const {priceID, customerID} = checkoutSessionCompletedEvent;
-                const sub = StripePlanIDs.toSubscription(stripeMode, priceID);
+        async function handleCheckoutSessionCompleted() {
 
-                if (sub.interval === '4year') {
-                    // we're only handling 4 year here right now and we
-                    // should use the regular functions for other plans
-                    // because they're not subscriptions.
-                    await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, undefined);
-                }
+            const checkoutSessionCompletedEvent = await toCheckoutSessionCompletedEvent(stripeMode, event.value);
+            const {priceID, customerID} = checkoutSessionCompletedEvent;
+            const sub = StripePlanIDs.toSubscription(stripeMode, priceID);
 
+            if (sub.interval === '4year') {
+                // we're only handling 4 year here right now and we
+                // should use the regular functions for other plans
+                // because they're not subscriptions.
+                await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, undefined);
             }
 
-            switch (event.eventType) {
+        }
 
-                case 'customer.subscription.created':
-                case 'customer.subscription.updated':
-                case 'customer.subscription.deleted':
-                    await handleSubscriptionEvent();
-                    break;
+        switch (event.eventType) {
 
-                case 'checkout.session.completed':
-                    await handleCheckoutSessionCompleted();
-                    break;
+            case 'customer.subscription.created':
+            case 'customer.subscription.updated':
+            case 'customer.subscription.deleted':
+                await handleSubscriptionEvent();
+                break;
 
-                default:
-                    console.log("No handler for event type: " + event.eventType);
-                    break;
+            case 'checkout.session.completed':
+                await handleCheckoutSessionCompleted();
+                break;
 
-            }
+            default:
+                console.log("No handler for event type: " + event.eventType);
+                break;
 
-        } else {
-            console.log("Ignoring incomplete subscription");
         }
 
     }
