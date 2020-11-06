@@ -1,33 +1,88 @@
 import * as React from 'react';
-import FormControl from '@material-ui/core/FormControl';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import EditAttributesIcon from '@material-ui/icons/EditAttributes';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import {MUIDialog} from "../../../../web/js/ui/dialogs/MUIDialog";
+import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import {ColumnDescriptor, COLUMNS} from "./Columns";
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface IProps {
-    readonly columns: ReadonlyArray<keyof IDocInfo>
+    readonly columns: ReadonlyArray<keyof IDocInfo>;
+    readonly onAccept: (columns: ReadonlyArray<keyof IDocInfo>) => void;
 }
 
-const names = ['foo', 'bar'];
+export const DocColumnsSelector = (props: IProps) => {
 
-export const DocColumnsSelector = () => {
+    const [open, setOpen] = React.useState(false);
+
+    const [columns, setColumns] = React.useState(props.columns);
+
+    const handleToggleColumn = React.useCallback((column: ColumnDescriptor) => {
+        if (columns.includes(column.id)) {
+            setColumns(columns.filter(current => current !== column.id));
+        } else {
+            setColumns([...columns, column.id]);
+        }
+    }, [columns]);
+
+    const toListItem = React.useCallback((column: ColumnDescriptor) => {
+        return (
+            <ListItem button onClick={() => handleToggleColumn(column)}>
+                <Checkbox checked={columns.includes(column.id)} />
+                <ListItemText primary={column.label} />
+            </ListItem>
+        )
+    }, [columns, handleToggleColumn]);
+
+    const handleAccept = React.useCallback(() => {
+        setOpen(false);
+        props.onAccept(columns);
+    }, [columns, props]);
+
     return (
-        <FormControl>
-            <Select
-                multiple
-                value={[]}
-                onChange={NULL_FUNCTION}
-                // input={<div />}
-                // MenuProps={MenuProps}>
-                >
-                {names.map((name) => (
-                    <MenuItem key={name} value={name}>
-                        {name}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    )
+
+        <>
+            <IconButton onClick={() => setOpen(true)}>
+                <EditAttributesIcon/>
+            </IconButton>
+
+            <MUIDialog open={open} onClose={() => setOpen(false)}>
+
+                <DialogTitle>
+                    Change Visible Document Columns
+                </DialogTitle>
+
+                <DialogContent>
+                    <List style={{minWidth: '250px'}}>
+                        {COLUMNS.map(toListItem)}
+                    </List>
+                </DialogContent>
+
+                <DialogActions>
+
+                    <Button onClick={() => setOpen(false)}
+                            size="large">
+                        Cancel
+                    </Button>
+
+                    <Button onClick={handleAccept}
+                            size="large"
+                            color="primary"
+                            variant="contained">
+                        Apply
+                    </Button>
+
+                </DialogActions>
+
+            </MUIDialog>
+        </>
+    );
+
 }

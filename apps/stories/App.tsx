@@ -18,7 +18,7 @@ import {DocCardStory} from "./impl/DocCardStory";
 import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
 import {SideNavStory} from "./impl/SideNavStory";
 import {ElevationsStory} from "./impl/ElevationsStory";
-import {DocColumnsSelector} from "../repository/js/doc_repo/DocColumnsSelector";
+import {DocColumnsStory} from "./impl/DocColumnsStory";
 
 interface IStory {
     readonly name: string;
@@ -83,7 +83,7 @@ const stories = createStoryIndex([
     },
     {
         name: "DocColumnsSelector",
-        component: <DocColumnsSelector/>
+        component: <DocColumnsStory/>
     }
 
 
