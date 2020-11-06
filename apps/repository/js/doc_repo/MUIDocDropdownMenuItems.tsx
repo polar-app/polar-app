@@ -25,7 +25,7 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import {FADatabaseIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
-import {useDocMetadataEditor} from "./doc_metadata_editor/DocMetadataEditorHook";
+import {useDocMetadataEditor, useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 import {RepoDocInfo} from "../RepoDocInfo";
 import { IDocInfo } from 'polar-shared/src/metadata/IDocInfo';
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
@@ -146,31 +146,10 @@ export function useJSONDownloadHandler() {
 
 const UpdateDocMetadataMenuItem = deepMemo(() => {
 
-    const {selectedProvider, onUpdated} = useDocRepoCallbacks();
-    const docMetadataEditor = useDocMetadataEditor()
-
-    const handleUpdated = React.useCallback((repoDocInfo: RepoDocInfo, docInfo: IDocInfo) => {
-
-        onUpdated(repoDocInfo, docInfo)
-
-    }, [onUpdated]);
-
-    const handleUpdateMetadata = React.useCallback(() => {
-
-        const selected = selectedProvider();
-
-        if (selected.length === 0) {
-            return;
-        }
-
-        const repoDocInfo = selected[0];
-
-        docMetadataEditor(repoDocInfo.docInfo, (docInfo) => handleUpdated(repoDocInfo, docInfo));
-
-    }, [docMetadataEditor, handleUpdated, selectedProvider]);
+    const docMetadataEditorForSelected = useDocMetadataEditorForSelected()
 
     return (
-        <MenuItem onClick={handleUpdateMetadata}>
+        <MenuItem onClick={docMetadataEditorForSelected}>
             <ListItemIcon>
                 <BallotIcon fontSize="small"/>
             </ListItemIcon>

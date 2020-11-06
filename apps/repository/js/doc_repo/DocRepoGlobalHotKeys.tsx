@@ -7,6 +7,7 @@ import {
     GlobalKeyboardShortcuts,
     keyMapWithGroup
 } from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {useDocMetadataEditor, useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 
 const globalKeyMap = keyMapWithGroup(
     {
@@ -42,6 +43,11 @@ const globalKeyMap = keyMapWithGroup(
                 description: "Open the current document in the document viewer",
                 sequences: ['Enter']
             },
+            UPDATE_METADATA: {
+                name: "Update Document Metadata",
+                description: "Update document metadata and additional fields like authors, abstract, etc.",
+                sequences: ['m']
+            },
 
         }
     });
@@ -50,13 +56,16 @@ export const DocRepoGlobalHotKeys = React.memo(() => {
 
     const callbacks = useDocRepoCallbacks();
 
+    const docMetadataEditorForSelected = useDocMetadataEditorForSelected();
+
     const globalKeyHandlers = {
         TAG: callbacks.onTagged,
         DELETE: callbacks.onDeleted,
         FLAG: callbacks.onFlagged,
         ARCHIVE: callbacks.onArchived,
         RENAME: callbacks.onRename,
-        OPEN: callbacks.onOpen
+        OPEN: callbacks.onOpen,
+        UPDATE_METADATA: docMetadataEditorForSelected
     };
 
     const location = useLocationWithPathOnly();

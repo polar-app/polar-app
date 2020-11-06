@@ -2,6 +2,8 @@ import * as React from 'react';
 import {useDialogManager} from "../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DocMetadataEditor} from "./DocMetadataEditor";
+import {useDocRepoCallbacks} from "../DocRepoStore2";
+import {RepoDocInfo} from "../../RepoDocInfo";
 
 export function useDocMetadataEditor() {
 
@@ -35,5 +37,30 @@ export function useDocMetadataEditor() {
         });
 
     }, [dialogs, handleUpdate])
+
+}
+
+export function useDocMetadataEditorForSelected() {
+
+    const {selectedProvider, onUpdated} = useDocRepoCallbacks();
+    const docMetadataEditor = useDocMetadataEditor()
+
+    const handleUpdated = React.useCallback((repoDocInfo: RepoDocInfo, docInfo: IDocInfo) => {
+        onUpdated(repoDocInfo, docInfo)
+    }, [onUpdated]);
+
+    return React.useCallback(() => {
+
+        const selected = selectedProvider();
+
+        if (selected.length === 0) {
+            return;
+        }
+
+        const repoDocInfo = selected[0];
+
+        docMetadataEditor(repoDocInfo.docInfo, (docInfo) => handleUpdated(repoDocInfo, docInfo));
+
+    }, [docMetadataEditor, handleUpdated, selectedProvider]);
 
 }
