@@ -235,14 +235,26 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
                         </TableCell>
                     </DeviceRouters.NotPhone>
-
                 );
 
             default:
                 return (
-                    <div key={id}>
-                        column {id} not supported
-                    </div>
+                    <DeviceRouters.NotPhone key={id}>
+                        <TableCell className={classes.colProgress}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}
+                                   padding="none"
+                                   style={{
+                                       width: COLUMN_MAP[id].width,
+                                       overflow: 'hidden',
+                                       whiteSpace: 'nowrap',
+                                       textOverflow: 'ellipsis'
+                                   }}>
+
+                            {row.docInfo[id]}
+
+                        </TableCell>
+                    </DeviceRouters.NotPhone>
                 );
         }
 

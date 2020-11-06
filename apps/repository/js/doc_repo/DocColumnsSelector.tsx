@@ -66,7 +66,7 @@ export const DocColumnsSelector = (props: IProps) => {
                 <MUIDialog open={open} onClose={() => setOpen(false)}>
 
                     <DialogTitle>
-                        Change Visible Document Columns
+                        Change Visible Document Metadata Columns
                     </DialogTitle>
 
                     <DialogContent>
