@@ -11,6 +11,7 @@ import {
 } from "./DocRepoStore2";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,12 +49,14 @@ export function DocRepoTableHead() {
 
     const selectedColumns = useDocRepoColumnsPrefs();
 
-    const columns = selectedColumns.map(current => COLUMN_MAP[current]);
+    const columns = selectedColumns.map(current => COLUMN_MAP[current])
+                                   .filter(current => isPresent(current));
 
     return (
         <TableHead>
             <TableRow className={classes.row}>
-                <TableCell padding="checkbox">
+                <TableCell key="left-checkbox"
+                           padding="checkbox">
                 </TableCell>
                 {columns.map((column) => {
 
@@ -84,7 +87,8 @@ export function DocRepoTableHead() {
                     )
                 })}
 
-                <TableCell style={{
+                <TableCell key="right-filter"
+                           style={{
                                width: DOC_BUTTON_COLUMN_WIDTH,
                            }}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>

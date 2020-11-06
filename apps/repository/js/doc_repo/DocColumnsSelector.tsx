@@ -34,7 +34,9 @@ export const DocColumnsSelector = (props: IProps) => {
 
     const toListItem = React.useCallback((column: ColumnDescriptor) => {
         return (
-            <ListItem button onClick={() => handleToggleColumn(column)}>
+            <ListItem key={column.id}
+                      button
+                      onClick={() => handleToggleColumn(column)}>
                 <Checkbox checked={columns.includes(column.id)} />
                 <ListItemText primary={column.label} />
             </ListItem>
@@ -60,35 +62,36 @@ export const DocColumnsSelector = (props: IProps) => {
                 </IconButton>
             </Box>
 
-            <MUIDialog open={open} onClose={() => setOpen(false)}>
+            {open && (
+                <MUIDialog open={open} onClose={() => setOpen(false)}>
 
-                <DialogTitle>
-                    Change Visible Document Columns
-                </DialogTitle>
+                    <DialogTitle>
+                        Change Visible Document Columns
+                    </DialogTitle>
 
-                <DialogContent>
-                    <List style={{minWidth: '250px'}}>
-                        {COLUMNS.map(toListItem)}
-                    </List>
-                </DialogContent>
+                    <DialogContent>
+                        <List style={{minWidth: '250px'}}>
+                            {COLUMNS.map(toListItem)}
+                        </List>
+                    </DialogContent>
 
-                <DialogActions>
+                    <DialogActions>
 
-                    <Button onClick={() => setOpen(false)}
-                            size="large">
-                        Cancel
-                    </Button>
+                        <Button onClick={() => setOpen(false)}
+                                size="large">
+                            Cancel
+                        </Button>
 
-                    <Button onClick={handleAccept}
-                            size="large"
-                            color="primary"
-                            variant="contained">
-                        Apply
-                    </Button>
+                        <Button onClick={handleAccept}
+                                size="large"
+                                color="primary"
+                                variant="contained">
+                            Apply
+                        </Button>
 
-                </DialogActions>
+                    </DialogActions>
 
-            </MUIDialog>
+                </MUIDialog>)}
         </>
     );
 
