@@ -16,7 +16,7 @@ import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {useDocRepoColumns} from "./DocRepoColumnsHook";
+import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -147,7 +147,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     };
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
-    const columns = useDocRepoColumns();
+    const columns = useDocRepoColumnsPrefs();
 
     const toCell = React.useCallback((id: keyof IDocInfo) => {
 

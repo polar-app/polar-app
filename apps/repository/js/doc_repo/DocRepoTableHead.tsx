@@ -9,7 +9,7 @@ import {Sorting} from "./Sorting";
 import {
     useDocRepoStore, useDocRepoCallbacks
 } from "./DocRepoStore2";
-import {useDocRepoColumns} from "./DocRepoColumnsHook";
+import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,7 +37,7 @@ export function DocRepoTableHead() {
     const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
     const {setSort} = useDocRepoCallbacks();
 
-    const selectedColumns = useDocRepoColumns();
+    const selectedColumns = useDocRepoColumnsPrefs();
 
     const columns = selectedColumns.map(current => COLUMN_MAP[current]);
 

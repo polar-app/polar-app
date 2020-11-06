@@ -16,7 +16,6 @@ import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
 import {MUINextIconButton} from "../../../../web/js/mui/icon_buttons/MUINextIconButton";
 import {DeviceRouter, DeviceRouters} from '../../../../web/js/ui/DeviceRouter';
 import {MUIPrevIconButton} from "../../../../web/js/mui/icon_buttons/MUIPrevIconButton";
-import {useDocRepoColumns} from "../doc_repo/DocRepoColumnsHook";
 
 interface ToolbarProps {
     readonly nrRows: number;
