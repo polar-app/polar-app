@@ -1,6 +1,6 @@
 {
   "name": "polar-hooks",
-  "version": "2.0.74",
+  "version": "2.0.75",
   "description": "Performs HTTP auth for us using a token scheme",
   "main": "index.js",
   "repository": "git@github.com:burtonator/polar-proxy.git",
@@ -20,9 +20,9 @@
     "@types/escape-html": "0.0.20",
     "@types/uuid": "3.4.5",
     "escape-html": "^1.0.3",
-    "polar-backend-shared": "^2.0.74",
-    "polar-firebase": "^2.0.74",
-    "polar-webapp-dist": "^2.0.74",
+    "polar-backend-shared": "^2.0.75",
+    "polar-firebase": "^2.0.75",
+    "polar-webapp-dist": "^2.0.75",
     "uuid": "3.3.3"
   }
 }
