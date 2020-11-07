@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from "@material-ui/core/Typography";
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
@@ -9,6 +8,7 @@ import {DocMetaContextProvider} from "../../../../web/js/annotation_sidebar/DocM
 import {AnnotationView2} from "../../../../web/js/annotation_sidebar/annotations/AnnotationView2";
 import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
 import {FeedbackPadding} from "../ui/FeedbackPadding";
+import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
 const NoAnnotationSelected = () => (
     <Box p={1}>
@@ -39,11 +39,12 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <div style={{
-                  display: 'flex',
-                  flexGrow: 1,
-                  flexDirection: 'column'
-             }}>
+        <MUIElevation elevation={0}
+                      style={{
+                          display: 'flex',
+                          flexGrow: 1,
+                          flexDirection: 'column'
+                       }}>
 
             <AnnotationActiveInputContextProvider>
                 <>
@@ -62,7 +63,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                 </>
             </AnnotationActiveInputContextProvider>
 
-        </div>
+        </MUIElevation>
     );
 });
 
