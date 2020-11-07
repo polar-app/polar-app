@@ -15,6 +15,9 @@ import {isPresent} from "polar-shared/src/Preconditions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {
+            backgroundColor: theme.palette.background.paper
+        },
         visuallyHidden: {
             border: 0,
             clip: 'rect(0 0 0 0)',
@@ -27,14 +30,15 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 1,
         },
         th: {
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
         },
         row: {
             "& th": {
                 paddingTop: '3px',
                 paddingBottom: '3px',
                 paddingLeft: 0,
-                paddingRight: 0
+                paddingRight: 0,
+                backgroundColor: `${theme.palette.background.paper} !important`
             }
         }
     }),
@@ -53,50 +57,51 @@ export function DocRepoTableHead() {
                                    .filter(current => isPresent(current));
 
     return (
-        <TableHead>
-            <TableRow className={classes.row}>
-                <TableCell key="left-checkbox"
-                           padding="checkbox">
-                </TableCell>
-                {columns.map((column) => {
 
-                    const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
+            <TableHead className={classes.root}>
+                <TableRow className={classes.row}>
+                    <TableCell key="left-checkbox"
+                               padding="checkbox">
+                    </TableCell>
+                    {columns.map((column) => {
 
-                    return (
-                        <TableCell key={column.id}
-                                   className={classes.th}
-                                   style={{
-                                       width: column.width,
-                                       minWidth: column.width
-                                   }}
-                                   padding={column.disablePadding ? 'none' : 'default'}
-                                   sortDirection={orderBy === column.id ? order : false}>
+                        const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
 
-                            <TableSortLabel
-                                active={orderBy === column.id}
-                                direction={order}
-                                onClick={() => setSort(newOrder, column.id)}>
-                                {column.label}
-                                {orderBy === column.id ? (
-                                    <span className={classes.visuallyHidden}>
-                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                    </span>
-                                ) : null}
-                            </TableSortLabel>
-                        </TableCell>
-                    )
-                })}
+                        return (
+                            <TableCell key={column.id}
+                                       className={classes.th}
+                                       style={{
+                                           width: column.width,
+                                           minWidth: column.width
+                                       }}
+                                       padding={column.disablePadding ? 'none' : 'default'}
+                                       sortDirection={orderBy === column.id ? order : false}>
 
-                <TableCell key="right-filter"
-                           style={{
-                               width: DOC_BUTTON_COLUMN_WIDTH,
-                           }}>
-                    <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                        <DocColumnsSelectorWithPrefs/>
-                    </div>
-                </TableCell>
+                                <TableSortLabel
+                                    active={orderBy === column.id}
+                                    direction={order}
+                                    onClick={() => setSort(newOrder, column.id)}>
+                                    {column.label}
+                                    {orderBy === column.id ? (
+                                        <span className={classes.visuallyHidden}>
+                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                        </span>
+                                    ) : null}
+                                </TableSortLabel>
+                            </TableCell>
+                        )
+                    })}
 
-            </TableRow>
-        </TableHead>
+                    <TableCell key="right-filter"
+                               style={{
+                                   width: DOC_BUTTON_COLUMN_WIDTH,
+                               }}>
+                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                            <DocColumnsSelectorWithPrefs/>
+                        </div>
+                    </TableCell>
+
+                </TableRow>
+            </TableHead>
     );
 }

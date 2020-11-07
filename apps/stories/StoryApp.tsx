@@ -19,6 +19,7 @@ import {CachedSnapshotStory} from "./impl/CachedSnapshotStory";
 import {SideNavStory} from "./impl/SideNavStory";
 import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
+import {WhatsNewStory} from "./impl/WhatsNewStory";
 
 interface IStory {
     readonly name: string;
@@ -84,7 +85,12 @@ const stories = createStoryIndex([
     {
         name: "DocColumnsSelector",
         component: <DocColumnsStory/>
+    },
+    {
+        name: "Whats New",
+        component: <WhatsNewStory/>
     }
+
 
 
 ]);
@@ -184,7 +190,7 @@ const StoriesRouter = deepMemo(() => {
     );
 });
 
-export const App = () => {
+export const StoryApp = () => {
     return (
         <MUIAppRoot>
 

@@ -39,13 +39,11 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <Paper square
-               elevation={0}
-               style={{
-                   display: 'flex',
-                   flexGrow: 1,
-                   flexDirection: 'column'
-               }}>
+        <div style={{
+                  display: 'flex',
+                  flexGrow: 1,
+                  flexDirection: 'column'
+             }}>
 
             <AnnotationActiveInputContextProvider>
                 <>
@@ -64,7 +62,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                 </>
             </AnnotationActiveInputContextProvider>
 
-        </Paper>
+        </div>
     );
 });
 

@@ -95,11 +95,9 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <Paper square
-                           elevation={0}
-                           style={{flexGrow: 1, display: 'flex'}}>
+                    <div style={{flexGrow: 1, display: 'flex'}}>
                         <AnnotationInlineViewer2 />
-                    </Paper>
+                    </div>
 
             }
         ]}/>

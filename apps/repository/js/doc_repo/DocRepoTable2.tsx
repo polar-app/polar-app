@@ -21,16 +21,12 @@ export const DocRepoTable2 = deepMemo(() => {
                 height: '100%'
              }}>
 
-            {/*TODO: changing this to paper implements the proper Figma color we */}
-            {/*want*/}
-            <Paper square
-                   elevation={0}
-                   style={{
-                       width: '100%',
-                       height: '100%',
-                       display: 'flex',
-                       flexDirection: 'column'
-                   }}>
+            <div style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column'
+                  }}>
                         <MUIDocContextMenu render={rawContextMenuHandler => {
 
                         return (
@@ -73,7 +69,7 @@ export const DocRepoTable2 = deepMemo(() => {
                             </>);
                         }}/>
 
-            </Paper>
+            </div>
         </div>
     )
 
