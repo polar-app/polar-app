@@ -190,7 +190,7 @@ const StoriesRouter = deepMemo(() => {
     );
 });
 
-export const StoryApp = () => {
+export const StoriesApp = () => {
     return (
         <MUIAppRoot>
 
