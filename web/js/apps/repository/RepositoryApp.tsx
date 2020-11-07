@@ -276,6 +276,7 @@ export const RepositoryApp = (props: IProps) => {
                         <div className="RepositoryApp"
                              style={{
                                  display: 'flex',
+                                 minWidth: 0,
                                  minHeight: 0,
                                  flexDirection: 'column',
                                  flexGrow: 1
