@@ -5,7 +5,7 @@
  * Separating the value from the idToken means we avoid accidentally copying
  * the idToken in rest (...) arguments but also avoid conflating object usage.
  */
-export interface UserRequest<B> {
+export interface UserRequest<R> {
 
     /**
      * The token to authenticate the user.
@@ -15,7 +15,7 @@ export interface UserRequest<B> {
     /**
      * The actual request JSON body
      */
-    readonly body: B;
+    readonly request: R;
 
 }
 

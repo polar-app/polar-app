@@ -49,10 +49,6 @@ export class DatastoreImportFileFunctions {
 
 }
 
-export const DatastoreImportFileFunction = ExpressFunctions.createHook((req, res) => {
-    return UserRequests.execute(req, res, DatastoreImportFileFunctions.exec);
-});
-
 interface DatastoreImportFileRequest {
     readonly docID: string;
     readonly backend: Backend;
@@ -88,3 +84,7 @@ async function copyFile(src: string, dest: string, uid: UserIDStr) {
     });
 
 }
+
+export const DatastoreImportFileFunction = ExpressFunctions.createHook((req, res) => {
+    return UserRequests.execute(req, res, DatastoreImportFileFunctions.exec);
+});

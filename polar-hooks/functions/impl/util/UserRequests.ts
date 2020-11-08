@@ -6,10 +6,10 @@ import express from 'express';
 
 export class UserRequests {
 
-    public static execute<B, V>(req: express.Request,
+    public static execute<R, V>(req: express.Request,
                                 res: express.Response,
                                 handler: (idUser: IDUser,
-                                          body: B,
+                                          request: R,
                                           req: express.Request,
                                           res: express.Response) => Promise<V>): void {
 
@@ -33,12 +33,12 @@ export class UserRequests {
 
             };
 
-            const userRequest: UserRequest<B> = toBody();
-            const {body} = userRequest;
+            const userRequest: UserRequest<R> = toBody();
+            const {request} = userRequest;
 
             const idUser = await IDUsers.fromIDToken(userRequest.idToken);
 
-            const response = await handler(idUser, body, req, res);
+            const response = await handler(idUser, request, req, res);
 
             ExpressFunctions.sendResponse(res, response || {});
 
