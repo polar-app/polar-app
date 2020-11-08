@@ -1,25 +1,22 @@
 import {IDUser} from "../util/IDUsers";
-import {StripeMode} from "./StripeUtils";
 import {StripeCreateCustomerPortalSessions} from "./StripeCreateCustomerPortalSessions";
-import express from 'express';
+import {
+    IStripeCreateCustomerPortalRequest,
+    IStripeCreateCustomerPortalResponse
+} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
 
 export namespace StripeCreateCustomerPortalFunctions {
 
-    interface IStripeCreateCustomerPortalRequest {
-        readonly stripeMode: StripeMode;
-    }
-
     export async function exec(idUser: IDUser,
-                               request: IStripeCreateCustomerPortalRequest,
-                               req: express.Request,
-                               res: express.Response) {
+                               request: IStripeCreateCustomerPortalRequest): Promise<IStripeCreateCustomerPortalResponse> {
 
         const session = await StripeCreateCustomerPortalSessions.create(idUser, {
             stripeMode: request.stripeMode,
         });
 
-        res.redirect(session.url);
-
+        return {
+            url: session.url
+        }
     }
 
 }
