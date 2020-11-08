@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithThumbnail} from "./SideNavButtonWithThumbnail";
 
-const WIDTH = 50;
+const WIDTH = 72;
 
 const useStyles = makeStyles((theme) =>
     createStyles({

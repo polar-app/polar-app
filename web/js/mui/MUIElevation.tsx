@@ -24,22 +24,24 @@ export interface IElevations {
 export function useElevations(): IElevations {
     const theme = useTheme();
 
+    // FIXME: light mode ... 
+    
     return {
         0: {
             default: theme.palette.background.default,
             highlighted: lighten(theme.palette.background.default)
         },
         1: {
-            default: 'rgb(66,66,66)',
-            highlighted: 'rgb(79,79,79)'
+            default: '#424242',
+            highlighted: '#4f4f4f'
         },
         2: {
-            default: 'rgb(75,75,75)',
-            highlighted: 'rgb(94,94,94)'
+            default: '#4b4b4b',
+            highlighted: '#5e5e5e'
         },
         3: {
-            default: 'rgb(83,83,83)',
-            highlighted: 'rgb(96,96,96)'
+            default: '#535353',
+            highlighted: '#606060'
         },
     }
 }
@@ -109,7 +111,9 @@ interface IProps {
 export const MUIElevation = deepMemo((props: IProps) => {
 
     const elevation = useElevationBackground(props.elevation);
-    const background = props.highlighted ? elevation.default : elevation.highlighted;
+    // const background = props.highlighted ? elevation.default : elevation.highlighted;
+
+    const background = elevation.default;
 
     return (
         <div className={clsx(['mui-elevation', props.className])}
