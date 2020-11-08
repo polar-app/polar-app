@@ -5,6 +5,7 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../../hooks/ReactLifecycleHooks";
+import {deepMemo} from "../../react/ReactUtils";
 
 interface IProps {
     readonly children: React.ReactElement;
@@ -36,7 +37,7 @@ export function usePersistentRouteContext() {
     return React.useContext(PersistentRouteContext);
 }
 
-export const PersistentRoute = React.memo((props: IProps) => {
+export const PersistentRoute = deepMemo((props: IProps) => {
 
     const [active, setActive] = React.useState(false);
 
@@ -69,4 +70,4 @@ export const PersistentRoute = React.memo((props: IProps) => {
        </>
     );
 
-}, isEqual);
+});

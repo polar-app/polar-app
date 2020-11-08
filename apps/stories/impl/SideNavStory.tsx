@@ -3,7 +3,7 @@ import {SideNav} from "../../../web/js/sidenav/SideNav";
 import {SideNavStoreProvider, TabDescriptor, useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 import Button from '@material-ui/core/Button';
 import {DocCardImages} from "./doc_cards/DocCardImages";
-import {SideNavContent} from "../../../web/js/sidenav/SideNavContent";
+import {SideNavContentRouter} from "../../../web/js/sidenav/SideNavContentRouter";
 import Divider from '@material-ui/core/Divider';
 
 let seq = 0;
@@ -12,7 +12,7 @@ const createWebCard = (id: number): TabDescriptor => {
     return {
 
         id,
-        url: `http://example.com/${id}`,
+        url: `/apps/stories/side-nav/${id}`,
         title: "Alice's Adventures in Wonderland",
         icon: (
             <img src={DocCardImages.WEB_CARD_IMAGE_URL} alt='foo'/>
@@ -33,7 +33,7 @@ const createPDFCard = (id: number): TabDescriptor => {
     return {
 
         id,
-        url: `http://example.com/${id}`,
+        url: `/apps/stories/side-nav/${id}`,
         title: 'Large-scale Cluster Management at Google with Borg',
         icon: (
             <img src={DocCardImages.PDF_CARD_IMAGE_URL} alt='foo'/>
@@ -73,7 +73,7 @@ const Body = () => {
             <Divider orientation="vertical"/>
 
             <div style={{flexGrow: 1}}>
-                <SideNavContent/>
+                <SideNavContentRouter/>
             </div>
 
         </div>

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {useSideNavStore} from "./SideNavStore";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {PersistentRoute} from "../apps/repository/PersistentRoute";
 
-export const SideNavContent = React.memo(() => {
+export const SideNavContentRouter = React.memo(() => {
     const {tabs, activeTab} = useSideNavStore(['tabs', 'activeTab']);
 
     const tab = Arrays.first(tabs.filter(tab => tab.id === activeTab));
@@ -12,9 +13,11 @@ export const SideNavContent = React.memo(() => {
     }
 
     return (
-        <>
-            {tab.content}
-        </>
+        <PersistentRoute exact path={tab.url}>
+            <>
+                {tab.content}
+            </>
+        </PersistentRoute>
     );
 
 });

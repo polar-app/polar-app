@@ -6,8 +6,7 @@ import {deepMemo} from "../../web/js/react/ReactUtils";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {HashRouter, Route, Switch, useHistory, useLocation} from 'react-router-dom';
-import { Arrays } from 'polar-shared/src/util/Arrays';
+import {BrowserRouter, useHistory, useLocation} from 'react-router-dom';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 import Box from '@material-ui/core/Box';
 import {CKEditor5Story} from "./impl/CKEditor5Story";
@@ -103,7 +102,7 @@ const StoriesSidebar = deepMemo(() => {
     const id = useLocationID();
 
     const handleClick = React.useCallback((story: IStoryWithID) => {
-        history.push('/id/' + story.id);
+        history.push('/apps/stories/' + story.id);
     }, [history]);
 
     const toListItem = React.useCallback((story: IStoryWithID) => {
@@ -141,14 +140,20 @@ function useLocationID(): string | undefined {
     const location = useLocation();
 
     if (! location.pathname) {
+        console.log("useLocationID: no pathname");
         return undefined;
     }
 
-    if (! location.pathname.startsWith('/id/')) {
+    if (location.pathname.indexOf('/stories/') === -1)  {
+        console.log("useLocationID: Stories not in path");
         return undefined;
     }
 
-    return Arrays.last(location.pathname.split('/'));
+    const id = location.pathname.split('/')[3];
+
+    console.log("Returning ID: " + id);
+
+    return id;
 
 }
 
@@ -156,10 +161,14 @@ const StoryViewRoute = deepMemo(() => {
 
     const id = useLocationID();
 
+    console.log("Routing to story ID: ", id);
+
     if (! id) {
         console.warn("No id");
         return null;
     }
+
+    console.log("Routing to story ID: ", id);
 
     const matchingStories = stories.filter(current => current.id === id);
 
@@ -185,11 +194,11 @@ const StoryViewRoute = deepMemo(() => {
 
 const StoriesRouter = deepMemo(() => {
     return (
-        <Switch>
-            <Route path="/id">
-                <StoryViewRoute/>
-            </Route>
-        </Switch>
+        // <Switch>
+        //     <Route path="/id">
+            <StoryViewRoute/>
+        //     </Route>
+        // </Switch>
     );
 });
 
@@ -197,7 +206,7 @@ export const StoriesApp = () => {
     return (
         <MUIAppRoot>
 
-            <HashRouter hashType="noslash">
+            <BrowserRouter>
                 <DockLayout2
                     dockPanels={[
                         {
@@ -226,7 +235,7 @@ export const StoriesApp = () => {
                             )
                         }
                     ]}/>
-            </HashRouter>
+            </BrowserRouter>
 
         </MUIAppRoot>
     );

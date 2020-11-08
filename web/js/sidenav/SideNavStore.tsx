@@ -3,6 +3,8 @@ import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {URLStr} from "polar-shared/src/util/Strings";
+import { useHistory } from 'react-router-dom';
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 export interface ITabImage {
     readonly url: string;
@@ -111,21 +113,27 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
                           setStore: (store: ISideNavStore) => void,
                           mutator: Mutator): ISideNavCallbacks {
 
-    // FIXME: now the issue is useHistory here I think...
-    // FIXME: useHistory caues the components to reload and it might be that
-    // we have two BrowserRouters at the root. I think we should try to go with
-    // just ONE router if possible and more properly use switches.
-
-    // const history = useHistory();
-
-    // FIXME: I think this is better BUT ... the memo is still being called
-    // and created at least once...
+    const history = useHistory();
 
     return React.useMemo((): ISideNavCallbacks => {
 
-        function setActiveTab(activeTab: number) {
+        console.log("Creating SideNav store");
+
+        function tabByID(id: number) {
             const store = storeProvider();
-            setStore({...store, activeTab});
+            return Arrays.first(store.tabs.filter(tab => tab.id === id));
+        }
+
+        function setActiveTab(activeTabID: number) {
+            const store = storeProvider();
+            setStore({...store, activeTab: activeTabID});
+
+            const activeTab = tabByID(activeTabID);
+
+            if (activeTab) {
+                history.push(activeTab.url);
+            }
+
         }
 
         function addTab(newTabDescriptor: TabDescriptorInit) {
@@ -145,8 +153,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             }
 
             function doTabMutation(newStore: ISideNavStore) {
-                // history.replace(tabDescriptor.url);
-                // history.replaceState(null, tabDescriptor.title, tabDescriptor.url);
+                history.push(tabDescriptor.url);
                 setStore(newStore);
             }
 
@@ -160,8 +167,6 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             }
 
             const tabs = [...store.tabs, tabDescriptor];
-
-            console.log("FIXME: tabs: ", tabs);
 
             // now switch to the new tab
             const activeTab = tabDescriptor.id;
@@ -193,6 +198,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             const tabs = computeTabs();
             const activeTab = computeActiveTab();
 
+            // FIXME: this needs to change the URL too..
             setStore({...store, tabs, activeTab});
 
         }
@@ -201,7 +207,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             addTab, removeTab, setActiveTab
         };
 
-    }, [storeProvider, setStore]);
+    }, [storeProvider, setStore, history]);
 
 }
 

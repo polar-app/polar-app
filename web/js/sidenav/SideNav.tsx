@@ -37,7 +37,7 @@ export const SideNav = React.memo(() => {
 
     const toNavButton = React.useCallback((tab: TabDescriptor) => {
         return (
-            <SideNavButtonWithThumbnail tab={tab}/>
+            <SideNavButtonWithThumbnail key={tab.id} tab={tab}/>
         )
     }, []);
 

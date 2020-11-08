@@ -98,7 +98,7 @@ export const SideNavButtonWithThumbnail = deepMemo((props: IProps) => {
     }
 
     return (
-        <div key={`${tab.id}`}>
+        <div>
             <Tooltip placement="right"
                      enterDelay={0}
                      leaveDelay={0}
