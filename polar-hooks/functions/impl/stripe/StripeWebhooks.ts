@@ -32,7 +32,7 @@ export namespace StripeWebhooks {
     }
 
     interface IStripeCheckoutSessionCompletedEvent {
-        readonly priceID: string;
+        readonly id: string;
         readonly customerID: string;
     }
 
@@ -54,46 +54,13 @@ export namespace StripeWebhooks {
 
     }
 
-    async function toCheckoutSessionCompletedEvent(stripeMode: StripeMode,
-                                                  rawEvent: any): Promise<IStripeCheckoutSessionCompletedEvent> {
+    function toCheckoutSessionCompletedEvent(rawEvent: any): IStripeCheckoutSessionCompletedEvent {
 
-        const payment_intent: string = rawEvent.data.object.payment_intent;
+        const id: string = rawEvent.data.object.id;
         const customerID: string = rawEvent.data.object.customer;
 
-        const stripe = StripeUtils.getStripe(stripeMode)
-
-        const paymentIntent = await stripe.paymentIntents.retrieve(payment_intent);
-
-        async function retrieveInvoice() {
-
-            if (paymentIntent.invoice === null) {
-                // FIXME: now this is the problem.  There's no invoice even though there should be...
-                throw new Error("No invoice")
-            }
-
-            if (typeof paymentIntent.invoice === 'string') {
-                return stripe.invoices.retrieve(paymentIntent.invoice);
-            } else {
-                return paymentIntent.invoice;
-            }
-
-
-        }
-
-        const invoice = await retrieveInvoice();
-
-        if (invoice.lines.data.length !== 1) {
-            throw new Error("Wrong number of lines: " + invoice.lines.data.length)
-        }
-
-        const line = invoice.lines.data[0];
-
-        if (line.price === null) {
-            throw new Error("No price");
-        }
-
         return {
-            priceID: line.price.id,
+            id,
             customerID
         };
 
@@ -151,9 +118,24 @@ export namespace StripeWebhooks {
 
         async function handleCheckoutSessionCompleted() {
 
-            const checkoutSessionCompletedEvent = await toCheckoutSessionCompletedEvent(stripeMode, event.value);
-            const {priceID, customerID} = checkoutSessionCompletedEvent;
+            const checkoutSessionCompletedEvent = toCheckoutSessionCompletedEvent(event.value);
+
+            async function retrieveCheckoutSession() {
+                const stripe = StripeUtils.getStripe(stripeMode);
+                return await stripe.checkout.sessions.retrieve(checkoutSessionCompletedEvent.id);
+            }
+
+            const checkoutSession = await retrieveCheckoutSession();
+
+            if (! checkoutSession.line_items) {
+                throw new Error("No line items");
+            }
+
+            const priceID = checkoutSession.line_items.data[0].price.id;
+
             const sub = StripePlanIDs.toSubscription(stripeMode, priceID);
+
+            const {customerID} = checkoutSessionCompletedEvent;
 
             if (sub.interval === '4year') {
                 // we're only handling 4 year here right now and we
