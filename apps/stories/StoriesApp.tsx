@@ -24,6 +24,7 @@ import {WhatsNewStory} from "./impl/WhatsNewStory";
 interface IStory {
     readonly name: string;
     readonly component: JSX.Element;
+    readonly noMargin?: boolean;
 }
 
 interface IStoryWithID extends IStory {
@@ -76,7 +77,8 @@ const stories = createStoryIndex([
     },
     {
         name: "Side Nav",
-        component: <SideNavStory/>
+        component: <SideNavStory/>,
+        noMargin: true
     },
     {
         name: "Elevations",
@@ -169,7 +171,14 @@ const StoryViewRoute = deepMemo(() => {
     const story = matchingStories[0];
 
     return (
-        <StoryView story={story}/>
+        <Box m={story.noMargin ? 0 : 1}
+             style={{
+                 flexGrow: 1,
+                 display: 'flex'
+             }}>
+
+            <StoryView story={story}/>
+        </Box>
     );
 
 });
@@ -178,13 +187,7 @@ const StoriesRouter = deepMemo(() => {
     return (
         <Switch>
             <Route path="/id">
-                <Box m={1}
-                     style={{
-                         flexGrow: 1,
-                         display: 'flex'
-                     }}>
-                    <StoryViewRoute/>
-                </Box>
+                <StoryViewRoute/>
             </Route>
         </Switch>
     );

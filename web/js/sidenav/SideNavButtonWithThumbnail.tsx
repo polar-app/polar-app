@@ -11,7 +11,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 
-const WIDTH = 100;
+const WIDTH = 50;
 const BORDER = 3;
 
 const useStyles = makeStyles((theme) =>

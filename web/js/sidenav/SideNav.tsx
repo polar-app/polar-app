@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithThumbnail} from "./SideNavButtonWithThumbnail";
 
-const WIDTH = 100;
+const WIDTH = 50;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -45,7 +45,7 @@ export const SideNav = React.memo(() => {
         <div className={classes.root}>
 
             <div className={classes.logo}>
-                <PolarSVGIcon width={85} height={85}/>
+                <PolarSVGIcon width={WIDTH} height={WIDTH}/>
             </div>
 
             <div className={classes.divider}>
