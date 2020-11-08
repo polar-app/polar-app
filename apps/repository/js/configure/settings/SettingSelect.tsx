@@ -71,7 +71,7 @@ export const SettingSelect = (props: IProps) => {
             </div>
 
             <div>
-                <p>
+                <p style={{fontSize: '1.3rem'}}>
                     {props.description}
                 </p>
             </div>

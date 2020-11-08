@@ -53,10 +53,10 @@ export const SettingsScreen = () => {
                 <div className="">
                     <h1>General</h1>
 
-                    <p>
+                    <h2>
                         General settings. Note that some of
                         these may require you to reload.
-                    </p>
+                    </h2>
 
                     <SettingToggle title="Dark Mode"
                                    description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
