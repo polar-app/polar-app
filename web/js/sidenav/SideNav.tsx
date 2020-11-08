@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) =>
         },
         divider: {
             marginBottom: '5px',
+        },
+        buttons: {
+            flexGrow: 1,
+            minHeight: 0,
+            overflow: 'hidden'
         }
     }),
 );
@@ -52,7 +57,10 @@ export const SideNav = React.memo(() => {
                 <Divider/>
             </div>
 
-            {tabs.map(toNavButton)}
+            <div className={classes.buttons}>
+                {tabs.map(toNavButton)}
+            </div>
+
         </div>
     );
 
