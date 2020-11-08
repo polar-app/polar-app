@@ -76,6 +76,10 @@ export namespace StripeCreateSessions {
             mode,
             success_url: 'https://app.getpolarized.io',
             cancel_url: 'https://app.getpolarized.io',
+            metadata: {
+                price_id: planID,
+                plan_id: planID
+            },
             ...subscriptionParams
         }
 
