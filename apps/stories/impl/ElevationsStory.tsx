@@ -7,18 +7,30 @@ interface ElevationExampleProps {
 
 const ElevationExample = (props: ElevationExampleProps) => {
 
-    const background = useElevationBackground(props.elevation)
+    const backgroundElevation = useElevationBackground(props.elevation)
 
     return (
-        <MUIElevation style={{
-                          margin: '15px',
-                          padding: '10px'
-                      }}
-                      elevation={props.elevation}>
-            <div>
-                {props.elevation} - {background}
-            </div>
-        </MUIElevation>
+        <>
+            <MUIElevation style={{
+                              margin: '15px',
+                              padding: '10px'
+                          }}
+                          elevation={props.elevation}>
+                <div>
+                    {props.elevation} default: {backgroundElevation.default}
+                </div>
+            </MUIElevation>
+            <MUIElevation style={{
+                              margin: '15px',
+                              padding: '10px'
+                          }}
+                          elevation={props.elevation}
+                          highlighted>
+                <div>
+                    {props.elevation} highlighted: {backgroundElevation.highlighted}
+                </div>
+            </MUIElevation>
+        </>
     )
 
 }
