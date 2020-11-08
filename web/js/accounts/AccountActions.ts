@@ -31,7 +31,6 @@ export namespace AccountActions {
         await executeAccountMethod(url, data);
     }
 
-
     export async function cancelSubscription() {
         const url = StripeUtils.createURL(`/StripeCancelSubscription/`);
         const accountData = await createAccountData();
