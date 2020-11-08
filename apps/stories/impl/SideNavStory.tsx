@@ -57,7 +57,25 @@ const createCard = (id: number) => {
     }
 }
 
-export const Main = () => {
+const Body = () => {
+    return (
+        <div style={{
+                 display: 'flex',
+             }}>
+
+            <div>
+                <SideNav/>
+            </div>
+
+            <div style={{flexGrow: 1}}>
+                <SideNavContent/>
+            </div>
+
+        </div>
+    )
+}
+
+const Footer = () => {
 
     const {addTab} = useSideNavCallbacks();
 
@@ -70,26 +88,34 @@ export const Main = () => {
 
     return (
         <div style={{
+                position: 'absolute',
+                right: '10px',
+                bottom: '10px',
+                zIndex: 1000
+             }}>
+
+            <Button color="primary"
+                    variant="contained"
+                    onClick={doAddTab}>
+                Add Tab
+            </Button>
+
+        </div>
+    );
+}
+
+export const Main = () => {
+
+
+    return (
+        <div style={{
                  display: 'flex',
                  flexDirection: 'column'
             }}>
 
-            <div style={{
-                     display: 'flex',
-                     flexGrow: 1
-                }}>
-                <SideNav/>
-                <SideNavContent/>
-            </div>
-            <div style={{}}>
+            <Body/>
 
-                <Button color="primary"
-                        variant="contained"
-                        onClick={doAddTab}>
-                    Add Tab
-                </Button>
-
-            </div>
+            <Footer/>
         </div>
     );
 }
