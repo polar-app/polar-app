@@ -3,6 +3,7 @@ import { StripeMode } from './StripeUtils';
 import {StripeChangePlans} from "./StripeChangePlans";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
+// FIXME: this isn't validating idUser
 export const StripeChangePlanFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
     console.log(JSON.stringify(req.body, null, '  '));

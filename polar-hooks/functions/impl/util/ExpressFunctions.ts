@@ -106,7 +106,11 @@ export class ExpressFunctions {
         rollbar.log(msg, err);
         console.error(msg, err);
         const body = ErrorResponses.create(err.message);
+
+        SentryReporters.reportError(msg, err);
+
         this.sendResponse(res, body, 500);
+
     }
 
 }
