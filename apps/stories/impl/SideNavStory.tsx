@@ -4,6 +4,7 @@ import {SideNavStoreProvider, TabDescriptor, useSideNavCallbacks} from "../../..
 import Button from '@material-ui/core/Button';
 import {DocCardImages} from "./doc_cards/DocCardImages";
 import {SideNavContent} from "../../../web/js/sidenav/SideNavContent";
+import Divider from '@material-ui/core/Divider';
 
 let seq = 0;
 
@@ -59,13 +60,17 @@ const createCard = (id: number) => {
 
 const Body = () => {
     return (
-        <div style={{
+        <div className="sidenav-body"
+             style={{
                  display: 'flex',
+                 flexGrow: 1
              }}>
 
             <div>
                 <SideNav/>
             </div>
+
+            <Divider orientation="vertical"/>
 
             <div style={{flexGrow: 1}}>
                 <SideNavContent/>
@@ -87,7 +92,8 @@ const Footer = () => {
     }, [addTab]);
 
     return (
-        <div style={{
+        <div className="sidenav-footer"
+             style={{
                 position: 'absolute',
                 right: '10px',
                 bottom: '10px',
@@ -108,10 +114,11 @@ export const Main = () => {
 
 
     return (
-        <div style={{
+        <div className="sidenav"
+             style={{
                  display: 'flex',
                  flexDirection: 'column'
-            }}>
+             }}>
 
             <Body/>
 
