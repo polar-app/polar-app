@@ -127,10 +127,6 @@ export namespace StripeWebhooks {
 
             const checkoutSession = await retrieveCheckoutSession();
 
-            if (! checkoutSession.line_items) {
-                throw new Error("No line items for session: " + checkoutSessionCompletedEvent.id);
-            }
-
             const priceID = (checkoutSession.metadata || {}).price_id
 
             const sub = StripePlanIDs.toSubscription(stripeMode, priceID);
