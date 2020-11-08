@@ -8,6 +8,7 @@ import {Firestore} from "../firebase/Firestore";
 import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/impl/stripe/StripeUtils";
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
+import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
 
 export namespace AccountActions {
 
@@ -26,7 +27,8 @@ export namespace AccountActions {
 
     export async function redirectToStripeCustomerPortal() {
         const stripeMode = StripeUtils.stripeMode();
-        await JSONRPC.exec('StripeCreateCustomerPortal', {stripeMode});
+        const response: IStripeCreateCustomerPortalResponse = await JSONRPC.exec('StripeCreateCustomerPortal', {stripeMode});
+        document.location.href = response.url;
     }
 
     export async function cancelSubscription() {
