@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) =>
         },
         divider: {
             marginBottom: '5px',
+            padding: theme.spacing(1)
         },
         buttons: {
             flexGrow: 1,
@@ -50,7 +51,7 @@ export const SideNav = React.memo(() => {
         <div className={classes.root}>
 
             <div className={classes.logo}>
-                <PolarSVGIcon width={WIDTH} height={WIDTH}/>
+                <PolarSVGIcon width={WIDTH - 4} height={WIDTH - 4}/>
             </div>
 
             <div className={classes.divider}>

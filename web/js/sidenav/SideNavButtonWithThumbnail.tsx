@@ -19,11 +19,16 @@ const useStyles = makeStyles((theme) =>
         button: {
             // borderRadius: '5px',
             width: `${WIDTH - (BORDER * 2)}px`,
+
             borderLeftWidth: `${BORDER}`,
             borderLeftStyle: 'solid',
             borderLeftColor: 'transparent',
+
+            borderRightWidth: `${BORDER}`,
+            borderRightStyle: 'solid',
+            borderRightColor: 'transparent',
+
             marginBottom: '5px',
-            paddingLeft: `${BORDER}`,
             cursor: 'pointer',
 
             "& img": {
