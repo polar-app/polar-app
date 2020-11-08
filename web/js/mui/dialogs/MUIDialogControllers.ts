@@ -33,9 +33,11 @@ export function useAsyncActionTaskbar() {
 
             updateProgress({value: 'indeterminate'})
 
-            await opts.action();
-
-            updateProgress({value: 100})
+            try {
+                await opts.action();
+            } finally {
+                updateProgress({value: 100})
+            }
 
         }
 
