@@ -2,6 +2,7 @@ import React from 'react';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export interface ITabImage {
     readonly url: string;
@@ -9,25 +10,35 @@ export interface ITabImage {
     readonly height: number;
 }
 
-export interface TabDescriptor {
-
-    readonly id: number;
+export interface TabDescriptorInit {
 
     /**
      * The URL for this tab so that the router can be used with it.
      */
-    readonly url: string;
+    readonly url: URLStr;
 
+    /**
+     * The title for the tab
+     */
     readonly title: string;
 
     /**
-     * An icon to show for this tab.
+     * An icon to show for this tab
      */
     readonly icon?: React.ReactNode;
 
+    /**
+     * The main content for the tab.
+     */
     readonly content?: React.ReactNode;
 
     readonly image: ITabImage;
+
+}
+
+export interface TabDescriptor extends TabDescriptorInit {
+
+    readonly id: number;
 
 }
 
@@ -42,7 +53,7 @@ interface ISideNavStore {
 interface ISideNavCallbacks {
 
     readonly setActiveTab: (id: number) => void;
-    readonly addTab: (tabDescriptor: TabDescriptor) => void;
+    readonly addTab: (tabDescriptor: TabDescriptorInit) => void;
     readonly removeTab: (id: number) => void;
 
 }
@@ -94,6 +105,8 @@ function mutatorFactory(storeProvider: Provider<ISideNavStore>,
 
 }
 
+let seq = 0;
+
 function callbacksFactory(storeProvider: Provider<ISideNavStore>,
                           setStore: (store: ISideNavStore) => void,
                           mutator: Mutator): ISideNavCallbacks {
@@ -115,7 +128,12 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             setStore({...store, activeTab});
         }
 
-        function addTab(tabDescriptor: TabDescriptor) {
+        function addTab(newTabDescriptor: TabDescriptorInit) {
+
+            const tabDescriptor: TabDescriptor = {
+                ...newTabDescriptor,
+                id: seq++
+            }
 
             const store = storeProvider();
 
@@ -129,7 +147,6 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             function doTabMutation(newStore: ISideNavStore) {
                 // history.replace(tabDescriptor.url);
                 // history.replaceState(null, tabDescriptor.title, tabDescriptor.url);
-                console.log("FIXME: newStore: ", newStore);
                 setStore(newStore);
             }
 
