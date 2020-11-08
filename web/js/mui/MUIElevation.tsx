@@ -4,7 +4,7 @@ import {useTheme, lighten} from "@material-ui/core/styles";
 import grey from '@material-ui/core/colors/grey'
 import clsx from 'clsx';
 
-export type Elevation = 0 | 1 | 2 | 3 | 4;
+export type Elevation = 0 | 1 | 2 | 3;
 
 export type BackgroundColor = string;
 
@@ -30,22 +30,30 @@ export function useElevations(): IElevations {
             highlighted: lighten(theme.palette.background.default)
         },
         1: {
-            default: theme.palette.background.default,
-            highlighted: lighten(theme.palette.background.default)
+            default: 'rgb(66,66,66)',
+            highlighted: 'rgb(79,79,79)'
         },
         2: {
-            default: theme.palette.background.default,
-            highlighted: lighten(theme.palette.background.default)
+            default: 'rgb(75,75,75)',
+            highlighted: 'rgb(94,94,94)'
         },
         3: {
-            default: theme.palette.background.default,
-            highlighted: lighten(theme.palette.background.default)
+            default: 'rgb(83,83,83)',
+            highlighted: 'rgb(96,96,96)'
         },
     }
 }
 
 
+
 export function useElevationBackground(elevation: Elevation) {
+
+    const elevations = useElevations();
+    return elevations[elevation];
+
+}
+
+export function useElevationBackground2(elevation: Elevation) {
 
     // this would be better as a CSS style.
 
@@ -63,8 +71,6 @@ export function useElevationBackground(elevation: Elevation) {
                 return grey[700];
             case 3:
                 return grey[600];
-            case 4:
-                return grey[500];
 
         }
 
@@ -80,8 +86,6 @@ export function useElevationBackground(elevation: Elevation) {
                 return grey[400];
             case 3:
                 return grey[500];
-            case 4:
-                return grey[600];
 
         }
 
@@ -94,6 +98,7 @@ interface IProps {
     readonly children?: React.ReactElement;
     readonly style?: React.CSSProperties;
     readonly className?: string;
+    readonly highlighted?: boolean;
 }
 
 /**
@@ -103,7 +108,8 @@ interface IProps {
  */
 export const MUIElevation = deepMemo((props: IProps) => {
 
-    const background = useElevationBackground(props.elevation);
+    const elevation = useElevationBackground(props.elevation);
+    const background = props.highlighted ? elevation.default : elevation.highlighted;
 
     return (
         <div className={clsx(['mui-elevation', props.className])}

@@ -23,7 +23,7 @@ const ElevationExample = (props: ElevationExampleProps) => {
 
 }
 
-const elevations: ReadonlyArray<Elevation> = [0, 1, 2, 3, 4];
+const elevations: ReadonlyArray<Elevation> = [0, 1, 2, 3];
 
 const ElevationsList = () => {
     return (

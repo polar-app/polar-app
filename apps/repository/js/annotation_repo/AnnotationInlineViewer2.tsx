@@ -39,7 +39,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <MUIElevation elevation={0}
+        <MUIElevation elevation={1}
                       style={{
                           display: 'flex',
                           flexGrow: 1,
