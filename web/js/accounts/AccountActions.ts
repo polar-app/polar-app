@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
@@ -9,6 +10,7 @@ import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/im
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
+import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 
 export namespace AccountActions {
 
@@ -25,10 +27,26 @@ export namespace AccountActions {
         window.location.href = LoginURLs.create();
     }
 
-    export async function redirectToStripeCustomerPortal() {
-        const stripeMode = StripeUtils.stripeMode();
-        const response: IStripeCreateCustomerPortalResponse = await JSONRPC.exec('StripeCreateCustomerPortal', {stripeMode});
-        document.location.href = response.url;
+    export function useRedirectToStripeCustomerPortal() {
+
+        // const linkLoader = useLinkLoader();
+
+        return React.useCallback(async () => {
+
+            const stripeMode = StripeUtils.stripeMode();
+            const response: IStripeCreateCustomerPortalResponse = await JSONRPC.exec('StripeCreateCustomerPortal', {stripeMode});
+
+            // right now we can't trigger opening the URL here as it's blocked
+            // because it's not computed within the event.
+            document.location.href = response.url;
+
+            // linkLoader(response.url, {
+            //     newWindow: true,
+            //     focus: true
+            // });
+
+        }, []);
+
     }
 
     export async function cancelSubscription() {

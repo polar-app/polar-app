@@ -8,12 +8,13 @@ export const ManageSubscriptionButton = React.memo(() => {
 
     const asyncActionTaskbar = useAsyncActionTaskbar()
     const currentSubscription = useUserSubscriptionContext();
+    const redirectToStripeCustomerPortal = AccountActions.useRedirectToStripeCustomerPortal();
 
     const handleClick = React.useCallback(() => {
 
         asyncActionTaskbar({
             message: "Sending you to the customer portal.  One moment",
-            action: async () => await AccountActions.redirectToStripeCustomerPortal()
+            action: async () => await redirectToStripeCustomerPortal()
         });
 
     }, [asyncActionTaskbar]);
