@@ -157,8 +157,7 @@ export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
                     </div>
 
                     <div className="mt-2 mb-4">
-                        <AccountOverview
-                            plan={props.userInfo.subscription.plan}/>
+                        <AccountOverview subscription={props.userInfo.subscription}/>
                     </div>
 
                     <ViewPlansAndPricingButton/>
