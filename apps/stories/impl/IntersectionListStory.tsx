@@ -10,14 +10,22 @@ interface IData {
 
 function createData(count: number) {
 
-    function toData(idx: number): IData {
-        return {
-            id: '' + idx,
-            height: Math.floor((Math.random() * 50) + 55)
-        };
-    }
+    const before = performance.now();
 
-    return Numbers.range(1, count).map(toData);
+    try {
+        function toData(idx: number): IData {
+            return {
+                id: '' + idx,
+                height: Math.floor((Math.random() * 50) + 55)
+            };
+        }
+
+        return Numbers.range(1, count).map(toData);
+
+    } finally {
+        const after = performance.now();
+        console.log("createData duration: " + (after - before));
+    }
 
 }
 
