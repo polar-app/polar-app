@@ -40,12 +40,12 @@ const ToggleMounted = (props: ToggleMountedProps) => {
 
 }
 
-function myHook() {
+function useMyHook() {
     const tagStore = useTagStore(undefined)
     console.log("FIXME: got my tagStore: ", tagStore);
 }
 
-const createdHook = () => myHook();
+const createdHook = () => useMyHook();
 
 interface IMyCallbacks {
     readonly myCallback: () => void;

@@ -305,7 +305,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return React.useContext(mutatorContext);
     }
 
-    const providerComponent = (props: ObservableStoreProps<V>) => {
+    const useProviderComponent = (props: ObservableStoreProps<V>) => {
 
         React.useMemo(() => {
             // this is a hack to setStore only on the initial render and only when we have a props.store
@@ -326,7 +326,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [providerComponent, useStoreHook, useCallbacksHook, useMutatorHook];
+    return [useProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook];
 
 }
 

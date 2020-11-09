@@ -56,7 +56,7 @@ export const BrowserTabs = () => {
     if (activeTab) {
       history.push(tabs[activeTab].url);
     } 
-  }, [activeTab]);
+  }, [activeTab, history, tabs]);
 
   // Change tabs
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
