@@ -110,9 +110,9 @@ function mutatorFactory(storeProvider: Provider<ISideNavStore>,
 
 let seq = 0;
 
-function callbacksFactory(storeProvider: Provider<ISideNavStore>,
-                          setStore: (store: ISideNavStore) => void,
-                          mutator: Mutator): ISideNavCallbacks {
+function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
+                             setStore: (store: ISideNavStore) => void,
+                             mutator: Mutator): ISideNavCallbacks {
 
     const history = useHistory();
     const historyRef = useRefValue(history);
@@ -218,7 +218,7 @@ export function createSideNavStore() {
     return createObservableStore<ISideNavStore, Mutator, ISideNavCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 }
 

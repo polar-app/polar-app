@@ -35,9 +35,9 @@ function mutatorFactory(storeProvider: Provider<IZenModeStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IZenModeStore>,
-                          setStore: (store: IZenModeStore) => void,
-                          mutator: Mutator): IZenModeCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IZenModeStore>,
+                             setStore: (store: IZenModeStore) => void,
+                             mutator: Mutator): IZenModeCallbacks {
 
     return React.useMemo(() => {
 
@@ -65,6 +65,6 @@ export const [ZenModeStoreProviderDelegate, useZenModeStore, useZenModeCallbacks
     createObservableStore<IZenModeStore, Mutator, IZenModeCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 
