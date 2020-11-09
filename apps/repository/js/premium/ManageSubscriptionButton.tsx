@@ -17,7 +17,7 @@ export const ManageSubscriptionButton = React.memo(() => {
             action: async () => await redirectToStripeCustomerPortal()
         });
 
-    }, [asyncActionTaskbar]);
+    }, [asyncActionTaskbar, redirectToStripeCustomerPortal]);
 
     if (currentSubscription.plan.level === 'free') {
         return null;

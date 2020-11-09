@@ -126,9 +126,9 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
-                          setStore: (store: IAnnotationSidebarStore) => void,
-                          mutator: Mutator): IAnnotationSidebarCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
+                             setStore: (store: IAnnotationSidebarStore) => void,
+                             mutator: Mutator): IAnnotationSidebarCallbacks {
 
     const persistenceLayerContext = usePersistenceLayerContext();
 
@@ -163,6 +163,6 @@ export const [AnnotationSidebarStoreProvider, useAnnotationSidebarStore, useAnno
     = createObservableStore<IAnnotationSidebarStore, Mutator, IAnnotationSidebarCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 

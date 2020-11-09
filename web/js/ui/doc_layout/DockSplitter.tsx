@@ -33,7 +33,7 @@ export const DockSplitter = deepMemo((props: IProps) => {
 
         return result;
 
-    }, []);
+    }, [theme.palette.divider]);
 
     const splitterStyle = createSplitterStyle();
 

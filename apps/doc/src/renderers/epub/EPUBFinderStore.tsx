@@ -47,9 +47,9 @@ function mutatorFactory(storeProvider: Provider<IEPUBFinderStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
-                          setStore: (store: IEPUBFinderStore) => void,
-                          mutator: Mutator): IEPUBFinderCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
+                             setStore: (store: IEPUBFinderStore) => void,
+                             mutator: Mutator): IEPUBFinderCallbacks {
 
     const {page} = useDocViewerStore(['page']);
 
@@ -115,7 +115,7 @@ function callbacksFactory(storeProvider: Provider<IEPUBFinderStore>,
 const observableStore = createObservableStore<IEPUBFinderStore, Mutator, IEPUBFinderCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
-    callbacksFactory
+    callbacksFactory: useCallbacksFactory
 });
 
 
