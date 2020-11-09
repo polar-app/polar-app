@@ -20,6 +20,7 @@ import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
 import {ReactWindowStory} from "./impl/ReactWindowStory";
+import XGridStory from "./impl/XGridStory";
 
 interface IStory {
     readonly name: string;
@@ -96,7 +97,13 @@ const stories = createStoryIndex([
         name: "React Window",
         component: <ReactWindowStory/>,
         noMargin: true
+    },
+    {
+        name: "XGrid",
+        component: <XGridStory/>,
+        noMargin: true
     }
+
 
 ]);
 
