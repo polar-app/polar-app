@@ -97,9 +97,6 @@ const stories = createStoryIndex([
         component: <ReactWindowStory/>
     }
 
-
-
-
 ]);
 
 const StoriesSidebar = deepMemo(() => {
