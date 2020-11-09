@@ -22,6 +22,10 @@ export const IntersectionListItem = function<V extends ListValue>(props: Interse
 
     const Component = props.component;
 
+    // FIXME: this is the performance issue.  Without this it works just fine and a block strategy would
+    // work but I'd have to implement it.
+
+    // FIXME: trackVisibility doesn't seem to work with use
     const {ref, inView, entry} = useInView({
         threshold: 0,
         trackVisibility: true,

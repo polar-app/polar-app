@@ -56,6 +56,19 @@ const ItemComponent = (props: VisibleComponentProps<IData>) => {
 //    - when the block is visible, render each row, when it's not, render a gap replacement.
 //
 //    - make sure the components are cacheable via deepMemo
+//
+//    - I can use multiple tbody elements BUT I haven't tested this before AND I would need to specify the width too
+//      and this might not work on Safari or Firefox
+//
+//        - OH!!! BUT ... I could use a BlockComponent then render each item in them and set the height that way
+//
+//        - there would be three components
+//
+//        - HiddenComponent - rendered when something is hidden. height must be right
+//        - VisibleComponent - rendered when something is visible. height must be right.
+//        - BlockComponent - renders a block with a parent which detects visibility and has the useInView hook to
+//                           keep performance reasonable.
+//        -
 
 export const IntersectionListStory = () => {
 
