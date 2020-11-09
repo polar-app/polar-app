@@ -85,7 +85,6 @@ const BlockComponent = (props: BlockComponentProps<IData>) => {
                    style={{
                        height,
                        minHeight: height,
-                       overflow: 'auto',
                        flexGrow: 1
                    }}>
             {props.children}
@@ -106,7 +105,8 @@ export const IntersectionListTableStory = () => {
                  display: 'flex',
                  flexGrow: 1,
                  flexDirection: 'column',
-                 overflow: 'auto'
+                 overflow: 'auto',
+                 minHeight: 0
              }}>
 
             {root && (
