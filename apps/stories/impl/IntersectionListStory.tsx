@@ -1,6 +1,11 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {IntersectionList, VisibleComponentProps} from "../../../web/js/intersection_list/IntersectionList";
+import {
+    BlockComponentProps,
+    HiddenComponentProps,
+    IntersectionList,
+    VisibleComponentProps
+} from "../../../web/js/intersection_list/IntersectionList";
 
 interface IData {
     readonly id: string;
@@ -28,26 +33,54 @@ function createData(count: number) {
 
 }
 
-const ItemComponent = (props: VisibleComponentProps<IData>) => {
+const HiddenComponent = (props: HiddenComponentProps<IData>) => {
 
     return (
-        <div ref={props.innerRef}
-             style={{
+        <div style={{
                  minHeight: `${props.value.height}px`,
                  height: `${props.value.height}px`
              }}>
 
-            {props.inView && (
-                <div>
-                    id: {props.value.id} <br/>
-                    height: {props.value.height}
-                </div>
-            )}
+        </div>
+    );
+
+};
+
+const VisibleComponent = (props: VisibleComponentProps<IData>) => {
+
+    return (
+        <div style={{
+                 minHeight: `${props.value.height}px`,
+                 height: `${props.value.height}px`
+             }}>
+
+            <div>
+                id: {props.value.id} <br/>
+                height: {props.value.height}
+            </div>
 
         </div>
     );
 
-}
+};
+
+const BlockComponent = (props: BlockComponentProps<IData>) => {
+
+    const height = Numbers.sum(...props.values.map(current => current.height));
+
+    return (
+        <div ref={props.innerRef}
+             style={{
+                 height,
+                 minHeight: height,
+                 overflow: 'auto',
+                 flexGrow: 1
+             }}>
+            {props.children}
+        </div>
+    );
+
+};
 
 // TODO:
 //
@@ -94,7 +127,9 @@ export const IntersectionListStory = () => {
             {root && (
                 <IntersectionList values={data}
                                   root={root}
-                                  component={ItemComponent}/>
+                                  blockComponent={BlockComponent}
+                                  hiddenComponent={HiddenComponent}
+                                  visibleComponent={VisibleComponent}/>
             )}
 
         </div>

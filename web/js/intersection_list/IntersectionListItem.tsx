@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {VisibleComponent, ListValue} from "./IntersectionList";
+import {VisibleComponent, ListValue, HiddenComponent} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 
 export interface IntersectionListItem<V extends ListValue> {
@@ -8,7 +8,10 @@ export interface IntersectionListItem<V extends ListValue> {
 
     readonly value: V;
 
-    readonly component: VisibleComponent<V>;
+    readonly visibleComponent: VisibleComponent<V>;
+
+    readonly hiddenComponent: HiddenComponent<V>;
+
 
 }
 
@@ -19,22 +22,23 @@ export interface IntersectionListItem<V extends ListValue> {
  *
  */
 export const IntersectionListItem = function<V extends ListValue>(props: IntersectionListItem<V>) {
-
-    const Component = props.component;
-
-    // FIXME: this is the performance issue.  Without this it works just fine and a block strategy would
-    // work but I'd have to implement it.
-
-    // FIXME: trackVisibility doesn't seem to work with use
-    const {ref, inView, entry} = useInView({
-        threshold: 0,
-        trackVisibility: true,
-        delay: 100,
-        root: props.root
-    });
-
-    return (
-        <Component value={props.value} innerRef={ref} inView={inView}/>
-    );
+// a
+//     const Component = props.component;
+//
+//     // FIXME: this is the performance issue.  Without this it works just fine and a block strategy would
+//     // work but I'd have to implement it.
+//
+//     // FIXME: trackVisibility doesn't seem to work with use
+//     const {ref, inView, entry} = useInView({
+//         threshold: 0,
+//         trackVisibility: true,
+//         delay: 100,
+//         root: props.root
+//     });
+//
+//     return (
+//         <Component value={props.value} innerRef={ref} inView={inView}/>
+//     );
+    return null;
 
 };

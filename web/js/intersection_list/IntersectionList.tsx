@@ -1,21 +1,13 @@
 import * as React from 'react';
 import {IntersectionListItem} from "./IntersectionListItem";
+import { Arrays } from 'polar-shared/src/util/Arrays';
+import { IntersectionListBlock } from './IntersectionListBlock';
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
 export interface VisibleComponentProps<V extends ListValue> {
 
-    /**
-     * Called when we have a ref to the component
-     */
-    readonly innerRef: RefCallback;
-
     readonly value: V;
-
-    /**
-     * True if the component is in the viewport.
-     */
-    readonly inView: boolean;
 
 }
 
@@ -25,7 +17,18 @@ export interface VisibleComponentProps<V extends ListValue> {
 export type VisibleComponent<V extends ListValue> = (props: VisibleComponentProps<V>) => JSX.Element;
 
 
-interface HiddenComponentProps<V extends ListValue> {
+export interface HiddenComponentProps<V extends ListValue> {
+
+    readonly value: V;
+
+}
+
+/**
+ * The component to render when the value is not visible.
+ */
+export type HiddenComponent<V extends ListValue> = (props: HiddenComponentProps<V>) => JSX.Element;
+
+export interface BlockComponentProps<V extends ListValue> {
 
     /**
      * Called when we have a ref to the component
@@ -34,12 +37,11 @@ interface HiddenComponentProps<V extends ListValue> {
 
     readonly values: ReadonlyArray<V>;
 
+    readonly children: JSX.Element;
+
 }
 
-/**
- * The component to render when the value is not visible.
- */
-export type HiddenComponent<V extends ListValue> = (props: HiddenComponentProps<V>) => JSX.Element;
+export type BlockComponent<V extends ListValue> = (props: BlockComponentProps<V>) => JSX.Element;
 
 export interface ListValue {
 
@@ -62,7 +64,13 @@ interface IProps<V extends ListValue> {
 
     readonly values: ReadonlyArray<V>;
 
-    readonly component: VisibleComponent<V>;
+    readonly blockComponent: BlockComponent<V>;
+
+    readonly visibleComponent: VisibleComponent<V>;
+
+    readonly hiddenComponent: HiddenComponent<V>;
+
+    readonly batchSize?: number;
 
 }
 
@@ -76,15 +84,32 @@ interface IProps<V extends ListValue> {
  */
 export const IntersectionList = function<V extends ListValue>(props: IProps<V>) {
 
+    const batchSize = props.batchSize || 25;
+
+    const blocks = Arrays.createBatches(props.values, batchSize);
+
+    // FIXME: this is using idx which is the wrong key.
+
     return (
         <>
-            {props.values.map(current => (
-                <IntersectionListItem key={current.id}
-                                      root={props.root}
-                                      value={current}
-                                      component={props.component}/>
+            {/*{props.values.map(current => (*/}
+            {/*    <IntersectionListItem key={current.id}*/}
+            {/*                          root={props.root}*/}
+            {/*                          value={current}*/}
+            {/*                          component={props.component}/>*/}
+
+            {/*))}*/}
+
+            {blocks.map((block, idx) => (
+                <IntersectionListBlock key={idx}
+                                       root={props.root}
+                                       values={block}
+                                       blockComponent={props.blockComponent}
+                                       visibleComponent={props.visibleComponent}
+                                       hiddenComponent={props.hiddenComponent}/>
 
             ))}
+
         </>
     );
 
