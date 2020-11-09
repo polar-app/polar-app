@@ -527,10 +527,7 @@ const AnnotationRepoStoreInner = React.memo((props: IProps) => {
     const annotationRepoMutator = useAnnotationRepoMutator();
     const annotationRepoCallbacks = useAnnotationRepoCallbacks();
 
-    // FIXME: I think this should be useMemo
-    const doRefresh = React.useCallback(Debouncers.create(() => {
-        annotationRepoMutator.refresh();
-    }), [annotationRepoMutator]);
+    const doRefresh = React.useMemo(() => Debouncers.create(() => annotationRepoMutator.refresh()), [annotationRepoMutator]);
 
     useComponentDidMount(() => {
         annotationRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocAnnotationIndex.values());
