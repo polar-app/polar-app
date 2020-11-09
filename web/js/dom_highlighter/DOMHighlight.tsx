@@ -7,8 +7,8 @@ import {
 } from "../react/WindowHooks";
 import {DOMHighlightRow} from "./DOMHighlightRow";
 import {Highlights} from "./Highlights";
-import {AnimationFrameDebouncer} from "./AnimationFrameDebouncer";
-import withAnimationFrame = AnimationFrameDebouncer.withAnimationFrame;
+import {AnimationFrameDebouncers} from "./AnimationFrameDebouncers";
+import withAnimationFrame = AnimationFrameDebouncers.withAnimationFrame;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 import {NodeTextRegion} from "polar-dom-text-search/src/NodeTextRegion";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
@@ -38,7 +38,7 @@ export const DOMHighlight = deepMemo((props: IProps) => {
 
     const [highlightViewportPositions, setHighlightViewportPositions] = React.useState(toHighlightViewportPositions(regions))
 
-    const redrawCallback = React.useCallback(withAnimationFrame(() => {
+    const redrawCallback = React.useMemo(() => withAnimationFrame(() => {
         setHighlightViewportPositions(toHighlightViewportPositions(regions));
     }), [regions]);
 

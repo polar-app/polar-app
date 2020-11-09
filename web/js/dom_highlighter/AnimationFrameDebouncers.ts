@@ -1,9 +1,11 @@
-export namespace AnimationFrameDebouncer {
+export type AnimationFrameDebouncer = () => void;
+
+export namespace AnimationFrameDebouncers {
 
     /**
      * Debouncer that use requestAnimationFrame
      */
-    export function withAnimationFrame(delegate: () => void): () => void {
+    export function withAnimationFrame(delegate: () => void): AnimationFrameDebouncer{
 
         let pending: boolean = false;
 
