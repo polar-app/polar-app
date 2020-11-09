@@ -26,8 +26,6 @@ export const CaptureSizeContainer = (props: IProps) => {
         const width = elementRef.current!.clientWidth;
         const height = elementRef.current!.clientHeight;
 
-        console.log("FIXME: elementRef: ", elementRef.current);
-        console.log("FIXME: ", height);
         return {
             width, height
         };
