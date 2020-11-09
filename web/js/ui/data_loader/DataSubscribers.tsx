@@ -23,7 +23,7 @@ export namespace DataSubscribers {
 
         const context = React.createContext<D | undefined>(undefined);
 
-        const component: DataProvider = (props: DataProviderProps) => {
+        const useComponent: DataProvider = (props: DataProviderProps) => {
 
             const [data, setData] = React.useState<D | undefined>(undefined);
             const [err, setError] = React.useState<Error | undefined>(undefined);
@@ -80,7 +80,7 @@ export namespace DataSubscribers {
 
         }
 
-        return [component, context];
+        return [useComponent, context];
 
     }
 
