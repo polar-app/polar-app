@@ -36,7 +36,7 @@ function createData(count: number) {
 
 }
 
-const HiddenComponent = (props: HiddenComponentProps<IData>) => {
+const HiddenComponent = React.memo((props: HiddenComponentProps<IData>) => {
 
     return (
         <div style={{
@@ -47,9 +47,9 @@ const HiddenComponent = (props: HiddenComponentProps<IData>) => {
         </div>
     );
 
-};
+});
 
-const VisibleComponent = (props: VisibleComponentProps<IData>) => {
+const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
 
     const theme = useTheme();
 
@@ -70,9 +70,9 @@ const VisibleComponent = (props: VisibleComponentProps<IData>) => {
         </div>
     );
 
-};
+});
 
-const BlockComponent = (props: BlockComponentProps<IData>) => {
+const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
 
     const height = Numbers.sum(...props.values.map(current => current.height));
 
@@ -88,34 +88,7 @@ const BlockComponent = (props: BlockComponentProps<IData>) => {
         </div>
     );
 
-};
-
-// TODO:
-//
-// - implement the block strategy
-//
-//    - when the block is visible, render each row, when it's not, render a gap replacement.
-//
-//    - make sure the components are cacheable via deepMemo
-//
-//    - I can use multiple tbody elements BUT I haven't tested this before AND I would need to specify the width too
-//      and this might not work on Safari or Firefox
-//
-//        - OH!!! BUT ... I could use a BlockComponent then render each item in them and set the height that way
-//
-//        - there would be three components
-//
-//        - HiddenComponent - rendered when something is hidden. height must be right
-//        - VisibleComponent - rendered when something is visible. height must be right.
-//        - BlockComponent - renders a block with a parent which detects visibility and has the useInView hook to
-//                           keep performance reasonable.
-//
-// - FIXME the main problem with block components is that if the items they hold are shifted around then it will
-//   trigger a full block re-render... but if the *inner* components do not re-render I think that's probably fine.
-//
-//          - the memoification won't work if we shift everything up one...
-//
-//          - but to be fair, only the empty items would be rendered below that...
+});
 
 export const IntersectionListStory = () => {
 
