@@ -4,7 +4,10 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {useSideNavStore, TabDescriptor} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
-import {SideNavButtonWithThumbnail} from "./SideNavButtonWithThumbnail";
+import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
+import {FAHomeIcon} from "../mui/MUIFontAwesome";
+import { useHistory } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
 
 const WIDTH = 72;
 
@@ -35,6 +38,17 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+const HomeButton = () => {
+
+    const history = useHistory();
+
+    return (
+        <IconButton onClick={() => history.push('/')}>
+            <FAHomeIcon/>
+        </IconButton>
+    )
+}
+
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
@@ -43,7 +57,7 @@ export const SideNav = React.memo(() => {
 
     const toNavButton = React.useCallback((tab: TabDescriptor) => {
         return (
-            <SideNavButtonWithThumbnail key={tab.id} tab={tab}/>
+            <SideNavButtonWithIcon key={tab.id} tab={tab}/>
         )
     }, []);
 
@@ -53,6 +67,12 @@ export const SideNav = React.memo(() => {
             <div className={classes.logo}>
                 <PolarSVGIcon width={WIDTH - 4} height={WIDTH - 4}/>
             </div>
+
+            <div className={classes.divider}>
+                <Divider/>
+            </div>
+
+            <HomeButton/>
 
             <div className={classes.divider}>
                 <Divider/>

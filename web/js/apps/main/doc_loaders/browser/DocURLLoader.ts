@@ -20,12 +20,12 @@ export namespace DocURLLoader {
 
 export function useDocURLLoader(): (url: string) => void {
 
-    const nav = useLinkLoader();
+    const linkLoader = useLinkLoader();
 
     const opts = {focus: true, newWindow: true};
 
     return (url: string) => {
-        nav(url, opts);
+        linkLoader(url, opts);
     }
 
 }

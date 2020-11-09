@@ -137,14 +137,14 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     const {selectRow, setSelected} = callbacks;
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
-        const contextMenuHandler: ContextMenuHandler = (event) => {
+    const contextMenuHandler: ContextMenuHandler = React.useCallback((event) => {
         selectRow(row.id, event, 'context');
         rawContextMenuHandler(event);
-    };
+    }, [selectRow, rawContextMenuHandler]);
 
-    const selectRowClickHandler = (event: React.MouseEvent<HTMLElement>) => {
+    const selectRowClickHandler = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
         selectRow(row.id, event, 'click');
-    };
+    }, [selectRow]);
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
     const columns = useDocRepoColumnsPrefs();

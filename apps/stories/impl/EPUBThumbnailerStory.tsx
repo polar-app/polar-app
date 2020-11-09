@@ -47,7 +47,7 @@ export const EPUBThumbnailerStory = () => {
 
         setThumbnail(thumbnail);
 
-    }, [thumbnail]);
+    }, []);
 
     useComponentDidMount(() => {
         doAsync().catch(err => console.error(err));

@@ -34,7 +34,7 @@ export interface TabDescriptorInit {
      */
     readonly content?: React.ReactNode;
 
-    readonly image: ITabImage;
+    readonly image?: ITabImage;
 
 }
 
@@ -114,6 +114,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
                           mutator: Mutator): ISideNavCallbacks {
 
     const history = useHistory();
+    const historyRef = useRefValue(history);
 
     return React.useMemo((): ISideNavCallbacks => {
 
@@ -131,7 +132,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             const activeTab = tabByID(activeTabID);
 
             if (activeTab) {
-                history.push(activeTab.url);
+                historyRef.current.push(activeTab.url);
             }
 
         }
@@ -153,7 +154,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             }
 
             function doTabMutation(newStore: ISideNavStore) {
-                history.push(tabDescriptor.url);
+                historyRef.current.push(tabDescriptor.url);
                 setStore(newStore);
             }
 
@@ -207,7 +208,7 @@ function callbacksFactory(storeProvider: Provider<ISideNavStore>,
             addTab, removeTab, setActiveTab
         };
 
-    }, [storeProvider, setStore, history]);
+    }, [storeProvider, setStore, historyRef]);
 
 }
 
