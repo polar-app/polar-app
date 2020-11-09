@@ -39,7 +39,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <MUIElevation elevation={1}
+        <MUIElevation elevation={2}
                       style={{
                           display: 'flex',
                           flexGrow: 1,
@@ -73,18 +73,11 @@ export const AnnotationInlineViewer2 = React.memo(() => {
 
     const annotation = selected.length > 0 ? viewPage.filter(current => current.id === selected[0])[0] : undefined;
 
-    if (annotation) {
-
-        return (
-            <AnnotationSelected annotation={annotation}/>
-        );
-
-    } else {
-        return (
-            <NoAnnotationSelected/>
-        );
-
-    }
+    return (
+        <>
+            {annotation ? <AnnotationSelected annotation={annotation}/> : <NoAnnotationSelected/>}
+        </>
+    );
 
 });
 
