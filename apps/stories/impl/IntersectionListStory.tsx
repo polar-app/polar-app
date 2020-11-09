@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
-import {IntersectionList, IntersectionListComponentProps} from "../../../web/js/intersection_list/IntersectionList";
+import {IntersectionList, VisibleComponentProps} from "../../../web/js/intersection_list/IntersectionList";
 
 interface IData {
     readonly id: string;
@@ -28,7 +28,7 @@ function createData(count: number) {
 
 }
 
-const ItemComponent = (props: IntersectionListComponentProps<IData>) => {
+const ItemComponent = (props: VisibleComponentProps<IData>) => {
 
     return (
         <div ref={props.innerRef}
@@ -48,6 +48,14 @@ const ItemComponent = (props: IntersectionListComponentProps<IData>) => {
     );
 
 }
+
+// TODO:
+//
+// - implement the block strategy
+//
+//    - when the block is visible, render each row, when it's not, render a gap replacement.
+//
+//    - make sure the components are cacheable via deepMemo
 
 export const IntersectionListStory = () => {
 

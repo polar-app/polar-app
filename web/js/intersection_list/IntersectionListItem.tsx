@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IntersectionListComponent, ListValue} from "./IntersectionList";
+import {VisibleComponent, ListValue} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 
 export interface IntersectionListItem<V extends ListValue> {
@@ -8,7 +8,7 @@ export interface IntersectionListItem<V extends ListValue> {
 
     readonly value: V;
 
-    readonly component: IntersectionListComponent<V>;
+    readonly component: VisibleComponent<V>;
 
 }
 

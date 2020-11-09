@@ -3,7 +3,7 @@ import {IntersectionListItem} from "./IntersectionListItem";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
-export interface IntersectionListComponentProps<V extends ListValue> {
+export interface VisibleComponentProps<V extends ListValue> {
 
     /**
      * Called when we have a ref to the component
@@ -19,7 +19,27 @@ export interface IntersectionListComponentProps<V extends ListValue> {
 
 }
 
-export type IntersectionListComponent<V extends ListValue> = (props: IntersectionListComponentProps<V>) => JSX.Element;
+/**
+ * The component to render when we are visible
+ */
+export type VisibleComponent<V extends ListValue> = (props: VisibleComponentProps<V>) => JSX.Element;
+
+
+interface HiddenComponentProps<V extends ListValue> {
+
+    /**
+     * Called when we have a ref to the component
+     */
+    readonly innerRef: RefCallback;
+
+    readonly values: ReadonlyArray<V>;
+
+}
+
+/**
+ * The component to render when the value is not visible.
+ */
+export type HiddenComponent<V extends ListValue> = (props: HiddenComponentProps<V>) => JSX.Element;
 
 export interface ListValue {
 
@@ -42,7 +62,7 @@ interface IProps<V extends ListValue> {
 
     readonly values: ReadonlyArray<V>;
 
-    readonly component: IntersectionListComponent<V>;
+    readonly component: VisibleComponent<V>;
 
 }
 
