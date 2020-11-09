@@ -6,9 +6,11 @@ import {
     IntersectionList,
     VisibleComponentProps
 } from "../../../web/js/intersection_list/IntersectionList";
+import useTheme from '@material-ui/core/styles/useTheme';
 
 interface IData {
     readonly id: string;
+    readonly idx: number;
     readonly height: number;
 }
 
@@ -20,6 +22,7 @@ function createData(count: number) {
         function toData(idx: number): IData {
             return {
                 id: '' + idx,
+                idx,
                 height: Math.floor((Math.random() * 50) + 55)
             };
         }
@@ -48,10 +51,15 @@ const HiddenComponent = (props: HiddenComponentProps<IData>) => {
 
 const VisibleComponent = (props: VisibleComponentProps<IData>) => {
 
+    const theme = useTheme();
+
+    const background = props.value.idx % 2 === 0 ? theme.palette.background.paper: theme.palette.background.default;
+
     return (
         <div style={{
                  minHeight: `${props.value.height}px`,
-                 height: `${props.value.height}px`
+                 height: `${props.value.height}px`,
+                 background
              }}>
 
             <div>
