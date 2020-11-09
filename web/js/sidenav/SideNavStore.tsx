@@ -5,6 +5,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
+import { useRefValue } from '../hooks/ReactHooks';
 
 export interface ITabImage {
     readonly url: string;

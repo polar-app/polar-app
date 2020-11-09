@@ -248,14 +248,14 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
 
 }
 
-function createCallbacks(storeProvider: Provider<IDocRepoStore>,
-                         setStore: (store: IDocRepoStore) => void,
-                         mutator: Mutator,
-                         repoDocMetaManager: RepoDocMetaManager,
-                         tagsProvider: () => ReadonlyArray<Tag>,
-                         dialogs: DialogManager,
-                         persistence: IPersistenceContext,
-                         log: ILogger): IDocRepoCallbacks {
+function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
+                            setStore: (store: IDocRepoStore) => void,
+                            mutator: Mutator,
+                            repoDocMetaManager: RepoDocMetaManager,
+                            tagsProvider: () => ReadonlyArray<Tag>,
+                            dialogs: DialogManager,
+                            persistence: IPersistenceContext,
+                            log: ILogger): IDocRepoCallbacks {
 
     const docLoader = useDocLoader();
 
@@ -818,7 +818,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
 }
 
-const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
+const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
                           setStore: (store: IDocRepoStore) => void,
                           mutator: Mutator): IDocRepoCallbacks => {
 
@@ -833,14 +833,14 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
     const tagsProviderRef = useRefWithUpdates(tagsProvider);
 
-    return createCallbacks(storeProvider,
-                           setStore,
-                           mutator,
-                           repoDocMetaManager,
-                           () => tagsProviderRef.current(),
-                           dialogs,
-                           persistence,
-                           log);
+    return useCreateCallbacks(storeProvider,
+                              setStore,
+                              mutator,
+                              repoDocMetaManager,
+                              () => tagsProviderRef.current(),
+                              dialogs,
+                              persistence,
+                              log);
 
     // return React.useMemo(() => {
     //     return createCallbacks(storeProvider,
@@ -859,7 +859,7 @@ export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDoc
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 
 interface IProps {
@@ -878,6 +878,7 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
     const docRepoMutator = useDocRepoMutator();
     const callbacks = useDocRepoCallbacks();
 
+    // FIXME: I think this should be useMemo... shouldn't it?
     const doRefresh = React.useCallback(Debouncers.create(() => {
         docRepoMutator.refresh();
     }), [docRepoMutator]);
