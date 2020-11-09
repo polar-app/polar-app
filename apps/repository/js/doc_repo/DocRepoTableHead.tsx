@@ -16,7 +16,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            backgroundColor: theme.palette.background.paper
+            backgroundColor: theme.palette.background.default
         },
         visuallyHidden: {
             border: 0,
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 paddingBottom: '3px',
                 paddingLeft: 0,
                 paddingRight: 0,
-                backgroundColor: `${theme.palette.background.paper} !important`
+                backgroundColor: `${theme.palette.background.default} !important`
             }
         }
     }),

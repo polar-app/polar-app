@@ -9,6 +9,7 @@ import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
 export const DocRepoTable2 = deepMemo(() => {
 
@@ -21,12 +22,13 @@ export const DocRepoTable2 = deepMemo(() => {
                 height: '100%'
              }}>
 
-            <div style={{
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column'
-                  }}>
+            <MUIElevation elevation={2}
+                          style={{
+                              width: '100%',
+                              height: '100%',
+                              display: 'flex',
+                              flexDirection: 'column'
+                          }}>
                         <MUIDocContextMenu render={rawContextMenuHandler => {
 
                         return (
@@ -69,7 +71,7 @@ export const DocRepoTable2 = deepMemo(() => {
                             </>);
                         }}/>
 
-            </div>
+            </MUIElevation>
         </div>
     )
 
