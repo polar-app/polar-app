@@ -108,6 +108,7 @@ function callbacksFactory(
   // FIXME: I think this is better BUT ... the memo is still being called
   // and created at least once...
 
+  // eslint-disable-next-line
   return React.useMemo((): IBrowserTabsCallbacks => {
     function setActiveTab(activeTab: number) {
       const store = storeProvider();
