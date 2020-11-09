@@ -81,6 +81,10 @@ function useCallbacksFactory(storeProvider: Provider<IDockLayoutStore>,
 
 }
 
+export function useDockLayoutResized() {
+    useDockLayoutStore(['panels']);
+}
+
 export const [DockLayoutStoreProvider, useDockLayoutStore, useDockLayoutCallbacks] =
     createObservableStore<IDockLayoutStore, Mutator, IDockLayoutCallbacks>({
         initialValue: initialStore,
