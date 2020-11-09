@@ -31,7 +31,7 @@ export const MUIAppRoot = (props: IProps) => {
             },
             background: {
                 'default': '#1b1b1b',
-                'paper': '#262626'
+                'paper': '#343434'
             }
         }
     }), [theme]);

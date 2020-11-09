@@ -41,7 +41,7 @@ export const FolderSidebar2 = () => {
 
     return (
         <MUIElevation className="FolderSidebar2"
-                      elevation={1}
+                      elevation={2}
                       style={{
                           display: 'flex',
                           flexGrow: 1,

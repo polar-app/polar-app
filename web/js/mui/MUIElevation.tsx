@@ -24,8 +24,8 @@ export interface IElevations {
 export function useElevations(): IElevations {
     const theme = useTheme();
 
-    // FIXME: light mode ...
-    
+    // TODO: light mode ...
+
     return {
         0: {
             default: theme.palette.background.default,
@@ -39,11 +39,8 @@ export function useElevations(): IElevations {
             default: '#343434',
             highlighted: '#3b3b3b'
         }
-        // 3: {
-        //     default: '#535353',
-        //     highlighted: '#606060'
-        // },
     }
+
 }
 
 
