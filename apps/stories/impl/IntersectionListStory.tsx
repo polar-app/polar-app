@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {IntersectionList, IntersectionListComponentProps} from "../../../web/js/intersection_list/IntersectionList";
-import {IntersectionListItem} from "../../../web/js/intersection_list/IntersectionListItem";
 
 interface IData {
     readonly id: string;
