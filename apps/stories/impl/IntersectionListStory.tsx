@@ -68,7 +68,13 @@ const ItemComponent = (props: VisibleComponentProps<IData>) => {
 //        - VisibleComponent - rendered when something is visible. height must be right.
 //        - BlockComponent - renders a block with a parent which detects visibility and has the useInView hook to
 //                           keep performance reasonable.
-//        -
+//
+// - FIXME the main problem with block components is that if the items they hold are shifted around then it will
+//   trigger a full block re-render... but if the *inner* components do not re-render I think that's probably fine.
+//
+//          - the memoification won't work if we shift everything up one...
+//
+//          - but to be fair, only the empty items would be rendered below that...
 
 export const IntersectionListStory = () => {
 
