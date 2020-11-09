@@ -56,7 +56,7 @@ import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
-import { useSideNavStore } from '../../sidenav/SideNavStore';
+import { useSideNavStore, SideNavStoreProvider } from '../../sidenav/SideNavStore';
 import {SideNavButtonWithThumbnail} from "../../sidenav/SideNavButtonWithThumbnail";
 import {SideNav} from "../../sidenav/SideNav";
 
@@ -289,7 +289,8 @@ export const RepositoryApp = (props: IProps) => {
 
                             <>
                                 <UseLocationChangeStoreProvider>
-                                    <BrowserRouter>
+                                    <SideNavStoreProvider>
+                                        <BrowserRouter>
                                         <AnalyticsLocationListener/>
                                         <UseLocationChangeRoot>
                                             <MUIDialogController>
@@ -408,6 +409,7 @@ export const RepositoryApp = (props: IProps) => {
                                             </MUIDialogController>
                                         </UseLocationChangeRoot>
                                  </BrowserRouter>
+                                    </SideNavStoreProvider>
                                 </UseLocationChangeStoreProvider>
                             </>
 
