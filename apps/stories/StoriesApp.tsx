@@ -19,6 +19,7 @@ import {SideNavStory} from "./impl/SideNavStory";
 import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
+import {ReactWindowStory} from "./impl/ReactWindowStory";
 
 interface IStory {
     readonly name: string;
@@ -90,7 +91,12 @@ const stories = createStoryIndex([
     {
         name: "Whats New",
         component: <WhatsNewStory/>
+    },
+    {
+        name: "React Window",
+        component: <ReactWindowStory/>
     }
+
 
 
 
