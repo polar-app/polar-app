@@ -44,7 +44,7 @@ const ItemComponent = (props: IntersectionListComponentProps<IData>) => {
 
 export const IntersectionListStory = () => {
 
-    const data = React.useMemo(() => createData(100), []);
+    const data = React.useMemo(() => createData(500), []);
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 
@@ -53,7 +53,8 @@ export const IntersectionListStory = () => {
              style={{
                  display: 'flex',
                  flexGrow: 1,
-                 flexDirection: 'column'
+                 flexDirection: 'column',
+                 overflow: 'auto'
              }}>
 
             {root && (

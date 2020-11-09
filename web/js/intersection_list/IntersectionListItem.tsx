@@ -24,8 +24,8 @@ export const IntersectionListItem = function<V extends ListValue>(props: Interse
 
     const {ref, inView, entry} = useInView({
         threshold: 0,
-        // trackVisibility: true,
-        // delay: 50,
+        trackVisibility: true,
+        delay: 100,
         root: props.root
     });
 
