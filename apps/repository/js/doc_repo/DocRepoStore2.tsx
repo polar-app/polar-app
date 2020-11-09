@@ -871,17 +871,12 @@ interface IProps {
  */
 const DocRepoStoreLoader = React.memo((props: IProps) => {
 
-    // TODO: migrate to useRepoDocInfos
-
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
     const docRepoMutator = useDocRepoMutator();
     const callbacks = useDocRepoCallbacks();
 
-    // FIXME: I think this should be useMemo... shouldn't it?
-    const doRefresh = React.useCallback(Debouncers.create(() => {
-        docRepoMutator.refresh();
-    }), [docRepoMutator]);
+    const doRefresh = React.useMemo(() => Debouncers.create(() => docRepoMutator.refresh()), [docRepoMutator]);
 
     useComponentDidMount(() => {
         docRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocInfoIndex.values());

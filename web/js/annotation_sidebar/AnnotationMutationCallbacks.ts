@@ -327,6 +327,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
         function createCommentCallback(annotation: IAnnotationRef): Callback1<ICommentMutation> {
 
+            // eslint-disable-next-line
             return React.useCallback((mutation: ICommentMutation) => {
 
                 const holder: IAnnotationMutationHolder<ICommentMutation> = {
@@ -350,6 +351,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
         // TODO should be useFlashcardCallback
         function createFlashcardCallback(annotation: IAnnotationRef): Callback1<IFlashcardMutation> {
 
+            // eslint-disable-next-line
             return React.useCallback((mutation: IFlashcardMutation) => {
 
                 const holder: IAnnotationMutationHolder<IFlashcardMutation> = {
@@ -372,6 +374,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
         function createColorCallback(selected: IAnnotationMutationSelected): Callback1<IColorMutation> {
 
+            // eslint-disable-next-line
             return React.useCallback((mutation: IColorMutation) => {
                 onColor({...selected, ...mutation});
             }, [selected]);
