@@ -94,7 +94,8 @@ const stories = createStoryIndex([
     },
     {
         name: "React Window",
-        component: <ReactWindowStory/>
+        component: <ReactWindowStory/>,
+        noMargin: true
     }
 
 ]);

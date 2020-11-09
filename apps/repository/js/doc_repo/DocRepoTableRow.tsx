@@ -126,6 +126,7 @@ interface IProps {
     readonly rawContextMenuHandler: ContextMenuHandler;
     readonly selected: boolean;
     readonly row: RepoDocInfo;
+    readonly style?: React.CSSProperties;
 }
 
 export const DocRepoTableRow = React.memo((props: IProps) => {
@@ -262,6 +263,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     return (
         <TableRow
+            style={props.style}
             hover
             className={classes.tr}
             role="checkbox"
