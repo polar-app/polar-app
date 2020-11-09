@@ -13,6 +13,7 @@ export default function XGridStory() {
             {...data}
             loading={data.rows.length === 0}
             rowHeight={38}
+            hideFooter={true}
             checkboxSelection
         />
     );
