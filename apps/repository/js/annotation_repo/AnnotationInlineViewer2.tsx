@@ -10,18 +10,26 @@ import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
 import {FeedbackPadding} from "../ui/FeedbackPadding";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
+
 const NoAnnotationSelected = () => (
-    <Box p={1}>
+    <MUIElevation elevation={2}
+                  style={{
+                      display: 'flex',
+                      flexGrow: 1,
+                  }}>
 
-        <div className="text-center">
-            <Typography align="center"
-                        variant="h5"
-                        color="textPrimary">
-                No annotation selected.
-            </Typography>
-        </div>
+        <Box p={1}>
 
-    </Box>
+            <div className="text-center">
+                <Typography align="center"
+                            variant="h5"
+                            color="textPrimary">
+                    No annotation selected.
+                </Typography>
+            </div>
+
+        </Box>
+    </MUIElevation>
 );
 
 interface AnnotationSelectedProps {
