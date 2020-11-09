@@ -215,7 +215,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             createTaggedCallback(mutation)();
         }
 
-        function createDeletedCallback(mutation: IDeleteMutation): Callback {
+        function useDeletedCallback(mutation: IDeleteMutation): Callback {
 
             return React.useCallback(() => {
                 onDeleted(mutation);
@@ -399,7 +399,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
         return {
             writeUpdatedDocMetas,
-            createDeletedCallback,
+            createDeletedCallback: useDeletedCallback,
             onDeleted,
             onAreaHighlight,
             onTextHighlight,
