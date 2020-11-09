@@ -42,7 +42,7 @@ export const AccountOverview = deepMemo((props: IProps) => {
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
 
-            <MUITooltip title={`Subscribed to plan '${v2Plan.level}' billed at interval '${props.subscription.interval}'`}>
+            {/*<MUITooltip title={`Subscribed to plan '${v2Plan.level}' billed at interval '${props.subscription.interval}'`}>*/}
 
                 <div className="ml-auto mr-auto"
                      style={{
@@ -60,7 +60,7 @@ export const AccountOverview = deepMemo((props: IProps) => {
                     <PlanIcon level='pro' active={v2Plan.level === 'pro'}/>
 
                 </div>
-            </MUITooltip>
+            {/*</MUITooltip>*/}
 
         </div>
     );
