@@ -45,8 +45,6 @@ function useMyHook() {
     console.log("FIXME: got my tagStore: ", tagStore);
 }
 
-const createdHook = () => useMyHook();
-
 interface IMyCallbacks {
     readonly myCallback: () => void;
 }
@@ -57,7 +55,6 @@ interface IMyCallbacks {
 // }
 
 function myCallback() {
-    const tagStore = useTagStore(undefined);
     console.log("FIXME it worked");
 }
 

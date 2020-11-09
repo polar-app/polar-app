@@ -14,6 +14,7 @@ export function createReactContext<T>(provider: () => T) {
 
     const Context = React.createContext<T>(null!);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const useContext = React.useContext(Context);
 
     const Provider = React.memo((props: IProps) => {
