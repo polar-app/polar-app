@@ -85,7 +85,7 @@ export const SideNavButtonWithThumbnail = deepMemo((props: IProps) => {
                         style={{
                             objectPosition: "0% 0%"
                         }}
-                        image={tab.image.url}
+                        image={tab.image?.url}
                         title={tab.title}
                     />
                     <CardContent>

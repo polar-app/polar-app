@@ -56,6 +56,9 @@ import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
+import { useSideNavStore } from '../../sidenav/SideNavStore';
+import {SideNavButtonWithThumbnail} from "../../sidenav/SideNavButtonWithThumbnail";
+import {SideNav} from "../../sidenav/SideNav";
 
 interface IProps {
     readonly app: App;
@@ -97,6 +100,8 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
 export const RepositoryApp = (props: IProps) => {
 
     const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
+
+    const {tabs} = useSideNavStore(['tabs']);
 
     Preconditions.assertPresent(app, 'app');
 
@@ -296,9 +301,9 @@ export const RepositoryApp = (props: IProps) => {
                                                                 <LoginScreen/>
                                                             </Route>
 
-                                                            <Route exact path={["/doc", "/doc/:id"]}>
-                                                                <RenderDocViewerScreen/>
-                                                            </Route>
+                                                            {/*<Route exact path={["/doc", "/doc/:id"]}>*/}
+                                                            {/*    <RenderDocViewerScreen/>*/}
+                                                            {/*</Route>*/}
 
                                                             <Route exact path="/error">
                                                                 <ErrorScreen/>
@@ -309,43 +314,72 @@ export const RepositoryApp = (props: IProps) => {
                                                             </Route>
 
                                                             <Route>
-                                                                <RepoHeader3/>
 
-                                                                <PersistentRoute exact path="/">
-                                                                    <RenderDefaultScreen/>
-                                                                </PersistentRoute>
+                                                                <div style={{
+                                                                    display: 'flex',
+                                                                    minWidth: 0,
+                                                                    minHeight: 0,
+                                                                    flexGrow: 1
+                                                                }}>
 
-                                                                <PersistentRoute exact path="/annotations">
-                                                                    <RenderAnnotationRepoScreen/>
-                                                                </PersistentRoute>
+                                                                    <SideNav/>
 
-                                                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                                                    <div style={{
+                                                                            display: 'flex',
+                                                                            minWidth: 0,
+                                                                            minHeight: 0,
+                                                                            flexDirection: 'column',
+                                                                            flexGrow: 1
+                                                                        }}>
 
-                                                                    <Route exact path='/whats-new'
-                                                                           render={renderWhatsNewScreen}/>
+                                                                        <RepoHeader3/>
 
-                                                                    <Route exact path='/invite' render={renderInvite}/>
+                                                                        <PersistentRoute exact path="/">
+                                                                            <RenderDefaultScreen/>
+                                                                        </PersistentRoute>
 
-                                                                    <Route exact path='/plans' render={premiumScreen}/>
+                                                                        <PersistentRoute exact path="/annotations">
+                                                                            <RenderAnnotationRepoScreen/>
+                                                                        </PersistentRoute>
 
-                                                                    <Route exact path='/plans-year'
-                                                                           render={premiumScreenYear}/>
+                                                                        {tabs.map(tab => (
+                                                                            <PersistentRoute key={'doc-' + tab.id}
+                                                                                             exact
+                                                                                             path={tab.url}>
+                                                                                <RenderDocViewerScreen/>
+                                                                            </PersistentRoute>
+                                                                        ))}
 
-                                                                    <Route exact path='/premium' render={premiumScreen}/>
+                                                                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                                                                    <Route exact path='/support' render={supportScreen}/>
+                                                                            <Route exact path='/whats-new'
+                                                                                   render={renderWhatsNewScreen}/>
 
-                                                                    <Route exact path='/stats'
-                                                                           component={renderStatsScreen}/>
+                                                                            <Route exact path='/invite' render={renderInvite}/>
 
-                                                                    <Route exact path="/settings"
-                                                                           component={RenderSettingsScreen}/>
+                                                                            <Route exact path='/plans' render={premiumScreen}/>
 
-                                                                    <Route exact path="/device"
-                                                                           component={renderDeviceScreen}/>
+                                                                            <Route exact path='/plans-year'
+                                                                                   render={premiumScreenYear}/>
 
-                                                                </Switch>
-                                                                <RepoFooter/>
+                                                                            <Route exact path='/premium' render={premiumScreen}/>
+
+                                                                            <Route exact path='/support' render={supportScreen}/>
+
+                                                                            <Route exact path='/stats'
+                                                                                   component={renderStatsScreen}/>
+
+                                                                            <Route exact path="/settings"
+                                                                                   component={RenderSettingsScreen}/>
+
+                                                                            <Route exact path="/device"
+                                                                                   component={renderDeviceScreen}/>
+
+                                                                        </Switch>
+                                                                        <RepoFooter/>
+                                                                    </div>
+                                                                </div>
+
                                                             </Route>
 
                                                         </Switch>

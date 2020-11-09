@@ -9,6 +9,7 @@ import {ViewerURLs} from "./doc_loaders/ViewerURLs";
 import {PersistentRoute} from "../repository/PersistentRoute";
 import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {RepositoryDocViewerScreen} from '../repository/RepositoryApp';
+import { useSideNavDocLoader } from './doc_loaders/sidenav/SideNavDocLoaders';
 
 function useDocLoaderElectron2() {
 
@@ -85,4 +86,5 @@ function useDocLoaderNull() {
 // conditionally.
 // export const useDocLoader = AppRuntime.isElectron() ? useDocLoaderElectron : useDocLoaderDefault;
 
-export const useDocLoader = useDocLoaderDefault;
+// export const useDocLoader = useDocLoaderDefault;
+export const useDocLoader = useSideNavDocLoader

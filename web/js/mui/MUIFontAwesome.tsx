@@ -11,6 +11,8 @@ import {faSquare} from "@fortawesome/free-regular-svg-icons/faSquare";
 import {faChrome} from "@fortawesome/free-brands-svg-icons/faChrome";
 import {faDiscord} from "@fortawesome/free-brands-svg-icons/faDiscord";
 import {faDatabase} from "@fortawesome/free-solid-svg-icons/faDatabase";
+import {faHome} from "@fortawesome/free-solid-svg-icons/faHome";
+import {faFile} from "@fortawesome/free-solid-svg-icons/faFile";
 
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
@@ -47,3 +49,5 @@ export const FAPlusIcon = createIcon(faPlus);
 export const FACheckCircleIcon = createIcon(faCheckCircle);
 export const FATimesCircleIcon = createIcon(faTimesCircle);
 export const FADatabaseIcon = createIcon(faDatabase);
+export const FAHomeIcon = createIcon(faHome);
+export const FAFileIcon = createIcon(faFile);

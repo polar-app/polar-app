@@ -61,7 +61,7 @@ interface DocViewer {
     readonly containerElement: HTMLElement;
 }
 
-function createDocViewer(): DocViewer {
+function createDocViewer(docID: string): DocViewer {
 
     const eventBus = new EventBus({dispatchToDOM: false});
     // TODO  this isn't actually exported..
@@ -77,13 +77,23 @@ function createDocViewer(): DocViewer {
         eventBus
     });
 
-    const containerElement = document.getElementById('viewerContainer')! as HTMLDivElement;
+    const root = document.querySelector(`div[data-doc-viewer-id='${docID}']`);
+
+    if (root === null) {
+        throw new Error("No root");
+    }
+
+    const containerElement = root.querySelector('.viewerContainer')! as HTMLDivElement;
 
     if (containerElement === null) {
         throw new Error("No containerElement");
     }
 
-    const viewerElement = document.getElementById('viewer')! as HTMLDivElement;
+    const viewerElement = root.querySelector('.viewer')! as HTMLDivElement;
+
+    console.log("FIXME: rendering at root: ", root);
+    console.log("FIXME: rendering at containerElement: ", containerElement);
+    console.log("FIXME: rendering at viewerElement: ", viewerElement);
 
     if (viewerElement === null) {
         throw new Error("No viewerElement");
@@ -160,7 +170,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     useComponentDidMount(() => {
 
-        docViewerRef.current = createDocViewer();
+        docViewerRef.current = createDocViewer(props.docMeta.docInfo.fingerprint);
 
         doLoad(docViewerRef.current)
             .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
@@ -215,8 +225,10 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         window.addEventListener('resize', resizeDebouncer, {passive: true});
 
-        document.getElementById("viewerContainer")!
-            .addEventListener("resize", resizeDebouncer);
+
+        // FIXME:
+        // document.getElementById("viewerContainer")!
+        //     .addEventListener("resize", resizeDebouncer);
 
         setResizer(resizeDebouncer);
 

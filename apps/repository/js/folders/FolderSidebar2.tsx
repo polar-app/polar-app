@@ -12,6 +12,7 @@ import {
 import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 import {TagIDStr} from "polar-shared/src/tags/Tags";
+import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
 
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
@@ -39,69 +40,68 @@ export const FolderSidebar2 = () => {
     }, [onDrop]);
 
     return (
-        <Paper className="FolderSidebar2"
-               square
-               elevation={0}
-               style={{
-                   display: 'flex',
-                   flexGrow: 1,
-                   flexDirection: "column",
-                   minHeight: 0
-               }}>
+        <MUIElevation className="FolderSidebar2"
+                      elevation={0}
+                      style={{
+                          display: 'flex',
+                          flexGrow: 1,
+                          flexDirection: "column",
+                          minHeight: 0
+                      }}>
+            <>
+                <MUIPaperToolbar borderBottom
+                                 padding={0.5}>
+                    <div style={{
+                        display: 'flex'
+                    }}>
 
-            <MUIPaperToolbar borderBottom
-                             padding={0.5}>
-                <div style={{
-                    display: 'flex'
-                }}>
+                        <MUISearchBox2
+                            initialValue={filter}
+                            placeholder="Filter by tag or folder"
+                            autoComplete="off"
+                            style={{
+                                flexGrow: 1
+                            }}
+                            onChange={setFilter}/>
 
-                    <MUISearchBox2
-                        initialValue={filter}
-                        placeholder="Filter by tag or folder"
-                        autoComplete="off"
-                        style={{
-                            flexGrow: 1
-                        }}
-                        onChange={setFilter}/>
+                        <div className="ml-1">
+                            <AddTagsDropdown onCreateFolder={() => onCreateUserTag('folder')}
+                                             onCreateTag={() => onCreateUserTag('tag')}/>
+                        </div>
 
-                    <div className="ml-1">
-                        <AddTagsDropdown onCreateFolder={() => onCreateUserTag('folder')}
-                                         onCreateTag={() => onCreateUserTag('tag')}/>
                     </div>
+                </MUIPaperToolbar>
 
+                <div style={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         overflow: 'auto'
+                     }}>
+
+                    {foldersRoot &&
+                        <div style={{marginLeft: '8px'}}>
+                            <FoldersContextMenu>
+                                <MUITreeView root={foldersRoot}
+                                             toggleExpanded={toggleExpanded}
+                                             selectRow={selectRow}
+                                             collapseNode={collapseNode}
+                                             expandNode={expandNode}
+                                             selected={selected}
+                                             expanded={expanded}
+                                             onDrop={handleDrop}
+                                             />
+                            </FoldersContextMenu>
+                        </div>}
+
+                    <TagsContextMenu>
+                        <MUITagList tags={tagsView}
+                                    selected={selected}
+                                    selectRow={selectRow}
+                                    onDrop={handleDrop}/>
+                    </TagsContextMenu>
                 </div>
-            </MUIPaperToolbar>
-
-            <div style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     overflow: 'auto'
-                 }}>
-
-                {foldersRoot &&
-                    <div style={{marginLeft: '8px'}}>
-                        <FoldersContextMenu>
-                            <MUITreeView root={foldersRoot}
-                                         toggleExpanded={toggleExpanded}
-                                         selectRow={selectRow}
-                                         collapseNode={collapseNode}
-                                         expandNode={expandNode}
-                                         selected={selected}
-                                         expanded={expanded}
-                                         onDrop={handleDrop}
-                                         />
-                        </FoldersContextMenu>
-                    </div>}
-
-                <TagsContextMenu>
-                    <MUITagList tags={tagsView}
-                                selected={selected}
-                                selectRow={selectRow}
-                                onDrop={handleDrop}/>
-                </TagsContextMenu>
-            </div>
-
-        </Paper>
+            </>
+        </MUIElevation>
     )
 
 };

@@ -36,11 +36,12 @@ export const PDFViewerContainer = () => {
                       width: '100%',
                       height: '100%'
                   }}
+                  className="viewerContainer"
                   itemProp="mainContentOfPage"
                   data-iter={iter}>
 
                 <div>
-                    <div id="viewer" className="pdfViewer">
+                    <div id="viewer" className="pdfViewer viewer">
                         <div/>
 
                     </div>
