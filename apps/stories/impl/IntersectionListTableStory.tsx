@@ -19,6 +19,8 @@ interface IData {
     readonly height: number;
 }
 
+const HEIGHT = 58;
+
 function createData(count: number) {
 
     const before = performance.now();
@@ -28,7 +30,7 @@ function createData(count: number) {
             return {
                 id: '' + idx,
                 idx,
-                height: Math.floor((Math.random() * 50) + 55)
+                height: HEIGHT
             };
         }
 
@@ -42,7 +44,8 @@ function createData(count: number) {
 }
 
 const HiddenComponent = (props: HiddenComponentProps<IData>) => {
-    const height = 15;
+
+    const height = HEIGHT;
 
     return (
         <TableRow style={{
@@ -57,7 +60,7 @@ const HiddenComponent = (props: HiddenComponentProps<IData>) => {
 
 const VisibleComponent = (props: VisibleComponentProps<IData>) => {
 
-    const height = 15;
+    const height = HEIGHT;
 
     return (
         <TableRow style={{
@@ -107,17 +110,17 @@ export const IntersectionListTableStory = () => {
 
             {root && (
 
-                <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>id</TableCell>
-                    </TableRow>
-                </TableHead>
-                    <IntersectionList values={data}
-                                      root={root}
-                                      blockComponent={BlockComponent}
-                                      hiddenComponent={HiddenComponent}
-                                      visibleComponent={VisibleComponent}/>
+                <Table style={{overflow: 'auto'}}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>id</TableCell>
+                        </TableRow>
+                    </TableHead>
+                        <IntersectionList values={data}
+                                          root={root}
+                                          blockComponent={BlockComponent}
+                                          hiddenComponent={HiddenComponent}
+                                          visibleComponent={VisibleComponent}/>
                 </Table>
             )}
 
