@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import Table from '@material-ui/core/Table';
+import TableContainer from '@material-ui/core/TableContainer';
 
 interface IData {
     readonly id: string;
@@ -110,18 +111,20 @@ export const IntersectionListTableStory = () => {
 
             {root && (
 
-                <Table style={{overflow: 'auto'}}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>id</TableCell>
-                        </TableRow>
-                    </TableHead>
+                <TableContainer>
+                    <Table stickyHeader style={{overflow: 'auto'}}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>id</TableCell>
+                            </TableRow>
+                        </TableHead>
                         <IntersectionList values={data}
                                           root={root}
                                           blockComponent={BlockComponent}
                                           hiddenComponent={HiddenComponent}
                                           visibleComponent={VisibleComponent}/>
-                </Table>
+                    </Table>
+                </TableContainer>
             )}
 
         </div>
