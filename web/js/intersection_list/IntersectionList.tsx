@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {IntersectionListItem} from "./IntersectionListItem";
 
-export type RefCallback = (element: HTMLElement | HTMLDivElement) => void;
+export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
 export interface IntersectionListComponentProps<V extends ListValue> {
 
     /**
      * Called when we have a ref to the component
      */
-    readonly ref: RefCallback;
+    readonly innerRef: RefCallback;
 
     readonly value: V;
 

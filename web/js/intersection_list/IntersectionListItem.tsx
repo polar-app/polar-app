@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IntersectionListComponent, ListValue} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 
-interface IProps<V extends ListValue> {
+export interface IntersectionListItem<V extends ListValue> {
 
     readonly root: HTMLElement;
 
@@ -18,19 +18,19 @@ interface IProps<V extends ListValue> {
  * Intersection listener that uses 'blocks' of components
  *
  */
-export const IntersectionListItem = function<V extends ListValue>(props: IProps<V>) {
+export const IntersectionListItem = function<V extends ListValue>(props: IntersectionListItem<V>) {
 
     const Component = props.component;
 
     const {ref, inView, entry} = useInView({
         threshold: 0,
-        trackVisibility: true,
-        delay: 50,
+        // trackVisibility: true,
+        // delay: 50,
         root: props.root
     });
 
     return (
-        <Component value={props.value} ref={ref} inView={inView}/>
+        <Component value={props.value} innerRef={ref} inView={inView}/>
     );
 
 };

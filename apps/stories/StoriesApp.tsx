@@ -21,6 +21,7 @@ import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
 import {ReactWindowStory} from "./impl/ReactWindowStory";
 import XGridStory from "./impl/XGridStory";
+import { IntersectionListStory } from './impl/IntersectionListStory';
 
 interface IStory {
     readonly name: string;
@@ -102,7 +103,13 @@ const stories = createStoryIndex([
         name: "XGrid",
         component: <XGridStory/>,
         noMargin: true
+    },
+    {
+        name: "Intersection List",
+        component: <IntersectionListStory/>,
+        noMargin: true
     }
+
 
 
 ]);
