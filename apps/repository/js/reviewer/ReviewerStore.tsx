@@ -107,9 +107,9 @@ function mutatorFactory<A>(storeProvider: Provider<IReviewerStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IReviewerStore>,
-                          setStore: (store: IReviewerStore) => void,
-                          mutator: Mutator): IReviewerCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IReviewerStore>,
+                            setStore: (store: IReviewerStore) => void,
+                            mutator: Mutator): IReviewerCallbacks {
 
     const dialogs = useDialogManager();
 
@@ -248,5 +248,5 @@ export const [ReviewerStoreProvider, useReviewerStore, useReviewerCallbacks] =
     createObservableStore<IReviewerStore, Mutator, IReviewerCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });

@@ -217,9 +217,9 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
-                          setStore: (store: IFolderSidebarStore) => void,
-                          mutator: Mutator): IFolderSidebarCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
+                             setStore: (store: IFolderSidebarStore) => void,
+                             mutator: Mutator): IFolderSidebarCallbacks {
 
     // used so that we listen to repoDocInfos and get them for every update
     // so that we can build a new store.
@@ -509,7 +509,7 @@ export function createFolderSidebarStore() {
     return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
-          callbacksFactory
+          callbacksFactory: useCallbacksFactory
     });
 }
 

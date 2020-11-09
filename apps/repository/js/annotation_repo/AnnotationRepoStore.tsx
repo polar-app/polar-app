@@ -246,14 +246,14 @@ function mutatorFactory(storeProvider: Provider<IAnnotationRepoStore>,
 }
 
 
-const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
-                         setStore: (store: IAnnotationRepoStore) => void,
-                         mutator: Mutator,
-                         dialogs: DialogManager,
-                         persistence: IPersistenceContext,
-                         repoDocMetaLoader: RepoDocMetaLoader,
-                         repoDocMetaManager: RepoDocMetaManager,
-                         log: ILogger): IAnnotationRepoCallbacks => {
+const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
+                            setStore: (store: IAnnotationRepoStore) => void,
+                            mutator: Mutator,
+                            dialogs: DialogManager,
+                            persistence: IPersistenceContext,
+                            repoDocMetaLoader: RepoDocMetaLoader,
+                            repoDocMetaManager: RepoDocMetaManager,
+                            log: ILogger): IAnnotationRepoCallbacks => {
 
     const docLoader = useDocLoader();
     const annotationMutationCallbacksFactory = useAnnotationMutationCallbacksFactory();
@@ -483,9 +483,9 @@ const createCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
 }
 
-function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
-                          setStore: (store: IAnnotationRepoStore) => void,
-                          mutator: Mutator): IAnnotationRepoCallbacks {
+function useCallbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
+                              setStore: (store: IAnnotationRepoStore) => void,
+                              mutator: Mutator): IAnnotationRepoCallbacks {
 
     const dialogs = useDialogManager();
     const persistence = usePersistenceContext();
@@ -493,14 +493,14 @@ function callbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
     const repoDocMetaManager = useRepoDocMetaManager();
     const log = useLogger();
 
-    return createCallbacks(storeProvider,
-                           setStore,
-                           mutator,
-                           dialogs,
-                           persistence,
-                           repoDocMetaLoader,
-                           repoDocMetaManager,
-                           log);
+    return useCreateCallbacks(storeProvider,
+                              setStore,
+                              mutator,
+                              dialogs,
+                              persistence,
+                              repoDocMetaLoader,
+                              repoDocMetaManager,
+                              log);
 
 }
 
@@ -508,7 +508,7 @@ export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotation
     = createObservableStore<IAnnotationRepoStore, Mutator, IAnnotationRepoCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
-    callbacksFactory
+    callbacksFactory: useCallbacksFactory
 });
 
 interface IProps {
@@ -527,6 +527,7 @@ const AnnotationRepoStoreInner = React.memo((props: IProps) => {
     const annotationRepoMutator = useAnnotationRepoMutator();
     const annotationRepoCallbacks = useAnnotationRepoCallbacks();
 
+    // FIXME: I think this should be useMemo
     const doRefresh = React.useCallback(Debouncers.create(() => {
         annotationRepoMutator.refresh();
     }), [annotationRepoMutator]);

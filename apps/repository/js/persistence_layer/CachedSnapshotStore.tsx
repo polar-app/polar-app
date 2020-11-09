@@ -33,9 +33,9 @@ function mutatorFactory<A>(storeProvider: Provider<ICachedSnapshotStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<ICachedSnapshotStore>,
-                          setStore: (store: ICachedSnapshotStore) => void,
-                          mutator: Mutator): ICachedSnapshotCallbacks {
+function useCallbacksFactory(storeProvider: Provider<ICachedSnapshotStore>,
+                             setStore: (store: ICachedSnapshotStore) => void,
+                             mutator: Mutator): ICachedSnapshotCallbacks {
 
     return React.useMemo(() => {
 
@@ -55,7 +55,7 @@ export function createCacheSnapshotStore() {
     return createObservableStore<ICachedSnapshotStore, Mutator, ICachedSnapshotCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 }
 
