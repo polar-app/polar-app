@@ -25,6 +25,9 @@ export const CaptureSizeContainer = (props: IProps) => {
     const calculator = React.useCallback(() => {
         const width = elementRef.current!.clientWidth;
         const height = elementRef.current!.clientHeight;
+
+        console.log("FIXME: elementRef: ", elementRef.current);
+        console.log("FIXME: ", height);
         return {
             width, height
         };
@@ -32,7 +35,9 @@ export const CaptureSizeContainer = (props: IProps) => {
 
     return (
         <Context.Provider value={calculator}>
-            <div ref={handleRef}>
+            <div ref={handleRef}
+                 style={props.style}
+                 className={props.className}>
                 {mounted && props.children}
             </div>
         </Context.Provider>
