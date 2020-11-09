@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IntersectionListItem} from "./IntersectionListItem";
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import { IntersectionListBlock } from './IntersectionListBlock';
+import {FunctionComponent} from "react";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
@@ -14,8 +15,7 @@ export interface VisibleComponentProps<V extends ListValue> {
 /**
  * The component to render when we are visible
  */
-export type VisibleComponent<V extends ListValue> = (props: VisibleComponentProps<V>) => JSX.Element;
-
+export type VisibleComponent<V extends ListValue> = React.FunctionComponent<VisibleComponentProps<V>>;
 
 export interface HiddenComponentProps<V extends ListValue> {
 
@@ -26,7 +26,7 @@ export interface HiddenComponentProps<V extends ListValue> {
 /**
  * The component to render when the value is not visible.
  */
-export type HiddenComponent<V extends ListValue> = (props: HiddenComponentProps<V>) => JSX.Element;
+export type HiddenComponent<V extends ListValue> = React.FunctionComponent<HiddenComponentProps<V>>;
 
 export interface BlockComponentProps<V extends ListValue> {
 
@@ -41,7 +41,7 @@ export interface BlockComponentProps<V extends ListValue> {
 
 }
 
-export type BlockComponent<V extends ListValue> = (props: BlockComponentProps<V>) => JSX.Element;
+export type BlockComponent<V extends ListValue> = React.FunctionComponent<BlockComponentProps<V>>;
 
 export interface ListValue {
 

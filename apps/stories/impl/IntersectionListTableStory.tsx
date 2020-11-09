@@ -44,7 +44,7 @@ function createData(count: number) {
 
 }
 
-const HiddenComponent = (props: HiddenComponentProps<IData>) => {
+const HiddenComponent = React.memo((props: HiddenComponentProps<IData>) => {
 
     const height = HEIGHT;
 
@@ -57,9 +57,9 @@ const HiddenComponent = (props: HiddenComponentProps<IData>) => {
         </TableRow>
     );
 
-};
+});
 
-const VisibleComponent = (props: VisibleComponentProps<IData>) => {
+const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
 
     const height = HEIGHT;
 
@@ -74,9 +74,9 @@ const VisibleComponent = (props: VisibleComponentProps<IData>) => {
         </TableRow>
     );
 
-};
+});
 
-const BlockComponent = (props: BlockComponentProps<IData>) => {
+const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
 
     const height = Numbers.sum(...props.values.map(current => current.height));
 
@@ -91,7 +91,7 @@ const BlockComponent = (props: BlockComponentProps<IData>) => {
         </TableBody>
     );
 
-};
+});
 
 export const IntersectionListTableStory = () => {
 
