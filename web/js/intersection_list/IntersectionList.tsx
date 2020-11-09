@@ -88,17 +88,8 @@ export const IntersectionList = function<V extends ListValue>(props: IProps<V>) 
 
     const blocks = Arrays.createBatches(props.values, batchSize);
 
-    // FIXME: this is using idx which is the wrong key.
-
     return (
         <>
-            {/*{props.values.map(current => (*/}
-            {/*    <IntersectionListItem key={current.id}*/}
-            {/*                          root={props.root}*/}
-            {/*                          value={current}*/}
-            {/*                          component={props.component}/>*/}
-
-            {/*))}*/}
 
             {blocks.map((block, idx) => (
                 <IntersectionListBlock key={idx}
