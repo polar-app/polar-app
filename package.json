@@ -91,7 +91,7 @@
     "@types/react-virtualized": "=9.21.10",
     "@types/react-virtualized-auto-sizer": "=1.0.0",
     "@types/react-visibility-sensor": "=5.0.1",
-    "@types/react-window": "=1.8.1",
+    "@types/react-window": "=1.8.2",
     "@types/semver": "~6.2.0",
     "@types/summernote": "~0.8.0",
     "@types/throttle-debounce": "=2.1.0",
