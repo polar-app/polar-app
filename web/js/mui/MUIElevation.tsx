@@ -36,7 +36,7 @@ export function useElevations(): IElevations {
             highlighted: '#363636'
         },
         2: {
-            default: '#343434',
+            default: theme.palette.background.paper,
             highlighted: '#3b3b3b'
         }
     }

@@ -29,10 +29,10 @@ export const MUIAppRoot = (props: IProps) => {
             primary: {
                 'main': 'rgb(103, 84, 214)'
             },
-            background: {
-                'default': '#1b1b1b',
-                'paper': '#343434'
-            }
+            // background: {
+            //     'default': '#1b1b1b',
+            //     'paper': '#343434'
+            // }
         }
     }), [theme]);
 
