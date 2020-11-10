@@ -39,7 +39,7 @@ export const IntersectionListBlock = typedMemo(function<V extends ListValue>(pro
         <BlockComponent innerRef={ref} values={props.values}>
             <>
                 {props.values.map((current, index) => (
-                    <IntersectionListBlockItem key={current.id}
+                    <IntersectionListBlockItem key={indexBase + index}
                                                root={props.root}
                                                value={current}
                                                index={indexBase + index}
