@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {BlockComponent, HiddenComponent, ListValue, VisibleComponent} from "./IntersectionList";
+import {BlockComponent, HiddenComponent, ListValue, RefCallback, VisibleComponent} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
-import {typedMemo} from "../hooks/ReactHooks";
-import {Line} from "../util/Line";
+import {typedMemo, useLogWhenChanged} from "../hooks/ReactHooks";
 
 interface IProps<V extends ListValue> {
 
@@ -98,14 +97,40 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
 
 export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
-    const BlockComponent = props.blockComponent;
-
     const {ref, inView} = useIntersectionObserverViewState(props);
+
+    // useLogWhenChanged('inView', inView);
+
+    return (
+        <LazyBlockComponent innerRef={ref}
+                            inView={inView}
+                            values={props.values}
+                            visibleComponent={props.visibleComponent}
+                            blockComponent={props.blockComponent}
+                            hiddenComponent={props.hiddenComponent}
+                            blockSize={props.blockSize}
+                            blockIndex={props.blockIndex}
+                            root={props.root}/>
+    );
+});
+
+export interface LazyBlockComponentProps<V extends ListValue> extends IProps<V> {
+    readonly innerRef: RefCallback;
+    readonly inView: boolean;
+}
+
+/**
+ * Used so that we're doing the rendering here and we can memoize it so that a re-render due to inView changing
+ * won't re-render the component itself due to props not changing.
+ */
+export const LazyBlockComponent = typedMemo(function<V extends ListValue>(props: LazyBlockComponentProps<V>) {
+
+    const BlockComponent = props.blockComponent;
 
     const indexBase = props.blockIndex * props.blockSize;
 
     return (
-        <BlockComponent innerRef={ref} values={props.values}>
+        <BlockComponent innerRef={props.innerRef} values={props.values}>
             <>
                 {props.values.map((current, index) => (
                     <IntersectionListBlockItem key={indexBase + index}
@@ -114,20 +139,10 @@ export const IntersectionListBlock = typedMemo(function<V extends ListValue>(pro
                                                index={indexBase + index}
                                                visibleComponent={props.visibleComponent}
                                                hiddenComponent={props.hiddenComponent}
-                                               inView={inView}/>
+                                               inView={props.inView}/>
                 ))}
-
-                {/*{! inView && (*/}
-                {/*    <HiddenComponentBlock/>*/}
-                {/*)}*/}
             </>
         </BlockComponent>
-    )
+    );
+
 });
-
-interface Foo<V> {
-
-}
-
-//
-// export const IntersectionListBlock<V> = React.memo(IntersectionListBlockDelegate) as React.FunctionComponent<IProps<V>>;
