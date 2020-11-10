@@ -104,12 +104,12 @@ interface IProps {
 export const MUIElevation = deepMemo((props: IProps) => {
 
     const elevation = useElevationBackground(props.elevation);
-    const background = props.highlighted ? elevation.highlighted : elevation.default;
+    const backgroundColor = props.highlighted ? elevation.highlighted : elevation.default;
 
     return (
         <div className={clsx(['mui-elevation', props.className])}
              style={{
-                 background,
+                 backgroundColor,
                  ...props.style
              }}>
 
