@@ -3,6 +3,7 @@ import {BlockComponent, HiddenComponent, ListValue, VisibleComponent} from "./In
 import { useInView } from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
 import {typedMemo} from "../hooks/ReactHooks";
+import {Line} from "../util/Line";
 
 interface IProps<V extends ListValue> {
 
@@ -26,14 +27,38 @@ export const IntersectionListBlock = typedMemo(function<V extends ListValue>(pro
 
     const BlockComponent = props.blockComponent;
 
-    const {ref, inView, entry} = useInView({
+    const {ref, entry} = useInView({
         threshold: 0,
-        trackVisibility: true,
-        delay: 100,
         root: props.root
     });
 
+    function computeInView() {
+
+        const buffer = window.outerHeight * 0.5;
+
+        if (! entry) {
+            return false;
+        }
+
+        const line = new Line(0 - buffer, window.outerHeight + buffer, 'y');
+
+        if (line.containsPoint(entry.boundingClientRect.top)) {
+            return true;
+        }
+
+        if (line.containsPoint(entry.boundingClientRect.bottom)) {
+            return true;
+        }
+
+        return true;
+
+    }
+
+    const inView = computeInView();
+
     const indexBase = props.blockIndex * props.blockSize;
+
+    // FIXME: we can use just the
 
     return (
         <BlockComponent innerRef={ref} values={props.values}>
