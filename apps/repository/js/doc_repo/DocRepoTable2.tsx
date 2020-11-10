@@ -19,6 +19,11 @@ import { RepoDocInfo } from '../RepoDocInfo';
 import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {createContextMenu} from "./MUIContextMenu";
+import {
+    IDocViewerContextMenuOrigin
+} from "../../../doc/src/DocViewerMenu";
+import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
 
 
 const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
@@ -71,6 +76,10 @@ const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
     );
 
 });
+
+// const DocRepoContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu);
+const DocRepoContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(MUIDocDropdownMenuItems);
+
 export const DocRepoTable2 = deepMemo(() => {
 
     const {view} = useDocRepoStore(['view']);
@@ -111,13 +120,15 @@ export const DocRepoTable2 = deepMemo(() => {
 
                             <DocRepoTableHead/>
 
-                            {root && (
-                                <IntersectionList values={view}
-                                                  root={root}
-                                                  blockSize={25}
-                                                  blockComponent={BlockComponent}
-                                                  hiddenComponent={HiddenComponent}
-                                                  visibleComponent={VisibleComponent}/>)}
+                            <DocRepoContextMenu>
+                                {root && (
+                                    <IntersectionList values={view}
+                                                      root={root}
+                                                      blockSize={25}
+                                                      blockComponent={BlockComponent}
+                                                      hiddenComponent={HiddenComponent}
+                                                      visibleComponent={VisibleComponent}/>)}
+                            </DocRepoContextMenu>
 
                             {/*<TableBody>*/}
                             {/*    {viewPage*/}

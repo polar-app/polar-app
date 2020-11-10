@@ -1,5 +1,5 @@
 import React from "react";
-import {MUIDocDropdownMenu} from "./MUIDocDropdownMenu";
+import {DocRepoDropdownMenu} from "./DocRepoDropdownMenu";
 import IconButton from "@material-ui/core/IconButton";
 import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -50,8 +50,8 @@ export const MUIDocDropdownButton = deepMemo((props: IProps) => {
                 <MoreVertIcon/>
             </IconButton>
             {anchorEl &&
-                <MUIDocDropdownMenu anchorEl={anchorEl}
-                                    onClose={handleClose}/>}
+                <DocRepoDropdownMenu anchorEl={anchorEl}
+                                     onClose={handleClose}/>}
         </div>
     );
 
