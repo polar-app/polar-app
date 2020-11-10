@@ -2,7 +2,7 @@
 title: Three Steps To Become A Better Reader Using Active Reading
 date: 2020-11-09T08:00:00.000-08:00
 layout: post
-description: Meta Description: A close reading of a document accommodates the reader to disengage, interpret, and reassemble the working sections of a text into a new interpretation of the text
+description: A close reading of a document accommodates the reader to disengage, interpret, and reassemble the working sections of a text into a new interpretation of the text
 large_image: https://i.imgur.com/gaI80lv.jpg 
 ---
 
