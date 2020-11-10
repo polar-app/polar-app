@@ -10,7 +10,7 @@ Active, or [close](https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/16
 
 Let’s get started!
   
-<img class="img-fluid" src="https://i.imgur.com/38NzSxW.gifv">
+<img class="img-fluid" src="https://i.imgur.com/Fs9v0xK.gif">
 
 # 1. Pre-Read
 
