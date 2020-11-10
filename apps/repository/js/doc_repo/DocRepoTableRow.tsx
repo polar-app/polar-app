@@ -135,7 +135,7 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
     const callbacks = useDocRepoCallbacks();
 
-    const {selectRow, setSelected} = callbacks;
+    const {selectRow} = callbacks;
     const {viewIndex, rawContextMenuHandler, selected, row} = props;
 
     const contextMenuHandler: ContextMenuHandler = React.useCallback((event) => {
