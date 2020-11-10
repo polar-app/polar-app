@@ -88,8 +88,7 @@ export class Mailchimp {
         const response = await Fetches.fetch(url, init);
 
         if (response.status !== 200) {
-            // console.log(await response.text());
-            throw new Error("Failed request: " + response.status + ": " + response.statusText);
+            throw new Error(`Failed request: ${response.status} : ${response.statusText} for email: ${email}, firstName: ${firstName}, lastName: ${lastName}`);
         }
 
         // return response;
