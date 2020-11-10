@@ -14,18 +14,11 @@ function createApp(stripeMode: StripeMode) {
         const stripeEvent: StripeEvent = req.body;
 
         const eventType = stripeEvent.type;
-        const customerID = stripeEvent.data.object.customer;
-        const planID = stripeEvent.data.object.plan.id;
-        const status = stripeEvent.data.object.status;
-        const subscriptionID = stripeEvent.data.object.id;
 
         await StripeWebhooks.handleEvent({
             stripeMode,
             eventType,
-            customerID,
-            planID,
-            status,
-            subscriptionID
+            value: stripeEvent
         });
 
         res.sendStatus(200);

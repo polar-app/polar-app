@@ -1,5 +1,3 @@
-import {assert} from 'chai';
-import {Accounts} from "./Accounts";
 import {StripeWebhooks} from "./StripeWebhooks";
 import {StripeTesting} from "./StripeTesting";
 import {StripeUtils} from "./StripeUtils";
@@ -34,10 +32,12 @@ describe('StripeWebhooks', function() {
         await StripeWebhooks.handleEvent({
             stripeMode: 'test',
             eventType: 'customer.subscription.updated',
-            customerID: customer.id,
-            status: 'active',
-            subscriptionID: subscription.id,
-            planID: price.id,
+            value: {
+                customerID: customer.id,
+                status: 'active',
+                subscriptionID: subscription.id,
+                planID: price.id
+            }
         })
 
     });

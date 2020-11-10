@@ -13,9 +13,10 @@ export interface UserRequest<R> {
     readonly idToken: IDTokenStr;
 
     /**
-     * The actual request object.
+     * The actual request JSON body
      */
     readonly request: R;
+
 }
 
 export type IDTokenStr = string;

@@ -92,6 +92,14 @@ export class StripePlanIDs {
             case identifiers._4YEAR.PRO:
                 return {plan: V2PlanPro, interval: '4year'};
 
+            case 'plan_bronze':
+                return {plan: V2PlanPlus, interval: 'month'};
+            case 'plan_silver':
+                return {plan: V2PlanPlus, interval: 'month'};
+            case 'plan_gold':
+                return {plan: V2PlanPro, interval: 'month'};
+
+
         }
 
         throw new Error(`Invalid product: ${priceID} for mode ${mode}`);
