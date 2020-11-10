@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {IntersectionListItem} from "./IntersectionListItem";
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import { IntersectionListBlock } from './IntersectionListBlock';
-import {FunctionComponent} from "react";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
@@ -70,7 +68,7 @@ interface IProps<V extends ListValue> {
 
     readonly hiddenComponent: HiddenComponent<V>;
 
-    readonly batchSize?: number;
+    readonly blockSize?: number;
 
 }
 
@@ -84,9 +82,9 @@ interface IProps<V extends ListValue> {
  */
 export const IntersectionList = function<V extends ListValue>(props: IProps<V>) {
 
-    const batchSize = props.batchSize || 25;
+    const blockSize = props.blockSize || 25;
 
-    const blocks = Arrays.createBatches(props.values, batchSize);
+    const blocks = Arrays.createBatches(props.values, blockSize);
 
     return (
         <>
