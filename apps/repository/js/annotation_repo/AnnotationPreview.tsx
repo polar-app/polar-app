@@ -33,6 +33,7 @@ function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 
 const ImagePreview = deepMemo((props: IProps) => {
     const {img} = props;
+
     return (
         <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
     );
