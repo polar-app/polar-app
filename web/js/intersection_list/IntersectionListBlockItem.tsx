@@ -28,11 +28,11 @@ export const IntersectionListBlockItem = function<V extends ListValue>(props: In
 
     if (props.inView) {
         return (
-            <VisibleComponent value={props.value}/>
+            <VisibleComponent value={props.value} index={props.index}/>
         );
     } else {
         return (
-            <HiddenComponent value={props.value}/>
+            <HiddenComponent value={props.value} index={props.index}/>
         );
     }
 

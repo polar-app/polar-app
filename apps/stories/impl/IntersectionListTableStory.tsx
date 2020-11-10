@@ -69,7 +69,7 @@ const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
                       height: `${height}px`,
                   }}>
 
-            <TableCell>{props.value.id}</TableCell>
+            <TableCell>{props.index}</TableCell>
 
         </TableRow>
     );

@@ -7,6 +7,7 @@ export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void
 export interface VisibleComponentProps<V extends ListValue> {
 
     readonly value: V;
+    readonly index: number;
 
 }
 
@@ -18,6 +19,7 @@ export type VisibleComponent<V extends ListValue> = React.FunctionComponent<Visi
 export interface HiddenComponentProps<V extends ListValue> {
 
     readonly value: V;
+    readonly index: number;
 
 }
 
@@ -86,6 +88,8 @@ export const IntersectionList = function<V extends ListValue>(props: IProps<V>) 
 
     const blocks = Arrays.createBatches(props.values, blockSize);
 
+    const Block = IntersectionListBlock;
+
     return (
         <>
 
@@ -93,6 +97,8 @@ export const IntersectionList = function<V extends ListValue>(props: IProps<V>) 
                 <IntersectionListBlock key={idx}
                                        root={props.root}
                                        values={block}
+                                       blockSize={blockSize}
+                                       blockIndex={idx}
                                        blockComponent={props.blockComponent}
                                        visibleComponent={props.visibleComponent}
                                        hiddenComponent={props.hiddenComponent}/>
