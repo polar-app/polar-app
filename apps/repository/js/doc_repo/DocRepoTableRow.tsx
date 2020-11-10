@@ -15,9 +15,7 @@ import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
-import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
-import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
-import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {DocRepoTableRowInner} from "./DocRepoTableRowInner";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -136,130 +134,9 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     const callbacks = useDocRepoCallbacks();
 
     const {selectRow} = callbacks;
-    const {viewIndex, rawContextMenuHandler, selected, row} = props;
-
-    const contextMenuHandler: ContextMenuHandler = React.useCallback((event) => {
-        selectRow(row.id, event, 'context');
-        rawContextMenuHandler(event);
-    }, [selectRow, row.id, rawContextMenuHandler]);
-
-    const selectRowClickHandler = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
-        selectRow(row.id, event, 'click');
-    }, [row.id, selectRow]);
+    const {viewIndex, selected, row} = props;
 
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
-    const columns = useDocRepoColumnsPrefs();
-
-    const toCell = React.useCallback((id: keyof IDocInfo) => {
-
-        switch(id) {
-
-            case 'title':
-                return (
-                    <TableCell key={id}
-                               component="th"
-                               id={labelId}
-                               scope="row"
-                               className={classes.colTitle}
-                               padding="none"
-                               onClick={selectRowClickHandler}
-                               onContextMenu={contextMenuHandler}>
-                        {row.title}
-                    </TableCell>
-                );
-
-            case 'added':
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell className={classes.colAdded}
-                                   padding="none"
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}>
-
-                            <DateTimeTableCell datetime={row.added}/>
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
-                );
-
-            case 'lastUpdated':
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell className={classes.colLastUpdated}
-                                   padding="none"
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}>
-
-                            <DateTimeTableCell datetime={row.lastUpdated}/>
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
-                );
-
-            case 'tags':
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCellTags contextMenuHandler={contextMenuHandler}
-                                       selectRow={selectRow}
-                                       viewID={row.id}
-                                       tags={row.tags}/>
-                    </DeviceRouters.NotPhone>
-                );
-
-            case 'authors':
-
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell padding="none"
-                                   className={classes.colAuthors}
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}>
-
-                            {Object.values(row.docInfo.authors || {}).join(', ')}
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
-                );
-
-            case 'progress':
-
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell className={classes.colProgress}
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}
-                                   padding="none">
-
-                            <progress className={classes.progress}
-                                      value={row.progress}
-                                      max={100}/>
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
-                );
-
-            default:
-                return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell className={classes.colProgress}
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}
-                                   padding="none"
-                                   style={{
-                                       width: COLUMN_MAP[id].width,
-                                       overflow: 'hidden',
-                                       whiteSpace: 'nowrap',
-                                       textOverflow: 'ellipsis'
-                                   }}>
-
-                            {row.docInfo[id]}
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
-                );
-        }
-
-    }, [classes, contextMenuHandler, labelId, row, selectRow, selectRowClickHandler]);
 
     return (
         <TableRow
@@ -287,23 +164,10 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
                 </AutoBlur>
             </TableCell>
 
-            {columns.map(toCell)}
+            <DocRepoTableRowInner viewIndex={props.viewIndex}
+                                  rawContextMenuHandler={props.rawContextMenuHandler}
+                                  row={props.row}/>
 
-            <DeviceRouters.NotPhone>
-                <TableCell align="right"
-                           padding="none"
-                           className={classes.colDocButtons}
-                           onClick={event => event.stopPropagation()}
-                           onDoubleClick={event => event.stopPropagation()}>
-
-                    <MUIDocButtonBar className={classes.docButtons}
-                                     flagged={row.flagged}
-                                     archived={row.archived}
-                                     viewID={row.id}
-                                     {...props}/>
-
-                </TableCell>
-            </DeviceRouters.NotPhone>
         </TableRow>
     );
 
