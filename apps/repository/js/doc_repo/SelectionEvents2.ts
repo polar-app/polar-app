@@ -25,7 +25,7 @@ export namespace SelectionEvents2 {
 
     export function selectRow<T extends IDType>(viewID: IDStr,
                                                 currentlySelected: ReadonlyArray<IDStr>,
-                                                viewPage: ReadonlyArray<T>,
+                                                view: ReadonlyArray<T>,
                                                 event: IMouseEvent,
                                                 type: SelectRowType): SelectedRows {
 
@@ -119,7 +119,7 @@ export namespace SelectionEvents2 {
         };
 
         function computeSelectedIndexes(): ReadonlyArray<number> {
-            const viewPageIDs = viewPage.map(current => current.id);
+            const viewPageIDs = view.map(current => current.id);
             return currentlySelected.map(current => viewPageIDs.indexOf(current));
         }
 
@@ -132,7 +132,7 @@ export namespace SelectionEvents2 {
 
             const selected = computeSelectedIndexes();
 
-            const selectedIdx = viewPage.map(current => current.id)
+            const selectedIdx = view.map(current => current.id)
                                         .indexOf(viewID);
 
             if (selected.length > 0) {
@@ -147,7 +147,7 @@ export namespace SelectionEvents2 {
             const viewPagePointers = [...Numbers.range(rangeMin, rangeMax)];
 
             // now convert these back to IDs
-            return viewPagePointers.map(ptr => viewPage[ptr].id);
+            return viewPagePointers.map(ptr => view[ptr].id);
 
         };
 
@@ -155,7 +155,7 @@ export namespace SelectionEvents2 {
 
             const selected = computeSelectedIndexes();
 
-            const selectedIdx = viewPage.map(current => current.id)
+            const selectedIdx = view.map(current => current.id)
                                         .indexOf(viewID);
 
             function computeViewPagePointers() {
@@ -168,7 +168,7 @@ export namespace SelectionEvents2 {
 
             const viewPagePointers = computeViewPagePointers();
             // now convert these back to IDs
-            return viewPagePointers.map(ptr => viewPage[ptr].id);
+            return viewPagePointers.map(ptr => view[ptr].id);
 
         };
 

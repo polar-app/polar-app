@@ -23,15 +23,15 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
 
-    // console.log("FIXME: HiddenComponent render: " + props.index)
+    console.log("FIXME: HiddenComponent render: " + props.index)
 
     const height = HEIGHT;
 
     return (
         <TableRow style={{
-            minHeight: `${height}px`,
-            height: `${height}px`,
-        }}>
+                      minHeight: `${height}px`,
+                      height: `${height}px`,
+                  }}>
 
         </TableRow>
     );

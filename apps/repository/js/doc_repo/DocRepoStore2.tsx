@@ -294,7 +294,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const selected = SelectionEvents2.selectRow(viewID,
                                                     store.selected,
-                                                    store.viewPage,
+                                                    store.view,
                                                     event,
                                                     type);
 
