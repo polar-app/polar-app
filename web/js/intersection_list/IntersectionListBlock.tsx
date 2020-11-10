@@ -15,6 +15,10 @@ interface IProps<V extends ListValue> {
 
     readonly hiddenComponent: HiddenComponent<V>;
 
+    readonly blockSize: number;
+
+    readonly blockIndex: number;
+
 }
 
 export const IntersectionListBlock = function<V extends ListValue>(props: IProps<V>) {
@@ -28,13 +32,16 @@ export const IntersectionListBlock = function<V extends ListValue>(props: IProps
         root: props.root
     });
 
+    const indexBase = props.blockIndex * props.blockSize;
+
     return (
         <BlockComponent innerRef={ref} values={props.values}>
             <>
-                {props.values.map(current => (
+                {props.values.map((current, index) => (
                     <IntersectionListBlockItem key={current.id}
                                                root={props.root}
                                                value={current}
+                                               index={indexBase + index}
                                                visibleComponent={props.visibleComponent}
                                                hiddenComponent={props.hiddenComponent}
                                                inView={inView}/>

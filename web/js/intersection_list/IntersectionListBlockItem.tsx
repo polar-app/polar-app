@@ -13,6 +13,8 @@ export interface IntersectionListItem<V extends ListValue> {
 
     readonly inView: boolean;
 
+    readonly index: number;
+
 }
 
 /**
