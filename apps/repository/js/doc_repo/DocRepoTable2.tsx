@@ -113,6 +113,7 @@ export const DocRepoTable2 = deepMemo(() => {
                             {root && (
                                 <IntersectionList values={view}
                                                   root={root}
+                                                  blockSize={50}
                                                   blockComponent={BlockComponent}
                                                   hiddenComponent={HiddenComponent}
                                                   visibleComponent={VisibleComponent}/>)}
