@@ -52,7 +52,7 @@ function useCallbacksFactory(storeProvider: Provider<IMUIContextMenuStore>,
             setActive,
         };
 
-    }, [storeProvider, setStore]);
+    }, [setStore]);
 
 
 }
