@@ -23,8 +23,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
 
-    console.log("FIXME: HiddenComponent render: " + props.index)
-
     const height = HEIGHT;
 
     return (
@@ -41,8 +39,6 @@ const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) =>
 const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) => {
 
     const {selected} = useDocRepoStore(['selected']);
-
-    // console.log("FIXME: VisibleComponent render: " + props.index)
 
     const viewIndex = props.index;
     const row = props.value;
