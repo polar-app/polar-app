@@ -23,6 +23,7 @@ import {ReactWindowStory} from "./impl/ReactWindowStory";
 import XGridStory from "./impl/XGridStory";
 import { IntersectionListStory } from './impl/IntersectionListStory';
 import { IntersectionListTableStory } from './impl/IntersectionListTableStory';
+import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
 
 interface IStory {
     readonly name: string;
@@ -114,6 +115,10 @@ const stories = createStoryIndex([
         name: "Intersection List Table",
         component: <IntersectionListTableStory/>,
         noMargin: true
+    },
+    {
+        name: "MUIImageBottomFadeStory",
+        component: <MUIImageBottomFadeStory/>
     }
 
 
