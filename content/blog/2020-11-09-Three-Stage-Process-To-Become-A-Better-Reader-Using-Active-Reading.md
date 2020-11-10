@@ -6,7 +6,7 @@ Reading a book should be approached similarly to playing video games. You’re p
 
 # What is Close/Active Reading?
 
-Active, or [close](https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/164/2019/03/28042440/Reading-Active-Reading-Strategies-Close-Reading.pdf), reading is a comprehensive and diligent approach to interpreting a text. A close reading of a document accommodates the reader to disengage, decipher, and reassemble the working sections of a text into a new interpretation of the text. So how would one go about attempting to actively read?
+Active, or <a href="https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/164/2019/03/28042440/Reading-Active-Reading-Strategies-Close-Reading.pdf">close</a>, reading is a comprehensive and diligent approach to interpreting a text. A close reading of a document accommodates the reader to disengage, decipher, and reassemble the working sections of a text into a new interpretation of the text. So how would one go about attempting to actively read?
 
 Let’s get started!
   
@@ -14,7 +14,7 @@ Let’s get started!
 
 # 1. Pre-Read
 
-Before you begin reading, there are a few steps that will help you while reading. Annotating the text while reading is absolutely necessary so grab a pen/pencil, or of course, utilize [Adobe Digital Edition](https://www.adobe.com/solutions/ebook/digital-editions.html?red=a), [Supermemo](https://www.supermemo.com/en), or [Polar](https://getpolarized.io/) for digital content. Depending on what you’re looking for, a simple PDF like Adobe might suffice. Or if you’re a more serious reader, you might want to go with Polar. Making predictions as per what the reading will entail is another useful trick to help understand the concepts you might read.
+Before you begin reading, there are a few steps that will help you while reading. Annotating the text while reading is absolutely necessary so grab a pen/pencil, or of course, utilize <a href="https://www.adobe.com/solutions/ebook/digital-editions.html?red=a">Adobe Digital Edition</a>, <a href="https://www.supermemo.com/en">Supermemo</a>, or <a href="https://getpolarized.io">Polar</a>, for digital content. Depending on what you’re looking for, a simple PDF like Adobe might suffice. Or if you’re a more serious reader, you might want to go with Polar. Making predictions as per what the reading will entail is another useful trick to help understand the concepts you might read.
 
 # 2. Reading
 
@@ -50,4 +50,4 @@ Furthermore, rereading the text will allow the reader to analyze a deeper unders
 
 We all learn to read letters/characters and think that this is it. Whereas through the multiple years of my reading journey, I discovered that there's so much more to actually retaining the information. That is why these 3 stages - pre-read, reading, rereading (processing) - is an essential method in improving your reading skills because it primarily targets reading comprehension. With this process, you will be able to discern the information and retain it.
 
-Now you have everything you need to get started so either pick up a book or open up [Polar](https://getpolarized.io/) and begin your reading journey.
+Now you have everything you need to get started so either pick up a book or open up <a href="https://getpolarized.io">Polar</a> and begin your reading journey.
