@@ -45,9 +45,13 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
         root
     });
 
-    if (observation.inView !== inView) {
-        // only fire when inView changes.
-        setUseInView(observation.inView);
+    // if (observation.inView !== inView) {
+    //     setUseInView(observation.inView);
+    // }
+
+    if (observation.inView && ! inView) {
+        // only go one way ... then don't deactivate...
+        setUseInView(true);
     }
 
     return {
