@@ -64,8 +64,8 @@ export const DocRepoTableToolbar = React.memo(() => {
                                 <AutoBlur>
                                     <Checkbox
                                         size="medium"
-                                        indeterminate={selected.length > 0 && selected.length < rowsPerPage}
-                                        checked={selected.length === rowsPerPage}
+                                        indeterminate={selected.length > 0 && selected.length < view.length}
+                                        checked={selected.length === view.length && view.length !== 0}
                                         onChange={event => handleCheckbox(event.target.checked)}
                                         inputProps={{ 'aria-label': 'select all documents' }}
                                     />
