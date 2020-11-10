@@ -69,11 +69,21 @@ function pprint(value: any) {
 export function useLogWhenChanged<T>(name: string, value: T) {
     const previous = React.useRef(value);
 
-    // if (!Object.is(previous.current, value)) {
-    if (! deepEqual(previous.current, value)) {
-        console.log(`${name} changed. Old: ${pprint(previous.current)}, New: ${pprint(value)} `);
+    try {
+
+        const info = `prev: ${pprint(previous.current)}, curr: ${pprint(value)}`;
+
+        if (! deepEqual(previous.current, value)) {
+            console.log(`${name} changed: ${info}`);
+        } else {
+            console.log(`${name} NOT changed: ${info}`);
+        }
+
+    } finally {
         previous.current = value;
+
     }
+
 
 }
 
