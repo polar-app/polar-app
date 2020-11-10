@@ -1,3 +1,11 @@
+---
+title: Three Steps To Become A Better Reader Using Active Reading
+date: 2020-11-09T08:00:00.000-08:00
+layout: post
+description: Three Stpes To become A Better Reader Using Active Reading
+large_image: https://i.imgur.com/gaI80lv.jpg 
+---
+
 I remember when I initially attempted to read an English book after relocating to the USA from India. It was incredibly challenging and I felt defeated and frustrated when I wasn’t capable of comprehending any of the material in my 3rd grade elementary class. Nevertheless, through numerous attempts at improving my reading skills, I was able to overcome those challenges. The process that worked for me was close/active reading.
 
  I think you will agree with me when I say reading is a really troublesome task to perform without your attention becoming diverted. So, today I am going to reveal how to instantly improve your reading skills with three simple stages. Today, I have come a long way from not being able to recognize the American alphabet. So today, I am going to teach you what helped me overcome this obstacle.
@@ -20,7 +28,7 @@ Before you begin reading, there are a few steps that will help you while reading
 
 Have you ever been reading and become distracted every 5 minutes? Have you ever self-diagnosed yourself with ADHD because you couldn’t focus on your reading? Believe me, I get it.
 
-<img class="img-fluid" src="https://i.imgur.com/8ydBJx5.gif">
+<img class="img-fluid" src="https://i.imgur.com/9p4cSDj.gif">
 
 There are times when you cannot begin to read the first word and are so overwhelmed by the lengthy chapter that needs to be read for tomorrow’s lecture. One of the few things that assisted me was learning to annotate while reading (not just how, but what to annotate). Whether I was virtually writing notes on the side of PDFs or adding post-its on my textbook (not buying a $200 textbook, renting is the way to go!!), those notes were what I remembered during exams, not the actual text. It’s always easier to remember your own words over someone else’s.
 
