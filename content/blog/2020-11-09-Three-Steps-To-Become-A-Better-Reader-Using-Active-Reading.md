@@ -10,7 +10,7 @@ I remember when I initially attempted to read an English book after relocating t
 
  I think you will agree with me when I say reading is a really troublesome task to perform without your attention becoming diverted. So, today I am going to reveal how to instantly improve your reading skills with three simple stages. Today, I have come a long way from not being able to recognize the American alphabet. So today, I am going to teach you what helped me overcome this obstacle.
 
-Reading a book should be approached similarly to playing video games. You’re probably thinking, what the f*ck is she talking about? Whether you’re playing Among Us with your friends or playing Call of Duty, your senses are very sharpened and you react to every little detail. This is primarily due to the fact that the player is being active.
+Reading a book should be approached similarly to playing video games. You’re probably thinking, what the heckk is she talking about? Whether you’re playing Among Us with your friends or playing Call of Duty, your senses are very sharpened and you react to every little detail. This is primarily due to the fact that the player is being active.
 
 # What is Close/Active Reading?
 
