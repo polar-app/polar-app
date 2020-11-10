@@ -61,11 +61,13 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                         <>
                             <AnnotationInlineControlBar annotation={annotation}/>
 
-                            <FeedbackPadding>
-                                <div className="mt-1">
-                                    <AnnotationView2 annotation={annotation}/>
-                                </div>
-                            </FeedbackPadding>
+                            <MUIElevation elevation={2}>
+                                <FeedbackPadding>
+                                    <div className="mt-1">
+                                        <AnnotationView2 annotation={annotation}/>
+                                    </div>
+                                </FeedbackPadding>
+                            </MUIElevation>
                         </>
                     </DocMetaContextProvider>
                 </>

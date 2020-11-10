@@ -14,6 +14,7 @@ import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {FeedbackButton2} from '../ui/FeedbackButton2';
+import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
 namespace main {
 
@@ -95,9 +96,13 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <div style={{flexGrow: 1, display: 'flex'}}>
+                    <MUIElevation elevation={2}
+                                  style={{
+                                      flexGrow: 1,
+                                      display: 'flex'
+                                  }}>
                         <AnnotationInlineViewer2 />
-                    </div>
+                    </MUIElevation>
 
             }
         ]}/>

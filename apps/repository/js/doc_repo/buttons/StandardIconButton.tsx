@@ -11,7 +11,7 @@ export interface StandardButtonProps extends ButtonProps {
     readonly disabled?: boolean;
 }
 
-export const StandardIconButton = (props: StandardButtonProps) => {
+export const StandardIconButton = React.memo((props: StandardButtonProps) => {
     const theme = useTheme();
 
     return (
@@ -25,4 +25,4 @@ export const StandardIconButton = (props: StandardButtonProps) => {
             </IconButton>
         </MUITooltip>
     );
-};
+});
