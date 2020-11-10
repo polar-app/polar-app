@@ -10,7 +10,7 @@ Active, or [close](https://cdn.vanderbilt.edu/vu-wp0/wp-content/uploads/sites/16
 
 Let’s get started!
   
-<img class="img-fluid" src="https://i.imgur.com/Fs9v0xK.gif">
+<img class="img-fluid" src="https://i.imgur.com/38NzSxW.gif">
 
 # 1. Pre-Read
 
@@ -20,7 +20,7 @@ Before you begin reading, there are a few steps that will help you while reading
 
 Have you ever been reading and become distracted every 5 minutes? Have you ever self-diagnosed yourself with ADHD because you couldn’t focus on your reading? Believe me, I get it.
 
-<img class="img-fluid" src="https://i.imgur.com/1rE8HGe.gifv">
+<img class="img-fluid" src="https://i.imgur.com/1rE8HGe.gif">
 
 There are times when you cannot begin to read the first word and are so overwhelmed by the lengthy chapter that needs to be read for tomorrow’s lecture. One of the few things that assisted me was learning to annotate while reading (not just how, but what to annotate). Whether I was virtually writing notes on the side of PDFs or adding post-its on my textbook (not buying a $200 textbook, renting is the way to go!!), those notes were what I remembered during exams, not the actual text. It’s always easier to remember your own words over someone else’s.
 
@@ -44,7 +44,7 @@ One of the main things I struggled with was actually retaining the information. 
 
 Furthermore, rereading the text will allow the reader to analyze a deeper understanding of the text. Also, review annotations and continue annotating if new information is discovered. Lastly, creating an overall summary of your own will be very beneficial in retaining the text.
 
-<img class="img-fluid" src="https://i.imgur.com/Fs9v0xK.gifv">
+<img class="img-fluid" src="https://i.imgur.com/Fs9v0xK.gif">
 
 # Conclusion
 
