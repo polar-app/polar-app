@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import { IntersectionListBlock } from './IntersectionListBlock';
+import {typedMemo} from "../hooks/ReactHooks";
 
 export type RefCallback = (element: HTMLElement | HTMLDivElement | null) => void;
 
@@ -74,6 +75,7 @@ interface IProps<V extends ListValue> {
 
 }
 
+
 /**
  * Intersection listener that uses 'blocks' of components
  *
@@ -82,7 +84,7 @@ interface IProps<V extends ListValue> {
  * https://github.com/thebuilder/react-intersection-observer#readme
  * https://github.com/researchgate/react-intersection-observer
  */
-export const IntersectionList = function<V extends ListValue>(props: IProps<V>) {
+export const IntersectionList = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
     const blockSize = props.blockSize || 25;
 
@@ -95,17 +97,17 @@ export const IntersectionList = function<V extends ListValue>(props: IProps<V>) 
 
             {blocks.map((block, idx) => (
                 <IntersectionListBlock key={idx}
-                                       root={props.root}
-                                       values={block}
-                                       blockSize={blockSize}
-                                       blockIndex={idx}
-                                       blockComponent={props.blockComponent}
-                                       visibleComponent={props.visibleComponent}
-                                       hiddenComponent={props.hiddenComponent}/>
+                                          root={props.root}
+                                          values={block}
+                                          blockSize={blockSize}
+                                          blockIndex={idx}
+                                          blockComponent={props.blockComponent}
+                                          visibleComponent={props.visibleComponent}
+                                          hiddenComponent={props.hiddenComponent}/>
 
             ))}
 
         </>
     );
 
-};
+});

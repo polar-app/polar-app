@@ -20,61 +20,66 @@ import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
+
+const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
+
+    // console.log("FIXME: HiddenComponent render: " + props.index)
+
+    const height = HEIGHT;
+
+    return (
+        <TableRow style={{
+            minHeight: `${height}px`,
+            height: `${height}px`,
+        }}>
+
+        </TableRow>
+    );
+
+});
+
+const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) => {
+
+    const {selected} = useDocRepoStore(['selected']);
+
+    // console.log("FIXME: VisibleComponent render: " + props.index)
+
+    const viewIndex = props.index;
+    const row = props.value;
+
+    return (
+        <DocRepoTableRow
+            viewIndex={viewIndex}
+            key={viewIndex}
+            rawContextMenuHandler={NULL_FUNCTION}
+            selected={selected.includes(row.id)}
+            row={row}
+        />
+    );
+
+});
+
+const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
+
+    const height = Numbers.sum(...props.values.map(current => HEIGHT));
+
+    return (
+        <TableBody ref={props.innerRef}
+                   style={{
+                       height,
+                       minHeight: height,
+                       flexGrow: 1
+                   }}>
+            {props.children}
+        </TableBody>
+    );
+
+});
 export const DocRepoTable2 = deepMemo(() => {
 
-    const {page, rowsPerPage, viewPage, view, selected}
-        = useDocRepoStore(['page', 'rowsPerPage', 'view', 'viewPage', 'selected']);
+    const {view} = useDocRepoStore(['view']);
 
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
-
-    const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
-
-        const height = HEIGHT;
-
-        return (
-            <TableRow style={{
-                minHeight: `${height}px`,
-                height: `${height}px`,
-            }}>
-
-            </TableRow>
-        );
-
-    });
-
-    const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) => {
-
-        const viewIndex = props.index;
-        const row = props.value;
-
-        return (
-            <DocRepoTableRow
-                viewIndex={viewIndex}
-                key={viewIndex}
-                rawContextMenuHandler={NULL_FUNCTION}
-                selected={selected.includes(row.id)}
-                row={row}
-            />
-        );
-
-    });
-
-    const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
-
-        const height = Numbers.sum(...props.values.map(current => HEIGHT));
-
-        return (
-            <TableBody ref={props.innerRef}
-                       style={{
-                           height,
-                           minHeight: height,
-                           flexGrow: 1
-                       }}>
-                {props.children}
-            </TableBody>
-        );
-
-    });
 
     return (
         <div style={{
@@ -113,7 +118,7 @@ export const DocRepoTable2 = deepMemo(() => {
                             {root && (
                                 <IntersectionList values={view}
                                                   root={root}
-                                                  blockSize={50}
+                                                  blockSize={25}
                                                   blockComponent={BlockComponent}
                                                   hiddenComponent={HiddenComponent}
                                                   visibleComponent={VisibleComponent}/>)}

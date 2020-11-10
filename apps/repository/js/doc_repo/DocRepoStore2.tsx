@@ -341,12 +341,12 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const store = storeProvider();
 
-        const {viewPage} = store;
+        const {view} = store;
 
         function computeSelected(): ReadonlyArray<IDStr> {
 
             if (newSelected === 'all') {
-                return viewPage.map(current => current.id);
+                return view.map(current => current.id);
             }
 
             if (newSelected === 'none') {

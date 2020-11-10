@@ -77,3 +77,4 @@ export function useLogWhenChanged<T>(name: string, value: T) {
 
 }
 
+export const typedMemo: <T>(c: T) => T = React.memo;

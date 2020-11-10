@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {VisibleComponent, ListValue, HiddenComponent} from "./IntersectionList";
+import {typedMemo} from "../hooks/ReactHooks";
 
 export interface IntersectionListItem<V extends ListValue> {
 
@@ -21,7 +22,7 @@ export interface IntersectionListItem<V extends ListValue> {
  * Intersection listener that uses 'blocks' of components
  *
  */
-export const IntersectionListBlockItem = function<V extends ListValue>(props: IntersectionListItem<V>) {
+export const IntersectionListBlockItem = typedMemo(function<V extends ListValue>(props: IntersectionListItem<V>) {
 
     const VisibleComponent = props.visibleComponent;
     const HiddenComponent = props.hiddenComponent;
@@ -36,4 +37,4 @@ export const IntersectionListBlockItem = function<V extends ListValue>(props: In
         );
     }
 
-};
+});

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {BlockComponent, HiddenComponent, ListValue, VisibleComponent} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
+import {typedMemo} from "../hooks/ReactHooks";
 
 interface IProps<V extends ListValue> {
 
@@ -21,7 +22,7 @@ interface IProps<V extends ListValue> {
 
 }
 
-export const IntersectionListBlock = function<V extends ListValue>(props: IProps<V>) {
+export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
     const BlockComponent = props.blockComponent;
 
@@ -46,7 +47,18 @@ export const IntersectionListBlock = function<V extends ListValue>(props: IProps
                                                hiddenComponent={props.hiddenComponent}
                                                inView={inView}/>
                 ))}
+
+                {/*{! inView && (*/}
+                {/*    <HiddenComponentBlock/>*/}
+                {/*)}*/}
             </>
         </BlockComponent>
     )
+});
+
+interface Foo<V> {
+
 }
+
+//
+// export const IntersectionListBlock<V> = React.memo(IntersectionListBlockDelegate) as React.FunctionComponent<IProps<V>>;

@@ -289,6 +289,8 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
 
             {columns.map(toCell)}
 
+            {/*// FIXME this is super slow*/}
+
             <DeviceRouters.NotPhone>
                 <TableCell align="right"
                            padding="none"
