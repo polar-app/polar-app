@@ -1,11 +1,13 @@
 import React, {useCallback} from "react";
-import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 import {IDStr} from "polar-shared/src/util/Strings";
 import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
+import {useContextMenu} from "./MUIContextMenu";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { StandardIconButton } from "./buttons/StandardIconButton";
 
 interface IProps {
 
@@ -42,10 +44,17 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
     const onTagged = useSelectRowCallback(viewID, callbacks.onTagged);
     const onArchived = useSelectRowCallback(viewID, callbacks.onArchived);
     const onFlagged = useSelectRowCallback(viewID, callbacks.onFlagged);
+    const contextMenuHandlers = useContextMenu();
+
+    const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
+        callbacks.selectRow(viewID, event, 'click');
+        contextMenuHandlers.onContextMenu(event)
+    }, [callbacks, contextMenuHandlers, viewID]);
 
     return (
 
-        <div className={props.className || ''} onClick={() => callbacks.setSelected([viewID])}>
+        <div className={props.className || ''}
+             onClick={() => callbacks.setSelected([viewID])}>
 
             <MUIDocTagButton onClick={onTagged}/>
 
@@ -55,9 +64,14 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
             <MUIDocFlagButton onClick={onFlagged}
                               active={props.flagged}/>
 
-            {/*<Tooltip title="More options...">*/}
-                <MUIDocDropdownButton onClick={(event) => callbacks.selectRow(viewID, event, 'click')}/>
-            {/*</Tooltip>*/}
+            <StandardIconButton tooltip="More document actions..."
+                                aria-controls="doc-dropdown-menu"
+                                aria-haspopup="true"
+                                // variant="contained"
+                                onClick={handleDropdownMenu}
+                                size="small">
+                <MoreVertIcon/>
+            </StandardIconButton>
 
         </div>
     );
