@@ -1,9 +1,17 @@
 import React from "react";
 import {ButtonProps} from "./StandardToggleButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import useTheme from "@material-ui/core/styles/useTheme";
 import {MUITooltip} from "../../../../../web/js/mui/MUITooltip";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            color: theme.palette.text.secondary
+        },
+    }),
+);
 
 export interface StandardButtonProps extends ButtonProps {
     readonly tooltip: string;
@@ -12,16 +20,16 @@ export interface StandardButtonProps extends ButtonProps {
 }
 
 export const StandardIconButton = React.memo((props: StandardButtonProps) => {
-    const theme = useTheme();
+    const classes = useStyles();
 
     return (
         <MUITooltip title={props.tooltip}>
             <IconButton size={props.size || 'small'}
+                        className={classes.root}
                         disableRipple={true}
                         onClick={props.onClick}
                         disabled={props.disabled}
-                        aria-label={props.tooltip.toLowerCase()}
-                        style={{color: theme.palette.text.secondary}}>
+                        aria-label={props.tooltip.toLowerCase()}>
                 {props.children}
             </IconButton>
         </MUITooltip>

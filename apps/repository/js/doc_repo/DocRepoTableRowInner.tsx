@@ -226,9 +226,6 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
                 return (
                     <cells.Progress key={id}
-                                    viewID={row.id}
-                                    flagged={row.flagged}
-                                    archived={row.archived}
                                     progress={row.progress}
                                     selectRowClickHandler={selectRowClickHandler}
                                     contextMenuHandler={contextMenuHandler}/>
@@ -269,7 +266,14 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                            onClick={event => event.stopPropagation()}
                            onDoubleClick={event => event.stopPropagation()}>
 
-                    <cells.OverflowMenuButton viewID={row.id}/>
+                    <MUIDocButtonBar className={classes.docButtons}
+                                     flagged={row.flagged}
+                                     archived={row.archived}
+                                     viewID={row.id}/>
+
+                    {/*<cells.OverflowMenuButton viewID={row.id}/>*/}
+
+
 
                 </TableCell>
             </DeviceRouters.NotPhone>
@@ -284,32 +288,11 @@ namespace cells {
         readonly progress: number;
         readonly contextMenuHandler: ContextMenuHandler;
         readonly selectRowClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
-
-        readonly viewID: IDStr;
-        readonly flagged: boolean;
-        readonly archived: boolean;
-
     }
 
     export const Progress = React.memo((props: ProgressProps) => {
 
-        const {viewID, flagged, archived} = props;
-
         const classes = useStyles();
-        const hoverActive = useMUIHoverActive();
-
-        const Progress = React.memo(() => (
-            <progress className={classes.progress}
-                      value={props.progress}
-                      max={100}/>
-        ));
-
-        const Buttons = React.memo(() => (
-            <MUIDocButtonBar className={classes.docButtons}
-                             flagged={flagged}
-                             archived={archived}
-                             viewID={viewID}/>
-        ));
 
         return (
             <DeviceRouters.NotPhone>
@@ -318,8 +301,9 @@ namespace cells {
                            onContextMenu={props.contextMenuHandler}
                            padding="none">
 
-                    {hoverActive && <Buttons/>}
-                    {! hoverActive && <Progress/>}
+                    <progress className={classes.progress}
+                              value={props.progress}
+                              max={100}/>
 
                 </TableCell>
             </DeviceRouters.NotPhone>
