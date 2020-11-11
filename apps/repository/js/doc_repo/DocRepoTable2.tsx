@@ -2,10 +2,8 @@ import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
 import {DocRepoTableToolbar} from './DocRepoTableToolbar';
 import {DocRepoTableHead} from "./DocRepoTableHead";
-import {MUIDocContextMenu} from "./MUIDocContextMenu";
 import {DocRepoTableRow} from "./DocRepoTableRow";
 import {useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
@@ -19,7 +17,7 @@ import { RepoDocInfo } from '../RepoDocInfo';
 import TableRow from '@material-ui/core/TableRow';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {createContextMenu} from "./MUIContextMenu";
+import {createContextMenu} from "./MUIContextMenu2";
 import {
     IDocViewerContextMenuOrigin
 } from "../../../doc/src/DocViewerMenu";

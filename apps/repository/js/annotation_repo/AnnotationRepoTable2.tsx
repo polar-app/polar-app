@@ -11,7 +11,7 @@ import {
     useAnnotationRepoStore
 } from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
-import {createContextMenu} from "../doc_repo/MUIContextMenu";
+import {createContextMenu} from "../doc_repo/MUIContextMenu2";
 import {AnnotationRepoTableMenu} from "./AnnotationRepoTableMenu";
 import {MUINextIconButton} from "../../../../web/js/mui/icon_buttons/MUINextIconButton";
 import {DeviceRouter, DeviceRouters} from '../../../../web/js/ui/DeviceRouter';

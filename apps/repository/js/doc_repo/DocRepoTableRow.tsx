@@ -3,8 +3,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {AutoBlur} from "./AutoBlur";
 import Checkbox from "@material-ui/core/Checkbox";
-import {DateTimeTableCell} from "../DateTimeTableCell";
-import {MUIDocButtonBar} from "./MUIDocButtonBar";
 import {ContextMenuHandler} from "./MUIDocContextMenu";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
@@ -16,7 +14,6 @@ import {useDocRepoCallbacks} from "./DocRepoStore2";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DocRepoTableRowInner} from "./DocRepoTableRowInner";
-import {useContextMenu} from "./MUIContextMenu";
 import { useDocRepoContextMenu } from "./DocRepoTable2";
 
 const useStyles = makeStyles((theme: Theme) =>

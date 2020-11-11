@@ -141,7 +141,7 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 export type ContextMenuProviderComponent = (props: IContextMenuProps) => JSX.Element;
 
-export type UseContextMenuHook = (opts: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
+export type UseContextMenuHook = (opts?: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
 
 export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMenuHook];
 
@@ -155,7 +155,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
         useMUIContextMenuMutator
     ] = createContextMenuStore();
 
-    const useContextMenu = React.useCallback((opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
+    const useContextMenu = (opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
 
         const {setActive} = useMUIContextMenuCallbacks();
 
@@ -186,8 +186,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
         return {onContextMenu};
 
-    }, [useMUIContextMenuCallbacks]);
-
+    }
 
     const ContextMenuInner = typedMemo(function<O>(props: ContextMenuInnerProps<O>) {
 
@@ -271,6 +270,7 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
 
     return (
         <Menu
+            transitionDuration={50}
             keepMounted
             anchorEl={props.anchorEl}
             open={true}
