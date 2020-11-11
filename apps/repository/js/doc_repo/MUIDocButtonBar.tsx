@@ -5,11 +5,8 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
-import {StandardIconButton} from "./buttons/StandardIconButton";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import ArchiveIcon from "@material-ui/icons/Archive";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import FlagIcon from "@material-ui/icons/Flag";
+import { OverflowMenuButton } from "./buttons/DocOverflowMenuButton";
 
 interface IProps {
 
@@ -50,6 +47,7 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
     return (
 
         <MUIButtonBar className={props.className || ''}
+                      style={{justifyContent: 'flex-end'}}
                       onClick={() => callbacks.setSelected([viewID])}>
 
             <MUIDocTagButton onClick={onTagged}/>
@@ -60,9 +58,7 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
             <MUIDocFlagButton onClick={onFlagged}
                               active={props.flagged}/>
 
-            {/*<LocalOfferIcon style={{cursor: 'pointer'}} onClick={onTagged}/>*/}
-            {/*<ArchiveIcon style={{cursor: 'pointer'}} onClick={onArchived}/>*/}
-            {/*<FlagIcon style={{cursor: 'pointer'}} onClick={onFlagged}/>*/}
+            <OverflowMenuButton viewID={viewID}/>
 
         </MUIButtonBar>
     );

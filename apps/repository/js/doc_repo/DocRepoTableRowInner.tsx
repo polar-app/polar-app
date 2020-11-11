@@ -15,11 +15,6 @@ import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {useMUIHoverActive} from "../../../../web/js/mui/MUIHoverStore";
-import {StandardIconButton} from "./buttons/StandardIconButton";
-import {useDocRepoContextMenu} from "./DocRepoTable2";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -307,36 +302,6 @@ namespace cells {
 
                 </TableCell>
             </DeviceRouters.NotPhone>
-        );
-
-    });
-
-    interface OverflowMenuButtonProps {
-        readonly viewID: IDStr;
-    }
-
-    export const OverflowMenuButton = React.memo((props: OverflowMenuButtonProps) => {
-
-        const {viewID} = props;
-
-        const {selectRow} = useDocRepoCallbacks();
-        const contextMenuHandlers = useDocRepoContextMenu();
-
-        const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
-            selectRow(viewID, event, 'click');
-            contextMenuHandlers.onContextMenu(event)
-        }, [contextMenuHandlers, selectRow, viewID]);
-
-        return (
-            <Box mr={1}>
-                <StandardIconButton tooltip="More document actions..."
-                                    aria-controls="doc-dropdown-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleDropdownMenu}
-                                    size="small">
-                    <MoreVertIcon/>
-                </StandardIconButton>
-            </Box>
         );
 
     });
