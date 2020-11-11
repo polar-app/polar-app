@@ -15,6 +15,7 @@ import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {MUIHoverToggle} from "../../../../web/js/mui/MUIHoverToggle";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -219,6 +220,16 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             case 'progress':
 
+                const Progress = React.memo(() => (
+                    <progress className={classes.progress}
+                              value={row.progress}
+                              max={100}/>
+                ));
+
+                const Buttons = React.memo(() => (
+                    <div>buttons</div>
+                ));
+
                 return (
                     <DeviceRouters.NotPhone key={id}>
                         <TableCell className={classes.colProgress}
@@ -226,9 +237,8 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                    onContextMenu={contextMenuHandler}
                                    padding="none">
 
-                            <progress className={classes.progress}
-                                      value={row.progress}
-                                      max={100}/>
+                            <MUIHoverToggle Active={Buttons}
+                                            Inactive={Progress}/>
 
                         </TableCell>
                     </DeviceRouters.NotPhone>

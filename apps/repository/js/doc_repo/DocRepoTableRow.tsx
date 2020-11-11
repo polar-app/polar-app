@@ -38,85 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
         td: {
             whiteSpace: 'nowrap'
         },
-        progress: {
-            width: COLUMN_MAP.progress.width
-        },
-        colProgress: {
-            width: COLUMN_MAP.progress.width,
-            minWidth: COLUMN_MAP.progress.width
-        },
-        colAdded: {
-            whiteSpace: 'nowrap',
-            width: COLUMN_MAP.added.width,
-        },
-        colLastUpdated: {
-            whiteSpace: 'nowrap',
-            width: COLUMN_MAP.lastUpdated.width,
-        },
-        colTitle: {
-            width: COLUMN_MAP.title.width,
-
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-        colTags: {
-            width: COLUMN_MAP.tags.width,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-        colAuthors: {
-            width: COLUMN_MAP.authors.width,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textOverflow: 'ellipsis'
-        },
-        colDocButtons: {
-            width: DOC_BUTTON_COLUMN_WIDTH
-        },
-        docButtons: {
-            marginLeft: '5px',
-            marginRight: '5px',
-            display: 'flex',
-            justifyContent: 'flex-end'
-        }
 
     }),
 );
-
-interface TableCellTagsProps {
-    readonly contextMenuHandler: ContextMenuHandler;
-    readonly selectRow: (viewID: IDStr, event: React.MouseEvent, type: SelectRowType) => void;
-    readonly viewID: IDStr;
-    readonly tags?: Readonly<{[id: string]: Tag}>;
-}
-
-export const TableCellTags = React.memo((props: TableCellTagsProps) => {
-
-    const classes = useStyles();
-
-    return (
-        <TableCell padding="none"
-                   className={classes.colTags}
-                   onClick={event => props.selectRow(props.viewID, event, 'click')}
-                   onContextMenu={props.contextMenuHandler}>
-
-            {/*TODO: this sorting and mapping might be better done */}
-            {/*at the RepoDocInfo level so it's done once not per*/}
-            {/*display render.*/}
-            {arrayStream(Tags.onlyRegular(Object.values(props.tags || {})))
-                .sort((a, b) => a.label.localeCompare(b.label))
-                .map(current => current.label)
-                .collect()
-                .join(', ')}
-
-        </TableCell>
-    );
-}, isEqual);
 
 interface IProps {
     readonly viewIndex: number;
