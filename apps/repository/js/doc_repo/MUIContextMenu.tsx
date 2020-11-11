@@ -1,10 +1,8 @@
-import * as React from "react";
+import React, {useState} from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {createContextMenuStore} from "./MUIContextMenuStore";
-import {typedMemo} from "../../../../web/js/hooks/ReactHooks";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -47,11 +45,8 @@ interface IContextMenuCallbacks {
     readonly onContextMenu: OnContextMenuCallback;
 }
 
-interface IContextMenuContext<O> {
-    readonly computeOrigin?: (event: IMouseEvent) => O | undefined;
-}
-
-export const ContextMenuContext = React.createContext<IContextMenuContext<any>>({computeOrigin: NULL_FUNCTION});
+export const ContextMenuContext
+    = React.createContext<IContextMenuCallbacks>({onContextMenu: NULL_FUNCTION});
 
 interface IContextMenuProps {
     readonly children: React.ReactNode;
@@ -139,37 +134,26 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 }
 
-export type ContextMenuProviderComponent = (props: IContextMenuProps) => JSX.Element;
-
-export type UseContextMenuHook = (opts: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
-
-export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMenuHook];
-
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
-                                     opts: CreateContextMenuOpts<O> = {}): CreateContextMenuTuple {
+                                     opts: CreateContextMenuOpts<O> = {}): (props: IContextMenuProps) => JSX.Element {
 
-    const [
-        MUIContextMenuStoreProvider,
-        useMUIContextMenuStore,
-        useMUIContextMenuCallbacks,
-        useMUIContextMenuMutator
-    ] = createContextMenuStore();
+    return (props: IContextMenuProps): JSX.Element => {
 
-    const useContextMenu = React.useCallback((opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
+        interface IContextMenuActive {
+            readonly mouseX: number;
+            readonly mouseY: number;
 
-        const {setActive} = useMUIContextMenuCallbacks();
+            readonly origin: O | undefined;
+        }
 
-        const {computeOrigin} = React.useContext(ContextMenuContext);
+        const [active, setActive] = useState<IContextMenuActive | undefined>(undefined);
 
-        const onContextMenu = React.useCallback((event: IMouseEvent) => {
-
-            const parent = opts.onContextMenu || NULL_FUNCTION;
-            parent(event);
+        const onContextMenu = React.useCallback((event: IMouseEvent): void => {
 
             event.stopPropagation();
             event.preventDefault();
 
-            const origin = computeOrigin ?  computeOrigin(event) : undefined;
+            const origin = opts.computeOrigin ?  opts.computeOrigin(event) : undefined;
 
             const menuPoint = computeMenuPoint(event);
 
@@ -181,27 +165,15 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
             setActive(newActive);
 
-
-        }, [computeOrigin, opts.onContextMenu, setActive]);
-
-        return {onContextMenu};
-
-    }, [useMUIContextMenuCallbacks]);
-
-
-    const ContextMenuInner = typedMemo(function<O>(props: ContextMenuInnerProps<O>) {
-
-        const {MenuComponent} = props;
-
-        const {active} = useMUIContextMenuStore(['active']);
-        const {setActive} = useMUIContextMenuCallbacks();
+        }, []);
 
         const handleClose = React.useCallback(() => {
             setActive(undefined);
-        }, [setActive])
+        }, [])
 
         return (
-            <>
+            <ContextMenuContext.Provider value={{onContextMenu}}>
+
                 {active &&
                 <MUIContextMenu {...active}
                                 anchorEl={props.anchorEl}
@@ -209,33 +181,28 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
                     <MenuComponent origin={active.origin}/>
                 </MUIContextMenu>}
 
-            </>
-        );
-    });
+                {props.children}
 
-    const ProviderComponent = (props: IContextMenuProps): JSX.Element => {
-
-        return (
-            <ContextMenuContext.Provider value={{computeOrigin: opts.computeOrigin}}>
-                <MUIContextMenuStoreProvider>
-
-                    <>
-                        <ContextMenuInner MenuComponent={MenuComponent} anchorEl={props.anchorEl}/>
-
-                        {props.children}
-                    </>
-                </MUIContextMenuStoreProvider>
             </ContextMenuContext.Provider>
         );
     };
 
-    return [ProviderComponent, useContextMenu];
-
 }
 
-interface ContextMenuInnerProps<O> {
-    readonly MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null
-    readonly anchorEl?: HTMLElement;
+export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks {
+
+    const contextMenuCallbacks = React.useContext(ContextMenuContext);
+
+    const onContextMenu = React.useCallback((event: IMouseEvent) => {
+        const parent = opts.onContextMenu || NULL_FUNCTION;
+        parent(event);
+
+        contextMenuCallbacks.onContextMenu(event);
+
+    }, [contextMenuCallbacks, opts]);
+
+    return {onContextMenu};
+
 }
 
 interface MUIContextMenuProps {
@@ -263,11 +230,11 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
         props.handleClose();
     }, [props])
 
-    const handleContextMenu = React.useCallback((event: React.MouseEvent) => {
+    function handleContextMenu(event: React.MouseEvent) {
         // needed so that you can't bring up a native context menu on a context
         // menu
         event.preventDefault();
-    }, []);
+    }
 
     return (
         <Menu
@@ -290,4 +257,3 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
         </Menu>
     );
 });
-
