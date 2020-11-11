@@ -16,6 +16,7 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {MUIHoverToggle} from "../../../../web/js/mui/MUIHoverToggle";
+import {useMUIHoverActive} from "../../../../web/js/mui/MUIHoverStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -220,28 +221,13 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             case 'progress':
 
-                const Progress = React.memo(() => (
-                    <progress className={classes.progress}
-                              value={row.progress}
-                              max={100}/>
-                ));
 
-                const Buttons = React.memo(() => (
-                    <div>buttons</div>
-                ));
 
                 return (
-                    <DeviceRouters.NotPhone key={id}>
-                        <TableCell className={classes.colProgress}
-                                   onClick={selectRowClickHandler}
-                                   onContextMenu={contextMenuHandler}
-                                   padding="none">
-
-                            <MUIHoverToggle Active={Buttons}
-                                            Inactive={Progress}/>
-
-                        </TableCell>
-                    </DeviceRouters.NotPhone>
+                    <cells.Progress key={id}
+                                    progress={row.progress}
+                                    selectRowClickHandler={selectRowClickHandler}
+                                    contextMenuHandler={contextMenuHandler}/>
                 );
 
             default:
@@ -291,3 +277,44 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
     );
 
 }, isEqual);
+
+namespace cells {
+
+    interface ProgressProps {
+        readonly progress: number;
+        readonly contextMenuHandler: ContextMenuHandler;
+        readonly selectRowClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
+    }
+
+    export const Progress = React.memo((props: ProgressProps) => {
+
+        const classes = useStyles();
+        const hoverActive = useMUIHoverActive();
+
+        const Progress = React.memo(() => (
+            <progress className={classes.progress}
+                      value={props.progress}
+                      max={100}/>
+        ));
+
+        const Buttons = React.memo(() => (
+            <div>buttons</div>
+        ));
+
+        return (
+            <DeviceRouters.NotPhone>
+                <TableCell className={classes.colProgress}
+                           onClick={props.selectRowClickHandler}
+                           onContextMenu={props.contextMenuHandler}
+                           padding="none">
+
+                    {hoverActive && <Buttons/>}
+                    {! hoverActive && <Progress/>}
+
+                </TableCell>
+            </DeviceRouters.NotPhone>
+        );
+
+    });
+
+}

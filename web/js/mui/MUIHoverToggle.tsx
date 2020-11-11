@@ -24,3 +24,4 @@ export const MUIHoverToggle = React.memo((props: IProps) => {
     );
 
 });
+

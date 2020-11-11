@@ -15,6 +15,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SelectRowType} from "./SelectionEvents2";
 import {DocRepoTableRowInner} from "./DocRepoTableRowInner";
 import { useDocRepoContextMenu } from "./DocRepoTable2";
+import {useMUIHoverListener} from "../../../../web/js/mui/MUIHoverStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,9 +63,12 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     const labelId = `enhanced-table-checkbox-${viewIndex}`;
     const contextMenuHandlers = useDocRepoContextMenu();
 
+    const hoverListener = useMUIHoverListener();
+
     return (
         <TableRow
             {...contextMenuHandlers}
+            {...hoverListener}
             style={props.style}
             hover
             className={classes.tr}
