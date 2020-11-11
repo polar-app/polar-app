@@ -18,8 +18,8 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
 const TagsMenu = () => <FolderSidebarMenu type="tag"/>
 
-const FoldersContextMenu = createContextMenu(FoldersMenu);
-const TagsContextMenu = createContextMenu(TagsMenu);
+export const [FoldersContextMenu, useFoldersContextMenu] = createContextMenu(FoldersMenu);
+export const [TagsContextMenu, useTagsContextMenu] = createContextMenu(TagsMenu);
 
 export const FolderSidebar2 = () => {
 

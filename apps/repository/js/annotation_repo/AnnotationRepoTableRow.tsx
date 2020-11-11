@@ -1,12 +1,12 @@
 import * as React from "react";
 import TableCell from "@material-ui/core/TableCell";
-import Box from "@material-ui/core/Box";
 import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {IMouseEvent, useContextMenu} from "../doc_repo/MUIContextMenu";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 import isEqual from "react-fast-compare";
+import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable2";
 
 interface IProps {
     readonly viewIndex: number;
@@ -28,7 +28,7 @@ export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps
         callbacks.selectRow(annotation.id, event, 'context');
     }, [callbacks, annotation]);
 
-    const contextMenu = useContextMenu({onContextMenu});
+    const contextMenu = useAnnotationRepoTableContextMenu({onContextMenu});
 
     return (
         <TableRow {...contextMenu}

@@ -57,10 +57,14 @@ function useCallbacksFactory(storeProvider: Provider<IMUIContextMenuStore>,
 
 }
 
-export const [MUIContextMenuStoreProvider, useMUIContextMenuStore, useMUIContextMenuCallbacks, useMUIContextMenuMutator] =
-    createObservableStore<IMUIContextMenuStore, Mutator, IMUIContextMenuCallbacks>({
+export function createContextMenuStore() {
+
+    return createObservableStore<IMUIContextMenuStore, Mutator, IMUIContextMenuCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
         callbacksFactory: useCallbacksFactory
     });
+
+}
+
 

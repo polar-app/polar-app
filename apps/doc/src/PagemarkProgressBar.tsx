@@ -38,12 +38,13 @@ export const ProgressBar = deepMemo(() => {
 
 });
 
+const [PagemarkProgressBarContextMenu, usePagemarkProgressBarContextMenu] =
+    createContextMenu(PagemarkProgressBarMenu)
+
 export const PagemarkProgressBar = React.memo(() => {
 
-    const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
-
     return (
-        <ContextMenu>
+        <PagemarkProgressBarContextMenu>
             <MUIPaperToolbar borderBottom>
 
                 <div style={{
@@ -57,7 +58,7 @@ export const PagemarkProgressBar = React.memo(() => {
                 </div>
 
             </MUIPaperToolbar>
-        </ContextMenu>
+        </PagemarkProgressBarContextMenu>
     );
 
-}, isEqual);
+});

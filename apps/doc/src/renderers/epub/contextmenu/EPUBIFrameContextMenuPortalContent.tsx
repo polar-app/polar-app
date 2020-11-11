@@ -8,7 +8,8 @@ import {
 } from "../../../DocViewerMenu";
 import {createContextMenu} from "../../../../../repository/js/doc_repo/MUIContextMenu";
 
-const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
+const [DocViewerContextMenu, useDocViewerContextMenu]
+    = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
 export const EPUBIFrameContextMenuPortalContent = deepMemo(() => {
 

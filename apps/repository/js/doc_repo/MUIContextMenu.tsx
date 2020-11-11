@@ -3,7 +3,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {useMUIContextMenuStore, useMUIContextMenuCallbacks, MUIContextMenuStoreProvider} from "./MUIContextMenuStore";
+import {createContextMenuStore} from "./MUIContextMenuStore";
 import {typedMemo} from "../../../../web/js/hooks/ReactHooks";
 
 export namespace MouseEvents {
@@ -139,10 +139,81 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 }
 
-export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
-                                     opts: CreateContextMenuOpts<O> = {}): (props: IContextMenuProps) => JSX.Element {
+export type ContextMenuProviderComponent = (props: IContextMenuProps) => JSX.Element;
 
-    return (props: IContextMenuProps): JSX.Element => {
+export type UseContextMenuHook = (opts: Partial<IContextMenuCallbacks>) => IContextMenuCallbacks;
+
+export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMenuHook];
+
+export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
+                                     opts: CreateContextMenuOpts<O> = {}): CreateContextMenuTuple {
+
+    const [
+        MUIContextMenuStoreProvider,
+        useMUIContextMenuStore,
+        useMUIContextMenuCallbacks,
+        useMUIContextMenuMutator
+    ] = createContextMenuStore();
+
+    const useContextMenu = React.useCallback((opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
+
+        const {setActive} = useMUIContextMenuCallbacks();
+
+        const {computeOrigin} = React.useContext(ContextMenuContext);
+
+        const onContextMenu = React.useCallback((event: IMouseEvent) => {
+
+            const parent = opts.onContextMenu || NULL_FUNCTION;
+            parent(event);
+
+            event.stopPropagation();
+            event.preventDefault();
+
+            const origin = computeOrigin ?  computeOrigin(event) : undefined;
+
+            const menuPoint = computeMenuPoint(event);
+
+            const newActive = {
+                mouseX: menuPoint.x,
+                mouseY: menuPoint.y,
+                origin
+            };
+
+            setActive(newActive);
+
+
+        }, [computeOrigin, opts.onContextMenu, setActive]);
+
+        return {onContextMenu};
+
+    }, [useMUIContextMenuCallbacks]);
+
+
+    const ContextMenuInner = typedMemo(function<O>(props: ContextMenuInnerProps<O>) {
+
+        const {MenuComponent} = props;
+
+        const {active} = useMUIContextMenuStore(['active']);
+        const {setActive} = useMUIContextMenuCallbacks();
+
+        const handleClose = React.useCallback(() => {
+            setActive(undefined);
+        }, [setActive])
+
+        return (
+            <>
+                {active &&
+                <MUIContextMenu {...active}
+                                anchorEl={props.anchorEl}
+                                handleClose={handleClose}>
+                    <MenuComponent origin={active.origin}/>
+                </MUIContextMenu>}
+
+            </>
+        );
+    });
+
+    const ProviderComponent = (props: IContextMenuProps): JSX.Element => {
 
         return (
             <ContextMenuContext.Provider value={{computeOrigin: opts.computeOrigin}}>
@@ -158,68 +229,13 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
         );
     };
 
+    return [ProviderComponent, useContextMenu];
+
 }
 
 interface ContextMenuInnerProps<O> {
     readonly MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null
     readonly anchorEl?: HTMLElement;
-}
-
-const ContextMenuInner = typedMemo(function<O>(props: ContextMenuInnerProps<O>) {
-
-    const {MenuComponent} = props;
-
-    const {active} = useMUIContextMenuStore(['active']);
-    const {setActive} = useMUIContextMenuCallbacks();
-
-    const handleClose = React.useCallback(() => {
-        setActive(undefined);
-    }, [setActive])
-
-    return (
-        <>
-            {active &&
-                <MUIContextMenu {...active}
-                                anchorEl={props.anchorEl}
-                                handleClose={handleClose}>
-                    <MenuComponent origin={active.origin}/>
-                </MUIContextMenu>}
-
-        </>
-    );
-});
-
-export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks {
-
-    const {setActive} = useMUIContextMenuCallbacks();
-
-    const {computeOrigin} = React.useContext(ContextMenuContext);
-
-    const onContextMenu = React.useCallback((event: IMouseEvent) => {
-
-        const parent = opts.onContextMenu || NULL_FUNCTION;
-        parent(event);
-
-        event.stopPropagation();
-        event.preventDefault();
-
-        const origin = computeOrigin ?  computeOrigin(event) : undefined;
-
-        const menuPoint = computeMenuPoint(event);
-
-        const newActive = {
-            mouseX: menuPoint.x,
-            mouseY: menuPoint.y,
-            origin
-        };
-
-        setActive(newActive);
-
-
-    }, [computeOrigin, opts.onContextMenu, setActive]);
-
-    return {onContextMenu};
-
 }
 
 interface MUIContextMenuProps {
@@ -274,3 +290,4 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
         </Menu>
     );
 });
+

@@ -281,7 +281,7 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     );
 });
 
-export const ContextMenu = createContextMenu(PagemarkMenu);
+export const [PagemarkContextMenu, usePagemarkContextMenu] = createContextMenu(PagemarkMenu);
 
 interface IProps {
     readonly fingerprint: IDStr;

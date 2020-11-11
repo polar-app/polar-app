@@ -8,7 +8,6 @@ import TagID = Tags.TagID;
 import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {useDragContext} from "../../ui/tree/DragTarget2";
-import {useContextMenu} from "../../../../apps/repository/js/doc_repo/MUIContextMenu";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

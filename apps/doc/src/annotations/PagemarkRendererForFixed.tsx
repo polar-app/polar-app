@@ -155,7 +155,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
     );
 }, isEqual);
 
-export const ContextMenu = createContextMenu(PagemarkMenu);
+export const [PagemarkRendererForFixedContextMenu, usePagemarkRendererForFixedContextMenu] = createContextMenu(PagemarkMenu);
 
 export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
 
@@ -186,7 +186,7 @@ export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
 
         return ReactDOM.createPortal(
             <PagemarkValueContext.Provider value={pagemark}>
-                <ContextMenu>
+                <PagemarkRendererForFixedContextMenu>
                     <PagemarkInner id={id}
                                    className={className}
                                    fingerprint={fingerprint}
@@ -194,7 +194,7 @@ export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
                                    pagemark={pagemark}
                                    overlayRect={overlayRect}
                                    pagemarkColor={pagemarkColor}/>
-                </ContextMenu>
+                </PagemarkRendererForFixedContextMenu>
             </PagemarkValueContext.Provider>,
             container);
     }, [createID, fingerprint, pageNum, pagemark]);

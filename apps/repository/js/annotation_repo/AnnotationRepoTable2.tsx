@@ -117,6 +117,9 @@ namespace Handheld {
 
 }
 
+export const [AnnotationRepoTableContextMenu, useAnnotationRepoTableContextMenu]
+    = createContextMenu(AnnotationRepoTableMenu);
+
 export const AnnotationRepoTable2 = React.memo(() => {
 
     const {page, rowsPerPage, view, viewPage, selected} =
@@ -124,11 +127,9 @@ export const AnnotationRepoTable2 = React.memo(() => {
 
     const {setPage, setRowsPerPage} = useAnnotationRepoCallbacks();
 
-    const ContextMenu = React.useMemo(() => createContextMenu(AnnotationRepoTableMenu), []);
-
     return (
 
-        <ContextMenu>
+        <AnnotationRepoTableContextMenu>
             <Paper className="AnnotationRepoTable2"
                    square id="doc-repo-table"
                    elevation={0}
@@ -197,7 +198,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                 </div>
 
             </Paper>
-        </ContextMenu>
+        </AnnotationRepoTableContextMenu>
 
     );
 });

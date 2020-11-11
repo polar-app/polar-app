@@ -99,7 +99,8 @@ const DocMain = React.memo(() => {
     )
 }, isEqual);
 
-const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
+export const [DocViewerContextMenu, useDocViewerContextMenu]
+    = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
 namespace Device {
 

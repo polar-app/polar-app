@@ -5,9 +5,9 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
-import {useContextMenu} from "./MUIContextMenu";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { StandardIconButton } from "./buttons/StandardIconButton";
+import { useDocRepoContextMenu } from "./DocRepoTable2";
 
 interface IProps {
 
@@ -44,7 +44,7 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
     const onTagged = useSelectRowCallback(viewID, callbacks.onTagged);
     const onArchived = useSelectRowCallback(viewID, callbacks.onArchived);
     const onFlagged = useSelectRowCallback(viewID, callbacks.onFlagged);
-    const contextMenuHandlers = useContextMenu();
+    const contextMenuHandlers = useDocRepoContextMenu();
 
     const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
         callbacks.selectRow(viewID, event, 'click');
