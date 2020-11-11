@@ -17,6 +17,7 @@ export const StandardIconButton = React.memo((props: StandardButtonProps) => {
     return (
         <MUITooltip title={props.tooltip}>
             <IconButton size={props.size || 'small'}
+                        disableRipple={true}
                         onClick={props.onClick}
                         disabled={props.disabled}
                         aria-label={props.tooltip.toLowerCase()}
