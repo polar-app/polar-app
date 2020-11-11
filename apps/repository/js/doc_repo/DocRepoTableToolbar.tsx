@@ -52,13 +52,15 @@ export const DocRepoTableToolbar = React.memo(() => {
 
                             <Grid item>
                                 <AutoBlur>
-                                    <Checkbox
-                                        size="medium"
-                                        indeterminate={selected.length > 0 && selected.length < view.length}
-                                        checked={selected.length === view.length && view.length !== 0}
-                                        onChange={event => handleCheckbox(event.target.checked)}
-                                        inputProps={{ 'aria-label': 'select all documents' }}
-                                    />
+                                    <Box mt={1} mb={1}>
+                                        <Checkbox
+                                            size="medium"
+                                            indeterminate={selected.length > 0 && selected.length < view.length}
+                                            checked={selected.length === view.length && view.length !== 0}
+                                            onChange={event => handleCheckbox(event.target.checked)}
+                                            inputProps={{ 'aria-label': 'select all documents' }}
+                                        />
+                                    </Box>
                                 </AutoBlur>
                             </Grid>
 
