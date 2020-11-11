@@ -56,13 +56,13 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
         <div className={props.className || ''}
              onClick={() => callbacks.setSelected([viewID])}>
 
-            <MUIDocTagButton onClick={onTagged}/>
+            {/*<MUIDocTagButton onClick={onTagged}/>*/}
 
-            <MUIDocArchiveButton onClick={onArchived}
-                                 active={props.archived}/>
+            {/*<MUIDocArchiveButton onClick={onArchived}*/}
+            {/*                     active={props.archived}/>*/}
 
-            <MUIDocFlagButton onClick={onFlagged}
-                              active={props.flagged}/>
+            {/*<MUIDocFlagButton onClick={onFlagged}*/}
+            {/*                  active={props.flagged}/>*/}
 
             <StandardIconButton tooltip="More document actions..."
                                 aria-controls="doc-dropdown-menu"
