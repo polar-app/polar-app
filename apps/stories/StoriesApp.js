@@ -49,6 +49,7 @@ const XGridStory_1 = __importDefault(require("./impl/XGridStory"));
 const IntersectionListStory_1 = require("./impl/IntersectionListStory");
 const IntersectionListTableStory_1 = require("./impl/IntersectionListTableStory");
 const MUIImageBottomFadeStory_1 = require("./impl/MUIImageBottomFadeStory");
+const MUITooltipStory_1 = require("./impl/MUITooltipStory");
 function createStoryIndex(stories) {
     function toStoryWithID(story) {
         const id = story.name.toLowerCase().replace(/ /g, '-');
@@ -129,6 +130,10 @@ const stories = createStoryIndex([
     {
         name: "MUIImageBottomFadeStory",
         component: React.createElement(MUIImageBottomFadeStory_1.MUIImageBottomFadeStory, null)
+    },
+    {
+        name: "MUITooltip",
+        component: React.createElement(MUITooltipStory_1.MUITooltipStory, null)
     }
 ]);
 const StoriesSidebar = ReactUtils_1.deepMemo(() => {
