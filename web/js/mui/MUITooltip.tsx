@@ -45,6 +45,7 @@ export const MUITooltip = React.memo((props: IProps) => {
         <Tooltip title={props.title}
                  arrow={true}
                  disableTouchListener={true}
+                 disableFocusListener={true}
                  // disableFocusListener={props.disableFocusListener || props.disabled}
                  // disableHoverListener={props.disableHoverListener || props.disabled}
                  // disableTouchListener={props.disableTouchListener || props.disabled}
