@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {VisibleComponent, ListValue, HiddenComponent} from "./IntersectionList";
+import {VisibleComponent, ListValue} from "./IntersectionList";
 import {typedMemo} from "../hooks/ReactHooks";
 
 export interface IntersectionListItem<V extends ListValue> {
@@ -8,11 +8,7 @@ export interface IntersectionListItem<V extends ListValue> {
 
     readonly value: V;
 
-    readonly visibleComponent: VisibleComponent<V>;
-
-    readonly hiddenComponent: HiddenComponent<V>;
-
-    readonly inView: boolean;
+    readonly VisibleComponent: VisibleComponent<V>;
 
     readonly index: number;
 
@@ -24,17 +20,10 @@ export interface IntersectionListItem<V extends ListValue> {
  */
 export const IntersectionListBlockItem = typedMemo(function<V extends ListValue>(props: IntersectionListItem<V>) {
 
-    const VisibleComponent = props.visibleComponent;
-    const HiddenComponent = props.hiddenComponent;
+    const {VisibleComponent} = props;
 
-    if (props.inView) {
-        return (
-            <VisibleComponent value={props.value} index={props.index}/>
-        );
-    } else {
-        return (
-            <HiddenComponent value={props.value} index={props.index}/>
-        );
-    }
+    return (
+        <VisibleComponent value={props.value} index={props.index}/>
+    );
 
 });

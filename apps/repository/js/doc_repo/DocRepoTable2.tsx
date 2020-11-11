@@ -9,8 +9,8 @@ import {useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {
-    BlockComponentProps,
-    HiddenComponentProps, IntersectionList,
+    BlockComponentProps, HiddenBlockComponentProps,
+    IntersectionList,
     VisibleComponentProps
 } from "../../../../web/js/intersection_list/IntersectionList";
 import { RepoDocInfo } from '../RepoDocInfo';
@@ -22,22 +22,6 @@ import {
     IDocViewerContextMenuOrigin
 } from "../../../doc/src/DocViewerMenu";
 import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
-
-
-const HiddenComponent = React.memo((props: HiddenComponentProps<RepoDocInfo>) => {
-
-    const height = HEIGHT;
-
-    return (
-        <TableRow style={{
-                      minHeight: `${height}px`,
-                      height: `${height}px`,
-                  }}>
-
-        </TableRow>
-    );
-
-});
 
 const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) => {
 
@@ -71,6 +55,21 @@ const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
                    }}>
             {props.children}
         </TableBody>
+    );
+
+});
+
+const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<RepoDocInfo>) => {
+
+    const height = Numbers.sum(...props.values.map(current => HEIGHT));
+
+    return (
+        <TableRow style={{
+                      minHeight: `${height}px`,
+                      height: `${height}px`,
+                  }}>
+
+        </TableRow>
     );
 
 });
@@ -123,28 +122,11 @@ export const DocRepoTable2 = deepMemo(() => {
                                     <IntersectionList values={view}
                                                       root={root}
                                                       blockSize={25}
-                                                      blockComponent={BlockComponent}
-                                                      hiddenComponent={HiddenComponent}
-                                                      visibleComponent={VisibleComponent}/>)}
+                                                      BlockComponent={BlockComponent}
+                                                      HiddenBlockComponent={HiddenBlockComponent}
+                                                      VisibleComponent={VisibleComponent}/>)}
                             </DocRepoContextMenu>
 
-                            {/*<TableBody>*/}
-                            {/*    {viewPage*/}
-                            {/*        .map((row, index) => {*/}
-
-                            {/*            const viewIndex = (page * rowsPerPage) + index;*/}
-
-                            {/*            return (*/}
-                            {/*                <DocRepoTableRow*/}
-                            {/*                    viewIndex={viewIndex}*/}
-                            {/*                    key={viewIndex}*/}
-                            {/*                    rawContextMenuHandler={rawContextMenuHandler}*/}
-                            {/*                    selected={selected.includes(row.id)}*/}
-                            {/*                    row={row}*/}
-                            {/*                />*/}
-                            {/*            );*/}
-                            {/*        })}*/}
-                            {/*</TableBody>*/}
                         </Table>
                     </TableContainer>
                 </>

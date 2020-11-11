@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {BlockComponent, HiddenComponent, ListValue, RefCallback, VisibleComponent} from "./IntersectionList";
+import {BlockComponent, ListValue, RefCallback, VisibleComponent, HiddenBlockComponent} from "./IntersectionList";
 import { useInView } from 'react-intersection-observer';
 import {IntersectionListBlockItem} from "./IntersectionListBlockItem";
-import {typedMemo, useLogWhenChanged} from "../hooks/ReactHooks";
+import {typedMemo} from "../hooks/ReactHooks";
 
 interface IProps<V extends ListValue> {
 
@@ -10,15 +10,15 @@ interface IProps<V extends ListValue> {
 
     readonly values: ReadonlyArray<V>;
 
-    readonly blockComponent: BlockComponent<V>;
-
-    readonly visibleComponent: VisibleComponent<V>;
-
-    readonly hiddenComponent: HiddenComponent<V>;
-
     readonly blockSize: number;
 
     readonly blockIndex: number;
+
+    readonly BlockComponent: BlockComponent<V>;
+
+    readonly VisibleComponent: VisibleComponent<V>;
+
+    readonly HiddenBlockComponent: HiddenBlockComponent<V>;
 
 }
 
@@ -103,15 +103,13 @@ export const IntersectionListBlock = typedMemo(function<V extends ListValue>(pro
 
     const {ref, inView} = useIntersectionObserverViewState(props);
 
-    // useLogWhenChanged('inView', inView);
-
     return (
         <LazyBlockComponent innerRef={ref}
                             inView={inView}
                             values={props.values}
-                            visibleComponent={props.visibleComponent}
-                            blockComponent={props.blockComponent}
-                            hiddenComponent={props.hiddenComponent}
+                            VisibleComponent={props.VisibleComponent}
+                            BlockComponent={props.BlockComponent}
+                            HiddenBlockComponent={props.HiddenBlockComponent}
                             blockSize={props.blockSize}
                             blockIndex={props.blockIndex}
                             root={props.root}/>
@@ -129,24 +127,30 @@ export interface LazyBlockComponentProps<V extends ListValue> extends IProps<V> 
  */
 export const LazyBlockComponent = typedMemo(function<V extends ListValue>(props: LazyBlockComponentProps<V>) {
 
-    const BlockComponent = props.blockComponent;
+    const {BlockComponent, HiddenBlockComponent} = props;
 
     const indexBase = props.blockIndex * props.blockSize;
 
     return (
-        <BlockComponent innerRef={props.innerRef} values={props.values}>
-            <>
-                {props.values.map((current, index) => (
-                    <IntersectionListBlockItem key={indexBase + index}
-                                               root={props.root}
-                                               value={current}
-                                               index={indexBase + index}
-                                               visibleComponent={props.visibleComponent}
-                                               hiddenComponent={props.hiddenComponent}
-                                               inView={props.inView}/>
-                ))}
-            </>
-        </BlockComponent>
+        <>
+            <BlockComponent innerRef={props.innerRef} values={props.values}>
+                 <>
+                    {props.inView && props.values.map((current, index) => (
+                        <IntersectionListBlockItem key={indexBase + index}
+                                                   root={props.root}
+                                                   value={current}
+                                                   index={indexBase + index}
+                                                   VisibleComponent={props.VisibleComponent}/>
+                    ))}
+
+                     {! props.inView && (
+                         <HiddenBlockComponent index={indexBase}
+                                               values={props.values}/>)}
+
+                 </>
+            </BlockComponent>
+
+        </>
     );
 
 });

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
-    BlockComponentProps,
-    HiddenComponentProps,
+    BlockComponentProps, HiddenBlockComponentProps,
     IntersectionList,
     VisibleComponentProps
 } from "../../../web/js/intersection_list/IntersectionList";
@@ -35,19 +34,6 @@ function createData(count: number) {
     }
 
 }
-
-const HiddenComponent = React.memo((props: HiddenComponentProps<IData>) => {
-
-    return (
-        <div style={{
-                 minHeight: `${props.value.height}px`,
-                 height: `${props.value.height}px`
-             }}>
-
-        </div>
-    );
-
-});
 
 const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
 
@@ -90,6 +76,21 @@ const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
 
 });
 
+const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<IData>) => {
+
+    const height = Numbers.sum(...props.values.map(current => current.height));
+
+    return (
+        <div style={{
+                 minHeight: `${height}px`,
+                 height: `${height}px`
+             }}>
+
+        </div>
+    );
+
+});
+
 export const IntersectionListStory = () => {
 
     const data = React.useMemo(() => createData(500), []);
@@ -108,9 +109,9 @@ export const IntersectionListStory = () => {
             {root && (
                 <IntersectionList values={data}
                                   root={root}
-                                  blockComponent={BlockComponent}
-                                  hiddenComponent={HiddenComponent}
-                                  visibleComponent={VisibleComponent}/>
+                                  BlockComponent={BlockComponent}
+                                  HiddenBlockComponent={HiddenBlockComponent}
+                                  VisibleComponent={VisibleComponent}/>
             )}
 
         </div>

@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {
-    BlockComponentProps,
-    HiddenComponentProps,
+    BlockComponentProps, HiddenBlockComponentProps,
     IntersectionList,
     VisibleComponentProps
 } from "../../../web/js/intersection_list/IntersectionList";
-import useTheme from '@material-ui/core/styles/useTheme';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -44,21 +42,6 @@ function createData(count: number) {
 
 }
 
-const HiddenComponent = React.memo((props: HiddenComponentProps<IData>) => {
-
-    const height = HEIGHT;
-
-    return (
-        <TableRow style={{
-                      minHeight: `${height}px`,
-                      height: `${height}px`,
-                  }}>
-
-        </TableRow>
-    );
-
-});
-
 const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
 
     const height = HEIGHT;
@@ -93,6 +76,21 @@ const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
 
 });
 
+const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<IData>) => {
+
+    const height = HEIGHT * props.values.length;
+
+    return (
+        <TableRow style={{
+            minHeight: `${height}px`,
+            height: `${height}px`,
+        }}>
+
+        </TableRow>
+    );
+
+});
+
 export const IntersectionListTableStory = () => {
 
     const data = React.useMemo(() => createData(500), []);
@@ -120,9 +118,9 @@ export const IntersectionListTableStory = () => {
                         </TableHead>
                         <IntersectionList values={data}
                                           root={root}
-                                          blockComponent={BlockComponent}
-                                          hiddenComponent={HiddenComponent}
-                                          visibleComponent={VisibleComponent}/>
+                                          BlockComponent={BlockComponent}
+                                          HiddenBlockComponent={HiddenBlockComponent}
+                                          VisibleComponent={VisibleComponent}/>
                     </Table>
                 </TableContainer>
             )}

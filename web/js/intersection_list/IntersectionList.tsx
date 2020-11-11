@@ -17,9 +17,9 @@ export interface VisibleComponentProps<V extends ListValue> {
  */
 export type VisibleComponent<V extends ListValue> = React.FunctionComponent<VisibleComponentProps<V>>;
 
-export interface HiddenComponentProps<V extends ListValue> {
+export interface HiddenBlockComponentProps<V extends ListValue> {
 
-    readonly value: V;
+    readonly values: ReadonlyArray<V>;
     readonly index: number;
 
 }
@@ -27,7 +27,7 @@ export interface HiddenComponentProps<V extends ListValue> {
 /**
  * The component to render when the value is not visible.
  */
-export type HiddenComponent<V extends ListValue> = React.FunctionComponent<HiddenComponentProps<V>>;
+export type HiddenBlockComponent<V extends ListValue> = React.FunctionComponent<HiddenBlockComponentProps<V>>;
 
 export interface BlockComponentProps<V extends ListValue> {
 
@@ -65,11 +65,11 @@ interface IProps<V extends ListValue> {
 
     readonly values: ReadonlyArray<V>;
 
-    readonly blockComponent: BlockComponent<V>;
+    readonly BlockComponent: BlockComponent<V>;
 
-    readonly visibleComponent: VisibleComponent<V>;
+    readonly VisibleComponent: VisibleComponent<V>;
 
-    readonly hiddenComponent: HiddenComponent<V>;
+    readonly HiddenBlockComponent: HiddenBlockComponent<V>;
 
     readonly blockSize?: number;
 
@@ -90,8 +90,6 @@ export const IntersectionList = typedMemo(function<V extends ListValue>(props: I
 
     const blocks = Arrays.createBatches(props.values, blockSize);
 
-    const Block = IntersectionListBlock;
-
     return (
         <>
 
@@ -101,9 +99,9 @@ export const IntersectionList = typedMemo(function<V extends ListValue>(props: I
                                           values={block}
                                           blockSize={blockSize}
                                           blockIndex={idx}
-                                          blockComponent={props.blockComponent}
-                                          visibleComponent={props.visibleComponent}
-                                          hiddenComponent={props.hiddenComponent}/>
+                                          BlockComponent={props.BlockComponent}
+                                          VisibleComponent={props.VisibleComponent}
+                                          HiddenBlockComponent={props.HiddenBlockComponent}/>
 
             ))}
 
