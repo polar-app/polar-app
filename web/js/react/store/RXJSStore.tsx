@@ -8,6 +8,8 @@ export type ProviderComponent<V> = (props: IProviderProps<V>) => JSX.Element;
 
 export type SetStore<V> = (value: V) => void;
 
+export type UseSetStore<V> = () => (value: V) => void;
+
 export type UseStoreListener<V> = () => V;
 
 interface IProviderProps<V> {
@@ -45,15 +47,18 @@ function createInternalObservableStore<V>(initialValue: V): InternalObservableSt
 
 }
 
-export function createRXJSStore<V>(): [ProviderComponent<V>, SetStore<V>, UseStoreListener<V>] {
+export function createRXJSStore<V>(): [ProviderComponent<V>, UseSetStore<V>, UseStoreListener<V>] {
 
-    const Context = React.createContext<InternalObservableStore<V>>(null!);
+    const Context = React.createContext<InternalObservableStore<any>>(null!);
 
-    const setStore = (value: V) => {
+    const useSetStore: UseSetStore<V> = () => {
 
         const context = React.useContext(Context);
-        context.current = value;
-        context.subject.next(value);
+
+        return (value) => {
+            context.current = value;
+            context.subject.next(value);
+        }
 
     };
 
@@ -88,7 +93,7 @@ export function createRXJSStore<V>(): [ProviderComponent<V>, SetStore<V>, UseSto
 
     });
 
-    return [Provider, setStore, useStoreListener]
+    return [Provider, useSetStore, useStoreListener]
 
 }
 
