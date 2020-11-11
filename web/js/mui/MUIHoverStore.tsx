@@ -50,7 +50,7 @@ function useCallbacksFactory(storeProvider: Provider<IMUIHoverStore>,
 
 }
 
-export const [MUIHoverStoreProviderDelegate, useMUIHoverStore, useMUIHoverCallbacks, useMUIHoverMutator] =
+export const [MUIHoverStoreProvider, useMUIHoverStore, useMUIHoverCallbacks, useMUIHoverMutator] =
     createObservableStore<IMUIHoverStore, Mutator, IMUIHoverCallbacks>({
         initialValue: initialStore,
         mutatorFactory,

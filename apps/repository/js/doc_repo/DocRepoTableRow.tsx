@@ -5,17 +5,12 @@ import {AutoBlur} from "./AutoBlur";
 import Checkbox from "@material-ui/core/Checkbox";
 import {ContextMenuHandler} from "./MUIDocContextMenu";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {COLUMN_MAP, DOC_BUTTON_COLUMN_WIDTH} from "./Columns";
 import {RepoDocInfo} from "../RepoDocInfo";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
-import {IDStr} from "polar-shared/src/util/Strings";
-import {SelectRowType} from "./SelectionEvents2";
 import {DocRepoTableRowInner} from "./DocRepoTableRowInner";
 import { useDocRepoContextMenu } from "./DocRepoTable2";
-import {useMUIHoverListener} from "../../../../web/js/mui/MUIHoverStore";
+import {useMUIHoverListener, MUIHoverStoreProvider} from "../../../../web/js/mui/MUIHoverStore";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,7 +46,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const DocRepoTableRow = React.memo((props: IProps) => {
+const Delegate = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -101,3 +96,10 @@ export const DocRepoTableRow = React.memo((props: IProps) => {
     );
 
 }, isEqual);
+
+export const DocRepoTableRow = React.memo((props: IProps) => (
+    <MUIHoverStoreProvider>
+        <Delegate {...props}/>
+    </MUIHoverStoreProvider>
+));
+
