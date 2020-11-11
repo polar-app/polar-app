@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {createContextMenu} from "./MUIContextMenu";
+import {createContextMenu} from "./MUIContextMenu2";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const ChildComponent = () => {
