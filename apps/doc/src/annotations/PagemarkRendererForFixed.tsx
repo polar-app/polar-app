@@ -155,7 +155,7 @@ const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
     );
 }, isEqual);
 
-export const [PagemarkRendererForFixedContextMenu, usePagemarkRendererForFixedContextMenu] = createContextMenu(PagemarkMenu);
+export const ContextMenu = createContextMenu(PagemarkMenu);
 
 export const PagemarkRendererForFixed = deepMemo((props: IProps) => {
 
