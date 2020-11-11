@@ -15,8 +15,11 @@ import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {MUIHoverToggle} from "../../../../web/js/mui/MUIHoverToggle";
 import {useMUIHoverActive} from "../../../../web/js/mui/MUIHoverStore";
+import {StandardIconButton} from "./buttons/StandardIconButton";
+import {useDocRepoContextMenu} from "./DocRepoTable2";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -78,13 +81,11 @@ const useStyles = makeStyles((theme: Theme) =>
             textOverflow: 'ellipsis'
         },
         colDocButtons: {
-            width: DOC_BUTTON_COLUMN_WIDTH
+            width: DOC_BUTTON_COLUMN_WIDTH,
         },
         docButtons: {
-            marginLeft: '5px',
-            marginRight: '5px',
             display: 'flex',
-            justifyContent: 'flex-end'
+            justifyContent: 'center'
         }
 
     }),
@@ -225,6 +226,9 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
                 return (
                     <cells.Progress key={id}
+                                    viewID={row.id}
+                                    flagged={row.flagged}
+                                    archived={row.archived}
                                     progress={row.progress}
                                     selectRowClickHandler={selectRowClickHandler}
                                     contextMenuHandler={contextMenuHandler}/>
@@ -265,11 +269,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                            onClick={event => event.stopPropagation()}
                            onDoubleClick={event => event.stopPropagation()}>
 
-                    <MUIDocButtonBar className={classes.docButtons}
-                                     flagged={row.flagged}
-                                     archived={row.archived}
-                                     viewID={row.id}
-                                     {...props}/>
+                    <cells.OverflowMenuButton viewID={row.id}/>
 
                 </TableCell>
             </DeviceRouters.NotPhone>
@@ -284,9 +284,16 @@ namespace cells {
         readonly progress: number;
         readonly contextMenuHandler: ContextMenuHandler;
         readonly selectRowClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
+
+        readonly viewID: IDStr;
+        readonly flagged: boolean;
+        readonly archived: boolean;
+
     }
 
     export const Progress = React.memo((props: ProgressProps) => {
+
+        const {viewID, flagged, archived} = props;
 
         const classes = useStyles();
         const hoverActive = useMUIHoverActive();
@@ -298,7 +305,10 @@ namespace cells {
         ));
 
         const Buttons = React.memo(() => (
-            <div>buttons</div>
+            <MUIDocButtonBar className={classes.docButtons}
+                             flagged={flagged}
+                             archived={archived}
+                             viewID={viewID}/>
         ));
 
         return (
@@ -313,6 +323,36 @@ namespace cells {
 
                 </TableCell>
             </DeviceRouters.NotPhone>
+        );
+
+    });
+
+    interface OverflowMenuButtonProps {
+        readonly viewID: IDStr;
+    }
+
+    export const OverflowMenuButton = React.memo((props: OverflowMenuButtonProps) => {
+
+        const {viewID} = props;
+
+        const {selectRow} = useDocRepoCallbacks();
+        const contextMenuHandlers = useDocRepoContextMenu();
+
+        const handleDropdownMenu = React.useCallback((event: React.MouseEvent) => {
+            selectRow(viewID, event, 'click');
+            contextMenuHandlers.onContextMenu(event)
+        }, [contextMenuHandlers, selectRow, viewID]);
+
+        return (
+            <Box mr={1}>
+                <StandardIconButton tooltip="More document actions..."
+                                    aria-controls="doc-dropdown-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleDropdownMenu}
+                                    size="small">
+                    <MoreVertIcon/>
+                </StandardIconButton>
+            </Box>
         );
 
     });

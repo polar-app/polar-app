@@ -1,0 +1,13 @@
+/// <reference types="react" />
+export declare const CommentIcon: () => JSX.Element;
+export declare const PlusIcon: () => JSX.Element;
+export declare const TimesIcon: () => JSX.Element;
+export declare const SearchIcon: () => JSX.Element;
+export declare const FilterIcon: () => JSX.Element;
+export declare const FolderMinusIcon: () => JSX.Element;
+export declare const FolderIcon: () => JSX.Element;
+export declare const TagIcon: () => JSX.Element;
+export declare const DeleteIcon: () => JSX.Element;
+export declare const SortIcon: () => JSX.Element;
+export declare const EnvelopeIcon: () => JSX.Element;
+export declare const CloseIcon: () => JSX.Element;
