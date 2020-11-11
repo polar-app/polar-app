@@ -362,6 +362,7 @@ module.exports = {
             rewrites: [
                 // TODO: load DefaultRewrites here and convert them...
                 { from: /^\/login$/, to: '/apps/repository/index.html' },
+                { from: /^\/apps\/stories/, to: '/apps/stories/index.html' },
             ]
         }
     }
