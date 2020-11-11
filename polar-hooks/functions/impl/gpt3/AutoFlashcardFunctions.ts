@@ -1,6 +1,7 @@
 import {IDUser} from '../util/IDUsers';
 import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 import {GPTCompletions} from "./GPTCompletions";
+import {GPTContentFilter} from "./GPTContentFilter";
 import {SentryReporters} from "../reporters/SentryReporter";
 
 export class AutoFlashcardFunctions {
@@ -17,18 +18,24 @@ export class AutoFlashcardFunctions {
         try {
 
             // FIXME: call the content filter API for input...
+            const input_filter_class = await GPTContentFilter.exec(request.query_text);
 
             const completions = await GPTCompletions.exec(request);
 
             // FIXME: call the content filter API for output...
+            const output_filter_class = await GPTContentFilter.exec([completions.front, completions.back])
 
-            return completions;
+            if (input_filter_class != "safe" || output_filter_class != "safe") {
+                throw new Error("Sensitive or Unsafe text");
+            }
+            else {
+                return completions;
+            }
 
         } catch (e) {
             SentryReporters.reportError("Failed to run AutoFlashcardFunction: ", e);
             return {error: 'no-result'};
         }
-
     }
 
 }
