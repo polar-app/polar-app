@@ -21,7 +21,7 @@
 npm install -g lerna                   
 
 # fetches all NPM packages
-lerna bootsrap                         
+lerna bootstrap                         
 
 # builds all our packages 
 lerna run compile                      
