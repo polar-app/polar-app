@@ -1,6 +1,9 @@
 
 # Steps to Build 
 
+- If you're on Windows you should download the latest version of Windows
+  Subsystem for Linux.
+
 - you might need to run ```ulimit -n 500000``` and then 'ulimit -n' to make sure
   this setting was accepted by the OS.  Some users report a bug with npm that 
   causes it to tail to garbage collect open file handles and this fixes it.
@@ -21,7 +24,7 @@
 npm install -g lerna                   
 
 # fetches all NPM packages
-lerna bootsrap                         
+lerna bootstrap                         
 
 # builds all our packages 
 lerna run compile                      
