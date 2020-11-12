@@ -1,7 +1,7 @@
-import {FilterResponses} from "./FilterResponses";
+import {FilterResponses} from "./GPTContentFilterResponses";
 import { Fetches } from "polar-shared/src/util/Fetch";
 import {GPTConfigs} from "./GPTConfigs";
-import {FilterResponse} from "./FilterResponse";
+import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
 
 export type Classification = 'safe' | 'sensitive' | 'unsafe';
 
@@ -44,7 +44,7 @@ export namespace GPTContentFilters {
         //     }
         // ]
         // }
-        const filterResponse: FilterResponse = await response.json();
+        const filterResponse: GPTContentFilterResponse = await response.json();
 
         return FilterResponses.toClassificationResponse(filterResponse);
 

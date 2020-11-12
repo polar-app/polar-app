@@ -1,9 +1,9 @@
 import {Classification} from "./GPTContentFilters";
-import {FilterResponse} from "./FilterResponse";
+import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
 
 export namespace FilterResponses {
 
-    export function toClassificationResponse(filterResponse: FilterResponse): Classification {
+    export function toClassificationResponse(filterResponse: GPTContentFilterResponse): Classification {
 
         function parseClass() {
 

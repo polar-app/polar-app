@@ -1,4 +1,4 @@
-import {FilterResponses} from "./FilterResponses";
+import {FilterResponses} from "./GPTContentFilterResponses";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('FilterResponses', function() {
