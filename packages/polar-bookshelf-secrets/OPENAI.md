@@ -1,0 +1,3 @@
+open AI key..
+
+API_KEY="sk-BusCRJP1w79Z4C7xH8IH7sUqCrS5ee4F2JydKy5K"
