@@ -25,6 +25,7 @@ import { IntersectionListStory } from './impl/IntersectionListStory';
 import { IntersectionListTableStory } from './impl/IntersectionListTableStory';
 import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
 import {MUITooltipStory} from "./impl/MUITooltipStory";
+import { MUIPaletteStory } from './impl/MUIPaletteStory';
 
 interface IStory {
     readonly name: string;
@@ -124,6 +125,10 @@ const stories = createStoryIndex([
     {
         name: "MUITooltip",
         component: <MUITooltipStory/>
+    },
+    {
+        name: "MUIPaletteStory",
+        component: <MUIPaletteStory/>
     }
 
 ]);
