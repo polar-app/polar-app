@@ -38,7 +38,7 @@ commands:
 
       - run:
           name: npm setup
-          command: cp .npmrc ${HOME} && npm config set registry='https://polar-app.bytesafe.dev/r/default'
+          command: cp .npmrc ${HOME} && npm config set registry='https://polar-app.bytesafe.dev/r/default' && npm ping
 
       - run:
           name: install lerna
