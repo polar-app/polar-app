@@ -17,8 +17,6 @@ export class AutoFlashcardFunctions {
 
         try {
 
-
-
             const inputClassification = await GPTContentFilters.exec([request.query_text]);
 
             GPTContentFilters.assertClassification(inputClassification);
@@ -35,6 +33,7 @@ export class AutoFlashcardFunctions {
             SentryReporters.reportError("Failed to run AutoFlashcardFunction: ", e);
             return {error: 'no-result'};
         }
+
     }
 
 }
