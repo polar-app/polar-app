@@ -91,6 +91,10 @@ jobs:
       - build_setup
 
       - run:
+          name: npm setup
+          command: cp .npmrc ${HOME} && npm config set registry https://polar-app.bytesafe.dev/r/default
+
+      - run:
           name: Run X virtual framebuffer (Linux)
           command: |
             if [ "$OSTYPE" = 'linux-gnu' ]; then
