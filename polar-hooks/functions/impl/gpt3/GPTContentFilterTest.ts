@@ -1,15 +1,18 @@
 import {FilterResponses} from "./GPTContentFilterResponses";
-import {assertJSON} from "polar-test/src/test/Assertions";
+import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
+import {assert} from 'chai';
 
 describe('FilterResponses', function() {
 
 	it("basic", async function() {
 
-		// const filterResponse = {
-		// 	text: "This text is safe"
-		// };
+		const filterResponse: GPTContentFilterResponse = {
+			choices: [{
+				text: 0
+			}]
+		};
 
-		// assertJSON(FilterResponses.toClassificationResponse(filterResponse), "safe");
+		assert.equal(FilterResponses.toClassificationResponse(filterResponse), "safe");
 
 	});
 
