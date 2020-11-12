@@ -10,12 +10,13 @@
 
 - Make sure you're on node >=14.5 and npm >=6.14.5
 - clone the polar-app repository locally.
-- Copy .npmrc to your home directory.  
-- npm config set registry https://polar-app.bytesafe.dev/r/default
 
 - Follow the following instructions
 
 ```bash
+
+# setup NPM registry to use our cutsom registry.
+cp .npmrc ${HOME} && npm config set registry='https://polar-app.bytesafe.dev/r/default'
 
 # pull down all repositories locally
 ./sbin/init
