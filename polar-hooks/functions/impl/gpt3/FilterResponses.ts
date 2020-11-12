@@ -1,12 +1,18 @@
-import {FilterResponse} from "./GPTResponse";
-import {Classification} from "./FilterResponses";
+import {Classification} from "./GPTContentFilters";
+import {FilterResponse} from "./FilterResponse";
 
 export namespace FilterResponses {
 
-    export function toClassificationResponse(filterReponse: FilterResponse): Classification {
+    export function toClassificationResponse(filterResponse: FilterResponse): Classification {
 
         function parseClass() {
-            return filterReponse.choices[0].text;
+
+            if (filterResponse.choices.length === 0) {
+                throw new Error("No choices in response");
+            }
+
+            return filterResponse.choices[0].text;
+
         }
 
         // Get the value from
@@ -15,10 +21,12 @@ export namespace FilterResponses {
         // 1 - This text is sensitive. This means that the text could be talking about a sensitive topic, something political, religious, or talking about a protected class such as race or nationality.
         // 2 - This text is unsafe. This means that the text contains profane language, prejudiced or hateful language, something that could be NSFW, or text that portrays certain groups/people in a harmful manner.
 
-        const classes: Array<String> = ["safe", "sensitive", "unsafe"];
-        const class_num = parseClass();
+        const classes: ReadonlyArray<Classification> = ["safe", "sensitive", "unsafe"];
 
-        return classes[Number(class_num)];
+        const classNum = parseClass();
+
+        return classes[classNum];
+
     }
 
 }

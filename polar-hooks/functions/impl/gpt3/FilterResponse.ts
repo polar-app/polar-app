@@ -1,3 +1,7 @@
-export interface GPTResponse {
-    readonly choices: any;
+interface IChoice {
+    readonly text: number;
+}
+
+export interface FilterResponse {
+    readonly choices: ReadonlyArray<IChoice>;
 }
