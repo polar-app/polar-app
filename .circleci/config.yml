@@ -197,52 +197,27 @@ workflows:
   version: 2
   parallel_workflow:
     jobs:
-      - build_with_executor:
-          executor:
-            name: win/default
-            shell: bash.exe
+#      - build_with_executor:
+#          executor:
+#            name: win/default
+#            shell: bash.exe
 
       - build_with_executor:
           executor: my-docker
-
-      - build_with_executor:
-          executor: my-macos
+#
+#      - build_with_executor:
+#          executor: my-macos
 
       - build-webapp
 
-      - end2end:
-          executor:
-            name: win/default
-            shell: bash.exe
-
-      - end2end:
-          executor: my-docker
-
-      - end2end:
-          executor: my-macos
-
-
-#      - e2e:
-#          requires:
-#            - build
-#          num: 0
-#      - e2e:
-#          requires:
-#            - build
-#          num: 1
-#      - e2e:
-#          requires:
-#            - build
-#          num: 2
-#      - e2e:
-#          requires:
-#            - build
-#          num: 3
-#      - e2e:
-#          requires:
-#            - build
-#          num: 4
-#      - e2e:
-#          requires:
-#            - build
-#          num: 5
+#      - end2end:
+#          executor:
+#            name: win/default
+#            shell: bash.exe
+#
+#      - end2end:
+#          executor: my-docker
+#
+#      - end2end:
+#          executor: my-macos
+#
