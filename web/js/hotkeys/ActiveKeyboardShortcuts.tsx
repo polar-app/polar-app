@@ -163,6 +163,7 @@ export const ActiveKeyboardShortcuts = deepMemo(() => {
                                      handlerMap={handlers}/>
 
             <Dialog fullWidth={true}
+                    transitionDuration={50}
                     maxWidth="lg"
                     open={showActiveShortcuts}
                     onClose={handleClose}>
