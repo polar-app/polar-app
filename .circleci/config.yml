@@ -28,9 +28,10 @@ commands:
             - v1-dependencies-
 
       - run:
-          name: node version
-          command: node --version
-
+          name: versions
+          command: |
+            node --version
+            npm --version
 
       - run:
           name: OS environment
@@ -38,7 +39,11 @@ commands:
 
       - run:
           name: npm setup
-          command: cp .npmrc ${HOME} && npm config set registry='https://polar-app.bytesafe.dev/r/default' && npm ping
+          command: |
+            echo "Copying .npmrc to ${HOME}"
+            cp .npmrc ${HOME}
+            npm config set registry='https://polar-app.bytesafe.dev/r/default'
+            npm ping
 
       - run:
           name: install lerna
@@ -139,7 +144,7 @@ jobs:
       # all images and tags here:
       #   https://circleci.com/docs/2.0/docker-image-tags.json
       #
-      - image: circleci/node:12.1-stretch
+      - image: circleci/node:14.9-buster
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
