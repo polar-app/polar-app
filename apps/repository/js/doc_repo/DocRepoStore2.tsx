@@ -48,6 +48,7 @@ import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
+import TypeConverter = Sorting.TypeConverter;
 
 interface IDocRepoStore {
 
@@ -184,9 +185,11 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
         // Now that we have new data, we have to also apply the filters and sort
         // order to the results, then update the view + viewPage
 
+        const converter: TypeConverter<RepoDocInfo, IDocInfo> = (from) => from.docInfo;
+
         const view = Mappers.create(data)
             .map(current => DocRepoFilters2.execute(current, filters))
-            .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
+            .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy, converter)))
             .collect()
 
         return {...tmpStore, view};
