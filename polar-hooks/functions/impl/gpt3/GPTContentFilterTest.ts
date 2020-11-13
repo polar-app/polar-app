@@ -1,18 +1,13 @@
-import {GPTContentFilterResponses} from "./GPTContentFilterResponses";
-import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
 import {assert} from 'chai';
+import {GPTContentFilters} from "./GPTContentFilters";
 
-describe('FilterResponses', function() {
+xdescribe('GPTContentFilters', function() {
 
 	it("basic", async function() {
 
-		const filterResponse: GPTContentFilterResponse = {
-			choices: [{
-				text: 0
-			}]
-		};
+		const response = await GPTContentFilters.exec(['hello world'])
 
-		assert.equal(GPTContentFilterResponses.toClassificationResponse(filterResponse), "safe");
+		assert.equal(response, "safe");
 
 	});
 
