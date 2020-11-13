@@ -1,7 +1,7 @@
 import {Classification} from "./GPTContentFilters";
 import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
 
-export namespace FilterResponses {
+export namespace GPTContentFilterResponses {
 
     export function toClassificationResponse(contentFilterResponse: GPTContentFilterResponse): Classification {
 

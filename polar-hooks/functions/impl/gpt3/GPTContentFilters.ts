@@ -1,4 +1,4 @@
-import {FilterResponses} from "./GPTContentFilterResponses";
+import {GPTContentFilterResponses} from "./GPTContentFilterResponses";
 import { Fetches } from "polar-shared/src/util/Fetch";
 import {GPTConfigs} from "./GPTConfigs";
 import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
@@ -46,7 +46,7 @@ export namespace GPTContentFilters {
         // }
         const filterResponse: GPTContentFilterResponse = await response.json();
 
-        return FilterResponses.toClassificationResponse(filterResponse);
+        return GPTContentFilterResponses.toClassificationResponse(filterResponse);
 
     }
 
