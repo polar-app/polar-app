@@ -161,7 +161,6 @@ jobs:
 
     steps:
       - checkout
-      - build_setup
       - run:
           name: install lerna
           command: sudo npm install -g lerna
