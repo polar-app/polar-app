@@ -1,6 +1,6 @@
 import {Fetches} from "polar-shared/src/util/Fetch";
-import {GPTResponse} from "./GPTResponse";
-import {GPTResponses} from "./GPTResponses";
+import {GPTCompletionResponse} from "./GPTCompletionResponse";
+import {GPTCompletionResponses} from "./GPTCompletionResponses";
 import { GPTConfigs } from './GPTConfigs';
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 
@@ -64,9 +64,9 @@ Q:`
         }
 
         // this will be a JSON object with the response from gpt3...
-        const gptResponse: GPTResponse = await response.json();
-        
-        return GPTResponses.toAutoFlashcardResponse(gptResponse);
+        const gptResponse: GPTCompletionResponse = await response.json();
+
+        return GPTCompletionResponses.toAutoFlashcardResponse(gptResponse);
 
     }
 

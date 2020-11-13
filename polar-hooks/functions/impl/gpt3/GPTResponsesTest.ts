@@ -1,4 +1,4 @@
-import {GPTResponses} from "./GPTResponses";
+import {GPTCompletionResponses} from "./GPTCompletionResponses";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe('GPTResponses', function() {
@@ -9,7 +9,7 @@ describe('GPTResponses', function() {
 			text: ' Who was president of the US in 1963?\nA: Taylor Swift\n'
 		};
 
-		assertJSON(GPTResponses.toAutoFlashcardResponse(gptResponse), {
+		assertJSON(GPTCompletionResponses.toAutoFlashcardResponse(gptResponse), {
 			"front": " Who was president of the US in 1963?\n",
 			"back": "A: Taylor Swift\n",
 		});
