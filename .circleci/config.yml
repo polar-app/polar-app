@@ -42,10 +42,9 @@ commands:
       - run:
           name: npm setup
           command: |
-            npm config set registry='https://polar-app.bytesafe.dev/r/default'
-            export NPM_TOKEN=01EPZ43T1JVFV2ZVZNR37NQJKG
+            rm -f ~/.npmrc
             echo "Copying .npmrc to ${HOME}"
-            cp .npmrc ${HOME}
+            cp .npmrc ~
             npm ping
 
       - run:
