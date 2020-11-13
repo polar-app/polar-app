@@ -63,6 +63,14 @@ When you make changes to the code it will reload the app.
 
 You can use the 'dev2' app for hacking on custom stuff.  
 
+# Faster per-module compilation... 
+
+You can run
+
+```npx tsc --watch```
+
+in a module to make it compile faster during dev mode.
+
 ## admin credentials 
 
 If what you're working on requires credentials please contact an admin 
