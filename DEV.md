@@ -71,3 +71,7 @@ If what you're working on requires credentials please contact an admin
 # TODO
 
 - the credentials for our apt repo are required... this is a big deal breaker/issue
+
+# Upgrading Packages
+lerna exec --concurrency=1 --parallel=false --no-bail -- npm-upgrade-pkg typescript 3.9.5
+
