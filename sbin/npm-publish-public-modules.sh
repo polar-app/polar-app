@@ -36,6 +36,11 @@ publish_private() {
 
 }
 
+# FIXME: validate package versions
+# find packages/polar-app-public -maxdepth 2 -name package.json  -exec jq -r .version "{}" ";" | sort | uniq
+
+# FIXME: wait until the package versions are packaged.
+
 set -e
 cp packages/polar-bookshelf-secrets/npmrc-default-rw.txt ~/.nmprc
 
