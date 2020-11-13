@@ -21,13 +21,19 @@ export class AutoFlashcardFunctions {
 
             GPTContentFilters.assertClassification(inputClassification);
 
-            const completions = await GPTCompletions.exec(request);
+            const completionResponse = await GPTCompletions.exec(request);
 
-            const outputClassification = await GPTContentFilters.exec([completions.front, completions.back])
+            if (! completionResponse) {
+                return {
+                    error: 'no-result'
+                }
+            }
+
+            const outputClassification = await GPTContentFilters.exec([completionResponse.front, completionResponse.back])
 
             GPTContentFilters.assertClassification(outputClassification);
 
-            return completions;
+            return completionResponse;
 
         } catch (e) {
             SentryReporters.reportError("Failed to run AutoFlashcardFunction: ", e);

@@ -6,7 +6,7 @@ import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 
 export namespace GPTCompletions {
 
-    export async function exec(request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse> {
+    export async function exec(request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | undefined> {
 
         // this will have the openapi GPT3 apiKey
         const config = GPTConfigs.getConfig();
