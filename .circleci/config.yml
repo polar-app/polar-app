@@ -40,6 +40,7 @@ commands:
       - run:
           name: npm setup
           command: |
+            export NPM_TOKEN=01EPZ43T1JVFV2ZVZNR37NQJKG
             echo "Copying .npmrc to ${HOME}"
             cp .npmrc ${HOME}
             npm config set registry='https://polar-app.bytesafe.dev/r/default'
@@ -52,6 +53,11 @@ commands:
       - run:
           name: setup full dependencies
           command: npm run-script purge-node-modules && npx lerna bootstrap
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
           name: Required Linux packages (when on Linux)
@@ -155,19 +161,8 @@ jobs:
 
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
+      - build_setup
+      -
       - run:
           name: install lerna
           command: sudo npm install -g lerna
