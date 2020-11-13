@@ -65,7 +65,7 @@ Q:`
 
         // this will be a JSON object with the response from gpt3...
         const gptResponse: GPTResponse = await response.json();
-
+        
         return GPTResponses.toAutoFlashcardResponse(gptResponse);
 
     }
