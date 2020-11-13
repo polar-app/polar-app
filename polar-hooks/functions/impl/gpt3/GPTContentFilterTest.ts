@@ -1,11 +1,11 @@
 import {assert} from 'chai';
-import {GPTContentFilters} from "./GPTContentFilters";
+import {GPTCompletions} from "./GPTCompletions";
 
 xdescribe('GPTContentFilters', function() {
 
 	it("basic", async function() {
 
-		const response = await GPTContentFilters.exec(['hello world'])
+		const response = await GPTCompletions.exec(['hello world'])
 
 		assert.equal(response, "safe");
 

@@ -1,4 +1,4 @@
-import {Classification} from "./GPTContentFilters";
+import {Classification} from "./GPTCompletions";
 import {GPTContentFilterResponse} from "./GPTContentFilterResponse";
 
 export namespace GPTContentFilterResponses {
