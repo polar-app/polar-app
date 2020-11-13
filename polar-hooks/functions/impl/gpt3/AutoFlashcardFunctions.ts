@@ -1,8 +1,8 @@
 import {IDUser} from '../util/IDUsers';
 import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 import {GPTCompletions} from "./GPTCompletions";
-import {GPTCompletions} from "./GPTCompletions";
 import {SentryReporters} from "../reporters/SentryReporter";
+import {GPTContentFilters} from "./GPTContentFilters";
 
 export class AutoFlashcardFunctions {
 
@@ -17,15 +17,15 @@ export class AutoFlashcardFunctions {
 
         try {
 
-            const inputClassification = await GPTCompletions.exec([request.query_text]);
+            const inputClassification = await GPTContentFilters.exec([request.query_text]);
 
-            GPTCompletions.assertClassification(inputClassification);
+            GPTContentFilters.assertClassification(inputClassification);
 
             const completions = await GPTCompletions.exec(request);
 
-            const outputClassification = await GPTCompletions.exec([completions.front, completions.back])
+            const outputClassification = await GPTContentFilters.exec([completions.front, completions.back])
 
-            GPTCompletions.assertClassification(outputClassification);
+            GPTContentFilters.assertClassification(outputClassification);
 
             return completions;
 
