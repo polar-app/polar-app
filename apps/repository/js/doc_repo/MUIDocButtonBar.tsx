@@ -1,11 +1,12 @@
 import React, {useCallback} from "react";
-import {MUIDocDropdownButton} from "./MUIDocDropdownButton";
-import {useDocRepoCallbacks} from "../../../../apps/repository/js/doc_repo/DocRepoStore2";
+import {useDocRepoCallbacks} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 import {IDStr} from "polar-shared/src/util/Strings";
 import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import { MUIDocArchiveButton } from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
+import { OverflowMenuButton } from "./buttons/DocOverflowMenuButton";
 
 interface IProps {
 
@@ -45,7 +46,9 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
 
     return (
 
-        <div className={props.className || ''} onClick={() => callbacks.setSelected([viewID])}>
+        <MUIButtonBar className={props.className || ''}
+                      style={{justifyContent: 'flex-end'}}
+                      onClick={() => callbacks.setSelected([viewID])}>
 
             <MUIDocTagButton onClick={onTagged}/>
 
@@ -55,11 +58,9 @@ export const MUIDocButtonBar = React.memo((props: IProps) => {
             <MUIDocFlagButton onClick={onFlagged}
                               active={props.flagged}/>
 
-            {/*<Tooltip title="More options...">*/}
-                <MUIDocDropdownButton onClick={(event) => callbacks.selectRow(viewID, event, 'click')}/>
-            {/*</Tooltip>*/}
+            <OverflowMenuButton viewID={viewID}/>
 
-        </div>
+        </MUIButtonBar>
     );
 
 }, isEqual);

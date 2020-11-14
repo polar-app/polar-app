@@ -56,7 +56,7 @@ export const Resizable = deepMemo((props: IProps) => {
 
         return elementRef.current?.parentElement;
 
-    }, [elementRef.current]);
+    }, []);
 
     const computeBoundsParentElementRect = React.useCallback((): ILTRect => {
 
@@ -70,7 +70,7 @@ export const Resizable = deepMemo((props: IProps) => {
 
     }, [computeBoundsParentElement, doc.body]);
 
-    const toggleUserSelect = (resizing: boolean) => {
+    const toggleUserSelect = React.useCallback((resizing: boolean) => {
         // this is a hack to disable user select of the document to prevent
         // parts of the UI from being selected
 
@@ -80,9 +80,9 @@ export const Resizable = deepMemo((props: IProps) => {
             doc.body.style.userSelect = 'auto';
         }
 
-    };
+    }, [doc.body.style]);
 
-    const toggleCursor = (direction: Direction | undefined) => {
+    const toggleCursor = React.useCallback((direction: Direction | undefined) => {
 
         if (! direction) {
             doc.body.style.cursor = 'auto';
@@ -106,16 +106,16 @@ export const Resizable = deepMemo((props: IProps) => {
 
         doc.body.style.cursor = computeCursor(direction);
 
-    }
+    }, [doc.body.style]);
 
-    function updatePosition(position: ILTRect, direction: Direction) {
+    const updatePosition = React.useCallback((position: ILTRect, direction: Direction) => {
         setPosition(position);
 
         if (props.onResized) {
             props.onResized(position, direction);
         }
 
-    }
+    }, [props]);
 
     const handleMouseUp = React.useCallback(() => {
         mouseDown.current = false;

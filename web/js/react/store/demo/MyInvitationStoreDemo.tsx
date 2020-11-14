@@ -43,7 +43,7 @@ function mutatorFactory() {
     return {};
 }
 
-const callbacksFactory: CallbacksFactory<IInvitation, Mutator, IInvitationCallbacks> = (storeProvider, setStore, mutator) => {
+const useCallbacksFactory: CallbacksFactory<IInvitation, Mutator, IInvitationCallbacks> = (storeProvider, setStore, mutator) => {
 
     const tagStore = useTagStore(undefined)
 
@@ -60,5 +60,5 @@ export const [MyInvitationStoreProvider, useMyInvitationStore, useMyInvitationSt
     = createObservableStore<IInvitation, Mutator, IInvitationCallbacks>({
         initialValue: invitationStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });

@@ -10,18 +10,26 @@ import {AnnotationInlineControlBar} from './AnnotationInlineControlBar';
 import {FeedbackPadding} from "../ui/FeedbackPadding";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
+
 const NoAnnotationSelected = () => (
-    <Box p={1}>
+    <MUIElevation elevation={2}
+                  style={{
+                      display: 'flex',
+                      flexGrow: 1,
+                  }}>
 
-        <div className="text-center">
-            <Typography align="center"
-                        variant="h5"
-                        color="textPrimary">
-                No annotation selected.
-            </Typography>
-        </div>
+        <Box p={1}>
 
-    </Box>
+            <div className="text-center">
+                <Typography align="center"
+                            variant="h5"
+                            color="textPrimary">
+                    No annotation selected.
+                </Typography>
+            </div>
+
+        </Box>
+    </MUIElevation>
 );
 
 interface AnnotationSelectedProps {
@@ -39,7 +47,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <MUIElevation elevation={1}
+        <MUIElevation elevation={2}
                       style={{
                           display: 'flex',
                           flexGrow: 1,
@@ -53,11 +61,13 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                         <>
                             <AnnotationInlineControlBar annotation={annotation}/>
 
-                            <FeedbackPadding>
-                                <div className="mt-1">
-                                    <AnnotationView2 annotation={annotation}/>
-                                </div>
-                            </FeedbackPadding>
+                            <MUIElevation elevation={2}>
+                                <FeedbackPadding>
+                                    <div className="mt-1">
+                                        <AnnotationView2 annotation={annotation}/>
+                                    </div>
+                                </FeedbackPadding>
+                            </MUIElevation>
                         </>
                     </DocMetaContextProvider>
                 </>
@@ -73,18 +83,11 @@ export const AnnotationInlineViewer2 = React.memo(() => {
 
     const annotation = selected.length > 0 ? viewPage.filter(current => current.id === selected[0])[0] : undefined;
 
-    if (annotation) {
-
-        return (
-            <AnnotationSelected annotation={annotation}/>
-        );
-
-    } else {
-        return (
-            <NoAnnotationSelected/>
-        );
-
-    }
+    return (
+        <>
+            {annotation ? <AnnotationSelected annotation={annotation}/> : <NoAnnotationSelected/>}
+        </>
+    );
 
 });
 

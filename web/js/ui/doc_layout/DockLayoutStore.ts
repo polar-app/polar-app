@@ -38,9 +38,9 @@ function mutatorFactory(storeProvider: Provider<IDockLayoutStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
-                          setStore: (store: IDockLayoutStore) => void,
-                          mutator: Mutator): IDockLayoutCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IDockLayoutStore>,
+                             setStore: (store: IDockLayoutStore) => void,
+                             mutator: Mutator): IDockLayoutCallbacks {
 
     return React.useMemo((): IDockLayoutCallbacks => {
 
@@ -81,9 +81,13 @@ function callbacksFactory(storeProvider: Provider<IDockLayoutStore>,
 
 }
 
+export function useDockLayoutResized() {
+    useDockLayoutStore(['panels']);
+}
+
 export const [DockLayoutStoreProvider, useDockLayoutStore, useDockLayoutCallbacks] =
     createObservableStore<IDockLayoutStore, Mutator, IDockLayoutCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });

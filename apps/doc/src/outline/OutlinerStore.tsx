@@ -60,9 +60,9 @@ function mutatorFactory(storeProvider: Provider<IOutlinerStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IOutlinerStore>,
-                          setStore: (store: IOutlinerStore) => void,
-                          mutator: Mutator): IOutlinerCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IOutlinerStore>,
+                             setStore: (store: IOutlinerStore) => void,
+                             mutator: Mutator): IOutlinerCallbacks {
 
     return React.useMemo(() => {
 
@@ -152,6 +152,6 @@ export const [OutlinerStoreProviderDelegate, useOutlinerStore, useOutlinerCallba
     createObservableStore<IOutlinerStore, Mutator, IOutlinerCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 

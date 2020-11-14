@@ -327,9 +327,9 @@ function mutatorFactory(storeProvider: Provider<IDocViewerStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IDocViewerStore>,
-                          setStore: (store: IDocViewerStore) => void,
-                          mutator: Mutator): IDocViewerCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
+                             setStore: (store: IDocViewerStore) => void,
+                             mutator: Mutator): IDocViewerCallbacks {
 
     const log = useLogger();
     const docMetaContext = useDocMetaContext();
@@ -1015,7 +1015,7 @@ export const [DocViewerStoreProviderDelegate, useDocViewerStore, useDocViewerCal
     = createObservableStore<IDocViewerStore, Mutator, IDocViewerCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
-    callbacksFactory
+    callbacksFactory: useCallbacksFactory
 });
 
 interface IProps {

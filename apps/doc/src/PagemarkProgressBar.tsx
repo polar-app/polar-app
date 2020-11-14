@@ -60,4 +60,4 @@ export const PagemarkProgressBar = React.memo(() => {
         </ContextMenu>
     );
 
-}, isEqual);
+});

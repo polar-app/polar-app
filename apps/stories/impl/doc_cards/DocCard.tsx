@@ -32,7 +32,7 @@ export const DocCard = React.memo((props: IProps) => {
                     alt={props.title}
                     height="150"
                     style={{
-                        objectPosition: '0% 0%'
+                        objectPosition: '50% top'
                     }}
                     image={props.imgURL}
                     title={props.title}

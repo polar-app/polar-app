@@ -25,7 +25,7 @@ const ElevationExample = (props: ElevationExampleProps) => {
                               padding: '10px'
                           }}
                           elevation={props.elevation}
-                          highlighted>
+                          highlighted={true}>
                 <div>
                     {props.elevation} highlighted: {backgroundElevation.highlighted}
                 </div>
@@ -35,7 +35,7 @@ const ElevationExample = (props: ElevationExampleProps) => {
 
 }
 
-const elevations: ReadonlyArray<Elevation> = [0, 1, 2, 3];
+const elevations: ReadonlyArray<Elevation> = [0, 1, 2];
 
 const ElevationsList = () => {
     return (

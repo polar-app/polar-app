@@ -6,6 +6,8 @@ import {Tag} from "polar-shared/src/tags/Tags";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {assertJSON} from "../../../../web/js/test/Assertions";
+import TypeConverter = Sorting.TypeConverter;
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 
 const now = new Date();
 const today = ISODateTimeStrings.create();
@@ -34,6 +36,8 @@ const tagsToString = (repoDocInfo: RepoDocInfo) => {
 
 };
 
+const converter: TypeConverter<RepoDocInfo, IDocInfo> = (from) => from.docInfo;
+
 describe('Sorting', function() {
 
     it("by tags", function() {
@@ -48,21 +52,75 @@ describe('Sorting', function() {
             MockRepoDocInfos.createDoc('doc 6', yesterday, today, ['elizabeth'], 50),
         ];
 
+        const toColumnString = (repoDocInfo: RepoDocInfo): string => {
+
+            return Object.keys(repoDocInfo.tags || [])
+                .map(current => current.toLowerCase())
+                .sort()
+                .join(', ');
+
+        };
+
         const sorted =
-            arrayStream(Sorting.stableSort(docs, Sorting.getComparator('asc', 'tags')))
-                .map(tagsToString)
+            arrayStream(Sorting.stableSort(docs, Sorting.createComparator('asc', 'tags', converter)))
+                .map(toColumnString)
                 .collect()
 
         assertJSON(sorted, [
-            "",
             "alice",
             "alice, bob",
             "alice, elizabeth",
             "carol",
             "dan",
-            "elizabeth"
+            "elizabeth",
+            "",
         ]);
 
     });
+
+    //
+    // it("by authors", function() {
+    //
+    //
+    //     function createDoc0() {
+    //         const doc = MockRepoDocInfos.createDoc('doc 0', yesterday, today, [], 50);
+    //         doc.docInfo.authors = ['alice'];
+    //         return doc;
+    //     }
+    //
+    //     function createDoc1() {
+    //         const doc = MockRepoDocInfos.createDoc('doc 0', yesterday, today, [], 50);
+    //         doc.docInfo.authors = ['bob'];
+    //         return doc;
+    //     }
+    //
+    //     function createDoc2() {
+    //         const doc = MockRepoDocInfos.createDoc('doc 0', yesterday, today, [], 50);
+    //         return doc;
+    //     }
+    //
+    //     const docs = [
+    //         createDoc0(),
+    //         createDoc1(),
+    //         createDoc2(),
+    //     ];
+    //
+    //     const sorted =
+    //         arrayStream(Sorting.stableSort(docs, Sorting.getComparator('asc', 'authors')))
+    //             .map(tagsToString)
+    //             .collect()
+    //
+    //     assertJSON(sorted, [
+    //         "",
+    //         "alice",
+    //         "alice, bob",
+    //         "alice, elizabeth",
+    //         "carol",
+    //         "dan",
+    //         "elizabeth"
+    //     ]);
+    //
+    // });
+
 
 });

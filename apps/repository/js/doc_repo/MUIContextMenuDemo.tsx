@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {createContextMenu, useContextMenu} from "./MUIContextMenu";
+import {createContextMenu} from "./MUIContextMenu2";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const ChildComponent = () => {
 
-    const contextMenu = useContextMenu();
+    const contextMenu = useMyContextMenu();
 
     return (
         <div {...contextMenu}>
@@ -15,18 +15,18 @@ const ChildComponent = () => {
 
 }
 
+const MyMenu = () => (
+    <>
+        <MenuItem>Profile</MenuItem>
+        <MenuItem>home</MenuItem>
+    </>
+);
+
+const [MyContextMenu, useMyContextMenu] = createContextMenu(MyMenu);
+
 export const MUIContextMenuDemo = () => {
 
     // FIXME: JUST pass a div with menu items ?? that seems easier...
-
-    const MyMenu = () => (
-        <>
-            <MenuItem>Profile</MenuItem>
-            <MenuItem>home</MenuItem>
-        </>
-    );
-
-    const MyContextMenu = createContextMenu(MyMenu);
 
     return (
         <MyContextMenu>

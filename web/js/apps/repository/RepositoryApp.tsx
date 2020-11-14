@@ -231,13 +231,9 @@ export const RepositoryApp = (props: IProps) => {
 
     const premiumScreen = () => {
         return (
-            <PricingScreen/>
-        );
-    };
-
-    const premiumScreenYear = () => {
-        return (
-            <PricingScreen/>
+            <AuthRequired>
+                <PricingScreen/>
+            </AuthRequired>
         );
     };
 
@@ -359,9 +355,6 @@ export const RepositoryApp = (props: IProps) => {
                                                                             <Route exact path='/invite' render={renderInvite}/>
 
                                                                             <Route exact path='/plans' render={premiumScreen}/>
-
-                                                                            <Route exact path='/plans-year'
-                                                                                   render={premiumScreenYear}/>
 
                                                                             <Route exact path='/premium' render={premiumScreen}/>
 

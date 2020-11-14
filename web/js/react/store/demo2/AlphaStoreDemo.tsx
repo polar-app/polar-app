@@ -23,7 +23,7 @@ function mutatorFactory() {
     return {};
 }
 
-const callbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> = (storeProvider, setStore, mutator) => {
+const useCallbacksFactory: CallbacksFactory<IAlphaStore, Mutator, IAlphaCallbacks> = (storeProvider, setStore, mutator) => {
 
     const betaStore = useBetaStore(undefined);
 
@@ -56,5 +56,5 @@ export const [AlphaStoreProvider, useAlphaStore, useAlphaStoreCallbacks]
     = createObservableStore<IAlphaStore, Mutator, IAlphaCallbacks>({
         initialValue: store,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });

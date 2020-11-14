@@ -189,9 +189,10 @@ export const ChromeTab = (props: ChromeTabProps) => {
   };
 
   // On render/update
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!open) {
-      //setInitial(false);
+      // setInitial(false);
       setOpen(true);
       /*
       setTimeout(() => {

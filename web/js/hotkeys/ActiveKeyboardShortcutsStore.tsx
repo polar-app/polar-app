@@ -27,9 +27,9 @@ function mutatorFactory(storeProvider: Provider<IActiveKeyboardShortcutsStore>,
     return {};
 }
 
-function callbacksFactory(storeProvider: Provider<IActiveKeyboardShortcutsStore>,
-                          setStore: (store: IActiveKeyboardShortcutsStore) => void,
-                          mutator: Mutator): IActiveKeyboardShortcutsCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IActiveKeyboardShortcutsStore>,
+                             setStore: (store: IActiveKeyboardShortcutsStore) => void,
+                             mutator: Mutator): IActiveKeyboardShortcutsCallbacks {
 
     return React.useMemo(() => {
 
@@ -50,6 +50,6 @@ export const [ActiveKeyboardShortcutsStoreProvider, useActiveKeyboardShortcutsSt
     = createObservableStore<IActiveKeyboardShortcutsStore, Mutator, IActiveKeyboardShortcutsCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
-    callbacksFactory
+    callbacksFactory: useCallbacksFactory
 });
 

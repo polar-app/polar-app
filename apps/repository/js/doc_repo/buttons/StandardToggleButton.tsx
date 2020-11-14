@@ -31,7 +31,7 @@ export const StandardToggleButton = React.memo((props: StandardToggleButtonProps
         <MUITooltip title={props.tooltip}>
             <IconButton size={props.size || 'small'}
                         onClick={props.onClick}
-                        aria-label={props.tooltip.toLowerCase()}
+                        aria-label={props.tooltip}
                         style={{color: activeColor}}>
                 {props.children}
             </IconButton>

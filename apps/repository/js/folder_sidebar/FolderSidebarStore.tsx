@@ -82,6 +82,8 @@ interface IFolderSidebarCallbacks {
 
     readonly onDelete: () => void;
 
+    readonly resetSelected: () => void;
+
 }
 
 const initialStore: IFolderSidebarStore = {
@@ -217,9 +219,9 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
-                          setStore: (store: IFolderSidebarStore) => void,
-                          mutator: Mutator): IFolderSidebarCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
+                             setStore: (store: IFolderSidebarStore) => void,
+                             mutator: Mutator): IFolderSidebarCallbacks {
 
     // used so that we listen to repoDocInfos and get them for every update
     // so that we can build a new store.
@@ -256,8 +258,8 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     return React.useMemo(() => {
 
-
         function doSelectRow(nodes: ReadonlyArray<TagID>) {
+
             const store = storeProvider();
 
             const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes, Tags.create);
@@ -440,7 +442,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
                     const store = storeProvider();
                     const tags = store.tags.filter(current => current.id !== tag.id);
-                    mutator.doUpdate({...store, tags, selected: []});
+                    mutator.doUpdate({...store, tags});
 
                 }
 
@@ -463,6 +465,11 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             const selected = selectedTags();
 
+            function handleDeleted() {
+                resetSelected();
+                doDelete(selected);
+            }
+
             dialogs.confirm({
                 title: `Are you sure you want to delete these tags/folders?`,
                 subtitle: <div>
@@ -472,9 +479,16 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                     </div>,
                 onCancel: NULL_FUNCTION,
                 type: 'danger',
-                onAccept: () => doDelete(selected)
+                onAccept: handleDeleted
             });
 
+        }
+
+        function resetSelected() {
+            const store = storeProvider();
+            const newSelected = ['/'];
+            mutator.doUpdate({...store, selected: newSelected});
+            doSelectRow(newSelected)
         }
 
         return {
@@ -486,6 +500,7 @@ function callbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             onCreateUserTag,
             onDrop,
             onDelete,
+            resetSelected
         };
 
     }, [
@@ -509,7 +524,7 @@ export function createFolderSidebarStore() {
     return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
-          callbacksFactory
+          callbacksFactory: useCallbacksFactory
     });
 }
 

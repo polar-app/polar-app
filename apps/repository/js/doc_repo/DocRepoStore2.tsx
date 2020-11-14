@@ -48,6 +48,7 @@ import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
+import TypeConverter = Sorting.TypeConverter;
 
 interface IDocRepoStore {
 
@@ -57,11 +58,6 @@ interface IDocRepoStore {
      * The sorted view of the data based on the order and orderBy.
      */
     readonly view: ReadonlyArray<RepoDocInfo>;
-
-    /**
-     * The page data based on a slice of view, and the page number.
-     */
-    readonly viewPage: ReadonlyArray<RepoDocInfo>;
 
     /**
      * The selected records as pointers in to viewPage
@@ -77,16 +73,6 @@ interface IDocRepoStore {
      * The column we are sorting by.
      */
     readonly orderBy: keyof IDocInfo;
-
-    /**
-     * The page number we're viewing
-     */
-    readonly page: number;
-
-    /**
-     * The rows per page we have.
-     */
-    readonly rowsPerPage: number;
 
     readonly filters: DocRepoFilters2.Filter;
 
@@ -107,8 +93,6 @@ interface IDocRepoCallbacks {
                          event: React.MouseEvent,
                          type: SelectRowType) => void;
 
-    readonly setPage: (page: number) => void;
-    readonly setRowsPerPage: (rowsPerPage: number) => void;
     readonly setSelected: (selected: ReadonlyArray<IDStr> | 'all' | 'none') => void;
     readonly setFilters: (filters: DocRepoFilters2.Filter) => void;
     readonly setSort: (order: Sorting.Order, orderBy: keyof IDocInfo) => void;
@@ -163,13 +147,10 @@ interface IDocRepoCallbacks {
 const initialStore: IDocRepoStore = {
     data: [],
     view: [],
-    viewPage: [],
     selected: [],
 
     orderBy: 'progress',
     order: 'desc',
-    page: 0,
-    rowsPerPage: 25,
 
     filters: {},
     _refresh: 0
@@ -199,19 +180,19 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
         // TODO: we only have to resort and recompute the view when the filters
         // or the sort order changes.
 
-        const {data, page, rowsPerPage, order, orderBy, filters} = tmpStore;
+        const {data, order, orderBy, filters} = tmpStore;
 
         // Now that we have new data, we have to also apply the filters and sort
         // order to the results, then update the view + viewPage
 
+        const converter: TypeConverter<RepoDocInfo, IDocInfo> = (from) => from.docInfo;
+
         const view = Mappers.create(data)
             .map(current => DocRepoFilters2.execute(current, filters))
-            .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy)))
+            .map(current => Sorting.stableSort(current, Sorting.createComparator(order, orderBy, converter)))
             .collect()
 
-        const viewPage = view.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-        return {...tmpStore, view, viewPage};
+        return {...tmpStore, view};
 
     }
 
@@ -248,14 +229,14 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
 
 }
 
-function createCallbacks(storeProvider: Provider<IDocRepoStore>,
-                         setStore: (store: IDocRepoStore) => void,
-                         mutator: Mutator,
-                         repoDocMetaManager: RepoDocMetaManager,
-                         tagsProvider: () => ReadonlyArray<Tag>,
-                         dialogs: DialogManager,
-                         persistence: IPersistenceContext,
-                         log: ILogger): IDocRepoCallbacks {
+function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
+                            setStore: (store: IDocRepoStore) => void,
+                            mutator: Mutator,
+                            repoDocMetaManager: RepoDocMetaManager,
+                            tagsProvider: () => ReadonlyArray<Tag>,
+                            dialogs: DialogManager,
+                            persistence: IPersistenceContext,
+                            log: ILogger): IDocRepoCallbacks {
 
     const docLoader = useDocLoader();
 
@@ -294,7 +275,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const selected = SelectionEvents2.selectRow(viewID,
                                                     store.selected,
-                                                    store.viewPage,
+                                                    store.view,
                                                     event,
                                                     type);
 
@@ -309,44 +290,22 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
         const store = storeProvider();
 
-        const {viewPage, selected} = store;
+        const {view, selected} = store;
 
-        return viewPage.filter(current => selected.includes(current.id));
+        return view.filter(current => selected.includes(current.id));
 
-    }
-
-    function setPage(page: number) {
-
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            page,
-            selected: []
-        });
-    }
-
-    function setRowsPerPage(rowsPerPage: number) {
-        const store = storeProvider();
-
-        mutator.doReduceAndUpdateState({
-            ...store,
-            rowsPerPage,
-            page: 0,
-            selected: []
-        });
     }
 
     function setSelected(newSelected: ReadonlyArray<IDStr> | 'all' | 'none') {
 
         const store = storeProvider();
 
-        const {viewPage} = store;
+        const {view} = store;
 
         function computeSelected(): ReadonlyArray<IDStr> {
 
             if (newSelected === 'all') {
-                return viewPage.map(current => current.id);
+                return view.map(current => current.id);
             }
 
             if (newSelected === 'none') {
@@ -371,7 +330,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         mutator.doReduceAndUpdateState({
             ...store,
             filters,
-            page: 0,
             selected: []
         });
     }
@@ -383,7 +341,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
             ...store,
             order,
             orderBy,
-            page: 0,
             selected: []
         });
 
@@ -781,8 +738,6 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
         selectedProvider,
 
         selectRow,
-        setPage,
-        setRowsPerPage,
         setSelected,
         setFilters,
         setSort,
@@ -818,7 +773,7 @@ function createCallbacks(storeProvider: Provider<IDocRepoStore>,
 
 }
 
-const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
+const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
                           setStore: (store: IDocRepoStore) => void,
                           mutator: Mutator): IDocRepoCallbacks => {
 
@@ -833,14 +788,14 @@ const callbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
     const tagsProviderRef = useRefWithUpdates(tagsProvider);
 
-    return createCallbacks(storeProvider,
-                           setStore,
-                           mutator,
-                           repoDocMetaManager,
-                           () => tagsProviderRef.current(),
-                           dialogs,
-                           persistence,
-                           log);
+    return useCreateCallbacks(storeProvider,
+                              setStore,
+                              mutator,
+                              repoDocMetaManager,
+                              () => tagsProviderRef.current(),
+                              dialogs,
+                              persistence,
+                              log);
 
     // return React.useMemo(() => {
     //     return createCallbacks(storeProvider,
@@ -859,7 +814,7 @@ export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDoc
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });
 
 interface IProps {
@@ -871,16 +826,12 @@ interface IProps {
  */
 const DocRepoStoreLoader = React.memo((props: IProps) => {
 
-    // TODO: migrate to useRepoDocInfos
-
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
     const docRepoMutator = useDocRepoMutator();
     const callbacks = useDocRepoCallbacks();
 
-    const doRefresh = React.useCallback(Debouncers.create(() => {
-        docRepoMutator.refresh();
-    }), [docRepoMutator]);
+    const doRefresh = React.useMemo(() => Debouncers.create(() => docRepoMutator.refresh()), [docRepoMutator]);
 
     useComponentDidMount(() => {
         docRepoMutator.setDataProvider(() => repoDocMetaManager.repoDocInfoIndex.values());

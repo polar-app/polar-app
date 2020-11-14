@@ -6,6 +6,7 @@ interface IProps {
     readonly children: React.ReactNode;
     readonly style?: React.CSSProperties;
     readonly className?: string;
+    readonly onClick?: () => void;
 }
 
 
@@ -20,6 +21,7 @@ export const MUIButtonBar = deepMemo((props: IProps) => {
                  flexWrap: 'nowrap',
                  ...(props.style || {})
              }}
+             onClick={props.onClick}
              className={className}>
 
             {props.children}

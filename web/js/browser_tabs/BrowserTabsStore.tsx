@@ -83,9 +83,9 @@ function mutatorFactory(storeProvider: Provider<IBrowserTabsStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
-                          setStore: (store: IBrowserTabsStore) => void,
-                          mutator: Mutator): IBrowserTabsCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IBrowserTabsStore>,
+                             setStore: (store: IBrowserTabsStore) => void,
+                             mutator: Mutator): IBrowserTabsCallbacks {
 
     // FIXME: now the issue is useHistory here I think...
     // FIXME: useHistory caues the components to reload and it might be that
@@ -179,7 +179,7 @@ export function createBrowserTabsStore() {
     return createObservableStore<IBrowserTabsStore, Mutator, IBrowserTabsCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
-          callbacksFactory
+          callbacksFactory: useCallbacksFactory
     });
 }
 

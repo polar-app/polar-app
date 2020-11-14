@@ -36,7 +36,7 @@ export const COLUMNS: ReadonlyArray<ColumnDescriptor> = [
     { id: 'progress', numeric: true, disablePadding: true, label: 'Progress', width: '75px', defaultOrder: 'desc' },
 ];
 
-export const DOC_BUTTON_COLUMN_WIDTH = '135px';
+export const DOC_BUTTON_COLUMN_WIDTH = '130px';
 
 export const COLUMN_MAP: ColumnDescriptorMap =
     arrayStream(COLUMNS)

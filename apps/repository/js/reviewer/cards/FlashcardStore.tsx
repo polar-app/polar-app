@@ -26,9 +26,9 @@ function mutatorFactory<A>(storeProvider: Provider<IFlashcardStore>,
 
 }
 
-function callbacksFactory(storeProvider: Provider<IFlashcardStore>,
-                          setStore: (store: IFlashcardStore) => void,
-                          mutator: Mutator): IFlashcardCallbacks {
+function useCallbacksFactory(storeProvider: Provider<IFlashcardStore>,
+                             setStore: (store: IFlashcardStore) => void,
+                             mutator: Mutator): IFlashcardCallbacks {
 
     return React.useMemo(() => {
 
@@ -47,5 +47,5 @@ export const [FlashcardStoreProvider, useFlashcardStore, useFlashcardCallbacks] 
     createObservableStore<IFlashcardStore, Mutator, IFlashcardCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory: useCallbacksFactory
     });

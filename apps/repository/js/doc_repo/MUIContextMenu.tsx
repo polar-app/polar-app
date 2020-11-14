@@ -134,6 +134,10 @@ function computeMenuPoint(event: IMouseEvent): IPoint {
 
 }
 
+/**
+ *
+ * @Deprecated use MUIContextMenu2
+ */
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
                                      opts: CreateContextMenuOpts<O> = {}): (props: IContextMenuProps) => JSX.Element {
 
@@ -175,11 +179,11 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
             <ContextMenuContext.Provider value={{onContextMenu}}>
 
                 {active &&
-                    <MUIContextMenu {...active}
-                                    anchorEl={props.anchorEl}
-                                    handleClose={handleClose}>
-                        <MenuComponent origin={active.origin}/>
-                    </MUIContextMenu>}
+                <MUIContextMenu {...active}
+                                anchorEl={props.anchorEl}
+                                handleClose={handleClose}>
+                    <MenuComponent origin={active.origin}/>
+                </MUIContextMenu>}
 
                 {props.children}
 
@@ -189,6 +193,10 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
 }
 
+/**
+ *
+ * @Deprecated use MUIContextMenu2
+ */
 export function useContextMenu(opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks {
 
     const contextMenuCallbacks = React.useContext(ContextMenuContext);
@@ -238,6 +246,7 @@ export const MUIContextMenu = deepMemo((props: MUIContextMenuProps) => {
 
     return (
         <Menu
+            transitionDuration={50}
             keepMounted
             anchorEl={props.anchorEl}
             open={true}

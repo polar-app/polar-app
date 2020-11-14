@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
-import TablePagination from "@material-ui/core/TablePagination";
 import {AutoBlur} from "./AutoBlur";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
@@ -14,21 +13,12 @@ import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
 
 export const DocRepoTableToolbar = React.memo(() => {
 
-    const {rowsPerPage, view, selected, page}
-        = useDocRepoStore(['rowsPerPage', 'view', 'selected', 'page']);
+    const {view, selected}
+        = useDocRepoStore(['view', 'selected']);
 
     const callbacks = useDocRepoCallbacks();
 
-    const {setRowsPerPage, setSelected} = callbacks;
-
-    const handleChangePage = (event: any, newPage: number) => {
-        callbacks.setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const rowsPerPage = parseInt(event.target.value, 10);
-        setRowsPerPage(rowsPerPage);
-    };
+    const {setSelected} = callbacks;
 
     const handleCheckbox = (checked: boolean) => {
         // TODO: this is wrong... the '-' button should remove the checks...
@@ -62,13 +52,15 @@ export const DocRepoTableToolbar = React.memo(() => {
 
                             <Grid item>
                                 <AutoBlur>
-                                    <Checkbox
-                                        size="medium"
-                                        indeterminate={selected.length > 0 && selected.length < rowsPerPage}
-                                        checked={selected.length === rowsPerPage}
-                                        onChange={event => handleCheckbox(event.target.checked)}
-                                        inputProps={{ 'aria-label': 'select all documents' }}
-                                    />
+                                    <Box mt={1} mb={1}>
+                                        <Checkbox
+                                            size="medium"
+                                            indeterminate={selected.length > 0 && selected.length < view.length}
+                                            checked={selected.length === view.length && view.length !== 0}
+                                            onChange={event => handleCheckbox(event.target.checked)}
+                                            inputProps={{ 'aria-label': 'select all documents' }}
+                                        />
+                                    </Box>
                                 </AutoBlur>
                             </Grid>
 
@@ -99,28 +91,6 @@ export const DocRepoTableToolbar = React.memo(() => {
 
                 </Grid>
 
-                <div style={{display: 'flex'}}>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, 50]}
-                        component="div"
-                        size="small"
-                        count={view.length}
-                        rowsPerPage={rowsPerPage}
-                        style={{
-                            padding: 0,
-                            minHeight: 0
-                        }}
-                        // onDoubleClick={event => {
-                        //     event.stopPropagation();
-                        //     event.preventDefault();
-                        // }}
-                        page={page}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                    />
-
-                </div>
             </Grid>
         </>
     );

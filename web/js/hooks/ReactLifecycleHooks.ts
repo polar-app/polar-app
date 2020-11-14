@@ -7,6 +7,7 @@ export function useComponentDidMount(delegate: () => void) {
     // https://dev.to/trentyang/replace-lifecycle-with-hooks-in-react-3d4n
 
     // will only execute the first time.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => delegate(), []);
 }
 
@@ -16,6 +17,7 @@ export function useComponentWillUnmount(delegate: () => void) {
     // this isn't REALLY on unmount though.  There can be no remaining reference
     // to the component.
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => delegate, []);
 
 }

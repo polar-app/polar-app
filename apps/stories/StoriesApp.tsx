@@ -19,6 +19,13 @@ import {SideNavStory} from "./impl/SideNavStory";
 import {ElevationsStory} from "./impl/ElevationsStory";
 import {DocColumnsStory} from "./impl/DocColumnsStory";
 import {WhatsNewStory} from "./impl/WhatsNewStory";
+import {ReactWindowStory} from "./impl/ReactWindowStory";
+import XGridStory from "./impl/XGridStory";
+import { IntersectionListStory } from './impl/IntersectionListStory';
+import { IntersectionListTableStory } from './impl/IntersectionListTableStory';
+import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
+import {MUITooltipStory} from "./impl/MUITooltipStory";
+import { MUIPaletteStory } from './impl/MUIPaletteStory';
 
 interface IStory {
     readonly name: string;
@@ -90,9 +97,39 @@ const stories = createStoryIndex([
     {
         name: "Whats New",
         component: <WhatsNewStory/>
+    },
+    {
+        name: "React Window",
+        component: <ReactWindowStory/>,
+        noMargin: true
+    },
+    {
+        name: "XGrid",
+        component: <XGridStory/>,
+        noMargin: true
+    },
+    {
+        name: "Intersection List",
+        component: <IntersectionListStory/>,
+        noMargin: true
+    },
+    {
+        name: "Intersection List Table",
+        component: <IntersectionListTableStory/>,
+        noMargin: true
+    },
+    {
+        name: "MUIImageBottomFadeStory",
+        component: <MUIImageBottomFadeStory/>
+    },
+    {
+        name: "MUITooltip",
+        component: <MUITooltipStory/>
+    },
+    {
+        name: "MUIPaletteStory",
+        component: <MUIPaletteStory/>
     }
-
-
 
 ]);
 

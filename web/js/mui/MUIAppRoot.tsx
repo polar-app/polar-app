@@ -27,8 +27,12 @@ export const MUIAppRoot = (props: IProps) => {
         palette: {
             type: theme,
             primary: {
-                main: 'rgb(103, 84, 214)'
-            }
+                'main': 'rgb(103, 84, 214)'
+            },
+            // background: {
+            //     'default': '#1b1b1b',
+            //     'paper': '#343434'
+            // }
         }
     }), [theme]);
 

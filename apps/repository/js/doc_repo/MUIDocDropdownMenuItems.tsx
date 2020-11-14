@@ -156,7 +156,7 @@ const UpdateDocMetadataMenuItem = deepMemo(() => {
     );
 });
 
-export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProps, ref) => {
+export const MUIDocDropdownMenuItems = React.memo(() => {
 
     const callbacks = useDocRepoCallbacks();
 
@@ -258,4 +258,4 @@ export const MUIDocDropdownMenuItems = React.memo(React.forwardRef((props: IProp
             </MenuItem>
         </>
     );
-}));
+});

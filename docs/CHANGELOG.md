@@ -1,3 +1,7 @@
+
+- Improved sorting so that empty strings sort last.
+- Fixed problem with the UI not sorting properly for authors and other new columns.
+
 # 2.0.60
 
 - can edit metadata on documents directly now.
