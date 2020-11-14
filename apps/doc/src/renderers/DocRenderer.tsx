@@ -22,9 +22,9 @@ interface ILoadedProps {
 const PDFDocumentRenderer = (props: ILoadedProps) => {
     return (
         <>
-            <PDFViewerContainer/>
-
-            <PDFDocument {...props}/>
+            <PDFViewerContainer>
+                <PDFDocument {...props}/>
+            </PDFViewerContainer>
 
         </>
     );

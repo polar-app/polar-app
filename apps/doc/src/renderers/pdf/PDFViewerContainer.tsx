@@ -2,14 +2,18 @@ import * as React from "react";
 import {useContextMenu} from "../../../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../../../web/js/util/Elements";
 import {GlobalPDFCss} from "./GlobalPDFCss";
+import {useForceMount} from "../../../../../web/js/hooks/ReactHooks";
 
 let iter: number = 0;
 
-export const PDFViewerContainer = () => {
+interface IProps {
+    readonly children: React.ReactNode;
+}
 
-    ++iter;
+export const PDFViewerContainer = (props: IProps) => {
 
     const contextMenu = useContextMenu();
+    const [ref, mounted] = useForceMount();
 
     const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
 
@@ -24,10 +28,13 @@ export const PDFViewerContainer = () => {
 
     }, [contextMenu]);
 
+    ++iter;
+
     return (
         <>
             <GlobalPDFCss/>
             <main onContextMenu={onContextMenu}
+                  ref={ref}
                   id="viewerContainer"
                   style={{
                       position: 'absolute',
@@ -37,12 +44,14 @@ export const PDFViewerContainer = () => {
                       height: '100%'
                   }}
                   className="viewerContainer"
-                  itemProp="mainContentOfPage"
+                  itemProp= "mainContentOfPage"
                   data-iter={iter}>
 
                 <div>
                     <div id="viewer" className="pdfViewer viewer">
                         <div/>
+
+                        {mounted && props.children}
 
                     </div>
                 </div>

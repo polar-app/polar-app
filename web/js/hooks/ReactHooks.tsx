@@ -84,7 +84,24 @@ export function useLogWhenChanged<T>(name: string, value: T) {
 
     }
 
-
 }
 
 export const typedMemo: <T>(c: T) => T = React.memo;
+
+export type ForceMountRefCallback = (ref: HTMLElement | HTMLDivElement | null) => void;
+
+export type ForceMountMounted = boolean;
+
+export type ForceMountTuple = [ForceMountRefCallback, ForceMountMounted];
+
+export function useForceMount(): ForceMountTuple {
+
+    const [mounted, setMounted] = React.useState(false);
+
+    const forceMountRefCallback = React.useCallback((ref: HTMLElement | HTMLDivElement | null) => {
+        setMounted(ref !== null);
+    }, []);
+
+    return [forceMountRefCallback, mounted];
+
+}
