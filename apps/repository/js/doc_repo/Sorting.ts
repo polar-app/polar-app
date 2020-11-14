@@ -13,6 +13,8 @@ export namespace Sorting {
      */
     export type TypeConverter<F, T> = (from: F) => T
 
+    export type PrimitiveConverter<V> = (value: V) => number | string;
+
     export function reverse(order: Order) {
         return order === 'asc' ? 'desc' : 'asc';
     }
@@ -66,6 +68,7 @@ export namespace Sorting {
         const bVal = toVal(<any> converter(b)[orderBy]);
 
         if (typeof aVal === 'number') {
+            // TODO: this is going to slow us down as comparing the orer ech time is not fun.
             return NumberComparators.create(aVal as number, bVal as number, order);
         }
 

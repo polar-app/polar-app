@@ -82,6 +82,8 @@ interface IFolderSidebarCallbacks {
 
     readonly onDelete: () => void;
 
+    readonly resetSelected: () => void;
+
 }
 
 const initialStore: IFolderSidebarStore = {
@@ -256,8 +258,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     return React.useMemo(() => {
 
-
         function doSelectRow(nodes: ReadonlyArray<TagID>) {
+
             const store = storeProvider();
 
             const selectedTags = Tags.lookupByTagLiteral(store.tags, nodes, Tags.create);
@@ -440,7 +442,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
                     const store = storeProvider();
                     const tags = store.tags.filter(current => current.id !== tag.id);
-                    mutator.doUpdate({...store, tags, selected: []});
+                    mutator.doUpdate({...store, tags});
 
                 }
 
@@ -463,6 +465,11 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             const selected = selectedTags();
 
+            function handleDeleted() {
+                resetSelected();
+                doDelete(selected);
+            }
+
             dialogs.confirm({
                 title: `Are you sure you want to delete these tags/folders?`,
                 subtitle: <div>
@@ -472,9 +479,17 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                     </div>,
                 onCancel: NULL_FUNCTION,
                 type: 'danger',
-                onAccept: () => doDelete(selected)
+                onAccept: handleDeleted
             });
 
+        }
+
+        function resetSelected() {
+            const store = storeProvider();
+            const newSelected = ['/'];
+            console.log("FIXME: setting selected to ", newSelected);
+            mutator.doUpdate({...store, selected: newSelected});
+            doSelectRow(newSelected)
         }
 
         return {
@@ -486,6 +501,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             onCreateUserTag,
             onDrop,
             onDelete,
+            resetSelected
         };
 
     }, [

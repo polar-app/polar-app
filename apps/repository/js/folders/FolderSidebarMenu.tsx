@@ -15,6 +15,10 @@ export const FolderSidebarMenu = (props: IProps) => {
 
     const {onDelete, onCreateUserTag} = useFolderSidebarCallbacks();
 
+    const handleDelete = React.useCallback(() => {
+        onDelete();
+    }, [onDelete])
+
     return (
         <>
             <MUIMenuItem text={"Create " + Strings.upperFirst(props.type)}
@@ -24,7 +28,7 @@ export const FolderSidebarMenu = (props: IProps) => {
 
             <MUIMenuItem text="Delete"
                          icon={<DeleteForeverIcon/>}
-                         onClick={onDelete}/>
+                         onClick={handleDelete}/>
 
         </>
     );
