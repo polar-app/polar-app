@@ -189,7 +189,7 @@ function mutatorFactory(storeProvider: Provider<IDocRepoStore>,
 
         const view = Mappers.create(data)
             .map(current => DocRepoFilters2.execute(current, filters))
-            .map(current => Sorting.stableSort(current, Sorting.getComparator(order, orderBy, converter)))
+            .map(current => Sorting.stableSort(current, Sorting.createComparator(order, orderBy, converter)))
             .collect()
 
         return {...tmpStore, view};

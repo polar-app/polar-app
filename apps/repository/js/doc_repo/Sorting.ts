@@ -1,9 +1,12 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {StringComparators} from "polar-shared/src/util/StringComparators";
+import { TagFilters } from "polar-shared/src/tags/TagFilters";
+import {Tag} from "../../../../../polar-app-public.broken/polar-shared/src/tags/Tags";
+import {NumberComparators} from "polar-shared/src/util/NumberComparators";
 
 export namespace Sorting {
 
     export type Order = 'asc' | 'desc';
-
 
     /**
      * Convert value from F and to T
@@ -14,9 +17,10 @@ export namespace Sorting {
         return order === 'asc' ? 'desc' : 'asc';
     }
 
-    function descendingComparator<F, T>(a: F, b: F,
-                                        orderBy: keyof T,
-                                        converter: TypeConverter<F, T>) {
+    function createComparatorWithOrderBy<F, T>(a: F, b: F,
+                                               order: Order,
+                                               orderBy: keyof T,
+                                               converter: TypeConverter<F, T>) {
 
         const toVal = (value: number | string | any): number | string => {
 
@@ -29,12 +33,19 @@ export namespace Sorting {
             }
 
             if (orderBy === 'tags') {
+
+                type TagMap = {[id: string]: Tag};
+
+                const tagMap: TagMap = value;
+
                 // this is sort of a hack and only works because with tags the key
                 // is the tag id and there are no other objects we're sorting on.
-                return Object.keys(value)
-                    .map(current => current.toLowerCase())
+                return Object.values(tagMap)
+                    .filter(TagFilters.onlyRegular)
+                    .map(current => current.label.toLowerCase())
                     .sort()
                     .join(', ');
+
             }
 
             function toDictionaryValue() {
@@ -55,20 +66,18 @@ export namespace Sorting {
         const bVal = toVal(<any> converter(b)[orderBy]);
 
         if (typeof aVal === 'number') {
-            return <number> bVal - <number> aVal;
+            return NumberComparators.create(aVal as number, bVal as number, order);
         }
 
-        return (<string> bVal).localeCompare(<string> aVal);
+        return StringComparators.comparatorWithEmptyStringsLast(<string> aVal, <string> bVal, order);
 
     }
 
-    export function getComparator<F, T>(order: Order,
-                                        orderBy: keyof T,
-                                        converter: TypeConverter<F, T>): (a: F, b: F) => number {
+    export function createComparator<F, T>(order: Order,
+                                           orderBy: keyof T,
+                                           converter: TypeConverter<F, T>): (a: F, b: F) => number {
 
-        return order === 'desc'
-            ? (a, b) => descendingComparator<F, T>(a, b, orderBy, converter)
-            : (a, b) => -descendingComparator<F, T>(a, b, orderBy, converter);
+        return (a, b) => createComparatorWithOrderBy<F, T>(a, b, order, orderBy, converter)
 
     }
 

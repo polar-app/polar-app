@@ -62,18 +62,18 @@ describe('Sorting', function() {
         };
 
         const sorted =
-            arrayStream(Sorting.stableSort(docs, Sorting.getComparator('asc', 'tags', converter)))
+            arrayStream(Sorting.stableSort(docs, Sorting.createComparator('asc', 'tags', converter)))
                 .map(toColumnString)
                 .collect()
 
         assertJSON(sorted, [
-            "",
             "alice",
             "alice, bob",
             "alice, elizabeth",
             "carol",
             "dan",
-            "elizabeth"
+            "elizabeth",
+            "",
         ]);
 
     });
