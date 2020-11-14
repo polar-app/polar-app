@@ -487,7 +487,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         function resetSelected() {
             const store = storeProvider();
             const newSelected = ['/'];
-            console.log("FIXME: setting selected to ", newSelected);
             mutator.doUpdate({...store, selected: newSelected});
             doSelectRow(newSelected)
         }
