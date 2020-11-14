@@ -314,12 +314,12 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         // FIXME: I think the problem is because we're creating ONE store object so the context is working
         // BUT it means that the store object needs to be recreated each time
 
-        // React.useMemo(() => {
-        //     // this is a hack to setStore only on the initial render and only when we have a props.store
-        //     if (props.store !== undefined) {
-        //         setStore(props.store);
-        //     }
-        // }, [props.store]);
+        React.useMemo(() => {
+            // this is a hack to setStore only on the initial render and only when we have a props.store
+            if (props.store !== undefined) {
+                setStore(props.store);
+            }
+        }, [props.store]);
 
         return (
             <storeContext.Provider value={store}>
