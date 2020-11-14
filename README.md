@@ -14,7 +14,7 @@ cp debug.keystore /Users/burton/projects/polar-app/packages/polar-mobile-app/and
 ## Android Setup
 
 The standalone APK does compile via expo build:android does not work. It runs
-with the error "Default Activity Not Found". However the non-standalone APK
+with the error "Default Activity Not Found". However, the non-standalone APK
 functions.
 
 ### To Run from APK (non-standalone) via Android Studio:
