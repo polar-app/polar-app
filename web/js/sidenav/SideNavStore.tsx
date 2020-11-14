@@ -5,7 +5,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
-import { useRefValue } from '../hooks/ReactHooks';
+import {useLogWhenChanged, useRefValue} from '../hooks/ReactHooks';
 
 export interface ITabImage {
     readonly url: string;
@@ -117,9 +117,16 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
     const history = useHistory();
     const historyRef = useRefValue(history);
 
+    // useLogWhenChanged('history', history);
+    // useLogWhenChanged('historyRef', historyRef);
+    // useLogWhenChanged('storeProvider', storeProvider);
+    // useLogWhenChanged('setStore', setStore);
+
     return React.useMemo((): ISideNavCallbacks => {
 
-        console.log("Creating SideNav store");
+        // useMemo SEEMs to be called over and over aain but not sure wy... it should be useMemo...
+        // and NONE of its deps are changing.
+        console.log("FIXME: Creating SideNav store");
 
         function tabByID(id: number) {
             const store = storeProvider();
@@ -209,7 +216,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             addTab, removeTab, setActiveTab
         };
 
-    }, [storeProvider, setStore, historyRef]);
+    }, [historyRef, setStore, storeProvider]);
 
 }
 

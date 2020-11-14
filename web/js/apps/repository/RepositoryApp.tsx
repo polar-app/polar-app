@@ -285,7 +285,6 @@ export const RepositoryApp = (props: IProps) => {
 
                             <>
                                 <UseLocationChangeStoreProvider>
-                                    <SideNavStoreProvider>
                                         <BrowserRouter>
                                         <AnalyticsLocationListener/>
                                         <UseLocationChangeRoot>
@@ -401,8 +400,7 @@ export const RepositoryApp = (props: IProps) => {
 
                                             </MUIDialogController>
                                         </UseLocationChangeRoot>
-                                 </BrowserRouter>
-                                    </SideNavStoreProvider>
+                                     </BrowserRouter>
                                 </UseLocationChangeStoreProvider>
                             </>
 

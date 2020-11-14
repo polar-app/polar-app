@@ -4,6 +4,8 @@ import {ActiveKeyboardShortcuts} from "../hotkeys/ActiveKeyboardShortcuts";
 import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider";
 import {BrowserTabsStoreProvider} from "../browser_tabs/BrowserTabsStore";
 import {MUIAppRoot} from "./MUIAppRoot";
+import {SideNavStoreProvider} from "../sidenav/SideNavStore";
+import {UseLocationChangeStoreProvider} from "../../../apps/doc/src/annotations/UseLocationChangeStore";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -20,7 +22,11 @@ export const MUIRepositoryRoot = (props: IProps) => {
 
                     <FirestoreProvider>
                         <UserInfoProvider>
-                            {props.children}
+                            <SideNavStoreProvider>
+                                <>
+                                    {props.children}
+                                </>
+                            </SideNavStoreProvider>
                         </UserInfoProvider>
                     </FirestoreProvider>
                 </>
