@@ -4,10 +4,6 @@
 - If you're on Windows you should download the latest version of Windows
   Subsystem for Linux.
 
-- you might need to run ```ulimit -n 500000``` and then 'ulimit -n' to make sure
-  this setting was accepted by the OS.  Some users report a bug with npm that 
-  causes it to tail to garbage collect open file handles and this fixes it.
-
 - Make sure you're on node >=14.5 and npm >=6.14.5
 - clone the polar-app repository locally.
 
@@ -44,6 +40,21 @@ npx webpack-dev-server
 
 This *should* mean you have all code running and Polar should load in your 
 browser.
+
+# Potential Errors / Gotchas
+
+## ulimit 
+
+You might need to run ```ulimit -n 1000000``` and then 'ulimit -n' to make sure
+this setting was accepted by the OS.  Some users report a bug with npm that
+causes it to tail to garbage collect open file handles and this fixes it.
+
+
+### increasing file handle limit on macos
+
+```bash
+sudo launchctl limit maxfiles 1000000 1000000
+```
 
 # Background
 
