@@ -13,7 +13,6 @@ interface IProps {
 export const PDFViewerContainer = (props: IProps) => {
 
     const contextMenu = useContextMenu();
-    const [ref, mounted] = useForceMount();
 
     const onContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
 
@@ -34,7 +33,6 @@ export const PDFViewerContainer = (props: IProps) => {
         <>
             <GlobalPDFCss/>
             <main onContextMenu={onContextMenu}
-                  ref={ref}
                   id="viewerContainer"
                   style={{
                       position: 'absolute',
@@ -51,7 +49,7 @@ export const PDFViewerContainer = (props: IProps) => {
                     <div id="viewer" className="pdfViewer viewer">
                         <div/>
 
-                        {mounted && props.children}
+                        {props.children}
 
                     </div>
                 </div>
