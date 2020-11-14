@@ -20,11 +20,15 @@ functions.
 ### To Run from APK (non-standalone) via Android Studio:
 
 1. Open android studio and make sure it is set to the configs as directed by
-  "https://reactnative.dev/docs/0.6/getting-started".
+
+    https://reactnative.dev/docs/getting-started
 
 2. Open an existing project, and select app-debug.apk at "polar-interns\will.kendall\React-native\native-test\android\app\build\outputs\apk\debug"
 
-3. Use the AVD manager (A little icon of a phone with the green alien infront of it in the top right of the project window) to select an Android Virtual Device (AVD). You may have to install a new device; they're pretty heft on space too.
+3. Use the AVD manager (A little icon of a phone with the green alien infront of
+it in the top right of the project window) to select an Android Virtual Device
+(AVD). You may have to install a new device; they're pretty heft on space too.
+
    - Make sure the AVD is running Android 9 (Pie) to solve compatibility issues.
 4. Run this emulator by clicking the play button within the AVD managar.
 5. Navigate to ".\polar-interns\will.kendall\React-native\native-test\" in your terminal.
