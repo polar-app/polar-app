@@ -9,20 +9,54 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
+export type Month = 'jan' | 'feb' | 'mar' | 'apr' | 'may' | 'jun' | 'jul' | 'aug' | 'sep' | 'oct' | 'nov' | 'dec';
+
+export type MonthSelect = Month | '';
+
 interface IProps extends DocInfoProperty {
     readonly className?: string;
     readonly style?: React.CSSProperties;
     readonly docInfo: IDocInfo;
-    readonly value: string | undefined;
-    readonly onChange: (value: string) => void;
+    readonly value: Month | undefined;
+    readonly onChange: (value: Month | undefined) => void;
+}
+
+function toMonthSelect(month: Month | undefined) {
+
+    if (month === undefined) {
+        return ''
+    }
+
+    return month;
+
+}
+
+function toMonth(month: MonthSelect): Month | undefined {
+
+    if (month === '') {
+        return undefined;
+    }
+
+    return month;
+
 }
 
 export const MonthProperty = deepMemo((props: IProps) => {
 
     const label = props.label || Strings.upperFirst(props.name);
 
+    const [value, setValue] = React.useState<MonthSelect>(toMonthSelect(props.value));
+
     const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
-        props.onChange(event.target.value as string);
+
+        function eventValue(): MonthSelect {
+            return event.target.value as MonthSelect;
+        }
+
+        const newValue = eventValue();
+        setValue(newValue)
+        props.onChange(toMonth(newValue));
+
     }, [props]);
 
     return (
@@ -39,7 +73,7 @@ export const MonthProperty = deepMemo((props: IProps) => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label={label}
-                    value={props.value}
+                    value={value}
                     onChange={handleChange}>
                     <MenuItem value="jan">January</MenuItem>
                     <MenuItem value="feb">February</MenuItem>
@@ -53,6 +87,7 @@ export const MonthProperty = deepMemo((props: IProps) => {
                     <MenuItem value="oct">October</MenuItem>
                     <MenuItem value="nov">November</MenuItem>
                     <MenuItem value="dec">December</MenuItem>
+                    <MenuItem value="">not set</MenuItem>
                 </Select>
 
                 {props.description !== undefined && (

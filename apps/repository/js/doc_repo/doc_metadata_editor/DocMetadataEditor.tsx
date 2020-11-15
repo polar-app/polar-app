@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Month} from "polar-shared/src/metadata/IDocBib";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import { StringProperty } from './StringProperty';
@@ -162,12 +163,18 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
         setDocInfo(newDocInfo);
     }, [props]);
 
-    const handleFieldChangeForString = React.useCallback((field: DocInfoProperty, value: string) => {
+    const handleFieldChangeForString = React.useCallback((field: DocInfoProperty, value: string | undefined) => {
 
         const newDocInfo : any = Dictionaries.deepCopy(props.docInfo);
 
         if (field.optional) {
-            newDocInfo[field.name] = value.trim() === '' ? undefined : value.trim();
+
+            if (value === undefined) {
+                newDocInfo[field.name] = undefined;
+            } else {
+                newDocInfo[field.name] = value.trim() === '' ? undefined : value.trim();
+            }
+
         } else {
             newDocInfo[field.name] = value;
         }
@@ -230,7 +237,7 @@ export const DocMetadataEditor = deepMemo((props: IProps) => {
                 return (
                     <MonthProperty className={classes.property}
                                    docInfo={docInfo}
-                                   value={docInfo[property.name] as string}
+                                   value={docInfo[property.name] as Month}
                                    onChange={value => handleFieldChangeForString(property, value)}
                                    {...property}/>
                 );
