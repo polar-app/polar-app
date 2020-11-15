@@ -1,9 +1,12 @@
 
-- Fixed bug where only one docMeta field could be changed when editing document metadata.
+# 2.0.79
+
+- Fixed a bug with uploading files ending in .PDF 
+- Fixed a bug where only one docMeta field could be changed when editing document metadata.
 - Fixed react bug with not rendering the month properly when editing doc metadata
-- Fixed bug with dispatchPDFDocMeta in PDF documents.  Order was incorrect.
+- Fixed a bug with dispatchPDFDocMeta in PDF documents.  Order was incorrect.
 - Improved sorting so that empty strings sort last.
-- Fixed problem with the UI not sorting properly for authors and other new columns.
+- Fixed a bug with the UI not sorting properly for authors and other new columns.
 
 # 2.0.60
 
