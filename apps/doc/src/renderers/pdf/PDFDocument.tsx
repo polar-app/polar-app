@@ -272,9 +272,9 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         }
 
-        pageNavigatorRef.current = createPageNavigator(docRef.current);
-
         dispatchPDFDocMeta();
+
+        pageNavigatorRef.current = createPageNavigator(docRef.current);
 
         setPageNavigator(pageNavigatorRef.current);
 

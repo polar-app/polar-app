@@ -1,4 +1,5 @@
 
+- Fixed bug with dispatchPDFDocMeta in PDF documents.  Order was incorrect.
 - Improved sorting so that empty strings sort last.
 - Fixed problem with the UI not sorting properly for authors and other new columns.
 
