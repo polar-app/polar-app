@@ -1,4 +1,5 @@
 
+- Fixed bug where only one docMeta field could be changed when editing document metadata.
 - Fixed react bug with not rendering the month properly when editing doc metadata
 - Fixed bug with dispatchPDFDocMeta in PDF documents.  Order was incorrect.
 - Improved sorting so that empty strings sort last.
