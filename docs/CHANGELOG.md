@@ -1,6 +1,9 @@
 
 # 2.0.79
 
+- keyboard shortcut duration now shorter
+- When deleting a tag we reset and select the default folder now to avoid
+  confusing the user that a file has been deleted.
 - Fixed a bug with uploading files ending in .PDF 
 - Fixed a bug where only one docMeta field could be changed when editing document metadata.
 - Fixed react bug with not rendering the month properly when editing doc metadata
