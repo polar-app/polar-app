@@ -44,7 +44,31 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export function DocRepoTableHead() {
+const Check = React.memo(() => {
+    return (
+        <TableCell key="left-checkbox"
+                   padding="checkbox">
+        </TableCell>
+    )
+});
+
+const ColumnSelector = React.memo(() => {
+    return (
+
+        <TableCell key="right-filter"
+                   style={{
+                       width: DOC_BUTTON_COLUMN_WIDTH,
+                   }}>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <DocColumnsSelectorWithPrefs/>
+            </div>
+        </TableCell>
+
+    );
+
+});
+
+export const DocRepoTableHead = React.memo(() => {
 
     const classes = useStyles();
 
@@ -60,9 +84,9 @@ export function DocRepoTableHead() {
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-                    <TableCell key="left-checkbox"
-                               padding="checkbox">
-                    </TableCell>
+
+                    <Check/>
+
                     {columns.map((column) => {
 
                         const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
@@ -92,16 +116,9 @@ export function DocRepoTableHead() {
                         )
                     })}
 
-                    <TableCell key="right-filter"
-                               style={{
-                                   width: DOC_BUTTON_COLUMN_WIDTH,
-                               }}>
-                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                            <DocColumnsSelectorWithPrefs/>
-                        </div>
-                    </TableCell>
+                    <ColumnSelector/>
 
                 </TableRow>
             </TableHead>
     );
-}
+});
