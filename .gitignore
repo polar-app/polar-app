@@ -15,6 +15,9 @@ packages/polar-bookshelf.wiki
 packages/readability
 packages/epub.js
 packages/polar-site2
+packages/polar-mobile-app
+packages/polar-mobile-app2
+packages/polar-test-data
 packages
 node_modules
 lerna-debug.log
