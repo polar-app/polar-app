@@ -40,7 +40,7 @@ publish_private() {
 # find packages/polar-app-public -maxdepth 2 -name package.json  -exec jq -r .version "{}" ";" | sort | uniq
 
 set -e
-npm run-script set-registry-bytesafe-rw
+npm run-script set-registry-default-rw && npm ping
 # npm ping
 
 (publish_public)
