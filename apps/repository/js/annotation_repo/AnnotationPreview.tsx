@@ -45,13 +45,16 @@ const ImagePreview = deepMemo((props: IProps) => {
 
     return (
         <div style={{display: 'flex'}}>
-            <HeightFitImg id={props.id}
-                          src={img.src}
-                          height={200}
-                          style={{
-                              marginLeft: 'auto',
-                              marginRight: 'auto'
-                          }}/>
+            {/*<HeightFitImg id={props.id}*/}
+            {/*              src={img.src}*/}
+            {/*              height={200}*/}
+            {/*              style={{*/}
+            {/*                  marginLeft: 'auto',*/}
+            {/*                  marginRight: 'auto'*/}
+            {/*              }}/>*/}
+
+            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
+
         </div>
     );
 
