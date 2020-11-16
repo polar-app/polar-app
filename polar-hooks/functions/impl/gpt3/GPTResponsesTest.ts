@@ -18,5 +18,4 @@ describe('GPTResponses', function() {
 		});
 
 	});
-
 });
