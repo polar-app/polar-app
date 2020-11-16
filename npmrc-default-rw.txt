@@ -1,1 +1,3 @@
 //registry.npmjs.org/:_authToken=06d50537-50c6-404d-80ee-0d1b02ef49ad
+registry=https://registry.npmjs.org/
+
