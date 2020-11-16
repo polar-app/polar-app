@@ -6,7 +6,7 @@ import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {DockSplitter} from "./DockSplitter";
 import {deepMemo} from "../../react/ReactUtils";
-import {useRefState} from "../../hooks/ReactHooks";
+import {useStateRef} from "../../hooks/ReactHooks";
 import { useDockLayoutStore, useDockLayoutCallbacks } from './DockLayoutStore';
 
 class Styles {
@@ -37,7 +37,7 @@ export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
     const {panels} = useDockLayoutStore(['panels']);
     const {setPanels} = useDockLayoutCallbacks();
 
-    const [, setState, stateRef] = useRefState<IState>({
+    const [, setState, stateRef] = useStateRef<IState>({
         resizing: undefined,
     });
 

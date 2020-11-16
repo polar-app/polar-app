@@ -25,12 +25,12 @@ export function useRefWithUpdates<T>(value: T) {
     return ref;
 }
 
-export type RefState<V> = readonly [V, (value: V) => void, React.MutableRefObject<V>];
+export type RefStateTuple<V> = readonly [V, (value: V) => void, React.MutableRefObject<V>];
 
 /**
  * Like useState but we also use a ref with the setter function so that it's updated each time as well.
  */
-export function useRefState<V>(value: V): RefState<V> {
+export function useStateRef<V>(value: V): RefStateTuple<V> {
 
     const [state, setStateDelegate] = React.useState(value);
     const ref = React.useRef<V>(value);

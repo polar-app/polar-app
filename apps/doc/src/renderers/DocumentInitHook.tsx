@@ -18,7 +18,7 @@ export function useDocumentInit() {
     const jumpToPageLoader = useDocViewerJumpToPageLoader();
     const [resumeProgressActive, resumeProgressHandler] = useReadingProgressResume();
 
-    function doInit() {
+    const doInit = React.useCallback(() => {
 
         if (! pageNavigator) {
             throw new Error("No pageNavigator");
@@ -47,7 +47,7 @@ export function useDocumentInit() {
 
         return undefined;
 
-    }
+    }, [docMeta, jumpToPageLoader, pageNavigator, resumeProgressActive, resumeProgressHandler]);
 
     useComponentDidMount(() => {
         setTimeout(doInit, 1);

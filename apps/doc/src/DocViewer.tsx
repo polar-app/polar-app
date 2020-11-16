@@ -32,7 +32,7 @@ import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
+import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
@@ -299,7 +299,7 @@ export const DocViewer = deepMemo(() => {
     const log = useLogger();
     const persistenceLayerContext = usePersistenceLayerContext();
     const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
-    const [exists, setExists, existsRef] = useRefState<boolean | undefined>(undefined);
+    const [exists, setExists, existsRef] = useStateRef<boolean | undefined>(undefined);
 
     useComponentDidMount(() => {
 

@@ -749,8 +749,12 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
 
         function setPageNavigator(pageNavigator: PageNavigator) {
+
+            Preconditions.assertPresent(pageNavigator, "pageNavigator");
+
             const store = storeProvider();
-            setStore({...store, pageNavigator})
+            setStore({...store, pageNavigator});
+
         }
 
         function onPageJump(page: number) {

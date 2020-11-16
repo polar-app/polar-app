@@ -51,6 +51,7 @@ import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import Destination = _pdfjs.Destination;
 import {Nonces} from "polar-shared/src/util/Nonces";
+import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -138,7 +139,7 @@ interface IProps {
 export const PDFDocument = deepMemo((props: IProps) => {
 
     const {docURL} = props;
-    const [active, setActive] = React.useState(false);
+    const [active, setActive, activeRef] = useStateRef(false);
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
@@ -166,6 +167,30 @@ export const PDFDocument = deepMemo((props: IProps) => {
             .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
 
     });
+
+    const hasPagesInitRef = React.useRef(false);
+    const hasLoadRef = React.useRef(false);
+
+    const handleActive = React.useCallback(() => {
+
+        if (hasPagesInitRef.current && hasLoadRef.current) {
+            if (! activeRef.current) {
+                setActive(true);
+            }
+        }
+
+    }, [activeRef, setActive]);
+
+    const onPagesInit = React.useCallback(() => {
+        hasPagesInitRef.current = true;
+        handleActive();
+    }, [handleActive]);
+
+    const onLoaded = React.useCallback(() => {
+        hasLoadRef.current = true;
+        handleActive();
+
+    }, [handleActive]);
 
     const doLoad = async (docViewer: DocViewer) => {
 
@@ -205,9 +230,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
             // PageContextMenus.start()
             annotationBarInjector();
 
-            if (! active) {
-                setActive(true);
-            }
+            onPagesInit();
 
         });
 
@@ -272,9 +295,9 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         }
 
-        dispatchPDFDocMeta();
-
         pageNavigatorRef.current = createPageNavigator(docRef.current);
+
+        dispatchPDFDocMeta();
 
         setPageNavigator(pageNavigatorRef.current);
 
@@ -354,6 +377,8 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         enableAutoPagemarks();
 
+        onLoaded()
+
     }
 
     function resize(): number {
@@ -399,8 +424,13 @@ export const PDFDocument = deepMemo((props: IProps) => {
                 fingerprint: docRef.current.fingerprint
             };
 
-            setPage(pageNavigatorRef.current!.get());
             setDocDescriptor(docDescriptor);
+
+            if (pageNavigatorRef.current) {
+                setPage(pageNavigatorRef.current.get());
+            } else {
+                log.warn("No pageNavigatorRef")
+            }
 
         }
 
