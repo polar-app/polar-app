@@ -41,7 +41,7 @@ Q:`
 
         const body: any = {
             "max_tokens": 200,
-            "temperature": 1,
+            "temperature": 0,
             "top_p": 1,
             "n": 1,
             "stream": false,
