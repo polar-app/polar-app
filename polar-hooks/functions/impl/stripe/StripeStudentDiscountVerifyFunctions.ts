@@ -95,6 +95,7 @@ namespace StripeStudentDiscountPromotionCodes {
 
         const promotionCode = await stripe.promotionCodes.create({
             coupon,
+            max_redemptions: 1,
             metadata: {
                 email,
                 university_id: university.id,
