@@ -7,6 +7,7 @@ interface IProps {
     readonly src: string;
     readonly height: number;
     readonly color?: HighlightColor;
+    readonly style?: React.CSSProperties;
 }
 
 /**
@@ -26,14 +27,16 @@ export const HeightFitImg = deepMemo((props: IProps) => {
                  // core CSS properties for the image so that it
                  // is responsive.
 
-                 objectFit: 'cover',
+                 // objectFit: 'cover',
+                 objectFit: 'contain',
                  objectPosition: '50% top',
 
-                 height,
+                 // height,
                  maxHeight: height,
 
                  // boxSizing: 'content-box',
                  // border: `1px solid #c6c6c6`,
+                 ...props.style
 
              }}
              draggable={false}
