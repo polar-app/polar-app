@@ -8,13 +8,14 @@ export interface IAnnotationPtr {
     readonly docID: IDStr;
     readonly pageNum: number;
     readonly pos?: 'top' | 'bottom';
+    readonly b?: number;
 }
 
 export namespace AnnotationLinks {
 
     import QueryOrLocation = HashURLs.QueryOrLocation;
 
-    export function createHash(ptr: IAnnotationPtr) {
+    export function createHash(ptr: IAnnotationPtr): string {
         const nonce = Math.floor(Math.random() * 100000);
         const pos = ptr.pos || 'top';
         return `?page=${ptr.pageNum}&target=${ptr.target}&pos=${pos}&n=${nonce}`;

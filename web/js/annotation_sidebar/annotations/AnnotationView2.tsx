@@ -68,7 +68,9 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
     const key = 'doc-annotation-' + annotation.id;
 
     return (
-        <div key={key} className="">
+        <div key={key}
+             id={'annotation-' + annotation.id}
+             className="">
             {/*<MUIHoverController>*/}
                 <>
 
