@@ -9,7 +9,7 @@ import {
 } from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Executors} from '../util/Executors';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;

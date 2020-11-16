@@ -6,7 +6,7 @@ import {
 } from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
 import {Firebase} from "../../firebase/Firebase";
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {
     OnErrorCallback,
     SnapshotUnsubscriber

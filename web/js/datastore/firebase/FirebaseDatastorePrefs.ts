@@ -12,6 +12,7 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
+import firebase from 'firebase/app'
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
 

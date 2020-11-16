@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
-import * as firebase from "firebase/app";
+import firebase from 'firebase/app'
 import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
 import {Firestore} from "../firebase/Firestore";

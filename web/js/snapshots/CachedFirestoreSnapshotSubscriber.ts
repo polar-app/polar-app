@@ -1,6 +1,7 @@
 import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import firebase from 'firebase/app'
 
 export type OnNextCachedSnapshot<V> = (snapshot: ISnapshot<V> | undefined) => void;
 

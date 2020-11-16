@@ -163,6 +163,7 @@ export const [AnnotationSidebarStoreProvider, useAnnotationSidebarStore, useAnno
     = createObservableStore<IAnnotationSidebarStore, Mutator, IAnnotationSidebarCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory: useCallbacksFactory
+        callbacksFactory: useCallbacksFactory,
+        enableShallowEquals: true
     });
 

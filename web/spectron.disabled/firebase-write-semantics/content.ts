@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {Firestore} from '../../js/firebase/Firestore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Promises} from '../../js/util/Promises';

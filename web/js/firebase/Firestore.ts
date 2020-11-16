@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/firestore';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';

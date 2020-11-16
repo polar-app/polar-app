@@ -1,6 +1,8 @@
 
 # 2.0.81
 
+- Upgrade to the latest version of RXJS
+
 - implemented shallow vs deep comparison in the main store which can be optionally enabled
   per store and makes UI clicks just about 1ms on average.
 

@@ -524,7 +524,8 @@ export function createFolderSidebarStore() {
     return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
-          callbacksFactory: useCallbacksFactory
+          callbacksFactory: useCallbacksFactory,
+          enableShallowEquals: true
     });
 }
 

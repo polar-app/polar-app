@@ -1,6 +1,6 @@
 // noinspection TsLint: max-line-length
 
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/auth';
 
 import * as firebaseui from 'firebaseui'

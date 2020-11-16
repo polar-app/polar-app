@@ -1,5 +1,5 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {DatastoreCollection} from '../../js/datastore/FirebaseDatastore';
 import {FirebaseTestRunner} from '../../js/firebase/FirebaseTestRunner';
 import {Logging} from '../../js/logger/Logging';
