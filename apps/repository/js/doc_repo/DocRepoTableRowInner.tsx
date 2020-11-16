@@ -15,6 +15,8 @@ import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {AutoBlur} from "./AutoBlur";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -277,7 +279,34 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
 }, isEqual);
 
-namespace cells {
+export namespace cells {
+
+    interface CheckboxProps {
+        readonly viewID: string;
+        readonly viewIndex: number;
+        readonly selected: boolean;
+    }
+
+    export const Check = React.memo((props: CheckboxProps) => {
+
+        const {viewID, viewIndex, selected} = props;
+        const {selectRow} = useDocRepoCallbacks();
+
+        const labelId = `enhanced-table-checkbox-${viewIndex}`;
+
+        return (
+            <TableCell padding="none">
+                <AutoBlur>
+                    <Checkbox checked={selected}
+                              inputProps={{'aria-labelledby': labelId}}
+                              onClick={(event) => selectRow(viewID, event, 'checkbox')}
+
+                    />
+                </AutoBlur>
+            </TableCell>
+        );
+
+    })
 
     interface ProgressProps {
         readonly progress: number;

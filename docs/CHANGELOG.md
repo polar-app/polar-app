@@ -1,4 +1,6 @@
 
+# 2.0.80
+
 - Fixed bug with PDF documents not properly resuming pagemarks 
 
 # 2.0.79
