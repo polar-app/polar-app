@@ -1,8 +1,8 @@
 import {IDUser} from '../util/IDUsers';
 import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
 import {GPTCompletions} from "./GPTCompletions";
-import {GPTContentFilter} from "./GPTContentFilter";
 import {SentryReporters} from "../reporters/SentryReporter";
+import {GPTContentFilters} from "./GPTContentFilters";
 
 export class AutoFlashcardFunctions {
 
@@ -17,25 +17,29 @@ export class AutoFlashcardFunctions {
 
         try {
 
-            // FIXME: call the content filter API for input...
-            const input_filter_class = await GPTContentFilter.exec(request.query_text);
+            const inputClassification = await GPTContentFilters.exec([request.query_text]);
 
-            const completions = await GPTCompletions.exec(request);
+            GPTContentFilters.assertClassification(inputClassification);
 
-            // FIXME: call the content filter API for output...
-            const output_filter_class = await GPTContentFilter.exec([completions.front, completions.back])
+            const completionResponse = await GPTCompletions.exec(request);
 
-            if (input_filter_class != "safe" || output_filter_class != "safe") {
-                throw new Error("Sensitive or Unsafe text");
+            if (! completionResponse) {
+                return {
+                    error: 'no-result'
+                }
             }
-            else {
-                return completions;
-            }
+
+            const outputClassification = await GPTContentFilters.exec([completionResponse.front, completionResponse.back])
+
+            GPTContentFilters.assertClassification(outputClassification);
+
+            return completionResponse;
 
         } catch (e) {
             SentryReporters.reportError("Failed to run AutoFlashcardFunction: ", e);
             return {error: 'no-result'};
         }
+
     }
 
 }

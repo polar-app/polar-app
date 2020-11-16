@@ -1,12 +1,12 @@
 import {Fetches} from "polar-shared/src/util/Fetch";
-import {GPTResponse} from "./GPTResponse";
-import {GPTResponses} from "./GPTResponses";
+import {GPTCompletionResponse} from "./GPTCompletionResponse";
+import {GPTCompletionResponses} from "./GPTCompletionResponses";
 import { GPTConfigs } from './GPTConfigs';
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 
 export namespace GPTCompletions {
 
-    export async function exec(request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse> {
+    export async function exec(request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | undefined> {
 
         // this will have the openapi GPT3 apiKey
         const config = GPTConfigs.getConfig();
@@ -64,9 +64,9 @@ Q:`
         }
 
         // this will be a JSON object with the response from gpt3...
-        const gptResponse: GPTResponse = await response.json();
+        const gptResponse: GPTCompletionResponse = await response.json();
 
-        return GPTResponses.toAutoFlashcardResponse(gptResponse);
+        return GPTCompletionResponses.toAutoFlashcardResponse(gptResponse);
 
     }
 
