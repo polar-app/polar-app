@@ -36,8 +36,12 @@ publish_private() {
 
 }
 
+# FIXME: validate package versions
+# find packages/polar-app-public -maxdepth 2 -name package.json  -exec jq -r .version "{}" ";" | sort | uniq
+
 set -e
-cp packages/polar-bookshelf-secrets/npmrc-default-rw.txt ~/.nmprc
+npm run-script set-registry-bytesafe-rw
+# npm ping
 
 (publish_public)
 (publish_private)
