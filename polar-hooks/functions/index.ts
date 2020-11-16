@@ -28,6 +28,8 @@ import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
 import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
 import {StripeCreateCustomerPortalFunction} from "./impl/stripe/StripeCreateCustomerPortalFunction";
+import {StripeStudentDiscountVerifyFunction} from "./impl/stripe/StripeStudentDiscountVerifyFunction";
+import {StripeStudentDiscountFunction} from "./impl/stripe/StripeStudentDiscountFunction";
 
 exports.hello = HelloWorldFunction;
 // exports.docPreviewSitemap = DocPreviewSitemapFunction;
@@ -60,3 +62,5 @@ exports.docAdd = DocAddFunction;
 exports.search = SearchFunction;
 exports.autoFlashcard = AutoFlashcardFunction
 exports.StripeCreateCustomerPortal = StripeCreateCustomerPortalFunction;
+exports.StripeStudentDiscountVerifyFunction = StripeStudentDiscountVerifyFunction;
+exports.StripeStudentDiscountFunction = StripeStudentDiscountFunction;
