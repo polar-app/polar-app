@@ -1,8 +1,9 @@
 import {Firestore} from './Firestore';
 import {Objects} from "polar-shared/src/util/Objects";
+import firebase from 'firebase/app'
 
 /**
- * Build a simple query cursor for Firesotre queries.
+ * Build a simple query cursor for Firestore queries.
  *
  * https://firebase.google.com/docs/firestore/query-data/query-cursors
  */
