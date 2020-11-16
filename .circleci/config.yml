@@ -42,9 +42,7 @@ commands:
       - run:
           name: npm setup
           command: |
-            rm -f ~/.npmrc
-            echo "Copying .npmrc to ${HOME}"
-            cp .npmrc ~
+            npm run-script set-registry-bytesafe-rw
             npm ping
 
       - run:
