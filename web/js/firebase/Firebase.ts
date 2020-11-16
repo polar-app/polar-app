@@ -77,26 +77,32 @@ export class Firebase {
         return auth.currentUser || undefined;
     }
 
-    public static async currentUserAsync(): Promise<firebase.User | null> {
+    public static async currentUserAsync(): Promise<firebase.User | undefined> {
 
         Firebase.init();
 
-        // const auth = firebase.auth();
-        // const user = auth.currentUser;
-        // return user;
+        return new Promise<firebase.User | undefined>((resolve, reject) => {
 
-        // TODO: I think this actually might be wrong.
-        return new Promise<firebase.User | null>((resolve, reject) => {
+            async function doAsync() {
+                const auth = firebase.auth();
 
-            const unsubscribe = firebase.auth()
-                .onAuthStateChanged((user) => {
-                                        unsubscribe();
-                                        resolve(user);
-                                    },
-                                    (err) => {
-                                        unsubscribe();
-                                        reject(err);
-                                    });
+                const unsubscribe = auth.onAuthStateChanged(user => {
+                                                                resolve(user || undefined);
+                                                                unsubscribe();
+                                                            },
+                                                            err => {
+                                                                reject(err);
+                                                                unsubscribe();
+                                                            });
+
+                if (auth.currentUser) {
+                    unsubscribe();
+                    resolve(auth.currentUser);
+                }
+
+            }
+
+            doAsync().catch(err => reject(err));
 
         });
 
