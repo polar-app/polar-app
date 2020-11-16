@@ -180,9 +180,8 @@ jobs:
             npm run-script build-webapp && \
             echo "Webapp Built Successfully" && \
             pwd && \
-            find web/dist/chrome-bundle.js -size +3500000c |tee /dev/stderr| egrep '.*' && \
-            find web/dist/repository-bundle.js -size +4000000c |tee /dev/stderr| egrep '.*'
-
+            cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
+            find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
 executors:
   my-docker:

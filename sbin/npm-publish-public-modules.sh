@@ -36,11 +36,30 @@ publish_private() {
 
 }
 
+wait_for_package_version() {
+
+  package=${1}
+  version=${2}
+
+  while true; do
+    npm_version=$(npm show polar-accounts version)
+
+    if [ "${npm_version}" = "${version}" ]; then
+      echo "${package}=${npm_version}"
+      break
+    fi
+
+    sleep 15
+
+  done
+
+}
+
 # FIXME: validate package versions
 # find packages/polar-app-public -maxdepth 2 -name package.json  -exec jq -r .version "{}" ";" | sort | uniq
 
 set -e
-npm run-script set-registry-bytesafe-rw
+npm run-script set-registry-default-rw && npm ping
 # npm ping
 
 (publish_public)
