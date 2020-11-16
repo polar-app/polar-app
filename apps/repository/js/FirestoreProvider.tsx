@@ -4,6 +4,7 @@ import {FirestoreCollections} from "./reviewer/FirestoreCollections";
 import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
+import firebase from 'firebase/app'
 
 export interface IFirestore {
     readonly uid: string | undefined;

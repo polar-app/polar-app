@@ -6,6 +6,7 @@ import {Billing} from "polar-accounts/src/Billing";
 import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
+import firebase from 'firebase/app'
 
 // TODO: I don't like this so we're going to have to find a solution long term.
 const POLAR_APP_SITES = [

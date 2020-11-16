@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Firestore} from "../../../web/js/firebase/Firestore";
 import {Firebase} from "../../../web/js/firebase/Firebase";
+import firebase from 'firebase/app'
 
 export type FirestoreSnapshot = firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>
 

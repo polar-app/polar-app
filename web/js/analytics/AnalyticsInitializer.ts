@@ -4,6 +4,7 @@ import {Firebase} from "../firebase/Firebase";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
+import firebase from 'firebase/app'
 
 export namespace AnalyticsInitializer {
 

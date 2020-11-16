@@ -1,3 +1,6 @@
+- added support for webCapture: true through all parts of the capture process
+- AnnotationSidebarStore.tsx and FolderSidebarStore.tsx now use shallow equals for performance boost
+- added support for Firestore 8.0 and new Firebase UI auth
 
 # 2.0.81
 
