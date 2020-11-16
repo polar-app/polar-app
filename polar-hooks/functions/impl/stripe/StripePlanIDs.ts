@@ -99,6 +99,13 @@ export class StripePlanIDs {
             case 'plan_gold':
                 return {plan: V2PlanPro, interval: 'month'};
 
+            case 'plan_bronze_year':
+                return {plan: V2PlanPlus, interval: 'year'};
+            case 'plan_silver_year':
+                return {plan: V2PlanPlus, interval: 'year'};
+            case 'plan_gold_year':
+                return {plan: V2PlanPro, interval: 'year'};
+
 
         }
 
