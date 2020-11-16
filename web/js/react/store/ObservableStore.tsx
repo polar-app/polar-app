@@ -2,8 +2,7 @@ import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
 import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
-import isEqual from "react-fast-compare";
-import {typedMemo} from "../../hooks/ReactHooks";
+import deepEquals from "react-fast-compare";
 
 function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
 
@@ -60,10 +59,60 @@ export interface ObservableStore<V> {
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
+interface IUSeObservableStoreOpts {
+    readonly enableShallowEquals: boolean;
+}
+
+type Dict = {[key: string]: any};
+
+namespace Equals {
+
+    export function shallow(a: Dict, b: Dict): boolean {
+
+        if (a === b) {
+            // the easiest case where they are both object.
+            return true;
+        }
+
+        const aKeys = Object.keys(a);
+        const bKeys = Object.keys(b);
+
+        if (aKeys.length !== bKeys.length) {
+            // they have obviously different number of keys
+            return false;
+        }
+
+        // we HAVE to check the names of the keys in the index because
+        // if we don't there might be null values in a different
+        // dictionary which would be indistinguishable from missing
+
+        for (let idx = 0; idx < aKeys.length; ++idx) {
+            if(aKeys[idx] !== bKeys[idx]) {
+                return false;
+            }
+        }
+
+        for(const key of aKeys) {
+
+            if(a[key] !== b[key]) {
+                return false;
+            }
+
+        }
+
+        return true;
+
+    }
+
+    export function deep(a: Dict, b: Dict): boolean {
+        return deepEquals(a, b);
+    }
+
+}
 
 export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
                                                          keys: ReadonlyArray<K> | undefined,
-                                                         opts?: IUseStoreHooksOpts): Pick<V, K> {
+                                                         opts: IUSeObservableStoreOpts): Pick<V, K> {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
@@ -77,30 +126,38 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
     const subscriptionRef = React.useRef(internalObservableStore.subject.subscribe((nextValue) => {
 
-        function debug(msg: string, ...args: any[]) {
-            if (opts?.debug) {
-                console.log("DEBUG: " + msg, args);
+        const currValue = valueRef.current;
+
+        if (nextValue === currValue) {
+            // we're already done as it's the same value
+            return;
+        }
+
+        function isEqual(a: Dict, b: Dict): boolean {
+            if (opts.enableShallowEquals) {
+                return Equals.shallow(a, b);
             }
+
+            return Equals.deep(a, b);
+
         }
 
         if (keys) {
 
-            debug("Using keys");
+            // debug("Using keys");
 
             // we have received an update but we're only interested in a few
             // keys so compare them.
-
-            const currValue = valueRef.current;
 
             const nextValuePicked = pick(nextValue, keys);
             const currValuePicked = pick(currValue, keys);
 
             if (! isEqual(currValuePicked, nextValuePicked)) {
                 // the internal current in the context is already updated.
-                debug("values are updated: ", nextValuePicked, currValuePicked);
+                // debug("values are updated: ", nextValuePicked, currValuePicked);
                 return doUpdateValue(nextValue);
             } else {
-                debug("values are NOT updated: ", nextValuePicked, currValuePicked);
+                // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
             }
 
         } else {
@@ -241,6 +298,11 @@ export interface ObservableStoreOpts<V, M, C> {
      */
     readonly mockCallbacksFactory?: CallbacksFactory<V, M, C>;
 
+    /**
+     * Do a shallow equals by default..
+     */
+    readonly enableShallowEquals?: boolean;
+
 }
 
 type ComponentCallbacksFactory<C> = () => C;
@@ -292,8 +354,10 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
-    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => {
-        return useObservableStore(storeContext, keys, opts);
+    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
+        return useObservableStore(storeContext, keys, {
+            enableShallowEquals: opts.enableShallowEquals || false
+        });
     }
 
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);

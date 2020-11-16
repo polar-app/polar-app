@@ -225,7 +225,7 @@
     "reflect-metadata": "~0.1.12",
     "requirejs": "=2.3.6",
     "rimraf": "~2.6.2",
-    "rxjs": "=6.5.5",
+    "rxjs": "=6.6.3",
     "semver": "~6.3.0",
     "stream-to-array": "~2.3.0",
     "string-to-stream": "~1.1.1",

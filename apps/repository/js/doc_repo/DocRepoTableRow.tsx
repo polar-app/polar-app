@@ -52,12 +52,12 @@ const Delegate = React.memo((props: IProps) => {
 
     const contextMenuHandlers = useDocRepoContextMenu();
 
-    const hoverListener = useMUIHoverListener();
+    // const hoverListener = useMUIHoverListener();
+    // {/*{...hoverListener}*/}
 
     return (
         <TableRow
             {...contextMenuHandlers}
-            {...hoverListener}
             style={props.style}
             hover
             className={classes.tr}
@@ -83,8 +83,8 @@ const Delegate = React.memo((props: IProps) => {
 }, isEqual);
 
 export const DocRepoTableRow = React.memo((props: IProps) => (
-    <MUIHoverStoreProvider initialValue={false}>
-        <Delegate {...props}/>
-    </MUIHoverStoreProvider>
+    // <MUIHoverStoreProvider initialValue={false}>
+    <Delegate {...props}/>
+    // </MUIHoverStoreProvider>
 ));
 

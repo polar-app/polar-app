@@ -814,7 +814,8 @@ export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDoc
     = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory: useCallbacksFactory
+        callbacksFactory: useCallbacksFactory,
+        enableShallowEquals: true
     });
 
 interface IProps {
