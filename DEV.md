@@ -12,7 +12,7 @@
 ```bash
 
 # setup NPM registry to use our cutsom registry.
-cp .npmrc ${HOME} && npm config set registry='https://polar-app.bytesafe.dev/r/default'
+cp .npmrc.default ${HOME}/.npmrc && npm ping
 
 # pull down all repositories locally
 ./sbin/init
