@@ -19,6 +19,7 @@ export const FirestoreInitStory = React.memo(() => {
             // timestampsInSnapshots: true
         })
 
+        firebase.firestore.setLogLevel("debug");
         const firestore = firebase.firestore(app);
 
         const settings = {
