@@ -81,10 +81,11 @@ export class Firebase {
 
         Firebase.init();
 
+        const auth = firebase.auth();
+
         return new Promise<firebase.User | undefined>((resolve, reject) => {
 
             async function doAsync() {
-                const auth = firebase.auth();
 
                 const unsubscribe = auth.onAuthStateChanged(user => {
                                                                 resolve(user || undefined);
