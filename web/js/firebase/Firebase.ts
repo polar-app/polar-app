@@ -77,6 +77,12 @@ export class Firebase {
         return auth.currentUser || undefined;
     }
 
+    /**
+     * This API is sort of broken by design
+     *
+     * https://medium.com/firebase-developers/why-is-my-currentuser-null-in-firebase-auth-4701791f74f0
+     *
+     */
     public static async currentUserAsync(): Promise<firebase.User | undefined> {
 
         Firebase.init();
