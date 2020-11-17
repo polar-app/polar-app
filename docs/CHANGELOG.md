@@ -1,3 +1,5 @@
+# 2.0.83
+
 - more stores are now shallow
 
 # 2.0.82
