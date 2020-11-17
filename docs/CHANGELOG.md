@@ -1,3 +1,5 @@
+- more stores are now shallow
+
 # 2.0.82
 
 - added support for webCapture: true through all parts of the capture process
