@@ -12,7 +12,7 @@
 ```bash
 
 # setup NPM registry to use our cutsom registry.
-cp .npmrc.default ${HOME}/.npmrc && npm ping
+cp .npmrc.default ${HOME}/.npmrc 
 
 # pull down all repositories locally
 ./sbin/init
