@@ -94,3 +94,8 @@ If what you're working on requires credentials please contact an admin
 # Upgrading Packages
 lerna exec --concurrency=1 --parallel=false --no-bail -- npm-upgrade-pkg typescript 3.9.5
 
+
+# Windows
+
+- Install latest Windows Subsystem for Linux
+- 
