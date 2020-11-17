@@ -6,7 +6,7 @@ import WebView from "react-native-webview";
 
 export default function App() {
     return (
-        <WebView source={{ uri: "https://beta.getpolarized.io/" }}
+        <WebView source={{ uri: "https://app.getpolarized.io/" }}
                  // source={{
                  //   uri: "https://www.whatismybrowser.com/detect/what-is-my-user-agent",
                  // }}
