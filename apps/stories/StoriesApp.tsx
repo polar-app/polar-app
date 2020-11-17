@@ -28,6 +28,7 @@ import {MUITooltipStory} from "./impl/MUITooltipStory";
 import { MUIPaletteStory } from './impl/MUIPaletteStory';
 import { FirestoreSnapshotsStory } from './impl/FirestoreSnapshotsStory';
 import { HeightFitImgStory } from './impl/HeightFitImgStory';
+import {FirestoreInitStory} from "./impl/FirestoreInitStory";
 
 interface IStory {
     readonly name: string;
@@ -139,6 +140,10 @@ const stories = createStoryIndex([
     {
         name: "HeightFitImgStory",
         component: <HeightFitImgStory/>
+    },
+    {
+        name: "Firebase Init",
+        component: <FirestoreInitStory/>
     }
 
 ]);
