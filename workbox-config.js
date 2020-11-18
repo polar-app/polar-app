@@ -120,7 +120,13 @@ module.exports = {
     // stripPrefix: 'dist/public',
     maximumFileSizeToCacheInBytes: 150000000,
     swDest: 'dist/public/service-worker.js',
-    // runtimeCaching: [
+    runtimeCaching: [
+        {
+            // https://js.stripe.com/v3
+            urlPattern: /https:\/\/js\.stripe\.com\/v3/,
+            handler: 'staleWhileRevalidate'
+        }
+    ],
     //     {
     //         urlPattern: /.*/,
     //         handler: 'staleWhileRevalidate'
