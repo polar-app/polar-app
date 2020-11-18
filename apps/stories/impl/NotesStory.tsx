@@ -6,30 +6,50 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {CKEditor5} from "./ckeditor5/CKEditor5";
+import Popover from '@material-ui/core/Popover';
+import Paper from '@material-ui/core/Paper';
+import MenuList from '@material-ui/core/MenuList';
+import ListItemText from '@material-ui/core/ListItemText';
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
 // sets up finder and context
 
 interface NoteMenuProps {
-    readonly anchorEl: HTMLElement;
+    readonly top: number;
+    readonly left: number;
+
 }
 
 const NoteMenu = React.memo((props: NoteMenuProps) => {
     return (
-        <Menu
-            id="fade-menu"
-            keepMounted
-            anchorEl={props.anchorEl}
-            open={true}
-            style={{height: '400px'}}>
 
-            <MenuItem>Option 1</MenuItem>
-            <MenuItem>Option 2</MenuItem>
-            <MenuItem>Option 3</MenuItem>
-            <MenuItem>Option 4</MenuItem>
-            <MenuItem>Option 5</MenuItem>
-        </Menu>
+        <Popover open={true}
+                 anchorReference="anchorPosition"
+                 anchorPosition={{ top: props.top, left: props.left }}
+                 anchorOrigin={{
+                     vertical: 'bottom',
+                     horizontal: 'left',
+                 }}
+                 transformOrigin={{
+                     vertical: 'top',
+                     horizontal: 'left',
+                 }}>
+
+            <Paper elevation={3}>
+
+                <MenuList>
+                    <MenuItem>
+                        <ListItemText primary="hello world"/>
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemText primary="hello world"/>
+                    </MenuItem>
+                </MenuList>
+            </Paper>
+
+        </Popover>
+
     );
 });
 
@@ -37,38 +57,55 @@ interface NoteEditorProps {
     readonly content: string;
 }
 
+interface IActiveMenuPosition {
+    readonly top: number;
+    readonly left: number;
+}
+
 type ActionMenuOnKeyPress = (event: React.KeyboardEvent) => void;
-type ActionMenuTuple = [boolean, ActionMenuOnKeyPress];
+type ActionMenuTuple = [IActiveMenuPosition | undefined, ActionMenuOnKeyPress];
 
 function useActionMenu(): ActionMenuTuple {
 
-    const [menuActive, setMenuActive] = React.useState(false);
+    const [position, setPosition] = React.useState<IActiveMenuPosition | undefined>(undefined);
 
     const onKeyPress = React.useCallback((event: React.KeyboardEvent) => {
 
         switch (event.key) {
             case '/':
-                setMenuActive(true);
+
+                if (window.getSelection()?.rangeCount === 1) {
+
+                    const bcr = window.getSelection()!.getRangeAt(0).getBoundingClientRect();
+
+                    setPosition({
+                        top: bcr.bottom,
+                        left: bcr.left,
+                    });
+
+                }
+
                 break;
             case 'Escape':
             case ' ':
-                setMenuActive(true);
+                setPosition(undefined);
                 break;
 
         }
 
     }, []);
 
-    return [menuActive, onKeyPress]
+    return [position, onKeyPress]
 
 }
 
 const NoteEditor = React.memo((props: NoteEditorProps) => {
 
-    const [active, onKeyPress] = useActionMenu();
+    const [position, onKeyPress] = useActionMenu();
 
     return (
         <div onKeyPress={onKeyPress}>
+            {position && <NoteMenu {...position}/>}
             <CKEditor5 content={props.content} onChange={NULL_FUNCTION}/>
         </div>
     );
