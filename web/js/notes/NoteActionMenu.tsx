@@ -5,6 +5,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useStateRef} from "../hooks/ReactHooks";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface IProps {
     readonly top: number;
@@ -19,10 +22,7 @@ interface IMenuItem {
 
 export const NoteActionMenu = React.memo((props: IProps) => {
 
-    const selectedMenuItem = useNoteMenuSelectedListener();
-    const setSelectedMenuItem = useNoteMenuSelectedStore();
-
-    // FIXME: listen to the window listener ...
+    const[selectedMenuItem, setSelectedMenuItem, selectedMenuItemRef] = useStateRef<number | undefined>(undefined);
 
     const items: ReadonlyArray<IMenuItem> = React.useMemo(() =>
         [
@@ -58,6 +58,39 @@ export const NoteActionMenu = React.memo((props: IProps) => {
 
     };
 
+    const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
+
+        switch (event.key) {
+            case 'ArrowDown':
+                console.log("FIXME: ArrowDown")
+                setSelectedMenuItem(selectedMenuItemRef.current === undefined ? 0 : Math.min(items.length, selectedMenuItemRef.current + 1));
+                event.preventDefault();
+                event.stopPropagation();
+                break;
+
+            case 'ArrowUp':
+                console.log("FIXME: arrowUp")
+                setSelectedMenuItem(Math.max(items.length, (selectedMenuItemRef.current || 0) - 1));
+                event.preventDefault();
+                event.stopPropagation();
+                break;
+
+            default:
+                break;
+
+        }
+
+    }, [items.length, selectedMenuItemRef, setSelectedMenuItem]);
+
+
+    useComponentDidMount(() => {
+        window.addEventListener('keydown', handleKeyDown);
+    })
+
+    useComponentWillUnmount(() => {
+        window.removeEventListener('keydown', handleKeyDown);
+    })
+
     return (
 
         <Paper elevation={3}
@@ -68,7 +101,9 @@ export const NoteActionMenu = React.memo((props: IProps) => {
                }}>
 
             <MenuList>
-                {items.map((current, idx) => <NoteMenuItem id={idx} {...current}/>)}
+                {items.map((current, idx) => <NoteMenuItem key={idx}
+                                                           id={idx}
+                                                           {...current}/>)}
             </MenuList>
         </Paper>
 

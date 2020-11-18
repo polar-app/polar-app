@@ -2,6 +2,7 @@ import React from "react";
 import {CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {NoteActionMenu} from "./NoteActionMenu";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface IProps {
     readonly content: string;
@@ -12,8 +13,10 @@ interface IActiveMenuPosition {
     readonly left: number;
 }
 
-type ActionMenuOnKeyDown = (event: React.KeyboardEvent) => void;
-type ActionMenuTuple = [IActiveMenuPosition | undefined, ActionMenuOnKeyDown];
+export type ActionMenuOnKeyDown = (event: React.KeyboardEvent) => void;
+export type ActionMenuDismiss = () => void;
+export type ActionMenuTuple = [IActiveMenuPosition | undefined, ActionMenuOnKeyDown, ActionMenuDismiss];
+
 
 function useActionMenu(): ActionMenuTuple {
 
@@ -59,21 +62,27 @@ function useActionMenu(): ActionMenuTuple {
 
     }, []);
 
-    return [position, onKeyDown]
+    const dismiss = React.useCallback(() => {
+        setPosition(undefined)
+    }, []);
+
+    return [position, onKeyDown, dismiss]
 
 }
 
 export const NoteEditor = React.memo((props: IProps) => {
 
-    const [position, onKeyDown] = useActionMenu();
-
-    const onKeyPress = React.useCallback(() => {
-
-    }, []);
+    const [actionMenuPosition, actionMenuOnKeyDown, actionMenuDismiss] = useActionMenu();
 
     return (
-        <div onKeyDown={onKeyDown}>
-            {position && <NoteActionMenu {...position}/>}
+        <div onKeyDown={actionMenuOnKeyDown}>
+            {actionMenuPosition && (
+                    <ClickAwayListener onClickAway={actionMenuDismiss}>
+                        <div>
+                            <NoteActionMenu {...actionMenuPosition}/>
+                        </div>
+                    </ClickAwayListener>
+                )}
             <CKEditor5 content={props.content} onChange={NULL_FUNCTION}/>
         </div>
     );
