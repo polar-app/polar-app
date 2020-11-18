@@ -45,7 +45,7 @@ const Notes = deepMemo((props: NoteProps) => {
     }
 
     return (
-        <ul>
+        <ul style={{flexGrow: 1}}>
 
             {props.notes.map((note) => (
                 <li key={note.id}>
@@ -66,36 +66,6 @@ export const NotesStory = () => {
         <>
             <Notes notes={notes}/>
 
-            {/*<Menu*/}
-            {/*    id="fade-menu"*/}
-            {/*    keepMounted*/}
-            {/*    open={true}*/}
-            {/*    style={{height: '100px'}}>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*</Menu>*/}
         </>
     );
 

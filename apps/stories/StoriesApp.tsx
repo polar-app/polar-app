@@ -30,6 +30,7 @@ import { FirestoreSnapshotsStory } from './impl/FirestoreSnapshotsStory';
 import { HeightFitImgStory } from './impl/HeightFitImgStory';
 import {FirestoreInitStory} from "./impl/FirestoreInitStory";
 import {ActionMenuStory} from "./impl/ActionMenuStory";
+import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
 
 interface IStory {
     readonly name: string;
@@ -149,6 +150,10 @@ const stories = createStoryIndex([
     {
         name: "ActionMenuStory",
         component: <ActionMenuStory/>
+    },
+    {
+        name: "Youtube Player",
+        component: <YoutubePlayerStory/>
     }
 
 ]);

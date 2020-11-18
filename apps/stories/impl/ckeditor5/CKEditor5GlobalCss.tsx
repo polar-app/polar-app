@@ -15,7 +15,7 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
                 "--ck-font-size-base": "14px",
             
                 /* Helper variables to avoid duplication in the colors. */
-                "--ck-custom-background": "hsl(270, 1%, 29%)",
+                "--ck-custom-background": theme.palette.background.default,
                 "--ck-custom-foreground": "hsl(255, 3%, 18%)",
                 "--ck-custom-border": "hsl(300, 1%, 22%)",
                 "--ck-custom-white": "hsl(0, 0%, 100%)",
@@ -23,7 +23,8 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
                 /* -- Overrides generic colors. ------------------------------------------------------------- */
             
                 "--ck-color-base-foreground": "var(--ck-custom-background)",
-                "--ck-color-focus-border": "hsl(208, 90%, 62%)",
+                // "--ck-color-focus-border": "hsl(208, 90%, 62%)",
+                "--ck-color-focus-border": "transparent",
                 "--ck-color-text": "hsl(0, 0%, 98%)",
                 "--ck-color-shadow-drop": "hsla(0, 0%, 0%, 0.2)",
                 "--ck-color-shadow-inner": "hsla(0, 0%, 0%, 0.1)",
