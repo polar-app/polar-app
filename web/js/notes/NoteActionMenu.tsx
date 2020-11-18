@@ -3,9 +3,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
-import {useStateRef} from "../hooks/ReactHooks";
+import {useRefValue} from "../hooks/ReactHooks";
+import {useNoteActionMenuStoreListener, useNoteActionMenuStore} from "./NoteActionMenuStore";
 
 interface IProps {
     readonly top: number;
@@ -20,7 +20,9 @@ interface IMenuItem {
 
 export const NoteActionMenu = React.memo((props: IProps) => {
 
-    const[selectedMenuItem, setSelectedMenuItem, selectedMenuItemRef] = useStateRef<number | undefined>(undefined);
+    const noteActionMenuStore = useNoteActionMenuStoreListener();
+    const setNoteActionMenuStore = useNoteActionMenuStore();
+    const menuIndexRef = useRefValue(noteActionMenuStore.menuIndex);
 
     const items: ReadonlyArray<IMenuItem> = React.useMemo(() =>
         [
@@ -36,20 +38,24 @@ export const NoteActionMenu = React.memo((props: IProps) => {
         readonly id: number;
     }
 
+    const setMenuIndex = React.useCallback((menuIndex: number | undefined) => {
+        setNoteActionMenuStore({...noteActionMenuStore, menuIndex})
+    }, [noteActionMenuStore, setNoteActionMenuStore]);
+
     const executeCurrentAction = React.useCallback(() => {
 
-        if (selectedMenuItemRef.current !== undefined) {
-            items[selectedMenuItemRef.current].action();
+        if (menuIndexRef.current !== undefined) {
+            items[menuIndexRef.current].action();
         }
 
-    }, [items, selectedMenuItemRef])
+    }, [items, menuIndexRef])
 
     const handleClick = React.useCallback((id: number) => {
 
-        setSelectedMenuItem(undefined);
+        setMenuIndex(undefined);
         executeCurrentAction();
 
-    }, [executeCurrentAction, setSelectedMenuItem]);
+    }, [executeCurrentAction, setMenuIndex]);
 
     const NoteMenuItem = (props: NoteMenuItemProps) => {
 
@@ -57,7 +63,7 @@ export const NoteActionMenu = React.memo((props: IProps) => {
 
         return (
             <MenuItem onClick={() => handleClick(id)}
-                      selected={selectedMenuItem === id}>
+                      selected={menuIndexRef.current === id}>
                 <ListItemText primary={props.text} />
             </MenuItem>
         );
@@ -68,22 +74,22 @@ export const NoteActionMenu = React.memo((props: IProps) => {
 
         function computeNextID() {
 
-            if (selectedMenuItemRef.current === undefined) {
+            if (menuIndexRef.current === undefined) {
                 return 0;
             }
 
-            return Math.min(items.length - 1, selectedMenuItemRef.current + 1);
+            return Math.min(items.length - 1, menuIndexRef.current + 1);
 
         }
 
 
         function computePrevID() {
 
-            if (selectedMenuItemRef.current === undefined) {
+            if (menuIndexRef.current === undefined) {
                 return 0;
             }
 
-            return Math.max(0, selectedMenuItemRef.current - 1);
+            return Math.max(0, menuIndexRef.current - 1);
 
         }
 
@@ -91,7 +97,7 @@ export const NoteActionMenu = React.memo((props: IProps) => {
             case 'ArrowDown':
 
                 const nextID = computeNextID();
-                setSelectedMenuItem(nextID);
+                setMenuIndex(nextID);
                 event.preventDefault();
                 event.stopPropagation();
                 break;
@@ -99,7 +105,7 @@ export const NoteActionMenu = React.memo((props: IProps) => {
             case 'ArrowUp':
 
                 const prevID = computePrevID();
-                setSelectedMenuItem(prevID);
+                setMenuIndex(prevID);
                 event.preventDefault();
                 event.stopPropagation();
                 break;
@@ -117,8 +123,7 @@ export const NoteActionMenu = React.memo((props: IProps) => {
 
         }
 
-    }, [executeCurrentAction, items.length, selectedMenuItemRef, setSelectedMenuItem]);
-
+    }, [executeCurrentAction, items.length, menuIndexRef, setMenuIndex]);
 
     useComponentDidMount(() => {
         window.addEventListener('keydown', handleKeyDown);
