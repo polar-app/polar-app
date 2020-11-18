@@ -1,6 +1,12 @@
+import * as React from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
+const balloon = require('@ckeditor/ckeditor5-build-balloon');
+
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
-import React from "react";
+
+// import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+// import BalloonEditor from "@ckeditor/ckeditor5-editor-balloon/src/ballooneditor";
+
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
 
