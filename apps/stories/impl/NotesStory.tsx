@@ -10,6 +10,7 @@ import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
 import ListItemText from '@material-ui/core/ListItemText';
+import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
@@ -21,15 +22,19 @@ interface NoteMenuProps {
 
 }
 
+export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
+    createRXJSStore<string | undefined>();
+
 const NoteMenu = React.memo((props: NoteMenuProps) => {
 
-    const [selectedMenuItem, setSelectedMenuItem] = React.useState<string | undefined>(undefined);
+    const selectedMenuItem = useNoteMenuSelectedListener();
+    const setSelectedMenuItem = useNoteMenuSelectedStore();
 
     interface NoteMenuItemProps {
         readonly text: string;
     }
 
-    const NoteMenuItem = (props: NoteMenuItemProps) => {
+    const NoteMenuItem = React.useCallback((props: NoteMenuItemProps) => {
 
         const id = props.text.toLowerCase().replace(/ /g, '-');
 
@@ -39,41 +44,24 @@ const NoteMenu = React.memo((props: NoteMenuProps) => {
                 <ListItemText primary={props.text} />
             </MenuItem>
         );
-    }
+    }, [selectedMenuItem, setSelectedMenuItem]);
 
     return (
 
-        // <Popover open={true}
-        //          anchorReference="anchorPosition"
-        //          anchorPosition={{
-        //              top: props.top,
-        //              left: props.left
-        //          }}
-        //          anchorOrigin={{
-        //              vertical: 'bottom',
-        //              horizontal: 'left',
-        //          }}
-        //          transformOrigin={{
-        //              vertical: 'top',
-        //              horizontal: 'left',
-        //          }}>
+        <Paper elevation={3}
+               style={{
+                   position: 'absolute',
+                   top: props.top,
+                   left: props.left
+               }}>
 
-            <Paper elevation={3}
-                   style={{
-                       position: 'absolute',
-                       top: props.top,
-                       left: props.left
-                   }}>
-
-                <MenuList>
-                    <NoteMenuItem text="Embed"/>
-                    <NoteMenuItem text="Tomorrow"/>
-                    <NoteMenuItem text="Today"/>
-                    <NoteMenuItem text="Yesterday"/>
-                </MenuList>
-            </Paper>
-
-        // </Popover>
+            <MenuList>
+                <NoteMenuItem text="Embed"/>
+                <NoteMenuItem text="Tomorrow"/>
+                <NoteMenuItem text="Today"/>
+                <NoteMenuItem text="Yesterday"/>
+            </MenuList>
+        </Paper>
 
     );
 });
@@ -100,6 +88,8 @@ function useActionMenu(): ActionMenuTuple {
         // TODO: up/down arrows to select the right item
         // TODO: click away listener so that if I select another item this will go away
 
+        console.log("FIXME: key: ", event.key);
+
         switch (event.key) {
 
             case '/':
@@ -119,6 +109,8 @@ function useActionMenu(): ActionMenuTuple {
             case 'Escape':
             case 'Backspace':
             case 'Delete':
+            case 'ArrowLeft':
+            case 'ArrowRight':
             case ' ':
                 setPosition(undefined);
                 break;
@@ -180,7 +172,10 @@ const Notes = deepMemo((props: NoteProps) => {
         <ul style={{flexGrow: 1}}>
 
             {props.notes.map((note) => (
-                <li key={note.id}>
+                <li style={{
+                        listStyleType: 'disc'
+                    }}
+                    key={note.id}>
                     <NoteEditor content={note.content}/>
                     <Notes notes={note.children}/>
                 </li>))}
