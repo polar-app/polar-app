@@ -11,6 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
 import ListItemText from '@material-ui/core/ListItemText';
 import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 
@@ -87,8 +89,9 @@ function useActionMenu(): ActionMenuTuple {
         // TODO: filter the list input based on what the user has typed
         // TODO: up/down arrows to select the right item
         // TODO: click away listener so that if I select another item this will go away
-
-        console.log("FIXME: key: ", event.key);
+        // TODO: we can do editing.view.focus()
+        // TODO: we can call ref.focus() (on the element) to select the current items
+        // and we can use that to navigate through them.
 
         switch (event.key) {
 
@@ -135,10 +138,16 @@ const NoteEditor = React.memo((props: NoteEditorProps) => {
     );
 });
 
+export type NoteID = IDStr;
+
 interface INote {
     readonly id: string;
     readonly content: string
-    readonly children?: ReadonlyArray<INote>;
+    readonly items?: ReadonlyArray<NoteID>;
+}
+
+function identifierFactory() {
+    return Hashcodes.createRandomID();
 }
 
 const notes: ReadonlyArray<INote> = [
@@ -148,27 +157,62 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '102',
-        content: 'this is the second note',
-        children: [
-            {
-                id: '103',
-                content: 'This is a child note'
-            }
+        content: 'this is an item with some child items',
+        items: [
+            '103'
         ]
+    },
+    {
+        id: '103',
+        content: 'this is the second note',
     }
 ]
 
-interface NoteProps {
+type NotesIndex = {[id: string]: INote};
+
+function createNotesIndex(): NotesIndex {
+
+    const result: NotesIndex = {};
+
+    for (const note of notes) {
+        result[note.id] = note;
+    }
+
+    return result;
+
+}
+
+const notesIndex: NotesIndex = createNotesIndex();
+
+interface NoteProps extends INote {
+
+}
+
+const Note = React.memo((props: NoteProps) => {
+
+    const items = props.items || [];
+    const children = items.map(current => notesIndex[current]);
+
+    return (
+        <>
+            <NoteEditor content={props.content}/>
+            <Notes notes={children}/>
+        </>
+    );
+});
+
+interface NotesProps {
     readonly notes: ReadonlyArray<INote> | undefined;
 }
 
-const Notes = deepMemo((props: NoteProps) => {
+const Notes = deepMemo((props: NotesProps) => {
 
     if ( ! props.notes) {
         return null;
     }
 
     return (
+
         <ul style={{flexGrow: 1}}>
 
             {props.notes.map((note) => (
@@ -176,8 +220,7 @@ const Notes = deepMemo((props: NoteProps) => {
                         listStyleType: 'disc'
                     }}
                     key={note.id}>
-                    <NoteEditor content={note.content}/>
-                    <Notes notes={note.children}/>
+                    <Note {...note}/>
                 </li>))}
 
         </ul>
@@ -194,19 +237,6 @@ export const NotesStory = () => {
 
         </>
     );
-
-    // return (
-    //     <ul>
-    //
-    //         {notes.map((note) => (
-    //             <li key={note.id}>
-    //                 <Editor content={note.content}
-    //                         onChange={NULL_FUNCTION}/>
-    //             </li>))}
-    //
-    //     </ul>
-    //
-    // );
 
 }
 
