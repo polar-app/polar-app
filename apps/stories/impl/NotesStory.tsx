@@ -92,6 +92,8 @@ function useActionMenu(): ActionMenuTuple {
         // TODO: we can do editing.view.focus()
         // TODO: we can call ref.focus() (on the element) to select the current items
         // and we can use that to navigate through them.
+        // TODO: link to another node using completion with [[
+        // TODO: link to tags too
 
         switch (event.key) {
 
@@ -129,6 +131,10 @@ function useActionMenu(): ActionMenuTuple {
 const NoteEditor = React.memo((props: NoteEditorProps) => {
 
     const [position, onKeyDown] = useActionMenu();
+
+    const onKeyPress = React.useCallback(() => {
+
+    }, []);
 
     return (
         <div onKeyDown={onKeyDown}>
@@ -183,6 +189,10 @@ function createNotesIndex(): NotesIndex {
 }
 
 const notesIndex: NotesIndex = createNotesIndex();
+
+type ReverseIndex = {[key: string]: ReadonlyArray<INote>};
+
+const reverseIndex: ReverseIndex = {};
 
 interface NoteProps extends INote {
 

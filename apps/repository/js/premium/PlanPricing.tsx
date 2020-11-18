@@ -65,7 +65,7 @@ namespace PlanPrices {
             case "free":
                 return 0.0;
             case "plus":
-                return 164.99;
+                return 199.99;
             case "pro":
                 return 399.99;
         }
