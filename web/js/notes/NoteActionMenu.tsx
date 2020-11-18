@@ -1,5 +1,4 @@
 import React from "react";
-import {useNoteMenuSelectedListener, useNoteMenuSelectedStore} from "../../../apps/stories/impl/NotesStory";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
@@ -7,7 +6,6 @@ import MenuList from "@material-ui/core/MenuList";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useStateRef} from "../hooks/ReactHooks";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface IProps {
     readonly top: number;
@@ -60,17 +58,40 @@ export const NoteActionMenu = React.memo((props: IProps) => {
 
     const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
 
+        function computeNextID() {
+
+            if (selectedMenuItemRef.current === undefined) {
+                return 0;
+            }
+
+            return Math.min(items.length - 1, selectedMenuItemRef.current + 1);
+
+        }
+
+
+        function computePrevID() {
+
+            if (selectedMenuItemRef.current === undefined) {
+                return 0;
+            }
+
+            return Math.max(0, selectedMenuItemRef.current - 1);
+
+        }
+
         switch (event.key) {
             case 'ArrowDown':
-                console.log("FIXME: ArrowDown")
-                setSelectedMenuItem(selectedMenuItemRef.current === undefined ? 0 : Math.min(items.length, selectedMenuItemRef.current + 1));
+
+                const nextID = computeNextID();
+                setSelectedMenuItem(nextID);
                 event.preventDefault();
                 event.stopPropagation();
                 break;
 
             case 'ArrowUp':
-                console.log("FIXME: arrowUp")
-                setSelectedMenuItem(Math.max(items.length, (selectedMenuItemRef.current || 0) - 1));
+
+                const prevID = computePrevID();
+                setSelectedMenuItem(prevID);
                 event.preventDefault();
                 event.stopPropagation();
                 break;
