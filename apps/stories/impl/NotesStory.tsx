@@ -24,31 +24,45 @@ interface NoteMenuProps {
 const NoteMenu = React.memo((props: NoteMenuProps) => {
     return (
 
-        <Popover open={true}
-                 anchorReference="anchorPosition"
-                 anchorPosition={{ top: props.top, left: props.left }}
-                 anchorOrigin={{
-                     vertical: 'bottom',
-                     horizontal: 'left',
-                 }}
-                 transformOrigin={{
-                     vertical: 'top',
-                     horizontal: 'left',
-                 }}>
+        // <Popover open={true}
+        //          anchorReference="anchorPosition"
+        //          anchorPosition={{
+        //              top: props.top,
+        //              left: props.left
+        //          }}
+        //          anchorOrigin={{
+        //              vertical: 'bottom',
+        //              horizontal: 'left',
+        //          }}
+        //          transformOrigin={{
+        //              vertical: 'top',
+        //              horizontal: 'left',
+        //          }}>
 
-            <Paper elevation={3}>
+            <Paper elevation={3}
+                   style={{
+                       position: 'absolute',
+                       top: props.top,
+                       left: props.left
+                   }}>
 
                 <MenuList>
                     <MenuItem>
-                        <ListItemText primary="hello world"/>
+                        <ListItemText primary="Embed"/>
                     </MenuItem>
                     <MenuItem>
-                        <ListItemText primary="hello world"/>
+                        <ListItemText primary="Tomorrow"/>
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemText primary="Today"/>
+                    </MenuItem>
+                    <MenuItem>
+                        <ListItemText primary="Yesterday"/>
                     </MenuItem>
                 </MenuList>
             </Paper>
 
-        </Popover>
+        // </Popover>
 
     );
 });
@@ -62,16 +76,20 @@ interface IActiveMenuPosition {
     readonly left: number;
 }
 
-type ActionMenuOnKeyPress = (event: React.KeyboardEvent) => void;
-type ActionMenuTuple = [IActiveMenuPosition | undefined, ActionMenuOnKeyPress];
+type ActionMenuOnKeyDown = (event: React.KeyboardEvent) => void;
+type ActionMenuTuple = [IActiveMenuPosition | undefined, ActionMenuOnKeyDown];
 
 function useActionMenu(): ActionMenuTuple {
 
     const [position, setPosition] = React.useState<IActiveMenuPosition | undefined>(undefined);
 
-    const onKeyPress = React.useCallback((event: React.KeyboardEvent) => {
+    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        // TODO: filter the list input based on what the user has typed
+        // TODO: up/down arrows to select the right item
 
         switch (event.key) {
+
             case '/':
 
                 if (window.getSelection()?.rangeCount === 1) {
@@ -87,6 +105,8 @@ function useActionMenu(): ActionMenuTuple {
 
                 break;
             case 'Escape':
+            case 'Backspace':
+            case 'Delete':
             case ' ':
                 setPosition(undefined);
                 break;
@@ -95,16 +115,16 @@ function useActionMenu(): ActionMenuTuple {
 
     }, []);
 
-    return [position, onKeyPress]
+    return [position, onKeyDown]
 
 }
 
 const NoteEditor = React.memo((props: NoteEditorProps) => {
 
-    const [position, onKeyPress] = useActionMenu();
+    const [position, onKeyDown] = useActionMenu();
 
     return (
-        <div onKeyPress={onKeyPress}>
+        <div onKeyDown={onKeyDown}>
             {position && <NoteMenu {...position}/>}
             <CKEditor5 content={props.content} onChange={NULL_FUNCTION}/>
         </div>

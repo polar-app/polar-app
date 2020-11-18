@@ -12,7 +12,7 @@ const ActionList = () => {
     return (
         <Paper elevation={3}>
             <MenuList>
-                <MenuItem>
+                <MenuItem selected={true}>
                     <ListItemText primary="hello world"/>
                 </MenuItem>
                 <MenuItem>
