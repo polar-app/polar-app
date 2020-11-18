@@ -15,7 +15,7 @@ export const CKEditor5 = deepMemo((props: IProps) => {
         <>
             <CKEditor5GlobalCss/>
             <CKEditor
-                editor={ ClassicEditor }
+                editor={ BalloonEditor }
                 data={props.content}
                 onInit={ (editor: any) => {
                     // You can store the "editor" and use when it is needed.
