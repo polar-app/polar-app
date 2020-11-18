@@ -1,7 +1,7 @@
 import React from "react";
-
 import {deepMemo} from "../react/ReactUtils";
-import {INote} from "polar-shared/src/metadata/INote";
+import { Note } from "./Note";
+import {INote} from "./NotesStore";
 
 interface NotesProps {
     readonly notes: ReadonlyArray<INote> | undefined;
