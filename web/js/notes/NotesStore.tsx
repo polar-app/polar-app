@@ -34,8 +34,8 @@ interface INotesStore {
 
 interface INotesCallbacks {
 
-    readonly add: (notes: ReadonlyArray<INote>) => void;
-    readonly remove: (notes: ReadonlyArray<INote>) => void;
+    readonly doPut: (notes: ReadonlyArray<INote>) => void;
+    readonly doDelete: (notes: ReadonlyArray<INote>) => void;
 
     readonly lookupReverse: (id: NoteIDStr) => ReadonlyArray<NoteIDStr>;
 
@@ -65,7 +65,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             return store.reverse[id] || [];
         }
 
-        function add(notes: ReadonlyArray<INote>) {
+        function doPut(notes: ReadonlyArray<INote>) {
 
             const store = storeProvider();
 
@@ -85,7 +85,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function remove(notes: ReadonlyArray<INote>) {
+        function doDelete(notes: ReadonlyArray<INote>) {
 
             const store = storeProvider();
 
@@ -113,10 +113,10 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
         }
 
         return {
-            add, remove, lookupReverse
+            doPut, doDelete, lookupReverse
         };
 
-    }, [])
+    }, [storeProvider])
 
 }
 
