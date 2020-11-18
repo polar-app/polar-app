@@ -22,6 +22,25 @@ interface NoteMenuProps {
 }
 
 const NoteMenu = React.memo((props: NoteMenuProps) => {
+
+    const [selectedMenuItem, setSelectedMenuItem] = React.useState<string | undefined>(undefined);
+
+    interface NoteMenuItemProps {
+        readonly text: string;
+    }
+
+    const NoteMenuItem = (props: NoteMenuItemProps) => {
+
+        const id = props.text.toLowerCase().replace(/ /g, '-');
+
+        return (
+            <MenuItem onClick={() => setSelectedMenuItem(id)}
+                      selected={selectedMenuItem === id}>
+                <ListItemText primary={props.text} />
+            </MenuItem>
+        );
+    }
+
     return (
 
         // <Popover open={true}
@@ -47,18 +66,10 @@ const NoteMenu = React.memo((props: NoteMenuProps) => {
                    }}>
 
                 <MenuList>
-                    <MenuItem>
-                        <ListItemText primary="Embed"/>
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemText primary="Tomorrow"/>
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemText primary="Today"/>
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemText primary="Yesterday"/>
-                    </MenuItem>
+                    <NoteMenuItem text="Embed"/>
+                    <NoteMenuItem text="Tomorrow"/>
+                    <NoteMenuItem text="Today"/>
+                    <NoteMenuItem text="Yesterday"/>
                 </MenuList>
             </Paper>
 
@@ -87,6 +98,7 @@ function useActionMenu(): ActionMenuTuple {
 
         // TODO: filter the list input based on what the user has typed
         // TODO: up/down arrows to select the right item
+        // TODO: click away listener so that if I select another item this will go away
 
         switch (event.key) {
 
