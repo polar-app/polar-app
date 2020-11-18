@@ -334,6 +334,10 @@ module.exports = {
                 {
                     urlPattern: /https:\/\/lh5.googleusercontent.com\//,
                     handler: 'CacheFirst'
+                },
+                {
+                    urlPattern: /https:\/\/js\.stripe\.com\/v3/,
+                    handler: 'StaleWhileRevalidate'
                 }
             ],
             modifyURLPrefix: {
