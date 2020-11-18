@@ -8,6 +8,11 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
     return {
         // @global is handled by jss-plugin-global.
         '@global': {
+
+            ".ck-content": {
+                boxShadow: "none !important"
+            },
+
             ":root": {
 
                 "--ck-border-radius": "4px",
@@ -23,8 +28,10 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
                 /* -- Overrides generic colors. ------------------------------------------------------------- */
             
                 "--ck-color-base-foreground": "var(--ck-custom-background)",
+                "--ck-color-focus-border": "#303030",
                 // "--ck-color-focus-border": "hsl(208, 90%, 62%)",
-                "--ck-color-focus-border": "transparent",
+                // "--ck-color-focus-border": "transparent",
+                // "--ck-color-focus-border": "var(--ck-custom-background)",
                 "--ck-color-text": "hsl(0, 0%, 98%)",
                 "--ck-color-shadow-drop": "hsla(0, 0%, 0%, 0.2)",
                 "--ck-color-shadow-inner": "hsla(0, 0%, 0%, 0.1)",
