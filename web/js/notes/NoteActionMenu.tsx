@@ -48,9 +48,11 @@ export const NoteActionMenu = React.memo((props: IProps) => {
             items[menuIndexRef.current].action();
         }
 
-    }, [items, menuIndexRef])
+        setMenuIndex(undefined);
 
-    const handleClick = React.useCallback((id: number) => {
+    }, [items, menuIndexRef, setMenuIndex])
+
+    const handleClick = React.useCallback(() => {
 
         setMenuIndex(undefined);
         executeCurrentAction();
@@ -62,7 +64,7 @@ export const NoteActionMenu = React.memo((props: IProps) => {
         const {id} = props;
 
         return (
-            <MenuItem onClick={() => handleClick(id)}
+            <MenuItem onClick={handleClick}
                       selected={menuIndexRef.current === id}>
                 <ListItemText primary={props.text} />
             </MenuItem>

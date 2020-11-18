@@ -60,7 +60,6 @@ export function useNoteActionMenuKeyboardListener(): ActionMenuTuple {
 
                 break;
             case 'Escape':
-            case 'Enter':
             case 'Backspace':
             case 'Delete':
             case 'ArrowLeft':
